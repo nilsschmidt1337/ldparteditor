@@ -64,6 +64,8 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData2;
+import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.Rounder;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -286,6 +288,8 @@ public class CompositeTab extends CompositeTabDesign {
                         GData dataInLine = dat.getDrawPerLine().getValue(state.currentCaretPositionLine + 1);
                         final int type = dataInLine.type();
                         String[] data_segments = oldLine.trim().split("\\s+"); //$NON-NLS-1$
+                        final boolean isDistanceOrProtractor = type == 2 && !((GData2) dataInLine).isLine
+                                || type == 3 && !((GData3) dataInLine).isTriangle;
 
                         Vertex vertexToReplace = null;
                         boolean foundValidVertex = false;
@@ -307,7 +311,7 @@ public class CompositeTab extends CompositeTabDesign {
                         case 3:
                         case 4:
                         case 5:
-                            int index2 = StringHelper.getIndexFromWhitespaces(oldLine, state.currentCaretPositionChar);
+                            int index2 = StringHelper.getIndexFromWhitespaces(oldLine, state.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
                             if (index2 > 1) {
                                 if (type > 3 && index2 > 10) {
                                     if (type == 4)
@@ -342,7 +346,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 }
                             }
                             if (!(vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace))) {
-                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, state.currentCaretPositionChar - 1);
+                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, state.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
                                 if (index2 > 1) {
                                     if (type > 3 && index2 > 10) {
                                         if (type == 4)
@@ -379,7 +383,7 @@ public class CompositeTab extends CompositeTabDesign {
                             }
 
                             if (!(vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace))) {
-                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, state.currentCaretPositionChar + 1);
+                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, state.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
                                 if (index2 > 1) {
                                     if (type > 3 && index2 > 10) {
                                         if (type == 4)
@@ -485,7 +489,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 case 4:
                                 case 5:
                                     int index2;
-                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, state.currentCaretPositionChar);
+                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, state.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
                                     if (index2 > 0) {
                                         if (type > 3 && index2 > 10) {
                                             x = new BigDecimal(new_data_segments[11]);
@@ -493,19 +497,19 @@ public class CompositeTab extends CompositeTabDesign {
                                             z = new BigDecimal(new_data_segments[13]);
                                             foundValidVertex = true;
                                         } else if (type > 2 && index2 > 7) {
-                                            x = new BigDecimal(new_data_segments[8]);
-                                            y = new BigDecimal(new_data_segments[9]);
-                                            z = new BigDecimal(new_data_segments[10]);
+                                            x = new BigDecimal(new_data_segments[8 + (isDistanceOrProtractor ? 2 : 0)]);
+                                            y = new BigDecimal(new_data_segments[9 + (isDistanceOrProtractor ? 2 : 0)]);
+                                            z = new BigDecimal(new_data_segments[10 + (isDistanceOrProtractor ? 2 : 0)]);
                                             foundValidVertex = true;
                                         } else if (index2 > 4) {
-                                            x = new BigDecimal(new_data_segments[5]);
-                                            y = new BigDecimal(new_data_segments[6]);
-                                            z = new BigDecimal(new_data_segments[7]);
+                                            x = new BigDecimal(new_data_segments[5 + (isDistanceOrProtractor ? 2 : 0)]);
+                                            y = new BigDecimal(new_data_segments[6 + (isDistanceOrProtractor ? 2 : 0)]);
+                                            z = new BigDecimal(new_data_segments[7 + (isDistanceOrProtractor ? 2 : 0)]);
                                             foundValidVertex = true;
                                         } else {
-                                            x = new BigDecimal(new_data_segments[2]);
-                                            y = new BigDecimal(new_data_segments[3]);
-                                            z = new BigDecimal(new_data_segments[4]);
+                                            x = new BigDecimal(new_data_segments[2 + (isDistanceOrProtractor ? 2 : 0)]);
+                                            y = new BigDecimal(new_data_segments[3 + (isDistanceOrProtractor ? 2 : 0)]);
+                                            z = new BigDecimal(new_data_segments[4 + (isDistanceOrProtractor ? 2 : 0)]);
                                             foundValidVertex = true;
                                         }
                                     }
@@ -550,7 +554,7 @@ public class CompositeTab extends CompositeTabDesign {
                                         case 4:
                                         case 5:
                                             int index2;
-                                            index2 = StringHelper.getIndexFromWhitespaces(newLine, state.currentCaretPositionChar + 1);
+                                            index2 = StringHelper.getIndexFromWhitespaces(newLine, state.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
                                             if (index2 > 1) {
                                                 if (type > 3 && index2 > 10) {
                                                     x = new BigDecimal(new_data_segments[11]);
@@ -558,19 +562,19 @@ public class CompositeTab extends CompositeTabDesign {
                                                     z = new BigDecimal(new_data_segments[13]);
                                                     foundValidVertex = true;
                                                 } else if (type > 2 && index2 > 7) {
-                                                    x = new BigDecimal(new_data_segments[8]);
-                                                    y = new BigDecimal(new_data_segments[9]);
-                                                    z = new BigDecimal(new_data_segments[10]);
+                                                    x = new BigDecimal(new_data_segments[8 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                    y = new BigDecimal(new_data_segments[9 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                    z = new BigDecimal(new_data_segments[10 + (isDistanceOrProtractor ? 2 : 0)]);
                                                     foundValidVertex = true;
                                                 } else if (index2 > 4) {
-                                                    x = new BigDecimal(new_data_segments[5]);
-                                                    y = new BigDecimal(new_data_segments[6]);
-                                                    z = new BigDecimal(new_data_segments[7]);
+                                                    x = new BigDecimal(new_data_segments[5 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                    y = new BigDecimal(new_data_segments[6 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                    z = new BigDecimal(new_data_segments[7 + (isDistanceOrProtractor ? 2 : 0)]);
                                                     foundValidVertex = true;
                                                 } else {
-                                                    x = new BigDecimal(new_data_segments[2]);
-                                                    y = new BigDecimal(new_data_segments[3]);
-                                                    z = new BigDecimal(new_data_segments[4]);
+                                                    x = new BigDecimal(new_data_segments[2 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                    y = new BigDecimal(new_data_segments[3 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                    z = new BigDecimal(new_data_segments[4 + (isDistanceOrProtractor ? 2 : 0)]);
                                                     foundValidVertex = true;
                                                 }
                                             }
@@ -615,7 +619,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                 case 4:
                                                 case 5:
                                                     int index2;
-                                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, state.currentCaretPositionChar - 1);
+                                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, state.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
                                                     if (index2 > 1) {
                                                         if (type > 3 && index2 > 10) {
                                                             x = new BigDecimal(new_data_segments[11]);
@@ -623,19 +627,19 @@ public class CompositeTab extends CompositeTabDesign {
                                                             z = new BigDecimal(new_data_segments[13]);
                                                             foundValidVertex = true;
                                                         } else if (type > 2 && index2 > 7) {
-                                                            x = new BigDecimal(new_data_segments[8]);
-                                                            y = new BigDecimal(new_data_segments[9]);
-                                                            z = new BigDecimal(new_data_segments[10]);
+                                                            x = new BigDecimal(new_data_segments[8 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                            y = new BigDecimal(new_data_segments[9 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                            z = new BigDecimal(new_data_segments[10 + (isDistanceOrProtractor ? 2 : 0)]);
                                                             foundValidVertex = true;
                                                         } else if (index2 > 4) {
-                                                            x = new BigDecimal(new_data_segments[5]);
-                                                            y = new BigDecimal(new_data_segments[6]);
-                                                            z = new BigDecimal(new_data_segments[7]);
+                                                            x = new BigDecimal(new_data_segments[5 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                            y = new BigDecimal(new_data_segments[6 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                            z = new BigDecimal(new_data_segments[7 + (isDistanceOrProtractor ? 2 : 0)]);
                                                             foundValidVertex = true;
                                                         } else {
-                                                            x = new BigDecimal(new_data_segments[2]);
-                                                            y = new BigDecimal(new_data_segments[3]);
-                                                            z = new BigDecimal(new_data_segments[4]);
+                                                            x = new BigDecimal(new_data_segments[2 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                            y = new BigDecimal(new_data_segments[3 + (isDistanceOrProtractor ? 2 : 0)]);
+                                                            z = new BigDecimal(new_data_segments[4 + (isDistanceOrProtractor ? 2 : 0)]);
                                                             foundValidVertex = true;
                                                         }
                                                     }
@@ -1106,27 +1110,27 @@ public class CompositeTab extends CompositeTabDesign {
             public void getNextOffset (MovementEvent event) {
                 boolean ignoreLineBreak = false;
                 switch (event.movement) {
-                    /* This method is called:
-                     *   word next (control right-arrow)
-                     *   select word next (control shift right-arrow)
-                     *   delete next word (control delete)
-                     */
-                    case SWT.MOVEMENT_WORD:
-                        ignoreLineBreak = true;
+                /* This method is called:
+                 *   word next (control right-arrow)
+                 *   select word next (control shift right-arrow)
+                 *   delete next word (control delete)
+                 */
+                case SWT.MOVEMENT_WORD:
+                    ignoreLineBreak = true;
 
                     /* This method is called:
                      *   double click select word
                      *   double click drag select word
                      */
-                    case SWT.MOVEMENT_WORD_END:
-                        event.newOffset = event.offset;
-                        char c = '#';
-                        final int len = compositeText[0].getText().length() - 1;
-                        while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset < len) {
-                            event.newOffset++;
-                            c = compositeText[0].getText().charAt(event.newOffset);
-                        }
-                        break;
+                case SWT.MOVEMENT_WORD_END:
+                    event.newOffset = event.offset;
+                    char c = '#';
+                    final int len = compositeText[0].getText().length() - 1;
+                    while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset < len) {
+                        event.newOffset++;
+                        c = compositeText[0].getText().charAt(event.newOffset);
+                    }
+                    break;
                 }
             }
 
@@ -1135,37 +1139,37 @@ public class CompositeTab extends CompositeTabDesign {
                 boolean ignoreLineBreak = false;
                 event.newOffset = event.offset;
                 switch (event.movement) {
-                    /* This method is called:
-                     *   word previous (control right-arrow)
-                     *   select word previous (control shift right-arrow)
-                     *   delete previous word (control delete)
-                     */
-                    case SWT.MOVEMENT_WORD:
-                        event.newOffset--;
-                        ignoreLineBreak = true;
+                /* This method is called:
+                 *   word previous (control right-arrow)
+                 *   select word previous (control shift right-arrow)
+                 *   delete previous word (control delete)
+                 */
+                case SWT.MOVEMENT_WORD:
+                    event.newOffset--;
+                    ignoreLineBreak = true;
                     /* This method is called:
                      *   double click select word
                      *   double click drag select word
                      */
-                    case SWT.MOVEMENT_WORD_START:
-                        if (!ignoreLineBreak && event.offset == compositeText[0].getOffsetAtLine(compositeText[0].getLineAtOffset(event.offset))) {
-                            return;
-                        }
-                        char c = ignoreLineBreak ? '#' : compositeText[0].getText().charAt(event.newOffset);
-                        if (!ignoreLineBreak && event.newOffset > 0 && c == '\n'  || c == '\r') {
-                            event.newOffset--;
-                            c = '#';
-                        }
-                        while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset > 0) {
-                            event.newOffset--;
-                            c = compositeText[0].getText().charAt(event.newOffset);
-                        }
-                        event.newOffset++;
-                        while (event.newOffset > 0 && c == '\n' || c == '\r') {
-                            event.newOffset--;
-                            c = compositeText[0].getText().charAt(event.newOffset);
-                        }
-                        break;
+                case SWT.MOVEMENT_WORD_START:
+                    if (!ignoreLineBreak && event.offset == compositeText[0].getOffsetAtLine(compositeText[0].getLineAtOffset(event.offset))) {
+                        return;
+                    }
+                    char c = ignoreLineBreak ? '#' : compositeText[0].getText().charAt(event.newOffset);
+                    if (!ignoreLineBreak && event.newOffset > 0 && c == '\n'  || c == '\r') {
+                        event.newOffset--;
+                        c = '#';
+                    }
+                    while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset > 0) {
+                        event.newOffset--;
+                        c = compositeText[0].getText().charAt(event.newOffset);
+                    }
+                    event.newOffset++;
+                    while (event.newOffset > 0 && c == '\n' || c == '\r') {
+                        event.newOffset--;
+                        c = compositeText[0].getText().charAt(event.newOffset);
+                    }
+                    break;
                 }
             }
         });

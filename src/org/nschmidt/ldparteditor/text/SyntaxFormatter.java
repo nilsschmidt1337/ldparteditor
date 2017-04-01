@@ -82,9 +82,9 @@ public class SyntaxFormatter {
             BigDecimal VX, BigDecimal VY, BigDecimal VZ,
             float replaceEpsilon, boolean replaceVertex, boolean isSelected, boolean isDuplicate,
             DatFile df) {
-        
+
         ArrayList<StyleRange> styles = new ArrayList<StyleRange>();
-        
+
         if (isDuplicate) {
             StyleRange errStyleRange = new StyleRange();
             errStyleRange.start = e.lineOffset;
@@ -100,7 +100,7 @@ public class SyntaxFormatter {
         float vx = VX.floatValue();
         float vy = VY.floatValue();
         float vz = VZ.floatValue();
-        
+
         String[] text_segments = e.lineText.split(" "); //$NON-NLS-1$
 
         // Get the linetype
@@ -277,6 +277,8 @@ public class SyntaxFormatter {
         // All work done here..
         int offset = e.lineOffset;
 
+        boolean maybeVertex = false;
+
         StyleRange commentStyleRange = new StyleRange();
         commentStyleRange.start = offset;
         commentStyleRange.length = e.lineText.length();
@@ -303,13 +305,16 @@ public class SyntaxFormatter {
                 metaStyleRange.foreground = Colour.line_comment_font[0];
                 styles.add(metaStyleRange);
                 return;
+            } else if (segment.equals("VERTEX")) { //$NON-NLS-1$
+                maybeVertex = true;
+                break;
             } else {
                 break;
             }
         }
 
         // We got a header entry or meta command here..
-        if (replaceVertex) {
+        if (maybeVertex && replaceVertex) {
             int checkForVertexCounter = 0;
             float tx = 0f;
             float ty = 0f;
@@ -341,12 +346,6 @@ public class SyntaxFormatter {
                         metaStyleRange.length = segment.length();
                         metaStyleRange.foreground = Colour.line_comment_font[0];
                         switch (checkForVertexCounter) {
-                        case 0:
-                            if (segment.equals("!LPE"))checkForVertexCounter++; //$NON-NLS-1$
-                            break;
-                        case 1:
-                            if (segment.equals("VERTEX"))checkForVertexCounter++; //$NON-NLS-1$
-                            break;
                         case 2:
                             try {
                                 tx = Float.parseFloat(segment);
@@ -382,6 +381,9 @@ public class SyntaxFormatter {
                 setBorderStyle(styles.get(6));
             }
         } else {
+            int checkForProtractorAndDistanceCounter = 0;
+            String segment_x = "0"; //$NON-NLS-1$
+            String segment_y = "0"; //$NON-NLS-1$
             offset = e.lineOffset;
             for (String segment : text_segments) {
                 if (segment.equals("")) { //$NON-NLS-1$
@@ -395,6 +397,68 @@ public class SyntaxFormatter {
                         metaStyleRange.fontStyle = SWT.BOLD | SWT.ITALIC;
                         metaStyleRange.foreground = Colour.line_comment_font[0];
                         styles.add(metaStyleRange);
+                        switch (checkForProtractorAndDistanceCounter) {
+                        case 0:
+                            if (segment.equals("!LPE")) { //$NON-NLS-1$
+                                checkForProtractorAndDistanceCounter++;
+                            }
+                            break;
+                        case 1:
+                            if (segment.equals("DISTANCE"))checkForProtractorAndDistanceCounter++; //$NON-NLS-1$
+                            if (segment.equals("PROTRACTOR"))checkForProtractorAndDistanceCounter++; //$NON-NLS-1$
+                            break;
+                        }
+                    } else if (checkForProtractorAndDistanceCounter > 1) {
+                        segment_x = checkForProtractorAndDistanceCounter == 3 || checkForProtractorAndDistanceCounter == 6 || checkForProtractorAndDistanceCounter == 9 ? segment : segment_x;
+                        segment_y = checkForProtractorAndDistanceCounter == 4 || checkForProtractorAndDistanceCounter == 7 || checkForProtractorAndDistanceCounter == 10 ? segment : segment_y;
+                        boolean checkForReplace = false;
+                        StyleRange metaStyleRange = new StyleRange();
+                        metaStyleRange.start = offset;
+                        metaStyleRange.length = segment.length();
+                        switch (checkForProtractorAndDistanceCounter) {
+                        case 2:
+                            validateColour(metaStyleRange, segment);
+                            styles.add(metaStyleRange);
+                            checkForProtractorAndDistanceCounter++;
+                            break;
+                        case 5:
+                        case 11:
+                            checkForReplace = true;
+                        case 3:
+                        case 4:
+                        case 9:
+                        case 10:
+                            metaStyleRange.fontStyle = SWT.NORMAL;
+                            metaStyleRange.foreground = Colour.line_secondary_font[0];
+                            styles.add(metaStyleRange);
+                            checkForProtractorAndDistanceCounter++;
+                            break;
+                        case 8:
+                            checkForReplace = true;
+                        case 6:
+                        case 7:
+                            metaStyleRange.fontStyle = SWT.NORMAL;
+                            metaStyleRange.foreground = Colour.line_primary_font[0];
+                            styles.add(metaStyleRange);
+                            checkForProtractorAndDistanceCounter++;
+                            break;
+                        default:
+                            break;
+                        }
+                        if (checkForReplace && replaceVertex) {
+                            try {
+                                float tx = Float.parseFloat(segment_x);
+                                float ty = Float.parseFloat(segment_y);
+                                float tz = Float.parseFloat(segment);
+                                int num_styles = styles.size();
+                                if (num_styles > 2 && Math.abs(vx - tx) < replaceEpsilon && Math.abs(vy - ty) < replaceEpsilon && Math.abs(vz - tz) < replaceEpsilon) {
+                                    setBorderStyle(styles.get(num_styles - 1));
+                                    setBorderStyle(styles.get(num_styles - 2));
+                                    setBorderStyle(styles.get(num_styles - 3));
+                                }
+                            } catch (NumberFormatException nfe) {
+                            }
+                        }
                     }
                     offset += segLength + 1;
                 }
@@ -931,27 +995,27 @@ public class SyntaxFormatter {
                         setBorderStyle(styles.get(11));
                     }
                 }
-                
+
                 Vector3d.sub(vertexA, vertexC, vertexA2);
                 Vector3d.sub(vertexB, vertexC, vertexB2);
                 Vector3d.sub(vertexB, vertexA, vertexC2);
-                
+
                 double angle = Vector3d.angle(vertexA2, vertexB2);
                 double sumAngle = angle;
                 parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-                
+
                 if (!parseError) {
                     vertexA2.negate();
                     angle = Vector3d.angle(vertexA2, vertexC2);
                     sumAngle = sumAngle + angle;
                     parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
                 }
-                
+
                 if (!parseError) {
                     angle = 180.0 - sumAngle;
                     parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
                 }
-                
+
                 parseError = parseError || vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                 parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                 parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;
@@ -1182,32 +1246,32 @@ public class SyntaxFormatter {
                 Vector3d.sub(vertexB, vertexC, vertexB2);
                 Vector3d.sub(vertexD, vertexC, vertexC2);
                 Vector3d.sub(vertexD, vertexA, vertexD2);
-                
+
                 // Collinearity
                 angle = Vector3d.angle(vertexA2, vertexD2);
                 double sumAngle = angle;
                 parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-                
+
                 if (!parseError) {
                     angle = Vector3d.angle(vertexB2, vertexC2);
                     sumAngle = sumAngle + angle;
                     parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
                 }
-                
+
                 if (!parseError) {
                     vertexA2.negate();
                     vertexB2.negate();
                     angle = Vector3d.angle(vertexA2, vertexB2);
                     sumAngle = sumAngle + angle;
                     parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-                                                
+
                 }
-                
+
                 if (!parseError) {
                     angle = 360.0 - sumAngle;
                     parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-                }              
-                
+                }
+
                 parseError = parseError || vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                 parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                 parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;

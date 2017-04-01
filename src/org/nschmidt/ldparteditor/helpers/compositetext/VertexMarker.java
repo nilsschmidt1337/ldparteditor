@@ -21,6 +21,8 @@ import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
+import org.nschmidt.ldparteditor.data.GData2;
+import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -53,6 +55,13 @@ public enum VertexMarker {
                 caret_end -= off;
                 String line = compositeText.getLine(startLine);
                 String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+                boolean isDistanceOrProtractor = type == 2 && !((GData2) dataInLine).isLine
+                        || type == 3 && !((GData3) dataInLine).isTriangle;
+                if (isDistanceOrProtractor) {
+                    for (int i = 1; i < data_segments.length - 2; i++) {
+                        data_segments[i] = data_segments[i + 2];
+                    }
+                }
                 VertexManager vm = datFile.getVertexManager();
                 Vertex vertexToReplace = null;
                 try {
@@ -72,7 +81,7 @@ public enum VertexMarker {
                     case 3:
                     case 4:
                     case 5:
-                        int index2 = StringHelper.getIndexFromWhitespaces(line, caret_start);
+                        int index2 = StringHelper.getIndexFromWhitespaces(line, caret_start) - (isDistanceOrProtractor ? 2 : 0);
                         if (index2 > 1) {
                             if (type > 3 && index2 > 10) {
                                 x = new BigDecimal(data_segments[11]);
