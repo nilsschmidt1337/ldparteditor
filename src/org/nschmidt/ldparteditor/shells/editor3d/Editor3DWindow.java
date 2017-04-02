@@ -2092,12 +2092,13 @@ public class Editor3DWindow extends Editor3DDesign {
                                     spn_SelectionZ4[0].setEnabled(true);
                                 case 3:
                                     spn_SelectionAngle[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
-                                    spn_SelectionLength[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
                                     spn_SelectionX3[0].setEnabled(true);
                                     spn_SelectionY3[0].setEnabled(true);
                                     spn_SelectionZ3[0].setEnabled(true);
                                 case 2:
-                                    spn_SelectionLength[0].setEnabled(gdata.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) gdata).isLine);
+                                    spn_SelectionLength[0].setEnabled(
+                                            gdata.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) gdata).isLine
+                                            || gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
                                     spn_SelectionX1[0].setEnabled(true);
                                     spn_SelectionY1[0].setEnabled(true);
                                     spn_SelectionZ1[0].setEnabled(true);
@@ -2273,12 +2274,13 @@ public class Editor3DWindow extends Editor3DDesign {
                                     spn_SelectionZ4[0].setEnabled(true);
                                 case 3:
                                     spn_SelectionAngle[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
-                                    spn_SelectionLength[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
                                     spn_SelectionX3[0].setEnabled(true);
                                     spn_SelectionY3[0].setEnabled(true);
                                     spn_SelectionZ3[0].setEnabled(true);
                                 case 2:
-                                    spn_SelectionLength[0].setEnabled(gdata.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) gdata).isLine);
+                                    spn_SelectionLength[0].setEnabled(
+                                            gdata.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) gdata).isLine
+                                            || gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
                                     spn_SelectionX1[0].setEnabled(true);
                                     spn_SelectionY1[0].setEnabled(true);
                                     spn_SelectionZ1[0].setEnabled(true);
