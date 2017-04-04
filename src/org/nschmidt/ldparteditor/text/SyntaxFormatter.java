@@ -308,6 +308,8 @@ public class SyntaxFormatter {
             } else if (segment.equals("VERTEX")) { //$NON-NLS-1$
                 maybeVertex = true;
                 break;
+            } else if (segment.equals("!LPE")) { //$NON-NLS-1$
+                continue;
             } else {
                 break;
             }
