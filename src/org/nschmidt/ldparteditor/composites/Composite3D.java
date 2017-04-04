@@ -2210,7 +2210,7 @@ public class Composite3D extends ScalableComposite {
 
     public static void showSelectionInTextEditor(final DatFile df, final boolean setTopIndex) {
         if (df.equals(View.DUMMY_DATFILE)) return;
-        if (!df.getVertexManager().getSelectedData().isEmpty()) {
+        if (!df.getVertexManager().getSelectedData().isEmpty() || !df.getVertexManager().getSelectedVertices().isEmpty()) {
             for (EditorTextWindow w : Project.getOpenTextWindows()) {
                 for (final CTabItem t : w.getTabFolder().getItems()) {
                     if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
@@ -2222,7 +2222,7 @@ public class Composite3D extends ScalableComposite {
                             @Override
                             public void run() {
                                 final VertexManager vm = df.getVertexManager();
-                                if (vm.getSelectedData().size() > 0) {
+                                if (vm.getSelectedData().size() > 0 || vm.getSelectedVertices().size() > 0) {
 
                                     final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
                                     final int lastSetIndex = ((CompositeTab) t).getState().getOldLineIndex();
@@ -2232,6 +2232,10 @@ public class Composite3D extends ScalableComposite {
 
                                     selection.addAll(vm.getSelectedData());
                                     selection.addAll(vm.getSelectedSubfiles());
+
+                                    for (Vertex v : vm.getSelectedVertices()) {
+                                        selection.addAll(vm.getLinkedVertexMetaCommands(v));
+                                    }
 
                                     for (GData g : selection) {
                                         index = df.getDrawPerLine_NOCLONE().getKey(g);

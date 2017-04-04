@@ -946,4 +946,18 @@ class VM03Adjacency extends VM02Add {
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
         }
     }
+
+    public synchronized Set<GData0> getLinkedVertexMetaCommands(Vertex v) {
+        HashSet<GData0> result = new HashSet<>();
+        Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
+        if (manis != null) {
+            for (VertexManifestation mani : manis) {
+                GData gd = mani.getGdata();
+                if (gd != null && gd.type() == 0) {
+                    result.add((GData0) gd);
+                }
+            }
+        }
+        return result;
+    }
 }
