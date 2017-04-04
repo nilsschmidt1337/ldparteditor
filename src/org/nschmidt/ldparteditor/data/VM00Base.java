@@ -1543,7 +1543,7 @@ class VM00Base {
                             GData0 meta = (GData0) g;
                             boolean idCheck = !lineLinkedToVertices.containsKey(meta);
                             isPureSubfileVertex = isPureSubfileVertex && idCheck;
-                            if (moveAdjacentData || val == 1) {
+                            if (val == 1) {
                                 if (!idCheck) {
                                     effSelectedVertices.add(meta);
                                 }
@@ -1646,6 +1646,8 @@ class VM00Base {
 
             // 3. Deletion of the selected data (no whole subfiles!!)
 
+            if (!effSelectedVertices.isEmpty())
+                setModified_NoSync();
             if (!effSelectedLines.isEmpty())
                 setModified_NoSync();
             if (!effSelectedTriangles.isEmpty())
@@ -1655,6 +1657,11 @@ class VM00Base {
             if (!effSelectedCondlines.isEmpty())
                 setModified_NoSync();
             final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+            for (GData0 gd : effSelectedVertices) {
+                dpl.removeByValue(gd);
+                gd.getBefore().setNext(gd.getNext());
+                remove(gd);
+            }
             for (GData2 gd : effSelectedLines) {
                 dpl.removeByValue(gd);
                 gd.getBefore().setNext(gd.getNext());
