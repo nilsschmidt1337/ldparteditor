@@ -19,6 +19,7 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.ApplicationWindow;
@@ -69,6 +70,7 @@ import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.Rounder;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.enums.Colour;
@@ -212,6 +214,19 @@ public class CompositeTab extends CompositeTabDesign {
                 final VertexManager vm = df.getVertexManager();
                 final GData data = df.getDrawPerLine_NOCLONE().getValue(compositeText[0].getLineAtOffset(e.lineOffset) + 1);
                 boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
+
+                if (data != null && data.type() == 0) {
+                    Set<VertexInfo> vis = vm.getLineLinkedToVertices().get(data);
+                    if (vis != null) {
+                        for (VertexInfo vi : vis) {
+                            if (vm.getSelectedVertices().contains(vi.getVertex())) {
+                                isSelected = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
                 syntaxFormatter.format(e,
                         state.getToReplaceX(), state.getToReplaceY(), state.getToReplaceZ(),
