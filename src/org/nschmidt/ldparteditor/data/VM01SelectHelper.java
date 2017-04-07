@@ -1838,6 +1838,9 @@ public class VM01SelectHelper extends VM01Select {
             } else {
                 pasted = new GData0(lineToParse);
             }
+            if (token2.equals(pasted.toString())) {
+                pasted = new GData0(lineToParse);
+            }
             b.setNext(pasted);
             pasted.setNext(n);
             dpl.put(line, pasted);

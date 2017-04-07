@@ -26,6 +26,7 @@ import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 
@@ -82,7 +83,11 @@ public enum AnnotatorTexmap {
                     s.x += correction[1];
                     s.y += correction[0];
                     ((CompositeTab) t).getTextComposite().setText(datFile.getText());
-                    ((CompositeTab) t).getTextComposite().setSelection(s);
+                    try {
+                        ((CompositeTab) t).getTextComposite().setSelection(s);
+                    } catch (IllegalArgumentException iae) {
+                        NLogger.error(AnnotatorTexmap.class, iae);
+                    }
                     ((CompositeTab) t).getState().setSync(false);
                     ((CompositeTab) t).parseForErrorAndHints();
                     ((CompositeTab) t).getTextComposite().redraw();
