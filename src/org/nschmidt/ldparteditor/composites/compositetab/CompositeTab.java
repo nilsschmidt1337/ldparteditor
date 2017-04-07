@@ -1032,6 +1032,40 @@ public class CompositeTab extends CompositeTabDesign {
                         compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + historyLine.length() - delta);
                         break;
                     }
+                    case EDITORTEXT_INSERT_KEYWORD:
+                    {
+                        if (!vm.isUpdated() || df.isReadOnly()) return;
+                        NLogger.debug(getClass(), "Insert keyword line.."); //$NON-NLS-1$
+
+                        final StyledText st = compositeText[0];
+                        int s1 = st.getSelectionRange().x;
+                        int s2 = s1 + st.getSelectionRange().y;
+                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                        if (fromLine != toLine) return;
+                        String currentLine = st.getLine(fromLine);
+                        fromLine++;
+                        NLogger.debug(getClass(), "Line {0}", fromLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), currentLine);
+
+                        final boolean needNewLine = StringHelper.isNotBlank(currentLine);
+
+                        final String keywordLine = (needNewLine ? StringHelper.getLineDelimiter() : "") + "0 !KEYWORDS "; //$NON-NLS-1$ //$NON-NLS-2$
+
+                        int delta = 0;
+                        s1 = compositeText[0].getOffsetAtLine(toLine);
+                        if (needNewLine) {
+                            compositeText[0].setSelection(s1 + currentLine.length());
+                        } else {
+                            if (!currentLine.isEmpty()) {
+                                compositeText[0].setSelection(s1, s1 + currentLine.length());
+                                delta = keywordLine.length();
+                            }
+                        }
+                        compositeText[0].insert(keywordLine);
+                        compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + keywordLine.length() - delta);
+                        break;
+                    }
                     case EDITORTEXT_INSERT_REFERENCE:
                     {
                         if (!vm.isUpdated() || df.isReadOnly()) return;
