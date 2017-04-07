@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.composites.compositetab;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -987,6 +989,47 @@ public class CompositeTab extends CompositeTabDesign {
                         Editor3DWindow.getWindow().getSearchWindow().run();
                         Editor3DWindow.getWindow().getSearchWindow().setTextComposite(me);
                         Editor3DWindow.getWindow().getSearchWindow().setScopeToAll();
+                        break;
+                    }
+                    case EDITORTEXT_INSERT_HISTORY:
+                    {
+                        if (!vm.isUpdated() || df.isReadOnly()) return;
+                        NLogger.debug(getClass(), "Insert history line.."); //$NON-NLS-1$
+
+                        final StyledText st = compositeText[0];
+                        int s1 = st.getSelectionRange().x;
+                        int s2 = s1 + st.getSelectionRange().y;
+                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                        if (fromLine != toLine) return;
+                        String currentLine = st.getLine(fromLine);
+                        fromLine++;
+                        NLogger.debug(getClass(), "Line {0}", fromLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), currentLine);
+
+                        final boolean needNewLine = StringHelper.isNotBlank(currentLine);
+
+                        final String username;
+                        if (WorkbenchManager.getUserSettingState().getLdrawUserName().trim().isEmpty()) {
+                            username = " {" + WorkbenchManager.getUserSettingState().getRealUserName() + "} ";    //$NON-NLS-1$//$NON-NLS-2$
+                        } else {
+                            username = " (" + WorkbenchManager.getUserSettingState().getLdrawUserName() + ") ";    //$NON-NLS-1$//$NON-NLS-2$
+                        }
+
+                        final String historyLine = (needNewLine ? StringHelper.getLineDelimiter() : "") + "0 !HISTORY " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + username; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+                        int delta = 0;
+                        s1 = compositeText[0].getOffsetAtLine(toLine);
+                        if (needNewLine) {
+                            compositeText[0].setSelection(s1 + currentLine.length());
+                        } else {
+                            if (!currentLine.isEmpty()) {
+                                compositeText[0].setSelection(s1, s1 + currentLine.length());
+                                delta = historyLine.length();
+                            }
+                        }
+                        compositeText[0].insert(historyLine);
+                        compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + historyLine.length() - delta);
                         break;
                     }
                     case EDITORTEXT_INSERT_REFERENCE:
