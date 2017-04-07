@@ -731,6 +731,7 @@ public final class I18n {
     public static final String KEYBOARD_FindReplace = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_FlipRotate = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Inline = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_InsertHistory = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_InsertReference = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_LMB = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_MMB = KEYBOARD.getString(getProperty());

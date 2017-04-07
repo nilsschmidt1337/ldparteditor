@@ -159,6 +159,7 @@ class KeyTableDesign extends Dialog {
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_SelectAll, TextTask.EDITORTEXT_SELECTALL, true);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_Undo, TextTask.EDITORTEXT_UNDO, true);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_FindReplace, TextTask.EDITORTEXT_FIND, true);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_InsertHistory, TextTask.EDITORTEXT_INSERT_HISTORY, true);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_InsertReference, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
 
         if (s1.size() != Task.values().length || s2.size() != TextTask.values().length) {

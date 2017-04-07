@@ -185,6 +185,8 @@ public class KeyStateManager {
         addTask(TextTask.EDITORTEXT_SAVE, SWT.CTRL, 's');
 
         addTask(TextTask.EDITORTEXT_FIND, SWT.CTRL, 'f');
+
+        addTask(TextTask.EDITORTEXT_INSERT_HISTORY, SWT.CTRL, 'h');
         addTask(TextTask.EDITORTEXT_INSERT_REFERENCE, SWT.CTRL, 'r');
     }
 
