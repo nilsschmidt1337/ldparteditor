@@ -436,6 +436,7 @@ public class VM27YTruder extends VM26LineIntersector {
 
         NLogger.debug(getClass(), "Delete new, but invalid objects."); //$NON-NLS-1$
 
+        clearSelection2();
         newLines.removeAll(linesToDelete2);
         newTriangles.removeAll(trisToDelete2);
         newQuads.removeAll(quadsToDelete2);
@@ -464,10 +465,8 @@ public class VM27YTruder extends VM26LineIntersector {
         NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
         roundSelection(6, 10, true, false, true, true, true);
 
-        if (true) {
-            setModified(true, true);
-            validateState();
-        }
+        setModified(true, true);
+        validateState();
 
         NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
     }
