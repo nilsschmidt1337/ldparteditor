@@ -1013,7 +1013,7 @@ public class CompositeTab extends CompositeTabDesign {
                         if (WorkbenchManager.getUserSettingState().getLdrawUserName().trim().isEmpty()) {
                             username = " {" + WorkbenchManager.getUserSettingState().getRealUserName() + "} ";    //$NON-NLS-1$//$NON-NLS-2$
                         } else {
-                            username = " (" + WorkbenchManager.getUserSettingState().getLdrawUserName() + ") ";    //$NON-NLS-1$//$NON-NLS-2$
+                            username = " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "] ";    //$NON-NLS-1$//$NON-NLS-2$
                         }
 
                         final String historyLine = (needNewLine ? StringHelper.getLineDelimiter() : "") + "0 !HISTORY " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + username; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
