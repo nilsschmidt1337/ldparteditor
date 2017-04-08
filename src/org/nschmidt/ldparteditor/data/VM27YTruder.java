@@ -39,7 +39,8 @@ public class VM27YTruder extends VM26LineIntersector {
         if (linkedDatFile.isReadOnly()) return;
 
         final double distance = ys.getDistance();
-        if (distance == 0) return;
+        int mode = ys.getMode();
+        if (distance == 0 && (mode == 1 || mode == 4)) return;
 
         final Set<GData2> originalSelection = new HashSet<>();
         originalSelection.addAll(selectedLines);
@@ -67,7 +68,7 @@ public class VM27YTruder extends VM26LineIntersector {
 
         int x=0, y=1, z=2;
 
-        int mode = ys.getMode();
+
         double AngleLineThr = ys.getCondlineAngleThreshold();
 
         int end, current;
