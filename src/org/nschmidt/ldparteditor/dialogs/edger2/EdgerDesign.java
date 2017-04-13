@@ -17,8 +17,8 @@ package org.nschmidt.ldparteditor.dialogs.edger2;
 
 import java.math.BigDecimal;
 
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
+import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 
 /**
@@ -41,7 +42,7 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  * @author nils
  *
  */
-class EdgerDesign extends Dialog {
+class EdgerDesign extends TrayDialog {
 
     final Edger2Settings es;
 
@@ -98,7 +99,7 @@ class EdgerDesign extends Dialog {
         cmb_b.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_b.setText(es.isExtendedRange() ? cmb_b.getItem(1) : cmb_b.getItem(0));
         cmb_b.select(es.isExtendedRange() ? 1 : 0);
-        
+
         Combo cmb_c = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_c[0] = cmb_c;
         cmb_c.setItems(new String[] { I18n.EDGER_CondlineOnQuadOff, I18n.EDGER_CondlineOnQuadOn });
@@ -172,6 +173,9 @@ class EdgerDesign extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        if (NLogger.DEBUG) {
+            createHelpControl(parent);
+        }
     }
 
     /**
