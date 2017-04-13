@@ -40,6 +40,8 @@ import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.Transfer;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
@@ -202,6 +204,12 @@ public class CompositePrimitive extends Composite {
         });
 
         GL.setCapabilities(capabilities);
+        canvas.addDisposeListener(new DisposeListener() {
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                canvas.getCursor().dispose();
+            }
+        });
         // MARK Resize
         canvas.addListener(SWT.Resize, new Listener() {
             @Override

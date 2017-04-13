@@ -20,6 +20,8 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyledText;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -110,13 +112,19 @@ class CompositeTabDesign extends CTabItem {
             gl_composite.marginWidth = 0;
             composite.setLayout(gl_composite);
 
-            Canvas canvas_lineNumberArea = new Canvas(composite, SWT.NONE);
-            this.canvas_lineNumberArea[0] = canvas_lineNumberArea;
-            canvas_lineNumberArea.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-            canvas_lineNumberArea.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
+            Canvas canvas_lineNumber_Area = new Canvas(composite, SWT.NONE);
+            this.canvas_lineNumberArea[0] = canvas_lineNumber_Area;
+            canvas_lineNumber_Area.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+            canvas_lineNumber_Area.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
+            this.canvas_lineNumberArea[0].addDisposeListener(new DisposeListener() {
+                @Override
+                public void widgetDisposed(DisposeEvent e) {
+                    canvas_lineNumberArea[0].getCursor().dispose();
+                }
+            });
 
             GridData gd_canvas_lineNumberArea = new GridData(SWT.LEFT, SWT.FILL, false, true);
-            canvas_lineNumberArea.setLayoutData(gd_canvas_lineNumberArea);
+            canvas_lineNumber_Area.setLayoutData(gd_canvas_lineNumberArea);
 
             StyledText compositeText = new StyledText(composite, SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
             this.compositeText[0] = compositeText;
