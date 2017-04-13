@@ -39,6 +39,8 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MenuDetectEvent;
@@ -1187,6 +1189,12 @@ public class Composite3D extends ScalableComposite {
         }
 
         GL.setCapabilities(capabilities);
+        canvas.addDisposeListener(new DisposeListener() {
+            @Override
+            public void widgetDisposed(DisposeEvent e) {
+                canvas.getCursor().dispose();
+            }
+        });
         // MARK Resize
         canvas.addListener(SWT.Resize, new Listener() {
             @Override
