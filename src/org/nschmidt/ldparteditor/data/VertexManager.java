@@ -41,7 +41,7 @@ import org.nschmidt.ldparteditor.composites.ScalableComposite;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
-import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
+import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -1064,7 +1064,7 @@ public final class VertexManager extends VM99Clipboard {
         if (event != null) {
             c3d.getCursor3D().set(perspective.get3DCoordinatesFromScreen(event.x, event.y));
             c3d.getScreenXY().set(event.x, event.y);
-            GuiManager.updateStatus(c3d);
+            GuiStatusManager.updateStatus(c3d);
             ((ScalableComposite) c3d.getParent()).redrawScales(event.x, event.y);
         }
     }

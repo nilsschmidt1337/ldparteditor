@@ -423,7 +423,7 @@ public class Composite3DModifier {
 
             oldParentSashForm.layout();
             Editor3DWindow.getSashForm().setWeights(mainSashWeights);
-            GuiManager.updateStatus();
+            GuiStatusManager.updateStatus();
             Project.setFileToEdit(null);
         }
     }
@@ -496,7 +496,7 @@ public class Composite3DModifier {
         }
 
         c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
-        GuiManager.updateStatus(c3d);
+        GuiStatusManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
         pc.initializeViewportPerspective();
         syncZoom();

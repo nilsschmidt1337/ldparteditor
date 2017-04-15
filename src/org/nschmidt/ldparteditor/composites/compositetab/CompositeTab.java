@@ -79,7 +79,7 @@ import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.TextTask;
-import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
+import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.compositetext.QuickFixer;
@@ -722,7 +722,7 @@ public class CompositeTab extends CompositeTabDesign {
                     // Text inserted
                     if (state.isDoingPaste() && Editor3DWindow.getWindow().isMovingAdjacentData() && WorkbenchManager.getUserSettingState().isDisableMADtext()) {
                         Editor3DWindow.getWindow().setMovingAdjacentData(false);
-                        GuiManager.updateStatus();
+                        GuiStatusManager.updateStatus();
                     }
                 }
 

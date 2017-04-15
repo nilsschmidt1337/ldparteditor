@@ -366,7 +366,7 @@ public class MouseActions {
         c3d.getCursorSnapped3D().set(sx - sx % snap, sy - sy % snap, sz - sz % snap, 1f);
 
         c3d.getScreenXY().set(event.x, event.y);
-        GuiManager.updateStatus(c3d);
+        GuiStatusManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales(event.x, event.y);
         if (Editor3DWindow.getWindow().isAddingSomething() && !c3d.isDoingSelection()) {
             if (Editor3DWindow.getWindow().isAddingLines() || Editor3DWindow.getWindow().isAddingDistance()) {
