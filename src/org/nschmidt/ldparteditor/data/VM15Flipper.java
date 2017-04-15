@@ -21,7 +21,7 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.nschmidt.ldparteditor.helpers.composite3d.GuiManager;
+import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 class VM15Flipper extends VM14Splitter {
@@ -36,7 +36,7 @@ class VM15Flipper extends VM14Splitter {
 
         final boolean adjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
         Editor3DWindow.getWindow().setMovingAdjacentData(false);
-        GuiManager.updateStatus();
+        GuiStatusManager.updateStatus();
 
         final Set<GData2> newLines = new HashSet<GData2>();
         final Set<GData3> newTriangles = new HashSet<GData3>();

@@ -66,6 +66,9 @@ public class Manipulator {
 
     private Matrix accurateResult = View.ACCURATE_ID;
     private Matrix accurateScale = View.ACCURATE_ID;
+    private double accurateRotationX = 0.0;
+    private double accurateRotationY = 0.0;
+    private double accurateRotationZ = 0.0;
 
     private final FloatBuffer matrix = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer matrix_inv = BufferUtils.createFloatBuffer(16);
@@ -277,12 +280,18 @@ public class Manipulator {
         this.scale.load(origin.scale);
         this.accurateResult = new Matrix(origin.accurateResult);
         this.accurateScale = new Matrix(origin.accurateScale);
-
+        this.accurateRotationX = origin.accurateRotationX;
+        this.accurateRotationY = origin.accurateRotationY;
+        this.accurateRotationZ = origin.accurateRotationZ;
         this.modified = origin.modified;
     }
 
     public Matrix4f getTempTransformation4f() {
         return result;
+    }
+
+    public Matrix getTempTransformationAccurate() {
+        return accurateResult;
     }
 
     public FloatBuffer getTempTransformation() {
@@ -965,6 +974,9 @@ public class Manipulator {
         Matrix4f.setIdentity(scale);
         accurateResult = View.ACCURATE_ID;
         accurateScale = View.ACCURATE_ID;
+        accurateRotationX = 0.0;
+        accurateRotationY = 0.0;
+        accurateRotationZ = 0.0;
         // if (Editor3DWindow.getWindow().isMovingAdjacentData()) c3d.getLockableDatFileReference().getVertexManager().transformSelection(View.ACCURATE_ID, true);
     }
 
@@ -975,6 +987,9 @@ public class Manipulator {
         Matrix4f.setIdentity(scale);
         accurateResult = View.ACCURATE_ID;
         accurateScale = View.ACCURATE_ID;
+        accurateRotationX = 0.0;
+        accurateRotationY = 0.0;
+        accurateRotationZ = 0.0;
         x_Translate = true;
         y_Translate = true;
         // if (Editor3DWindow.getWindow().isMovingAdjacentData()) c3d.getLockableDatFileReference().getVertexManager().transformSelection(View.ACCURATE_ID, true);
@@ -1000,6 +1015,9 @@ public class Manipulator {
     public void resetTranslation() {
         accurateResult = View.ACCURATE_ID;
         accurateScale = View.ACCURATE_ID;
+        accurateRotationX = 0.0;
+        accurateRotationY = 0.0;
+        accurateRotationZ = 0.0;
         Matrix4f.setIdentity(result);
         Matrix4f.setIdentity(scale);
         x_Translate = false;
@@ -1179,6 +1197,7 @@ public class Manipulator {
                 if (x_rotatingForwards) {
                     transformation.rotate(snap_x_Rotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate, snap_x_RotateFlag, accurateXaxis);
+                    accurateRotationX = accurateRotationX + snap_x_Rotate.doubleValue();
                     Vector4f vector = new Vector4f(x_rotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
@@ -1192,6 +1211,7 @@ public class Manipulator {
                 } else if (x_rotatingBackwards) {
                     transformation.rotate(-snap_x_Rotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate.negate(), snap_x_RotateFlag, accurateXaxis);
+                    accurateRotationX = accurateRotationX - snap_x_Rotate.doubleValue();
                     Vector4f vector = new Vector4f(x_rotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
@@ -1226,6 +1246,7 @@ public class Manipulator {
                 if (y_rotatingForwards) {
                     transformation.rotate(snap_y_Rotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate, snap_y_RotateFlag, accurateYaxis);
+                    accurateRotationY = accurateRotationY + snap_y_Rotate.doubleValue();
                     Vector4f vector = new Vector4f(y_rotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
@@ -1239,6 +1260,7 @@ public class Manipulator {
                 } else if (y_rotatingBackwards) {
                     transformation.rotate(-snap_y_Rotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate.negate(), snap_y_RotateFlag, accurateYaxis);
+                    accurateRotationY = accurateRotationY - snap_y_Rotate.doubleValue();
                     Vector4f vector = new Vector4f(y_rotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
@@ -1273,6 +1295,7 @@ public class Manipulator {
                 if (z_rotatingForwards) {
                     transformation.rotate(snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate, snap_z_RotateFlag, accurateZaxis);
+                    accurateRotationZ = accurateRotationZ + snap_z_Rotate.doubleValue();
                     Vector4f vector = new Vector4f(z_rotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
@@ -1286,6 +1309,7 @@ public class Manipulator {
                 } else if (z_rotatingBackwards) {
                     transformation.rotate(-snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
                     accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate.negate(), snap_z_RotateFlag, accurateZaxis);
+                    accurateRotationZ = accurateRotationZ - snap_z_Rotate.doubleValue();
                     Vector4f vector = new Vector4f(z_rotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
@@ -1923,5 +1947,17 @@ public class Manipulator {
 
     public static void setActivationTreshold(float activationTreshold) {
         Manipulator.activationTreshold = activationTreshold;
+    }
+
+    public double getAccurateRotationX() {
+        return accurateRotationX;
+    }
+
+    public double getAccurateRotationY() {
+        return accurateRotationY;
+    }
+
+    public double getAccurateRotationZ() {
+        return accurateRotationZ;
     }
 }

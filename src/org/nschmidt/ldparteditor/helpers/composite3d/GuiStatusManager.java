@@ -23,10 +23,12 @@ import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -37,7 +39,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
  * @author nils
  *
  */
-public enum GuiManager {
+public enum GuiStatusManager {
     INSTANCE;
 
     private static DecimalFormat df = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
@@ -62,7 +64,7 @@ public enum GuiManager {
         if ((vs = vm.getSelectedVertices()).size() == 1) {
             try {
                 Vertex v = vs.iterator().next();
-                sb.append(" Vertex @  ["); //$NON-NLS-1$
+                sb.append(" Vertex @  ["); //$NON-NLS-1$ I18N Needs translation!
                 sb.append(df.format(v.X.multiply(View.unit_factor)));
                 sb.append("; "); //$NON-NLS-1$
                 sb.append(df.format(v.Y.multiply(View.unit_factor)));
@@ -89,6 +91,30 @@ public enum GuiManager {
 
         if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
             sb.append(I18n.E3D_AdjacentWarningStatus);
+        }
+
+        Manipulator m = c3d.getManipulator();
+        if (m.isModified()) {
+            Matrix t = m.getTempTransformationAccurate();
+            double dax = (m.getAccurateRotationX() / Math.PI * 180.0) % 360;
+            double day = (m.getAccurateRotationY() / Math.PI * 180.0) % 360;
+            double daz = (m.getAccurateRotationZ() / Math.PI * 180.0) % 360;
+            if (dax == 0.0 && day == 0.0 && daz == 0.0) {
+                sb.append("delta: ["); //$NON-NLS-1$ I18N Needs translation!
+                sb.append(df.format(t.M30));
+                sb.append("; "); //$NON-NLS-1$
+                sb.append(df.format(t.M31));
+                sb.append("; "); //$NON-NLS-1$
+                sb.append(df.format(t.M32));
+            } else {
+                sb.append("rotation: ["); //$NON-NLS-1$ I18N Needs translation!
+                sb.append(df.format(dax));
+                sb.append("; "); //$NON-NLS-1$
+                sb.append(df.format(day));
+                sb.append("; "); //$NON-NLS-1$
+                sb.append(df.format(daz));
+            }
+            sb.append("]"); //$NON-NLS-1$
         }
 
         Editor3DWindow.getStatusLabel().setText(sb.toString());
