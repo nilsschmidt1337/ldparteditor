@@ -367,7 +367,7 @@ public class DatHeaderManager {
                                         if (headerState == HeaderState._08o_KEYWORDS) {
                                             // I expect that this line is a valid Keyword
                                             if (normalizedLine.startsWith("0 !KEYWORDS ")) { //$NON-NLS-1$
-                                                h.setHasHELP(true);
+                                                h.setHasKEYWORDS(true);
                                                 headerState = HeaderState._08o_KEYWORDS;
                                                 break;
                                             } else { // Its something else..
