@@ -289,7 +289,6 @@ public class SplashScreen extends ApplicationWindow {
                     }
                 });
                 threadReturn[0] = ReturnType.NO_ERROR;
-                this.interrupt();
             }
         }.start();
         // Wait until the splash screen worker thread has done the job..
