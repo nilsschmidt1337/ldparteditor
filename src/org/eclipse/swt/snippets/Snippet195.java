@@ -32,7 +32,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.lwjgl.opengl.GL11;
 //import org.lwjgl.opengl.GLContext;
 import org.lwjgl.util.glu.GLU;
-import org.nschmidt.ldparteditor.i18n.I18n;
 
 public class Snippet195 {
     static void drawTorus(float r, float R, int nsides, int rings) {
@@ -66,11 +65,11 @@ public class Snippet195 {
         final Display display = new Display();
         Shell shell = new Shell(display);
         shell.setLayout(new FillLayout());
-        Composite comp = new Composite(shell, I18n.I18N_NON_BIDIRECT());
+        Composite comp = new Composite(shell, SWT.NONE);
         comp.setLayout(new FillLayout());
         GLData data = new GLData();
         data.doubleBuffer = true;
-        final GLCanvas canvas = new GLCanvas(comp, I18n.I18N_NON_BIDIRECT(), data);
+        final GLCanvas canvas = new GLCanvas(comp, SWT.NONE, data);
 
         canvas.setCurrent();
         //        try {
