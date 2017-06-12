@@ -170,7 +170,7 @@ public enum ResourceManager {
         imageMap.get(name).dispose();
         while (!imageMap.get(name).isDisposed()) {
             try {
-                Thread.sleep(100);
+                Thread.sleep(10);
             } catch (InterruptedException e) {
             }
         }
