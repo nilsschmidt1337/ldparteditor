@@ -2777,6 +2777,10 @@ public class Editor3DWindow extends Editor3DDesign {
         txt_primitiveSearch[0].addModifyListener(new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
+                if (getCompositePrimitive().stopDraw()) {
+                    txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
+                    return;
+                }
                 getCompositePrimitive().collapseAll();
                 ArrayList<Primitive> prims = getCompositePrimitive().getPrimitives();
                 final String crit = txt_primitiveSearch[0].getText();
@@ -5932,7 +5936,6 @@ public class Editor3DWindow extends Editor3DDesign {
                             LibraryManager.readOfficialLowResPrimitives(treeItem_OfficialPrimitives8[0]);
                         }
                     });
-                    Thread.sleep(1500);
                 }
             });
         } catch (InvocationTargetException consumed) {

@@ -301,7 +301,7 @@ public class SplashScreen extends ApplicationWindow {
         }
         // Close the splash..
         try {
-            Thread.sleep(1000);
+            Thread.sleep(900);
         } catch (InterruptedException e) {
         }
         close();

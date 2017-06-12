@@ -50,6 +50,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
     /**
      * Initializes the Scene and gives OpenGL-Hints
      */
+    @Override
     public void init() {
         // MARK OpenGL Hints and Initialization
         GL11.glDepthMask(true);
@@ -77,6 +78,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
     /**
      * Draws the scene
      */
+    @Override
     public void drawScene(float mouseX, float mouseY) {
 
         final GLCanvas canvas = cp.getCanvas();
@@ -92,6 +94,11 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         GL11.glColorMask(true, true, true, true);
 
         GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
+
+        if (cp.stopDraw()) {
+            canvas.swapBuffers();
+            return;
+        }
 
         Rectangle bounds = cp.getBounds();
         GL11.glViewport(0, 0, bounds.width, bounds.height);
@@ -362,6 +369,6 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
 
     @Override
     public void dispose() {
-        
+
     }
 }
