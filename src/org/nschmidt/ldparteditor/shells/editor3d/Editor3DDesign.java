@@ -278,6 +278,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
     final MenuItem[] mntm_DownloadLDConfig = new MenuItem[1];
+    final MenuItem[] mntm_DownloadCategories = new MenuItem[1];
 
     final MenuItem[] mntm_LoadPalette = new MenuItem[1];
     final MenuItem[] mntm_ResetPalette = new MenuItem[1];
@@ -2496,6 +2497,11 @@ class Editor3DDesign extends ApplicationWindow {
                         MenuItem mntm_DownloadLDConfig = new MenuItem(mnu_LibFeatures, SWT.PUSH);
                         this.mntm_DownloadLDConfig[0] = mntm_DownloadLDConfig;
                         mntm_DownloadLDConfig.setText(I18n.E3D_DownloadLDConfig);
+                    }
+                    {
+                        MenuItem mntm_DownloadCategories = new MenuItem(mnu_LibFeatures, SWT.PUSH);
+                        this.mntm_DownloadCategories[0] = mntm_DownloadCategories;
+                        mntm_DownloadCategories.setText(I18n.E3D_DownloadCategories);
                     }
                 }
                 {

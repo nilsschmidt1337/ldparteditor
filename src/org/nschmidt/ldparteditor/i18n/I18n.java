@@ -395,6 +395,7 @@ public final class I18n {
     public static final String E3D_CreateTransformedCopy = E3D.getString(getProperty());
     public static final String E3D_Decolour = E3D.getString(getProperty());
     public static final String E3D_DeleteConfig = E3D.getString(getProperty());
+    public static final String E3D_DownloadCategories = E3D.getString(getProperty());
     public static final String E3D_DownloadLDConfig = E3D.getString(getProperty());
     public static final String E3D_DragHint = E3D.getString(getProperty());
     public static final String E3D_Edger2 = E3D.getString(getProperty());
@@ -550,6 +551,7 @@ public final class I18n {
     public static final String E3D_Redo = E3D.getString(getProperty());
     public static final String E3D_ReduceCount = E3D.getString(getProperty());
     public static final String E3D_RenameMove = E3D.getString(getProperty());
+    public static final String E3D_ReplaceCategories = E3D.getString(getProperty());
     public static final String E3D_ReplaceLDConfig = E3D.getString(getProperty());
     public static final String E3D_RequiresRestart = E3D.getString(getProperty());
     public static final String E3D_Reset = E3D.getString(getProperty());
