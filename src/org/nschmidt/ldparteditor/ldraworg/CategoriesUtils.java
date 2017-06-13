@@ -24,41 +24,77 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
-import org.nschmidt.ldparteditor.data.DatFile;
-import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
-import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
-import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-public enum LDConfigUtils {
+public enum CategoriesUtils {
     INSTANCE;
 
-    public static void downloadLDConfig() {
-
+    public static void downloadCategories() {
         final Editor3DWindow win = Editor3DWindow.getWindow();
-        final List<String> lines = new ArrayList<>();
+        final List<String> categories = new ArrayList<>();
 
         try {
-            URL go = new URL("http://www.ldraw.org/library/official/ldconfig.ldr");//$NON-NLS-1$
+            URL go = new URL("http://www.ldraw.org/library/tracker/ref/catkeyfaq/"); //$NON-NLS-1$
             URLConnection uc = go.openConnection();
             try (BufferedReader in =
                     new BufferedReader(
                             new InputStreamReader(
                                     uc.getInputStream()))) {
                 String inputLine;
+                int[] state = new int[]{0};
+                boolean[] parse = new boolean[]{false};
+                final StringBuffer sb = new StringBuffer();
                 while ((inputLine = in.readLine()) != null) {
-                    lines.add(inputLine);
+                    inputLine.chars().forEach((c) -> {
+                        if (parse[0] && c != '<') {
+                            sb.append((char) c);
+                        }
+                        switch (c) {
+                        case '<':
+                            if (parse[0]) {
+                                String category = sb.toString().trim();
+                                if (category.length() > 0) {
+                                    categories.add(category);
+                                }
+                            }
+                            parse[0] = false;
+                            state[0] = 1;
+                            sb.setLength(0);
+                            break;
+                        case 'l':
+                            if (state[0] == 1) {
+                                state[0] = 2;
+                            } else {
+                                state[0] = 0;
+                            }
+                            break;
+                        case 'i':
+                            if (state[0] == 2) {
+                                state[0] = 3;
+                            } else {
+                                state[0] = 0;
+                            }
+                            break;
+                        case '>':
+                            if (state[0] == 3) {
+                                parse[0] = true;
+                            }
+                            state[0] = 0;
+                            break;
+                        default:
+                            if (!parse[0]) {
+                                state[0] = 0;
+                            }
+                            break;
+                        }
+                    });
                 }
             }
         } catch (IOException ioe) {
@@ -69,12 +105,10 @@ public enum LDConfigUtils {
             return;
         }
 
-        final String ldconfig = WorkbenchManager.getUserSettingState().getLdConfigPath();
-
-        Object[] messageArguments = {ldconfig, lines.size()};
+        Object[] messageArguments = {"categories.txt", categories.size()}; //$NON-NLS-1$
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
-        formatter.applyPattern(I18n.E3D_ReplaceLDConfig);
+        formatter.applyPattern(I18n.E3D_ReplaceCategories);
 
         MessageBox messageBoxReplace = new MessageBox(win.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
         messageBoxReplace.setText(I18n.DIALOG_Info);
@@ -83,8 +117,8 @@ public enum LDConfigUtils {
             return;
         }
 
-        try (UTF8PrintWriter out = new UTF8PrintWriter(ldconfig)) {
-            for (String line : lines) {
+        try (UTF8PrintWriter out = new UTF8PrintWriter("categories.txt")) { //$NON-NLS-1$
+            for (String line : categories) {
                 out.println(line);
             }
             out.flush();
@@ -96,27 +130,9 @@ public enum LDConfigUtils {
             return;
         }
 
-        reloadLDConfig(ldconfig);
-
         MessageBox messageBoxDone = new MessageBox(win.getShell(), SWT.ICON_INFORMATION | SWT.OK);
         messageBoxDone.setText(I18n.DIALOG_Info);
         messageBoxDone.setMessage(I18n.E3D_FileWasReplaced);
         messageBoxDone.open();
-    }
-
-    public static void reloadLDConfig(String path) {
-        if (path != null && View.loadLDConfig(path)) {
-            View.overrideColour16();
-            GData.CACHE_warningsAndErrors.clear();
-            WorkbenchManager.getUserSettingState().setLdConfigPath(path);
-            Set<DatFile> dfs = new HashSet<DatFile>();
-            for (OpenGLRenderer renderer : Editor3DWindow.renders) {
-                dfs.add(renderer.getC3D().getLockableDatFileReference());
-            }
-            for (DatFile df : dfs) {
-                df.getVertexManager().addSnapshot();
-                SubfileCompiler.compile(df, false, false);
-            }
-        }
     }
 }

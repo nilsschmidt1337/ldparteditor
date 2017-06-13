@@ -182,6 +182,7 @@ import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.ldraworg.CategoriesUtils;
 import org.nschmidt.ldparteditor.ldraworg.LDConfigUtils;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -4848,6 +4849,14 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 LDConfigUtils.downloadLDConfig();
+                regainFocus();
+            }
+        });
+
+        mntm_DownloadCategories[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CategoriesUtils.downloadCategories();
                 regainFocus();
             }
         });
