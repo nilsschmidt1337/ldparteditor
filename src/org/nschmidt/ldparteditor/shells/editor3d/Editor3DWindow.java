@@ -182,6 +182,7 @@ import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.ldraworg.LDConfigUtils;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
@@ -4821,10 +4822,6 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 OptionsDialog dialog = new OptionsDialog(getShell());
                 dialog.run();
-                // KeyTableDialog dialog = new KeyTableDialog(getShell());
-                // if (dialog.open() == IDialogConstants.OK_ID) {
-                //
-                // }
                 regainFocus();
             }
         });
@@ -4836,27 +4833,21 @@ public class Editor3DWindow extends Editor3DDesign {
                 fd.setText(I18n.E3D_OpenLDConfig);
                 fd.setFilterPath(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
 
-                String[] filterExt = { "*.ldr", "LDConfig.ldr", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                String[] filterExt = { "*.ldr", "ldconfig.ldr", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 fd.setFilterExtensions(filterExt);
                 String[] filterNames = { I18n.E3D_LDrawConfigurationFile1, I18n.E3D_LDrawConfigurationFile2, I18n.E3D_AllFiles };
                 fd.setFilterNames(filterNames);
 
                 String selected = fd.open();
-                System.out.println(selected);
+                LDConfigUtils.reloadLDConfig(selected);
+                regainFocus();
+            }
+        });
 
-                if (selected != null && View.loadLDConfig(selected)) {
-                    View.overrideColour16();
-                    GData.CACHE_warningsAndErrors.clear();
-                    WorkbenchManager.getUserSettingState().setLdConfigPath(selected);
-                    Set<DatFile> dfs = new HashSet<DatFile>();
-                    for (OpenGLRenderer renderer : renders) {
-                        dfs.add(renderer.getC3D().getLockableDatFileReference());
-                    }
-                    for (DatFile df : dfs) {
-                        df.getVertexManager().addSnapshot();
-                        SubfileCompiler.compile(df, false, false);
-                    }
-                }
+        mntm_DownloadLDConfig[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                LDConfigUtils.downloadLDConfig();
                 regainFocus();
             }
         });

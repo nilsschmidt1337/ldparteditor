@@ -379,6 +379,7 @@ public final class I18n {
     public static final String E3D_AntiAliasing = E3D.getString(getProperty());
     public static final String E3D_BackgroundImage = E3D.getString(getProperty());
     public static final String E3D_CamToManipulator = E3D.getString(getProperty());
+    public static final String E3D_CantConnectToLDrawOrg = E3D.getString(getProperty());
     public static final String E3D_Close = E3D.getString(getProperty());
     public static final String E3D_CloseView = E3D.getString(getProperty());
     public static final String E3D_Coarse = E3D.getString(getProperty());
@@ -394,6 +395,7 @@ public final class I18n {
     public static final String E3D_CreateTransformedCopy = E3D.getString(getProperty());
     public static final String E3D_Decolour = E3D.getString(getProperty());
     public static final String E3D_DeleteConfig = E3D.getString(getProperty());
+    public static final String E3D_DownloadLDConfig = E3D.getString(getProperty());
     public static final String E3D_DragHint = E3D.getString(getProperty());
     public static final String E3D_Edger2 = E3D.getString(getProperty());
     public static final String E3D_Everything = E3D.getString(getProperty());
@@ -402,6 +404,8 @@ public final class I18n {
     public static final String E3D_FarClipping = E3D.getString(getProperty());
     public static final String E3D_FarClippingHint = E3D.getString(getProperty());
     public static final String E3D_File = E3D.getString(getProperty());
+    public static final String E3D_FileWasReplaced = E3D.getString(getProperty());
+    public static final String E3D_FileWasReplacedError = E3D.getString(getProperty());
     public static final String E3D_Fine = E3D.getString(getProperty());
     public static final String E3D_FlipRotate = E3D.getString(getProperty());
     public static final String E3D_Focus = E3D.getString(getProperty());
@@ -432,6 +436,7 @@ public final class I18n {
     public static final String E3D_LDrawSourceFile = E3D.getString(getProperty());
     public static final String E3D_LastOpened = E3D.getString(getProperty());
     public static final String E3D_LastProject = E3D.getString(getProperty());
+    public static final String E3D_LibraryFeatures = E3D.getString(getProperty());
     public static final String E3D_LineIntersection = E3D.getString(getProperty());
     public static final String E3D_LineOpenGL = E3D.getString(getProperty());
     public static final String E3D_LineSize0 = E3D.getString(getProperty());
@@ -545,6 +550,7 @@ public final class I18n {
     public static final String E3D_Redo = E3D.getString(getProperty());
     public static final String E3D_ReduceCount = E3D.getString(getProperty());
     public static final String E3D_RenameMove = E3D.getString(getProperty());
+    public static final String E3D_ReplaceLDConfig = E3D.getString(getProperty());
     public static final String E3D_RequiresRestart = E3D.getString(getProperty());
     public static final String E3D_Reset = E3D.getString(getProperty());
     public static final String E3D_ResetAll = E3D.getString(getProperty());

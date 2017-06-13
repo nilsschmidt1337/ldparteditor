@@ -25,7 +25,7 @@ import java.io.UnsupportedEncodingException;
  * @author nils
  *
  */
-public class UTF8PrintWriter {
+public class UTF8PrintWriter implements AutoCloseable {
 
     /** The {@code PrintWriter} instance [NOT PUBLIC YET] */
     private final PrintWriter myWriter;
@@ -59,6 +59,7 @@ public class UTF8PrintWriter {
      * Closes the stream and releases any system resources associated with it.
      * Closing a previously closed stream has no effect.
      */
+    @Override
     public void close() {
         myWriter.close();
     }
