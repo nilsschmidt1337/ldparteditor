@@ -167,7 +167,6 @@ public class SplashScreen extends ApplicationWindow {
             } else {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
             }
-            // WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
         } catch (Exception e) {
             openGLerror[0] = true;
         }
@@ -301,7 +300,7 @@ public class SplashScreen extends ApplicationWindow {
         }
         // Close the splash..
         try {
-            Thread.sleep(900);
+            Thread.sleep(800);
         } catch (InterruptedException e) {
         }
         close();
@@ -369,8 +368,20 @@ public class SplashScreen extends ApplicationWindow {
             }
 
             String ldcPath = WorkbenchManager.getUserSettingState().getLdConfigPath();
-            if (ldcPath == null) {
-                ldcPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "LDConfig.ldr"; //$NON-NLS-1$
+            try {
+                if (ldcPath == null || !new File(ldcPath).exists()) {
+                    ldcPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "ldconfig.ldr"; //$NON-NLS-1$
+                    if (!new File(ldcPath).exists()) {
+                        ldcPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "LDConfig.ldr"; //$NON-NLS-1$
+                    }
+                    if (!new File(ldcPath).exists()) {
+                        ldcPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "ldconfig.ldr"; //$NON-NLS-1$
+                    }
+                    WorkbenchManager.getUserSettingState().setLdConfigPath(ldcPath);
+                }
+            } catch (SecurityException se) {
+                ldcPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "ldconfig.ldr"; //$NON-NLS-1$
+                WorkbenchManager.getUserSettingState().setLdConfigPath(ldcPath);
             }
             View.loadLDConfig(ldcPath);
 
