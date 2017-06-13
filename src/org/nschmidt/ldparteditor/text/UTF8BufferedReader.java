@@ -28,7 +28,7 @@ import java.io.UnsupportedEncodingException;
  * @author nils
  *
  */
-public class UTF8BufferedReader {
+public class UTF8BufferedReader implements AutoCloseable {
 
     /** The {@code BufferedReader} instance [NOT PUBLIC YET] */
     private final BufferedReader myReader;
@@ -81,6 +81,7 @@ public class UTF8BufferedReader {
      * Closes the stream and releases any system resources associated with it.
      * Closing a previously closed stream has no effect.
      */
+    @Override
     public void close() throws LDParsingException {
         try {
             myReader.close();

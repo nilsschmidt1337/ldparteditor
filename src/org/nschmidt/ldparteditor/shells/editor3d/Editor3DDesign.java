@@ -277,6 +277,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Options = new MenuItem[1];
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
+    final MenuItem[] mntm_DownloadLDConfig = new MenuItem[1];
 
     final MenuItem[] mntm_LoadPalette = new MenuItem[1];
     final MenuItem[] mntm_ResetPalette = new MenuItem[1];
@@ -2482,6 +2483,22 @@ class Editor3DDesign extends ApplicationWindow {
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
                 {
+                    final MenuItem mntm_LibFeatures = new MenuItem(mnu_Tools, SWT.CASCADE);
+                    mntm_LibFeatures.setText(I18n.E3D_LibraryFeatures);
+                    final Menu mnu_LibFeatures = new Menu(mntm_LibFeatures);
+                    mntm_LibFeatures.setMenu(mnu_LibFeatures);
+                    {
+                        MenuItem mntm_SelectAnotherLDConfig = new MenuItem(mnu_LibFeatures, SWT.PUSH);
+                        this.mntm_SelectAnotherLDConfig[0] = mntm_SelectAnotherLDConfig;
+                        mntm_SelectAnotherLDConfig.setText(I18n.E3D_SelectLDConfig);
+                    }
+                    {
+                        MenuItem mntm_DownloadLDConfig = new MenuItem(mnu_LibFeatures, SWT.PUSH);
+                        this.mntm_DownloadLDConfig[0] = mntm_DownloadLDConfig;
+                        mntm_DownloadLDConfig.setText(I18n.E3D_DownloadLDConfig);
+                    }
+                }
+                {
                     MenuItem mntm_Options = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_Options[0] = mntm_Options;
                     mntm_Options.setText(I18n.E3D_Options);
@@ -2490,11 +2507,6 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_ResetSettingsOnRestart = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_ResetSettingsOnRestart[0] = mntm_ResetSettingsOnRestart;
                     mntm_ResetSettingsOnRestart.setText(I18n.E3D_ResetAll);
-                }
-                {
-                    MenuItem mntm_SelectAnotherLDConfig = new MenuItem(mnu_Tools, SWT.PUSH);
-                    this.mntm_SelectAnotherLDConfig[0] = mntm_SelectAnotherLDConfig;
-                    mntm_SelectAnotherLDConfig.setText(I18n.E3D_SelectLDConfig);
                 }
                 {
                     final MenuItem mntm_Palette = new MenuItem(mnu_Tools, SWT.CASCADE);
