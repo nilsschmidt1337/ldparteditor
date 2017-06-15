@@ -513,6 +513,89 @@ public class Manipulator {
     }
 
     public GColour checkManipulatorStatus(float r, float g, float b, int type, Composite3D c3d, float zoom) {
+        GColour result = manipulatorStatusHelper(r, g, b, type, c3d, zoom);
+        if (View.manipulator_selected_Colour_r[0] == result.getR() && View.manipulator_selected_Colour_g[0] == result.getG() && View.manipulator_selected_Colour_b[0] == result.getB()) {
+            switch (Editor3DWindow.getWindow().getWorkingLayer()) {
+            case NONE:
+                return result;
+            default:
+                return new GColour(-1, View.manipulator_outerCircle_Colour_r[0], View.manipulator_outerCircle_Colour_g[0], View.manipulator_outerCircle_Colour_b[0], 1f);
+            }
+        }
+        switch (Editor3DWindow.getWindow().getWorkingLayer()) {
+        case X:
+            switch (type) {
+            case X_TRANSLATE:
+            case X_SCALE:
+            case X_ROTATE:
+                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+            default:
+            }
+            break;
+        case Y:
+            switch (type) {
+            case Y_TRANSLATE:
+            case Y_SCALE:
+            case Y_ROTATE:
+                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+            default:
+            }
+            break;
+        case Z:
+            switch (type) {
+            case Z_TRANSLATE:
+            case Z_SCALE:
+            case Z_ROTATE:
+                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+            default:
+            }
+            break;
+        case XY:
+            switch (type) {
+            case X_TRANSLATE:
+            case X_SCALE:
+            case X_ROTATE:
+            case Y_TRANSLATE:
+            case Y_SCALE:
+            case Y_ROTATE:
+                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+            default:
+            }
+            break;
+        case XZ:
+            switch (type) {
+            case X_TRANSLATE:
+            case X_SCALE:
+            case X_ROTATE:
+            case Z_TRANSLATE:
+            case Z_SCALE:
+            case Z_ROTATE:
+                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+            default:
+            }
+            break;
+        case YZ:
+            switch (type) {
+            case Y_TRANSLATE:
+            case Y_SCALE:
+            case Y_ROTATE:
+            case Z_TRANSLATE:
+            case Z_SCALE:
+            case Z_ROTATE:
+                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+            default:
+            }
+            break;
+        case XYZ:
+            return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+        case NONE:
+        default:
+            break;
+        }
+        return result;
+    }
+
+    private GColour manipulatorStatusHelper(float r, float g, float b, int type, Composite3D c3d, float zoom) {
         Vector4f[] gen = c3d.getGenerator();
         Vector3f axis = null;
         // Check if its rotation

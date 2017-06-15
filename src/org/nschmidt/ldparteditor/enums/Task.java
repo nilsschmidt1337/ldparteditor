@@ -88,5 +88,13 @@ public enum Task {
     RMB,
 
     INSERT_AT_CURSOR,
-    MOVE_TO_AVG
+    MOVE_TO_AVG,
+
+    MODE_X,
+    MODE_Y,
+    MODE_Z,
+    MODE_XY,
+    MODE_XZ,
+    MODE_YZ,
+    MODE_XYZ
 }

@@ -144,6 +144,7 @@ import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.dialogs.ytruder.YTruderDialog;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
+import org.nschmidt.ldparteditor.enums.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
@@ -249,6 +250,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean insertingAtCursorPosition = false;
     private ObjectMode workingType = ObjectMode.VERTICES;
     private WorkingMode workingAction = WorkingMode.SELECT;
+    private ManipulatorAxisMode workingLayer = ManipulatorAxisMode.NONE;
 
     private GColour lastUsedColour = View.getLDConfigColour(16);
 
@@ -7141,6 +7143,14 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void setInsertingAtCursorPosition(boolean insertAtCursor) {
         this.insertingAtCursorPosition = insertAtCursor;
+    }
+
+    public ManipulatorAxisMode getWorkingLayer() {
+        return workingLayer;
+    }
+
+    public void setWorkingLayer(ManipulatorAxisMode workingLayer) {
+        this.workingLayer = workingLayer;
     }
 
     public GColour getLastUsedColour() {
