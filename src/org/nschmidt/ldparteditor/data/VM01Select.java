@@ -266,6 +266,7 @@ class VM01Select extends VM00Snapshot {
     }
 
     public void backupSelection() {
+        backupSelectionClear();
         backupSelectedCondlines.addAll(selectedCondlines);
         backupSelectedData.addAll(selectedData);
         backupSelectedLines.addAll(selectedLines);
