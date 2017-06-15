@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.Task;
@@ -172,6 +173,14 @@ public class KeyStateManager {
 
         addTask(Task.INSERT_AT_CURSOR, 'i');
 
+        addTask(Task.MODE_X, SWT.F6);
+        addTask(Task.MODE_Y, SWT.F7);
+        addTask(Task.MODE_Z, SWT.F8);
+        addTask(Task.MODE_XY, SWT.F9);
+        addTask(Task.MODE_XZ, SWT.F10);
+        addTask(Task.MODE_YZ, SWT.F11);
+        addTask(Task.MODE_XYZ, SWT.F12);
+
         addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
         addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
         addTask(TextTask.EDITORTEXT_QUICKFIX, SWT.ALT, 'f');
@@ -271,7 +280,6 @@ public class KeyStateManager {
                     case ESC:
                         multi = 100;
                         colourNumber = 0;
-                        // c3d.getModifier().closeView();
                         if (df.getObjVertex1() == null && df.getObjVertex2() == null && df.getObjVertex3() == null && df.getObjVertex4() == null) {
                             win.disableAddAction();
                         }
@@ -281,6 +289,7 @@ public class KeyStateManager {
                         df.setObjVertex4(null);
                         df.setNearestObjVertex1(null);
                         df.setNearestObjVertex2(null);
+                        win.setWorkingLayer(ManipulatorAxisMode.NONE);
                         vm.clearSelection();
                         break;
                     case COPY:
@@ -514,6 +523,27 @@ public class KeyStateManager {
                         break;
                     case SPLIT:
                         vm.split(2);
+                        break;
+                    case MODE_X:
+                        win.setWorkingLayer(ManipulatorAxisMode.X);
+                        break;
+                    case MODE_Y:
+                        win.setWorkingLayer(ManipulatorAxisMode.Y);
+                        break;
+                    case MODE_Z:
+                        win.setWorkingLayer(ManipulatorAxisMode.Z);
+                        break;
+                    case MODE_XY:
+                        win.setWorkingLayer(ManipulatorAxisMode.XY);
+                        break;
+                    case MODE_XZ:
+                        win.setWorkingLayer(ManipulatorAxisMode.XZ);
+                        break;
+                    case MODE_YZ:
+                        win.setWorkingLayer(ManipulatorAxisMode.YZ);
+                        break;
+                    case MODE_XYZ:
+                        win.setWorkingLayer(ManipulatorAxisMode.XYZ);
                         break;
                     }
                 }
