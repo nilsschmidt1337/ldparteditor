@@ -44,6 +44,7 @@ public class DatHeaderManager {
 
     private boolean hasNoThread = true;
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
+    private Thread worker = null;
 
     private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
 
@@ -57,9 +58,9 @@ public class DatHeaderManager {
 
     public void pushDatHeaderCheck(GData data, StyledText compositeText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount) {
         if (df.isReadOnly()) return;
-        if (hasNoThread) {
+        if (hasNoThread || !worker.isAlive()) {
             hasNoThread = false;
-            new Thread(new Runnable() {
+            worker = new Thread(new Runnable() {
                 @Override
                 public void run() {
 
@@ -670,7 +671,8 @@ public class DatHeaderManager {
                     return false;
                 }
 
-            }).start();
+            });
+            worker.start();
         }
 
         while (!workQueue.offer(new Object[]{data, hints, warnings, errors, duplicates, compositeText, problemCount})) {
