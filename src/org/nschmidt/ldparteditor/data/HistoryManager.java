@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
@@ -25,6 +26,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.regex.Pattern;
 
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CTabItem;
@@ -41,6 +43,8 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class HistoryManager {
+
+    private static final Pattern pattern = Pattern.compile("\r?\n|\r"); //$NON-NLS-1$
 
     private DatFile df;
 
@@ -74,7 +78,8 @@ public class HistoryManager {
                     final ArrayList<Integer> historySelectionStart = new ArrayList<Integer>();
                     final ArrayList<Integer> historySelectionEnd = new ArrayList<Integer>();
                     final ArrayList<Integer> historyTopIndex = new ArrayList<Integer>();
-                    final ArrayList<int[]> historyText = new ArrayList<int[]>();
+                    final ArrayList<String> historyFullText = new ArrayList<String>();
+                    final ArrayList<String[]> historyText = new ArrayList<String[]>();
                     final ArrayList<HashMap<String, ArrayList<Boolean>>> historySelectedData = new ArrayList<HashMap<String, ArrayList<Boolean>>>();
                     final ArrayList<HashMap<String, ArrayList<Boolean>>> historyHiddenData = new ArrayList<HashMap<String, ArrayList<Boolean>>>();
                     final ArrayList<Vertex[]> historySelectedVertices = new ArrayList<Vertex[]>();
@@ -84,23 +89,48 @@ public class HistoryManager {
                         try {
                             Object[] newEntry = workQueue.poll();
                             if (newEntry != null) {
-                                final int[] result;
+                                final String[] result;
+                                final String resultFullText;
                                 String text = (String) newEntry[0];
                                 GData[] data = (GData[]) newEntry[3];
                                 if (text != null) {
-                                    result = StringHelper.compress(text);
+                                    if (text.charAt(text.length() - 1) == '\r') {
+                                        text = text.substring(0, text.length() - 1);
+                                    }
+                                    if (text.length() > 0 && text.charAt(text.length() - 1) == '\n') {
+                                        text = text.substring(0, text.length() - 1);
+                                    }
+                                    if (text.length() > 0 && text.charAt(text.length() - 1) == '\r') {
+                                        text = text.substring(0, text.length() - 1);
+                                    }
+                                    if (text.length() > 0 && text.charAt(text.length() - 1) == '\n') {
+                                        text = text.substring(0, text.length() - 1);
+                                    }
+                                    String[] result2 = pattern.split(text);
+                                    if (result2.length == 0) {
+                                        result = new String[]{""}; //$NON-NLS-1$
+                                    } else {
+                                        result = result2;
+                                    }
+                                    resultFullText = text;
                                 } else if (data != null) {
-                                    StringBuilder sb = new StringBuilder();
-                                    int size = data.length - 1;
+                                    final int size = data.length;
                                     if (size > 0) {
                                         final String ld = StringHelper.getLineDelimiter();
+                                        final StringBuilder sb = new StringBuilder();
+                                        result = new String[size];
                                         for (int i = 0; i < size; i++) {
-                                            sb.append(data[i].toString());
-                                            sb.append(ld);
+                                            if (i > 0) {
+                                                sb.append(ld);
+                                            }
+                                            result[i] = data[i].toString();
+                                            sb.append(result[i]);
                                         }
-                                        sb.append(data[size].toString());
+                                        resultFullText = sb.toString();
+                                    } else {
+                                        result = new String[]{""}; //$NON-NLS-1$
+                                        resultFullText = result[0];
                                     }
-                                    result = StringHelper.compress(sb.toString());
                                 } else {
                                     // throw new AssertionError("There must be data to backup!"); //$NON-NLS-1$
                                     continue;
@@ -119,6 +149,7 @@ public class HistoryManager {
                                     removeFromListAboveOrEqualIndex(historySelectedVertices, pointer + 1);
                                     removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer + 1);
                                     removeFromListAboveOrEqualIndex(historyText, pointer + 1);
+                                    removeFromListAboveOrEqualIndex(historyFullText, pointer + 1);
                                     removeFromListAboveOrEqualIndex(historyTopIndex, pointer + 1);
                                     pointerMax = pointer + 1;
                                 }
@@ -134,6 +165,7 @@ public class HistoryManager {
                                         removeFromListLessIndex(historySelectedVertices, delta + 1);
                                         removeFromListLessIndex(historyHiddenVertices, delta + 1);
                                         removeFromListLessIndex(historyText, delta + 1);
+                                        removeFromListLessIndex(historyFullText, delta + 1);
                                         removeFromListLessIndex(historyTopIndex, delta + 1);
                                         pointerMax = pointerMax - delta;
                                         if (pointer > MAX_ITEM_COUNT) {
@@ -150,49 +182,40 @@ public class HistoryManager {
                                 historyHiddenData.add((HashMap<String, ArrayList<Boolean>>) newEntry[7]);
                                 historyHiddenVertices.add((Vertex[]) newEntry[8]);
                                 historyText.add(result);
+                                historyFullText.add(resultFullText);
 
                                 // 1. Cleanup duplicated text entries
 
                                 if (pointer > 0) {
                                     int pStart = historySelectionStart.get(pointer - 1);
-                                    int[] previous = historyText.get(pointer - 1);
-                                    if (previous.length == result.length) {
-                                        boolean match = true;
-                                        for (int i = 0; i < previous.length; i++) {
-                                            int v1 = previous[i];
-                                            int v2 = result[i];
-                                            if (v1 != v2) {
-                                                match = false;
-                                                break;
+                                    String[] previous = historyText.get(pointer - 1);
+                                    if (Arrays.equals(previous, result) && !Editor3DWindow.getWindow().isAddingSomething()) {
+                                        if (pStart != -1) {
+                                            if ((Integer) newEntry[2] == 0) {
+                                                // Skip saving this entry since only the cursor was moved
+                                                removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
+                                                removeFromListAboveOrEqualIndex(historySelectionEnd, pointer);
+                                                removeFromListAboveOrEqualIndex(historySelectedData, pointer);
+                                                removeFromListAboveOrEqualIndex(historyHiddenData, pointer);
+                                                removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
+                                                removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer);
+                                                removeFromListAboveOrEqualIndex(historyText, pointer);
+                                                removeFromListAboveOrEqualIndex(historyFullText, pointer);
+                                                removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
+                                            } else {
+                                                // Remove the previous entry, because it only contains a new text selection
+                                                historySelectionStart.remove(pointer - 1);
+                                                historySelectionEnd.remove(pointer - 1);
+                                                historySelectedData.remove(pointer - 1);
+                                                historyHiddenData.remove(pointer - 1);
+                                                historySelectedVertices.remove(pointer - 1);
+                                                historyHiddenVertices.remove(pointer - 1);
+                                                historyText.remove(pointer - 1);
+                                                historyFullText.remove(pointer - 1);
+                                                historyTopIndex.remove(pointer - 1);
                                             }
-                                        }
-
-                                        if (match && !Editor3DWindow.getWindow().isAddingSomething()) {
-                                            if (pStart != -1) {
-                                                if ((Integer) newEntry[2] == 0) {
-                                                    // Skip saving this entry since only the cursor was moved
-                                                    removeFromListAboveOrEqualIndex(historySelectionStart, pointer);
-                                                    removeFromListAboveOrEqualIndex(historySelectionEnd, pointer);
-                                                    removeFromListAboveOrEqualIndex(historySelectedData, pointer);
-                                                    removeFromListAboveOrEqualIndex(historyHiddenData, pointer);
-                                                    removeFromListAboveOrEqualIndex(historySelectedVertices, pointer);
-                                                    removeFromListAboveOrEqualIndex(historyHiddenVertices, pointer);
-                                                    removeFromListAboveOrEqualIndex(historyText, pointer);
-                                                    removeFromListAboveOrEqualIndex(historyTopIndex, pointer);
-                                                } else {
-                                                    // Remove the previous entry, because it only contains a new text selection
-                                                    historySelectionStart.remove(pointer - 1);
-                                                    historySelectionEnd.remove(pointer - 1);
-                                                    historySelectedData.remove(pointer - 1);
-                                                    historyHiddenData.remove(pointer - 1);
-                                                    historySelectedVertices.remove(pointer - 1);
-                                                    historyHiddenVertices.remove(pointer - 1);
-                                                    historyTopIndex.remove(pointer - 1);
-                                                    historyText.remove(pointer - 1);
-                                                }
-                                                pointerMax--;
-                                                pointer--;
-                                            }
+                                            pointerMax--;
+                                            pointer--;
                                         }
                                     }
                                 }
@@ -247,18 +270,18 @@ public class HistoryManager {
                                         while (!hasTextEditor && pointer + delta > -1 && pointer + delta < historySelectionStart.size() && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
                                             pointer += delta;
                                         }
-                                        int[] text = historyText.get(pointer);
                                         final int pointer2 = pointer;
-                                        final String decompressed = StringHelper.decompress(text);
+                                        final String[] lines = historyText.get(pointer);
+                                        final String fullText = historyFullText.get(pointer);
                                         action.set(4);
+                                        df.parseForChanges(lines);
                                         Display.getDefault().syncExec(new Runnable() {
                                             @Override
                                             public void run() {
                                                 GDataCSG.resetCSG(df, false);
                                                 GDataCSG.forceRecompile(df);
                                                 Project.getUnsavedFiles().add(df);
-                                                df.setText(decompressed);
-                                                df.parseForData(false);
+                                                df.setText(fullText);
                                                 boolean hasTextEditor = false;
                                                 try {
                                                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -273,7 +296,7 @@ public class HistoryManager {
                                                                     ti = historyTopIndex.get(pointer2);
                                                                 }
                                                                 ((CompositeTab) t).getState().setSync(true);
-                                                                ((CompositeTab) t).getTextComposite().setText(decompressed);
+                                                                ((CompositeTab) t).getTextComposite().setText(fullText);
                                                                 ((CompositeTab) t).getTextComposite().setTopIndex(ti);
                                                                 try {
                                                                     ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);

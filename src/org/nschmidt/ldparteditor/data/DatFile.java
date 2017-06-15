@@ -1039,6 +1039,98 @@ public final class DatFile {
         return false;
     }
 
+
+    public void parseForChanges(String[] lines) {
+        final boolean drawSelection = isDrawSelection();
+        setDrawSelection(false);
+
+        Project.getParsedFiles().add(this);
+        Project.addOpenedFile(this);
+
+        Set<String> alreadyParsed = new HashSet<String>();
+        alreadyParsed.add(getShortName());
+
+        final GColour col16 = View.getLDConfigColour(16);
+
+        // Clear the cache..
+        GData.parsedLines.clear();
+        GData.CACHE_parsedFilesSource.clear();
+        GData.CACHE_warningsAndErrors.clear();
+
+
+        GData oldG = drawChainAnchor.next;
+        GData newG;
+        int lineNumber = 1;
+        int oldLineCount = drawPerLine.size();
+        drawChainTail = drawChainAnchor;
+
+        HashMap<String, GData> candidateForRemoval = new HashMap<String, GData>();
+        for (String line : lines) {
+            if (oldG == null) {
+                if (isNotBlank(line)) {
+                    ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, false);
+                    newG = results.get(0).getGraphicalData();
+                    if (newG == null) {
+                        newG = new GData0(line);
+                    } else {
+                        newG.setText(line);
+                    }
+                } else {
+                    newG = new GData0(line);
+                }
+                drawPerLine.put(lineNumber, newG);
+            } else {
+                String oldS = oldG.toString();
+                if (!line.equals(oldS)) {
+                    candidateForRemoval.put(oldS, oldG);
+                    if (candidateForRemoval.containsKey(line)) {
+                        newG = candidateForRemoval.get(line);
+                        candidateForRemoval.remove(line);
+                    } else {
+                        if (isNotBlank(line)) {
+                            ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, false);
+                            newG = results.get(0).getGraphicalData();
+                            if (newG == null) {
+                                newG = new GData0(line);
+                            } else {
+                                newG.setText(line);
+                            }
+                        } else {
+                            newG = new GData0(line);
+                        }
+                    }
+                    drawPerLine.put(lineNumber, newG);
+                } else {
+                    drawPerLine.put(lineNumber, oldG);
+                }
+                oldG = oldG.next;
+            }
+            lineNumber++;
+        }
+
+        for(GData dataToRemove : candidateForRemoval.values()) {
+            vertices.remove(dataToRemove);
+        }
+        for (int l = lines.length + 1; l <= oldLineCount; l++) {
+            vertices.remove(drawPerLine.getValue(l));
+            drawPerLine.removeByKey(l);
+        }
+
+        {
+            GData previous = drawChainAnchor;
+            for (int l = 1; l <= lines.length; l++) {
+                previous.setNext(drawPerLine.getValue(l));
+                previous = drawPerLine.getValue(l);
+            }
+            drawChainTail = previous;
+            drawChainTail.setNext(null);
+        }
+
+        vertices.validateState();
+        setDrawSelection(drawSelection);
+    }
+
+
     public void parseForData(boolean addHistory) {
         final boolean drawSelection = isDrawSelection();
         setDrawSelection(false);
