@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.FloatBuffer;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -77,7 +78,9 @@ import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.dnd.MyDummyType2;
 import org.nschmidt.ldparteditor.enums.MouseButton;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Rule;
+import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -181,6 +184,13 @@ public class CompositePrimitive extends Composite {
         }
         canvas.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
         canvas.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
+        {
+            Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.E3D_RotateViewHint);
+            canvas.setToolTipText(formatter.format(messageArguments));
+        }
 
         this.setBackgroundMode(SWT.INHERIT_FORCE);
 
