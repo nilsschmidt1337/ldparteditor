@@ -37,6 +37,7 @@ public class DuplicateManager {
 
     private boolean hasNoThread = true;
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
+    private Thread worker = null;
 
     private volatile Queue<GData> workQueue = new ConcurrentLinkedQueue<GData>();
 
@@ -46,9 +47,9 @@ public class DuplicateManager {
 
     public void pushDuplicateCheck(GData data) {
         if (df.isReadOnly()) return;
-        if (hasNoThread) {
+        if (hasNoThread || !worker.isAlive()) {
             hasNoThread = false;
-            new Thread(new Runnable() {
+            worker = new Thread(new Runnable() {
                 @Override
                 public void run() {
 
@@ -596,7 +597,8 @@ public class DuplicateManager {
                     registered[0] = true;
                     GData.CACHE_duplicates.put(gd, new ParsingResult(I18n.DATPARSER_InvisibleLine, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                 }
-            }).start();
+            });
+            worker.start();
         }
 
         while (!workQueue.offer(data)) {

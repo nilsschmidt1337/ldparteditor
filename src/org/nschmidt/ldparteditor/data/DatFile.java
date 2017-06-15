@@ -733,6 +733,10 @@ public final class DatFile {
     public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount, boolean unselectBgPicture) {
 
         if (compositeText.getText().isEmpty()) {
+            duplicate.pushDuplicateCheck(drawChainAnchor);
+            updateDuplicatesErrors(compositeText, duplicates);
+            datHeader.pushDatHeaderCheck(drawChainAnchor, compositeText, hints, warnings, errors, duplicates, problemCount);
+            updateDatHeaderHints(compositeText, hints);
             return;
         }
 
