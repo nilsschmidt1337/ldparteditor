@@ -15,23 +15,17 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.SynchronousQueue;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.jface.dialogs.ProgressMonitorDialog;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
@@ -39,7 +33,6 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -54,9 +47,9 @@ public class HistoryManager {
     private boolean hasNoThread = true;
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
     private volatile AtomicInteger action = new AtomicInteger(0);
-    private volatile ProgressMonitorDialog[] m = new ProgressMonitorDialog[1];
-    private volatile SynchronousQueue<Integer> sq = new SynchronousQueue<Integer>();
     private final Lock lock = new ReentrantLock();
+    private Runnable runnable = null;
+    private volatile int mode = 0;
 
     private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
 
@@ -74,8 +67,6 @@ public class HistoryManager {
                 public void run() {
 
                     final int MAX_ITEM_COUNT = 100; // default is 100
-
-                    boolean restoreWasScuccessful = false;
 
                     int pointer = 0;
                     int pointerMax = 0;
@@ -216,8 +207,6 @@ public class HistoryManager {
                                 final int action2 = action.get();
                                 int delta = 0;
                                 if (action2 > 0 && action2 < 3) {
-                                    restoreWasScuccessful = false;
-
                                     boolean doRestore = false;
                                     switch (action2) {
                                     case 1:
@@ -260,38 +249,16 @@ public class HistoryManager {
                                         }
                                         int[] text = historyText.get(pointer);
                                         final int pointer2 = pointer;
-                                        NLogger.debug(getClass(), "Waiting for monitor..."); //$NON-NLS-1$
-                                        sq.put(10);
-                                        if (m[0] == null || m[0].getShell() == null) {
-                                            NLogger.error(getClass(), "Monitor creation failed!"); //$NON-NLS-1$
-                                            action.set(0);
-                                            hasNoThread = true;
-                                            return;
-                                        }
-                                        NLogger.debug(getClass(), "Accepted monitor."); //$NON-NLS-1$
                                         final String decompressed = StringHelper.decompress(text);
+                                        action.set(4);
                                         Display.getDefault().syncExec(new Runnable() {
                                             @Override
                                             public void run() {
-                                                try {
-                                                    sq.put(20);
-                                                } catch (InterruptedException e) {
-                                                }
                                                 GDataCSG.resetCSG(df, false);
                                                 GDataCSG.forceRecompile(df);
                                                 Project.getUnsavedFiles().add(df);
                                                 df.setText(decompressed);
-                                                m[0].getShell().redraw();
-                                                m[0].getShell().update();
-                                                m[0].getShell().getDisplay().readAndDispatch();
                                                 df.parseForData(false);
-                                                try {
-                                                    sq.put(60);
-                                                } catch (InterruptedException e) {
-                                                }
-                                                m[0].getShell().redraw();
-                                                m[0].getShell().update();
-                                                m[0].getShell().getDisplay().readAndDispatch();
                                                 boolean hasTextEditor = false;
                                                 try {
                                                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -397,7 +364,7 @@ public class HistoryManager {
                                                     }
                                                 }
                                                 vm.updateUnsavedStatus();
-                                                
+
                                                 // Redraw the content of the StyledText (to see the selection)
                                                 try {
                                                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -436,17 +403,13 @@ public class HistoryManager {
                                                 vm.setSkipSyncWithTextEditor(false);
 
                                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
-                                                try {
-                                                    sq.put(10);
-                                                } catch (InterruptedException e) {
-                                                }
+                                                action.set(0);
                                             }
                                         });
+                                    } else {
+                                        action.set(0);
                                     }
-                                    action.set(0);
-                                    restoreWasScuccessful = true;
                                 } else {
-                                    restoreWasScuccessful = true;
                                     if (workQueue.isEmpty()) Thread.sleep(100);
                                 }
                             }
@@ -461,11 +424,8 @@ public class HistoryManager {
                             NLogger.error(getClass(), e);
                         }
 
-                        if (!restoreWasScuccessful) {
-                            action.set(0);
-                        }
-                        restoreWasScuccessful = false;
                     }
+                    action.set(0);
                 }
             }).start();
         }
@@ -506,84 +466,80 @@ public class HistoryManager {
         }
     }
 
-    private void action(final int mode, final Shell sh) {
-        if (df.isReadOnly() || !df.getVertexManager().isUpdated() && WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) return;
-        BusyIndicator.showWhile(Display.getCurrent(), new Runnable() {
-            @Override
-            public void run() {
-                try
-                {
-                    final ProgressMonitorDialog mon = new ProgressMonitorDialog(sh == null ? Editor3DWindow.getWindow().getShell() : sh);
-                    mon.run(true, false, new IRunnableWithProgress()
-                    {
-                        @Override
-                        public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
-                        {
-                            try
-                            {
-                                if (action.get() == 0) {
-                                    action.set(mode);
-                                }
-                                m[0] = mon;
-                                NLogger.debug(getClass(), "Provided Monitor..."); //$NON-NLS-1$
-                                if (!isRunning.get()) {
-                                    hasNoThread = true;
-                                    isRunning.set(true);
-                                    pushHistory(null, -1, -1, null, null, null, null, null, -1);
-                                    NLogger.debug(getClass(), "Forked history thread..."); //$NON-NLS-1$
-                                }
-                                monitor.beginTask(I18n.E3D_LoadingData, 100);
-                                while (action.get() > 0) {
-                                    Integer inc = sq.poll(200, TimeUnit.MILLISECONDS);
-                                    if (inc != null) {
-                                        monitor.worked(inc);
-                                        NLogger.debug(getClass(), "Polled progress info. ({0})", inc); //$NON-NLS-1$
-                                    } else {
-                                        NLogger.debug(getClass(), "Progress info has timed out."); //$NON-NLS-1$
-                                    }
-                                }
-                            } catch (Exception ex) {
+    private void action(final int action_mode, final Shell sh) {
+        if (action.get() != 0 || df.isReadOnly() || !df.getVertexManager().isUpdated() && WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) return;
 
-                                // We want to know what can go wrong here
-                                // because it SHOULD be avoided!!
+        mode = action_mode;
 
-                                switch (mode) {
-                                case 1:
-                                    NLogger.error(getClass(), "Undo failed within the ProgressMonitor.run() call."); //$NON-NLS-1$
-                                    break;
-                                case 2:
-                                    NLogger.error(getClass(), "Redo failed within the ProgressMonitor.run() call."); //$NON-NLS-1$
-                                    break;
-                                default:
-                                    // Can't happen
-                                    break;
-                                }
+        if (runnable == null) {
+            runnable = new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        action.set(mode);
+                        if (!isRunning.get()) {
+                            hasNoThread = true;
+                            isRunning.set(true);
+                            pushHistory(null, -1, -1, null, null, null, null, null, -1);
+                            NLogger.debug(getClass(), "Forked history thread..."); //$NON-NLS-1$
+                        }
 
-                                NLogger.error(getClass(), ex);
+                        Shell sh2 = sh == null ? Editor3DWindow.getWindow().getShell() : sh;
+                        while (action.get() > 0) {
+                            sh2.redraw();
+                            sh2.update();
+                            sh2.getDisplay().readAndDispatch();
+                            try {
+                                Thread.sleep(10);
+                            } catch (InterruptedException ie) {
+                                NLogger.error(getClass(), ie);
                             }
                         }
-                    });
-                } catch (Exception undoRedoException) {
-
-                    // We want to know what can go wrong here
-                    // because it SHOULD be avoided!!
-
-                    switch (mode) {
-                    case 1:
-                        NLogger.error(getClass(), "Undo failed while the ProgressMonitor was shown."); //$NON-NLS-1$
-                        break;
-                    case 2:
-                        NLogger.error(getClass(), "Redo failed while the ProgressMonitor was shown."); //$NON-NLS-1$
-                        break;
-                    default:
-                        // Can't happen
-                        break;
+                    } catch (Exception ex) {
+                        // We want to know what can go wrong here
+                        // because it SHOULD be avoided!!
+                        switch (mode) {
+                        case 1:
+                            NLogger.error(getClass(), "Undo failed within the ProgressMonitor.run() call."); //$NON-NLS-1$
+                            break;
+                        case 2:
+                            NLogger.error(getClass(), "Redo failed within the ProgressMonitor.run() call."); //$NON-NLS-1$
+                            break;
+                        default:
+                            // Can't happen
+                            break;
+                        }
+                        NLogger.error(getClass(), ex);
                     }
+                }
+            };
+        }
 
-                    NLogger.error(getClass(), undoRedoException);
+        try {
+            BusyIndicator.showWhile(Display.getCurrent(), runnable);
+            while (action.get() > 0) {
+                try {
+                    Thread.sleep(10);
+                } catch (InterruptedException ie) {
+                    NLogger.error(getClass(), ie);
                 }
             }
-        });
+        } catch (Exception undoRedoException) {
+            // We want to know what can go wrong here
+            // because it SHOULD be avoided!!
+            switch (mode) {
+            case 1:
+                NLogger.error(getClass(), "Undo failed while the ProgressMonitor was shown."); //$NON-NLS-1$
+                break;
+            case 2:
+                NLogger.error(getClass(), "Redo failed while the ProgressMonitor was shown."); //$NON-NLS-1$
+                break;
+            default:
+                // Can't happen
+                break;
+            }
+            NLogger.error(getClass(), undoRedoException);
+        }
         df.getVertexManager().setSelectedBgPicture(null);
         df.getVertexManager().setSelectedBgPictureIndex(0);
         Editor3DWindow.getWindow().updateBgPictureTab();
