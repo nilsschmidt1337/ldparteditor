@@ -257,10 +257,12 @@ public enum DatParser {
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed) {
 
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
-        // line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
 
-        if (line.startsWith("0 !: ")) { //$NON-NLS-1$
+        if (line.startsWith(I18n.DATFILE_InlinePrefix)) {
+            result.add(new ParsingResult(new GData0(line)));
+            result.add(new ParsingResult(I18n.DATPARSER_InliningRelict, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+        } else if (line.startsWith("0 !: ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
             if (newLPEmetaTag == null) {
                 newLPEmetaTag = new GData0(line);
@@ -954,31 +956,31 @@ public enum DatParser {
                 if (depth < 1) {
                     boolean parseError = false;
                     double angle;
-                    
+
                     Vector3d.sub(vertexA, vertexC, vertexA2);
                     Vector3d.sub(vertexB, vertexC, vertexB2);
                     Vector3d.sub(vertexB, vertexA, vertexC2);
-                    
+
                     angle = Vector3d.angle(vertexA2, vertexB2);
                     double sumAngle = angle;
                     parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-                    
+
                     if (!parseError) {
                         vertexA2.negate();
                         angle = Vector3d.angle(vertexA2, vertexC2);
                         sumAngle = sumAngle + angle;
                         parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
                     }
-                    
+
                     if (!parseError) {
                         angle = 180.0 - sumAngle;
                         parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
                     }
-                    
+
                     if (parseError) {
                         result.add(new ParsingResult(I18n.DATPARSER_CollinearVertices, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                     }
-                                        
+
                     parseError = vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;
@@ -1122,7 +1124,7 @@ public enum DatParser {
                     }
 
                     double angle;
-                    
+
                     // Coplanarity
                     if (!parseError) {
 
@@ -1135,33 +1137,33 @@ public enum DatParser {
                             parseWarning = false;
                         }
                     }
-                    
+
                     Vector3d.sub(vertexB, vertexA, vertexA2);
                     Vector3d.sub(vertexB, vertexC, vertexB2);
                     Vector3d.sub(vertexD, vertexC, vertexC2);
                     Vector3d.sub(vertexD, vertexA, vertexD2);
 
                     if (!parseError) {
-                        
+
                         angle = Vector3d.angle(vertexA2, vertexD2);
                         double sumAngle = angle;
                         parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-                        
+
                         if (!parseError) {
                             angle = Vector3d.angle(vertexB2, vertexC2);
                             sumAngle = sumAngle + angle;
                             parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
                         }
-                        
+
                         if (!parseError) {
                             vertexA2.negate();
                             vertexB2.negate();
                             angle = Vector3d.angle(vertexA2, vertexB2);
                             sumAngle = sumAngle + angle;
                             parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
-                                                        
+
                         }
-                        
+
                         if (!parseError) {
                             angle = 360.0 - sumAngle;
                             parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
@@ -1171,7 +1173,7 @@ public enum DatParser {
                             result.add(new ParsingResult(I18n.DATPARSER_CollinearVertices, "[E34] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                         }
                     }
-                    
+
                     parseError = vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;

@@ -286,6 +286,7 @@ final class WarningFixer {
             text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
         }
         break;
+        case 1: // Inlining relict
         case 13: // Unofficial Meta Command
         case 254: // !LPE VERTEX
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
