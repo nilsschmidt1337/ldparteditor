@@ -22,5 +22,5 @@ package org.nschmidt.ldparteditor.enums;
  *
  */
 public enum WorkingMode {
-    SELECT, MOVE, ROTATE, SCALE, COMBINED
+    SELECT, MOVE, MOVE_GLOBAL, ROTATE, SCALE, COMBINED
 }

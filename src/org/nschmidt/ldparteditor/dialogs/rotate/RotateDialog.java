@@ -23,7 +23,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
+import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -80,6 +82,7 @@ public class RotateDialog extends RotateDesign {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
                 btn_Local[0].setSelection(true);
                 transformationMode = ManipulatorScope.LOCAL;
+                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
             }
         });
         btn_Global[0].addSelectionListener(new SelectionAdapter() {
@@ -88,6 +91,7 @@ public class RotateDialog extends RotateDesign {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
                 btn_Global[0].setSelection(true);
                 transformationMode = ManipulatorScope.GLOBAL;
+                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
             }
         });
         rb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
