@@ -116,6 +116,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.dialogs.copy.CopyDialog;
+import org.nschmidt.ldparteditor.dialogs.direction.DirectionDialog;
 import org.nschmidt.ldparteditor.dialogs.edger2.EdgerDialog;
 import org.nschmidt.ldparteditor.dialogs.intersector.IntersectorDialog;
 import org.nschmidt.ldparteditor.dialogs.isecalc.IsecalcDialog;
@@ -3817,7 +3818,14 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
+                        final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
+                        if (DirectionDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        } else {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        }
                         vm.merge(MergeTo.NEAREST_FACE, true, true);
+                        Editor3DWindow.getWindow().setWorkingAction(action);
                         regainFocus();
                         return;
                     }
@@ -3917,7 +3925,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
                         final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        if (CoordinatesDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        } else {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        }
                         if (new CoordinatesDialog(getShell(), v, mani, c3d.getManipulator()).open() == IDialogConstants.OK_ID) {
 
                             if (CoordinatesDialog.getTransformationMode() == ManipulatorScope.LOCAL) {
@@ -4043,7 +4055,11 @@ public class Editor3DWindow extends Editor3DDesign {
                             && c3d.equals(DatFile.getLastHoveredComposite())
                             && !c3d.getLockableDatFileReference().isReadOnly()) {
                         final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        if (TranslateDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        } else {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        }
                         if (new TranslateDialog(getShell(), new Vertex(c3d.getManipulator().getAccuratePosition()), transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             final boolean moveAdjacentData = isMovingAdjacentData();
@@ -4103,7 +4119,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
                         final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        if (RotateDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        } else {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        }
                         if (new RotateDialog(getShell(), null, clipboard, mani, transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             final boolean moveAdjacentData = isMovingAdjacentData();
@@ -4163,7 +4183,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
                         final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();
-                        Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        if (ScaleDialog.getTransformationMode() == ManipulatorScope.GLOBAL) {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                        } else {
+                            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                        }
                         if (new ScaleDialog(getShell(), null, clipboard, mani, transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             final boolean moveAdjacentData = isMovingAdjacentData();

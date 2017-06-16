@@ -23,9 +23,11 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
+import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -87,6 +89,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
                 btn_Local[0].setSelection(true);
                 if (transformationMode != ManipulatorScope.LOCAL) {
                     transformationMode = ManipulatorScope.LOCAL;
+                    Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
                     vertex = globalToLocal(vertex);
                 }
                 updateXYZ();
@@ -99,6 +102,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
                 btn_Global[0].setSelection(true);
                 if (transformationMode != ManipulatorScope.GLOBAL) {
                     transformationMode = ManipulatorScope.GLOBAL;
+                    Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
                     vertex = localToGlobal(vertex);
                 }
                 updateXYZ();
