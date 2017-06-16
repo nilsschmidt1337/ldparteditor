@@ -26,6 +26,7 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.Matrix;
+import org.nschmidt.ldparteditor.enums.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
@@ -517,6 +518,27 @@ public class Manipulator {
         if (View.manipulator_selected_Colour_r[0] == result.getR() && View.manipulator_selected_Colour_g[0] == result.getG() && View.manipulator_selected_Colour_b[0] == result.getB()) {
             switch (Editor3DWindow.getWindow().getWorkingLayer()) {
             case NONE:
+            case TEMP_X:
+            case TEMP_Y:
+            case TEMP_Z:
+                switch (type) {
+                case X_TRANSLATE:
+                case X_SCALE:
+                case X_ROTATE:
+                    Editor3DWindow.getWindow().setWorkingLayer(ManipulatorAxisMode.TEMP_X);
+                    break;
+                case Y_TRANSLATE:
+                case Y_SCALE:
+                case Y_ROTATE:
+                    Editor3DWindow.getWindow().setWorkingLayer(ManipulatorAxisMode.TEMP_Y);
+                    break;
+                case Z_TRANSLATE:
+                case Z_SCALE:
+                case Z_ROTATE:
+                    Editor3DWindow.getWindow().setWorkingLayer(ManipulatorAxisMode.TEMP_Z);
+                    break;
+                default:
+                }
                 return result;
             default:
                 return new GColour(-1, View.manipulator_outerCircle_Colour_r[0], View.manipulator_outerCircle_Colour_g[0], View.manipulator_outerCircle_Colour_b[0], 1f);
