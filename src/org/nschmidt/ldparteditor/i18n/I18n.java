@@ -239,6 +239,7 @@ public final class I18n {
     public static final String COPYNPASTE_Paste = COPYNPASTE.getString(getProperty());
     public static final String DATFILE_FoundTJunction = DATFILE.getString(getProperty());
     public static final String DATFILE_HeaderHint = DATFILE.getString(getProperty());
+    public static final String DATFILE_InlinePrefix = DATFILE.getString(getProperty());
     public static final String DATFILE_Inlined = DATFILE.getString(getProperty());
     public static final String DATFILE_Line = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingAuthor = DATFILE.getString(getProperty());
@@ -267,6 +268,7 @@ public final class I18n {
     public static final String DATPARSER_HourglassQuadrilateral = DATPARSER.getString(getProperty());
     public static final String DATPARSER_IdenticalControlPoints = DATPARSER.getString(getProperty());
     public static final String DATPARSER_IdenticalVertices = DATPARSER.getString(getProperty());
+    public static final String DATPARSER_InliningRelict = DATPARSER.getString(getProperty());
     public static final String DATPARSER_InvalidCase = DATPARSER.getString(getProperty());
     public static final String DATPARSER_InvalidColour = DATPARSER.getString(getProperty());
     public static final String DATPARSER_InvalidHeader = DATPARSER.getString(getProperty());
