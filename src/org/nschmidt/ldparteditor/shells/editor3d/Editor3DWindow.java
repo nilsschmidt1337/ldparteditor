@@ -2933,278 +2933,278 @@ public class Editor3DWindow extends Editor3DDesign {
         if (btn_Manipulator_0_toOrigin[0] != null) btn_Manipulator_0_toOrigin[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_0();
+                mntm_Manipulator_0_toOrigin();
             }
         });
 
         if (btn_Manipulator_XIII_toWorld[0] != null) btn_Manipulator_XIII_toWorld[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XIII();
+                mntm_Manipulator_XIII_toWorld();
             }
         });
 
         if (btn_Manipulator_X_XReverse[0] != null) btn_Manipulator_X_XReverse[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_X();
+                mntm_Manipulator_X_XReverse();
             }
         });
 
         if (btn_Manipulator_XI_YReverse[0] != null) btn_Manipulator_XI_YReverse[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XI();
+                mntm_Manipulator_XI_YReverse();
             }
         });
 
         if (btn_Manipulator_XII_ZReverse[0] != null) btn_Manipulator_XII_ZReverse[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XII();
+                mntm_Manipulator_XII_ZReverse();
             }
         });
 
         if (btn_Manipulator_SwitchXY[0] != null) btn_Manipulator_SwitchXY[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XY();
+                mntm_Manipulator_SwitchXY();
             }
         });
 
         if (btn_Manipulator_SwitchXZ[0] != null) btn_Manipulator_SwitchXZ[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XZ();
+                mntm_Manipulator_SwitchXZ();
             }
         });
 
         if (btn_Manipulator_SwitchYZ[0] != null) btn_Manipulator_SwitchYZ[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_YZ();
+                mntm_Manipulator_SwitchYZ();
             }
         });
 
         if (btn_Manipulator_1_cameraToPos[0] != null) btn_Manipulator_1_cameraToPos[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_1();
+                mntm_Manipulator_1_cameraToPos();
             }
         });
         if (btn_Manipulator_2_toAverage[0] != null) btn_Manipulator_2_toAverage[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_2();
+                mntm_Manipulator_2_toAverage();
             }
         });
 
         if (btn_Manipulator_3_toSubfile[0] != null) btn_Manipulator_3_toSubfile[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_3();
+                mntm_Manipulator_3_toSubfile();
             }
         });
 
         if (btn_Manipulator_32_subfileTo[0] != null) btn_Manipulator_32_subfileTo[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_32();
+                mntm_Manipulator_32_subfileTo();
             }
         });
 
         if (btn_Manipulator_4_toVertex[0] != null) btn_Manipulator_4_toVertex[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_4();
+                mntm_Manipulator_4_toVertex();
             }
         });
 
         if (btn_Manipulator_5_toEdge[0] != null) btn_Manipulator_5_toEdge[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_5();
+                mntm_Manipulator_5_toEdge();
             }
         });
 
         if (btn_Manipulator_6_toSurface[0] != null) btn_Manipulator_6_toSurface[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_6();
+                mntm_Manipulator_6_toSurface();
             }
         });
 
         if (btn_Manipulator_7_toVertexNormal[0] != null) btn_Manipulator_7_toVertexNormal[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_7();
+                mntm_Manipulator_7_toVertexNormal();
             }
         });
 
         if (btn_Manipulator_8_toEdgeNormal[0] != null) btn_Manipulator_8_toEdgeNormal[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_8();
+                mntm_Manipulator_8_toEdgeNormal();
             }
         });
 
         if (btn_Manipulator_9_toSurfaceNormal[0] != null) btn_Manipulator_9_toSurfaceNormal[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_9();
+                mntm_Manipulator_9_toSurfaceNormal();
             }
         });
 
         if (btn_Manipulator_XIV_adjustRotationCenter[0] != null) btn_Manipulator_XIV_adjustRotationCenter[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XIV();
+                mntm_Manipulator_XIV_adjustRotationCenter();
             }
         });
 
         if (btn_Manipulator_XV_toVertexPosition[0] != null) btn_Manipulator_XV_toVertexPosition[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XV();
+                mntm_Manipulator_XV_toVertexPosition();
             }
         });
 
         if (mntm_Manipulator_0_toOrigin[0] != null) mntm_Manipulator_0_toOrigin[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_0();
+                mntm_Manipulator_0_toOrigin();
             }
         });
 
         if (mntm_Manipulator_XIII_toWorld[0] != null) mntm_Manipulator_XIII_toWorld[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XIII();
+                mntm_Manipulator_XIII_toWorld();
             }
         });
 
         if (mntm_Manipulator_X_XReverse[0] != null) mntm_Manipulator_X_XReverse[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_X();
+                mntm_Manipulator_X_XReverse();
             }
         });
 
         if (mntm_Manipulator_XI_YReverse[0] != null) mntm_Manipulator_XI_YReverse[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XI();
+                mntm_Manipulator_XI_YReverse();
             }
         });
 
         if (mntm_Manipulator_XII_ZReverse[0] != null) mntm_Manipulator_XII_ZReverse[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XII();
+                mntm_Manipulator_XII_ZReverse();
             }
         });
 
         if (mntm_Manipulator_SwitchXY[0] != null) mntm_Manipulator_SwitchXY[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XY();
+                mntm_Manipulator_SwitchXY();
             }
         });
 
         if (mntm_Manipulator_SwitchXZ[0] != null) mntm_Manipulator_SwitchXZ[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XZ();
+                mntm_Manipulator_SwitchXZ();
             }
         });
 
         if (mntm_Manipulator_SwitchYZ[0] != null) mntm_Manipulator_SwitchYZ[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_YZ();
+                mntm_Manipulator_SwitchYZ();
             }
         });
 
         if (mntm_Manipulator_1_cameraToPos[0] != null) mntm_Manipulator_1_cameraToPos[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_1();
+                mntm_Manipulator_1_cameraToPos();
             }
         });
         if (mntm_Manipulator_2_toAverage[0] != null) mntm_Manipulator_2_toAverage[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_2();
+                mntm_Manipulator_2_toAverage();
             }
         });
 
         if (mntm_Manipulator_3_toSubfile[0] != null) mntm_Manipulator_3_toSubfile[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_3();
+                mntm_Manipulator_3_toSubfile();
             }
         });
 
         if (mntm_Manipulator_32_subfileTo[0] != null) mntm_Manipulator_32_subfileTo[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_32();
+                mntm_Manipulator_32_subfileTo();
             }
         });
 
         if (mntm_Manipulator_4_toVertex[0] != null) mntm_Manipulator_4_toVertex[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_4();
+                mntm_Manipulator_4_toVertex();
             }
         });
 
         if (mntm_Manipulator_5_toEdge[0] != null) mntm_Manipulator_5_toEdge[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_5();
+                mntm_Manipulator_5_toEdge();
             }
         });
 
         if (mntm_Manipulator_6_toSurface[0] != null) mntm_Manipulator_6_toSurface[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_6();
+                mntm_Manipulator_6_toSurface();
             }
         });
 
         if (mntm_Manipulator_7_toVertexNormal[0] != null) mntm_Manipulator_7_toVertexNormal[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_7();
+                mntm_Manipulator_7_toVertexNormal();
             }
         });
 
         if (mntm_Manipulator_8_toEdgeNormal[0] != null) mntm_Manipulator_8_toEdgeNormal[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_8();
+                mntm_Manipulator_8_toEdgeNormal();
             }
         });
 
         if (mntm_Manipulator_9_toSurfaceNormal[0] != null) mntm_Manipulator_9_toSurfaceNormal[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_9();
+                mntm_Manipulator_9_toSurfaceNormal();
             }
         });
 
         if (mntm_Manipulator_XIV_adjustRotationCenter[0] != null) mntm_Manipulator_XIV_adjustRotationCenter[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XIV();
+                mntm_Manipulator_XIV_adjustRotationCenter();
             }
         });
 
         if (mntm_Manipulator_XV_toVertexPosition[0] != null) mntm_Manipulator_XV_toVertexPosition[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_XV();
+                mntm_Manipulator_XV_toVertexPosition();
             }
         });
 
@@ -8281,7 +8281,7 @@ public class Editor3DWindow extends Editor3DDesign {
         }
     }
 
-    private void mntm_Manipulator_0() {
+    public void mntm_Manipulator_0_toOrigin() {
         if (Project.getFileToEdit() != null) {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
@@ -8293,7 +8293,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_XIII() {
+    public void mntm_Manipulator_XIII_toWorld() {
         if (Project.getFileToEdit() != null) {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
@@ -8309,7 +8309,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_X() {
+    public void mntm_Manipulator_X_XReverse() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8321,7 +8321,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_XI() {
+    public void mntm_Manipulator_XI_YReverse() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8333,7 +8333,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_XII() {
+    public void mntm_Manipulator_XII_ZReverse() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8345,7 +8345,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_1() {
+    public void mntm_Manipulator_1_cameraToPos() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             Vector4f pos = c3d.getManipulator().getPosition();
@@ -8377,7 +8377,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    public void mntm_Manipulator_2() {
+    public void mntm_Manipulator_2_toAverage() {
         if (Project.getFileToEdit() != null) {
             Vector4f avg = Project.getFileToEdit().getVertexManager().getSelectionCenter();
             for (OpenGLRenderer renderer : renders) {
@@ -8391,7 +8391,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_3() {
+    public void mntm_Manipulator_3_toSubfile() {
         if (Project.getFileToEdit() != null) {
             Set<GData1> subfiles = Project.getFileToEdit().getVertexManager().getSelectedSubfiles();
             if (!subfiles.isEmpty()) {
@@ -8429,7 +8429,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_32() {
+    public void mntm_Manipulator_32_subfileTo() {
         if (Project.getFileToEdit() != null) {
             VertexManager vm = Project.getFileToEdit().getVertexManager();
             Set<GData1> subfiles = vm.getSelectedSubfiles();
@@ -8459,7 +8459,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_4() {
+    public void mntm_Manipulator_4_toVertex() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8490,7 +8490,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_5() {
+    public void mntm_Manipulator_5_toEdge() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8551,7 +8551,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_6() {
+    public void mntm_Manipulator_6_toSurface() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8565,7 +8565,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_7() {
+    public void mntm_Manipulator_7_toVertexNormal() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8633,7 +8633,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_8() {
+    public void mntm_Manipulator_8_toEdgeNormal() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8683,7 +8683,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_9() {
+    public void mntm_Manipulator_9_toSurfaceNormal() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8733,7 +8733,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_XIV() {
+    public void mntm_Manipulator_XIV_adjustRotationCenter() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8744,7 +8744,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_XV() {
+    public void mntm_Manipulator_XV_toVertexPosition() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8817,7 +8817,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_YZ() {
+    public void mntm_Manipulator_SwitchYZ() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8833,7 +8833,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_XZ() {
+    public void mntm_Manipulator_SwitchXZ() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -8849,7 +8849,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    private void mntm_Manipulator_XY() {
+    public void mntm_Manipulator_SwitchXY() {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {

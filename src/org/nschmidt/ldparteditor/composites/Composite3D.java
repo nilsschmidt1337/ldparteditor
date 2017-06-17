@@ -132,6 +132,8 @@ public class Composite3D extends ScalableComposite {
     private final Menu mnu_lineMode;
     /** The "Synchronise..."-Menu */
     public final Menu mnu_syncronise;
+    /** The "Manipulator"-Menu */
+    private final Menu mnu_Manipulator;
 
     /** The cursor position in the 3D space [LDU] */
     private final Vector4f cursor3D = new Vector4f(0f, 0f, 0f, 1f);
@@ -400,6 +402,9 @@ public class Composite3D extends ScalableComposite {
 
         MenuItem mntmViewAngles = new MenuItem(menu, SWT.CASCADE);
         mntmViewAngles.setText(I18n.E3D_ViewingAngles);
+
+        MenuItem mntmManipulator = new MenuItem(menu, SWT.CASCADE);
+        mntmManipulator.setText(I18n.E3D_ModifyManipulator);
 
         MenuItem mntmViewActions = new MenuItem(menu, SWT.CASCADE);
         mntmViewActions.setText(I18n.E3D_ViewActions);
@@ -723,6 +728,245 @@ public class Composite3D extends ScalableComposite {
             });
             mntmTwoThirds.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
             mntmTwoThirds.setText(I18n.PERSPECTIVE_TwoThirds);
+        }
+
+        {
+            // MARK CMenu Manipulator
+            mnu_Manipulator = new Menu(mntmManipulator);
+            mntmManipulator.setMenu(mnu_Manipulator);
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToOrigin);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_0_toOrigin();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToWorld);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_XIII_toWorld();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_AdjustRotationCenter);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_XIV_adjustRotationCenter();
+                    }
+                });
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator1 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ReverseX);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_X_XReverse();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ReverseY);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_XI_YReverse();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ReverseZ);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_XII_ZReverse();
+                    }
+                });
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator20 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_SwapXY);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_SwitchXY();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_SwapXZ);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_SwitchXZ();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_SwapYZ);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_SwitchYZ();
+                    }
+                });
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator30 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_CamToManipulator);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_1_cameraToPos();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToAvg);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
+                KeyStateManager.addKeyText(btn_Mani, I18n.E3D_ManipulatorToAvg, Task.MOVE_TO_AVG);
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_2_toAverage();
+                    }
+                });
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator31 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToSubfile);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_3_toSubfile();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_SubfileToManipulator);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_32_subfileTo();
+                    }
+                });
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator32 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToVertex);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_4_toVertex();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToEdge);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_5_toEdge();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToFace);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_6_toSurface();
+                    }
+                });
+            }
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator4 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToVertexN);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_7_toVertexNormal();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToVertexP);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_XV_toVertexPosition();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToEdgeN);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_8_toEdgeNormal();
+                    }
+                });
+            }
+            {
+                MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                btn_Mani.setText(I18n.E3D_ManipulatorToFaceN);
+                btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
+                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                    @Override
+                    public void widgetSelected(SelectionEvent e) {
+                        Editor3DWindow.getWindow().mntm_Manipulator_9_toSurfaceNormal();
+                    }
+                });
+            }
         }
 
         {

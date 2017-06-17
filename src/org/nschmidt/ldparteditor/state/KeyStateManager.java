@@ -336,7 +336,7 @@ public class KeyStateManager {
                         win.disableAddAction();
                         break;
                     case MOVE_TO_AVG:
-                        win.mntm_Manipulator_2();
+                        win.mntm_Manipulator_2_toAverage();
                         break;
                     case COLOUR_NUMBER0:
 
