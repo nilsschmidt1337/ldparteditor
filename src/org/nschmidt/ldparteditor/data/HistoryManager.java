@@ -28,10 +28,8 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.regex.Pattern;
 
-import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
@@ -52,10 +50,10 @@ public class HistoryManager {
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
     private volatile AtomicInteger action = new AtomicInteger(0);
     private final Lock lock = new ReentrantLock();
-    private Runnable runnable = null;
     private volatile int mode = 0;
 
     private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
+    private volatile Queue<Object[]> answerQueue = new ConcurrentLinkedQueue<Object[]>();
 
     public HistoryManager(DatFile df) {
         this.df = df;
@@ -270,168 +268,52 @@ public class HistoryManager {
                                         while (!hasTextEditor && pointer + delta > -1 && pointer + delta < historySelectionStart.size() && historySelectionStart.get(pointer) != -1 && pointer > 0 && pointer < pointerMax - 1) {
                                             pointer += delta;
                                         }
-                                        final int pointer2 = pointer;
-                                        final String[] lines = historyText.get(pointer);
+                                        final int start = historySelectionStart.get(pointer);
+                                        final int end = historySelectionEnd.get(pointer);
+                                        final int topIndex = historyTopIndex.get(pointer);
                                         final String fullText = historyFullText.get(pointer);
-                                        action.set(4);
-                                        df.parseForChanges(lines);
-                                        Display.getDefault().syncExec(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                GDataCSG.resetCSG(df, false);
-                                                GDataCSG.forceRecompile(df);
-                                                Project.getUnsavedFiles().add(df);
-                                                df.setText(fullText);
-                                                boolean hasTextEditor = false;
-                                                try {
-                                                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                                        for (final CTabItem t : w.getTabFolder().getItems()) {
-                                                            final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
-                                                            if (txtDat != null && txtDat.equals(df)) {
-                                                                int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
-                                                                Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
-                                                                if (openTextEditor) {
-                                                                    r.x = historySelectionStart.get(pointer2);
-                                                                    r.y = historySelectionEnd.get(pointer2);
-                                                                    ti = historyTopIndex.get(pointer2);
-                                                                }
-                                                                ((CompositeTab) t).getState().setSync(true);
-                                                                ((CompositeTab) t).getTextComposite().setText(fullText);
-                                                                ((CompositeTab) t).getTextComposite().setTopIndex(ti);
-                                                                try {
-                                                                    ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
-                                                                } catch (IllegalArgumentException consumed) {}
-                                                                ((CompositeTab) t).getTextComposite().redraw();
-                                                                ((CompositeTab) t).getControl().redraw();
-                                                                ((CompositeTab) t).getTextComposite().update();
-                                                                ((CompositeTab) t).getControl().update();
-                                                                ((CompositeTab) t).getState().setSync(false);
-                                                                hasTextEditor = true;
-                                                                break;
-                                                            }
-                                                        }
-                                                        if (hasTextEditor) break;
-                                                    }
-                                                } catch (Exception undoRedoException) {
-
-                                                    // We want to know what can go wrong here
-                                                    // because it SHOULD be avoided!!
-
-                                                    switch (action2) {
-                                                    case 1:
-                                                        NLogger.error(getClass(), "Undo failed."); //$NON-NLS-1$
-                                                        break;
-                                                    case 2:
-                                                        NLogger.error(getClass(), "Redo failed."); //$NON-NLS-1$
-                                                        break;
-                                                    default:
-                                                        // Can't happen
-                                                        break;
-                                                    }
-
-                                                    NLogger.error(getClass(), undoRedoException);
-                                                }
-
-                                                final VertexManager vm = df.getVertexManager();
-
-                                                vm.clearSelection2();
-                                                final Vertex[] verts = historySelectedVertices.get(pointer2);
-                                                if (verts != null) {
-                                                    for (Vertex vertex : verts) {
-                                                        vm.getSelectedVertices().add(vertex);
-                                                    }
-                                                }
-
-                                                final Vertex[] verts2 = historyHiddenVertices.get(pointer2);
-                                                if (verts2 != null) {
-                                                    vm.getHiddenVertices().clear();
-                                                    for (Vertex vertex : verts2) {
-                                                        vm.getHiddenVertices().add(vertex);
-                                                    }
-                                                }
-
-                                                HashMap<String, ArrayList<Boolean>> hiddenSelection = historyHiddenData.get(pointer2);
-                                                if (hiddenSelection != null) {
-                                                    vm.hiddenData.clear();
-                                                    vm.restoreHideShowState(hiddenSelection);
-                                                }
-                                                HashMap<String, ArrayList<Boolean>> selection = historySelectedData.get(pointer2);
-                                                if (selection != null) {
-                                                    vm.restoreSelectedDataState(selection);
-                                                    ThreadsafeHashMap<GData, Set<VertexInfo>> llv = vm.getLineLinkedToVertices();
-                                                    for (GData1 g1 : vm.getSelectedSubfiles()) {
-                                                        final Set<VertexInfo> vis = llv.get(g1);
-                                                        if (vis != null) {
-                                                            for (VertexInfo vi : vis) {
-                                                                vm.getSelectedVertices().add(vi.vertex);
-                                                                GData gd = vi.getLinkedData();
-                                                                vm.getSelectedData().add(gd);
-                                                                switch (gd.type()) {
-                                                                case 2:
-                                                                    vm.getSelectedLines().add((GData2) gd);
-                                                                    break;
-                                                                case 3:
-                                                                    vm.getSelectedTriangles().add((GData3) gd);
-                                                                    break;
-                                                                case 4:
-                                                                    vm.getSelectedQuads().add((GData4) gd);
-                                                                    break;
-                                                                case 5:
-                                                                    vm.getSelectedCondlines().add((GData5) gd);
-                                                                    break;
-                                                                default:
-                                                                    break;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                vm.updateUnsavedStatus();
-
-                                                // Redraw the content of the StyledText (to see the selection)
-                                                try {
-                                                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                                        for (final CTabItem t : w.getTabFolder().getItems()) {
-                                                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                                                ((CompositeTab) t).getTextComposite().redraw();
-                                                                hasTextEditor = true;
-                                                                break;
-                                                            }
-                                                        }
-                                                        if (hasTextEditor) break;
-                                                    }
-                                                } catch (Exception undoRedoException) {
-
-                                                    // We want to know what can go wrong here
-                                                    // because it SHOULD be avoided!!
-
-                                                    switch (action2) {
-                                                    case 1:
-                                                        NLogger.error(getClass(), "Undo StyledText redraw failed."); //$NON-NLS-1$
-                                                        break;
-                                                    case 2:
-                                                        NLogger.error(getClass(), "Redo StyledText redraw failed."); //$NON-NLS-1$
-                                                        break;
-                                                    default:
-                                                        // Can't happen
-                                                        break;
-                                                    }
-
-                                                    NLogger.error(getClass(), undoRedoException);
-                                                }
-
-                                                // Never ever call "vm.setModified_NoSync();" here. NEVER delete the following lines.
-                                                vm.setModified(false, false);
-                                                vm.setUpdated(true);
-                                                vm.setSkipSyncWithTextEditor(false);
-
-                                                Editor3DWindow.getWindow().updateTree_unsavedEntries();
-                                                action.set(0);
-                                            }
-                                        });
+                                        final String[] lines = historyText.get(pointer);
+                                        HashMap<String, ArrayList<Boolean>> selection = historySelectedData.get(pointer);
+                                        HashMap<String, ArrayList<Boolean>> hiddenSelection = historyHiddenData.get(pointer);
+                                        final Vertex[] verts = historySelectedVertices.get(pointer);
+                                        final Vertex[] verts2 = historyHiddenVertices.get(pointer);
+                                        while (!answerQueue.offer(new Object[]{
+                                                openTextEditor,
+                                                start,
+                                                end,
+                                                topIndex,
+                                                fullText,
+                                                lines,
+                                                selection,
+                                                hiddenSelection,
+                                                verts,
+                                                verts2,
+                                                false
+                                        })) {
+                                            try {
+                                                Thread.sleep(100);
+                                            } catch (InterruptedException e) {}
+                                        }
                                     } else {
-                                        action.set(0);
+                                        while (!answerQueue.offer(new Object[]{
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                null,
+                                                true
+                                        })) {
+                                            try {
+                                                Thread.sleep(100);
+                                            } catch (InterruptedException e) {}
+                                        }
                                     }
+                                    action.set(0);
                                 } else {
                                     if (workQueue.isEmpty()) Thread.sleep(100);
                                 }
@@ -489,80 +371,205 @@ public class HistoryManager {
         }
     }
 
+    @SuppressWarnings("unchecked")
     private void action(final int action_mode, final Shell sh) {
         if (action.get() != 0 || df.isReadOnly() || !df.getVertexManager().isUpdated() && WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) return;
 
         mode = action_mode;
 
-        if (runnable == null) {
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        action.set(mode);
-                        if (!isRunning.get()) {
-                            hasNoThread = true;
-                            isRunning.set(true);
-                            pushHistory(null, -1, -1, null, null, null, null, null, -1);
-                            NLogger.debug(getClass(), "Forked history thread..."); //$NON-NLS-1$
-                        }
-
-                        Shell sh2 = sh == null ? Editor3DWindow.getWindow().getShell() : sh;
-                        while (action.get() > 0) {
-                            sh2.redraw();
-                            sh2.update();
-                            sh2.getDisplay().readAndDispatch();
-                            try {
-                                Thread.sleep(10);
-                            } catch (InterruptedException ie) {
-                                NLogger.error(getClass(), ie);
-                            }
-                        }
-                    } catch (Exception ex) {
-                        // We want to know what can go wrong here
-                        // because it SHOULD be avoided!!
-                        switch (mode) {
-                        case 1:
-                            NLogger.error(getClass(), "Undo failed within the ProgressMonitor.run() call."); //$NON-NLS-1$
-                            break;
-                        case 2:
-                            NLogger.error(getClass(), "Redo failed within the ProgressMonitor.run() call."); //$NON-NLS-1$
-                            break;
-                        default:
-                            // Can't happen
-                            break;
-                        }
-                        NLogger.error(getClass(), ex);
-                    }
-                }
-            };
+        action.set(mode);
+        if (!isRunning.get()) {
+            hasNoThread = true;
+            isRunning.set(true);
+            pushHistory(null, -1, -1, null, null, null, null, null, -1);
+            NLogger.debug(getClass(), "Forked history thread..."); //$NON-NLS-1$
         }
 
-        try {
-            BusyIndicator.showWhile(Display.getCurrent(), runnable);
-            while (action.get() > 0) {
+        // FIXME Get history data
+
+        boolean openTextEditor = false;
+        int start = -1;
+        int end = -1;
+        int topIndex = -1;
+        String fullText = null;
+        String[] lines = null;
+        HashMap<String, ArrayList<Boolean>> selection = null;
+        HashMap<String, ArrayList<Boolean>> hiddenSelection = null;
+        Vertex[] verts = null;
+        Vertex[] verts2 = null;
+        while (true) {
+            Object[] newEntry = answerQueue.poll();
+            if (newEntry != null) {
+                if ((boolean) newEntry[10]) {
+                    break;
+                }
+                openTextEditor = (boolean) newEntry[0];
+                start = (int) newEntry[1];
+                end = (int) newEntry[2];
+                topIndex = (int) newEntry[3];
+                fullText = (String) newEntry[4];
+                lines = (String[]) newEntry[5];
+                selection = (HashMap<String, ArrayList<Boolean>>) newEntry[6];
+                hiddenSelection = (HashMap<String, ArrayList<Boolean>>) newEntry[7];
+                verts = (Vertex[]) newEntry[8];
+                verts2 = (Vertex[]) newEntry[9];
+                break;
+            }
+            if (answerQueue.isEmpty()) {
                 try {
-                    Thread.sleep(10);
-                } catch (InterruptedException ie) {
-                    NLogger.error(getClass(), ie);
+                    Thread.sleep(100);
+                } catch (InterruptedException e) {
                 }
             }
+        }
+
+        df.parseForChanges(lines);
+        GDataCSG.resetCSG(df, false);
+        GDataCSG.forceRecompile(df);
+        Project.getUnsavedFiles().add(df);
+        df.setText(fullText);
+        boolean hasTextEditor = false;
+        try {
+            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                for (final CTabItem t : w.getTabFolder().getItems()) {
+                    final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                    if (txtDat != null && txtDat.equals(df)) {
+                        int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
+                        Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
+                        if (openTextEditor) {
+                            r.x = start;
+                            r.y = end;
+                            ti = topIndex;
+                        }
+                        ((CompositeTab) t).getState().setSync(true);
+                        ((CompositeTab) t).getTextComposite().setText(fullText);
+                        ((CompositeTab) t).getTextComposite().setTopIndex(ti);
+                        try {
+                            ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
+                        } catch (IllegalArgumentException consumed) {}
+                        ((CompositeTab) t).getTextComposite().redraw();
+                        ((CompositeTab) t).getControl().redraw();
+                        ((CompositeTab) t).getTextComposite().update();
+                        ((CompositeTab) t).getControl().update();
+                        ((CompositeTab) t).getState().setSync(false);
+                        hasTextEditor = true;
+                        break;
+                    }
+                }
+                if (hasTextEditor) break;
+            }
         } catch (Exception undoRedoException) {
+
             // We want to know what can go wrong here
             // because it SHOULD be avoided!!
-            switch (mode) {
+
+            switch (action_mode) {
             case 1:
-                NLogger.error(getClass(), "Undo failed while the ProgressMonitor was shown."); //$NON-NLS-1$
+                NLogger.error(getClass(), "Undo failed."); //$NON-NLS-1$
                 break;
             case 2:
-                NLogger.error(getClass(), "Redo failed while the ProgressMonitor was shown."); //$NON-NLS-1$
+                NLogger.error(getClass(), "Redo failed."); //$NON-NLS-1$
                 break;
             default:
                 // Can't happen
                 break;
             }
+
             NLogger.error(getClass(), undoRedoException);
         }
+
+        final VertexManager vm = df.getVertexManager();
+
+        vm.clearSelection2();
+
+        if (verts != null) {
+            for (Vertex vertex : verts) {
+                vm.getSelectedVertices().add(vertex);
+            }
+        }
+
+        if (verts2 != null) {
+            vm.getHiddenVertices().clear();
+            for (Vertex vertex : verts2) {
+                vm.getHiddenVertices().add(vertex);
+            }
+        }
+
+        if (hiddenSelection != null) {
+            vm.hiddenData.clear();
+            vm.restoreHideShowState(hiddenSelection);
+        }
+        if (selection != null) {
+            vm.restoreSelectedDataState(selection);
+            ThreadsafeHashMap<GData, Set<VertexInfo>> llv = vm.getLineLinkedToVertices();
+            for (GData1 g1 : vm.getSelectedSubfiles()) {
+                final Set<VertexInfo> vis = llv.get(g1);
+                if (vis != null) {
+                    for (VertexInfo vi : vis) {
+                        vm.getSelectedVertices().add(vi.vertex);
+                        GData gd = vi.getLinkedData();
+                        vm.getSelectedData().add(gd);
+                        switch (gd.type()) {
+                        case 2:
+                            vm.getSelectedLines().add((GData2) gd);
+                            break;
+                        case 3:
+                            vm.getSelectedTriangles().add((GData3) gd);
+                            break;
+                        case 4:
+                            vm.getSelectedQuads().add((GData4) gd);
+                            break;
+                        case 5:
+                            vm.getSelectedCondlines().add((GData5) gd);
+                            break;
+                        default:
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        vm.updateUnsavedStatus();
+
+        // Redraw the content of the StyledText (to see the selection)
+        try {
+            for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                for (final CTabItem t : w.getTabFolder().getItems()) {
+                    if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                        ((CompositeTab) t).getTextComposite().redraw();
+                        hasTextEditor = true;
+                        break;
+                    }
+                }
+                if (hasTextEditor) break;
+            }
+        } catch (Exception undoRedoException) {
+
+            // We want to know what can go wrong here
+            // because it SHOULD be avoided!!
+
+            switch (action_mode) {
+            case 1:
+                NLogger.error(getClass(), "Undo StyledText redraw failed."); //$NON-NLS-1$
+                break;
+            case 2:
+                NLogger.error(getClass(), "Redo StyledText redraw failed."); //$NON-NLS-1$
+                break;
+            default:
+                // Can't happen
+                break;
+            }
+
+            NLogger.error(getClass(), undoRedoException);
+        }
+
+        // Never ever call "vm.setModified_NoSync();" here. NEVER delete the following lines.
+        vm.setModified(false, false);
+        vm.setUpdated(true);
+        vm.setSkipSyncWithTextEditor(false);
+
+        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+        action.set(0);
         df.getVertexManager().setSelectedBgPicture(null);
         df.getVertexManager().setSelectedBgPictureIndex(0);
         Editor3DWindow.getWindow().updateBgPictureTab();
