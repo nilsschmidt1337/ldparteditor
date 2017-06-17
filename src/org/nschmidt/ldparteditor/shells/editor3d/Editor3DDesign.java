@@ -2735,6 +2735,7 @@ class Editor3DDesign extends ApplicationWindow {
                     this.mntm_Manipulator_2_toAverage[0] = btn_Mani;
                     btn_Mani.setText(I18n.E3D_ManipulatorToAvg);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
+                    KeyStateManager.addKeyText(btn_Mani, I18n.E3D_ManipulatorToAvg, Task.MOVE_TO_AVG);
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator31 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
@@ -2865,6 +2866,8 @@ class Editor3DDesign extends ApplicationWindow {
                 this.btn_Manipulator_2_toAverage[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToAvg);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
+                KeyStateManager.addTooltipText(btn_Mani, I18n.E3D_ManipulatorToAvg, Task.MOVE_TO_AVG);
+
             }
             {
                 Button btn_Mani = new Button(toolItem_ManipulatorActions, SWT.NONE);
