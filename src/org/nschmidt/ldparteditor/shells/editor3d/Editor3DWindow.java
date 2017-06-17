@@ -8303,7 +8303,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     c3d.getManipulator().reset();
                     c3d.getManipulator().getPosition().set(t);
                     c3d.getManipulator().setAccuratePosition(T[0], T[1], T[2]);
-                    ;
                 }
             }
         }

@@ -31,9 +31,11 @@ import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.RotationSnap;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -2065,4 +2067,441 @@ public class Manipulator {
     public double getAccurateRotationZ() {
         return accurateRotationZ;
     }
+
+    public void smallIncrement(WorkingMode action, ManipulatorAxisMode layer, ManipulatorScope scope, Composite3D c3d) {
+        smallStep(action, layer, scope, BigDecimal.ONE, c3d);
+    }
+
+    public void smallDecrement(WorkingMode action, ManipulatorAxisMode layer, ManipulatorScope scope, Composite3D c3d) {
+        smallStep(action, layer, scope, BigDecimal.ONE.negate(), c3d);
+    }
+
+    private void smallStep(WorkingMode action, ManipulatorAxisMode layer, ManipulatorScope scope, BigDecimal ddir, Composite3D c3d) {
+        resetTranslation();
+        switch (layer) {
+        case X:
+        case XY:
+        case TEMP_X:
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) x_Translate = true;
+            if (action == WorkingMode.ROTATE) x_Rotate = true;
+            if (action == WorkingMode.SCALE) x_Scale = true;
+            if (layer != ManipulatorAxisMode.XY) break;
+        case Y:
+        case YZ:
+        case TEMP_Y:
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) y_Translate = true;
+            if (action == WorkingMode.ROTATE) y_Rotate = true;
+            if (action == WorkingMode.SCALE) y_Scale = true;
+            if (layer != ManipulatorAxisMode.YZ) break;
+        case Z:
+        case XZ:
+        case TEMP_Z:
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) z_Translate = true;
+            if (action == WorkingMode.ROTATE) z_Rotate = true;
+            if (action == WorkingMode.SCALE) z_Scale = true;
+            if (layer != ManipulatorAxisMode.XZ) break;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) x_Translate = true;
+            if (action == WorkingMode.ROTATE) x_Rotate = true;
+            if (action == WorkingMode.SCALE) x_Scale = true;
+            break;
+        case XYZ:
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) x_Translate = true;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) y_Translate = true;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) z_Translate = true;
+            if (action == WorkingMode.SCALE) x_Scale = true;
+            if (action == WorkingMode.SCALE) y_Scale = true;
+            if (action == WorkingMode.SCALE) z_Scale = true;
+            if (action == WorkingMode.ROTATE) v_Rotate = true;
+            break;
+        case NONE:
+        default:
+            // Can't happen...
+            NLogger.error(getClass(), "Invalid call to Manipulator.smallStep()"); //$NON-NLS-1$
+            return;
+        }
+
+        float fdir = ddir.floatValue();
+        modified = true;
+
+        if (scope == ManipulatorScope.GLOBAL) {
+            Vector4f t = new Vector4f(getPosition());
+            BigDecimal[] T = getAccuratePosition();
+            c3d.getManipulator().reset();
+            c3d.getManipulator().getPosition().set(t);
+            c3d.getManipulator().setAccuratePosition(T[0], T[1], T[2]);
+        }
+
+        Matrix4f transformation = new Matrix4f();
+        Matrix accurateTransformation;
+        Matrix4f.setIdentity(transformation);
+
+        if (x_Translate) {
+            float factor = snap_x_Translate.floatValue() * 1000f * fdir;
+            BigDecimal FACTOR = snap_x_Translate.multiply(ddir);
+            transformation.m30 = xAxis.x * factor;
+            transformation.m31 = xAxis.y * factor;
+            transformation.m32 = xAxis.z * factor;
+            accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(FACTOR), accurateXaxis[1].multiply(FACTOR), accurateXaxis[2].multiply(FACTOR),
+                    BigDecimal.ONE);
+            accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
+            Matrix4f.transform(transformation, position, position);
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (y_Translate) {
+            float factor = snap_y_Translate.floatValue() * 1000f * fdir;
+            BigDecimal FACTOR = snap_y_Translate.multiply(ddir);
+            transformation.m30 = yAxis.x * factor;
+            transformation.m31 = yAxis.y * factor;
+            transformation.m32 = yAxis.z * factor;
+            accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(FACTOR), accurateYaxis[1].multiply(FACTOR), accurateYaxis[2].multiply(FACTOR),
+                    BigDecimal.ONE);
+            accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
+            Matrix4f.transform(transformation, position, position);
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (z_Translate) {
+            float factor = snap_z_Translate.floatValue() * 1000f * fdir;
+            BigDecimal FACTOR = snap_z_Translate.multiply(ddir);
+            transformation.m30 = zAxis.x * factor;
+            transformation.m31 = zAxis.y * factor;
+            transformation.m32 = zAxis.z * factor;
+            accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateZaxis[0].multiply(FACTOR), accurateZaxis[1].multiply(FACTOR), accurateZaxis[2].multiply(FACTOR),
+                    BigDecimal.ONE);
+            accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
+            Matrix4f.transform(transformation, position, position);
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (x_Rotate || y_Rotate || z_Rotate || v_Rotate) {
+            Matrix4f forward = new Matrix4f();
+            Matrix4f.setIdentity(forward);
+            Matrix4f.translate(new Vector3f(-position.x, -position.y, -position.z), forward, forward);
+            Matrix4f.mul(forward, result, result);
+            accurateResult = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0].negate(), accuratePosition[1].negate(), accuratePosition[2].negate() }), accurateResult);
+        }
+
+        if (x_Rotate) {
+            BigDecimal FACTOR = snap_x_Rotate.multiply(ddir);
+            transformation.rotate(FACTOR.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+            accurateTransformation = View.ACCURATE_ID.rotate(FACTOR, snap_x_RotateFlag, accurateXaxis);
+            accurateRotationX = accurateRotationX + FACTOR.doubleValue();
+            Vector4f vector = new Vector4f(x_rotateArrow);
+            Matrix4f m = new Matrix4f();
+            Matrix4f.setIdentity(m);
+            m.rotate(Math.max(FACTOR.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+            Matrix4f.transform(m, vector, vector);
+            vector.setW(0f);
+            vector.normalise();
+            vector.setW(1f);
+            x_rotateArrow.set(vector);
+            x_Rotate_start.set(x_rotateArrow);
+            Matrix4f.transform(transformation, yAxis, yAxis);
+            Matrix4f.transform(transformation, zAxis, zAxis);
+            accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+            accurateZaxis = accurateTransformation.transform(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (y_Rotate) {
+            BigDecimal FACTOR = snap_y_Rotate.multiply(ddir);
+            transformation.rotate(FACTOR.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+            accurateTransformation = View.ACCURATE_ID.rotate(FACTOR, snap_y_RotateFlag, accurateYaxis);
+            accurateRotationY = accurateRotationY + FACTOR.doubleValue();
+            Vector4f vector = new Vector4f(y_rotateArrow);
+            Matrix4f m = new Matrix4f();
+            Matrix4f.setIdentity(m);
+            m.rotate(Math.max(FACTOR.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+            Matrix4f.transform(m, vector, vector);
+            vector.setW(0f);
+            vector.normalise();
+            vector.setW(1f);
+            y_rotateArrow.set(vector);
+            y_Rotate_start.set(y_rotateArrow);
+            Matrix4f.transform(transformation, xAxis, xAxis);
+            Matrix4f.transform(transformation, zAxis, zAxis);
+            accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+            accurateZaxis = accurateTransformation.transform(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (z_Rotate) {
+            BigDecimal FACTOR = snap_z_Rotate.multiply(ddir);
+            transformation.rotate(FACTOR.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+            accurateTransformation = View.ACCURATE_ID.rotate(FACTOR, snap_z_RotateFlag, accurateZaxis);
+            accurateRotationZ = accurateRotationZ + FACTOR.doubleValue();
+            Vector4f vector = new Vector4f(z_rotateArrow);
+            Matrix4f m = new Matrix4f();
+            Matrix4f.setIdentity(m);
+            m.rotate(Math.max(FACTOR.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+            Matrix4f.transform(m, vector, vector);
+            vector.setW(0f);
+            vector.normalise();
+            vector.setW(1f);
+            z_rotateArrow.set(vector);
+            z_Rotate_start.set(z_rotateArrow);
+            Matrix4f.transform(transformation, yAxis, yAxis);
+            Matrix4f.transform(transformation, xAxis, xAxis);
+            accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+            accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (v_Rotate) {
+            Vector4f[] gen = c3d.getGenerator();
+            BigDecimal FACTOR = snap_v_Rotate.multiply(ddir);
+            transformation.rotate(FACTOR.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+            accurateTransformation = View.ACCURATE_ID.rotate(FACTOR, snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+            Vector4f vector = new Vector4f(v_rotateArrow);
+            Matrix4f m = new Matrix4f();
+            Matrix4f.setIdentity(m);
+            m.rotate(Math.max(FACTOR.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+            Matrix4f.transform(m, vector, vector);
+            vector.setW(0f);
+            vector.normalise();
+            vector.setW(1f);
+            v_rotateArrow.set(vector);
+            v_Rotate_start.set(v_rotateArrow);
+            Matrix4f.transform(transformation, zAxis, zAxis);
+            Matrix4f.transform(transformation, yAxis, yAxis);
+            Matrix4f.transform(transformation, xAxis, xAxis);
+            accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+            accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+            accurateZaxis = accurateTransformation.transform(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (x_Rotate || y_Rotate || z_Rotate || v_Rotate) {
+            Matrix4f backward = new Matrix4f();
+            Matrix4f.setIdentity(backward);
+            Matrix4f.translate(new Vector3f(position.x, position.y, position.z), backward, backward);
+            Matrix4f.mul(backward, result, result);
+            accurateResult = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0], accuratePosition[1], accuratePosition[2] }), accurateResult);
+        }
+
+        if (x_Scale || y_Scale || z_Scale) {
+            Matrix4f.setIdentity(scale);
+            accurateScale = View.ACCURATE_ID;
+        }
+
+        if (x_Scale) {
+            float factor;
+            BigDecimal FACTOR;
+            if (BigDecimal.ONE.compareTo(ddir) == 0) {
+                factor = factor_x_Scale.floatValue();
+                FACTOR = factor_x_Scale;
+            } else {
+                factor = 1f / factor_x_Scale.floatValue();
+                FACTOR = BigDecimal.ONE.divide(factor_x_Scale, Threshold.mc);
+            }
+            transformation.m30 = -position.x;
+            transformation.m31 = -position.y;
+            transformation.m32 = -position.z;
+            accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accuratePosition[0].negate(), accuratePosition[1].negate(), accuratePosition[2].negate(), BigDecimal.ONE);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            transformation.setIdentity();
+            transformation.m00 = xAxis.x;
+            transformation.m01 = xAxis.y;
+            transformation.m02 = xAxis.z;
+            transformation.m10 = yAxis.x;
+            transformation.m11 = yAxis.y;
+            transformation.m12 = yAxis.z;
+            transformation.m20 = zAxis.x;
+            transformation.m21 = zAxis.y;
+            transformation.m22 = zAxis.z;
+            accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0], accurateYaxis[1], accurateYaxis[2], BigDecimal.ZERO,
+                    accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+            accurateTransformation = accurateTransformation.invert();
+            transformation = Matrix4f.invert(transformation, null);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+            transformation.m00 = factor * xAxis.x;
+            transformation.m01 = factor * xAxis.y;
+            transformation.m02 = factor * xAxis.z;
+            transformation.m10 = yAxis.x;
+            transformation.m11 = yAxis.y;
+            transformation.m12 = yAxis.z;
+            transformation.m20 = zAxis.x;
+            transformation.m21 = zAxis.y;
+            transformation.m22 = zAxis.z;
+            accurateTransformation = new Matrix(accurateXaxis[0].multiply(FACTOR), accurateXaxis[1].multiply(FACTOR), accurateXaxis[2].multiply(FACTOR), BigDecimal.ZERO, accurateYaxis[0],
+                    accurateYaxis[1], accurateYaxis[2], BigDecimal.ZERO, accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ONE);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+            transformation.m30 = position.x;
+            transformation.m31 = position.y;
+            transformation.m32 = position.z;
+            accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accuratePosition[0], accuratePosition[1], accuratePosition[2], BigDecimal.ONE);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (y_Scale) {
+            float factor;
+            BigDecimal FACTOR;
+            if (BigDecimal.ONE.compareTo(ddir) == 0) {
+                factor = factor_y_Scale.floatValue();
+                FACTOR = factor_y_Scale;
+            } else {
+                factor = 1f / factor_y_Scale.floatValue();
+                FACTOR = BigDecimal.ONE.divide(factor_y_Scale, Threshold.mc);
+            }
+            transformation.m30 = -position.x;
+            transformation.m31 = -position.y;
+            transformation.m32 = -position.z;
+            accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accuratePosition[0].negate(), accuratePosition[1].negate(), accuratePosition[2].negate(), BigDecimal.ONE);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+            transformation.m00 = xAxis.x;
+            transformation.m01 = xAxis.y;
+            transformation.m02 = xAxis.z;
+            transformation.m10 = yAxis.x;
+            transformation.m11 = yAxis.y;
+            transformation.m12 = yAxis.z;
+            transformation.m20 = zAxis.x;
+            transformation.m21 = zAxis.y;
+            transformation.m22 = zAxis.z;
+            accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0], accurateYaxis[1], accurateYaxis[2], BigDecimal.ZERO,
+                    accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+            accurateTransformation = accurateTransformation.invert();
+            transformation = Matrix4f.invert(transformation, null);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+            transformation.m00 = xAxis.x;
+            transformation.m01 = xAxis.y;
+            transformation.m02 = xAxis.z;
+            transformation.m10 = factor * yAxis.x;
+            transformation.m11 = factor * yAxis.y;
+            transformation.m12 = factor * yAxis.z;
+            transformation.m20 = zAxis.x;
+            transformation.m21 = zAxis.y;
+            transformation.m22 = zAxis.z;
+            accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0].multiply(FACTOR), accurateYaxis[1].multiply(FACTOR),
+                    accurateYaxis[2].multiply(FACTOR), BigDecimal.ZERO, accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ONE);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+            transformation.m30 = position.x;
+            transformation.m31 = position.y;
+            transformation.m32 = position.z;
+            accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accuratePosition[0], accuratePosition[1], accuratePosition[2], BigDecimal.ONE);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (z_Scale) {
+            float factor;
+            BigDecimal FACTOR;
+            if (BigDecimal.ONE.compareTo(ddir) == 0) {
+                factor = factor_z_Scale.floatValue();
+                FACTOR = factor_z_Scale;
+            } else {
+                factor = 1f / factor_z_Scale.floatValue();
+                FACTOR = BigDecimal.ONE.divide(factor_z_Scale, Threshold.mc);
+            }
+            transformation.m30 = -position.x;
+            transformation.m31 = -position.y;
+            transformation.m32 = -position.z;
+            accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accuratePosition[0].negate(), accuratePosition[1].negate(), accuratePosition[2].negate(), BigDecimal.ONE);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+            transformation.m00 = xAxis.x;
+            transformation.m01 = xAxis.y;
+            transformation.m02 = xAxis.z;
+            transformation.m10 = yAxis.x;
+            transformation.m11 = yAxis.y;
+            transformation.m12 = yAxis.z;
+            transformation.m20 = zAxis.x;
+            transformation.m21 = zAxis.y;
+            transformation.m22 = zAxis.z;
+            accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0], accurateYaxis[1], accurateYaxis[2], BigDecimal.ZERO,
+                    accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+            accurateTransformation = accurateTransformation.invert();
+            transformation = Matrix4f.invert(transformation, null);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+            transformation.m00 = xAxis.x;
+            transformation.m01 = xAxis.y;
+            transformation.m02 = xAxis.z;
+            transformation.m10 = yAxis.x;
+            transformation.m11 = yAxis.y;
+            transformation.m12 = yAxis.z;
+            transformation.m20 = factor * zAxis.x;
+            transformation.m21 = factor * zAxis.y;
+            transformation.m22 = factor * zAxis.z;
+            accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0], accurateYaxis[1], accurateYaxis[2], BigDecimal.ZERO,
+                    accurateZaxis[0].multiply(FACTOR), accurateZaxis[1].multiply(FACTOR), accurateZaxis[2].multiply(FACTOR), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ONE);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+            transformation.m30 = position.x;
+            transformation.m31 = position.y;
+            transformation.m32 = position.z;
+            accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accuratePosition[0], accuratePosition[1], accuratePosition[2], BigDecimal.ONE);
+            accurateScale = Matrix.mul(accurateTransformation, accurateScale);
+            Matrix4f.mul(transformation, scale, scale);
+            Matrix4f.setIdentity(transformation);
+        }
+
+        if (x_Scale || y_Scale || z_Scale) {
+            Matrix4f.mul(scale, result, result);
+            accurateResult = Matrix.mul(accurateScale, accurateResult);
+        }
+
+        xAxis.x = accurateXaxis[0].floatValue();
+        xAxis.y = accurateXaxis[1].floatValue();
+        xAxis.z = accurateXaxis[2].floatValue();
+        yAxis.x = accurateYaxis[0].floatValue();
+        yAxis.y = accurateYaxis[1].floatValue();
+        yAxis.z = accurateYaxis[2].floatValue();
+        zAxis.x = accurateZaxis[0].floatValue();
+        zAxis.y = accurateZaxis[1].floatValue();
+        zAxis.z = accurateZaxis[2].floatValue();
+        xAxis.setW(0f);
+        xAxis.normalise();
+        xAxis.setW(1f);
+        yAxis.setW(0f);
+        yAxis.normalise();
+        yAxis.setW(1f);
+        zAxis.setW(0f);
+        zAxis.normalise();
+        zAxis.setW(1f);
+    }
+
 }

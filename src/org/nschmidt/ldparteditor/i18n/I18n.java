@@ -725,6 +725,13 @@ public final class I18n {
     public static final String KEYBOARD_AddTriangle = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AddVertex = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Alt = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_AxisX = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_AxisXY = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_AxisXYZ = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_AxisXZ = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_AxisY = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_AxisYZ = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_AxisZ = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Copy = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Ctrl = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_CustomiseShortkeys = KEYBOARD.getString(getProperty());

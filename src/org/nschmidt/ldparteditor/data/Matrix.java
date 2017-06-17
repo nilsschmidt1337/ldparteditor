@@ -318,7 +318,7 @@ public final class Matrix {
         }
         return result.toString();
     }
-    
+
     private String bigDecimalToString(BigDecimal bd) {
         String result;
         if (bd.compareTo(BigDecimal.ZERO) == 0)
@@ -597,4 +597,13 @@ public final class Matrix {
         return new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, m30, m31, m32, BigDecimal.ONE);
     }
 
+    public Matrix reduceAccuracy() {
+        final BigDecimal[][] rounded = new BigDecimal[4][4];
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                rounded[i][j] = this.M[i][j].round(Threshold.mc);
+            }
+        }
+        return new Matrix(rounded);
+    }
 }

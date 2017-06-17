@@ -1284,7 +1284,7 @@ public class MouseActions {
 
     }
 
-    private void checkSyncEditMode(VertexManager vm, DatFile datfile) {
+    public void checkSyncEditMode(VertexManager vm, DatFile datfile) {
         if (WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) {
             Vertex v = null;
             if (vm.getSelectedVertices().size() == 1) {
@@ -1315,7 +1315,7 @@ public class MouseActions {
         }
     }
 
-    private void syncManipulator() {
+    public void syncManipulator() {
         if (c3d.isSyncManipulator()) {
             for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
                 Composite3D c3d2 = renderer.getC3D();
