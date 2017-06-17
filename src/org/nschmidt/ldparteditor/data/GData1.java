@@ -1406,6 +1406,8 @@ public final class GData1 extends GData {
             }
         }
 
+        accurateLocalMatrix = accurateLocalMatrix.reduceAccuracy();
+
         df.getVertexManager().remove(untransformedSubfile);
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append("1 "); //$NON-NLS-1$

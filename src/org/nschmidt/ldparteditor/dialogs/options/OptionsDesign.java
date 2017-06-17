@@ -80,6 +80,10 @@ class OptionsDesign extends ApplicationWindow {
     }
 
     {
+        s1.add(Task.TRANSFORM_UP);
+        s1.add(Task.TRANSFORM_RIGHT);
+        s1.add(Task.TRANSFORM_DOWN);
+        s1.add(Task.TRANSFORM_LEFT);
         s1.add(Task.COLOUR_NUMBER0);
         s1.add(Task.COLOUR_NUMBER1);
         s1.add(Task.COLOUR_NUMBER2);
@@ -162,6 +166,9 @@ class OptionsDesign extends ApplicationWindow {
                 trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
 
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddVertex, Task.ADD_VERTEX, true);
@@ -176,23 +183,28 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Paste, Task.PASTE, false);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Delete, Task.DELETE, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Esc1, Task.ESC, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_FlipRotate, Task.FLIP_ROTATE_VERTICES, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_MergeToAvg, Task.MERGE_TO_AVERAGE, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_MergeToLast, Task.MERGE_TO_LAST, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Split, Task.SPLIT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_FlipRotate, Task.FLIP_ROTATE_VERTICES, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeCombined, Task.MODE_COMBINED, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeSelect, Task.MODE_SELECT, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeMove, Task.MODE_MOVE, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeRotate, Task.MODE_ROTATE, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeScale, Task.MODE_SCALE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeSelect, Task.MODE_SELECT, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_MoveToAvg, Task.MOVE_TO_AVG, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjFace, Task.OBJ_FACE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjLine, Task.OBJ_LINE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjPrimitive, Task.OBJ_PRIMITIVE, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjVertex, Task.OBJ_VERTEX, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjLine, Task.OBJ_LINE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjFace, Task.OBJ_FACE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjPrimitive, Task.OBJ_PRIMITIVE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisX, Task.MODE_X, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisY, Task.MODE_Y, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisZ, Task.MODE_Z, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisXY, Task.MODE_XY, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisXZ, Task.MODE_XZ, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisYZ, Task.MODE_YZ, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisXYZ, Task.MODE_XYZ, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ResetView, Task.RESET_VIEW, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Save, Task.SAVE, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectAll, Task.SELECT_ALL, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectAllWithSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS, true);
@@ -202,7 +214,6 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectTouching, Task.SELECT_TOUCHING, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ShowGrid, Task.SHOW_GRID, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ShowRuler, Task.SHOW_RULER, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Split, Task.SPLIT, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Undo, Task.UNDO, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Redo, Task.REDO, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ZoomIn, Task.ZOOM_IN, true);

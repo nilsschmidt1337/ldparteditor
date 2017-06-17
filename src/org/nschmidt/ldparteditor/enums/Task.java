@@ -96,5 +96,10 @@ public enum Task {
     MODE_XY,
     MODE_XZ,
     MODE_YZ,
-    MODE_XYZ
+    MODE_XYZ,
+
+    TRANSFORM_UP,
+    TRANSFORM_RIGHT,
+    TRANSFORM_DOWN,
+    TRANSFORM_LEFT
 }
