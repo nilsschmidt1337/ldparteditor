@@ -385,8 +385,6 @@ public class HistoryManager {
             NLogger.debug(getClass(), "Forked history thread..."); //$NON-NLS-1$
         }
 
-        // FIXME Get history data
-
         boolean openTextEditor = false;
         int start = -1;
         int end = -1;
@@ -401,7 +399,8 @@ public class HistoryManager {
             Object[] newEntry = answerQueue.poll();
             if (newEntry != null) {
                 if ((boolean) newEntry[10]) {
-                    break;
+                    action.set(0);
+                    return;
                 }
                 openTextEditor = (boolean) newEntry[0];
                 start = (int) newEntry[1];
@@ -444,6 +443,7 @@ public class HistoryManager {
                         ((CompositeTab) t).getState().setSync(true);
                         ((CompositeTab) t).getTextComposite().setText(fullText);
                         ((CompositeTab) t).getTextComposite().setTopIndex(ti);
+                        ((CompositeTab) t).getTextComposite().forceFocus();
                         try {
                             ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
                         } catch (IllegalArgumentException consumed) {}
