@@ -184,13 +184,6 @@ public class CompositePrimitive extends Composite {
         }
         canvas.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
         canvas.setBackground(SWTResourceManager.getColor(SWT.COLOR_WHITE));
-        {
-            Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.E3D_RotateViewHint);
-            canvas.setToolTipText(formatter.format(messageArguments));
-        }
 
         this.setBackgroundMode(SWT.INHERIT_FORCE);
 
@@ -306,6 +299,16 @@ public class CompositePrimitive extends Composite {
             // MARK MouseMove
             public void handleEvent(Event event) {
                 dontRefresh.set(true);
+                {
+                    Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
+                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.applyPattern(I18n.E3D_RotateViewHint);
+                    String tooltipText = formatter.format(messageArguments);
+                    if (!tooltipText.equals(canvas.getToolTipText())) {
+                        canvas.setToolTipText(tooltipText);
+                    }
+                }
                 switch (mouse_button_pressed) {
                 case MouseButton.LEFT:
                     break;
