@@ -54,12 +54,9 @@ public class VM01SelectHelper extends VM01Select {
     }
 
     /**
-     *
-     * @param c3d
-     * @param addSomething
      * @return {@code true} if the selection did not use a rubber band
      */
-    public synchronized boolean selectVertices(final Composite3D c3d, boolean addSomething) {
+    public synchronized boolean selectVertices(final Composite3D c3d, boolean addSomething, boolean forceRayTest) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         final boolean noCondlineVerts = !c3d.isShowingCondlineControlPoints();
         if (!c3d.getKeys().isCtrlPressed() && !addSomething || addSomething) {
@@ -77,7 +74,7 @@ public class VM01SelectHelper extends VM01Select {
                 needRayTest2 = true;
             if (Math.abs(selectionHeight.x) < 0.001f && Math.abs(selectionHeight.y) < 0.001f && Math.abs(selectionHeight.z) < 0.001f)
                 needRayTest2 = true;
-            needRayTest = needRayTest2;
+            needRayTest = needRayTest2 || forceRayTest;
         }
 
         if (needRayTest) {
@@ -860,7 +857,7 @@ public class VM01SelectHelper extends VM01Select {
         selectedVertices.clear();
         Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
         Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
-        selectVertices(c3d, false);
+        selectVertices(c3d, false, false);
         boolean allVertsFromLine = false;
         boolean needRayTest = false;
         if (Math.abs(selectionWidth.x) < 0.001f && Math.abs(selectionWidth.y) < 0.001f && Math.abs(selectionWidth.z) < 0.001f)
@@ -1298,7 +1295,7 @@ public class VM01SelectHelper extends VM01Select {
         boolean allVertsFromLine = false;
         Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
         Vector4f selectionHeight = new Vector4f(c3d.getSelectionHeight());
-        selectVertices(c3d, false);
+        selectVertices(c3d, false, false);
         boolean needRayTest = false;
         if (Math.abs(selectionWidth.x) < 0.001f && Math.abs(selectionWidth.y) < 0.001f && Math.abs(selectionWidth.z) < 0.001f)
             needRayTest = true;
