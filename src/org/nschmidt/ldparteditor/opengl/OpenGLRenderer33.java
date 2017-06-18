@@ -187,7 +187,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     @Override
     public void drawScene() {
 
-        final long start = System.currentTimeMillis();
+        // final long start = System.currentTimeMillis();
 
         final boolean negDet = c3d.hasNegDeterminant();
         final boolean raytraceMode = c3d.getRenderMode() == 5;
@@ -2228,7 +2228,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
         canvas.swapBuffers();
 
-        NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
+        // NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
     }
 
     @Override

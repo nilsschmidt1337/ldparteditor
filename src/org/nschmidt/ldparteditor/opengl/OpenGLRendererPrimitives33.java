@@ -29,7 +29,6 @@ import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Arrow;
-import org.nschmidt.ldparteditor.logger.NLogger;
 
 public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
@@ -58,7 +57,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     @Override
     public void drawScene(float mouseX, float mouseY) {
 
-        final long start = System.currentTimeMillis();
+        // final long start = System.currentTimeMillis();
 
         final GLCanvas canvas = cp.getCanvas();
 
@@ -239,7 +238,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
         canvas.swapBuffers();
 
-        NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
+        // NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
     }
 
     @Override
