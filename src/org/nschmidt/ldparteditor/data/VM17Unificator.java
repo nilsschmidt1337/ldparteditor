@@ -205,6 +205,7 @@ class VM17Unificator extends VM16Subdivide {
                             TreeMap<Vertex, TreeSet<Vertex>> unifyGroups = new TreeMap<Vertex, TreeSet<Vertex>>();
                             TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
 
+                            fileVertices.removeAll(subfileVertices);
                             for (Vertex v1 : subfileVertices) {
                                 TreeSet<Vertex> group = new TreeSet<Vertex>();
                                 for (Vertex v2 : fileVertices) {
