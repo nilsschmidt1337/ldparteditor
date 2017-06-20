@@ -2007,12 +2007,12 @@ public final class DatFile {
         NLogger.debug(getClass(), "Total time to backup history: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
     }
 
-    public void undo(final Shell sh) {
-        history.undo(sh);
+    public void undo(final Shell sh, boolean focusTextEditor) {
+        history.undo(sh, focusTextEditor);
     }
 
-    public void redo(final Shell sh) {
-        history.redo(sh);
+    public void redo(final Shell sh, boolean focusTextEditor) {
+        history.redo(sh, focusTextEditor);
     }
 
     public static Composite3D getLastHoveredComposite() {

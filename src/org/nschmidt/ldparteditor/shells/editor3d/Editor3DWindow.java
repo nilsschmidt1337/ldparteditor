@@ -992,7 +992,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().undo(null);
+                    Project.getFileToEdit().undo(null, false);
                 }
                 regainFocus();
             }
@@ -1003,7 +1003,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().redo(null);
+                    Project.getFileToEdit().redo(null, false);
                 }
                 regainFocus();
             }
@@ -9691,5 +9691,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+    }
+
+    public void updateInitialScale(BigDecimal initialScale) {
+        spn_ScaleInitial[0].setValue(initialScale);
     }
 }

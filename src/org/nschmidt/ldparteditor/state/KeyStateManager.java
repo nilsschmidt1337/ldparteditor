@@ -449,11 +449,11 @@ public class KeyStateManager {
                         break;
                     }
                     case REDO:
-                        df.redo(null);
+                        df.redo(null, false);
                         pressedKeyCodes.remove(keyCode);
                         break;
                     case UNDO:
-                        df.undo(null);
+                        df.undo(null, false);
                         pressedKeyCodes.remove(keyCode);
                         break;
                     case SAVE:
