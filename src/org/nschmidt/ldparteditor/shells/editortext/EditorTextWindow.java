@@ -656,7 +656,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                         return;
                     }
-                    selection.getState().getFileNameObj().undo(selection.getParent().getShell());
+                    selection.getState().getFileNameObj().undo(selection.getParent().getShell(), true);
                 }
             }
         });
@@ -669,7 +669,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                         return;
                     }
-                    selection.getState().getFileNameObj().redo(selection.getParent().getShell());
+                    selection.getState().getFileNameObj().redo(selection.getParent().getShell(), true);
                 }
             }
         });

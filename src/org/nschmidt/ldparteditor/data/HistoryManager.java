@@ -347,10 +347,10 @@ public class HistoryManager {
         isRunning.set(false);
     }
 
-    public void undo(final Shell sh) {
+    public void undo(final Shell sh, boolean focusTextEditor) {
         if (lock.tryLock()) {
             try {
-                action(1, sh);
+                action(1, sh, focusTextEditor);
             } finally {
                 lock.unlock();
             }
@@ -359,10 +359,10 @@ public class HistoryManager {
         }
     }
 
-    public void redo(final Shell sh) {
+    public void redo(final Shell sh, boolean focusTextEditor) {
         if (lock.tryLock()) {
             try {
-                action(2, sh);
+                action(2, sh, focusTextEditor);
             } finally {
                 lock.unlock();
             }
@@ -372,7 +372,7 @@ public class HistoryManager {
     }
 
     @SuppressWarnings("unchecked")
-    private void action(final int action_mode, final Shell sh) {
+    private void action(final int action_mode, final Shell sh, final boolean focusTextEditor) {
         if (action.get() != 0 || df.isReadOnly() || !df.getVertexManager().isUpdated() && WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) return;
 
         mode = action_mode;
@@ -443,7 +443,9 @@ public class HistoryManager {
                         ((CompositeTab) t).getState().setSync(true);
                         ((CompositeTab) t).getTextComposite().setText(fullText);
                         ((CompositeTab) t).getTextComposite().setTopIndex(ti);
-                        ((CompositeTab) t).getTextComposite().forceFocus();
+                        if (focusTextEditor) {
+                            ((CompositeTab) t).getTextComposite().forceFocus();
+                        }
                         try {
                             ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
                         } catch (IllegalArgumentException consumed) {}
