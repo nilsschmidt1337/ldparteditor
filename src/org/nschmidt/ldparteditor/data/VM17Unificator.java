@@ -140,8 +140,13 @@ class VM17Unificator extends VM16Subdivide {
                             TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
 
                             for (Vertex v1 : fileVertices) {
+                                if (us.getSnapOn() == 2 && subfileVertices.contains(v1)) {
+                                    i++;
+                                    continue;
+                                }
                                 TreeSet<Vertex> group = new TreeSet<Vertex>();
                                 group.add(v1);
+                                j = 0;
                                 for (Vertex v2 : fileVertices) {
                                     if (j > i && !inGroup.contains(v2)) {
                                         Vector3d v3d1 = new Vector3d(v1);
@@ -189,6 +194,9 @@ class VM17Unificator extends VM16Subdivide {
                         Set<Vertex> keySet = mergeTargets.keySet();
                         for (Vertex key : keySet) {
                             Vertex target = mergeTargets.get(key);
+                            if (us.getSnapOn() > 0 && subfileVertices.contains(target) && subfileVertices.contains(key)) {
+                                continue;
+                            }
                             changeVertexDirectFast(key, target, true);
                             selectedVertices.add(target);
                         }
@@ -197,19 +205,15 @@ class VM17Unificator extends VM16Subdivide {
                     if (us.getSnapOn() == 1 || us.getSnapOn() == 2) {
                         monitor.subTask(I18n.VM_Snap);
 
-                        int i = 0;
-                        int j = 0;
-
                         TreeMap<Vertex, Vertex> mergeTargets = new TreeMap<Vertex, Vertex>();
                         {
                             TreeMap<Vertex, TreeSet<Vertex>> unifyGroups = new TreeMap<Vertex, TreeSet<Vertex>>();
                             TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
 
-                            fileVertices.removeAll(subfileVertices);
                             for (Vertex v1 : subfileVertices) {
                                 TreeSet<Vertex> group = new TreeSet<Vertex>();
                                 for (Vertex v2 : fileVertices) {
-                                    if (j > i && !inGroup.contains(v2)) {
+                                    if (!inGroup.contains(v2)) {
                                         Vector3d v3d1 = new Vector3d(v1);
                                         Vector3d v3d2 = new Vector3d(v2);
                                         if (Vector3d.distSquare(v3d1, v3d2).compareTo(st) < 0) {
@@ -217,10 +221,8 @@ class VM17Unificator extends VM16Subdivide {
                                             inGroup.add(v2);
                                         }
                                     }
-                                    j++;
                                 }
                                 unifyGroups.put(v1, group);
-                                i++;
                             }
 
                             fileVertices.clear();
@@ -239,6 +241,9 @@ class VM17Unificator extends VM16Subdivide {
                         Set<Vertex> keySet = mergeTargets.keySet();
                         for (Vertex key : keySet) {
                             Vertex target = mergeTargets.get(key);
+                            if (subfileVertices.contains(target) && subfileVertices.contains(key)) {
+                                continue;
+                            }
                             changeVertexDirectFast(key, target, true);
                             selectedVertices.add(target);
                         }
