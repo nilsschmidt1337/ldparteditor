@@ -103,9 +103,7 @@ public class Manipulator {
     final float snap_y_Scale = 400f;
     final float snap_z_Scale = 400f;
 
-    private static BigDecimal factor_x_Scale = new BigDecimal("1.1"); //$NON-NLS-1$
-    private static BigDecimal factor_y_Scale = new BigDecimal("1.1"); //$NON-NLS-1$
-    private static BigDecimal factor_z_Scale = new BigDecimal("1.1"); //$NON-NLS-1$
+    private static BigDecimal factor_Scale = new BigDecimal("1.1"); //$NON-NLS-1$
 
     private static BigDecimal snap_x_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.mc);
     private static BigDecimal snap_y_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.mc);
@@ -117,6 +115,13 @@ public class Manipulator {
     private static RotationSnap snap_y_RotateFlag = RotationSnap.COMPLEX;
     private static RotationSnap snap_z_RotateFlag = RotationSnap.COMPLEX;
     private static RotationSnap snap_v_RotateFlag = RotationSnap.COMPLEX;
+
+    private static BigDecimal initialScaleOld = BigDecimal.ZERO;
+    private static BigDecimal initialScaleNew = BigDecimal.ZERO;
+
+    public static void setInitialScale(BigDecimal length) {
+        initialScaleNew = length;
+    }
 
     public static void setSnap(BigDecimal trans, BigDecimal rot, BigDecimal scale) {
 
@@ -205,9 +210,7 @@ public class Manipulator {
         snap_y_Translate = trans;
         snap_z_Translate = trans;
 
-        factor_x_Scale = scale;
-        factor_y_Scale = scale;
-        factor_z_Scale = scale;
+        factor_Scale = scale;
 
         snap_x_Rotate = rot;
         snap_y_Rotate = rot;
@@ -217,7 +220,7 @@ public class Manipulator {
     }
 
     public static BigDecimal[] getSnap() {
-        return new BigDecimal[] { snap_x_Translate, snap_x_Rotate, factor_x_Scale };
+        return new BigDecimal[] { snap_x_Translate, snap_x_Rotate, factor_Scale };
     }
 
     private boolean lock = false;
@@ -1075,6 +1078,7 @@ public class Manipulator {
     }
 
     public void startTranslation(Composite3D c3d) {
+        initialScaleOld = initialScaleNew;
         c3d.getLockableDatFileReference().getVertexManager().backupHideShowState();
         modified = false;
         Matrix4f.setIdentity(result);
@@ -1084,7 +1088,6 @@ public class Manipulator {
         accurateRotationX = 0.0;
         accurateRotationY = 0.0;
         accurateRotationZ = 0.0;
-        // if (Editor3DWindow.getWindow().isMovingAdjacentData()) c3d.getLockableDatFileReference().getVertexManager().transformSelection(View.ACCURATE_ID, true);
     }
 
     public void startTranslation2(Composite3D c3d) {
@@ -1102,10 +1105,11 @@ public class Manipulator {
         // if (Editor3DWindow.getWindow().isMovingAdjacentData()) c3d.getLockableDatFileReference().getVertexManager().transformSelection(View.ACCURATE_ID, true);
     }
 
-
     public void applyTranslation(Composite3D c3d) {
         if (modified) {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
+            initialScaleOld = initialScaleNew;
+            Editor3DWindow.getWindow().updateInitialScale(initialScaleNew, factor_Scale);
         }
         resetTranslation();
     }
@@ -1115,8 +1119,6 @@ public class Manipulator {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
         }
         resetTranslation();
-        // x_Translate = false;
-        // y_Translate = false;
     }
 
     public void resetTranslation() {
@@ -1512,6 +1514,12 @@ public class Manipulator {
         boolean isScaling = false;
         BigDecimal oldScaleFactor = BigDecimal.ONE;
         float oldFactor = 1f;
+        boolean newScaleFactor = initialScaleOld.compareTo(BigDecimal.ZERO) > 0;
+        if (newScaleFactor) {
+            initialScaleOld = initialScaleNew;
+        }
+        boolean scaleThreshold = newScaleFactor ? snap_x_Translate.add(snap_x_Translate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0 : false;
+
 
         if (x_Scale) {
             if (l < snap_x_Scale)
@@ -1527,12 +1535,27 @@ public class Manipulator {
 
             float factor;
             BigDecimal FACTOR;
-            if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                factor = factor_x_Scale.floatValue();
-                FACTOR = factor_x_Scale;
+            if (newScaleFactor) {
+                if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
+                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                } else if (scaleThreshold) {
+                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                } else {
+                    initialScaleNew = initialScaleOld;
+                    factor_Scale = BigDecimal.ONE;
+                }
+                factor = factor_Scale.floatValue();
+                FACTOR = factor_Scale;
             } else {
-                factor = 1f / factor_x_Scale.floatValue();
-                FACTOR = BigDecimal.ONE.divide(factor_x_Scale, Threshold.mc);
+                if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
+                    factor = factor_Scale.floatValue();
+                    FACTOR = factor_Scale;
+                } else {
+                    factor = 1f / factor_Scale.floatValue();
+                    FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                }
             }
             isScaling = true;
             oldFactor = factor;
@@ -1617,12 +1640,28 @@ public class Manipulator {
                 factor = oldFactor;
                 FACTOR = oldScaleFactor;
             } else {
-                if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                    factor = factor_y_Scale.floatValue();
-                    FACTOR = factor_y_Scale;
+                if (newScaleFactor) {
+                    initialScaleOld = initialScaleNew;
+                    if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
+                        initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
+                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    } else if (scaleThreshold) {
+                        initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
+                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    } else {
+                        initialScaleNew = initialScaleOld;
+                        factor_Scale = BigDecimal.ONE;
+                    }
+                    factor = factor_Scale.floatValue();
+                    FACTOR = factor_Scale;
                 } else {
-                    factor = 1f / factor_y_Scale.floatValue();
-                    FACTOR = BigDecimal.ONE.divide(factor_y_Scale, Threshold.mc);
+                    if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
+                        factor = factor_Scale.floatValue();
+                        FACTOR = factor_Scale;
+                    } else {
+                        factor = 1f / factor_Scale.floatValue();
+                        FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    }
                 }
                 isScaling = true;
                 oldFactor = factor;
@@ -1708,13 +1747,30 @@ public class Manipulator {
                 factor = oldFactor;
                 FACTOR = oldScaleFactor;
             } else {
-                if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                    factor = factor_z_Scale.floatValue();
-                    FACTOR = factor_z_Scale;
+                if (newScaleFactor) {
+                    initialScaleOld = initialScaleNew;
+                    if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
+                        initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
+                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    } else if (scaleThreshold) {
+                        initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
+                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    } else {
+                        initialScaleNew = initialScaleOld;
+                        factor_Scale = BigDecimal.ONE;
+                    }
+                    factor = factor_Scale.floatValue();
+                    FACTOR = factor_Scale;
                 } else {
-                    factor = 1f / factor_z_Scale.floatValue();
-                    FACTOR = BigDecimal.ONE.divide(factor_z_Scale, Threshold.mc);
+                    if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
+                        factor = factor_Scale.floatValue();
+                        FACTOR = factor_Scale;
+                    } else {
+                        factor = 1f / factor_Scale.floatValue();
+                        FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    }
                 }
+
                 isScaling = true;
                 oldFactor = factor;
                 oldScaleFactor = FACTOR;
@@ -2077,6 +2133,7 @@ public class Manipulator {
     }
 
     private void smallStep(WorkingMode action, ManipulatorAxisMode layer, ManipulatorScope scope, BigDecimal ddir, Composite3D c3d) {
+        initialScaleOld = initialScaleNew;
         resetTranslation();
         switch (layer) {
         case X:
@@ -2120,6 +2177,8 @@ public class Manipulator {
             return;
         }
 
+        boolean newScaleFactor = initialScaleOld.compareTo(BigDecimal.ZERO) > 0;
+        boolean scaleThreshold = newScaleFactor ? snap_x_Translate.add(snap_x_Translate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0 : false;
         float fdir = ddir.floatValue();
         modified = true;
 
@@ -2305,12 +2364,27 @@ public class Manipulator {
         if (x_Scale) {
             float factor;
             BigDecimal FACTOR;
-            if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                factor = factor_x_Scale.floatValue();
-                FACTOR = factor_x_Scale;
+            if (newScaleFactor) {
+                if (BigDecimal.ONE.compareTo(ddir) == 0) {
+                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                } else if (scaleThreshold) {
+                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                } else {
+                    initialScaleNew = initialScaleOld;
+                    factor_Scale = BigDecimal.ONE;
+                }
+                factor = factor_Scale.floatValue();
+                FACTOR = factor_Scale;
             } else {
-                factor = 1f / factor_x_Scale.floatValue();
-                FACTOR = BigDecimal.ONE.divide(factor_x_Scale, Threshold.mc);
+                if (BigDecimal.ONE.compareTo(ddir) == 0) {
+                    factor = factor_Scale.floatValue();
+                    FACTOR = factor_Scale;
+                } else {
+                    factor = 1f / factor_Scale.floatValue();
+                    FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                }
             }
             transformation.m30 = -position.x;
             transformation.m31 = -position.y;
@@ -2364,12 +2438,27 @@ public class Manipulator {
         if (y_Scale) {
             float factor;
             BigDecimal FACTOR;
-            if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                factor = factor_y_Scale.floatValue();
-                FACTOR = factor_y_Scale;
+            if (newScaleFactor) {
+                if (BigDecimal.ONE.compareTo(ddir) == 0) {
+                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                } else if (scaleThreshold) {
+                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                } else {
+                    initialScaleNew = initialScaleOld;
+                    factor_Scale = BigDecimal.ONE;
+                }
+                factor = factor_Scale.floatValue();
+                FACTOR = factor_Scale;
             } else {
-                factor = 1f / factor_y_Scale.floatValue();
-                FACTOR = BigDecimal.ONE.divide(factor_y_Scale, Threshold.mc);
+                if (BigDecimal.ONE.compareTo(ddir) == 0) {
+                    factor = factor_Scale.floatValue();
+                    FACTOR = factor_Scale;
+                } else {
+                    factor = 1f / factor_Scale.floatValue();
+                    FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                }
             }
             transformation.m30 = -position.x;
             transformation.m31 = -position.y;
@@ -2423,12 +2512,27 @@ public class Manipulator {
         if (z_Scale) {
             float factor;
             BigDecimal FACTOR;
-            if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                factor = factor_z_Scale.floatValue();
-                FACTOR = factor_z_Scale;
+            if (newScaleFactor) {
+                if (BigDecimal.ONE.compareTo(ddir) == 0) {
+                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                } else if (scaleThreshold) {
+                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                } else {
+                    initialScaleNew = initialScaleOld;
+                    factor_Scale = BigDecimal.ONE;
+                }
+                factor = factor_Scale.floatValue();
+                FACTOR = factor_Scale;
             } else {
-                factor = 1f / factor_z_Scale.floatValue();
-                FACTOR = BigDecimal.ONE.divide(factor_z_Scale, Threshold.mc);
+                if (BigDecimal.ONE.compareTo(ddir) == 0) {
+                    factor = factor_Scale.floatValue();
+                    FACTOR = factor_Scale;
+                } else {
+                    factor = 1f / factor_Scale.floatValue();
+                    FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                }
             }
             transformation.m30 = -position.x;
             transformation.m31 = -position.y;

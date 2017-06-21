@@ -2059,6 +2059,13 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
+        spn_ScaleInitial[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                Manipulator.setInitialScale(spn.getValue());
+            }
+        });
+
         btn_PreviousSelection[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -9693,7 +9700,8 @@ public class Editor3DWindow extends Editor3DDesign {
         });
     }
 
-    public void updateInitialScale(BigDecimal initialScale) {
+    public void updateInitialScale(BigDecimal initialScale, BigDecimal scaleFacor) {
         spn_ScaleInitial[0].setValue(initialScale);
+        spn_Scale[0].setValue(scaleFacor);
     }
 }

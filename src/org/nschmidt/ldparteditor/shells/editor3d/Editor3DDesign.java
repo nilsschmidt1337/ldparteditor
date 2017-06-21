@@ -342,6 +342,7 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spn_Move = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Rotate = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Scale = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_ScaleInitial = new BigDecimalSpinner[1];
 
     final TreeItem[] treeItem_Project = new TreeItem[1];
     final TreeItem[] treeItem_Unsaved = new TreeItem[1];
@@ -824,8 +825,35 @@ class Editor3DDesign extends ApplicationWindow {
                             spinner3.setValue(userSettings.getMedium_scale_snap());
                             spinner3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
+
+                            {
+                                Object[] messageArguments = {I18n.UNIT_CurrentUnit()};
+                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                formatter.setLocale(MyLanguage.LOCALE);
+                                formatter.applyPattern(I18n.E3D_ScaleInitial);
+
+                                Label lblNewLabel31 = new Label(cmp_snappingArea, SWT.NONE);
+                                lblNewLabel31.setText(formatter.format(messageArguments));
+                                lblNewLabel31.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+                            }
+
+                            BigDecimalSpinner spinner4 = new BigDecimalSpinner(cmp_snappingArea, SWT.NONE, View.NUMBER_FORMAT8F);
+                            this.spn_ScaleInitial[0] = spinner4;
+                            spinner4.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
+                            spinner4.setMinimum(BigDecimal.ZERO);
+                            spinner4.setValue(BigDecimal.ZERO);
+                            spinner4.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            Label lblSpacer1 = new Label(cmp_snappingArea, SWT.NONE);
+                            lblSpacer1.setText(" "); //$NON-NLS-1$
+                            lblSpacer1.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
                             Label separator = new Label(cmp_snappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
                             separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            Label lblSpacer2 = new Label(cmp_snappingArea, SWT.NONE);
+                            lblSpacer2.setText(" "); //$NON-NLS-1$
+                            lblSpacer2.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
                             Label lblNewLabel4 = new Label(cmp_snappingArea, SWT.NONE);
                             lblNewLabel4.setText(I18n.UNITS_Name_LDU + " [" + I18n.UNITS_LDU + "]"); //$NON-NLS-1$ //$NON-NLS-2$
