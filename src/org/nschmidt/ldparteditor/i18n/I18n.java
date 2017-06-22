@@ -674,6 +674,8 @@ public final class I18n {
     public static final String EDGER_ScopeSelection = EDGER.getString(getProperty());
     public static final String EDGER_Title = EDGER.getString(getProperty());
     public static final String EDGER_UnmatchedOnly = EDGER.getString(getProperty());
+    public static final String EDGER_Verbose = EDGER.getString(getProperty());
+    public static final String EDGER_VerboseMsg = EDGER.getString(getProperty());
     public static final String EDITORTEXT_Colour1 = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Colour2 = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Comment = EDITORTEXT.getString(getProperty());

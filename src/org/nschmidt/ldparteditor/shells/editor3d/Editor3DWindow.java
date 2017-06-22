@@ -101,6 +101,7 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
+import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GDataBFC;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.GDataPNG;
@@ -4532,8 +4533,39 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new EdgerDialog(getShell(), es).open() == IDialogConstants.OK_ID) {
+
+                            final HashSet<GData2> oldLines = new HashSet<>();
+                            final int oldCondlineCount = es.isVerbose() ? vm.getCondlines().size() : 0;
+                            final int oldLineCount = es.isVerbose() ? vm.getLines().size() : 0;
+                            if (es.isVerbose()) {
+                                oldLines.addAll(vm.getLines().keySet());
+                            }
+
                             vm.addSnapshot();
                             vm.addEdges(es);
+
+                            if (es.isVerbose()) {
+                                int unmatchedLines = 0;
+                                for (GData2 g2 : vm.getLines().keySet()) {
+                                    if (!oldLines.contains(g2) && g2.colourNumber == 4) {
+                                        unmatchedLines += 1;
+                                    }
+                                }
+
+                                MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                                messageBox.setText(I18n.DIALOG_Info);
+
+                                Object[] messageArguments = {
+                                        vm.getCondlines().size() - oldCondlineCount,
+                                        vm.getLines().size() - oldLineCount - unmatchedLines,
+                                        unmatchedLines};
+                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                formatter.setLocale(MyLanguage.LOCALE);
+                                formatter.applyPattern(I18n.EDGER_VerboseMsg);
+
+                                messageBox.setMessage(formatter.format(messageArguments));
+                                messageBox.open();
+                            }
                         }
                         regainFocus();
                         return;

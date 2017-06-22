@@ -29,6 +29,7 @@ public class Edger2Settings {
     private BigDecimal ae = new BigDecimal("60"); //$NON-NLS-1$
     private boolean extendedRange = false;
     private boolean condlineOnQuads = false;
+    private boolean verbose = false;
     private int scope = 0;
     private int unmatchedMode = 0;
     public BigDecimal getEqualDistance() {
@@ -78,5 +79,11 @@ public class Edger2Settings {
     }
     public void setCondlineOnQuads(boolean condlineOnQuads) {
         this.condlineOnQuads = condlineOnQuads;
+    }
+    public boolean isVerbose() {
+        return verbose;
+    }
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 }

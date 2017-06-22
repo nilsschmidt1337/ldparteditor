@@ -46,7 +46,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
  */
 public final class GData2 extends GData {
 
-    final int colourNumber;
+    public final int colourNumber;
     public final boolean isLine;
 
     final float r;
