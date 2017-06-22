@@ -38,6 +38,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
 /**
  * The rotate dialog
@@ -69,7 +70,10 @@ class RotateDesign extends Dialog {
     final BigDecimalSpinner[] spn_pY = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_pZ = new BigDecimalSpinner[1];
 
+    final IntegerSpinner[] spn_Iterations = new IntegerSpinner[1];
+
     private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
+    private final int i;
 
     // Use final only for subclass/listener references!
 
@@ -77,9 +81,10 @@ class RotateDesign extends Dialog {
     Vertex p = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-    RotateDesign(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope) {
+    RotateDesign(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope, int iterations) {
         super(parentShell);
         transformationMode = scope;
+        i = iterations;
         if (manipulatorPosition != null) {
             m = manipulatorPosition;
         }
@@ -240,6 +245,22 @@ class RotateDesign extends Dialog {
             spn_pZ.setMaximum(new BigDecimal(1000000));
             spn_pZ.setMinimum(new BigDecimal(-1000000));
             spn_pZ.setValue(p.Z);
+        }
+
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+
+            Label lbl_Iterations = new Label(cmp_txt, SWT.NONE);
+            lbl_Iterations.setText(I18n.E3D_Iterations);
+
+            IntegerSpinner spn_Iterations = new IntegerSpinner(cmp_txt, SWT.NONE);
+            this.spn_Iterations[0] = spn_Iterations;
+            spn_Iterations.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            spn_Iterations.setMaximum(1000);
+            spn_Iterations.setMinimum(1);
+            spn_Iterations.setValue(i);
         }
 
         cmp_container.pack();

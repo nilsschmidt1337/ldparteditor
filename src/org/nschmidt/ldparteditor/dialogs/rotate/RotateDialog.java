@@ -27,6 +27,7 @@ import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
@@ -47,6 +48,7 @@ public class RotateDialog extends RotateDesign {
     private static boolean y = false;
     private static boolean z = false;
     private static boolean creatingCopy = false;
+    private static int iterations = 1;
 
     /**
      * Create the dialog.
@@ -54,7 +56,7 @@ public class RotateDialog extends RotateDesign {
      * @param parentShell
      */
     public RotateDialog(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope) {
-        super(parentShell, v, clipboardVertices, manipulatorPosition, scope);
+        super(parentShell, v, clipboardVertices, manipulatorPosition, scope, iterations);
         x = true;
         y = false;
         z = false;
@@ -202,11 +204,23 @@ public class RotateDialog extends RotateDesign {
                 close();
             }
         });
+        spn_Iterations[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(IntegerSpinner spn) {
+                iterations = spn.getValue();
+            }
+        });
         return super.open();
     }
 
     public static boolean isCreatingCopy() {
         return creatingCopy;
+    }
+
+    public static int getAndResetIterations() {
+        int result = iterations;
+        iterations = 1;
+        return result;
     }
 
     public static boolean isZ() {

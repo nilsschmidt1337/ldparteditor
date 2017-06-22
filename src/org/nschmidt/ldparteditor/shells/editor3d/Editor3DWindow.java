@@ -4134,12 +4134,15 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (new RotateDialog(getShell(), null, clipboard, mani, transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
                             final boolean moveAdjacentData = isMovingAdjacentData();
-                            if (RotateDialog.isCreatingCopy()) {
-                                c3d.getLockableDatFileReference().getVertexManager().copy();
-                                c3d.getLockableDatFileReference().getVertexManager().paste();
-                                setMovingAdjacentData(false);
+                            final int iterations = RotateDialog.getAndResetIterations();
+                            for (int i = 0; i < iterations; i++) {
+                                if (RotateDialog.isCreatingCopy()) {
+                                    c3d.getLockableDatFileReference().getVertexManager().copy();
+                                    c3d.getLockableDatFileReference().getVertexManager().paste();
+                                    setMovingAdjacentData(false);
+                                }
+                                c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), RotateDialog.isZ(), isMovingAdjacentData(), true, RotateDialog.getTransformationMode());
                             }
-                            c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), RotateDialog.isZ(), isMovingAdjacentData(), true, RotateDialog.getTransformationMode());
                             if (RotateDialog.isCreatingCopy()) {
                                 setMovingAdjacentData(moveAdjacentData);
                             }
