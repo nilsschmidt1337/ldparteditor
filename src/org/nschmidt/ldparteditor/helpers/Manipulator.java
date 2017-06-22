@@ -1102,14 +1102,13 @@ public class Manipulator {
         accurateRotationZ = 0.0;
         x_Translate = true;
         y_Translate = true;
-        // if (Editor3DWindow.getWindow().isMovingAdjacentData()) c3d.getLockableDatFileReference().getVertexManager().transformSelection(View.ACCURATE_ID, true);
     }
 
     public void applyTranslation(Composite3D c3d) {
         if (modified) {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
             initialScaleOld = initialScaleNew;
-            Editor3DWindow.getWindow().updateInitialScale(initialScaleNew, factor_Scale);
+            Editor3DWindow.getWindow().updateInitialScale(initialScaleNew, factor_Scale, false);
         }
         resetTranslation();
     }

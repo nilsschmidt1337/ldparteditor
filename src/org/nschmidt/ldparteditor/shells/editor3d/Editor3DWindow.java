@@ -9700,7 +9700,25 @@ public class Editor3DWindow extends Editor3DDesign {
         });
     }
 
-    public void updateInitialScale(BigDecimal initialScale, BigDecimal scaleFacor) {
+    public void updateInitialScale(BigDecimal initialScale, BigDecimal scaleFacor, boolean setDefaults) {
+        if (setDefaults) {
+            switch (snapSize) {
+            case 0:
+                WorkbenchManager.getUserSettingState().setCoarse_scale_snap(new BigDecimal("2")); //$NON-NLS-1$
+                scaleFacor = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
+                break;
+            case 1:
+                WorkbenchManager.getUserSettingState().setCoarse_scale_snap(new BigDecimal("1.1")); //$NON-NLS-1$
+                scaleFacor = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
+                break;
+            case 2:
+                WorkbenchManager.getUserSettingState().setCoarse_scale_snap(new BigDecimal("1.001")); //$NON-NLS-1$
+                scaleFacor = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
+                break;
+            default:
+                break;
+            }
+        }
         spn_ScaleInitial[0].setValue(initialScale);
         spn_Scale[0].setValue(scaleFacor);
     }

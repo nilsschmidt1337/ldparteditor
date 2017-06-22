@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.state;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -299,6 +300,7 @@ public class KeyStateManager {
                         df.setNearestObjVertex1(null);
                         df.setNearestObjVertex2(null);
                         win.setWorkingLayer(ManipulatorAxisMode.NONE);
+                        win.updateInitialScale(BigDecimal.ZERO, BigDecimal.ONE, true);
                         vm.clearSelection();
                         break;
                     case COPY:
