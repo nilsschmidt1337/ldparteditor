@@ -15,18 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.edger2;
 
-import org.eclipse.jface.dialogs.DialogTray;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.events.HelpEvent;
-import org.eclipse.swt.events.HelpListener;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
@@ -55,27 +48,6 @@ public class EdgerDialog extends EdgerDesign {
     @Override
     public int open() {
         super.create();
-
-        if (NLogger.DEBUG) {
-            getShell().addHelpListener(new HelpListener() {
-                @Override
-                public void helpRequested(HelpEvent e) {
-                   try {
-                       closeTray();
-                   } catch (IllegalStateException ise) {
-                       openTray(new DialogTray() {
-                           @Override
-                           protected Control createContents(Composite parent) {
-                               Browser br = new Browser(parent, SWT.NONE);
-                               return br;
-                           }
-
-                       });
-                   }
-                }
-            });
-        }
-
         // MARK All final listeners will be configured here..
         spn_ac[0].addValueChangeListener(new ValueChangeAdapter() {
             @Override
@@ -125,7 +97,12 @@ public class EdgerDialog extends EdgerDesign {
                 es.setScope(cmb_scope[0].getSelectionIndex());
             }
         });
+        btn_verbose[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                es.setVerbose(btn_verbose[0].getSelection());
+            }
+        });
         return super.open();
     }
-
 }

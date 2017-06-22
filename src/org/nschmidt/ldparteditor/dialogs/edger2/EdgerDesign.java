@@ -23,6 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -56,6 +57,7 @@ class EdgerDesign extends TrayDialog {
     final Combo[] cmb_c = new Combo[1];
     final Combo[] cmb_u = new Combo[1];
     final Combo[] cmb_scope = new Combo[1];
+    final Button[] btn_verbose = new Button[1];
 
     EdgerDesign(Shell parentShell, Edger2Settings es) {
         super(parentShell);
@@ -150,6 +152,12 @@ class EdgerDesign extends TrayDialog {
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(es.getScope()));
         cmb_scope.select(es.getScope());
+
+        Button btn_verbose = new Button(cmp_container, SWT.CHECK);
+        this.btn_verbose[0] = btn_verbose;
+        btn_verbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btn_verbose.setText(I18n.EDGER_Verbose);
+        btn_verbose.setSelection(es.isVerbose());
 
         Label lbl_1 = new Label(cmp_container, SWT.NONE);
         lbl_1.setText(I18n.EDGER_Condition1);
