@@ -89,6 +89,10 @@ public class KeyStateManager {
         reservedKeyCodes.add(SWT.ARROW_RIGHT + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.ARROW_DOWN + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.ARROW_LEFT + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Ctrl"); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_DOWN + "+Ctrl"); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_LEFT + "+Ctrl"); //$NON-NLS-1$
 
         reservedKeyCodes.add(SWT.KEYPAD_0 + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.KEYPAD_1 + ""); //$NON-NLS-1$
@@ -113,6 +117,10 @@ public class KeyStateManager {
         addTask(Task.TRANSFORM_RIGHT, SWT.ARROW_RIGHT);
         addTask(Task.TRANSFORM_DOWN, SWT.ARROW_DOWN);
         addTask(Task.TRANSFORM_LEFT, SWT.ARROW_LEFT);
+        addTask(Task.TRANSFORM_UP, SWT.CTRL, SWT.ARROW_UP);
+        addTask(Task.TRANSFORM_RIGHT, SWT.CTRL, SWT.ARROW_RIGHT);
+        addTask(Task.TRANSFORM_DOWN, SWT.CTRL, SWT.ARROW_DOWN);
+        addTask(Task.TRANSFORM_LEFT, SWT.CTRL, SWT.ARROW_LEFT);
 
         addTask(Task.COLOUR_NUMBER0, SWT.KEYPAD_0);
         addTask(Task.COLOUR_NUMBER1, SWT.KEYPAD_1);
@@ -559,6 +567,12 @@ public class KeyStateManager {
                     case TRANSFORM_UP:
                     case TRANSFORM_RIGHT:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || win.getWorkingAction() == WorkingMode.SELECT) break;
+                        if (ctrlPressed) {
+                            win.setMovingAdjacentData(false);
+                            GuiStatusManager.updateStatus();
+                            vm.copy();
+                            vm.paste();
+                        }
                         c3d.getManipulator().smallIncrement(win.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
@@ -568,6 +582,12 @@ public class KeyStateManager {
                     case TRANSFORM_DOWN:
                     case TRANSFORM_LEFT:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || win.getWorkingAction() == WorkingMode.SELECT) break;
+                        if (ctrlPressed) {
+                            win.setMovingAdjacentData(false);
+                            GuiStatusManager.updateStatus();
+                            vm.copy();
+                            vm.paste();
+                        }
                         c3d.getManipulator().smallDecrement(win.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
                         c3d.getMouse().checkSyncEditMode(vm, df);
