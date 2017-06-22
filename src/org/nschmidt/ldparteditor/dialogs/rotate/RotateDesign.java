@@ -73,7 +73,6 @@ class RotateDesign extends Dialog {
     final IntegerSpinner[] spn_Iterations = new IntegerSpinner[1];
 
     private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
-    private final int i;
 
     // Use final only for subclass/listener references!
 
@@ -81,10 +80,9 @@ class RotateDesign extends Dialog {
     Vertex p = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-    RotateDesign(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope, int iterations) {
+    RotateDesign(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope) {
         super(parentShell);
         transformationMode = scope;
-        i = iterations;
         if (manipulatorPosition != null) {
             m = manipulatorPosition;
         }
@@ -260,7 +258,7 @@ class RotateDesign extends Dialog {
             spn_Iterations.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spn_Iterations.setMaximum(1000);
             spn_Iterations.setMinimum(1);
-            spn_Iterations.setValue(i);
+            spn_Iterations.setValue(1);
         }
 
         cmp_container.pack();

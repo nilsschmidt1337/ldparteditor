@@ -36,6 +36,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
 /**
  * The translate dialog
@@ -64,6 +65,8 @@ class TranslateDesign extends Dialog {
 
     final Button[] btn_ToManipulatorPosition = new Button[1];
     final Button[] btn_ToManipulatorPositionInverted = new Button[1];
+
+    final IntegerSpinner[] spn_Iterations = new IntegerSpinner[1];
 
     private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
 
@@ -181,6 +184,22 @@ class TranslateDesign extends Dialog {
             this.btn_ToManipulatorPositionInverted[0] = btn_ToManipulatorPositionInverted;
             btn_ToManipulatorPositionInverted.setText(I18n.TRANSLATE_ToManipulatorPositionInverted);
             btn_ToManipulatorPositionInverted.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+        }
+
+        {
+            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
+            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmp_txt.setLayout(new GridLayout(1, true));
+
+            Label lbl_Iterations = new Label(cmp_txt, SWT.NONE);
+            lbl_Iterations.setText(I18n.E3D_Iterations);
+
+            IntegerSpinner spn_Iterations = new IntegerSpinner(cmp_txt, SWT.NONE);
+            this.spn_Iterations[0] = spn_Iterations;
+            spn_Iterations.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            spn_Iterations.setMaximum(1000);
+            spn_Iterations.setMinimum(1);
+            spn_Iterations.setValue(1);
         }
 
         cmp_container.pack();

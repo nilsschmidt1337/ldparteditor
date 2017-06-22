@@ -25,6 +25,7 @@ import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
@@ -45,6 +46,7 @@ public class TranslateDialog extends TranslateDesign {
     private static boolean y = true;
     private static boolean z = true;
     private static boolean creatingCopy = false;
+    private static int iterations = 1;
 
     /**
      * Create the dialog.
@@ -151,11 +153,23 @@ public class TranslateDialog extends TranslateDesign {
                 close();
             }
         });
+        spn_Iterations[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(IntegerSpinner spn) {
+                iterations = spn.getValue();
+            }
+        });
         return super.open();
     }
 
     public static boolean isCreatingCopy() {
         return creatingCopy;
+    }
+
+    public static int getAndResetIterations() {
+        int result = iterations;
+        iterations = 1;
+        return result;
     }
 
     public static boolean isZ() {
