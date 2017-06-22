@@ -434,6 +434,7 @@ public final class I18n {
     public static final String E3D_Inverse = E3D.getString(getProperty());
     public static final String E3D_Isecalc = E3D.getString(getProperty());
     public static final String E3D_IsolatedVertices = E3D.getString(getProperty());
+    public static final String E3D_Iterations = E3D.getString(getProperty());
     public static final String E3D_LDrawConfigurationFile1 = E3D.getString(getProperty());
     public static final String E3D_LDrawConfigurationFile2 = E3D.getString(getProperty());
     public static final String E3D_LDrawSourceFile = E3D.getString(getProperty());
