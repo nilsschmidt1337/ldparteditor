@@ -23,6 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -46,6 +47,7 @@ class RectifierDesign extends Dialog {
     final RectifierSettings rs;
     final BigDecimalSpinner[] spn_angle = new BigDecimalSpinner[1];
     final Combo[] cmb_scope = new Combo[1];
+    final Button[] btn_verbose = new Button[1];
 
     final Combo[] cmb_colourise = new Combo[1];
     final Combo[] cmb_noQuadConversation = new Combo[1];
@@ -125,6 +127,12 @@ class RectifierDesign extends Dialog {
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(rs.getScope()));
         cmb_scope.select(rs.getScope());
+
+        Button btn_verbose = new Button(cmp_container, SWT.CHECK);
+        this.btn_verbose[0] = btn_verbose;
+        btn_verbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btn_verbose.setText(I18n.RECTIFIER_Verbose);
+        btn_verbose.setSelection(rs.isVerbose());
 
         cmp_container.pack();
         return cmp_container;

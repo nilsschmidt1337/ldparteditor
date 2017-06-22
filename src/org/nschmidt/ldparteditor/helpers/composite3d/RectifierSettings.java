@@ -28,6 +28,7 @@ public class RectifierSettings {
     private boolean noQuadConversation = false;
     private boolean noRectConversationOnAdjacentCondlines = false;
     private boolean noBorderedQuadToRectConversation = false;
+    private boolean verbose = false;
     private int scope = 0;
     public BigDecimal getMaximumAngle() {
         return maximumAngle;
@@ -64,5 +65,11 @@ public class RectifierSettings {
     }
     public void setScope(int scope) {
         this.scope = scope;
+    }
+    public boolean isVerbose() {
+        return verbose;
+    }
+    public void setVerbose(boolean verbose) {
+        this.verbose = verbose;
     }
 }

@@ -84,7 +84,12 @@ public class RectifierDialog extends RectifierDesign {
                 rs.setNoRectConversationOnAdjacentCondlines(cmb_noRectConversationOnAdjacentCondlines[0].getSelectionIndex() == 1);
             }
         });
-
+        btn_verbose[0].addListener(SWT.Selection, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                rs.setVerbose(btn_verbose[0].getSelection());
+            }
+        });
         return super.open();
     }
 

@@ -42,9 +42,11 @@ class VM04Rectifier extends VM03Adjacency {
         super(linkedDatFile);
     }
 
-    public void rectify(final RectifierSettings rs, boolean syncWithTextEditor, final boolean showProgressMonitor) {
+    public int[] rectify(final RectifierSettings rs, boolean syncWithTextEditor, final boolean showProgressMonitor) {
 
-        if (linkedDatFile.isReadOnly()) return;
+        final int[] result2 = new int[]{0, 0, 0, 0};
+
+        if (linkedDatFile.isReadOnly()) return result2;
 
         final double targetAngle = rs.getMaximumAngle().doubleValue();
         final boolean colourise = rs.isColourise();
@@ -356,17 +358,15 @@ class VM04Rectifier extends VM03Adjacency {
 
                                                 quad = new GData4(yellow.getColourNumber(), yellow.getR(), yellow.getG(), yellow.getB(), yellow.getA(), first, second, third, fourth, View.DUMMY_REFERENCE, linkedDatFile);
 
-                                                linkedDatFile.insertAfter(tri2, quad);
-                                                setModified_NoSync();
                                             } else {
 
                                                 quad = new GData4(tri1.colourNumber, tri1.r, tri1.g, tri1.b, tri1.a, first, second, third, fourth, View.DUMMY_REFERENCE, linkedDatFile);
 
-                                                linkedDatFile.insertAfter(tri2, quad);
-                                                setModified_NoSync();
                                             }
 
-
+                                            linkedDatFile.insertAfter(tri2, quad);
+                                            setModified_NoSync();
+                                            result2[0] += 2;
 
                                             lines1.retainAll(lines3);
                                             lines2.retainAll(lines4);
@@ -379,6 +379,7 @@ class VM04Rectifier extends VM03Adjacency {
                                                 //  break;
                                                 case 5:
                                                     clinesToDelete.add((GData5) gData);
+                                                    result2[1] += 1;
                                                     break;
                                                 default:
                                                     break;
@@ -574,10 +575,11 @@ class VM04Rectifier extends VM03Adjacency {
                                                 linkedDatFile.insertAfter(qa, rect);
 
                                                 quadsToDelete.add(qa);
-                                                if (e1 != null) linesToDelete.add(e1);
-                                                if (e2 != null) linesToDelete.add(e2);
-                                                if (e3 != null) linesToDelete.add(e3);
-                                                if (e4 != null) linesToDelete.add(e4);
+                                                result2[2] += 1;
+                                                if (e1 != null) {linesToDelete.add(e1); result2[3] += 1;}
+                                                if (e2 != null) {linesToDelete.add(e2); result2[3] += 1;}
+                                                if (e3 != null) {linesToDelete.add(e3); result2[3] += 1;}
+                                                if (e4 != null) {linesToDelete.add(e4); result2[3] += 1;}
                                             }
                                         }
                                     }
@@ -1100,6 +1102,8 @@ class VM04Rectifier extends VM03Adjacency {
         delete(false, syncWithTextEditor);
 
         validateState();
+
+        return result2;
     }
 
     private Vertex[] ROTQUAD(Vertex[] vq) {

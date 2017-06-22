@@ -4592,7 +4592,25 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new RectifierDialog(getShell(), rs).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
-                            vm.rectify(rs, true, true);
+
+                            final int[] result = vm.rectify(rs, true, true);
+
+                            MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                            messageBox.setText(I18n.DIALOG_Info);
+
+                            Object[] messageArguments = {
+                                    result[0],
+                                    result[1],
+                                    result[2],
+                                    result[3]
+                            };
+                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                            formatter.setLocale(MyLanguage.LOCALE);
+                            formatter.applyPattern(I18n.RECTIFIER_VerboseMsg);
+
+                            messageBox.setMessage(formatter.format(messageArguments));
+                            messageBox.open();
+
                         }
                         regainFocus();
                         return;

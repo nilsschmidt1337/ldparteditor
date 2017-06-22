@@ -1051,6 +1051,8 @@ public final class I18n {
     public static final String RECTIFIER_Title = RECTIFIER.getString(getProperty());
     public static final String RECTIFIER_TriQuads1 = RECTIFIER.getString(getProperty());
     public static final String RECTIFIER_TriQuads2 = RECTIFIER.getString(getProperty());
+    public static final String RECTIFIER_Verbose = RECTIFIER.getString(getProperty());
+    public static final String RECTIFIER_VerboseMsg = RECTIFIER.getString(getProperty());
     public static final String ROTATE_Pivot = ROTATE.getString(getProperty());
     public static final String ROTATE_PivotClipboard = ROTATE.getString(getProperty());
     public static final String ROTATE_PivotManipulator = ROTATE.getString(getProperty());
