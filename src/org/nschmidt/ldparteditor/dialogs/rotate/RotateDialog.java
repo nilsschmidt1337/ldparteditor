@@ -56,7 +56,7 @@ public class RotateDialog extends RotateDesign {
      * @param parentShell
      */
     public RotateDialog(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope) {
-        super(parentShell, v, clipboardVertices, manipulatorPosition, scope, iterations);
+        super(parentShell, v, clipboardVertices, manipulatorPosition, scope);
         x = true;
         y = false;
         z = false;
