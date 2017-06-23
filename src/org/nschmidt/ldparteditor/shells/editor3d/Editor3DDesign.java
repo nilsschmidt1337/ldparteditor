@@ -1478,13 +1478,13 @@ class Editor3DDesign extends ApplicationWindow {
                         treeAllParts.setLayoutData(gridData);
                     }
                     {
-                        Button btn_showMiddle = new Button(cmp_Container2, SWT.RIGHT_TO_LEFT);
+                        Button btn_showMiddle = new Button(cmp_Container2, SWT.RIGHT_TO_LEFT | Cocoa.getSytle());
                         this.btn_showMiddle[0] = btn_showMiddle;
                         btn_showMiddle.setImage(ResourceManager.getImage("icon16_middle.png")); //$NON-NLS-1$
                         btn_showMiddle.setToolTipText(I18n.E3D_SashMiddle);
                     }
                     {
-                        Button btn_sameHeight = new Button(cmp_Container2, SWT.RIGHT_TO_LEFT);
+                        Button btn_sameHeight = new Button(cmp_Container2, SWT.RIGHT_TO_LEFT | Cocoa.getSytle());
                         this.btn_sameHeight[0] = btn_sameHeight;
                         btn_sameHeight.setImage(ResourceManager.getImage("icon16_sameHeight.png")); //$NON-NLS-1$
                         btn_sameHeight.setToolTipText(I18n.E3D_SashSameHeight);
@@ -1615,7 +1615,7 @@ class Editor3DDesign extends ApplicationWindow {
                         Button btn_ZoomInPrimitives = new Button(cmp_Search, Cocoa.getSytle());
                         this.btn_zoomInPrimitives[0] = btn_ZoomInPrimitives;
                         btn_ZoomInPrimitives.setText("+"); //$NON-NLS-1$
-                        Button btn_showLower = new Button(cmp_Search, SWT.RIGHT_TO_LEFT);
+                        Button btn_showLower = new Button(cmp_Search, SWT.RIGHT_TO_LEFT | Cocoa.getSytle());
                         this.btn_showLower[0] = btn_showLower;
                         btn_showLower.setImage(ResourceManager.getImage("icon16_lower.png")); //$NON-NLS-1$
                         btn_showLower.setToolTipText(I18n.E3D_SashLower);
@@ -1782,38 +1782,38 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_LineThickness = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_lineSize0 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            Button btn_lineSize0 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_lineSize0[0] = btn_lineSize0;
             btn_lineSize0.setToolTipText(I18n.E3D_LineSize0);
             btn_lineSize0.setImage(ResourceManager.getImage("icon16_linesize0.png")); //$NON-NLS-1$
         }
         {
-            Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_lineSize1[0] = btn_lineSize1;
             btn_lineSize1.setToolTipText(I18n.E3D_LineSize1);
             btn_lineSize1.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
         }
         {
-            Button btn_lineSize2 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            Button btn_lineSize2 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_lineSize2[0] = btn_lineSize2;
             btn_lineSize2.setToolTipText(I18n.E3D_LineSize2);
             btn_lineSize2.setImage(ResourceManager.getImage("icon16_linesize2.png")); //$NON-NLS-1$
         }
         {
-            Button btn_lineSize3 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            Button btn_lineSize3 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             btn_lineSize3.setSelection(true);
             this.btn_lineSize3[0] = btn_lineSize3;
             btn_lineSize3.setToolTipText(I18n.E3D_LineSize3);
             btn_lineSize3.setImage(ResourceManager.getImage("icon16_linesize3.png")); //$NON-NLS-1$
         }
         {
-            Button btn_lineSize4 = new Button(toolItem_LineThickness, SWT.TOGGLE);
+            Button btn_lineSize4 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_lineSize4[0] = btn_lineSize4;
             btn_lineSize4.setToolTipText(I18n.E3D_LineSize4);
             btn_lineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
         }
         if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
-            Button btn_toggleLinesOpenGL = new Button(target, SWT.TOGGLE);
+            Button btn_toggleLinesOpenGL = new Button(target, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_ToggleLinesOpenGL[0] = btn_toggleLinesOpenGL;
             btn_toggleLinesOpenGL.setToolTipText(I18n.E3D_LineOpenGL);
             btn_toggleLinesOpenGL.setImage(ResourceManager.getImage("icon16_gllines.png")); //$NON-NLS-1$
@@ -1920,42 +1920,42 @@ class Editor3DDesign extends ApplicationWindow {
         KeyStateManager.addTooltipText(btn_AddComment, I18n.E3D_AddComment, Task.ADD_COMMENTS);
         btn_AddComment.setImage(ResourceManager.getImage("icon16_addcomment.png")); //$NON-NLS-1$
 
-        Button btn_AddVertex = new Button(toolItem_Add, SWT.TOGGLE);
+        Button btn_AddVertex = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddVertex[0] = btn_AddVertex;
         KeyStateManager.addTooltipText(btn_AddVertex, I18n.E3D_AddVertex, Task.ADD_VERTEX);
         btn_AddVertex.setImage(ResourceManager.getImage("icon16_addvertex.png")); //$NON-NLS-1$
 
-        Button btn_AddPrimitive = new Button(toolItem_Add, SWT.TOGGLE);
+        Button btn_AddPrimitive = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddPrimitive[0] = btn_AddPrimitive;
         btn_AddPrimitive.setToolTipText(I18n.E3D_AddSubpart);
         btn_AddPrimitive.setImage(ResourceManager.getImage("icon16_addprimitive.png")); //$NON-NLS-1$
 
-        Button btn_AddLine = new Button(toolItem_Add, SWT.TOGGLE);
+        Button btn_AddLine = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddLine[0] = btn_AddLine;
         KeyStateManager.addTooltipText(btn_AddLine, I18n.E3D_AddLine, Task.ADD_LINE);
         btn_AddLine.setImage(ResourceManager.getImage("icon16_addline.png")); //$NON-NLS-1$
 
-        Button btn_AddTriangle = new Button(toolItem_Add, SWT.TOGGLE);
+        Button btn_AddTriangle = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddTriangle[0] = btn_AddTriangle;
         KeyStateManager.addTooltipText(btn_AddTriangle, I18n.E3D_AddTriangle, Task.ADD_TRIANGLE);
         btn_AddTriangle.setImage(ResourceManager.getImage("icon16_addtriangle.png")); //$NON-NLS-1$
 
-        Button btn_AddQuad = new Button(toolItem_Add, SWT.TOGGLE);
+        Button btn_AddQuad = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddQuad[0] = btn_AddQuad;
         KeyStateManager.addTooltipText(btn_AddQuad, I18n.E3D_AddQuad, Task.ADD_QUAD);
         btn_AddQuad.setImage(ResourceManager.getImage("icon16_addquad.png")); //$NON-NLS-1$
 
-        Button btn_AddCondline = new Button(toolItem_Add, SWT.TOGGLE);
+        Button btn_AddCondline = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddCondline[0] = btn_AddCondline;
         KeyStateManager.addTooltipText(btn_AddCondline, I18n.E3D_AddCondline, Task.ADD_CONDLINE);
         btn_AddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
 
-        Button btn_AddDistance = new Button(toolItem_Add, SWT.TOGGLE);
+        Button btn_AddDistance = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddDistance[0] = btn_AddDistance;
         KeyStateManager.addTooltipText(btn_AddDistance, I18n.E3D_AddDistance, Task.ADD_DISTANCE);
         btn_AddDistance.setImage(ResourceManager.getImage("icon16_adddistance.png")); //$NON-NLS-1$
 
-        Button btn_AddProtractor = new Button(toolItem_Add, SWT.TOGGLE);
+        Button btn_AddProtractor = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddProtractor[0] = btn_AddProtractor;
         KeyStateManager.addTooltipText(btn_AddProtractor, I18n.E3D_AddProtractor, Task.ADD_PROTRACTOR);
         btn_AddProtractor.setImage(ResourceManager.getImage("icon16_addprotractor.png")); //$NON-NLS-1$
@@ -1978,7 +1978,7 @@ class Editor3DDesign extends ApplicationWindow {
             break;
         }
         ToolItem toolItem_InsertAtCursorPosition = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
-        Button btn_InsertAtCursorPosition = new Button(toolItem_InsertAtCursorPosition, SWT.TOGGLE);
+        Button btn_InsertAtCursorPosition = new Button(toolItem_InsertAtCursorPosition, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_InsertAtCursorPosition[0] = btn_InsertAtCursorPosition;
         KeyStateManager.addTooltipText(btn_InsertAtCursorPosition, I18n.E3D_InsertAtCursorPosition, Task.INSERT_AT_CURSOR);
         btn_InsertAtCursorPosition.setImage(ResourceManager.getImage("icon16_insertAtCursor.png")); //$NON-NLS-1$
@@ -2001,26 +2001,26 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_Mode = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE);
+            Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Vertices[0] = btn_Vertices;
             KeyStateManager.addTooltipText(btn_Vertices, I18n.E3D_ModeVertex, Task.OBJ_VERTEX);
             btn_Vertices.setSelection(true);
             btn_Vertices.setImage(ResourceManager.getImage("icon16_vertices.png")); //$NON-NLS-1$
         }
         {
-            Button btn_TrisNQuads = new Button(toolItem_Mode, SWT.TOGGLE);
+            Button btn_TrisNQuads = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_TrisNQuads[0] = btn_TrisNQuads;
             KeyStateManager.addTooltipText(btn_TrisNQuads, I18n.E3D_ModeSurface, Task.OBJ_FACE);
             btn_TrisNQuads.setImage(ResourceManager.getImage("icon16_trisNquads.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Lines = new Button(toolItem_Mode, SWT.TOGGLE);
+            Button btn_Lines = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Lines[0] = btn_Lines;
             KeyStateManager.addTooltipText(btn_Lines, I18n.E3D_ModeLine, Task.OBJ_LINE);
             btn_Lines.setImage(ResourceManager.getImage("icon16_lines.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Subfiles = new Button(toolItem_Mode, SWT.TOGGLE);
+            Button btn_Subfiles = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Subfiles[0] = btn_Subfiles;
             KeyStateManager.addTooltipText(btn_Subfiles, I18n.E3D_ModeSubpart, Task.OBJ_PRIMITIVE);
             btn_Subfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
@@ -2973,14 +2973,14 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_TransformationModes = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Local[0] = btn_Local;
             btn_Local.setToolTipText(I18n.E3D_Local);
             btn_Local.setSelection(true);
             btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Global[0] = btn_Global;
             btn_Global.setToolTipText(I18n.E3D_Global);
             btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
@@ -3004,32 +3004,32 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_TransformationMode = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Select = new Button(toolItem_TransformationMode, SWT.TOGGLE);
+            Button btn_Select = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Select[0] = btn_Select;
             KeyStateManager.addTooltipText(btn_Select, I18n.E3D_Select, Task.MODE_SELECT);
             btn_Select.setSelection(true);
             btn_Select.setImage(ResourceManager.getImage("icon16_select.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Move = new Button(toolItem_TransformationMode, SWT.TOGGLE);
+            Button btn_Move = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Move[0] = btn_Move;
             KeyStateManager.addTooltipText(btn_Move, I18n.E3D_Move, Task.MODE_MOVE);
             btn_Move.setImage(ResourceManager.getImage("icon16_move.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Rotate = new Button(toolItem_TransformationMode, SWT.TOGGLE);
+            Button btn_Rotate = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Rotate[0] = btn_Rotate;
             KeyStateManager.addTooltipText(btn_Rotate, I18n.E3D_Rotate, Task.MODE_ROTATE);
             btn_Rotate.setImage(ResourceManager.getImage("icon16_rotate.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Scale = new Button(toolItem_TransformationMode, SWT.TOGGLE);
+            Button btn_Scale = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Scale[0] = btn_Scale;
             KeyStateManager.addTooltipText(btn_Scale, I18n.E3D_Scale, Task.MODE_SCALE);
             btn_Scale.setImage(ResourceManager.getImage("icon16_scale.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Combined = new Button(toolItem_TransformationMode, SWT.TOGGLE);
+            Button btn_Combined = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Combined[0] = btn_Combined;
             KeyStateManager.addTooltipText(btn_Combined, I18n.E3D_Combined, Task.MODE_COMBINED);
             btn_Combined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
@@ -3089,20 +3089,20 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_MiscToggle = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_AdjacentMove = new Button(toolItem_MiscToggle, SWT.TOGGLE);
+            Button btn_AdjacentMove = new Button(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_MoveAdjacentData[0] = btn_AdjacentMove;
             btn_AdjacentMove.setToolTipText(I18n.E3D_MoveAdjacentData);
             btn_AdjacentMove.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
             btn_AdjacentMove.setSelection(false);
         }
         {
-            Button btn_TransSelection = new Button(toolItem_MiscToggle, SWT.TOGGLE);
+            Button btn_TransSelection = new Button(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_NoTransparentSelection[0] = btn_TransSelection;
             btn_TransSelection.setToolTipText(I18n.E3D_ToggleTransparent);
             btn_TransSelection.setImage(ResourceManager.getImage("icon16_notrans.png")); //$NON-NLS-1$
         }
         {
-            Button btn_BFCToggle = new Button(toolItem_MiscToggle, SWT.TOGGLE);
+            Button btn_BFCToggle = new Button(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_BFCToggle[0] = btn_BFCToggle;
             btn_BFCToggle.setToolTipText(I18n.E3D_ToggleBFC);
             btn_BFCToggle.setImage(ResourceManager.getImage("icon16_bfc.png")); //$NON-NLS-1$
