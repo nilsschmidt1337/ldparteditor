@@ -2136,7 +2136,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
         }
         {
-            final Button btn_Select = new Button(toolItem_MiscClick, SWT.PUSH);
+            final Button btn_Select = new Button(toolItem_MiscClick, SWT.PUSH | Cocoa.getSytle());
             this.btn_Select2[0] = btn_Select;
             btn_Select.setToolTipText(I18n.E3D_AdvancedSelect);
             btn_Select.setText(I18n.E3D_AdvancedSelect);
@@ -2301,7 +2301,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            final Button btn_MergeNSplit = new Button(toolItem_MiscClick, SWT.PUSH);
+            final Button btn_MergeNSplit = new Button(toolItem_MiscClick, SWT.PUSH | Cocoa.getSytle());
             btn_MergeNSplit.setToolTipText(I18n.E3D_MergeSplit);
             btn_MergeNSplit.setText(I18n.E3D_MergeSplit);
             this.mnu_Merge = new Menu(this.getShell(), SWT.POP_UP);
@@ -2414,7 +2414,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            final Button btn_ToolsActions = new Button(toolItem_MiscClick, SWT.PUSH);
+            final Button btn_ToolsActions = new Button(toolItem_MiscClick, SWT.PUSH | Cocoa.getSytle());
             btn_ToolsActions.setText(I18n.E3D_Tools);
             btn_ToolsActions.setToolTipText(I18n.E3D_ToolsOptions);
             this.mnu_Tools = new Menu(this.getShell(), SWT.POP_UP);
