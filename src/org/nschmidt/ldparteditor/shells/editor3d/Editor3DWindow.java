@@ -4204,6 +4204,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                         if (new ScaleDialog(getShell(), null, clipboard, mani, transformationMode).open() == IDialogConstants.OK_ID) {
                             c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
+                            updateInitialScale(BigDecimal.ZERO, BigDecimal.ZERO, true);
                             final boolean moveAdjacentData = isMovingAdjacentData();
                             if (ScaleDialog.isCreatingCopy()) {
                                 c3d.getLockableDatFileReference().getVertexManager().copy();
