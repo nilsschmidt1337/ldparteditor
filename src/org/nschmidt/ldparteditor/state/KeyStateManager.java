@@ -221,7 +221,7 @@ public class KeyStateManager {
             addTask(Task.MODE_YZ, SWT.F11);
             addTask(Task.MODE_XYZ, SWT.F12);
 
-            addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
+            addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.COMMAND | SWT.SHIFT, 'r');
             addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
             addTask(TextTask.EDITORTEXT_QUICKFIX, SWT.ALT, 'f');
             addTask(TextTask.EDITORTEXT_SELECTALL, SWT.COMMAND, 'a');
@@ -235,7 +235,7 @@ public class KeyStateManager {
 
             addTask(TextTask.EDITORTEXT_FIND, SWT.COMMAND, 'f');
 
-            addTask(TextTask.EDITORTEXT_INSERT_HISTORY, SWT.COMMAND, 'h');
+            addTask(TextTask.EDITORTEXT_INSERT_HISTORY, SWT.COMMAND, 'l');
             addTask(TextTask.EDITORTEXT_INSERT_KEYWORD, SWT.COMMAND, 'k');
             addTask(TextTask.EDITORTEXT_INSERT_REFERENCE, SWT.COMMAND, 'r');
 
