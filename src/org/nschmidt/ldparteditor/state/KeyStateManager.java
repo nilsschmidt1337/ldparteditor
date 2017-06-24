@@ -208,7 +208,7 @@ public class KeyStateManager {
             addTask(Task.SPLIT, SWT.ALT, 'v');
 
             addTask(Task.LMB, 'k');
-            addTask(Task.MMB, SWT.COMMAND);
+            addTask(Task.MMB, SWT.SHIFT);
             addTask(Task.RMB, SWT.ALT);
 
             addTask(Task.INSERT_AT_CURSOR, 'i');

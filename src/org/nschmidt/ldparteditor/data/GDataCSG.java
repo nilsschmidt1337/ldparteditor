@@ -53,6 +53,7 @@ import org.nschmidt.csg.Vector3d;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
@@ -1085,7 +1086,7 @@ public final class GDataCSG extends GData {
             }
         }
         selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>());
-        if (!c3d.getKeys().isCtrlPressed()) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             selectedBodyMap.get(df).clear();
         }
         selectedBodyMap.get(df).add(resultObj);

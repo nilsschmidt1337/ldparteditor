@@ -763,7 +763,7 @@ public class Manipulator {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!c3d.getKeys().isCtrlPressed())
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
                     x_Scale = false;
             case Y_SCALE:
                 if (lock) {
@@ -773,7 +773,7 @@ public class Manipulator {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!c3d.getKeys().isCtrlPressed())
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
                     y_Scale = false;
             case Z_SCALE:
                 if (lock) {
@@ -783,7 +783,7 @@ public class Manipulator {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!c3d.getKeys().isCtrlPressed())
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
                     z_Scale = false;
                 size = scale_size;
                 break;
@@ -795,7 +795,7 @@ public class Manipulator {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!c3d.getKeys().isCtrlPressed())
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
                     x_Translate = false;
             case Y_TRANSLATE:
                 if (lock) {
@@ -805,7 +805,7 @@ public class Manipulator {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!c3d.getKeys().isCtrlPressed())
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
                     y_Translate = false;
             case Z_TRANSLATE:
                 if (lock) {
@@ -815,7 +815,7 @@ public class Manipulator {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!c3d.getKeys().isCtrlPressed())
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
                     z_Translate = false;
                 size = translate_size;
                 break;
