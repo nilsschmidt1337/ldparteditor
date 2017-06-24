@@ -698,14 +698,14 @@ public class MouseActions {
         Vector2f oldPos = c3d.getOldMousePosition();
         c3d.setWarpedSelection(oldPos.x - event.x < 0 ^ oldPos.y - event.y < 0);
 
-        mouse_button_pressed = 0;
-
         int button = event.button;
         if (Cocoa.isCocoa) {
-            if ((event.stateMask & SWT.ALT) == SWT.ALT) {
+            if (mouse_button_pressed == MouseButton.RIGHT) {
                 button = MouseButton.RIGHT;
             }
         }
+
+        mouse_button_pressed = 0;
 
         switch (button) {
         case MouseButton.LEFT:
