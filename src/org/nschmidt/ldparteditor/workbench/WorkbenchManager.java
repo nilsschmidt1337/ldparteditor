@@ -86,7 +86,7 @@ public enum WorkbenchManager {
                 WorkbenchManager.editor3DWindowState = (Editor3DWindowState) configFileStream.readObject();
                 WorkbenchManager.editorTextWindowState = (EditorTextWindowState) configFileStream.readObject();
                 WorkbenchManager.userSettingState = (UserSettingState) configFileStream.readObject();
-                WorkbenchManager.userSettingState.loadShortkeys();
+                // FIXME _UNCOMMENT ON RELEASE!!! WorkbenchManager.userSettingState.loadShortkeys();
                 if (WorkbenchManager.userSettingState.getOpenGLVersion() == 0) {
                     WorkbenchManager.userSettingState.setOpenGLVersion(20);
                 }
@@ -239,7 +239,7 @@ public enum WorkbenchManager {
     public static void setPrimitiveCache(PrimitiveCache primitiveCache) {
         WorkbenchManager.primitiveCache = primitiveCache;
     }
-    
+
     public static String getDefaultFileHeader() {
         final StringBuilder sb = new StringBuilder();
         sb.append("0 "); //$NON-NLS-1$
