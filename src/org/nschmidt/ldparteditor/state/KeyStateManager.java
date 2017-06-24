@@ -96,6 +96,16 @@ public class KeyStateManager {
         reservedKeyCodes.add(SWT.SHIFT + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.COMMAND + ""); //$NON-NLS-1$
 
+        reservedKeyCodes.add(SWT.ARROW_UP + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_RIGHT + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_DOWN + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_LEFT + ""); //$NON-NLS-1$
+
+        reservedKeyCodes.add(SWT.ARROW_UP + "+Alt"); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Alt"); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_DOWN + "+Alt"); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ARROW_LEFT + "+Alt"); //$NON-NLS-1$
+
         reservedKeyCodes.add(SWT.KEYPAD_0 + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.KEYPAD_1 + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.KEYPAD_2 + ""); //$NON-NLS-1$
@@ -130,18 +140,10 @@ public class KeyStateManager {
 
         if (Cocoa.isCocoa) {
 
-            reservedKeyCodes.add(SWT.ARROW_UP + ""); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_RIGHT + ""); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_DOWN + ""); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_LEFT + ""); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_UP + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_DOWN + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_LEFT + "+Cmd"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_UP + "+Alt"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Alt"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_DOWN + "+Alt"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_LEFT + "+Alt"); //$NON-NLS-1$
 
             reservedKeyCodes.add(SWT.BS + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add((int) 'x' + "+Cmd"); //$NON-NLS-1$
@@ -239,10 +241,6 @@ public class KeyStateManager {
 
         } else {
 
-            reservedKeyCodes.add(SWT.ARROW_UP + ""); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_RIGHT + ""); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_DOWN + ""); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_LEFT + ""); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Ctrl"); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_DOWN + "+Ctrl"); //$NON-NLS-1$
