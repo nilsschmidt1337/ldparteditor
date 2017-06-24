@@ -736,6 +736,7 @@ public final class I18n {
     public static final String KEYBOARD_AxisY = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AxisYZ = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_AxisZ = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_Backspace = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Command = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Copy = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Ctrl = KEYBOARD.getString(getProperty());
