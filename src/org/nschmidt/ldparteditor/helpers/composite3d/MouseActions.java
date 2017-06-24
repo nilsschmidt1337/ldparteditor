@@ -699,7 +699,15 @@ public class MouseActions {
         c3d.setWarpedSelection(oldPos.x - event.x < 0 ^ oldPos.y - event.y < 0);
 
         mouse_button_pressed = 0;
-        switch (event.button) {
+
+        int button = event.button;
+        if (Cocoa.isCocoa) {
+            if ((event.stateMask & SWT.ALT) == SWT.ALT) {
+                button = MouseButton.RIGHT;
+            }
+        }
+
+        switch (button) {
         case MouseButton.LEFT:
             c3d.setDoingSelection(false);
             final Editor3DWindow window = Editor3DWindow.getWindow();
