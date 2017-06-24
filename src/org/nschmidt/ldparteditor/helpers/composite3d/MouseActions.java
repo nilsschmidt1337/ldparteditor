@@ -125,12 +125,9 @@ public class MouseActions {
         vm.addSnapshot();
         vm.getResetTimer().set(true);
         datfile.setLastSelectedComposite(c3d);
+
         mouse_button_pressed = event.button;
-        if (Cocoa.isCocoa) {
-            if ((event.stateMask & SWT.ALT) == SWT.ALT) {
-                mouse_button_pressed = MouseButton.RIGHT;
-            }
-        }
+
         old_mouse_position.set(event.x, event.y);
         switch (mouse_button_pressed) {
         case MouseButton.LEFT:
@@ -255,12 +252,6 @@ public class MouseActions {
         c3d.getKeys().setKeyState(SWT.COMMAND, (event.stateMask & SWT.COMMAND) == SWT.COMMAND);
         c3d.getKeys().setKeyState(SWT.CTRL, (event.stateMask & SWT.CTRL) == SWT.CTRL);
         c3d.getKeys().setKeyState(SWT.SHIFT, (event.stateMask & SWT.SHIFT) == SWT.SHIFT);
-
-        if (Cocoa.isCocoa) {
-            if ((event.stateMask & SWT.ALT) == SWT.ALT) {
-                mouse_button_pressed = MouseButton.RIGHT;
-            }
-        }
 
         {
             long ct = System.currentTimeMillis();
@@ -698,16 +689,9 @@ public class MouseActions {
         Vector2f oldPos = c3d.getOldMousePosition();
         c3d.setWarpedSelection(oldPos.x - event.x < 0 ^ oldPos.y - event.y < 0);
 
-        int button = event.button;
-        if (Cocoa.isCocoa) {
-            if (mouse_button_pressed == MouseButton.RIGHT) {
-                button = MouseButton.RIGHT;
-            }
-        }
-
         mouse_button_pressed = 0;
 
-        switch (button) {
+        switch (event.button) {
         case MouseButton.LEFT:
             c3d.setDoingSelection(false);
             final Editor3DWindow window = Editor3DWindow.getWindow();
