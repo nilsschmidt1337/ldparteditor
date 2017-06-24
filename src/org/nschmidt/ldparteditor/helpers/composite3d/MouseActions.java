@@ -297,7 +297,7 @@ public class MouseActions {
             float rx = 0;
             float ry = 0;
 
-            if (keyboard.isCtrlPressed() || (Cocoa.isCocoa && keyboard.isShiftPressed())) {
+            if (keyboard.isCtrlPressed() || (Cocoa.isCocoa && keyboard.isAltPressed())) {
                 if (c3d.hasNegDeterminant()) {
                     rx = (float) (Math.atan2(-cSize.y / 2f + old_mouse_position.y, -cSize.x / 2f + old_mouse_position.x)
                             - Math.atan2(-cSize.y / 2f + event.y, -cSize.x / 2f + event.x));
@@ -336,7 +336,7 @@ public class MouseActions {
                 break;
             float dx = 0;
             float dy = 0;
-            if (!keyboard.isShiftPressed()) {
+            if (!(keyboard.isShiftPressed() || (Cocoa.isCocoa && keyboard.isAltPressed())) ) {
                 dx = (old_mouse_position.x - event.x) / viewport_pixel_per_ldu;
             }
             if (!(keyboard.isCtrlPressed() || (Cocoa.isCocoa && keyboard.isCmdPressed())) || Editor3DWindow.getWindow().isAddingSomething()) {

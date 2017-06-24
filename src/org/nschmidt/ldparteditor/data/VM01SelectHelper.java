@@ -35,6 +35,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -59,7 +60,7 @@ public class VM01SelectHelper extends VM01Select {
     public synchronized boolean selectVertices(final Composite3D c3d, boolean addSomething, boolean forceRayTest) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         final boolean noCondlineVerts = !c3d.isShowingCondlineControlPoints();
-        if (!c3d.getKeys().isCtrlPressed() && !addSomething || addSomething) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())) && !addSomething || addSomething) {
             clearSelection2();
         }
         final Vector4f selectionStart = new Vector4f(c3d.getSelectionStart());
@@ -849,7 +850,7 @@ public class VM01SelectHelper extends VM01Select {
 
     public synchronized void selectLines(Composite3D c3d) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
-        if (!c3d.getKeys().isCtrlPressed()) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
         Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
@@ -1286,7 +1287,7 @@ public class VM01SelectHelper extends VM01Select {
     }
 
     public synchronized void selectFaces(Composite3D c3d, Event event) {
-        if (!c3d.getKeys().isCtrlPressed()) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
         Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
@@ -1629,7 +1630,7 @@ public class VM01SelectHelper extends VM01Select {
 
         HashSet<GData1> backupSubfiles = new HashSet<GData1>(selectedSubfiles);
 
-        if (!c3d.getKeys().isCtrlPressed()) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
             backupSubfiles.clear();
         }
