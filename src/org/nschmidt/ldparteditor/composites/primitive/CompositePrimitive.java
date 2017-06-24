@@ -82,6 +82,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Rule;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
@@ -303,7 +304,7 @@ public class CompositePrimitive extends Composite {
                     Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.E3D_RotateViewHint);
+                    formatter.applyPattern(Cocoa.isCocoa ? I18n.E3D_RotateViewHintMac : I18n.E3D_RotateViewHint);
                     String tooltipText = formatter.format(messageArguments);
                     if (!tooltipText.equals(canvas.getToolTipText())) {
                         canvas.setToolTipText(tooltipText);
@@ -374,7 +375,7 @@ public class CompositePrimitive extends Composite {
             // MARK MouseVerticalWheel
             public void handleEvent(Event event) {
 
-                if ((event.stateMask & SWT.CTRL) == SWT.CTRL) {
+                if (Cocoa.checkCtrlOrCmdPressed(event.stateMask)) {
                     if (event.count < 0)
                         zoomIn();
                     else

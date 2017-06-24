@@ -158,6 +158,7 @@ import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
@@ -1093,7 +1094,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedVertices().isEmpty()) {
                     final VertexManager vm = Project.getFileToEdit().getVertexManager();
                     vm.getSelectedVertices().clear();
-                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                    if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                         vm.reSelectSubFiles();
                     } else {
                         vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
@@ -1115,7 +1116,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     vm.getSelectedData().removeAll(vm.getSelectedQuads());
                     vm.getSelectedTriangles().clear();
                     vm.getSelectedQuads().clear();
-                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                    if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                         vm.reSelectSubFiles();
                     } else {
                         vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
@@ -1137,7 +1138,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     vm.getSelectedData().removeAll(vm.getSelectedLines());
                     vm.getSelectedCondlines().clear();
                     vm.getSelectedLines().clear();
-                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                    if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                         vm.reSelectSubFiles();
                     } else {
                         vm.getSelectedData().removeAll(vm.getSelectedSubfiles());
@@ -1153,7 +1154,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Subfiles[0]);
                 setWorkingType(ObjectMode.SUBFILES);
-                if ((e.stateMask & SWT.ALT) == SWT.ALT && (e.stateMask & SWT.CTRL) != SWT.CTRL && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedSubfiles().isEmpty()) {
+                if ((e.stateMask & SWT.ALT) == SWT.ALT && !Cocoa.checkCtrlOrCmdPressed(e.stateMask) && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedSubfiles().isEmpty()) {
                     final VertexManager vm = Project.getFileToEdit().getVertexManager();
                     final ArrayList<GData1> subfiles = new ArrayList<GData1>();
                     subfiles.addAll(vm.getSelectedSubfiles());
@@ -1581,7 +1582,7 @@ public class Editor3DWindow extends Editor3DDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
-                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                    if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                         if (new RoundDialog(getShell()).open() == IDialogConstants.CANCEL_ID) return;
                     }
                     Project.getFileToEdit().getVertexManager().addSnapshot();
@@ -3868,7 +3869,7 @@ public class Editor3DWindow extends Editor3DDesign {
         mntm_setXYZ[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                final boolean noReset = (e.stateMask & SWT.CTRL) != SWT.CTRL;
+                final boolean noReset = !Cocoa.checkCtrlOrCmdPressed(e.stateMask);
                 for (OpenGLRenderer renderer : renders) {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
