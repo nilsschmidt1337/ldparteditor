@@ -192,7 +192,7 @@ public class KeyStateManager {
 
             addTask(Task.LMB, 'k');
             addTask(Task.MMB, SWT.COMMAND);
-            addTask(Task.RMB, 'l');
+            addTask(Task.RMB, SWT.ALT);
 
             addTask(Task.INSERT_AT_CURSOR, 'i');
 
@@ -571,7 +571,11 @@ public class KeyStateManager {
                     {
                         Event mouseEvent = new Event();
                         mouseEvent.type = SWT.MouseDown;
-                        mouseEvent.button = MouseButton.RIGHT;
+                        if (!Cocoa.isCocoa) {
+                            mouseEvent.button = MouseButton.RIGHT;
+                        } else {
+                            mouseEvent.button = MouseButton.MIDDLE;
+                        }
                         c3d.getCanvas().forceFocus();
                         c3d.getCanvas().getDisplay().post(mouseEvent);
                         break;
