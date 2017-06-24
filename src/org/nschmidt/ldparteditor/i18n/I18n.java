@@ -569,6 +569,7 @@ public final class I18n {
     public static final String E3D_RotateSelection = E3D.getString(getProperty());
     public static final String E3D_RotateSnap = E3D.getString(getProperty());
     public static final String E3D_RotateViewHint = E3D.getString(getProperty());
+    public static final String E3D_RotateViewHintMac = E3D.getString(getProperty());
     public static final String E3D_Round = E3D.getString(getProperty());
     public static final String E3D_Ruler = E3D.getString(getProperty());
     public static final String E3D_SashLeft = E3D.getString(getProperty());

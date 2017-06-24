@@ -73,6 +73,7 @@ import org.nschmidt.ldparteditor.dnd.MyDummyType;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.helpers.compositetext.Annotator;
@@ -1041,7 +1042,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     }
                     NLogger.debug(getClass(), "Unrectify.."); //$NON-NLS-1$
                     final StyledText st = selection.getTextComposite();
-                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                    if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                         // Don't split quads
                         Unrectifier.splitAllIntoTriangles(st, selection.getState().getFileNameObj(), false);
                     } else {
@@ -1161,7 +1162,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                         return;
                     }
-                    if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                    if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                         if (new RoundDialog(btn_RoundSelection[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
                     }
                     NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$

@@ -230,7 +230,7 @@ class EditorTextDesign extends ApplicationWindow {
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour1 + I18n.E3D_ControlClickModify);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour1 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
 
             btn_Col.setToolTipText(formatter.format(messageArguments));
         } else {
@@ -244,7 +244,7 @@ class EditorTextDesign extends ApplicationWindow {
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour2 + I18n.E3D_ControlClickModify);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour2 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
 
             btn_Col.setToolTipText(formatter.format(messageArguments));
         }
@@ -254,7 +254,7 @@ class EditorTextDesign extends ApplicationWindow {
         btn_Col.addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if ((e.stateMask & SWT.CTRL) == SWT.CTRL) {
+                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                     // Choose new colour
                     new ColourDialog(btn_Col.getShell(), gColour2, false).open();
                     WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
@@ -269,7 +269,7 @@ class EditorTextDesign extends ApplicationWindow {
                         Object[] messageArguments = {num, View.getLDConfigColourName(num)};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour1 + I18n.E3D_ControlClickModify);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour1 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
 
                         btn_Col.setToolTipText(formatter.format(messageArguments));
                     } else {
@@ -282,7 +282,7 @@ class EditorTextDesign extends ApplicationWindow {
                         Object[] messageArguments = {colourBuilder.toString()};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour2 + I18n.E3D_ControlClickModify);
+                        formatter.applyPattern(I18n.EDITORTEXT_Colour2 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
 
                         btn_Col.setToolTipText(formatter.format(messageArguments));
 
@@ -516,7 +516,7 @@ class EditorTextDesign extends ApplicationWindow {
             Button btn_Unrectify = new Button(toolItem_Debug, Cocoa.getSytle());
             this.btn_Unrectify[0] = btn_Unrectify;
             btn_Unrectify.setImage(ResourceManager.getImage("icon16_unrectify.png")); //$NON-NLS-1$
-            btn_Unrectify.setToolTipText(I18n.EDITORTEXT_Unrectify);
+            btn_Unrectify.setToolTipText(Cocoa.replaceCtrlByCmd(I18n.EDITORTEXT_Unrectify));
         }
         {
             Button btn_SyncEdit = new Button(toolItem_Debug, Cocoa.getSytle());
@@ -557,7 +557,7 @@ class EditorTextDesign extends ApplicationWindow {
         {
             Button btn_RoundSelection = new Button(toolItem_Debug, Cocoa.getSytle());
             this.btn_RoundSelection[0] = btn_RoundSelection;
-            KeyStateManager.addTooltipText(btn_RoundSelection, I18n.EDITORTEXT_Round + I18n.E3D_ControlClickModify, TextTask.EDITORTEXT_ROUND);
+            KeyStateManager.addTooltipText(btn_RoundSelection, I18n.EDITORTEXT_Round + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify), TextTask.EDITORTEXT_ROUND);
             btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
         }
 

@@ -44,13 +44,21 @@ public enum KeyBoardHelper {
         int accelerator = SWTKeySupport.convertEventToUnmodifiedAccelerator(event);
         KeyStroke keyStroke = SWTKeySupport.convertAcceleratorToKeyStroke(accelerator);
         KeySequence sequence = KeySequence.getInstance(keyStroke);
-        return sequence.toString()
-                .replace("CTRL", I18n.KEYBOARD_Ctrl) //$NON-NLS-1$
-                .replace("SHIFT", I18n.KEYBOARD_Shift) //$NON-NLS-1$
-                .replace("ALT", I18n.KEYBOARD_Alt) //$NON-NLS-1$
-                .replace("DEL", I18n.KEYBOARD_Del) //$NON-NLS-1$
-                .replace("COMMAND", I18n.KEYBOARD_Command) //$NON-NLS-1$
-                .replace("BS", I18n.KEYBOARD_Backspace); //$NON-NLS-1$
+        if (Cocoa.isCocoa) {
+            return sequence.toString()
+                    .replace("CTRL+", " " + I18n.KEYBOARD_Ctrl.toLowerCase() + " ") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    .replace("SHIFT+", "\u21E7") //$NON-NLS-1$ //$NON-NLS-2$
+                    .replace("ALT+", "\u2325") //$NON-NLS-1$ //$NON-NLS-2$
+                    .replace("COMMAND+", I18n.KEYBOARD_Command) //$NON-NLS-1$
+                    .replace("BS", "\u232B"); //$NON-NLS-1$ //$NON-NLS-2$
+        } else {
+            return sequence.toString()
+                    .replace("CTRL", I18n.KEYBOARD_Ctrl) //$NON-NLS-1$
+                    .replace("SHIFT", I18n.KEYBOARD_Shift) //$NON-NLS-1$
+                    .replace("ALT", I18n.KEYBOARD_Alt) //$NON-NLS-1$
+                    .replace("DEL", I18n.KEYBOARD_Del) //$NON-NLS-1$
+                    .replace("BS", I18n.KEYBOARD_Backspace); //$NON-NLS-1$
+        }
     }
 
 }

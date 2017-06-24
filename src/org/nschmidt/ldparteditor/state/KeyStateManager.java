@@ -113,30 +113,30 @@ public class KeyStateManager {
         addTask(Task.COLOUR_NUMBER8, SWT.KEYPAD_8);
         addTask(Task.COLOUR_NUMBER9, SWT.KEYPAD_9);
 
-        if (!Cocoa.isCocoa) {
+        if (Cocoa.isCocoa) {
 
             reservedKeyCodes.add(SWT.ARROW_UP + ""); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_RIGHT + ""); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_DOWN + ""); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_LEFT + ""); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_DOWN + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add(SWT.ARROW_LEFT + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_UP + "+Cmd"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Cmd"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_DOWN + "+Cmd"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_LEFT + "+Cmd"); //$NON-NLS-1$
 
             reservedKeyCodes.add(SWT.BS + "+Cmd"); //$NON-NLS-1$
-            reservedKeyCodes.add((int) 'x' + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add((int) 'c' + "+Ctrl"); //$NON-NLS-1$
-            reservedKeyCodes.add((int) 'v' + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'x' + "+Cmd"); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'c' + "+Cmd"); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'v' + "+Cmd"); //$NON-NLS-1$
 
             addTask(Task.TRANSFORM_UP, SWT.ARROW_UP);
             addTask(Task.TRANSFORM_RIGHT, SWT.ARROW_RIGHT);
             addTask(Task.TRANSFORM_DOWN, SWT.ARROW_DOWN);
             addTask(Task.TRANSFORM_LEFT, SWT.ARROW_LEFT);
-            addTask(Task.TRANSFORM_UP_COPY, SWT.CTRL, SWT.ARROW_UP);
-            addTask(Task.TRANSFORM_RIGHT_COPY, SWT.CTRL, SWT.ARROW_RIGHT);
-            addTask(Task.TRANSFORM_DOWN_COPY, SWT.CTRL, SWT.ARROW_DOWN);
-            addTask(Task.TRANSFORM_LEFT_COPY, SWT.CTRL, SWT.ARROW_LEFT);
+            addTask(Task.TRANSFORM_UP_COPY, SWT.COMMAND, SWT.ARROW_UP);
+            addTask(Task.TRANSFORM_RIGHT_COPY, SWT.COMMAND, SWT.ARROW_RIGHT);
+            addTask(Task.TRANSFORM_DOWN_COPY, SWT.COMMAND, SWT.ARROW_DOWN);
+            addTask(Task.TRANSFORM_LEFT_COPY, SWT.COMMAND, SWT.ARROW_LEFT);
 
             addTask(Task.DELETE, SWT.COMMAND, SWT.BS);
             addTask(Task.ESC, SWT.ESC);
@@ -166,20 +166,20 @@ public class KeyStateManager {
             addTask(Task.ADD_PROTRACTOR, 'p');
             addTask(Task.ADD_COMMENTS, '0');
 
-            addTask(Task.ZOOM_IN,  '+');
-            addTask(Task.ZOOM_OUT,  '-');
-            addTask(Task.RESET_VIEW, SWT.CTRL, 'r');
-            addTask(Task.SHOW_GRID, SWT.CTRL, 'g');
-            addTask(Task.SHOW_RULER, SWT.CTRL, 'l');
+            addTask(Task.ZOOM_IN, '+');
+            addTask(Task.ZOOM_OUT, '-');
+            addTask(Task.RESET_VIEW, SWT.COMMAND, 'r');
+            addTask(Task.SHOW_GRID, SWT.COMMAND, 'g');
+            addTask(Task.SHOW_RULER, SWT.COMMAND, 'l');
 
-            addTask(Task.UNDO, SWT.CTRL, 'z');
-            addTask(Task.REDO, SWT.CTRL, 'y');
+            addTask(Task.UNDO, SWT.COMMAND, 'z');
+            addTask(Task.REDO, SWT.COMMAND, 'y');
 
-            addTask(Task.SAVE, SWT.CTRL, 's');
+            addTask(Task.SAVE, SWT.COMMAND, 's');
 
             addTask(Task.SELECT_ALL, SWT.COMMAND, 'a');
             addTask(Task.SELECT_NONE, SWT.COMMAND | SWT.SHIFT, 'a');
-            addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.CTRL | SWT.ALT,  'c');
+            addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.COMMAND | SWT.ALT,  'c');
             addTask(Task.SELECT_CONNECTED, SWT.ALT, 'c');
             addTask(Task.SELECT_TOUCHING, SWT.ALT, 't');
 
@@ -191,7 +191,7 @@ public class KeyStateManager {
             addTask(Task.SPLIT, SWT.ALT, 'v');
 
             addTask(Task.LMB, 'k');
-            addTask(Task.MMB, 'm');
+            addTask(Task.MMB, SWT.COMMAND);
             addTask(Task.RMB, 'l');
 
             addTask(Task.INSERT_AT_CURSOR, 'i');
@@ -275,8 +275,8 @@ public class KeyStateManager {
             addTask(Task.ADD_PROTRACTOR, 'p');
             addTask(Task.ADD_COMMENTS, '0');
 
-            addTask(Task.ZOOM_IN,  '+');
-            addTask(Task.ZOOM_OUT,  '-');
+            addTask(Task.ZOOM_IN, '+');
+            addTask(Task.ZOOM_OUT, '-');
             addTask(Task.RESET_VIEW, SWT.CTRL, 'r');
             addTask(Task.SHOW_GRID, SWT.CTRL, 'g');
             addTask(Task.SHOW_RULER, SWT.CTRL, 'l');
@@ -288,7 +288,7 @@ public class KeyStateManager {
 
             addTask(Task.SELECT_ALL, SWT.CTRL, 'a');
             addTask(Task.SELECT_NONE, SWT.CTRL | SWT.SHIFT, 'a');
-            addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.CTRL | SWT.ALT,  'c');
+            addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.CTRL | SWT.ALT, 'c');
             addTask(Task.SELECT_CONNECTED, SWT.ALT, 'c');
             addTask(Task.SELECT_TOUCHING, SWT.ALT, 't');
 

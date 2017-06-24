@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -171,7 +172,7 @@ class OptionsDesign extends ApplicationWindow {
                 trtm_EditorText.setVisible(true);
 
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB, !Cocoa.isCocoa);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);

@@ -15,15 +15,34 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers;
 
+import java.text.MessageFormat;
+
 import org.eclipse.swt.SWT;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
 
 public enum Cocoa {
     INSTANCE;
 
-    public static final boolean isCocoa = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
+    public static final boolean isCocoa = !"cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$ FIXME remove "!"
 
     public static int getSytle() {
         return isCocoa ? SWT.FLAT : SWT.NONE;
+    }
+
+    public static String replaceCtrlByCmd(String source) {
+        Object[] messageArguments = {isCocoa ? "\u2318" : "Ctrl"}; //$NON-NLS-1$ //$NON-NLS-2$
+        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+        formatter.setLocale(MyLanguage.LOCALE);
+        formatter.applyPattern(source);
+        return formatter.format(messageArguments);
+    }
+
+    public static boolean checkCtrlOrCmdPressed(int stateMask) {
+        if (isCocoa) {
+            return (stateMask & SWT.COMMAND) == SWT.COMMAND;
+        } else {
+            return (stateMask & SWT.CTRL) == SWT.CTRL;
+        }
     }
 
 }
