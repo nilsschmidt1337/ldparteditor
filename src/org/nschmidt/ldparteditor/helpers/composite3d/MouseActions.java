@@ -51,6 +51,7 @@ import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -125,8 +126,13 @@ public class MouseActions {
         vm.getResetTimer().set(true);
         datfile.setLastSelectedComposite(c3d);
         mouse_button_pressed = event.button;
+        if (Cocoa.isCocoa) {
+            if ((event.stateMask & SWT.ALT) == SWT.ALT) {
+                mouse_button_pressed = MouseButton.RIGHT;
+            }
+        }
         old_mouse_position.set(event.x, event.y);
-        switch (event.button) {
+        switch (mouse_button_pressed) {
         case MouseButton.LEFT:
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if ((event.stateMask & SWT.SHIFT) == SWT.SHIFT && !window.isAddingSomething()) {
@@ -249,6 +255,12 @@ public class MouseActions {
         c3d.getKeys().setKeyState(SWT.COMMAND, (event.stateMask & SWT.COMMAND) == SWT.COMMAND);
         c3d.getKeys().setKeyState(SWT.CTRL, (event.stateMask & SWT.CTRL) == SWT.CTRL);
         c3d.getKeys().setKeyState(SWT.SHIFT, (event.stateMask & SWT.SHIFT) == SWT.SHIFT);
+
+        if (Cocoa.isCocoa) {
+            if ((event.stateMask & SWT.ALT) == SWT.ALT) {
+                mouse_button_pressed = MouseButton.RIGHT;
+            }
+        }
 
         {
             long ct = System.currentTimeMillis();

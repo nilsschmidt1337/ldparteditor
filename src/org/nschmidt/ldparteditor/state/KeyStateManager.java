@@ -397,7 +397,6 @@ public class KeyStateManager {
                 NLogger.debug(KeyStateManager.class, "[Key ({0}) down]", keyCode); //$NON-NLS-1$
                 setKeyState(keyCode, true);
                 pressedKeyCodes.add(keyCode);
-                final boolean mac = Cocoa.isCocoa;
                 final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
                 final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
                 final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
