@@ -197,10 +197,10 @@ public class KeyStateManager {
             addTask(Task.SELECT_ALL, SWT.COMMAND, 'a');
             addTask(Task.SELECT_NONE, SWT.COMMAND | SWT.SHIFT, 'a');
             addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.COMMAND | SWT.ALT,  'c');
-            addTask(Task.SELECT_CONNECTED, SWT.ALT, 'c');
-            addTask(Task.SELECT_TOUCHING, SWT.ALT, 't');
+            addTask(Task.SELECT_CONNECTED, SWT.COMMAND, 'j');
+            addTask(Task.SELECT_TOUCHING, SWT.COMMAND, 't');
 
-            addTask(Task.SELECT_OPTION_WITH_SAME_COLOURS, SWT.ALT, 's');
+            addTask(Task.SELECT_OPTION_WITH_SAME_COLOURS, SWT.COMMAND | SWT.SHIFT, 's');
 
             addTask(Task.FLIP_ROTATE_VERTICES, 'f');
             addTask(Task.MERGE_TO_AVERAGE, SWT.COMMAND, 'w');
@@ -223,10 +223,10 @@ public class KeyStateManager {
 
             addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.COMMAND | SWT.SHIFT, 'r');
             addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
-            addTask(TextTask.EDITORTEXT_QUICKFIX, SWT.ALT, 'f');
+            addTask(TextTask.EDITORTEXT_QUICKFIX, SWT.COMMAND, 'q');
             addTask(TextTask.EDITORTEXT_SELECTALL, SWT.COMMAND, 'a');
-            addTask(TextTask.EDITORTEXT_INLINE, SWT.ALT, 'i');
-            addTask(TextTask.EDITORTEXT_ROUND, SWT.ALT, 'c');
+            addTask(TextTask.EDITORTEXT_INLINE, SWT.COMMAND | SWT.SHIFT, 'i');
+            addTask(TextTask.EDITORTEXT_ROUND, SWT.COMMAND | SWT.SHIFT, 'c');
 
             addTask(TextTask.EDITORTEXT_UNDO, SWT.COMMAND, 'z');
             addTask(TextTask.EDITORTEXT_REDO, SWT.COMMAND, 'y');
