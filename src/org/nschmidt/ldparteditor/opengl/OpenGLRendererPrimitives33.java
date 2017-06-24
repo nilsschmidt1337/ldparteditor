@@ -61,6 +61,10 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
         final GLCanvas canvas = cp.getCanvas();
 
+        if (canvas.isDisposed()) {
+            return;
+        }
+
         if (!canvas.isCurrent()) {
             canvas.setCurrent();
             GL.setCapabilities(cp.getCapabilities());
