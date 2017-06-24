@@ -578,15 +578,13 @@ public class KeyStateManager {
                     }
                     case RMB:
                     {
-                        Event mouseEvent = new Event();
-                        mouseEvent.type = SWT.MouseDown;
                         if (!Cocoa.isCocoa) {
+                            Event mouseEvent = new Event();
+                            mouseEvent.type = SWT.MouseDown;
                             mouseEvent.button = MouseButton.RIGHT;
-                        } else {
-                            mouseEvent.button = MouseButton.MIDDLE;
+                            c3d.getCanvas().forceFocus();
+                            c3d.getCanvas().getDisplay().post(mouseEvent);
                         }
-                        c3d.getCanvas().forceFocus();
-                        c3d.getCanvas().getDisplay().post(mouseEvent);
                         break;
                     }
                     case MMB:
