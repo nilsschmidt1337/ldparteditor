@@ -1010,7 +1010,7 @@ public final class GDataCSG extends GData {
             static_lock.lock();
             final DatFile df = c3d.getLockableDatFileReference();
             final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
-            if (!c3d.getKeys().isCtrlPressed()) {
+            if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
                 selectedTriangles.clear();
             }
             final Integer selectedBodyID = selectCSG_helper(c3d, event);
