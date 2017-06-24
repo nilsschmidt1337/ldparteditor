@@ -173,7 +173,7 @@ class OptionsDesign extends ApplicationWindow {
 
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB, !Cocoa.isCocoa);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, !Cocoa.isCocoa);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddVertex, Task.ADD_VERTEX, true);

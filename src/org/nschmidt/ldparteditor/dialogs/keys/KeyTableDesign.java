@@ -141,7 +141,7 @@ class KeyTableDesign extends Dialog {
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AxisYZ, Task.MODE_YZ, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_AxisXYZ, Task.MODE_XYZ, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_ResetView, Task.RESET_VIEW, true);
-        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, true);
+        registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, !Cocoa.isCocoa);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_Save, Task.SAVE, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectAll, Task.SELECT_ALL, true);
         registerDoubleClickEvent(trtm_Editor3D, I18n.KEYBOARD_SelectAllWithSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS, true);
