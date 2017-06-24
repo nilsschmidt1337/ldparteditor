@@ -79,6 +79,7 @@ import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.TextTask;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
@@ -831,14 +832,17 @@ public class CompositeTab extends CompositeTabDesign {
                 // KeyBoardHelper.getKeyString(event));
 
                 final int keyCode = event.keyCode;
+                final boolean mac = Cocoa.isCocoa;
                 final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
                 final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
                 final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                final boolean cmdPressed = (event.stateMask & SWT.COMMAND) != 0;
                 StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
                 sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(cmdPressed ? "+\u2318" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 TextTask task = KeyStateManager.getTextTaskmap().get(sb.toString());
 
                 if (task != null) {

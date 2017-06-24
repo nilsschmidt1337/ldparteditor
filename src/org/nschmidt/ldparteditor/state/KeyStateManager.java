@@ -40,6 +40,7 @@ import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.KeyBoardHelper;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
@@ -107,6 +108,7 @@ public class KeyStateManager {
         reservedKeyCodes.add(SWT.ALT + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.CTRL + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.SHIFT + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.COMMAND + ""); //$NON-NLS-1$
 
         reservedKeyCodes.add(SWT.DEL + ""); //$NON-NLS-1$
         reservedKeyCodes.add((int) 'x' + "+Ctrl"); //$NON-NLS-1$
@@ -224,6 +226,8 @@ public class KeyStateManager {
     private boolean ctrlPressed;
     /** Indicates that ALT is pressed */
     private boolean altPressed;
+    /** Indicates that COMMAND is pressed */
+    private boolean cmdPressed;
 
     public KeyStateManager(Composite3D c3d) {
         this.c3d = c3d;
@@ -257,6 +261,13 @@ public class KeyStateManager {
     }
 
     /**
+     * @return {@code true} if COMMAND is pressed
+     */
+    public boolean isCmdPressed() {
+        return cmdPressed;
+    }
+
+    /**
      * Sets the state of released and pressed keys and triggers eventually a
      * function
      *
@@ -272,14 +283,17 @@ public class KeyStateManager {
                 NLogger.debug(KeyStateManager.class, "[Key ({0}) down]", keyCode); //$NON-NLS-1$
                 setKeyState(keyCode, true);
                 pressedKeyCodes.add(keyCode);
+                final boolean mac = Cocoa.isCocoa;
                 final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
                 final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
                 final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                final boolean cmdPressed = (event.stateMask & SWT.COMMAND) != 0;
                 final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
                 sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(cmdPressed ? "+\u2318" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 final String key = sb.toString();
                 final Task t = taskMap.get(key);
                 if (t != null) {
@@ -698,6 +712,9 @@ public class KeyStateManager {
         case SWT.CTRL:
             ctrlPressed = isPressed;
             break;
+        case SWT.COMMAND:
+            cmdPressed = isPressed;
+            break;
         }
     }
 
@@ -705,6 +722,7 @@ public class KeyStateManager {
         this.altPressed = ksm.altPressed;
         this.shiftPressed = ksm.shiftPressed;
         this.ctrlPressed = ksm.ctrlPressed;
+        this.cmdPressed = ksm.cmdPressed;
     }
 
     public static HashSet<String> getReservedKeyCodes() {
@@ -751,18 +769,21 @@ public class KeyStateManager {
         final boolean ctrlPressed = (stateMask & SWT.CTRL) != 0;
         final boolean altPressed = (stateMask & SWT.ALT) != 0;
         final boolean shiftPressed = (stateMask & SWT.SHIFT) != 0;
+        final boolean cmdPressed = (stateMask & SWT.COMMAND) != 0;
         String[] s = new String[2];
         final StringBuilder sb = new StringBuilder();
         sb.append(keyCode);
         sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
         sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
         sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+        sb.append(cmdPressed ? "+\u2318" : ""); //$NON-NLS-1$//$NON-NLS-2$
         s[0] = sb.toString();
         Event event = new Event();
         event.keyCode = keyCode;
         if (ctrlPressed) event.stateMask = event.stateMask | SWT.CTRL;
         if (altPressed) event.stateMask = event.stateMask | SWT.ALT;
         if (shiftPressed) event.stateMask = event.stateMask | SWT.SHIFT;
+        if (cmdPressed) event.stateMask = event.stateMask | SWT.COMMAND;
         s[1] = KeyBoardHelper.getKeyString(event);
         return s;
     }
