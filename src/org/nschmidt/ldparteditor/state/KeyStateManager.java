@@ -29,7 +29,11 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
+import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.composites.ScalableComposite;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.VertexManager;
@@ -43,6 +47,7 @@ import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.KeyBoardHelper;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
+import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -113,6 +118,16 @@ public class KeyStateManager {
         addTask(Task.COLOUR_NUMBER8, SWT.KEYPAD_8);
         addTask(Task.COLOUR_NUMBER9, SWT.KEYPAD_9);
 
+        addTask(Task.TRANSLATE_UP, SWT.ALT, SWT.ARROW_UP);
+        addTask(Task.TRANSLATE_RIGHT, SWT.ALT, SWT.ARROW_RIGHT);
+        addTask(Task.TRANSLATE_DOWN, SWT.ALT, SWT.ARROW_DOWN);
+        addTask(Task.TRANSLATE_LEFT, SWT.ALT, SWT.ARROW_LEFT);
+
+        addTask(Task.TRANSFORM_UP, SWT.ARROW_UP);
+        addTask(Task.TRANSFORM_RIGHT, SWT.ARROW_RIGHT);
+        addTask(Task.TRANSFORM_DOWN, SWT.ARROW_DOWN);
+        addTask(Task.TRANSFORM_LEFT, SWT.ARROW_LEFT);
+
         if (Cocoa.isCocoa) {
 
             reservedKeyCodes.add(SWT.ARROW_UP + ""); //$NON-NLS-1$
@@ -123,16 +138,16 @@ public class KeyStateManager {
             reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_DOWN + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_LEFT + "+Cmd"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_UP + "+Alt"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Alt"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_DOWN + "+Alt"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_LEFT + "+Alt"); //$NON-NLS-1$
 
             reservedKeyCodes.add(SWT.BS + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add((int) 'x' + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add((int) 'c' + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add((int) 'v' + "+Cmd"); //$NON-NLS-1$
 
-            addTask(Task.TRANSFORM_UP, SWT.ARROW_UP);
-            addTask(Task.TRANSFORM_RIGHT, SWT.ARROW_RIGHT);
-            addTask(Task.TRANSFORM_DOWN, SWT.ARROW_DOWN);
-            addTask(Task.TRANSFORM_LEFT, SWT.ARROW_LEFT);
             addTask(Task.TRANSFORM_UP_COPY, SWT.COMMAND, SWT.ARROW_UP);
             addTask(Task.TRANSFORM_RIGHT_COPY, SWT.COMMAND, SWT.ARROW_RIGHT);
             addTask(Task.TRANSFORM_DOWN_COPY, SWT.COMMAND, SWT.ARROW_DOWN);
@@ -238,10 +253,6 @@ public class KeyStateManager {
             reservedKeyCodes.add((int) 'c' + "+Ctrl"); //$NON-NLS-1$
             reservedKeyCodes.add((int) 'v' + "+Ctrl"); //$NON-NLS-1$
 
-            addTask(Task.TRANSFORM_UP, SWT.ARROW_UP);
-            addTask(Task.TRANSFORM_RIGHT, SWT.ARROW_RIGHT);
-            addTask(Task.TRANSFORM_DOWN, SWT.ARROW_DOWN);
-            addTask(Task.TRANSFORM_LEFT, SWT.ARROW_LEFT);
             addTask(Task.TRANSFORM_UP_COPY, SWT.CTRL, SWT.ARROW_UP);
             addTask(Task.TRANSFORM_RIGHT_COPY, SWT.CTRL, SWT.ARROW_RIGHT);
             addTask(Task.TRANSFORM_DOWN_COPY, SWT.CTRL, SWT.ARROW_DOWN);
@@ -729,6 +740,18 @@ public class KeyStateManager {
                         c3d.getManipulator().resetTranslation();
                         c3d.getMouse().syncManipulator();
                         break;
+                    case TRANSLATE_UP:
+                        translateView(c3d, 0, -100 /c3d.getViewportPixelPerLDU());
+                        break;
+                    case TRANSLATE_RIGHT:
+                        translateView(c3d, -100 / c3d.getViewportPixelPerLDU(), 0);
+                        break;
+                    case TRANSLATE_DOWN:
+                        translateView(c3d, 0, 100 / c3d.getViewportPixelPerLDU());
+                        break;
+                    case TRANSLATE_LEFT:
+                        translateView(c3d, 100 / c3d.getViewportPixelPerLDU(), 0);
+                        break;
                     }
                 }
             } else if (keyEventType == SWT.KeyUp) {
@@ -997,5 +1020,40 @@ public class KeyStateManager {
             }
         }
         return false;
+    }
+
+    private static void translateView(Composite3D c3d, float dx, float dy) {
+        PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
+        Matrix4f viewport_rotation = c3d.getRotation();
+        Matrix4f viewport_translation = c3d.getTranslation();
+        Matrix4f old_viewport_translation = new Matrix4f();
+        Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
+        Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
+        Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+        Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
+        Matrix4f.transform(ovr_inverse2, xAxis4f_translation, xAxis4f_translation);
+        Matrix4f.transform(ovr_inverse2, yAxis4f_translation, yAxis4f_translation);
+        Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
+        Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+        Matrix4f.load(old_viewport_translation, viewport_translation);
+        Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
+        Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+        perspective.calculateOriginData();
+        c3d.getVertexManager().getResetTimer().set(true);
+        if (c3d.isSyncTranslation()) {
+            float tx = c3d.getTranslation().m30;
+            float ty = c3d.getTranslation().m31;
+            float tz = c3d.getTranslation().m32;
+            for (OpenGLRenderer renderer : Editor3DWindow.getRenders()) {
+                Composite3D c3d2 = renderer.getC3D();
+                if (!c3d2.isDisposed() && c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
+                    c3d2.getTranslation().m30 = tx;
+                    c3d2.getTranslation().m31 = ty;
+                    c3d2.getTranslation().m32 = tz;
+                    ((ScalableComposite) c3d2.getParent()).redrawScales();
+                    c3d2.getPerspectiveCalculator().initializeViewportPerspective();
+                }
+            }
+        }
     }
 }

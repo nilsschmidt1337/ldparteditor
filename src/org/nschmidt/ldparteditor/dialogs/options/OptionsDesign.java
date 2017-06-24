@@ -89,6 +89,10 @@ class OptionsDesign extends ApplicationWindow {
         s1.add(Task.TRANSFORM_RIGHT_COPY);
         s1.add(Task.TRANSFORM_DOWN_COPY);
         s1.add(Task.TRANSFORM_LEFT_COPY);
+        s1.add(Task.TRANSLATE_UP);
+        s1.add(Task.TRANSLATE_RIGHT);
+        s1.add(Task.TRANSLATE_DOWN);
+        s1.add(Task.TRANSLATE_LEFT);
         s1.add(Task.COLOUR_NUMBER0);
         s1.add(Task.COLOUR_NUMBER1);
         s1.add(Task.COLOUR_NUMBER2);
