@@ -228,9 +228,6 @@ public class PrimGen2Dialog extends PrimGen2Design {
             // MARK KeyDown (Quick Fix)
             public void handleEvent(Event event) {
 
-                // NLogger.debug(getClass(),
-                // KeyBoardHelper.getKeyString(event));
-
                 final int keyCode = event.keyCode;
                 final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
                 final boolean altPressed = (event.stateMask & SWT.ALT) != 0;

@@ -185,7 +185,7 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Cut, Task.CUT, false);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Copy, Task.COPY, false);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Paste, Task.PASTE, false);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Delete, Task.DELETE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_Delete, Task.DELETE, false);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Esc1, Task.ESC, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_MergeToAvg, Task.MERGE_TO_AVERAGE, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_MergeToLast, Task.MERGE_TO_LAST, true);

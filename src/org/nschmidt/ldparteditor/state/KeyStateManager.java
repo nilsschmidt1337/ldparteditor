@@ -86,14 +86,10 @@ public class KeyStateManager {
 
     static {
 
-        reservedKeyCodes.add(SWT.ARROW_UP + ""); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.ARROW_RIGHT + ""); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.ARROW_DOWN + ""); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.ARROW_LEFT + ""); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Ctrl"); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.ARROW_DOWN + "+Ctrl"); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.ARROW_LEFT + "+Ctrl"); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.ALT + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.CTRL + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.SHIFT + ""); //$NON-NLS-1$
+        reservedKeyCodes.add(SWT.COMMAND + ""); //$NON-NLS-1$
 
         reservedKeyCodes.add(SWT.KEYPAD_0 + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.KEYPAD_1 + ""); //$NON-NLS-1$
@@ -105,24 +101,6 @@ public class KeyStateManager {
         reservedKeyCodes.add(SWT.KEYPAD_7 + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.KEYPAD_8 + ""); //$NON-NLS-1$
         reservedKeyCodes.add(SWT.KEYPAD_9 + ""); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.ALT + ""); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.CTRL + ""); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.SHIFT + ""); //$NON-NLS-1$
-        reservedKeyCodes.add(SWT.COMMAND + ""); //$NON-NLS-1$
-
-        reservedKeyCodes.add(SWT.DEL + ""); //$NON-NLS-1$
-        reservedKeyCodes.add((int) 'x' + "+Ctrl"); //$NON-NLS-1$
-        reservedKeyCodes.add((int) 'c' + "+Ctrl"); //$NON-NLS-1$
-        reservedKeyCodes.add((int) 'v' + "+Ctrl"); //$NON-NLS-1$
-
-        addTask(Task.TRANSFORM_UP, SWT.ARROW_UP);
-        addTask(Task.TRANSFORM_RIGHT, SWT.ARROW_RIGHT);
-        addTask(Task.TRANSFORM_DOWN, SWT.ARROW_DOWN);
-        addTask(Task.TRANSFORM_LEFT, SWT.ARROW_LEFT);
-        addTask(Task.TRANSFORM_UP_COPY, SWT.CTRL, SWT.ARROW_UP);
-        addTask(Task.TRANSFORM_RIGHT_COPY, SWT.CTRL, SWT.ARROW_RIGHT);
-        addTask(Task.TRANSFORM_DOWN_COPY, SWT.CTRL, SWT.ARROW_DOWN);
-        addTask(Task.TRANSFORM_LEFT_COPY, SWT.CTRL, SWT.ARROW_LEFT);
 
         addTask(Task.COLOUR_NUMBER0, SWT.KEYPAD_0);
         addTask(Task.COLOUR_NUMBER1, SWT.KEYPAD_1);
@@ -135,89 +113,225 @@ public class KeyStateManager {
         addTask(Task.COLOUR_NUMBER8, SWT.KEYPAD_8);
         addTask(Task.COLOUR_NUMBER9, SWT.KEYPAD_9);
 
-        addTask(Task.DELETE, SWT.DEL);
-        addTask(Task.ESC, SWT.ESC);
-        addTask(Task.COPY, SWT.CTRL, 'c');
-        addTask(Task.CUT, SWT.CTRL, 'x');
-        addTask(Task.PASTE, SWT.CTRL, 'v');
+        if (!Cocoa.isCocoa) {
 
-        addTask(Task.OBJ_VERTEX, SWT.F2);
-        addTask(Task.OBJ_FACE, SWT.F3);
-        addTask(Task.OBJ_LINE, SWT.F4);
-        addTask(Task.OBJ_PRIMITIVE, SWT.F5);
+            reservedKeyCodes.add(SWT.ARROW_UP + ""); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_RIGHT + ""); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_DOWN + ""); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_LEFT + ""); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_DOWN + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_LEFT + "+Ctrl"); //$NON-NLS-1$
 
-        addTask(Task.MODE_SELECT, '1');
-        addTask(Task.MODE_MOVE, '2');
-        addTask(Task.MODE_ROTATE,'3');
-        addTask(Task.MODE_SCALE, '4');
-        addTask(Task.MODE_COMBINED, 'c');
+            reservedKeyCodes.add(SWT.BS + "+Cmd"); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'x' + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'c' + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'v' + "+Ctrl"); //$NON-NLS-1$
 
-        addTask(Task.MOVE_TO_AVG, 'a');
+            addTask(Task.TRANSFORM_UP, SWT.ARROW_UP);
+            addTask(Task.TRANSFORM_RIGHT, SWT.ARROW_RIGHT);
+            addTask(Task.TRANSFORM_DOWN, SWT.ARROW_DOWN);
+            addTask(Task.TRANSFORM_LEFT, SWT.ARROW_LEFT);
+            addTask(Task.TRANSFORM_UP_COPY, SWT.CTRL, SWT.ARROW_UP);
+            addTask(Task.TRANSFORM_RIGHT_COPY, SWT.CTRL, SWT.ARROW_RIGHT);
+            addTask(Task.TRANSFORM_DOWN_COPY, SWT.CTRL, SWT.ARROW_DOWN);
+            addTask(Task.TRANSFORM_LEFT_COPY, SWT.CTRL, SWT.ARROW_LEFT);
 
-        addTask(Task.ADD_VERTEX, '5');
-        addTask(Task.ADD_TRIANGLE, '6');
-        addTask(Task.ADD_QUAD, '7');
-        addTask(Task.ADD_LINE, '8');
-        addTask(Task.ADD_CONDLINE, '9');
-        addTask(Task.ADD_DISTANCE, 'd');
-        addTask(Task.ADD_PROTRACTOR, 'p');
-        addTask(Task.ADD_COMMENTS, '0');
+            addTask(Task.DELETE, SWT.COMMAND, SWT.BS);
+            addTask(Task.ESC, SWT.ESC);
+            addTask(Task.COPY, SWT.COMMAND, 'c');
+            addTask(Task.CUT, SWT.COMMAND, 'x');
+            addTask(Task.PASTE, SWT.COMMAND, 'v');
 
-        addTask(Task.ZOOM_IN,  '+');
-        addTask(Task.ZOOM_OUT,  '-');
-        addTask(Task.RESET_VIEW, SWT.CTRL, 'r');
-        addTask(Task.SHOW_GRID, SWT.CTRL, 'g');
-        addTask(Task.SHOW_RULER, SWT.CTRL, 'l');
+            addTask(Task.OBJ_VERTEX, SWT.F2);
+            addTask(Task.OBJ_FACE, SWT.F3);
+            addTask(Task.OBJ_LINE, SWT.F4);
+            addTask(Task.OBJ_PRIMITIVE, SWT.F5);
 
-        addTask(Task.UNDO, SWT.CTRL, 'z');
-        addTask(Task.REDO, SWT.CTRL, 'y');
+            addTask(Task.MODE_SELECT, '1');
+            addTask(Task.MODE_MOVE, '2');
+            addTask(Task.MODE_ROTATE,'3');
+            addTask(Task.MODE_SCALE, '4');
+            addTask(Task.MODE_COMBINED, 'c');
 
-        addTask(Task.SAVE, SWT.CTRL, 's');
+            addTask(Task.MOVE_TO_AVG, 'a');
 
-        addTask(Task.SELECT_ALL, SWT.CTRL, 'a');
-        addTask(Task.SELECT_NONE, SWT.CTRL | SWT.SHIFT, 'a');
-        addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.CTRL | SWT.ALT,  'c');
-        addTask(Task.SELECT_CONNECTED, SWT.ALT, 'c');
-        addTask(Task.SELECT_TOUCHING, SWT.ALT, 't');
+            addTask(Task.ADD_VERTEX, '5');
+            addTask(Task.ADD_TRIANGLE, '6');
+            addTask(Task.ADD_QUAD, '7');
+            addTask(Task.ADD_LINE, '8');
+            addTask(Task.ADD_CONDLINE, '9');
+            addTask(Task.ADD_DISTANCE, 'd');
+            addTask(Task.ADD_PROTRACTOR, 'p');
+            addTask(Task.ADD_COMMENTS, '0');
 
-        addTask(Task.SELECT_OPTION_WITH_SAME_COLOURS, SWT.ALT, 's');
+            addTask(Task.ZOOM_IN,  '+');
+            addTask(Task.ZOOM_OUT,  '-');
+            addTask(Task.RESET_VIEW, SWT.CTRL, 'r');
+            addTask(Task.SHOW_GRID, SWT.CTRL, 'g');
+            addTask(Task.SHOW_RULER, SWT.CTRL, 'l');
 
-        addTask(Task.FLIP_ROTATE_VERTICES, 'f');
-        addTask(Task.MERGE_TO_AVERAGE, SWT.CTRL, 'w');
-        addTask(Task.MERGE_TO_LAST, SWT.CTRL, 'e');
-        addTask(Task.SPLIT, SWT.ALT, 'v');
+            addTask(Task.UNDO, SWT.CTRL, 'z');
+            addTask(Task.REDO, SWT.CTRL, 'y');
 
-        addTask(Task.LMB, 'k');
-        addTask(Task.MMB, 'm');
-        addTask(Task.RMB, 'l');
+            addTask(Task.SAVE, SWT.CTRL, 's');
 
-        addTask(Task.INSERT_AT_CURSOR, 'i');
+            addTask(Task.SELECT_ALL, SWT.COMMAND, 'a');
+            addTask(Task.SELECT_NONE, SWT.COMMAND | SWT.SHIFT, 'a');
+            addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.CTRL | SWT.ALT,  'c');
+            addTask(Task.SELECT_CONNECTED, SWT.ALT, 'c');
+            addTask(Task.SELECT_TOUCHING, SWT.ALT, 't');
 
-        addTask(Task.MODE_X, SWT.F6);
-        addTask(Task.MODE_Y, SWT.F7);
-        addTask(Task.MODE_Z, SWT.F8);
-        addTask(Task.MODE_XY, SWT.F9);
-        addTask(Task.MODE_XZ, SWT.F10);
-        addTask(Task.MODE_YZ, SWT.F11);
-        addTask(Task.MODE_XYZ, SWT.F12);
+            addTask(Task.SELECT_OPTION_WITH_SAME_COLOURS, SWT.ALT, 's');
 
-        addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
-        addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
-        addTask(TextTask.EDITORTEXT_QUICKFIX, SWT.ALT, 'f');
-        addTask(TextTask.EDITORTEXT_SELECTALL, SWT.CTRL, 'a');
-        addTask(TextTask.EDITORTEXT_INLINE, SWT.ALT, 'i');
-        addTask(TextTask.EDITORTEXT_ROUND, SWT.ALT, 'c');
+            addTask(Task.FLIP_ROTATE_VERTICES, 'f');
+            addTask(Task.MERGE_TO_AVERAGE, SWT.COMMAND, 'w');
+            addTask(Task.MERGE_TO_LAST, SWT.COMMAND, 'e');
+            addTask(Task.SPLIT, SWT.ALT, 'v');
 
-        addTask(TextTask.EDITORTEXT_UNDO, SWT.CTRL, 'z');
-        addTask(TextTask.EDITORTEXT_REDO, SWT.CTRL, 'y');
+            addTask(Task.LMB, 'k');
+            addTask(Task.MMB, 'm');
+            addTask(Task.RMB, 'l');
 
-        addTask(TextTask.EDITORTEXT_SAVE, SWT.CTRL, 's');
+            addTask(Task.INSERT_AT_CURSOR, 'i');
 
-        addTask(TextTask.EDITORTEXT_FIND, SWT.CTRL, 'f');
+            addTask(Task.MODE_X, SWT.F6);
+            addTask(Task.MODE_Y, SWT.F7);
+            addTask(Task.MODE_Z, SWT.F8);
+            addTask(Task.MODE_XY, SWT.F9);
+            addTask(Task.MODE_XZ, SWT.F10);
+            addTask(Task.MODE_YZ, SWT.F11);
+            addTask(Task.MODE_XYZ, SWT.F12);
 
-        addTask(TextTask.EDITORTEXT_INSERT_HISTORY, SWT.CTRL, 'h');
-        addTask(TextTask.EDITORTEXT_INSERT_KEYWORD, SWT.CTRL, 'k');
-        addTask(TextTask.EDITORTEXT_INSERT_REFERENCE, SWT.CTRL, 'r');
+            addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
+            addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
+            addTask(TextTask.EDITORTEXT_QUICKFIX, SWT.ALT, 'f');
+            addTask(TextTask.EDITORTEXT_SELECTALL, SWT.COMMAND, 'a');
+            addTask(TextTask.EDITORTEXT_INLINE, SWT.ALT, 'i');
+            addTask(TextTask.EDITORTEXT_ROUND, SWT.ALT, 'c');
+
+            addTask(TextTask.EDITORTEXT_UNDO, SWT.COMMAND, 'z');
+            addTask(TextTask.EDITORTEXT_REDO, SWT.COMMAND, 'y');
+
+            addTask(TextTask.EDITORTEXT_SAVE, SWT.COMMAND, 's');
+
+            addTask(TextTask.EDITORTEXT_FIND, SWT.COMMAND, 'f');
+
+            addTask(TextTask.EDITORTEXT_INSERT_HISTORY, SWT.COMMAND, 'h');
+            addTask(TextTask.EDITORTEXT_INSERT_KEYWORD, SWT.COMMAND, 'k');
+            addTask(TextTask.EDITORTEXT_INSERT_REFERENCE, SWT.COMMAND, 'r');
+
+        } else {
+
+            reservedKeyCodes.add(SWT.ARROW_UP + ""); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_RIGHT + ""); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_DOWN + ""); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_LEFT + ""); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_DOWN + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add(SWT.ARROW_LEFT + "+Ctrl"); //$NON-NLS-1$
+
+            reservedKeyCodes.add(SWT.DEL + ""); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'x' + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'c' + "+Ctrl"); //$NON-NLS-1$
+            reservedKeyCodes.add((int) 'v' + "+Ctrl"); //$NON-NLS-1$
+
+            addTask(Task.TRANSFORM_UP, SWT.ARROW_UP);
+            addTask(Task.TRANSFORM_RIGHT, SWT.ARROW_RIGHT);
+            addTask(Task.TRANSFORM_DOWN, SWT.ARROW_DOWN);
+            addTask(Task.TRANSFORM_LEFT, SWT.ARROW_LEFT);
+            addTask(Task.TRANSFORM_UP_COPY, SWT.CTRL, SWT.ARROW_UP);
+            addTask(Task.TRANSFORM_RIGHT_COPY, SWT.CTRL, SWT.ARROW_RIGHT);
+            addTask(Task.TRANSFORM_DOWN_COPY, SWT.CTRL, SWT.ARROW_DOWN);
+            addTask(Task.TRANSFORM_LEFT_COPY, SWT.CTRL, SWT.ARROW_LEFT);
+
+            addTask(Task.DELETE, SWT.DEL);
+            addTask(Task.ESC, SWT.ESC);
+            addTask(Task.COPY, SWT.CTRL, 'c');
+            addTask(Task.CUT, SWT.CTRL, 'x');
+            addTask(Task.PASTE, SWT.CTRL, 'v');
+
+            addTask(Task.OBJ_VERTEX, SWT.F2);
+            addTask(Task.OBJ_FACE, SWT.F3);
+            addTask(Task.OBJ_LINE, SWT.F4);
+            addTask(Task.OBJ_PRIMITIVE, SWT.F5);
+
+            addTask(Task.MODE_SELECT, '1');
+            addTask(Task.MODE_MOVE, '2');
+            addTask(Task.MODE_ROTATE,'3');
+            addTask(Task.MODE_SCALE, '4');
+            addTask(Task.MODE_COMBINED, 'c');
+
+            addTask(Task.MOVE_TO_AVG, 'a');
+
+            addTask(Task.ADD_VERTEX, '5');
+            addTask(Task.ADD_TRIANGLE, '6');
+            addTask(Task.ADD_QUAD, '7');
+            addTask(Task.ADD_LINE, '8');
+            addTask(Task.ADD_CONDLINE, '9');
+            addTask(Task.ADD_DISTANCE, 'd');
+            addTask(Task.ADD_PROTRACTOR, 'p');
+            addTask(Task.ADD_COMMENTS, '0');
+
+            addTask(Task.ZOOM_IN,  '+');
+            addTask(Task.ZOOM_OUT,  '-');
+            addTask(Task.RESET_VIEW, SWT.CTRL, 'r');
+            addTask(Task.SHOW_GRID, SWT.CTRL, 'g');
+            addTask(Task.SHOW_RULER, SWT.CTRL, 'l');
+
+            addTask(Task.UNDO, SWT.CTRL, 'z');
+            addTask(Task.REDO, SWT.CTRL, 'y');
+
+            addTask(Task.SAVE, SWT.CTRL, 's');
+
+            addTask(Task.SELECT_ALL, SWT.CTRL, 'a');
+            addTask(Task.SELECT_NONE, SWT.CTRL | SWT.SHIFT, 'a');
+            addTask(Task.SELECT_ALL_WITH_SAME_COLOURS, SWT.CTRL | SWT.ALT,  'c');
+            addTask(Task.SELECT_CONNECTED, SWT.ALT, 'c');
+            addTask(Task.SELECT_TOUCHING, SWT.ALT, 't');
+
+            addTask(Task.SELECT_OPTION_WITH_SAME_COLOURS, SWT.ALT, 's');
+
+            addTask(Task.FLIP_ROTATE_VERTICES, 'f');
+            addTask(Task.MERGE_TO_AVERAGE, SWT.CTRL, 'w');
+            addTask(Task.MERGE_TO_LAST, SWT.CTRL, 'e');
+            addTask(Task.SPLIT, SWT.ALT, 'v');
+
+            addTask(Task.LMB, 'k');
+            addTask(Task.MMB, 'm');
+            addTask(Task.RMB, 'l');
+
+            addTask(Task.INSERT_AT_CURSOR, 'i');
+
+            addTask(Task.MODE_X, SWT.F6);
+            addTask(Task.MODE_Y, SWT.F7);
+            addTask(Task.MODE_Z, SWT.F8);
+            addTask(Task.MODE_XY, SWT.F9);
+            addTask(Task.MODE_XZ, SWT.F10);
+            addTask(Task.MODE_YZ, SWT.F11);
+            addTask(Task.MODE_XYZ, SWT.F12);
+
+            addTask(TextTask.EDITORTEXT_REPLACE_VERTEX, SWT.ALT | SWT.SHIFT, 'r');
+            addTask(TextTask.EDITORTEXT_ESC, SWT.ESC);
+            addTask(TextTask.EDITORTEXT_QUICKFIX, SWT.ALT, 'f');
+            addTask(TextTask.EDITORTEXT_SELECTALL, SWT.CTRL, 'a');
+            addTask(TextTask.EDITORTEXT_INLINE, SWT.ALT, 'i');
+            addTask(TextTask.EDITORTEXT_ROUND, SWT.ALT, 'c');
+
+            addTask(TextTask.EDITORTEXT_UNDO, SWT.CTRL, 'z');
+            addTask(TextTask.EDITORTEXT_REDO, SWT.CTRL, 'y');
+
+            addTask(TextTask.EDITORTEXT_SAVE, SWT.CTRL, 's');
+
+            addTask(TextTask.EDITORTEXT_FIND, SWT.CTRL, 'f');
+
+            addTask(TextTask.EDITORTEXT_INSERT_HISTORY, SWT.CTRL, 'h');
+            addTask(TextTask.EDITORTEXT_INSERT_KEYWORD, SWT.CTRL, 'k');
+            addTask(TextTask.EDITORTEXT_INSERT_REFERENCE, SWT.CTRL, 'r');
+
+        }
     }
 
     /** Indicates that SHIFT is pressed */
@@ -293,7 +407,7 @@ public class KeyStateManager {
                 sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(cmdPressed ? "+\u2318" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 final String key = sb.toString();
                 final Task t = taskMap.get(key);
                 if (t != null) {
@@ -776,7 +890,7 @@ public class KeyStateManager {
         sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
         sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
         sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
-        sb.append(cmdPressed ? "+\u2318" : ""); //$NON-NLS-1$//$NON-NLS-2$
+        sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
         s[0] = sb.toString();
         Event event = new Event();
         event.keyCode = keyCode;
