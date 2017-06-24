@@ -306,7 +306,7 @@ public class MouseActions {
             float rx = 0;
             float ry = 0;
 
-            if (keyboard.isCtrlPressed()) {
+            if (keyboard.isCtrlPressed() || (Cocoa.isCocoa && keyboard.isShiftPressed())) {
                 if (c3d.hasNegDeterminant()) {
                     rx = (float) (Math.atan2(-cSize.y / 2f + old_mouse_position.y, -cSize.x / 2f + old_mouse_position.x)
                             - Math.atan2(-cSize.y / 2f + event.y, -cSize.x / 2f + event.x));
@@ -348,7 +348,7 @@ public class MouseActions {
             if (!keyboard.isShiftPressed()) {
                 dx = (old_mouse_position.x - event.x) / viewport_pixel_per_ldu;
             }
-            if (!keyboard.isCtrlPressed() || Editor3DWindow.getWindow().isAddingSomething()) {
+            if (!(keyboard.isCtrlPressed() || (Cocoa.isCocoa && keyboard.isCmdPressed())) || Editor3DWindow.getWindow().isAddingSomething()) {
                 dy = (event.y - old_mouse_position.y) / viewport_pixel_per_ldu;
             }
             Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
