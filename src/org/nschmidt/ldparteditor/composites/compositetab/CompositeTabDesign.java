@@ -56,6 +56,8 @@ class CompositeTabDesign extends CTabItem {
     /** The menu of this composite */
     final Menu[] menu = new Menu[1];
 
+    final MenuItem[] mntm_DrawSelection = new MenuItem[1];
+
     final MenuItem[] mntm_Copy = new MenuItem[1];
     final MenuItem[] mntm_Cut = new MenuItem[1];
     final MenuItem[] mntm_Delete = new MenuItem[1];
@@ -243,6 +245,14 @@ class CompositeTabDesign extends CTabItem {
 
             this.menu[0] = new Menu(compositeText);
             compositeText.setMenu(this.menu[0]);
+
+            MenuItem mntmDrawSelection = new MenuItem(menu[0], I18n.I18N_RTL());
+            mntmDrawSelection.setText(I18n.EDITORTEXT_DrawSelection);
+            mntmDrawSelection.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
+            mntm_DrawSelection[0] = mntmDrawSelection;
+
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator0 = new MenuItem(menu[0], SWT.SEPARATOR);
 
             MenuItem mntmCut = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmCut.setText(I18n.COPYNPASTE_Cut);
