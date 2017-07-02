@@ -375,6 +375,10 @@ public class UserSettingState implements Serializable {
     private int[] text_foreground_g = null;
     private int[] text_foreground_b = null;
 
+    private int[] text_foreground_hidden_r = null;
+    private int[] text_foreground_hidden_g = null;
+    private int[] text_foreground_hidden_b = null;
+
     private float[] cursor1_Colour_r = null;
     private float[] cursor1_Colour_g = null;
     private float[] cursor1_Colour_b = null;
@@ -1041,6 +1045,10 @@ public class UserSettingState implements Serializable {
         text_foreground_g = new int[]{Colour.text_foreground[0].getGreen()};
         text_foreground_b = new int[]{Colour.text_foreground[0].getBlue()};
 
+        text_foreground_hidden_r = new int[]{Colour.text_foreground_hidden[0].getRed()};
+        text_foreground_hidden_g = new int[]{Colour.text_foreground_hidden[0].getGreen()};
+        text_foreground_hidden_b = new int[]{Colour.text_foreground_hidden[0].getBlue()};
+
         cursor1_Colour_r = View.cursor1_Colour_r;
         cursor1_Colour_g = View.cursor1_Colour_g;
         cursor1_Colour_b = View.cursor1_Colour_b;
@@ -1306,6 +1314,10 @@ public class UserSettingState implements Serializable {
 
         if (text_foreground_r != null) {
             Colour.text_foreground[0] = SWTResourceManager.getColor(text_foreground_r[0], text_foreground_g[0], text_foreground_b[0]);
+        }
+
+        if (text_foreground_hidden_r != null) {
+            Colour.text_foreground_hidden[0] = SWTResourceManager.getColor(text_foreground_hidden_r[0], text_foreground_hidden_g[0], text_foreground_hidden_b[0]);
         }
     }
 

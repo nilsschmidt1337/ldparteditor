@@ -371,6 +371,7 @@ class OptionsDesign extends ApplicationWindow {
 
                 registerColour(trtm_EditorText, I18n.COLOUR_TextEditorBGColour, ColourType.SWT_COLOUR, Colour.text_background);
                 registerColour(trtm_EditorText, I18n.COLOUR_TextEditorFGColour, ColourType.SWT_COLOUR, Colour.text_foreground);
+                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorFGColourHidden, ColourType.SWT_COLOUR, Colour.text_foreground_hidden);
                 registerColour(trtm_EditorText, I18n.COLOUR_TextEditorSelectedBGColour, ColourType.SWT_COLOUR, Colour.line_highlight_selected_background);
                 registerColour(trtm_EditorText, I18n.COLOUR_TextEditorHighlightBGColour, ColourType.SWT_COLOUR, Colour.line_highlight_background);
                 registerColour(trtm_EditorText, I18n.COLOUR_TextEditorCommentColour, ColourType.SWT_COLOUR, Colour.line_comment_font);

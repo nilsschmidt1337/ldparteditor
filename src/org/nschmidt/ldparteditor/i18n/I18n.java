@@ -202,6 +202,7 @@ public final class I18n {
     public static final String COLOUR_TextEditorCommentColour = COLOUR.getString(getProperty());
     public static final String COLOUR_TextEditorErrorUnderlineColour = COLOUR.getString(getProperty());
     public static final String COLOUR_TextEditorFGColour = COLOUR.getString(getProperty());
+    public static final String COLOUR_TextEditorFGColourHidden = COLOUR.getString(getProperty());
     public static final String COLOUR_TextEditorHighlightBGColour = COLOUR.getString(getProperty());
     public static final String COLOUR_TextEditorHintUnderlineColour = COLOUR.getString(getProperty());
     public static final String COLOUR_TextEditorPrimaryColour = COLOUR.getString(getProperty());
