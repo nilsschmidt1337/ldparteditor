@@ -80,9 +80,11 @@ import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
+import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.compositetext.QuickFixer;
+import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
 import org.nschmidt.ldparteditor.helpers.compositetext.VertexMarker;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -1630,6 +1632,33 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 state.folder[0].paste();
+            }
+        });
+
+        mntm_DrawSelection[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (!state.getFileNameObj().getVertexManager().isUpdated()){
+                    return;
+                }
+                final DatFile df = state.getFileNameObj();
+                final VertexManager vm = df.getVertexManager();
+                vm.addSnapshot();
+                vm.showAll();
+                final StyledText st = getTextComposite();
+                int s1 = st.getSelectionRange().x;
+                int s2 = s1 + st.getSelectionRange().y;
+                int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                fromLine++;
+                toLine++;
+                Text2SelectionConverter.convert(fromLine, toLine, df);
+                vm.selectInverse(new SelectorSettings());
+                vm.hideSelection();
+                Text2SelectionConverter.convert(fromLine, toLine, df);
+                df.addHistory();
+                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                st.forceFocus();
             }
         });
     }
