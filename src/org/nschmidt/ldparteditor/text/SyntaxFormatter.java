@@ -80,7 +80,7 @@ public class SyntaxFormatter {
      */
     public void format(LineStyleEvent e,
             BigDecimal VX, BigDecimal VY, BigDecimal VZ,
-            float replaceEpsilon, boolean replaceVertex, boolean isSelected, boolean isDuplicate,
+            float replaceEpsilon, boolean replaceVertex, boolean isSelected, boolean isDuplicate, boolean isVisible,
             DatFile df) {
 
         ArrayList<StyleRange> styles = new ArrayList<StyleRange>();
@@ -155,6 +155,11 @@ public class SyntaxFormatter {
             errStyleRange.underlineStyle = SWT.UNDERLINE_ERROR;
             styles.add(errStyleRange);
             break;
+        }
+        if (!isVisible) {
+            for (StyleRange sr : styles) {
+                sr.foreground = Colour.text_foreground_hidden[0];
+            }
         }
         if (isSelected) {
             for (StyleRange sr : styles) {

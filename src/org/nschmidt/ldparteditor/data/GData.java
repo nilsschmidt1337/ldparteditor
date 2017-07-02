@@ -157,6 +157,10 @@ public abstract class GData implements IGData, Comparable<GData> {
         return result;
     }
 
+    public boolean isVisible() {
+        return visible;
+    }
+
     /*
      * MARK Only for GC debugging!
      *

@@ -179,7 +179,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
                 syntaxFormatter.format(e,
                         BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-                        0f, false, isSelected, GData.CACHE_duplicates.containsKey(data), df);
+                        0f, false, isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), df);
             }
         });
 

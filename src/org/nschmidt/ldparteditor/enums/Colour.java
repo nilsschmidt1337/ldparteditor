@@ -52,6 +52,8 @@ public enum Colour {
     public static org.eclipse.swt.graphics.Color[] text_background = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(255, 255, 255)};
     /** The main foreground colour of the text */
     public static org.eclipse.swt.graphics.Color[] text_foreground = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(0, 0, 0)};
+    /** The main foreground colour of the text from hidden objects */
+    public static org.eclipse.swt.graphics.Color[] text_foreground_hidden = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(240, 240, 240)};
 
     /**
      * Disposes all colours
@@ -70,6 +72,7 @@ public enum Colour {
         line_box_font[0].dispose();
         text_background[0].dispose();
         text_foreground[0].dispose();
+        text_foreground_hidden[0].dispose();
     }
 
     /**
