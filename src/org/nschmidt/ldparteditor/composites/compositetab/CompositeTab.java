@@ -1661,6 +1661,30 @@ public class CompositeTab extends CompositeTabDesign {
                 st.forceFocus();
             }
         });
+
+        mntm_DrawUntilSelection[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (!state.getFileNameObj().getVertexManager().isUpdated()){
+                    return;
+                }
+                final DatFile df = state.getFileNameObj();
+                final VertexManager vm = df.getVertexManager();
+                vm.addSnapshot();
+                vm.showAll();
+                final StyledText st = getTextComposite();
+                int s1 = st.getSelectionRange().x;
+                int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                int toLine = st.getLineCount();
+                fromLine++;
+                Text2SelectionConverter.convert(fromLine, toLine, df);
+                vm.hideSelection();
+                Text2SelectionConverter.convert(1, Math.max(1, fromLine - 1), df);
+                df.addHistory();
+                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                st.forceFocus();
+            }
+        });
     }
 
     /**
