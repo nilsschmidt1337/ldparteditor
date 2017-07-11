@@ -1677,9 +1677,11 @@ public class CompositeTab extends CompositeTabDesign {
                 int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
                 int toLine = st.getLineCount();
                 fromLine++;
-                Text2SelectionConverter.convert(fromLine, toLine, df);
-                vm.hideSelection();
-                Text2SelectionConverter.convert(1, Math.max(1, fromLine - 1), df);
+                if (Math.min(fromLine, toLine) != toLine) {
+                    Text2SelectionConverter.convert(Math.min(fromLine + 1, toLine), toLine, df);
+                    vm.hideSelection();
+                }
+                Text2SelectionConverter.convert(1, fromLine, df);
                 df.addHistory();
                 st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
                 st.forceFocus();
