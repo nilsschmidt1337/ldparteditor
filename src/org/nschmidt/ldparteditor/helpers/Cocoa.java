@@ -23,7 +23,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 public enum Cocoa {
     INSTANCE;
 
-    public static final boolean isCocoa = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$ FIXME remove "!"
+    public static final boolean isCocoa = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
 
     public static int getSytle() {
         return isCocoa ? SWT.FLAT : SWT.NONE;
