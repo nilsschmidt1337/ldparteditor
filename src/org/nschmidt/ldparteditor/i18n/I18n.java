@@ -690,6 +690,7 @@ public final class I18n {
     public static final String EDITORTEXT_Error = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Errors = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_FindReplace = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_Hide = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Inline1 = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Inline2 = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Inline3 = EDITORTEXT.getString(getProperty());
@@ -700,6 +701,7 @@ public final class I18n {
     public static final String EDITORTEXT_ReadOnly = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_RemoveDuplicates = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Round = EDITORTEXT.getString(getProperty());
+    public static final String EDITORTEXT_Show = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_ShowHideErrorTab = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_ShowSelectionIn3D = EDITORTEXT.getString(getProperty());
     public static final String EDITORTEXT_Sort = EDITORTEXT.getString(getProperty());

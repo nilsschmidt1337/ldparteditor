@@ -1687,6 +1687,54 @@ public class CompositeTab extends CompositeTabDesign {
                 st.forceFocus();
             }
         });
+
+        mntm_HideSelection[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (!state.getFileNameObj().getVertexManager().isUpdated()){
+                    return;
+                }
+                final DatFile df = state.getFileNameObj();
+                final VertexManager vm = df.getVertexManager();
+                vm.addSnapshot();
+                final StyledText st = getTextComposite();
+                int s1 = st.getSelectionRange().x;
+                int s2 = s1 + st.getSelectionRange().y;
+                int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                fromLine++;
+                toLine++;
+                Text2SelectionConverter.convert(fromLine, toLine, df);
+                vm.hideSelection();
+                df.addHistory();
+                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                st.forceFocus();
+            }
+        });
+
+        mntm_ShowSelection[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (!state.getFileNameObj().getVertexManager().isUpdated()){
+                    return;
+                }
+                final DatFile df = state.getFileNameObj();
+                final VertexManager vm = df.getVertexManager();
+                vm.addSnapshot();
+                final StyledText st = getTextComposite();
+                int s1 = st.getSelectionRange().x;
+                int s2 = s1 + st.getSelectionRange().y;
+                int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                fromLine++;
+                toLine++;
+                Text2SelectionConverter.convert(fromLine, toLine, df);
+                vm.showSelection();
+                df.addHistory();
+                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                st.forceFocus();
+            }
+        });
     }
 
     /**

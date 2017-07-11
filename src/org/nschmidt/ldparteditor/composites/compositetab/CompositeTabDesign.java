@@ -56,6 +56,8 @@ class CompositeTabDesign extends CTabItem {
     /** The menu of this composite */
     final Menu[] menu = new Menu[1];
 
+    final MenuItem[] mntm_HideSelection = new MenuItem[1];
+    final MenuItem[] mntm_ShowSelection = new MenuItem[1];
     final MenuItem[] mntm_DrawSelection = new MenuItem[1];
     final MenuItem[] mntm_DrawUntilSelection = new MenuItem[1];
 
@@ -247,18 +249,29 @@ class CompositeTabDesign extends CTabItem {
             this.menu[0] = new Menu(compositeText);
             compositeText.setMenu(this.menu[0]);
 
+            MenuItem mntmHide = new MenuItem(menu[0], I18n.I18N_RTL());
+            mntmHide.setText(I18n.EDITORTEXT_Hide);
+            mntmHide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
+            mntm_HideSelection[0] = mntmHide;
+
+            MenuItem mntmShowSelection = new MenuItem(menu[0], I18n.I18N_RTL());
+            mntmShowSelection.setText(I18n.EDITORTEXT_Show);
+            mntmShowSelection.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
+            mntm_ShowSelection[0] = mntmShowSelection;
+
+            @SuppressWarnings("unused")
+            final MenuItem mntmSeparator0 = new MenuItem(menu[0], SWT.SEPARATOR);
+
             MenuItem mntmDrawSelection = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmDrawSelection.setText(I18n.EDITORTEXT_DrawSelection);
-            mntmDrawSelection.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
             mntm_DrawSelection[0] = mntmDrawSelection;
 
             MenuItem mntmDrawUntilSelection = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmDrawUntilSelection.setText(I18n.EDITORTEXT_DrawUntilSelection);
-            mntmDrawUntilSelection.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
             mntm_DrawUntilSelection[0] = mntmDrawUntilSelection;
 
             @SuppressWarnings("unused")
-            final MenuItem mntmSeparator0 = new MenuItem(menu[0], SWT.SEPARATOR);
+            final MenuItem mntmSeparator1 = new MenuItem(menu[0], SWT.SEPARATOR);
 
             MenuItem mntmCut = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmCut.setText(I18n.COPYNPASTE_Cut);
