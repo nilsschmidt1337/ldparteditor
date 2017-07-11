@@ -54,6 +54,7 @@ import org.eclipse.swt.custom.CTabFolder2Listener;
 import org.eclipse.swt.custom.CTabFolderEvent;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.FocusEvent;
@@ -2854,6 +2855,14 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (Project.getFileToEdit().getVertexManager().getSelectedData().size() > 0) {
                         Project.getFileToEdit().getVertexManager().addSnapshot();
                         Project.getFileToEdit().getVertexManager().hideSelection();
+                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                            for (CTabItem t : w.getTabFolder().getItems()) {
+                                if (Project.getFileToEdit().equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                    StyledText st = ((CompositeTab) t).getTextComposite();
+                                    st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                                }
+                            }
+                        }
                         Project.getFileToEdit().addHistory();
                     }
                 }
@@ -2866,6 +2875,14 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().showAll();
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (CTabItem t : w.getTabFolder().getItems()) {
+                            if (Project.getFileToEdit().equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                StyledText st = ((CompositeTab) t).getTextComposite();
+                                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                            }
+                        }
+                    }
                     Project.getFileToEdit().addHistory();
                 }
                 regainFocus();
