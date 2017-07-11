@@ -66,9 +66,34 @@ class VM11HideShow extends VM10Selector {
         clearSelection();
     }
 
+    public void showSelection() {
+        for (GData1 data : selectedSubfiles) {
+            show(data);
+        }
+        for (GData2 data : selectedLines) {
+            show(data);
+        }
+        for (GData3 data : selectedTriangles) {
+            show(data);
+        }
+        for (GData4 data : selectedQuads) {
+            show(data);
+        }
+        for (GData5 data : selectedCondlines) {
+            show(data);
+        }
+        hiddenVertices.removeAll(selectedVertices);
+        clearSelection();
+    }
+
     private void hide(GData gdata) {
         gdata.hide();
         hiddenData.add(gdata);
+    }
+
+    private void show(GData gdata) {
+        gdata.show();
+        hiddenData.remove(gdata);
     }
 
     public void showAll() {
