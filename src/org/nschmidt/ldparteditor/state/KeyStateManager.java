@@ -173,6 +173,7 @@ public class KeyStateManager {
             addTask(Task.MODE_COMBINED, 'c');
 
             addTask(Task.MOVE_TO_AVG, 'a');
+            addTask(Task.MOVE_ADJACENT_DATA, 'b');
 
             addTask(Task.ADD_VERTEX, '5');
             addTask(Task.ADD_TRIANGLE, '6');
@@ -274,6 +275,7 @@ public class KeyStateManager {
             addTask(Task.MODE_COMBINED, 'c');
 
             addTask(Task.MOVE_TO_AVG, 'a');
+            addTask(Task.MOVE_ADJACENT_DATA, 'b');
 
             addTask(Task.ADD_VERTEX, '5');
             addTask(Task.ADD_TRIANGLE, '6');
@@ -483,6 +485,9 @@ public class KeyStateManager {
                         break;
                     case MOVE_TO_AVG:
                         win.mntm_Manipulator_2_toAverage();
+                        break;
+                    case MOVE_ADJACENT_DATA:
+                        win.toggleMoveAdjacentData();
                         break;
                     case COLOUR_NUMBER0:
 
