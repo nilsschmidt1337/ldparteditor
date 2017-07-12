@@ -112,4 +112,6 @@ public enum Task {
     TRANSLATE_RIGHT,
     TRANSLATE_DOWN,
     TRANSLATE_LEFT,
+
+    MOVE_ADJACENT_DATA
 }

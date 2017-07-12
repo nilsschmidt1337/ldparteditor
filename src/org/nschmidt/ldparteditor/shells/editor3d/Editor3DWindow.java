@@ -6285,6 +6285,12 @@ public class Editor3DWindow extends Editor3DDesign {
         clickSingleBtn(btn_InsertAtCursorPosition[0]);
     }
 
+    public void toggleMoveAdjacentData() {
+        setMovingAdjacentData(!isMovingAdjacentData());
+        btn_MoveAdjacentData[0].setSelection(isMovingAdjacentData());
+        clickSingleBtn(btn_MoveAdjacentData[0]);
+    }
+
     public void setObjMode(int type) {
         switch (type) {
         case 0:
