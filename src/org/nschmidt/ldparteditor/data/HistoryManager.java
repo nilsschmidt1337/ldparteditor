@@ -498,8 +498,12 @@ public class HistoryManager {
         }
 
         if (hiddenSelection != null) {
-            vm.hiddenData.clear();
-            vm.restoreHideShowState(hiddenSelection);
+            if (hiddenSelection.isEmpty() && !vm.hiddenData.isEmpty()) {
+                vm.showAll();
+            } else {
+                vm.hiddenData.clear();
+                vm.restoreHideShowState(hiddenSelection);
+            }
         }
         if (selection != null) {
             vm.restoreSelectedDataState(selection);
