@@ -85,7 +85,7 @@ class EditorTextDesign extends ApplicationWindow {
     final Button[] btn_Palette = new Button[1];
 
     final Button[] btn_Hide = new Button[1];
-    final Button[] btn_ShowAll = new Button[1];
+    final Button[] btn_Show = new Button[1];
 
     final Button[] btn_Cut = new Button[1];
     final Button[] btn_Copy = new Button[1];
@@ -432,14 +432,14 @@ class EditorTextDesign extends ApplicationWindow {
         {
             Button btn_Hide = new Button(toolItem_HideUnhide, Cocoa.getSytle());
             this.btn_Hide[0] = btn_Hide;
-            btn_Hide.setToolTipText(I18n.E3D_Hide);
+            btn_Hide.setToolTipText(I18n.EDITORTEXT_Hide);
             btn_Hide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Unhide = new Button(toolItem_HideUnhide, Cocoa.getSytle());
-            this.btn_ShowAll[0] = btn_Unhide;
-            btn_Unhide.setToolTipText(I18n.E3D_ShowAll);
-            btn_Unhide.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
+            Button btn_Show = new Button(toolItem_HideUnhide, Cocoa.getSytle());
+            this.btn_Show[0] = btn_Show;
+            btn_Show.setToolTipText(I18n.EDITORTEXT_Show);
+            btn_Show.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
         }
         ToolItem toolItem_UndoRedo = new ToolItem(toolBar, Cocoa.getSytle(), true);
         {

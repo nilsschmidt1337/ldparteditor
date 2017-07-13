@@ -1191,6 +1191,26 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
+        btn_Hide[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selectedTab = (CompositeTab) tabFolder[0].getSelection();
+                if (selectedTab != null) {
+                    selectedTab.hideSelection();
+                }
+            }
+        });
+
+        btn_Show[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                CompositeTab selectedTab = (CompositeTab) tabFolder[0].getSelection();
+                if (selectedTab != null) {
+                    selectedTab.showSelection();
+                }
+            }
+        });
+
         tabFolder[0].addCTabFolder2Listener(new CTabFolder2Listener() {
 
             @Override
