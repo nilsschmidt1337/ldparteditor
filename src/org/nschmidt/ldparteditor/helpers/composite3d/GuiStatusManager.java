@@ -23,6 +23,7 @@ import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
@@ -61,26 +62,7 @@ public enum GuiStatusManager {
 
         final VertexManager vm = c3d.getVertexManager();
         final Set<Vertex> vs;
-
-        int selectedObjectCount = 0;
-        int selectedSubfileCount = vm.getSelectedSubfiles().size();
-        int selectedLineCount = vm.getSelectedLines().size();
-        int selectedTriangleCount = vm.getSelectedTriangles().size();
-        int selectedQuadCount = vm.getSelectedQuads().size();
-        int selectedCondlineCount = vm.getSelectedCondlines().size();
-        int selectedVerticesCount = vm.getSelectedVertices().size();
-        selectedObjectCount = selectedSubfileCount + selectedLineCount + selectedTriangleCount + selectedQuadCount + selectedCondlineCount + selectedVerticesCount;
-        if (selectedObjectCount > 0) {
-            boolean needsComma = false;
-            sb.append("("); //$NON-NLS-1$
-            needsComma = appendSelectionInfo(sb, "Vertex", "Vertices", selectedVerticesCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            needsComma = appendSelectionInfo(sb, "Line", "Lines", selectedLineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            needsComma = appendSelectionInfo(sb, "Triangle", "Triangles", selectedTriangleCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            needsComma = appendSelectionInfo(sb, "Quad", "Quads", selectedQuadCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            needsComma = appendSelectionInfo(sb, "Condline", "Condlines", selectedCondlineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            needsComma = appendSelectionInfo(sb, "Subfile", "Subfiles", selectedSubfileCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
-            sb.append(") "); //$NON-NLS-1$
-        }
+        updateSelection(sb, vm);
         if ((vs = vm.getSelectedVertices()).size() == 1) {
             try {
                 Vertex v = vs.iterator().next();
@@ -142,10 +124,43 @@ public enum GuiStatusManager {
         // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
     }
 
+    public static synchronized void updateStatus(DatFile df) {
+        final StringBuilder sb = new StringBuilder();
+        final VertexManager vm = df.getVertexManager();
+        updateSelection(sb, vm);
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(df.getShortName());
+        Editor3DWindow.getStatusLabel().setText(sb.toString());
+        Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
+    }
+
     public static void updateStatus() {
         Editor3DWindow.getStatusLabel().setText(I18n.E3D_NoFileSelected);
         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
         Editor3DWindow.getStatusLabel().update();
+    }
+
+    private static void updateSelection(StringBuilder sb, VertexManager vm) {
+        int selectedObjectCount = 0;
+        int selectedSubfileCount = vm.getSelectedSubfiles().size();
+        int selectedLineCount = vm.getSelectedLines().size();
+        int selectedTriangleCount = vm.getSelectedTriangles().size();
+        int selectedQuadCount = vm.getSelectedQuads().size();
+        int selectedCondlineCount = vm.getSelectedCondlines().size();
+        int selectedVerticesCount = vm.getSelectedVertices().size();
+        selectedObjectCount = selectedSubfileCount + selectedLineCount + selectedTriangleCount + selectedQuadCount + selectedCondlineCount + selectedVerticesCount;
+        if (selectedObjectCount > 0) {
+            boolean needsComma = false;
+            sb.append("("); //$NON-NLS-1$
+            needsComma = appendSelectionInfo(sb, "Vertex", "Vertices", selectedVerticesCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Line", "Lines", selectedLineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Triangle", "Triangles", selectedTriangleCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Quad", "Quads", selectedQuadCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Condline", "Condlines", selectedCondlineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Subfile", "Subfiles", selectedSubfileCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            sb.append(") "); //$NON-NLS-1$
+        }
     }
 
     private static boolean appendSelectionInfo(StringBuilder sb, String singular, String plural, int count, boolean needsComma) {
