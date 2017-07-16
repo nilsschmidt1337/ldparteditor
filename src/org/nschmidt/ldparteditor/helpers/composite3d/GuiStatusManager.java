@@ -73,12 +73,12 @@ public enum GuiStatusManager {
         if (selectedObjectCount > 0) {
             boolean needsComma = false;
             sb.append("("); //$NON-NLS-1$
-            needsComma = appendSelectionInfo(sb, "Vertex", "Vertices", selectedVerticesCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
-            needsComma = appendSelectionInfo(sb, "Line", "Lines", selectedLineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
-            needsComma = appendSelectionInfo(sb, "Triangle", "Triangles", selectedTriangleCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
-            needsComma = appendSelectionInfo(sb, "Quad", "Quads", selectedQuadCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
-            needsComma = appendSelectionInfo(sb, "Condline", "Condlines", selectedCondlineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
-            needsComma = appendSelectionInfo(sb, "Subfile", "Subfiles", selectedSubfileCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
+            needsComma = appendSelectionInfo(sb, "Vertex", "Vertices", selectedVerticesCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Line", "Lines", selectedLineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Triangle", "Triangles", selectedTriangleCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Quad", "Quads", selectedQuadCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Condline", "Condlines", selectedCondlineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
+            needsComma = appendSelectionInfo(sb, "Subfile", "Subfiles", selectedSubfileCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$ FIXME !i18n!
             sb.append(") "); //$NON-NLS-1$
         }
         if ((vs = vm.getSelectedVertices()).size() == 1) {
