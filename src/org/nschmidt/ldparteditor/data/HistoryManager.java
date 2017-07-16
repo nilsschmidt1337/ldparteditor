@@ -32,6 +32,7 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -579,6 +580,7 @@ public class HistoryManager {
         df.getVertexManager().setSelectedBgPicture(null);
         df.getVertexManager().setSelectedBgPictureIndex(0);
         Editor3DWindow.getWindow().updateBgPictureTab();
+        GuiStatusManager.updateStatus(df);
         NLogger.debug(getClass(), "done."); //$NON-NLS-1$
     }
 
