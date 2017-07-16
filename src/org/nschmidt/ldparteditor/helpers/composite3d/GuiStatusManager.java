@@ -61,6 +61,26 @@ public enum GuiStatusManager {
 
         final VertexManager vm = c3d.getVertexManager();
         final Set<Vertex> vs;
+
+        int selectedObjectCount = 0;
+        int selectedSubfileCount = vm.getSelectedSubfiles().size();
+        int selectedLineCount = vm.getSelectedLines().size();
+        int selectedTriangleCount = vm.getSelectedTriangles().size();
+        int selectedQuadCount = vm.getSelectedQuads().size();
+        int selectedCondlineCount = vm.getSelectedCondlines().size();
+        int selectedVerticesCount = vm.getSelectedVertices().size();
+        selectedObjectCount = selectedSubfileCount + selectedLineCount + selectedTriangleCount + selectedQuadCount + selectedCondlineCount + selectedVerticesCount;
+        if (selectedObjectCount > 0) {
+            boolean needsComma = false;
+            sb.append("("); //$NON-NLS-1$
+            needsComma = appendSelectionInfo(sb, "Vertex", "Vertices", selectedVerticesCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
+            needsComma = appendSelectionInfo(sb, "Line", "Lines", selectedLineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
+            needsComma = appendSelectionInfo(sb, "Triangle", "Triangles", selectedTriangleCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
+            needsComma = appendSelectionInfo(sb, "Quad", "Quads", selectedQuadCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
+            needsComma = appendSelectionInfo(sb, "Condline", "Condlines", selectedCondlineCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
+            needsComma = appendSelectionInfo(sb, "Subfile", "Subfiles", selectedSubfileCount, needsComma); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append(") "); //$NON-NLS-1$
+        }
         if ((vs = vm.getSelectedVertices()).size() == 1) {
             try {
                 Vertex v = vs.iterator().next();
@@ -126,6 +146,23 @@ public enum GuiStatusManager {
         Editor3DWindow.getStatusLabel().setText(I18n.E3D_NoFileSelected);
         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
         Editor3DWindow.getStatusLabel().update();
+    }
+
+    private static boolean appendSelectionInfo(StringBuilder sb, String singular, String plural, int count, boolean needsComma) {
+        boolean doAppend = count > 0;
+        if (doAppend) {
+            if (needsComma) {
+                sb.append(", "); //$NON-NLS-1$
+            }
+            sb.append(count);
+            sb.append(" "); //$NON-NLS-1$
+            if (count == 1) {
+                sb.append(singular);
+            } else {
+                sb.append(plural);
+            }
+        }
+        return doAppend;
     }
 
 }
