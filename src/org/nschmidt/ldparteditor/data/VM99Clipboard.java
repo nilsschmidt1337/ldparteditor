@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -31,10 +32,13 @@ import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
+import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -484,6 +488,15 @@ class VM99Clipboard extends VM27YTruder {
 
             // 5. Create text data entry in the OS clipboard
             final StringBuilder cbString = new StringBuilder();
+            final Matrix rotM;
+            {
+                final Composite3D c3d = linkedDatFile.getLastSelectedComposite();
+                if (c3d != null && !c3d.isDisposed()) {
+                    rotM = c3d.getManipulator().getAccurateRotation();
+                } else {
+                    rotM = null;
+                }
+            }
             for (GData data : CLIPBOARD) {
                 if (CLIPBOARD_InvNext.contains(data)) {
                     cbString.append("0 BFC INVERTNEXT"); //$NON-NLS-1$
@@ -492,6 +505,24 @@ class VM99Clipboard extends VM27YTruder {
                     cbString.append(StringHelper.getLineDelimiter());
                 } else {
                     cbString.append(data.toString());
+                    cbString.append(StringHelper.getLineDelimiter());
+                }
+                if (data.type() == 2 && !((GData2) data).isLine) {
+                    GData2 gd2 = (GData2) data;
+                    BigDecimal dx = gd2.X1.subtract(gd2.X2);
+                    BigDecimal dy = gd2.Y1.subtract(gd2.Y2);
+                    BigDecimal dz = gd2.Z1.subtract(gd2.Z2);
+                    if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.LOCAL && rotM != null) {
+                        Vector3d tr = rotM.transform(new Vector3d(dx, dy, dz));
+                        dx = tr.X;
+                        dy = tr.Y;
+                        dz = tr.Z;
+                    }
+                    cbString.append("0 //~  DIST: " + bigDecimalToString(gd2.getLength()) + " DX: " + bigDecimalToString(dx) + " DY: " + bigDecimalToString(dy) + " DZ: " + bigDecimalToString(dz)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    cbString.append(StringHelper.getLineDelimiter());
+                } else if (data.type() == 3 && !((GData3) data).isTriangle) {
+                    GData3 gd3 = (GData3) data;
+                    cbString.append("0 //~  ANGLE: " + gd3.getProtractorAngle() + " LENGTH: " + bigDecimalToString(gd3.getProtractorLength()));  //$NON-NLS-1$//$NON-NLS-2$
                     cbString.append(StringHelper.getLineDelimiter());
                 }
             }
@@ -541,6 +572,9 @@ class VM99Clipboard extends VM27YTruder {
             clearSelection();
             if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
                 for (GData g : CLIPBOARD) {
+                    if (g.type() == 0 && g.text.startsWith("0 //~")) { //$NON-NLS-1$
+                        continue;
+                    }
                     Set<String> alreadyParsed = new HashSet<String>();
                     alreadyParsed.add(linkedDatFile.getShortName());
                     if (CLIPBOARD_InvNext.contains(g)) {
