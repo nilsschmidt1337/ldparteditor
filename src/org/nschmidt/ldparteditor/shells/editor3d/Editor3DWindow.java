@@ -124,6 +124,7 @@ import org.nschmidt.ldparteditor.dialogs.intersector.IntersectorDialog;
 import org.nschmidt.ldparteditor.dialogs.isecalc.IsecalcDialog;
 import org.nschmidt.ldparteditor.dialogs.lines2pattern.Lines2PatternDialog;
 import org.nschmidt.ldparteditor.dialogs.logupload.LogUploadDialog;
+import org.nschmidt.ldparteditor.dialogs.meshreducer.MeshReducerDialog;
 import org.nschmidt.ldparteditor.dialogs.newproject.NewProjectDialog;
 import org.nschmidt.ldparteditor.dialogs.options.OptionsDialog;
 import org.nschmidt.ldparteditor.dialogs.partreview.PartReviewDialog;
@@ -170,6 +171,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.MeshReducerSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
@@ -275,6 +277,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private RingsAndConesSettings ris = new RingsAndConesSettings();
     private SelectorSettings sels = new SelectorSettings();
     private TJunctionSettings tjs = new TJunctionSettings();
+    private MeshReducerSettings ms = new MeshReducerSettings();
 
     private boolean updatingPngPictureTab;
     private int pngPictureUpdateCounter = 0;
@@ -4820,7 +4823,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (new TJunctionDialog(getShell(), tjs).open() == IDialogConstants.OK_ID) {
                             VertexManager vm = df.getVertexManager();
                             vm.addSnapshot();
-                            vm.fixTjunctions(tjs.getMode());
+                            vm.fixTjunctions(tjs);
                         }
                         regainFocus();
                         return;
@@ -4837,9 +4840,11 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     DatFile df = c3d.getLockableDatFileReference();
                     if (df.equals(Project.getFileToEdit()) && !df.isReadOnly()) {
-                        VertexManager vm = df.getVertexManager();
-                        vm.addSnapshot();
-                        vm.meshReduce(0);
+                        if (new MeshReducerDialog(getShell(), ms).open() == IDialogConstants.OK_ID) {
+                            VertexManager vm = df.getVertexManager();
+                            vm.addSnapshot();
+                            vm.meshReduce(0, ms);
+                        }
                         regainFocus();
                         return;
                     }

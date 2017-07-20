@@ -112,6 +112,35 @@ class VM03Adjacency extends VM02Add {
         return rval;
     }
 
+    public HashSet<GData> getLinkedSurfacesOfSameColour(Vertex vertex) {
+        HashSet<GData> rval = new HashSet<GData>();
+        Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
+        if (vm != null) {
+            GColour colour = null;
+            getManifestationLock().lock();
+            for (VertexManifestation m : vm) {
+                int type = m.getGdata().type();
+                GColour col = null;
+                if (type == 3) {
+                    GData3 gd = (GData3) m.getGdata();
+                    col = new GColour(gd.colourNumber, gd.r, gd.g, gd.b, gd.a);
+                }
+                if (type == 4) {
+                    GData4 gd = (GData4) m.getGdata();
+                    col = new GColour(gd.colourNumber, gd.r, gd.g, gd.b, gd.a);
+                }
+                if (col != null) {
+                    if (colour == null) colour = col;
+                    if (colour.equals(col)) {
+                        rval.add(m.getGdata());
+                    }
+                }
+            }
+            getManifestationLock().unlock();
+        }
+        return rval;
+    }
+
     public GData2 hasEdge(Vertex v1, Vertex v2) {
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);

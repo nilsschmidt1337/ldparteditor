@@ -67,6 +67,7 @@ public final class I18n {
     private static final ResourceBundle HINTFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.HintFixer", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle EDGER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Edger", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle META = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Meta", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle MESHREDUCE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.MeshReducer", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle INTERSECTOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Intersector", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle ISECALC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Isecalc", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.LOCALE); //$NON-NLS-1$
@@ -804,6 +805,10 @@ public final class I18n {
     public static final String LINES_Hint = LINES.getString(getProperty());
     public static final String LINES_ScopeSelection = LINES.getString(getProperty());
     public static final String LINES_Title = LINES.getString(getProperty());
+    public static final String MESHREDUCE_DestroyColours = MESHREDUCE.getString(getProperty());
+    public static final String MESHREDUCE_KeepColours = MESHREDUCE.getString(getProperty());
+    public static final String MESHREDUCE_Mode = MESHREDUCE.getString(getProperty());
+    public static final String MESHREDUCE_Title = MESHREDUCE.getString(getProperty());
     public static final String META_Author = META.getString(getProperty());
     public static final String META_BackFaceCulling = META.getString(getProperty());
     public static final String META_CSGCompile = META.getString(getProperty());

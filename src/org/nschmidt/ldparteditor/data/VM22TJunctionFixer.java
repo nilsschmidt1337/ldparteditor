@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.TJunctionSettings;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -43,11 +44,12 @@ class VM22TJunctionFixer extends VM21Merger {
         super(linkedDatFile);
     }
 
-    public void fixTjunctions(int mode) {
+    public void fixTjunctions(TJunctionSettings tjs) {
 
+        final int mode = tjs.getMode();
         final boolean calculateDistance = (mode < 2);
         final boolean doMerge = (mode != 0);
-        
+
         linkedDatFile.setDrawSelection(false);
 
         final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());

@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.helpers.composite3d.MeshReducerSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
@@ -44,7 +45,9 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         super(linkedDatFile);
     }
 
-    public void meshReduce(int count) {
+    public void meshReduce(int count, final MeshReducerSettings ms) {
+
+        final boolean ignoreColours = (ms.getMode() == 0);
 
         // FIXME Needs better performance. I have to implement time measurements first.
 
@@ -91,7 +94,12 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                         while (true) {
 
                                             // 1. Ermittle alle angrenzenden Flächen
-                                            final HashSet<GData> surfs = getLinkedSurfaces(v);
+                                            final HashSet<GData> surfs;
+                                            if (ignoreColours) {
+                                                surfs = getLinkedSurfaces(v);
+                                            } else {
+                                                surfs = getLinkedSurfacesOfSameColour(v);
+                                            }
 
                                             // 2. Ermittle alle angrenzenden Punkte
                                             final TreeSet<Vertex> verts = new TreeSet<Vertex>();
@@ -263,7 +271,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         }
 
         if (reduceCount[0] > 0 && newIteration[0] && faceCount != (triangles.size() + quads.size())) {
-            meshReduce(reduceCount[0] + count);
+            meshReduce(reduceCount[0] + count, ms);
             return;
         }
 
