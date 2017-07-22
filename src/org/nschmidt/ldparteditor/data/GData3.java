@@ -77,10 +77,9 @@ public final class GData3 extends GData {
     public final float xn;
     public final float yn;
     public final float zn;
-    public final GData1 parent;
 
     public GData3(final int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, GData1 parent, DatFile datFile, boolean isTriangle) {
-
+        super(parent);
         this.isTriangle = isTriangle;
         this.colourNumber = colourNumber;
         this.r = r;
@@ -99,7 +98,6 @@ public final class GData3 extends GData {
         this.xn = (y3 - y1) * (z2 - z1) - (z3 - z1) * (y2 - y1);
         this.yn = (z3 - z1) * (x2 - x1) - (x3 - x1) * (z2 - z1);
         this.zn = (x3 - x1) * (y2 - y1) - (y3 - y1) * (x2 - x1);
-        this.parent = parent;
         datFile.getVertexManager().add(this);
         this.X1 = new BigDecimal(x1);
         this.Y1 = new BigDecimal(y1);
@@ -114,7 +112,7 @@ public final class GData3 extends GData {
 
     public GData3(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
             BigDecimal z3, GData1 parent, DatFile datFile, boolean isTriangle) {
-
+        super(parent);
         this.isTriangle = isTriangle;
         this.colourNumber = colourNumber;
         this.r = r;
@@ -151,13 +149,12 @@ public final class GData3 extends GData {
         this.x3 = X3.floatValue() * 1000f;
         this.y3 = Y3.floatValue() * 1000f;
         this.z3 = Z3.floatValue() * 1000f;
-        this.parent = parent;
         datFile.getVertexManager().add(this);
 
     }
 
     public GData3(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, Vertex v3, GData1 parent, DatFile datFile, boolean isTriangle) {
-
+        super(parent);
         this.isTriangle = isTriangle;
         this.colourNumber = colourNumber;
         this.r = r;
@@ -185,7 +182,6 @@ public final class GData3 extends GData {
         this.xn = (y3 - y1) * (z2 - z1) - (z3 - z1) * (y2 - y1);
         this.yn = (z3 - z1) * (x2 - x1) - (x3 - x1) * (z2 - z1);
         this.zn = (x3 - x1) * (y2 - y1) - (y3 - y1) * (x2 - x1);
-        this.parent = parent;
         datFile.getVertexManager().add(this);
     }
 
@@ -200,7 +196,7 @@ public final class GData3 extends GData {
      * @param isTriangle
      */
     public GData3(Vertex v1, Vertex v2, Vertex v3, GData1 parent, GColour c, boolean isTriangle) {
-
+        super(parent);
         this.isTriangle = isTriangle;
         this.colourNumber = c.getColourNumber();
         this.r = c.getR();
@@ -228,12 +224,11 @@ public final class GData3 extends GData {
         this.xn = (y3 - y1) * (z2 - z1) - (z3 - z1) * (y2 - y1);
         this.yn = (z3 - z1) * (x2 - x1) - (x3 - x1) * (z2 - z1);
         this.zn = (x3 - x1) * (y2 - y1) - (y3 - y1) * (x2 - x1);
-        this.parent = parent;
     }
 
     public GData3(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
             BigDecimal z3, float x12, float y12, float z12, float x22, float y22, float z22, float x32, float y32, float z32, float xn, float yn, float zn, GData1 parent, DatFile datFile, boolean isTriangle) {
-
+        super(parent);
         this.isTriangle = isTriangle;
         this.colourNumber = colourNumber;
         this.r = r;
@@ -261,7 +256,6 @@ public final class GData3 extends GData {
         this.xn = xn;
         this.yn = yn;
         this.zn = zn;
-        this.parent = parent;
         datFile.getVertexManager().add(this);
 
     }

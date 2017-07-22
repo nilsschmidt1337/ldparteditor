@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
@@ -41,7 +42,7 @@ public class VM00Snapshot extends VM00Base {
     public void loadSnapshot(MemorySnapshot s) {
         if (NLogger.DEBUG) {
             clear();
-            GData0 emptyLine = new GData0(""); //$NON-NLS-1$
+            GData0 emptyLine = new GData0("", View.DUMMY_REFERENCE); //$NON-NLS-1$
             linkedDatFile.getDrawPerLine_NOCLONE().clear();
             linkedDatFile.getDrawChainStart().setNext(emptyLine);
             linkedDatFile.getDrawPerLine_NOCLONE().put(1, emptyLine);

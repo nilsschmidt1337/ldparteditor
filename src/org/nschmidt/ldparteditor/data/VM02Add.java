@@ -48,7 +48,7 @@ class VM02Add extends VM01SelectHelper {
 
     public synchronized GData0 addVertex(Vertex vertex, GData0 vertexTag) {
         if (vertex == null || vertexTag == null) {
-            vertexTag = new GData0("0 !LPE VERTEX 0 0 0"); //$NON-NLS-1$
+            vertexTag = new GData0("0 !LPE VERTEX 0 0 0", View.DUMMY_REFERENCE); //$NON-NLS-1$
             vertex = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
         }
         getManifestationLock().lock();
@@ -320,7 +320,7 @@ class VM02Add extends VM01SelectHelper {
             Project.addUnsavedFile(linkedDatFile);
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         }
-        GDataPNG pic = new GDataPNG(new GDataPNG(text, offset, angleA, angleB, angleC, scale, texturePath).getString(offset, angleA, angleB, angleC, scale, texturePath), offset, angleA, angleB, angleC, scale, texturePath);
+        GDataPNG pic = new GDataPNG(new GDataPNG(text, offset, angleA, angleB, angleC, scale, texturePath, View.DUMMY_REFERENCE).getString(offset, angleA, angleB, angleC, scale, texturePath), offset, angleA, angleB, angleC, scale, texturePath, View.DUMMY_REFERENCE);
         linkedDatFile.addToTailOrInsertAfterCursor(pic);
         setSelectedBgPicture(pic);
         setModified_NoSync();
@@ -776,7 +776,7 @@ class VM02Add extends VM01SelectHelper {
         ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
         GData pasted = result.get(0).getGraphicalData();
         if (pasted == null) {
-            pasted = new GData0(lineToParse);
+            pasted = new GData0(lineToParse, View.DUMMY_REFERENCE);
         }
 
         setModified_NoSync();

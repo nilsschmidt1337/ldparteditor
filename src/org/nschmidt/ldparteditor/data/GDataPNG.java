@@ -50,7 +50,8 @@ public final class GDataPNG extends GData {
 
     private boolean goingToBeReplaced = false;
 
-    public GDataPNG(String text, Vertex offset, BigDecimal angleA, BigDecimal angleB, BigDecimal angleC, Vertex scale, String texturePath) {
+    public GDataPNG(String text, Vertex offset, BigDecimal angleA, BigDecimal angleB, BigDecimal angleC, Vertex scale, String texturePath, GData1 parent) {
+        super(parent);
         this.text = text;
         this.texturePath = texturePath;
         this.texture = new GTexture(TexType.PLANAR, texturePath, null, 0, new Vector3f(), new Vector3f(), new Vector3f(), 0, 0);

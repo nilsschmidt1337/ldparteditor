@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.util.HashMap;
+
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -26,10 +27,8 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
  */
 public final class GDataInit extends GData {
 
-    private final GData1 parent;
-
     public GDataInit(GData1 parent) {
-        this.parent = parent;
+        super(parent);
     }
 
     @Override
@@ -150,9 +149,5 @@ public final class GDataInit extends GData {
         GData.globalFoundTEXMAPStack.clear();
         GData.globalFoundTEXMAPStack.push(false);
         GData.globalTextureStack.clear();
-    }
-
-    public GData1 getParent() {
-        return parent;
     }
 }

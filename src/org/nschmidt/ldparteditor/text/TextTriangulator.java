@@ -47,6 +47,7 @@ import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.PGData3;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -290,7 +291,7 @@ public class TextTriangulator {
 
         if (!places.isEmpty()) {
 
-            GData anchor = new GData0(null);
+            GData anchor = new GData0(null, View.DUMMY_REFERENCE);
 
             // initialize the triangulation with this triangle
             Triangulation triangulation = new Triangulation(tri);

@@ -260,12 +260,12 @@ public enum DatParser {
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
 
         if (line.startsWith(I18n.DATFILE_InlinePrefix)) {
-            result.add(new ParsingResult(new GData0(line)));
+            result.add(new ParsingResult(new GData0(line, parent)));
             result.add(new ParsingResult(I18n.DATPARSER_InliningRelict, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
         } else if (line.startsWith("0 !: ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
             if (newLPEmetaTag == null) {
-                newLPEmetaTag = new GData0(line);
+                newLPEmetaTag = new GData0(line, parent);
                 result.add(new ParsingResult(newLPEmetaTag));
                 result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
             } else {
@@ -274,14 +274,14 @@ public enum DatParser {
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent, datFile);
             if (newLPEmetaTag == null) {
-                newLPEmetaTag = new GData0(line);
+                newLPEmetaTag = new GData0(line, parent);
                 result.add(new ParsingResult(newLPEmetaTag));
                 result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
             } else {
                 result.add(new ParsingResult(newLPEmetaTag));
             }
         } else if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
-            GData0 newLPEmetaTag = new GData0(line);
+            GData0 newLPEmetaTag = new GData0(line, parent);
             result.add(new ParsingResult(newLPEmetaTag));
             result.add(new ParsingResult(I18n.DATPARSER_UnofficialMetaCommand, "[W0D] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
             if (line.startsWith("TODO ", 7)) { //$NON-NLS-1$
@@ -445,7 +445,7 @@ public enum DatParser {
                     }
                     sb.append(data_segments[data_segments.length - 1]);
                     result.remove(0);
-                    final GDataPNG gpng = new GDataPNG(line, offset, a1, a2, a3, scale, sb.toString());
+                    final GDataPNG gpng = new GDataPNG(line, offset, a1, a2, a3, scale, sb.toString(), parent);
                     if (!errorCheckOnly) datFile.getVertexManager().setSelectedBgPicture(gpng);
                     result.add(0, new ParsingResult(gpng));
                     if (!errorCheckOnly) upatePngImages = true;
@@ -453,56 +453,56 @@ public enum DatParser {
             }
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
+                result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT, parent)));
             } else if (line.startsWith("CERTIFY", 6)) { //$NON-NLS-1$
                 if (line.startsWith("CLIP CCW", 14) || line.startsWith("CCW CLIP", 14)) { //$NON-NLS-1$ //$NON-NLS-2$
                     result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP, parent)));
                 } else if (line.startsWith("CLIP CW", 14) || line.startsWith("CW CLIP", 14)) { //$NON-NLS-1$ //$NON-NLS-2$
                     result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
+                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP, parent)));
                 } else if (line.startsWith("CCW", 14)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                    result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP, parent)));
                 } else if (line.startsWith("CW", 14)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
+                    result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP, parent)));
                 } else if (line.startsWith("INVERTNEXT", 14)) { //$NON-NLS-1$
                     result.add(new ParsingResult(I18n.DATPARSER_MLCAD_InvertNext, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT)));
+                    result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT, parent)));
                 } else if (line.startsWith("CLIP", 14)) { //$NON-NLS-1$
                     result.add(new ParsingResult(I18n.DATPARSER_MLCAD_Clip, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.CLIP)));
+                    result.add(new ParsingResult(new GDataBFC(BFC.CLIP, parent)));
                 } else if (line.startsWith("NOCLIP", 14)) { //$NON-NLS-1$
                     result.add(new ParsingResult(I18n.DATPARSER_MLCAD_NoClip, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
-                    result.add(new ParsingResult(new GDataBFC(BFC.NOCLIP)));
+                    result.add(new ParsingResult(new GDataBFC(BFC.NOCLIP, parent)));
                 } else {
-                    result.add(new ParsingResult(new GData0(line)));
+                    result.add(new ParsingResult(new GData0(line, parent)));
                 }
             } else if (line.startsWith("NOCERTIFY", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.NOCERTIFY)));
+                result.add(new ParsingResult(new GDataBFC(BFC.NOCERTIFY, parent)));
             } else if (line.startsWith("CCW", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.CCW)));
+                result.add(new ParsingResult(new GDataBFC(BFC.CCW, parent)));
             } else if (line.startsWith("CW", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.CW)));
+                result.add(new ParsingResult(new GDataBFC(BFC.CW, parent)));
             } else if (line.startsWith("NOCLIP", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.NOCLIP)));
+                result.add(new ParsingResult(new GDataBFC(BFC.NOCLIP, parent)));
             } else if (line.startsWith("CLIP CCW", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP, parent)));
             } else if (line.startsWith("CLIP CW", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
+                result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP, parent)));
             } else if (line.startsWith("CCW CLIP", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP)));
+                result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP, parent)));
             } else if (line.startsWith("CW CLIP", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP)));
+                result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP, parent)));
             } else if (line.startsWith("CLIP", 6)) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GDataBFC(BFC.CLIP)));
+                result.add(new ParsingResult(new GDataBFC(BFC.CLIP, parent)));
             } else {
-                result.add(new ParsingResult(new GData0(line)));
+                result.add(new ParsingResult(new GData0(line, parent)));
             }
         } else {
             if (line.equals("0 STEP")) { //$NON-NLS-1$
-                result.add(new ParsingResult(new GData0(line, true)));
+                result.add(new ParsingResult(new GData0(line, true, parent)));
             } else {
-                result.add(new ParsingResult(new GData0(line)));
+                result.add(new ParsingResult(new GData0(line, parent)));
             }
 
         }

@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.util.HashMap;
+
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -32,7 +33,8 @@ public final class GDataBFC extends GData {
         return type;
     }
 
-    public GDataBFC(byte type) {
+    public GDataBFC(byte type, GData1 parent) {
+        super(parent);
         this.type = type;
     }
 
@@ -150,7 +152,7 @@ public final class GDataBFC extends GData {
     public void drawGL20_WhileAddCondlines(Composite3D c3d) {
         drawGL20_BFC(null);
     }
-    
+
     @Override
     public int type() {
         return 6;
@@ -292,7 +294,7 @@ public final class GDataBFC extends GData {
             if (validState) {
                 state.globalInvertNext = !state.globalInvertNext;
                 state.globalInvertNextFound = true;
-            }          
+            }
             break;
         case BFC.NOCERTIFY:
             state.localWinding = BFC.NOCERTIFY;

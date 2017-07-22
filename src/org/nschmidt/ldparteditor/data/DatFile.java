@@ -85,13 +85,13 @@ public final class DatFile {
     private final HashMap<Integer, GData> copy_drawPerLine = new HashMap<Integer, GData>();
 
     private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE); //$NON-NLS-1$
+    private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE, View.DUMMY_REFERENCE); //$NON-NLS-1$
 
     private static final GTexture CUBEMAP_MATTE_TEXTURE = new GTexture(TexType.PLANAR, "matte_metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GDataTEX CUBEMAP_MATTE = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_MATTE_TEXTURE); //$NON-NLS-1$
+    private static final GDataTEX CUBEMAP_MATTE = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_MATTE_TEXTURE, View.DUMMY_REFERENCE); //$NON-NLS-1$
 
     private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 3, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GDataTEX CUBEMAP_METAL = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_METAL_TEXTURE); //$NON-NLS-1$
+    private static final GDataTEX CUBEMAP_METAL = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_METAL_TEXTURE, View.DUMMY_REFERENCE); //$NON-NLS-1$
 
 
     private final VertexManager vertices = new VertexManager(this);
@@ -570,7 +570,7 @@ public final class DatFile {
 
                 gdata = results.get(0).getGraphicalData();
                 if (gdata == null) {
-                    gdata = new GData0(line);
+                    gdata = new GData0(line, View.DUMMY_REFERENCE);
                 } else {
                     gdata.setText(line);
                     GData.CACHE_warningsAndErrors.put(gdata, results);
@@ -617,7 +617,7 @@ public final class DatFile {
                     }
                 }
             } else {
-                gdata = new GData0(line);
+                gdata = new GData0(line, View.DUMMY_REFERENCE);
                 anchorData.setNext(gdata);
                 anchorData = gdata;
                 drawPerLine.put(lineNumber, gdata);
@@ -1071,12 +1071,12 @@ public final class DatFile {
                     ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, false);
                     newG = results.get(0).getGraphicalData();
                     if (newG == null) {
-                        newG = new GData0(line);
+                        newG = new GData0(line, View.DUMMY_REFERENCE);
                     } else {
                         newG.setText(line);
                     }
                 } else {
-                    newG = new GData0(line);
+                    newG = new GData0(line, View.DUMMY_REFERENCE);
                 }
                 drawPerLine.put(lineNumber, newG);
             } else {
@@ -1091,12 +1091,12 @@ public final class DatFile {
                             ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, false);
                             newG = results.get(0).getGraphicalData();
                             if (newG == null) {
-                                newG = new GData0(line);
+                                newG = new GData0(line, View.DUMMY_REFERENCE);
                             } else {
                                 newG.setText(line);
                             }
                         } else {
-                            newG = new GData0(line);
+                            newG = new GData0(line, View.DUMMY_REFERENCE);
                         }
                     }
                     drawPerLine.put(lineNumber, newG);
@@ -1209,7 +1209,7 @@ public final class DatFile {
 
                 gdata = results.get(0).getGraphicalData();
                 if (gdata == null) {
-                    gdata = new GData0(line);
+                    gdata = new GData0(line, View.DUMMY_REFERENCE);
                 } else {
                     gdata.setText(line);
                 }
@@ -1219,7 +1219,7 @@ public final class DatFile {
                 drawPerLine.put(lineNumber, gdata);
 
             } else {
-                gdata = new GData0(line);
+                gdata = new GData0(line, View.DUMMY_REFERENCE);
                 anchorData.setNext(gdata);
                 anchorData = gdata;
                 drawPerLine.put(lineNumber, gdata);
@@ -1368,10 +1368,10 @@ public final class DatFile {
                                     insertEmptyLine = StringHelper.isNotBlank(next.toString());
                                 }
                                 replaceComment(target, gdata);
-                                if (insertEmptyLine) insertAfter(gdata, new GData0("")); //$NON-NLS-1$
+                                if (insertEmptyLine) insertAfter(gdata, new GData0("", View.DUMMY_REFERENCE)); //$NON-NLS-1$
                             } else  {
                                 insertAfter(target, gdata);
-                                insertAfter(gdata, new GData0("")); //$NON-NLS-1$
+                                insertAfter(gdata, new GData0("", View.DUMMY_REFERENCE)); //$NON-NLS-1$
                             }
                             state.setSync(true);
                             try {

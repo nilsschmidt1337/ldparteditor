@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -31,7 +32,8 @@ public final class GDataTEX extends GData {
     final GData linkedData;
     final GTexture linkedTexture;
 
-    public GDataTEX(GData linkedData, String text, TexMeta meta, GTexture linkedTexture) {
+    public GDataTEX(GData linkedData, String text, TexMeta meta, GTexture linkedTexture, GData1 parent) {
+        super(parent);
         this.linkedTexture = linkedTexture;
         this.linkedData = linkedData;
         this.text = text;

@@ -87,14 +87,13 @@ public final class GData5 extends GData {
     private Matrix4f M = new Matrix4f();
 
     private final float[][] lGeom;
-    final GData1 parent;
 
     private boolean wasShown = false;
 
     public GData5(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
             BigDecimal z3, BigDecimal x4, BigDecimal y4, BigDecimal z4, GData1 parentFileRef, DatFile datFile) {
 
-        this.parent = parentFileRef;
+        super(parentFileRef);
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -146,7 +145,7 @@ public final class GData5 extends GData {
             BigDecimal x3, BigDecimal y3, BigDecimal z3, BigDecimal x4, BigDecimal y4, BigDecimal z4, float x12, float y12, float z12, float x22, float y22, float z22, float x32, float y32,
             float z32, float x42, float y42, float z42, GData1 parentFileRef, DatFile datFile) {
 
-        this.parent = parentFileRef;
+        super(parentFileRef);
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -204,7 +203,7 @@ public final class GData5 extends GData {
      * @param c
      */
     GData5(Vertex v1, Vertex v2, Vertex v3, Vertex v4, GData1 parent, GColour c) {
-
+        super(parent);
         this.colourNumber = c.getColourNumber();
         this.r = c.getR();
         this.g = c.getG();
@@ -234,7 +233,6 @@ public final class GData5 extends GData {
         this.X4 = v4.X;
         this.Y4 = v4.Y;
         this.Z4 = v4.Z;
-        this.parent = parent;
         this.lGeom = null;
     }
 
@@ -249,7 +247,7 @@ public final class GData5 extends GData {
      * @param parent
      */
     public GData5(Vertex v1, Vertex v2, Vertex v3, Vertex v4, GColour c, GData1 parent) {
-
+        super(parent);
         this.colourNumber = c.getColourNumber();
         this.r = c.getR();
         this.g = c.getG();
@@ -268,7 +266,6 @@ public final class GData5 extends GData {
         this.y4 = v4.y;
         this.z4 = v4.z;
         this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
-        this.parent = parent;
         A2.x = this.x1;
         B2.x = this.x2;
         C2.x = this.x3;
@@ -299,6 +296,7 @@ public final class GData5 extends GData {
      * FOR PRIMITIVES ONLY
      */
     public GData5(GColour c, GData1 parent, Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
+        super(parent);
         this.colourNumber = c.getColourNumber();
         this.r = c.getR();
         this.g = c.getG();
@@ -317,7 +315,6 @@ public final class GData5 extends GData {
         this.y4 = v4.y;
         this.z4 = v4.z;
         this.lGeom = null; // MathHelper.getLineVertices1000(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
-        this.parent = parent;
         this.X1 = null;
         this.Y1 = null;
         this.Z1 = null;
@@ -333,7 +330,7 @@ public final class GData5 extends GData {
     }
 
     public GData5(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, Vertex v3, Vertex v4, GData1 parent, DatFile datFile) {
-
+        super(parent);
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -364,7 +361,6 @@ public final class GData5 extends GData {
         this.y4 = v4.y;
         this.z4 = v4.z;
         this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
-        this.parent = parent;
         datFile.getVertexManager().add(this);
         A2.x = this.x1;
         B2.x = this.x2;

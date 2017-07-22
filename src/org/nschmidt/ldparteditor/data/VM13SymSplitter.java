@@ -479,7 +479,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                     break;
                                 case 1:
                                     if (subfilesWithInvertnext.contains(g)) {
-                                        beforeSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                        beforeSb.append(new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE).toString());
                                         beforeSb.append(StringHelper.getLineDelimiter());
                                     }
                                     beforeSb.append(((GData1) g).colourReplace(blue.toString()));
@@ -495,7 +495,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 }
                             } else {
                                 if (subfilesWithInvertnext.contains(g)) {
-                                    beforeSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                    beforeSb.append(new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE).toString());
                                     beforeSb.append(StringHelper.getLineDelimiter());
                                 }
                                 beforeSb.append(g.toString());
@@ -604,7 +604,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                     break;
                                 case 1:
                                     if (subfilesWithInvertnext.contains(g)) {
-                                        betweenSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                        betweenSb.append(new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE).toString());
                                         betweenSb.append(StringHelper.getLineDelimiter());
                                     }
                                     betweenSb.append(((GData1) g).colourReplace(yellow.toString()));
@@ -638,7 +638,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                     break;
                                 case 1:
                                     if (subfilesWithInvertnext.contains(g)) {
-                                        betweenSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                        betweenSb.append(new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE).toString());
                                         betweenSb.append(StringHelper.getLineDelimiter());
                                     }
                                     betweenSb.append(((GData1) g).colourReplace(yellow.toString()));
@@ -654,7 +654,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 }
                             } else {
                                 if (subfilesWithInvertnext.contains(g)) {
-                                    betweenSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                    betweenSb.append(new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE).toString());
                                     betweenSb.append(StringHelper.getLineDelimiter());
                                 }
                                 betweenSb.append(g.toString());
@@ -674,7 +674,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     } else {
                         if (behind.contains(g)) {
                             if (subfilesWithInvertnext.contains(g)) {
-                                behindSb.append(new GDataBFC(BFC.INVERTNEXT).toString());
+                                behindSb.append(new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE).toString());
                                 behindSb.append(StringHelper.getLineDelimiter());
                             }
                             behindSb.append(g.toString());
@@ -937,14 +937,14 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
         validateState();
     }
 
-    private void hide(GData gdata) {   
+    private void hide(GData gdata) {
         gdata.hide();
         hiddenData.add(gdata);
         if (gdata.type() == 1) {
             hide((GData1) gdata);
         }
     }
-    
+
     private void hide(GData1 gdata) {
         GData g = gdata.myGData;
         while ((g = g.next) != null) {

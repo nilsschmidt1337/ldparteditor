@@ -571,7 +571,7 @@ class VM04Rectifier extends VM03Adjacency {
                                                 ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                                                 GData rect = result.get(0).getGraphicalData();
                                                 if (rect == null)
-                                                    rect = new GData0(lineBuilder.toString());
+                                                    rect = new GData0(lineBuilder.toString(), View.DUMMY_REFERENCE);
                                                 linkedDatFile.insertAfter(qa, rect);
 
                                                 quadsToDelete.add(qa);
@@ -1075,7 +1075,7 @@ class VM04Rectifier extends VM03Adjacency {
                                 ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                                 GData rect = result.get(0).getGraphicalData();
                                 if (rect == null)
-                                    rect = new GData0(lineBuilder.toString());
+                                    rect = new GData0(lineBuilder.toString(), View.DUMMY_REFERENCE);
                                 linkedDatFile.insertAfter(qa, rect);
 
                                 quadsToDelete.add(qa);

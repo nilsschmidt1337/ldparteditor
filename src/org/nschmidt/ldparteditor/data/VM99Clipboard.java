@@ -357,97 +357,31 @@ class VM99Clipboard extends VM27YTruder {
                                 if (dpl.containsValue(o2)) {
                                     return dpl.getKey(o1).compareTo(dpl.getKey(o2));
                                 } else {
-                                    switch (o2.type()) {
-                                    case 1:
+                                    if (o2.type() == 1) {
                                         return dpl.getKey(o1).compareTo(dpl.getKey(((GData1) o2).firstRef));
-                                    case 2:
-                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData2) o2).parent.firstRef));
-                                    case 3:
-                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData3) o2).parent.firstRef));
-                                    case 4:
-                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData4) o2).parent.firstRef));
-                                    case 5:
-                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData5) o2).parent.firstRef));
-                                    default:
-                                        GData t = o2.getBefore();
-                                        while (t != null && t.getBefore() != null) {
-                                            t = t.getBefore();
-                                        }
-                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GDataInit) t).getParent().firstRef));
+                                    } else {
+                                        return dpl.getKey(o1).compareTo(dpl.getKey(o2.parent.firstRef));
                                     }
                                 }
                             } else {
                                 if (dpl.containsValue(o2)) {
-                                    switch (o1.type()) {
-                                    case 1:
+                                    if (o1.type() == 1) {
                                         return dpl.getKey(((GData1) o1).firstRef).compareTo(dpl.getKey(o2));
-                                    case 2:
-                                        return dpl.getKey(((GData2) o1).parent.firstRef).compareTo(dpl.getKey(o2));
-                                    case 3:
-                                        return dpl.getKey(((GData3) o1).parent.firstRef).compareTo(dpl.getKey(o2));
-                                    case 4:
-                                        return dpl.getKey(((GData4) o1).parent.firstRef).compareTo(dpl.getKey(o2));
-                                    case 5:
-                                        return dpl.getKey(((GData5) o1).parent.firstRef).compareTo(dpl.getKey(o2));
-                                    default:
-                                        GData t = o2.getBefore();
-                                        while (t != null && t.getBefore() != null) {
-                                            t = t.getBefore();
-                                        }
-                                        return dpl.getKey(((GDataInit) t).getParent().firstRef).compareTo(dpl.getKey(o2));
+                                    } else {
+                                        return dpl.getKey(o1.parent.firstRef).compareTo(dpl.getKey(o2));
                                     }
                                 } else {
                                     final Integer co1;
                                     final Integer co2;
-                                    {
-                                        switch (o1.type()) {
-                                        case 1:
-                                            co1 = dpl.getKey(((GData1) o1).firstRef);
-                                            break;
-                                        case 2:
-                                            co1 = dpl.getKey(((GData2) o1).parent.firstRef);
-                                            break;
-                                        case 3:
-                                            co1 = dpl.getKey(((GData3) o1).parent.firstRef);
-                                            break;
-                                        case 4:
-                                            co1 = dpl.getKey(((GData4) o1).parent.firstRef);
-                                            break;
-                                        case 5:
-                                            co1 = dpl.getKey(((GData5) o1).parent.firstRef);
-                                            break;
-                                        default:
-                                            GData t = o2.getBefore();
-                                            while (t != null && t.getBefore() != null) {
-                                                t = t.getBefore();
-                                            }
-                                            co1 = dpl.getKey(((GDataInit) t).getParent().firstRef);
-                                        }
+                                    if (o1.type() == 1) {
+                                        co1 = dpl.getKey(((GData1) o1).firstRef);
+                                    } else {
+                                        co1 = dpl.getKey(o1.parent.firstRef);
                                     }
-                                    {
-                                        switch (o2.type()) {
-                                        case 1:
-                                            co2 = dpl.getKey(((GData1) o2).firstRef);
-                                            break;
-                                        case 2:
-                                            co2 = dpl.getKey(((GData2) o2).parent.firstRef);
-                                            break;
-                                        case 3:
-                                            co2 = dpl.getKey(((GData3) o2).parent.firstRef);
-                                            break;
-                                        case 4:
-                                            co2 = dpl.getKey(((GData4) o2).parent.firstRef);
-                                            break;
-                                        case 5:
-                                            co2 = dpl.getKey(((GData5) o2).parent.firstRef);
-                                            break;
-                                        default:
-                                            GData t = o2.getBefore();
-                                            while (t != null && t.getBefore() != null) {
-                                                t = t.getBefore();
-                                            }
-                                            co2 = dpl.getKey(((GDataInit) t).getParent().firstRef);
-                                        }
+                                    if (o2.type() == 1) {
+                                        co2 = dpl.getKey(((GData1) o2).firstRef);
+                                    } else {
+                                        co2 = dpl.getKey(o2.parent.firstRef);
                                     }
                                     if (co1 == null && co2 == null) {
                                         return 0;
@@ -483,7 +417,7 @@ class VM99Clipboard extends VM27YTruder {
             }
 
             for (Vertex v : singleVertices) {
-                CLIPBOARD.add(new GData0("0 !LPE VERTEX " + bigDecimalToString(v.X) + " " + bigDecimalToString(v.Y) + " " + bigDecimalToString(v.Z))); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
+                CLIPBOARD.add(new GData0("0 !LPE VERTEX " + bigDecimalToString(v.X) + " " + bigDecimalToString(v.Y) + " " + bigDecimalToString(v.Z), View.DUMMY_REFERENCE)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
             }
 
             // 5. Create text data entry in the OS clipboard
@@ -578,13 +512,13 @@ class VM99Clipboard extends VM27YTruder {
                     Set<String> alreadyParsed = new HashSet<String>();
                     alreadyParsed.add(linkedDatFile.getShortName());
                     if (CLIPBOARD_InvNext.contains(g)) {
-                        GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT);
+                        GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE);
                         linkedDatFile.insertAfterCursor(invNext);
                     }
                     ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                     GData pasted = result.get(0).getGraphicalData();
                     if (pasted == null)
-                        pasted = new GData0(g.toString());
+                        pasted = new GData0(g.toString(), View.DUMMY_REFERENCE);
                     linkedDatFile.insertAfterCursor(pasted);
                     selectedData.add(pasted);
                     switch (pasted.type()) {
@@ -653,7 +587,7 @@ class VM99Clipboard extends VM27YTruder {
                     Set<String> alreadyParsed = new HashSet<String>();
                     alreadyParsed.add(linkedDatFile.getShortName());
                     if (CLIPBOARD_InvNext.contains(g)) {
-                        GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT);
+                        GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE);
                         before.setNext(invNext);
                         before = invNext;
                         linecount++;
@@ -662,7 +596,7 @@ class VM99Clipboard extends VM27YTruder {
                     ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                     GData pasted = result.get(0).getGraphicalData();
                     if (pasted == null)
-                        pasted = new GData0(g.toString());
+                        pasted = new GData0(g.toString(), View.DUMMY_REFERENCE);
                     linecount++;
                     dpl.put(linecount, pasted);
                     selectedData.add(pasted);
@@ -749,7 +683,7 @@ class VM99Clipboard extends VM27YTruder {
                 Set<String> alreadyParsed = new HashSet<String>();
                 alreadyParsed.add(linkedDatFile.getShortName());
                 if (CLIPBOARD_InvNext.contains(g)) {
-                    GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT);
+                    GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE);
                     before.setNext(invNext);
                     before = invNext;
                     linecount++;
@@ -757,7 +691,7 @@ class VM99Clipboard extends VM27YTruder {
                 ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                 GData pasted = result.get(0).getGraphicalData();
                 if (pasted == null)
-                    pasted = new GData0(g.toString());
+                    pasted = new GData0(g.toString(), View.DUMMY_REFERENCE);
                 linecount++;
                 selectedData.add(pasted);
                 switch (pasted.type()) {
