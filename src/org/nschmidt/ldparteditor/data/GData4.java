@@ -78,11 +78,10 @@ public final class GData4 extends GData {
     public final float yn;
     public final float zn;
 
-    public final GData1 parent;
-
     public GData4(final int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4,
             Vector3d normal, GData1 parent, DatFile datFile) {
 
+        super(parent);
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -106,7 +105,6 @@ public final class GData4 extends GData {
         this.xn = xn;
         this.yn = yn;
         this.zn = zn;
-        this.parent = parent;
         datFile.getVertexManager().add(this);
         this.X1 = null;
         this.Y1 = null;
@@ -125,6 +123,7 @@ public final class GData4 extends GData {
     public GData4(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
             BigDecimal z3, BigDecimal x4, BigDecimal y4, BigDecimal z4, Vector3d normal, GData1 parent, DatFile datFile) {
 
+        super(parent);
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -160,7 +159,6 @@ public final class GData4 extends GData {
         this.xn = xn;
         this.yn = yn;
         this.zn = zn;
-        this.parent = parent;
         datFile.getVertexManager().add(this);
     }
 
@@ -168,6 +166,7 @@ public final class GData4 extends GData {
             BigDecimal z3, BigDecimal x4, BigDecimal y4, BigDecimal z4, float x12, float y12, float z12, float x22, float y22, float z22, float x32, float y32, float z32, float x42, float y42,
             float z42, float xn, float yn, float zn, GData1 parent, DatFile datFile) {
 
+        super(parent);
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -200,7 +199,6 @@ public final class GData4 extends GData {
         this.xn = xn;
         this.yn = yn;
         this.zn = zn;
-        this.parent = parent;
         datFile.getVertexManager().add(this);
     }
 
@@ -219,6 +217,7 @@ public final class GData4 extends GData {
      */
     public GData4(Vertex v1, Vertex v2, Vertex v3, Vertex v4, GData1 parent, GColour c) {
 
+        super(parent);
         this.colourNumber = c.getColourNumber();
         this.r = c.getR();
         this.g = c.getG();
@@ -267,12 +266,12 @@ public final class GData4 extends GData {
         this.xn = -normal.x;
         this.yn = -normal.y;
         this.zn = -normal.z;
-        this.parent = parent;
 
     }
 
     public GData4(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, Vertex v3, Vertex v4, GData1 parent, DatFile datFile) {
 
+        super(parent);
         this.colourNumber = colourNumber;
         this.r = r;
         this.g = g;
@@ -321,7 +320,6 @@ public final class GData4 extends GData {
         this.xn = -normal.x;
         this.yn = -normal.y;
         this.zn = -normal.z;
-        this.parent = parent;
         datFile.getVertexManager().add(this);
     }
 

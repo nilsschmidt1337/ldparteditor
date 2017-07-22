@@ -42,6 +42,7 @@ public abstract class GData implements IGData, Comparable<GData> {
 
     protected GData next;
     protected GData before;
+    public final GData1 parent;
 
     protected boolean visible = true;
 
@@ -105,9 +106,10 @@ public abstract class GData implements IGData, Comparable<GData> {
     private static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
     protected final int ID;
 
-    GData() {
+    GData(GData1 parent) {
         // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!
         ID = id_counter.getAndIncrement();
+        this.parent = parent;
     }
 
     // anchor is the next data to render

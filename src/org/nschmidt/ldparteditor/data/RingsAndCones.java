@@ -432,7 +432,7 @@ public enum RingsAndCones {
                                     , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                     if (gd == null) {
-                        gd = new GData0(line);
+                        gd = new GData0(line, View.DUMMY_REFERENCE);
                     } else {
                         vm.getSelectedData().add(gd);
                         vm.getSelectedSubfiles().add((GData1) gd);
@@ -516,7 +516,7 @@ public enum RingsAndCones {
 
 
                 } else if (!rs.isUsingExistingPrimitives()) {
-                    df.addToTailOrInsertAfterCursor(new GData0(line));
+                    df.addToTailOrInsertAfterCursor(new GData0(line, View.DUMMY_REFERENCE));
                 } else {
                     MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_INFORMATION | SWT.OK);
                     messageBoxError.setText(I18n.DIALOG_Info);

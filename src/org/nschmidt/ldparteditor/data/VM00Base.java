@@ -527,43 +527,33 @@ class VM00Base {
         }
     }
 
-    // FIXME Needs improvements!
     final void cleanupHiddenData() {
         if (hiddenData.size() > 0) {
-            HashMap<String, ArrayList<GData>> dict = new HashMap<String, ArrayList<GData>>();
-            for (GData1 g2 : vertexCountInSubfile.keySet()) {
-                final String key = g2.getNiceString();
-                dict.putIfAbsent(key, new ArrayList<GData>());
-                dict.get(key).add(g2);
-            }
-            for (GData2 g2 : lines.keySet()) {
-                final String key = g2.getNiceString();
-                dict.putIfAbsent(key, new ArrayList<GData>());
-                dict.get(key).add(g2);
-            }
-            for (GData3 g2 : triangles.keySet()) {
-                final String key = g2.getNiceString();
-                dict.putIfAbsent(key, new ArrayList<GData>());
-                dict.get(key).add(g2);
-            }
-            for (GData4 g2 : quads.keySet()) {
-                final String key = g2.getNiceString();
-                dict.putIfAbsent(key, new ArrayList<GData>());
-                dict.get(key).add(g2);
-            }
-            for (GData5 g2 : condlines.keySet()) {
-                final String key = g2.getNiceString();
-                dict.putIfAbsent(key, new ArrayList<GData>());
-                dict.get(key).add(g2);
-            }
+            HashMap<String, ArrayList<GData>> dict = null;
+            Set<GData1> s1 = vertexCountInSubfile.keySet();
+            Set<GData2> s2 = lines.keySet();
+            Set<GData3> s3 = triangles.keySet();
+            Set<GData4> s4 = quads.keySet();
+            Set<GData5> s5 = condlines.keySet();
             HashSet<GData> dataToHide = new HashSet<GData>();
-            HashMap<GData, GData> cache = new HashMap<>();
             for (Iterator<GData> hi = hiddenData.iterator(); hi.hasNext();) {
                 final GData oldData = hi.next();
+                if (
+                        s1.contains(oldData)
+                        || s2.contains(oldData)
+                        || s3.contains(oldData)
+                        || s4.contains(oldData)
+                        || s5.contains(oldData)) {
+                    oldData.visible = false;
+                    continue;
+                }
+                if (dict == null) {
+                    dict = buildObjectDictionary();
+                }
                 ArrayList<GData> g3 = dict.get(oldData.toString());
                 if (g3 != null) {
                     for (GData g : g3) {
-                        if (isSharingSameSubfile(g, oldData, cache)) {
+                        if (isSharingSameSubfile(g, oldData)) {
                             dataToHide.add(g);
                             g.visible = false;
                         }
@@ -575,17 +565,39 @@ class VM00Base {
         }
     }
 
-    private boolean isSharingSameSubfile(GData g1, GData g2, HashMap<GData, GData> cache) {
-        GData s1 = cache.get(g1);
-        GData s2 = cache.get(g2);
-        if (s1 == null) {
-            s1 = getSubfile(g1);
-            cache.put(g1, s1);
+    private HashMap<String, ArrayList<GData>> buildObjectDictionary() {
+        HashMap<String, ArrayList<GData>> dict = new HashMap<String, ArrayList<GData>>();
+        for (GData1 g1 : vertexCountInSubfile.keySet()) {
+            final String key = g1.getNiceString();
+            dict.putIfAbsent(key, new ArrayList<GData>());
+            dict.get(key).add(g1);
         }
-        if (s2 == null) {
-            s2 = getSubfile(g2);
-            cache.put(g2, s2);
+        for (GData2 g2 : lines.keySet()) {
+            final String key = g2.getNiceString();
+            dict.putIfAbsent(key, new ArrayList<GData>());
+            dict.get(key).add(g2);
         }
+        for (GData3 g3 : triangles.keySet()) {
+            final String key = g3.getNiceString();
+            dict.putIfAbsent(key, new ArrayList<GData>());
+            dict.get(key).add(g3);
+        }
+        for (GData4 g4 : quads.keySet()) {
+            final String key = g4.getNiceString();
+            dict.putIfAbsent(key, new ArrayList<GData>());
+            dict.get(key).add(g4);
+        }
+        for (GData5 g5 : condlines.keySet()) {
+            final String key = g5.getNiceString();
+            dict.putIfAbsent(key, new ArrayList<GData>());
+            dict.get(key).add(g5);
+        }
+        return dict;
+    }
+
+    private boolean isSharingSameSubfile(GData g1, GData g2) {
+        GData1 s1 = g1.parent;
+        GData1 s2 = g2.parent;
         if (s1 == View.DUMMY_REFERENCE && s2 == View.DUMMY_REFERENCE) {
             return true;
         }
@@ -593,47 +605,6 @@ class VM00Base {
             return false;
         }
         return s1.getNiceString().equals(s2.getNiceString());
-    }
-
-    public GData1 getSubfile(GData g) {
-        GData1 result = View.DUMMY_REFERENCE;
-        int counter = 0;
-        while (counter < 100) {
-            while ((g = g.getBefore()) != null && (g.type() < 1 || g.type() > 5) && g.type() != 7) {
-            }
-            if (g == null) {
-                return View.DUMMY_REFERENCE;
-            }
-            GData1 p = View.DUMMY_REFERENCE;
-            switch (g.type()) {
-            case 1:
-                p = ((GData1) g).parent.firstRef;
-                break;
-            case 2:
-                p = ((GData2) g).parent;
-                break;
-            case 3:
-                p = ((GData3) g).parent;
-                break;
-            case 4:
-                p = ((GData4) g).parent;
-                break;
-            case 5:
-                p = ((GData5) g).parent;
-                break;
-            case 7:
-                p = ((GDataInit) g).getParent().firstRef;
-                break;
-            }
-            if (View.DUMMY_REFERENCE.equals(p)) {
-                return result;
-            }
-            result = p;
-            g = p;
-            counter++;
-        }
-        NLogger.error(getClass(), "VM00Base.getSubfile() had too many iterations!"); //$NON-NLS-1$
-        return View.DUMMY_REFERENCE;
     }
 
     private final void cleanupSelection() {
@@ -1374,7 +1345,7 @@ class VM00Base {
         getManifestationLock().lock();
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
             vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
-        GData0 vertexTag = new GData0("0 !LPE VERTEX " + bigDecimalToString(vertex.X) + " " + bigDecimalToString(vertex.Y) + " " + bigDecimalToString(vertex.Z)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
+        GData0 vertexTag = new GData0("0 !LPE VERTEX " + bigDecimalToString(vertex.X) + " " + bigDecimalToString(vertex.Y) + " " + bigDecimalToString(vertex.Z), View.DUMMY_REFERENCE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
         vertexLinkedToPositionInFile.get(vertex).add(new VertexManifestation(0, vertexTag));
         getManifestationLock().unlock();
         lineLinkedToVertices.put(vertexTag, Collections.newSetFromMap(new ThreadsafeHashMap<VertexInfo, Boolean>()));
@@ -1754,7 +1725,7 @@ class VM00Base {
                 if (tail != null) {
                     linkedDatFile.setDrawChainTail(tail);
                 } else {
-                    GData0 blankLine = new GData0(""); //$NON-NLS-1$
+                    GData0 blankLine = new GData0("", View.DUMMY_REFERENCE); //$NON-NLS-1$
                     linkedDatFile.getDrawChainStart().setNext(blankLine);
                     dpl.put(1, blankLine);
                     linkedDatFile.setDrawChainTail(blankLine);

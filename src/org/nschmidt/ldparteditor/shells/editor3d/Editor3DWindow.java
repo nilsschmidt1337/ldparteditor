@@ -5553,7 +5553,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                             String newText = png.getString(png.offset, png.angleA, png.angleB, png.angleC, png.scale, texturePath);
 
-                            GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, png.scale, texturePath);
+                            GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, png.scale, texturePath, View.DUMMY_REFERENCE);
                             replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
                             pngPictureUpdateCounter++;
@@ -5671,7 +5671,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         String newText = png.getString(png.offset, spn.getValue(), png.angleB, png.angleC, png.scale, png.texturePath);
 
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, spn.getValue(), png.angleB, png.angleC, png.scale, png.texturePath);
+                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, spn.getValue(), png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
                         pngPictureUpdateCounter++;
@@ -5713,7 +5713,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         String newText = png.getString(png.offset, png.angleA, spn.getValue(), png.angleC, png.scale, png.texturePath);
 
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, spn.getValue(), png.angleC, png.scale, png.texturePath);
+                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, spn.getValue(), png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
                         pngPictureUpdateCounter++;
@@ -5755,7 +5755,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         String newText = png.getString(png.offset, png.angleA, png.angleB, spn.getValue(), png.scale, png.texturePath);
 
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, spn.getValue(), png.scale, png.texturePath);
+                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, spn.getValue(), png.scale, png.texturePath, View.DUMMY_REFERENCE);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
                         pngPictureUpdateCounter++;
@@ -5798,7 +5798,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         Vertex newScale = new Vertex(spn.getValue(), png.scale.Y, png.scale.Z);
                         String newText = png.getString(png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
 
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
+                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath, View.DUMMY_REFERENCE);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
                         pngPictureUpdateCounter++;
@@ -5841,7 +5841,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         Vertex newScale = new Vertex(png.scale.X, spn.getValue(), png.scale.Z);
                         String newText = png.getString(png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
 
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
+                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath, View.DUMMY_REFERENCE);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
                         vm.setModified(true, true);
@@ -5877,7 +5877,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         Vertex newOffset = new Vertex(spn.getValue(), png.offset.Y, png.offset.Z);
                         String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
 
-                        GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
+                        GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
                         pngPictureUpdateCounter++;
@@ -5920,7 +5920,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         Vertex newOffset = new Vertex(png.offset.X, spn.getValue(), png.offset.Z);
                         String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
 
-                        GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
+                        GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
                         pngPictureUpdateCounter++;
@@ -5963,7 +5963,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         Vertex newOffset = new Vertex(png.offset.X, png.offset.Y, spn.getValue());
                         String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
 
-                        GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
+                        GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
                         replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
 
                         pngPictureUpdateCounter++;
@@ -7678,25 +7678,25 @@ public class Editor3DWindow extends Editor3DDesign {
                         parent = this.treeItem_ProjectPrimitives[0];
                     }
 
-                    df.addToTail(new GData0("0 " + subfilePrefix)); //$NON-NLS-1$
-                    df.addToTail(new GData0("0 Name: " + folderPrefix + new File(selected).getName())); //$NON-NLS-1$
+                    df.addToTail(new GData0("0 " + subfilePrefix, View.DUMMY_REFERENCE)); //$NON-NLS-1$
+                    df.addToTail(new GData0("0 Name: " + folderPrefix + new File(selected).getName(), View.DUMMY_REFERENCE)); //$NON-NLS-1$
                     String ldrawName = WorkbenchManager.getUserSettingState().getLdrawUserName();
                     if (ldrawName == null || ldrawName.isEmpty()) {
-                        df.addToTail(new GData0("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName())); //$NON-NLS-1$
+                        df.addToTail(new GData0("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName(), View.DUMMY_REFERENCE)); //$NON-NLS-1$
                     } else {
-                        df.addToTail(new GData0("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName() + " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        df.addToTail(new GData0("0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName() + " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "]", View.DUMMY_REFERENCE)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     }
-                    df.addToTail(new GData0("0 !LDRAW_ORG " + typeSuffix)); //$NON-NLS-1$
+                    df.addToTail(new GData0("0 !LDRAW_ORG " + typeSuffix, View.DUMMY_REFERENCE)); //$NON-NLS-1$
                     String license = WorkbenchManager.getUserSettingState().getLicense();
                     if (license == null || license.isEmpty()) {
-                        df.addToTail(new GData0("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt")); //$NON-NLS-1$
+                        df.addToTail(new GData0("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", View.DUMMY_REFERENCE)); //$NON-NLS-1$
                     } else {
-                        df.addToTail(new GData0(license));
+                        df.addToTail(new GData0(license, View.DUMMY_REFERENCE));
                     }
-                    df.addToTail(new GData0("")); //$NON-NLS-1$
-                    df.addToTail(new GDataBFC(BFC.CCW_CLIP));
-                    df.addToTail(new GData0("")); //$NON-NLS-1$
-                    df.addToTail(new GData0("")); //$NON-NLS-1$
+                    df.addToTail(new GData0("", View.DUMMY_REFERENCE)); //$NON-NLS-1$
+                    df.addToTail(new GDataBFC(BFC.CCW_CLIP, View.DUMMY_REFERENCE));
+                    df.addToTail(new GData0("", View.DUMMY_REFERENCE)); //$NON-NLS-1$
+                    df.addToTail(new GData0("", View.DUMMY_REFERENCE)); //$NON-NLS-1$
 
                     df.getVertexManager().setModified(true, true);
 

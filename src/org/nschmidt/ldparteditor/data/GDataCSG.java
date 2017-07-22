@@ -106,8 +106,6 @@ public final class GDataCSG extends GData {
     private final String ref2;
     private final String ref3;
 
-    final GData1 parent;
-
     private CSG compiledCSG = null;
     private CSG dataCSG = null;
 
@@ -181,10 +179,10 @@ public final class GDataCSG extends GData {
     // CASE 2 0 !LPE [CSG TAG] [ID] [ID2] [ID3] 6
     // CASE 3 0 !LPE [CSG TAG] [ID] 4
     public GDataCSG(DatFile df, byte type, String csgLine, GData1 parent) {
+        super(parent);
         clearPolygonCache.put(df, true);
         fullClearPolygonCache.put(df, false);
         myDat = df;
-        this.parent = parent;
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(this);
         String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
         final GColour col16 = View.getLDConfigColour(16);

@@ -233,7 +233,7 @@ public class VM09WindingChange extends VM08SlicerPro {
                             dpl.put(k + 1, gdata);
                         }
                     }
-                    GDataBFC newInvNext = new GDataBFC(BFC.INVERTNEXT);
+                    GDataBFC newInvNext = new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE);
                     dpl.put(lineToInsert + 1, newInvNext);
                     before.setNext(newInvNext);
                     newInvNext.setNext(subf);
@@ -258,7 +258,7 @@ public class VM09WindingChange extends VM08SlicerPro {
                     if (tail != null) {
                         linkedDatFile.setDrawChainTail(tail);
                     } else {
-                        GData0 blankLine = new GData0(""); //$NON-NLS-1$
+                        GData0 blankLine = new GData0("", View.DUMMY_REFERENCE); //$NON-NLS-1$
                         linkedDatFile.getDrawChainStart().setNext(blankLine);
                         dpl.put(1, blankLine);
                         linkedDatFile.setDrawChainTail(blankLine);

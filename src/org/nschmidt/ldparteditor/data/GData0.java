@@ -32,12 +32,14 @@ public final class GData0 extends GData {
 
     private final boolean isSTEP;
 
-    public GData0(String comment) {
+    public GData0(String comment, GData1 parent) {
+        super(parent);
         text = comment;
         isSTEP = false;
     }
 
-    public GData0(String comment, boolean isSTEP) {
+    public GData0(String comment, boolean isSTEP, GData1 parent) {
+        super(parent);
         text = comment;
         this.isSTEP = isSTEP;
     }

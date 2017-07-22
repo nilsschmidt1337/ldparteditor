@@ -1553,7 +1553,7 @@ public class VM01SelectHelper extends VM01Select {
     public synchronized void selectWholeSubfiles() {
         HashSet<GData1> subfilesToAdd = new HashSet<GData1>();
         for (GData g : selectedData) {
-            subfilesToAdd.add(getSubfile(g));
+            subfilesToAdd.add(g.parent);
         }
         subfilesToAdd.remove(View.DUMMY_REFERENCE);
         for (GData1 g : subfilesToAdd) {
@@ -1667,7 +1667,7 @@ public class VM01SelectHelper extends VM01Select {
         NLogger.debug(getClass(), "Subfiles in selection:"); //$NON-NLS-1$
         HashSet<GData1> subs = new HashSet<GData1>();
         for (GData g : selectedData) {
-            GData1 s = getSubfile(g);
+            GData1 s = g.parent;
             if (!View.DUMMY_REFERENCE.equals(s)) {
                 subs.add(s);
             }
@@ -1832,12 +1832,12 @@ public class VM01SelectHelper extends VM01Select {
                 ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
                 pasted = result.get(0).getGraphicalData();
                 if (pasted == null)
-                    pasted = new GData0(lineToParse);
+                    pasted = new GData0(lineToParse, View.DUMMY_REFERENCE);
             } else {
-                pasted = new GData0(lineToParse);
+                pasted = new GData0(lineToParse, View.DUMMY_REFERENCE);
             }
             if (token2.equals(pasted.toString())) {
-                pasted = new GData0(lineToParse);
+                pasted = new GData0(lineToParse, View.DUMMY_REFERENCE);
             }
             b.setNext(pasted);
             pasted.setNext(n);

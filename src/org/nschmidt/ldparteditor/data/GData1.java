@@ -96,18 +96,17 @@ public final class GData1 extends GData {
     final GData myGData = new GDataInit(this);
 
     public final GData1 firstRef;
-    public final GData1 parent;
 
     final int depth;
 
     public GData1() {
+        super(View.DUMMY_REFERENCE);
         this.colourNumber = 0;
         this.r = 0;
         this.g = 0;
         this.b = 0;
         this.a = 0;
         this.firstRef = this;
-        this.parent = View.DUMMY_REFERENCE;
         this.depth = 0;
         this.matrix = null;
         this.productMatrix = View.ID;
@@ -122,7 +121,7 @@ public final class GData1 extends GData {
 
     public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, Matrix TMatrix, ArrayList<String> lines, String name, String shortName, int depth, boolean det,
             Matrix4f pMatrix, Matrix PMatrix, DatFile datFile, GData1 firstRef, boolean readOnly, boolean errorCheckOnly, Set<String> alreadyParsed, GData1 parent) {
-        this.parent = parent;
+        super(parent);
         depth++;
         if (depth < 16) {
             if (depth == 1) {
@@ -180,7 +179,7 @@ public final class GData1 extends GData {
                         final GData res_gdata;
                         switch (gdata.type()) {
                         case 0:
-                            res_gdata = new GData0(line);
+                            res_gdata = new GData0(line, this);
                             break;
                         case 1:
                             GData1 gd1 = (GData1) gdata;
@@ -231,7 +230,7 @@ public final class GData1 extends GData {
                             break;
                         case 6:
                             GDataBFC gd6 = (GDataBFC) gdata;
-                            res_gdata = new GDataBFC(gd6.type);
+                            res_gdata = new GDataBFC(gd6.type, this);
                             break;
                         case 8:
                             GDataCSG gd8 = (GDataCSG) gdata;
@@ -239,7 +238,7 @@ public final class GData1 extends GData {
                             break;
                         case 9:
                             GDataTEX gd9 = (GDataTEX) gdata;
-                            res_gdata = new GDataTEX(gd9.linkedData, gd9.text, gd9.meta, gd9.linkedTexture);
+                            res_gdata = new GDataTEX(gd9.linkedData, gd9.text, gd9.meta, gd9.linkedTexture, this);
                             break;
                         default:
                             NLogger.debug(getClass(), "CACHE ERROR"); //$NON-NLS-1$
@@ -271,13 +270,13 @@ public final class GData1 extends GData {
                                 }
                             }
                         } else {
-                            gdata = new GData0(line);
+                            gdata = new GData0(line, this);
                         }
                         anchorData.setNext(gdata);
                         anchorData = gdata;
                     }
                 } else {
-                    GData0 gdata = new GData0(line);
+                    GData0 gdata = new GData0(line, this);
                     anchorData.setNext(gdata);
                     anchorData = gdata;
                 }
@@ -332,10 +331,9 @@ public final class GData1 extends GData {
      */
     public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, ArrayList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
             GData1 firstRef, Set<String> alreadyParsed, GData1 parent, DatFile datFile) {
-
+        super(parent);
         this.accurateLocalMatrix = null;
         this.accurateProductMatrix = null;
-        this.parent = parent;
         depth++;
         if (depth < 16) {
             if (depth == 1) {
@@ -373,12 +371,12 @@ public final class GData1 extends GData {
                 if (isNotBlank(line)) {
                     GData gdata = TexMapParser.parseLine(line, depth, r, g, b, a, this, pMatrix, alreadyParsed, datFile);
                     if (gdata == null) {
-                        gdata = new GData0(line);
+                        gdata = new GData0(line, this);
                     }
                     anchorData.setNext(gdata);
                     anchorData = gdata;
                 } else {
-                    GData0 gdata = new GData0(line);
+                    GData0 gdata = new GData0(line, this);
                     anchorData.setNext(gdata);
                     anchorData = gdata;
                 }
@@ -2093,7 +2091,7 @@ public final class GData1 extends GData {
         if (Inliner.withSubfileReference)
             sb.append("0 !LPE INLINE_END<br>"); //$NON-NLS-1$
         if (lastBFC == BFC.NOCLIP) {
-            sb.append(new GDataBFC(BFC.CLIP).toString() + "<br>"); //$NON-NLS-1$
+            sb.append(new GDataBFC(BFC.CLIP, this).toString() + "<br>"); //$NON-NLS-1$
         }
         return sb.toString();
     }

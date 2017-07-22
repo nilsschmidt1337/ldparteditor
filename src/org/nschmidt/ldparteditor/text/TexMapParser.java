@@ -58,19 +58,19 @@ public enum TexMapParser {
 
     private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
 
-    public static GDataTEX parseGeometry(String line, int depth, float r, float g, float b, float a, GData1 gData1, Matrix4f pMatrix, Set<String> alreadyParsed, DatFile datFile) {
+    public static GDataTEX parseGeometry(String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f pMatrix, Set<String> alreadyParsed, DatFile datFile) {
         String tline = line.replaceAll("0\\s+\\Q!:\\E\\s+", ""); //$NON-NLS-1$ //$NON-NLS-2$
-        GData data = parseLine(tline, depth, r, g, b, a, gData1, pMatrix, alreadyParsed, datFile);
-        return new GDataTEX(data, line, TexMeta.GEOMETRY, null);
+        GData data = parseLine(tline, depth, r, g, b, a, parent, pMatrix, alreadyParsed, datFile);
+        return new GDataTEX(data, line, TexMeta.GEOMETRY, null, parent);
     }
 
     public static GDataTEX parseTEXMAP(String[] data_segments, String line, GData1 parent, DatFile datFile) {
         int segs = data_segments.length;
         if (segs == 3) {
             if (data_segments[2].equals("END")) { //$NON-NLS-1$
-                return new GDataTEX(null, line, TexMeta.END, null);
+                return new GDataTEX(null, line, TexMeta.END, null, parent);
             } else if (data_segments[2].equals("FALLBACK")) { //$NON-NLS-1$
-                return new GDataTEX(null, line, TexMeta.FALLBACK, null);
+                return new GDataTEX(null, line, TexMeta.FALLBACK, null, parent);
             }
         } else if (segs > 3) {
             Vector4f v1 = new Vector4f();
@@ -271,16 +271,16 @@ public enum TexMapParser {
                     if (glossmap.isEmpty())
                         glossmap = null;
 
-                    return new GDataTEX(null, line, meta, new GTexture(type, texture, glossmap, 1, new Vector3f(v1.x, v1.y, v1.z), new Vector3f(v2.x, v2.y, v2.z), new Vector3f(v3.x, v3.y, v3.z), a, b));
+                    return new GDataTEX(null, line, meta, new GTexture(type, texture, glossmap, 1, new Vector3f(v1.x, v1.y, v1.z), new Vector3f(v2.x, v2.y, v2.z), new Vector3f(v3.x, v3.y, v3.z), a, b), parent);
                 }
             }
         }
         return null;
     }
 
-    public static GData parseLine(String line, int depth, float r, float g, float b, float a, GData1 gData1, Matrix4f pMatrix, Set<String> alreadyParsed, DatFile df) {
+    public static GData parseLine(String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f pMatrix, Set<String> alreadyParsed, DatFile df) {
         final String[] data_segments = WHITESPACE.split(line.trim());
-        return parseLine(data_segments, line, depth, r, g, b, a, gData1, pMatrix, alreadyParsed, df);
+        return parseLine(data_segments, line, depth, r, g, b, a, parent, pMatrix, alreadyParsed, df);
     }
 
     // What follows now is a very minimalistic DAT file parser (<500LOC)
@@ -384,31 +384,31 @@ public enum TexMapParser {
             return newLPEmetaTag;
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.INVERTNEXT);
+                return new GDataBFC(BFC.INVERTNEXT, parent);
             } else if (line.startsWith("CERTIFY CCW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW_CLIP);
+                return new GDataBFC(BFC.CCW_CLIP, parent);
             } else if (line.startsWith("CERTIFY CW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CW_CLIP);
+                return new GDataBFC(BFC.CW_CLIP, parent);
             } else if (line.startsWith("CERTIFY", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW_CLIP);
+                return new GDataBFC(BFC.CCW_CLIP, parent);
             } else if (line.startsWith("NOCERTIFY", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.NOCERTIFY);
+                return new GDataBFC(BFC.NOCERTIFY, parent);
             } else if (line.startsWith("CCW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW);
+                return new GDataBFC(BFC.CCW, parent);
             } else if (line.startsWith("CW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CW);
+                return new GDataBFC(BFC.CW, parent);
             } else if (line.startsWith("NOCLIP", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.NOCLIP);
+                return new GDataBFC(BFC.NOCLIP, parent);
             } else if (line.startsWith("CLIP CCW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW_CLIP);
+                return new GDataBFC(BFC.CCW_CLIP, parent);
             } else if (line.startsWith("CLIP CW", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CW_CLIP);
+                return new GDataBFC(BFC.CW_CLIP, parent);
             } else if (line.startsWith("CCW CLIP", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CCW_CLIP);
+                return new GDataBFC(BFC.CCW_CLIP, parent);
             } else if (line.startsWith("CW CLIP", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CW_CLIP);
+                return new GDataBFC(BFC.CW_CLIP, parent);
             } else if (line.startsWith("CLIP", 6)) { //$NON-NLS-1$
-                return new GDataBFC(BFC.CLIP);
+                return new GDataBFC(BFC.CLIP, parent);
             } else {
                 return null;
             }
