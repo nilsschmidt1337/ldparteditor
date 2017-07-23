@@ -1553,7 +1553,7 @@ public class VM01SelectHelper extends VM01Select {
     public synchronized void selectWholeSubfiles() {
         HashSet<GData1> subfilesToAdd = new HashSet<GData1>();
         for (GData g : selectedData) {
-            subfilesToAdd.add(g.parent);
+            subfilesToAdd.add(g.parent.firstRef);
         }
         subfilesToAdd.remove(View.DUMMY_REFERENCE);
         for (GData1 g : subfilesToAdd) {
@@ -1667,7 +1667,7 @@ public class VM01SelectHelper extends VM01Select {
         NLogger.debug(getClass(), "Subfiles in selection:"); //$NON-NLS-1$
         HashSet<GData1> subs = new HashSet<GData1>();
         for (GData g : selectedData) {
-            GData1 s = g.parent;
+            GData1 s = g.parent.firstRef;
             if (!View.DUMMY_REFERENCE.equals(s)) {
                 subs.add(s);
             }
