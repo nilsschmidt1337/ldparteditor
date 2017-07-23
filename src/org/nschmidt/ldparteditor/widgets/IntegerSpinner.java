@@ -59,7 +59,7 @@ public class IntegerSpinner extends Composite {
     private volatile boolean focus = true;
     private volatile boolean forceUpdate = false;
     private volatile boolean selectAll = true;
-    volatile boolean invalidInput = false;
+    private volatile boolean invalidInput = false;
 
     /**
      * @param parent
