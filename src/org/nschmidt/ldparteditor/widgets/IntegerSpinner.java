@@ -17,8 +17,11 @@ package org.nschmidt.ldparteditor.widgets;
 
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -28,9 +31,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * @author nils
@@ -49,6 +54,12 @@ public class IntegerSpinner extends Composite {
 
     private final IntegerSpinner me;
     private final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+
+    private volatile AtomicInteger counter = new AtomicInteger();
+    private volatile boolean focus = true;
+    private volatile boolean forceUpdate = false;
+    private volatile boolean selectAll = true;
+    volatile boolean invalidInput = false;
 
     /**
      * @param parent
@@ -121,23 +132,47 @@ public class IntegerSpinner extends Composite {
             }
         });
 
+        txt.addListener(SWT.MouseDown, (e) -> {
+            if (selectAll) {
+                txt_val[0].selectAll();
+                selectAll = false;
+                CompletableFuture.runAsync( () -> {
+                        focus = true;
+                        while (focus) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException ie) {}
+                            Display.getDefault().asyncExec(() -> {
+                                try {
+                                    focus = txt_val[0].isFocusControl();
+                                } catch (SWTException swte) {
+                                    NLogger.debug(getClass(), swte);
+                                }
+                            });
+                        }
+                        selectAll = true;
+                });
+            }
+        });
+
         final int[] oldValue = new int[] { 0 };
-        final boolean[] invalidInput = new boolean[] { false };
         txt.addModifyListener(new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
-                if (invalidInput[0]) {
-                    invalidInput[0] = false;
+                if (invalidInput) {
+                    invalidInput = false;
                     return;
                 }
 
                 int caret = txt_val[0].getCaretPosition();
-
+                String text = null;
+                final String result;
                 try {
                     Number val = NUMBER_FORMAT0F.parse(txt_val[0].getText());
                     value = val.intValue();
                     if (value > maximum || value < minimum) {
                         oldValue[0] = value;
+                        forceUpdate = true;
                         value = Math.min(value, maximum);
                         value = Math.max(value, minimum);
                     }
@@ -147,16 +182,44 @@ public class IntegerSpinner extends Composite {
 
                     if (oldValue[0] != value) {
                         oldValue[0] = value;
-                        invalidInput[0] = true;
-                        txt_val[0].setText(NUMBER_FORMAT0F.format(value));
+                        text = NUMBER_FORMAT0F.format(value);
                     }
                 } catch (ParseException ex) {
-                    if (!invalidInput[0]) {
-                        invalidInput[0] = true;
-                        txt_val[0].setText(NUMBER_FORMAT0F.format(value));
-                        invalidInput[0] = false;
+                    if (!invalidInput) {
+                        text = NUMBER_FORMAT0F.format(value);
                     }
                 }
+
+                result = text;
+
+                CompletableFuture.runAsync( () -> {
+                    final int id = counter.getAndIncrement() + 1;
+                    focus = true;
+                    while (focus && counter.compareAndSet(id, id) && !forceUpdate) {
+                        Display.getDefault().asyncExec(() -> {
+                            try {
+                                focus = txt_val[0].isFocusControl();
+                            } catch (SWTException swte) {
+                                NLogger.debug(getClass(), swte);
+                            }
+                        });
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException ie) {}
+                    }
+                    if (!counter.compareAndSet(id, id) || result == null || txt_val[0].isDisposed()) {
+                        return;
+                    }
+                    Display.getDefault().asyncExec(() -> {
+                        invalidInput = true;
+                        forceUpdate = false;
+                        try {
+                            txt_val[0].setText(result);
+                        } catch (SWTException swte) {
+                            NLogger.debug(getClass(), swte);
+                        }
+                    });
+                });
 
                 txt_val[0].setSelection(caret);
             }
