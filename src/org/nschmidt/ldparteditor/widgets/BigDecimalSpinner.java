@@ -18,8 +18,11 @@ package org.nschmidt.ldparteditor.widgets;
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
@@ -29,9 +32,11 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * @author nils
@@ -50,9 +55,15 @@ public class BigDecimalSpinner extends Composite {
 
     private final BigDecimalSpinner me;
     private java.text.DecimalFormat numberFormat;
-    
+
     private BigDecimal smallIncrement = new BigDecimal(".0001"); //$NON-NLS-1$
     private BigDecimal largeIncrement = new BigDecimal(".01"); //$NON-NLS-1$
+
+    private volatile AtomicInteger counter = new AtomicInteger();
+    private volatile boolean focus = true;
+    private volatile boolean forceUpdate = false;
+    private volatile boolean selectAll = true;
+    volatile boolean invalidInput = false;
 
     public BigDecimalSpinner(final Composite parent, int style, String numberFormat) {
         super(parent, style);
@@ -138,17 +149,42 @@ public class BigDecimalSpinner extends Composite {
             }
         });
 
+        txt.addListener(SWT.MouseDown, (e) -> {
+            if (selectAll) {
+                txt_val[0].selectAll();
+                selectAll = false;
+                CompletableFuture.runAsync( () -> {
+                        focus = true;
+                        while (focus) {
+                            try {
+                                Thread.sleep(100);
+                            } catch (InterruptedException ie) {}
+                            Display.getDefault().asyncExec(() -> {
+                                try {
+                                    focus = txt_val[0].isFocusControl();
+                                } catch (SWTException swte) {
+                                    NLogger.debug(getClass(), swte);
+                                }
+                            });
+                        }
+                        selectAll = true;
+                });
+            }
+        });
+
         final BigDecimal[] oldValue = new BigDecimal[] { BigDecimal.ZERO };
-        final boolean[] invalidInput = new boolean[] { false };
         txt.addModifyListener(new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
-                if (invalidInput[0]) {
-                    invalidInput[0] = false;
+
+                if (invalidInput) {
+                    invalidInput = false;
                     return;
                 }
-                int caret = txt_val[0].getCaretPosition();
 
+                int caret = txt_val[0].getCaretPosition();
+                String text = null;
+                final String result;
                 try {
                     numberFormat.setParseBigDecimal(true);
                     BigDecimal val = (BigDecimal) numberFormat.parseObject(txt_val[0].getText());
@@ -156,6 +192,7 @@ public class BigDecimalSpinner extends Composite {
                     value = val;
                     if (value.compareTo(maximum) > 0 || value.compareTo(minimum) < 0) {
                         oldValue[0] = value;
+                        forceUpdate = true;
                         value = value.compareTo(maximum) > 0 ? maximum : value;
                         value = value.compareTo(minimum) < 0 ? minimum : value;
                     }
@@ -165,16 +202,44 @@ public class BigDecimalSpinner extends Composite {
 
                     if (oldValue[0].compareTo(value) != 0) {
                         oldValue[0] = value;
-                        invalidInput[0] = true;
-                        txt_val[0].setText(numberFormat.format(value));
+                        text = numberFormat.format(value);
                     }
                 } catch (ParseException ex) {
-                    if (!invalidInput[0]) {
-                        invalidInput[0] = true;
-                        txt_val[0].setText(numberFormat.format(value));
-                        invalidInput[0] = false;
+                    if (!invalidInput) {
+                        text = numberFormat.format(value);
                     }
                 }
+                result = text;
+
+                CompletableFuture.runAsync( () -> {
+                    final int id = counter.getAndIncrement() + 1;
+                    focus = true;
+                    while (focus && counter.compareAndSet(id, id) && !forceUpdate) {
+                        Display.getDefault().asyncExec(() -> {
+                            try  {
+                                focus = txt_val[0].isFocusControl();
+                            } catch (SWTException swte) {
+                                NLogger.debug(getClass(), swte);
+                            }
+                        });
+                        try {
+                            Thread.sleep(10);
+                        } catch (InterruptedException ie) {}
+                    }
+                    if (!counter.compareAndSet(id, id) || result == null || txt_val[0].isDisposed()) {
+                        return;
+                    }
+                    Display.getDefault().asyncExec(() -> {
+                        invalidInput = true;
+                        forceUpdate = false;
+                        try {
+                            txt_val[0].setText(result);
+                        } catch (SWTException swte) {
+                            NLogger.debug(getClass(), swte);
+                        }
+                    });
+                });
+
                 txt_val[0].setSelection(caret);
             }
         });
@@ -237,7 +302,7 @@ public class BigDecimalSpinner extends Composite {
         txt_val[0].setEnabled(enabled);
         super.setEnabled(enabled);
     }
-    
+
     public java.text.DecimalFormat getNumberFormat() {
         return numberFormat;
     }
