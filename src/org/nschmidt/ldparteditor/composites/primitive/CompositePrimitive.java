@@ -498,7 +498,7 @@ public class CompositePrimitive extends Composite {
 
     public void setViewport2(Matrix4f[] m) {
         viewport_matrix.load(m[0]);
-        viewport_translation.load(m[1]);
+        viewport_translation.setIdentity(); // .load(m[1]); // Don't load the translation (issue #566)
         viewport_rotation.load(m[2]);
         viewport_matrix_inv = (Matrix4f) m[0].invert();
     }
