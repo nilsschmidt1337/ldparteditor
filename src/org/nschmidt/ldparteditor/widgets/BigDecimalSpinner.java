@@ -63,7 +63,7 @@ public class BigDecimalSpinner extends Composite {
     private volatile boolean focus = true;
     private volatile boolean forceUpdate = false;
     private volatile boolean selectAll = true;
-    volatile boolean invalidInput = false;
+    private volatile boolean invalidInput = false;
 
     public BigDecimalSpinner(final Composite parent, int style, String numberFormat) {
         super(parent, style);
