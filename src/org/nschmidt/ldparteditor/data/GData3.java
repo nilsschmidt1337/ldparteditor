@@ -274,7 +274,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(false, c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -309,7 +309,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(false, c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         final float r = MathHelper.randomFloat(ID, 0);
@@ -347,7 +347,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(false, c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -542,7 +542,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(false, c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -706,7 +706,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(false, c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -829,7 +829,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            drawProtractor_GL20(false, c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
             return;
         }
         switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
@@ -1561,7 +1561,7 @@ public final class GData3 extends GData {
         drawNumberGL33(angle_s, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
     }
 
-    public void drawProtractor_GL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
+    public void drawProtractor_GL20(boolean selected, Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
@@ -1569,10 +1569,22 @@ public final class GData3 extends GData {
         GL11.glDisable(GL11.GL_LIGHTING);
 
         GL11.glLineWidth(View.lineWidthGL[0]);
+        if (selected) {
+            GL11.glColor4f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 1f);
+            GL11.glBegin(GL11.GL_LINES);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glEnd();
+        } else {
+            final float s = ((r + g + b) / 3 + .5f) % 1f;
+            GL11.glColor4f(s, s, s, 1f);
+            GL11.glBegin(GL11.GL_LINES);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glEnd();
+        }
         GL11.glColor4f(r, g, b, 1f);
         GL11.glBegin(GL11.GL_LINES);
-        GL11.glVertex3f(x1, y1, z1);
-        GL11.glVertex3f(x2, y2, z2);
         GL11.glVertex3f(x1, y1, z1);
         GL11.glVertex3f(x3, y3, z3);
         GL11.glEnd();
@@ -1629,13 +1641,15 @@ public final class GData3 extends GData {
         GL11.glEnd();
 
         GL11.glPushMatrix();
-        GL11.glDisable(GL11.GL_CULL_FACE);
         GL11.glMultMatrixf(renderer.getRotationInverse());
 
+        GL11.glDisable(GL11.GL_CULL_FACE);
+        GL11.glDisable(GL11.GL_DEPTH_TEST);
         PGData3.beginDrawText();
         GL11.glColor4f(r, g, b, 1f);
         drawNumber(angle_s, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
         PGData3.endDrawText();
+        GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
 
@@ -1778,9 +1792,11 @@ public final class GData3 extends GData {
 
     public int insertProtractor(Vertex[] v, float[] lineData, int lineIndex) {
 
+        final float s = ((r + g + b) / 3 + .5f) % 1f;
+
         GL33Helper.pointAt7(0, x1, y1, z1, lineData, lineIndex);
         GL33Helper.pointAt7(1, x2, y2, z2, lineData, lineIndex);
-        GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, s, s, s, 7f, lineData, lineIndex);
 
         lineIndex += 2;
 
