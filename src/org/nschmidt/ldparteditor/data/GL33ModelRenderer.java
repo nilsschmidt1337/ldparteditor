@@ -1220,7 +1220,11 @@ public class GL33ModelRenderer {
                                     pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
                                     pointAt7(4, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
                                     pointAt7(5, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    colourise7(0, 6, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                    if (((GData3) gd).isTriangle) {
+                                        colourise7(0, 6, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                    } else {
+                                        colourise7(0, 4, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                    }
                                     selectionLineIndex += 6;
                                     break;
                                 case 4:

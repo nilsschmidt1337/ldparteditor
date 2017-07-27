@@ -259,14 +259,14 @@ public final class VertexManager extends VM99Clipboard {
                                     }
                                 }
                                 GL11.glMultMatrixf(matrix_inv);
-                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawProtractor_GL20(c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
+                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, gd3.r, gd3.g, gd3.b, 0f), false).drawProtractor_GL20(true, c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
                                 GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                                 GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
                                 GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
                                 GL11.glVertex3f(triverts[2].x, triverts[2].y, triverts[2].z);
-                                GL11.glVertex3f(triverts[0].x, triverts[0].y, triverts[0].z);
+                                GL11.glVertex3f(triverts[1].x, triverts[1].y, triverts[1].z);
                                 GL11.glColor3f(View.vertex_Colour_r[0], View.vertex_Colour_g[0], View.vertex_Colour_b[0]);
                                 GL11.glEnd();
                             } else {
@@ -381,7 +381,7 @@ public final class VertexManager extends VM99Clipboard {
                             nz = (triverts[2].x - triverts[0].x) * (triverts[1].y - triverts[0].y) - (triverts[2].y - triverts[0].y) * (triverts[1].x - triverts[0].x);
                             if (!gd3.isTriangle) {
                                 GL11.glMultMatrixf(matrix_inv);
-                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawProtractor_GL20(c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
+                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, gd3.r, gd3.g, gd3.b, 0f), false).drawProtractor_GL20(true, c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
                                 GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
@@ -765,18 +765,25 @@ public final class VertexManager extends VM99Clipboard {
                                     lineverts[i1] = new Vertex(res.x, res.y, res.z);
                                 }
                                 GL11.glMultMatrixf(matrix_inv);
-                                new GData3(dataVerts[0], dataVerts[1], dataVerts[2], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawProtractor_GL20(c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z, lineverts[2].X, lineverts[2].Y, lineverts[2].Z);
-                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                new GData3(dataVerts[0], dataVerts[1], dataVerts[2], null, new GColour(16, tri.r, tri.g, tri.b, 0f), false).drawProtractor_GL20(true, c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z, lineverts[2].X, lineverts[2].Y, lineverts[2].Z);
                                 GL11.glMultMatrixf(matrix);
+                                GL11.glBegin(GL11.GL_LINES);
+                                GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+                                GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                                GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                                GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
+                                GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                                GL11.glEnd();
+                            } else {
+                                GL11.glBegin(GL11.GL_LINES);
+                                GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                                GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                                GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
+                                GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
+                                GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
+                                GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
+                                GL11.glEnd();
                             }
-                            GL11.glBegin(GL11.GL_LINES);
-                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
-                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
-                            GL11.glVertex3f(dataVerts[1].x, dataVerts[1].y, dataVerts[1].z);
-                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
-                            GL11.glVertex3f(dataVerts[2].x, dataVerts[2].y, dataVerts[2].z);
-                            GL11.glVertex3f(dataVerts[0].x, dataVerts[0].y, dataVerts[0].z);
-                            GL11.glEnd();
                         }
                     }
                 } else {
