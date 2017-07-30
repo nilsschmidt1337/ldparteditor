@@ -466,7 +466,6 @@ public class VM01SelectHelper extends VM01Select {
                     }
                 }
             } else { // Multithreaded selection for many faces
-                backupSelection();
                 final int chunks = View.NUM_CORES;
                 final Thread[] threads = new Thread[chunks];
                 final AtomicBoolean dialogCanceled = new AtomicBoolean(false);
@@ -549,9 +548,7 @@ public class VM01SelectHelper extends VM01Select {
                                 finally
                                 {
                                     if (m.isCanceled()) {
-                                        restoreSelection();
-                                    } else {
-                                        backupSelectionClear();
+                                        clearSelection2();
                                     }
                                     m.done();
                                 }
