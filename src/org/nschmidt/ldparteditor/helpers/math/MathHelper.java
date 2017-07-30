@@ -526,6 +526,8 @@ public enum MathHelper {
 
     public static Vector4f getNearestPointToLineSegment(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
 
+        // FIXME Has some problems (see issue #575)
+
         // Fastest iterative approach without objects
 
         // 0th Iteration
@@ -584,6 +586,8 @@ public enum MathHelper {
 
     public static org.nschmidt.csg.Vector3d getNearestPointToLineSegmentCSG(double lx1, double ly1, double lz1, double lx2, double ly2, double lz2, double px, double py, double pz) {
 
+        // FIXME Has some problems (see issue #575)
+
         // Fastest iterative approach without objects
 
         // 0th Iteration
@@ -641,6 +645,8 @@ public enum MathHelper {
     }
 
     public static Vector4f getNearestPointToLineSegment2(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
+
+        // FIXME Has some problems (see issue #575)
 
         // Fastest iterative approach without objects
 

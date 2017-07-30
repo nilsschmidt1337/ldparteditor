@@ -161,7 +161,6 @@ public class VM21Merger extends VM20Manipulator {
                         modified = split((Vertex) target[0], (Vertex) target[1], (Vertex) target[2]) || modified;
                     }
                 } else if (directional) {
-                    // FIXME NEEDS IMPLEMENTATION!!!
                     final HashSet<GData> allSurfs = new HashSet<>();
                     allSurfs.addAll(triangles.keySet());
                     allSurfs.addAll(quads.keySet());
