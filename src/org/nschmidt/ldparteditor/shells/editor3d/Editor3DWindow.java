@@ -3509,6 +3509,40 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
+        mntm_SAllTypes[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        mntm_SVertices[0].setSelection(true);
+                        mntm_SLines[0].setSelection(true);
+                        mntm_STriangles[0].setSelection(true);
+                        mntm_SQuads[0].setSelection(true);
+                        mntm_SCLines[0].setSelection(true);
+                        showSelectMenu();
+                    }
+                });
+                regainFocus();
+            }
+        });
+        mntm_SNothing[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                Display.getCurrent().asyncExec(new Runnable() {
+                    @Override
+                    public void run() {
+                        mntm_SVertices[0].setSelection(false);
+                        mntm_SLines[0].setSelection(false);
+                        mntm_STriangles[0].setSelection(false);
+                        mntm_SQuads[0].setSelection(false);
+                        mntm_SCLines[0].setSelection(false);
+                        showSelectMenu();
+                    }
+                });
+                regainFocus();
+            }
+        });
         mntm_STriangles[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

@@ -376,6 +376,7 @@ public final class I18n {
     public static final String E3D_AllSameColours = E3D.getString(getProperty());
     public static final String E3D_AllSameColoursShown = E3D.getString(getProperty());
     public static final String E3D_AllShown = E3D.getString(getProperty());
+    public static final String E3D_AllTypes = E3D.getString(getProperty());
     public static final String E3D_AngleDiff = E3D.getString(getProperty());
     public static final String E3D_AngleX = E3D.getString(getProperty());
     public static final String E3D_AngleY = E3D.getString(getProperty());
@@ -507,6 +508,7 @@ public final class I18n {
     public static final String E3D_NoFileSelected = E3D.getString(getProperty());
     public static final String E3D_NoPrimitiveSelected = E3D.getString(getProperty());
     public static final String E3D_None = E3D.getString(getProperty());
+    public static final String E3D_Nothing = E3D.getString(getProperty());
     public static final String E3D_NumberOfFractions = E3D.getString(getProperty());
     public static final String E3D_Open = E3D.getString(getProperty());
     public static final String E3D_OpenDat = E3D.getString(getProperty());
