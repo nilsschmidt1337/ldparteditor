@@ -435,11 +435,13 @@ class Editor3DDesign extends ApplicationWindow {
     final Button[] btn_zoomOutPrimitives = new Button[1];
     final Button[] btn_zoomInPrimitives = new Button[1];
 
+    final MenuItem[] mntm_SAllTypes = new MenuItem[1];
     final MenuItem[] mntm_STriangles = new MenuItem[1];
     final MenuItem[] mntm_SQuads = new MenuItem[1];
     final MenuItem[] mntm_SCLines = new MenuItem[1];
     final MenuItem[] mntm_SVertices = new MenuItem[1];
     final MenuItem[] mntm_SLines = new MenuItem[1];
+    final MenuItem[] mntm_SNothing = new MenuItem[1];
 
 
     final MenuItem[] mntm_IconSize1 = new MenuItem[1];
@@ -2288,6 +2290,18 @@ class Editor3DDesign extends ApplicationWindow {
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator5 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                {
+                    MenuItem mntm_SAllTypes = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SAllTypes[0] = mntm_SAllTypes;
+                    mntm_SAllTypes.setText(I18n.E3D_AllTypes);
+                }
+                {
+                    MenuItem mntm_SNothing = new MenuItem(mnu_Select, SWT.PUSH);
+                    this.mntm_SNothing[0] = mntm_SNothing;
+                    mntm_SNothing.setText(I18n.E3D_Nothing);
+                }
+                @SuppressWarnings("unused")
+                final MenuItem mntmSeparator6 = new MenuItem(mnu_Select, SWT.SEPARATOR);
                 {
                     MenuItem mntm_needsThreshold = new MenuItem(mnu_Select, SWT.PUSH);
                     mntm_needsThreshold.setText(I18n.E3D_NeedsAThreshold);
