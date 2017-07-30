@@ -526,8 +526,6 @@ public enum MathHelper {
 
     public static Vector4f getNearestPointToLineSegment(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
 
-        // FIXME Has some problems (see issue #575)
-
         // Fastest iterative approach without objects
 
         // 0th Iteration
@@ -548,8 +546,8 @@ public enum MathHelper {
 
         float dap = 0f;
         float odap = 1f;
-
-        while (Math.abs(dap - odap) > .001f) {
+        int refinements = 0;
+        while (Math.abs(dap - odap) > .001f || (refinements++ < 3)) {
             float dxup = ux - px;
             float dyup = uy - py;
             float dzup = uz - pz;
@@ -586,8 +584,6 @@ public enum MathHelper {
 
     public static org.nschmidt.csg.Vector3d getNearestPointToLineSegmentCSG(double lx1, double ly1, double lz1, double lx2, double ly2, double lz2, double px, double py, double pz) {
 
-        // FIXME Has some problems (see issue #575)
-
         // Fastest iterative approach without objects
 
         // 0th Iteration
@@ -609,7 +605,8 @@ public enum MathHelper {
         double dap = 0d;
         double odap = 1d;
 
-        while (Math.abs(dap - odap) > .0001d) {
+        int refinements = 0;
+        while (Math.abs(dap - odap) > .0001d || (refinements++ < 3)) {
             double dxup = ux - px;
             double dyup = uy - py;
             double dzup = uz - pz;
@@ -646,8 +643,6 @@ public enum MathHelper {
 
     public static Vector4f getNearestPointToLineSegment2(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
 
-        // FIXME Has some problems (see issue #575)
-
         // Fastest iterative approach without objects
 
         // 0th Iteration
@@ -669,7 +664,8 @@ public enum MathHelper {
         float dap = 0f;
         float odap = 1f;
 
-        while (Math.abs(dap - odap) > .0000001f) {
+        int refinements = 0;
+        while (Math.abs(dap - odap) > .0000001f || (refinements++ < 3)) {
             float dxup = ux - px;
             float dyup = uy - py;
             float dzup = uz - pz;
