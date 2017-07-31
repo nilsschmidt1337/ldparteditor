@@ -1701,6 +1701,23 @@ public class CompositeTab extends CompositeTabDesign {
                 showSelection();
             }
         });
+
+        mntm_ShowAll[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                if (!state.getFileNameObj().getVertexManager().isUpdated()){
+                    return;
+                }
+                final DatFile df = state.getFileNameObj();
+                final VertexManager vm = df.getVertexManager();
+                final StyledText st = getTextComposite();
+                vm.addSnapshot();
+                vm.showAll();
+                df.addHistory();
+                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                st.forceFocus();
+            }
+        });
     }
 
     /**
@@ -1872,5 +1889,4 @@ public class CompositeTab extends CompositeTabDesign {
         st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
         st.forceFocus();
     }
-
 }

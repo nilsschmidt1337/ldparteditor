@@ -58,6 +58,7 @@ class CompositeTabDesign extends CTabItem {
 
     final MenuItem[] mntm_HideSelection = new MenuItem[1];
     final MenuItem[] mntm_ShowSelection = new MenuItem[1];
+    final MenuItem[] mntm_ShowAll = new MenuItem[1];
     final MenuItem[] mntm_DrawSelection = new MenuItem[1];
     final MenuItem[] mntm_DrawUntilSelection = new MenuItem[1];
 
@@ -258,6 +259,10 @@ class CompositeTabDesign extends CTabItem {
             mntmShowSelection.setText(I18n.EDITORTEXT_Show);
             mntmShowSelection.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
             mntm_ShowSelection[0] = mntmShowSelection;
+
+            MenuItem mntmShowAll = new MenuItem(menu[0], I18n.I18N_RTL());
+            mntmShowAll.setText(I18n.E3D_ShowAll);
+            mntm_ShowAll[0] = mntmShowAll;
 
             @SuppressWarnings("unused")
             final MenuItem mntmSeparator0 = new MenuItem(menu[0], SWT.SEPARATOR);
