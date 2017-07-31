@@ -705,7 +705,9 @@ public final class GData2 extends GData {
         PGData3.beginDrawText();
         GL11.glColor4f(r, g, b, 1f);
         final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);
+        final Vector4f lineOrigin = new Vector4f(x1, y1, z1, 1f);
         Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
+        Matrix4f.transform(c3d.getRotation(), lineOrigin, lineOrigin);
         BigDecimal dx = x2c.subtract(x1c);
         BigDecimal dy = y2c.subtract(y1c);
         BigDecimal dz = z2c.subtract(z1c);
@@ -735,6 +737,9 @@ public final class GData2 extends GData {
         final float oy2 = .03f * zoom;
         final float oy3 = .045f * zoom;
         final float ox1 = -.045f * zoom;
+        for (PGData3 tri : View.S) {
+            tri.drawText(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
+        }
         for (PGData3 tri : View.DA) {
             tri.drawText(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
@@ -888,7 +893,9 @@ public final class GData2 extends GData {
         final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final float zoom = 1f / c3d.getZoom();
         final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);
+        final Vector4f lineOrigin = new Vector4f(x1, y1, z1, 1f);
         Matrix4f.transform(c3d.getRotation(), textOrigin, textOrigin);
+        Matrix4f.transform(c3d.getRotation(), lineOrigin, lineOrigin);
         BigDecimal dx = x2c.subtract(x1c);
         BigDecimal dy = y2c.subtract(y1c);
         BigDecimal dz = z2c.subtract(z1c);
@@ -918,6 +925,9 @@ public final class GData2 extends GData {
         final float oy2 = .03f * zoom;
         final float oy3 = .045f * zoom;
         final float ox1 = -.045f * zoom;
+        for (PGData3 tri : View.S) {
+            tri.drawTextGL33_VAO(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
+        }
         for (PGData3 tri : View.DA) {
             tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
