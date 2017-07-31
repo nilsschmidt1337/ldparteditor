@@ -321,6 +321,7 @@ public enum View {
     public final static Set<PGData3> RIGHT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_RIGHT, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
     public final static Set<PGData3> TOP = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_TOP, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
 
+    public final static Set<PGData3> S = TextTriangulator.triangulateGLText(Font.MONOSPACE, "*", 0.07, 0.3, 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D0 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "0", 0.07, 0.3, 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D1 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "1", 0.07, 0.3, 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D2 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "2", 0.07, 0.3, 16.9); //$NON-NLS-1$
