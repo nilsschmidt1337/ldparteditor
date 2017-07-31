@@ -2083,7 +2083,7 @@ class Editor3DDesign extends ApplicationWindow {
         {
             Button btn_BFCswap = new Button(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_BFCswap[0] = btn_BFCswap;
-            btn_BFCswap.setToolTipText(I18n.E3D_SwapWinding);
+            KeyStateManager.addTooltipText(btn_BFCswap, I18n.E3D_SwapWinding, Task.SWAP_WINDING);
             btn_BFCswap.setImage(ResourceManager.getImage("icon16_bfcSwap.png")); //$NON-NLS-1$
         }
         {

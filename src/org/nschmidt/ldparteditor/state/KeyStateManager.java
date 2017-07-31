@@ -175,6 +175,8 @@ public class KeyStateManager {
             addTask(Task.MOVE_TO_AVG, 'a');
             addTask(Task.MOVE_ADJACENT_DATA, 'b');
 
+            addTask(Task.SWAP_WINDING, 'j');
+
             addTask(Task.ADD_VERTEX, '5');
             addTask(Task.ADD_TRIANGLE, '6');
             addTask(Task.ADD_QUAD, '7');
@@ -276,6 +278,8 @@ public class KeyStateManager {
 
             addTask(Task.MOVE_TO_AVG, 'a');
             addTask(Task.MOVE_ADJACENT_DATA, 'b');
+
+            addTask(Task.SWAP_WINDING, 'j');
 
             addTask(Task.ADD_VERTEX, '5');
             addTask(Task.ADD_TRIANGLE, '6');
@@ -488,6 +492,10 @@ public class KeyStateManager {
                         break;
                     case MOVE_ADJACENT_DATA:
                         win.toggleMoveAdjacentData();
+                        break;
+                    case SWAP_WINDING:
+                        vm.backupHideShowState();
+                        vm.windingChangeSelection(true);
                         break;
                     case COLOUR_NUMBER0:
 
