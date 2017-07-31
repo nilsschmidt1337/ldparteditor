@@ -800,6 +800,7 @@ public final class I18n {
     public static final String KEYBOARD_ShowGrid = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ShowRuler = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Split = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_SwapWinding = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ToggleInsertAtCursor = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Undo = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ZoomIn = KEYBOARD.getString(getProperty());
