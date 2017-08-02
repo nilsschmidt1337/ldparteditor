@@ -133,8 +133,6 @@ class VM10Selector extends VM09WindingChange {
                                     allNormals.add(new Vector3d(new BigDecimal(g.xn), new BigDecimal(g.yn), new BigDecimal(g.zn)));
                                 }
                             }
-                        } else {
-
                         }
                     }
 
@@ -682,32 +680,6 @@ class VM10Selector extends VM09WindingChange {
                     }
 
                     clearVertexNormalCache();
-                    
-                    // Deselect excluded data types (vertices, lines, etc.)
-                    
-                    if (!ss.isVertices()) {
-                        selectedVertices.clear();
-                    }
-
-                    if (!ss.isLines()) {
-                        selectedData.removeAll(selectedLines);
-                        selectedLines.clear();                    
-                    }
-
-                    if (!ss.isTriangles()) {
-                        selectedData.removeAll(selectedTriangles);
-                        selectedTriangles.clear();
-                    }
-
-                    if (!ss.isQuads()) {
-                        selectedData.removeAll(selectedQuads);
-                        selectedQuads.clear();                      
-                    }
-
-                    if (!ss.isCondlines()) {
-                        selectedData.removeAll(selectedCondlines);
-                        selectedCondlines.clear();                      
-                    }
 
                     // Extend selection to whole subfiles
                     if (ss.isWholeSubfiles() && !ss.isNoSubfiles()) {
