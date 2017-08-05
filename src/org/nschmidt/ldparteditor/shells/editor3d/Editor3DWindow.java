@@ -2949,7 +2949,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().getVertexManager().paste();
+                    Project.getFileToEdit().getVertexManager().paste(loadSelectorSettings());
                     if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
                         setMovingAdjacentData(false);
                         GuiStatusManager.updateStatus();
@@ -4086,7 +4086,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 final boolean moveAdjacentData = isMovingAdjacentData();
                                 if (CoordinatesDialog.isCreatingCopy()) {
                                     vm.copy();
-                                    vm.paste();
+                                    vm.paste(null);
                                     setMovingAdjacentData(false);
                                     vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), false, true, CoordinatesDialog.getTransformationMode());
                                     setMovingAdjacentData(moveAdjacentData);
@@ -4130,7 +4130,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             for (int i = 0; i < iterations; i++) {
                                 if (TranslateDialog.isCreatingCopy()) {
                                     c3d.getLockableDatFileReference().getVertexManager().copy();
-                                    c3d.getLockableDatFileReference().getVertexManager().paste();
+                                    c3d.getLockableDatFileReference().getVertexManager().paste(null);
                                     setMovingAdjacentData(false);
                                 }
                                 c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(TranslateDialog.getOffset(), null, TransformationMode.TRANSLATE, TranslateDialog.isX(), TranslateDialog.isY(), TranslateDialog.isZ(), isMovingAdjacentData(), true, TranslateDialog.getTransformationMode());
@@ -4197,7 +4197,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             for (int i = 0; i < iterations; i++) {
                                 if (RotateDialog.isCreatingCopy()) {
                                     c3d.getLockableDatFileReference().getVertexManager().copy();
-                                    c3d.getLockableDatFileReference().getVertexManager().paste();
+                                    c3d.getLockableDatFileReference().getVertexManager().paste(null);
                                     setMovingAdjacentData(false);
                                 }
                                 c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(RotateDialog.getAngles(), RotateDialog.getPivot(), TransformationMode.ROTATE, RotateDialog.isX(), RotateDialog.isY(), RotateDialog.isZ(), isMovingAdjacentData(), true, RotateDialog.getTransformationMode());
@@ -4263,7 +4263,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             final boolean moveAdjacentData = isMovingAdjacentData();
                             if (ScaleDialog.isCreatingCopy()) {
                                 c3d.getLockableDatFileReference().getVertexManager().copy();
-                                c3d.getLockableDatFileReference().getVertexManager().paste();
+                                c3d.getLockableDatFileReference().getVertexManager().paste(null);
                                 setMovingAdjacentData(false);
                             }
                             c3d.getLockableDatFileReference().getVertexManager().setXyzOrTranslateOrTransform(ScaleDialog.getScaleFactors(), ScaleDialog.getPivot(), TransformationMode.SCALE, ScaleDialog.isX(), ScaleDialog.isY(), ScaleDialog.isZ(), isMovingAdjacentData(), true, ScaleDialog.getTransformationMode());

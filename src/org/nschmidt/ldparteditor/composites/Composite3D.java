@@ -582,7 +582,7 @@ public class Composite3D extends ScalableComposite {
             public void widgetSelected(SelectionEvent e) {
                 if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
                 lockableDatFileReference.getVertexManager().addSnapshot();
-                lockableDatFileReference.getVertexManager().paste();
+                lockableDatFileReference.getVertexManager().paste(Editor3DWindow.getWindow().loadSelectorSettings());
                 if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
                     Editor3DWindow.getWindow().setMovingAdjacentData(false);
                     GuiStatusManager.updateStatus();
@@ -2452,7 +2452,7 @@ public class Composite3D extends ScalableComposite {
                                 ct2.getTextComposite().redraw();
                             }
 
-                            vm.paste(dpl.getValue(Math.max(minLine - 1, 1)));
+                            vm.pasteToJoin(dpl.getValue(Math.max(minLine - 1, 1)));
                         }
                     });
                 }

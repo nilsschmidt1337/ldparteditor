@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -498,15 +499,32 @@ class VM99Clipboard extends VM27YTruder {
 
     }
 
-    public void paste() {
+    public void paste(SelectorSettings sels) {
         if (linkedDatFile.isReadOnly())
             return;
+        final boolean insertVertices = sels == null || sels.isVertices();
+        final boolean insertLines = sels == null || sels.isLines();
+        final boolean insertTriangles = sels == null || sels.isTriangles();
+        final boolean insertQuads = sels == null || sels.isQuads();
+        final boolean insertCondlines = sels == null || sels.isCondlines();
         final GColour col16 = View.getLDConfigColour(16);
         if (!CLIPBOARD.isEmpty()) {
             clearSelection();
             if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
                 for (GData g : CLIPBOARD) {
-                    if (g.type() == 0 && g.text.startsWith("0 //~")) { //$NON-NLS-1$
+                    if (g.type() == 0 && (!insertVertices || g.text.startsWith("0 //~"))) { //$NON-NLS-1$
+                        continue;
+                    }
+                    if (!insertLines && g.type() == 2) {
+                        continue;
+                    }
+                    if (!insertTriangles && g.type() == 3) {
+                        continue;
+                    }
+                    if (!insertQuads && g.type() == 4) {
+                        continue;
+                    }
+                    if (!insertCondlines && g.type() == 5) {
                         continue;
                     }
                     Set<String> alreadyParsed = new HashSet<String>();
@@ -584,6 +602,21 @@ class VM99Clipboard extends VM27YTruder {
                 GData before = linkedDatFile.getDrawChainTail();
                 GData tailData = null;
                 for (GData g : CLIPBOARD) {
+                    if (!insertVertices && g.type() == 0 && g.text.contains("VERTEX")) { //$NON-NLS-1$
+                        continue;
+                    }
+                    if (!insertLines && g.type() == 2) {
+                        continue;
+                    }
+                    if (!insertTriangles && g.type() == 3) {
+                        continue;
+                    }
+                    if (!insertQuads && g.type() == 4) {
+                        continue;
+                    }
+                    if (!insertCondlines && g.type() == 5) {
+                        continue;
+                    }
                     Set<String> alreadyParsed = new HashSet<String>();
                     alreadyParsed.add(linkedDatFile.getShortName());
                     if (CLIPBOARD_InvNext.contains(g)) {
@@ -669,7 +702,7 @@ class VM99Clipboard extends VM27YTruder {
     }
 
 
-    public void paste(GData g2) {
+    public void pasteToJoin(GData g2) {
         if (linkedDatFile.isReadOnly())
             return;
         final GColour col16 = View.getLDConfigColour(16);

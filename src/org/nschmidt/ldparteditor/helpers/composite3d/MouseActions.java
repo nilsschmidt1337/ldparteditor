@@ -1222,17 +1222,20 @@ public class MouseActions {
                 M.setAccurateYaxis(aYx, aYy, aYz);
                 checkSyncEditMode(vm, datfile);
             } else if (window.getWorkingAction() == WorkingMode.SELECT) {
+                final SelectorSettings sels = window.loadSelectorSettings();
                 switch (window.getWorkingType()) {
                 case VERTICES:
-                    vm.selectVertices(c3d, false, false);
-                    vm.reSelectSubFiles();
+                    if (sels.isVertices()) {
+                        vm.selectVertices(c3d, false, false);
+                        vm.reSelectSubFiles();
+                    }
                     break;
                 case LINES:
-                    vm.selectLines(c3d);
+                    vm.selectLines(c3d, sels);
                     vm.reSelectSubFiles();
                     break;
                 case FACES:
-                    vm.selectFaces(c3d, event);
+                    vm.selectFaces(c3d, event, sels);
                     vm.reSelectSubFiles();
                     break;
                 case SUBFILES:

@@ -37,6 +37,7 @@ import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
+import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
@@ -845,7 +846,7 @@ public class VM01SelectHelper extends VM01Select {
         return true;
     }
 
-    public synchronized void selectLines(Composite3D c3d) {
+    public synchronized void selectLines(Composite3D c3d, SelectorSettings sels) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
@@ -866,32 +867,36 @@ public class VM01SelectHelper extends VM01Select {
         if (selectedVertices.size() < 2 || needRayTest) {
             if (selectedVertices.size() == 1) {
                 Vertex selectedVertex = selectedVertices.iterator().next();
-                for (GData2 line : lines.keySet()) {
-                    if (hiddenData.contains(line))
-                        continue;
-                    for (Vertex tvertex : lines.get(line)) {
-                        if (selectedVertex.equals(tvertex)) {
-                            if (selectedLines.contains(line)) {
-                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
-                            } else {
-                                selectedData.add(line);
-                                selectedLines.add(line);
+                if (sels.isLines()) {
+                     for (GData2 line : lines.keySet()) {
+                        if (hiddenData.contains(line))
+                            continue;
+                        for (Vertex tvertex : lines.get(line)) {
+                            if (selectedVertex.equals(tvertex)) {
+                                if (selectedLines.contains(line)) {
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
+                                } else {
+                                    selectedData.add(line);
+                                    selectedLines.add(line);
+                                }
                             }
                         }
                     }
                 }
-                for (GData5 line : condlines.keySet()) {
-                    if (hiddenData.contains(line))
-                        continue;
-                    for (Vertex tvertex : condlines.get(line)) {
-                        if (selectedVertex.equals(tvertex)) {
-                            if (selectedCondlines.contains(line)) {
-                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
-                            } else {
-                                selectedData.add(line);
-                                selectedCondlines.add(line);
+                if (sels.isCondlines()) {
+                    for (GData5 line : condlines.keySet()) {
+                        if (hiddenData.contains(line))
+                            continue;
+                        for (Vertex tvertex : condlines.get(line)) {
+                            if (selectedVertex.equals(tvertex)) {
+                                if (selectedCondlines.contains(line)) {
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
+                                } else {
+                                    selectedData.add(line);
+                                    selectedCondlines.add(line);
+                                }
                             }
                         }
                     }
@@ -936,144 +941,151 @@ public class VM01SelectHelper extends VM01Select {
 
                 float[][] M = new float[2][2];
                 float[] b = new float[] { 0f, 0f };
-                // NLogger.debug(getClass(), discr);
+                if (sels.isLines()) {
+                    for (GData2 line : lines.keySet()) {
+                        if (hiddenData.contains(line))
+                            continue;
+                        allVertsFromLine = false;
+                        for (Vertex tvertex : lines.get(line)) {
+                            if (allVertsFromLine) { // b
+                                f[0] = a[0] - tvertex.x;
+                                f[1] = a[1] - tvertex.y;
+                                f[2] = a[2] - tvertex.z;
+                            } else { // a
+                                a[0] = tvertex.x;
+                                a[1] = tvertex.y;
+                                a[2] = tvertex.z;
+                                e[0] = s[0] - a[0];
+                                e[1] = s[1] - a[1];
+                                e[2] = s[2] - a[2];
+                            }
+                            allVertsFromLine = true;
+                        }
+                        M[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
+                        M[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
+
+                        M[1][0] = M[0][1]; // t
+                        M[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
+                        b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
+                        b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
+                        try {
+                            float[] solution = MathHelper.gaussianElimination(M, b);
+
+                            if (solution[1] >= 0f && solution[1] <= 1f) {
+                                float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
+                                if (distanceSquared < discr) {
+                                    if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
+                                        continue;
+                                    // Vertex[] v = lines.get(line);
+                                    // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                                    //    continue;
+                                    if (selectedLines.contains(line)) {
+                                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
+                                    } else {
+                                        selectedData.add(line);
+                                        selectedLines.add(line);
+                                    }
+                                }
+                            }
+                        } catch (RuntimeException re1) {
+                        }
+                    }
+                }
+                if (sels.isCondlines()) {
+                    for (GData5 line : condlines.keySet()) {
+                        if (hiddenData.contains(line))
+                            continue;
+                        allVertsFromLine = false;
+                        for (Vertex tvertex : condlines.get(line)) {
+                            if (allVertsFromLine) { // b
+                                f[0] = a[0] - tvertex.x;
+                                f[1] = a[1] - tvertex.y;
+                                f[2] = a[2] - tvertex.z;
+                                break;
+                            } else { // a
+                                a[0] = tvertex.x;
+                                a[1] = tvertex.y;
+                                a[2] = tvertex.z;
+                                e[0] = s[0] - a[0];
+                                e[1] = s[1] - a[1];
+                                e[2] = s[2] - a[2];
+                            }
+                            allVertsFromLine = true;
+                        }
+                        M[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
+                        M[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
+
+                        M[1][0] = M[0][1]; // t
+                        M[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
+                        b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
+                        b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
+                        try {
+                            float[] solution = MathHelper.gaussianElimination(M, b);
+                            if (solution[1] >= 0f && solution[1] <= 1f) {
+                                float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
+                                        e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
+                                if (distanceSquared < discr) {
+                                    if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
+                                        continue;
+                                    // Vertex[] v = condlines.get(line);
+                                    // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
+                                    //     continue;
+                                    if (selectedCondlines.contains(line)) {
+                                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
+                                    } else {
+                                        selectedData.add(line);
+                                        selectedCondlines.add(line);
+                                    }
+                                }
+                            }
+                        } catch (RuntimeException re2) {
+                        }
+                    }
+                }
+            }
+        } else {
+            if (sels.isLines()) {
                 for (GData2 line : lines.keySet()) {
                     if (hiddenData.contains(line))
                         continue;
                     allVertsFromLine = false;
                     for (Vertex tvertex : lines.get(line)) {
-                        if (allVertsFromLine) { // b
-                            f[0] = a[0] - tvertex.x;
-                            f[1] = a[1] - tvertex.y;
-                            f[2] = a[2] - tvertex.z;
-                        } else { // a
-                            a[0] = tvertex.x;
-                            a[1] = tvertex.y;
-                            a[2] = tvertex.z;
-                            e[0] = s[0] - a[0];
-                            e[1] = s[1] - a[1];
-                            e[2] = s[2] - a[2];
+                        if (!selectedVertices.contains(tvertex))
+                            break;
+                        if (allVertsFromLine) {
+                            if (selectedLines.contains(line)) {
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
+                            } else {
+                                selectedData.add(line);
+                                selectedLines.add(line);
+                            }
                         }
                         allVertsFromLine = true;
                     }
-                    M[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
-                    M[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
-
-                    M[1][0] = M[0][1]; // t
-                    M[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
-                    b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
-                    b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
-                    try {
-                        float[] solution = MathHelper.gaussianElimination(M, b);
-
-                        if (solution[1] >= 0f && solution[1] <= 1f) {
-                            float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
-                            if (distanceSquared < discr) {
-                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
-                                    continue;
-                                // Vertex[] v = lines.get(line);
-                                // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
-                                //    continue;
-                                if (selectedLines.contains(line)) {
-                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
-                                } else {
-                                    selectedData.add(line);
-                                    selectedLines.add(line);
-                                }
-                            }
-                        }
-                    } catch (RuntimeException re1) {
-                    }
                 }
+            }
+            if (sels.isCondlines()) {
                 for (GData5 line : condlines.keySet()) {
                     if (hiddenData.contains(line))
                         continue;
                     allVertsFromLine = false;
                     for (Vertex tvertex : condlines.get(line)) {
-                        if (allVertsFromLine) { // b
-                            f[0] = a[0] - tvertex.x;
-                            f[1] = a[1] - tvertex.y;
-                            f[2] = a[2] - tvertex.z;
+                        if (!selectedVertices.contains(tvertex))
                             break;
-                        } else { // a
-                            a[0] = tvertex.x;
-                            a[1] = tvertex.y;
-                            a[2] = tvertex.z;
-                            e[0] = s[0] - a[0];
-                            e[1] = s[1] - a[1];
-                            e[2] = s[2] - a[2];
+                        if (allVertsFromLine) {
+                            if (selectedCondlines.contains(line)) {
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
+                            } else {
+                                selectedData.add(line);
+                                selectedCondlines.add(line);
+                            }
                         }
                         allVertsFromLine = true;
                     }
-                    M[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
-                    M[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
-
-                    M[1][0] = M[0][1]; // t
-                    M[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
-                    b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
-                    b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
-                    try {
-                        float[] solution = MathHelper.gaussianElimination(M, b);
-                        if (solution[1] >= 0f && solution[1] <= 1f) {
-                            float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
-                                    e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
-                            if (distanceSquared < discr) {
-                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
-                                    continue;
-                                // Vertex[] v = condlines.get(line);
-                                // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
-                                //     continue;
-                                if (selectedCondlines.contains(line)) {
-                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
-                                } else {
-                                    selectedData.add(line);
-                                    selectedCondlines.add(line);
-                                }
-                            }
-                        }
-                    } catch (RuntimeException re2) {
-                    }
-                }
-            }
-        } else {
-            for (GData2 line : lines.keySet()) {
-                if (hiddenData.contains(line))
-                    continue;
-                allVertsFromLine = false;
-                for (Vertex tvertex : lines.get(line)) {
-                    if (!selectedVertices.contains(tvertex))
-                        break;
-                    if (allVertsFromLine) {
-                        if (selectedLines.contains(line)) {
-                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
-                        } else {
-                            selectedData.add(line);
-                            selectedLines.add(line);
-                        }
-                    }
-                    allVertsFromLine = true;
-                }
-            }
-            for (GData5 line : condlines.keySet()) {
-                if (hiddenData.contains(line))
-                    continue;
-                allVertsFromLine = false;
-                for (Vertex tvertex : condlines.get(line)) {
-                    if (!selectedVertices.contains(tvertex))
-                        break;
-                    if (allVertsFromLine) {
-                        if (selectedCondlines.contains(line)) {
-                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
-                        } else {
-                            selectedData.add(line);
-                            selectedCondlines.add(line);
-                        }
-                    }
-                    allVertsFromLine = true;
                 }
             }
         }
@@ -1283,7 +1295,7 @@ public class VM01SelectHelper extends VM01Select {
         selectedVerticesForSubfile.addAll(tmpVerts);
     }
 
-    public synchronized void selectFaces(Composite3D c3d, Event event) {
+    public synchronized void selectFaces(Composite3D c3d, Event event, SelectorSettings sels) {
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
@@ -1302,41 +1314,44 @@ public class VM01SelectHelper extends VM01Select {
         if (selectedVertices.size() < 2 || needRayTest) {
             if (selectedVertices.size() == 1) {
                 Vertex selectedVertex = selectedVertices.iterator().next();
-                for (GData3 line : triangles.keySet()) {
-                    if (hiddenData.contains(line))
-                        continue;
-                    for (Vertex tvertex : triangles.get(line)) {
-                        if (selectedVertex.equals(tvertex)) {
-                            if (selectedTriangles.contains(line)) {
-                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedTriangles.remove(line);
-                            } else {
-                                selectedData.add(line);
-                                selectedTriangles.add(line);
+                if (sels.isTriangles()) {
+                    for (GData3 line : triangles.keySet()) {
+                        if (hiddenData.contains(line))
+                            continue;
+                        for (Vertex tvertex : triangles.get(line)) {
+                            if (selectedVertex.equals(tvertex)) {
+                                if (selectedTriangles.contains(line)) {
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedTriangles.remove(line);
+                                } else {
+                                    selectedData.add(line);
+                                    selectedTriangles.add(line);
+                                }
                             }
                         }
                     }
                 }
-                for (GData4 line : quads.keySet()) {
-                    if (hiddenData.contains(line))
-                        continue;
-                    for (Vertex tvertex : quads.get(line)) {
-                        if (selectedVertex.equals(tvertex)) {
-                            if (selectedQuads.contains(line)) {
-                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                                if (needRayTest || c3d.getKeys().isAltPressed()) selectedQuads.remove(line);
-                            } else {
-                                selectedData.add(line);
-                                selectedQuads.add(line);
+                if (sels.isQuads()) {
+                    for (GData4 line : quads.keySet()) {
+                        if (hiddenData.contains(line))
+                            continue;
+                        for (Vertex tvertex : quads.get(line)) {
+                            if (selectedVertex.equals(tvertex)) {
+                                if (selectedQuads.contains(line)) {
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                                    if (needRayTest || c3d.getKeys().isAltPressed()) selectedQuads.remove(line);
+                                } else {
+                                    selectedData.add(line);
+                                    selectedQuads.add(line);
+                                }
                             }
                         }
                     }
                 }
             } else {
-
                 GData selection = selectFaces_helper(c3d, event);
                 if (selection != null) {
-                    if (selection.type() == 4) {
+                    if (selection.type() == 4 && sels.isQuads()) {
                         GData4 gd4 = (GData4) selection;
                         if (selectedQuads.contains(gd4)) {
                             if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(gd4);
@@ -1345,7 +1360,7 @@ public class VM01SelectHelper extends VM01Select {
                             selectedData.add(gd4);
                             selectedQuads.add(gd4);
                         }
-                    } else {
+                    } else if (sels.isTriangles()) {
                         GData3 gd3 = (GData3) selection;
                         if (selectedTriangles.contains(gd3)) {
                             if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(gd3);
@@ -1358,43 +1373,47 @@ public class VM01SelectHelper extends VM01Select {
                 }
             }
         } else {
-            for (GData3 line : triangles.keySet()) {
-                if (hiddenData.contains(line))
-                    continue;
-                allVertsFromLine = true;
-                for (Vertex tvertex : triangles.get(line)) {
-                    if (!selectedVertices.contains(tvertex)) {
-                        allVertsFromLine = false;
-                        break;
+            if (sels.isTriangles()) {
+                for (GData3 line : triangles.keySet()) {
+                    if (hiddenData.contains(line))
+                        continue;
+                    allVertsFromLine = true;
+                    for (Vertex tvertex : triangles.get(line)) {
+                        if (!selectedVertices.contains(tvertex)) {
+                            allVertsFromLine = false;
+                            break;
+                        }
                     }
-                }
-                if (allVertsFromLine) {
-                    if (selectedTriangles.contains(line)) {
-                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedTriangles.remove(line);
-                    } else {
-                        selectedData.add(line);
-                        selectedTriangles.add(line);
+                    if (allVertsFromLine) {
+                        if (selectedTriangles.contains(line)) {
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedTriangles.remove(line);
+                        } else {
+                            selectedData.add(line);
+                            selectedTriangles.add(line);
+                        }
                     }
                 }
             }
-            for (GData4 line : quads.keySet()) {
-                if (hiddenData.contains(line))
-                    continue;
-                allVertsFromLine = true;
-                for (Vertex tvertex : quads.get(line)) {
-                    if (!selectedVertices.contains(tvertex)) {
-                        allVertsFromLine = false;
-                        break;
+            if (sels.isQuads()) {
+                for (GData4 line : quads.keySet()) {
+                    if (hiddenData.contains(line))
+                        continue;
+                    allVertsFromLine = true;
+                    for (Vertex tvertex : quads.get(line)) {
+                        if (!selectedVertices.contains(tvertex)) {
+                            allVertsFromLine = false;
+                            break;
+                        }
                     }
-                }
-                if (allVertsFromLine) {
-                    if (selectedQuads.contains(line)) {
-                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
-                        if (needRayTest || c3d.getKeys().isAltPressed()) selectedQuads.remove(line);
-                    } else {
-                        selectedData.add(line);
-                        selectedQuads.add(line);
+                    if (allVertsFromLine) {
+                        if (selectedQuads.contains(line)) {
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
+                            if (needRayTest || c3d.getKeys().isAltPressed()) selectedQuads.remove(line);
+                        } else {
+                            selectedData.add(line);
+                            selectedQuads.add(line);
+                        }
                     }
                 }
             }
