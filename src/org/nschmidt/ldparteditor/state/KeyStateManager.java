@@ -461,7 +461,7 @@ public class KeyStateManager {
                         vm.delete(win.isMovingAdjacentData(), true);
                         break;
                     case PASTE:
-                        vm.paste();
+                        vm.paste(win.loadSelectorSettings());
                         if (WorkbenchManager.getUserSettingState().isDisableMAD3D()) {
                             win.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
@@ -724,7 +724,7 @@ public class KeyStateManager {
                             win.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
-                            vm.paste();
+                            vm.paste(null);
                         }
                         c3d.getManipulator().smallIncrement(win.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
@@ -741,7 +741,7 @@ public class KeyStateManager {
                             win.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
-                            vm.paste();
+                            vm.paste(null);
                         }
                         c3d.getManipulator().smallDecrement(win.getWorkingAction(), win.getWorkingLayer(), win.getTransformationMode(), c3d);
                         c3d.getManipulator().applyTranslation(c3d);
