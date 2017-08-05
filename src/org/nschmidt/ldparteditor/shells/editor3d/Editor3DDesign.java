@@ -2005,26 +2005,26 @@ class Editor3DDesign extends ApplicationWindow {
         {
             Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Vertices[0] = btn_Vertices;
-            KeyStateManager.addTooltipText(btn_Vertices, I18n.E3D_ModeVertex, Task.OBJ_VERTEX);
+            KeyStateManager.addTooltipText(btn_Vertices, I18n.E3D_ModeVertex + I18n.E3D_AltToDeselect, Task.OBJ_VERTEX);
             btn_Vertices.setSelection(true);
             btn_Vertices.setImage(ResourceManager.getImage("icon16_vertices.png")); //$NON-NLS-1$
         }
         {
             Button btn_TrisNQuads = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_TrisNQuads[0] = btn_TrisNQuads;
-            KeyStateManager.addTooltipText(btn_TrisNQuads, I18n.E3D_ModeSurface, Task.OBJ_FACE);
+            KeyStateManager.addTooltipText(btn_TrisNQuads, I18n.E3D_ModeSurface + I18n.E3D_AltToDeselect, Task.OBJ_FACE);
             btn_TrisNQuads.setImage(ResourceManager.getImage("icon16_trisNquads.png")); //$NON-NLS-1$
         }
         {
             Button btn_Lines = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Lines[0] = btn_Lines;
-            KeyStateManager.addTooltipText(btn_Lines, I18n.E3D_ModeLine, Task.OBJ_LINE);
+            KeyStateManager.addTooltipText(btn_Lines, I18n.E3D_ModeLine + I18n.E3D_AltToDeselect, Task.OBJ_LINE);
             btn_Lines.setImage(ResourceManager.getImage("icon16_lines.png")); //$NON-NLS-1$
         }
         {
             Button btn_Subfiles = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Subfiles[0] = btn_Subfiles;
-            KeyStateManager.addTooltipText(btn_Subfiles, I18n.E3D_ModeSubpart, Task.OBJ_PRIMITIVE);
+            KeyStateManager.addTooltipText(btn_Subfiles, I18n.E3D_ModeSubpart + I18n.E3D_AltToDeselect, Task.OBJ_PRIMITIVE);
             btn_Subfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
         }
         return toolItem_Mode;

@@ -377,6 +377,7 @@ public final class I18n {
     public static final String E3D_AllSameColoursShown = E3D.getString(getProperty());
     public static final String E3D_AllShown = E3D.getString(getProperty());
     public static final String E3D_AllTypes = E3D.getString(getProperty());
+    public static final String E3D_AltToDeselect = E3D.getString(getProperty());
     public static final String E3D_AngleDiff = E3D.getString(getProperty());
     public static final String E3D_AngleX = E3D.getString(getProperty());
     public static final String E3D_AngleY = E3D.getString(getProperty());
