@@ -867,7 +867,7 @@ public class VM01SelectHelper extends VM01Select {
         if (selectedVertices.size() < 2 || needRayTest) {
             if (selectedVertices.size() == 1) {
                 Vertex selectedVertex = selectedVertices.iterator().next();
-                if (sels.isLines()) {
+                if (sels.isLines() || !sels.isCondlines()) {
                      for (GData2 line : lines.keySet()) {
                         if (hiddenData.contains(line))
                             continue;
@@ -884,7 +884,7 @@ public class VM01SelectHelper extends VM01Select {
                         }
                     }
                 }
-                if (sels.isCondlines()) {
+                if (sels.isCondlines() || !sels.isLines()) {
                     for (GData5 line : condlines.keySet()) {
                         if (hiddenData.contains(line))
                             continue;
@@ -941,7 +941,7 @@ public class VM01SelectHelper extends VM01Select {
 
                 float[][] M = new float[2][2];
                 float[] b = new float[] { 0f, 0f };
-                if (sels.isLines()) {
+                if (sels.isLines() || !sels.isCondlines()) {
                     for (GData2 line : lines.keySet()) {
                         if (hiddenData.contains(line))
                             continue;
@@ -992,7 +992,7 @@ public class VM01SelectHelper extends VM01Select {
                         }
                     }
                 }
-                if (sels.isCondlines()) {
+                if (sels.isCondlines() || !sels.isLines()) {
                     for (GData5 line : condlines.keySet()) {
                         if (hiddenData.contains(line))
                             continue;
@@ -1046,7 +1046,7 @@ public class VM01SelectHelper extends VM01Select {
                 }
             }
         } else {
-            if (sels.isLines()) {
+            if (sels.isLines() || !sels.isCondlines()) {
                 for (GData2 line : lines.keySet()) {
                     if (hiddenData.contains(line))
                         continue;
@@ -1067,7 +1067,7 @@ public class VM01SelectHelper extends VM01Select {
                     }
                 }
             }
-            if (sels.isCondlines()) {
+            if (sels.isCondlines() || !sels.isLines()) {
                 for (GData5 line : condlines.keySet()) {
                     if (hiddenData.contains(line))
                         continue;
@@ -1314,7 +1314,7 @@ public class VM01SelectHelper extends VM01Select {
         if (selectedVertices.size() < 2 || needRayTest) {
             if (selectedVertices.size() == 1) {
                 Vertex selectedVertex = selectedVertices.iterator().next();
-                if (sels.isTriangles()) {
+                if (sels.isTriangles() || !sels.isQuads()) {
                     for (GData3 line : triangles.keySet()) {
                         if (hiddenData.contains(line))
                             continue;
@@ -1331,7 +1331,7 @@ public class VM01SelectHelper extends VM01Select {
                         }
                     }
                 }
-                if (sels.isQuads()) {
+                if (sels.isQuads() || !sels.isTriangles()) {
                     for (GData4 line : quads.keySet()) {
                         if (hiddenData.contains(line))
                             continue;
@@ -1360,7 +1360,7 @@ public class VM01SelectHelper extends VM01Select {
                             selectedData.add(gd4);
                             selectedQuads.add(gd4);
                         }
-                    } else if (sels.isTriangles()) {
+                    } else if (sels.isTriangles() || !sels.isQuads()) {
                         GData3 gd3 = (GData3) selection;
                         if (selectedTriangles.contains(gd3)) {
                             if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(gd3);
@@ -1373,7 +1373,7 @@ public class VM01SelectHelper extends VM01Select {
                 }
             }
         } else {
-            if (sels.isTriangles()) {
+            if (sels.isTriangles() || !sels.isQuads()) {
                 for (GData3 line : triangles.keySet()) {
                     if (hiddenData.contains(line))
                         continue;
@@ -1395,7 +1395,7 @@ public class VM01SelectHelper extends VM01Select {
                     }
                 }
             }
-            if (sels.isQuads()) {
+            if (sels.isQuads() || !sels.isTriangles()) {
                 for (GData4 line : quads.keySet()) {
                     if (hiddenData.contains(line))
                         continue;
