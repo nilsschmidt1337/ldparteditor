@@ -28,6 +28,7 @@ import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -91,8 +92,25 @@ public enum GuiStatusManager {
         sb.append(df.format(cursor3D[2].multiply(View.unit_factor)));
         sb.append("] "); //$NON-NLS-1$
 
-        if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
+        final Editor3DWindow win = Editor3DWindow.getWindow();
+        if (win.isMovingAdjacentData()) {
             sb.append(I18n.E3D_AdjacentWarningStatus);
+        }
+
+        final SelectorSettings sels = win.loadSelectorSettings();
+        final ObjectMode om = win.getWorkingType();
+        if (om == ObjectMode.FACES) {
+            if (sels.isTriangles() && !sels.isQuads()) {
+                sb.append(I18n.E3D_OnlyTriangles);
+            } else if (sels.isQuads() && !sels.isTriangles()) {
+                sb.append(I18n.E3D_OnlyQuads);
+            }
+        } else if (om == ObjectMode.LINES) {
+            if (sels.isLines() && !sels.isCondlines()) {
+                sb.append(I18n.E3D_OnlyLines);
+            } else if (sels.isCondlines() && !sels.isLines()) {
+                sb.append(I18n.E3D_OnlyCondlines);
+            }
         }
 
         Manipulator m = c3d.getManipulator();

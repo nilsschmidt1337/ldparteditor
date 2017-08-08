@@ -443,6 +443,7 @@ public class KeyStateManager {
                         if (df.getObjVertex1() == null && df.getObjVertex2() == null && df.getObjVertex3() == null && df.getObjVertex4() == null) {
                             win.disableAddAction();
                         }
+                        win.activateAllTypes();
                         df.setObjVertex1(null);
                         df.setObjVertex2(null);
                         df.setObjVertex3(null);
