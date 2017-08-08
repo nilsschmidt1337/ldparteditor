@@ -1225,10 +1225,8 @@ public class MouseActions {
                 final SelectorSettings sels = window.loadSelectorSettings();
                 switch (window.getWorkingType()) {
                 case VERTICES:
-                    if (sels.isVertices()) {
-                        vm.selectVertices(c3d, false, false);
-                        vm.reSelectSubFiles();
-                    }
+                    vm.selectVertices(c3d, false, false);
+                    vm.reSelectSubFiles();
                     break;
                 case LINES:
                     vm.selectLines(c3d, sels);
