@@ -511,6 +511,10 @@ public final class I18n {
     public static final String E3D_None = E3D.getString(getProperty());
     public static final String E3D_Nothing = E3D.getString(getProperty());
     public static final String E3D_NumberOfFractions = E3D.getString(getProperty());
+    public static final String E3D_OnlyCondlines = E3D.getString(getProperty());
+    public static final String E3D_OnlyLines = E3D.getString(getProperty());
+    public static final String E3D_OnlyQuads = E3D.getString(getProperty());
+    public static final String E3D_OnlyTriangles = E3D.getString(getProperty());
     public static final String E3D_Open = E3D.getString(getProperty());
     public static final String E3D_OpenDat = E3D.getString(getProperty());
     public static final String E3D_OpenDatFile = E3D.getString(getProperty());

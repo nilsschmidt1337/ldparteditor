@@ -3515,11 +3515,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 Display.getCurrent().asyncExec(new Runnable() {
                     @Override
                     public void run() {
-                        mntm_SVertices[0].setSelection(true);
-                        mntm_SLines[0].setSelection(true);
-                        mntm_STriangles[0].setSelection(true);
-                        mntm_SQuads[0].setSelection(true);
-                        mntm_SCLines[0].setSelection(true);
+                        activateAllTypes();
                         showSelectMenu();
                     }
                 });
@@ -9842,5 +9838,13 @@ public class Editor3DWindow extends Editor3DDesign {
         }
         spn_ScaleInitial[0].setValue(initialScale);
         spn_Scale[0].setValue(scaleFacor);
+    }
+
+    public void activateAllTypes() {
+        mntm_SVertices[0].setSelection(true);
+        mntm_SLines[0].setSelection(true);
+        mntm_STriangles[0].setSelection(true);
+        mntm_SQuads[0].setSelection(true);
+        mntm_SCLines[0].setSelection(true);
     }
 }
