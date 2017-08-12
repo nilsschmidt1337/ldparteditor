@@ -594,10 +594,14 @@ public class EditorTextWindow extends EditorTextDesign {
         btn_Save[0].addSelectionListener(new SelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (tabFolder[0].getSelection() != null) {
-                    CompositeTabState state = ((CompositeTab) tabFolder[0].getSelection()).getState();
+                final CompositeTab ct = (CompositeTab) tabFolder[0].getSelection();
+                if (ct != null) {
+                    CompositeTabState state = ct.getState();
                     DatFile df = state.getFileNameObj();
                     Editor3DWindow.getWindow().addRecentFile(df);
+                    final Point selection = ct.getTextComposite().getSelection();
+                    final int x = selection.x;
+                    final int y = selection.y;
                     if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                         if (df.save()) {
                             Editor3DWindow.getWindow().addRecentFile(df);
@@ -609,6 +613,8 @@ public class EditorTextWindow extends EditorTextDesign {
                             messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
                         }
                     }
+                    ct.getTextComposite().setSelection(x, y);
+                    ct.getTextComposite().forceFocus();
                 }
             }
 
