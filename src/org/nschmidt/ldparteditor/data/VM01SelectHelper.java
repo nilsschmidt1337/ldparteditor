@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -33,7 +32,6 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.ObjectMode;
-import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
@@ -42,7 +40,6 @@ import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -350,32 +347,44 @@ public class VM01SelectHelper extends VM01Select {
             }
         }
         if (addSomething) {
-            TreeSet<Vertex> nearVertices = new TreeSet<Vertex>();
-            TreeSet<Vertex> nearVertices2 = new TreeSet<Vertex>();
-            float zoom = c3d.getZoom();
+            TreeSet<Vertex> nearVertices = new TreeSet<>();
+            ArrayList<Vector4f> nearVertices2 = new ArrayList<>();
+            float zoom = c3d.getZoom() * 1000f;
             NLogger.debug(getClass(), zoom);
-            BigDecimal EPSILON;
-            EPSILON = new BigDecimal(".0005"); //$NON-NLS-1$
-            EPSILON = EPSILON.multiply(EPSILON, Threshold.mc).multiply(EPSILON, Threshold.mc).multiply(new BigDecimal(3)).divide(new BigDecimal(zoom), Threshold.mc);
-            NLogger.debug(getClass(), "EPSILON around selection is {0}", EPSILON); //$NON-NLS-1$
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
+            ArrayList<Vector4f> vertsOnScreen = new ArrayList<>(selectedVertices.size());
+            ArrayList<Vertex> verts = new ArrayList<>(selectedVertices.size());
             for (Vertex v : selectedVertices) {
-                Vector3d v1 = new Vector3d(v);
+                vertsOnScreen.add(pc.getScreenCoordinatesFrom3D(v.x, v.y, v.z));
+                verts.add(v);
+            }
+            final float EPSILON_SQR = 40f;
+            NLogger.debug(getClass(), "EPSILON² around selection is {0}", EPSILON_SQR); //$NON-NLS-1$
+            final int size = selectedVertices.size();
+            for (int i = 0; i < size; i++) {
+                final Vector4f sv = vertsOnScreen.get(i);
+                final float svx = sv.x;
+                final float svy = sv.y;
                 boolean isNear = false;
-                for (Vertex key : nearVertices2) {
-                    Vector3d v2 = new Vector3d(key);
-                    BigDecimal dist = Vector3d.distSquare(v1, v2);
-                    if (dist.compareTo(EPSILON) < 0f) {
+                for (Vector4f sv2 : nearVertices2) {
+                    final float dx = svx - sv2.x;
+                    final float dy = svy - sv2.y;
+                    float dist = dx * dx + dy * dy;
+                    // NLogger.debug(getClass(), "DIST is {0}", dist); //$NON-NLS-1$
+                    if (dist < EPSILON_SQR) {
                         isNear = true;
                         break;
                     }
                 }
-                nearVertices2.add(v);
+                nearVertices2.add(sv);
                 if (!isNear) {
-                    nearVertices.add(v);
+                    nearVertices.add(verts.get(i));
                 }
             }
+
             selectedVertices.clear();
             selectedVertices.addAll(nearVertices);
+
         } else if (Editor3DWindow.getWindow().isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) {
             {
                 HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
