@@ -1627,6 +1627,7 @@ public final class DatFile {
             }
             return true;
         } catch (Exception ex) {
+            NLogger.error(getClass(), ex);
             return false;
         } finally {
             if (r != null) {
