@@ -323,12 +323,16 @@ public enum Project {
     }
 
     public static void addOpenedFile(DatFile file) {
+        openedFiles.remove(file);
+        openedFiles.add(file);
+        /* The last opened file should be on the end!
         if (!openedFiles.contains(file)) {
             openedFiles.add(file);
         } else {
             openedFiles.remove(file);
             openedFiles.add(0, file);
         }
+        */
     }
 
     public static void removeOpenedFile(DatFile file) {
