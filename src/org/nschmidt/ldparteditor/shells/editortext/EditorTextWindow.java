@@ -1228,12 +1228,17 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void close(CTabFolderEvent event) {
                 CompositeTab ct = (CompositeTab) event.item;
+                final DatFile df = ct.getState().getFileNameObj();
                 ct.getTextComposite().getParent().getParent().getParent().dispose();
                 ct.dispose();
                 SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
                 if (sw != null) {
                     sw.setTextComposite(null);
                     sw.setScopeToAll();
+                }
+                final int TEXT_3D_SEPARATE = 0;
+                if (WorkbenchManager.getUserSettingState().getTextWinArr() != TEXT_3D_SEPARATE) {
+                    Editor3DWindow.getWindow().closeTabWithDatFile(df);
                 }
             }
         });
