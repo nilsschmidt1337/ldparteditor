@@ -9110,6 +9110,25 @@ public class Editor3DWindow extends Editor3DDesign {
         }
     }
 
+    public void closeTabWithDatFile(DatFile df) {
+        if (View.DUMMY_DATFILE.equals(df) || df == null) {
+            return;
+        }
+        for (CTabItem ti : tabFolder_OpenDatFiles[0].getItems()) {
+            if (df.equals(ti.getData())) {
+                ti.dispose();
+                Project.removeOpenedFile(df);
+                if (!closeDatfile(df)) {
+                    Project.addOpenedFile(df);
+                    updateTabs();
+                }
+                Editor3DWindow.getWindow().getShell().forceFocus();
+                regainFocus();
+                break;
+            }
+        }
+    }
+
     public static AtomicBoolean getNoSyncDeadlock() {
         return no_sync_deadlock;
     }
