@@ -83,7 +83,7 @@ public class UserSettingState implements Serializable {
     private BigDecimal fuzziness3D = new BigDecimal("0.001"); //$NON-NLS-1$
 
     /** Your "fuzziness factor", "pixel" distance below which vertices would be considered the same in 2D projected space. */
-    private int fuzziness2D = 0;
+    private int fuzziness2D = 7;
 
     /** Your transformation matrix precision */
     private int transMatrixPrecision = 5;
