@@ -82,6 +82,7 @@ import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
@@ -973,13 +974,26 @@ class Editor3DDesign extends ApplicationWindow {
                                 }
                             });
 
-                            /*
+                            Label lblNewLabel9 = new Label(cmp_snappingArea, Cocoa.getSytle());
+                            lblNewLabel9.setText(I18n.E3D_ThreshForAddingElements2D);
+                            lblNewLabel9.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
                             final IntegerSpinner spinnerT2D = new IntegerSpinner(cmp_snappingArea, Cocoa.getSytle());
                             spinnerT2D.setMaximum(9999);
                             spinnerT2D.setMinimum(0);
-                            spinnerT2D.setValue(0);
+                            spinnerT2D.setValue(userSettings.getFuzziness2D());
                             spinnerT2D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
-                             */
+
+                            spinnerT2D.addValueChangeListener(new ValueChangeAdapter() {
+                                @Override
+                                public void valueChanged(IntegerSpinner spn) {
+                                    WorkbenchManager.getUserSettingState().setFuzziness2D(spn.getValue());
+                                }
+                            });
+
+                            Label lblSpacer4 = new Label(cmp_snappingArea, Cocoa.getSytle());
+                            lblSpacer4.setText(" "); //$NON-NLS-1$
+                            lblSpacer4.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
 
                             cmp_scroll.setMinSize(cmp_snappingArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
                         }

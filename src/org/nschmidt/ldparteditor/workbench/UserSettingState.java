@@ -82,6 +82,9 @@ public class UserSettingState implements Serializable {
     /** Your "fuzziness factor", LDU distance below which vertices would be considered the same in 3D space. */
     private BigDecimal fuzziness3D = BigDecimal.ZERO;
 
+    /** Your "fuzziness factor", "pixel" distance below which vertices would be considered the same in 2D projected space. */
+    private int fuzziness2D = 0;
+
     /** Your transformation matrix precision */
     private int transMatrixPrecision = 5;
     /** Your coordinates precision */
@@ -1414,5 +1417,13 @@ public class UserSettingState implements Serializable {
 
     public void setFuzziness3D(BigDecimal fuzziness3d) {
         fuzziness3D = fuzziness3d;
+    }
+
+    public int getFuzziness2D() {
+        return fuzziness2D;
+    }
+
+    public void setFuzziness2D(int fuzziness2d) {
+        fuzziness2D = fuzziness2d;
     }
 }
