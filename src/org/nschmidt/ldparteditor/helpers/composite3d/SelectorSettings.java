@@ -29,6 +29,7 @@ public class SelectorSettings {
     private int scope = 0;
     private boolean edgeStop = false;
     private boolean colour = false;
+    private boolean type = false;
     private boolean orientation = false;
     private boolean distance = false;
     private boolean hidden = false;
@@ -137,5 +138,11 @@ public class SelectorSettings {
     }
     public void setEdgeAdjacency(boolean edgeAdjacency) {
         this.edgeAdjacency = edgeAdjacency;
+    }
+    public boolean isType() {
+        return type;
+    }
+    public void setType(boolean type) {
+        this.type = type;
     }
 }

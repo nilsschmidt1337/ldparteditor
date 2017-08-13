@@ -662,6 +662,7 @@ public final class I18n {
     public static final String E3D_WithAdjacency = E3D.getString(getProperty());
     public static final String E3D_WithSameColour = E3D.getString(getProperty());
     public static final String E3D_WithSameOrientation = E3D.getString(getProperty());
+    public static final String E3D_WithSameType = E3D.getString(getProperty());
     public static final String E3D_WithWholeSubfileSelection = E3D.getString(getProperty());
     public static final String E3D_YTruder = E3D.getString(getProperty());
     public static final String EDGER_0to180 = EDGER.getString(getProperty());
