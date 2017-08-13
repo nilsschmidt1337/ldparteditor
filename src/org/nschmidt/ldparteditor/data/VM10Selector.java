@@ -40,6 +40,20 @@ class VM10Selector extends VM09WindingChange {
 
     public final void selector(final SelectorSettings ss) {
 
+        final boolean s_vertices = ss.isVertices();
+        final boolean s_lines = ss.isLines();
+        final boolean s_triangles = ss.isTriangles();
+        final boolean s_quads = ss.isQuads();
+        final boolean s_condlines = ss.isCondlines();
+
+        if (ss.isType()) {
+            ss.setVertices(!selectedVertices.isEmpty());
+            ss.setLines(!selectedLines.isEmpty());
+            ss.setTriangles(!selectedTriangles.isEmpty());
+            ss.setQuads(!selectedQuads.isEmpty());
+            ss.setCondlines(!selectedCondlines.isEmpty());
+        }
+
         linkedDatFile.setDrawSelection(false);
         try
         {
@@ -716,6 +730,13 @@ class VM10Selector extends VM09WindingChange {
         }catch (InvocationTargetException consumed) {
         } catch (InterruptedException consumed) {
         }
+
+        ss.setVertices(s_vertices);
+        ss.setLines(s_lines);
+        ss.setTriangles(s_triangles);
+        ss.setQuads(s_quads);
+        ss.setCondlines(s_condlines);
+
         linkedDatFile.setDrawSelection(true);
     }
 
@@ -754,38 +775,38 @@ class VM10Selector extends VM09WindingChange {
 
     private boolean canSelect(GData adjacentTo, GData what, SelectorSettings ss, Set<Vector3d> allNormals, Set<GColour> allColours, double angle) {
 
-        if (ss.isColour()) {
-            GColour myColour;
+        {
+            GColour myColour = null;
             switch (what.type()) {
             case 1:
                 GData1 g1 = (GData1) what;
-                myColour = new GColour(g1.colourNumber, g1.r, g1.g, g1.b, g1.a);
+                if (ss.isColour()) myColour = new GColour(g1.colourNumber, g1.r, g1.g, g1.b, g1.a);
                 break;
             case 2:
+                if ((ss.isType() || ss.isColour()) && !ss.isLines()) return false;
                 GData2 g2 = (GData2) what;
-                myColour = new GColour(g2.colourNumber, g2.r, g2.g, g2.b, g2.a);
-                if (!ss.isLines()) return false;
+                if (ss.isColour()) myColour = new GColour(g2.colourNumber, g2.r, g2.g, g2.b, g2.a);
                 break;
             case 3:
+                if ((ss.isType() || ss.isColour()) && !ss.isTriangles()) return false;
                 GData3 g3 = (GData3) what;
-                myColour = new GColour(g3.colourNumber, g3.r, g3.g, g3.b, g3.a);
-                if (!ss.isTriangles()) return false;
+                if (ss.isColour()) myColour = new GColour(g3.colourNumber, g3.r, g3.g, g3.b, g3.a);
                 break;
             case 4:
+                if ((ss.isType() || ss.isColour()) && !ss.isQuads()) return false;
                 GData4 g4 = (GData4) what;
-                myColour = new GColour(g4.colourNumber, g4.r, g4.g, g4.b, g4.a);
-                if (!ss.isQuads()) return false;
+                if (ss.isColour()) myColour = new GColour(g4.colourNumber, g4.r, g4.g, g4.b, g4.a);
                 break;
             case 5:
+                if ((ss.isType() || ss.isColour()) && !ss.isCondlines()) return false;
                 GData5 g5 = (GData5) what;
-                myColour = new GColour(g5.colourNumber, g5.r, g5.g, g5.b, g5.a);
-                if (!ss.isCondlines()) return false;
+                if (ss.isColour()) myColour = new GColour(g5.colourNumber, g5.r, g5.g, g5.b, g5.a);
                 break;
             default:
                 return false;
             }
             // Check Colour
-            if (!allColours.contains(myColour)) {
+            if (ss.isColour() && !allColours.contains(myColour)) {
                 return false;
             }
         }
