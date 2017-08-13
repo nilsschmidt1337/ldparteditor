@@ -75,6 +75,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
+import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
@@ -150,7 +151,7 @@ public class CompositeTab extends CompositeTabDesign {
 
         {
             DropTarget dt = new DropTarget(compositeText[0], DND.DROP_DEFAULT | DND.DROP_MOVE );
-            dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+            dt.setTransfer(new Transfer[] { MyDummyTransfer2.getInstance(), FileTransfer.getInstance() });
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {
@@ -205,7 +206,27 @@ public class CompositeTab extends CompositeTabDesign {
                                 }
                             }
                         }
+                        return;
                     }
+
+                    final DatFile datfile = state.getFileNameObj();
+                    if (datfile.isReadOnly()) {
+                        return;
+                    }
+                    NLogger.debug(getClass(), "Primitive dropped."); //$NON-NLS-1$
+                    final Editor3DWindow window = Editor3DWindow.getWindow();
+                    final org.nschmidt.ldparteditor.data.Primitive p = window.getCompositePrimitive().getSelectedPrimitive();
+                    final StyledText st = getTextComposite();
+                    if (p == null || p.isCategory() || datfile.isReadOnly()) return;
+                    NLogger.debug(getClass(), "Primitive: {0}", p); //$NON-NLS-1$
+                    String ref = p.getName();
+                    final int start = st.getSelection().x;
+                    int lastBreak = st.getText().indexOf("\r\n", start); //$NON-NLS-1$
+                    if (lastBreak == -1) {
+                        lastBreak = st.getText().length();
+                    }
+                    st.setSelection(lastBreak);
+                    st.insert("\r\n1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + ref); //$NON-NLS-1$
                 }
             });
         }
