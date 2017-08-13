@@ -980,7 +980,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                             final IntegerSpinner spinnerT2D = new IntegerSpinner(cmp_snappingArea, Cocoa.getSytle());
                             spinnerT2D.setMaximum(9999);
-                            spinnerT2D.setMinimum(0);
+                            spinnerT2D.setMinimum(1);
                             spinnerT2D.setValue(userSettings.getFuzziness2D());
                             spinnerT2D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
