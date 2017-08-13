@@ -361,25 +361,29 @@ public class VM01SelectHelper extends VM01Select {
             }
             final float EPSILON_SQR = (float) Math.pow(WorkbenchManager.getUserSettingState().getFuzziness2D(), 2.0);
             NLogger.debug(getClass(), "EPSILON² around selection is {0}", EPSILON_SQR); //$NON-NLS-1$
-            final int size = selectedVertices.size();
-            for (int i = 0; i < size; i++) {
-                final Vector4f sv = vertsOnScreen.get(i);
-                final float svx = sv.x;
-                final float svy = sv.y;
-                boolean isNear = false;
-                for (Vector4f sv2 : nearVertices2) {
-                    final float dx = svx - sv2.x;
-                    final float dy = svy - sv2.y;
-                    float dist = dx * dx + dy * dy;
-                    // NLogger.debug(getClass(), "DIST is {0}", dist); //$NON-NLS-1$
-                    if (dist < EPSILON_SQR) {
-                        isNear = true;
-                        break;
+            if (EPSILON_SQR == 1f) {
+                nearVertices.addAll(selectedVertices);
+            } else {
+                final int size = selectedVertices.size();
+                for (int i = 0; i < size; i++) {
+                    final Vector4f sv = vertsOnScreen.get(i);
+                    final float svx = sv.x;
+                    final float svy = sv.y;
+                    boolean isNear = false;
+                    for (Vector4f sv2 : nearVertices2) {
+                        final float dx = svx - sv2.x;
+                        final float dy = svy - sv2.y;
+                        float dist = dx * dx + dy * dy;
+                        // NLogger.debug(getClass(), "DIST is {0}", dist); //$NON-NLS-1$
+                        if (dist < EPSILON_SQR) {
+                            isNear = true;
+                            break;
+                        }
                     }
-                }
-                nearVertices2.add(sv);
-                if (!isNear) {
-                    nearVertices.add(verts.get(i));
+                    nearVertices2.add(sv);
+                    if (!isNear) {
+                        nearVertices.add(verts.get(i));
+                    }
                 }
             }
 
