@@ -220,13 +220,22 @@ public class CompositeTab extends CompositeTabDesign {
                     if (p == null || p.isCategory() || datfile.isReadOnly()) return;
                     NLogger.debug(getClass(), "Primitive: {0}", p); //$NON-NLS-1$
                     String ref = p.getName();
-                    final int start = st.getSelection().x;
-                    int lastBreak = st.getText().indexOf("\r\n", start); //$NON-NLS-1$
-                    if (lastBreak == -1) {
-                        lastBreak = st.getText().length();
+                    final int lineNr = st.getLineAtOffset(st.getSelection().x);
+                    final boolean lastLine = (lineNr + 1 == st.getLineCount());
+                    int start = st.getOffsetAtLine(lineNr);
+                    if (lastLine) {
+                        start = st.getText().length();
+                        st.setSelection(start);
+                        st.insert("\r\n1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + ref); //$NON-NLS-1$
+                        st.setSelection(st.getText().length());
+                    } else {
+                        st.setSelection(start);
+                        String newPrimitive = "1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + ref + "\r\n"; //$NON-NLS-1$ //$NON-NLS-2$
+                        st.insert(newPrimitive);
+                        st.setSelection(start + newPrimitive.length());
                     }
-                    st.setSelection(lastBreak);
-                    st.insert("\r\n1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + ref); //$NON-NLS-1$
+                    st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+                    st.forceFocus();
                 }
             });
         }
