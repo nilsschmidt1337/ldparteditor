@@ -33,10 +33,12 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.resources.ResourceManager;
 
 /**
  * @author nils
@@ -47,6 +49,7 @@ public class BigDecimalSpinner extends Composite {
     private final Button[] btn_Up = new Button[1];
     private final Button[] btn_Down = new Button[1];
     private final Text[] txt_val = new Text[1];
+    private final Label[] lbl_warn = new Label[1];
 
     private BigDecimal value;
     private BigDecimal maximum;
@@ -85,7 +88,7 @@ public class BigDecimalSpinner extends Composite {
 
     private void createContents(final Composite parent) {
 
-        GridLayout gl = new GridLayout(3, false);
+        GridLayout gl = new GridLayout(4, false);
 
         gl.marginBottom = 0;
         gl.marginHeight = 0;
@@ -182,6 +185,7 @@ public class BigDecimalSpinner extends Composite {
                     return;
                 }
 
+
                 int caret = txt_val[0].getCaretPosition();
                 String text = null;
                 final String result;
@@ -200,11 +204,27 @@ public class BigDecimalSpinner extends Composite {
                     if (myListener != null)
                         myListener.valueChanged(me);
 
+                    boolean differenceBetweenDisplayedAndInput = false;
                     if (oldValue[0].compareTo(value) != 0) {
                         oldValue[0] = value;
                         text = numberFormat.format(value);
+                        try {
+                            BigDecimal val2 = (BigDecimal) numberFormat.parseObject(text);
+                            if (val2.compareTo(value) != 0) {
+                                differenceBetweenDisplayedAndInput = true;
+                            }
+                        } catch (ParseException consumed) {}
+                    }
+                    if (differenceBetweenDisplayedAndInput) {
+                        lbl_warn[0].setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
+                        lbl_warn[0].setToolTipText("The real value is " + value.toEngineeringString() + " which differs from the displayed number!\nValue between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
+                    } else {
+                        lbl_warn[0].setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
+                        lbl_warn[0].setToolTipText("Value between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
                     }
                 } catch (ParseException ex) {
+                    lbl_warn[0].setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
+                    lbl_warn[0].setToolTipText("Please insert a valid number."); //$NON-NLS-1$ I18N Needs translation!
                     if (!invalidInput) {
                         text = numberFormat.format(value);
                     }
@@ -260,6 +280,11 @@ public class BigDecimalSpinner extends Composite {
             public void mouseDoubleClick(org.eclipse.swt.events.MouseEvent e) {
             }
         });
+
+        Label warn = new Label(this, SWT.NONE);
+        lbl_warn[0] = warn;
+        warn.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
+        warn.setToolTipText("You can input more digits than displayed."); //$NON-NLS-1$ I18N Needs translation!
 
         this.layout();
         this.pack();
