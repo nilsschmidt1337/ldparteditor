@@ -1933,20 +1933,22 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         }
                     } else if (mp.x > 0f && mp.y > 0f) {
                         GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
-                        if (System.currentTimeMillis() - hoverSettingsTime > 300 && DatFile.getLastHoveredComposite() == c3d) {
+                        if (System.currentTimeMillis() - hoverSettingsTime > 600 && DatFile.getLastHoveredComposite() == c3d) {
 
                             hoverSettingsTime = System.currentTimeMillis();
 
-                            java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
-                            final int x = (int) b.getX();
-                            final int y = (int) b.getY();
+                            if (c3d.hasMouse()) {
+                                java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+                                final int x = (int) b.getX();
+                                final int y = (int) b.getY();
 
-                            Menu menu = c3d.getMenu();
-                            if (!menu.isDisposed() && !menu.getVisible()) {
-                                menu.setLocation(x, y);
-                                menu.setVisible(true);
-                                mp.setX(51f);
-                                mp.setY(51f);
+                                Menu menu = c3d.getMenu();
+                                if (!menu.isDisposed() && !menu.getVisible()) {
+                                    menu.setLocation(x, y);
+                                    menu.setVisible(true);
+                                    mp.setX(51f);
+                                    mp.setY(51f);
+                                }
                             }
                         }
                     }

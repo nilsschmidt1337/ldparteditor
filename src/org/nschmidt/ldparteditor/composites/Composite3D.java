@@ -163,6 +163,8 @@ public class Composite3D extends ScalableComposite {
     /** The view zoom level */
     private volatile float zoom;
 
+    private boolean hasMouse = true;
+
     private final Vector4f screenXY = new Vector4f(0, 0, 0, 1);
 
     private final Set<Vertex> tmpHiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
@@ -1471,6 +1473,22 @@ public class Composite3D extends ScalableComposite {
             // MARK MouseUp
             public void handleEvent(Event event) {
                 mouse.mouseUp(event);
+            }
+        });
+
+        canvas.addListener(SWT.MouseEnter, new Listener() {
+            @Override
+            // MARK MouseEnter
+            public void handleEvent(Event event) {
+                setHasMouse(true);
+            }
+        });
+
+        canvas.addListener(SWT.MouseExit, new Listener() {
+            @Override
+            // MARK MouseExit
+            public void handleEvent(Event event) {
+                setHasMouse(false);
             }
         });
 
@@ -2784,5 +2802,13 @@ public class Composite3D extends ScalableComposite {
         if (getMntmSmoothShading() != null) {
             getMntmSmoothShading().setSelection(state.isSmooth());
         }
+    }
+
+    public boolean hasMouse() {
+        return hasMouse;
+    }
+
+    public void setHasMouse(boolean hasMouse) {
+        this.hasMouse = hasMouse;
     }
 }
