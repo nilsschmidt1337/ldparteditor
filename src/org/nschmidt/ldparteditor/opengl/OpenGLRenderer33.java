@@ -2195,20 +2195,22 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         r = View.vertex_selected_Colour_r[0];
                         g = View.vertex_selected_Colour_g[0];
                         b = View.vertex_selected_Colour_b[0];
-                        if (System.currentTimeMillis() - hoverSettingsTime > 300 && DatFile.getLastHoveredComposite() == c3d) {
+                        if (System.currentTimeMillis() - hoverSettingsTime > 600 && DatFile.getLastHoveredComposite() == c3d) {
 
                             hoverSettingsTime = System.currentTimeMillis();
 
-                            java.awt.Point p = java.awt.MouseInfo.getPointerInfo().getLocation();
-                            final int x = (int) p.getX();
-                            final int y = (int) p.getY();
+                            if (c3d.hasMouse()) {
+                                java.awt.Point p = java.awt.MouseInfo.getPointerInfo().getLocation();
+                                final int x = (int) p.getX();
+                                final int y = (int) p.getY();
 
-                            Menu menu = c3d.getMenu();
-                            if (!menu.isDisposed() && !menu.getVisible()) {
-                                menu.setLocation(x, y);
-                                menu.setVisible(true);
-                                mp.setX(51f);
-                                mp.setY(51f);
+                                Menu menu = c3d.getMenu();
+                                if (!menu.isDisposed() && !menu.getVisible()) {
+                                    menu.setLocation(x, y);
+                                    menu.setVisible(true);
+                                    mp.setX(51f);
+                                    mp.setY(51f);
+                                }
                             }
                         }
                     }
