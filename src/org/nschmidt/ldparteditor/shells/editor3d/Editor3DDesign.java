@@ -252,6 +252,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_WithAdjacency = new MenuItem[1];
     final MenuItem[] mntm_WithWholeSubfiles = new MenuItem[1];
     final MenuItem[] mntm_WithSameColour = new MenuItem[1];
+    final MenuItem[] mntm_WithSameType = new MenuItem[1];
     final MenuItem[] mntm_WithHiddenData = new MenuItem[1];
     final MenuItem[] mntm_ExceptSubfiles = new MenuItem[1];
     final MenuItem[] mntm_StopAtEdges = new MenuItem[1];
@@ -2207,6 +2208,11 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_WithSameColour = new MenuItem(mnu_Select, SWT.CHECK);
                     this.mntm_WithSameColour[0] = mntm_WithSameColour;
                     KeyStateManager.addKeyText(mntm_WithSameColour, I18n.E3D_WithSameColour, Task.SELECT_OPTION_WITH_SAME_COLOURS);
+                }
+                {
+                    MenuItem mntm_WithSameType = new MenuItem(mnu_Select, SWT.CHECK);
+                    this.mntm_WithSameType[0] = mntm_WithSameType;
+                    mntm_WithSameType.setText(I18n.E3D_WithSameType);
                 }
                 {
                     MenuItem mntm_WithSameOrientation = new MenuItem(mnu_Select, SWT.CHECK);
