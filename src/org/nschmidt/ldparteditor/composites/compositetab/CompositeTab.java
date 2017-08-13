@@ -226,11 +226,11 @@ public class CompositeTab extends CompositeTabDesign {
                     if (lastLine) {
                         start = st.getText().length();
                         st.setSelection(start);
-                        st.insert("\r\n1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + ref); //$NON-NLS-1$
+                        st.insert(StringHelper.getLineDelimiter() + "1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + ref); //$NON-NLS-1$
                         st.setSelection(st.getText().length());
                     } else {
                         st.setSelection(start);
-                        String newPrimitive = "1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + ref + "\r\n"; //$NON-NLS-1$ //$NON-NLS-2$
+                        String newPrimitive = "1 16 0 0 0 1 0 0 0 1 0 0 0 1 " + ref + StringHelper.getLineDelimiter(); //$NON-NLS-1$
                         st.insert(newPrimitive);
                         st.setSelection(start + newPrimitive.length());
                     }
