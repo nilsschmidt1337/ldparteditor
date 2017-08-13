@@ -72,6 +72,11 @@ class CompositeTabDesign extends CTabItem {
     final Button[] btn_QuickFix = new Button[1];
     final Button[] btn_QuickFixSame = new Button[1];
 
+    final MenuItem[] mntm_Inspect = new MenuItem[1];
+    final MenuItem[] mntm_InspectSame = new MenuItem[1];
+    final Button[] btn_Inspect = new Button[1];
+    final Button[] btn_InspectSame = new Button[1];
+
     final Canvas[] canvas_lineNumberArea = new Canvas[1];
     final StyledText[] compositeText = new StyledText[1];
     final Label[] lbl_ProblemCount = new Label[1];
@@ -168,7 +173,7 @@ class CompositeTabDesign extends CTabItem {
                 tabFolder_partInformation.setSelection(tbtm_partProblems);
                 Composite cmp_partProblems = new Composite(tabFolder_partInformation, SWT.NONE);
                 tbtm_partProblems.setControl(cmp_partProblems);
-                cmp_partProblems.setLayout(new GridLayout(3, false));
+                cmp_partProblems.setLayout(new GridLayout(5, false));
 
                 Label lbl_ProblemCount = new Label(cmp_partProblems, SWT.NONE);
                 this.lbl_ProblemCount[0] = lbl_ProblemCount;
@@ -180,7 +185,7 @@ class CompositeTabDesign extends CTabItem {
                 tree_Problems[0] = tree;
                 tree.setLinesVisible(true);
                 tree.setHeaderVisible(true);
-                tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 3, 1));
+                tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
 
                 TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
                 trclmn_Description.setWidth(598);
@@ -227,10 +232,32 @@ class CompositeTabDesign extends CTabItem {
                 mntmQuickFixSame.setEnabled(true);
                 mntmQuickFixSame.setText(I18n.COMPOSITETAB_QuickFixSimilar);
 
+                MenuItem mntmInspect = new MenuItem(menu, I18n.I18N_NON_BIDIRECT());
+                mntm_Inspect[0] = mntmInspect;
+                mntmInspect.setEnabled(true);
+                mntmInspect.setText(I18n.COMPOSITETAB_Inspect);
+
+                MenuItem mntmInspectSame = new MenuItem(menu, I18n.I18N_NON_BIDIRECT());
+                mntm_InspectSame[0] = mntmInspectSame;
+                mntmInspectSame.setEnabled(true);
+                mntmInspectSame.setText(I18n.COMPOSITETAB_InspectSimilar);
+
                 tree.build();
 
                 Label lbl_Separator = new Label(cmp_partProblems, SWT.NONE);
                 lbl_Separator.setText(" "); //$NON-NLS-1$
+
+                Button btn_Inspect = new Button(cmp_partProblems, SWT.NONE);
+                this.btn_Inspect[0] = btn_Inspect;
+                btn_Inspect.setEnabled(false);
+                btn_Inspect.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
+                btn_Inspect.setText(I18n.COMPOSITETAB_Inspect);
+
+                Button btn_InspectSame = new Button(cmp_partProblems, SWT.NONE);
+                this.btn_InspectSame[0] = btn_InspectSame;
+                btn_InspectSame.setEnabled(false);
+                btn_InspectSame.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
+                btn_InspectSame.setText(I18n.COMPOSITETAB_InspectSimilar);
 
                 Button btn_QuickFix = new Button(cmp_partProblems, SWT.NONE);
                 this.btn_QuickFix[0] = btn_QuickFix;

@@ -222,6 +222,8 @@ public final class I18n {
     public static final String COMPOSITETAB_FileNotFound = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_FileReadError = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_Hints = COMPOSITETAB.getString(getProperty());
+    public static final String COMPOSITETAB_Inspect = COMPOSITETAB.getString(getProperty());
+    public static final String COMPOSITETAB_InspectSimilar = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_Location = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_NewFile = COMPOSITETAB.getString(getProperty());
     public static final String COMPOSITETAB_Problems = COMPOSITETAB.getString(getProperty());

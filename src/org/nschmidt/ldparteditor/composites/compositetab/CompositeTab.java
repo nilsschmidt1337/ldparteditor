@@ -221,7 +221,7 @@ public class CompositeTab extends CompositeTabDesign {
                     NLogger.debug(getClass(), "Primitive: {0}", p); //$NON-NLS-1$
                     String ref = p.getName();
                     final int lineNr = st.getLineAtOffset(st.getSelection().x);
-                    final boolean lastLine = (lineNr + 1 == st.getLineCount());
+                    final boolean lastLine = lineNr + 1 == st.getLineCount();
                     int start = st.getOffsetAtLine(lineNr);
                     if (lastLine) {
                         start = st.getText().length();
@@ -1474,6 +1474,8 @@ public class CompositeTab extends CompositeTabDesign {
             public void widgetSelected(SelectionEvent e) {
                 super.widgetSelected(e);
                 boolean enabled = tree_Problems[0].getSelectionCount() == 1 && tree_Problems[0].getSelection()[0] != null;
+                btn_Inspect[0].setEnabled(enabled);
+                btn_InspectSame[0].setEnabled(enabled);
                 btn_QuickFix[0].setEnabled(enabled);
                 btn_QuickFixSame[0].setEnabled(enabled);
             }
@@ -1839,6 +1841,8 @@ public class CompositeTab extends CompositeTabDesign {
         ct.treeItem_Warnings[0] = this.treeItem_Warnings[0];
         ct.treeItem_Errors[0] = this.treeItem_Errors[0];
         ct.treeItem_Duplicates[0] = this.treeItem_Duplicates[0];
+        ct.btn_Inspect[0] = this.btn_Inspect[0];
+        ct.btn_InspectSame[0] = this.btn_InspectSame[0];
         ct.btn_QuickFix[0] = this.btn_QuickFix[0];
         ct.btn_QuickFixSame[0] = this.btn_QuickFixSame[0];
         ct.lbl_ProblemCount[0] = this.lbl_ProblemCount[0];
