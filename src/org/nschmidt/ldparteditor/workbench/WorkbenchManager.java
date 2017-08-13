@@ -120,7 +120,7 @@ public enum WorkbenchManager {
 
         // TODO New values, which were not included in the state before, have to be initialized!
         if (WorkbenchManager.userSettingState.getFuzziness3D() == null) {
-            WorkbenchManager.userSettingState.setFuzziness3D(BigDecimal.ZERO);
+            WorkbenchManager.userSettingState.setFuzziness3D(new BigDecimal("0.001")); //$NON-NLS-1$
         }
 
         if (WorkbenchManager.userSettingState.getFuzziness2D() == 0) {

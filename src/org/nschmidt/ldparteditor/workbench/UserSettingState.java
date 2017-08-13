@@ -80,7 +80,7 @@ public class UserSettingState implements Serializable {
     private BigDecimal fine_scale_snap = new BigDecimal("1.001"); //$NON-NLS-1$
 
     /** Your "fuzziness factor", LDU distance below which vertices would be considered the same in 3D space. */
-    private BigDecimal fuzziness3D = BigDecimal.ZERO;
+    private BigDecimal fuzziness3D = new BigDecimal("0.001"); //$NON-NLS-1$
 
     /** Your "fuzziness factor", "pixel" distance below which vertices would be considered the same in 2D projected space. */
     private int fuzziness2D = 0;

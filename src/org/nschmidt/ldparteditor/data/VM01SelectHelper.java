@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -32,6 +33,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.ObjectMode;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
@@ -40,6 +42,7 @@ import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -349,7 +352,6 @@ public class VM01SelectHelper extends VM01Select {
         }
         if (addSomething) {
             TreeSet<Vertex> nearVertices = new TreeSet<>();
-            ArrayList<Vector4f> nearVertices2 = new ArrayList<>();
             float zoom = c3d.getZoom() * 1000f;
             NLogger.debug(getClass(), zoom);
             final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
@@ -360,10 +362,9 @@ public class VM01SelectHelper extends VM01Select {
                 verts.add(v);
             }
             final float EPSILON_SQR = (float) Math.pow(WorkbenchManager.getUserSettingState().getFuzziness2D(), 2.0);
-            NLogger.debug(getClass(), "EPSILON² around selection is {0}", EPSILON_SQR); //$NON-NLS-1$
-            if (EPSILON_SQR == 1f) {
-                nearVertices.addAll(selectedVertices);
-            } else {
+            NLogger.debug(getClass(), "2D EPSILON² around selection is {0}", EPSILON_SQR); //$NON-NLS-1$
+            if (EPSILON_SQR > 1f) {
+                final ArrayList<Vector4f> nearVertices2 = new ArrayList<>();
                 final int size = selectedVertices.size();
                 for (int i = 0; i < size; i++) {
                     final Vector4f sv = vertsOnScreen.get(i);
@@ -385,10 +386,36 @@ public class VM01SelectHelper extends VM01Select {
                         nearVertices.add(verts.get(i));
                     }
                 }
+                selectedVertices.clear();
+                selectedVertices.addAll(nearVertices);
             }
 
-            selectedVertices.clear();
-            selectedVertices.addAll(nearVertices);
+            if (BigDecimal.ZERO.compareTo(WorkbenchManager.getUserSettingState().getFuzziness3D()) < 0) {
+                nearVertices.clear();
+                final ArrayList<Vertex> nearVertices2 = new ArrayList<>();
+                BigDecimal EPSILON;
+                EPSILON = WorkbenchManager.getUserSettingState().getFuzziness3D();
+                EPSILON = EPSILON.multiply(EPSILON, Threshold.mc);
+                NLogger.debug(getClass(), "3D EPSILON² around selection is {0}", EPSILON); //$NON-NLS-1$
+                for (Vertex v : selectedVertices) {
+                    Vector3d v1 = new Vector3d(v);
+                    boolean isNear = false;
+                    for (Vertex key : nearVertices2) {
+                        Vector3d v2 = new Vector3d(key);
+                        BigDecimal dist = Vector3d.distSquare(v1, v2);
+                        if (dist.compareTo(EPSILON) < 0f) {
+                            isNear = true;
+                            break;
+                        }
+                    }
+                    nearVertices2.add(v);
+                    if (!isNear) {
+                        nearVertices.add(v);
+                    }
+                }
+                selectedVertices.clear();
+                selectedVertices.addAll(nearVertices);
+            }
 
         } else if (Editor3DWindow.getWindow().isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) {
             {
