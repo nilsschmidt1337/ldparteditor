@@ -636,6 +636,8 @@ public final class I18n {
     public static final String E3D_SyncManipulator = E3D.getString(getProperty());
     public static final String E3D_SyncTranslation = E3D.getString(getProperty());
     public static final String E3D_SyncZoom = E3D.getString(getProperty());
+    public static final String E3D_ThreshForAddingElements2D = E3D.getString(getProperty());
+    public static final String E3D_ThreshForAddingElements3D = E3D.getString(getProperty());
     public static final String E3D_ThreshInDeg = E3D.getString(getProperty());
     public static final String E3D_ThreshInLdu = E3D.getString(getProperty());
     public static final String E3D_Tjunction = E3D.getString(getProperty());

@@ -79,6 +79,9 @@ public class UserSettingState implements Serializable {
     /** Your fine scale snap value */
     private BigDecimal fine_scale_snap = new BigDecimal("1.001"); //$NON-NLS-1$
 
+    /** Your "fuzziness factor", LDU distance below which vertices would be considered the same in 3D space. */
+    private BigDecimal fuzziness3D = BigDecimal.ZERO;
+
     /** Your transformation matrix precision */
     private int transMatrixPrecision = 5;
     /** Your coordinates precision */
@@ -1403,5 +1406,13 @@ public class UserSettingState implements Serializable {
 
     public void setOpenGLVersion(int openGLVersion) {
         this.openGLVersion = openGLVersion;
+    }
+
+    public BigDecimal getFuzziness3D() {
+        return fuzziness3D;
+    }
+
+    public void setFuzziness3D(BigDecimal fuzziness3d) {
+        fuzziness3D = fuzziness3d;
     }
 }

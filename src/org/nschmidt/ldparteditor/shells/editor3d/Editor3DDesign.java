@@ -949,6 +949,38 @@ class Editor3DDesign extends ApplicationWindow {
                                 }
                             });
 
+                            Label separator2 = new Label(cmp_snappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
+                            separator2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            Label lblSpacer3 = new Label(cmp_snappingArea, Cocoa.getSytle());
+                            lblSpacer3.setText(" "); //$NON-NLS-1$
+                            lblSpacer3.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            Label lblNewLabel8 = new Label(cmp_snappingArea, Cocoa.getSytle());
+                            lblNewLabel8.setText(I18n.E3D_ThreshForAddingElements3D);
+                            lblNewLabel8.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+
+                            final BigDecimalSpinner spinnerT3D = new BigDecimalSpinner(cmp_snappingArea, Cocoa.getSytle(), View.NUMBER_FORMAT8F);
+                            spinnerT3D.setMaximum(BigDecimal.ONE);
+                            spinnerT3D.setMinimum(BigDecimal.ZERO);
+                            spinnerT3D.setValue(userSettings.getFuzziness3D());
+                            spinnerT3D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+
+                            spinnerT3D.addValueChangeListener(new ValueChangeAdapter() {
+                                @Override
+                                public void valueChanged(BigDecimalSpinner spn) {
+                                    WorkbenchManager.getUserSettingState().setFuzziness3D(spn.getValue());
+                                }
+                            });
+
+                            /*
+                            final IntegerSpinner spinnerT2D = new IntegerSpinner(cmp_snappingArea, Cocoa.getSytle());
+                            spinnerT2D.setMaximum(9999);
+                            spinnerT2D.setMinimum(0);
+                            spinnerT2D.setValue(0);
+                            spinnerT2D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
+                             */
+
                             cmp_scroll.setMinSize(cmp_snappingArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
                         }
 

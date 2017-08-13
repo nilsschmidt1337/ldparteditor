@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.math.BigDecimal;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -118,6 +119,9 @@ public enum WorkbenchManager {
         }
 
         // TODO New values, which were not included in the state before, have to be initialized!
+        if (WorkbenchManager.userSettingState.getFuzziness3D() == null) {
+            WorkbenchManager.userSettingState.setFuzziness3D(BigDecimal.ZERO);
+        }
     }
 
     /**
