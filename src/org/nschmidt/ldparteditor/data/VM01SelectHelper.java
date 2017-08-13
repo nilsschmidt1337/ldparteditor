@@ -45,6 +45,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 public class VM01SelectHelper extends VM01Select {
 
@@ -358,7 +359,7 @@ public class VM01SelectHelper extends VM01Select {
                 vertsOnScreen.add(pc.getScreenCoordinatesFrom3D(v.x, v.y, v.z));
                 verts.add(v);
             }
-            final float EPSILON_SQR = 40f;
+            final float EPSILON_SQR = (float) Math.pow(WorkbenchManager.getUserSettingState().getFuzziness2D(), 2.0);
             NLogger.debug(getClass(), "EPSILON² around selection is {0}", EPSILON_SQR); //$NON-NLS-1$
             final int size = selectedVertices.size();
             for (int i = 0; i < size; i++) {

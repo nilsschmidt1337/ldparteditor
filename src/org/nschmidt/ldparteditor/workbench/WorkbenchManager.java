@@ -122,6 +122,10 @@ public enum WorkbenchManager {
         if (WorkbenchManager.userSettingState.getFuzziness3D() == null) {
             WorkbenchManager.userSettingState.setFuzziness3D(BigDecimal.ZERO);
         }
+
+        if (WorkbenchManager.userSettingState.getFuzziness2D() == 0) {
+            WorkbenchManager.userSettingState.setFuzziness2D(7);
+        }
     }
 
     /**
