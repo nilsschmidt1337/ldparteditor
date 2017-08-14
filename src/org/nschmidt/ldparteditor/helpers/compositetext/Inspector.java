@@ -19,6 +19,7 @@ import java.util.HashSet;
 
 import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 
 /**
@@ -43,6 +44,24 @@ public enum Inspector {
 
         if (issues.isEmpty())
             return;
+
+        final VertexManager vm = datFile.getVertexManager();
+
+        vm.clearSelection();
+
+        final int lc = cText.getLineCount();
+        for (TreeItem ti : issues) {
+            if (ti.getData() == null) continue;
+            final int offset = (int) ti.getData();
+            if (offset < 0) continue;
+            final int line = cText.getLineAtOffset(offset) + 1;
+            if (line < 1 || line > lc) continue;
+            vm.addTextLineToSelection(line);
+        }
+
+        vm.setModified_NoSync();
+        vm.syncWithTextEditors(true);
+        vm.updateUnsavedStatus();
 
         // FIXME Needs implementation!
     }
