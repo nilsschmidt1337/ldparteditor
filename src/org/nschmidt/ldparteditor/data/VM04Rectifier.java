@@ -78,7 +78,7 @@ class VM04Rectifier extends VM03Adjacency {
             }
         }
 
-        final boolean noAdjacentCondlines = rs.isNoBorderedQuadToRectConversation();
+        final boolean noAdjacentCondlines = rs.isNoRectConversationOnAdjacentCondlines();
         final boolean replaceQuads = !rs.isNoQuadConversation();
         final GColour col16 = View.getLDConfigColour(16);
 
