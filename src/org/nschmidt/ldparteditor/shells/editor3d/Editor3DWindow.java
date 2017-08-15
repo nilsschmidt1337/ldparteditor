@@ -1616,8 +1616,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         lastUsedColour = gColour2;
                     }
                     setLastUsedColour(gColour2);
-                    btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
-                    btn_LastUsedColour[0].removeListener(SWT.Selection, btn_LastUsedColour[0].getListeners(SWT.Selection)[0]);
+                    btn_LastUsedColour[0].clearPaintListeners();
+                    btn_LastUsedColour[0].clearSelectionListeners();
                     final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
                     final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
                     final int x = Math.round(size.x / 5f);
@@ -7367,8 +7367,8 @@ public class Editor3DWindow extends Editor3DDesign {
             num = -1;
         }
         Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
-        btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
-        btn_LastUsedColour[0].removeListener(SWT.Selection, btn_LastUsedColour[0].getListeners(SWT.Selection)[0]);
+        btn_LastUsedColour[0].clearPaintListeners();
+        btn_LastUsedColour[0].clearSelectionListeners();
         final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
         final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
         final int x = size.x / 4;
@@ -9791,8 +9791,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         Project.getFileToEdit().getVertexManager().addSnapshot();
                         Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
 
-                        btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
-                        btn_LastUsedColour[0].removeListener(SWT.Selection, btn_LastUsedColour[0].getListeners(SWT.Selection)[0]);
+                        btn_LastUsedColour[0].clearPaintListeners();
+                        btn_LastUsedColour[0].clearSelectionListeners();
                         final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                         final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
                         final int x = Math.round(size.x / 5f);
