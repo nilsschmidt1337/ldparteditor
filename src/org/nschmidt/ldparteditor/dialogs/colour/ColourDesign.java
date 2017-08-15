@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * This first dialog - shown on startup - asks for mandatory information about
@@ -122,7 +123,7 @@ class ColourDesign extends Dialog {
         final int btnSize = (int) (lbl_stdColour.computeSize(SWT.DEFAULT, SWT.DEFAULT).y * 1.5f);
 
         for (Integer index : ldConfIndices) {
-            final Button btn_stdColour = new Button(cmpStdColours, SWT.FLAT);
+            final NButton btn_stdColour = new NButton(cmpStdColours, SWT.FLAT);
             btn_stdColour.setBounds(0, 0, btnSize, btnSize);
             GridData gd = new GridData();
             gd.grabExcessHorizontalSpace = true;

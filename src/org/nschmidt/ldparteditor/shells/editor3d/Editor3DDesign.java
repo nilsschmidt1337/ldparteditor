@@ -83,6 +83,7 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
@@ -188,8 +189,8 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Manipulator_SwitchXZ = new MenuItem[1];
     final MenuItem[] mntm_Manipulator_SwitchYZ = new MenuItem[1];
 
-    final Button[] btn_LastUsedColour = new Button[1];
-    final Button[] btn_Pipette = new Button[1];
+    final NButton[] btn_LastUsedColour = new NButton[1];
+    final NButton[] btn_Pipette = new NButton[1];
     final Button[] btn_Decolour = new Button[1];
     final Button[] btn_Palette = new Button[1];
 
@@ -1904,11 +1905,37 @@ class Editor3DDesign extends ApplicationWindow {
 
         ToolItem toolItem_ColourFunctions = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_LastUsedColour = new Button(toolItem_ColourFunctions, Cocoa.getSytle());
+            final int imgSize;
+            switch (Editor3DWindow.getIconsize()) {
+            case 0:
+                imgSize = 16;
+                break;
+            case 1:
+                imgSize = 24;
+                break;
+            case 2:
+                imgSize = 32;
+                break;
+            case 3:
+                imgSize = 48;
+                break;
+            case 4:
+                imgSize = 64;
+                break;
+            case 5:
+                imgSize = 72;
+                break;
+            default:
+                imgSize = 16;
+                break;
+            }
+            NButton btn_LastUsedColour = new NButton(toolItem_ColourFunctions, Cocoa.getSytle());
             this.btn_LastUsedColour[0] = btn_LastUsedColour;
             btn_LastUsedColour.setToolTipText(I18n.E3D_Colour16);
             btn_LastUsedColour.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
-            final Color col = SWTResourceManager.getColor(128, 128, 128);
+
+            final GColour col16 = View.getLDConfigColour(16);
+            final Color col = SWTResourceManager.getColor((int) (255f * col16.getR()), (int) (255f * col16.getG()), (int) (255f * col16.getB()));
             final Point size = btn_LastUsedColour.computeSize(SWT.DEFAULT, SWT.DEFAULT);
             final int x = Math.round(size.x / 5f);
             final int y = Math.round(size.y / 5f);
@@ -1919,6 +1946,7 @@ class Editor3DDesign extends ApplicationWindow {
                 public void paintControl(PaintEvent e) {
                     e.gc.setBackground(col);
                     e.gc.fillRectangle(x, y, w, h);
+                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 }
             });
             btn_LastUsedColour.addSelectionListener(new SelectionAdapter() {
@@ -1934,7 +1962,7 @@ class Editor3DDesign extends ApplicationWindow {
             });
         }
         {
-            Button btn_Pipette = new Button(toolItem_ColourFunctions, Cocoa.getSytle());
+            NButton btn_Pipette = new NButton(toolItem_ColourFunctions, Cocoa.getSytle());
             this.btn_Pipette[0] = btn_Pipette;
             btn_Pipette.setToolTipText(I18n.E3D_Pipette);
             btn_Pipette.setImage(ResourceManager.getImage("icon16_pipette.png")); //$NON-NLS-1$
@@ -3369,7 +3397,7 @@ class Editor3DDesign extends ApplicationWindow {
         final Color[] col = new Color[1];
         col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
 
-        final Button btn_Col = new Button(toolItem_Colours, Cocoa.getSytle());
+        final NButton btn_Col = new NButton(toolItem_Colours, Cocoa.getSytle());
         btn_Col.setData(gColour2);
         int num = gColour2[0].getColourNumber();
         if (!View.hasLDConfigColour(num)) {
@@ -3449,8 +3477,8 @@ class Editor3DDesign extends ApplicationWindow {
                         Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
                     }
                     Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
-                    btn_LastUsedColour[0].removeListener(SWT.Paint, btn_LastUsedColour[0].getListeners(SWT.Paint)[0]);
-                    btn_LastUsedColour[0].removeListener(SWT.Selection, btn_LastUsedColour[0].getListeners(SWT.Selection)[0]);
+                    btn_LastUsedColour[0].clearPaintListeners();
+                    btn_LastUsedColour[0].clearSelectionListeners();
                     final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                     final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
                     final int x = Math.round(size.x / 5f);
