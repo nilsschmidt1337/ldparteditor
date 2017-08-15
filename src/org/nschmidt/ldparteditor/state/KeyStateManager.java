@@ -967,7 +967,7 @@ public class KeyStateManager {
     }
 
     public static void addKeyText(final MenuItem mntm, final String text, final TextTask t) {
-        mntm.setText(text + "\t" + taskKeyMap.get(t)); //$NON-NLS-1$
+        mntm.setText(text + "\t" + textTaskKeyMap.get(t)); //$NON-NLS-1$
         mntm.addArmListener(new ArmListener() {
             @Override
             public void widgetArmed(ArmEvent e) {
