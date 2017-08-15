@@ -39,4 +39,6 @@ public enum Font {
     public static final org.eclipse.swt.graphics.Font MONOSPACE = JFaceResources.getFont(JFaceResources.TEXT_FONT);
     /** The width of the standard monospaced font (in pixels) */
     public static final int MONOSPACE_WIDTH = FontMetrics.getStringWidth(" ", Font.MONOSPACE); //$NON-NLS-1$
+    /** The em size of the standard font (in pixels) */
+    public static final int STANDARD_EM_SIZE = FontMetrics.getStringWidth("M", Font.SYSTEM); //$NON-NLS-1$
 }

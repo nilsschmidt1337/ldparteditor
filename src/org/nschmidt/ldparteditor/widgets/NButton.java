@@ -25,8 +25,8 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
@@ -43,6 +43,9 @@ public class NButton extends Canvas {
 
     private Image img = null;
     private String text = ""; //$NON-NLS-1$
+    private boolean hovered = false;
+    private boolean pressed = false;
+
 
     public NButton(Composite parent, int style) {
         super(parent, style);
@@ -50,10 +53,28 @@ public class NButton extends Canvas {
         super.addPaintListener(this::paint);
 
         addListener(SWT.MouseDown, event -> {
+            pressed = true;
+            redraw();
+            update();
             final SelectionEvent se = new SelectionEvent(event);
             for (SelectionListener sl : selectors) {
                 sl.widgetSelected(se);
             }
+        });
+        addListener(SWT.MouseUp, event -> {
+            pressed = false;
+            redraw();
+            update();
+        });
+        addListener(SWT.MouseEnter, event -> {
+            hovered = true;
+            redraw();
+            update();
+        });
+        addListener(SWT.MouseExit, event -> {
+            hovered = false;
+            redraw();
+            update();
         });
     }
 
@@ -95,12 +116,23 @@ public class NButton extends Canvas {
     }
 
     private void paint(PaintEvent event) {
+        final Image img = this.img;
         final boolean hasImage = img != null;
+        final int img_width = hasImage ? img.getImageData().width : 0;
+        final int img_height = hasImage ? img.getImageData().height : 0;
+
+        event.gc.setForeground(SWTResourceManager.getColor(60, 60, 60));
+
+        if (hovered) {
+            event.gc.setForeground(SWTResourceManager.getColor(255, 255, 255));
+        }
+        if (pressed) {
+            event.gc.setForeground(SWTResourceManager.getColor(30, 30, 30));
+        }
+
+        event.gc.drawRoundRectangle(0, 0, img_width + 9, img_height + 9, 5, 5);
 
         if (hasImage) {
-
-            event.gc.setBackground(SWTResourceManager.getColor(60, 60, 60));
-            event.gc.drawRoundRectangle(0, 0, img.getImageData().width + 9, img.getImageData().height + 9, 5, 5);
 
             event.gc.drawImage(img, 5, 5);
         }
@@ -113,10 +145,10 @@ public class NButton extends Canvas {
     public Point computeSize(int wHint, int hHint, boolean changed) {
 
         if (img != null) {
-            Rectangle bounds = img.getBounds();
+            ImageData data = img.getImageData();
 
             // Just return the size of the image
-            return new Point(bounds.width + 10, bounds.height + 10);
+            return new Point(data.width + 10, data.height + 10);
         } else {
             return new Point(25, 25);
         }
