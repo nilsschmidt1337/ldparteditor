@@ -1128,7 +1128,7 @@ public enum DatParser {
                     // Coplanarity
                     if (!parseError) {
 
-                        angle = Vector3d.angle(normals[0], normals[2]);
+                        angle = Math.max(Vector3d.angle(normals[0], normals[2]), Vector3d.angle(normals[1], normals[3]));
 
                         parseWarning = angle > Threshold.coplanarity_angle_warning;
                         if (angle > Threshold.coplanarity_angle_error) {
