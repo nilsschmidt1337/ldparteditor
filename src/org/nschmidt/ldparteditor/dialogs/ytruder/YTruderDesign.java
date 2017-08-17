@@ -23,7 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -52,10 +52,10 @@ class YTruderDesign extends Dialog {
     final BigDecimalSpinner[] spn_condlineAngleThreshold = new BigDecimalSpinner[1];
     final Combo[] cmb_axis = new Combo[1];
     final Combo[] cmb_scope = new Combo[1];
-    final Button[] btn_TranslateByDistance = new Button[1];
-    final Button[] btn_SymmetryAcrossPlane = new Button[1];
-    final Button[] btn_ProjectionOnPlane = new Button[1];
-    final Button[] btn_ExtrudeRadially = new Button[1];
+    final NButton[] btn_TranslateByDistance = new NButton[1];
+    final NButton[] btn_SymmetryAcrossPlane = new NButton[1];
+    final NButton[] btn_ProjectionOnPlane = new NButton[1];
+    final NButton[] btn_ExtrudeRadially = new NButton[1];
 
     YTruderDesign(Shell parentShell, YTruderSettings ys) {
         super(parentShell);
@@ -84,28 +84,28 @@ class YTruderDesign extends Dialog {
         lbl_description.setText(I18n.YTRUDER_Description);
 
         {
-            Button btn_TranslateByDistance = new Button(cmp_container, SWT.RADIO);
+            NButton btn_TranslateByDistance = new NButton(cmp_container, SWT.RADIO);
             this.btn_TranslateByDistance[0] = btn_TranslateByDistance;
             btn_TranslateByDistance.setText(I18n.YTRUDER_TranslationByDistance);
             btn_TranslateByDistance.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btn_TranslateByDistance.setSelection(ys.getMode() == 1);
         }
         {
-            Button btn_SymmetryAcrossPlane = new Button(cmp_container, SWT.RADIO);
+            NButton btn_SymmetryAcrossPlane = new NButton(cmp_container, SWT.RADIO);
             this.btn_SymmetryAcrossPlane[0] = btn_SymmetryAcrossPlane;
             btn_SymmetryAcrossPlane.setText(I18n.YTRUDER_SymmetryAcrossPlane);
             btn_SymmetryAcrossPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btn_SymmetryAcrossPlane.setSelection(ys.getMode() == 2);
         }
         {
-            Button btn_ProjectionOnPlane = new Button(cmp_container, SWT.RADIO);
+            NButton btn_ProjectionOnPlane = new NButton(cmp_container, SWT.RADIO);
             this.btn_ProjectionOnPlane[0] = btn_ProjectionOnPlane;
             btn_ProjectionOnPlane.setText(I18n.YTRUDER_ProjectionOnPlane);
             btn_ProjectionOnPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btn_ProjectionOnPlane.setSelection(ys.getMode() == 3);
         }
         {
-            Button btn_ExtrudeRadially = new Button(cmp_container, SWT.RADIO);
+            NButton btn_ExtrudeRadially = new NButton(cmp_container, SWT.RADIO);
             this.btn_ExtrudeRadially[0] = btn_ExtrudeRadially;
             btn_ExtrudeRadially.setText(I18n.YTRUDER_ExtrudeRadially);
             btn_ExtrudeRadially.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));

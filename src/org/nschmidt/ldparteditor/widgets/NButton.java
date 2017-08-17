@@ -202,6 +202,12 @@ public class NButton extends Canvas {
         return selected;
     }
 
+    public void setSelection(boolean selected) {
+        checkWidget();
+        this.selected = selected;
+        redraw();
+    }
+
     public void setText(String text) {
         checkWidget();
         this.text = text;

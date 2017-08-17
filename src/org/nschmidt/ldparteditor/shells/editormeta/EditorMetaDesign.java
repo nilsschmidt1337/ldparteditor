@@ -28,7 +28,7 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -53,16 +53,16 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 class EditorMetaDesign extends ApplicationWindow {
 
-    final Button[] btn_Create = new Button[1];
+    final NButton[] btn_Create = new NButton[1];
 
     final Text[] ev_description_txt = new Text[1];
-    final Button[] ev_description_btn = new Button[1];
+    final NButton[] ev_description_btn = new NButton[1];
     final Text[] ev_name_txt = new Text[1];
     final Text[] ev_author_realName_txt = new Text[1];
     final Text[] ev_author_userName_txt = new Text[1];
-    final Button[] ev_type_unofficial_btn = new Button[1];
+    final NButton[] ev_type_unofficial_btn = new NButton[1];
     final Combo[] ev_type_type_cmb = new Combo[1];
-    final Button[] ev_type_update_btn = new Button[1];
+    final NButton[] ev_type_update_btn = new NButton[1];
     final Text[] ev_type_update_txt  = new Text[1];
     final Combo[] ev_license_cmb = new Combo[1];
     final Text[] ev_help_txt = new Text[1];
@@ -76,7 +76,7 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_history21_txt = new Text[1];
     final Text[] ev_history22_txt = new Text[1];
     final Text[] ev_history23_txt = new Text[1];
-    final Button[] ev_comment_btn = new Button[1];
+    final NButton[] ev_comment_btn = new NButton[1];
     final Text[] ev_comment_txt  = new Text[1];
     final Combo[] ev_bfc_cmb = new Combo[1];
     final Combo[] ev_texmapPlanar_cmb = new Combo[1];
@@ -90,7 +90,7 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_texmapPlanar8_txt  = new Text[1];
     final Text[] ev_texmapPlanar9_txt  = new Text[1];
     final Text[] ev_texmapPlanar10_txt  = new Text[1];
-    final Button[] ev_texmapPlanar_btn = new Button[1];
+    final NButton[] ev_texmapPlanar_btn = new NButton[1];
     final Combo[] ev_texmapCyli_cmb = new Combo[1];
     final Text[] ev_texmapCyli1_txt  = new Text[1];
     final Text[] ev_texmapCyli2_txt  = new Text[1];
@@ -103,7 +103,7 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_texmapCyli9_txt  = new Text[1];
     final Text[] ev_texmapCyli10_txt  = new Text[1];
     final Text[] ev_texmapCyli11_txt  = new Text[1];
-    final Button[] ev_texmapCyli_btn = new Button[1];
+    final NButton[] ev_texmapCyli_btn = new NButton[1];
     final Combo[] ev_texmapSphere_cmb = new Combo[1];
     final Text[] ev_texmapSphere1_txt  = new Text[1];
     final Text[] ev_texmapSphere2_txt  = new Text[1];
@@ -117,10 +117,10 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_texmapSphere10_txt  = new Text[1];
     final Text[] ev_texmapSphere11_txt  = new Text[1];
     final Text[] ev_texmapSphere12_txt  = new Text[1];
-    final Button[] ev_texmapSphere_btn = new Button[1];
-    final Button[] ev_texmapFallback_btn = new Button[1];
+    final NButton[] ev_texmapSphere_btn = new NButton[1];
+    final NButton[] ev_texmapFallback_btn = new NButton[1];
     final Text[] ev_texmapMeta_txt  = new Text[1];
-    final Button[] ev_texmapEnd_btn = new Button[1];
+    final NButton[] ev_texmapEnd_btn = new NButton[1];
     final Text[] ev_todo_txt  = new Text[1];
     final Text[] ev_vertex1_txt  = new Text[1];
     final Text[] ev_vertex2_txt  = new Text[1];
@@ -178,7 +178,7 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_png7_txt  = new Text[1];
     final Text[] ev_png8_txt  = new Text[1];
     final Text[] ev_png9_txt  = new Text[1];
-    final Button[] ev_png_btn = new Button[1];
+    final NButton[] ev_png_btn = new NButton[1];
 
     final Label[] lbl_lineToInsert  = new Label[1];
 
@@ -250,7 +250,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         txt_description.setMessage(I18n.META_Description);
                         ev_description_txt[0] = txt_description;
 
-                        Button btn_needsWork = new Button(cmp_description, SWT.TOGGLE);
+                        NButton btn_needsWork = new NButton(cmp_description, SWT.TOGGLE);
                         btn_needsWork.setText("(Needs Work)"); //$NON-NLS-1$
                         ev_description_btn[0] = btn_needsWork;
                     }
@@ -303,7 +303,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lbl_type = new Label(cmp_type, SWT.NONE);
                         lbl_type.setText("0 !LDRAW_ORG "); //$NON-NLS-1$
 
-                        Button btn_unofficial = new Button(cmp_type, SWT.TOGGLE);
+                        NButton btn_unofficial = new NButton(cmp_type, SWT.TOGGLE);
                         btn_unofficial.setText("Unofficial"); //$NON-NLS-1$
                         ev_type_unofficial_btn[0] = btn_unofficial;
 
@@ -314,7 +314,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         cmb_type.select(0);
                         ev_type_type_cmb[0] = cmb_type;
 
-                        Button btn_update = new Button(cmp_type, SWT.TOGGLE);
+                        NButton btn_update = new NButton(cmp_type, SWT.TOGGLE);
                         btn_update.setText("UPDATE"); //$NON-NLS-1$
                         ev_type_update_btn[0] = btn_update;
 
@@ -498,7 +498,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         Label lbl_type = new Label(cmp_comment, SWT.NONE);
                         lbl_type.setText("0 // "); //$NON-NLS-1$
 
-                        Button btn_needsWork2 = new Button(cmp_comment, SWT.TOGGLE);
+                        NButton btn_needsWork2 = new NButton(cmp_comment, SWT.TOGGLE);
                         btn_needsWork2.setText("Needs work:"); //$NON-NLS-1$
                         ev_comment_btn[0] = btn_needsWork2;
 
@@ -640,7 +640,7 @@ class EditorMetaDesign extends ApplicationWindow {
                             ev_texmapPlanar10_txt[0] = txt_png;
                         }
                         {
-                            Button btn_browse = new Button(cmp_texmap, SWT.NONE);
+                            NButton btn_browse = new NButton(cmp_texmap, SWT.NONE);
                             btn_browse.setText(I18n.DIALOG_Browse);
                             ev_texmapPlanar_btn[0] = btn_browse;
                         }
@@ -726,7 +726,7 @@ class EditorMetaDesign extends ApplicationWindow {
                             ev_texmapCyli11_txt[0] = txt_png;
                         }
                         {
-                            Button btn_browse = new Button(cmp_texmap, SWT.NONE);
+                            NButton btn_browse = new NButton(cmp_texmap, SWT.NONE);
                             btn_browse.setText(I18n.DIALOG_Browse);
                             ev_texmapCyli_btn[0] = btn_browse;
                         }
@@ -817,13 +817,13 @@ class EditorMetaDesign extends ApplicationWindow {
                             ev_texmapSphere12_txt[0] = txt_png;
                         }
                         {
-                            Button btn_browse = new Button(cmp_texmap, SWT.NONE);
+                            NButton btn_browse = new NButton(cmp_texmap, SWT.NONE);
                             btn_browse.setText(I18n.DIALOG_Browse);
                             ev_texmapSphere_btn[0] = btn_browse;
                         }
                     }
                     {
-                        Button btn_texmap = new Button(grp_meta, SWT.NONE);
+                        NButton btn_texmap = new NButton(grp_meta, SWT.NONE);
                         btn_texmap.setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
                         ev_texmapFallback_btn[0] = btn_texmap;
                     }
@@ -840,7 +840,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         }
                     }
                     {
-                        Button btn_texmap = new Button(grp_meta, SWT.NONE);
+                        NButton btn_texmap = new NButton(grp_meta, SWT.NONE);
                         btn_texmap.setText("0 !TEXMAP END"); //$NON-NLS-1$
                         ev_texmapEnd_btn[0] = btn_texmap;
                     }
@@ -1293,7 +1293,7 @@ class EditorMetaDesign extends ApplicationWindow {
                             ev_png9_txt[0] = txt_png;
                         }
                         {
-                            Button btn_browse = new Button(cmp_lpe, SWT.NONE);
+                            NButton btn_browse = new NButton(cmp_lpe, SWT.NONE);
                             btn_browse.setText(I18n.DIALOG_Browse);
                             ev_png_btn[0] = btn_browse;
                         }
@@ -1314,7 +1314,7 @@ class EditorMetaDesign extends ApplicationWindow {
         lbl_Preview.setLayoutData(gdl);
 
 
-        Button btn_Create = new Button(container, SWT.NONE);
+        NButton btn_Create = new NButton(container, SWT.NONE);
         btn_Create.setText(I18n.DIALOG_CreateMetaCommand);
         GridData gdt = new GridData();
         gdt.horizontalAlignment = SWT.RIGHT;

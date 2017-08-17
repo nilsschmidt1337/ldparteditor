@@ -23,7 +23,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -31,8 +30,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The edger2 dialog
@@ -57,7 +56,7 @@ class EdgerDesign extends TrayDialog {
     final Combo[] cmb_c = new Combo[1];
     final Combo[] cmb_u = new Combo[1];
     final Combo[] cmb_scope = new Combo[1];
-    final Button[] btn_verbose = new Button[1];
+    final NButton[] btn_verbose = new NButton[1];
 
     EdgerDesign(Shell parentShell, Edger2Settings es) {
         super(parentShell);
@@ -153,7 +152,7 @@ class EdgerDesign extends TrayDialog {
         cmb_scope.setText(cmb_scope.getItem(es.getScope()));
         cmb_scope.select(es.getScope());
 
-        Button btn_verbose = new Button(cmp_container, SWT.CHECK);
+        NButton btn_verbose = new NButton(cmp_container, SWT.CHECK);
         this.btn_verbose[0] = btn_verbose;
         btn_verbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         btn_verbose.setText(I18n.EDGER_Verbose);
@@ -181,9 +180,6 @@ class EdgerDesign extends TrayDialog {
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
-        if (NLogger.DEBUG) {
-            createHelpControl(parent);
-        }
     }
 
     /**

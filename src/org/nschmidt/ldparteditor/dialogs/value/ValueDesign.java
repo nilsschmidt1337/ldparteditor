@@ -42,13 +42,13 @@ class ValueDesign extends Dialog {
 
     final String unitText;
     final String shellText;
-    
+
     ValueDesign(Shell parentShell, String shellText, String unitText) {
         super(parentShell);
         this.unitText = unitText;
         this.shellText = shellText;
     }
-    
+
     /**
      * Create contents of the dialog.
      *

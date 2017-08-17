@@ -30,7 +30,6 @@ import org.eclipse.swt.graphics.Transform;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -42,6 +41,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * @author nils
@@ -68,7 +68,7 @@ public class CompositeScale extends ScalableComposite {
         gl_compositeScale.horizontalSpacing = 0;
         this.setLayout(gl_compositeScale);
 
-        Button btn_openContextMenu = new Button(this, SWT.CENTER);
+        NButton btn_openContextMenu = new NButton(this, SWT.CENTER);
         GridData gd_btn_openContextMenu = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
         gd_btn_openContextMenu.heightHint = 20;
         gd_btn_openContextMenu.widthHint = 20;
@@ -85,8 +85,8 @@ public class CompositeScale extends ScalableComposite {
                 int y = (int) b.getY();
                 if (!me.getComposite3D().getMenu().isDisposed()) {
                     me.getComposite3D().getMenu().setLocation(x, y);
-                    me.getComposite3D().getMenu().setVisible(true);   
-                }                
+                    me.getComposite3D().getMenu().setVisible(true);
+                }
             }
         });
 

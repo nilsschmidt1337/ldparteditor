@@ -37,6 +37,7 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The translate dialog
@@ -51,20 +52,20 @@ class TranslateDesign extends Dialog {
 
     static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
-    final Button[] btn_Local = new Button[1];
-    final Button[] btn_Global = new Button[1];
+    final NButton[] btn_Local = new NButton[1];
+    final NButton[] btn_Global = new NButton[1];
 
     final Button[] btn_Copy = new Button[1];
 
-    final Button[] cb_Xaxis = new Button[1];
-    final Button[] cb_Yaxis = new Button[1];
-    final Button[] cb_Zaxis = new Button[1];
+    final NButton[] cb_Xaxis = new NButton[1];
+    final NButton[] cb_Yaxis = new NButton[1];
+    final NButton[] cb_Zaxis = new NButton[1];
     final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
 
-    final Button[] btn_ToManipulatorPosition = new Button[1];
-    final Button[] btn_ToManipulatorPositionInverted = new Button[1];
+    final NButton[] btn_ToManipulatorPosition = new NButton[1];
+    final NButton[] btn_ToManipulatorPositionInverted = new NButton[1];
 
     final IntegerSpinner[] spn_Iterations = new IntegerSpinner[1];
 
@@ -105,14 +106,14 @@ class TranslateDesign extends Dialog {
 
         ToolItem toolItem_TransformationModes = new ToolItem(cmp_container, SWT.NONE, true);
         {
-            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Local[0] = btn_Local;
             btn_Local.setToolTipText(I18n.E3D_Local);
             if (transformationMode == ManipulatorScope.LOCAL) btn_Local.setSelection(true);
             btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Global[0] = btn_Global;
             btn_Global.setToolTipText(I18n.E3D_Global);
             if (transformationMode == ManipulatorScope.GLOBAL) btn_Global.setSelection(true);
@@ -124,7 +125,7 @@ class TranslateDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Button cb_Xaxis = new Button(cmp_txt, SWT.CHECK);
+            NButton cb_Xaxis = new NButton(cmp_txt, SWT.CHECK);
             this.cb_Xaxis[0] = cb_Xaxis;
             cb_Xaxis.setText(I18n.TRANSLATE_X);
             cb_Xaxis.setSelection(true);
@@ -142,7 +143,7 @@ class TranslateDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Button cb_Yaxis = new Button(cmp_txt, SWT.CHECK);
+            NButton cb_Yaxis = new NButton(cmp_txt, SWT.CHECK);
             this.cb_Yaxis[0] = cb_Yaxis;
             cb_Yaxis.setText(I18n.TRANSLATE_Y);
             cb_Yaxis.setSelection(true);
@@ -160,7 +161,7 @@ class TranslateDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Button cb_Zaxis = new Button(cmp_txt, SWT.CHECK);
+            NButton cb_Zaxis = new NButton(cmp_txt, SWT.CHECK);
             this.cb_Zaxis[0] = cb_Zaxis;
             cb_Zaxis.setText(I18n.TRANSLATE_Z);
             cb_Zaxis.setSelection(true);
@@ -174,13 +175,13 @@ class TranslateDesign extends Dialog {
         }
 
         {
-            Button btn_ToManipulatorPosition = new Button(cmp_container, SWT.NONE);
+            NButton btn_ToManipulatorPosition = new NButton(cmp_container, SWT.NONE);
             this.btn_ToManipulatorPosition[0] = btn_ToManipulatorPosition;
             btn_ToManipulatorPosition.setText(I18n.TRANSLATE_ToManipulatorPosition);
             btn_ToManipulatorPosition.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
-            Button btn_ToManipulatorPositionInverted = new Button(cmp_container, SWT.NONE);
+            NButton btn_ToManipulatorPositionInverted = new NButton(cmp_container, SWT.NONE);
             this.btn_ToManipulatorPositionInverted[0] = btn_ToManipulatorPositionInverted;
             btn_ToManipulatorPositionInverted.setText(I18n.TRANSLATE_ToManipulatorPositionInverted);
             btn_ToManipulatorPositionInverted.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$

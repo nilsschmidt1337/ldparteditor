@@ -25,7 +25,6 @@ import org.eclipse.swt.events.ArmEvent;
 import org.eclipse.swt.events.ArmListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseMoveListener;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -54,6 +53,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -938,7 +938,7 @@ public class KeyStateManager {
         return s;
     }
 
-    public static void addTooltipText(final Button btn, final String text, final TextTask t) {
+    public static void addTooltipText(final NButton btn, final String text, final TextTask t) {
         btn.addMouseMoveListener(new MouseMoveListener() {
             @Override
             public void mouseMove(MouseEvent e) {
@@ -947,7 +947,7 @@ public class KeyStateManager {
         });
     }
 
-    public static void addTooltipText(final Button btn, final String text, final Task t) {
+    public static void addTooltipText(final NButton btn, final String text, final Task t) {
         btn.addMouseMoveListener(new MouseMoveListener() {
             @Override
             public void mouseMove(MouseEvent e) {
@@ -980,7 +980,7 @@ public class KeyStateManager {
         mntm.setText(text);
     }
 
-    public static void addTooltipText(Button btn, final String text) {
+    public static void addTooltipText(NButton btn, final String text) {
         btn.setToolTipText(text);
     }
 

@@ -23,7 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -43,9 +43,9 @@ class CopyDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    final Button[] btn_1 = new Button[1];
-    final Button[] btn_2 = new Button[1];
-    final Button[] btn_3 = new Button[1];
+    final NButton[] btn_1 = new NButton[1];
+    final NButton[] btn_2 = new NButton[1];
+    final NButton[] btn_3 = new NButton[1];
 
     final String fileName;
 
@@ -66,7 +66,7 @@ class CopyDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Button btn_1 = new Button(cmp_container, SWT.NONE);
+        NButton btn_1 = new NButton(cmp_container, SWT.NONE);
         this.btn_1[0] = btn_1;
         btn_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -78,7 +78,7 @@ class CopyDesign extends Dialog {
             btn_1.setText(formatter.format(messageArguments));
         }
 
-        Button btn_2 = new Button(cmp_container, SWT.NONE);
+        NButton btn_2 = new NButton(cmp_container, SWT.NONE);
         this.btn_2[0] = btn_2;
         btn_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
@@ -90,7 +90,7 @@ class CopyDesign extends Dialog {
             btn_2.setText(formatter.format(messageArguments));
         }
 
-        Button btn_3 = new Button(cmp_container, SWT.NONE);
+        NButton btn_3 = new NButton(cmp_container, SWT.NONE);
         this.btn_3[0] = btn_3;
         btn_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 

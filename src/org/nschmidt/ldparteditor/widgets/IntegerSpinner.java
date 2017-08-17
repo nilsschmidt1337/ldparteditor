@@ -29,7 +29,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Text;
@@ -44,8 +44,8 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
  */
 public class IntegerSpinner extends Composite {
 
-    private final Button[] btn_Up = new Button[1];
-    private final Button[] btn_Down = new Button[1];
+    private final NButton[] btn_Up = new NButton[1];
+    private final NButton[] btn_Down = new NButton[1];
     private final Text[] txt_val = new Text[1];
 
     private int value;
@@ -94,7 +94,7 @@ public class IntegerSpinner extends Composite {
         gd3.grabExcessVerticalSpace = true;
         gd3.verticalAlignment = SWT.FILL;
 
-        Button dwn = new Button(this, SWT.NONE);
+        NButton dwn = new NButton(this, SWT.NONE);
         this.btn_Down[0] = dwn;
         dwn.setImage(ResourceManager.getImage("icon16_previous.png")); //$NON-NLS-1$
         dwn.addMouseListener(new MouseListener() {
@@ -227,7 +227,7 @@ public class IntegerSpinner extends Composite {
             }
         });
 
-        Button up = new Button(this, SWT.NONE);
+        NButton up = new NButton(this, SWT.NONE);
         this.btn_Up[0] = up;
         up.setImage(ResourceManager.getImage("icon16_next.png")); //$NON-NLS-1$
         up.addMouseListener(new MouseListener() {

@@ -26,7 +26,6 @@ import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Canvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -38,6 +37,7 @@ import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeColumn;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
@@ -69,13 +69,13 @@ class CompositeTabDesign extends CTabItem {
 
     final MenuItem[] mntm_QuickFix = new MenuItem[1];
     final MenuItem[] mntm_QuickFixSame = new MenuItem[1];
-    final Button[] btn_QuickFix = new Button[1];
-    final Button[] btn_QuickFixSame = new Button[1];
+    final NButton[] btn_QuickFix = new NButton[1];
+    final NButton[] btn_QuickFixSame = new NButton[1];
 
     final MenuItem[] mntm_Inspect = new MenuItem[1];
     final MenuItem[] mntm_InspectSame = new MenuItem[1];
-    final Button[] btn_Inspect = new Button[1];
-    final Button[] btn_InspectSame = new Button[1];
+    final NButton[] btn_Inspect = new NButton[1];
+    final NButton[] btn_InspectSame = new NButton[1];
 
     final Canvas[] canvas_lineNumberArea = new Canvas[1];
     final StyledText[] compositeText = new StyledText[1];
@@ -247,25 +247,25 @@ class CompositeTabDesign extends CTabItem {
                 Label lbl_Separator = new Label(cmp_partProblems, SWT.NONE);
                 lbl_Separator.setText(" "); //$NON-NLS-1$
 
-                Button btn_Inspect = new Button(cmp_partProblems, SWT.NONE);
+                NButton btn_Inspect = new NButton(cmp_partProblems, SWT.NONE);
                 this.btn_Inspect[0] = btn_Inspect;
                 btn_Inspect.setEnabled(false);
                 btn_Inspect.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
                 btn_Inspect.setText(I18n.COMPOSITETAB_Inspect);
 
-                Button btn_InspectSame = new Button(cmp_partProblems, SWT.NONE);
+                NButton btn_InspectSame = new NButton(cmp_partProblems, SWT.NONE);
                 this.btn_InspectSame[0] = btn_InspectSame;
                 btn_InspectSame.setEnabled(false);
                 btn_InspectSame.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
                 btn_InspectSame.setText(I18n.COMPOSITETAB_InspectSimilar);
 
-                Button btn_QuickFix = new Button(cmp_partProblems, SWT.NONE);
+                NButton btn_QuickFix = new NButton(cmp_partProblems, SWT.NONE);
                 this.btn_QuickFix[0] = btn_QuickFix;
                 btn_QuickFix.setEnabled(false);
                 btn_QuickFix.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                 btn_QuickFix.setText(I18n.COMPOSITETAB_QuickFix);
 
-                Button btn_QuickFixSame = new Button(cmp_partProblems, SWT.NONE);
+                NButton btn_QuickFixSame = new NButton(cmp_partProblems, SWT.NONE);
                 this.btn_QuickFixSame[0] = btn_QuickFixSame;
                 btn_QuickFixSame.setEnabled(false);
                 btn_QuickFixSame.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$

@@ -22,7 +22,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -53,10 +53,10 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 class OptionsDesign extends ApplicationWindow {
 
-    Button[] btn_AllowInvalidShapes = new Button[1];
-    Button[] btn_disableMAD3D = new Button[1];
-    Button[] btn_disableMADtext = new Button[1];
-    Button[] btn_OK = new Button[1];
+    NButton[] btn_AllowInvalidShapes = new NButton[1];
+    NButton[] btn_disableMAD3D = new NButton[1];
+    NButton[] btn_disableMADtext = new NButton[1];
+    NButton[] btn_OK = new NButton[1];
 
     final Combo[] cmb_textWinArr = new Combo[1];
     final Combo[] cmb_locale = new Combo[1];
@@ -66,9 +66,9 @@ class OptionsDesign extends ApplicationWindow {
     final Text[] txt_realName = new Text[1];
     final Text[] txt_partAuthoringPath = new Text[1];
     final Combo[] cmb_license = new Combo[1];
-    final Button[] btn_browseLdrawPath = new Button[1];
-    final Button[] btn_browseUnofficialPath = new Button[1];
-    final Button[] btn_browseAuthoringPath = new Button[1];
+    final NButton[] btn_browseLdrawPath = new NButton[1];
+    final NButton[] btn_browseUnofficialPath = new NButton[1];
+    final NButton[] btn_browseAuthoringPath = new NButton[1];
 
     final HashMap<String, Locale> localeMap = new HashMap<String, Locale>();
 
@@ -443,17 +443,17 @@ class OptionsDesign extends ApplicationWindow {
                 cmp_container.setLayout(new GridLayout());
                 cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                Button btn_AllowInvalidShapes = new Button(cmp_container, SWT.CHECK);
+                NButton btn_AllowInvalidShapes = new NButton(cmp_container, SWT.CHECK);
                 this.btn_AllowInvalidShapes[0] = btn_AllowInvalidShapes;
                 btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
                 btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
 
-                Button btn_disableMAD3D = new Button(cmp_container, SWT.CHECK);
+                NButton btn_disableMAD3D = new NButton(cmp_container, SWT.CHECK);
                 this.btn_disableMAD3D[0] = btn_disableMAD3D;
                 btn_disableMAD3D.setText(I18n.OPTIONS_MAD1);
                 btn_disableMAD3D.setSelection(userSettings.isDisableMAD3D());
 
-                Button btn_disableMADtext = new Button(cmp_container, SWT.CHECK);
+                NButton btn_disableMADtext = new NButton(cmp_container, SWT.CHECK);
                 this.btn_disableMADtext[0] = btn_disableMADtext;
                 btn_disableMADtext.setText(I18n.OPTIONS_MAD2);
                 btn_disableMADtext.setSelection(userSettings.isDisableMADtext());
@@ -518,7 +518,7 @@ class OptionsDesign extends ApplicationWindow {
                 txt_ldrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
                 txt_ldrawPath.setText(userSettings.getLdrawFolderPath());
 
-                Button btn_BrowseLdrawPath = new Button(cmp_pathChooser1, SWT.NONE);
+                NButton btn_BrowseLdrawPath = new NButton(cmp_pathChooser1, SWT.NONE);
                 this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
                 btn_BrowseLdrawPath.setText(I18n.OPTIONS_Browse);
 
@@ -559,7 +559,7 @@ class OptionsDesign extends ApplicationWindow {
                 txt_partAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
                 txt_partAuthoringPath.setText(userSettings.getAuthoringFolderPath());
 
-                Button btn_browseAuthoringPath = new Button(cmp_pathChooser2, SWT.NONE);
+                NButton btn_browseAuthoringPath = new NButton(cmp_pathChooser2, SWT.NONE);
                 this.btn_browseAuthoringPath[0] = btn_browseAuthoringPath;
                 btn_browseAuthoringPath.setText(I18n.OPTIONS_Browse);
 
@@ -575,7 +575,7 @@ class OptionsDesign extends ApplicationWindow {
                 txt_unofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
                 txt_unofficialPath.setText(userSettings.getUnofficialFolderPath());
 
-                Button btn_browseUnofficialPath = new Button(cmp_pathChooser3, SWT.NONE);
+                NButton btn_browseUnofficialPath = new NButton(cmp_pathChooser3, SWT.NONE);
                 this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
                 btn_browseUnofficialPath.setText(I18n.OPTIONS_Browse);
             }
@@ -605,7 +605,7 @@ class OptionsDesign extends ApplicationWindow {
         gridData2.grabExcessHorizontalSpace = true;
         spacer.setLayoutData(gridData2);
 
-        Button btnOK = new Button(cmp_Buttons, SWT.NONE);
+        NButton btnOK = new NButton(cmp_Buttons, SWT.NONE);
         this.btn_OK[0] = btnOK;
         btnOK.setText(I18n.DIALOG_OK);
 

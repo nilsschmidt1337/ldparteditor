@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * This first dialog - shown on startup - asks for mandatory information about
@@ -60,9 +61,9 @@ class StartupDesign extends Dialog {
     final Text[] txt_realName = new Text[1];
     final Text[] txt_partAuthoringPath = new Text[1];
     final Combo[] cmb_license = new Combo[1];
-    final Button[] btn_browseLdrawPath = new Button[1];
-    final Button[] btn_browseUnofficialPath = new Button[1];
-    final Button[] btn_browseAuthoringPath = new Button[1];
+    final NButton[] btn_browseLdrawPath = new NButton[1];
+    final NButton[] btn_browseUnofficialPath = new NButton[1];
+    final NButton[] btn_browseAuthoringPath = new NButton[1];
 
     final HashMap<String, Locale> localeMap = new HashMap<String, Locale>();
 
@@ -135,7 +136,7 @@ class StartupDesign extends Dialog {
             txt_ldrawPath.setText(ldrawDir);
         }
 
-        Button btn_BrowseLdrawPath = new Button(cmp_pathChooser1, SWT.NONE);
+        NButton btn_BrowseLdrawPath = new NButton(cmp_pathChooser1, SWT.NONE);
         this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
         btn_BrowseLdrawPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
@@ -174,7 +175,7 @@ class StartupDesign extends Dialog {
         txt_partAuthoringPath.setEditable(false);
         txt_partAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
 
-        Button btn_browseAuthoringPath = new Button(cmp_pathChooser2, SWT.NONE);
+        NButton btn_browseAuthoringPath = new NButton(cmp_pathChooser2, SWT.NONE);
         this.btn_browseAuthoringPath[0] = btn_browseAuthoringPath;
         btn_browseAuthoringPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
@@ -193,7 +194,7 @@ class StartupDesign extends Dialog {
             txt_unofficialPath.setText(ldrawDir + File.separator + "Unofficial"); //$NON-NLS-1$
         }
 
-        Button btn_browseUnofficialPath = new Button(cmp_pathChooser3, SWT.NONE);
+        NButton btn_browseUnofficialPath = new NButton(cmp_pathChooser3, SWT.NONE);
         this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
         btn_browseUnofficialPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
