@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enums.Font;
+import org.nschmidt.ldparteditor.resources.ResourceManager;
 
 /**
  * @author nils
@@ -43,6 +44,7 @@ public class NButton extends Canvas {
     private final List<SelectionListener> selectors = new ArrayList<>();
     private final List<PaintListener> painters = new ArrayList<>();
     private final boolean canToggle;
+    private final boolean canCheck;
 
 
     private Image img = null;
@@ -56,16 +58,20 @@ public class NButton extends Canvas {
         super(parent, style);
 
         canToggle = (style & SWT.TOGGLE) == SWT.TOGGLE;
+        canCheck = (style & SWT.CHECK) == SWT.CHECK;
+
+        if (canCheck) {
+            img = ResourceManager.getImage("icon16_unchecked.png"); //$NON-NLS-1$
+        }
 
         super.addPaintListener(this::paint);
 
         addListener(SWT.MouseDown, event -> {
             pressed = true;
-            if (canToggle) {
-                selected = !selected;
+            if (canToggle || canCheck) {
+                setSelection(!selected);
             }
             redraw();
-            update();
             final SelectionEvent se = new SelectionEvent(event);
             for (SelectionListener sl : selectors) {
                 sl.widgetSelected(se);
@@ -74,17 +80,14 @@ public class NButton extends Canvas {
         addListener(SWT.MouseUp, event -> {
             pressed = false;
             redraw();
-            update();
         });
         addListener(SWT.MouseEnter, event -> {
             hovered = true;
             redraw();
-            update();
         });
         addListener(SWT.MouseExit, event -> {
             hovered = false;
             redraw();
-            update();
         });
     }
 
@@ -114,6 +117,8 @@ public class NButton extends Canvas {
     }
 
     public void setImage(Image image) {
+        checkWidget();
+        if (canCheck) return;
         img = image;
     }
 
@@ -205,6 +210,13 @@ public class NButton extends Canvas {
     public void setSelection(boolean selected) {
         checkWidget();
         this.selected = selected;
+        if (canCheck) {
+            if (selected) {
+                img = ResourceManager.getImage("icon16_checked.png"); //$NON-NLS-1$
+            } else {
+                img = ResourceManager.getImage("icon16_unchecked.png"); //$NON-NLS-1$
+            }
+        }
         redraw();
     }
 
