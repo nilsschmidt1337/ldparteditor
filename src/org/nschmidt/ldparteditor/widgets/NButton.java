@@ -82,10 +82,12 @@ public class NButton extends Canvas {
             redraw();
         });
         addListener(SWT.MouseEnter, event -> {
+            pressed = false;
             hovered = true;
             redraw();
         });
         addListener(SWT.MouseExit, event -> {
+            pressed = false;
             hovered = false;
             redraw();
         });
@@ -142,7 +144,7 @@ public class NButton extends Canvas {
         gc.setFont(Font.SYSTEM);
         // setFont before using textExtent, so that the size of the text
         // can be calculated correctly
-        final Point textExtent = gc.textExtent(getText());
+        final Point textExtent = getText().isEmpty() ? new Point(0,0) : gc.textExtent(getText());
 
         // TODO 1. Calculate sizes
 
@@ -159,7 +161,9 @@ public class NButton extends Canvas {
             gc.setForeground(SWTResourceManager.getColor(30, 30, 30));
         }
 
-        gc.drawRoundRectangle(0, 0, img_width + 9, img_height + 9, 5, 5);
+        if (!canCheck) {
+            gc.drawRoundRectangle(0, 0, img_width + 9 + textExtent.x, Math.max(textExtent.y, img_height) + 9, 5, 5);
+        }
 
         if (hasImage) {
 
@@ -168,7 +172,7 @@ public class NButton extends Canvas {
 
         gc.setForeground(getForeground());
 
-        gc.drawString(getText(), 0, 0, true);
+        gc.drawString(getText(), img_width + 5, 5, true);
 
 
         // 3. Paint custom forms
@@ -184,16 +188,18 @@ public class NButton extends Canvas {
         gc.setFont(Font.SYSTEM);
         // setFont before using textExtent, so that the size of the text
         // can be calculated correctly
-        final Point textExtent = gc.textExtent(getText());
+        final Point textExtent = getText().isEmpty() ? new Point(0,0) : gc.textExtent(getText());
         gc.dispose();
 
         if (img != null) {
             ImageData data = img.getImageData();
 
             // Just return the size of the image
-            return new Point(data.width + 10, data.height + 10);
+            return new Point(data.width + textExtent.x + 10, Math.max(data.height, textExtent.y) + 10);
+        } else if (!getText().isEmpty()) {
+            return new Point(10 + textExtent.x, 10 + textExtent.y);
         } else {
-            return new Point(25, 25);
+            return new Point(25 + textExtent.x, 25 + textExtent.y);
         }
     }
 
