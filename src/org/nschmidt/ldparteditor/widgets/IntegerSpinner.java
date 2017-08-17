@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.resources.ResourceManager;
 
 /**
  * @author nils
@@ -93,8 +94,9 @@ public class IntegerSpinner extends Composite {
         gd3.grabExcessVerticalSpace = true;
         gd3.verticalAlignment = SWT.FILL;
 
-        Button dwn = new Button(this, SWT.ARROW | SWT.LEFT);
+        Button dwn = new Button(this, SWT.NONE);
         this.btn_Down[0] = dwn;
+        dwn.setImage(ResourceManager.getImage("icon16_previous.png")); //$NON-NLS-1$
         dwn.addMouseListener(new MouseListener() {
             @Override
             public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
@@ -137,20 +139,20 @@ public class IntegerSpinner extends Composite {
                 txt_val[0].selectAll();
                 selectAll = false;
                 CompletableFuture.runAsync( () -> {
-                        focus = true;
-                        while (focus) {
+                    focus = true;
+                    while (focus) {
+                        try {
+                            Thread.sleep(100);
+                        } catch (InterruptedException ie) {}
+                        Display.getDefault().asyncExec(() -> {
                             try {
-                                Thread.sleep(100);
-                            } catch (InterruptedException ie) {}
-                            Display.getDefault().asyncExec(() -> {
-                                try {
-                                    focus = txt_val[0].isFocusControl();
-                                } catch (SWTException swte) {
-                                    NLogger.debug(getClass(), swte);
-                                }
-                            });
-                        }
-                        selectAll = true;
+                                focus = txt_val[0].isFocusControl();
+                            } catch (SWTException swte) {
+                                NLogger.debug(getClass(), swte);
+                            }
+                        });
+                    }
+                    selectAll = true;
                 });
             }
         });
@@ -225,8 +227,9 @@ public class IntegerSpinner extends Composite {
             }
         });
 
-        Button up = new Button(this, SWT.ARROW | SWT.RIGHT);
+        Button up = new Button(this, SWT.NONE);
         this.btn_Up[0] = up;
+        up.setImage(ResourceManager.getImage("icon16_next.png")); //$NON-NLS-1$
         up.addMouseListener(new MouseListener() {
             @Override
             public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
