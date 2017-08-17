@@ -30,7 +30,6 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -88,7 +87,7 @@ public class BigDecimalSpinner extends Composite {
 
     private void createContents(final Composite parent) {
 
-        GridLayout gl = new GridLayout(4, false);
+        GridLayout gl = new GridLayout(5, false);
 
         gl.marginBottom = 0;
         gl.marginHeight = 0;
@@ -287,6 +286,9 @@ public class BigDecimalSpinner extends Composite {
         lbl_warn[0] = warn;
         warn.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
         warn.setToolTipText("You can input more digits than displayed."); //$NON-NLS-1$ I18N Needs translation!
+
+        Label placeholder = new Label(this, SWT.NONE);
+        placeholder.setText("  "); //$NON-NLS-1$
 
         this.layout();
         this.pack();

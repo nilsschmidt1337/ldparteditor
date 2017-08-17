@@ -29,9 +29,9 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
@@ -69,7 +69,7 @@ public class IntegerSpinner extends Composite {
     public IntegerSpinner(final Composite parent, int style) {
         super(parent, style);
         me = this;
-        GridLayout gl = new GridLayout(3, false);
+        GridLayout gl = new GridLayout(4, false);
 
         gl.marginBottom = 0;
         gl.marginHeight = 0;
@@ -244,6 +244,9 @@ public class IntegerSpinner extends Composite {
             public void mouseDoubleClick(org.eclipse.swt.events.MouseEvent e) {
             }
         });
+
+        Label placeholder = new Label(this, SWT.NONE);
+        placeholder.setText("  "); //$NON-NLS-1$
 
         this.layout();
         this.pack();
