@@ -47,9 +47,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -1255,9 +1253,9 @@ public class EditorTextWindow extends EditorTextDesign {
                 EditorTextWindow.dragFolderOrigin = tabFolder[0];
             }
         });
-        tabFolder[0].addListener(SWT.Selection, new Listener() {
+        tabFolder[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 ((CompositeTab) tabFolder[0].getSelection()).getTextComposite().forceFocus();
             }
         });

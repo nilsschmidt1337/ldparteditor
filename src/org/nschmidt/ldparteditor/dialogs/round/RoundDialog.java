@@ -16,6 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.round;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -36,7 +38,7 @@ public class RoundDialog extends RoundDesign {
     private boolean onX = WorkbenchManager.getUserSettingState().isRoundX();
     private boolean onY = WorkbenchManager.getUserSettingState().isRoundY();
     private boolean onZ = WorkbenchManager.getUserSettingState().isRoundZ();
-    
+
     /**
      * Create the dialog.
      *
@@ -50,22 +52,22 @@ public class RoundDialog extends RoundDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        
-        cb_Xaxis[0].addListener(SWT.Selection, new Listener() {
+
+        cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 onX = cb_Xaxis[0].getSelection();
             }
         });
-        cb_Yaxis[0].addListener(SWT.Selection, new Listener() {
+        cb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 onY = cb_Yaxis[0].getSelection();
             }
         });
-        cb_Zaxis[0].addListener(SWT.Selection, new Listener() {
+        cb_Zaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 onZ = cb_Zaxis[0].getSelection();
             }
         });

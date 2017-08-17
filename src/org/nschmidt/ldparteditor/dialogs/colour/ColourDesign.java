@@ -96,7 +96,7 @@ class ColourDesign extends Dialog {
             NButton btn_randomColour = new NButton(cmp_container, SWT.NONE);
             btn_randomColours[0] = btn_randomColour;
             btn_randomColour.setText(I18n.COLOURDIALOG_RandomColours);
-            btn_randomColour.setImage(ResourceManager.getImage("icon8_randomColours.png")); //$NON-NLS-1$
+            btn_randomColour.setImage(ResourceManager.getImage("icon16_randomColours.png")); //$NON-NLS-1$
         }
 
         {
@@ -122,7 +122,7 @@ class ColourDesign extends Dialog {
         final int btnSize = (int) (lbl_stdColour.computeSize(SWT.DEFAULT, SWT.DEFAULT).y * 1.5f);
 
         for (Integer index : ldConfIndices) {
-            final NButton btn_stdColour = new NButton(cmpStdColours, SWT.FLAT);
+            final NButton btn_stdColour = new NButton(cmpStdColours, SWT.BORDER);
             btn_stdColour.setBounds(0, 0, btnSize, btnSize);
             GridData gd = new GridData();
             gd.grabExcessHorizontalSpace = true;
