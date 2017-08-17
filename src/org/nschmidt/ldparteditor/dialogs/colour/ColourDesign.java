@@ -28,7 +28,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -58,9 +57,9 @@ class ColourDesign extends Dialog {
     final boolean randomColours;
 
     // Use final only for subclass/listener references!
-    final Button[] btn_colourChoose = new Button[1];
-    final Button[] btn_colourTable = new Button[1];
-    final Button[] btn_randomColours = new Button[1];
+    final NButton[] btn_colourChoose = new NButton[1];
+    final NButton[] btn_colourTable = new NButton[1];
+    final NButton[] btn_randomColours = new NButton[1];
 
     ColourDesign(Shell parentShell, GColour[] refCol, final boolean randomColours) {
         super(parentShell);
@@ -89,12 +88,12 @@ class ColourDesign extends Dialog {
             lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
-        Button btn_pickDirectColour = new Button(cmp_container, SWT.NONE);
+        NButton btn_pickDirectColour = new NButton(cmp_container, SWT.NONE);
         btn_colourChoose[0] = btn_pickDirectColour;
         btn_pickDirectColour.setText(I18n.COLOURDIALOG_DirectColour);
 
         if (randomColours) {
-            Button btn_randomColour = new Button(cmp_container, SWT.NONE);
+            NButton btn_randomColour = new NButton(cmp_container, SWT.NONE);
             btn_randomColours[0] = btn_randomColour;
             btn_randomColour.setText(I18n.COLOURDIALOG_RandomColours);
             btn_randomColour.setImage(ResourceManager.getImage("icon8_randomColours.png")); //$NON-NLS-1$
@@ -108,7 +107,7 @@ class ColourDesign extends Dialog {
         Label lbl_stdColour = new Label(cmp_container, SWT.NONE);
         lbl_stdColour.setText(I18n.COLOURDIALOG_StandardColours);
 
-        Button btn_showTable = new Button(cmp_container, SWT.NONE);
+        NButton btn_showTable = new NButton(cmp_container, SWT.NONE);
         btn_colourTable[0] = btn_showTable;
         btn_showTable.setText(I18n.COLOURDIALOG_ShowColourTable);
 

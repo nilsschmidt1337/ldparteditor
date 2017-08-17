@@ -23,7 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -48,12 +48,12 @@ class DirectionDesign extends Dialog {
 
     static ManipulatorScope transformationMode = ManipulatorScope.GLOBAL;
 
-    final Button[] btn_Local = new Button[1];
-    final Button[] btn_Global = new Button[1];
+    final NButton[] btn_Local = new NButton[1];
+    final NButton[] btn_Global = new NButton[1];
 
-    final Button[] btn_mX = new Button[1];
-    final Button[] btn_mY = new Button[1];
-    final Button[] btn_mZ = new Button[1];
+    final NButton[] btn_mX = new NButton[1];
+    final NButton[] btn_mY = new NButton[1];
+    final NButton[] btn_mZ = new NButton[1];
 
 
     final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
@@ -96,7 +96,7 @@ class DirectionDesign extends Dialog {
 
         ToolItem toolItem_TransformationModes = new ToolItem(cmp_container, SWT.NONE, true);
         {
-            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Local[0] = btn_Local;
             btn_Local.setToolTipText(I18n.E3D_Local);
             if (transformationMode == ManipulatorScope.LOCAL) {
@@ -105,7 +105,7 @@ class DirectionDesign extends Dialog {
             btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Global[0] = btn_Global;
             btn_Global.setToolTipText(I18n.E3D_Global);
             if (transformationMode == ManipulatorScope.GLOBAL) {
@@ -220,7 +220,7 @@ class DirectionDesign extends Dialog {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(1, true));
-            Button btn_Clipboard = new Button(cmp_txt, SWT.NONE);
+            NButton btn_Clipboard = new NButton(cmp_txt, SWT.NONE);
             this.btn_mX[0] = btn_Clipboard;
             btn_Clipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_Clipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
@@ -231,7 +231,7 @@ class DirectionDesign extends Dialog {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(1, true));
-            Button btn_Clipboard = new Button(cmp_txt, SWT.NONE);
+            NButton btn_Clipboard = new NButton(cmp_txt, SWT.NONE);
             this.btn_mY[0] = btn_Clipboard;
             btn_Clipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_Clipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
@@ -242,7 +242,7 @@ class DirectionDesign extends Dialog {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(1, true));
-            Button btn_Clipboard = new Button(cmp_txt, SWT.NONE);
+            NButton btn_Clipboard = new NButton(cmp_txt, SWT.NONE);
             this.btn_mZ[0] = btn_Clipboard;
             btn_Clipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_Clipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$

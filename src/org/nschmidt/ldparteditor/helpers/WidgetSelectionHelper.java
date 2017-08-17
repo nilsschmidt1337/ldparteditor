@@ -15,11 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers;
 
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.nschmidt.ldparteditor.composites.ToolItem;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * Provides useful methods for the selection of widgets
@@ -40,7 +40,7 @@ public enum WidgetSelectionHelper {
         Control[] childs = toolItem.getChildren();
         int number_Of_Childs = childs.length;
         for (int i = 1; i < number_Of_Childs; i++) {
-            Button b = (Button) childs[i];
+            NButton b = (NButton) childs[i];
             b.setSelection(false);
         }
     }

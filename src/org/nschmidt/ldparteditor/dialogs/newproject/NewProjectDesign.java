@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -43,7 +44,7 @@ class NewProjectDesign extends Dialog {
 
     Text[] txt_projectPath = new Text[1];
     Text[] txt_projectName = new Text[1];
-    Button[] btn_browseProjectPath = new Button[1];
+    NButton[] btn_browseProjectPath = new NButton[1];
     Button[] btn_ok = new Button[1];
     boolean saveAs = false;
 
@@ -91,7 +92,7 @@ class NewProjectDesign extends Dialog {
             txt_ldrawPath.setText(new File(Project.getProjectPath()).getParent().substring(authorFolder.length()));
         }
 
-        Button btn_BrowseLdrawPath = new Button(cmp_pathChooser1, SWT.NONE);
+        NButton btn_BrowseLdrawPath = new NButton(cmp_pathChooser1, SWT.NONE);
         this.btn_browseProjectPath[0] = btn_BrowseLdrawPath;
         btn_BrowseLdrawPath.setText(I18n.DIALOG_Browse);
 

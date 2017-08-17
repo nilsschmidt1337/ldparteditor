@@ -46,7 +46,6 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -121,52 +120,52 @@ class Editor3DDesign extends ApplicationWindow {
     final Menu[] mnu_fineMenu = new Menu[1];
 
     final CTabFolder[] tabFolder_OpenDatFiles = new CTabFolder[1];
-    final Button[] btn_SyncTabs = new Button[1];
+    final NButton[] btn_SyncTabs = new NButton[1];
 
     private Composite cmpNorth;
     private Composite cmpEast;
     private Composite cmpWest;
     private static Composite status;
     private static final int iconSize = WorkbenchManager.getUserSettingState().getIconSize();
-    final Button[] btn_Sync = new Button[1];
-    final Button[] btn_LastOpen = new Button[1];
-    final Button[] btn_New = new Button[1];
-    final Button[] btn_Open = new Button[1];
-    final Button[] btn_Save = new Button[1];
-    final Button[] btn_SaveAll = new Button[1];
-    final Button[] btn_Select = new Button[1];
-    final Button[] btn_Move = new Button[1];
-    final Button[] btn_Rotate = new Button[1];
-    final Button[] btn_Scale = new Button[1];
-    final Button[] btn_Combined = new Button[1];
+    final NButton[] btn_Sync = new NButton[1];
+    final NButton[] btn_LastOpen = new NButton[1];
+    final NButton[] btn_New = new NButton[1];
+    final NButton[] btn_Open = new NButton[1];
+    final NButton[] btn_Save = new NButton[1];
+    final NButton[] btn_SaveAll = new NButton[1];
+    final NButton[] btn_Select = new NButton[1];
+    final NButton[] btn_Move = new NButton[1];
+    final NButton[] btn_Rotate = new NButton[1];
+    final NButton[] btn_Scale = new NButton[1];
+    final NButton[] btn_Combined = new NButton[1];
 
-    final Button[] btn_Local = new Button[1];
-    final Button[] btn_Global = new Button[1];
+    final NButton[] btn_Local = new NButton[1];
+    final NButton[] btn_Global = new NButton[1];
 
-    final Button[] btn_Undo = new Button[1];
-    final Button[] btn_AddHistory = new Button[1];
-    final Button[] btn_Redo = new Button[1];
+    final NButton[] btn_Undo = new NButton[1];
+    final NButton[] btn_AddHistory = new NButton[1];
+    final NButton[] btn_Redo = new NButton[1];
 
-    final Button[] btn_Manipulator_0_toOrigin = new Button[1];
-    final Button[] btn_Manipulator_X_XReverse = new Button[1];
-    final Button[] btn_Manipulator_XI_YReverse = new Button[1];
-    final Button[] btn_Manipulator_XII_ZReverse = new Button[1];
-    final Button[] btn_Manipulator_XIII_toWorld = new Button[1];
-    final Button[] btn_Manipulator_1_cameraToPos = new Button[1];
-    final Button[] btn_Manipulator_2_toAverage = new Button[1];
-    final Button[] btn_Manipulator_3_toSubfile = new Button[1];
-    final Button[] btn_Manipulator_32_subfileTo = new Button[1];
-    final Button[] btn_Manipulator_4_toVertex = new Button[1];
-    final Button[] btn_Manipulator_5_toEdge = new Button[1];
-    final Button[] btn_Manipulator_6_toSurface = new Button[1];
-    final Button[] btn_Manipulator_7_toVertexNormal = new Button[1];
-    final Button[] btn_Manipulator_8_toEdgeNormal = new Button[1];
-    final Button[] btn_Manipulator_9_toSurfaceNormal = new Button[1];
-    final Button[] btn_Manipulator_XIV_adjustRotationCenter = new Button[1];
-    final Button[] btn_Manipulator_XV_toVertexPosition = new Button[1];
-    final Button[] btn_Manipulator_SwitchXY = new Button[1];
-    final Button[] btn_Manipulator_SwitchXZ = new Button[1];
-    final Button[] btn_Manipulator_SwitchYZ = new Button[1];
+    final NButton[] btn_Manipulator_0_toOrigin = new NButton[1];
+    final NButton[] btn_Manipulator_X_XReverse = new NButton[1];
+    final NButton[] btn_Manipulator_XI_YReverse = new NButton[1];
+    final NButton[] btn_Manipulator_XII_ZReverse = new NButton[1];
+    final NButton[] btn_Manipulator_XIII_toWorld = new NButton[1];
+    final NButton[] btn_Manipulator_1_cameraToPos = new NButton[1];
+    final NButton[] btn_Manipulator_2_toAverage = new NButton[1];
+    final NButton[] btn_Manipulator_3_toSubfile = new NButton[1];
+    final NButton[] btn_Manipulator_32_subfileTo = new NButton[1];
+    final NButton[] btn_Manipulator_4_toVertex = new NButton[1];
+    final NButton[] btn_Manipulator_5_toEdge = new NButton[1];
+    final NButton[] btn_Manipulator_6_toSurface = new NButton[1];
+    final NButton[] btn_Manipulator_7_toVertexNormal = new NButton[1];
+    final NButton[] btn_Manipulator_8_toEdgeNormal = new NButton[1];
+    final NButton[] btn_Manipulator_9_toSurfaceNormal = new NButton[1];
+    final NButton[] btn_Manipulator_XIV_adjustRotationCenter = new NButton[1];
+    final NButton[] btn_Manipulator_XV_toVertexPosition = new NButton[1];
+    final NButton[] btn_Manipulator_SwitchXY = new NButton[1];
+    final NButton[] btn_Manipulator_SwitchXZ = new NButton[1];
+    final NButton[] btn_Manipulator_SwitchYZ = new NButton[1];
 
     final MenuItem[] mntm_Manipulator_0_toOrigin = new MenuItem[1];
     final MenuItem[] mntm_Manipulator_X_XReverse = new MenuItem[1];
@@ -191,34 +190,34 @@ class Editor3DDesign extends ApplicationWindow {
 
     final NButton[] btn_LastUsedColour = new NButton[1];
     final NButton[] btn_Pipette = new NButton[1];
-    final Button[] btn_Decolour = new Button[1];
-    final Button[] btn_Palette = new Button[1];
+    final NButton[] btn_Decolour = new NButton[1];
+    final NButton[] btn_Palette = new NButton[1];
 
-    final Button[] btn_MoveAdjacentData = new Button[1];
-    final Button[] btn_CompileSubfile = new Button[1];
-    final Button[] btn_SplitQuad = new Button[1];
-    final Button[] btn_MergeQuad = new Button[1];
-    final Button[] btn_LineIntersection = new Button[1];
-    final Button[] btn_CondlineToLine = new Button[1];
-    final Button[] btn_LineToCondline = new Button[1];
-    final Button[] btn_MoveOnLine = new Button[1];
-    final Button[] btn_RoundSelection = new Button[1];
-    final Button[] btn_ShowSelectionInTextEditor = new Button[1];
-    final Button[] btn_BFCswap = new Button[1];
-    final Button[] btn_Vertices = new Button[1];
-    final Button[] btn_TrisNQuads = new Button[1];
-    final Button[] btn_Lines = new Button[1];
-    final Button[] btn_Subfiles = new Button[1];
-    final Button[] btn_InsertAtCursorPosition = new Button[1];
-    final Button[] btn_AddComment = new Button[1];
-    final Button[] btn_AddVertex = new Button[1];
-    final Button[] btn_AddPrimitive = new Button[1];
-    final Button[] btn_AddLine = new Button[1];
-    final Button[] btn_AddTriangle = new Button[1];
-    final Button[] btn_AddQuad = new Button[1];
-    final Button[] btn_AddCondline = new Button[1];
-    final Button[] btn_AddDistance = new Button[1];
-    final Button[] btn_AddProtractor = new Button[1];
+    final NButton[] btn_MoveAdjacentData = new NButton[1];
+    final NButton[] btn_CompileSubfile = new NButton[1];
+    final NButton[] btn_SplitQuad = new NButton[1];
+    final NButton[] btn_MergeQuad = new NButton[1];
+    final NButton[] btn_LineIntersection = new NButton[1];
+    final NButton[] btn_CondlineToLine = new NButton[1];
+    final NButton[] btn_LineToCondline = new NButton[1];
+    final NButton[] btn_MoveOnLine = new NButton[1];
+    final NButton[] btn_RoundSelection = new NButton[1];
+    final NButton[] btn_ShowSelectionInTextEditor = new NButton[1];
+    final NButton[] btn_BFCswap = new NButton[1];
+    final NButton[] btn_Vertices = new NButton[1];
+    final NButton[] btn_TrisNQuads = new NButton[1];
+    final NButton[] btn_Lines = new NButton[1];
+    final NButton[] btn_Subfiles = new NButton[1];
+    final NButton[] btn_InsertAtCursorPosition = new NButton[1];
+    final NButton[] btn_AddComment = new NButton[1];
+    final NButton[] btn_AddVertex = new NButton[1];
+    final NButton[] btn_AddPrimitive = new NButton[1];
+    final NButton[] btn_AddLine = new NButton[1];
+    final NButton[] btn_AddTriangle = new NButton[1];
+    final NButton[] btn_AddQuad = new NButton[1];
+    final NButton[] btn_AddCondline = new NButton[1];
+    final NButton[] btn_AddDistance = new NButton[1];
+    final NButton[] btn_AddProtractor = new NButton[1];
 
     final MenuItem[] mntm_gridCoarseDefault = new MenuItem[1];
     final MenuItem[] mntm_gridMediumDefault = new MenuItem[1];
@@ -231,14 +230,14 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Close = new MenuItem[1];
     final MenuItem[] mntm_CopyToUnofficial = new MenuItem[1];
 
-    final Button[] btn_OpenIn3DEditor = new Button[1];
-    final Button[] btn_OpenInTextEditor = new Button[1];
-    final Button[] btn_Rename = new Button[1];
-    final Button[] btn_Revert = new Button[1];
-    final Button[] btn_Close = new Button[1];
-    final Button[] btn_CopyToUnofficial = new Button[1];
+    final NButton[] btn_OpenIn3DEditor = new NButton[1];
+    final NButton[] btn_OpenInTextEditor = new NButton[1];
+    final NButton[] btn_Rename = new NButton[1];
+    final NButton[] btn_Revert = new NButton[1];
+    final NButton[] btn_Close = new NButton[1];
+    final NButton[] btn_CopyToUnofficial = new NButton[1];
 
-    final Button[] btn_Select2 = new Button[1];
+    final NButton[] btn_Select2 = new NButton[1];
 
     final MenuItem[] mntm_SelectAll = new MenuItem[1];
     final MenuItem[] mntm_SelectAllWithColours = new MenuItem[1];
@@ -316,32 +315,32 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Scale = new MenuItem[1];
 
     final Text[] txt_Search = new Text[1];
-    final Button[] btn_ResetSearch = new Button[1];
+    final NButton[] btn_ResetSearch = new NButton[1];
     final CTabFolder[] tabFolder_Settings = new CTabFolder[1];
 
-    final Button[] btn_showUpper1 = new Button[1];
-    final Button[] btn_showUpper2 = new Button[1];
-    final Button[] btn_showUpper3 = new Button[1];
-    final Button[] btn_showMiddle = new Button[1];
-    final Button[] btn_showLower = new Button[1];
-    final Button[] btn_sameHeight = new Button[1];
-    final Button[] btn_showLeft = new Button[1];
-    final Button[] btn_showRight = new Button[1];
-    final Button[] btn_sameWidth = new Button[1];
+    final NButton[] btn_showUpper1 = new NButton[1];
+    final NButton[] btn_showUpper2 = new NButton[1];
+    final NButton[] btn_showUpper3 = new NButton[1];
+    final NButton[] btn_showMiddle = new NButton[1];
+    final NButton[] btn_showLower = new NButton[1];
+    final NButton[] btn_sameHeight = new NButton[1];
+    final NButton[] btn_showLeft = new NButton[1];
+    final NButton[] btn_showRight = new NButton[1];
+    final NButton[] btn_sameWidth = new NButton[1];
 
-    final Button[] btn_Hide = new Button[1];
-    final Button[] btn_ShowAll = new Button[1];
-    final Button[] btn_NoTransparentSelection = new Button[1];
-    final Button[] btn_BFCToggle = new Button[1];
+    final NButton[] btn_Hide = new NButton[1];
+    final NButton[] btn_ShowAll = new NButton[1];
+    final NButton[] btn_NoTransparentSelection = new NButton[1];
+    final NButton[] btn_BFCToggle = new NButton[1];
 
-    final Button[] btn_Delete = new Button[1];
-    final Button[] btn_Copy = new Button[1];
-    final Button[] btn_Cut = new Button[1];
-    final Button[] btn_Paste = new Button[1];
+    final NButton[] btn_Delete = new NButton[1];
+    final NButton[] btn_Copy = new NButton[1];
+    final NButton[] btn_Cut = new NButton[1];
+    final NButton[] btn_Paste = new NButton[1];
 
-    final Button[] btn_Coarse = new Button[1];
-    final Button[] btn_Medium = new Button[1];
-    final Button[] btn_Fine = new Button[1];
+    final NButton[] btn_Coarse = new NButton[1];
+    final NButton[] btn_Medium = new NButton[1];
+    final NButton[] btn_Fine = new NButton[1];
 
     final BigDecimalSpinner[] spn_Move = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Rotate = new BigDecimalSpinner[1];
@@ -370,10 +369,10 @@ class Editor3DDesign extends ApplicationWindow {
     final TreeItem[] treeItem_OfficialPrimitives48 = new TreeItem[1];
     final Tree[] treeParts = new Tree[1];
 
-    final Button[] btn_PngPrevious = new Button[1];
-    final Button[] btn_PngFocus = new Button[1];
-    final Button[] btn_PngNext = new Button[1];
-    final Button[] btn_PngImage = new Button[1];
+    final NButton[] btn_PngPrevious = new NButton[1];
+    final NButton[] btn_PngFocus = new NButton[1];
+    final NButton[] btn_PngNext = new NButton[1];
+    final NButton[] btn_PngImage = new NButton[1];
     final Text[] txt_PngPath = new Text[1];
     final BigDecimalSpinner[] spn_PngX = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_PngY = new BigDecimalSpinner[1];
@@ -384,22 +383,22 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spn_PngSX = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_PngSY = new BigDecimalSpinner[1];
 
-    final Button[] btn_ToggleLinesOpenGL = new Button[1];
-    final Button[] btn_lineSize0 = new Button[1];
-    final Button[] btn_lineSize1 = new Button[1];
-    final Button[] btn_lineSize2 = new Button[1];
-    final Button[] btn_lineSize3 = new Button[1];
-    final Button[] btn_lineSize4 = new Button[1];
+    final NButton[] btn_ToggleLinesOpenGL = new NButton[1];
+    final NButton[] btn_lineSize0 = new NButton[1];
+    final NButton[] btn_lineSize1 = new NButton[1];
+    final NButton[] btn_lineSize2 = new NButton[1];
+    final NButton[] btn_lineSize3 = new NButton[1];
+    final NButton[] btn_lineSize4 = new NButton[1];
 
-    final Button[] btn_NewDat = new Button[1];
-    final Button[] btn_OpenDat = new Button[1];
-    final Button[] btn_SaveDat = new Button[1];
-    final Button[] btn_SaveAsDat = new Button[1];
+    final NButton[] btn_NewDat = new NButton[1];
+    final NButton[] btn_OpenDat = new NButton[1];
+    final NButton[] btn_SaveDat = new NButton[1];
+    final NButton[] btn_SaveAsDat = new NButton[1];
 
-    final Button[] btn_PreviousSelection = new Button[1];
-    final Button[] btn_NextSelection = new Button[1];
+    final NButton[] btn_PreviousSelection = new NButton[1];
+    final NButton[] btn_NextSelection = new NButton[1];
     final Text[] txt_Line = new Text[1];
-    final Button[] btn_MoveAdjacentData2 = new Button[1];
+    final NButton[] btn_MoveAdjacentData2 = new NButton[1];
 
     final BigDecimalSpinner[] spn_SelectionAngle = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_SelectionLength = new BigDecimalSpinner[1];
@@ -433,10 +432,10 @@ class Editor3DDesign extends ApplicationWindow {
 
     final CompositePrimitive[] cmp_Primitives = new CompositePrimitive[1];
     final Text[] txt_primitiveSearch = new Text[1];
-    final Button[] btn_resetPrimitiveSearch = new Button[1];
+    final NButton[] btn_resetPrimitiveSearch = new NButton[1];
 
-    final Button[] btn_zoomOutPrimitives = new Button[1];
-    final Button[] btn_zoomInPrimitives = new Button[1];
+    final NButton[] btn_zoomOutPrimitives = new NButton[1];
+    final NButton[] btn_zoomInPrimitives = new NButton[1];
 
     final MenuItem[] mntm_SAllTypes = new MenuItem[1];
     final MenuItem[] mntm_STriangles = new MenuItem[1];
@@ -532,16 +531,16 @@ class Editor3DDesign extends ApplicationWindow {
         if (userSettings.getTextWinArr() != TEXT_3D_SEPARATE) {
             ToolItem toolItem_SashResize = new ToolItem(cmpNorth, Cocoa.getSytle(), true);
             if (userSettings.getTextWinArr() == TEXT_RIGHT_3D_LEFT) {
-                Button btn_showLeft = new Button(toolItem_SashResize, Cocoa.getSytle());
+                NButton btn_showLeft = new NButton(toolItem_SashResize, Cocoa.getSytle());
                 this.btn_showLeft[0] = btn_showLeft;
                 btn_showLeft.setToolTipText(I18n.E3D_SashLeft);
                 btn_showLeft.setImage(ResourceManager.getImage("icon16_leftSash.png")); //$NON-NLS-1$
             } else {
-                Button btn_sameWidth = new Button(toolItem_SashResize, Cocoa.getSytle());
+                NButton btn_sameWidth = new NButton(toolItem_SashResize, Cocoa.getSytle());
                 this.btn_sameWidth[0] = btn_sameWidth;
                 btn_sameWidth.setToolTipText(I18n.E3D_SashSameWidth);
                 btn_sameWidth.setImage(ResourceManager.getImage("icon16_sameWidth.png")); //$NON-NLS-1$
-                Button btn_showRight = new Button(toolItem_SashResize, Cocoa.getSytle());
+                NButton btn_showRight = new NButton(toolItem_SashResize, Cocoa.getSytle());
                 this.btn_showRight[0] = btn_showRight;
                 btn_showRight.setToolTipText(I18n.E3D_SashRight);
                 btn_showRight.setImage(ResourceManager.getImage("icon16_rightSash.png")); //$NON-NLS-1$
@@ -657,7 +656,7 @@ class Editor3DDesign extends ApplicationWindow {
             cmp_main_editor.setLayoutData(BorderLayout.CENTER);
             cmp_main_editor.setLayout(new GridLayout(2, false));
             {
-                Button btn_SyncTabs = new Button(cmp_main_editor, SWT.TOGGLE);
+                NButton btn_SyncTabs = new NButton(cmp_main_editor, SWT.TOGGLE);
                 this.btn_SyncTabs[0] = btn_SyncTabs;
                 btn_SyncTabs.setToolTipText(I18n.E3D_Sync3DEditor);
                 btn_SyncTabs.setImage(ResourceManager.getImage("icon16_sync3D.png")); //$NON-NLS-1$
@@ -760,7 +759,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_snappingArea.getLayout()).marginWidth = 0;
 
                             {
-                                Button btn_showUpper = new Button(cmp_snappingArea, Cocoa.getSytle());
+                                NButton btn_showUpper = new NButton(cmp_snappingArea, Cocoa.getSytle());
                                 this.btn_showUpper1[0] = btn_showUpper;
                                 btn_showUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
                                 btn_showUpper.setToolTipText(I18n.E3D_SashUpper);
@@ -771,18 +770,18 @@ class Editor3DDesign extends ApplicationWindow {
                                 Composite cmp_dummy = new Composite(cmp_snappingArea, Cocoa.getSytle());
                                 cmp_dummy.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-                                Button btnCoarse = new Button(cmp_dummy, SWT.RADIO);
+                                NButton btnCoarse = new NButton(cmp_dummy, SWT.RADIO);
                                 this.btn_Coarse[0] = btnCoarse;
                                 btnCoarse.setImage(ResourceManager.getImage("icon8_coarse.png")); //$NON-NLS-1$
                                 btnCoarse.setToolTipText(I18n.E3D_Coarse);
 
-                                Button btnMedium = new Button(cmp_dummy, SWT.RADIO);
+                                NButton btnMedium = new NButton(cmp_dummy, SWT.RADIO);
                                 this.btn_Medium[0] = btnMedium;
                                 btnMedium.setSelection(true);
                                 btnMedium.setImage(ResourceManager.getImage("icon8_medium.png")); //$NON-NLS-1$
                                 btnMedium.setToolTipText(I18n.E3D_Medium);
 
-                                Button btnFine = new Button(cmp_dummy, SWT.RADIO);
+                                NButton btnFine = new NButton(cmp_dummy, SWT.RADIO);
                                 this.btn_Fine[0] = btnFine;
                                 btnFine.setImage(ResourceManager.getImage("icon8_fine.png")); //$NON-NLS-1$
                                 btnFine.setToolTipText(I18n.E3D_Fine);
@@ -1016,7 +1015,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
 
                             {
-                                Button btn_showUpper = new Button(cmp_bgArea, Cocoa.getSytle());
+                                NButton btn_showUpper = new NButton(cmp_bgArea, Cocoa.getSytle());
                                 this.btn_showUpper2[0] = btn_showUpper;
                                 btn_showUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
                                 btn_showUpper.setToolTipText(I18n.E3D_SashUpper);
@@ -1027,12 +1026,12 @@ class Editor3DDesign extends ApplicationWindow {
                                 Composite cmp_Dummy = new Composite(cmp_bgArea, Cocoa.getSytle());
                                 cmp_Dummy.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-                                Button btn_PreviousSelection = new Button(cmp_Dummy, Cocoa.getSytle());
+                                NButton btn_PreviousSelection = new NButton(cmp_Dummy, Cocoa.getSytle());
                                 this.btn_PreviousSelection[0] = btn_PreviousSelection;
                                 btn_PreviousSelection.setImage(ResourceManager.getImage("icon8_previous.png")); //$NON-NLS-1$
                                 btn_PreviousSelection.setToolTipText(I18n.E3D_PreviousItem);
 
-                                Button btn_NextSelection = new Button(cmp_Dummy, Cocoa.getSytle());
+                                NButton btn_NextSelection = new NButton(cmp_Dummy, Cocoa.getSytle());
                                 this.btn_NextSelection[0] = btn_NextSelection;
                                 btn_NextSelection.setImage(ResourceManager.getImage("icon8_next.png")); //$NON-NLS-1$
                                 btn_NextSelection.setToolTipText(I18n.E3D_NextItem);
@@ -1050,7 +1049,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 txt_Line.setEditable(false);
                                 txt_Line.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-                                Button btn_moveAdjacentData2 = new Button(cmp_LineSetup, SWT.TOGGLE);
+                                NButton btn_moveAdjacentData2 = new NButton(cmp_LineSetup, SWT.TOGGLE);
                                 this.btn_MoveAdjacentData2[0] = btn_moveAdjacentData2;
                                 btn_moveAdjacentData2.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
                                 btn_moveAdjacentData2.setText(I18n.E3D_MoveAdjacentData);
@@ -1263,7 +1262,7 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
 
                             {
-                                Button btn_showUpper = new Button(cmp_bgArea, Cocoa.getSytle());
+                                NButton btn_showUpper = new NButton(cmp_bgArea, Cocoa.getSytle());
                                 this.btn_showUpper3[0] = btn_showUpper;
                                 btn_showUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
                                 btn_showUpper.setToolTipText(I18n.E3D_SashUpper);
@@ -1274,17 +1273,17 @@ class Editor3DDesign extends ApplicationWindow {
                                 Composite cmp_dummy = new Composite(cmp_bgArea, Cocoa.getSytle());
                                 cmp_dummy.setLayout(new FillLayout(SWT.HORIZONTAL));
 
-                                Button btnPrevious = new Button(cmp_dummy, Cocoa.getSytle());
+                                NButton btnPrevious = new NButton(cmp_dummy, Cocoa.getSytle());
                                 btn_PngPrevious[0] = btnPrevious;
                                 btnPrevious.setImage(ResourceManager.getImage("icon8_previous.png")); //$NON-NLS-1$
                                 btnPrevious.setToolTipText(I18n.E3D_Previous);
 
-                                Button btnFocusBG = new Button(cmp_dummy, Cocoa.getSytle());
+                                NButton btnFocusBG = new NButton(cmp_dummy, Cocoa.getSytle());
                                 btn_PngFocus[0] = btnFocusBG;
                                 btnFocusBG.setImage(ResourceManager.getImage("icon8_focus.png")); //$NON-NLS-1$
                                 btnFocusBG.setToolTipText(I18n.E3D_Focus);
 
-                                Button btnNext = new Button(cmp_dummy, Cocoa.getSytle());
+                                NButton btnNext = new NButton(cmp_dummy, Cocoa.getSytle());
                                 btn_PngNext[0] = btnNext;
                                 btnNext.setImage(ResourceManager.getImage("icon8_next.png")); //$NON-NLS-1$
                                 btnNext.setToolTipText(I18n.E3D_Next);
@@ -1306,7 +1305,7 @@ class Editor3DDesign extends ApplicationWindow {
                                 txt_pngPath.setEditable(false);
                                 txt_pngPath.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
-                                Button btn_BrowsePngPath = new Button(cmp_pathChooser1, Cocoa.getSytle());
+                                NButton btn_BrowsePngPath = new NButton(cmp_pathChooser1, Cocoa.getSytle());
                                 btn_PngImage[0] = btn_BrowsePngPath;
                                 btn_BrowsePngPath.setText(I18n.DIALOG_Browse);
 
@@ -1528,19 +1527,19 @@ class Editor3DDesign extends ApplicationWindow {
                         treeAllParts.setLayoutData(gridData);
                     }
                     {
-                        Button btn_showMiddle = new Button(cmp_Container2, SWT.RIGHT_TO_LEFT | Cocoa.getSytle());
+                        NButton btn_showMiddle = new NButton(cmp_Container2, SWT.RIGHT_TO_LEFT | Cocoa.getSytle());
                         this.btn_showMiddle[0] = btn_showMiddle;
                         btn_showMiddle.setImage(ResourceManager.getImage("icon16_middle.png")); //$NON-NLS-1$
                         btn_showMiddle.setToolTipText(I18n.E3D_SashMiddle);
                     }
                     {
-                        Button btn_sameHeight = new Button(cmp_Container2, SWT.RIGHT_TO_LEFT | Cocoa.getSytle());
+                        NButton btn_sameHeight = new NButton(cmp_Container2, SWT.RIGHT_TO_LEFT | Cocoa.getSytle());
                         this.btn_sameHeight[0] = btn_sameHeight;
                         btn_sameHeight.setImage(ResourceManager.getImage("icon16_sameHeight.png")); //$NON-NLS-1$
                         btn_sameHeight.setToolTipText(I18n.E3D_SashSameHeight);
                     }
                     {
-                        Button btn_OpenIn3DEditor = new Button(cmp_Container2, Cocoa.getSytle());
+                        NButton btn_OpenIn3DEditor = new NButton(cmp_Container2, Cocoa.getSytle());
                         this.btn_OpenIn3DEditor[0] = btn_OpenIn3DEditor;
                         btn_OpenIn3DEditor.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
                         btn_OpenIn3DEditor.setToolTipText(I18n.E3D_OpenIn3DEditor);
@@ -1548,7 +1547,7 @@ class Editor3DDesign extends ApplicationWindow {
                         btn_OpenIn3DEditor.setEnabled(false);
                     }
                     {
-                        Button btn_OpenInTextEditor = new Button(cmp_Container2, Cocoa.getSytle());
+                        NButton btn_OpenInTextEditor = new NButton(cmp_Container2, Cocoa.getSytle());
                         this.btn_OpenInTextEditor[0] = btn_OpenInTextEditor;
                         btn_OpenInTextEditor.setImage(ResourceManager.getImage("icon16_openInText.png")); //$NON-NLS-1$
                         btn_OpenInTextEditor.setToolTipText(I18n.E3D_OpenInTextEditor);
@@ -1556,7 +1555,7 @@ class Editor3DDesign extends ApplicationWindow {
                         btn_OpenInTextEditor.setEnabled(false);
                     }
                     {
-                        Button btn_Rename = new Button(cmp_Container2, Cocoa.getSytle());
+                        NButton btn_Rename = new NButton(cmp_Container2, Cocoa.getSytle());
                         this.btn_Rename[0] = btn_Rename;
                         btn_Rename.setImage(ResourceManager.getImage("icon16_rename.png")); //$NON-NLS-1$
                         btn_Rename.setToolTipText(I18n.E3D_RenameMove);
@@ -1564,7 +1563,7 @@ class Editor3DDesign extends ApplicationWindow {
                         btn_Rename.setEnabled(false);
                     }
                     {
-                        Button btn_Revert = new Button(cmp_Container2, Cocoa.getSytle());
+                        NButton btn_Revert = new NButton(cmp_Container2, Cocoa.getSytle());
                         this.btn_Revert[0] = btn_Revert;
                         btn_Revert.setImage(ResourceManager.getImage("icon16_revert.png")); //$NON-NLS-1$
                         btn_Revert.setToolTipText(I18n.E3D_RevertAllChanges);
@@ -1572,7 +1571,7 @@ class Editor3DDesign extends ApplicationWindow {
                         btn_Revert.setEnabled(false);
                     }
                     {
-                        Button btn_CopyToUnofficial = new Button(cmp_Container2, Cocoa.getSytle());
+                        NButton btn_CopyToUnofficial = new NButton(cmp_Container2, Cocoa.getSytle());
                         this.btn_CopyToUnofficial[0] = btn_CopyToUnofficial;
                         btn_CopyToUnofficial.setImage(ResourceManager.getImage("icon16_copyToUnofficial.png")); //$NON-NLS-1$
                         btn_CopyToUnofficial.setToolTipText(I18n.E3D_CopyToUnofficialLibrary);
@@ -1580,7 +1579,7 @@ class Editor3DDesign extends ApplicationWindow {
                         btn_CopyToUnofficial.setEnabled(false);
                     }
                     {
-                        Button btn_Close = new Button(cmp_Container2, Cocoa.getSytle());
+                        NButton btn_Close = new NButton(cmp_Container2, Cocoa.getSytle());
                         this.btn_Close[0] = btn_Close;
                         btn_Close.setImage(ResourceManager.getImage("icon16_close.png")); //$NON-NLS-1$
                         btn_Close.setToolTipText(I18n.E3D_Close);
@@ -1603,7 +1602,7 @@ class Editor3DDesign extends ApplicationWindow {
                         gridData2.horizontalAlignment = SWT.FILL;
                         gridData2.grabExcessHorizontalSpace = true;
                         txt_Search.setLayoutData(gridData2);
-                        Button btn_ResetSearch = new Button(cmp_Search, Cocoa.getSytle());
+                        NButton btn_ResetSearch = new NButton(cmp_Search, Cocoa.getSytle());
                         this.btn_ResetSearch[0] = btn_ResetSearch;
                         btn_ResetSearch.setText(I18n.E3D_Reset);
                     }
@@ -1656,16 +1655,16 @@ class Editor3DDesign extends ApplicationWindow {
                         gridData2.horizontalAlignment = SWT.FILL;
                         gridData2.grabExcessHorizontalSpace = true;
                         txt_Search.setLayoutData(gridData2);
-                        Button btn_ResetSearch = new Button(cmp_Search, Cocoa.getSytle());
+                        NButton btn_ResetSearch = new NButton(cmp_Search, Cocoa.getSytle());
                         this.btn_resetPrimitiveSearch[0] = btn_ResetSearch;
                         btn_ResetSearch.setText(I18n.E3D_Reset);
-                        Button btn_ZoomOutPrimitives = new Button(cmp_Search, Cocoa.getSytle());
+                        NButton btn_ZoomOutPrimitives = new NButton(cmp_Search, Cocoa.getSytle());
                         this.btn_zoomOutPrimitives[0] = btn_ZoomOutPrimitives;
                         btn_ZoomOutPrimitives.setText("-"); //$NON-NLS-1$
-                        Button btn_ZoomInPrimitives = new Button(cmp_Search, Cocoa.getSytle());
+                        NButton btn_ZoomInPrimitives = new NButton(cmp_Search, Cocoa.getSytle());
                         this.btn_zoomInPrimitives[0] = btn_ZoomInPrimitives;
                         btn_ZoomInPrimitives.setText("+"); //$NON-NLS-1$
-                        Button btn_showLower = new Button(cmp_Search, SWT.RIGHT_TO_LEFT | Cocoa.getSytle());
+                        NButton btn_showLower = new NButton(cmp_Search, SWT.RIGHT_TO_LEFT | Cocoa.getSytle());
                         this.btn_showLower[0] = btn_showLower;
                         btn_showLower.setImage(ResourceManager.getImage("icon16_lower.png")); //$NON-NLS-1$
                         btn_showLower.setToolTipText(I18n.E3D_SashLower);
@@ -1832,38 +1831,38 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_LineThickness = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_lineSize0 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_lineSize0 = new NButton(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_lineSize0[0] = btn_lineSize0;
             btn_lineSize0.setToolTipText(I18n.E3D_LineSize0);
             btn_lineSize0.setImage(ResourceManager.getImage("icon16_linesize0.png")); //$NON-NLS-1$
         }
         {
-            Button btn_lineSize1 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_lineSize1 = new NButton(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_lineSize1[0] = btn_lineSize1;
             btn_lineSize1.setToolTipText(I18n.E3D_LineSize1);
             btn_lineSize1.setImage(ResourceManager.getImage("icon16_linesize1.png")); //$NON-NLS-1$
         }
         {
-            Button btn_lineSize2 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_lineSize2 = new NButton(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_lineSize2[0] = btn_lineSize2;
             btn_lineSize2.setToolTipText(I18n.E3D_LineSize2);
             btn_lineSize2.setImage(ResourceManager.getImage("icon16_linesize2.png")); //$NON-NLS-1$
         }
         {
-            Button btn_lineSize3 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_lineSize3 = new NButton(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             btn_lineSize3.setSelection(true);
             this.btn_lineSize3[0] = btn_lineSize3;
             btn_lineSize3.setToolTipText(I18n.E3D_LineSize3);
             btn_lineSize3.setImage(ResourceManager.getImage("icon16_linesize3.png")); //$NON-NLS-1$
         }
         {
-            Button btn_lineSize4 = new Button(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_lineSize4 = new NButton(toolItem_LineThickness, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_lineSize4[0] = btn_lineSize4;
             btn_lineSize4.setToolTipText(I18n.E3D_LineSize4);
             btn_lineSize4.setImage(ResourceManager.getImage("icon16_linesize4.png")); //$NON-NLS-1$
         }
         if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
-            Button btn_toggleLinesOpenGL = new Button(target, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_toggleLinesOpenGL = new NButton(target, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_ToggleLinesOpenGL[0] = btn_toggleLinesOpenGL;
             btn_toggleLinesOpenGL.setToolTipText(I18n.E3D_LineOpenGL);
             btn_toggleLinesOpenGL.setImage(ResourceManager.getImage("icon16_gllines.png")); //$NON-NLS-1$
@@ -1897,7 +1896,7 @@ class Editor3DDesign extends ApplicationWindow {
         }
 
         {
-            Button btn_Palette = new Button(toolItem_Colours, Cocoa.getSytle());
+            NButton btn_Palette = new NButton(toolItem_Colours, Cocoa.getSytle());
             this.btn_Palette[0] = btn_Palette;
             btn_Palette.setToolTipText(I18n.E3D_More);
             btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
@@ -1968,7 +1967,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Pipette.setImage(ResourceManager.getImage("icon16_pipette.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Decolour = new Button(toolItem_ColourFunctions, Cocoa.getSytle());
+            NButton btn_Decolour = new NButton(toolItem_ColourFunctions, Cocoa.getSytle());
             this.btn_Decolour[0] = btn_Decolour;
             btn_Decolour.setToolTipText(I18n.E3D_Decolour);
             btn_Decolour.setImage(ResourceManager.getImage("icon16_uncolour.png")); //$NON-NLS-1$
@@ -1992,47 +1991,47 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_Add = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
 
-        Button btn_AddComment = new Button(toolItem_Add, Cocoa.getSytle());
+        NButton btn_AddComment = new NButton(toolItem_Add, Cocoa.getSytle());
         this.btn_AddComment[0] = btn_AddComment;
         KeyStateManager.addTooltipText(btn_AddComment, I18n.E3D_AddComment, Task.ADD_COMMENTS);
         btn_AddComment.setImage(ResourceManager.getImage("icon16_addcomment.png")); //$NON-NLS-1$
 
-        Button btn_AddVertex = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
+        NButton btn_AddVertex = new NButton(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddVertex[0] = btn_AddVertex;
         KeyStateManager.addTooltipText(btn_AddVertex, I18n.E3D_AddVertex, Task.ADD_VERTEX);
         btn_AddVertex.setImage(ResourceManager.getImage("icon16_addvertex.png")); //$NON-NLS-1$
 
-        Button btn_AddPrimitive = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
+        NButton btn_AddPrimitive = new NButton(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddPrimitive[0] = btn_AddPrimitive;
         btn_AddPrimitive.setToolTipText(I18n.E3D_AddSubpart);
         btn_AddPrimitive.setImage(ResourceManager.getImage("icon16_addprimitive.png")); //$NON-NLS-1$
 
-        Button btn_AddLine = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
+        NButton btn_AddLine = new NButton(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddLine[0] = btn_AddLine;
         KeyStateManager.addTooltipText(btn_AddLine, I18n.E3D_AddLine, Task.ADD_LINE);
         btn_AddLine.setImage(ResourceManager.getImage("icon16_addline.png")); //$NON-NLS-1$
 
-        Button btn_AddTriangle = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
+        NButton btn_AddTriangle = new NButton(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddTriangle[0] = btn_AddTriangle;
         KeyStateManager.addTooltipText(btn_AddTriangle, I18n.E3D_AddTriangle, Task.ADD_TRIANGLE);
         btn_AddTriangle.setImage(ResourceManager.getImage("icon16_addtriangle.png")); //$NON-NLS-1$
 
-        Button btn_AddQuad = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
+        NButton btn_AddQuad = new NButton(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddQuad[0] = btn_AddQuad;
         KeyStateManager.addTooltipText(btn_AddQuad, I18n.E3D_AddQuad, Task.ADD_QUAD);
         btn_AddQuad.setImage(ResourceManager.getImage("icon16_addquad.png")); //$NON-NLS-1$
 
-        Button btn_AddCondline = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
+        NButton btn_AddCondline = new NButton(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddCondline[0] = btn_AddCondline;
         KeyStateManager.addTooltipText(btn_AddCondline, I18n.E3D_AddCondline, Task.ADD_CONDLINE);
         btn_AddCondline.setImage(ResourceManager.getImage("icon16_addcondline.png")); //$NON-NLS-1$
 
-        Button btn_AddDistance = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
+        NButton btn_AddDistance = new NButton(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddDistance[0] = btn_AddDistance;
         KeyStateManager.addTooltipText(btn_AddDistance, I18n.E3D_AddDistance, Task.ADD_DISTANCE);
         btn_AddDistance.setImage(ResourceManager.getImage("icon16_adddistance.png")); //$NON-NLS-1$
 
-        Button btn_AddProtractor = new Button(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
+        NButton btn_AddProtractor = new NButton(toolItem_Add, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_AddProtractor[0] = btn_AddProtractor;
         KeyStateManager.addTooltipText(btn_AddProtractor, I18n.E3D_AddProtractor, Task.ADD_PROTRACTOR);
         btn_AddProtractor.setImage(ResourceManager.getImage("icon16_addprotractor.png")); //$NON-NLS-1$
@@ -2055,7 +2054,7 @@ class Editor3DDesign extends ApplicationWindow {
             break;
         }
         ToolItem toolItem_InsertAtCursorPosition = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
-        Button btn_InsertAtCursorPosition = new Button(toolItem_InsertAtCursorPosition, SWT.TOGGLE | Cocoa.getSytle());
+        NButton btn_InsertAtCursorPosition = new NButton(toolItem_InsertAtCursorPosition, SWT.TOGGLE | Cocoa.getSytle());
         this.btn_InsertAtCursorPosition[0] = btn_InsertAtCursorPosition;
         KeyStateManager.addTooltipText(btn_InsertAtCursorPosition, I18n.E3D_InsertAtCursorPosition, Task.INSERT_AT_CURSOR);
         btn_InsertAtCursorPosition.setImage(ResourceManager.getImage("icon16_insertAtCursor.png")); //$NON-NLS-1$
@@ -2078,26 +2077,26 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_Mode = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Vertices = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Vertices = new NButton(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Vertices[0] = btn_Vertices;
             KeyStateManager.addTooltipText(btn_Vertices, I18n.E3D_ModeVertex + I18n.E3D_AltToDeselect, Task.OBJ_VERTEX);
             btn_Vertices.setSelection(true);
             btn_Vertices.setImage(ResourceManager.getImage("icon16_vertices.png")); //$NON-NLS-1$
         }
         {
-            Button btn_TrisNQuads = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_TrisNQuads = new NButton(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_TrisNQuads[0] = btn_TrisNQuads;
             KeyStateManager.addTooltipText(btn_TrisNQuads, I18n.E3D_ModeSurface + I18n.E3D_AltToDeselect, Task.OBJ_FACE);
             btn_TrisNQuads.setImage(ResourceManager.getImage("icon16_trisNquads.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Lines = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Lines = new NButton(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Lines[0] = btn_Lines;
             KeyStateManager.addTooltipText(btn_Lines, I18n.E3D_ModeLine + I18n.E3D_AltToDeselect, Task.OBJ_LINE);
             btn_Lines.setImage(ResourceManager.getImage("icon16_lines.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Subfiles = new Button(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Subfiles = new NButton(toolItem_Mode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Subfiles[0] = btn_Subfiles;
             KeyStateManager.addTooltipText(btn_Subfiles, I18n.E3D_ModeSubpart + I18n.E3D_AltToDeselect, Task.OBJ_PRIMITIVE);
             btn_Subfiles.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
@@ -2121,25 +2120,25 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_CCPD = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Cut = new Button(toolItem_CCPD, Cocoa.getSytle());
+            NButton btn_Cut = new NButton(toolItem_CCPD, Cocoa.getSytle());
             this.btn_Cut[0] = btn_Cut;
             btn_Cut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Cut, I18n.COPYNPASTE_Cut, Task.CUT);
         }
         {
-            Button btn_Copy = new Button(toolItem_CCPD, Cocoa.getSytle());
+            NButton btn_Copy = new NButton(toolItem_CCPD, Cocoa.getSytle());
             this.btn_Copy[0] = btn_Copy;
             btn_Copy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Copy, I18n.COPYNPASTE_Copy, Task.COPY);
         }
         {
-            Button btn_Paste = new Button(toolItem_CCPD, Cocoa.getSytle());
+            NButton btn_Paste = new NButton(toolItem_CCPD, Cocoa.getSytle());
             this.btn_Paste[0] = btn_Paste;
             btn_Paste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Paste, I18n.COPYNPASTE_Paste, Task.PASTE);
         }
         {
-            Button btn_Delete = new Button(toolItem_CCPD, Cocoa.getSytle());
+            NButton btn_Delete = new NButton(toolItem_CCPD, Cocoa.getSytle());
             this.btn_Delete[0] = btn_Delete;
             btn_Delete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Delete, I18n.COPYNPASTE_Delete, Task.DELETE);
@@ -2150,70 +2149,70 @@ class Editor3DDesign extends ApplicationWindow {
     private ToolItem createToolItemMiscClick(String label) {
         ToolItem toolItem_MiscClick = new ToolItem(cmpNorth, Cocoa.getSytle(), true);
         {
-            Button btn_ShowSelectionInTextEditor = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_ShowSelectionInTextEditor = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_ShowSelectionInTextEditor[0] = btn_ShowSelectionInTextEditor;
             btn_ShowSelectionInTextEditor.setToolTipText(I18n.C3D_ShowInText);
             btn_ShowSelectionInTextEditor.setImage(ResourceManager.getImage("icon16_selection2text.png")); //$NON-NLS-1$
         }
         {
-            Button btn_BFCswap = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_BFCswap = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_BFCswap[0] = btn_BFCswap;
             KeyStateManager.addTooltipText(btn_BFCswap, I18n.E3D_SwapWinding, Task.SWAP_WINDING);
             btn_BFCswap.setImage(ResourceManager.getImage("icon16_bfcSwap.png")); //$NON-NLS-1$
         }
         {
-            Button btn_CompileSubfile = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_CompileSubfile = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_CompileSubfile[0] = btn_CompileSubfile;
             btn_CompileSubfile.setToolTipText(I18n.E3D_CompileSubfileData);
             btn_CompileSubfile.setImage(ResourceManager.getImage("icon16_subcompile.png")); //$NON-NLS-1$
         }
         {
-            Button btn_SplitQuad = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_SplitQuad = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_SplitQuad[0] = btn_SplitQuad;
             btn_SplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
             btn_SplitQuad.setToolTipText(I18n.E3D_SplitQuad);
         }
         {
-            Button btn_MergeQuad = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_MergeQuad = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_MergeQuad[0] = btn_MergeQuad;
             btn_MergeQuad.setImage(ResourceManager.getImage("icon16_triToquad.png")); //$NON-NLS-1$
             btn_MergeQuad.setToolTipText(I18n.EDITORTEXT_MergeQuad);
         }
         {
-            Button btn_LineIntersection = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_LineIntersection = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_LineIntersection[0] = btn_LineIntersection;
             btn_LineIntersection.setImage(ResourceManager.getImage("icon16_lineintersect.png")); //$NON-NLS-1$
             btn_LineIntersection.setToolTipText(I18n.E3D_LineIntersection);
         }
         {
-            Button btn_CondlineToLine = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_CondlineToLine = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_CondlineToLine[0] = btn_CondlineToLine;
             // FIXME Needs icon!
             btn_CondlineToLine.setText("C2L"); //$NON-NLS-1$
             btn_CondlineToLine.setToolTipText(I18n.E3D_CondlineToLine);
         }
         {
-            Button btn_LineToCondline = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_LineToCondline = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_LineToCondline[0] = btn_LineToCondline;
             // FIXME Needs icon!
             btn_LineToCondline.setText("L2C"); //$NON-NLS-1$
             btn_LineToCondline.setToolTipText(I18n.E3D_LineToCondline);
         }
         {
-            Button btn_MoveOnLine = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_MoveOnLine = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_MoveOnLine[0] = btn_MoveOnLine;
             // FIXME Needs icon!
             btn_MoveOnLine.setText("ML"); //$NON-NLS-1$
             btn_MoveOnLine.setToolTipText(I18n.E3D_MoveOnLine);
         }
         {
-            Button btn_RoundSelection = new Button(toolItem_MiscClick, Cocoa.getSytle());
+            NButton btn_RoundSelection = new NButton(toolItem_MiscClick, Cocoa.getSytle());
             this.btn_RoundSelection[0] = btn_RoundSelection;
             btn_RoundSelection.setToolTipText(I18n.E3D_Round + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
             btn_RoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
         }
         {
-            final Button btn_Select = new Button(toolItem_MiscClick, SWT.PUSH | Cocoa.getSytle());
+            final NButton btn_Select = new NButton(toolItem_MiscClick, SWT.PUSH | Cocoa.getSytle());
             this.btn_Select2[0] = btn_Select;
             btn_Select.setToolTipText(I18n.E3D_AdvancedSelect);
             btn_Select.setText(I18n.E3D_AdvancedSelect);
@@ -2395,7 +2394,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            final Button btn_MergeNSplit = new Button(toolItem_MiscClick, SWT.PUSH | Cocoa.getSytle());
+            final NButton btn_MergeNSplit = new NButton(toolItem_MiscClick, SWT.PUSH | Cocoa.getSytle());
             btn_MergeNSplit.setToolTipText(I18n.E3D_MergeSplit);
             btn_MergeNSplit.setText(I18n.E3D_MergeSplit);
             this.mnu_Merge = new Menu(this.getShell(), SWT.POP_UP);
@@ -2508,7 +2507,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         {
-            final Button btn_ToolsActions = new Button(toolItem_MiscClick, SWT.PUSH | Cocoa.getSytle());
+            final NButton btn_ToolsActions = new NButton(toolItem_MiscClick, SWT.PUSH | Cocoa.getSytle());
             btn_ToolsActions.setText(I18n.E3D_Tools);
             btn_ToolsActions.setToolTipText(I18n.E3D_ToolsOptions);
             this.mnu_Tools = new Menu(this.getShell(), SWT.POP_UP);
@@ -2772,7 +2771,7 @@ class Editor3DDesign extends ApplicationWindow {
             if (toolItem == null) {
                 toolItem = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);;
             }
-            final Button btn_ManipulatorActions = new Button(toolItem, SWT.ARROW | SWT.DOWN);
+            final NButton btn_ManipulatorActions = new NButton(toolItem, SWT.ARROW | SWT.DOWN);
             btn_ManipulatorActions.setToolTipText(I18n.E3D_ModifyManipulator);
             this.mnu_Manipulator = new Menu(this.getShell(), SWT.POP_UP);
             btn_ManipulatorActions.addSelectionListener(new SelectionAdapter() {
@@ -2925,67 +2924,67 @@ class Editor3DDesign extends ApplicationWindow {
         } else {
             ToolItem toolItem_ManipulatorActions = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_0_toOrigin[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToOrigin);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_XIII_toWorld[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToWorld);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_XIV_adjustRotationCenter[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_AdjustRotationCenter);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_X_XReverse[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ReverseX);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_XI_YReverse[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ReverseY);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_XII_ZReverse[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ReverseZ);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_SwitchXY[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_SwapXY);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_SwitchXZ[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_SwapXZ);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_SwitchYZ[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_SwapYZ);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_1_cameraToPos[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_CamToManipulator);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_2_toAverage[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToAvg);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
@@ -2993,55 +2992,55 @@ class Editor3DDesign extends ApplicationWindow {
 
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_3_toSubfile[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToSubfile);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_32_subfileTo[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_SubfileToManipulator);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile2.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_4_toVertex[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToVertex);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_5_toEdge[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToEdge);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_6_toSurface[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToFace);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_7_toVertexNormal[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToVertexN);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_XV_toVertexPosition[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToVertexP);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_8_toEdgeNormal[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToEdgeN);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
             }
             {
-                Button btn_Mani = new Button(toolItem_ManipulatorActions, Cocoa.getSytle());
+                NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getSytle());
                 this.btn_Manipulator_9_toSurfaceNormal[0] = btn_Mani;
                 btn_Mani.setToolTipText(I18n.E3D_ManipulatorToFaceN);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
@@ -3067,14 +3066,14 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_TransformationModes = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Local[0] = btn_Local;
             btn_Local.setToolTipText(I18n.E3D_Local);
             btn_Local.setSelection(true);
             btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Global[0] = btn_Global;
             btn_Global.setToolTipText(I18n.E3D_Global);
             btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
@@ -3098,32 +3097,32 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_TransformationMode = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Select = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Select = new NButton(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Select[0] = btn_Select;
             KeyStateManager.addTooltipText(btn_Select, I18n.E3D_Select, Task.MODE_SELECT);
             btn_Select.setSelection(true);
             btn_Select.setImage(ResourceManager.getImage("icon16_select.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Move = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Move = new NButton(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Move[0] = btn_Move;
             KeyStateManager.addTooltipText(btn_Move, I18n.E3D_Move, Task.MODE_MOVE);
             btn_Move.setImage(ResourceManager.getImage("icon16_move.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Rotate = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Rotate = new NButton(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Rotate[0] = btn_Rotate;
             KeyStateManager.addTooltipText(btn_Rotate, I18n.E3D_Rotate, Task.MODE_ROTATE);
             btn_Rotate.setImage(ResourceManager.getImage("icon16_rotate.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Scale = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Scale = new NButton(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Scale[0] = btn_Scale;
             KeyStateManager.addTooltipText(btn_Scale, I18n.E3D_Scale, Task.MODE_SCALE);
             btn_Scale.setImage(ResourceManager.getImage("icon16_scale.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Combined = new Button(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_Combined = new NButton(toolItem_TransformationMode, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_Combined[0] = btn_Combined;
             KeyStateManager.addTooltipText(btn_Combined, I18n.E3D_Combined, Task.MODE_COMBINED);
             btn_Combined.setImage(ResourceManager.getImage("icon16_combined.png")); //$NON-NLS-1$
@@ -3147,19 +3146,19 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_UndoRedo = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Undo = new Button(toolItem_UndoRedo, Cocoa.getSytle());
+            NButton btn_Undo = new NButton(toolItem_UndoRedo, Cocoa.getSytle());
             this.btn_Undo[0] = btn_Undo;
             btn_Undo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Undo, I18n.E3D_Undo, Task.UNDO);
         }
         if (NLogger.DEBUG) {
-            Button btn_Snapshot = new Button(toolItem_UndoRedo, Cocoa.getSytle());
+            NButton btn_Snapshot = new NButton(toolItem_UndoRedo, Cocoa.getSytle());
             this.btn_AddHistory[0] = btn_Snapshot;
             btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
             btn_Snapshot.setToolTipText(I18n.E3D_Snapshot);
         }
         {
-            Button btn_Redo = new Button(toolItem_UndoRedo, Cocoa.getSytle());
+            NButton btn_Redo = new NButton(toolItem_UndoRedo, Cocoa.getSytle());
             this.btn_Redo[0] = btn_Redo;
             btn_Redo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btn_Redo, I18n.E3D_Redo, Task.REDO);
@@ -3183,20 +3182,20 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_MiscToggle = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_AdjacentMove = new Button(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_AdjacentMove = new NButton(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_MoveAdjacentData[0] = btn_AdjacentMove;
             KeyStateManager.addTooltipText(btn_AdjacentMove, I18n.E3D_MoveAdjacentData, Task.MOVE_ADJACENT_DATA);
             btn_AdjacentMove.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
             btn_AdjacentMove.setSelection(false);
         }
         {
-            Button btn_TransSelection = new Button(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_TransSelection = new NButton(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_NoTransparentSelection[0] = btn_TransSelection;
             btn_TransSelection.setToolTipText(I18n.E3D_ToggleTransparent);
             btn_TransSelection.setImage(ResourceManager.getImage("icon16_notrans.png")); //$NON-NLS-1$
         }
         {
-            Button btn_BFCToggle = new Button(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
+            NButton btn_BFCToggle = new NButton(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
             this.btn_BFCToggle[0] = btn_BFCToggle;
             btn_BFCToggle.setToolTipText(I18n.E3D_ToggleBFC);
             btn_BFCToggle.setImage(ResourceManager.getImage("icon16_bfc.png")); //$NON-NLS-1$
@@ -3220,13 +3219,13 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_HideUnhide = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Hide = new Button(toolItem_HideUnhide, Cocoa.getSytle());
+            NButton btn_Hide = new NButton(toolItem_HideUnhide, Cocoa.getSytle());
             this.btn_Hide[0] = btn_Hide;
             btn_Hide.setToolTipText(I18n.E3D_Hide);
             btn_Hide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Unhide = new Button(toolItem_HideUnhide, Cocoa.getSytle());
+            NButton btn_Unhide = new NButton(toolItem_HideUnhide, Cocoa.getSytle());
             this.btn_ShowAll[0] = btn_Unhide;
             btn_Unhide.setToolTipText(I18n.E3D_ShowAll);
             btn_Unhide.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
@@ -3250,31 +3249,31 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_NewOpenDAT = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_NewDat = new Button(toolItem_NewOpenDAT, Cocoa.getSytle());
+            NButton btn_NewDat = new NButton(toolItem_NewOpenDAT, Cocoa.getSytle());
             this.btn_NewDat[0] = btn_NewDat;
             btn_NewDat.setToolTipText(I18n.E3D_NewDat);
             btn_NewDat.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
         }
         {
-            Button btn_OpenDAT = new Button(toolItem_NewOpenDAT, Cocoa.getSytle());
+            NButton btn_OpenDAT = new NButton(toolItem_NewOpenDAT, Cocoa.getSytle());
             this.btn_OpenDat[0] = btn_OpenDAT;
             btn_OpenDAT.setToolTipText(I18n.E3D_OpenDat);
             btn_OpenDAT.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Snapshot = new Button(toolItem_NewOpenDAT, Cocoa.getSytle());
+            NButton btn_Snapshot = new NButton(toolItem_NewOpenDAT, Cocoa.getSytle());
             this.btn_LastOpen[0] = btn_Snapshot;
             btn_Snapshot.setToolTipText(I18n.E3D_LastOpened);
             btn_Snapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
         }
         {
-            Button btn_SaveDAT = new Button(toolItem_NewOpenDAT, Cocoa.getSytle());
+            NButton btn_SaveDAT = new NButton(toolItem_NewOpenDAT, Cocoa.getSytle());
             this.btn_SaveDat[0] = btn_SaveDAT;
             KeyStateManager.addTooltipText(btn_SaveDAT, I18n.E3D_Save, Task.SAVE);
             btn_SaveDAT.setImage(ResourceManager.getImage("icon16_document-savedat.png")); //$NON-NLS-1$
         }
         {
-            Button btn_SaveAsDAT = new Button(toolItem_NewOpenDAT, Cocoa.getSytle());
+            NButton btn_SaveAsDAT = new NButton(toolItem_NewOpenDAT, Cocoa.getSytle());
             this.btn_SaveAsDat[0] = btn_SaveAsDAT;
             btn_SaveAsDAT.setToolTipText(I18n.E3D_SaveAs);
             btn_SaveAsDAT.setImage(ResourceManager.getImage("icon16_document-savedat.png")); //$NON-NLS-1$
@@ -3299,25 +3298,25 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_NewOpenSave = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_New = new Button(toolItem_NewOpenSave, Cocoa.getSytle());
+            NButton btn_New = new NButton(toolItem_NewOpenSave, Cocoa.getSytle());
             this.btn_New[0] = btn_New;
             btn_New.setToolTipText(I18n.E3D_New);
             btn_New.setImage(ResourceManager.getImage("icon16_document-new.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Open = new Button(toolItem_NewOpenSave, Cocoa.getSytle());
+            NButton btn_Open = new NButton(toolItem_NewOpenSave, Cocoa.getSytle());
             this.btn_Open[0] = btn_Open;
             btn_Open.setToolTipText(I18n.E3D_Open);
             btn_Open.setImage(ResourceManager.getImage("icon16_document-open.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Save = new Button(toolItem_NewOpenSave, Cocoa.getSytle());
+            NButton btn_Save = new NButton(toolItem_NewOpenSave, Cocoa.getSytle());
             this.btn_Save[0] = btn_Save;
             KeyStateManager.addTooltipText(btn_Save, I18n.E3D_Save, Task.SAVE);
             btn_Save.setImage(ResourceManager.getImage("icon16_document-save.png")); //$NON-NLS-1$
         }
         {
-            Button btn_SaveAll = new Button(toolItem_NewOpenSave, Cocoa.getSytle());
+            NButton btn_SaveAll = new NButton(toolItem_NewOpenSave, Cocoa.getSytle());
             this.btn_SaveAll[0] = btn_SaveAll;
             btn_SaveAll.setToolTipText(I18n.E3D_SaveAll);
             btn_SaveAll.setImage(ResourceManager.getImage("icon16_document-saveall.png")); //$NON-NLS-1$
@@ -3341,7 +3340,7 @@ class Editor3DDesign extends ApplicationWindow {
         }
         ToolItem toolItem_Sync = new ToolItem(target, Cocoa.getSytle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            Button btn_Sync = new Button(toolItem_Sync, Cocoa.getSytle());
+            NButton btn_Sync = new NButton(toolItem_Sync, Cocoa.getSytle());
             this.btn_Sync[0] = btn_Sync;
             btn_Sync.setToolTipText(I18n.E3D_SyncFolders);
             btn_Sync.setImage(ResourceManager.getImage("icon16_sync.png")); //$NON-NLS-1$

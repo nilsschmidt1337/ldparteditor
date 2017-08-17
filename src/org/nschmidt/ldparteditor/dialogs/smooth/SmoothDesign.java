@@ -23,7 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -45,9 +45,9 @@ import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 class SmoothDesign extends Dialog {
 
 
-    final Button[] cb_Xaxis = new Button[1];
-    final Button[] cb_Yaxis = new Button[1];
-    final Button[] cb_Zaxis = new Button[1];
+    final NButton[] cb_Xaxis = new NButton[1];
+    final NButton[] cb_Yaxis = new NButton[1];
+    final NButton[] cb_Zaxis = new NButton[1];
     final IntegerSpinner[] spn_pX = new IntegerSpinner[1];
     final BigDecimalSpinner[] spn_pY = new BigDecimalSpinner[1];
     
@@ -85,17 +85,17 @@ class SmoothDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(3, true));
 
-            Button cb_Xaxis = new Button(cmp_txt, SWT.CHECK);
+            NButton cb_Xaxis = new NButton(cmp_txt, SWT.CHECK);
             this.cb_Xaxis[0] = cb_Xaxis;
             cb_Xaxis.setText(I18n.COORDINATESDIALOG_X);
             cb_Xaxis.setSelection(true);
             
-            Button cb_Yaxis = new Button(cmp_txt, SWT.CHECK);
+            NButton cb_Yaxis = new NButton(cmp_txt, SWT.CHECK);
             this.cb_Yaxis[0] = cb_Yaxis;
             cb_Yaxis.setText(I18n.COORDINATESDIALOG_Y);
             cb_Yaxis.setSelection(true);
             
-            Button cb_Zaxis = new Button(cmp_txt, SWT.CHECK);
+            NButton cb_Zaxis = new NButton(cmp_txt, SWT.CHECK);
             this.cb_Zaxis[0] = cb_Zaxis;
             cb_Zaxis.setText(I18n.COORDINATESDIALOG_Z);
             cb_Zaxis.setSelection(true);

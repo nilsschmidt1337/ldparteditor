@@ -72,7 +72,6 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.opengl.GLCanvas;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
@@ -206,6 +205,7 @@ import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
@@ -7071,12 +7071,12 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     // Helper functions
-    private void clickBtnTest(Button btn) {
+    private void clickBtnTest(NButton btn) {
         WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn.getParent());
         btn.setSelection(true);
     }
 
-    private void clickSingleBtn(Button btn) {
+    private void clickSingleBtn(NButton btn) {
         boolean state = btn.getSelection();
         WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn.getParent());
         btn.setSelection(state);
@@ -8379,7 +8379,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return recentItems;
     }
 
-    private void setLineSize(SphereGL20 sp, SphereGL20 sp_inv, float line_width1000, float line_width, float line_width_gl, Button btn) {
+    private void setLineSize(SphereGL20 sp, SphereGL20 sp_inv, float line_width1000, float line_width, float line_width_gl, NButton btn) {
         final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;
         View.lineWidth1000[0] = line_width1000;
         View.lineWidth[0] = line_width;
@@ -9756,7 +9756,7 @@ public class Editor3DWindow extends Editor3DDesign {
         }
 
         {
-            Button btn_Palette = new Button(toolItem_ColourBar, SWT.NONE);
+            NButton btn_Palette = new NButton(toolItem_ColourBar, SWT.NONE);
             this.btn_Palette[0] = btn_Palette;
             btn_Palette.setToolTipText(I18n.E3D_More);
             btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$

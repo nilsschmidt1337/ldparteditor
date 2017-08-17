@@ -23,7 +23,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -47,7 +47,7 @@ class Txt2DatDesign extends Dialog {
     final Txt2DatSettings ts;
 
     // Use final only for subclass/listener references!
-    final Button[] btn_chooseFont = new Button[1];
+    final NButton[] btn_chooseFont = new NButton[1];
     final BigDecimalSpinner[] spn_flatness = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_interpolateFlatness = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_fontHeight = new BigDecimalSpinner[1];
@@ -80,7 +80,7 @@ class Txt2DatDesign extends Dialog {
         Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
         lbl_coordsPrec.setText(I18n.TXT2DAT_Font);
 
-        Button spn_vequ = new Button(cmp_container, SWT.NONE);
+        NButton spn_vequ = new NButton(cmp_container, SWT.NONE);
         this.btn_chooseFont[0] = spn_vequ;
         spn_vequ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spn_vequ.setText(I18n.TXT2DAT_Select);

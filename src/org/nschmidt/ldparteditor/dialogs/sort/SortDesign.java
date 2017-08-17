@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The sort dialog
@@ -45,7 +46,7 @@ class SortDesign extends Dialog {
 
     final Button[] btn_OK = new Button[1];
 
-    final Button[] btn_ignoreStructure = new Button[1];
+    final NButton[] btn_ignoreStructure = new NButton[1];
 
     final Combo[] cmb_scope = new Combo[1];
     final Combo[] cmb_sortCriteria = new Combo[1];
@@ -107,7 +108,7 @@ class SortDesign extends Dialog {
         cmb_sortCriteria.select(2);
         criteria = 2;
 
-        Button btn_ignoreStructure = new Button(cmp_container, SWT.CHECK);
+        NButton btn_ignoreStructure = new NButton(cmp_container, SWT.CHECK);
         this.btn_ignoreStructure[0] = btn_ignoreStructure;
         btn_ignoreStructure.setText(I18n.SORT_IgnoreStructure);
         cmp_container.pack();

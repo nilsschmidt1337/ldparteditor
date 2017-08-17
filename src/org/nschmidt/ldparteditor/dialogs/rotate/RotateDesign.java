@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The rotate dialog
@@ -53,19 +54,19 @@ class RotateDesign extends Dialog {
 
     static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
-    final Button[] btn_Local = new Button[1];
-    final Button[] btn_Global = new Button[1];
+    final NButton[] btn_Local = new NButton[1];
+    final NButton[] btn_Global = new NButton[1];
 
     final Button[] btn_Copy = new Button[1];
 
-    final Button[] rb_Xaxis = new Button[1];
-    final Button[] rb_Yaxis = new Button[1];
-    final Button[] rb_Zaxis = new Button[1];
+    final NButton[] rb_Xaxis = new NButton[1];
+    final NButton[] rb_Yaxis = new NButton[1];
+    final NButton[] rb_Zaxis = new NButton[1];
     final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
-    final Button[] btn_PivotClipboard = new Button[1];
-    final Button[] btn_PivotManipulator = new Button[1];
+    final NButton[] btn_PivotClipboard = new NButton[1];
+    final NButton[] btn_PivotManipulator = new NButton[1];
     final BigDecimalSpinner[] spn_pX = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_pY = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_pZ = new BigDecimalSpinner[1];
@@ -127,14 +128,14 @@ class RotateDesign extends Dialog {
 
         ToolItem toolItem_TransformationModes = new ToolItem(cmp_container, SWT.NONE, true);
         {
-            Button btn_Local = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Local[0] = btn_Local;
             btn_Local.setToolTipText(I18n.E3D_Local);
             if (transformationMode == ManipulatorScope.LOCAL) btn_Local.setSelection(true);
             btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
-            Button btn_Global = new Button(toolItem_TransformationModes, SWT.TOGGLE);
+            NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Global[0] = btn_Global;
             btn_Global.setToolTipText(I18n.E3D_Global);
             if (transformationMode == ManipulatorScope.GLOBAL) btn_Global.setSelection(true);
@@ -146,7 +147,7 @@ class RotateDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Button cb_Xaxis = new Button(cmp_txt, SWT.RADIO);
+            NButton cb_Xaxis = new NButton(cmp_txt, SWT.RADIO);
             this.rb_Xaxis[0] = cb_Xaxis;
             cb_Xaxis.setText(I18n.ROTATE_X);
             cb_Xaxis.setSelection(true);
@@ -158,7 +159,7 @@ class RotateDesign extends Dialog {
             spn_X.setMinimum(new BigDecimal(-1000000));
             spn_X.setValue(v.X);
 
-            Button cb_Yaxis = new Button(cmp_txt, SWT.RADIO);
+            NButton cb_Yaxis = new NButton(cmp_txt, SWT.RADIO);
             this.rb_Yaxis[0] = cb_Yaxis;
             cb_Yaxis.setText(I18n.ROTATE_Y);
 
@@ -169,7 +170,7 @@ class RotateDesign extends Dialog {
             spn_Y.setMinimum(new BigDecimal(-1000000));
             spn_Y.setValue(v.Y);
 
-            Button cb_Zaxis = new Button(cmp_txt, SWT.RADIO);
+            NButton cb_Zaxis = new NButton(cmp_txt, SWT.RADIO);
             this.rb_Zaxis[0] = cb_Zaxis;
             cb_Zaxis.setText(I18n.ROTATE_Z);
 
@@ -188,7 +189,7 @@ class RotateDesign extends Dialog {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(1, true));
-            Button btn_PivotManipulator = new Button(cmp_txt, SWT.NONE);
+            NButton btn_PivotManipulator = new NButton(cmp_txt, SWT.NONE);
             this.btn_PivotManipulator[0] = btn_PivotManipulator;
             btn_PivotManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_PivotManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
@@ -198,7 +199,7 @@ class RotateDesign extends Dialog {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(1, true));
-            Button btn_PivotClipboard = new Button(cmp_txt, SWT.NONE);
+            NButton btn_PivotClipboard = new NButton(cmp_txt, SWT.NONE);
             this.btn_PivotClipboard[0] = btn_PivotClipboard;
             btn_PivotClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_PivotClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
