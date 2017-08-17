@@ -45,6 +45,7 @@ public class NButton extends Canvas {
     private final List<PaintListener> painters = new ArrayList<>();
     private final boolean canToggle;
     private final boolean canCheck;
+    private final boolean hasBorder;
 
 
     private Image img = null;
@@ -59,6 +60,7 @@ public class NButton extends Canvas {
 
         canToggle = (style & SWT.TOGGLE) == SWT.TOGGLE;
         canCheck = (style & SWT.CHECK) == SWT.CHECK;
+        hasBorder = (style & SWT.BORDER) == SWT.BORDER;
 
         if (canCheck) {
             img = ResourceManager.getImage("icon16_unchecked.png"); //$NON-NLS-1$
@@ -139,7 +141,7 @@ public class NButton extends Canvas {
         final boolean hasImage = img != null;
         final int img_width = hasImage ? img.getImageData().width : 0;
         final int img_height = hasImage ? img.getImageData().height : 0;
-
+        final int this_width = getBounds().width - 1;
 
         gc.setFont(Font.SYSTEM);
         // setFont before using textExtent, so that the size of the text
@@ -151,18 +153,44 @@ public class NButton extends Canvas {
 
         // TODO 2. Draw Content
 
+        if (selected && canToggle) {
+            gc.setBackground(SWTResourceManager.getColor(160, 160, 200));
+            gc.fillRoundRectangle(0, 0, Math.max(img_width + 9 + textExtent.x, this_width), Math.max(textExtent.y, img_height) + 9, 5, 5);
+            gc.setBackground(getBackground());
+        }
 
-        gc.setForeground(SWTResourceManager.getColor(60, 60, 60));
+        gc.setForeground(SWTResourceManager.getColor(255, 255, 255));
 
-        if (hovered) {
-            gc.setForeground(SWTResourceManager.getColor(255, 255, 255));
+        if (hovered || focused) {
+            gc.setForeground(SWTResourceManager.getColor(0, 0, 0));
         }
         if (pressed) {
-            gc.setForeground(SWTResourceManager.getColor(30, 30, 30));
+            gc.setForeground(SWTResourceManager.getColor(220, 220, 220));
         }
 
-        if (!canCheck) {
-            gc.drawRoundRectangle(0, 0, img_width + 9 + textExtent.x, Math.max(textExtent.y, img_height) + 9, 5, 5);
+
+
+        if (!canCheck && !hasBorder) {
+            gc.drawRoundRectangle(0, 0, Math.max(img_width + 9 + textExtent.x, this_width), Math.max(textExtent.y, img_height) + 9, 5, 5);
+
+            gc.setForeground(SWTResourceManager.getColor(60, 60, 60));
+
+            if (hovered || focused) {
+                gc.setBackground(SWTResourceManager.getColor(160, 160, 200));
+                gc.fillRoundRectangle(1, 1, Math.max(img_width + 9 + textExtent.x, this_width) - 1, Math.max(textExtent.y, img_height) + 9 - 1, 5, 5);
+                if (selected && canToggle) {
+                    gc.setBackground(SWTResourceManager.getColor(160, 160, 200));
+                } else {
+                    gc.setBackground(getBackground());
+                }
+                gc.fillRoundRectangle(2, 2, Math.max(img_width + 9 + textExtent.x, this_width) - 3, Math.max(textExtent.y, img_height) + 9 - 3, 5, 5);
+
+            }
+            if (pressed) {
+                gc.setForeground(SWTResourceManager.getColor(30, 30, 30));
+            }
+
+            gc.drawRoundRectangle(1, 1, Math.max(img_width + 9 + textExtent.x, this_width) - 1, Math.max(textExtent.y, img_height) + 9 - 1, 5, 5);
         }
 
         if (hasImage) {

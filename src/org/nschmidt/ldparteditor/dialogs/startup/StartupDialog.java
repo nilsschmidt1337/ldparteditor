@@ -19,6 +19,8 @@ import java.io.File;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -77,9 +79,9 @@ public class StartupDialog extends StartupDesign {
         super.create();
         btn_ok[0].setEnabled(false);
         // MARK All final listeners will be configured here..
-        btn_browseLdrawPath[0].addListener(SWT.Selection, new Listener() {
+        btn_browseLdrawPath[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
 
                 // Set the initial filter to null
@@ -104,9 +106,9 @@ public class StartupDialog extends StartupDesign {
                 }
             }
         });
-        btn_browseAuthoringPath[0].addListener(SWT.Selection, new Listener() {
+        btn_browseAuthoringPath[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
 
                 // Set the initial filter to null
@@ -131,9 +133,9 @@ public class StartupDialog extends StartupDesign {
                 }
             }
         });
-        btn_browseUnofficialPath[0].addListener(SWT.Selection, new Listener() {
+        btn_browseUnofficialPath[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
 
                 // Set the initial filter to null

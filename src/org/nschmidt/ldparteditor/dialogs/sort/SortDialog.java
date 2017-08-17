@@ -71,9 +71,9 @@ public class SortDialog extends SortDesign {
             }
         });
 
-        btn_ignoreStructure[0].addListener(SWT.Selection, new Listener() {
+        btn_ignoreStructure[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 destructive = btn_ignoreStructure[0].getSelection();
             }
         });

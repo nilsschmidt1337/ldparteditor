@@ -16,6 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.rectifier;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
@@ -84,9 +86,9 @@ public class RectifierDialog extends RectifierDesign {
                 rs.setNoRectConversationOnAdjacentCondlines(cmb_noRectConversationOnAdjacentCondlines[0].getSelectionIndex() == 1);
             }
         });
-        btn_verbose[0].addListener(SWT.Selection, new Listener() {
+        btn_verbose[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 rs.setVerbose(btn_verbose[0].getSelection());
             }
         });

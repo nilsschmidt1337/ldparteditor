@@ -63,9 +63,9 @@ public class OptionsDialog extends OptionsDesign {
             }
         });
 
-        btn_browseLdrawPath[0].addListener(SWT.Selection, new Listener() {
+        btn_browseLdrawPath[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
 
                 // Set the initial filter to the last selected path
@@ -89,9 +89,9 @@ public class OptionsDialog extends OptionsDesign {
                 }
             }
         });
-        btn_browseAuthoringPath[0].addListener(SWT.Selection, new Listener() {
+        btn_browseAuthoringPath[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
 
                 // Set the initial filter to the last selected path
@@ -115,9 +115,9 @@ public class OptionsDialog extends OptionsDesign {
                 }
             }
         });
-        btn_browseUnofficialPath[0].addListener(SWT.Selection, new Listener() {
+        btn_browseUnofficialPath[0].addSelectionListener(new SelectionAdapter() {
             @Override
-            public void handleEvent(Event event) {
+            public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
 
                 // Set the initial filter to the last selected path
