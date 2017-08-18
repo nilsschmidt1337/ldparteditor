@@ -138,6 +138,7 @@ public class NButton extends Canvas {
         final GC gc = event.gc;
         final Image img = this.img;
         final boolean focused = this.isFocusControl();
+        final boolean enabled = this.isEnabled();
         final boolean hasImage = img != null;
         final int img_width = hasImage ? img.getImageData().width : 0;
         final int img_height = hasImage ? img.getImageData().height : 0;
@@ -171,6 +172,10 @@ public class NButton extends Canvas {
 
 
         if (!canCheck && !hasBorder) {
+
+            if (!enabled) {
+                gc.setForeground(SWTResourceManager.getColor(200, 200, 200));
+            }
             gc.drawRoundRectangle(0, 0, Math.max(img_width + 9 + textExtent.x, this_width), Math.max(textExtent.y, img_height) + 9, 5, 5);
 
             gc.setForeground(SWTResourceManager.getColor(60, 60, 60));
@@ -189,7 +194,9 @@ public class NButton extends Canvas {
             if (pressed) {
                 gc.setForeground(SWTResourceManager.getColor(30, 30, 30));
             }
-
+            if (!enabled) {
+                gc.setForeground(SWTResourceManager.getColor(200, 200, 200));
+            }
             gc.drawRoundRectangle(1, 1, Math.max(img_width + 9 + textExtent.x, this_width) - 1, Math.max(textExtent.y, img_height) + 9 - 1, 5, 5);
         }
 
@@ -257,6 +264,13 @@ public class NButton extends Canvas {
     public void setText(String text) {
         checkWidget();
         this.text = text;
+        redraw();
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        checkWidget();
         redraw();
     }
 }
