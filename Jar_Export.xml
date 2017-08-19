@@ -98,7 +98,7 @@
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
         </jar>
     	<!-- Create complete archive -->
-    	<zip destfile="${ws}/LDPartEditor/binary/${os}_${arc}/LDPartEditor_${os}_${arc}.zip"
+    	<zip destfile="${ws}/LDPartEditor/binary/LDPartEditor_${os}_${arc}.zip"
     	       basedir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"
     	/>
     </target>
