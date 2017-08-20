@@ -41,6 +41,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ForkJoinPool;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -51,6 +53,7 @@ import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * Constructive Solid Geometry (CSG).
@@ -419,44 +422,62 @@ public class CSG {
     public GData1 compile_without_t_junctions(DatFile df) {
 
         // Copy... and remove duplicates
-        this.polygons.parallelStream().forEach((poly) -> {
-            poly.vertices = new ArrayList<>(poly.vertices);
-            ArrayList<Vector3d> vertices = new ArrayList<>();
-            for (Vector3d v1 :  poly.vertices) {
-                for (Vector3d v2 :  poly.vertices) {
-                    if (v1 != v2) {
-                        if (v1.minus(v2).magnitude() < 0.01) {
-                            if (!vertices.contains(v2)) vertices.add(v1);
+        ForkJoinPool forkJoinPool = new ForkJoinPool(View.NUM_CORES);
+        try {
+            forkJoinPool.submit(() -> {
+                this.polygons.parallelStream().forEach((poly) -> {
+                    poly.vertices = new ArrayList<>(poly.vertices);
+                    ArrayList<Vector3d> vertices = new ArrayList<>();
+                    for (Vector3d v1 :  poly.vertices) {
+                        for (Vector3d v2 :  poly.vertices) {
+                            if (v1 != v2) {
+                                if (v1.minus(v2).magnitude() < 0.01) {
+                                    if (!vertices.contains(v2)) vertices.add(v1);
+                                }
+                            }
                         }
                     }
-                }
-            }
-            poly.vertices.removeAll(vertices);
-        });
+                    poly.vertices.removeAll(vertices);
+                });
+            }).get();
+        } catch (InterruptedException e) {
+            NLogger.error(getClass(), e);
+        } catch (ExecutionException e) {
+            NLogger.error(getClass(), e);
+        }
+
 
         // 1. The interpolation has to be propagated to other polygons
         // This process can be done in parallel, since the polygons are independent from each other.
 
         final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
-        this.polygons.parallelStream().forEach((poly) -> {
-            final List<Vector3d> verts = poly.vertices;
-            for (Vector3d[] split : splitList) {
-                final Vector3d vi = split[0];
-                final Vector3d vj = split[1];
-                final Vector3d v = split[2];
-                final int size = verts.size();
-                for (int k = 0; k < size; k++) {
-                    int l = (k + 1) % size;
-                    if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
-                        verts.add(l, v.clone());
-                        break;
-                    } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
-                        verts.add(l, v.clone());
-                        break;
+        try {
+            forkJoinPool.submit(() -> {
+                this.polygons.parallelStream().forEach((poly) -> {
+                    final List<Vector3d> verts = poly.vertices;
+                    for (Vector3d[] split : splitList) {
+                        final Vector3d vi = split[0];
+                        final Vector3d vj = split[1];
+                        final Vector3d v = split[2];
+                        final int size = verts.size();
+                        for (int k = 0; k < size; k++) {
+                            int l = (k + 1) % size;
+                            if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
+                                verts.add(l, v.clone());
+                                break;
+                            } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
+                                verts.add(l, v.clone());
+                                break;
+                            }
+                        }
                     }
-                }
-            }
-        });
+                });
+            }).get();
+        } catch (InterruptedException e) {
+            NLogger.error(getClass(), e);
+        } catch (ExecutionException e) {
+            NLogger.error(getClass(), e);
+        }
 
         // 2. Find and fix T-Junctions
         // This process can be done in parallel, since the polygons are independent from each other.
@@ -471,27 +492,35 @@ public class CSG {
         }
 
         // Find T-Junctions
-        this.polygons.parallelStream().forEach((poly) -> {
-            final List<Vector3d> verts = poly.vertices;
-            double min_dist = Double.MAX_VALUE;
-            for (Vector3d v : allVerts) {
-                final int size = verts.size();
-                for (int k = 0; k < size; k++) {
-                    int l = (k + 1) % size;
+        try {
+            forkJoinPool.submit(() -> {
+                this.polygons.parallelStream().forEach((poly) -> {
+                    final List<Vector3d> verts = poly.vertices;
+                    double min_dist = Double.MAX_VALUE;
+                    for (Vector3d v : allVerts) {
+                        final int size = verts.size();
+                        for (int k = 0; k < size; k++) {
+                            int l = (k + 1) % size;
 
-                    Vector3d a = verts.get(k);
-                    Vector3d b = verts.get(l);
+                            Vector3d a = verts.get(k);
+                            Vector3d b = verts.get(l);
 
-                    if (a.minus(v).magnitude() > 0.01 && b.minus(v).magnitude() > 0.01) {
-                        double dist = MathHelper.getNearestPointToLineSegmentCSG(a.x, a.y, a.z, b.x, b.y, b.z, v.x, v.y, v.z).minus(v).magnitude();
-                        if (dist < min_dist) min_dist = dist;
-                        if (dist < 0.1) {
-                            verts.add(l, v.clone());
+                            if (a.minus(v).magnitude() > 0.01 && b.minus(v).magnitude() > 0.01) {
+                                double dist = MathHelper.getNearestPointToLineSegmentCSG(a.x, a.y, a.z, b.x, b.y, b.z, v.x, v.y, v.z).minus(v).magnitude();
+                                if (dist < min_dist) min_dist = dist;
+                                if (dist < 0.1) {
+                                    verts.add(l, v.clone());
+                                }
+                            }
                         }
                     }
-                }
-            }
-        });
+                });
+            }).get();
+        } catch (InterruptedException e) {
+            NLogger.error(getClass(), e);
+        } catch (ExecutionException e) {
+            NLogger.error(getClass(), e);
+        }
 
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
