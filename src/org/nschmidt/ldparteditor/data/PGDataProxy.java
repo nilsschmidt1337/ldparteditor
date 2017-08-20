@@ -60,9 +60,12 @@ public final class PGDataProxy extends PGData implements Serializable {
             default:
                 initialised = false;
             }
+            if (initialised) {
+                data.drawBFCprimitive_GL20(drawOnlyMode);
+            }
         }
     }
-    
+
     @Override
     public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
         if (initialised) {
@@ -87,6 +90,9 @@ public final class PGDataProxy extends PGData implements Serializable {
                 break;
             default:
                 initialised = false;
+            }
+            if (initialised) {
+                data.drawBFCprimitive_GL33(stack, drawOnlyMode);
             }
         }
     }

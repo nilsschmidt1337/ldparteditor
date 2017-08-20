@@ -425,7 +425,13 @@ public class CompositePrimitive extends Composite {
                     } else {
                         Display.getCurrent().timerExec(3000, this);
                     }
-                } catch (SWTException consumed) {}
+                } catch (SWTException swte) {
+                    try {
+                        Display.getCurrent().timerExec(100, this);
+                    } catch (Exception consumed) {
+                        NLogger.error(getClass(), consumed);
+                    }
+                }
             }
         });
     }
@@ -1221,8 +1227,6 @@ public class CompositePrimitive extends Composite {
         int linetype = 0;
         char c;
         if (!(data_segments.length > 2 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
-            // result = PLACEHOLDER;
-            // cache.put(line, result);
             return null;
         }
         linetype = Character.getNumericValue(c);
