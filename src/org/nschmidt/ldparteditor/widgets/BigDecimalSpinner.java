@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.widgets;
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
@@ -156,7 +155,7 @@ public class BigDecimalSpinner extends Composite {
             if (selectAll) {
                 txt_val[0].selectAll();
                 selectAll = false;
-                CompletableFuture.runAsync( () -> {
+                new Thread( () -> {
                     focus = true;
                     while (focus) {
                         try {
@@ -167,11 +166,12 @@ public class BigDecimalSpinner extends Composite {
                                 focus = txt_val[0].isFocusControl();
                             } catch (SWTException swte) {
                                 NLogger.debug(getClass(), swte);
+                                return;
                             }
                         });
                     }
                     selectAll = true;
-                });
+                }).start();
             }
         });
 
@@ -231,7 +231,7 @@ public class BigDecimalSpinner extends Composite {
                 }
                 result = text;
 
-                CompletableFuture.runAsync( () -> {
+                new Thread(() -> {
                     final int id = counter.getAndIncrement() + 1;
                     focus = true;
                     while (focus && counter.compareAndSet(id, id) && !forceUpdate) {
@@ -258,7 +258,7 @@ public class BigDecimalSpinner extends Composite {
                             NLogger.debug(getClass(), swte);
                         }
                     });
-                });
+                }).start();
 
                 txt_val[0].setSelection(caret);
             }
