@@ -31,7 +31,6 @@ public enum BFC {
     public static final byte CW_CLIP = 6;
     public static final byte NOCERTIFY = 7;
     public static final byte UNKNOWN = 8;
-    public static final byte PLACEHOLDER = 127; // Constant for empty primitive lines (cache)
 
     private static boolean invertNext = false;
 

@@ -1638,7 +1638,7 @@ class Editor3DDesign extends ApplicationWindow {
                         gd2.horizontalAlignment = SWT.FILL;
                         lbl_selectedPrimitiveItem.setLayoutData(gd2);
                     }
-                    lbl_selectedPrimitiveItem.setText(I18n.E3D_NoPrimitiveSelected);
+                    lbl_selectedPrimitiveItem.setText(I18n.E3D_NoPrimitiveLoaded);
 
                     {
                         Composite cmp_Search = new Composite(cmp_Container4, Cocoa.getSytle());

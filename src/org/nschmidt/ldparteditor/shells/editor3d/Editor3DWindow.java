@@ -2798,6 +2798,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (getCompositePrimitive().stopDraw()) {
                     txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
                     return;
+                } else {
+                    getCompositePrimitive().disableRefresh();
                 }
                 getCompositePrimitive().collapseAll();
                 ArrayList<Primitive> prims = getCompositePrimitive().getPrimitives();
