@@ -185,9 +185,9 @@ class VM07PathTruder extends VM06Edger2 {
                             Vertex[] verts2 = lines.get(shape1.get(i - 1));
                             if (verts2 == null) {
                                 GData2 ind = shape1.get(i - 1);
-                                verts = new Vertex[2];
-                                verts[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
-                                verts[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
+                                verts2 = new Vertex[2];
+                                verts2[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
+                                verts2[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
                             }
                             if (verts2[1].equals(verts[0]) && liVerts.contains(verts[0])) {
                                 shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour(), true));
