@@ -299,7 +299,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseMove
             public void handleEvent(Event event) {
-                dontRefresh.set(true);
+                if (!stopDraw()) dontRefresh.set(true);
                 {
                     Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
@@ -416,22 +416,20 @@ public class CompositePrimitive extends Composite {
                 try {
                     openGL.drawScene(-1, -1);
                     hasDrawn.set(true);
-                    if (dontRefresh.get()) return;
+                    if (dontRefresh.get()) {
+                        Editor3DWindow.getWindow().updatePrimitiveLabel(null);
+                        return;
+                    }
                     if (stopDraw.get()) {
                         Display.getCurrent().timerExec(100, this);
                     } else if (quickDrawnFrames > 0) {
                         Display.getCurrent().timerExec(100, this);
                         quickDrawnFrames--;
                     } else {
+                        Editor3DWindow.getWindow().updatePrimitiveLabel(null);
                         Display.getCurrent().timerExec(3000, this);
                     }
-                } catch (SWTException swte) {
-                    try {
-                        Display.getCurrent().timerExec(100, this);
-                    } catch (Exception consumed) {
-                        NLogger.error(getClass(), consumed);
-                    }
-                }
+                } catch (SWTException consumed) {}
             }
         });
     }
@@ -1211,14 +1209,8 @@ public class CompositePrimitive extends Composite {
             case 3:
             case 4:
             case 5:
-                return new PGDataProxy(result);
             case 6:
-                PGDataBFC bfc = (PGDataBFC) result;
-                if (bfc.getType() != BFC.PLACEHOLDER) {
-                    return new PGDataProxy(bfc);
-                } else {
-                    return null;
-                }
+                return new PGDataProxy(result);
             }
         }
 
@@ -1590,5 +1582,9 @@ public class CompositePrimitive extends Composite {
 
     public boolean stopDraw() {
         return stopDraw.get();
+    }
+
+    public void disableRefresh() {
+        dontRefresh.set(true);
     }
 }

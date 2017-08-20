@@ -509,6 +509,7 @@ public final class I18n {
     public static final String E3D_NextItem = E3D.getString(getProperty());
     public static final String E3D_NoEffectSelectEverything = E3D.getString(getProperty());
     public static final String E3D_NoFileSelected = E3D.getString(getProperty());
+    public static final String E3D_NoPrimitiveLoaded = E3D.getString(getProperty());
     public static final String E3D_NoPrimitiveSelected = E3D.getString(getProperty());
     public static final String E3D_None = E3D.getString(getProperty());
     public static final String E3D_Nothing = E3D.getString(getProperty());
