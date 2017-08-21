@@ -120,9 +120,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
                     vertices.add(sphereVertex(center, radius, (i + 1) / (double) numSlices, (j + 1) / (double) numStacks));
                 }
                 vertices.add(sphereVertex(center, radius, i / (double) numSlices, (j + 1) / (double) numStacks));
-                PropertyStorage properties = new PropertyStorage();
-                properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
-                polygons.add(new Polygon(df, vertices, properties));
+                polygons.add(new Polygon(df, vertices, new GColourIndex(colour, ID)));
             }
         }
         return polygons;

@@ -47,8 +47,8 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
 
         if (!needCacheRefresh(cachedData, start, df) && !polygonCache.isEmpty()) {
             for (Polygon p : polygonCache) {
-                GColourIndex i = (GColourIndex) p.getShared().getValue("colour"); //$NON-NLS-1$
-                p.getShared().set("colour", new GColourIndex(i.getColour(), ID)); //$NON-NLS-1$
+                GColourIndex i = p.getColour();
+                p.setColour(new GColourIndex(i.getColour(), ID));
             }
             return polygonCache;
         }
@@ -73,7 +73,7 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
                         new Vector3d(g3.x1, g3.y1, g3.z1),
                         new Vector3d(g3.x2, g3.y2, g3.z2), new Vector3d(g3.x3, g3.y3, g3.z3)
                         );
-                p1.getShared().set("colour", new GColourIndex(colour2, ID)); //$NON-NLS-1$
+                p1.setColour(new GColourIndex(colour2, ID));
                 polygons.add(p1);
             } else {
                 GData4 g4 = (GData4) g;
@@ -91,8 +91,8 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
                         new Vector3d(g4.x3, g4.y3, g4.z3),
                         new Vector3d(g4.x4, g4.y4, g4.z4), new Vector3d(g4.x1, g4.y1, g4.z1)
                         );
-                p1.getShared().set("colour", new GColourIndex(colour2, ID)); //$NON-NLS-1$
-                p2.getShared().set("colour", new GColourIndex(colour2, ID)); //$NON-NLS-1$
+                p1.setColour(new GColourIndex(colour2, ID));
+                p2.setColour(new GColourIndex(colour2, ID));
                 polygons.add(p1);
                 polygons.add(p2);
             }
