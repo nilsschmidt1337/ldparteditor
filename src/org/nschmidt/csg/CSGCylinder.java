@@ -119,21 +119,15 @@ public class CSGCylinder extends CSGPrimitive implements Primitive {
         for (int i = 0; i < numSlices; i++) {
             double t0 = i / (double) numSlices, t1 = (i + 1) / (double) numSlices;
             {
-                PropertyStorage properties = new PropertyStorage();
-                properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
-                polygons.add(new Polygon(df, Arrays.asList(startV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, -1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1)), properties));
+                polygons.add(new Polygon(df, Arrays.asList(startV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, -1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1)), new GColourIndex(colour, ID)));
             }
             {
-                PropertyStorage properties = new PropertyStorage();
-                properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
                 polygons.add(new Polygon(df, Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, 0),
-                                                cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), properties));
+                                                cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), new GColourIndex(colour, ID)));
             }
             {
-                PropertyStorage properties = new PropertyStorage();
-                properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
                 polygons.add(new Polygon(df, Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1),
-                                                cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), properties));
+                                                cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), new GColourIndex(colour, ID)));
             }
         }
 

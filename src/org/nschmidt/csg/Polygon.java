@@ -65,17 +65,11 @@ public final class Polygon {
      */
     public List<Vector3d> vertices;
     /**
-     * Shared property (can be used for shared color etc.).
-     */
-    private final PropertyStorage shared;
-    /**
      * The linked DatFile
      */
     final DatFile df;
 
-    public PropertyStorage getShared() {
-        return shared;
-    }
+    private GColourIndex colour = new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0);
 
     /**
      * Plane defined by this polygon.
@@ -92,13 +86,11 @@ public final class Polygon {
      * and form a convex loop.
      * @param vertices
      *            polygon vertices
-     * @param shared
-     *            shared property
      */
-    public Polygon(DatFile df, List<Vector3d> vertices, PropertyStorage shared) {
+    public Polygon(DatFile df, List<Vector3d> vertices, GColourIndex colour) {
         this.df = df;
         this.vertices = vertices;
-        this.shared = shared;
+        this.colour = colour;
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
     }
 
@@ -114,7 +106,7 @@ public final class Polygon {
     public Polygon(DatFile df, List<Vector3d> vertices) {
         this.df = df;
         this.vertices = vertices;
-        this.shared = new PropertyStorage();
+        this.colour = new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0);
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
     }
 
@@ -138,7 +130,7 @@ public final class Polygon {
         for (Vector3d vertex : vertices) {
             newVertices.add(vertex.clone());
         }
-        return new Polygon(df, newVertices, new PropertyStorage(shared));
+        return new Polygon(df, newVertices, new GColourIndex(colour.getColour(), colour.getIndex()));
     }
 
     /**
@@ -178,10 +170,9 @@ public final class Polygon {
                 org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 2).x, (float) this.vertices.get(i + 2).y,
                         (float) this.vertices.get(i + 2).z);
                 GColourIndex colour = null;
-                if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
+                if ((colour = this.colour) == null) {
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                 } else {
-                    // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16), true), colour.getIndex());
                     result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                 }
             }
@@ -263,10 +254,9 @@ public final class Polygon {
                     }
 
                     GColourIndex colour = null;
-                    if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
+                    if ((colour = this.colour) == null) {
                         result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                     } else {
-                        // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16), true), colour.getIndex());
                         result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                     }
                 }
@@ -300,10 +290,9 @@ public final class Polygon {
                     }
 
                     GColourIndex colour = null;
-                    if ((colour = (GColourIndex) this.shared.getFirstValue()) == null) {
+                    if ((colour = this.colour) == null) {
                         result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                     } else {
-                        // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(colour.getIndex() % 16), true), colour.getIndex());
                         result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                     }
                 }
@@ -383,13 +372,13 @@ public final class Polygon {
     public Polygon transformed(Transform transform, GColour c, int ID) {
         Polygon result = clone().transform(transform);
         GColourIndex colour = null;
-        if ((colour = (GColourIndex) this.shared.getFirstValue()) != null) {
+        if ((colour = this.getColour()) != null) {
             GColour c2;
             if ((c2 = colour.getColour()) != null) {
                 if (c2.getColourNumber() == 16) {
-                    result.shared.set("colour", new GColourIndex(c.clone(), ID)); //$NON-NLS-1$ colour.getIndex()
+                    result.setColour(new GColourIndex(c.clone(), ID));
                 } else {
-                    result.shared.set("colour", new GColourIndex(c2.clone(), ID)); //$NON-NLS-1$
+                    result.setColour(new GColourIndex(c2.clone(), ID));
                 }
             }
         }
@@ -400,13 +389,11 @@ public final class Polygon {
      * Creates a polygon from the specified point list.
      * @param points
      *            the points that define the polygon
-     * @param shared
-     *            shared property storage
      *
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points, PropertyStorage shared) {
-        return fromPoints(csg, df, points, shared, null);
+    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points, GColourIndex colour) {
+        return fromPoints(csg, df, points, null, colour);
     }
 
     /**
@@ -417,7 +404,7 @@ public final class Polygon {
      * @return a polygon defined by the specified point list
      */
     public static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points) {
-        return fromPoints(csg, df, points, new PropertyStorage(), null);
+        return fromPoints(csg, df, points, null, new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0));
     }
 
     /**
@@ -428,7 +415,7 @@ public final class Polygon {
      * @return a polygon defined by the specified point list
      */
     public static Polygon fromPoints(GDataCSG csg, DatFile df, Vector3d... points) {
-        return fromPoints(csg, df, new ArrayList<Vector3d>(Arrays.asList(points)), new PropertyStorage(), null);
+        return fromPoints(csg, df, new ArrayList<Vector3d>(Arrays.asList(points)), null, new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0));
     }
 
     /**
@@ -441,7 +428,7 @@ public final class Polygon {
      *
      * @return a polygon defined by the specified point list
      */
-    private static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points, PropertyStorage shared, Plane plane) {
+    private static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points, Plane plane, GColourIndex colour) {
 
         List<Vector3d> vertices = new ArrayList<Vector3d>();
 
@@ -449,7 +436,7 @@ public final class Polygon {
             vertices.add(p.clone());
         }
 
-        return new Polygon(df, vertices, shared);
+        return new Polygon(df, vertices, colour);
     }
 
     /**
@@ -493,5 +480,13 @@ public final class Polygon {
         } // end for vertices
 
         return new Bounds(new Vector3d(minX, minY, minZ), new Vector3d(maxX, maxY, maxZ));
+    }
+
+    public GColourIndex getColour() {
+        return colour;
+    }
+
+    public void setColour(GColourIndex colour) {
+        this.colour = colour;
     }
 }

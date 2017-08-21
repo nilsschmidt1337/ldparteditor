@@ -128,9 +128,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
                         * (1 * Math.min(1, i & 4) - 0.5));
                 vertices.add(pos);
             }
-            PropertyStorage properties = new PropertyStorage();
-            properties.set("colour", new GColourIndex(colour, ID)); //$NON-NLS-1$
-            polygons.add(new Polygon(df, vertices, properties));
+            polygons.add(new Polygon(df, vertices, new GColourIndex(colour, ID)));
         }
 
         if (!centered) {
