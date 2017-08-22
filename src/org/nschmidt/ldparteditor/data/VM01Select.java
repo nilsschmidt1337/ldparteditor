@@ -63,7 +63,7 @@ class VM01Select extends VM00Snapshot {
         selectedQuads.clear();
         selectedCondlines.clear();
         lastSelectedVertex = null;
-        GDataCSG.clearSelection(linkedDatFile);
+        GDataCSGN.clearSelection(linkedDatFile);
     }
 
     public synchronized void clearSelection2() {
@@ -76,7 +76,7 @@ class VM01Select extends VM00Snapshot {
         selectedQuads.clear();
         selectedCondlines.clear();
         lastSelectedVertex = null;
-        GDataCSG.clearSelection(linkedDatFile);
+        GDataCSGN.clearSelection(linkedDatFile);
     }
 
     private void clearSelection3() {
@@ -89,7 +89,7 @@ class VM01Select extends VM00Snapshot {
         selectedQuads.clear();
         selectedCondlines.clear();
         lastSelectedVertex = null;
-        GDataCSG.clearSelection(linkedDatFile);
+        GDataCSGN.clearSelection(linkedDatFile);
     }
 
     public synchronized void selectAll(SelectorSettings ss, boolean includeHidden) {
@@ -148,7 +148,7 @@ class VM01Select extends VM00Snapshot {
         selectedData.addAll(selectedCondlines);
         selectedData.addAll(selectedSubfiles);
 
-        GDataCSG.selectAll(linkedDatFile);
+        GDataCSGN.selectAll(linkedDatFile);
     }
 
     public void selectAllWithSameColours(SelectorSettings ss, boolean includeHidden) {
@@ -177,11 +177,11 @@ class VM01Select extends VM00Snapshot {
             allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
         }
 
-        allColours.addAll(GDataCSG.getSelectedColours(linkedDatFile));
+        allColours.addAll(GDataCSGN.getSelectedColours(linkedDatFile));
 
         clearSelection();
 
-        GDataCSG.selectAllWithSameColours(linkedDatFile, allColours);
+        GDataCSGN.selectAllWithSameColours(linkedDatFile, allColours);
 
         if (ss.isVertices() && ss.isLines() && ss.isTriangles() && ss.isQuads() && ss.isCondlines()) {
             for (GData1 g : vertexCountInSubfile.keySet()) {
@@ -274,7 +274,7 @@ class VM01Select extends VM00Snapshot {
         backupSelectedSubfiles.addAll(selectedSubfiles);
         backupSelectedTriangles.addAll(selectedTriangles);
         backupSelectedVertices.addAll(selectedVertices);
-        GDataCSG.backupSelection(linkedDatFile);
+        GDataCSGN.backupSelection(linkedDatFile);
     }
 
     protected void backupSelectionClear() {
@@ -285,7 +285,7 @@ class VM01Select extends VM00Snapshot {
         backupSelectedSubfiles.clear();
         backupSelectedTriangles.clear();
         backupSelectedVertices.clear();
-        GDataCSG.backupSelectionClear(linkedDatFile);
+        GDataCSGN.backupSelectionClear(linkedDatFile);
     }
 
     public void restoreSelection() {
@@ -297,7 +297,7 @@ class VM01Select extends VM00Snapshot {
         selectedSubfiles.addAll(backupSelectedSubfiles);
         selectedTriangles.addAll(backupSelectedTriangles);
         selectedVertices.addAll(backupSelectedVertices);
-        GDataCSG.restoreSelection(linkedDatFile);
+        GDataCSGN.restoreSelection(linkedDatFile);
         backupSelectionClear();
     }
 
@@ -689,8 +689,8 @@ class VM01Select extends VM00Snapshot {
                 selectedCondlines.add((GData5) gd);
                 break;
             case 8:
-                HashSet<GDataCSG> selection = GDataCSG.getSelection(linkedDatFile);
-                GDataCSG g = (GDataCSG) gd;
+                HashSet<GDataCSGN> selection = GDataCSGN.getSelection(linkedDatFile);
+                GDataCSGN g = (GDataCSGN) gd;
                 if (g != null && g.canSelect()) {
                     selection.add(g);
                 }

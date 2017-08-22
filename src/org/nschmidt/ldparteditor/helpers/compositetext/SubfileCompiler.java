@@ -44,7 +44,7 @@ import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GData5;
-import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataCSGN;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
@@ -144,8 +144,8 @@ public enum SubfileCompiler {
             }
         }
         vm.clearSelection();
-        GDataCSG.resetCSG(datFile, false);
-        GDataCSG.forceRecompile(datFile);
+        GDataCSGN.resetCSG(datFile, false);
+        GDataCSGN.forceRecompile(datFile);
         skipCompile = true;
         matrixInv = View.ACCURATE_ID;
         matrixProd = View.ACCURATE_ID;

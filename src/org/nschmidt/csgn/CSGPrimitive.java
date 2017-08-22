@@ -13,12 +13,12 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.csg;
+package org.nschmidt.csgn;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class CSGPrimitive {
 
-    static final AtomicInteger id_counter = new AtomicInteger(0);
+    static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
 
 }
