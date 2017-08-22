@@ -56,7 +56,7 @@ public enum Rounder {
         // Check here if single vertex replacing (ALT+SHIFT+R) is active
         // If so, round only this vertex!
 
-        final VertexManager vm = datFile.getVertexManager();        
+        final VertexManager vm = datFile.getVertexManager();
         final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
         final boolean onX = userSettings.isRoundX();
         final boolean onY = userSettings.isRoundY();
@@ -67,8 +67,8 @@ public enum Rounder {
             Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
             vm.skipSyncTimer();
             vm.backupHideShowState();
-            GDataCSG.resetCSG(datFile, false);
-            GDataCSG.forceRecompile(datFile);
+            GDataCSGN.resetCSG(datFile, false);
+            GDataCSGN.forceRecompile(datFile);
             Vertex vOld = new Vertex(st.getToReplaceX(), st.getToReplaceY(), st.getToReplaceZ());
             int coordsDecimalPlaces = userSettings.getCoordsPrecision();
             Vertex vNew = new Vertex(onX ? vOld.X.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.X, onY ? vOld.Y.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.Y, onZ ? vOld.Z.setScale(coordsDecimalPlaces,

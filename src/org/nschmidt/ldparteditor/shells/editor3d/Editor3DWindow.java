@@ -103,7 +103,7 @@ import org.nschmidt.ldparteditor.data.GData0;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GDataBFC;
-import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataCSGN;
 import org.nschmidt.ldparteditor.data.GDataPNG;
 import org.nschmidt.ldparteditor.data.GraphicalDataTools;
 import org.nschmidt.ldparteditor.data.LibraryManager;
@@ -1690,7 +1690,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     VertexManager vm = Project.getFileToEdit().getVertexManager();
                     vm.addSnapshot();
                     vm.selectAll(new SelectorSettings(), true);
-                    GDataCSG.clearSelection(Project.getFileToEdit());
+                    GDataCSGN.clearSelection(Project.getFileToEdit());
                     GColour c = View.getLDConfigColour(16);
                     vm.colourChangeSelection(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), false);
                     vm.getSelectedData().removeAll(vm.getTriangles().keySet());

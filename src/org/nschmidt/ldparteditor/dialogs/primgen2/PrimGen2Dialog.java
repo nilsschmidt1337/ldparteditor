@@ -38,7 +38,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
-import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataCSGN;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Perspective;
@@ -176,7 +176,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 final VertexManager vm = df.getVertexManager();
                 final GData data = df.getDrawPerLine_NOCLONE().getValue(txt_data[0].getLineAtOffset(e.lineOffset) + 1);
                 boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
-                isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
+                isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSGN.getSelection(df).contains(data);
                 syntaxFormatter.format(e,
                         BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                         0f, false, isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), df);

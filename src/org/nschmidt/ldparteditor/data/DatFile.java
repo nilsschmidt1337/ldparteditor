@@ -154,7 +154,7 @@ public final class DatFile {
     public synchronized void draw(Composite3D c3d) {
 
 
-        GDataCSG.resetCSG(this, c3d.getManipulator().isModified());
+        GDataCSGN.resetCSG(this, c3d.getManipulator().isModified());
 
         GData data2draw = drawChainAnchor;
         int renderMode = c3d.getRenderMode();
@@ -254,14 +254,14 @@ public final class DatFile {
             break;
         }
 
-        GDataCSG.finishCacheCleanup(c3d.getLockableDatFileReference());
+        GDataCSGN.finishCacheCleanup(c3d.getLockableDatFileReference());
 
         if (c3d.isDrawingSolidMaterials() && renderMode != 5)
             vertices.showHidden();
     }
 
     public synchronized void getBFCorientationMap(HashMap<GData, Byte> bfcMap) {
-        GDataCSG.resetCSG(this, false);
+        GDataCSGN.resetCSG(this, false);
         GData data2draw = drawChainAnchor;
         data2draw.getBFCorientationMap(bfcMap);
         while ((data2draw = data2draw.getNext()) != null) {
@@ -1515,7 +1515,7 @@ public final class DatFile {
         history.deleteHistory();
         duplicate.deleteDuplicateInfo();
         datHeader.deleteHeaderHints();
-        GDataCSG.fullReset(this);
+        GDataCSGN.fullReset(this);
         text = ""; //$NON-NLS-1$
         vertices.setModified(false, true);
         vertices.clear();

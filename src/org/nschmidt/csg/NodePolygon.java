@@ -2,7 +2,7 @@ package org.nschmidt.csg;
 
 import java.util.List;
 
-public class NodePolygon {
+final class NodePolygon {
     private final Node node;
     private final List<Polygon> polygons;
 

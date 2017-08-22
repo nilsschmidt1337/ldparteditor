@@ -41,7 +41,7 @@ import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData1;
-import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataCSGN;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.ParsingResult;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -1238,7 +1238,7 @@ public class MouseActions {
                     break;
                 case SUBFILES:
                     vm.selectSubfiles(c3d, event);
-                    GDataCSG.selectCSG(c3d, event);
+                    GDataCSGN.selectCSG(c3d, event);
                     break;
                 }
                 checkSyncEditMode(vm, datfile);
@@ -1371,9 +1371,9 @@ public class MouseActions {
                 c3d.getManipulator().setAccurateZaxis(new BigDecimal(c3d.getManipulator().getZaxis().x), new BigDecimal(c3d.getManipulator().getZaxis().y),
                         new BigDecimal(c3d.getManipulator().getZaxis().z));
             }
-        } else if (GDataCSG.getSelection(c3d.getLockableDatFileReference()).size() == 1) {
-            GDataCSG csg = null;
-            for (GDataCSG c1 : GDataCSG.getSelection(c3d.getLockableDatFileReference())) {
+        } else if (GDataCSGN.getSelection(c3d.getLockableDatFileReference()).size() == 1) {
+            GDataCSGN csg = null;
+            for (GDataCSGN c1 : GDataCSGN.getSelection(c3d.getLockableDatFileReference())) {
                 csg = c1;
                 break;
             }

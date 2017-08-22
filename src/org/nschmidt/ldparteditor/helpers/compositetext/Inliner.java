@@ -27,7 +27,7 @@ import org.nschmidt.ldparteditor.data.BFC;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GDataBFC;
-import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataCSGN;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -128,8 +128,8 @@ public enum Inliner {
             }
         }
 
-        GDataCSG.resetCSG(datFile, false);
-        GDataCSG.forceRecompile(datFile);
+        GDataCSGN.resetCSG(datFile, false);
+        GDataCSGN.forceRecompile(datFile);
 
         ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
         lineEnd += 1;
@@ -253,8 +253,8 @@ public enum Inliner {
             bfcStatusToLine.put(key, bfcStatusTarget);
         }
 
-        GDataCSG.resetCSG(datFile, false);
-        GDataCSG.forceRecompile(datFile);
+        GDataCSGN.resetCSG(datFile, false);
+        GDataCSGN.forceRecompile(datFile);
 
         Collections.sort(lineNumbers);
         Collections.reverse(lineNumbers);

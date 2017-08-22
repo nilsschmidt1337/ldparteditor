@@ -40,7 +40,7 @@ import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.GDataBFC;
-import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataCSGN;
 import org.nschmidt.ldparteditor.data.GDataPNG;
 import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.ParsingResult;
@@ -383,53 +383,53 @@ public enum DatParser {
             } else if (line.startsWith("CSG_", 7)) { //$NON-NLS-1$
                 if (line.startsWith("UNION", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.UNION, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.UNION, line, parent)));
                 } else if (line.startsWith("DIFFERENCE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.DIFFERENCE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.DIFFERENCE, line, parent)));
                 } else if (line.startsWith("INTERSECTION", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.INTERSECTION, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.INTERSECTION, line, parent)));
                 } else if (line.startsWith("TRANSFORM", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.TRANSFORM, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.TRANSFORM, line, parent)));
                 } else if (line.startsWith("CUBOID", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CUBOID, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.CUBOID, line, parent)));
                 } else if (line.startsWith("ELLIPSOID", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.ELLIPSOID, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.ELLIPSOID, line, parent)));
                 } else if (line.startsWith("QUAD", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.QUAD, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.QUAD, line, parent)));
                 } else if (line.startsWith("CYLINDER", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CYLINDER, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.CYLINDER, line, parent)));
                 } else if (line.startsWith("MESH", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.MESH, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.MESH, line, parent)));
                 } else if (line.startsWith("CONE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CONE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.CONE, line, parent)));
                 } else if (line.startsWith("CIRCLE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.CIRCLE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.CIRCLE, line, parent)));
                 } else if (line.startsWith("COMPILE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.COMPILE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.COMPILE, line, parent)));
                 } else if (line.startsWith("QUALITY", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.QUALITY, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.QUALITY, line, parent)));
                 } else if (line.startsWith("EPSILON", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EPSILON, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.EPSILON, line, parent)));
                 } else if (line.startsWith("EXTRUDE", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE, line, parent)));
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.EXTRUDE, line, parent)));
                 } else if (line.startsWith("EXT_CFG", 11)) { //$NON-NLS-1$
                     result.remove(0);
-                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE_CFG, line, parent)));
-                    GDataCSG.forceRecompile(datFile);
+                    result.add(0, new ParsingResult(new GDataCSGN(datFile, CSG.EXTRUDE_CFG, line, parent)));
+                    GDataCSGN.forceRecompile(datFile);
                 }
             } else if (line.startsWith("PNG", 7) && depth == 0 && data_segments.length >= 12) { //$NON-NLS-1$
                 try {
@@ -719,7 +719,7 @@ public enum DatParser {
 
                         result.add(new ParsingResult(new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, TMatrix, lines, absoluteFilename, sb
                                 .toString(), depth, det < 0, destMatrix, DESTMatrix, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent)));
-                        GDataCSG.forceRecompile(datFile);
+                        GDataCSGN.forceRecompile(datFile);
                     }
 
                     // Avoid scaling of flat files

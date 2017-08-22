@@ -340,16 +340,16 @@ public class VM20Manipulator extends VM19ColourChanger {
 
         //-1. Update CSG Tree
 
-        if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
+        if (GDataCSGN.hasSelectionCSG(linkedDatFile)) {
             Matrix4f lowAccTransformation = transformation.getMatrix4f();
             Matrix4f.transpose(lowAccTransformation, lowAccTransformation);
             ArrayList<GData> newSelection = new ArrayList<>();
-            for (GDataCSG gd : GDataCSG.getSelection(linkedDatFile)) {
+            for (GDataCSGN gd : GDataCSGN.getSelection(linkedDatFile)) {
                 if (gd != null) newSelection.add(transformCSG(lowAccTransformation, gd));
             }
-            GDataCSG.getSelection(linkedDatFile).clear();
+            GDataCSGN.getSelection(linkedDatFile).clear();
             for (GData gd : newSelection) {
-                GDataCSG.getSelection(linkedDatFile).add((GDataCSG) gd);
+                GDataCSGN.getSelection(linkedDatFile).add((GDataCSGN) gd);
             }
             setModified_NoSync();
         }
@@ -616,9 +616,9 @@ public class VM20Manipulator extends VM19ColourChanger {
         }
     }
 
-    private GDataCSG transformCSG(Matrix4f lowAccTransformation, GDataCSG gData) {
-        GDataCSG gdC = gData;
-        GDataCSG newGData = new GDataCSG(linkedDatFile, lowAccTransformation, gdC);
+    private GDataCSGN transformCSG(Matrix4f lowAccTransformation, GDataCSGN gData) {
+        GDataCSGN gdC = gData;
+        GDataCSGN newGData = new GDataCSGN(linkedDatFile, lowAccTransformation, gdC);
         linker(gData, newGData);
         return newGData;
     }
