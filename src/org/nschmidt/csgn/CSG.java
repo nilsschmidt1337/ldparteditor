@@ -137,7 +137,10 @@ public class CSG {
 
     public CSG union(CSG csg) {
         // TODO Auto-generated method stub
-        return null;
+        List<Triangle> newtriangles = new ArrayList<>();
+        newtriangles.addAll(triangles);
+        newtriangles.addAll(csg.triangles);
+        return CSG.fromTriangles(newtriangles);
     }
 
     /**
