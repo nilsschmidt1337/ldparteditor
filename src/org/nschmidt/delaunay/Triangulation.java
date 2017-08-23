@@ -48,10 +48,10 @@ import java.util.Set;
  *         Voronoi cell.
  *
  */
-public class Triangulation extends AbstractSet<Triangle> {
+public class Triangulation extends AbstractSet<DTriangle> {
 
-    private Triangle mostRecent = null; // Most recently "active" triangle
-    private Graph<Triangle> triGraph; // Holds triangles for navigation
+    private DTriangle mostRecent = null; // Most recently "active" triangle
+    private Graph<DTriangle> triGraph; // Holds triangles for navigation
 
     /**
      * All sites must fall within the initial triangle.
@@ -59,8 +59,8 @@ public class Triangulation extends AbstractSet<Triangle> {
      * @param triangle
      *            the initial triangle
      */
-    public Triangulation(Triangle triangle) {
-        triGraph = new Graph<Triangle>();
+    public Triangulation(DTriangle triangle) {
+        triGraph = new Graph<DTriangle>();
         triGraph.add(triangle);
         mostRecent = triangle;
     }
@@ -68,7 +68,7 @@ public class Triangulation extends AbstractSet<Triangle> {
     /* The following two methods are required by AbstractSet */
 
     @Override
-    public Iterator<Triangle> iterator() {
+    public Iterator<DTriangle> iterator() {
         return triGraph.nodeSet().iterator();
     }
 
@@ -105,10 +105,10 @@ public class Triangulation extends AbstractSet<Triangle> {
      * @throws IllegalArgumentException
      *             if site is not in this triangle
      */
-    public Triangle neighborOpposite(Pnt site, Triangle triangle) {
+    public DTriangle neighborOpposite(Pnt site, DTriangle triangle) {
         if (!triangle.contains(site))
             throw new IllegalArgumentException("Bad vertex; not in triangle"); //$NON-NLS-1$
-        for (Triangle neighbor : triGraph.neighbors(triangle)) {
+        for (DTriangle neighbor : triGraph.neighbors(triangle)) {
             if (!neighbor.contains(site))
                 return neighbor;
         }
@@ -122,7 +122,7 @@ public class Triangulation extends AbstractSet<Triangle> {
      *            the triangle to check
      * @return the neighbors of triangle
      */
-    public Set<Triangle> neighbors(Triangle triangle) {
+    public Set<DTriangle> neighbors(DTriangle triangle) {
         return triGraph.neighbors(triangle);
     }
 
@@ -137,15 +137,15 @@ public class Triangulation extends AbstractSet<Triangle> {
      * @throws IllegalArgumentException
      *             if site is not in triangle
      */
-    public List<Triangle> surroundingTriangles(Pnt site, Triangle triangle) {
+    public List<DTriangle> surroundingTriangles(Pnt site, DTriangle triangle) {
         if (!triangle.contains(site))
             throw new IllegalArgumentException("Site not in triangle"); //$NON-NLS-1$
-        List<Triangle> list = new ArrayList<Triangle>();
-        Triangle start = triangle;
+        List<DTriangle> list = new ArrayList<DTriangle>();
+        DTriangle start = triangle;
         Pnt guide = triangle.getVertexButNot(site); // Affects cw or ccw
         while (true) {
             list.add(triangle);
-            Triangle previous = triangle;
+            DTriangle previous = triangle;
             triangle = this.neighborOpposite(guide, triangle); // Next triangle
             guide = previous.getVertexButNot(site, guide); // Update guide
             if (triangle == start)
@@ -161,13 +161,13 @@ public class Triangulation extends AbstractSet<Triangle> {
      *            the point to locate
      * @return the triangle that holds point; null if no such triangle
      */
-    public Triangle locate(Pnt point) {
-        Triangle triangle = mostRecent;
+    public DTriangle locate(Pnt point) {
+        DTriangle triangle = mostRecent;
         if (!this.contains(triangle))
             triangle = null;
 
         // Try a directed walk (this works fine in 2D, but can fail in 3D)
-        Set<Triangle> visited = new HashSet<Triangle>();
+        Set<DTriangle> visited = new HashSet<DTriangle>();
         while (triangle != null) {
             if (visited.contains(triangle)) { // This should never happen
                 System.out.println("Warning: Caught in a locate loop"); //$NON-NLS-1$
@@ -182,7 +182,7 @@ public class Triangulation extends AbstractSet<Triangle> {
         }
         // No luck; try brute force
         System.out.println("Warning: Checking all triangles for " + point); //$NON-NLS-1$
-        for (Triangle tri : this) {
+        for (DTriangle tri : this) {
             if (point.isOutside(tri.toArray(new Pnt[0])) == null)
                 return tri;
         }
@@ -204,7 +204,7 @@ public class Triangulation extends AbstractSet<Triangle> {
         // Uses straightforward scheme rather than best asymptotic time
 
         // Locate containing triangle
-        Triangle triangle = locate(site);
+        DTriangle triangle = locate(site);
         // Give up if no containing triangle or if site is already in DT
         if (triangle == null)
             throw new IllegalArgumentException("No containing triangle"); //$NON-NLS-1$
@@ -212,8 +212,8 @@ public class Triangulation extends AbstractSet<Triangle> {
             return;
 
         // Determine the cavity and update the triangulation
-        Set<Triangle> cavity = getCavity(site, triangle);
-        Triangle nextMostRecent = update(site, cavity);
+        Set<DTriangle> cavity = getCavity(site, triangle);
+        DTriangle nextMostRecent = update(site, cavity);
         if (nextMostRecent != null)
             mostRecent = nextMostRecent;
     }
@@ -227,10 +227,10 @@ public class Triangulation extends AbstractSet<Triangle> {
      *            the triangle containing site
      * @return set of all triangles that have site in their circumcircle
      */
-    private Set<Triangle> getCavity(Pnt site, Triangle triangle) {
-        Set<Triangle> encroached = new HashSet<Triangle>();
-        Queue<Triangle> toBeChecked = new LinkedList<Triangle>();
-        Set<Triangle> marked = new HashSet<Triangle>();
+    private Set<DTriangle> getCavity(Pnt site, DTriangle triangle) {
+        Set<DTriangle> encroached = new HashSet<DTriangle>();
+        Queue<DTriangle> toBeChecked = new LinkedList<DTriangle>();
+        Set<DTriangle> marked = new HashSet<DTriangle>();
         toBeChecked.add(triangle);
         marked.add(triangle);
         while (!toBeChecked.isEmpty()) {
@@ -239,7 +239,7 @@ public class Triangulation extends AbstractSet<Triangle> {
                 continue; // Site outside triangle => triangle not in cavity
             encroached.add(triangle);
             // Check the neighbors
-            for (Triangle neighbor : triGraph.neighbors(triangle)) {
+            for (DTriangle neighbor : triGraph.neighbors(triangle)) {
                 if (marked.contains(neighbor))
                     continue;
                 marked.add(neighbor);
@@ -259,12 +259,12 @@ public class Triangulation extends AbstractSet<Triangle> {
      *            the triangles with site in their circumcircle
      * @return one of the new triangles
      */
-    private Triangle update(Pnt site, Set<Triangle> cavity) {
+    private DTriangle update(Pnt site, Set<DTriangle> cavity) {
         Set<Set<Pnt>> boundary = new HashSet<Set<Pnt>>();
-        Set<Triangle> theTriangles = new HashSet<Triangle>();
+        Set<DTriangle> theTriangles = new HashSet<DTriangle>();
 
         // Find boundary facets and adjacent triangles
-        for (Triangle triangle : cavity) {
+        for (DTriangle triangle : cavity) {
             theTriangles.addAll(neighbors(triangle));
             for (Pnt vertex : triangle) {
                 Set<Pnt> facet = triangle.facetOpposite(vertex);
@@ -277,22 +277,22 @@ public class Triangulation extends AbstractSet<Triangle> {
         theTriangles.removeAll(cavity); // Adj triangles only
 
         // Remove the cavity triangles from the triangulation
-        for (Triangle triangle : cavity)
+        for (DTriangle triangle : cavity)
             triGraph.remove(triangle);
 
         // Build each new triangle and add it to the triangulation
-        Set<Triangle> newTriangles = new HashSet<Triangle>();
+        Set<DTriangle> newTriangles = new HashSet<DTriangle>();
         for (Set<Pnt> vertices : boundary) {
             vertices.add(site);
-            Triangle tri = new Triangle(vertices);
+            DTriangle tri = new DTriangle(vertices);
             triGraph.add(tri);
             newTriangles.add(tri);
         }
 
         // Update the graph links for each new triangle
         theTriangles.addAll(newTriangles); // Adj triangle + new triangles
-        for (Triangle triangle : newTriangles)
-            for (Triangle other : theTriangles)
+        for (DTriangle triangle : newTriangles)
+            for (DTriangle other : theTriangles)
                 if (triangle.isNeighbor(other))
                     triGraph.add(triangle, other);
 

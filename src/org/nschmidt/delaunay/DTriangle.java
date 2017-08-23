@@ -40,7 +40,7 @@ import java.util.NoSuchElementException;
  *         triangle.
  *
  */
-public class Triangle extends ArraySet<Pnt> {
+public class DTriangle extends ArraySet<Pnt> {
 
     private int idNumber; // The id number
     private Pnt circumcenter = null; // The triangle's circumcenter
@@ -53,7 +53,7 @@ public class Triangle extends ArraySet<Pnt> {
      * @throws IllegalArgumentException
      *             if there are not three distinct vertices
      */
-    public Triangle(Pnt... vertices) {
+    public DTriangle(Pnt... vertices) {
         this(Arrays.asList(vertices));
     }
 
@@ -63,7 +63,7 @@ public class Triangle extends ArraySet<Pnt> {
      * @throws IllegalArgumentException
      *             if there are not three distinct vertices
      */
-    public Triangle(Collection<? extends Pnt> collection) {
+    public DTriangle(Collection<? extends Pnt> collection) {
         super(collection);
         idNumber = idGenerator++;
         if (this.size() != 3)
@@ -100,7 +100,7 @@ public class Triangle extends ArraySet<Pnt> {
      *            the other Triangle
      * @return true iff this Triangle is a neighbor of triangle
      */
-    public boolean isNeighbor(Triangle triangle) {
+    public boolean isNeighbor(DTriangle triangle) {
         int count = 0;
         for (Pnt vertex : this)
             if (!triangle.contains(vertex))
@@ -143,7 +143,7 @@ public class Triangle extends ArraySet<Pnt> {
     @Override
     public Iterator<Pnt> iterator() {
         return new Iterator<Pnt>() {
-            private Iterator<Pnt> it = Triangle.super.iterator();
+            private Iterator<Pnt> it = DTriangle.super.iterator();
 
             @Override
             public boolean hasNext() {
