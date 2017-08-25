@@ -130,9 +130,8 @@ public class CSG {
         return null;
     }
 
-    public CSG transformed(Matrix4f matrix, GColour colour, int iD) {
-        // TODO Auto-generated method stub
-        return null;
+    public CSG transformed(Matrix4f transform, GColour c, int ID) {
+        return transformed(new Transform().apply(transform), c, ID);
     }
 
     public CSG union(CSG csg) {
