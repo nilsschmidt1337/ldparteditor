@@ -15,18 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.csgn;
 
-class LineSegment {
-
-    private final Vector3d[] vertices = new Vector3d[2];
-    private final Plane plane;
-
-    public LineSegment(Vector3d start, Vector3d end, Plane intersectionPlane) {
-        vertices[0] = start;
-        vertices[1] = end;
-        plane = intersectionPlane;
-    }
-
-    public Plane getPlane() {
-        return plane;
-    }
+enum Location {
+    COPLANAR, FRONT, BACK
 }

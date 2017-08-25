@@ -1,13 +1,22 @@
+/* MIT - License
+
+Copyright (c) 2012 - this year, Nils Schmidt
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"),
+to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense,
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
+INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
+FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.csgn;
 
 public class Plane {
 
-    /**
-     * EPSILON is the tolerance used by
-     * {@link #splitPolygon(org.nschmidt.csg.Polygon, java.util.List, java.util.List, java.util.List, java.util.List)
-     * }
-     * to decide if a point is on the plane.
-     */
     public static double EPSILON = 1e-3;
 
     /**
@@ -47,6 +56,11 @@ public class Plane {
     public static Plane createFromPoints(Vector3d a, Vector3d b, Vector3d c) {
         Vector3d n = b.minus(a).cross(c.minus(a)).unit();
         return new Plane(n, n.dot(a));
+    }
+
+    public Location getPointLocation(Vector3d point) {
+        double t = normal.dot(point) - dist;
+        return t < -Plane.EPSILON ? Location.BACK : t > Plane.EPSILON ? Location.FRONT : Location.COPLANAR;
     }
 
     @Override
