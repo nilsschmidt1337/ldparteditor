@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.csgn;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -31,11 +30,7 @@ public class Triangle {
      * Triangle vertices
      */
     public final Vector3d[] vertices = new Vector3d[3];
-
-    /**
-     * Triangle intersection lines
-     */
-    private List<LineSegment> intersections = null;
+    private Bounds boundsCache = null;
 
     /**
      * The linked DatFile
@@ -58,12 +53,22 @@ public class Triangle {
         this.plane = Plane.createFromPoints(v1, v2, v3);
     }
 
+    private Triangle(DatFile df, Vector3d v1, Vector3d v2, Vector3d v3, Plane plane, GColourIndex colour) {
+        this.df = df;
+        this.vertices[0] = v1;
+        this.vertices[1] = v2;
+        this.vertices[2] = v3;
+        this.plane = plane;
+        this.colour = colour;
+    }
+
     @Override
     public Triangle clone() {
         return new Triangle(df,
                 this.vertices[0].clone(),
                 this.vertices[1].clone(),
                 this.vertices[2].clone(),
+                this.plane.clone(),
                 new GColourIndex(colour.getColour(), colour.getIndex()));
     }
 
@@ -77,6 +82,8 @@ public class Triangle {
             // the transformation includes mirroring. flip polygon
             flip();
         }
+
+        boundsCache = null;
         return this;
     }
 
@@ -137,5 +144,32 @@ public class Triangle {
 
     public void setColour(GColourIndex colour) {
         this.colour = colour;
+    }
+
+    public boolean intersectsBoundingBox(Triangle other) {
+        return getBounds().intersects(other.getBounds());
+    }
+
+    public Bounds getBounds() {
+        Bounds result = boundsCache;
+        if (result == null) {
+            final Vector3d a = this.vertices[0];
+            final Vector3d b = this.vertices[1];
+            final Vector3d c = this.vertices[2];
+            final double x_min = Math.min(Math.min(a.x, b.x), c.x);
+            final double y_min = Math.min(Math.min(a.y, b.y), c.y);
+            final double z_min = Math.min(Math.min(a.z, b.z), c.z);
+            final double x_max = Math.max(Math.max(a.x, b.x), c.x);
+            final double y_max = Math.max(Math.max(a.y, b.y), c.y);
+            final double z_max = Math.max(Math.max(a.z, b.z), c.z);
+            result = new Bounds(new Vector3d(x_min, y_min, z_min), new Vector3d(x_max, y_max, z_max));
+            boundsCache = result;
+        }
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return  this.vertices[0].toString() + "_" + this.vertices[1].toString() + "_" +  this.vertices[2] + " colour: " + colour.getColour(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 }

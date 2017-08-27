@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -33,6 +34,13 @@ public class CSG {
     TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
 
     private List<Triangle> triangles = new ArrayList<>();
+    private List<Triangle> intersectThis = new ArrayList<>();
+    private List<Triangle> intersectOther = new ArrayList<>();
+    private List<Triangle> nonintersectInsideThis = new ArrayList<>();
+    private List<Triangle> nonintersectInsideOther = new ArrayList<>();
+    private List<Triangle> nonintersectOutsideThis = new ArrayList<>();
+    private List<Triangle> nonintersectOutsideOther = new ArrayList<>();
+    private Bounds boundsCache = null;
 
     private CSG() {
     }
@@ -111,23 +119,39 @@ public class CSG {
     }
 
     public void draw(Composite3D c3d) {
-        // TODO Auto-generated method stub
-
+        for (GData3 tri : result.keySet()) {
+            tri.drawGL20(c3d);
+        }
     }
 
     public void draw_textured(Composite3D c3d) {
-        // TODO Auto-generated method stub
-
+        for (GData3 tri : result.keySet()) {
+            tri.drawGL20_BFC_Textured(c3d);
+        }
     }
 
     public CSG difference(CSG csg) {
-        // TODO Auto-generated method stub
-        return null;
+        List<Triangle> newtriangles = new ArrayList<>();
+        if (getBounds().intersects(csg.getBounds())) {
+            collisionCheck(csg);
+            for (Triangle t : nonintersectInsideOther) {
+                newtriangles.add(t.clone().flip());
+            }
+            newtriangles.addAll(nonintersectOutsideThis);
+        } else {
+            newtriangles.addAll(triangles);
+        }
+        return CSG.fromTriangles(newtriangles);
     }
 
     public CSG intersect(CSG csg) {
-        // TODO Auto-generated method stub
-        return null;
+        List<Triangle> newtriangles = new ArrayList<>();
+        if (getBounds().intersects(csg.getBounds())) {
+            collisionCheck(csg);
+            newtriangles.addAll(nonintersectInsideThis);
+            newtriangles.addAll(nonintersectInsideOther);
+        }
+        return CSG.fromTriangles(newtriangles);
     }
 
     public CSG transformed(Matrix4f transform, GColour c, int ID) {
@@ -135,11 +159,210 @@ public class CSG {
     }
 
     public CSG union(CSG csg) {
-        // TODO Auto-generated method stub
         List<Triangle> newtriangles = new ArrayList<>();
-        newtriangles.addAll(triangles);
-        newtriangles.addAll(csg.triangles);
+        if (getBounds().intersects(csg.getBounds())) {
+            collisionCheck(csg);
+            newtriangles.addAll(nonintersectOutsideThis);
+            newtriangles.addAll(nonintersectOutsideOther);
+        } else {
+            newtriangles.addAll(triangles);
+            newtriangles.addAll(csg.triangles);
+        }
         return CSG.fromTriangles(newtriangles);
+    }
+
+    public Bounds getBounds() {
+        Bounds result = boundsCache;
+        if (result == null) {
+            if (!triangles.isEmpty()) {
+                result = new Bounds();
+                for (Triangle t : triangles) {
+                    Bounds b = t.getBounds();
+                    result.union(b);
+                }
+            } else {
+                result = new Bounds(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0));
+            }
+            boundsCache = result;
+        }
+        return result;
+    }
+
+    private void collisionCheck(CSG csg) {
+        final Bounds tb = getBounds();
+        final Bounds ob = csg.getBounds();
+        final int size = triangles.size();
+        final boolean[] nonboundsintersect = new boolean[size];
+        final boolean[] intersect = new boolean[size];
+
+        nonintersectInsideThis.clear();
+        nonintersectInsideOther.clear();
+        nonintersectOutsideThis.clear();
+        nonintersectOutsideOther.clear();
+
+        intersectThis.clear();
+        intersectOther.clear();
+
+        for (int i = 0; i < size; i++) {
+            Triangle t = triangles.get(i);
+            if (!ob.intersects(t.getBounds())) {
+                nonintersectOutsideThis.add(t);
+                nonboundsintersect[i] = true;
+            }
+        }
+
+        for (Triangle o : csg.triangles) {
+            if (!tb.intersects(o.getBounds())) {
+                nonintersectOutsideOther.add(o);
+                continue;
+            }
+
+            boolean otherIntersects = false;
+            for (int i = 0; i < size; i++) {
+                if (nonboundsintersect[i]) continue;
+                Triangle t = triangles.get(i);
+                if (t.intersectsBoundingBox(o)) {
+                    intersectThis.add(t);
+                    intersectOther.add(o);
+                    otherIntersects = true;
+                    intersect[i] = true;
+                }
+            }
+            if (otherIntersects) continue;
+
+            if (isInside(o)) {
+                nonintersectInsideOther.add(o);
+            } else {
+                nonintersectOutsideOther.add(o);
+            }
+        }
+
+        for (int i = 0; i < size; i++) {
+            if (nonboundsintersect[i] || intersect[i]) continue;
+            Triangle t = triangles.get(i);
+            if (csg.isInside(t)) {
+                nonintersectInsideThis.add(t);
+            } else {
+                nonintersectOutsideThis.add(t);
+            }
+        }
+    }
+
+    /**
+     * USE THIS ONLY FOR NON-INTERSECTING TRIANGLES
+     * @param test
+     * @return
+     */
+    private boolean isInside(Triangle test) {
+        double tmp = Math.random() - 0.5;
+        while (tmp == 0.0) tmp = Math.random() - 0.5;
+        final Vector3d randomDir1 = new Vector3d(tmp, Math.random() - 0.5, Math.random() - 0.5).unit();
+        final double[] dir1 = new double[]{randomDir1.x, randomDir1.y, randomDir1.z};
+        final double[] dir2 = new double[]{-randomDir1.y, randomDir1.x, randomDir1.z};
+        final double[] dir3 = new double[]{randomDir1.z, randomDir1.y, randomDir1.x};
+        final double[] dir4 = new double[]{-randomDir1.x, -randomDir1.y, -randomDir1.z};
+        final double[] dir5 = new double[]{randomDir1.x, randomDir1.y, -randomDir1.z};
+        final Vector3d tv1 = test.vertices[0];
+        final Vector3d tv2 = test.vertices[1];
+        final Vector3d tv3 = test.vertices[2];
+        final double[] orig = new double[]{
+                (tv1.x + tv2.x + tv3.x) / 3.0,
+                (tv1.y + tv2.y + tv3.y) / 3.0,
+                (tv1.z + tv2.z + tv3.z) / 3.0};
+
+        intersections1.clear();
+        intersections2.clear();
+        intersections3.clear();
+        intersections4.clear();
+        intersections5.clear();
+
+        for (final Triangle t : triangles) {
+            final Vector3d ov1 = t.vertices[0];
+            final Vector3d ov2 = t.vertices[1];
+            final Vector3d ov3 = t.vertices[2];
+            v1[0] = ov1.x;
+            v1[1] = ov1.y;
+            v1[2] = ov1.z;
+            v2[0] = ov2.x;
+            v2[1] = ov2.y;
+            v2[2] = ov2.z;
+            v3[0] = ov3.x;
+            v3[1] = ov3.y;
+            v3[2] = ov3.z;
+            if (TRIANGLE_INTERSECT(orig, dir1, v1, v2, v3)) {
+                intersections1.add(intersectionPoint);
+            }
+            if (TRIANGLE_INTERSECT(orig, dir2, v1, v2, v3)) {
+                intersections2.add(intersectionPoint);
+            }
+            if (TRIANGLE_INTERSECT(orig, dir3, v1, v2, v3)) {
+                intersections3.add(intersectionPoint);
+            }
+            if (TRIANGLE_INTERSECT(orig, dir4, v1, v2, v3)) {
+                intersections4.add(intersectionPoint);
+            }
+            if (TRIANGLE_INTERSECT(orig, dir5, v1, v2, v3)) {
+                intersections5.add(intersectionPoint);
+            }
+        }
+
+        return  (2 <(intersections1.size() % 2 + intersections2.size() % 2 + intersections3.size() % 2 + intersections4.size() % 2 + intersections5.size() % 2));
+    }
+
+    private double t, u, v;
+
+    final TreeSet<Vector3d> intersections1 = new TreeSet<>();
+    final TreeSet<Vector3d> intersections2 = new TreeSet<>();
+    final TreeSet<Vector3d> intersections3 = new TreeSet<>();
+    final TreeSet<Vector3d> intersections4 = new TreeSet<>();
+    final TreeSet<Vector3d> intersections5 = new TreeSet<>();
+    final double[] v1 = new double[3];
+    final double[] v2 = new double[3];
+    final double[] v3 = new double[3];
+    private double[] corner1 = new double[3];
+    private double[] corner2 = new double[3];
+    private double[] tvec = new double[3];
+    private double[] pvec = new double[3];
+    private double[] qvec = new double[3];
+    private Vector3d intersectionPoint;
+
+    private final double TOLERANCE = 0.00001d;
+
+    public boolean TRIANGLE_INTERSECT(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
+        double diskr = 0;
+        double inv_diskr = 0;
+        corner1[0] = vert1[0] - vert0[0];
+        corner1[1] = vert1[1] - vert0[1];
+        corner1[2] = vert1[2] - vert0[2];
+        corner2[0] = vert2[0] - vert0[0];
+        corner2[1] = vert2[1] - vert0[1];
+        corner2[2] = vert2[2] - vert0[2];
+        pvec[0] = dir[1] * corner2[2] - dir[2] * corner2[1];
+        pvec[1] = dir[2] * corner2[0] - dir[0] * corner2[2];
+        pvec[2] = dir[0] * corner2[1] - dir[1] * corner2[0];
+        diskr = corner1[0] * pvec[0] + corner1[1] * pvec[1] + corner1[2] * pvec[2];
+        if (diskr > -TOLERANCE && diskr < TOLERANCE)
+            return false;
+        inv_diskr = 1d / diskr;
+        tvec[0] = orig[0] - vert0[0];
+        tvec[1] = orig[1] - vert0[1];
+        tvec[2] = orig[2] - vert0[2];
+        u = (tvec[0] * pvec[0] + tvec[1] * pvec[1] + tvec[2] * pvec[2]) * inv_diskr;
+        if (u < 0 || u > 1)
+            return false;
+        qvec[0] = tvec[1] * corner1[2] - tvec[2] * corner1[1];
+        qvec[1] = tvec[2] * corner1[0] - tvec[0] * corner1[2];
+        qvec[2] = tvec[0] * corner1[1] - tvec[1] * corner1[0];
+        v = (dir[0] * qvec[0] + dir[1] * qvec[1] + dir[2] * qvec[2]) * inv_diskr;
+        if (v < 0 || u + v > 1)
+            return false;
+        t = (corner2[0] * qvec[0] + corner2[1] * qvec[1] + corner2[2] * qvec[2]) * inv_diskr;
+        if (t < 0) return false;
+        intersectionPoint = new Vector3d(
+                t * dir[0] + orig[0],
+                t * dir[1] + orig[1],
+                t * dir[2] + orig[2]);
+        return true;
     }
 
     /**
@@ -156,7 +379,6 @@ public class CSG {
     }
 
     public GData1 compile() {
-        // TODO Auto-generated method stub
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
         GColour col = View.getLDConfigColour(16);
@@ -175,5 +397,10 @@ public class CSG {
         CSG csg = new CSG();
         csg.triangles = triangles;
         return csg;
+    }
+
+    @Override
+    public String toString() {
+        return "triangles: " + triangles.size(); //$NON-NLS-1$
     }
 }
