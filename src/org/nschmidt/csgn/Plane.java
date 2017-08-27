@@ -58,9 +58,19 @@ public class Plane {
         return new Plane(n, n.dot(a));
     }
 
+    public void recreateFromPoints(Vector3d a, Vector3d b, Vector3d c) {
+        Vector3d n = b.minus(a).cross(c.minus(a)).unit();
+        normal = n;
+        dist = n.dot(a);
+    }
+
     public Location getPointLocation(Vector3d point) {
         double t = normal.dot(point) - dist;
         return t < -Plane.EPSILON ? Location.BACK : t > Plane.EPSILON ? Location.FRONT : Location.COPLANAR;
+    }
+
+    public double getInterpolationFactorFromPoints(Vector3d start, Vector3d end) {
+        return (this.dist - this.normal.dot(start)) / this.normal.dot(end.minus(start));
     }
 
     @Override
