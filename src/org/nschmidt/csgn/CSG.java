@@ -18,7 +18,6 @@ package org.nschmidt.csgn;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -35,11 +34,11 @@ public class CSG {
     TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
 
     private List<Triangle> triangles = new ArrayList<>();
-    private Set<Triangle> intersectThis = new HashSet<>();
-    private Set<Triangle> intersectOther = new HashSet<>();
-    private Set<Triangle> intersectOtherCopy = new HashSet<>();
-    private Set<Triangle> newTrianglesThis = new HashSet<>();
-    private Set<Triangle> newTrianglesOther = new HashSet<>();
+    private List<Triangle> intersectThis = new ArrayList<>();
+    private List<Triangle> intersectOther = new ArrayList<>();
+    private List<Triangle> intersectOtherCopy = new ArrayList<>();
+    private List<Triangle> newTrianglesThis = new ArrayList<>();
+    private List<Triangle> newTrianglesOther = new ArrayList<>();
     private List<Triangle> nonintersectInsideThis = new ArrayList<>();
     private List<Triangle> nonintersectInsideOther = new ArrayList<>();
     private List<Triangle> nonintersectOutsideThis = new ArrayList<>();
@@ -229,15 +228,19 @@ public class CSG {
                 if (nonboundsintersect[i]) continue;
                 Triangle t = triangles.get(i);
                 if (t.intersectsBoundingBox(o)) {
-                    intersectThis.add(t);
-                    intersectOther.add(o);
-                    otherIntersects = true;
-                    intersect[i] = true;
+                    if (!otherIntersects) {
+                        intersectOther.add(o);
+                        otherIntersects = true;
+                    }
+                    if (!intersect[i]) {
+                        intersectThis.add(t);
+                        intersect[i] = true;
+                    }
                 }
             }
             if (otherIntersects) continue;
 
-            if (isInside(o)) {
+            if (isProbablyInside(o)) {
                 nonintersectInsideOther.add(o);
             } else {
                 nonintersectOutsideOther.add(o);
@@ -247,7 +250,7 @@ public class CSG {
         for (int i = 0; i < size; i++) {
             if (nonboundsintersect[i] || intersect[i]) continue;
             Triangle t = triangles.get(i);
-            if (csg.isInside(t)) {
+            if (csg.isProbablyInside(t)) {
                 nonintersectInsideThis.add(t);
             } else {
                 nonintersectOutsideThis.add(t);
@@ -259,10 +262,9 @@ public class CSG {
         for (Triangle t : intersectThis) {
             final Plane tp = t.plane;
             for (Triangle o : intersectOther) {
-                if (o.hasNaN()) continue;
                 newTrianglesOther.addAll(o.split(tp));
             }
-            Set<Triangle> tmp = intersectOther;
+            List<Triangle> tmp = intersectOther;
             intersectOther = newTrianglesOther;
             tmp.clear();
             newTrianglesOther = tmp;
@@ -271,18 +273,16 @@ public class CSG {
         for (Triangle o : intersectOtherCopy) {
             final Plane op = o.plane;
             for (Triangle t : intersectThis) {
-                if (t.hasNaN()) continue;
                 newTrianglesThis.addAll(t.split(op));
             }
-            Set<Triangle> tmp = intersectThis;
+            List<Triangle> tmp = intersectThis;
             intersectThis = newTrianglesThis;
             tmp.clear();
             newTrianglesThis = tmp;
         }
 
         for (Triangle t : intersectThis) {
-            if (t.hasNaN()) continue;
-            if (false && isInside(t)) {
+            if (csg.isProbablyInside(t)) {
                 nonintersectInsideThis.add(t);
             } else {
                 nonintersectOutsideThis.add(t);
@@ -290,8 +290,7 @@ public class CSG {
         }
 
         for (Triangle o : intersectOther) {
-            if (o.hasNaN()) continue;
-            if (false || isInside(o)) {
+            if (isProbablyInside(o)) {
                 nonintersectInsideOther.add(o);
             } else {
                 nonintersectOutsideOther.add(o);
@@ -299,33 +298,53 @@ public class CSG {
         }
     }
 
-    /**
-     * USE THIS ONLY FOR NON-INTERSECTING TRIANGLES
-     * @param test
-     * @return
-     */
-    private boolean isInside(Triangle test) {
-        double tmp = Math.random() - 0.5;
-        while (tmp == 0.0) tmp = Math.random() - 0.5;
-        final Vector3d randomDir1 = new Vector3d(tmp, Math.random() - 0.5, Math.random() - 0.5).unit();
-        final double[] dir1 = new double[]{randomDir1.x, randomDir1.y, randomDir1.z};
-        final double[] dir2 = new double[]{-randomDir1.y, randomDir1.x, randomDir1.z};
-        final double[] dir3 = new double[]{randomDir1.z, randomDir1.y, randomDir1.x};
-        final double[] dir4 = new double[]{-randomDir1.x, -randomDir1.y, -randomDir1.z};
-        final double[] dir5 = new double[]{randomDir1.x, randomDir1.y, -randomDir1.z};
+    private boolean isProbablyInside(Triangle test) {
+        int counter = 0;
         final Vector3d tv1 = test.vertices[0];
         final Vector3d tv2 = test.vertices[1];
         final Vector3d tv3 = test.vertices[2];
-        final double[] orig = new double[]{
-                (tv1.x + tv2.x + tv3.x) / 3.0,
-                (tv1.y + tv2.y + tv3.y) / 3.0,
-                (tv1.z + tv2.z + tv3.z) / 3.0};
+        final double[] orig = new double[3];
+        double a = 0.33333333;
+        double b = 0.33333333;
+        double c = 0.33333333;
+        double sum;
+        for (int i = 0; i < 10; i++) {
+            counter = 0;
+            orig[0] = a * tv1.x + b * tv2.x + c * tv3.x;
+            orig[1] = a * tv1.y + b * tv2.y + c * tv3.y;
+            orig[2] = a * tv1.z + b * tv2.z + c * tv3.z;
+            for (int j = 0; j < 20; j++) {
+                counter += isInsideHelper(test, orig);
+                if (counter > 5 || counter < -5) {
+                    return counter > 0;
+                }
+            }
+            a = Math.random();
+            b = Math.random();
+            c = Math.random();
+            sum = a + b + c;
+            a = a / sum;
+            b = b / sum;
+            c = c / sum;
+        }
+        return counter > 0;
+    }
 
-        intersections1.clear();
-        intersections2.clear();
-        intersections3.clear();
-        intersections4.clear();
-        intersections5.clear();
+    private int isInsideHelper(Triangle test, double[] orig) {
+        double rx = 0.0;
+        double ry = 0.0;
+        double rz = 0.0;
+        do {
+            rx = Math.random() - 0.5;
+            ry = Math.random() - 0.5;
+            rz = Math.random() - 0.5;
+        } while (rx == 0.0 || ry == 0.0 || rz == 0.0);
+        double len = Math.sqrt(rx * rx + ry * ry + rz * rz);
+        final double[] dir1 = new double[]{rx / len, ry / len, rz / len};
+
+
+
+        intersections.clear();
 
         for (final Triangle t : triangles) {
             final Vector3d ov1 = t.vertices[0];
@@ -341,32 +360,16 @@ public class CSG {
             v3[1] = ov3.y;
             v3[2] = ov3.z;
             if (TRIANGLE_INTERSECT(orig, dir1, v1, v2, v3)) {
-                intersections1.add(intersectionPoint);
-            }
-            if (TRIANGLE_INTERSECT(orig, dir2, v1, v2, v3)) {
-                intersections2.add(intersectionPoint);
-            }
-            if (TRIANGLE_INTERSECT(orig, dir3, v1, v2, v3)) {
-                intersections3.add(intersectionPoint);
-            }
-            if (TRIANGLE_INTERSECT(orig, dir4, v1, v2, v3)) {
-                intersections4.add(intersectionPoint);
-            }
-            if (TRIANGLE_INTERSECT(orig, dir5, v1, v2, v3)) {
-                intersections5.add(intersectionPoint);
+                intersections.add(intersectionPoint);
             }
         }
 
-        return  (2 <(intersections1.size() % 2 + intersections2.size() % 2 + intersections3.size() % 2 + intersections4.size() % 2 + intersections5.size() % 2));
+        return  2 * (intersections.size() % 2) - 1;
     }
 
     private double t, u, v;
 
-    final TreeSet<Vector3d> intersections1 = new TreeSet<>();
-    final TreeSet<Vector3d> intersections2 = new TreeSet<>();
-    final TreeSet<Vector3d> intersections3 = new TreeSet<>();
-    final TreeSet<Vector3d> intersections4 = new TreeSet<>();
-    final TreeSet<Vector3d> intersections5 = new TreeSet<>();
+    final TreeSet<Vector3d> intersections = new TreeSet<>();
     final double[] v1 = new double[3];
     final double[] v2 = new double[3];
     final double[] v3 = new double[3];
