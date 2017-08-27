@@ -33,7 +33,10 @@
  */
 package org.nschmidt.csgn;
 
-public class Vector3d {
+public class Vector3d implements Comparable<Vector3d> {
+
+    private static double epsilon = 0.0001d;
+
     public double x;
     public double y;
     public double z;
@@ -247,5 +250,43 @@ public class Vector3d {
         hash = 97 * hash + (int) (Double.doubleToLongBits(this.y) ^ Double.doubleToLongBits(this.y) >>> 32);
         hash = 97 * hash + (int) (Double.doubleToLongBits(this.z) ^ Double.doubleToLongBits(this.z) >>> 32);
         return hash;
+    }
+
+    @Override
+    public int compareTo(Vector3d o) {
+        {
+            double d1 = x - o.x;
+            int c1 = Double.compare(Math.abs(d1), epsilon);
+            switch (c1) {
+            case 0:
+            case 1:
+                return d1 < 0f ? -1 : 1;
+            default:
+                break;
+            }
+        }
+        {
+            double d1 = y - o.y;
+            int c1 = Double.compare(Math.abs(d1), epsilon);
+            switch (c1) {
+            case 0:
+            case 1:
+                return d1 < 0f ? -1 : 1;
+            default:
+                break;
+            }
+        }
+        {
+            double d1 = z - o.z;
+            int c1 = Double.compare(Math.abs(d1), epsilon);
+            switch (c1) {
+            case 0:
+            case 1:
+                return d1 < 0f ? -1 : 1;
+            default:
+                break;
+            }
+        }
+        return 0;
     }
 }

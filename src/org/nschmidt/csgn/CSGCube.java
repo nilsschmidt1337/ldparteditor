@@ -42,7 +42,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
                 vertices.add(pos);
             }
             triangles.add(new Triangle(df, vertices.get(0), vertices.get(1), vertices.get(2), new GColourIndex(colour, ID)));
-            triangles.add(new Triangle(df, vertices.get(2), vertices.get(3), vertices.get(0), new GColourIndex(colour, ID)));
+            triangles.add(new Triangle(df, vertices.get(2), vertices.get(3), vertices.get(0), new GColourIndex(colour, ID))); // FIXME Just for debugging
         }
 
         return triangles;
