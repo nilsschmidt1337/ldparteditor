@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.csgn;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -83,6 +84,8 @@ public class Triangle {
             flip();
         }
 
+        plane.recreateFromPoints(vertices[0], vertices[1], vertices[2]);
+
         boundsCache = null;
         return this;
     }
@@ -114,6 +117,178 @@ public class Triangle {
         vertices[2] = tmp;
         plane.flip();
         return this;
+    }
+
+
+    static final GColour c01 = View.getLDConfigColour(1);
+    static final GColour c02 = View.getLDConfigColour(2);
+    static final GColour c03 = View.getLDConfigColour(3);
+    static final GColour c04 = View.getLDConfigColour(4);
+    static final GColour c05 = View.getLDConfigColour(5);
+    static final GColour c06 = View.getLDConfigColour(6);
+    static final GColour c07 = View.getLDConfigColour(7);
+    static final GColour c08 = View.getLDConfigColour(8);
+    static final GColour c09 = View.getLDConfigColour(9);
+    static final GColour c10 = View.getLDConfigColour(10);
+    static final GColour c11 = View.getLDConfigColour(10);
+    static final GColour c12 = View.getLDConfigColour(10);
+
+    public ArrayList<Triangle> split(Plane p) {
+        ArrayList<Triangle> result = new ArrayList<>(4);
+
+        final Vector3d v1 = vertices[0];
+        final Vector3d v2 = vertices[1];
+        final Vector3d v3 = vertices[2];
+        final Location p1 = p.getPointLocation(v1);
+        final Location p2 = p.getPointLocation(v2);
+        final Location p3 = p.getPointLocation(v3);
+
+        double t1;
+        double t2;
+
+        Vector3d i1;
+        Vector3d i2;
+
+        if (p1 == Location.FRONT) {
+            if (p2 == Location.FRONT) {
+                if (p3 == Location.FRONT) { // FRONT FRONT FRONT
+                    result.add(this);
+                } else if (p3 == Location.BACK) { // FRONT FRONT BACK
+                    t1 = p.getInterpolationFactorFromPoints(v2, v3);
+                    i1 = v2.interpolate(v3, t1);
+                    t2 = p.getInterpolationFactorFromPoints(v3, v1);
+                    i2 = v3.interpolate(v1, t2);
+                    result.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), new GColourIndex(c01, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v3.clone(), i2, plane.clone(), new GColourIndex(c01, colour.getIndex())));
+                    result.add(new Triangle(df, i2.clone(), v1.clone(), i1.clone(), plane.clone(), new GColourIndex(c01, colour.getIndex())));
+                } else { // FRONT FRONT COPLANAR (OK)
+                    result.add(this);
+                }
+            } else if (p2 == Location.BACK) {
+                if (p3 == Location.FRONT) { // FRONT BACK FRONT
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    t2 = p.getInterpolationFactorFromPoints(v2, v3);
+                    i2 = v2.interpolate(v3, t2);
+                    result.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), new GColourIndex(c02, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), i2.clone(), plane.clone(), new GColourIndex(c02, colour.getIndex())));
+                    result.add(new Triangle(df, i2.clone(), v3.clone(), v1.clone(), plane.clone(), new GColourIndex(c02, colour.getIndex())));
+                } else if (p3 == Location.BACK) { // FRONT BACK BACK
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    t2 = p.getInterpolationFactorFromPoints(v3, v1);
+                    i2 = v3.interpolate(v1, t2);
+                    result.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), new GColourIndex(c03, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c03, colour.getIndex())));
+                    result.add(new Triangle(df, v3.clone(), i2.clone(), i1.clone(), plane.clone(), new GColourIndex(c03, colour.getIndex())));
+                } else { // FRONT BACK COPLANAR
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    result.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), new GColourIndex(c04, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c04, colour.getIndex())));
+                }
+            } else {
+                if (p3 == Location.FRONT) { // FRONT COPLANAR FRONT
+                    result.add(this);
+                } else if (p3 == Location.BACK) { // FRONT COPLANAR BACK
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    result.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), new GColourIndex(c05, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c05, colour.getIndex())));
+                } else { // FRONT COPLANAR COPLANAR
+                    result.add(this);
+                }
+            }
+        } else if (p1 == Location.BACK) {
+            if (p2 == Location.FRONT) {
+                if (p3 == Location.FRONT) { // BACK FRONT FRONT
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    t2 = p.getInterpolationFactorFromPoints(v3, v1);
+                    i2 = v3.interpolate(v1, t2);
+                    result.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), new GColourIndex(c06, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c06, colour.getIndex())));
+                    result.add(new Triangle(df, v3.clone(), i2.clone(), i1.clone(), plane.clone(), new GColourIndex(c06, colour.getIndex())));
+                } else if (p3 == Location.BACK) { // BACK FRONT BACK
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    t2 = p.getInterpolationFactorFromPoints(v2, v3);
+                    i2 = v2.interpolate(v3, t2);
+                    result.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), new GColourIndex(c07, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), i2.clone(), plane.clone(), new GColourIndex(c07, colour.getIndex())));
+                    result.add(new Triangle(df, i2.clone(), v3.clone(), v1.clone(), plane.clone(), new GColourIndex(c07, colour.getIndex())));
+                } else { // BACK FRONT COPLANAR (OK)
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    result.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), new GColourIndex(c08, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c08, colour.getIndex())));
+                }
+            } else if (p2 == Location.BACK) {
+                if (p3 == Location.FRONT) { // BACK BACK FRONT
+                    t1 = p.getInterpolationFactorFromPoints(v2, v3);
+                    i1 = v2.interpolate(v3, t1);
+                    t2 = p.getInterpolationFactorFromPoints(v3, v1);
+                    i2 = v3.interpolate(v1, t2);
+                    result.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), new GColourIndex(c09, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v3.clone(), i2, plane.clone(), new GColourIndex(c09, colour.getIndex())));
+                    result.add(new Triangle(df, i2.clone(), v1.clone(), i1.clone(), plane.clone(), new GColourIndex(c09, colour.getIndex())));
+                } else if (p3 == Location.BACK) { // BACK BACK BACK
+                    result.add(this);
+                } else { // BACK BACK COPLANAR
+                    result.add(this);
+                }
+            } else {
+                if (p3 == Location.FRONT) { // BACK COPLANAR FRONT
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    result.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), new GColourIndex(c10, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c10, colour.getIndex())));
+                } else if (p3 == Location.BACK) { // BACK COPLANAR BACK
+                    result.add(this);
+                } else { // BACK COPLANAR COPLANAR
+                    result.add(this);
+                }
+            }
+        } else {
+            if (p2 == Location.FRONT) {
+                if (p3 == Location.FRONT) { // COPLANAR FRONT FRONT
+                    result.add(this);
+                } else if (p3 == Location.BACK) { // COPLANAR FRONT BACK
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    result.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), new GColourIndex(c11, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c11, colour.getIndex())));
+                } else { // COPLANAR FRONT COPLANAR
+                    result.add(this);
+                }
+            } else if (p2 == Location.BACK) {
+                if (p3 == Location.FRONT) { // COPLANAR BACK FRONT
+                    t1 = p.getInterpolationFactorFromPoints(v1, v2);
+                    i1 = v1.interpolate(v2, t1);
+                    result.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), new GColourIndex(c12, colour.getIndex())));
+                    result.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c12, colour.getIndex())));
+                } else if (p3 == Location.BACK) { // COPLANAR BACK BACK
+                    result.add(this);
+                } else { // COPLANAR BACK COPLANAR
+                    result.add(this);
+                }
+            } else {
+                if (p3 == Location.FRONT) { // COPLANAR COPLANAR FRONT
+                    result.add(this);
+                } else if (p3 == Location.BACK) { // COPLANAR COPLANAR BACK
+                    result.add(this);
+                } else { // COPLANAR COPLANAR COPLANAR
+
+                    // FIXME result depends on CSG action
+
+
+
+                }
+            }
+        }
+
+        // FIXME Needs implementation!
+        return result;
     }
 
     public HashMap<GData3, Integer> toLDrawTriangle(GData1 parent) {
@@ -166,6 +341,26 @@ public class Triangle {
             boundsCache = result;
         }
         return result;
+    }
+
+    /**
+     * ONLY FOR DEBUGGING
+     * @return
+     */
+    @Deprecated
+    public boolean hasNaN() {
+        for (int i = 0; i < 3; i++) {
+            if (Double.isNaN(vertices[i].x)) {
+                return true;
+            }
+            if (Double.isNaN(vertices[i].y)) {
+                return true;
+            }
+            if (Double.isNaN(vertices[i].z)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override

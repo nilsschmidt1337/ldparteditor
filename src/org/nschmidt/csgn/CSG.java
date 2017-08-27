@@ -18,6 +18,7 @@ package org.nschmidt.csgn;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -34,8 +35,11 @@ public class CSG {
     TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
 
     private List<Triangle> triangles = new ArrayList<>();
-    private List<Triangle> intersectThis = new ArrayList<>();
-    private List<Triangle> intersectOther = new ArrayList<>();
+    private Set<Triangle> intersectThis = new HashSet<>();
+    private Set<Triangle> intersectOther = new HashSet<>();
+    private Set<Triangle> intersectOtherCopy = new HashSet<>();
+    private Set<Triangle> newTrianglesThis = new HashSet<>();
+    private Set<Triangle> newTrianglesOther = new HashSet<>();
     private List<Triangle> nonintersectInsideThis = new ArrayList<>();
     private List<Triangle> nonintersectInsideOther = new ArrayList<>();
     private List<Triangle> nonintersectOutsideThis = new ArrayList<>();
@@ -133,7 +137,7 @@ public class CSG {
     public CSG difference(CSG csg) {
         List<Triangle> newtriangles = new ArrayList<>();
         if (getBounds().intersects(csg.getBounds())) {
-            collisionCheck(csg);
+            collisionAndIntersectionCheck(csg);
             for (Triangle t : nonintersectInsideOther) {
                 newtriangles.add(t.clone().flip());
             }
@@ -147,7 +151,7 @@ public class CSG {
     public CSG intersect(CSG csg) {
         List<Triangle> newtriangles = new ArrayList<>();
         if (getBounds().intersects(csg.getBounds())) {
-            collisionCheck(csg);
+            collisionAndIntersectionCheck(csg);
             newtriangles.addAll(nonintersectInsideThis);
             newtriangles.addAll(nonintersectInsideOther);
         }
@@ -161,7 +165,7 @@ public class CSG {
     public CSG union(CSG csg) {
         List<Triangle> newtriangles = new ArrayList<>();
         if (getBounds().intersects(csg.getBounds())) {
-            collisionCheck(csg);
+            collisionAndIntersectionCheck(csg);
             newtriangles.addAll(nonintersectOutsideThis);
             newtriangles.addAll(nonintersectOutsideOther);
         } else {
@@ -188,7 +192,7 @@ public class CSG {
         return result;
     }
 
-    private void collisionCheck(CSG csg) {
+    private void collisionAndIntersectionCheck(CSG csg) {
         final Bounds tb = getBounds();
         final Bounds ob = csg.getBounds();
         final int size = triangles.size();
@@ -202,6 +206,9 @@ public class CSG {
 
         intersectThis.clear();
         intersectOther.clear();
+        intersectOtherCopy.clear();
+        newTrianglesThis.clear();
+        newTrianglesOther.clear();
 
         for (int i = 0; i < size; i++) {
             Triangle t = triangles.get(i);
@@ -244,6 +251,50 @@ public class CSG {
                 nonintersectInsideThis.add(t);
             } else {
                 nonintersectOutsideThis.add(t);
+            }
+        }
+
+        intersectOtherCopy.addAll(intersectOther);
+
+        for (Triangle t : intersectThis) {
+            final Plane tp = t.plane;
+            for (Triangle o : intersectOther) {
+                if (o.hasNaN()) continue;
+                newTrianglesOther.addAll(o.split(tp));
+            }
+            Set<Triangle> tmp = intersectOther;
+            intersectOther = newTrianglesOther;
+            tmp.clear();
+            newTrianglesOther = tmp;
+        }
+
+        for (Triangle o : intersectOtherCopy) {
+            final Plane op = o.plane;
+            for (Triangle t : intersectThis) {
+                if (t.hasNaN()) continue;
+                newTrianglesThis.addAll(t.split(op));
+            }
+            Set<Triangle> tmp = intersectThis;
+            intersectThis = newTrianglesThis;
+            tmp.clear();
+            newTrianglesThis = tmp;
+        }
+
+        for (Triangle t : intersectThis) {
+            if (t.hasNaN()) continue;
+            if (false && isInside(t)) {
+                nonintersectInsideThis.add(t);
+            } else {
+                nonintersectOutsideThis.add(t);
+            }
+        }
+
+        for (Triangle o : intersectOther) {
+            if (o.hasNaN()) continue;
+            if (false || isInside(o)) {
+                nonintersectInsideOther.add(o);
+            } else {
+                nonintersectOutsideOther.add(o);
             }
         }
     }
