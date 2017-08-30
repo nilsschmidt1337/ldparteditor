@@ -148,6 +148,7 @@ public class IntegerSpinner extends Composite {
                                 focus = txt_val[0].isFocusControl();
                             } catch (SWTException swte) {
                                 NLogger.debug(getClass(), swte);
+                                return;
                             }
                         });
                     }
@@ -202,6 +203,7 @@ public class IntegerSpinner extends Composite {
                                 focus = txt_val[0].isFocusControl();
                             } catch (SWTException swte) {
                                 NLogger.debug(getClass(), swte);
+                                return;
                             }
                         });
                         try {
