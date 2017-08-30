@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -32,6 +31,8 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 class VM06Edger2 extends VM05Distance {
+
+    private ArrayList<Vertex> verticesToCheck = new ArrayList<>();
 
     protected VM06Edger2(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -247,8 +248,9 @@ class VM06Edger2 extends VM05Distance {
         if (linkedDatFile.isReadOnly()) return;
 
         initBFCmap();
+        verticesToCheck.clear();
 
-        final BigDecimal ed = es.getEqualDistance();
+        final BigDecimal edsquare = es.getEqualDistance().multiply(es.getEqualDistance(), Threshold.mc);
         TreeMap<Vertex, Vertex> snap = new TreeMap<Vertex, Vertex>();
         TreeMap<Vertex, TreeSet<Vertex>> snapToOriginal = new TreeMap<Vertex, TreeSet<Vertex>>();
 
@@ -260,11 +262,7 @@ class VM06Edger2 extends VM05Distance {
         {
             Set<Vertex> allVerts = vertexLinkedToPositionInFile.keySet();
             for (Vertex vertex : allVerts) {
-                if (!snap.containsKey(vertex)) snap.put(vertex, new Vertex(
-                        vertex.X.subtract(vertex.X.remainder(ed, Threshold.mc)).setScale(ed.scale(), RoundingMode.HALF_UP),
-                        vertex.Y.subtract(vertex.Y.remainder(ed, Threshold.mc)).setScale(ed.scale(), RoundingMode.HALF_UP),
-                        vertex.Z.subtract(vertex.Z.remainder(ed, Threshold.mc)).setScale(ed.scale(), RoundingMode.HALF_UP)
-                        ));
+                if (!snap.containsKey(vertex)) snap.put(vertex, vertexWithinDist(edsquare, vertex.X, vertex.Y, vertex.Z));
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
@@ -277,10 +275,10 @@ class VM06Edger2 extends VM05Distance {
             for (GData2 g2 : lins) {
                 if (!g2.isLine) {
                     continue;
-                }    
+                }
                 Vertex[] verts = lines.get(g2);
                 AccurateEdge e1 = new AccurateEdge(snap.get(verts[0]), snap.get(verts[1]));
-                presentEdges.add(e1);            
+                presentEdges.add(e1);
             }
             Set<GData5> clins = condlines.keySet();
             for (GData5 g5 : clins) {
@@ -400,11 +398,7 @@ class VM06Edger2 extends VM05Distance {
         {
             Set<Vertex> allVerts = vertexLinkedToPositionInFile.keySet();
             for (Vertex vertex : allVerts) {
-                if (!snap.containsKey(vertex)) snap.put(vertex, new Vertex(
-                        vertex.X.subtract(vertex.X.remainder(ed, Threshold.mc)).setScale(ed.scale(), RoundingMode.HALF_UP),
-                        vertex.Y.subtract(vertex.Y.remainder(ed, Threshold.mc)).setScale(ed.scale(), RoundingMode.HALF_UP),
-                        vertex.Z.subtract(vertex.Z.remainder(ed, Threshold.mc)).setScale(ed.scale(), RoundingMode.HALF_UP)
-                        ));
+                if (!snap.containsKey(vertex)) snap.put(vertex, vertexWithinDist(edsquare, vertex.X, vertex.Y, vertex.Z));
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
@@ -539,11 +533,7 @@ class VM06Edger2 extends VM05Distance {
         {
             Set<Vertex> allVerts = vertexLinkedToPositionInFile.keySet();
             for (Vertex vertex : allVerts) {
-                if (!snap.containsKey(vertex)) snap.put(vertex, new Vertex(
-                        vertex.X.subtract(vertex.X.remainder(ed, Threshold.mc)).setScale(ed.scale(), RoundingMode.HALF_UP),
-                        vertex.Y.subtract(vertex.Y.remainder(ed, Threshold.mc)).setScale(ed.scale(), RoundingMode.HALF_UP),
-                        vertex.Z.subtract(vertex.Z.remainder(ed, Threshold.mc)).setScale(ed.scale(), RoundingMode.HALF_UP)
-                        ));
+                if (!snap.containsKey(vertex)) snap.put(vertex, vertexWithinDist(edsquare, vertex.X, vertex.Y, vertex.Z));
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
@@ -739,6 +729,7 @@ class VM06Edger2 extends VM05Distance {
             break;
         }
 
+        verticesToCheck.clear();
         disposeBFCmap();
 
         if (isModified()) {
@@ -746,6 +737,24 @@ class VM06Edger2 extends VM05Distance {
         }
         validateState();
 
+    }
+
+    private Vertex vertexWithinDist(BigDecimal edsquare, BigDecimal x, BigDecimal y, BigDecimal z) {
+        for (Vertex v : verticesToCheck) {
+            BigDecimal dx = v.X.subtract(x);
+            BigDecimal dy = v.Y.subtract(y);
+            BigDecimal dz = v.Z.subtract(z);
+            dx = dx.multiply(dx, Threshold.mc);
+            dy = dy.multiply(dy, Threshold.mc);
+            dz = dz.multiply(dz, Threshold.mc);
+            BigDecimal total_dist = dx.add(dy).add(dz);
+            if (total_dist.compareTo(edsquare) < 0) {
+                return v;
+            }
+        }
+        final Vertex result = new Vertex(x, y, z);
+        verticesToCheck.add(result);
+        return result;
     }
 
     private void initBFCmap() {
