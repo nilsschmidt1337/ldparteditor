@@ -15,7 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -250,7 +249,7 @@ class VM06Edger2 extends VM05Distance {
         initBFCmap();
         verticesToCheck.clear();
 
-        final BigDecimal edsquare = es.getEqualDistance().multiply(es.getEqualDistance(), Threshold.mc);
+        final double edsquare = es.getEqualDistance().multiply(es.getEqualDistance(), Threshold.mc).doubleValue() * 1E6;
         TreeMap<Vertex, Vertex> snap = new TreeMap<Vertex, Vertex>();
         TreeMap<Vertex, TreeSet<Vertex>> snapToOriginal = new TreeMap<Vertex, TreeSet<Vertex>>();
 
@@ -262,7 +261,7 @@ class VM06Edger2 extends VM05Distance {
         {
             Set<Vertex> allVerts = vertexLinkedToPositionInFile.keySet();
             for (Vertex vertex : allVerts) {
-                if (!snap.containsKey(vertex)) snap.put(vertex, vertexWithinDist(edsquare, vertex.X, vertex.Y, vertex.Z));
+                if (!snap.containsKey(vertex)) snap.put(vertex, vertexWithinDist(edsquare, vertex));
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
@@ -398,7 +397,7 @@ class VM06Edger2 extends VM05Distance {
         {
             Set<Vertex> allVerts = vertexLinkedToPositionInFile.keySet();
             for (Vertex vertex : allVerts) {
-                if (!snap.containsKey(vertex)) snap.put(vertex, vertexWithinDist(edsquare, vertex.X, vertex.Y, vertex.Z));
+                if (!snap.containsKey(vertex)) snap.put(vertex, vertexWithinDist(edsquare, vertex));
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
@@ -533,7 +532,7 @@ class VM06Edger2 extends VM05Distance {
         {
             Set<Vertex> allVerts = vertexLinkedToPositionInFile.keySet();
             for (Vertex vertex : allVerts) {
-                if (!snap.containsKey(vertex)) snap.put(vertex, vertexWithinDist(edsquare, vertex.X, vertex.Y, vertex.Z));
+                if (!snap.containsKey(vertex)) snap.put(vertex, vertexWithinDist(edsquare, vertex));
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
@@ -739,20 +738,20 @@ class VM06Edger2 extends VM05Distance {
 
     }
 
-    private Vertex vertexWithinDist(BigDecimal edsquare, BigDecimal x, BigDecimal y, BigDecimal z) {
+    private Vertex vertexWithinDist(double edsquare, Vertex ov) {
         for (Vertex v : verticesToCheck) {
-            BigDecimal dx = v.X.subtract(x);
-            BigDecimal dy = v.Y.subtract(y);
-            BigDecimal dz = v.Z.subtract(z);
-            dx = dx.multiply(dx, Threshold.mc);
-            dy = dy.multiply(dy, Threshold.mc);
-            dz = dz.multiply(dz, Threshold.mc);
-            BigDecimal total_dist = dx.add(dy).add(dz);
-            if (total_dist.compareTo(edsquare) < 0) {
+            double dx = v.x - ov.x;
+            double dy = v.y - ov.y;
+            double dz = v.z - ov.z;
+            dx = dx * dx;
+            dy = dy * dy;
+            dz = dz * dz;
+            double total_dist = dx + dy+ dz;
+            if (total_dist < edsquare) {
                 return v;
             }
         }
-        final Vertex result = new Vertex(x, y, z);
+        final Vertex result = new Vertex(ov.X, ov.Y, ov.Z);
         verticesToCheck.add(result);
         return result;
     }
