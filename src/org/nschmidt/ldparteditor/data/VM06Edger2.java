@@ -55,6 +55,7 @@ class VM06Edger2 extends VM05Distance {
                 // if v1 is connected with v2 draw a line from v1 to v2
                 if (isNeighbour(v1, v2)) {
                     addLine(v1, v2);
+                    return;
                 }
             }
         }
