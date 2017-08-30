@@ -157,7 +157,7 @@ public class BigDecimalSpinner extends Composite {
                 selectAll = false;
                 new Thread( () -> {
                     focus = true;
-                    while (focus) {
+                    while (focus && !txt_val[0].isDisposed()) {
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException ie) {}
@@ -234,7 +234,7 @@ public class BigDecimalSpinner extends Composite {
                 new Thread(() -> {
                     final int id = counter.getAndIncrement() + 1;
                     focus = true;
-                    while (focus && counter.compareAndSet(id, id) && !forceUpdate) {
+                    while (focus && counter.compareAndSet(id, id) && !forceUpdate && !txt_val[0].isDisposed()) {
                         Display.getDefault().asyncExec(() -> {
                             try  {
                                 focus = txt_val[0].isFocusControl();
