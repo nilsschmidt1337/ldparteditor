@@ -177,7 +177,7 @@ class CompositeTabDesign extends CTabItem {
 
                 Label lbl_ProblemCount = new Label(cmp_partProblems, SWT.NONE);
                 this.lbl_ProblemCount[0] = lbl_ProblemCount;
-                lbl_ProblemCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+                lbl_ProblemCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 5, 1));
                 lbl_ProblemCount.setText("0 " + I18n.EDITORTEXT_Errors + ", 0 " + I18n.EDITORTEXT_Warnings + ", 0 " + I18n.EDITORTEXT_Others + ", 0 " + I18n.EDITORTEXT_Duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
                 Tree tree = new Tree(cmp_partProblems, SWT.BORDER | SWT.MULTI, 128);
@@ -249,6 +249,7 @@ class CompositeTabDesign extends CTabItem {
 
                 NButton btn_Inspect = new NButton(cmp_partProblems, SWT.NONE);
                 this.btn_Inspect[0] = btn_Inspect;
+                btn_Inspect.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
                 btn_Inspect.setEnabled(false);
                 btn_Inspect.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
                 btn_Inspect.setText(I18n.COMPOSITETAB_Inspect);
