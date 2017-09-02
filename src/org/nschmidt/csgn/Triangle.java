@@ -17,6 +17,7 @@ package org.nschmidt.csgn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -133,7 +134,7 @@ public class Triangle {
     static final GColour c11 = View.getLDConfigColour(10);
     static final GColour c12 = View.getLDConfigColour(10);
 
-    public ArrayList<Triangle> split(Plane p) {
+    public List<Triangle> split(Plane p) {
         ArrayList<Triangle> result = new ArrayList<>(4);
 
         final Vector3d v1 = vertices[0];
@@ -370,5 +371,15 @@ public class Triangle {
     @Override
     public String toString() {
         return  this.vertices[0].toString() + "_" + this.vertices[1].toString() + "_" +  this.vertices[2] + " colour: " + colour.getColour(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+    }
+
+    public static List<Triangle> getFront() {
+        // FIXME Auto-generated method stub
+        return null;
+    }
+
+    public static List<Triangle> getBack() {
+        // FIXME Auto-generated method stub
+        return null;
     }
 }

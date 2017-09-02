@@ -432,20 +432,6 @@ class VM00Base {
         // Do not validate more stuff on release, since it costs a lot performance.
         if (!NLogger.DEBUG) return;
 
-        // TreeMap<Vertex, HashSet<VertexManifestation>>
-        // vertexLinkedToPositionInFile
-        // TreeMap<Vertex, HashSet<GData1>> vertexLinkedToSubfile
-        // HashMap<GData, HashSet<VertexInfo>> lineLinkedToVertices
-
-        // HashMap<GData1, Integer> vertexCountInSubfile
-
-        // HashMap<GData2, Vertex[]> lines
-        // HashMap<GData3, Vertex[]> triangles
-        // HashMap<GData4, Vertex[]> quads
-        // HashMap<GData5, Vertex[]> condlines
-
-        // TreeSet<Vertex> selectedVertices
-
         Set<Vertex> vertices = vertexLinkedToPositionInFile.keySet();
         Set<Vertex> verticesInUse = new TreeSet<Vertex>();
         for (GData0 line : declaredVertices.keySet()) {

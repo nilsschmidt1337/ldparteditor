@@ -259,27 +259,28 @@ public class CSG {
 
         intersectOtherCopy.addAll(intersectOther);
 
+        // Copy all polygons into the datastructure
+        initializePlanePolygons(intersectOther);
         for (Triangle t : intersectThis) {
             final Plane tp = t.plane;
-            for (Triangle o : intersectOther) {
-                newTrianglesOther.addAll(o.split(tp));
+            final List<Triangle> candidates = getPolygons(t);
+            for (Triangle o : candidates) {
+                o.split(tp);
             }
-            List<Triangle> tmp = intersectOther;
-            intersectOther = newTrianglesOther;
-            tmp.clear();
-            newTrianglesOther = tmp;
+            addNewNode(Triangle.getFront(), Triangle.getBack(), tp);
         }
 
+        initializePlanePolygons(intersectThis);
         for (Triangle o : intersectOtherCopy) {
             final Plane op = o.plane;
-            for (Triangle t : intersectThis) {
-                newTrianglesThis.addAll(t.split(op));
+            final List<Triangle> candidates = getPolygons(o);
+            for (Triangle t : candidates) {
+                t.split(op);
             }
-            List<Triangle> tmp = intersectThis;
-            intersectThis = newTrianglesThis;
-            tmp.clear();
-            newTrianglesThis = tmp;
+            addNewNode(Triangle.getFront(), Triangle.getBack(), op);
         }
+
+        clearPolygons();
 
         for (Triangle t : intersectThis) {
             if (csg.isProbablyInside(t)) {
@@ -296,6 +297,26 @@ public class CSG {
                 nonintersectOutsideOther.add(o);
             }
         }
+    }
+
+    private void addNewNode(List<Triangle> front, List<Triangle> back, Plane tp) {
+        // TODO Auto-generated method stub
+
+    }
+
+    private List<Triangle> getPolygons(Triangle t2) {
+        // FIXME Auto-generated method stub
+        return null;
+    }
+
+    private void clearPolygons() {
+        // FIXME Auto-generated method stub
+
+    }
+
+    private void initializePlanePolygons(List<Triangle> intersectOther2) {
+        // FIXME Auto-generated method stub
+
     }
 
     private boolean isProbablyInside(Triangle test) {
