@@ -18,6 +18,7 @@ package org.nschmidt.csgn;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -260,27 +261,53 @@ public class CSG {
         intersectOtherCopy.addAll(intersectOther);
 
         // Copy all polygons into the datastructure
-        initializePlanePolygons(intersectOther);
-        for (Triangle t : intersectThis) {
-            final Plane tp = t.plane;
-            final List<Triangle> candidates = getPolygons(t);
-            for (Triangle o : candidates) {
-                o.split(tp);
+
+
+        {
+            final Set<CSGNode> nodes = new TreeSet<CSGNode>();
+            final CSGNode top = new CSGNode(intersectOther);
+            nodes.add(top);
+            for (Triangle t : intersectThis) {
+                final CSGNode newNode = new CSGNode(t);
+                if (nodes.add(newNode)) {
+                    newNode.split();
+                } else {
+                    CSGNode.oldNode.splitOnExisting(newNode);
+                }
             }
-            addNewNode(Triangle.getFront(), Triangle.getBack(), tp);
+            final List<Triangle> newOther = new ArrayList<>();
+            for (CSGNode n : nodes) {
+                if (n != top) {
+                    newOther.addAll(n.getFront());
+                    newOther.addAll(n.getBack());
+                }
+            }
+            intersectOther.clear();
+            intersectOther.addAll(newOther);
         }
 
-        initializePlanePolygons(intersectThis);
-        for (Triangle o : intersectOtherCopy) {
-            final Plane op = o.plane;
-            final List<Triangle> candidates = getPolygons(o);
-            for (Triangle t : candidates) {
-                t.split(op);
+        {
+            final Set<CSGNode> nodes = new TreeSet<CSGNode>();
+            final CSGNode top = new CSGNode(intersectThis);
+            nodes.add(top);
+            for (Triangle t : intersectOtherCopy) {
+                final CSGNode newNode = new CSGNode(t);
+                if (nodes.add(newNode)) {
+                    newNode.split();
+                } else {
+                    CSGNode.oldNode.splitOnExisting(newNode);
+                }
             }
-            addNewNode(Triangle.getFront(), Triangle.getBack(), op);
+            final List<Triangle> newThis = new ArrayList<>();
+            for (CSGNode n : nodes) {
+                if (n != top) {
+                    newThis.addAll(n.getFront());
+                    newThis.addAll(n.getBack());
+                }
+            }
+            intersectThis.clear();
+            intersectThis.addAll(newThis);
         }
-
-        clearPolygons();
 
         for (Triangle t : intersectThis) {
             if (csg.isProbablyInside(t)) {
@@ -297,26 +324,6 @@ public class CSG {
                 nonintersectOutsideOther.add(o);
             }
         }
-    }
-
-    private void addNewNode(List<Triangle> front, List<Triangle> back, Plane tp) {
-        // TODO Auto-generated method stub
-
-    }
-
-    private List<Triangle> getPolygons(Triangle t2) {
-        // FIXME Auto-generated method stub
-        return null;
-    }
-
-    private void clearPolygons() {
-        // FIXME Auto-generated method stub
-
-    }
-
-    private void initializePlanePolygons(List<Triangle> intersectOther2) {
-        // FIXME Auto-generated method stub
-
     }
 
     private boolean isProbablyInside(Triangle test) {
