@@ -44,6 +44,8 @@ public class CSG {
     private List<Triangle> nonintersectInsideOther = new ArrayList<>();
     private List<Triangle> nonintersectOutsideThis = new ArrayList<>();
     private List<Triangle> nonintersectOutsideOther = new ArrayList<>();
+    private List<Triangle> nonintersectOther = new ArrayList<>();
+    private List<Triangle> nonintersectThis = new ArrayList<>();
     private Bounds boundsCache = null;
 
     private CSG() {
@@ -203,6 +205,8 @@ public class CSG {
         nonintersectInsideOther.clear();
         nonintersectOutsideThis.clear();
         nonintersectOutsideOther.clear();
+        nonintersectOther.clear();
+        nonintersectThis.clear();
 
         intersectThis.clear();
         intersectOther.clear();
@@ -242,27 +246,15 @@ public class CSG {
             if (otherIntersects) continue;
 
             intersectOther.add(o);
-
-            /*
-            if (isProbablyInside(o)) {
-                nonintersectInsideOther.add(o);
-            } else {
-                nonintersectOutsideOther.add(o);
-            }
-             */
+            nonintersectOther.add(o);
+            o.setUnbreakable(true);
         }
 
         for (int i = 0; i < size; i++) {
             if (nonboundsintersect[i] || intersect[i]) continue;
             Triangle t = triangles.get(i);
             intersectThis.add(t);
-            /*
-            if (csg.isProbablyInside(t)) {
-                nonintersectInsideThis.add(t);
-            } else {
-                nonintersectOutsideThis.add(t);
-            }
-             */
+            t.setUnbreakable(true);
         }
 
         intersectOtherCopy.addAll(intersectOther);
