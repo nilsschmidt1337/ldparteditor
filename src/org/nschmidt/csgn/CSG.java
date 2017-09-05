@@ -241,21 +241,30 @@ public class CSG {
             }
             if (otherIntersects) continue;
 
+            nonintersectInsideOther.add(o);
+            nonintersectOutsideOther.add(o);
+
+            /*
             if (isProbablyInside(o)) {
                 nonintersectInsideOther.add(o);
             } else {
                 nonintersectOutsideOther.add(o);
             }
+            */
         }
 
         for (int i = 0; i < size; i++) {
             if (nonboundsintersect[i] || intersect[i]) continue;
             Triangle t = triangles.get(i);
+            nonintersectInsideThis.add(t);
+            nonintersectOutsideThis.add(t);
+            /*
             if (csg.isProbablyInside(t)) {
                 nonintersectInsideThis.add(t);
             } else {
                 nonintersectOutsideThis.add(t);
             }
+            */
         }
 
         intersectOtherCopy.addAll(intersectOther);
@@ -310,6 +319,17 @@ public class CSG {
         }
 
         for (Triangle t : intersectThis) {
+            nonintersectInsideThis.add(t);
+            nonintersectOutsideThis.add(t);
+        }
+
+        for (Triangle o : intersectOther) {
+            nonintersectInsideOther.add(o);
+            nonintersectOutsideOther.add(o);
+        }
+
+        /*
+        for (Triangle t : intersectThis) {
             if (csg.isProbablyInside(t)) {
                 nonintersectInsideThis.add(t);
             } else {
@@ -324,6 +344,8 @@ public class CSG {
                 nonintersectOutsideOther.add(o);
             }
         }
+        */
+
     }
 
     private boolean isProbablyInside(Triangle test) {
