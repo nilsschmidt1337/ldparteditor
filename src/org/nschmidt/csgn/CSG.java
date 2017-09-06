@@ -254,6 +254,7 @@ public class CSG {
             if (nonboundsintersect[i] || intersect[i]) continue;
             Triangle t = triangles.get(i);
             intersectThis.add(t);
+            nonintersectThis.add(t);
             t.setUnbreakable(true);
         }
 
@@ -276,9 +277,21 @@ public class CSG {
             }
             for (CSGNode n : nodes) {
                 if (n != top) {
-                    nonintersectOutsideOther.addAll(n.getFront());
+                    /*
+                    if (n.isLeaf()) {
+                        nonintersectOutsideOther.addAll(n.getFront());
+                        nonintersectInsideOther.addAll(n.getBack());
+                    } else {
+                        nonintersectOutsideOther.addAll(n.getFront());
+                        nonintersectOutsideOther.addAll(n.getBack());
+                    }
+                    */
+                    nonintersectInsideOther.addAll(n.getFront());
                     nonintersectInsideOther.addAll(n.getBack());
+                    nonintersectOutsideOther.addAll(n.getFront());
+                    nonintersectOutsideOther.addAll(n.getBack());
                 }
+
             }
         }
 
@@ -296,8 +309,19 @@ public class CSG {
             }
             for (CSGNode n : nodes) {
                 if (n != top) {
-                    nonintersectOutsideThis.addAll(n.getFront());
+                    /*
+                    if (n.isLeaf()) {
+                        nonintersectOutsideThis.addAll(n.getFront());
+                        nonintersectInsideThis.addAll(n.getBack());
+                    } else {
+                        nonintersectOutsideThis.addAll(n.getFront());
+                        nonintersectOutsideThis.addAll(n.getBack());
+                    }
+                    */
+                    nonintersectInsideThis.addAll(n.getFront());
                     nonintersectInsideThis.addAll(n.getBack());
+                    nonintersectOutsideThis.addAll(n.getFront());
+                    nonintersectOutsideThis.addAll(n.getBack());
                 }
             }
         }
