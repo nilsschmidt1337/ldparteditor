@@ -119,7 +119,7 @@ class CSGNode implements Comparable<CSGNode> {
         }
         for (Triangle t : back) {
             Object[] splitResult = t.split(p);
-            newFront.addAll((List<Triangle>) splitResult[0]);
+            newBack.addAll((List<Triangle>) splitResult[0]);
             newBack.addAll((List<Triangle>) splitResult[1]);
         }
         front.clear();

@@ -525,7 +525,7 @@ public final class GDataCSGN extends GData {
                         }
                         break;
                     case CSG.QUALITY:
-                        quality = c3d != null && c3d.getManipulator().isModified() ? 12 : global_quality;
+                        quality = c3d != null && c3d.getManipulator().isModified() ? Math.min(12, global_quality) : global_quality;
                         break;
                     case CSG.EPSILON:
                         Plane.EPSILON = global_epsilon;

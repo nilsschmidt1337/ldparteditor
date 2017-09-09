@@ -290,7 +290,7 @@ public class Triangle {
                 } else if (p3 == Location.BACK) { // COPLANAR COPLANAR BACK
                     back.add(this);
                 } else { // COPLANAR COPLANAR COPLANAR
-                    // FIXME result depends on CSG action
+                    (p.normal.dot(plane.normal) > 0 ? front : back).add(this);
                 }
             }
         }
