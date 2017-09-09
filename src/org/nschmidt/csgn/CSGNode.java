@@ -28,7 +28,7 @@ class CSGNode implements Comparable<CSGNode> {
     private List<Triangle> back = null;
     private Triangle triangle;
     private static int lastSortResult;
-    private static List<Triangle> lastFront = null;
+    private static List<Triangle> lastSide = null;
     public static CSGNode oldNode = null;
     private final boolean isRoot;
 
@@ -74,10 +74,10 @@ class CSGNode implements Comparable<CSGNode> {
         backCount += loc3 == Location.BACK ? 1 : 0;
 
         if (o.isRoot || (frontCount > 0 && backCount == 0)) {
-            lastFront = o.front;
+            lastSide = o.front;
             lastSortResult = 1;
         } else if (backCount > 0 && frontCount == 0) {
-            lastFront = o.back;
+            lastSide = o.back;
             lastSortResult = -1;
         } else {
             lastSortResult = 0;
@@ -96,7 +96,7 @@ class CSGNode implements Comparable<CSGNode> {
         } else {
             final List<Triangle> newFront = new ArrayList<>();
             back = new ArrayList<>();
-            for (Iterator<Triangle> it = lastFront.iterator(); it.hasNext();) {
+            for (Iterator<Triangle> it = lastSide.iterator(); it.hasNext();) {
                 Triangle t = it.next();
                 Object[] splitResult = t.split(p);
                 newFront.addAll((List<Triangle>) splitResult[0]);
