@@ -21,6 +21,9 @@ import java.util.List;
 
 class CSGNode implements Comparable<CSGNode> {
 
+    private CSGNode frontNode = null;
+    private CSGNode backNode = null;
+
     private List<Triangle> front = null;
     private List<Triangle> back = null;
     private Triangle triangle;
@@ -62,10 +65,18 @@ class CSGNode implements Comparable<CSGNode> {
         final Location loc2 = tp.getPointLocation(verts[1]);
         final Location loc3 = tp.getPointLocation(verts[2]);
 
-        if (o.isRoot || (loc1 == Location.FRONT && loc2 == Location.FRONT && loc3 == Location.FRONT)) {
+        int frontCount = loc1 == Location.FRONT ? 1 : 0;
+        frontCount += loc2 == Location.FRONT ? 1 : 0;
+        frontCount += loc3 == Location.FRONT ? 1 : 0;
+
+        int backCount = loc1 == Location.BACK ? 1 : 0;
+        backCount += loc2 == Location.BACK ? 1 : 0;
+        backCount += loc3 == Location.BACK ? 1 : 0;
+
+        if (o.isRoot || (frontCount > 0 && backCount == 0)) {
             lastFront = o.front;
             lastSortResult = 1;
-        } else if (loc1 == Location.BACK && loc2 == Location.BACK && loc3 == Location.BACK) {
+        } else if (backCount > 0 && frontCount == 0) {
             lastFront = o.back;
             lastSortResult = -1;
         } else {
@@ -84,9 +95,8 @@ class CSGNode implements Comparable<CSGNode> {
             throw new AssertionError(""); //$NON-NLS-1$
         } else {
             final List<Triangle> newFront = new ArrayList<>();
-            front = lastFront;
             back = new ArrayList<>();
-            for (Iterator<Triangle> it = front.iterator(); it.hasNext();) {
+            for (Iterator<Triangle> it = lastFront.iterator(); it.hasNext();) {
                 Triangle t = it.next();
                 Object[] splitResult = t.split(p);
                 newFront.addAll((List<Triangle>) splitResult[0]);
@@ -109,13 +119,38 @@ class CSGNode implements Comparable<CSGNode> {
         }
         for (Triangle t : back) {
             Object[] splitResult = t.split(p);
-            newBack.addAll((List<Triangle>) splitResult[0]);
+            newFront.addAll((List<Triangle>) splitResult[0]);
             newBack.addAll((List<Triangle>) splitResult[1]);
         }
         front.clear();
         back.clear();
         back = newBack;
         front = newFront;
+    }
+
+    public boolean add(CSGNode newNode) {
+        // FIXME Remove recursion!
+
+        final int result = newNode.compareTo(this);
+        switch (result) {
+        case -1: // back
+            if (backNode == null) {
+                backNode = newNode;
+                return true;
+            } else {
+                return backNode.add(newNode);
+            }
+        case 1: // front
+            if (frontNode == null) {
+                frontNode = newNode;
+                return true;
+            } else {
+                return frontNode.add(newNode);
+            }
+        default:
+            break;
+        }
+        return false;
     }
 
 }

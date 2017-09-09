@@ -18,9 +18,7 @@ package org.nschmidt.csgn;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -264,64 +262,42 @@ public class CSG {
 
 
         {
-            final Set<CSGNode> nodes = new TreeSet<CSGNode>();
+            final List<CSGNode> nodes = new ArrayList<CSGNode>(intersectThis.size());
             final CSGNode top = new CSGNode(intersectOther);
-            nodes.add(top);
             for (Triangle t : intersectThis) {
                 final CSGNode newNode = new CSGNode(t);
-                if (nodes.add(newNode)) {
+                if (top.add(newNode)) {
                     newNode.split();
+                    nodes.add(newNode);
                 } else {
                     CSGNode.oldNode.splitOnExisting(newNode);
                 }
             }
             for (CSGNode n : nodes) {
                 if (n != top) {
-                    /*
-                    if (n.isLeaf()) {
-                        nonintersectOutsideOther.addAll(n.getFront());
-                        nonintersectInsideOther.addAll(n.getBack());
-                    } else {
-                        nonintersectOutsideOther.addAll(n.getFront());
-                        nonintersectOutsideOther.addAll(n.getBack());
-                    }
-                    */
-                    nonintersectInsideOther.addAll(n.getFront());
                     nonintersectInsideOther.addAll(n.getBack());
                     nonintersectOutsideOther.addAll(n.getFront());
-                    nonintersectOutsideOther.addAll(n.getBack());
                 }
 
             }
         }
 
         {
-            final Set<CSGNode> nodes = new TreeSet<CSGNode>();
+            final List<CSGNode> nodes = new ArrayList<CSGNode>(intersectOtherCopy.size());
             final CSGNode top = new CSGNode(intersectThis);
-            nodes.add(top);
             for (Triangle t : intersectOtherCopy) {
                 final CSGNode newNode = new CSGNode(t);
-                if (nodes.add(newNode)) {
+                if (top.add(newNode)) {
                     newNode.split();
+                    nodes.add(newNode);
                 } else {
                     CSGNode.oldNode.splitOnExisting(newNode);
                 }
             }
             for (CSGNode n : nodes) {
                 if (n != top) {
-                    /*
-                    if (n.isLeaf()) {
-                        nonintersectOutsideThis.addAll(n.getFront());
-                        nonintersectInsideThis.addAll(n.getBack());
-                    } else {
-                        nonintersectOutsideThis.addAll(n.getFront());
-                        nonintersectOutsideThis.addAll(n.getBack());
-                    }
-                    */
-                    nonintersectInsideThis.addAll(n.getFront());
                     nonintersectInsideThis.addAll(n.getBack());
                     nonintersectOutsideThis.addAll(n.getFront());
-                    nonintersectOutsideThis.addAll(n.getBack());
                 }
             }
         }

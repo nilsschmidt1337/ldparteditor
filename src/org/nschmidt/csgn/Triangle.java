@@ -120,20 +120,6 @@ public class Triangle {
         return this;
     }
 
-
-    static final GColour c01 = View.getLDConfigColour(1);
-    static final GColour c02 = View.getLDConfigColour(2);
-    static final GColour c03 = View.getLDConfigColour(3);
-    static final GColour c04 = View.getLDConfigColour(4);
-    static final GColour c05 = View.getLDConfigColour(5);
-    static final GColour c06 = View.getLDConfigColour(6);
-    static final GColour c07 = View.getLDConfigColour(7);
-    static final GColour c08 = View.getLDConfigColour(8);
-    static final GColour c09 = View.getLDConfigColour(9);
-    static final GColour c10 = View.getLDConfigColour(10);
-    static final GColour c11 = View.getLDConfigColour(10);
-    static final GColour c12 = View.getLDConfigColour(10);
-
     public Object[] split(Plane p) {
         ArrayList<Triangle> front = new ArrayList<>(4);
         ArrayList<Triangle> back = new ArrayList<>(4);
@@ -160,9 +146,9 @@ public class Triangle {
                     i1 = v2.interpolate(v3, t1);
                     t2 = p.getInterpolationFactorFromPoints(v3, v1);
                     i2 = v3.interpolate(v1, t2);
-                    front.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), new GColourIndex(c01, colour.getIndex()), this.unbreakable));
-                    front.add(new Triangle(df, i2.clone(), v1.clone(), i1.clone(), plane.clone(), new GColourIndex(c01, colour.getIndex()), this.unbreakable));
-                    back.add(new Triangle(df, i1.clone(), v3.clone(), i2, plane.clone(), new GColourIndex(c01, colour.getIndex()), this.unbreakable));
+                    front.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), colour, this.unbreakable));
+                    front.add(new Triangle(df, i2.clone(), v1.clone(), i1.clone(), plane.clone(), colour, this.unbreakable));
+                    back.add(new Triangle(df, i1.clone(), v3.clone(), i2, plane.clone(), colour, this.unbreakable));
                 } else { // FRONT FRONT COPLANAR
                     front.add(this);
                 }
@@ -172,25 +158,25 @@ public class Triangle {
                     i1 = v1.interpolate(v2, t1);
                     t2 = p.getInterpolationFactorFromPoints(v2, v3);
                     i2 = v2.interpolate(v3, t2);
-                    front.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), new GColourIndex(c02, colour.getIndex()), this.unbreakable));
-                    back.add(new Triangle(df, i1.clone(), v2.clone(), i2.clone(), plane.clone(), new GColourIndex(c02, colour.getIndex()), this.unbreakable));
-                    front.add(new Triangle(df, i2.clone(), v3.clone(), v1.clone(), plane.clone(), new GColourIndex(c02, colour.getIndex()), this.unbreakable));
+                    front.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), colour, this.unbreakable));
+                    back.add(new Triangle(df, i1.clone(), v2.clone(), i2.clone(), plane.clone(), colour, this.unbreakable));
+                    front.add(new Triangle(df, i2.clone(), v3.clone(), v1.clone(), plane.clone(), colour, this.unbreakable));
                 } else if (p3 == Location.BACK) { // FRONT BACK BACK
                     t1 = p.getInterpolationFactorFromPoints(v1, v2);
                     i1 = v1.interpolate(v2, t1);
                     t2 = p.getInterpolationFactorFromPoints(v3, v1);
                     i2 = v3.interpolate(v1, t2);
-                    front.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), new GColourIndex(c03, colour.getIndex()), this.unbreakable));
-                    back.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c03, colour.getIndex()), this.unbreakable));
-                    back.add(new Triangle(df, v3.clone(), i2.clone(), i1.clone(), plane.clone(), new GColourIndex(c03, colour.getIndex()), this.unbreakable));
+                    front.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), colour, this.unbreakable));
+                    back.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), colour, this.unbreakable));
+                    back.add(new Triangle(df, v3.clone(), i2.clone(), i1.clone(), plane.clone(), colour, this.unbreakable));
                 } else { // FRONT BACK COPLANAR
                     t1 = p.getInterpolationFactorFromPoints(v1, v2);
                     if (t1 < 0.001 || t1 > .999) {
                         front.add(this);
                     } else {
                         i1 = v1.interpolate(v2, t1);
-                        front.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), new GColourIndex(c04, colour.getIndex()), this.unbreakable));
-                        back.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c04, colour.getIndex()), this.unbreakable));
+                        front.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), colour, this.unbreakable));
+                        back.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), colour, this.unbreakable));
                     }
                 }
             } else {
@@ -202,8 +188,8 @@ public class Triangle {
                         front.add(this);
                     } else {
                         i1 = v3.interpolate(v1, t1);
-                        front.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), new GColourIndex(c05, colour.getIndex()), this.unbreakable));
-                        back.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c05, colour.getIndex()), this.unbreakable));
+                        front.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), colour, this.unbreakable));
+                        back.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), colour, this.unbreakable));
                     }
                 } else { // FRONT COPLANAR COPLANAR
                     front.add(this);
@@ -216,25 +202,25 @@ public class Triangle {
                     i1 = v1.interpolate(v2, t1);
                     t2 = p.getInterpolationFactorFromPoints(v3, v1);
                     i2 = v3.interpolate(v1, t2);
-                    back.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), new GColourIndex(c06, colour.getIndex()), this.unbreakable));
-                    front.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c06, colour.getIndex()), this.unbreakable));
-                    front.add(new Triangle(df, v3.clone(), i2.clone(), i1.clone(), plane.clone(), new GColourIndex(c06, colour.getIndex()), this.unbreakable));
+                    back.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), colour, this.unbreakable));
+                    front.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), colour, this.unbreakable));
+                    front.add(new Triangle(df, v3.clone(), i2.clone(), i1.clone(), plane.clone(), colour, this.unbreakable));
                 } else if (p3 == Location.BACK) { // BACK FRONT BACK
                     t1 = p.getInterpolationFactorFromPoints(v1, v2);
                     i1 = v1.interpolate(v2, t1);
                     t2 = p.getInterpolationFactorFromPoints(v2, v3);
                     i2 = v2.interpolate(v3, t2);
-                    back.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), new GColourIndex(c07, colour.getIndex()), this.unbreakable));
-                    front.add(new Triangle(df, i1.clone(), v2.clone(), i2.clone(), plane.clone(), new GColourIndex(c07, colour.getIndex()), this.unbreakable));
-                    back.add(new Triangle(df, i2.clone(), v3.clone(), v1.clone(), plane.clone(), new GColourIndex(c07, colour.getIndex()), this.unbreakable));
+                    back.add(new Triangle(df, v1.clone(), i1, i2, plane.clone(), colour, this.unbreakable));
+                    front.add(new Triangle(df, i1.clone(), v2.clone(), i2.clone(), plane.clone(), colour, this.unbreakable));
+                    back.add(new Triangle(df, i2.clone(), v3.clone(), v1.clone(), plane.clone(), colour, this.unbreakable));
                 } else { // BACK FRONT COPLANAR
                     t1 = p.getInterpolationFactorFromPoints(v1, v2);
                     if (t1 < 0.001 || t1 > .999) {
                         front.add(this);
                     } else {
                         i1 = v1.interpolate(v2, t1);
-                        back.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), new GColourIndex(c08, colour.getIndex()), this.unbreakable));
-                        front.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c08, colour.getIndex()), this.unbreakable));
+                        back.add(new Triangle(df, v1.clone(), i1, v3.clone(), plane.clone(), colour, this.unbreakable));
+                        front.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), colour, this.unbreakable));
                     }
                 }
             } else if (p2 == Location.BACK) {
@@ -243,9 +229,9 @@ public class Triangle {
                     i1 = v2.interpolate(v3, t1);
                     t2 = p.getInterpolationFactorFromPoints(v3, v1);
                     i2 = v3.interpolate(v1, t2);
-                    back.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), new GColourIndex(c09, colour.getIndex()), this.unbreakable));
-                    back.add(new Triangle(df, i2.clone(), v1.clone(), i1.clone(), plane.clone(), new GColourIndex(c09, colour.getIndex()), this.unbreakable));
-                    front.add(new Triangle(df, i1.clone(), v3.clone(), i2, plane.clone(), new GColourIndex(c09, colour.getIndex()), this.unbreakable));
+                    back.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), colour, this.unbreakable));
+                    back.add(new Triangle(df, i2.clone(), v1.clone(), i1.clone(), plane.clone(), colour, this.unbreakable));
+                    front.add(new Triangle(df, i1.clone(), v3.clone(), i2, plane.clone(), colour, this.unbreakable));
                 } else if (p3 == Location.BACK) { // BACK BACK BACK
                     back.add(this);
                 } else { // BACK BACK COPLANAR
@@ -258,8 +244,8 @@ public class Triangle {
                         front.add(this);
                     } else {
                         i1 = v3.interpolate(v1, t1);
-                        back.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), new GColourIndex(c10, colour.getIndex()), this.unbreakable));
-                        front.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), new GColourIndex(c10, colour.getIndex()), this.unbreakable));
+                        back.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), colour, this.unbreakable));
+                        front.add(new Triangle(df, i1.clone(), v2.clone(), v3.clone(), plane.clone(), colour, this.unbreakable));
                     }
                 } else if (p3 == Location.BACK) { // BACK COPLANAR BACK
                     back.add(this);
@@ -277,8 +263,8 @@ public class Triangle {
                         front.add(this);
                     } else {
                         i1 = v2.interpolate(v3, t1);
-                        front.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), new GColourIndex(c11, colour.getIndex()), this.unbreakable));
-                        back.add(new Triangle(df, i1.clone(), v3.clone(), v1.clone(), plane.clone(), new GColourIndex(c11, colour.getIndex()), this.unbreakable));
+                        front.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), colour, this.unbreakable));
+                        back.add(new Triangle(df, i1.clone(), v3.clone(), v1.clone(), plane.clone(), colour, this.unbreakable));
                     }
                 } else { // COPLANAR FRONT COPLANAR
                     front.add(this);
@@ -290,8 +276,8 @@ public class Triangle {
                         front.add(this);
                     } else {
                         i1 = v2.interpolate(v3, t1);
-                        back.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), new GColourIndex(c12, colour.getIndex()), this.unbreakable));
-                        front.add(new Triangle(df, i1.clone(), v3.clone(), v1.clone(), plane.clone(), new GColourIndex(c12, colour.getIndex()), this.unbreakable));
+                        back.add(new Triangle(df, v1.clone(), v2.clone(), i1, plane.clone(), colour, this.unbreakable));
+                        front.add(new Triangle(df, i1.clone(), v3.clone(), v1.clone(), plane.clone(), colour, this.unbreakable));
                     }
                 } else if (p3 == Location.BACK) { // COPLANAR BACK BACK
                     back.add(this);
