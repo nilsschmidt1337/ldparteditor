@@ -79,6 +79,14 @@ class CSGNode implements Comparable<CSGNode> {
         } else if (backCount > 0 && frontCount == 0) {
             lastSide = o.back;
             lastSortResult = -1;
+        } else if (frontCount == 0 && backCount == 0) {
+            if (tp.normal.dot(o.triangle.plane.normal) > 0) {
+                lastSide = o.front;
+                lastSortResult = 1;
+            } else {
+                lastSide = o.back;
+                lastSortResult = -1;
+            }
         } else {
             lastSortResult = 0;
             oldNode = o;
