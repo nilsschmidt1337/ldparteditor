@@ -18,6 +18,7 @@ package org.nschmidt.csgn;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Stack;
 import java.util.TreeMap;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -270,7 +271,32 @@ public class CSG {
                     newNode.split();
                     nodes.add(newNode);
                 } else {
-                    CSGNode.oldNode.splitOnExisting(newNode);
+                    final Stack<CSGNode> newElements = new Stack<>();
+                    newElements.push(newNode);
+                    boolean onlyDoOnce = false;
+                    while (!newElements.isEmpty()) {
+                        CSGNode n = newElements.pop();
+                        if (top.add(n)) {
+                            n.split();
+                            nodes.add(n);
+                            continue;
+                        }
+                        if (onlyDoOnce) continue;
+                        Object[] s = CSGNode.oldNode.splitOther(t);
+                        @SuppressWarnings("unchecked")
+                        List<Triangle> front = (List<Triangle>) s[0];
+                        @SuppressWarnings("unchecked")
+                        List<Triangle> back = (List<Triangle>) s[1];
+                        for (Triangle tmp : front) {
+                            newElements.push(new CSGNode(tmp));
+                            break;
+                        }
+                        for (Triangle tmp : back) {
+                            newElements.push(new CSGNode(tmp));
+                            break;
+                        }
+                        onlyDoOnce = true;
+                    }
                 }
             }
             for (CSGNode n : nodes) {
@@ -291,7 +317,32 @@ public class CSG {
                     newNode.split();
                     nodes.add(newNode);
                 } else {
-                    CSGNode.oldNode.splitOnExisting(newNode);
+                    final Stack<CSGNode> newElements = new Stack<>();
+                    newElements.push(newNode);
+                    boolean onlyDoOnce = false;
+                    while (!newElements.isEmpty()) {
+                        CSGNode n = newElements.pop();
+                        if (top.add(n)) {
+                            n.split();
+                            nodes.add(n);
+                            continue;
+                        }
+                        if (onlyDoOnce) continue;
+                        Object[] s = CSGNode.oldNode.splitOther(t);
+                        @SuppressWarnings("unchecked")
+                        List<Triangle> front = (List<Triangle>) s[0];
+                        @SuppressWarnings("unchecked")
+                        List<Triangle> back = (List<Triangle>) s[1];
+                        for (Triangle tmp : front) {
+                            newElements.push(new CSGNode(tmp));
+                            break;
+                        }
+                        for (Triangle tmp : back) {
+                            newElements.push(new CSGNode(tmp));
+                            break;
+                        }
+                        onlyDoOnce = true;
+                    }
                 }
             }
             for (CSGNode n : nodes) {

@@ -17,6 +17,7 @@ package org.nschmidt.csgn;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -121,8 +122,8 @@ public class Triangle {
     }
 
     public Object[] split(Plane p) {
-        ArrayList<Triangle> front = new ArrayList<>(4);
-        ArrayList<Triangle> back = new ArrayList<>(4);
+        final List<Triangle> front = new ArrayList<>(4);
+        final List<Triangle> back = new ArrayList<>(4);
 
         final Vector3d v1 = vertices[0];
         final Vector3d v2 = vertices[1];
@@ -294,7 +295,18 @@ public class Triangle {
                 }
             }
         }
+
+        front.removeIf(t -> t.isMalformed());
+        back.removeIf(t -> t.isMalformed());
+
         return new Object[]{front, back};
+    }
+
+    private boolean isMalformed() {
+        final boolean AisB = vertices[0].compareTo(vertices[1]) == 0;
+        final boolean BisC = vertices[1].compareTo(vertices[2]) == 0;
+        final boolean AisC = vertices[0].compareTo(vertices[2]) == 0;
+        return AisB || BisC || AisC;
     }
 
     public HashMap<GData3, Integer> toLDrawTriangle(GData1 parent) {

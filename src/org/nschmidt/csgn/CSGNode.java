@@ -58,8 +58,8 @@ class CSGNode implements Comparable<CSGNode> {
     @Override
     public int compareTo(CSGNode o) {
 
-        final Vector3d[] verts = o.triangle.vertices;
-        final Plane tp = triangle.plane;
+        final Vector3d[] verts = triangle.vertices;
+        final Plane tp = o.triangle.plane;
 
         final Location loc1 = tp.getPointLocation(verts[0]);
         final Location loc2 = tp.getPointLocation(verts[1]);
@@ -93,6 +93,10 @@ class CSGNode implements Comparable<CSGNode> {
         }
 
         return lastSortResult;
+    }
+
+    public Object[] splitOther(Triangle t) {
+        return t.split(triangle.plane);
     }
 
     @SuppressWarnings("unchecked")
