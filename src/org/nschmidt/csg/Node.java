@@ -203,16 +203,19 @@ final class Node {
      *
      * @return a list of all polygons in this BSP tree
      */
-    public List<Polygon> allPolygons() {
-        List<Polygon> localPolygons = new ArrayList<Polygon>(this.polygons);
+    public List<Polygon> allPolygons(List<Polygon> result) {
+
+        result.addAll(this.polygons);
+
         if (this.front != null) {
-            localPolygons.addAll(this.front.allPolygons());
-        }
-        if (this.back != null) {
-            localPolygons.addAll(this.back.allPolygons());
+            this.front.allPolygons(result);
         }
 
-        return localPolygons;
+        if (this.back != null) {
+            this.back.allPolygons(result);
+        }
+
+        return result;
     }
 
     /**

@@ -209,36 +209,6 @@ public class CSG {
      *
      * @return union of this csg and the specified csg
      */
-    /*public CSG union(CSG csg) {
-
-        List<Polygon> inner = new ArrayList<Polygon>();
-        List<Polygon> outer = new ArrayList<Polygon>();
-
-        Bounds bounds = csg.getBounds();
-
-        for (Polygon p : this.polygons) {
-            if (bounds.intersects(p.getBounds())) {
-                inner.add(p);
-            } else {
-                outer.add(p);
-            }
-        }
-
-        List<Polygon> allPolygons = new ArrayList<Polygon>();
-
-        if (!inner.isEmpty()) {
-            CSG innerCSG = CSG.fromPolygons(inner);
-
-            allPolygons.addAll(outer);
-            allPolygons.addAll(innerCSG._unionNoOpt(csg).polygons);
-        } else {
-            allPolygons.addAll(this.polygons);
-            allPolygons.addAll(csg.polygons);
-        }
-
-        return CSG.fromPolygons(allPolygons);
-    }*/
-
     public CSG union(CSG csg) {
 
         final List<Polygon> thisPolys = this.clone().polygons;
@@ -273,7 +243,7 @@ public class CSG {
         b.invert();
 
         Stack<NodePolygon> st = new Stack<>();
-        st.push(new NodePolygon(a, b.allPolygons()));
+        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
             List<NodePolygon> npr = np.getNode().build(np.getPolygons());
@@ -282,7 +252,7 @@ public class CSG {
             }
         }
 
-        final List<Polygon> resultPolys = a.allPolygons();
+        final List<Polygon> resultPolys = a.allPolygons(new ArrayList<>());
         resultPolys.addAll(nonIntersectingPolys);
 
         return CSG.fromPolygons(resultPolys);
@@ -317,32 +287,27 @@ public class CSG {
      */
     public CSG difference(CSG csg) {
 
-        List<Polygon> inner = new ArrayList<Polygon>();
-        List<Polygon> outer = new ArrayList<Polygon>();
+        final List<Polygon> thisPolys = this.clone().polygons;
+        final List<Polygon> otherPolys = csg.clone().polygons;
+        final Bounds thisBounds = this.getBounds();
+        final Bounds otherBounds = csg.getBounds();
 
-        Bounds bounds = csg.getBounds();
+        final List<Polygon> nonIntersectingPolys = new ArrayList<>();
 
-        for (Polygon p : this.polygons) {
-            if (bounds.intersects(p.getBounds())) {
-                inner.add(p);
-            } else {
-                outer.add(p);
-            }
-        }
+        thisPolys.removeIf((poly) -> {
+           final boolean result;
+           if (result = !otherBounds.intersects(poly.getBounds())) {
+               nonIntersectingPolys.add(poly);
+           }
+           return result;
+        });
 
-        CSG innerCSG = CSG.fromPolygons(inner);
+        otherPolys.removeIf((poly) -> {
+            return !thisBounds.intersects(poly.getBounds());
+        });
 
-        List<Polygon> allPolygons = new ArrayList<Polygon>();
-        allPolygons.addAll(outer);
-        allPolygons.addAll(innerCSG._differenceNoOpt(csg).polygons);
-
-        return CSG.fromPolygons(allPolygons);
-    }
-
-    private CSG _differenceNoOpt(CSG csg) {
-
-        Node a = new Node(this.clone().polygons);
-        Node b = new Node(csg.clone().polygons);
+        Node a = new Node(thisPolys);
+        Node b = new Node(otherPolys);
 
         a.invert();
         a.clipTo(b);
@@ -352,7 +317,7 @@ public class CSG {
         b.invert();
 
         Stack<NodePolygon> st = new Stack<>();
-        st.push(new NodePolygon(a, b.allPolygons()));
+        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
             List<NodePolygon> npr = np.getNode().build(np.getPolygons());
@@ -363,8 +328,10 @@ public class CSG {
 
         a.invert();
 
-        CSG csgA = CSG.fromPolygons(a.allPolygons());
-        return csgA;
+        final List<Polygon> resultPolys = a.allPolygons(new ArrayList<>());
+        resultPolys.addAll(nonIntersectingPolys);
+
+        return CSG.fromPolygons(resultPolys);
     }
 
     /**
@@ -404,10 +371,8 @@ public class CSG {
         a.clipTo(b);
         b.clipTo(a);
 
-        // a.build(b.allPolygons());
-
         Stack<NodePolygon> st = new Stack<>();
-        st.push(new NodePolygon(a, b.allPolygons()));
+        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
             List<NodePolygon> npr = np.getNode().build(np.getPolygons());
@@ -417,7 +382,7 @@ public class CSG {
         }
 
         a.invert();
-        return CSG.fromPolygons(a.allPolygons());
+        return CSG.fromPolygons(a.allPolygons(new ArrayList<>()));
     }
 
     /**
