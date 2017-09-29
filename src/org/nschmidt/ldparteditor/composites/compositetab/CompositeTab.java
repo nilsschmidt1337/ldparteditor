@@ -69,7 +69,7 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
 import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GData3;
-import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataCSGN;
 import org.nschmidt.ldparteditor.data.Rounder;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexInfo;
@@ -262,7 +262,7 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 }
 
-                isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
+                isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSGN.getSelection(df).contains(data);
                 syntaxFormatter.format(e,
                         state.getToReplaceX(), state.getToReplaceY(), state.getToReplaceZ(),
                         state.getReplaceEpsilon(), state.isReplacingVertex(), isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(),  df);

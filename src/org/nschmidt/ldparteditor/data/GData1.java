@@ -233,8 +233,8 @@ public final class GData1 extends GData {
                             res_gdata = new GDataBFC(gd6.type, this);
                             break;
                         case 8:
-                            GDataCSG gd8 = (GDataCSG) gdata;
-                            res_gdata = new GDataCSG(datFile, gd8.type, gd8.text, this);
+                            GDataCSGN gd8 = (GDataCSGN) gdata;
+                            res_gdata = new GDataCSGN(datFile, gd8.type, gd8.text, this);
                             break;
                         case 9:
                             GDataTEX gd9 = (GDataTEX) gdata;
@@ -2001,11 +2001,11 @@ public final class GData1 extends GData {
                 sb.append(lineBuilder5.toString() + "<br>"); //$NON-NLS-1$
                 break;
             case 8: // CSG Statement
-                GDataCSG g8 = (GDataCSG) gs;
+                GDataCSGN g8 = (GDataCSGN) gs;
                 byte csgType = g8.getCSGtype();
                 StringBuilder lineBuilder8 = new StringBuilder();
 
-                String line2 = ((GDataCSG) gs).text;
+                String line2 = ((GDataCSGN) gs).text;
                 line2 = line2.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                 String[] data_segments2 = line2.trim().split("\\s+"); //$NON-NLS-1$
 

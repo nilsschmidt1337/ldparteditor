@@ -23,7 +23,7 @@ import org.eclipse.swt.graphics.Point;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
-import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.GDataCSGN;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -63,8 +63,8 @@ public enum AnnotatorTexmap {
         final Set<GData> sd = datFile.getVertexManager().getSelectedData();
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
 
-        GDataCSG.resetCSG(datFile, false);
-        GDataCSG.forceRecompile(datFile);
+        GDataCSGN.resetCSG(datFile, false);
+        GDataCSGN.forceRecompile(datFile);
 
         lineEnd += 1;
         for (int line = lineStart; line < lineEnd; line++) {

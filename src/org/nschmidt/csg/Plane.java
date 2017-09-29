@@ -86,7 +86,7 @@ public class Plane {
      * @param dist
      *            distance from origin
      */
-    public Plane(Vector3d normal, double dist) {
+    Plane(Vector3d normal, double dist) {
         this.normal = normal;
         this.dist = dist;
     }

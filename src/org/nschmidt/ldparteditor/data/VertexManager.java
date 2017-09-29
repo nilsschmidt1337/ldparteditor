@@ -35,7 +35,7 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.csg.CSG;
+import org.nschmidt.csgn.CSG;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.ScalableComposite;
 import org.nschmidt.ldparteditor.enums.View;
@@ -635,7 +635,7 @@ public final class VertexManager extends VM99Clipboard {
                 GL11.glEnable(GL11.GL_LIGHTING);
         }
 
-        if (!selectedData.isEmpty() || GDataCSG.hasSelectionCSG(linkedDatFile)) {
+        if (!selectedData.isEmpty() || GDataCSGN.hasSelectionCSG(linkedDatFile)) {
 
             GL11.glPushMatrix();
 
@@ -837,12 +837,12 @@ public final class VertexManager extends VM99Clipboard {
 
             GL11.glPopMatrix();
 
-            if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
+            if (GDataCSGN.hasSelectionCSG(linkedDatFile)) {
                 if (!modifiedManipulator)
                     GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDisable(GL11.GL_LIGHTING);
-                GDataCSG.rebuildSelection(linkedDatFile);
-                GDataCSG.drawSelectionCSG(c3d, modifiedManipulator);
+                GDataCSGN.rebuildSelection(linkedDatFile);
+                GDataCSGN.drawSelectionCSG(c3d, modifiedManipulator);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 if (c3d.isLightOn())
                     GL11.glEnable(GL11.GL_LIGHTING);
@@ -899,7 +899,7 @@ public final class VertexManager extends VM99Clipboard {
             }
         }
 
-        for (CSG csg : GDataCSG.getCSGs(linkedDatFile)) {
+        for (CSG csg : GDataCSGN.getCSGs(linkedDatFile)) {
             for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
                 final GData3 triangle = pair.getKey();
 

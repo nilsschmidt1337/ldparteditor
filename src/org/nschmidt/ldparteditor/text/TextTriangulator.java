@@ -39,7 +39,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.nschmidt.delaunay.Pnt;
-import org.nschmidt.delaunay.Triangle;
+import org.nschmidt.delaunay.DTriangle;
 import org.nschmidt.delaunay.Triangulation;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GData;
@@ -284,7 +284,7 @@ public class TextTriangulator {
          * - (0,-1)
          */
         double TRISIZE = 100000d;
-        Triangle tri = new Triangle(new Pnt(-TRISIZE / 2.0, TRISIZE), new Pnt(+TRISIZE / 2.0, TRISIZE), new Pnt(0, -TRISIZE));
+        DTriangle tri = new DTriangle(new Pnt(-TRISIZE / 2.0, TRISIZE), new Pnt(+TRISIZE / 2.0, TRISIZE), new Pnt(0, -TRISIZE));
 
         // now add all triangles which are in the shape to the set
         Set<GData> finalTriangleSet = new HashSet<GData>();
@@ -306,7 +306,7 @@ public class TextTriangulator {
                 if (triangulation.size() > 4000 || monitor.isCanceled()) break;
             }
 
-            for (Triangle triangle : triangulation) {
+            for (DTriangle triangle : triangulation) {
 
                 if (monitor.isCanceled()) break;
 
@@ -584,7 +584,7 @@ public class TextTriangulator {
          * - (0,-1)
          */
         double TRISIZE = 100000d;
-        Triangle tri = new Triangle(new Pnt(-TRISIZE / 2.0, TRISIZE), new Pnt(+TRISIZE / 2.0, TRISIZE), new Pnt(0, -TRISIZE));
+        DTriangle tri = new DTriangle(new Pnt(-TRISIZE / 2.0, TRISIZE), new Pnt(+TRISIZE / 2.0, TRISIZE), new Pnt(0, -TRISIZE));
 
         // now add all triangles which are in the shape to the set
         Set<PGData3> finalTriangleSet = new HashSet<PGData3>();
@@ -604,7 +604,7 @@ public class TextTriangulator {
                 if (triangulation.size() > 4000) break;
             }
 
-            for (Triangle triangle : triangulation) {
+            for (DTriangle triangle : triangulation) {
                 Pnt point1 = triangle.get(0);
                 Pnt point2 = triangle.get(1);
                 Pnt point3 = triangle.get(2);

@@ -403,7 +403,7 @@ public class GL33ModelRenderer {
                         final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
                         final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
                         final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
-                        final ArrayList<GDataCSG> csgData = new ArrayList<>();
+                        final ArrayList<GDataCSGN> csgData = new ArrayList<>();
                         final boolean drawStudLogo = c3d.isShowingLogo();
                         final ArrayList<GDataPNG> pngImages = new ArrayList<>();
                         final ArrayList<GData2> tmpDistanceMeters = new ArrayList<>();
@@ -548,7 +548,7 @@ public class GL33ModelRenderer {
                         }
 
                         if (calculateCSG.compareAndSet(true, false)) {
-                            final ArrayList<GDataCSG> csgData2 = csgData;
+                            final ArrayList<GDataCSGN> csgData2 = csgData;
                             CompletableFuture.runAsync( () -> {
                                 // Do asynchronous CSG calculations here...
                                 int csgDataSize = 0;
@@ -558,13 +558,13 @@ public class GL33ModelRenderer {
                                 int csgSelectionVertexSize = 0;
 
                                 try {
-                                    GDataCSG.static_lock.lock();
-                                    GDataCSG.resetCSG(df, c3d.getManipulator().isModified());
+                                    GDataCSGN.static_lock.lock();
+                                    GDataCSGN.resetCSG(df, c3d.getManipulator().isModified());
                                     // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
-                                    GDataCSG.rebuildSelection(df);
-                                    HashSet<GData3> selection = GDataCSG.getSelectionData(df);
+                                    GDataCSGN.rebuildSelection(df);
+                                    HashSet<GData3> selection = GDataCSGN.getSelectionData(df);
                                     csgSelectionVertexSize += selection.size() * 6;
-                                    for (GDataCSG csg : csgData2) {
+                                    for (GDataCSGN csg : csgData2) {
                                         csg.drawAndParse(c3d, df, false);
                                         final int[] size = csg.getDataSize();
                                         csgDataSize += size[0];
@@ -598,7 +598,7 @@ public class GL33ModelRenderer {
                                         csgSelectionIndex -= 6;
                                     }
 
-                                    for (GDataCSG csg : csgData2) {
+                                    for (GDataCSGN csg : csgData2) {
                                         for (GData3 gd3 : csg.getSurfaces()) {
                                             final boolean transparent = gd3.a < 1f;
                                             int tempIndex = csgIndex;
@@ -680,7 +680,7 @@ public class GL33ModelRenderer {
                                 } catch (Exception ex) {
                                     NLogger.error(getClass(), ex);
                                 } finally {
-                                    GDataCSG.static_lock.unlock();
+                                    GDataCSGN.static_lock.unlock();
                                 }
                             });
                         }
@@ -2618,7 +2618,7 @@ public class GL33ModelRenderer {
     private boolean[] load_BFC_and_TEXMAP_info(
             final ArrayList<GDataAndWinding> dataInOrder,
             final ArrayList<GDataAndWinding> texmapDataInOrder,
-            final ArrayList<GDataCSG> csgData,
+            final ArrayList<GDataCSGN> csgData,
             final HashMap<GData, Vertex[]> vertexMap,
             final HashMap<GData1, Matrix4f> matrixMap, final DatFile df,
             final ThreadsafeHashMap<GData2, Vertex[]> lines,
@@ -2876,7 +2876,7 @@ public class GL33ModelRenderer {
                 continue;
             case 8:
                 if (!texmap) {
-                    csgData.add((GDataCSG) gd);
+                    csgData.add((GDataCSGN) gd);
                     hasCSG = true;
                 }
                 continue;

@@ -119,14 +119,14 @@ class VM19ColourChanger extends VM18LineConverter {
         for (GData5 gd : effSelectedCondlines)
             modData.add(changeColour(index, r, g, b, a, gd));
 
-        if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
+        if (GDataCSGN.hasSelectionCSG(linkedDatFile)) {
             ArrayList<GData> newSelection = new ArrayList<>();
-            for (GDataCSG gd : GDataCSG.getSelection(linkedDatFile))
+            for (GDataCSGN gd : GDataCSGN.getSelection(linkedDatFile))
                 newSelection.add(changeColour(index, r, g, b, a, gd));
             modData.addAll(newSelection);
-            GDataCSG.getSelection(linkedDatFile).clear();
+            GDataCSGN.getSelection(linkedDatFile).clear();
             for (GData gd : newSelection) {
-                GDataCSG.getSelection(linkedDatFile).add((GDataCSG) gd);
+                GDataCSGN.getSelection(linkedDatFile).add((GDataCSGN) gd);
             }
             setModified_NoSync();
         }
@@ -347,8 +347,8 @@ class VM19ColourChanger extends VM18LineConverter {
                 newGData = newGdata5;
                 break;
             case 8:
-                GDataCSG gdC = (GDataCSG) gData;
-                GDataCSG newGdataC = new GDataCSG(linkedDatFile, index, r, g, b, a, gdC);
+                GDataCSGN gdC = (GDataCSGN) gData;
+                GDataCSGN newGdataC = new GDataCSGN(linkedDatFile, index, r, g, b, a, gdC);
                 newData.add(newGdataC);
                 newGData = newGdataC;
                 break;

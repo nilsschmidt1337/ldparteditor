@@ -910,10 +910,10 @@ class VM03Adjacency extends VM02Add {
                 setModified_NoSync();
             }
 
-            if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
-                HashSet<GDataCSG> newCSGSelection = new HashSet<GDataCSG>();
+            if (GDataCSGN.hasSelectionCSG(linkedDatFile)) {
+                HashSet<GDataCSGN> newCSGSelection = new HashSet<GDataCSGN>();
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
-                for (GDataCSG csg : GDataCSG.getSelection(linkedDatFile)) {
+                for (GDataCSGN csg : GDataCSGN.getSelection(linkedDatFile)) {
                     if (csg.type == CSG.COMPILE || csg.type == CSG.QUALITY || csg.type == CSG.UNION || csg.type == CSG.DIFFERENCE || csg.type == CSG.INTERSECTION  || csg.type == CSG.EPSILON || csg.type == CSG.EXTRUDE_CFG) {
                         continue;
                     }
@@ -939,10 +939,10 @@ class VM03Adjacency extends VM02Add {
                     if (oldNumber != null)
                         drawPerLine.put(oldNumber, roundedCSG);
                     remove(csg);
-                    newCSGSelection.add((GDataCSG) roundedCSG);
+                    newCSGSelection.add((GDataCSGN) roundedCSG);
                 }
-                GDataCSG.getSelection(linkedDatFile).clear();
-                GDataCSG.getSelection(linkedDatFile).addAll(newCSGSelection);
+                GDataCSGN.getSelection(linkedDatFile).clear();
+                GDataCSGN.getSelection(linkedDatFile).addAll(newCSGSelection);
                 setModified_NoSync();
             }
 

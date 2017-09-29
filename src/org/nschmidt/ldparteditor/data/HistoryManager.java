@@ -424,8 +424,8 @@ public class HistoryManager {
         }
 
         df.parseForChanges(lines);
-        GDataCSG.resetCSG(df, false);
-        GDataCSG.forceRecompile(df);
+        GDataCSGN.resetCSG(df, false);
+        GDataCSGN.forceRecompile(df);
         Project.getUnsavedFiles().add(df);
         df.setText(fullText);
         boolean hasTextEditor = false;
