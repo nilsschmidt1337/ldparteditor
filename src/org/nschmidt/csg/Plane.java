@@ -68,6 +68,11 @@ public class Plane {
      */
     public static final Plane YZ_PLANE = new Plane(Vector3d.X_ONE, 1);
 
+    private static final int COPLANAR = 0;
+    private static final int FRONT = 1;
+    private static final int BACK = 2;
+    private static final int SPANNING = 3;
+
     /**
      * Normal vector.
      */
@@ -140,10 +145,6 @@ public class Plane {
      *            back polgons
      */
     public void splitPolygon(final Polygon polygon, List<Polygon> coplanarFront, List<Polygon> coplanarBack, List<Polygon> front, List<Polygon> back) {
-        final int COPLANAR = 0;
-        final int FRONT = 1;
-        final int BACK = 2;
-        final int SPANNING = 3;
 
         // Classify each point as well as the entire polygon into one of the
         // above
@@ -159,9 +160,6 @@ public class Plane {
             types[i] = type;
         }
 
-        final DatFile df = polygon.df;
-        final boolean doOptimize = GDataCSG.isInlining(df);
-
         // Put the polygon in the correct list, splitting it when necessary.
         switch (polygonType) {
         case COPLANAR:
@@ -174,8 +172,12 @@ public class Plane {
             back.add(polygon);
             break;
         case SPANNING:
-            List<Vector3d> f = new ArrayList<Vector3d>();
-            List<Vector3d> b = new ArrayList<Vector3d>();
+
+            final DatFile df = polygon.df;
+
+            final List<Vector3d> f = new ArrayList<Vector3d>(size);
+            final List<Vector3d> b = new ArrayList<Vector3d>(size);
+
             for (int i = 0; i < size; i++) {
                 int j = (i + 1) % size;
                 int ti = types[i];
@@ -194,10 +196,9 @@ public class Plane {
 
                     final Vector3d v = vi.interpolate(vj, t);
 
-                    if (doOptimize) {
+                    if (GDataCSG.isInlining(df)) {
                         GDataCSG.getNewPolyVertices(df).add(new Vector3d[]{vi.clone(), vj.clone(), v.clone()});
                     }
-
 
                     f.add(v);
                     b.add(v.clone());
