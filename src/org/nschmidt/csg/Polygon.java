@@ -159,8 +159,8 @@ public final class Polygon {
 
     public HashMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
         HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+        int dID = CSGPrimitive.id_counter.getAndIncrement();
         if (this.vertices.size() >= 3) {
-            int dID = CSGPrimitive.id_counter.getAndIncrement();
             final GColour c16 = View.getLDConfigColour(16);
             for (int i = 0; i < this.vertices.size() - 2; i++) {
                 org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(0).x, (float) this.vertices.get(0).y,
@@ -173,7 +173,8 @@ public final class Polygon {
                 if ((colour = this.colour) == null) {
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                 } else {
-                    result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
+                    // FIXME result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                 }
             }
         }
@@ -257,7 +258,8 @@ public final class Polygon {
                     if ((colour = this.colour) == null) {
                         result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                     } else {
-                        result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                        result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
+                        // FIXME result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                     }
                 }
 
@@ -293,7 +295,8 @@ public final class Polygon {
                     if ((colour = this.colour) == null) {
                         result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                     } else {
-                        result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                        result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
+                        // FIXME result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                     }
                 }
             }
@@ -442,7 +445,7 @@ public final class Polygon {
     /**
      * Returns the bounds of this polygon.
      *
-     * @return bouds of this polygon
+     * @return bounds of this polygon
      */
     public Bounds getBounds() {
         double minX = Double.POSITIVE_INFINITY;

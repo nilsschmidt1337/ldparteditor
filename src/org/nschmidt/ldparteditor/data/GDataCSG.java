@@ -490,7 +490,8 @@ public final class GDataCSG extends GData {
                         if (linkedCSG.containsKey(ref1)) {
                             compiledCSG = linkedCSG.get(ref1);
                             if (GDataCSG.isInlining(df)) {
-                                compiledCSG.compile_without_t_junctions(df);
+                                // FIXME compiledCSG.compile_without_t_junctions(df);
+                                compiledCSG.compile();
                             } else {
                                 compiledCSG.compile();
                             }
