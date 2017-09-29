@@ -113,6 +113,7 @@ public class CSG {
     TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
 
     private List<Polygon> polygons;
+    private Bounds bounds = null;
 
     private CSG() {
     }
@@ -208,7 +209,7 @@ public class CSG {
      *
      * @return union of this csg and the specified csg
      */
-    public CSG union(CSG csg) {
+    /*public CSG union(CSG csg) {
 
         List<Polygon> inner = new ArrayList<Polygon>();
         List<Polygon> outer = new ArrayList<Polygon>();
@@ -236,18 +237,40 @@ public class CSG {
         }
 
         return CSG.fromPolygons(allPolygons);
-    }
+    }*/
 
-    private CSG _unionNoOpt(CSG csg) {
-        Node a = new Node(this.clone().polygons);
-        Node b = new Node(csg.clone().polygons);
+    public CSG union(CSG csg) {
+
+        final List<Polygon> thisPolys = this.clone().polygons;
+        final List<Polygon> otherPolys = csg.clone().polygons;
+        final Bounds thisBounds = this.getBounds();
+        final Bounds otherBounds = csg.getBounds();
+
+        final List<Polygon> nonIntersectingPolys = new ArrayList<>();
+
+        thisPolys.removeIf((poly) -> {
+           final boolean result;
+           if (result = !otherBounds.intersects(poly.getBounds())) {
+               nonIntersectingPolys.add(poly);
+           }
+           return result;
+        });
+
+        otherPolys.removeIf((poly) -> {
+            final boolean result;
+            if (result = !thisBounds.intersects(poly.getBounds())) {
+                nonIntersectingPolys.add(poly);
+            }
+            return result;
+         });
+
+        Node a = new Node(thisPolys);
+        Node b = new Node(otherPolys);
         a.clipTo(b);
         b.clipTo(a);
         b.invert();
         b.clipTo(a);
         b.invert();
-
-        // a.build(b.allPolygons());
 
         Stack<NodePolygon> st = new Stack<>();
         st.push(new NodePolygon(a, b.allPolygons()));
@@ -259,7 +282,10 @@ public class CSG {
             }
         }
 
-        return CSG.fromPolygons(a.allPolygons());
+        final List<Polygon> resultPolys = a.allPolygons();
+        resultPolys.addAll(nonIntersectingPolys);
+
+        return CSG.fromPolygons(resultPolys);
     }
 
     /**
@@ -324,8 +350,6 @@ public class CSG {
         b.invert();
         b.clipTo(a);
         b.invert();
-
-        // a.build(b.allPolygons());
 
         Stack<NodePolygon> st = new Stack<>();
         st.push(new NodePolygon(a, b.allPolygons()));
@@ -621,44 +645,19 @@ public class CSG {
      * @return bouds of this csg
      */
     public Bounds getBounds() {
-        double minX = Double.POSITIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        double minZ = Double.POSITIVE_INFINITY;
-
-        double maxX = Double.NEGATIVE_INFINITY;
-        double maxY = Double.NEGATIVE_INFINITY;
-        double maxZ = Double.NEGATIVE_INFINITY;
-
-        for (Polygon p : getPolygons()) {
-
-            for (int i = 0; i < p.vertices.size(); i++) {
-
-                Vector3d vert = p.vertices.get(i);
-
-                if (vert.x < minX) {
-                    minX = vert.x;
+        Bounds result = bounds;
+        if (result == null) {
+            if (!polygons.isEmpty()) {
+                result = new Bounds();
+                for (Polygon t : polygons) {
+                    Bounds b = t.getBounds();
+                    result.union(b);
                 }
-                if (vert.y < minY) {
-                    minY = vert.y;
-                }
-                if (vert.z < minZ) {
-                    minZ = vert.z;
-                }
-
-                if (vert.x > maxX) {
-                    maxX = vert.x;
-                }
-                if (vert.y > maxY) {
-                    maxY = vert.y;
-                }
-                if (vert.z > maxZ) {
-                    maxZ = vert.z;
-                }
-
-            } // end for vertices
-
-        } // end for polygon
-
-        return new Bounds(new Vector3d(minX, minY, minZ), new Vector3d(maxX, maxY, maxZ));
+            } else {
+                result = new Bounds(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0));
+            }
+            bounds = result;
+        }
+        return result;
     }
 }
