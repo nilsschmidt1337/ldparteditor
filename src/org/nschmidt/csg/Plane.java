@@ -149,12 +149,14 @@ public class Plane {
         // above
         // four classes.
         int polygonType = 0;
-        List<Integer> types = new ArrayList<Integer>();
-        for (int i = 0; i < polygon.vertices.size(); i++) {
+        final int size = polygon.vertices.size();
+        final int[] types = new int[size];
+
+        for (int i = 0; i < size; i++) {
             double t = this.normal.dot(polygon.vertices.get(i)) - this.dist;
             int type = t < -Plane.EPSILON ? BACK : t > Plane.EPSILON ? FRONT : COPLANAR;
             polygonType |= type;
-            types.add(type);
+            types[i] = type;
         }
 
         final DatFile df = polygon.df;
@@ -163,7 +165,7 @@ public class Plane {
         // Put the polygon in the correct list, splitting it when necessary.
         switch (polygonType) {
         case COPLANAR:
-            (this.normal.dot(polygon.plane.normal) > 0 ? coplanarFront : coplanarBack).add(polygon);
+            (coplanarBack == coplanarFront || this.normal.dot(polygon.plane.normal) > 0 ? coplanarFront : coplanarBack).add(polygon);
             break;
         case FRONT:
             front.add(polygon);
@@ -174,10 +176,10 @@ public class Plane {
         case SPANNING:
             List<Vector3d> f = new ArrayList<Vector3d>();
             List<Vector3d> b = new ArrayList<Vector3d>();
-            for (int i = 0; i < polygon.vertices.size(); i++) {
-                int j = (i + 1) % polygon.vertices.size();
-                int ti = types.get(i);
-                int tj = types.get(j);
+            for (int i = 0; i < size; i++) {
+                int j = (i + 1) % size;
+                int ti = types[i];
+                int tj = types[j];
                 final Vector3d vi = polygon.vertices.get(i);
                 final Vector3d vj = polygon.vertices.get(j);
                 if (ti != BACK) {

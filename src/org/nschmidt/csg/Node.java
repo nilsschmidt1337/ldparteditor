@@ -74,8 +74,6 @@ final class Node {
     public Node(List<Polygon> polygons) {
         this.polygons = new ArrayList<Polygon>();
         if (polygons != null) {
-            // this.build(polygons);
-
             Stack<NodePolygon> st = new Stack<>();
             st.push(new NodePolygon(this, polygons));
             int it = 0;
@@ -94,7 +92,7 @@ final class Node {
      * Constructor. Creates a node without polygons.
      */
     public Node() {
-        this(null);
+        this.polygons = new ArrayList<Polygon>();
     }
 
     @Override
@@ -118,14 +116,15 @@ final class Node {
      */
     public void invert() {
 
-        for (Polygon polygon : this.polygons) {
-            polygon.flip();
-        }
 
         if (this.plane == null && !polygons.isEmpty()) {
             this.plane = polygons.get(0).plane.clone();
         } else if (this.plane == null && polygons.isEmpty()) {
-            throw new RuntimeException("Please fix me! I don't know what to do?"); //$NON-NLS-1$
+            return;
+        }
+
+        for (Polygon polygon : this.polygons) {
+            polygon.flip();
         }
 
         this.plane.flip();
@@ -177,8 +176,6 @@ final class Node {
         return frontP;
     }
 
-    // Remove all polygons in this BSP tree that are inside the other BSP tree
-    // `bsp`.
     /**
      * Removes all polygons in this BSP tree that are inside the specified BSP
      * tree ({@code bsp}).
@@ -228,18 +225,20 @@ final class Node {
      *            polygons used to build the BSP
      */
     public final List<NodePolygon> build(List<Polygon> polygons) {
+
+        final ArrayList<NodePolygon> result = new ArrayList<NodePolygon>(2);
+
         if (this.plane == null && !polygons.isEmpty()) {
             this.plane = polygons.get(0).plane.clone();
         } else if (this.plane == null && polygons.isEmpty()) {
-            throw new RuntimeException("Please fix me! I don't know what to do?"); //$NON-NLS-1$
+            return result;
         }
 
-        ArrayList<NodePolygon> result = new ArrayList<NodePolygon>(2);
 
         List<Polygon> frontP = new ArrayList<Polygon>();
         List<Polygon> backP = new ArrayList<Polygon>();
 
-        // parellel version does not work here
+        // parallel version does not work here
         for (Polygon polygon : polygons) {
             this.plane.splitPolygon(polygon, this.polygons, this.polygons, frontP, backP);
         }
@@ -251,7 +250,6 @@ final class Node {
                 this.back = new Node();
             }
             result.add(new NodePolygon(back, backP));
-            // this.back.build(backP);
         }
 
         if (frontP.size() > 0) {
@@ -259,9 +257,7 @@ final class Node {
                 this.front = new Node();
             }
             result.add(0, new NodePolygon(front, frontP));
-            // this.front.build(frontP);
         }
-
 
         return result;
     }
