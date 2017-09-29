@@ -296,8 +296,10 @@ public class Triangle {
             }
         }
 
+        /*
         front.removeIf(t -> t.isMalformed());
         back.removeIf(t -> t.isMalformed());
+         */
 
         return new Object[]{front, back};
     }

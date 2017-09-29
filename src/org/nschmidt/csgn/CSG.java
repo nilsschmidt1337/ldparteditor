@@ -304,7 +304,6 @@ public class CSG {
                     nonintersectInsideOther.addAll(n.getBack());
                     nonintersectOutsideOther.addAll(n.getFront());
                 }
-
             }
         }
 
