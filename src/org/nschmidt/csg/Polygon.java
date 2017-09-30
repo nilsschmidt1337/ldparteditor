@@ -146,17 +146,6 @@ public final class Polygon {
         return this;
     }
 
-    /**
-     * Returns a flipped copy of this polygon.
-     *
-     * <b>Note:</b> this polygon is not modified.
-     *
-     * @return a flipped copy of this polygon
-     */
-    public Polygon flipped() {
-        return clone().flip();
-    }
-
     public HashMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
         HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
         int dID = CSGPrimitive.id_counter.getAndIncrement();

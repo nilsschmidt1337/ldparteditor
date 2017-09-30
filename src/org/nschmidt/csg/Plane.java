@@ -68,10 +68,10 @@ public class Plane {
      */
     public static final Plane YZ_PLANE = new Plane(Vector3d.X_ONE, 1);
 
-    private static final int COPLANAR = 0;
-    private static final int FRONT = 1;
-    private static final int BACK = 2;
-    private static final int SPANNING = 3;
+    public static final int COPLANAR = 0;
+    public static final int FRONT = 1;
+    public static final int BACK = 2;
+    public static final int SPANNING = 3;
 
     /**
      * Normal vector.
@@ -125,6 +125,20 @@ public class Plane {
         dist = -dist;
     }
 
+    public int[] getTypes(final Polygon polygon) {
+        final int size = polygon.vertices.size();
+        final int[] types = new int[size + 1];
+        int polygonType = 0;
+        for (int i = 0; i < size; i++) {
+            double t = this.normal.dot(polygon.vertices.get(i)) - this.dist;
+            int type = t < -Plane.EPSILON ? BACK : t > Plane.EPSILON ? FRONT : COPLANAR;
+            polygonType |= type;
+            types[i] = type;
+        }
+        types[size] = polygonType;
+        return types;
+    }
+
     /**
      * Splits a {@link Polygon} by this plane if needed. After that it puts the
      * polygons or the polygon fragments in the appropriate lists ({@code front}
@@ -144,24 +158,15 @@ public class Plane {
      * @param back
      *            back polgons
      */
-    public void splitPolygon(final Polygon polygon, List<Polygon> coplanarFront, List<Polygon> coplanarBack, List<Polygon> front, List<Polygon> back) {
+    public void splitPolygon(final Polygon polygon, final int[] types, List<Polygon> coplanarFront, List<Polygon> coplanarBack, List<Polygon> front, List<Polygon> back) {
 
         // Classify each point as well as the entire polygon into one of the
         // above
         // four classes.
-        int polygonType = 0;
-        final int size = polygon.vertices.size();
-        final int[] types = new int[size];
-
-        for (int i = 0; i < size; i++) {
-            double t = this.normal.dot(polygon.vertices.get(i)) - this.dist;
-            int type = t < -Plane.EPSILON ? BACK : t > Plane.EPSILON ? FRONT : COPLANAR;
-            polygonType |= type;
-            types[i] = type;
-        }
-
         // Put the polygon in the correct list, splitting it when necessary.
-        switch (polygonType) {
+
+        final int size = polygon.vertices.size();
+        switch (types[types.length - 1]) {
         case COPLANAR:
             (coplanarBack == coplanarFront || this.normal.dot(polygon.plane.normal) > 0 ? coplanarFront : coplanarBack).add(polygon);
             break;
