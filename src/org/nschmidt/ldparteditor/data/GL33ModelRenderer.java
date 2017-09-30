@@ -547,6 +547,29 @@ public class GL33ModelRenderer {
                             vertexNormals = null;
                         }
 
+                        // CSG Selection
+                        int csgSelectionVertexSize = 0;
+                        final float[] tmpCsgSelectionData;
+                        {
+                            int csgSelectionIndex = 0;
+                            HashSet<GData3> selection = GDataCSG.getSelectionData(df);
+                            csgSelectionVertexSize += selection.size() * 6;
+                            tmpCsgSelectionData = new float[csgSelectionVertexSize * 7];
+                            for (GData3 gd3 : selection) {
+                                pointAt7(0, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
+                                pointAt7(1, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
+                                pointAt7(2, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
+                                pointAt7(3, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
+                                pointAt7(4, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
+                                pointAt7(5, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
+                                colourise7(0, 6, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, tmpCsgSelectionData, csgSelectionIndex);
+                                csgSelectionIndex += 6;
+                            }
+                            if (csgSelectionIndex > 0) {
+                                csgSelectionIndex -= 6;
+                            }
+                        }
+
                         if (calculateCSG.compareAndSet(true, false)) {
                             final ArrayList<GDataCSG> csgData2 = csgData;
                             CompletableFuture.runAsync( () -> {
@@ -555,15 +578,12 @@ public class GL33ModelRenderer {
                                 int csgSolidVertexCount = 0;
                                 int csgTransVertexCount = 0;
 
-                                int csgSelectionVertexSize = 0;
 
                                 try {
                                     GDataCSG.static_lock.lock();
                                     GDataCSG.resetCSG(df, c3d.getManipulator().isModified());
                                     // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
                                     GDataCSG.rebuildSelection(df);
-                                    HashSet<GData3> selection = GDataCSG.getSelectionData(df);
-                                    csgSelectionVertexSize += selection.size() * 6;
                                     for (GDataCSG csg : csgData2) {
                                         csg.drawAndParse(c3d, df, false);
                                         final int[] size = csg.getDataSize();
@@ -571,9 +591,7 @@ public class GL33ModelRenderer {
                                         csgSolidVertexCount += size[1];
                                         csgTransVertexCount += size[2];
                                     }
-                                    final float[] tmpCsgSelectionData = new float[csgSelectionVertexSize * 7];
                                     int csgIndex = 0;
-                                    int csgSelectionIndex = 0;
                                     int transparentCSGindex = csgSolidVertexCount;
                                     float[] tmpCsgData = new float[csgDataSize];
                                     // Fill array here!
@@ -583,20 +601,6 @@ public class GL33ModelRenderer {
                                             new Vector4f(0f, 0f, 0f, 1f),
                                             new Vector4f(0f, 0f, 0f, 1f)
                                     };
-
-                                    for (GData3 gd3 : selection) {
-                                        pointAt7(0, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
-                                        pointAt7(1, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
-                                        pointAt7(2, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
-                                        pointAt7(3, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
-                                        pointAt7(4, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
-                                        pointAt7(5, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
-                                        colourise7(0, 6, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, tmpCsgSelectionData, csgSelectionIndex);
-                                        csgSelectionIndex += 6;
-                                    }
-                                    if (csgSelectionIndex > 0) {
-                                        csgSelectionIndex -= 6;
-                                    }
 
                                     for (GDataCSG csg : csgData2) {
                                         for (GData3 gd3 : csg.getSurfaces()) {
@@ -673,8 +677,6 @@ public class GL33ModelRenderer {
                                     solidCSGsize= csgIndex;
                                     transparentCSGoffset = csgIndex;
                                     transparentCSGsize = csgTransVertexCount;
-                                    dataSelectionCSG = tmpCsgSelectionData;
-                                    selectionCSGsize = csgSelectionVertexSize;
                                     lock.unlock();
                                     calculateCSG.set(true);
                                 } catch (Exception ex) {
@@ -2161,6 +2163,8 @@ public class GL33ModelRenderer {
                         dataTempLines = tempLineData;
                         selectionSize = selectionLineVertexCount;
                         dataSelectionLines = selectionLineData;
+                        dataSelectionCSG = tmpCsgSelectionData;
+                        selectionCSGsize = csgSelectionVertexSize;
                         lock.unlock();
 
                         /* if (NLogger.DEBUG) {
