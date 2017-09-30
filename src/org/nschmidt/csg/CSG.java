@@ -41,6 +41,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ForkJoinPool;
 
@@ -234,8 +235,22 @@ public class CSG {
             return result;
          });
 
-        Node a = new Node(thisPolys);
-        Node b = new Node(otherPolys);
+        CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(thisPolys));
+        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
+        CompletableFuture.allOf(f1, f2).join();
+
+        Node a = null;
+        Node b = null;
+
+        try {
+            a = f1.get();
+            b = f2.get();
+        } catch (ExecutionException e) {
+            NLogger.error(getClass(), e);
+        } catch (InterruptedException e) {
+            NLogger.error(getClass(), e);
+        }
+
         a.clipTo(b);
         b.clipTo(a);
         b.invert();
@@ -306,8 +321,21 @@ public class CSG {
             return !thisBounds.intersects(poly.getBounds());
         });
 
-        Node a = new Node(thisPolys);
-        Node b = new Node(otherPolys);
+        CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(thisPolys));
+        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
+        CompletableFuture.allOf(f1, f2).join();
+
+        Node a = null;
+        Node b = null;
+
+        try {
+            a = f1.get();
+            b = f2.get();
+        } catch (ExecutionException e) {
+            NLogger.error(getClass(), e);
+        } catch (InterruptedException e) {
+            NLogger.error(getClass(), e);
+        }
 
         a.invert();
         a.clipTo(b);
@@ -363,8 +391,23 @@ public class CSG {
      * @return intersection of this csg and the specified csg
      */
     public CSG intersect(CSG csg) {
-        Node a = new Node(this.clone().polygons);
-        Node b = new Node(csg.clone().polygons);
+
+        CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(this.clone().polygons));
+        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(csg.clone().polygons));
+        CompletableFuture.allOf(f1, f2).join();
+
+        Node a = null;
+        Node b = null;
+
+        try {
+            a = f1.get();
+            b = f2.get();
+        } catch (ExecutionException e) {
+            NLogger.error(getClass(), e);
+        } catch (InterruptedException e) {
+            NLogger.error(getClass(), e);
+        }
+
         a.invert();
         b.clipTo(a);
         b.invert();
