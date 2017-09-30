@@ -459,9 +459,9 @@ public class CSG {
             forkJoinPool.submit(() -> {
                 this.polygons.parallelStream().forEach((poly) -> {
                     poly.vertices = new ArrayList<>(poly.vertices);
-                    ArrayList<Vector3d> vertices = new ArrayList<>();
-                    for (Vector3d v1 :  poly.vertices) {
-                        for (Vector3d v2 :  poly.vertices) {
+                    ArrayList<VectorCSGd> vertices = new ArrayList<>();
+                    for (VectorCSGd v1 :  poly.vertices) {
+                        for (VectorCSGd v2 :  poly.vertices) {
                             if (v1 != v2) {
                                 if (v1.minus(v2).magnitude() < 0.01) {
                                     if (!vertices.contains(v2)) vertices.add(v1);
@@ -482,15 +482,15 @@ public class CSG {
         // 1. The interpolation has to be propagated to other polygons
         // This process can be done in parallel, since the polygons are independent from each other.
 
-        final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
+        final List<VectorCSGd[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
         try {
             forkJoinPool.submit(() -> {
                 this.polygons.parallelStream().forEach((poly) -> {
-                    final List<Vector3d> verts = poly.vertices;
-                    for (Vector3d[] split : splitList) {
-                        final Vector3d vi = split[0];
-                        final Vector3d vj = split[1];
-                        final Vector3d v = split[2];
+                    final List<VectorCSGd> verts = poly.vertices;
+                    for (VectorCSGd[] split : splitList) {
+                        final VectorCSGd vi = split[0];
+                        final VectorCSGd vj = split[1];
+                        final VectorCSGd v = split[2];
                         final int size = verts.size();
                         for (int k = 0; k < size; k++) {
                             int l = (k + 1) % size;
@@ -514,28 +514,28 @@ public class CSG {
         // 2. Find and fix T-Junctions
         // This process can be done in parallel, since the polygons are independent from each other.
 
-        final List<Vector3d> allVerts;
+        final List<VectorCSGd> allVerts;
         {
-            final Set<Vector3d> allVertsSet = new HashSet<Vector3d>();
+            final Set<VectorCSGd> allVertsSet = new HashSet<VectorCSGd>();
             this.polygons.stream().forEach((poly) -> {
                 allVertsSet.addAll(poly.vertices);
             });
-            allVerts = Collections.synchronizedList(new ArrayList<Vector3d>(allVertsSet));
+            allVerts = Collections.synchronizedList(new ArrayList<VectorCSGd>(allVertsSet));
         }
 
         // Find T-Junctions
         try {
             forkJoinPool.submit(() -> {
                 this.polygons.parallelStream().forEach((poly) -> {
-                    final List<Vector3d> verts = poly.vertices;
+                    final List<VectorCSGd> verts = poly.vertices;
                     double min_dist = Double.MAX_VALUE;
-                    for (Vector3d v : allVerts) {
+                    for (VectorCSGd v : allVerts) {
                         final int size = verts.size();
                         for (int k = 0; k < size; k++) {
                             int l = (k + 1) % size;
 
-                            Vector3d a = verts.get(k);
-                            Vector3d b = verts.get(l);
+                            VectorCSGd a = verts.get(k);
+                            VectorCSGd b = verts.get(l);
 
                             if (a.minus(v).magnitude() > 0.01 && b.minus(v).magnitude() > 0.01) {
                                 double dist = MathHelper.getNearestPointToLineSegmentCSG(a.x, a.y, a.z, b.x, b.y, b.z, v.x, v.y, v.z).minus(v).magnitude();
@@ -662,7 +662,7 @@ public class CSG {
                     result.union(b);
                 }
             } else {
-                result = new Bounds(new Vector3d(0, 0, 0), new Vector3d(0, 0, 0));
+                result = new Bounds(new VectorCSGd(0, 0, 0), new VectorCSGd(0, 0, 0));
             }
             bounds = result;
         }

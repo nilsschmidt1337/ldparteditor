@@ -58,15 +58,15 @@ public class Plane {
     /**
      * XY plane.
      */
-    public static final Plane XY_PLANE = new Plane(Vector3d.Z_ONE, 1);
+    public static final Plane XY_PLANE = new Plane(VectorCSGd.Z_ONE, 1);
     /**
      * XZ plane.
      */
-    public static final Plane XZ_PLANE = new Plane(Vector3d.Y_ONE, 1);
+    public static final Plane XZ_PLANE = new Plane(VectorCSGd.Y_ONE, 1);
     /**
      * YZ plane.
      */
-    public static final Plane YZ_PLANE = new Plane(Vector3d.X_ONE, 1);
+    public static final Plane YZ_PLANE = new Plane(VectorCSGd.X_ONE, 1);
 
     public static final int COPLANAR = 0;
     public static final int FRONT = 1;
@@ -76,7 +76,7 @@ public class Plane {
     /**
      * Normal vector.
      */
-    public Vector3d normal;
+    public VectorCSGd normal;
     /**
      * Distance to origin.
      */
@@ -91,7 +91,7 @@ public class Plane {
      * @param dist
      *            distance from origin
      */
-    public Plane(Vector3d normal, double dist) {
+    public Plane(VectorCSGd normal, double dist) {
         this.normal = normal;
         this.dist = dist;
     }
@@ -107,8 +107,8 @@ public class Plane {
      *            third point
      * @return a nedist plane
      */
-    public static Plane createFromPoints(Vector3d a, Vector3d b, Vector3d c) {
-        Vector3d n = b.minus(a).cross(c.minus(a)).unit();
+    public static Plane createFromPoints(VectorCSGd a, VectorCSGd b, VectorCSGd c) {
+        VectorCSGd n = b.minus(a).cross(c.minus(a)).unit();
         return new Plane(n, n.dot(a));
     }
 
@@ -180,15 +180,15 @@ public class Plane {
 
             final DatFile df = polygon.df;
 
-            final List<Vector3d> f = new ArrayList<Vector3d>(size);
-            final List<Vector3d> b = new ArrayList<Vector3d>(size);
+            final List<VectorCSGd> f = new ArrayList<VectorCSGd>(size);
+            final List<VectorCSGd> b = new ArrayList<VectorCSGd>(size);
 
             for (int i = 0; i < size; i++) {
                 int j = (i + 1) % size;
                 int ti = types[i];
                 int tj = types[j];
-                final Vector3d vi = polygon.vertices.get(i);
-                final Vector3d vj = polygon.vertices.get(j);
+                final VectorCSGd vi = polygon.vertices.get(i);
+                final VectorCSGd vj = polygon.vertices.get(j);
                 if (ti != BACK) {
                     f.add(vi);
                 }
@@ -199,7 +199,7 @@ public class Plane {
 
                     double t = (this.dist - this.normal.dot(vi)) / this.normal.dot(vj.minus(vi));
 
-                    final Vector3d v = vi.interpolate(vj, t);
+                    final VectorCSGd v = vi.interpolate(vj, t);
 
                     f.add(v);
                     b.add(v.clone());
@@ -257,15 +257,15 @@ public class Plane {
 
             final DatFile df = polygon.df;
 
-            final List<Vector3d> f = new ArrayList<Vector3d>(size);
-            final List<Vector3d> b = new ArrayList<Vector3d>(size);
+            final List<VectorCSGd> f = new ArrayList<VectorCSGd>(size);
+            final List<VectorCSGd> b = new ArrayList<VectorCSGd>(size);
 
             for (int i = 0; i < size; i++) {
                 int j = (i + 1) % size;
                 int ti = types[i];
                 int tj = types[j];
-                final Vector3d vi = polygon.vertices.get(i);
-                final Vector3d vj = polygon.vertices.get(j);
+                final VectorCSGd vi = polygon.vertices.get(i);
+                final VectorCSGd vj = polygon.vertices.get(j);
                 if (ti != BACK) {
                     f.add(vi);
                 }
@@ -276,10 +276,10 @@ public class Plane {
 
                     double t = (this.dist - this.normal.dot(vi)) / this.normal.dot(vj.minus(vi));
 
-                    final Vector3d v = vi.interpolate(vj, t);
+                    final VectorCSGd v = vi.interpolate(vj, t);
 
                     if (GDataCSG.isInlining(df)) {
-                        GDataCSG.getNewPolyVertices(df).add(new Vector3d[]{vi.clone(), vj.clone(), v.clone()});
+                        GDataCSG.getNewPolyVertices(df).add(new VectorCSGd[]{vi.clone(), vj.clone(), v.clone()});
                     }
 
                     f.add(v);

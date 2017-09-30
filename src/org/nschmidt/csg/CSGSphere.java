@@ -49,7 +49,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
 
     public final int ID = id_counter.getAndIncrement();
 
-    private Vector3d center;
+    private VectorCSGd center;
     private double radius;
     private int numSlices;
     private int numStacks;
@@ -85,23 +85,23 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
      *            number of stacks
      */
     public CSGSphere(int numSlices, int numStacks) {
-        this.center = new Vector3d(0, 0, 0);
+        this.center = new VectorCSGd(0, 0, 0);
         this.radius = 1000d;
         this.numSlices = numSlices;
         this.numStacks = numStacks;
     }
 
     private void init() {
-        center = new Vector3d(0, 0, 0);
+        center = new VectorCSGd(0, 0, 0);
         radius = 1000d;
         numSlices = 16;
         numStacks = 8;
     }
 
-    private Vector3d sphereVertex(Vector3d c, double r, double theta, double phi) {
+    private VectorCSGd sphereVertex(VectorCSGd c, double r, double theta, double phi) {
         theta *= Math.PI * 2;
         phi *= Math.PI;
-        Vector3d dir = new Vector3d(Math.cos(theta) * Math.sin(phi), Math.cos(phi), Math.sin(theta) * Math.sin(phi));
+        VectorCSGd dir = new VectorCSGd(Math.cos(theta) * Math.sin(phi), Math.cos(phi), Math.sin(theta) * Math.sin(phi));
         return c.plus(dir.times(r));
     }
 
@@ -110,7 +110,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
         List<Polygon> polygons = new ArrayList<Polygon>();
         for (int i = 0; i < numSlices; i++) {
             for (int j = 0; j < numStacks; j++) {
-                final List<Vector3d> vertices = new ArrayList<Vector3d>();
+                final List<VectorCSGd> vertices = new ArrayList<VectorCSGd>();
 
                 vertices.add(sphereVertex(center, radius, i / (double) numSlices, j / (double) numStacks));
                 if (j > 0) {
@@ -129,7 +129,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
     /**
      * @return the center
      */
-    public Vector3d getCenter() {
+    public VectorCSGd getCenter() {
         return center;
     }
 
@@ -137,7 +137,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
      * @param center
      *            the center to set
      */
-    public void setCenter(Vector3d center) {
+    public void setCenter(VectorCSGd center) {
         this.center = center;
     }
 
