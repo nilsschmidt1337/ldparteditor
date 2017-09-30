@@ -36,11 +36,11 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
     /**
      * Center of this quad.
      */
-    private Vector3d center;
+    private VectorCSGd center;
     /**
      * Cube dimensions.
      */
-    private Vector3d dimensions;
+    private VectorCSGd dimensions;
 
     private boolean centered = true;
 
@@ -49,8 +49,8 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
      * dimensions {@code [1,1,1]}.
      */
     public CSGQuad() {
-        center = new Vector3d(0d, 0d, 0d);
-        dimensions = new Vector3d(2000d, 1d, 2000d);
+        center = new VectorCSGd(0d, 0d, 0d);
+        dimensions = new VectorCSGd(2000d, 1d, 2000d);
     }
 
     /**
@@ -61,8 +61,8 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
      *            size
      */
     public CSGQuad(double size) {
-        center = new Vector3d(0d, 0d, 0d);
-        dimensions = new Vector3d(size, 1d, size);
+        center = new VectorCSGd(0d, 0d, 0d);
+        dimensions = new VectorCSGd(size, 1d, size);
     }
 
     @Override
@@ -74,9 +74,9 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
                 { { 4, 5, 7, 6 }, { 0, 0, +1 } } };
         List<Polygon> polygons = new ArrayList<Polygon>();
         for (int[][] info : a) {
-            List<Vector3d> vertices = new ArrayList<Vector3d>();
+            List<VectorCSGd> vertices = new ArrayList<VectorCSGd>();
             for (int i : info[0]) {
-                Vector3d pos = new Vector3d(center.x + dimensions.x * (1 * Math.min(1, i & 1) - 0.5), center.y + dimensions.y * (1 * Math.min(1, i & 2) - 0.5), center.z + dimensions.z
+                VectorCSGd pos = new VectorCSGd(center.x + dimensions.x * (1 * Math.min(1, i & 1) - 0.5), center.y + dimensions.y * (1 * Math.min(1, i & 2) - 0.5), center.z + dimensions.z
                         * (1 * Math.min(1, i & 4) - 0.5));
                 vertices.add(pos);
             }
@@ -99,7 +99,7 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
     /**
      * @return the center
      */
-    public Vector3d getCenter() {
+    public VectorCSGd getCenter() {
         return center;
     }
 
@@ -107,14 +107,14 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
      * @param center
      *            the center to set
      */
-    public void setCenter(Vector3d center) {
+    public void setCenter(VectorCSGd center) {
         this.center = center;
     }
 
     /**
      * @return the dimensions
      */
-    public Vector3d getDimensions() {
+    public VectorCSGd getDimensions() {
         return dimensions;
     }
 
@@ -122,7 +122,7 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
      * @param dimensions
      *            the dimensions to set
      */
-    public void setDimensions(Vector3d dimensions) {
+    public void setDimensions(VectorCSGd dimensions) {
         this.dimensions = dimensions;
     }
 

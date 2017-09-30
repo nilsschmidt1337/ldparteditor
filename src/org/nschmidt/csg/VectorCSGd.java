@@ -38,17 +38,17 @@ package org.nschmidt.csg;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class Vector3d {
+public class VectorCSGd {
 
     public double x;
     public double y;
     public double z;
 
-    public static final Vector3d ZERO = new Vector3d(0, 0, 0);
-    public static final Vector3d UNITY = new Vector3d(1, 1, 1);
-    public static final Vector3d X_ONE = new Vector3d(1, 0, 0);
-    public static final Vector3d Y_ONE = new Vector3d(0, 1, 0);
-    public static final Vector3d Z_ONE = new Vector3d(0, 0, 1);
+    public static final VectorCSGd ZERO = new VectorCSGd(0, 0, 0);
+    public static final VectorCSGd UNITY = new VectorCSGd(1, 1, 1);
+    public static final VectorCSGd X_ONE = new VectorCSGd(1, 0, 0);
+    public static final VectorCSGd Y_ONE = new VectorCSGd(0, 1, 0);
+    public static final VectorCSGd Z_ONE = new VectorCSGd(0, 0, 1);
 
     /**
      * Creates a new vector.
@@ -60,15 +60,15 @@ public class Vector3d {
      * @param z
      *            z value
      */
-    public Vector3d(double x, double y, double z) {
+    public VectorCSGd(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
     @Override
-    public Vector3d clone() {
-        return new Vector3d(x, y, z);
+    public VectorCSGd clone() {
+        return new VectorCSGd(x, y, z);
     }
 
     /**
@@ -78,8 +78,8 @@ public class Vector3d {
      *
      * @return a negated copy of this vector
      */
-    public Vector3d negated() {
-        return new Vector3d(-x, -y, -z);
+    public VectorCSGd negated() {
+        return new VectorCSGd(-x, -y, -z);
     }
 
     /**
@@ -92,8 +92,8 @@ public class Vector3d {
      *
      * @return the sum of this vector and the specified vector
      */
-    public Vector3d plus(Vector3d v) {
-        return new Vector3d(x + v.x, y + v.y, z + v.z);
+    public VectorCSGd plus(VectorCSGd v) {
+        return new VectorCSGd(x + v.x, y + v.y, z + v.z);
     }
 
     /**
@@ -106,8 +106,8 @@ public class Vector3d {
      *
      * @return the difference of this vector and the specified vector
      */
-    public Vector3d minus(Vector3d v) {
-        return new Vector3d(x - v.x, y - v.y, z - v.z);
+    public VectorCSGd minus(VectorCSGd v) {
+        return new VectorCSGd(x - v.x, y - v.y, z - v.z);
     }
 
     /**
@@ -120,8 +120,8 @@ public class Vector3d {
      *
      * @return the product of this vector and the specified value
      */
-    public Vector3d times(double a) {
-        return new Vector3d(x * a, y * a, z * a);
+    public VectorCSGd times(double a) {
+        return new VectorCSGd(x * a, y * a, z * a);
     }
 
     /**
@@ -134,8 +134,8 @@ public class Vector3d {
      *
      * @return the product of this vector and the specified vector
      */
-    public Vector3d times(Vector3d a) {
-        return new Vector3d(x * a.x, y * a.y, z * a.z);
+    public VectorCSGd times(VectorCSGd a) {
+        return new VectorCSGd(x * a.x, y * a.y, z * a.z);
     }
 
     /**
@@ -148,8 +148,8 @@ public class Vector3d {
      *
      * @return this vector devided by the specified value
      */
-    public Vector3d dividedBy(double a) {
-        return new Vector3d(x / a, y / a, z / a);
+    public VectorCSGd dividedBy(double a) {
+        return new VectorCSGd(x / a, y / a, z / a);
     }
 
     /**
@@ -162,7 +162,7 @@ public class Vector3d {
      *
      * @return the dot product of this vector and the specified vector
      */
-    public double dot(Vector3d a) {
+    public double dot(VectorCSGd a) {
         return this.x * a.x + this.y * a.y + this.z * a.z;
     }
 
@@ -180,7 +180,7 @@ public class Vector3d {
      *         the point midway between this and the specified vector if
      *         {@code t = 0.5}
      */
-    public Vector3d lerp(Vector3d a, double t) {
+    public VectorCSGd lerp(VectorCSGd a, double t) {
         return this.plus(a.minus(this).times(t));
     }
 
@@ -202,7 +202,7 @@ public class Vector3d {
      *
      * @return a normalized copy of this vector with {@code length}
      */
-    public Vector3d unit() {
+    public VectorCSGd unit() {
         return this.dividedBy(this.magnitude());
     }
 
@@ -216,8 +216,8 @@ public class Vector3d {
      *
      * @return the cross product of this vector and the specified vector.
      */
-    public Vector3d cross(Vector3d a) {
-        return new Vector3d(this.y * a.z - this.z * a.y, this.z * a.x - this.x * a.z, this.x * a.y - this.y * a.x);
+    public VectorCSGd cross(VectorCSGd a) {
+        return new VectorCSGd(this.y * a.z - this.z * a.y, this.z * a.x - this.x * a.z, this.x * a.y - this.y * a.x);
     }
 
     @Override
@@ -233,7 +233,7 @@ public class Vector3d {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Vector3d other = (Vector3d) obj;
+        final VectorCSGd other = (VectorCSGd) obj;
         if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(other.x)) {
             return false;
         }
@@ -266,7 +266,7 @@ public class Vector3d {
      *            interpolation parameter
      * @return a new vertex between this and the specified vertex
      */
-    public Vector3d interpolate(Vector3d other, double t) {
+    public VectorCSGd interpolate(VectorCSGd other, double t) {
         return this.lerp(other, t);
     }
 }

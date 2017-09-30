@@ -582,7 +582,7 @@ public enum MathHelper {
         return new Vector4f(ax, ay, az, 1f);
     }
 
-    public static org.nschmidt.csg.Vector3d getNearestPointToLineSegmentCSG(double lx1, double ly1, double lz1, double lx2, double ly2, double lz2, double px, double py, double pz) {
+    public static org.nschmidt.csg.VectorCSGd getNearestPointToLineSegmentCSG(double lx1, double ly1, double lz1, double lx2, double ly2, double lz2, double px, double py, double pz) {
 
         // Fastest iterative approach without objects
 
@@ -638,7 +638,7 @@ public enum MathHelper {
             dap = dxap * dxap + dyap * dyap + dzap * dzap;
 
         }
-        return new org.nschmidt.csg.Vector3d(ax, ay, az);
+        return new org.nschmidt.csg.VectorCSGd(ax, ay, az);
     }
 
     public static Vector4f getNearestPointToLineSegment2(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {

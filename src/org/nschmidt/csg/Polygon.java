@@ -40,6 +40,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -47,8 +48,10 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GDataCSG;
+import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 
 /**
  * Represents a convex polygon.
@@ -58,12 +61,56 @@ import org.nschmidt.ldparteditor.enums.View;
  * polygon. This can be used to define per-polygon properties (such as surface
  * color).
  */
-public final class Polygon {
+public final class Polygon implements Comparable<Polygon> {
+
+
+    private static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
+    protected final int ID;
+
+    /**
+     * Constructor. Creates a new polygon that consists of the specified
+     * vertices.
+     *
+     * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
+     * and form a convex loop.
+     * @param vertices
+     *            polygon vertices
+     */
+    private Polygon(DatFile df, List<VectorCSGd> vertices) {
+        // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!
+        ID = id_counter.getAndIncrement();
+        this.df = df;
+        this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
+        this.vertices = vertices;
+    }
+
+    @Override
+    public int hashCode() {
+        return ID;
+    }
+
+    /**
+     * EVERY Polygon object is unique!
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        return this == obj;
+    }
+
+    @Override
+    public int compareTo(Polygon o) {
+        if (equals(o)) {
+            return 0;
+        }
+        return Integer.compare(ID, o.ID);
+    }
 
     /**
      * Polygon vertices
      */
-    public List<Vector3d> vertices;
+    public List<VectorCSGd> vertices;
     /**
      * The linked DatFile
      */
@@ -87,27 +134,9 @@ public final class Polygon {
      * @param vertices
      *            polygon vertices
      */
-    public Polygon(DatFile df, List<Vector3d> vertices, GColourIndex colour) {
-        this.df = df;
-        this.vertices = vertices;
+    public Polygon(DatFile df, List<VectorCSGd> vertices, GColourIndex colour) {
+        this(df, vertices);
         this.colour = colour;
-        this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
-    }
-
-    /**
-     * Constructor. Creates a new polygon that consists of the specified
-     * vertices.
-     *
-     * <b>Note:</b> the vertices used to initialize a polygon must be coplanar
-     * and form a convex loop.
-     * @param vertices
-     *            polygon vertices
-     */
-    public Polygon(DatFile df, List<Vector3d> vertices) {
-        this.df = df;
-        this.vertices = vertices;
-        this.colour = new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0);
-        this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
     }
 
     /**
@@ -120,14 +149,14 @@ public final class Polygon {
      *            polygon vertices
      *
      */
-    public Polygon(DatFile df, Vector3d... vertices) {
-        this(df, new ArrayList<Vector3d>(Arrays.asList(vertices)));
+    public Polygon(DatFile df, VectorCSGd... vertices) {
+        this(df, new ArrayList<VectorCSGd>(Arrays.asList(vertices)));
     }
 
     @Override
     public Polygon clone() {
-        List<Vector3d> newVertices = new ArrayList<Vector3d>(vertices.size());
-        for (Vector3d vertex : vertices) {
+        List<VectorCSGd> newVertices = new ArrayList<VectorCSGd>(vertices.size());
+        for (VectorCSGd vertex : vertices) {
             newVertices.add(vertex.clone());
         }
         return new Polygon(df, newVertices, new GColourIndex(colour.getColour(), colour.getIndex()));
@@ -148,22 +177,22 @@ public final class Polygon {
 
     public HashMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
         HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
-        int dID = CSGPrimitive.id_counter.getAndIncrement();
         if (this.vertices.size() >= 3) {
             final GColour c16 = View.getLDConfigColour(16);
+            VectorCSGd dv1 = this.vertices.get(0);
             for (int i = 0; i < this.vertices.size() - 2; i++) {
-                org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(0).x, (float) this.vertices.get(0).y,
-                        (float) this.vertices.get(0).z);
-                org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 1).x, (float) this.vertices.get(i + 1).y,
-                        (float) this.vertices.get(i + 1).z);
-                org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 2).x, (float) this.vertices.get(i + 2).y,
-                        (float) this.vertices.get(i + 2).z);
+                VectorCSGd dv2 = this.vertices.get(i + 1);
+                VectorCSGd dv3 = this.vertices.get(i + 2);
+                Vertex v1 = new Vertex((float) dv1.x, (float) dv1.y, (float) dv1.z);
+                Vertex v2 = new Vertex((float) dv2.x, (float) dv2.y, (float) dv2.z);
+                Vertex v3 = new Vertex((float) dv3.x, (float) dv3.y, (float) dv3.z);
                 GColourIndex colour = null;
                 if ((colour = this.colour) == null) {
+                    int dID = CSGPrimitive.id_counter.getAndIncrement();
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                 } else {
-                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
-                    // FIXME result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(ID % 16), true), colour.getIndex());
+                    // result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                 }
             }
         }
@@ -174,7 +203,6 @@ public final class Polygon {
         HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
         final int size = this.vertices.size();
         if (size >= 3) {
-            int dID = CSGPrimitive.id_counter.getAndIncrement();
             final GColour c16 = View.getLDConfigColour(16);
             final BigDecimal identical_vertex_distance = new BigDecimal("0.1", MathContext.DECIMAL128); //$NON-NLS-1$
 
@@ -182,20 +210,20 @@ public final class Polygon {
 
             // Collinearity check
             for (int i = 0; i < this.vertices.size() - 2; i++) {
-                org.nschmidt.ldparteditor.helpers.math.Vector3d vertexA = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(0).x), new BigDecimal(this.vertices.get(0).y),
+                Vector3d vertexA = new Vector3d(new BigDecimal(this.vertices.get(0).x), new BigDecimal(this.vertices.get(0).y),
                         new BigDecimal(this.vertices.get(0).z));
-                org.nschmidt.ldparteditor.helpers.math.Vector3d vertexB = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i + 1).x), new BigDecimal(this.vertices.get(i + 1).y),
+                Vector3d vertexB = new Vector3d(new BigDecimal(this.vertices.get(i + 1).x), new BigDecimal(this.vertices.get(i + 1).y),
                         new BigDecimal(this.vertices.get(i + 1).z));
-                org.nschmidt.ldparteditor.helpers.math.Vector3d vertexC = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i + 2).x), new BigDecimal(this.vertices.get(i + 2).y),
+                Vector3d vertexC = new Vector3d(new BigDecimal(this.vertices.get(i + 2).x), new BigDecimal(this.vertices.get(i + 2).y),
                         new BigDecimal(this.vertices.get(i + 2).z));
 
-                org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexC, vertexA);
-                org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexB, vertexC, vertexB);
-                boolean parseError = org.nschmidt.ldparteditor.helpers.math.Vector3d.angle(vertexA, vertexB) < Threshold.collinear_angle_minimum;
+                Vector3d.sub(vertexA, vertexC, vertexA);
+                Vector3d.sub(vertexB, vertexC, vertexB);
+                boolean parseError = Vector3d.angle(vertexA, vertexB) < Threshold.collinear_angle_minimum;
 
                 parseError = parseError || vertexA.length().compareTo(identical_vertex_distance) < 0;
                 parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
-                parseError = parseError || org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
+                parseError = parseError || Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
 
                 if (parseError) {
                     isCollinear = true;
@@ -219,25 +247,25 @@ public final class Polygon {
                 my = my / size;
                 mz = mz / size;
 
-                org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) mx, (float) my, (float) mz);
+                Vertex v1 = new Vertex((float) mx, (float) my, (float) mz);
                 for (int i = 0; i < size; i++) {
-                    org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i).x, (float) this.vertices.get(i).y,
-                            (float) this.vertices.get(i).z);
-                    org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get((i + 1) % size).x, (float) this.vertices.get((i + 1) % size).y,
-                            (float) this.vertices.get((i + 1) % size).z);
+                    VectorCSGd dv2 = this.vertices.get(i);
+                    VectorCSGd dv3 = this.vertices.get((i + 1) % size);
+                    Vertex v2 = new Vertex((float) dv2.x, (float) dv2.y, (float) dv2.z);
+                    Vertex v3 = new Vertex((float) dv3.x, (float) dv3.y, (float) dv3.z);
 
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexA = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(mx), new BigDecimal(my), new BigDecimal(mz));
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexB = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i).x), new BigDecimal(this.vertices.get(i).y),
+                    Vector3d vertexA = new Vector3d(new BigDecimal(mx), new BigDecimal(my), new BigDecimal(mz));
+                    Vector3d vertexB = new Vector3d(new BigDecimal(this.vertices.get(i).x), new BigDecimal(this.vertices.get(i).y),
                             new BigDecimal(this.vertices.get(i).z));
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexC = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get((i + 1) % size).x), new BigDecimal(this.vertices.get((i + 1) % size).y),
+                    Vector3d vertexC = new Vector3d(new BigDecimal(this.vertices.get((i + 1) % size).x), new BigDecimal(this.vertices.get((i + 1) % size).y),
                             new BigDecimal(this.vertices.get((i + 1) % size).z));
 
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexC, vertexA);
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexB, vertexC, vertexB);
+                    Vector3d.sub(vertexA, vertexC, vertexA);
+                    Vector3d.sub(vertexB, vertexC, vertexB);
 
                     boolean parseError = vertexA.length().compareTo(identical_vertex_distance) < 0;
                     parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
-                    parseError = parseError || org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
+                    parseError = parseError || Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
 
                     if (parseError) {
                         continue;
@@ -245,36 +273,34 @@ public final class Polygon {
 
                     GColourIndex colour = null;
                     if ((colour = this.colour) == null) {
+                        int dID = CSGPrimitive.id_counter.getAndIncrement();
                         result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                     } else {
-                        result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
-                        // FIXME result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                        // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
+                        result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                     }
                 }
 
             } else {
                 // No collinearity, save one triangle
+                VectorCSGd dv1 = this.vertices.get(0);
                 for (int i = 0; i < this.vertices.size() - 2; i++) {
-                    org.nschmidt.ldparteditor.data.Vertex v1 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(0).x, (float) this.vertices.get(0).y,
-                            (float) this.vertices.get(0).z);
-                    org.nschmidt.ldparteditor.data.Vertex v2 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 1).x, (float) this.vertices.get(i + 1).y,
-                            (float) this.vertices.get(i + 1).z);
-                    org.nschmidt.ldparteditor.data.Vertex v3 = new org.nschmidt.ldparteditor.data.Vertex((float) this.vertices.get(i + 2).x, (float) this.vertices.get(i + 2).y,
-                            (float) this.vertices.get(i + 2).z);
+                    VectorCSGd dv2 = this.vertices.get(i + 1);
+                    VectorCSGd dv3 = this.vertices.get(i + 2);
+                    Vertex v1 = new Vertex((float) dv1.x, (float) dv1.y, (float) dv1.z);
+                    Vertex v2 = new Vertex((float) dv2.x, (float) dv2.y, (float) dv2.z);
+                    Vertex v3 = new Vertex((float) dv3.x, (float) dv3.y, (float) dv3.z);
 
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexA = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(0).x), new BigDecimal(this.vertices.get(0).y),
-                            new BigDecimal(this.vertices.get(0).z));
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexB = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i + 1).x), new BigDecimal(this.vertices.get(i + 1).y),
-                            new BigDecimal(this.vertices.get(i + 1).z));
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d vertexC = new org.nschmidt.ldparteditor.helpers.math.Vector3d(new BigDecimal(this.vertices.get(i + 2).x), new BigDecimal(this.vertices.get(i + 2).y),
-                            new BigDecimal(this.vertices.get(i + 2).z));
+                    Vector3d vertexA = new Vector3d(new BigDecimal(dv1.x), new BigDecimal(dv1.y), new BigDecimal(dv1.z));
+                    Vector3d vertexB = new Vector3d(new BigDecimal(dv2.x), new BigDecimal(dv2.y), new BigDecimal(dv2.z));
+                    Vector3d vertexC = new Vector3d(new BigDecimal(dv3.x), new BigDecimal(dv3.y), new BigDecimal(dv3.z));
 
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexC, vertexA);
-                    org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexB, vertexC, vertexB);
+                    Vector3d.sub(vertexA, vertexC, vertexA);
+                    Vector3d.sub(vertexB, vertexC, vertexB);
 
                     boolean parseError = vertexA.length().compareTo(identical_vertex_distance) < 0;
                     parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
-                    parseError = parseError || org.nschmidt.ldparteditor.helpers.math.Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
+                    parseError = parseError || Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
 
                     if (parseError) {
                         continue;
@@ -282,10 +308,11 @@ public final class Polygon {
 
                     GColourIndex colour = null;
                     if ((colour = this.colour) == null) {
+                        int dID = CSGPrimitive.id_counter.getAndIncrement();
                         result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                     } else {
-                        result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
-                        // FIXME result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                        // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
+                        result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                     }
                 }
             }
@@ -300,8 +327,8 @@ public final class Polygon {
      *            the vector that defines the translation
      * @return this polygon
      */
-    public Polygon translate(Vector3d v) {
-        for (Vector3d vertex : vertices) {
+    public Polygon translate(VectorCSGd v) {
+        for (VectorCSGd vertex : vertices) {
             vertex = vertex.plus(v);
         }
         return this;
@@ -317,7 +344,7 @@ public final class Polygon {
      *
      * @return a translated copy of this polygon
      */
-    public Polygon translated(Vector3d v) {
+    public Polygon translated(VectorCSGd v) {
         return clone().translate(v);
     }
 
@@ -334,7 +361,7 @@ public final class Polygon {
      */
     public Polygon transform(Transform transform) {
 
-        for (Vector3d v : vertices) {
+        for (VectorCSGd v : vertices) {
             transform.transform(v);
         }
 
@@ -384,7 +411,7 @@ public final class Polygon {
      *
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points, GColourIndex colour) {
+    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<VectorCSGd> points, GColourIndex colour) {
         return fromPoints(csg, df, points, null, colour);
     }
 
@@ -395,7 +422,7 @@ public final class Polygon {
      *
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points) {
+    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<VectorCSGd> points) {
         return fromPoints(csg, df, points, null, new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0));
     }
 
@@ -406,8 +433,8 @@ public final class Polygon {
      *
      * @return a polygon defined by the specified point list
      */
-    public static Polygon fromPoints(GDataCSG csg, DatFile df, Vector3d... points) {
-        return fromPoints(csg, df, new ArrayList<Vector3d>(Arrays.asList(points)), null, new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0));
+    public static Polygon fromPoints(GDataCSG csg, DatFile df, VectorCSGd... points) {
+        return fromPoints(csg, df, new ArrayList<VectorCSGd>(Arrays.asList(points)), null, new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0));
     }
 
     /**
@@ -420,11 +447,11 @@ public final class Polygon {
      *
      * @return a polygon defined by the specified point list
      */
-    private static Polygon fromPoints(GDataCSG csg, DatFile df, List<Vector3d> points, Plane plane, GColourIndex colour) {
+    private static Polygon fromPoints(GDataCSG csg, DatFile df, List<VectorCSGd> points, Plane plane, GColourIndex colour) {
 
-        List<Vector3d> vertices = new ArrayList<Vector3d>();
+        List<VectorCSGd> vertices = new ArrayList<VectorCSGd>();
 
-        for (Vector3d p : points) {
+        for (VectorCSGd p : points) {
             vertices.add(p.clone());
         }
 
@@ -447,7 +474,7 @@ public final class Polygon {
 
         for (int i = 0; i < vertices.size(); i++) {
 
-            Vector3d vert = vertices.get(i);
+            VectorCSGd vert = vertices.get(i);
 
             if (vert.x < minX) {
                 minX = vert.x;
@@ -471,7 +498,7 @@ public final class Polygon {
 
         } // end for vertices
 
-        return new Bounds(new Vector3d(minX, minY, minZ), new Vector3d(maxX, maxY, maxZ));
+        return new Bounds(new VectorCSGd(minX, minY, minZ), new VectorCSGd(maxX, maxY, maxZ));
     }
 
     public GColourIndex getColour() {

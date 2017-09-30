@@ -40,8 +40,8 @@ package org.nschmidt.csg;
  */
 class Bounds {
 
-    private final Vector3d min;
-    private final Vector3d max;
+    private final VectorCSGd min;
+    private final VectorCSGd max;
 
     /**
      * Constructor.
@@ -51,14 +51,14 @@ class Bounds {
      * @param max
      *            max x,y,z values
      */
-    public Bounds(Vector3d min, Vector3d max) {
+    public Bounds(VectorCSGd min, VectorCSGd max) {
         this.min = min.clone();
         this.max = max.clone();
     }
 
     public Bounds() {
-        this.min = new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
-        this.max = new Vector3d(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
+        this.min = new VectorCSGd(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        this.max = new VectorCSGd(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
     }
 
     /**
@@ -89,20 +89,20 @@ class Bounds {
     /**
      * @return the min x,y,z values
      */
-    public Vector3d getMin() {
+    public VectorCSGd getMin() {
         return min;
     }
 
     /**
      * @return the max x,y,z values
      */
-    public Vector3d getMax() {
+    public VectorCSGd getMax() {
         return max;
     }
 
     public void union(Bounds other) {
-        Vector3d o_max = other.max;
-        Vector3d o_min = other.min;
+        VectorCSGd o_max = other.max;
+        VectorCSGd o_min = other.min;
         if (o_min.x > max.x) max.x = o_min.x;
         if (o_min.y > max.y) max.y = o_min.y;
         if (o_min.z > max.z) max.z = o_min.z;

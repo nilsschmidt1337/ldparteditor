@@ -33,8 +33,8 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
 public class CSGCircle extends CSGPrimitive implements Primitive {
 
     public final int ID = id_counter.getAndIncrement();
-    private Vector3d start;
-    private Vector3d end;
+    private VectorCSGd start;
+    private VectorCSGd end;
     private double radius;
     private int numSlices;
 
@@ -43,8 +43,8 @@ public class CSGCircle extends CSGPrimitive implements Primitive {
      * from {@code [0,-0.5,0]} to {@code [0,0.5,0]}, i.e. {@code size = 1}.
      */
     public CSGCircle() {
-        this.start = new Vector3d(0, 0d, 0);
-        this.end = new Vector3d(0, 1, 0);
+        this.start = new VectorCSGd(0, 0d, 0);
+        this.end = new VectorCSGd(0, 1, 0);
         this.radius = 1000d;
         this.numSlices = 16;
     }
@@ -57,23 +57,23 @@ public class CSGCircle extends CSGPrimitive implements Primitive {
      *            number of slices (used for tessellation)
      */
     public CSGCircle(int numSlices) {
-        this.start = new Vector3d(0, 0d, 0);
-        this.end = new Vector3d(0, 1, 0);
+        this.start = new VectorCSGd(0, 0d, 0);
+        this.end = new VectorCSGd(0, 1, 0);
         this.radius = 1000d;
         this.numSlices = numSlices;
     }
 
     @Override
     public List<Polygon> toPolygons(DatFile df, GColour colour) {
-        final Vector3d s = getStart();
-        Vector3d e = getEnd();
-        final Vector3d ray = e.minus(s);
-        final Vector3d axisZ = ray.unit();
+        final VectorCSGd s = getStart();
+        VectorCSGd e = getEnd();
+        final VectorCSGd ray = e.minus(s);
+        final VectorCSGd axisZ = ray.unit();
         boolean isY = Math.abs(axisZ.y) > 0.5;
-        final Vector3d axisX = new Vector3d(isY ? 1 : 0, !isY ? 1 : 0, 0).cross(axisZ).unit();
-        final Vector3d axisY = axisX.cross(axisZ).unit();
-        Vector3d startV = s.clone();
-        Vector3d endV = e.clone();
+        final VectorCSGd axisX = new VectorCSGd(isY ? 1 : 0, !isY ? 1 : 0, 0).cross(axisZ).unit();
+        final VectorCSGd axisY = axisX.cross(axisZ).unit();
+        VectorCSGd startV = s.clone();
+        VectorCSGd endV = e.clone();
         List<Polygon> polygons = new ArrayList<Polygon>();
 
         for (int i = 0; i < numSlices; i++) {
@@ -93,17 +93,17 @@ public class CSGCircle extends CSGPrimitive implements Primitive {
         return polygons;
     }
 
-    private Vector3d cylPoint(Vector3d axisX, Vector3d axisY, Vector3d axisZ, Vector3d ray, Vector3d s, double r, double stack, double slice, double normalBlend) {
+    private VectorCSGd cylPoint(VectorCSGd axisX, VectorCSGd axisY, VectorCSGd axisZ, VectorCSGd ray, VectorCSGd s, double r, double stack, double slice, double normalBlend) {
         double angle = slice * Math.PI * 2;
-        Vector3d out = axisX.times(Math.cos(angle)).plus(axisY.times(Math.sin(angle)));
-        Vector3d pos = s.plus(ray.times(stack)).plus(out.times(r));
+        VectorCSGd out = axisX.times(Math.cos(angle)).plus(axisY.times(Math.sin(angle)));
+        VectorCSGd pos = s.plus(ray.times(stack)).plus(out.times(r));
         return pos;
     }
 
     /**
      * @return the start
      */
-    public Vector3d getStart() {
+    public VectorCSGd getStart() {
         return start;
     }
 
@@ -111,14 +111,14 @@ public class CSGCircle extends CSGPrimitive implements Primitive {
      * @param start
      *            the start to set
      */
-    public void setStart(Vector3d start) {
+    public void setStart(VectorCSGd start) {
         this.start = start;
     }
 
     /**
      * @return the end
      */
-    public Vector3d getEnd() {
+    public VectorCSGd getEnd() {
         return end;
     }
 
@@ -126,7 +126,7 @@ public class CSGCircle extends CSGPrimitive implements Primitive {
      * @param end
      *            the end to set
      */
-    public void setEnd(Vector3d end) {
+    public void setEnd(VectorCSGd end) {
         this.end = end;
     }
 
