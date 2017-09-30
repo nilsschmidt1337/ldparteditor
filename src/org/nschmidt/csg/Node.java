@@ -36,6 +36,7 @@ package org.nschmidt.csg;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
+import java.util.stream.Collectors;
 
 /**
  * Holds a node in a BSP tree. A BSP tree is built from a collection of polygons
@@ -160,8 +161,18 @@ final class Node {
         List<Polygon> frontP = new ArrayList<Polygon>();
         List<Polygon> backP = new ArrayList<Polygon>();
 
+        // Speed up with parallelism
+        List<int[]> types = polygons
+                .stream()
+                .parallel()
+                .map((poly) ->
+                    this.plane.getTypes(poly))
+                .collect(Collectors.toList());
+
+        int i = 0;
         for (Polygon polygon : polygons) {
-            this.plane.splitPolygon(polygon, frontP, backP, frontP, backP);
+            this.plane.splitPolygon(polygon, types.get(i), frontP, backP, frontP, backP);
+            i++;
         }
         if (this.front != null) {
             frontP = this.front.clipPolygons(frontP);
@@ -234,13 +245,22 @@ final class Node {
             return result;
         }
 
-
         List<Polygon> frontP = new ArrayList<Polygon>();
         List<Polygon> backP = new ArrayList<Polygon>();
 
+        // Speed up with parallelism
+        List<int[]> types = polygons
+                .stream()
+                .parallel()
+                .map((poly) ->
+                    this.plane.getTypes(poly))
+                .collect(Collectors.toList());
+
         // parallel version does not work here
+        int i = 0;
         for (Polygon polygon : polygons) {
-            this.plane.splitPolygon(polygon, this.polygons, this.polygons, frontP, backP);
+            this.plane.splitPolygon(polygon, types.get(i), this.polygons, this.polygons, frontP, backP);
+            i++;
         }
 
         // Back before front. Reversed because of the new Stack to avoid build() recursion stack overflows
