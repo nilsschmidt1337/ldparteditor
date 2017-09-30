@@ -201,6 +201,83 @@ public class Plane {
 
                     final Vector3d v = vi.interpolate(vj, t);
 
+                    f.add(v);
+                    b.add(v.clone());
+                }
+            }
+
+            if (f.size() >= 3) {
+                front.add(new Polygon(df, f, polygon.getColour()));
+            }
+            if (b.size() >= 3) {
+                back.add(new Polygon(df, b, polygon.getColour()));
+            }
+            break;
+        }
+    }
+
+    /**
+     * Splits a {@link Polygon} by this plane if needed. After that it puts the
+     * polygons or the polygon fragments in the appropriate lists ({@code front}
+     * , {@code back}). Coplanar polygons go into either {@code coplanarFront},
+     * {@code coplanarBack} depending on their orientation with respect to this
+     * plane. Polygons in front or back of this plane go into either
+     * {@code front} or {@code back}.
+     *
+     * @param polygon
+     *            polygon to split
+     * @param coplanarFront
+     *            "coplanar front" polygons
+     * @param coplanarBack
+     *            "coplanar back" polygons
+     * @param front
+     *            front polygons
+     * @param back
+     *            back polgons
+     */
+    public void splitPolygon2(final Polygon polygon, final int[] types, List<Polygon> coplanarFront, List<Polygon> coplanarBack, List<Polygon> front, List<Polygon> back) {
+
+        // Classify each point as well as the entire polygon into one of the
+        // above
+        // four classes.
+        // Put the polygon in the correct list, splitting it when necessary.
+
+        final int size = polygon.vertices.size();
+        switch (types[types.length - 1]) {
+        case COPLANAR:
+            (coplanarBack == coplanarFront || this.normal.dot(polygon.plane.normal) > 0 ? coplanarFront : coplanarBack).add(polygon);
+            break;
+        case FRONT:
+            front.add(polygon);
+            break;
+        case BACK:
+            back.add(polygon);
+            break;
+        case SPANNING:
+
+            final DatFile df = polygon.df;
+
+            final List<Vector3d> f = new ArrayList<Vector3d>(size);
+            final List<Vector3d> b = new ArrayList<Vector3d>(size);
+
+            for (int i = 0; i < size; i++) {
+                int j = (i + 1) % size;
+                int ti = types[i];
+                int tj = types[j];
+                final Vector3d vi = polygon.vertices.get(i);
+                final Vector3d vj = polygon.vertices.get(j);
+                if (ti != BACK) {
+                    f.add(vi);
+                }
+                if (ti != FRONT) {
+                    b.add(ti != BACK ? vi.clone() : vi);
+                }
+                if ((ti | tj) == SPANNING) {
+
+                    double t = (this.dist - this.normal.dot(vi)) / this.normal.dot(vj.minus(vi));
+
+                    final Vector3d v = vi.interpolate(vj, t);
+
                     if (GDataCSG.isInlining(df)) {
                         GDataCSG.getNewPolyVertices(df).add(new Vector3d[]{vi.clone(), vj.clone(), v.clone()});
                     }
