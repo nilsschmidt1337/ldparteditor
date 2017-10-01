@@ -281,4 +281,63 @@ final class Node {
 
         return result;
     }
+
+    public final List<NodePolygon> buildForResult(List<Polygon> polygons) {
+
+        final ArrayList<NodePolygon> result = new ArrayList<NodePolygon>(2);
+
+        if (this.plane == null && !polygons.isEmpty()) {
+            this.plane = polygons.get(0).plane.clone();
+        } else if (this.plane == null && polygons.isEmpty()) {
+            return result;
+        }
+
+        List<Polygon> frontP = new ArrayList<Polygon>();
+        List<Polygon> backP = new ArrayList<Polygon>();
+
+        // Speed up with parallelism
+        List<int[]> types = polygons
+                .stream()
+                .parallel()
+                .map((poly) ->
+                    this.plane.getTypes(poly))
+                .collect(Collectors.toList());
+
+        int i = 0;
+        for (Polygon polygon : polygons) {
+            final int[] types1 = types.get(i);
+            switch (types1[types1.length - 1]) {
+            case Plane.COPLANAR:
+                this.polygons.add(polygon);
+                break;
+            case Plane.FRONT:
+                frontP.add(polygon);
+                break;
+            case Plane.BACK:
+                backP.add(polygon);
+                break;
+            case Plane.SPANNING:
+                break;
+            }
+            i++;
+        }
+
+        // Back before front. Reversed because of the new Stack to avoid buildForUnion() recursion stack overflows
+
+        if (backP.size() > 0) {
+            if (this.back == null) {
+                this.back = new Node();
+            }
+            result.add(new NodePolygon(back, backP));
+        }
+
+        if (frontP.size() > 0) {
+            if (this.front == null) {
+                this.front = new Node();
+            }
+            result.add(0, new NodePolygon(front, frontP));
+        }
+
+        return result;
+    }
 }
