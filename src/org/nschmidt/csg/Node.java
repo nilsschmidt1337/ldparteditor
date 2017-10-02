@@ -212,17 +212,18 @@ final class Node {
      * @return a list of all polygons in this BSP tree
      */
     public List<Polygon> allPolygons(List<Polygon> result) {
-
-        result.addAll(this.polygons);
-
-        if (this.front != null) {
-            this.front.allPolygons(result);
+        final Stack<Node> st = new Stack<>();
+        st.push(this);
+        while (!st.isEmpty()) {
+            final Node n = st.pop();
+            result.addAll(n.polygons);
+            if (n.front != null) {
+                st.push(n.front);
+            }
+            if (n.back != null) {
+                st.push(n.back);
+            }
         }
-
-        if (this.back != null) {
-            this.back.allPolygons(result);
-        }
-
         return result;
     }
 
@@ -339,5 +340,10 @@ final class Node {
         }
 
         return result;
+    }
+
+    public void simplify() {
+        // FIXME Needs simplification method!
+        this.front.toString();
     }
 }
