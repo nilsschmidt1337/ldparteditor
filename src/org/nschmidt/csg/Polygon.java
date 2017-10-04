@@ -145,6 +145,14 @@ public final class Polygon {
         this(df, new ArrayList<VectorCSGd>(Arrays.asList(vertices)));
     }
 
+    public Polygon(DatFile df, List<VectorCSGd> vertices, Polygon o) {
+        PSEUDO_ID = pseudo_id_counter++;
+        this.df = df;
+        this.plane = o.plane.clone();
+        this.vertices = vertices;
+        this.colour = o.colour;
+    }
+
     @Override
     public Polygon clone() {
         List<VectorCSGd> newVertices = new ArrayList<VectorCSGd>(vertices.size());
