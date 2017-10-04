@@ -158,7 +158,7 @@ public class Plane {
      * @param back
      *            back polgons
      */
-    public void splitPolygon(final Polygon polygon, final int[] types, List<Polygon> coplanarFront, List<Polygon> coplanarBack, List<Polygon> front, List<Polygon> back) {
+    public void splitPolygonForClip(final Polygon polygon, final int[] types, List<Polygon> front, List<Polygon> back) {
 
         // Classify each point as well as the entire polygon into one of the
         // above
@@ -168,7 +168,7 @@ public class Plane {
         final int size = polygon.vertices.size();
         switch (types[types.length - 1]) {
         case COPLANAR:
-            (coplanarBack == coplanarFront || this.normal.dot(polygon.plane.normal) > 0 ? coplanarFront : coplanarBack).add(polygon);
+            (this.normal.dot(polygon.plane.normal) > 0 ? front : back).add(polygon);
             break;
         case FRONT:
             front.add(polygon);
@@ -235,7 +235,7 @@ public class Plane {
      * @param back
      *            back polgons
      */
-    public void splitPolygon2(final Polygon polygon, final int[] types, List<Polygon> coplanarFront, List<Polygon> coplanarBack, List<Polygon> front, List<Polygon> back) {
+    public void splitPolygonForBuild(final Polygon polygon, final int[] types, List<Polygon> coplanarPolys, List<Polygon> front, List<Polygon> back) {
 
         // Classify each point as well as the entire polygon into one of the
         // above
@@ -245,7 +245,7 @@ public class Plane {
         final int size = polygon.vertices.size();
         switch (types[types.length - 1]) {
         case COPLANAR:
-            (coplanarBack == coplanarFront || this.normal.dot(polygon.plane.normal) > 0 ? coplanarFront : coplanarBack).add(polygon);
+            coplanarPolys.add(polygon);
             break;
         case FRONT:
             front.add(polygon);

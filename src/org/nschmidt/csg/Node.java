@@ -171,7 +171,7 @@ final class Node {
 
         int i = 0;
         for (Polygon polygon : polygons) {
-            this.plane.splitPolygon(polygon, types.get(i), frontP, backP, frontP, backP);
+            this.plane.splitPolygonForClip(polygon, types.get(i), frontP, backP);
             i++;
         }
         if (this.front != null) {
@@ -265,7 +265,7 @@ final class Node {
         // parallel version does not work here
         int i = 0;
         for (Polygon polygon : polygons) {
-            this.plane.splitPolygon2(polygon, types.get(i), this.polygons, this.polygons, frontP, backP);
+            this.plane.splitPolygonForBuild(polygon, types.get(i), this.polygons, frontP, backP);
             i++;
         }
 
