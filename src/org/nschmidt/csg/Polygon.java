@@ -40,7 +40,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -61,11 +60,12 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
  * polygon. This can be used to define per-polygon properties (such as surface
  * color).
  */
-public final class Polygon implements Comparable<Polygon> {
+public final class Polygon {
 
 
-    private static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
-    protected final int ID;
+    // FIXME Remove this ID after the implementation is done
+    private static int pseudo_id_counter = 0;
+    private final int PSEUDO_ID;
 
     /**
      * Constructor. Creates a new polygon that consists of the specified
@@ -78,7 +78,7 @@ public final class Polygon implements Comparable<Polygon> {
      */
     private Polygon(DatFile df, List<VectorCSGd> vertices) {
         // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!
-        ID = id_counter.getAndIncrement();
+        PSEUDO_ID = pseudo_id_counter++;
         this.df = df;
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
         this.vertices = vertices;
@@ -86,7 +86,7 @@ public final class Polygon implements Comparable<Polygon> {
 
     @Override
     public int hashCode() {
-        return ID;
+        return PSEUDO_ID;
     }
 
     /**
@@ -97,14 +97,6 @@ public final class Polygon implements Comparable<Polygon> {
         if (obj == null)
             return false;
         return this == obj;
-    }
-
-    @Override
-    public int compareTo(Polygon o) {
-        if (equals(o)) {
-            return 0;
-        }
-        return Integer.compare(ID, o.ID);
     }
 
     /**
@@ -191,8 +183,8 @@ public final class Polygon implements Comparable<Polygon> {
                     int dID = CSGPrimitive.id_counter.getAndIncrement();
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                 } else {
-                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(ID % 16), true), colour.getIndex());
-                    // result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), colour.getIndex());
+                    // FIXME result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                 }
             }
         }
