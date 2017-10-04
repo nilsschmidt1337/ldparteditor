@@ -196,13 +196,18 @@ final class Node {
      * @param bsp
      *            bsp that shall be used for clipping
      */
-    public void clipTo(Node bsp) {
-        this.polygons = bsp.clipPolygons(this.polygons);
-        if (this.front != null) {
-            this.front.clipTo(bsp);
-        }
-        if (this.back != null) {
-            this.back.clipTo(bsp);
+    public void clipTo(final Node bsp) {
+        final Stack<Node> st = new Stack<>();
+        st.push(this);
+        while (!st.isEmpty()) {
+            final Node n = st.pop();
+            n.polygons = bsp.clipPolygons(n.polygons);
+            if (n.back != null) {
+                st.push(n.back);
+            }
+            if (n.front != null) {
+                st.push(n.front);
+            }
         }
     }
 
