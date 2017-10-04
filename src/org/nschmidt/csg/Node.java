@@ -341,9 +341,4 @@ final class Node {
 
         return result;
     }
-
-    public void simplify() {
-        // FIXME Needs simplification method!
-        this.front.toString();
-    }
 }

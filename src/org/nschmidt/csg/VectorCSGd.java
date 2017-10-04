@@ -38,7 +38,9 @@ package org.nschmidt.csg;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class VectorCSGd {
+public class VectorCSGd implements Comparable<VectorCSGd>{
+
+    private static final double epsilon = 0.0001f;
 
     public double x;
     public double y;
@@ -167,24 +169,6 @@ public class VectorCSGd {
     }
 
     /**
-     * Linearly interpolates between this and the specified vector.
-     *
-     * <b>Note:</b> this vector is not modified.
-     *
-     * @param a
-     *            vector
-     * @param t
-     *            interpolation value
-     *
-     * @return copy of this vector if {@code t = 0}; copy of a if {@code t = 1};
-     *         the point midway between this and the specified vector if
-     *         {@code t = 0.5}
-     */
-    public VectorCSGd lerp(VectorCSGd a, double t) {
-        return this.plus(a.minus(this).times(t));
-    }
-
-    /**
      * Returns the magnitude of this vector.
      *
      * <b>Note:</b> this vector is not modified.
@@ -217,7 +201,7 @@ public class VectorCSGd {
      * @return the cross product of this vector and the specified vector.
      */
     public VectorCSGd cross(VectorCSGd a) {
-        return new VectorCSGd(this.y * a.z - this.z * a.y, this.z * a.x - this.x * a.z, this.x * a.y - this.y * a.x);
+        return new VectorCSGd(y * a.z - z * a.y, z * a.x - x * a.z, x * a.y - y * a.x);
     }
 
     @Override
@@ -249,9 +233,9 @@ public class VectorCSGd {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.x) ^ Double.doubleToLongBits(this.x) >>> 32);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.y) ^ Double.doubleToLongBits(this.y) >>> 32);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.z) ^ Double.doubleToLongBits(this.z) >>> 32);
+        hash = 97 * hash + (int) (Double.doubleToLongBits(x) ^ Double.doubleToLongBits(x) >>> 32);
+        hash = 97 * hash + (int) (Double.doubleToLongBits(y) ^ Double.doubleToLongBits(y) >>> 32);
+        hash = 97 * hash + (int) (Double.doubleToLongBits(z) ^ Double.doubleToLongBits(z) >>> 32);
         return hash;
     }
 
@@ -267,6 +251,35 @@ public class VectorCSGd {
      * @return a new vertex between this and the specified vertex
      */
     public VectorCSGd interpolate(VectorCSGd other, double t) {
-        return this.lerp(other, t);
+        return plus(other.minus(this).times(t));
+    }
+
+    @Override
+    public int compareTo(VectorCSGd o) {
+        double d1 = x - o.x;
+        switch (Double.compare(Math.abs(d1), epsilon)) {
+        case 0:
+        case 1:
+            return d1 < 0f ? -1 : 1;
+        default:
+            break;
+        }
+        d1 = y - o.y;
+        switch (Double.compare(Math.abs(d1), epsilon)) {
+        case 0:
+        case 1:
+            return d1 < 0f ? -1 : 1;
+        default:
+            break;
+        }
+        d1 = z - o.z;
+        switch (Double.compare(Math.abs(d1), epsilon)) {
+        case 0:
+        case 1:
+            return d1 < 0f ? -1 : 1;
+        default:
+            break;
+        }
+        return 0;
     }
 }
