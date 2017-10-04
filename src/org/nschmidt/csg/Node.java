@@ -116,29 +116,33 @@ final class Node {
      * Converts solid space to empty space and vice verca.
      */
     public void invert() {
+        final Stack<Node> st = new Stack<>();
+        st.push(this);
+        while (!st.isEmpty()) {
+            final Node n = st.pop();
+            final List<Polygon> polys = n.polygons;
+            if (n.plane == null && !polys.isEmpty()) {
+                n.plane = polys.get(0).plane.clone();
+            } else if (n.plane == null && polys.isEmpty()) {
+                continue;
+            }
 
+            for (Polygon polygon : polys) {
+                polygon.flip();
+            }
 
-        if (this.plane == null && !polygons.isEmpty()) {
-            this.plane = polygons.get(0).plane.clone();
-        } else if (this.plane == null && polygons.isEmpty()) {
-            return;
+            n.plane.flip();
+
+            if (n.back != null) {
+                st.push(n.back);
+            }
+            if (n.front != null) {
+                st.push(n.front);
+            }
+            Node temp = n.front;
+            n.front = n.back;
+            n.back = temp;
         }
-
-        for (Polygon polygon : this.polygons) {
-            polygon.flip();
-        }
-
-        this.plane.flip();
-
-        if (this.front != null) {
-            this.front.invert();
-        }
-        if (this.back != null) {
-            this.back.invert();
-        }
-        Node temp = this.front;
-        this.front = this.back;
-        this.back = temp;
     }
 
     /**
