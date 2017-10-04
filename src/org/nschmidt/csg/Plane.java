@@ -207,10 +207,10 @@ public class Plane {
             }
 
             if (f.size() >= 3) {
-                front.add(new Polygon(df, f, polygon.getColour()));
+                front.add(new Polygon(df, f, polygon));
             }
             if (b.size() >= 3) {
-                back.add(new Polygon(df, b, polygon.getColour()));
+                back.add(new Polygon(df, b, polygon));
             }
             break;
         }
@@ -288,10 +288,10 @@ public class Plane {
             }
 
             if (f.size() >= 3) {
-                front.add(new Polygon(df, f, polygon.getColour()));
+                front.add(new Polygon(df, f, polygon));
             }
             if (b.size() >= 3) {
-                back.add(new Polygon(df, b, polygon.getColour()));
+                back.add(new Polygon(df, b, polygon));
             }
             break;
         }
