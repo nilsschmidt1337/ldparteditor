@@ -55,19 +55,6 @@ public class Plane {
      */
     public static double EPSILON = 1e-3;
 
-    /**
-     * XY plane.
-     */
-    public static final Plane XY_PLANE = new Plane(VectorCSGd.Z_ONE, 1);
-    /**
-     * XZ plane.
-     */
-    public static final Plane XZ_PLANE = new Plane(VectorCSGd.Y_ONE, 1);
-    /**
-     * YZ plane.
-     */
-    public static final Plane YZ_PLANE = new Plane(VectorCSGd.X_ONE, 1);
-
     public static final int COPLANAR = 0;
     public static final int FRONT = 1;
     public static final int BACK = 2;
@@ -169,13 +156,13 @@ public class Plane {
         switch (types[types.length - 1]) {
         case COPLANAR:
             (this.normal.dot(polygon.plane.normal) > 0 ? front : back).add(polygon);
-            break;
+            return;
         case FRONT:
             front.add(polygon);
-            break;
+            return;
         case BACK:
             back.add(polygon);
-            break;
+            return;
         case SPANNING:
 
             final DatFile df = polygon.df;
@@ -212,7 +199,7 @@ public class Plane {
             if (b.size() >= 3) {
                 back.add(new Polygon(df, b, polygon));
             }
-            break;
+            return;
         }
     }
 
@@ -246,13 +233,13 @@ public class Plane {
         switch (types[types.length - 1]) {
         case COPLANAR:
             coplanarPolys.add(polygon);
-            break;
+            return;
         case FRONT:
             front.add(polygon);
-            break;
+            return;
         case BACK:
             back.add(polygon);
-            break;
+            return;
         case SPANNING:
 
             final DatFile df = polygon.df;
@@ -293,7 +280,7 @@ public class Plane {
             if (b.size() >= 3) {
                 back.add(new Polygon(df, b, polygon));
             }
-            break;
+            return;
         }
     }
 }
