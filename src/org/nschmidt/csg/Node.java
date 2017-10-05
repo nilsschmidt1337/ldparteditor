@@ -103,8 +103,6 @@ final class Node {
         node.front = this.front == null ? null : this.front.clone();
         node.back = this.back == null ? null : this.back.clone();
 
-        node.polygons = new ArrayList<Polygon>();
-
         for (Polygon p : this.polygons) {
             node.polygons.add(p.clone());
         }
