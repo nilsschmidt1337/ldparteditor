@@ -96,20 +96,6 @@ final class Node {
         this.polygons = new ArrayList<Polygon>();
     }
 
-    @Override
-    public Node clone() {
-        Node node = new Node();
-        node.plane = this.plane == null ? null : this.plane.clone();
-        node.front = this.front == null ? null : this.front.clone();
-        node.back = this.back == null ? null : this.back.clone();
-
-        for (Polygon p : this.polygons) {
-            node.polygons.add(p.clone());
-        }
-
-        return node;
-    }
-
     /**
      * Converts solid space to empty space and vice verca.
      */
@@ -271,7 +257,7 @@ final class Node {
             i++;
         }
 
-        // Back before front. Reversed because of the new Stack to avoid build() recursion stack overflows
+        // Back before front. Reversed because of the new Stack to avoid recursion stack overflows
 
         if (backP.size() > 0) {
             if (this.back == null) {
@@ -330,7 +316,7 @@ final class Node {
             i++;
         }
 
-        // Back before front. Reversed because of the new Stack to avoid buildForUnion() recursion stack overflows
+        // Back before front. Reversed because of the new Stack to avoid recursion stack overflows
 
         if (backP.size() > 0) {
             if (this.back == null) {
