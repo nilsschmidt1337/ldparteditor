@@ -40,6 +40,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -66,6 +68,24 @@ public final class Polygon {
     // FIXME Remove this ID after the implementation is done
     private static int pseudo_id_counter = 0;
     private final int PSEUDO_ID;
+
+    /**
+     * Polygon vertices
+     */
+    public List<VectorCSGd> vertices;
+    /**
+     * The linked DatFile
+     */
+    final DatFile df;
+
+    private GColourIndex colour = new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0);
+
+    /**
+     * Plane defined by this polygon.
+     *
+     * <b>Note:</b> uses first three vertices to define the plane.
+     */
+    public final Plane plane;
 
     /**
      * Constructor. Creates a new polygon that consists of the specified
@@ -98,24 +118,6 @@ public final class Polygon {
             return false;
         return this == obj;
     }
-
-    /**
-     * Polygon vertices
-     */
-    public List<VectorCSGd> vertices;
-    /**
-     * The linked DatFile
-     */
-    final DatFile df;
-
-    private GColourIndex colour = new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0);
-
-    /**
-     * Plane defined by this polygon.
-     *
-     * <b>Note:</b> uses first three vertices to define the plane.
-     */
-    public final Plane plane;
 
     /**
      * Constructor. Creates a new polygon that consists of the specified
@@ -507,5 +509,71 @@ public final class Polygon {
 
     public void setColour(GColourIndex colour) {
         this.colour = colour;
+    }
+
+    /**
+     * FIXME Needs implementation: Unifies this convex polygon with another polygon if
+     * - they are on the same plane
+     * - they share two vertices
+     * - the resulting shape is convex
+     *
+     * @param other the other polygon
+     * @return {@code null} if the two polygons can't be unified to a new convex shape
+     */
+    public Polygon unify(Polygon other) {
+
+        final Plane op = other.plane;
+        if (plane.normal.compareTo(op.normal) != 0 || Math.abs(plane.dist - op.dist) > 0.001) {
+            return null;
+        }
+
+        int i = 0;
+        int j = 0;
+        int common = 0;
+
+        final List<VectorCSGd> newVertices = new ArrayList<>();
+
+        final Set<VectorCSGd> tv = new TreeSet<>(vertices);
+        final Set<VectorCSGd> ov = new TreeSet<>(other.vertices);
+        final int vs = vertices.size();
+        final int ovs = other.vertices.size();
+
+        for (i = 0; i < vs; i++) {
+            final VectorCSGd v = vertices.get(i);
+            if (ov.contains(v) && common < 3) {
+                common++;
+                j = other.vertices.indexOf(v);
+            } if (common > 0) {
+                break;
+            } else {
+                newVertices.add(v);
+            }
+        }
+
+        for (j = 0; j < ovs; j++) {
+            final VectorCSGd v = other.vertices.get(i);
+            if (ov.contains(v) && common < 3) {
+                common++;
+                i = vertices.indexOf(v);
+            } if (common > 0) {
+                break;
+            } else {
+                newVertices.add(v);
+            }
+        }
+
+
+
+
+
+        tv.retainAll(ov);
+
+        if (tv.size() != 2) {
+            return null;
+        }
+
+
+        return null;
+
     }
 }
