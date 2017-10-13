@@ -33,6 +33,8 @@
  */
 package org.nschmidt.csg;
 
+import org.nschmidt.ldparteditor.data.Vertex;
+
 /**
  * 3D Vector3d.
  *
@@ -211,32 +213,13 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final VectorCSGd other = (VectorCSGd) obj;
-        if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(other.x)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.y) != Double.doubleToLongBits(other.y)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.z) != Double.doubleToLongBits(other.z)) {
-            return false;
-        }
-        return true;
+        Vertex o = (Vertex) obj;
+        return Math.abs(x - o.x) < epsilon && Math.abs(y - o.y) < epsilon && Math.abs(z - o.z) < epsilon;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + (int) (Double.doubleToLongBits(x) ^ Double.doubleToLongBits(x) >>> 32);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(y) ^ Double.doubleToLongBits(y) >>> 32);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(z) ^ Double.doubleToLongBits(z) >>> 32);
-        return hash;
+        return 1337;
     }
 
 
