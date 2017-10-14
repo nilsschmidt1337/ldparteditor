@@ -512,7 +512,7 @@ public final class Polygon {
     }
 
     /**
-     * FIXME Needs implementation: Unifies this convex polygon with another polygon if
+     * Unifies this convex polygon with another polygon if
      * - they are on the same plane
      * - they share two vertices
      * - the resulting shape is convex
@@ -522,58 +522,77 @@ public final class Polygon {
      */
     public Polygon unify(Polygon other) {
 
+        if (!colour.getColour().equals(other.colour.getColour())) {
+            return null;
+        }
+
         final Plane op = other.plane;
         if (plane.normal.compareTo(op.normal) != 0 || Math.abs(plane.dist - op.dist) > 0.001) {
             return null;
         }
 
-        int i = 0;
-        int j = 0;
         int common = 0;
+
+        final Set<VectorCSGd> ov = new TreeSet<>(other.vertices);
+        int vs = vertices.size();
+        final int[] this_indexes = new int[2];
+
+        for (int i = 0; i < vs; i++) {
+            if (ov.contains(vertices.get(i))) {
+                if (common < 2) {
+                    this_indexes[common] = i;
+                    common++;
+                } else {
+                    return null;
+                }
+            }
+        }
+
+        if (common != 2) {
+            return null;
+        }
+        common = 0;
+
+        final Set<VectorCSGd> tv = new TreeSet<>(vertices);
+        int ovs = other.vertices.size();
+        final int[] other_indexes = new int[2];
+
+        for (int i = 0; i < ovs; i++) {
+            if (tv.contains(other.vertices.get(i))) {
+                other_indexes[common] = i;
+                common++;
+                if (common == 2) {
+                    break;
+                }
+            }
+        }
+
+        rotate(this_indexes, vertices, vs);
+        rotate(other_indexes, other.vertices, ovs);
 
         final List<VectorCSGd> newVertices = new ArrayList<>();
 
-        final Set<VectorCSGd> tv = new TreeSet<>(vertices);
-        final Set<VectorCSGd> ov = new TreeSet<>(other.vertices);
-        final int vs = vertices.size();
-        final int ovs = other.vertices.size();
-
-        for (i = 0; i < vs; i++) {
-            final VectorCSGd v = vertices.get(i);
-            if (ov.contains(v) && common < 3) {
-                common++;
-                j = other.vertices.indexOf(v);
-            } if (common > 0) {
-                break;
-            } else {
-                newVertices.add(v);
-            }
+        vs--;
+        for (int i = 1; i < vs; i++) {
+            newVertices.add(vertices.get(i));
         }
 
-        for (j = 0; j < ovs; j++) {
-            final VectorCSGd v = other.vertices.get(i);
-            if (ov.contains(v) && common < 3) {
-                common++;
-                i = vertices.indexOf(v);
-            } if (common > 0) {
-                break;
-            } else {
-                newVertices.add(v);
-            }
+        ovs--;
+        for (int i = 1; i < ovs; i++) {
+            newVertices.add(other.vertices.get(i));
         }
 
+        return new Polygon(df, newVertices, this);
+    }
 
-
-
-
-        tv.retainAll(ov);
-
-        if (tv.size() != 2) {
-            return null;
+    private void rotate(final int[] i_arr, final List<VectorCSGd> list, final int size) {
+        if (Math.abs(i_arr[0] - i_arr[1]) != 1) return;
+        final int rot_dist = Math.max(i_arr[0], i_arr[1]);
+        final int target = rot_dist + size;
+        final List<VectorCSGd> copy = new ArrayList<>(list);
+        list.clear();
+        for (int i = rot_dist; i < target; i++) {
+            list.add(copy.get(i % size));
         }
-
-
-        return null;
-
     }
 }
