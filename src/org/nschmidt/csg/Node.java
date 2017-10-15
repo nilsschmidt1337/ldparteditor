@@ -154,7 +154,7 @@ final class Node {
                 .stream()
                 .parallel()
                 .map((poly) ->
-                    this.plane.getTypes(poly))
+                this.plane.getTypes(poly))
                 .collect(Collectors.toList());
 
         int i = 0;
@@ -247,7 +247,7 @@ final class Node {
                 .stream()
                 .parallel()
                 .map((poly) ->
-                    this.plane.getTypes(poly))
+                this.plane.getTypes(poly))
                 .collect(Collectors.toList());
 
         // parallel version does not work here
@@ -294,7 +294,7 @@ final class Node {
                 .stream()
                 .parallel()
                 .map((poly) ->
-                    this.plane.getTypes(poly))
+                this.plane.getTypes(poly))
                 .collect(Collectors.toList());
 
         int i = 0;
@@ -333,5 +333,10 @@ final class Node {
         }
 
         return result;
+    }
+
+    void simplify() {
+        // FIXME Needs implementation!
+
     }
 }

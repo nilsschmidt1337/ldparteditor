@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -220,11 +221,11 @@ public class CSG {
         final List<Polygon> nonIntersectingPolys = new ArrayList<>();
 
         thisPolys.removeIf((poly) -> {
-           final boolean result;
-           if (result = !otherBounds.intersects(poly.getBounds())) {
-               nonIntersectingPolys.add(poly);
-           }
-           return result;
+            final boolean result;
+            if (result = !otherBounds.intersects(poly.getBounds())) {
+                nonIntersectingPolys.add(poly);
+            }
+            return result;
         });
 
         otherPolys.removeIf((poly) -> {
@@ -233,7 +234,7 @@ public class CSG {
                 nonIntersectingPolys.add(poly);
             }
             return result;
-         });
+        });
 
         CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(thisPolys));
         CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
@@ -257,14 +258,23 @@ public class CSG {
         b.clipTo(a);
         b.invert();
 
-        Stack<NodePolygon> st = new Stack<>();
+
+        final List<Node> nodes = new ArrayList<>();
+        final Stack<NodePolygon> st = new Stack<>();
         st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
-            List<NodePolygon> npr = np.getNode().buildForResult(np.getPolygons());
+            Node n = np.getNode();
+            nodes.add(n);
+            List<NodePolygon> npr = n.buildForResult(np.getPolygons());
             for (NodePolygon np2 : npr) {
                 st.push(np2);
             }
+        }
+
+        for (ListIterator<Node> it = nodes.listIterator(nodes.size() - 1); it.hasPrevious();) {
+            Node n = it.previous();
+            n.simplify();
         }
 
         final List<Polygon> resultPolys = a.allPolygons(new ArrayList<>());
@@ -310,11 +320,11 @@ public class CSG {
         final List<Polygon> nonIntersectingPolys = new ArrayList<>();
 
         thisPolys.removeIf((poly) -> {
-           final boolean result;
-           if (result = !otherBounds.intersects(poly.getBounds())) {
-               nonIntersectingPolys.add(poly);
-           }
-           return result;
+            final boolean result;
+            if (result = !otherBounds.intersects(poly.getBounds())) {
+                nonIntersectingPolys.add(poly);
+            }
+            return result;
         });
 
         otherPolys.removeIf((poly) -> {
