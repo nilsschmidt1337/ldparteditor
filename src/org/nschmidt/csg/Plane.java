@@ -45,7 +45,7 @@ import org.nschmidt.ldparteditor.data.GDataCSG;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class Plane {
+public class Plane implements Comparable<Plane> {
 
     /**
      * EPSILON is the tolerance used by
@@ -282,5 +282,14 @@ public class Plane {
             }
             return;
         }
+    }
+
+    @Override
+    public int compareTo(Plane o) {
+        final int vc = normal.compareTo(o.normal);
+        if (vc == 0) {
+            return Double.compare(dist, o.dist);
+        }
+        return vc;
     }
 }

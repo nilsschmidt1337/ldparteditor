@@ -38,7 +38,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -272,12 +271,45 @@ public class CSG {
             }
         }
 
-        for (ListIterator<Node> it = nodes.listIterator(nodes.size() - 1); it.hasPrevious();) {
-            Node n = it.previous();
-            n.simplify();
+        final List<Polygon> resultPolys = a.allPolygons(new ArrayList<>());
+        final TreeMap<Plane, List<Polygon>> polyMap = new TreeMap<>();
+
+        int oldSize = -1;
+        while (resultPolys.size() != oldSize) {
+            oldSize = resultPolys.size();
+
+            for (Polygon p : resultPolys) {
+                List<Polygon> polysToOptimize = polyMap.get(p.plane);
+                if (polysToOptimize == null) {
+                    polysToOptimize = new ArrayList<>();
+                    polyMap.put(p.plane, polysToOptimize);
+                }
+                polysToOptimize.add(p);
+            }
+            resultPolys.clear();
+
+            for (List<Polygon> polys : polyMap.values()) {
+                final int s = polys.size();
+                final boolean[] skip = new boolean[s];
+                for (int i = 0; i < s; i++) {
+                    if (skip[i]) continue;
+                    for (int j = i + 1; j < s; j++) {
+                        if (skip[j]) continue;
+                        Polygon r = polys.get(i).unify(polys.get(j));
+                        if (r != null) {
+                            skip[i] = true;
+                            skip[j] = true;
+                            resultPolys.add(r);
+                            break;
+                        }
+                    }
+                    if (skip[i]) continue;
+                    resultPolys.add(polys.get(i));
+                }
+            }
+            polyMap.clear();
         }
 
-        final List<Polygon> resultPolys = a.allPolygons(new ArrayList<>());
         resultPolys.addAll(nonIntersectingPolys);
 
         return CSG.fromPolygons(resultPolys);
