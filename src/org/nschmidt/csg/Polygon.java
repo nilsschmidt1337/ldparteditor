@@ -522,19 +522,31 @@ public final class Polygon {
      */
     public Polygon unify(Polygon other) {
 
+        // (optional) Check if they share the same colour
+
         if (!colour.getColour().equals(other.colour.getColour())) {
             return null;
         }
+
+        // Check if they are on the same plane
 
         final Plane op = other.plane;
         if (plane.normal.compareTo(op.normal) != 0 || Math.abs(plane.dist - op.dist) > 0.001) {
             return null;
         }
 
+        // Check if they share two vertices
+
+        int vs = vertices.size();
+        int ovs = other.vertices.size();
+
+        if (vs < 4 || ovs < 4) {
+            return null;
+        }
+
         int common = 0;
 
         final Set<VectorCSGd> ov = new TreeSet<>(other.vertices);
-        int vs = vertices.size();
         final int[] this_indexes = new int[2];
 
         for (int i = 0; i < vs; i++) {
@@ -554,7 +566,6 @@ public final class Polygon {
         common = 0;
 
         final Set<VectorCSGd> tv = new TreeSet<>(vertices);
-        int ovs = other.vertices.size();
         final int[] other_indexes = new int[2];
 
         for (int i = 0; i < ovs; i++) {
@@ -569,6 +580,25 @@ public final class Polygon {
 
         rotate(this_indexes, vertices, vs);
         rotate(other_indexes, other.vertices, ovs);
+
+        // Check if the resulting shape is "convex"
+        // and the common vertices are superflous.
+
+        final VectorCSGd dtv_1 = vertices.get(1).minus(vertices.get(0)).unit();
+        final VectorCSGd dov_1 = other.vertices.get(ovs - 1).minus(other.vertices.get(ovs - 2)).unit();
+
+        if (Math.abs(dtv_1.dot(dov_1) - 1.0) > 0.001) {
+            return null;
+        }
+
+        final VectorCSGd dtv_2 = vertices.get(vs - 1).minus(vertices.get(vs - 2)).unit();
+        final VectorCSGd dov_2 = other.vertices.get(1).minus(other.vertices.get(0)).unit();
+
+        if (Math.abs(dtv_2.dot(dov_2) - 1.0) > 0.001) {
+            return null;
+        }
+
+        // Create the new shape
 
         final List<VectorCSGd> newVertices = new ArrayList<>();
 
@@ -587,7 +617,7 @@ public final class Polygon {
 
     private void rotate(final int[] i_arr, final List<VectorCSGd> list, final int size) {
         if (Math.abs(i_arr[0] - i_arr[1]) != 1) return;
-        final int rot_dist = Math.max(i_arr[0], i_arr[1]);
+        final int rot_dist = i_arr[1]; // remember: i_arr[1] > i_arr[0]
         final int target = rot_dist + size;
         final List<VectorCSGd> copy = new ArrayList<>(list);
         list.clear();
