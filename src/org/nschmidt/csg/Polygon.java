@@ -524,9 +524,11 @@ public final class Polygon {
 
         // (optional) Check if they share the same colour
 
+        /*
         if (!colour.getColour().equals(other.colour.getColour())) {
             return null;
         }
+        */
 
         // Check if they are on the same plane
 
@@ -539,10 +541,6 @@ public final class Polygon {
 
         int vs = vertices.size();
         int ovs = other.vertices.size();
-
-        if (vs < 4 || ovs < 4) {
-            return null;
-        }
 
         int common = 0;
 

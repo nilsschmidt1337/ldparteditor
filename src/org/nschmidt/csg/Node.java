@@ -334,9 +334,4 @@ final class Node {
 
         return result;
     }
-
-    void simplify() {
-        // FIXME Needs implementation!
-
-    }
 }
