@@ -584,33 +584,52 @@ public final class Polygon {
 
         final VectorCSGd dtv_1 = vertices.get(1).minus(vertices.get(0)).unit();
         final VectorCSGd dov_1 = other.vertices.get(ovs - 1).minus(other.vertices.get(ovs - 2)).unit();
-
-        if (Math.abs(dtv_1.dot(dov_1) - 1.0) > 0.001) {
-            return null;
-        }
-
         final VectorCSGd dtv_2 = vertices.get(vs - 1).minus(vertices.get(vs - 2)).unit();
         final VectorCSGd dov_2 = other.vertices.get(1).minus(other.vertices.get(0)).unit();
 
-        if (Math.abs(dtv_2.dot(dov_2) - 1.0) > 0.001) {
-            return null;
-        }
+        final boolean linearDependent1 = Math.abs(dtv_1.dot(dov_1) - 1.0) <= 0.001;
+        final boolean linearDependent2 = Math.abs(dtv_2.dot(dov_2) - 1.0) <= 0.001;
+        final boolean linearMerge = linearDependent1 && linearDependent2;
+        final boolean convexMerge = !linearDependent1 && !linearDependent2;
+        final VectorCSGd cornerv1 = linearMerge ? null : dtv_1.cross(dov_1);
+        final VectorCSGd cornerv2 = linearMerge ? null : dtv_2.cross(dov_2);
 
         // Create the new shape
 
         final List<VectorCSGd> newVertices = new ArrayList<>();
 
-        vs--;
-        for (int i = 1; i < vs; i++) {
-            newVertices.add(vertices.get(i));
-        }
+        if (linearMerge) {
+            vs--;
+            for (int i = 1; i < vs; i++) {
+                newVertices.add(vertices.get(i));
+            }
 
-        ovs--;
-        for (int i = 1; i < ovs; i++) {
-            newVertices.add(other.vertices.get(i));
+            ovs--;
+            for (int i = 1; i < ovs; i++) {
+                newVertices.add(other.vertices.get(i));
+            }
+            return new Polygon(df, newVertices, this);
+        } else if (convexMerge) {
+            if (Math.abs(cornerv1.dot(cornerv2) - 1.0) <= 0.001) {
+                for (int i = 0; i < vs; i++) {
+                    newVertices.add(vertices.get(i));
+                }
+                ovs--;
+                for (int i = 1; i < ovs; i++) {
+                    newVertices.add(other.vertices.get(i));
+                }
+                return new Polygon(df, newVertices, this);
+            }
+            return null;
+        } else if (linearDependent1) {
+            // FIXME Needs implementation!
+            return null;
+        } else if (linearDependent2) {
+            // FIXME Needs implementation!
+            return null;
+        } else {
+            return null;
         }
-
-        return new Polygon(df, newVertices, this);
     }
 
     private void rotate(final int[] i_arr, final List<VectorCSGd> list, final int size) {
