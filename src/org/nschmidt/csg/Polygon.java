@@ -591,8 +591,8 @@ public final class Polygon {
         final boolean linearDependent2 = Math.abs(dtv_2.dot(dov_2) - 1.0) <= 0.001;
         final boolean linearMerge = linearDependent1 && linearDependent2;
         final boolean convexMerge = !linearDependent1 && !linearDependent2;
-        final VectorCSGd cornerv1 = linearMerge ? null : dtv_1.cross(dov_1);
-        final VectorCSGd cornerv2 = linearMerge ? null : dtv_2.cross(dov_2);
+        // final VectorCSGd cornerv1 = linearMerge ? null : dtv_1.cross(dov_1);
+        // final VectorCSGd cornerv2 = linearMerge ? null : dtv_2.cross(dov_2);
 
         // Create the new shape
 
@@ -610,23 +610,27 @@ public final class Polygon {
             }
             return new Polygon(df, newVertices, this);
         } else if (convexMerge) {
-            if (Math.abs(cornerv1.dot(cornerv2) - 1.0) <= 0.001) {
-                for (int i = 0; i < vs; i++) {
-                    newVertices.add(vertices.get(i));
-                }
-                ovs--;
-                for (int i = 1; i < ovs; i++) {
-                    newVertices.add(other.vertices.get(i));
-                }
-                return new Polygon(df, newVertices, this);
-            }
+            // FIXME Needs implementation?!
             return null;
         } else if (linearDependent1) {
-            // FIXME Needs implementation!
-            return null;
+            for (int i = 1; i < vs; i++) {
+                newVertices.add(vertices.get(i));
+            }
+            ovs--;
+            for (int i = 1; i < ovs; i++) {
+                newVertices.add(other.vertices.get(i));
+            }
+            return new Polygon(df, newVertices, this);
         } else if (linearDependent2) {
-            // FIXME Needs implementation!
-            return null;
+            vs--;
+            for (int i = 0; i < vs; i++) {
+                newVertices.add(vertices.get(i));
+            }
+            ovs--;
+            for (int i = 1; i < ovs; i++) {
+                newVertices.add(other.vertices.get(i));
+            }
+            return new Polygon(df, newVertices, this);
         } else {
             return null;
         }

@@ -271,44 +271,7 @@ public class CSG {
             }
         }
 
-        final List<Polygon> resultPolys = a.allPolygons(new ArrayList<>());
-        final TreeMap<Plane, List<Polygon>> polyMap = new TreeMap<>();
-
-        int oldSize = -1;
-        while (resultPolys.size() != oldSize) {
-            oldSize = resultPolys.size();
-
-            for (Polygon p : resultPolys) {
-                List<Polygon> polysToOptimize = polyMap.get(p.plane);
-                if (polysToOptimize == null) {
-                    polysToOptimize = new ArrayList<>();
-                    polyMap.put(p.plane, polysToOptimize);
-                }
-                polysToOptimize.add(p);
-            }
-            resultPolys.clear();
-
-            for (List<Polygon> polys : polyMap.values()) {
-                final int s = polys.size();
-                final boolean[] skip = new boolean[s];
-                for (int i = 0; i < s; i++) {
-                    if (skip[i]) continue;
-                    for (int j = i + 1; j < s; j++) {
-                        if (skip[j]) continue;
-                        Polygon r = polys.get(i).unify(polys.get(j));
-                        if (r != null) {
-                            skip[i] = true;
-                            skip[j] = true;
-                            resultPolys.add(r);
-                            break;
-                        }
-                    }
-                    if (skip[i]) continue;
-                    resultPolys.add(polys.get(i));
-                }
-            }
-            polyMap.clear();
-        }
+        final List<Polygon> resultPolys = a.allPolygonsOptimized();
 
         resultPolys.addAll(nonIntersectingPolys);
 
@@ -398,7 +361,7 @@ public class CSG {
 
         a.invert();
 
-        final List<Polygon> resultPolys = a.allPolygons(new ArrayList<>());
+        final List<Polygon> resultPolys = a.allPolygonsOptimized();
         resultPolys.addAll(nonIntersectingPolys);
 
         return CSG.fromPolygons(resultPolys);
@@ -467,7 +430,7 @@ public class CSG {
         }
 
         a.invert();
-        return CSG.fromPolygons(a.allPolygons(new ArrayList<>()));
+        return CSG.fromPolygons(a.allPolygonsOptimized());
     }
 
     /**
