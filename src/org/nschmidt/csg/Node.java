@@ -338,23 +338,22 @@ final class Node {
 
     public List<Polygon> allPolygonsOptimized() {
         final List<Polygon> resultPolys = allPolygons(new ArrayList<>());
-        final TreeMap<Plane, List<Polygon>> polyMap = new TreeMap<>();
+        final TreeMap<Plane, ArrayList<Polygon>> polyMap = new TreeMap<>();
+
+        for (Polygon p : resultPolys) {
+            ArrayList<Polygon> polysToOptimize = polyMap.get(p.plane);
+            if (polysToOptimize == null) {
+                polysToOptimize = new ArrayList<>();
+                polyMap.put(p.plane, polysToOptimize);
+            }
+            polysToOptimize.add(p);
+        }
 
         int oldSize = -1;
         while (resultPolys.size() != oldSize) {
             oldSize = resultPolys.size();
-
-            for (Polygon p : resultPolys) {
-                List<Polygon> polysToOptimize = polyMap.get(p.plane);
-                if (polysToOptimize == null) {
-                    polysToOptimize = new ArrayList<>();
-                    polyMap.put(p.plane, polysToOptimize);
-                }
-                polysToOptimize.add(p);
-            }
             resultPolys.clear();
-
-            for (List<Polygon> polys : polyMap.values()) {
+            for (ArrayList<Polygon> polys : polyMap.values()) {
                 final int s = polys.size();
                 final boolean[] skip = new boolean[s];
                 for (int i = 0; i < s; i++) {
@@ -366,14 +365,19 @@ final class Node {
                             skip[i] = true;
                             skip[j] = true;
                             resultPolys.add(r);
+                            polys.add(r);
                             break;
                         }
                     }
                     if (skip[i]) continue;
                     resultPolys.add(polys.get(i));
                 }
+                for (int i = s - 1; i > -1; i--) {
+                    if (skip[i]) {
+                        polys.remove(i);
+                    }
+                }
             }
-            polyMap.clear();
         }
         return resultPolys;
     }
