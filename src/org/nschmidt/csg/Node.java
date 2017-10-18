@@ -349,9 +349,9 @@ final class Node {
             polysToOptimize.add(p);
         }
 
-        int oldSize = -1;
-        while (resultPolys.size() != oldSize) {
-            oldSize = resultPolys.size();
+        boolean foundOptimization = true;
+        while (foundOptimization) {
+            foundOptimization = false;
             resultPolys.clear();
             for (ArrayList<Polygon> polys : polyMap.values()) {
                 final int s = polys.size();
@@ -366,6 +366,7 @@ final class Node {
                             skip[j] = true;
                             resultPolys.add(r);
                             polys.add(r);
+                            foundOptimization = true;
                             break;
                         }
                     }

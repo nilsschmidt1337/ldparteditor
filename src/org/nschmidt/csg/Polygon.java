@@ -532,10 +532,12 @@ public final class Polygon {
 
         // Check if they are on the same plane
 
+        /*
         final Plane op = other.plane;
         if (plane.normal.compareTo(op.normal) != 0 || Math.abs(plane.dist - op.dist) > 0.001) {
             return null;
         }
+        */
 
         // Check if they share two vertices
 
@@ -633,6 +635,68 @@ public final class Polygon {
             return new Polygon(df, newVertices, this);
         } else {
             return null;
+        }
+    }
+
+    public Polygon[] consumeCommonInterpolatedVertex(Polygon other) {
+
+        // Check if they share one vertex
+
+        int vs = vertices.size();
+        int ovs = other.vertices.size();
+
+        int common = 0;
+
+        final Set<VectorCSGd> ov = new TreeSet<>(other.vertices);
+        int this_index = -1;
+
+        for (int i = 0; i < vs; i++) {
+            if (ov.contains(vertices.get(i))) {
+                if (common < 1) {
+                    this_index = i;
+                    common++;
+                } else {
+                    return null;
+                }
+            }
+        }
+
+        if (common != 1) {
+            return null;
+        }
+        common = 0;
+
+        final Set<VectorCSGd> tv = new TreeSet<>(vertices);
+        int other_index = -1;
+
+        for (int i = 0; i < ovs; i++) {
+            if (tv.contains(other.vertices.get(i))) {
+                other_index = i;
+                break;
+            }
+        }
+
+        rotate(this_index, vertices, vs);
+        rotate(other_index, other.vertices, ovs);
+
+        final VectorCSGd dtv_1 = vertices.get(1).minus(vertices.get(0)).unit();
+        final VectorCSGd dov_1 = other.vertices.get(ovs - 1).minus(other.vertices.get(ovs - 2)).unit();
+        final VectorCSGd dtv_2 = vertices.get(vs - 1).minus(vertices.get(vs - 2)).unit();
+        final VectorCSGd dov_2 = other.vertices.get(1).minus(other.vertices.get(0)).unit();
+
+        final boolean linearDependent1 = Math.abs(dtv_1.dot(dov_1) - 1.0) <= 0.001;
+        final boolean linearDependent2 = Math.abs(dtv_2.dot(dov_2) - 1.0) <= 0.001;
+
+        return null;
+    }
+
+    private void rotate(final int ci, final List<VectorCSGd> list, final int size) {
+        final int rot_dist = ci;
+        final int target = rot_dist + size;
+        final List<VectorCSGd> copy = new ArrayList<>(list);
+        list.clear();
+        for (int i = rot_dist; i < target; i++) {
+            list.add(copy.get(i % size));
         }
     }
 
