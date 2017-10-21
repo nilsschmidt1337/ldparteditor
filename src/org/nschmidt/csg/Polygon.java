@@ -193,8 +193,8 @@ public final class Polygon {
                     int dID = CSGPrimitive.id_counter.getAndIncrement();
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                 } else {
-                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), colour.getIndex());
-                    // FIXME result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                    // TODO result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), colour.getIndex());
+                    result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                 }
             }
         }
@@ -589,12 +589,10 @@ public final class Polygon {
         final VectorCSGd dtv_2 = vertices.get(vs - 1).minus(vertices.get(vs - 2)).unit();
         final VectorCSGd dov_2 = other.vertices.get(1).minus(other.vertices.get(0)).unit();
 
-        final boolean linearDependent1 = Math.abs(dtv_1.dot(dov_1) - 1.0) <= 0.001;
-        final boolean linearDependent2 = Math.abs(dtv_2.dot(dov_2) - 1.0) <= 0.001;
+        final boolean linearDependent1 = Math.abs(dtv_1.dot(dov_1) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
+        final boolean linearDependent2 = Math.abs(dtv_2.dot(dov_2) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
         final boolean linearMerge = linearDependent1 && linearDependent2;
         final boolean convexMerge = !linearDependent1 && !linearDependent2;
-        // final VectorCSGd cornerv1 = linearMerge ? null : dtv_1.cross(dov_1);
-        // final VectorCSGd cornerv2 = linearMerge ? null : dtv_2.cross(dov_2);
 
         // Create the new shape
 
@@ -612,7 +610,19 @@ public final class Polygon {
             }
             return new Polygon(df, newVertices, this);
         } else if (convexMerge) {
-            // FIXME Needs implementation?!
+            // Don't do this complex thing for other configs :)
+            if (vs == 3 && ovs == 3) {
+                final VectorCSGd n1 = dtv_1.cross(dov_1).unit();
+                final VectorCSGd n2 = dtv_2.cross(dov_2).unit();
+                final boolean sameDirection = Math.abs(n1.dot(n2) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
+                if (sameDirection) {
+                    for (int i = 0; i < vs; i++) {
+                        newVertices.add(vertices.get(i));
+                    }
+                    newVertices.add(other.vertices.get(1));
+                    return new Polygon(df, newVertices, this);
+                }
+            }
             return null;
         } else if (linearDependent1) {
             for (int i = 1; i < vs; i++) {
@@ -642,29 +652,28 @@ public final class Polygon {
 
         // Check if they share one vertex
 
-        int vs = vertices.size();
-        int ovs = other.vertices.size();
+        final int vs = vertices.size();
+        final int ovs = other.vertices.size();
 
-        int common = 0;
+        boolean hasNoCommon = true;
 
         final Set<VectorCSGd> ov = new TreeSet<>(other.vertices);
         int this_index = -1;
 
         for (int i = 0; i < vs; i++) {
             if (ov.contains(vertices.get(i))) {
-                if (common < 1) {
+                if (hasNoCommon) {
                     this_index = i;
-                    common++;
+                    hasNoCommon = false;
                 } else {
                     return null;
                 }
             }
         }
 
-        if (common != 1) {
+        if (hasNoCommon) {
             return null;
         }
-        common = 0;
 
         final Set<VectorCSGd> tv = new TreeSet<>(vertices);
         int other_index = -1;
@@ -679,13 +688,116 @@ public final class Polygon {
         rotate(this_index, vertices, vs);
         rotate(other_index, other.vertices, ovs);
 
-        final VectorCSGd dtv_1 = vertices.get(1).minus(vertices.get(0)).unit();
-        final VectorCSGd dov_1 = other.vertices.get(ovs - 1).minus(other.vertices.get(ovs - 2)).unit();
-        final VectorCSGd dtv_2 = vertices.get(vs - 1).minus(vertices.get(vs - 2)).unit();
-        final VectorCSGd dov_2 = other.vertices.get(1).minus(other.vertices.get(0)).unit();
+        final VectorCSGd dtv_forward = vertices.get(0).minus(vertices.get(vs - 1));
+        final VectorCSGd dov_forward = other.vertices.get(1).minus(other.vertices.get(0));
+        final double dtvm_forward = dtv_forward.magnitude();
+        final double dovm_forward = dov_forward.magnitude();
+        final VectorCSGd dtvn_forward = dtv_forward.dividedBy(dtvm_forward);
+        final VectorCSGd dovn_forward = dov_forward.dividedBy(dovm_forward);
+        final double sp_forward = dtvn_forward.dot(dovn_forward);
+        final boolean linearDependent_forward = (Math.abs(sp_forward) - 1.0) <= 0.001;
+        if (!linearDependent_forward) {
+            return null;
+        }
 
-        final boolean linearDependent1 = Math.abs(dtv_1.dot(dov_1) - 1.0) <= 0.001;
-        final boolean linearDependent2 = Math.abs(dtv_2.dot(dov_2) - 1.0) <= 0.001;
+        final VectorCSGd dtv_backward = vertices.get(1).minus(vertices.get(0));
+        final VectorCSGd dov_backward = other.vertices.get(0).minus(other.vertices.get(ovs - 1));
+        final double dtvm_backward = dtv_backward.magnitude();
+        final double dovm_backward = dov_backward.magnitude();
+        final VectorCSGd dtvn_backward = dtv_backward.dividedBy(dtvm_backward);
+        final VectorCSGd dovn_backward = dov_backward.dividedBy(dovm_backward);
+        final double sp_backward = dtvn_backward.dot(dovn_backward);
+        final boolean linearDependent_backward = (Math.abs(sp_backward) - 1.0) <= 0.001;
+        if (!linearDependent_backward) {
+            return null;
+        }
+
+        if (sp_forward > 0.0) {
+            if (sp_backward > 0.0) {
+                return null;
+            }
+            final List<VectorCSGd> thisNewVertices = new ArrayList<>();
+            final List<VectorCSGd> otherNewVertices = new ArrayList<>();
+            if (dtvm_backward < dovm_backward) {
+                // Merge this into other
+
+                final VectorCSGd dtedgen = vertices.get(2).minus(vertices.get(1)).unit();
+                final VectorCSGd doedgen = vertices.get(1).minus(other.vertices.get(ovs - 1)).unit();
+
+                if (dtedgen.dot(doedgen) < 0) {
+                    return null;
+                }
+
+                final VectorCSGd dnewedgen = other.vertices.get(1).minus(vertices.get(1)).unit();
+                final VectorCSGd tn = dnewedgen.cross(dtedgen).unit();
+                final VectorCSGd on = doedgen.cross(dnewedgen).unit();
+
+                final boolean sameDirection = Math.abs(tn.dot(on) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
+                if (!sameDirection) {
+                    return null;
+                }
+
+                thisNewVertices.add(other.vertices.get(1).clone());
+                for (int i = 1; i < vs; i++) {
+                    thisNewVertices.add(vertices.get(i));
+                }
+
+                for (int i = 1; i < ovs; i++) {
+                    otherNewVertices.add(other.vertices.get(i));
+                }
+                otherNewVertices.add(vertices.get(1).clone());
+
+                return null; // new Polygon[]{new Polygon(df, thisNewVertices, this), new Polygon(df, otherNewVertices, this)};
+            } else {
+                // Merge other into this
+
+                final VectorCSGd dtedgen = vertices.get(2).minus(vertices.get(1)).unit();
+                final VectorCSGd doedgen = vertices.get(1).minus(other.vertices.get(ovs - 1)).unit();
+
+                if (dtedgen.dot(doedgen) < 0) {
+                    return null;
+                }
+
+                final VectorCSGd dnewedgen = other.vertices.get(1).minus(vertices.get(1)).unit();
+                final VectorCSGd tn = dnewedgen.cross(dtedgen).unit();
+                final VectorCSGd on = doedgen.cross(dnewedgen).unit();
+
+                final boolean sameDirection = Math.abs(tn.dot(on) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
+                if (!sameDirection) {
+                    return null;
+                }
+
+                // Merge this into other
+                thisNewVertices.add(other.vertices.get(ovs - 1).clone());
+                for (int i = 1; i < vs; i++) {
+                    thisNewVertices.add(vertices.get(i));
+                }
+
+                for (int i = 1; i < ovs; i++) {
+                    otherNewVertices.add(other.vertices.get(i));
+                }
+                otherNewVertices.add(vertices.get(vs - 1).clone());
+
+                Polygon p1 = new Polygon(df, thisNewVertices, this);
+                Polygon p2 = new Polygon(df, otherNewVertices, this);
+                p1.setColour(new GColourIndex(View.getLDConfigColour(14), p1.getColour().getIndex()));
+                p2.setColour(new GColourIndex(View.getLDConfigColour(1), p2.getColour().getIndex()));
+                return new Polygon[]{p1, p2};
+            }
+        } else {
+            if (sp_backward < 0.0) {
+                return null;
+            }
+            final List<VectorCSGd> thisNewVertices = new ArrayList<>();
+            final List<VectorCSGd> otherNewVertices = new ArrayList<>();
+            if (dtvm_forward < dovm_forward) {
+                // Merge this into other
+
+            } else {
+                // Merge other into this
+
+            }
+        }
 
         return null;
     }

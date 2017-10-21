@@ -369,6 +369,17 @@ final class Node {
                             foundOptimization = true;
                             break;
                         }
+                        Polygon[] ra = polys.get(i).consumeCommonInterpolatedVertex(polys.get(j));
+                        if (ra != null && !foundOptimization) {
+                            skip[i] = true;
+                            skip[j] = true;
+                            resultPolys.add(ra[0]);
+                            resultPolys.add(ra[1]);
+                            polys.add(ra[0]);
+                            polys.add(ra[1]);
+                            // foundOptimization = true;
+                            break;
+                        }
                     }
                     if (skip[i]) continue;
                     resultPolys.add(polys.get(i));
