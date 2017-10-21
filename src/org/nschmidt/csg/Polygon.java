@@ -522,6 +522,18 @@ public final class Polygon {
      */
     public Polygon unify(Polygon other) {
 
+        if (!this.getColour().getColour().equals(other.getColour().getColour())) {
+            return null;
+        }
+
+        if (this.getColour().getColour().getColourNumber() != 2) {
+            return null;
+        }
+
+        if (other.getColour().getColour().getColourNumber() != 2) {
+            return null;
+        }
+
         // (optional) Check if they share the same colour
 
         /*
@@ -611,7 +623,7 @@ public final class Polygon {
             return new Polygon(df, newVertices, this);
         } else if (convexMerge) {
             // Don't do this complex thing for other configs :)
-            if (vs == 3 && ovs == 3) {
+            if (false && vs == 3 && ovs == 3) {
                 final VectorCSGd n1 = dtv_1.cross(dov_1).unit();
                 final VectorCSGd n2 = dtv_2.cross(dov_2).unit();
                 final boolean sameDirection = Math.abs(n1.dot(n2) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
@@ -689,7 +701,7 @@ public final class Polygon {
         rotate(other_index, other.vertices, ovs);
 
         final VectorCSGd dtv_forward = vertices.get(0).minus(vertices.get(vs - 1));
-        final VectorCSGd dov_forward = other.vertices.get(1).minus(other.vertices.get(0));
+        final VectorCSGd dov_forward = other.vertices.get(1).minus(vertices.get(0));
         final double dtvm_forward = dtv_forward.magnitude();
         final double dovm_forward = dov_forward.magnitude();
         final VectorCSGd dtvn_forward = dtv_forward.dividedBy(dtvm_forward);
@@ -701,7 +713,7 @@ public final class Polygon {
         }
 
         final VectorCSGd dtv_backward = vertices.get(1).minus(vertices.get(0));
-        final VectorCSGd dov_backward = other.vertices.get(0).minus(other.vertices.get(ovs - 1));
+        final VectorCSGd dov_backward = vertices.get(0).minus(other.vertices.get(ovs - 1));
         final double dtvm_backward = dtv_backward.magnitude();
         final double dovm_backward = dov_backward.magnitude();
         final VectorCSGd dtvn_backward = dtv_backward.dividedBy(dtvm_backward);
@@ -718,71 +730,39 @@ public final class Polygon {
             }
             final List<VectorCSGd> thisNewVertices = new ArrayList<>();
             final List<VectorCSGd> otherNewVertices = new ArrayList<>();
+            final List<VectorCSGd> newVertices = new ArrayList<>();
+
             if (dtvm_backward < dovm_backward) {
-                // Merge this into other
+                // This is shorter
 
-                final VectorCSGd dtedgen = vertices.get(2).minus(vertices.get(1)).unit();
-                final VectorCSGd doedgen = vertices.get(1).minus(other.vertices.get(ovs - 1)).unit();
-
-                if (dtedgen.dot(doedgen) < 0) {
-                    return null;
-                }
-
-                final VectorCSGd dnewedgen = other.vertices.get(1).minus(vertices.get(1)).unit();
-                final VectorCSGd tn = dnewedgen.cross(dtedgen).unit();
-                final VectorCSGd on = doedgen.cross(dnewedgen).unit();
-
-                final boolean sameDirection = Math.abs(tn.dot(on) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
-                if (!sameDirection) {
-                    return null;
-                }
-
-                thisNewVertices.add(other.vertices.get(1).clone());
-                for (int i = 1; i < vs; i++) {
-                    thisNewVertices.add(vertices.get(i));
-                }
-
-                for (int i = 1; i < ovs; i++) {
-                    otherNewVertices.add(other.vertices.get(i));
-                }
-                otherNewVertices.add(vertices.get(1).clone());
-
-                return null; // new Polygon[]{new Polygon(df, thisNewVertices, this), new Polygon(df, otherNewVertices, this)};
+                return null;
             } else {
-                // Merge other into this
-
-                final VectorCSGd dtedgen = vertices.get(2).minus(vertices.get(1)).unit();
-                final VectorCSGd doedgen = vertices.get(1).minus(other.vertices.get(ovs - 1)).unit();
-
-                if (dtedgen.dot(doedgen) < 0) {
+                // Other is shorter
+                if (ovs < 4) {
                     return null;
                 }
 
-                final VectorCSGd dnewedgen = other.vertices.get(1).minus(vertices.get(1)).unit();
-                final VectorCSGd tn = dnewedgen.cross(dtedgen).unit();
-                final VectorCSGd on = doedgen.cross(dnewedgen).unit();
-
-                final boolean sameDirection = Math.abs(tn.dot(on) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
-                if (!sameDirection) {
-                    return null;
-                }
-
-                // Merge this into other
-                thisNewVertices.add(other.vertices.get(ovs - 1).clone());
                 for (int i = 1; i < vs; i++) {
                     thisNewVertices.add(vertices.get(i));
                 }
+                thisNewVertices.add(other.vertices.get(ovs - 1).clone());
 
                 for (int i = 1; i < ovs; i++) {
                     otherNewVertices.add(other.vertices.get(i));
                 }
-                otherNewVertices.add(vertices.get(vs - 1).clone());
+
+                newVertices.add(vertices.get(vs - 1).clone());
+                newVertices.add(other.vertices.get(1).clone());
+                newVertices.add(other.vertices.get(ovs - 1).clone());
+
 
                 Polygon p1 = new Polygon(df, thisNewVertices, this);
                 Polygon p2 = new Polygon(df, otherNewVertices, this);
-                p1.setColour(new GColourIndex(View.getLDConfigColour(14), p1.getColour().getIndex()));
-                p2.setColour(new GColourIndex(View.getLDConfigColour(1), p2.getColour().getIndex()));
-                return new Polygon[]{p1, p2};
+                Polygon p3 = new Polygon(df, newVertices, this);
+                p3.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
+                if (p1 != null) p1.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
+                if (p2 != null) p2.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
+                return new Polygon[]{p1, p2, p3};
             }
         } else {
             if (sp_backward < 0.0) {
@@ -790,6 +770,8 @@ public final class Polygon {
             }
             final List<VectorCSGd> thisNewVertices = new ArrayList<>();
             final List<VectorCSGd> otherNewVertices = new ArrayList<>();
+            final List<VectorCSGd> newVertices = new ArrayList<>();
+
             if (dtvm_forward < dovm_forward) {
                 // Merge this into other
 
