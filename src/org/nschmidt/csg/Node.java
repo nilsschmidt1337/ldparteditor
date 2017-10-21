@@ -361,7 +361,7 @@ final class Node {
                     for (int j = i + 1; j < s; j++) {
                         if (skip[j]) continue;
                         Polygon r = polys.get(i).unify(polys.get(j));
-                        if (r != null) {
+                        if (false && r != null) {
                             skip[i] = true;
                             skip[j] = true;
                             resultPolys.add(r);
@@ -375,8 +375,10 @@ final class Node {
                             skip[j] = true;
                             resultPolys.add(ra[0]);
                             resultPolys.add(ra[1]);
+                            resultPolys.add(ra[2]);
                             polys.add(ra[0]);
                             polys.add(ra[1]);
+                            polys.add(ra[2]);
                             // foundOptimization = true;
                             break;
                         }
