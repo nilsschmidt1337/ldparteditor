@@ -522,18 +522,6 @@ public final class Polygon {
      */
     public Polygon unify(Polygon other) {
 
-        if (!this.getColour().getColour().equals(other.getColour().getColour())) {
-            return null;
-        }
-
-        if (this.getColour().getColour().getColourNumber() != 2) {
-            return null;
-        }
-
-        if (other.getColour().getColour().getColourNumber() != 2) {
-            return null;
-        }
-
         // (optional) Check if they share the same colour
 
         /*
@@ -623,7 +611,7 @@ public final class Polygon {
             return new Polygon(df, newVertices, this);
         } else if (convexMerge) {
             // Don't do this complex thing for other configs :)
-            if (false && vs == 3 && ovs == 3) {
+            if (vs == 3 && ovs == 3) {
                 final VectorCSGd n1 = dtv_1.cross(dov_1).unit();
                 final VectorCSGd n2 = dtv_2.cross(dov_2).unit();
                 final boolean sameDirection = Math.abs(n1.dot(n2) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
@@ -707,7 +695,7 @@ public final class Polygon {
         final VectorCSGd dtvn_forward = dtv_forward.dividedBy(dtvm_forward);
         final VectorCSGd dovn_forward = dov_forward.dividedBy(dovm_forward);
         final double sp_forward = dtvn_forward.dot(dovn_forward);
-        final boolean linearDependent_forward = (Math.abs(sp_forward) - 1.0) <= 0.001;
+        final boolean linearDependent_forward = Math.abs(Math.abs(sp_forward) - 1.0) <= 0.001;
         if (!linearDependent_forward) {
             return null;
         }
@@ -719,7 +707,7 @@ public final class Polygon {
         final VectorCSGd dtvn_backward = dtv_backward.dividedBy(dtvm_backward);
         final VectorCSGd dovn_backward = dov_backward.dividedBy(dovm_backward);
         final double sp_backward = dtvn_backward.dot(dovn_backward);
-        final boolean linearDependent_backward = (Math.abs(sp_backward) - 1.0) <= 0.001;
+        final boolean linearDependent_backward = Math.abs(Math.abs(sp_backward) - 1.0) <= 0.001;
         if (!linearDependent_backward) {
             return null;
         }
@@ -759,9 +747,9 @@ public final class Polygon {
                 Polygon p1 = new Polygon(df, thisNewVertices, this);
                 Polygon p2 = new Polygon(df, otherNewVertices, this);
                 Polygon p3 = new Polygon(df, newVertices, this);
+                p1.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
+                p2.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
                 p3.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
-                if (p1 != null) p1.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
-                if (p2 != null) p2.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
                 return new Polygon[]{p1, p2, p3};
             }
         } else {
