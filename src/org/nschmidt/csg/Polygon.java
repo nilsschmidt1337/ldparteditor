@@ -522,6 +522,14 @@ public final class Polygon {
      */
     public Polygon unify(Polygon other) {
 
+        // FIXME This code is totally wrong at the moment.
+
+        /*
+        if (colour.getColour().getColourNumber() != 2 || other.colour.getColour().getColourNumber() != 2) {
+            return null;
+        }
+        */
+
         // (optional) Check if they share the same colour
 
         /*
@@ -539,7 +547,7 @@ public final class Polygon {
         }
         */
 
-        // Check if they share two vertices
+        // Check if they share two vertices which have no vertex in between!
 
         int vs = vertices.size();
         int ovs = other.vertices.size();
@@ -721,11 +729,34 @@ public final class Polygon {
             final List<VectorCSGd> newVertices = new ArrayList<>();
 
             if (dtvm_backward < dovm_backward) {
-                // This is shorter
+                // This is shorter (ok)
+                if (vs < 4) {
+                    return null;
+                }
 
-                return null;
+                for (int i = 1; i < vs; i++) {
+                    thisNewVertices.add(vertices.get(i));
+                }
+
+                otherNewVertices.add(vertices.get(1).clone());
+                for (int i = 1; i < ovs; i++) {
+                    otherNewVertices.add(other.vertices.get(i));
+                }
+
+                newVertices.add(vertices.get(vs - 1).clone());
+                newVertices.add(other.vertices.get(1).clone());
+                newVertices.add(vertices.get(1).clone());
+
+
+                Polygon p1 = new Polygon(df, thisNewVertices, this);
+                Polygon p2 = new Polygon(df, otherNewVertices, this);
+                Polygon p3 = new Polygon(df, newVertices, this);
+                p1.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
+                p2.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
+                p3.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
+                return new Polygon[]{p1, p2, p3};
             } else {
-                // Other is shorter
+                // Other is shorter (ok)
                 if (ovs < 4) {
                     return null;
                 }
@@ -747,9 +778,6 @@ public final class Polygon {
                 Polygon p1 = new Polygon(df, thisNewVertices, this);
                 Polygon p2 = new Polygon(df, otherNewVertices, this);
                 Polygon p3 = new Polygon(df, newVertices, this);
-                p1.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
-                p2.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
-                p3.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
                 return new Polygon[]{p1, p2, p3};
             }
         } else {
