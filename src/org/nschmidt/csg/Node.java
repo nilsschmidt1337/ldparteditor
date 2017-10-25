@@ -361,7 +361,7 @@ final class Node {
                     for (int j = i + 1; j < s; j++) {
                         if (skip[j]) continue;
                         Polygon r = polys.get(i).unify(polys.get(j));
-                        if (false && r != null) {
+                        if (r != null) {
                             skip[i] = true;
                             skip[j] = true;
                             resultPolys.add(r);
