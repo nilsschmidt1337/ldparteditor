@@ -193,8 +193,8 @@ public final class Polygon {
                     int dID = CSGPrimitive.id_counter.getAndIncrement();
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                 } else {
-                    // TODO result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), colour.getIndex());
-                    result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), colour.getIndex());
+                    // TODO result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                 }
             }
         }
