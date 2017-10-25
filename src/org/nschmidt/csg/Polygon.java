@@ -751,8 +751,8 @@ public final class Polygon {
                 Polygon p1 = new Polygon(df, thisNewVertices, this);
                 Polygon p2 = new Polygon(df, otherNewVertices, this);
                 Polygon p3 = new Polygon(df, newVertices, this);
-                p1.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
-                p2.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
+                p1.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
+                p2.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
                 p3.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
                 return new Polygon[]{p1, p2, p3};
             } else {
@@ -774,10 +774,12 @@ public final class Polygon {
                 newVertices.add(other.vertices.get(1).clone());
                 newVertices.add(other.vertices.get(ovs - 1).clone());
 
-
                 Polygon p1 = new Polygon(df, thisNewVertices, this);
                 Polygon p2 = new Polygon(df, otherNewVertices, this);
                 Polygon p3 = new Polygon(df, newVertices, this);
+                p1.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
+                p2.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
+                p3.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
                 return new Polygon[]{p1, p2, p3};
             }
         } else {
@@ -789,15 +791,59 @@ public final class Polygon {
             final List<VectorCSGd> newVertices = new ArrayList<>();
 
             if (dtvm_forward < dovm_forward) {
-                // Merge this into other
+                // This is shorter (ok)
+                if (vs < 4) {
+                    return null;
+                }
 
+                for (int i = 1; i < vs; i++) {
+                    thisNewVertices.add(vertices.get(i));
+                }
+
+                for (int i = 1; i < ovs; i++) {
+                    otherNewVertices.add(other.vertices.get(i));
+                }
+                otherNewVertices.add(vertices.get(vs - 1).clone());
+
+                newVertices.add(vertices.get(vs - 1).clone());
+                newVertices.add(other.vertices.get(ovs - 1).clone());
+                newVertices.add(vertices.get(1).clone());
+
+                Polygon p1 = new Polygon(df, thisNewVertices, this);
+                Polygon p2 = new Polygon(df, otherNewVertices, this);
+                Polygon p3 = new Polygon(df, newVertices, this);
+                p1.setColour(new GColourIndex(View.getLDConfigColour(15), this.getColour().getIndex()));
+                p2.setColour(new GColourIndex(View.getLDConfigColour(15), this.getColour().getIndex()));
+                p3.setColour(new GColourIndex(View.getLDConfigColour(15), this.getColour().getIndex()));
+                return new Polygon[]{p1, p2, p3};
             } else {
-                // Merge other into this
+                // Other is shorter (ok)
+                if (ovs < 4) {
+                    return null;
+                }
 
+                for (int i = 1; i < vs; i++) {
+                    thisNewVertices.add(vertices.get(i));
+                }
+                thisNewVertices.add(other.vertices.get(1).clone());
+
+                for (int i = 1; i < ovs; i++) {
+                    otherNewVertices.add(other.vertices.get(i));
+                }
+
+                newVertices.add(other.vertices.get(1).clone());
+                newVertices.add(other.vertices.get(ovs - 1).clone());
+                newVertices.add(vertices.get(1).clone());
+
+                Polygon p1 = new Polygon(df, thisNewVertices, this);
+                Polygon p2 = new Polygon(df, otherNewVertices, this);
+                Polygon p3 = new Polygon(df, newVertices, this);
+                p1.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
+                p2.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
+                p3.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
+                return new Polygon[]{p1, p2, p3};
             }
         }
-
-        return null;
     }
 
     private void rotate(final int ci, final List<VectorCSGd> list, final int size) {
