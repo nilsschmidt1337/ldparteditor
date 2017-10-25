@@ -522,8 +522,7 @@ public final class Polygon {
      */
     public Polygon unify(Polygon other) {
 
-        // FIXME This code is totally wrong at the moment.
-
+        // FIXME This code is totally wrong at the moment. It flips sometimes the vertex order of the polygon.
         /*
         if (colour.getColour().getColourNumber() != 2 || other.colour.getColour().getColourNumber() != 2) {
             return null;
@@ -571,6 +570,10 @@ public final class Polygon {
         if (common != 2) {
             return null;
         }
+        final int this_indexDelta = Math.abs(this_indexes[0] - this_indexes[1]);
+        if (!(this_indexDelta == 1 || this_indexDelta == (vs - 1))) {
+            return null;
+        }
         common = 0;
 
         final Set<VectorCSGd> tv = new TreeSet<>(vertices);
@@ -584,6 +587,10 @@ public final class Polygon {
                     break;
                 }
             }
+        }
+        final int other_indexDelta = Math.abs(other_indexes[0] - other_indexes[1]);
+        if (!(other_indexDelta == 1 || other_indexDelta == (ovs - 1))) {
+            return null;
         }
 
         rotate(this_indexes, vertices, vs);
@@ -620,8 +627,8 @@ public final class Polygon {
         } else if (convexMerge) {
             // Don't do this complex thing for other configs :)
             if (vs == 3 && ovs == 3) {
-                final VectorCSGd n1 = dtv_1.cross(dov_1).unit();
-                final VectorCSGd n2 = dtv_2.cross(dov_2).unit();
+                final VectorCSGd n1 = dtv_1.cross(dov_1);
+                final VectorCSGd n2 = dtv_2.cross(dov_2);
                 final boolean sameDirection = Math.abs(n1.dot(n2) - 1.0) <= 0.001; // Test if sp == 1, not |sp| == 1 !!
                 if (sameDirection) {
                     for (int i = 0; i < vs; i++) {
@@ -633,6 +640,11 @@ public final class Polygon {
             }
             return null;
         } else if (linearDependent1) {
+            final VectorCSGd n = dtv_2.cross(dov_2);
+            final boolean sameDirection = n.dot(plane.normal) > 0;
+            if (!sameDirection) {
+                return null;
+            }
             for (int i = 1; i < vs; i++) {
                 newVertices.add(vertices.get(i));
             }
@@ -642,6 +654,11 @@ public final class Polygon {
             }
             return new Polygon(df, newVertices, this);
         } else if (linearDependent2) {
+            final VectorCSGd n = dtv_1.cross(dov_1);
+            final boolean sameDirection = n.dot(plane.normal) > 0;
+            if (!sameDirection) {
+                return null;
+            }
             vs--;
             for (int i = 0; i < vs; i++) {
                 newVertices.add(vertices.get(i));
@@ -751,9 +768,6 @@ public final class Polygon {
                 Polygon p1 = new Polygon(df, thisNewVertices, this);
                 Polygon p2 = new Polygon(df, otherNewVertices, this);
                 Polygon p3 = new Polygon(df, newVertices, this);
-                p1.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
-                p2.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
-                p3.setColour(new GColourIndex(View.getLDConfigColour(6), this.getColour().getIndex()));
                 return new Polygon[]{p1, p2, p3};
             } else {
                 // Other is shorter (ok)
@@ -777,9 +791,6 @@ public final class Polygon {
                 Polygon p1 = new Polygon(df, thisNewVertices, this);
                 Polygon p2 = new Polygon(df, otherNewVertices, this);
                 Polygon p3 = new Polygon(df, newVertices, this);
-                p1.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
-                p2.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
-                p3.setColour(new GColourIndex(View.getLDConfigColour(1), this.getColour().getIndex()));
                 return new Polygon[]{p1, p2, p3};
             }
         } else {
@@ -812,9 +823,6 @@ public final class Polygon {
                 Polygon p1 = new Polygon(df, thisNewVertices, this);
                 Polygon p2 = new Polygon(df, otherNewVertices, this);
                 Polygon p3 = new Polygon(df, newVertices, this);
-                p1.setColour(new GColourIndex(View.getLDConfigColour(15), this.getColour().getIndex()));
-                p2.setColour(new GColourIndex(View.getLDConfigColour(15), this.getColour().getIndex()));
-                p3.setColour(new GColourIndex(View.getLDConfigColour(15), this.getColour().getIndex()));
                 return new Polygon[]{p1, p2, p3};
             } else {
                 // Other is shorter (ok)
@@ -838,9 +846,6 @@ public final class Polygon {
                 Polygon p1 = new Polygon(df, thisNewVertices, this);
                 Polygon p2 = new Polygon(df, otherNewVertices, this);
                 Polygon p3 = new Polygon(df, newVertices, this);
-                p1.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
-                p2.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
-                p3.setColour(new GColourIndex(View.getLDConfigColour(14), this.getColour().getIndex()));
                 return new Polygon[]{p1, p2, p3};
             }
         }
