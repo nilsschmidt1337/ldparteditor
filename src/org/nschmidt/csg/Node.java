@@ -336,8 +336,9 @@ final class Node {
         return result;
     }
 
-    public List<Polygon> allPolygonsOptimized() {
+    public List<Polygon> allPolygonsOptimized(List<Polygon> ps) {
         final List<Polygon> resultPolys = allPolygons(new ArrayList<>());
+        // resultPolys.addAll(ps); // FIXME <- Check if this is necessary!
         final TreeMap<Plane, ArrayList<Polygon>> polyMap = new TreeMap<>();
 
         for (Polygon p : resultPolys) {
@@ -357,30 +358,24 @@ final class Node {
                 final int s = polys.size();
                 final boolean[] skip = new boolean[s];
                 for (int i = 0; i < s; i++) {
-                    if (skip[i]) continue;
                     for (int j = i + 1; j < s; j++) {
-                        if (skip[j]) continue;
-                        Polygon r = polys.get(i).unify(polys.get(j));
-                        if (r != null) {
-                            skip[i] = true;
-                            skip[j] = true;
-                            resultPolys.add(r);
-                            polys.add(r);
-                            foundOptimization = true;
-                            break;
+                        if (!skip[i]) {
+                            Polygon ra = polys.get(i).findAndFixTJunction(polys.get(j));
+                            if (ra != null) {
+                                skip[i] = true;
+                                resultPolys.add(ra);
+                                polys.add(ra);
+                                foundOptimization = true;
+                            }
                         }
-                        Polygon[] ra = polys.get(i).consumeCommonInterpolatedVertex(polys.get(j));
-                        if (ra != null) {
-                            skip[i] = true;
-                            skip[j] = true;
-                            resultPolys.add(ra[0]);
-                            resultPolys.add(ra[1]);
-                            resultPolys.add(ra[2]);
-                            polys.add(ra[0]);
-                            polys.add(ra[1]);
-                            polys.add(ra[2]);
-                            foundOptimization = true;
-                            break;
+                        if (!skip[j]) {
+                            Polygon ra = polys.get(j).findAndFixTJunction(polys.get(i));
+                            if (ra != null) {
+                                skip[j] = true;
+                                resultPolys.add(ra);
+                                polys.add(ra);
+                                foundOptimization = true;
+                            }
                         }
                     }
                     if (skip[i]) continue;

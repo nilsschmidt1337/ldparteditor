@@ -673,6 +673,53 @@ public final class Polygon {
         }
     }
 
+    public Polygon findAndFixTJunction(Polygon other) {
+
+        // Check if they share one vertex
+        // By the nature of the CSG algorithm there might be a T-Junction
+        // on this type of Polygon pair
+
+        final int vs = vertices.size();
+        final int ovs = other.vertices.size();
+
+        final List<VectorCSGd> thisNewVertices = new ArrayList<>(vs);
+        final Set<VectorCSGd> tv = new TreeSet<>(vertices);
+
+        boolean foundTjunction = false;
+
+        for (int i = 0; i < vs; i++) {
+            final VectorCSGd vertex = vertices.get(i);
+            final VectorCSGd this_dir = vertices.get((i + 1) % vs).minus(vertex);
+            final double this_magnitude = this_dir.magnitude();
+
+            thisNewVertices.add(vertex.clone());
+            for (int j = 0; j < ovs; j++) {
+                final VectorCSGd other_vertex = other.vertices.get(j);
+                if (tv.contains(other_vertex)) continue;
+
+                final VectorCSGd to_other_dir = other_vertex.minus(vertex);
+
+                final double to_other_magnitude = to_other_dir.magnitude();
+
+                if (to_other_magnitude < this_magnitude) {
+
+                    final double sp_t_junction = this_dir.dividedBy(this_magnitude).dot(to_other_dir.dividedBy(to_other_magnitude));
+
+                    if (Math.abs(sp_t_junction - 1.0) <= 0.0001) { // Test if sp == 1, not |sp| == 1 !!
+                        thisNewVertices.add(other_vertex.clone());
+                        foundTjunction = true;
+                    }
+                }
+            }
+
+        }
+        if (foundTjunction) {
+            return new Polygon(df, thisNewVertices, this);
+        } else {
+            return null;
+        }
+    }
+
     public Polygon[] consumeCommonInterpolatedVertex(Polygon other) {
 
         // Check if they share one vertex

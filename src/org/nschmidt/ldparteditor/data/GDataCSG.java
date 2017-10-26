@@ -62,6 +62,7 @@ import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -546,7 +547,7 @@ public final class GDataCSG extends GData {
                 registeredData.add(null);
                 Plane.EPSILON = Plane.EPSILON * 10d;
             } catch (Exception e) {
-
+                NLogger.error(getClass(), e);
             }
         }
         if (compiledCSG != null && c3d != null && doDraw) {
