@@ -105,7 +105,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  * </blockquote>
  *
  * Subtraction and intersection naturally follow from set operations. If union
- * is {@code A | B}, differenceion is {@code A - B = ~(~A | B)} and intersection
+ * is {@code A | B}, difference is {@code A - B = ~(~A | B)} and intersection
  * is {@code A & B =
  * ~(~A | ~B)} where {@code ~} is the complement operator.
  */
@@ -257,7 +257,6 @@ public class CSG {
         b.clipTo(a);
         b.invert();
 
-
         final List<Node> nodes = new ArrayList<>();
         final Stack<NodePolygon> st = new Stack<>();
         st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
@@ -271,10 +270,7 @@ public class CSG {
             }
         }
 
-        final List<Polygon> resultPolys = a.allPolygonsOptimized(new ArrayList<>());
-
-        resultPolys.addAll(nonIntersectingPolys);
-
+        final List<Polygon> resultPolys = a.allPolygonsOptimized(nonIntersectingPolys);
         return CSG.fromPolygons(resultPolys);
     }
 
@@ -361,9 +357,7 @@ public class CSG {
 
         a.invert();
 
-        final List<Polygon> resultPolys = a.allPolygonsOptimized(new ArrayList<>());
-        resultPolys.addAll(nonIntersectingPolys);
-
+        final List<Polygon> resultPolys = a.allPolygonsOptimized(nonIntersectingPolys);
         return CSG.fromPolygons(resultPolys);
     }
 
