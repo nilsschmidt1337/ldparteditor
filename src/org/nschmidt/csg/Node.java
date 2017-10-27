@@ -337,11 +337,14 @@ final class Node {
     }
 
     public List<Polygon> allPolygonsOptimized(List<Polygon> ps) {
-        final List<Polygon> resultPolys = allPolygons(new ArrayList<>());
-        // resultPolys.addAll(ps); // FIXME <- Check if this is necessary!
+        final List<Polygon> allPolys = allPolygons(new ArrayList<>());
+        final List<Polygon> resultPolys = new ArrayList<>();
+
         final TreeMap<Plane, ArrayList<Polygon>> polyMap = new TreeMap<>();
 
-        for (Polygon p : resultPolys) {
+        allPolys.addAll(ps);
+
+        for (Polygon p : allPolys) {
             ArrayList<Polygon> polysToOptimize = polyMap.get(p.plane);
             if (polysToOptimize == null) {
                 polysToOptimize = new ArrayList<>();
@@ -359,7 +362,7 @@ final class Node {
                 final boolean[] skip = new boolean[s];
                 for (int i = 0; i < s; i++) {
                     for (int j = i + 1; j < s; j++) {
-                        if (!skip[i]) {
+                        if (!skip[i] && !skip[j]) {
                             Polygon ra = polys.get(i).findAndFixTJunction(polys.get(j));
                             if (ra != null) {
                                 skip[i] = true;
@@ -368,7 +371,7 @@ final class Node {
                                 foundOptimization = true;
                             }
                         }
-                        if (!skip[j]) {
+                        if (!skip[i] && !skip[j]) {
                             Polygon ra = polys.get(j).findAndFixTJunction(polys.get(i));
                             if (ra != null) {
                                 skip[j] = true;
