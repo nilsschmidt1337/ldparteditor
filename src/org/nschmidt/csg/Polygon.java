@@ -523,28 +523,6 @@ public final class Polygon {
     public Polygon unify(Polygon other) {
 
         // FIXME This code is totally wrong at the moment. It flips sometimes the vertex order of the polygon.
-        /*
-        if (colour.getColour().getColourNumber() != 2 || other.colour.getColour().getColourNumber() != 2) {
-            return null;
-        }
-        */
-
-        // (optional) Check if they share the same colour
-
-        /*
-        if (!colour.getColour().equals(other.colour.getColour())) {
-            return null;
-        }
-        */
-
-        // Check if they are on the same plane
-
-        /*
-        final Plane op = other.plane;
-        if (plane.normal.compareTo(op.normal) != 0 || Math.abs(plane.dist - op.dist) > 0.001) {
-            return null;
-        }
-        */
 
         // Check if they share two vertices which have no vertex in between!
 
@@ -624,7 +602,7 @@ public final class Polygon {
                 newVertices.add(other.vertices.get(i));
             }
             return new Polygon(df, newVertices, this);
-        } else if (convexMerge) {
+        } else if (false && convexMerge) {
             // Don't do this complex thing for other configs :)
             if (vs == 3 && ovs == 3) {
                 final VectorCSGd n1 = dtv_1.cross(dov_1);
@@ -639,7 +617,7 @@ public final class Polygon {
                 }
             }
             return null;
-        } else if (linearDependent1) {
+        } else if (false && linearDependent1) {
             final VectorCSGd n = dtv_2.cross(dov_2);
             final boolean sameDirection = n.dot(plane.normal) > 0;
             if (!sameDirection) {
@@ -653,7 +631,7 @@ public final class Polygon {
                 newVertices.add(other.vertices.get(i));
             }
             return new Polygon(df, newVertices, this);
-        } else if (linearDependent2) {
+        } else if (false && linearDependent2) {
             final VectorCSGd n = dtv_1.cross(dov_1);
             final boolean sameDirection = n.dot(plane.normal) > 0;
             if (!sameDirection) {
@@ -670,6 +648,22 @@ public final class Polygon {
             return new Polygon(df, newVertices, this);
         } else {
             return null;
+        }
+    }
+
+    public void removeInterpolatedPoints() {
+        VectorCSGd first_dir = null;;
+        VectorCSGd second_dir = null;
+        int vs = vertices.size();
+        for (int i = 0; i < vs + 1; i++) {
+            final VectorCSGd vertex = vertices.get(i % vs);
+            first_dir = second_dir == null ? vertices.get((i + 1) % vs).minus(vertex).unit() : second_dir;
+            second_dir = vertices.get((i + 2) % vs).minus(vertices.get((i + 1) % vs)).unit();
+            final boolean sameDirection = (Math.abs(first_dir.x - second_dir.x) <= 0.00001) && (Math.abs(first_dir.y - second_dir.y) <= 0.00001) && (Math.abs(first_dir.z - second_dir.z) <= 0.00001);
+            if (sameDirection) {
+                vertices.remove((i + 1) % vs);
+                vs--;
+            }
         }
     }
 
@@ -717,194 +711,6 @@ public final class Polygon {
             return new Polygon(df, thisNewVertices, this);
         } else {
             return null;
-        }
-    }
-
-    public Polygon[] consumeCommonInterpolatedVertex(Polygon other) {
-
-        // Check if they share one vertex
-
-        final int vs = vertices.size();
-        final int ovs = other.vertices.size();
-
-        boolean hasNoCommon = true;
-
-        final Set<VectorCSGd> ov = new TreeSet<>(other.vertices);
-        int this_index = -1;
-
-        for (int i = 0; i < vs; i++) {
-            if (ov.contains(vertices.get(i))) {
-                if (hasNoCommon) {
-                    this_index = i;
-                    hasNoCommon = false;
-                } else {
-                    return null;
-                }
-            }
-        }
-
-        if (hasNoCommon) {
-            return null;
-        }
-
-        final Set<VectorCSGd> tv = new TreeSet<>(vertices);
-        int other_index = -1;
-
-        for (int i = 0; i < ovs; i++) {
-            if (tv.contains(other.vertices.get(i))) {
-                other_index = i;
-                break;
-            }
-        }
-
-        rotate(this_index, vertices, vs);
-        rotate(other_index, other.vertices, ovs);
-
-        final VectorCSGd dtv_forward = vertices.get(0).minus(vertices.get(vs - 1));
-        final VectorCSGd dov_forward = other.vertices.get(1).minus(vertices.get(0));
-        final double dtvm_forward = dtv_forward.magnitude();
-        final double dovm_forward = dov_forward.magnitude();
-        final VectorCSGd dtvn_forward = dtv_forward.dividedBy(dtvm_forward);
-        final VectorCSGd dovn_forward = dov_forward.dividedBy(dovm_forward);
-        final double sp_forward = dtvn_forward.dot(dovn_forward);
-        final boolean linearDependent_forward = Math.abs(Math.abs(sp_forward) - 1.0) <= 0.001;
-        if (!linearDependent_forward) {
-            return null;
-        }
-
-        final VectorCSGd dtv_backward = vertices.get(1).minus(vertices.get(0));
-        final VectorCSGd dov_backward = vertices.get(0).minus(other.vertices.get(ovs - 1));
-        final double dtvm_backward = dtv_backward.magnitude();
-        final double dovm_backward = dov_backward.magnitude();
-        final VectorCSGd dtvn_backward = dtv_backward.dividedBy(dtvm_backward);
-        final VectorCSGd dovn_backward = dov_backward.dividedBy(dovm_backward);
-        final double sp_backward = dtvn_backward.dot(dovn_backward);
-        final boolean linearDependent_backward = Math.abs(Math.abs(sp_backward) - 1.0) <= 0.001;
-        if (!linearDependent_backward) {
-            return null;
-        }
-
-        if (sp_forward > 0.0) {
-            if (sp_backward > 0.0) {
-                return null;
-            }
-            final List<VectorCSGd> thisNewVertices = new ArrayList<>();
-            final List<VectorCSGd> otherNewVertices = new ArrayList<>();
-            final List<VectorCSGd> newVertices = new ArrayList<>();
-
-            if (dtvm_backward < dovm_backward) {
-                // This is shorter (ok)
-                if (vs < 4) {
-                    return null;
-                }
-
-                for (int i = 1; i < vs; i++) {
-                    thisNewVertices.add(vertices.get(i));
-                }
-
-                otherNewVertices.add(vertices.get(1).clone());
-                for (int i = 1; i < ovs; i++) {
-                    otherNewVertices.add(other.vertices.get(i));
-                }
-
-                newVertices.add(vertices.get(vs - 1).clone());
-                newVertices.add(other.vertices.get(1).clone());
-                newVertices.add(vertices.get(1).clone());
-
-
-                Polygon p1 = new Polygon(df, thisNewVertices, this);
-                Polygon p2 = new Polygon(df, otherNewVertices, this);
-                Polygon p3 = new Polygon(df, newVertices, this);
-                return new Polygon[]{p1, p2, p3};
-            } else {
-                // Other is shorter (ok)
-                if (ovs < 4) {
-                    return null;
-                }
-
-                for (int i = 1; i < vs; i++) {
-                    thisNewVertices.add(vertices.get(i));
-                }
-                thisNewVertices.add(other.vertices.get(ovs - 1).clone());
-
-                for (int i = 1; i < ovs; i++) {
-                    otherNewVertices.add(other.vertices.get(i));
-                }
-
-                newVertices.add(vertices.get(vs - 1).clone());
-                newVertices.add(other.vertices.get(1).clone());
-                newVertices.add(other.vertices.get(ovs - 1).clone());
-
-                Polygon p1 = new Polygon(df, thisNewVertices, this);
-                Polygon p2 = new Polygon(df, otherNewVertices, this);
-                Polygon p3 = new Polygon(df, newVertices, this);
-                return new Polygon[]{p1, p2, p3};
-            }
-        } else {
-            if (sp_backward < 0.0) {
-                return null;
-            }
-            final List<VectorCSGd> thisNewVertices = new ArrayList<>();
-            final List<VectorCSGd> otherNewVertices = new ArrayList<>();
-            final List<VectorCSGd> newVertices = new ArrayList<>();
-
-            if (dtvm_forward < dovm_forward) {
-                // This is shorter (ok)
-                if (vs < 4) {
-                    return null;
-                }
-
-                for (int i = 1; i < vs; i++) {
-                    thisNewVertices.add(vertices.get(i));
-                }
-
-                for (int i = 1; i < ovs; i++) {
-                    otherNewVertices.add(other.vertices.get(i));
-                }
-                otherNewVertices.add(vertices.get(vs - 1).clone());
-
-                newVertices.add(vertices.get(vs - 1).clone());
-                newVertices.add(other.vertices.get(ovs - 1).clone());
-                newVertices.add(vertices.get(1).clone());
-
-                Polygon p1 = new Polygon(df, thisNewVertices, this);
-                Polygon p2 = new Polygon(df, otherNewVertices, this);
-                Polygon p3 = new Polygon(df, newVertices, this);
-                return new Polygon[]{p1, p2, p3};
-            } else {
-                // Other is shorter (ok)
-                if (ovs < 4) {
-                    return null;
-                }
-
-                for (int i = 1; i < vs; i++) {
-                    thisNewVertices.add(vertices.get(i));
-                }
-                thisNewVertices.add(other.vertices.get(1).clone());
-
-                for (int i = 1; i < ovs; i++) {
-                    otherNewVertices.add(other.vertices.get(i));
-                }
-
-                newVertices.add(other.vertices.get(1).clone());
-                newVertices.add(other.vertices.get(ovs - 1).clone());
-                newVertices.add(vertices.get(1).clone());
-
-                Polygon p1 = new Polygon(df, thisNewVertices, this);
-                Polygon p2 = new Polygon(df, otherNewVertices, this);
-                Polygon p3 = new Polygon(df, newVertices, this);
-                return new Polygon[]{p1, p2, p3};
-            }
-        }
-    }
-
-    private void rotate(final int ci, final List<VectorCSGd> list, final int size) {
-        final int rot_dist = ci;
-        final int target = rot_dist + size;
-        final List<VectorCSGd> copy = new ArrayList<>(list);
-        list.clear();
-        for (int i = rot_dist; i < target; i++) {
-            list.add(copy.get(i % size));
         }
     }
 
