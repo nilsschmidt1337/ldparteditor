@@ -270,7 +270,7 @@ public class CSG {
             }
         }
 
-        final List<Polygon> resultPolys = a.allPolygonsOptimized(nonIntersectingPolys);
+        final List<Polygon> resultPolys = a.allPolygons(nonIntersectingPolys);
         return CSG.fromPolygons(resultPolys);
     }
 
@@ -357,7 +357,7 @@ public class CSG {
 
         a.invert();
 
-        final List<Polygon> resultPolys = a.allPolygonsOptimized(nonIntersectingPolys);
+        final List<Polygon> resultPolys = a.allPolygons(nonIntersectingPolys);
         return CSG.fromPolygons(resultPolys);
     }
 
@@ -424,7 +424,7 @@ public class CSG {
         }
 
         a.invert();
-        return CSG.fromPolygons(a.allPolygonsOptimized(new ArrayList<>()));
+        return CSG.fromPolygons(a.allPolygons(new ArrayList<>()));
     }
 
     /**

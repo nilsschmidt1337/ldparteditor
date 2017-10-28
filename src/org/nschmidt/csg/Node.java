@@ -37,7 +37,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
+
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * Holds a node in a BSP tree. A BSP tree is built from a collection of polygons
@@ -134,49 +138,99 @@ final class Node {
     }
 
     /**
-     * Recursively removes all polygons in the {@link polygons} list that are
+     * Removes all polygons in the {@link polygons} list that are
      * contained within this BSP tree.
      *
      * <b>Note:</b> polygons are splitted if necessary.
      *
-     * @param polygons
+     * @param polygonsToClip
      *            the polygons to clip
      *
      * @return the cliped list of polygons
      */
-    private List<Polygon> clipPolygons(List<Polygon> polygons) {
+
+    private List<Polygon> clipPolygons(List<Polygon> polygonsToClip) {
 
         if (this.plane == null) {
-            return new ArrayList<Polygon>(polygons);
+            return new ArrayList<Polygon>(polygonsToClip);
         }
 
+        final Stack<NodeArgs> st = new Stack<>();
+        st.push(new NodeArgs(this, polygonsToClip, Side.NONE, null));
+
+        NodeArgs lastArgs = null;
+        while (!st.isEmpty()) {
+            final NodeArgs a = st.pop();
+            if (a.returning) {
+                a.returning = false;
+                a.frontP.addAll(a.backP);
+
+                if (a.parent != null) {
+                    if (a.side == Side.FRONT) {
+                        a.parent.frontP = a.frontP;
+                    } else {
+                        a.parent.backP = a.frontP;
+                    }
+                }
+                lastArgs = a;
+            } else {
+                final Node n = a.node;
+                if (n.plane == null) {
+                    continue;
+                }
+                a.returning = true;
+                st.push(a);
+
+                // Speed up with parallelism
+                List<int[]> types = a.polygons
+                        .stream()
+                        .parallel()
+                        .map((poly) ->
+                        n.plane.getTypes(poly))
+                        .collect(Collectors.toList());
+
+                int i = 0;
+                for (Polygon polygon : a.polygons) {
+                    n.plane.splitPolygonForClip(polygon, types.get(i), a.frontP, a.backP);
+                    i++;
+                }
+
+                if (n.back != null) {
+                    st.push(new NodeArgs(n.back, a.backP, Side.BACK, a)); // returns a.backP
+                } else {
+                    a.backP = new ArrayList<Polygon>(0);
+                }
+                if (n.front != null) {
+                    st.push(new NodeArgs(n.front, a.frontP, Side.FRONT, a)); // returns a.frontP
+                }
+            }
+        }
+
+        if (lastArgs != null) {
+            return lastArgs.frontP;
+        } else {
+            return new ArrayList<Polygon>(polygonsToClip);
+        }
+    }
+
+    enum Side {
+        FRONT, BACK, NONE
+    }
+
+    class NodeArgs {
+        Side side;
+        NodeArgs parent;
+        List<Polygon> polygons;
         List<Polygon> frontP = new ArrayList<Polygon>();
         List<Polygon> backP = new ArrayList<Polygon>();
-
-        // Speed up with parallelism
-        List<int[]> types = polygons
-                .stream()
-                .parallel()
-                .map((poly) ->
-                this.plane.getTypes(poly))
-                .collect(Collectors.toList());
-
-        int i = 0;
-        for (Polygon polygon : polygons) {
-            this.plane.splitPolygonForClip(polygon, types.get(i), frontP, backP);
-            i++;
+        Node node;
+        boolean returning = false;
+        NodeArgs(Node n, List<Polygon> polys, Side s, NodeArgs p) {
+            parent = p;
+            side = s;
+            node = n;
+            polygons = polys;
         }
-        if (this.front != null) {
-            frontP = this.front.clipPolygons(frontP);
-        }
-        if (this.back != null) {
-            backP = this.back.clipPolygons(backP);
-        } else {
-            backP = new ArrayList<Polygon>(0);
-        }
-
-        frontP.addAll(backP);
-        return frontP;
     }
 
     /**
@@ -193,12 +247,81 @@ final class Node {
         st.push(this);
         while (!st.isEmpty()) {
             final Node n = st.pop();
-            n.polygons = bsp.clipPolygons(n.polygons);
-            if (n.back != null) {
-                st.push(n.back);
-            }
-            if (n.front != null) {
-                st.push(n.front);
+            if (!st.isEmpty()) {
+                final Node n2 = st.pop();
+                if (!st.isEmpty()) {
+                    final Node n3 = st.pop();
+
+                    CompletableFuture<List<Polygon>> f1 = CompletableFuture.supplyAsync(() -> bsp.clipPolygons(n.polygons));
+                    CompletableFuture<List<Polygon>> f2 = CompletableFuture.supplyAsync(() -> bsp.clipPolygons(n2.polygons));
+                    CompletableFuture<List<Polygon>> f3 = CompletableFuture.supplyAsync(() -> bsp.clipPolygons(n3.polygons));
+                    CompletableFuture.allOf(f1, f2, f3).join();
+
+                    try {
+                        n.polygons = f1.get();
+                        n2.polygons = f2.get();
+                        n3.polygons = f3.get();
+                    } catch (ExecutionException e) {
+                        NLogger.error(getClass(), e);
+                    } catch (InterruptedException e) {
+                        NLogger.error(getClass(), e);
+                    }
+
+                    if (n3.back != null) {
+                        st.push(n3.back);
+                    }
+                    if (n3.front != null) {
+                        st.push(n3.front);
+                    }
+                    if (n2.back != null) {
+                        st.push(n2.back);
+                    }
+                    if (n2.front != null) {
+                        st.push(n2.front);
+                    }
+                    if (n.back != null) {
+                        st.push(n.back);
+                    }
+                    if (n.front != null) {
+                        st.push(n.front);
+                    }
+
+                } else {
+
+                    CompletableFuture<List<Polygon>> f1 = CompletableFuture.supplyAsync(() -> bsp.clipPolygons(n.polygons));
+                    CompletableFuture<List<Polygon>> f2 = CompletableFuture.supplyAsync(() -> bsp.clipPolygons(n2.polygons));
+                    CompletableFuture.allOf(f1, f2).join();
+
+                    try {
+                        n.polygons = f1.get();
+                        n2.polygons = f2.get();
+                    } catch (ExecutionException e) {
+                        NLogger.error(getClass(), e);
+                    } catch (InterruptedException e) {
+                        NLogger.error(getClass(), e);
+                    }
+
+                    if (n2.back != null) {
+                        st.push(n2.back);
+                    }
+                    if (n2.front != null) {
+                        st.push(n2.front);
+                    }
+                    if (n.back != null) {
+                        st.push(n.back);
+                    }
+                    if (n.front != null) {
+                        st.push(n.front);
+                    }
+                }
+            } else {
+                n.polygons = bsp.clipPolygons(n.polygons);
+                if (n.back != null) {
+                    st.push(n.back);
+                }
+                if (n.front != null) {
+                    st.push(n.front);
+                }
             }
         }
     }

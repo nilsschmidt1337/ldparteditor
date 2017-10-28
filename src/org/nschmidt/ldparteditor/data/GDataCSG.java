@@ -348,14 +348,6 @@ public final class GDataCSG extends GData {
         parsedData.add(this);
         final boolean modified = c3d != null && c3d.getManipulator().isModified();
         if (deleteAndRecompile || modified || clearCaches) {
-            if (modified) {
-                // This is necessary, since stack overflows can damage the mesh structure
-                registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(null);
-                allNewPolygonVertices.putIfAbsent(df, new ArrayList<VectorCSGd[]>()).clear();
-                fullClearPolygonCache.put(df, false);
-                clearPolygonCache.putIfAbsent(df, true);
-                Plane.EPSILON = 1e-3;
-            }
             final HashBiMap<Integer, GDataCSG> idToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>());
             final HashMap<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<String, CSG>());
             final HashSet<GDataCSG> registeredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<GDataCSG>());
@@ -547,6 +539,7 @@ public final class GDataCSG extends GData {
                         break;
                     }
                 }
+            /* Is not possible anymore...
             } catch (StackOverflowError e) {
                 NLogger.debug(getClass(), e);
                 registeredData.clear();
@@ -555,6 +548,7 @@ public final class GDataCSG extends GData {
                 deleteAndRecompile = false;
                 registeredData.add(null);
                 Plane.EPSILON = Plane.EPSILON * 10d;
+            */
             } catch (Exception e) {
                 NLogger.debug(getClass(), e);
             }

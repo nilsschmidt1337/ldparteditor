@@ -48,7 +48,6 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GColourIndex;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
-import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -155,6 +154,14 @@ public final class Polygon {
         this.colour = o.colour;
     }
 
+    public Polygon(DatFile df, List<VectorCSGd> vertices, Plane p, GColourIndex colour) {
+        PSEUDO_ID = pseudo_id_counter++;
+        this.df = df;
+        this.plane = p;
+        this.vertices = vertices;
+        this.colour = colour;
+    }
+
     @Override
     public Polygon clone() {
         List<VectorCSGd> newVertices = new ArrayList<VectorCSGd>(vertices.size());
@@ -193,8 +200,8 @@ public final class Polygon {
                     int dID = CSGPrimitive.id_counter.getAndIncrement();
                     result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
                 } else {
-                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), colour.getIndex());
-                    // TODO result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
+                    // TODO result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), colour.getIndex()); // only for test
+                    result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
                 }
             }
         }
@@ -323,34 +330,6 @@ public final class Polygon {
     }
 
     /**
-     * Translates this polygon.
-     *
-     * @param v
-     *            the vector that defines the translation
-     * @return this polygon
-     */
-    public Polygon translate(VectorCSGd v) {
-        for (VectorCSGd vertex : vertices) {
-            vertex = vertex.plus(v);
-        }
-        return this;
-    }
-
-    /**
-     * Returns a translated copy of this polygon.
-     *
-     * <b>Note:</b> this polygon is not modified
-     *
-     * @param v
-     *            the vector that defines the translation
-     *
-     * @return a translated copy of this polygon
-     */
-    public Polygon translated(VectorCSGd v) {
-        return clone().translate(v);
-    }
-
-    /**
      * Applies the specified transformation to this polygon.
      *
      * <b>Note:</b> if the applied transformation performs a mirror operation
@@ -404,60 +383,6 @@ public final class Polygon {
             }
         }
         return result;
-    }
-
-    /**
-     * Creates a polygon from the specified point list.
-     * @param points
-     *            the points that define the polygon
-     *
-     * @return a polygon defined by the specified point list
-     */
-    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<VectorCSGd> points, GColourIndex colour) {
-        return fromPoints(csg, df, points, null, colour);
-    }
-
-    /**
-     * Creates a polygon from the specified point list.
-     * @param points
-     *            the points that define the polygon
-     *
-     * @return a polygon defined by the specified point list
-     */
-    public static Polygon fromPoints(GDataCSG csg, DatFile df, List<VectorCSGd> points) {
-        return fromPoints(csg, df, points, null, new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0));
-    }
-
-    /**
-     * Creates a polygon from the specified points.
-     * @param points
-     *            the points that define the polygon
-     *
-     * @return a polygon defined by the specified point list
-     */
-    public static Polygon fromPoints(GDataCSG csg, DatFile df, VectorCSGd... points) {
-        return fromPoints(csg, df, new ArrayList<VectorCSGd>(Arrays.asList(points)), null, new GColourIndex(new GColour(-1, 0f, 0f, 0f, 1f), 0));
-    }
-
-    /**
-     * Creates a polygon from the specified point list.
-     * @param points
-     *            the points that define the polygon
-     * @param shared
-     * @param plane
-     *            may be null
-     *
-     * @return a polygon defined by the specified point list
-     */
-    private static Polygon fromPoints(GDataCSG csg, DatFile df, List<VectorCSGd> points, Plane plane, GColourIndex colour) {
-
-        List<VectorCSGd> vertices = new ArrayList<VectorCSGd>();
-
-        for (VectorCSGd p : points) {
-            vertices.add(p.clone());
-        }
-
-        return new Polygon(df, vertices, colour);
     }
 
     /**
@@ -602,7 +527,7 @@ public final class Polygon {
                 newVertices.add(other.vertices.get(i));
             }
             return new Polygon(df, newVertices, this);
-        } else if (false && convexMerge) {
+        } else if (convexMerge) {
             // Don't do this complex thing for other configs :)
             if (vs == 3 && ovs == 3) {
                 final VectorCSGd n1 = dtv_1.cross(dov_1);
@@ -617,7 +542,7 @@ public final class Polygon {
                 }
             }
             return null;
-        } else if (false && linearDependent1) {
+        } else if (linearDependent1) {
             final VectorCSGd n = dtv_2.cross(dov_2);
             final boolean sameDirection = n.dot(plane.normal) > 0;
             if (!sameDirection) {
@@ -631,7 +556,7 @@ public final class Polygon {
                 newVertices.add(other.vertices.get(i));
             }
             return new Polygon(df, newVertices, this);
-        } else if (false && linearDependent2) {
+        } else if (linearDependent2) {
             final VectorCSGd n = dtv_1.cross(dov_1);
             final boolean sameDirection = n.dot(plane.normal) > 0;
             if (!sameDirection) {
@@ -668,10 +593,6 @@ public final class Polygon {
     }
 
     public Polygon findAndFixTJunction(Polygon other) {
-
-        // Check if they share one vertex
-        // By the nature of the CSG algorithm there might be a T-Junction
-        // on this type of Polygon pair
 
         final int vs = vertices.size();
         final int ovs = other.vertices.size();
