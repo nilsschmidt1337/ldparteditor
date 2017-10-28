@@ -541,16 +541,9 @@ public final class GDataCSG extends GData {
                 }
             /* Is not possible anymore...
             } catch (StackOverflowError e) {
-                NLogger.debug(getClass(), e);
-                registeredData.clear();
-                linkedCSG.clear();
-                parsedData.clear();
-                deleteAndRecompile = false;
-                registeredData.add(null);
-                Plane.EPSILON = Plane.EPSILON * 10d;
             */
             } catch (Exception e) {
-                NLogger.debug(getClass(), e);
+                NLogger.error(getClass(), e);
             }
         }
         if (compiledCSG != null && c3d != null && doDraw) {
