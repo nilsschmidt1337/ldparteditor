@@ -571,18 +571,19 @@ public class CSG {
     }
 
     public void draw(Composite3D c3d) {
-        for (GData3 tri : result.keySet()) {
+        for (GData3 tri : getResult().keySet()) {
             tri.drawGL20(c3d);
         }
     }
 
     public void draw_textured(Composite3D c3d) {
-        for (GData3 tri : result.keySet()) {
+        for (GData3 tri : getResult().keySet()) {
             tri.drawGL20_BFC_Textured(c3d);
         }
     }
 
     public TreeMap<GData3, Integer> getResult() {
+        // FIXME Do iterative optimization here!
         return result;
     }
 
