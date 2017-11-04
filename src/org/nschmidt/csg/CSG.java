@@ -582,9 +582,65 @@ public class CSG {
         }
     }
 
+    private volatile boolean shouldOptimize = true;
+    private volatile TreeMap<GData3, Integer> optimizedResult = null;
+    private volatile Set<String> oldTriangleStrings = new HashSet<>();
+    private volatile Set<GData3> optimizedTriangles = new HashSet<>();
+    private volatile int oldResultSize = 0;
+
     public TreeMap<GData3, Integer> getResult() {
+
         // FIXME Do iterative optimization here!
-        return result;
+
+        if (oldTriangleStrings.isEmpty() && optimizedTriangles.isEmpty()) {
+            optimizedTriangles = new HashSet<>();
+            optimizedTriangles.addAll(result.keySet());
+        }
+
+        if (shouldOptimize) {
+            shouldOptimize = false;
+            new Thread(() -> {
+                if (oldTriangleStrings.isEmpty()) {
+                    oldResultSize = optimizedTriangles.size();
+                    for (GData3 triangle : optimizedTriangles) {
+                        oldTriangleStrings.add(triangle.toString());
+                    }
+                    shouldOptimize = true;
+                    return;
+                }
+
+                if (oldResultSize != result.size()) {
+                    optimizedResult = null;
+                    oldTriangleStrings.clear();
+                    optimizedTriangles.clear();
+                    shouldOptimize = true;
+                    return;
+                }
+
+                int matchCount = 0;
+                for (GData3 tri : result.keySet()) {
+                    if (oldTriangleStrings.contains(tri.toString())) {
+                        matchCount++;
+                    }
+                }
+
+                if (oldResultSize != matchCount) {
+                    optimizedResult = null;
+                    oldTriangleStrings.clear();
+                    optimizedTriangles.clear();
+                    shouldOptimize = true;
+                    return;
+                }
+
+                shouldOptimize = true;
+            }).start();
+        }
+
+        if (optimizedResult == null) {
+            return result;
+        } else {
+            return optimizedResult;
+        }
     }
 
     /**
