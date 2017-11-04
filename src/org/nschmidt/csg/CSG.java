@@ -584,8 +584,8 @@ public class CSG {
 
     private volatile boolean shouldOptimize = true;
     private volatile TreeMap<GData3, Integer> optimizedResult = null;
+    private volatile TreeMap<GData3, Integer> optimizedTriangles = new TreeMap<>();
     private volatile Set<String> oldTriangleStrings = new HashSet<>();
-    private volatile Set<GData3> optimizedTriangles = new HashSet<>();
     private volatile int oldResultSize = 0;
 
     public TreeMap<GData3, Integer> getResult() {
@@ -593,8 +593,8 @@ public class CSG {
         // FIXME Do iterative optimization here!
 
         if (oldTriangleStrings.isEmpty() && optimizedTriangles.isEmpty()) {
-            optimizedTriangles = new HashSet<>();
-            optimizedTriangles.addAll(result.keySet());
+            optimizedTriangles = new TreeMap<>();
+            optimizedTriangles.putAll(result);
         }
 
         if (shouldOptimize) {
@@ -602,7 +602,7 @@ public class CSG {
             new Thread(() -> {
                 if (oldTriangleStrings.isEmpty()) {
                     oldResultSize = optimizedTriangles.size();
-                    for (GData3 triangle : optimizedTriangles) {
+                    for (GData3 triangle : optimizedTriangles.keySet()) {
                         oldTriangleStrings.add(triangle.toString());
                     }
                     shouldOptimize = true;
