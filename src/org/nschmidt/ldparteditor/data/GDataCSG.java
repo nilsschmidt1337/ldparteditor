@@ -95,7 +95,7 @@ public final class GDataCSG extends GData {
     private final List<Polygon> polygonCache = new ArrayList<Polygon>();
     private PathTruderSettings extruderConfig = new PathTruderSettings();
 
-    private static int quality = 16;
+    private static volatile int quality = 16;
     private int global_quality = 16;
     private double global_epsilon = 1e-6;
 
