@@ -35,7 +35,6 @@ package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -43,17 +42,15 @@ import java.util.Stack;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
-import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
-import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
@@ -450,118 +447,6 @@ public class CSG {
         return g1;
     }
 
-    public GData1 compile_without_t_junctions(DatFile df) {
-
-        // Copy... and remove duplicates
-        ForkJoinPool forkJoinPool = new ForkJoinPool(View.NUM_CORES);
-        try {
-            forkJoinPool.submit(() -> {
-                this.polygons.parallelStream().forEach((poly) -> {
-                    poly.vertices = new ArrayList<>(poly.vertices);
-                    ArrayList<VectorCSGd> vertices = new ArrayList<>();
-                    for (VectorCSGd v1 :  poly.vertices) {
-                        for (VectorCSGd v2 :  poly.vertices) {
-                            if (v1 != v2) {
-                                if (v1.minus(v2).magnitude() < 0.01) {
-                                    if (!vertices.contains(v2)) vertices.add(v1);
-                                }
-                            }
-                        }
-                    }
-                    poly.vertices.removeAll(vertices);
-                });
-            }).get();
-        } catch (InterruptedException e) {
-            NLogger.error(getClass(), e);
-        } catch (ExecutionException e) {
-            NLogger.error(getClass(), e);
-        }
-
-
-        // 1. The interpolation has to be propagated to other polygons
-        // This process can be done in parallel, since the polygons are independent from each other.
-
-        final List<VectorCSGd[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
-        try {
-            forkJoinPool.submit(() -> {
-                this.polygons.parallelStream().forEach((poly) -> {
-                    final List<VectorCSGd> verts = poly.vertices;
-                    for (VectorCSGd[] split : splitList) {
-                        final VectorCSGd vi = split[0];
-                        final VectorCSGd vj = split[1];
-                        final VectorCSGd v = split[2];
-                        final int size = verts.size();
-                        for (int k = 0; k < size; k++) {
-                            int l = (k + 1) % size;
-                            if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
-                                verts.add(l, v.clone());
-                                break;
-                            } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
-                                verts.add(l, v.clone());
-                                break;
-                            }
-                        }
-                    }
-                });
-            }).get();
-        } catch (InterruptedException e) {
-            NLogger.error(getClass(), e);
-        } catch (ExecutionException e) {
-            NLogger.error(getClass(), e);
-        }
-
-        // 2. Find and fix T-Junctions
-        // This process can be done in parallel, since the polygons are independent from each other.
-
-        final List<VectorCSGd> allVerts;
-        {
-            final Set<VectorCSGd> allVertsSet = new HashSet<VectorCSGd>();
-            this.polygons.stream().forEach((poly) -> {
-                allVertsSet.addAll(poly.vertices);
-            });
-            allVerts = Collections.synchronizedList(new ArrayList<VectorCSGd>(allVertsSet));
-        }
-
-        // Find T-Junctions
-        try {
-            forkJoinPool.submit(() -> {
-                this.polygons.parallelStream().forEach((poly) -> {
-                    final List<VectorCSGd> verts = poly.vertices;
-                    double min_dist = Double.MAX_VALUE;
-                    for (VectorCSGd v : allVerts) {
-                        final int size = verts.size();
-                        for (int k = 0; k < size; k++) {
-                            int l = (k + 1) % size;
-
-                            VectorCSGd a = verts.get(k);
-                            VectorCSGd b = verts.get(l);
-
-                            if (a.minus(v).magnitude() > 0.01 && b.minus(v).magnitude() > 0.01) {
-                                double dist = MathHelper.getNearestPointToLineSegmentCSG(a.x, a.y, a.z, b.x, b.y, b.z, v.x, v.y, v.z).minus(v).magnitude();
-                                if (dist < min_dist) min_dist = dist;
-                                if (dist < 0.1) {
-                                    verts.add(l, v.clone());
-                                }
-                            }
-                        }
-                    }
-                });
-            }).get();
-        } catch (InterruptedException e) {
-            NLogger.error(getClass(), e);
-        } catch (ExecutionException e) {
-            NLogger.error(getClass(), e);
-        }
-
-        Matrix4f id = new Matrix4f();
-        Matrix4f.setIdentity(id);
-        GColour col = View.getLDConfigColour(16);
-        GData1 g1 = new GData1(-1, col.getR(), col.getG(), col.getB(), 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
-                new HashSet<String>(), View.DUMMY_REFERENCE);
-        this.result = toLDrawTriangles2(g1);
-        return g1;
-    }
-
     public TreeMap<GData3, Integer> toLDrawTriangles2(GData1 parent) {
         TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
         for (Polygon p : this.polygons) {
@@ -588,6 +473,8 @@ public class CSG {
     private volatile Set<String> oldTriangleStrings = new HashSet<>();
     private volatile int oldResultSize = 0;
 
+    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
+
     public TreeMap<GData3, Integer> getResult() {
 
         // FIXME Do iterative optimization here!
@@ -599,7 +486,7 @@ public class CSG {
 
         if (shouldOptimize) {
             shouldOptimize = false;
-            new Thread(() -> {
+            executorService.execute(() -> {
                 if (oldTriangleStrings.isEmpty()) {
                     oldResultSize = optimizedTriangles.size();
                     for (GData3 triangle : optimizedTriangles.keySet()) {
@@ -633,7 +520,7 @@ public class CSG {
                 }
 
                 shouldOptimize = true;
-            }).start();
+            });
         }
 
         if (optimizedResult == null) {

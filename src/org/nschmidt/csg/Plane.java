@@ -38,7 +38,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
-import org.nschmidt.ldparteditor.data.GDataCSG;
 
 /**
  * Represents a plane in 3D space.
@@ -264,10 +263,6 @@ public class Plane implements Comparable<Plane> {
                     double t = (this.dist - this.normal.dot(vi)) / this.normal.dot(vj.minus(vi));
 
                     final VectorCSGd v = vi.interpolate(vj, t);
-
-                    if (GDataCSG.isInlining(df)) {
-                        GDataCSG.getNewPolyVertices(df).add(new VectorCSGd[]{vi.clone(), vj.clone(), v.clone()});
-                    }
 
                     f.add(v);
                     b.add(v.clone());
