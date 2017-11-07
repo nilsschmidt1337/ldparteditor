@@ -49,7 +49,6 @@ import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.Polygon;
-import org.nschmidt.csg.VectorCSGd;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
@@ -63,7 +62,6 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
@@ -85,15 +83,13 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> backupSelectedTrianglesMap = new ThreadsafeHashMap<DatFile, HashSet<GData3>>();
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> backupSelectedBodyMap = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
 
-    private static boolean deleteAndRecompile = true;
+    private static volatile boolean deleteAndRecompile = true;
 
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
     private final static ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<DatFile, PathTruderSettings>();
     private final static ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
     private final static ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
-    private final static ThreadsafeHashMap<DatFile, ArrayList<VectorCSGd[]>> allNewPolygonVertices = new ThreadsafeHashMap<DatFile, ArrayList<VectorCSGd[]>>();
-    private final static ThreadsafeHashMap<DatFile, Boolean> compileAndInline = new ThreadsafeHashMap<DatFile, Boolean>();
 
     private final ArrayList<GData> cachedData = new ArrayList<GData>();
     private final List<Polygon> polygonCache = new ArrayList<Polygon>();
@@ -116,7 +112,6 @@ public final class GDataCSG extends GData {
 
     public synchronized static void forceRecompile(DatFile df) {
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(null);
-        allNewPolygonVertices.putIfAbsent(df, new ArrayList<VectorCSGd[]>()).clear();
         clearPolygonCache.putIfAbsent(df, true);
         Plane.EPSILON = 1e-3;
     }
@@ -129,7 +124,6 @@ public final class GDataCSG extends GData {
         idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).clear();
         selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>()).clear();
         selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
-        allNewPolygonVertices.putIfAbsent(df, new ArrayList<VectorCSGd[]>()).clear();
         backupSelectionClear(df);
         Plane.EPSILON = 1e-3;
     }
@@ -140,9 +134,6 @@ public final class GDataCSG extends GData {
 
     public synchronized static void resetCSG(DatFile df, boolean useLowQuality) {
         if (useLowQuality) {
-            if (allNewPolygonVertices.containsKey(df)) {
-                allNewPolygonVertices.get(df).clear();
-            }
             quality = 12;
         } else {
             quality = 16;
@@ -151,7 +142,6 @@ public final class GDataCSG extends GData {
         ref.removeAll(parsedData.putIfAbsent(df, new HashSet<GDataCSG>()));
         clearPolygonCache.putIfAbsent(df, true);
         fullClearPolygonCache.putIfAbsent(df, true);
-        compileAndInline.putIfAbsent(df, false);
         deleteAndRecompile = !ref.isEmpty();
         if (deleteAndRecompile) {
             globalExtruderConfig.put(df, new PathTruderSettings());
@@ -490,12 +480,7 @@ public final class GDataCSG extends GData {
                     case CSG.COMPILE:
                         if (linkedCSG.containsKey(ref1)) {
                             compiledCSG = linkedCSG.get(ref1);
-                            if (GDataCSG.isInlining(df)) {
-                                // FIXME compiledCSG.compile_without_t_junctions(df);
-                                compiledCSG.compile();
-                            } else {
-                                compiledCSG.compile();
-                            }
+                            compiledCSG.compile();
                         } else {
                             compiledCSG = null;
                         }
@@ -616,7 +601,6 @@ public final class GDataCSG extends GData {
             switch (type) {
             case CSG.COMPILE:
                 if (compiledCSG != null) {
-                    compileAndInline.put(myDat, true);
                     resetCSG(myDat, false);
                     GDataCSG.forceRecompile(myDat);
                     GData g = myDat.getDrawChainStart();
@@ -630,9 +614,6 @@ public final class GDataCSG extends GData {
                     if (!deleteAndRecompile) {
                         return getNiceString() + "<br>0 // INLINE FAILED! :("; //$NON-NLS-1$
                     }
-
-                    compileAndInline.put(Project.getFileToEdit(), false);
-                    allNewPolygonVertices.get(myDat).clear();
 
                     final StringBuilder sb = new StringBuilder();
 
@@ -1308,26 +1289,10 @@ public final class GDataCSG extends GData {
             if (fullClearPolygonCache.get(df) != true) {
                 fullClearPolygonCache.put(df, true);
                 clearPolygonCache.put(df, true);
-                if (allNewPolygonVertices.containsKey(df)) {
-                    allNewPolygonVertices.get(df).clear();
-                }
             } else {
                 clearPolygonCache.put(df, false);
             }
         }
-    }
-
-    public static List<VectorCSGd[]> getNewPolyVertices(DatFile df) {
-        ArrayList<VectorCSGd[]> result = new ArrayList<VectorCSGd[]>();
-        if (compileAndInline.get(df)) {
-            return allNewPolygonVertices.putIfAbsent(df, result);
-        } else {
-            return result;
-        }
-    }
-
-    public static boolean isInlining(DatFile df) {
-        return compileAndInline.get(df);
     }
 
     public int[] getDataSize() {
