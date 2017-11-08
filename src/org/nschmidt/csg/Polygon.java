@@ -33,8 +33,6 @@
  */
 package org.nschmidt.csg;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -49,9 +47,7 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 
 /**
  * Represents a convex polygon.
@@ -184,8 +180,8 @@ public final class Polygon {
         return this;
     }
 
-    public HashMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
-        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
+    public HashMap<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
+        HashMap<GData3, IdAndPlane> result = new HashMap<>();
         if (this.vertices.size() >= 3) {
             final GColour c16 = View.getLDConfigColour(16);
             VectorCSGd dv1 = this.vertices.get(0);
@@ -198,131 +194,10 @@ public final class Polygon {
                 GColourIndex colour = null;
                 if ((colour = this.colour) == null) {
                     int dID = CSGPrimitive.id_counter.getAndIncrement();
-                    result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
+                    result.put(new GData3(v1, v2, v3, parent, c16, true), new IdAndPlane(plane, dID));
                 } else {
-                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), colour.getIndex()); // only for test
-                    // TODO result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
-                }
-            }
-        }
-        return result;
-    }
-
-    public HashMap<GData3, Integer> toLDrawTriangles2(GData1 parent) {
-        HashMap<GData3, Integer> result = new HashMap<GData3, Integer>();
-        final int size = this.vertices.size();
-        if (size >= 3) {
-            final GColour c16 = View.getLDConfigColour(16);
-            final BigDecimal identical_vertex_distance = new BigDecimal("0.1", MathContext.DECIMAL128); //$NON-NLS-1$
-
-            boolean isCollinear = false;
-
-            // Collinearity check
-            for (int i = 0; i < this.vertices.size() - 2; i++) {
-                Vector3d vertexA = new Vector3d(new BigDecimal(this.vertices.get(0).x), new BigDecimal(this.vertices.get(0).y),
-                        new BigDecimal(this.vertices.get(0).z));
-                Vector3d vertexB = new Vector3d(new BigDecimal(this.vertices.get(i + 1).x), new BigDecimal(this.vertices.get(i + 1).y),
-                        new BigDecimal(this.vertices.get(i + 1).z));
-                Vector3d vertexC = new Vector3d(new BigDecimal(this.vertices.get(i + 2).x), new BigDecimal(this.vertices.get(i + 2).y),
-                        new BigDecimal(this.vertices.get(i + 2).z));
-
-                Vector3d.sub(vertexA, vertexC, vertexA);
-                Vector3d.sub(vertexB, vertexC, vertexB);
-                boolean parseError = Vector3d.angle(vertexA, vertexB) < Threshold.collinear_angle_minimum;
-
-                parseError = parseError || vertexA.length().compareTo(identical_vertex_distance) < 0;
-                parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
-                parseError = parseError || Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
-
-                if (parseError) {
-                    isCollinear = true;
-                    break;
-                }
-            }
-
-
-            if (isCollinear) {
-                // Fix the collinearity by adding a center vertex
-                double mx = 0.0;
-                double my = 0.0;
-                double mz = 0.0;
-                for (int i = 0; i < size; i++) {
-                    mx = mx + this.vertices.get(i).x;
-                    my = my + this.vertices.get(i).y;
-                    mz = mz + this.vertices.get(i).z;
-                }
-
-                mx = mx / size;
-                my = my / size;
-                mz = mz / size;
-
-                Vertex v1 = new Vertex((float) mx, (float) my, (float) mz);
-                for (int i = 0; i < size; i++) {
-                    VectorCSGd dv2 = this.vertices.get(i);
-                    VectorCSGd dv3 = this.vertices.get((i + 1) % size);
-                    Vertex v2 = new Vertex((float) dv2.x, (float) dv2.y, (float) dv2.z);
-                    Vertex v3 = new Vertex((float) dv3.x, (float) dv3.y, (float) dv3.z);
-
-                    Vector3d vertexA = new Vector3d(new BigDecimal(mx), new BigDecimal(my), new BigDecimal(mz));
-                    Vector3d vertexB = new Vector3d(new BigDecimal(this.vertices.get(i).x), new BigDecimal(this.vertices.get(i).y),
-                            new BigDecimal(this.vertices.get(i).z));
-                    Vector3d vertexC = new Vector3d(new BigDecimal(this.vertices.get((i + 1) % size).x), new BigDecimal(this.vertices.get((i + 1) % size).y),
-                            new BigDecimal(this.vertices.get((i + 1) % size).z));
-
-                    Vector3d.sub(vertexA, vertexC, vertexA);
-                    Vector3d.sub(vertexB, vertexC, vertexB);
-
-                    boolean parseError = vertexA.length().compareTo(identical_vertex_distance) < 0;
-                    parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
-                    parseError = parseError || Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
-
-                    if (parseError) {
-                        continue;
-                    }
-
-                    GColourIndex colour = null;
-                    if ((colour = this.colour) == null) {
-                        int dID = CSGPrimitive.id_counter.getAndIncrement();
-                        result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
-                    } else {
-                        // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
-                        result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
-                    }
-                }
-
-            } else {
-                // No collinearity, save one triangle
-                VectorCSGd dv1 = this.vertices.get(0);
-                for (int i = 0; i < this.vertices.size() - 2; i++) {
-                    VectorCSGd dv2 = this.vertices.get(i + 1);
-                    VectorCSGd dv3 = this.vertices.get(i + 2);
-                    Vertex v1 = new Vertex((float) dv1.x, (float) dv1.y, (float) dv1.z);
-                    Vertex v2 = new Vertex((float) dv2.x, (float) dv2.y, (float) dv2.z);
-                    Vertex v3 = new Vertex((float) dv3.x, (float) dv3.y, (float) dv3.z);
-
-                    Vector3d vertexA = new Vector3d(new BigDecimal(dv1.x), new BigDecimal(dv1.y), new BigDecimal(dv1.z));
-                    Vector3d vertexB = new Vector3d(new BigDecimal(dv2.x), new BigDecimal(dv2.y), new BigDecimal(dv2.z));
-                    Vector3d vertexC = new Vector3d(new BigDecimal(dv3.x), new BigDecimal(dv3.y), new BigDecimal(dv3.z));
-
-                    Vector3d.sub(vertexA, vertexC, vertexA);
-                    Vector3d.sub(vertexB, vertexC, vertexB);
-
-                    boolean parseError = vertexA.length().compareTo(identical_vertex_distance) < 0;
-                    parseError = parseError || vertexB.length().compareTo(identical_vertex_distance) < 0;
-                    parseError = parseError || Vector3d.sub(vertexA, vertexB).length().compareTo(identical_vertex_distance) < 0;
-
-                    if (parseError) {
-                        continue;
-                    }
-
-                    GColourIndex colour = null;
-                    if ((colour = this.colour) == null) {
-                        int dID = CSGPrimitive.id_counter.getAndIncrement();
-                        result.put(new GData3(v1, v2, v3, parent, c16, true), dID);
-                    } else {
-                        // result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(dID % 16), true), colour.getIndex());
-                        result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), colour.getIndex());
-                    }
+                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), new IdAndPlane(plane, colour.getIndex())); // only for test
+                    // TODO result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), new IdAndPlane(plane, colour.getIndex()));
                 }
             }
         }

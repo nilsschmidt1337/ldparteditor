@@ -37,6 +37,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -108,7 +110,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  */
 public class CSG {
 
-    TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
+    TreeMap<GData3, IdAndPlane> result = new TreeMap<>();
 
     private List<Polygon> polygons;
     private Bounds bounds = null;
@@ -429,8 +431,8 @@ public class CSG {
      *
      * @return this csg as list of LDraw triangles
      */
-    public TreeMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
-        TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
+    public TreeMap<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
+        TreeMap<GData3, IdAndPlane> result = new TreeMap<>();
         for (Polygon p : this.polygons) {
             result.putAll(p.toLDrawTriangles(parent));
         }
@@ -447,14 +449,6 @@ public class CSG {
         return g1;
     }
 
-    public TreeMap<GData3, Integer> toLDrawTriangles2(GData1 parent) {
-        TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
-        for (Polygon p : this.polygons) {
-            result.putAll(p.toLDrawTriangles2(parent));
-        }
-        return result;
-    }
-
     public void draw(Composite3D c3d) {
         for (GData3 tri : getResult().keySet()) {
             tri.drawGL20(c3d);
@@ -468,14 +462,14 @@ public class CSG {
     }
 
     private volatile boolean shouldOptimize = true;
-    private volatile TreeMap<GData3, Integer> optimizedResult = null;
-    private volatile TreeMap<GData3, Integer> optimizedTriangles = new TreeMap<>();
+    private volatile TreeMap<GData3, IdAndPlane> optimizedResult = null;
+    private volatile TreeMap<GData3, IdAndPlane> optimizedTriangles = new TreeMap<>();
     private volatile Set<String> oldTriangleStrings = new HashSet<>();
     private volatile int oldResultSize = 0;
 
-    private static ExecutorService executorService = Executors.newSingleThreadExecutor();
+    public static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public TreeMap<GData3, Integer> getResult() {
+    public TreeMap<GData3, IdAndPlane> getResult() {
 
         // FIXME Do iterative optimization here!
 
@@ -519,6 +513,28 @@ public class CSG {
                     return;
                 }
 
+                TreeMap<GData3, IdAndPlane> optimization = new TreeMap<>();
+                if (optimizedResult != null) {
+                    optimization.putAll(optimizedResult);
+                } else {
+                    optimization.putAll(optimizedTriangles);
+                }
+
+                // Optimize for each plane
+                Map<Plane, List<GData3>> trianglesPerPlane = new TreeMap<>();
+                for (Entry<GData3, IdAndPlane> entry : optimization.entrySet()) {
+                    final Plane p = entry.getValue().plane;
+                    List<GData3> triangles = trianglesPerPlane.get(p);
+                    if (triangles == null) {
+                        triangles = new ArrayList<>();
+                        triangles.add(entry.getKey());
+                        trianglesPerPlane.put(p, triangles);
+                    } else {
+                        triangles.add(entry.getKey());
+                    }
+                }
+
+                optimizedResult = optimization;
                 shouldOptimize = true;
             });
         }

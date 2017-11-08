@@ -166,8 +166,8 @@ public class Plane implements Comparable<Plane> {
 
             final DatFile df = polygon.df;
 
-            final List<VectorCSGd> f = new ArrayList<VectorCSGd>(size);
-            final List<VectorCSGd> b = new ArrayList<VectorCSGd>(size);
+            final List<VectorCSGd> f = new ArrayList<>(size);
+            final List<VectorCSGd> b = new ArrayList<>(size);
 
             for (int i = 0; i < size; i++) {
                 int j = (i + 1) % size;
@@ -243,8 +243,8 @@ public class Plane implements Comparable<Plane> {
 
             final DatFile df = polygon.df;
 
-            final List<VectorCSGd> f = new ArrayList<VectorCSGd>(size);
-            final List<VectorCSGd> b = new ArrayList<VectorCSGd>(size);
+            final List<VectorCSGd> f = new ArrayList<>(size);
+            final List<VectorCSGd> b = new ArrayList<>(size);
 
             for (int i = 0; i < size; i++) {
                 int j = (i + 1) % size;
