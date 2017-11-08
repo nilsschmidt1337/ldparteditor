@@ -22,7 +22,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -900,8 +899,7 @@ public final class VertexManager extends VM99Clipboard {
         }
 
         for (CSG csg : GDataCSG.getCSGs(linkedDatFile)) {
-            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
-                final GData3 triangle = pair.getKey();
+            for(GData3 triangle : csg.getResult().keySet()) {
 
                 triQuadVerts[0] = new Vertex(triangle.x1, triangle.y1, triangle.z1);
                 triQuadVerts[1] = new Vertex(triangle.x2, triangle.y2, triangle.z2);

@@ -47,6 +47,7 @@ import org.nschmidt.csg.CSGExtrude;
 import org.nschmidt.csg.CSGMesh;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
+import org.nschmidt.csg.IdAndPlane;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.Polygon;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -330,7 +331,7 @@ public final class GDataCSG extends GData {
 
     public void drawAndParse(Composite3D c3d, DatFile df, boolean doDraw) {
 
-        final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true) || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df) || type == CSG.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df);
+        final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true) || (type == CSG.MESH || type == CSG.EXTRUDE) && CSGMesh.needCacheRefresh(cachedData, this, df);
         if (clearCaches) {
             clearPolygonCache.put(df, true);
         }
@@ -512,7 +513,7 @@ public final class GDataCSG extends GData {
                         }
                         break;
                     case CSG.QUALITY:
-                        quality = c3d != null && c3d.getManipulator().isModified() ? 12 : global_quality;
+                        quality = c3d != null && c3d.getManipulator().isModified() ? Math.min(global_quality, 12) : global_quality;
                         break;
                     case CSG.EPSILON:
                         Plane.EPSILON = global_epsilon;
@@ -630,7 +631,7 @@ public final class GDataCSG extends GData {
 
                                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
-                                TreeMap<GData3, Integer> result = compiledCSG.getResult();
+                                TreeMap<GData3, IdAndPlane> result = compiledCSG.getResult();
 
                                 for (GData3 g3 : result.keySet()) {
                                     StringBuilder lineBuilder3 = new StringBuilder();
@@ -996,8 +997,8 @@ public final class GDataCSG extends GData {
                     if (csg_pair.getKey() != null && csg_pair.getKey().endsWith("#>null")) { //$NON-NLS-1$
                         CSG csg = csg_pair.getValue();
                         if (csg != null) {
-                            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
-                                if (selectedBodyID.equals(pair.getValue())) {
+                            for(Entry<GData3, IdAndPlane> pair : csg.getResult().entrySet()) {
+                                if (selectedBodyID.equals(pair.getValue().id)) {
                                     selectedTriangles.add(pair.getKey());
                                 }
                             }
@@ -1034,7 +1035,7 @@ public final class GDataCSG extends GData {
         Integer result = null;
         GDataCSG resultObj = null;
         for (CSG csg : linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).values()) {
-            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
+            for(Entry<GData3, IdAndPlane> pair : csg.getResult().entrySet()) {
                 final GData3 triangle = pair.getKey();
 
                 triQuadVerts[0] = new Vertex(triangle.x1, triangle.y1, triangle.z1);
@@ -1043,7 +1044,7 @@ public final class GDataCSG extends GData {
 
                 if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
                     if (dist[0] < minDist) {
-                        Integer result2 = pair.getValue();
+                        Integer result2 = pair.getValue().id;
                         if (result2 != null) {
                             for (GDataCSG c : registeredData.get(df)) {
                                 if (dpl.containsValue(c) && idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).containsKey(result2)) {
@@ -1298,7 +1299,7 @@ public final class GDataCSG extends GData {
     public int[] getDataSize() {
         final int[] result = new int[]{0, 0, 0};
         if (compiledCSG != null) {
-            TreeMap<GData3, Integer> resultData = compiledCSG.getResult();
+            TreeMap<GData3, IdAndPlane> resultData = compiledCSG.getResult();
             for (GData3 tri : resultData.keySet()) {
                 if (tri.a < 1f) {
                     result[2] += 6;
