@@ -37,7 +37,7 @@ enum CSGOptimizerTJunction {
             }
 
             // Limit epsilon to max 0.01 LDU
-            epsilon = 10.5;
+            epsilon = 5.5;
 
             for (GData3 tri : triangles) {
                 final VectorCSGd[] triverts = trimap.get(tri);
@@ -47,8 +47,7 @@ enum CSGOptimizerTJunction {
                     if (triverts[2].compareTo(v) == 0) continue;
 
                     {
-                        VectorCSGd vc = MathHelper.getNearestPointToLineSegmentCSG(triverts[0].x, triverts[0].y, triverts[0].z, triverts[1].x, triverts[1].y, triverts[1].z, v.x, v.y, v.z);
-                        double d = vc.minus(v).magnitude();
+                        double d =  MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[0], triverts[1], v);
                         if (d < epsilon) {
                             final IdAndPlane oldId = optimization.get(tri);
                             optimization.remove(tri);
@@ -60,8 +59,7 @@ enum CSGOptimizerTJunction {
                     }
 
                     {
-                        VectorCSGd vc = MathHelper.getNearestPointToLineSegmentCSG(triverts[1].x, triverts[1].y, triverts[1].z, triverts[2].x, triverts[2].y, triverts[2].z, v.x, v.y, v.z);
-                        double d = vc.minus(v).magnitude();
+                        double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[1], triverts[2], v);
                         if (d < epsilon) {
                             final IdAndPlane oldId = optimization.get(tri);
                             optimization.remove(tri);
@@ -73,8 +71,7 @@ enum CSGOptimizerTJunction {
                     }
 
                     {
-                        VectorCSGd vc = MathHelper.getNearestPointToLineSegmentCSG(triverts[2].x, triverts[2].y, triverts[2].z, triverts[0].x, triverts[0].y, triverts[0].z, v.x, v.y, v.z);
-                        double d = vc.minus(v).magnitude();
+                        double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[2], triverts[0], v);
                         if (d < epsilon) {
                             final IdAndPlane oldId = optimization.get(tri);
                             optimization.remove(tri);

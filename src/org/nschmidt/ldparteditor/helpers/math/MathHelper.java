@@ -26,6 +26,7 @@ import java.util.TreeSet;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.csg.VectorCSGd;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
@@ -582,63 +583,24 @@ public enum MathHelper {
         return new Vector4f(ax, ay, az, 1f);
     }
 
-    public static org.nschmidt.csg.VectorCSGd getNearestPointToLineSegmentCSG(double lx1, double ly1, double lz1, double lx2, double ly2, double lz2, double px, double py, double pz) {
+    public static double getNearestPointDistanceToLineSegmentCSG(VectorCSGd p1, VectorCSGd p2, VectorCSGd p) {
 
-        // Fastest iterative approach without objects
+        VectorCSGd v = p2.minus(p1);
+        VectorCSGd w = p.minus(p1);
 
-        // 0th Iteration
-        double ax = (lx1 + lx2) / 2d;
-        double ay = (ly1 + ly2) / 2d;
-        double az = (lz1 + lz2) / 2d;
-
-        // 1st to n-th Iteration
-        double ux = lx1;
-        double uy = ly1;
-        double uz = lz1;
-        double vx = lx2;
-        double vy = ly2;
-        double vz = lz2;
-
-        double dup = 0d;
-        double dvp = 1d;
-
-        double dap = 0d;
-        double odap = 1d;
-
-        int refinements = 0;
-        while (Math.abs(dap - odap) > .001f || (refinements++ < 3)) {
-            double dxup = ux - px;
-            double dyup = uy - py;
-            double dzup = uz - pz;
-            dup = dxup * dxup + dyup * dyup + dzup * dzup;
-            double dxvp = vx - px;
-            double dyvp = vy - py;
-            double dzvp = vz - pz;
-            dvp = dxvp * dxvp + dyvp * dyvp + dzvp * dzvp;
-
-            if (dup < dvp) {
-                vx = ax;
-                vy = ay;
-                vz = az;
-                ax = (ax + ux) / 2d;
-                ay = (ay + uy) / 2d;
-                az = (az + uz) / 2d;
-            } else {
-                ux = ax;
-                uy = ay;
-                uz = az;
-                ax = (ax + vx) / 2d;
-                ay = (ay + vy) / 2d;
-                az = (az + vz) / 2d;
-            }
-            odap = dap;
-            double dxap = ax - px;
-            double dyap = ay - py;
-            double dzap = az - pz;
-            dap = dxap * dxap + dyap * dyap + dzap * dzap;
-
+        double div = v.magnitude();
+        double t = -w.dot(v) / (div * div);
+        if (t < 0.0) {
+            return p.minus(p1).magnitude();
         }
-        return new org.nschmidt.csg.VectorCSGd(ax, ay, az);
+        if (t > 1.0) {
+            return p.minus(p2).magnitude();
+        }
+
+        VectorCSGd pb = p1.plus(v.times(t));
+        double dist = p.minus(pb).magnitude();
+
+        return dist;
     }
 
     public static Vector4f getNearestPointToLineSegment2(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
