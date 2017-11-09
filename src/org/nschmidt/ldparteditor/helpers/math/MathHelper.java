@@ -606,7 +606,7 @@ public enum MathHelper {
         double odap = 1d;
 
         int refinements = 0;
-        while (Math.abs(dap - odap) > .0001d || (refinements++ < 3)) {
+        while (Math.abs(dap - odap) > .001f || (refinements++ < 3)) {
             double dxup = ux - px;
             double dyup = uy - py;
             double dzup = uz - pz;

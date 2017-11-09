@@ -107,7 +107,6 @@ public final class GDataCSG extends GData {
     private CSG compiledCSG = null;
     private CSG dataCSG = null;
 
-    private final DatFile myDat;
     private final GColour colour;
     final Matrix4f matrix;
 
@@ -174,7 +173,6 @@ public final class GDataCSG extends GData {
         super(parent);
         clearPolygonCache.put(df, true);
         fullClearPolygonCache.put(df, false);
-        myDat = df;
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(this);
         String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
         final GColour col16 = View.getLDConfigColour(16);
@@ -602,19 +600,6 @@ public final class GDataCSG extends GData {
             switch (type) {
             case CSG.COMPILE:
                 if (compiledCSG != null) {
-                    resetCSG(myDat, false);
-                    GDataCSG.forceRecompile(myDat);
-                    GData g = myDat.getDrawChainStart();
-                    deleteAndRecompile = true;
-                    while ((g = g.getNext()) != null) {
-                        if (g.type() == 8) {
-                            GDataCSG gcsg = (GDataCSG) g;
-                            gcsg.drawAndParse(null, myDat, false);
-                        }
-                    }
-                    if (!deleteAndRecompile) {
-                        return getNiceString() + "<br>0 // INLINE FAILED! :("; //$NON-NLS-1$
-                    }
 
                     final StringBuilder sb = new StringBuilder();
 
@@ -1297,30 +1282,42 @@ public final class GDataCSG extends GData {
     }
 
     public int[] getDataSize() {
+        if (datasize != null) {
+            return datasize;
+        }
+        return new int[]{0, 0, 0};
+    }
+
+    public Set<GData3> getSurfaces() {
+        if (surfaces == null) {
+            return new HashSet<GData3>();
+        } else {
+            return surfaces;
+        }
+    }
+
+    public static HashSet<GData3> getSelectionData(DatFile df) {
+        return selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
+    }
+
+    Set<GData3> surfaces = null;
+    int[] datasize = null;
+    public void cacheResult() {
+        // TODO Auto-generated method stub
         final int[] result = new int[]{0, 0, 0};
         if (compiledCSG != null) {
-            TreeMap<GData3, IdAndPlane> resultData = compiledCSG.getResult();
-            for (GData3 tri : resultData.keySet()) {
+            surfaces = new HashSet<GData3>(compiledCSG.getResult().keySet());
+            for (GData3 tri : surfaces) {
                 if (tri.a < 1f) {
                     result[2] += 6;
                 } else {
                     result[1] += 6;
                 }
             }
-            result[0] = 60 * resultData.size();
-        }
-        return result;
-    }
-
-    public Set<GData3> getSurfaces() {
-        if (compiledCSG == null) {
-            return new HashSet<GData3>();
+            result[0] = 60 * surfaces.size();
         } else {
-            return compiledCSG.getResult().keySet();
+            surfaces = new HashSet<GData3>();
         }
-    }
-
-    public static HashSet<GData3> getSelectionData(DatFile df) {
-        return selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
+        datasize = result;
     }
 }

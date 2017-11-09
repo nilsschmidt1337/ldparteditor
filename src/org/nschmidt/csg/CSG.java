@@ -39,6 +39,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -116,6 +117,7 @@ public class CSG {
     private Bounds bounds = null;
 
     private CSG() {
+        globalOptimizationRate = 100.0;
     }
 
     public static final byte UNION = 0;
@@ -466,12 +468,16 @@ public class CSG {
     private volatile TreeMap<GData3, IdAndPlane> optimizedTriangles = new TreeMap<>();
     private volatile Set<String> oldTriangleStrings = new HashSet<>();
     private volatile int oldResultSize = 0;
-
+    private final Random rnd = new Random(12345678L);
     public static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
-    public TreeMap<GData3, IdAndPlane> getResult() {
+    public static volatile long timeOfLastOptimization = -1;
+    public static volatile double globalOptimizationRate = 100.0;
 
-        // FIXME Do iterative optimization here!
+    public volatile double optimizationTries = 1.0;
+    public volatile double optimizationSuccess = 1.0;
+
+    public TreeMap<GData3, IdAndPlane> getResult() {
 
         if (oldTriangleStrings.isEmpty() && optimizedTriangles.isEmpty()) {
             optimizedTriangles = new TreeMap<>();
@@ -532,6 +538,26 @@ public class CSG {
                     } else {
                         triangles.add(entry.getKey());
                     }
+                }
+
+                final int action = rnd.nextInt() % 3;
+                boolean foundOptimization = false;
+
+                if (action == 0) foundOptimization = CSGOptimizerTJunction.optimize(rnd, trianglesPerPlane, optimization);
+                if (action == 1) foundOptimization = CSGOptimizerFlipTriangle.optimize(rnd, trianglesPerPlane, optimization);
+                if (action == 2) foundOptimization = CSGOptimizerEdgeCollapse.optimize(rnd, trianglesPerPlane, optimization);
+
+                if (foundOptimization) {
+                    optimizationSuccess++;
+                } else if (optimizationSuccess > 0) {
+                    optimizationSuccess--;
+                }
+                optimizationTries++;
+
+                final double rate = (1.0 - (optimizationSuccess / optimizationTries)) * 100.0;
+                if (rate < 99.0) {
+                    globalOptimizationRate = rate;
+                    timeOfLastOptimization = System.currentTimeMillis();
                 }
 
                 optimizedResult = optimization;
