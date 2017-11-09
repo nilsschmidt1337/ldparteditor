@@ -42,7 +42,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
  */
 public class VectorCSGd implements Comparable<VectorCSGd>{
 
-    private static final double epsilon = 0.0001f;
+    private static final double epsilon = 0.0001;
 
     public double x;
     public double y;
