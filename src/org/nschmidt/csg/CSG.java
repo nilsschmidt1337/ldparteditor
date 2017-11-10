@@ -551,22 +551,12 @@ public class CSG {
                 if (action == 0) {
                     if (tjunctionPause > 0) {
                         tjunctionPause--;
-                        action = 1; // TODO prefer 2 here, since it reduces the triangle count
+                        action = 2; // TODO prefer 2 here, since it reduces the triangle count
                     } else {
                         foundOptimization = CSGOptimizerTJunction.optimize(rnd, trianglesPerPlane, optimization);
                         if (!foundOptimization) {
                             tjunctionPause = 1000;
                         }
-                    }
-                }
-
-                if (action == 2) {
-                    foundOptimization = CSGOptimizerEdgeCollapse.optimize(rnd, trianglesPerPlane, optimization);
-                    if (foundOptimization) {
-                        action = -1;
-                    } else {
-                        action = 1;
-                        flipPause = 0;
                     }
                 }
 
@@ -584,6 +574,9 @@ public class CSG {
 
                 if (action == 2) {
                     foundOptimization = CSGOptimizerEdgeCollapse.optimize(rnd, trianglesPerPlane, optimization);
+                    if (!foundOptimization) {
+                        flipPause = 0;
+                    }
                 }
 
                 if (foundOptimization) {
