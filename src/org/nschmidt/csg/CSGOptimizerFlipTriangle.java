@@ -83,6 +83,8 @@ enum CSGOptimizerFlipTriangle {
                             ov.remove(a);
                             ov.remove(b);
                             if (ov.size() == 0) {
+                                optimization.remove(other);
+                                flipCache.remove(other);
                                 continue;
                             }
                             co = ov.iterator().next();
@@ -123,7 +125,7 @@ enum CSGOptimizerFlipTriangle {
                 optimization.remove(tb);
                 flipCache.remove(ta);
                 flipCache.remove(tb);
-                optimization.put(createTriangle(ta, na, nc, nb, 4), oldIdA);
+                optimization.put(createTriangle(ta, nc, na, nb, 4), oldIdA);
                 optimization.put(createTriangle(tb, nc, o, na, 14), oldIdB);
                 result = true;
             }
