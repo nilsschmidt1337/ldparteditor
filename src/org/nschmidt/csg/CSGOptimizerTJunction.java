@@ -18,7 +18,8 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 enum CSGOptimizerTJunction {
     INSTANCE;
 
-    private static double epsilon;
+    // TODO This epsilon should be accessible by the user!
+    private static double epsilon = .1;
 
     public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, TreeMap<GData3, IdAndPlane> optimization) {
         boolean result = false;
@@ -36,49 +37,53 @@ enum CSGOptimizerTJunction {
                 trimap.put(tri, triverts);
             }
 
-            // Limit epsilon to max 0.01 LDU
-            epsilon = 5.5;
-
             for (GData3 tri : triangles) {
                 final VectorCSGd[] triverts = trimap.get(tri);
                 for (VectorCSGd v : vertices) {
                     if (triverts[0].compareTo(v) == 0) continue;
                     if (triverts[1].compareTo(v) == 0) continue;
                     if (triverts[2].compareTo(v) == 0) continue;
+                    {
+                        double d =  MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[0], triverts[1], v, epsilon);
+                        if (d < epsilon) {
+                            // Make sure that the new edge generates no T-Junction!
+                            if (isValidEdge(v, triverts[2], vertices)) {
+                                final IdAndPlane oldId = optimization.get(tri);
+                                optimization.remove(tri);
+                                optimization.put(createTriangle(tri, triverts[0], v, triverts[2], 42), oldId);
+                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2], 42), oldId);
+                                result = true;
+                                break;
+                            }
+                        }
+                    }
+
 
                     {
-                        double d =  MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[0], triverts[1], v);
+                        double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[1], triverts[2], v, epsilon);
                         if (d < epsilon) {
-                            final IdAndPlane oldId = optimization.get(tri);
-                            optimization.remove(tri);
-                            optimization.put(createTriangle(tri, triverts[0], v, triverts[2]), oldId);
-                            optimization.put(createTriangle(tri, v, triverts[1], triverts[2]), oldId);
-                            result = true;
-                            break;
+                            if (isValidEdge(v, triverts[0], vertices)) {
+                                final IdAndPlane oldId = optimization.get(tri);
+                                optimization.remove(tri);
+                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0], 43), oldId);
+                                optimization.put(createTriangle(tri, v, triverts[2], triverts[0], 43), oldId);
+                                result = true;
+                                break;
+                            }
                         }
                     }
 
                     {
-                        double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[1], triverts[2], v);
+                        double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[2], triverts[0], v, epsilon);
                         if (d < epsilon) {
-                            final IdAndPlane oldId = optimization.get(tri);
-                            optimization.remove(tri);
-                            optimization.put(createTriangle(tri, triverts[1], v, triverts[0]), oldId);
-                            optimization.put(createTriangle(tri, v, triverts[2], triverts[0]), oldId);
-                            result = true;
-                            break;
-                        }
-                    }
-
-                    {
-                        double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[2], triverts[0], v);
-                        if (d < epsilon) {
-                            final IdAndPlane oldId = optimization.get(tri);
-                            optimization.remove(tri);
-                            optimization.put(createTriangle(tri, triverts[1], v, triverts[0]), oldId);
-                            optimization.put(createTriangle(tri, v, triverts[1], triverts[2]), oldId);
-                            result = true;
-                            break;
+                            if (isValidEdge(v, triverts[1], vertices)) {
+                                final IdAndPlane oldId = optimization.get(tri);
+                                optimization.remove(tri);
+                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0], 44), oldId);
+                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2], 44), oldId);
+                                result = true;
+                                break;
+                            }
                         }
                     }
                 }
@@ -88,12 +93,24 @@ enum CSGOptimizerTJunction {
         return result;
     }
 
-    private static GData3 createTriangle(GData3 idol, VectorCSGd a, VectorCSGd b, VectorCSGd c) {
+    private static boolean isValidEdge(VectorCSGd a, VectorCSGd b, Set<VectorCSGd> vertices) {
+        for (VectorCSGd v : vertices) {
+            if (a.compareTo(v) == 0) continue;
+            if (b.compareTo(v) == 0) continue;
+            double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(a, b, v, epsilon);
+            if (d < epsilon) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private static GData3 createTriangle(GData3 idol, VectorCSGd a, VectorCSGd b, VectorCSGd c, int col) {
         Vertex v1 = new Vertex((float) a.x, (float) a.y, (float) a.z);
         Vertex v2 = new Vertex((float) b.x, (float) b.y, (float) b.z);
         Vertex v3 = new Vertex((float) c.x, (float) c.y, (float) c.z);
         GData1 parent = idol.parent;
-        GColour colour = View.getLDConfigColour(42); // new GColour(idol.colourNumber, idol.r, idol.g, idol.b, idol.a);
+        GColour colour = View.getLDConfigColour(col); // new GColour(idol.colourNumber, idol.r, idol.g, idol.b, idol.a);
         return new GData3(v1, v2, v3, parent, colour, true);
     }
 }
