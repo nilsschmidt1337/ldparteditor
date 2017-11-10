@@ -22,7 +22,7 @@ enum CSGOptimizerEdgeCollapse {
     INSTANCE;
 
     // TODO This epsilon should be accessible by the user!
-    public static volatile double epsilon = 0.99;
+    public static volatile double epsilon = 0.9999;
 
     public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, TreeMap<GData3, IdAndPlane> optimization) {
         boolean result = false;
@@ -34,7 +34,10 @@ enum CSGOptimizerEdgeCollapse {
             final Map<GData3, VectorCSGd[]> trimap = new HashMap<>();
 
             for (GData3 tri : triangles) {
-                final VectorCSGd[] triverts = new VectorCSGd[]{new VectorCSGd(tri.x1, tri.y1, tri.z1), new VectorCSGd(tri.x2, tri.y2, tri.z2), new VectorCSGd(tri.x3, tri.y3, tri.z3)};
+                final VectorCSGd[] triverts = new VectorCSGd[]{
+                        new VectorCSGd(tri.x1, tri.y1, tri.z1),
+                        new VectorCSGd(tri.x2, tri.y2, tri.z2),
+                        new VectorCSGd(tri.x3, tri.y3, tri.z3)};
 
                 verticesToProcess.add(triverts[0]);
                 verticesToProcess.add(triverts[1]);
@@ -72,6 +75,8 @@ enum CSGOptimizerEdgeCollapse {
 
                 // 3.2 Ist das Polygon geschlossen?
                 final boolean isPolygonLoop = (verts.size() - 1) == surfs.size();
+                int commonPoints = 0;
+                int commonSurfaces = 0;
 
                 // 4. Entferne den Ursprungspunkt aus der Menge
                 verts.remove(v);
@@ -85,7 +90,8 @@ enum CSGOptimizerEdgeCollapse {
                     tsurfs.removeAll(surfs);
 
                     // 5.1 t muss zwei Flächen mit v teilen
-                    if (oldcount - tsurfs.size() != 2) {
+                    commonSurfaces = oldcount - tsurfs.size();
+                    if (commonSurfaces > 2 || commonSurfaces == 0) {
                         continue;
                     }
 
@@ -98,10 +104,16 @@ enum CSGOptimizerEdgeCollapse {
                         verts2.remove(t);
                         int oldcount2 = verts2.size();
                         verts2.removeAll(verts);
-                        int delta = oldcount2 - verts2.size();
-                        if (delta != 2) {
+                        commonPoints = oldcount2 - verts2.size();
+                        if (commonPoints > 2 || commonPoints == 0) {
                             continue;
                         }
+                    }
+
+                    if (isPolygonLoop && (commonPoints < 2 || commonSurfaces < 2)) {
+                        continue;
+                    } else if (!isPolygonLoop) { //&& (commonPoints != 1 || commonSurfaces != 1)) {
+                        continue;
                     }
 
                     // 5.3 die Normalen dürfen nicht kippen!
@@ -148,12 +160,11 @@ enum CSGOptimizerEdgeCollapse {
 
                     // v -> t
                     if (isPolygonLoop) {
-                        // FIXME Needs impl.
                         doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
                         foundOptimization = true;
                         result = true;
                         break;
-                    } else if (false) {
+                    } else if (true) {
                         if (isBoundaryPoint(t, linkedSurfaceMap, trimap)) {
                             VectorCSGd ref = t.minus(v);
                             double m = ref.magnitude();
@@ -161,16 +172,18 @@ enum CSGOptimizerEdgeCollapse {
                                 ref = ref.dividedBy(m);
                                 for (VectorCSGd r : verts) {
                                     if (r != t) {
-                                        VectorCSGd ref2 = v.minus(r);
-                                        double m2 = ref2.magnitude();
-                                        if (m2 > 0.0) {
-                                            ref2 = ref2.dividedBy(m2);
-                                            double diskr = ref.dot(ref2);
-                                            if (diskr > epsilon) {
-                                                doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
-                                                foundOptimization = true;
-                                                result = true;
-                                                break;
+                                        {
+                                            VectorCSGd ref2 = v.minus(r);
+                                            double m2 = ref2.magnitude();
+                                            if (m2 > 0.0) {
+                                                ref2 = ref2.dividedBy(m2);
+                                                double diskr = ref.dot(ref2);
+                                                if (diskr > epsilon) {
+                                                    doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
+                                                    foundOptimization = true;
+                                                    result = true;
+                                                    break;
+                                                }
                                             }
                                         }
                                     }
@@ -195,22 +208,16 @@ enum CSGOptimizerEdgeCollapse {
 
             Set<VectorCSGd> verts = new TreeSet<>(Arrays.asList(trimap.get(g)));
 
-            if (!(verts.contains(t) && verts.contains(v))) {
-
+            if (!verts.contains(t)) {
                 List<VectorCSGd> nv = new ArrayList<>(Arrays.asList(trimap.get(g)));
                 int i = -1;
                 if (nv.get(0).compareTo(v) == 0) i = 0;
                 if (nv.get(1).compareTo(v) == 0) i = 1;
                 if (nv.get(2).compareTo(v) == 0) i = 2;
-                if (i > 0) {
+                if (i > -1) {
                     nv.set(i, t);
-                    optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 449), optimization.get(g));
-                } else {
-                    // optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 406), optimization.get(g));
+                    optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 449), optimization.get(g)); // Purple
                 }
-            } else {
-                // List<VectorCSGd> nv = new ArrayList<>(Arrays.asList(trimap.get(g)));
-                // optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 406), optimization.get(g));
             }
 
             optimization.remove(g);
