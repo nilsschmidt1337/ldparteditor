@@ -476,6 +476,7 @@ public class CSG {
 
     public volatile double optimizationTries = 1.0;
     public volatile double optimizationSuccess = 1.0;
+    private volatile int tjunctionPause = 0;
 
     public TreeMap<GData3, IdAndPlane> getResult() {
 
@@ -540,10 +541,20 @@ public class CSG {
                     }
                 }
 
-                final int action = rnd.nextInt() % 3;
+                int action = rnd.nextInt(3);
                 boolean foundOptimization = false;
 
-                if (action == 0) foundOptimization = CSGOptimizerTJunction.optimize(rnd, trianglesPerPlane, optimization);
+                if (action == 0) {
+                    if (tjunctionPause > 0) {
+                        action = 1; // TODO prefer 2 here, since it reduces mesh complexity
+                    } else {
+                        foundOptimization = CSGOptimizerTJunction.optimize(rnd, trianglesPerPlane, optimization);
+                        if (!foundOptimization) {
+                            tjunctionPause = 1000;
+                        }
+                    }
+                }
+
                 if (action == 1) foundOptimization = CSGOptimizerFlipTriangle.optimize(rnd, trianglesPerPlane, optimization);
                 if (action == 2) foundOptimization = CSGOptimizerEdgeCollapse.optimize(rnd, trianglesPerPlane, optimization);
 
