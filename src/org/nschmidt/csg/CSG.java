@@ -35,6 +35,7 @@ package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -479,6 +480,8 @@ public class CSG {
     private volatile int tjunctionPause = 0;
     private volatile int flipPause = 0;
 
+    private final Map<GData3, Map<GData3, Boolean>> flipCache = new HashMap<>();
+
     public TreeMap<GData3, IdAndPlane> getResult() {
 
         if (oldTriangleStrings.isEmpty() && optimizedTriangles.isEmpty()) {
@@ -557,17 +560,28 @@ public class CSG {
                     }
                 }
 
+                if (action == 2) {
+                    foundOptimization = CSGOptimizerEdgeCollapse.optimize(rnd, trianglesPerPlane, optimization);
+                    if (foundOptimization) {
+                        action = -1;
+                    } else {
+                        action = 1;
+                        flipPause = 0;
+                    }
+                }
+
                 if (action == 1) {
                     if (flipPause > 0) {
                         flipPause--;
                         action = 2;
                     } else {
-                        foundOptimization = CSGOptimizerFlipTriangle.optimize(rnd, trianglesPerPlane, optimization);
+                        foundOptimization = CSGOptimizerFlipTriangle.optimize(rnd, trianglesPerPlane, optimization, flipCache);
                         if (!foundOptimization) {
                             flipPause = 1000;
                         }
                     }
                 }
+
                 if (action == 2) {
                     foundOptimization = CSGOptimizerEdgeCollapse.optimize(rnd, trianglesPerPlane, optimization);
                 }

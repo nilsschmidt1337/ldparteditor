@@ -20,10 +20,8 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 enum CSGOptimizerFlipTriangle {
     INSTANCE;
 
-    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, TreeMap<GData3, IdAndPlane> optimization) {
+    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, TreeMap<GData3, IdAndPlane> optimization, Map<GData3, Map<GData3, Boolean>> flipCache) {
         boolean result = false;
-
-        // FIXME Do iterative optimization here!
 
         for (List<GData3> triangles : trianglesPerPlane.values()) {
 
@@ -72,6 +70,11 @@ enum CSGOptimizerFlipTriangle {
                     List<GData3> commonTris = edgeMap.get(a).get(b);
                     if (commonTris.size() == 2) {
                         GData3 other = commonTris.get(0) == tri ? commonTris.get(1) : commonTris.get(0);
+
+                        if (flipCache.containsKey(tri) && flipCache.get(tri).containsKey(other)) {
+                            continue;
+                        }
+
                         VectorCSGd c = triverts[(i + 2) % 3];
                         VectorCSGd co;
                         {
@@ -79,6 +82,9 @@ enum CSGOptimizerFlipTriangle {
                             ov.addAll(Arrays.asList(trimap.get(other)));
                             ov.remove(a);
                             ov.remove(b);
+                            if (ov.size() == 0) {
+                                continue;
+                            }
                             co = ov.iterator().next();
                         }
 
@@ -93,6 +99,17 @@ enum CSGOptimizerFlipTriangle {
                             o = b;
                             endSearch = rnd.nextBoolean();
                             if (endSearch) break;
+                        } else {
+                            if (!flipCache.containsKey(tri)) flipCache.put(tri, new HashMap<>());
+                            if (!flipCache.containsKey(other)) flipCache.put(other, new HashMap<>());
+                            {
+                                Map<GData3, Boolean> map = flipCache.get(tri);
+                                if (!map.containsKey(other)) map.put(other, null);
+                            }
+                            {
+                                Map<GData3, Boolean> map = flipCache.get(other);
+                                if (!map.containsKey(tri)) map.put(tri, null);
+                            }
                         }
                     }
                 }
@@ -104,6 +121,8 @@ enum CSGOptimizerFlipTriangle {
                 final IdAndPlane oldIdB = optimization.get(tb);
                 optimization.remove(ta);
                 optimization.remove(tb);
+                flipCache.remove(ta);
+                flipCache.remove(tb);
                 optimization.put(createTriangle(ta, na, nc, nb, 4), oldIdA);
                 optimization.put(createTriangle(tb, nc, o, na, 14), oldIdB);
                 result = true;
