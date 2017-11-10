@@ -209,20 +209,16 @@ public class Vector3d {
         vectorA1.normalise(vectorA);
         vectorB1.normalise(vectorB);
         double cosinus = vectorA.X.multiply(vectorB.X, mc).add(vectorA.Y.multiply(vectorB.Y, mc), mc).add(vectorA.Z.multiply(vectorB.Z, mc), mc)
-                .divide(vectorA.length().multiply(vectorB.length(), mc), mc).doubleValue(); // I
-        // know
-        // the
-        // divisor
-        // should
-        // be
-        // one,
-        // but
-        // just
-        // for
-        // the
-        // case
-        // it's
-        // not...
+                .divide(vectorA.length().multiply(vectorB.length(), mc), mc).doubleValue();
+        return Math.acos(cosinus) * 180d / Math.PI;
+    }
+
+    public static double fastAngle(Vector3d vectorA1, Vector3d vectorB1) {
+        Vector3d vectorA = new Vector3d();
+        Vector3d vectorB = new Vector3d();
+        vectorA1.normalise(vectorA);
+        vectorB1.normalise(vectorB);
+        double cosinus = vectorA.X.multiply(vectorB.X, mc).add(vectorA.Y.multiply(vectorB.Y, mc), mc).add(vectorA.Z.multiply(vectorB.Z, mc), mc).doubleValue();
         return Math.acos(cosinus) * 180d / Math.PI;
     }
 

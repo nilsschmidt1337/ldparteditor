@@ -583,6 +583,13 @@ public enum MathHelper {
         return new Vector4f(ax, ay, az, 1f);
     }
 
+    public static boolean canBeProjectedToLineSegmentCSG(VectorCSGd p1, VectorCSGd p2, VectorCSGd p) {
+        VectorCSGd v = p2.minus(p1);
+        VectorCSGd w = p.minus(p1);
+        double t = w.dot(v) / (v.dot(v));
+        return (t > 0.0) && (t < 1.0);
+    }
+
     public static double getNearestPointDistanceToLineSegmentCSG(VectorCSGd p1, VectorCSGd p2, VectorCSGd p, double epsilon) {
 
         VectorCSGd v = p2.minus(p1);
@@ -1930,6 +1937,57 @@ public enum MathHelper {
                     z2,
                     dummyReference, df, true));
         }
+        return result;
+    }
+
+    public static boolean hasNarrowAngleDistribution(
+            VectorCSGd ta, VectorCSGd tb, VectorCSGd tc,
+            VectorCSGd oa, VectorCSGd ob, VectorCSGd oc,
+            VectorCSGd na, VectorCSGd nb, VectorCSGd nc,
+            VectorCSGd noa, VectorCSGd nob, VectorCSGd noc) {
+
+            double[] tangles = getTriangleAngles(ta, tb, tc);
+            double[] oangles = getTriangleAngles(oa, ob, oc);
+
+            double[] nangles = getTriangleAngles(na, nb, nc);
+            double[] noangles = getTriangleAngles(noa, nob, noc);
+
+            double tmax = -Double.MAX_VALUE;
+            double tmin = Double.MAX_VALUE;
+
+            double omax = -Double.MAX_VALUE;
+            double omin = Double.MAX_VALUE;
+
+            for (int i = 0; i < 3; i++) {
+                tmax = Math.max(tmax, tangles[i]);
+                tmax = Math.max(tmax, oangles[i]);
+                tmin = Math.min(tmin, tangles[i]);
+                tmin = Math.min(tmin, oangles[i]);
+                omax = Math.max(omax, nangles[i]);
+                omax = Math.max(omax, noangles[i]);
+                omin = Math.min(omin, nangles[i]);
+                omin = Math.min(omin, noangles[i]);
+            }
+
+            return (omax - omin) < (tmax - tmin);
+    }
+
+    private static double[] getTriangleAngles(VectorCSGd pa, VectorCSGd pb, VectorCSGd pc) {
+        double[] result = new double[3];
+        Vector3d a = new Vector3d(new BigDecimal(pa.x), new BigDecimal(pa.y), new BigDecimal(pa.z));
+        Vector3d b = new Vector3d(new BigDecimal(pb.x), new BigDecimal(pb.y), new BigDecimal(pb.z));
+        Vector3d c = new Vector3d(new BigDecimal(pc.x), new BigDecimal(pc.y), new BigDecimal(pc.z));
+        Vector3d ab = Vector3d.sub(b, a);
+        Vector3d bc = Vector3d.sub(c, b);
+        Vector3d ac = Vector3d.sub(c, a);
+
+        result[0] = Vector3d.fastAngle(ab, ac);
+        ab.negate();
+        result[1] = Vector3d.fastAngle(bc, ab);
+        bc.negate();
+        ac.negate();
+        result[2] = Vector3d.fastAngle(ac, bc);
+
         return result;
     }
 }
