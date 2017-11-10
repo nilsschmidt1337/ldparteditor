@@ -1984,9 +1984,7 @@ public enum MathHelper {
         result[0] = Vector3d.fastAngle(ab, ac);
         ab.negate();
         result[1] = Vector3d.fastAngle(bc, ab);
-        bc.negate();
-        ac.negate();
-        result[2] = Vector3d.fastAngle(ac, bc);
+        result[2] = 180.0 - result[0] - result[1];
 
         return result;
     }
