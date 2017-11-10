@@ -54,6 +54,8 @@ public class Plane implements Comparable<Plane> {
      */
     public static double EPSILON = 1e-3;
 
+    private static final double epsilon = 0.0001;
+
     public static final int COPLANAR = 0;
     public static final int FRONT = 1;
     public static final int BACK = 2;
@@ -283,6 +285,9 @@ public class Plane implements Comparable<Plane> {
     public int compareTo(Plane o) {
         final int vc = normal.compareTo(o.normal);
         if (vc == 0) {
+            if (Math.abs(dist - o.dist) < epsilon) {
+                return 0;
+            }
             return Double.compare(dist, o.dist);
         }
         return vc;

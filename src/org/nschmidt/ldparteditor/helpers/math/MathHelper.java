@@ -583,18 +583,17 @@ public enum MathHelper {
         return new Vector4f(ax, ay, az, 1f);
     }
 
-    public static double getNearestPointDistanceToLineSegmentCSG(VectorCSGd p1, VectorCSGd p2, VectorCSGd p) {
+    public static double getNearestPointDistanceToLineSegmentCSG(VectorCSGd p1, VectorCSGd p2, VectorCSGd p, double epsilon) {
 
         VectorCSGd v = p2.minus(p1);
         VectorCSGd w = p.minus(p1);
 
-        double div = v.magnitude();
-        double t = -w.dot(v) / (div * div);
+        double t = w.dot(v) / (v.dot(v));
         if (t < 0.0) {
-            return p.minus(p1).magnitude();
+            return 2.0 * epsilon; // p.minus(p1).magnitude();
         }
         if (t > 1.0) {
-            return p.minus(p2).magnitude();
+            return 2.0 * epsilon; // p.minus(p2).magnitude();
         }
 
         VectorCSGd pb = p1.plus(v.times(t));
