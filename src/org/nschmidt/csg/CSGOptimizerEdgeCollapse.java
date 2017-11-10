@@ -99,7 +99,7 @@ enum CSGOptimizerEdgeCollapse {
                         int oldcount2 = verts2.size();
                         verts2.removeAll(verts);
                         int delta = oldcount2 - verts2.size();
-                        if (delta > 2 || delta < 1) {
+                        if (delta != 2) {
                             continue;
                         }
                     }
@@ -152,6 +152,7 @@ enum CSGOptimizerEdgeCollapse {
                         doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
                         foundOptimization = true;
                         result = true;
+                        break;
                     } else if (false) {
                         if (isBoundaryPoint(t, linkedSurfaceMap, trimap)) {
                             VectorCSGd ref = t.minus(v);
@@ -189,7 +190,7 @@ enum CSGOptimizerEdgeCollapse {
             Map<VectorCSGd, List<GData3>> linkedSurfaceMap,
             Map<GData3, VectorCSGd[]> trimap) {
 
-        final List<GData3> affectedSurfaces = linkedSurfaceMap.get(t);
+        final List<GData3> affectedSurfaces = linkedSurfaceMap.get(v);
         for (GData3 g : affectedSurfaces) {
 
             Set<VectorCSGd> verts = new TreeSet<>(Arrays.asList(trimap.get(g)));
@@ -205,7 +206,7 @@ enum CSGOptimizerEdgeCollapse {
                     nv.set(i, t);
                     optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 449), optimization.get(g));
                 } else {
-                    optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 406), optimization.get(g));
+                    // optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 406), optimization.get(g));
                 }
             } else {
                 // List<VectorCSGd> nv = new ArrayList<>(Arrays.asList(trimap.get(g)));
