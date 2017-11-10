@@ -19,7 +19,7 @@ enum CSGOptimizerTJunction {
     INSTANCE;
 
     // TODO This epsilon should be accessible by the user!
-    private static double epsilon = .1;
+    public static volatile double epsilon = .1;
 
     public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, TreeMap<GData3, IdAndPlane> optimization) {
         boolean result = false;

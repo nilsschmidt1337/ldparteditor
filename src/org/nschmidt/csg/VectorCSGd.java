@@ -33,8 +33,6 @@
  */
 package org.nschmidt.csg;
 
-import org.nschmidt.ldparteditor.data.Vertex;
-
 /**
  * 3D Vector3d.
  *
@@ -213,7 +211,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
 
     @Override
     public boolean equals(Object obj) {
-        Vertex o = (Vertex) obj;
+        VectorCSGd o = (VectorCSGd) obj;
         return Math.abs(x - o.x) < epsilon && Math.abs(y - o.y) < epsilon && Math.abs(z - o.z) < epsilon;
     }
 

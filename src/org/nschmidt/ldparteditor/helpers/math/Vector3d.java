@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helpers.math;
 import java.math.BigDecimal;
 import java.math.MathContext;
 
+import org.nschmidt.csg.VectorCSGd;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.Threshold;
 
@@ -78,6 +79,10 @@ public class Vector3d {
 
     public Vector3d(Vector3r vertex) {
         this(vertex.X.BigDecimalValue(), vertex.Y.BigDecimalValue(), vertex.Z.BigDecimalValue());
+    }
+
+    public Vector3d(VectorCSGd v) {
+        this(new BigDecimal(v.x), new BigDecimal(v.y), new BigDecimal(v.z));
     }
 
     /**
