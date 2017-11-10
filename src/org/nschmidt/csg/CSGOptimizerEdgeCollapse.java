@@ -35,9 +35,11 @@ enum CSGOptimizerEdgeCollapse {
 
             for (GData3 tri : triangles) {
                 final VectorCSGd[] triverts = new VectorCSGd[]{new VectorCSGd(tri.x1, tri.y1, tri.z1), new VectorCSGd(tri.x2, tri.y2, tri.z2), new VectorCSGd(tri.x3, tri.y3, tri.z3)};
+
                 verticesToProcess.add(triverts[0]);
                 verticesToProcess.add(triverts[1]);
                 verticesToProcess.add(triverts[2]);
+
                 if (!linkedSurfaceMap.containsKey(triverts[0])) linkedSurfaceMap.put(triverts[0], new ArrayList<>());
                 if (!linkedSurfaceMap.containsKey(triverts[1])) linkedSurfaceMap.put(triverts[1], new ArrayList<>());
                 if (!linkedSurfaceMap.containsKey(triverts[2])) linkedSurfaceMap.put(triverts[2], new ArrayList<>());
@@ -78,7 +80,7 @@ enum CSGOptimizerEdgeCollapse {
                 for (final VectorCSGd t : verts) {
                     if (foundOptimization) break;
 
-                    final List<GData3> tsurfs = linkedSurfaceMap.get(t);
+                    final List<GData3> tsurfs = new ArrayList<>(linkedSurfaceMap.get(t));
                     final int oldcount = tsurfs.size();
                     tsurfs.removeAll(surfs);
 
@@ -150,7 +152,7 @@ enum CSGOptimizerEdgeCollapse {
                         doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
                         foundOptimization = true;
                         result = true;
-                    } else {
+                    } else if (false) {
                         if (isBoundaryPoint(t, linkedSurfaceMap, trimap)) {
                             VectorCSGd ref = t.minus(v);
                             double m = ref.magnitude();
@@ -187,19 +189,27 @@ enum CSGOptimizerEdgeCollapse {
             Map<VectorCSGd, List<GData3>> linkedSurfaceMap,
             Map<GData3, VectorCSGd[]> trimap) {
 
-        final List<GData3> affectedSurfaces = linkedSurfaceMap.get(v);
+        final List<GData3> affectedSurfaces = linkedSurfaceMap.get(t);
         for (GData3 g : affectedSurfaces) {
 
-            List<VectorCSGd> verts = Arrays.asList(trimap.get(g));
+            Set<VectorCSGd> verts = new TreeSet<>(Arrays.asList(trimap.get(g)));
 
             if (!(verts.contains(t) && verts.contains(v))) {
 
-                List<VectorCSGd> nv = new ArrayList<>(verts);
-                int i = nv.indexOf(v);
+                List<VectorCSGd> nv = new ArrayList<>(Arrays.asList(trimap.get(g)));
+                int i = -1;
+                if (nv.get(0).compareTo(v) == 0) i = 0;
+                if (nv.get(1).compareTo(v) == 0) i = 1;
+                if (nv.get(2).compareTo(v) == 0) i = 2;
                 if (i > 0) {
                     nv.set(i, t);
-                    optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 1), optimization.get(g));
+                    optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 449), optimization.get(g));
+                } else {
+                    optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 406), optimization.get(g));
                 }
+            } else {
+                // List<VectorCSGd> nv = new ArrayList<>(Arrays.asList(trimap.get(g)));
+                // optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 406), optimization.get(g));
             }
 
             optimization.remove(g);

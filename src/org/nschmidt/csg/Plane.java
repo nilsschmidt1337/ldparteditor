@@ -54,7 +54,7 @@ public class Plane implements Comparable<Plane> {
      */
     public static double EPSILON = 1e-3;
 
-    private static final double epsilon = 0.0001;
+    private static final double epsilon = 0.001;
 
     public static final int COPLANAR = 0;
     public static final int FRONT = 1;
