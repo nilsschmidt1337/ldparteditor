@@ -112,7 +112,7 @@ enum CSGOptimizerEdgeCollapse {
 
                     if (isPolygonLoop && (commonPoints < 2 || commonSurfaces < 2)) {
                         continue;
-                    } else if (!isPolygonLoop) { //&& (commonPoints != 1 || commonSurfaces != 1)) {
+                    } else if (!isPolygonLoop && (commonPoints != 1 || verts.size() != 3)) {
                         continue;
                     }
 
@@ -164,7 +164,7 @@ enum CSGOptimizerEdgeCollapse {
                         foundOptimization = true;
                         result = true;
                         break;
-                    } else if (true) {
+                    } else {
                         if (isBoundaryPoint(t, linkedSurfaceMap, trimap)) {
                             VectorCSGd ref = t.minus(v);
                             double m = ref.magnitude();
@@ -172,18 +172,16 @@ enum CSGOptimizerEdgeCollapse {
                                 ref = ref.dividedBy(m);
                                 for (VectorCSGd r : verts) {
                                     if (r != t) {
-                                        {
-                                            VectorCSGd ref2 = v.minus(r);
-                                            double m2 = ref2.magnitude();
-                                            if (m2 > 0.0) {
-                                                ref2 = ref2.dividedBy(m2);
-                                                double diskr = ref.dot(ref2);
-                                                if (diskr > epsilon) {
-                                                    doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
-                                                    foundOptimization = true;
-                                                    result = true;
-                                                    break;
-                                                }
+                                        VectorCSGd ref2 = v.minus(r);
+                                        double m2 = ref2.magnitude();
+                                        if (m2 > 0.0) {
+                                            ref2 = ref2.dividedBy(m2);
+                                            double diskr = ref.dot(ref2);
+                                            if (diskr > epsilon) {
+                                                doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
+                                                foundOptimization = true;
+                                                result = true;
+                                                break;
                                             }
                                         }
                                     }

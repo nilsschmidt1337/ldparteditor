@@ -50,8 +50,8 @@ enum CSGOptimizerTJunction {
                             if (isValidEdge(v, triverts[2], vertices)) {
                                 final IdAndPlane oldId = optimization.get(tri);
                                 optimization.remove(tri);
-                                optimization.put(createTriangle(tri, triverts[0], v, triverts[2], 42), oldId);
-                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2], 42), oldId);
+                                optimization.put(createTriangle(tri, triverts[0], v, triverts[2], 490), oldId);
+                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2], 490), oldId);
                                 result = true;
                                 break;
                             }
@@ -65,8 +65,8 @@ enum CSGOptimizerTJunction {
                             if (isValidEdge(v, triverts[0], vertices)) {
                                 final IdAndPlane oldId = optimization.get(tri);
                                 optimization.remove(tri);
-                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0], 43), oldId);
-                                optimization.put(createTriangle(tri, v, triverts[2], triverts[0], 43), oldId);
+                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0], 490), oldId);
+                                optimization.put(createTriangle(tri, v, triverts[2], triverts[0], 490), oldId);
                                 result = true;
                                 break;
                             }
@@ -79,8 +79,8 @@ enum CSGOptimizerTJunction {
                             if (isValidEdge(v, triverts[1], vertices)) {
                                 final IdAndPlane oldId = optimization.get(tri);
                                 optimization.remove(tri);
-                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0], 44), oldId);
-                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2], 44), oldId);
+                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0], 490), oldId);
+                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2], 490), oldId);
                                 result = true;
                                 break;
                             }
