@@ -32,6 +32,7 @@ enum CSGOptimizerFlipTriangle {
             for (GData3 tri : triangles) {
                 final VectorCSGd[] triverts = new VectorCSGd[]{new VectorCSGd(tri.x1, tri.y1, tri.z1), new VectorCSGd(tri.x2, tri.y2, tri.z2), new VectorCSGd(tri.x3, tri.y3, tri.z3)};
                 trimap.put(tri, triverts);
+
                 for (int i = 0; i < 3; i++) {
                     VectorCSGd a = triverts[i];
                     for (int j = i + 1; j < 3; j++) {

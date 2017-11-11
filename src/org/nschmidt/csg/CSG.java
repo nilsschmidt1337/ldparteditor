@@ -526,7 +526,7 @@ public class CSG {
                 if (action == 0 || action == 2) {
                     if (tjunctionPause > 0) {
                         tjunctionPause--;
-                        action = 2; // TODO prefer 2 here, since it reduces the triangle count
+                        action = 2;
                     } else {
                         foundOptimization = CSGOptimizerTJunction.optimize(rnd, trianglesPerPlane, optimization);
                         if (!foundOptimization) {
