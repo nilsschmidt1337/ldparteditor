@@ -559,14 +559,14 @@ public class CSG {
                     failureStrike = 0;
                 } else if (optimizationSuccess > 0) {
                     optimizationSuccess--;
-                    if (failureStrike < 1000) {
+                    if (failureStrike < 100) {
                         failureStrike++;
                     }
                 }
                 optimizationTries++;
 
-                final double rate = Math.max((1.0 - (optimizationSuccess / optimizationTries)), failureStrike / 1000.0) * 100.0;
-                if (rate < 99.0 && failureStrike < 1000) {
+                final double rate = Math.max((1.0 - (optimizationSuccess / optimizationTries)), failureStrike / 100.0) * 100.0;
+                if (rate < 99.0 && failureStrike < 100) {
                     globalOptimizationRate = rate;
                     timeOfLastOptimization = System.currentTimeMillis();
                 }
