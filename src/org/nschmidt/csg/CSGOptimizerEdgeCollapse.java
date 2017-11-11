@@ -112,7 +112,7 @@ enum CSGOptimizerEdgeCollapse {
 
                     if (isPolygonLoop && (commonPoints < 2 || commonSurfaces < 2)) {
                         continue;
-                    } else if (!isPolygonLoop && (commonPoints != 1 || verts.size() != 3)) {
+                    } else if (!isPolygonLoop && (commonPoints != 1 || verts.size() != 3)) { //  || verts.size() > 4)) { <- no so trivial for 4 vertices!
                         continue;
                     }
 

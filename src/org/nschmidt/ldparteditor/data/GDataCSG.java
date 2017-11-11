@@ -1303,7 +1303,6 @@ public final class GDataCSG extends GData {
     Set<GData3> surfaces = null;
     int[] datasize = null;
     public void cacheResult() {
-        // TODO Auto-generated method stub
         final int[] result = new int[]{0, 0, 0};
         if (compiledCSG != null) {
             surfaces = new HashSet<GData3>(compiledCSG.getResult().keySet());

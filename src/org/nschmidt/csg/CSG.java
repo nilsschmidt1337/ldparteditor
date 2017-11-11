@@ -41,7 +41,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
@@ -49,12 +48,15 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import org.eclipse.swt.widgets.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
@@ -467,8 +469,6 @@ public class CSG {
     private volatile boolean shouldOptimize = true;
     private volatile TreeMap<GData3, IdAndPlane> optimizedResult = null;
     private volatile TreeMap<GData3, IdAndPlane> optimizedTriangles = new TreeMap<>();
-    private volatile Set<String> oldTriangleStrings = new HashSet<>();
-    private volatile int oldResultSize = 0;
     private final Random rnd = new Random(12345678L);
     public static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -477,6 +477,7 @@ public class CSG {
 
     public volatile double optimizationTries = 1.0;
     public volatile double optimizationSuccess = 1.0;
+    public volatile double failureStrike = 0;
     private volatile int tjunctionPause = 0;
     private volatile int flipPause = 0;
 
@@ -484,45 +485,19 @@ public class CSG {
 
     public TreeMap<GData3, IdAndPlane> getResult() {
 
-        if (oldTriangleStrings.isEmpty() && optimizedTriangles.isEmpty()) {
+        if (optimizedTriangles.isEmpty()) {
             optimizedTriangles = new TreeMap<>();
             optimizedTriangles.putAll(result);
         }
 
         if (shouldOptimize) {
+            final Composite3D lastC3d = DatFile.getLastHoveredComposite();
+            if (lastC3d != null) {
+                Display.getDefault().asyncExec(() -> {GuiStatusManager.updateStatus(lastC3d);});
+            }
+
             shouldOptimize = false;
             executorService.execute(() -> {
-                if (oldTriangleStrings.isEmpty()) {
-                    oldResultSize = optimizedTriangles.size();
-                    for (GData3 triangle : optimizedTriangles.keySet()) {
-                        oldTriangleStrings.add(triangle.toString());
-                    }
-                    shouldOptimize = true;
-                    return;
-                }
-
-                if (oldResultSize != result.size()) {
-                    optimizedResult = null;
-                    oldTriangleStrings.clear();
-                    optimizedTriangles.clear();
-                    shouldOptimize = true;
-                    return;
-                }
-
-                int matchCount = 0;
-                for (GData3 tri : result.keySet()) {
-                    if (oldTriangleStrings.contains(tri.toString())) {
-                        matchCount++;
-                    }
-                }
-
-                if (oldResultSize != matchCount) {
-                    optimizedResult = null;
-                    oldTriangleStrings.clear();
-                    optimizedTriangles.clear();
-                    shouldOptimize = true;
-                    return;
-                }
 
                 TreeMap<GData3, IdAndPlane> optimization = new TreeMap<>();
                 if (optimizedResult != null) {
@@ -548,7 +523,7 @@ public class CSG {
                 int action = rnd.nextInt(3);
                 boolean foundOptimization = false;
 
-                if (action == 0) {
+                if (action == 0 || action == 2) {
                     if (tjunctionPause > 0) {
                         tjunctionPause--;
                         action = 2; // TODO prefer 2 here, since it reduces the triangle count
@@ -572,7 +547,7 @@ public class CSG {
                     }
                 }
 
-                if (action == 2) {
+                if (action == 2 && tjunctionPause > 0) {
                     foundOptimization = CSGOptimizerEdgeCollapse.optimize(rnd, trianglesPerPlane, optimization);
                     if (!foundOptimization) {
                         flipPause = 0;
@@ -581,13 +556,17 @@ public class CSG {
 
                 if (foundOptimization) {
                     optimizationSuccess++;
+                    failureStrike = 0;
                 } else if (optimizationSuccess > 0) {
                     optimizationSuccess--;
+                    if (failureStrike < 1000) {
+                        failureStrike++;
+                    }
                 }
                 optimizationTries++;
 
-                final double rate = (1.0 - (optimizationSuccess / optimizationTries)) * 100.0;
-                if (rate < 99.0) {
+                final double rate = Math.max((1.0 - (optimizationSuccess / optimizationTries)), failureStrike / 1000.0) * 100.0;
+                if (rate < 99.0 && failureStrike < 1000) {
                     globalOptimizationRate = rate;
                     timeOfLastOptimization = System.currentTimeMillis();
                 }
