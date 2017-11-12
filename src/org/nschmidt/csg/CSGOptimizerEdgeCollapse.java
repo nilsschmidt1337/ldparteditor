@@ -64,48 +64,6 @@ enum CSGOptimizerEdgeCollapse {
 
                 // 1.1 Ist es ein eindeutiger Eckpunkt?
                 if (surfs.size() == 1) {
-                    final TreeSet<VectorCSGd> verts = new TreeSet<VectorCSGd>();
-                    final TreeSet<VectorCSGd> verts2 = new TreeSet<VectorCSGd>();
-                    for (final GData3 g : surfs) {
-                        verts.addAll(Arrays.asList(trimap.get(g)));
-                    }
-                    verts.remove(v);
-
-                    List<GData3> surfs2 = new ArrayList<>();
-                    for (final VectorCSGd t : verts) {
-                        surfs2.addAll(linkedSurfaceMap.get(t));
-                    }
-
-                    for (GData3 g : surfs2) {
-                        verts2.addAll(Arrays.asList(trimap.get(g)));
-                    }
-                    verts2.removeAll(verts);
-                    verts2.remove(v);
-
-                    for (final VectorCSGd t : verts) {
-                        if (foundOptimization) break;
-                        VectorCSGd ref = t.minus(v);
-                        double m = ref.magnitude();
-                        if (m > 0.0) {
-                            ref = ref.dividedBy(m);
-                            for (VectorCSGd r : verts2) {
-                                if (r != t) {
-                                    VectorCSGd ref2 = r.minus(t);
-                                    double m2 = ref2.magnitude();
-                                    if (m2 > 0.0) {
-                                        ref2 = ref2.dividedBy(m2);
-                                        double diskr = ref.dot(ref2);
-                                        if (diskr > epsilon) {
-                                            doOptimize(t, v, optimization, linkedSurfaceMap, trimap);
-                                            foundOptimization = true;
-                                            result = true;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                     continue;
                 }
 
