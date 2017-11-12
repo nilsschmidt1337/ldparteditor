@@ -1936,4 +1936,19 @@ public final class GData3 extends GData {
 
         return 24;
     }
+
+    /**
+     * Calculates the "area" of the triangle, but does take the square root and does not divide by two.<br>
+     * (1/2) * Math.sqrt((x2⋅y3−x3⋅y2)²+(x3⋅y1−x1⋅y3)²+(x1⋅y2−x2⋅y1)²)
+     *
+     * @return the double-squared-area
+     */
+    public BigDecimal getDoubleSquaredArea() {
+
+        final BigDecimal d1 = X2.multiply(Y3).subtract(X3.multiply(Y2));
+        final BigDecimal d2 = X3.multiply(Y1).subtract(X1.multiply(Y3));
+        final BigDecimal d3 = X1.multiply(Y2).subtract(X2.multiply(Y1));
+
+        return d1.add(d2).add(d3);
+    }
 }
