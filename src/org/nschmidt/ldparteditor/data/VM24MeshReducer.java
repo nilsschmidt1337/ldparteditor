@@ -143,7 +143,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                                 // 7.2 t darf nur zwei angrenzende Punkte mit v teilen
                                                 {
                                                     final TreeSet<Vertex> verts2 = new TreeSet<Vertex>();
-                                                    for (final GData gData : tsurfs) {
+                                                    for (final GData gData : getLinkedSurfaces(t)) {
                                                         if (gData.type() == 3) {
                                                             for (Vertex tv : triangles.get(gData)) {
                                                                 verts2.add(tv);
