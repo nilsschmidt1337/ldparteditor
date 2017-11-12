@@ -88,7 +88,7 @@ class VM22TJunctionFixer extends VM21Merger {
                                         clearSelection2();
                                         selectedVertices.add(v);
                                         verticesToSelect.add(v);
-                                        if (doMerge) merge(MergeTo.NEAREST_EDGE, false, false);
+                                        if (doMerge) merge(MergeTo.NEAREST_EDGE_SPLIT, false, false);
                                         TjunctionCount[0]++;
                                     }
                                     monitor.worked(1);
