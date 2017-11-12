@@ -508,8 +508,14 @@ public class CSG {
 
                 // Optimize for each plane
                 Map<Plane, List<GData3>> trianglesPerPlane = new TreeMap<>();
+                List<GData3> obsoleteTriangles = new ArrayList<>();
                 for (Entry<GData3, IdAndPlane> entry : optimization.entrySet()) {
-                    final Plane p = entry.getValue().plane;
+                    IdAndPlane id = entry.getValue();
+                    if (id == null) {
+                        obsoleteTriangles.add(entry.getKey());
+                        continue;
+                    }
+                    final Plane p = id.plane;
                     List<GData3> triangles = trianglesPerPlane.get(p);
                     if (triangles == null) {
                         triangles = new ArrayList<>();
@@ -518,6 +524,9 @@ public class CSG {
                     } else {
                         triangles.add(entry.getKey());
                     }
+                }
+                for (GData3 g : obsoleteTriangles) {
+                    optimization.remove(g);
                 }
 
                 int action = rnd.nextInt(3);
