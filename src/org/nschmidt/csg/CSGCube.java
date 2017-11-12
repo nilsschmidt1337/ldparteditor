@@ -55,11 +55,11 @@ public class CSGCube extends CSGPrimitive implements Primitive {
     /**
      * Center of this cube.
      */
-    private Vector3d center;
+    private VectorCSGd center;
     /**
      * Cube dimensions.
      */
-    private Vector3d dimensions;
+    private VectorCSGd dimensions;
 
     private boolean centered = true;
 
@@ -68,8 +68,8 @@ public class CSGCube extends CSGPrimitive implements Primitive {
      * dimensions {@code [1,1,1]}.
      */
     public CSGCube() {
-        center = new Vector3d(0d, 0d, 0d);
-        dimensions = new Vector3d(2000d, 2000d, 2000d);
+        center = new VectorCSGd(0d, 0d, 0d);
+        dimensions = new VectorCSGd(2000d, 2000d, 2000d);
     }
 
     /**
@@ -80,8 +80,8 @@ public class CSGCube extends CSGPrimitive implements Primitive {
      *            size
      */
     public CSGCube(double size) {
-        center = new Vector3d(0, 0, 0);
-        dimensions = new Vector3d(size, size, size);
+        center = new VectorCSGd(0, 0, 0);
+        dimensions = new VectorCSGd(size, size, size);
     }
 
     /**
@@ -93,7 +93,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
      * @param dimensions
      *            cube dimensions
      */
-    public CSGCube(Vector3d center, Vector3d dimensions) {
+    public CSGCube(VectorCSGd center, VectorCSGd dimensions) {
         this.center = center;
         this.dimensions = dimensions;
     }
@@ -110,7 +110,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
      *            depth
      */
     public CSGCube(double w, double h, double d) {
-        this(Vector3d.ZERO, new Vector3d(w, h, d));
+        this(VectorCSGd.ZERO, new VectorCSGd(w, h, d));
     }
 
     @Override
@@ -122,9 +122,9 @@ public class CSGCube extends CSGPrimitive implements Primitive {
                 { { 4, 5, 7, 6 }, { 0, 0, +1 } } };
         List<Polygon> polygons = new ArrayList<Polygon>();
         for (int[][] info : a) {
-            List<Vector3d> vertices = new ArrayList<Vector3d>();
+            List<VectorCSGd> vertices = new ArrayList<VectorCSGd>();
             for (int i : info[0]) {
-                Vector3d pos = new Vector3d(center.x + dimensions.x * (1 * Math.min(1, i & 1) - 0.5), center.y + dimensions.y * (1 * Math.min(1, i & 2) - 0.5), center.z + dimensions.z
+                VectorCSGd pos = new VectorCSGd(center.x + dimensions.x * (1 * Math.min(1, i & 1) - 0.5), center.y + dimensions.y * (1 * Math.min(1, i & 2) - 0.5), center.z + dimensions.z
                         * (1 * Math.min(1, i & 4) - 0.5));
                 vertices.add(pos);
             }
@@ -147,7 +147,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
     /**
      * @return the center
      */
-    public Vector3d getCenter() {
+    public VectorCSGd getCenter() {
         return center;
     }
 
@@ -155,14 +155,14 @@ public class CSGCube extends CSGPrimitive implements Primitive {
      * @param center
      *            the center to set
      */
-    public void setCenter(Vector3d center) {
+    public void setCenter(VectorCSGd center) {
         this.center = center;
     }
 
     /**
      * @return the dimensions
      */
-    public Vector3d getDimensions() {
+    public VectorCSGd getDimensions() {
         return dimensions;
     }
 
@@ -170,7 +170,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
      * @param dimensions
      *            the dimensions to set
      */
-    public void setDimensions(Vector3d dimensions) {
+    public void setDimensions(VectorCSGd dimensions) {
         this.dimensions = dimensions;
     }
 

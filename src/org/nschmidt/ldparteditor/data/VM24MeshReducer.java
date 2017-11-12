@@ -102,7 +102,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                             }
 
                                             // 2. Ermittle alle angrenzenden Punkte
-                                            final TreeSet<Vertex> verts = new TreeSet<Vertex>();
+                                            final TreeSet<Vertex> verts = new TreeSet<>();
 
                                             {
                                                 int delta = 1;
@@ -129,20 +129,20 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                             // 4. Entferne den Ursprungspunkt aus der Menge
                                             verts.remove(v);
 
-                                            // 7. Prüfe die Kandidaten
+                                            // 5. Prüfe die Kandidaten
                                             for (final Vertex t : verts) {
                                                 final HashSet<GData> tsurfs = getLinkedSurfaces(t);
                                                 final int oldcount = tsurfs.size();
                                                 tsurfs.removeAll(surfs);
 
-                                                // 7.1 t muss zwei Flächen mit v teilen
+                                                // 5.1 t muss zwei Flächen mit v teilen
                                                 if (oldcount - tsurfs.size() != 2) {
                                                     continue;
                                                 }
 
-                                                // 7.2 t darf nur zwei angrenzende Punkte mit v teilen
+                                                // 5.2 t darf nur zwei angrenzende Punkte mit v teilen
                                                 {
-                                                    final TreeSet<Vertex> verts2 = new TreeSet<Vertex>();
+                                                    final TreeSet<Vertex> verts2 = new TreeSet<>();
                                                     for (final GData gData : getLinkedSurfaces(t)) {
                                                         if (gData.type() == 3) {
                                                             for (Vertex tv : triangles.get(gData)) {
@@ -162,7 +162,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                                     }
                                                 }
 
-                                                // 7.3 die Normalen dürfen nicht kippen!
+                                                // 5.3 die Normalen dürfen nicht kippen!
                                                 {
                                                     boolean cont = false;
                                                     final int surfcount = surfs.size();
@@ -203,7 +203,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                                         oldNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
                                                         s++;
                                                     }
-                                                    HashSet<Integer> ignoreSet = new HashSet<Integer>();
+                                                    HashSet<Integer> ignoreSet = new HashSet<>();
                                                     for (s = 0; s < surfcount; s++) {
                                                         for (int i = 0; i < 3; i++) {
                                                             if (surfsv[s][i].equals(t)) {

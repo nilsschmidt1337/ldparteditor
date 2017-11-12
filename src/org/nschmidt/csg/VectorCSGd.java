@@ -38,17 +38,19 @@ package org.nschmidt.csg;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class Vector3d {
+public class VectorCSGd implements Comparable<VectorCSGd>{
+
+    private static final double epsilon = 0.0001;
 
     public double x;
     public double y;
     public double z;
 
-    public static final Vector3d ZERO = new Vector3d(0, 0, 0);
-    public static final Vector3d UNITY = new Vector3d(1, 1, 1);
-    public static final Vector3d X_ONE = new Vector3d(1, 0, 0);
-    public static final Vector3d Y_ONE = new Vector3d(0, 1, 0);
-    public static final Vector3d Z_ONE = new Vector3d(0, 0, 1);
+    public static final VectorCSGd ZERO = new VectorCSGd(0, 0, 0);
+    public static final VectorCSGd UNITY = new VectorCSGd(1, 1, 1);
+    public static final VectorCSGd X_ONE = new VectorCSGd(1, 0, 0);
+    public static final VectorCSGd Y_ONE = new VectorCSGd(0, 1, 0);
+    public static final VectorCSGd Z_ONE = new VectorCSGd(0, 0, 1);
 
     /**
      * Creates a new vector.
@@ -60,15 +62,15 @@ public class Vector3d {
      * @param z
      *            z value
      */
-    public Vector3d(double x, double y, double z) {
+    public VectorCSGd(double x, double y, double z) {
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
     @Override
-    public Vector3d clone() {
-        return new Vector3d(x, y, z);
+    public VectorCSGd clone() {
+        return new VectorCSGd(x, y, z);
     }
 
     /**
@@ -78,8 +80,8 @@ public class Vector3d {
      *
      * @return a negated copy of this vector
      */
-    public Vector3d negated() {
-        return new Vector3d(-x, -y, -z);
+    public VectorCSGd negated() {
+        return new VectorCSGd(-x, -y, -z);
     }
 
     /**
@@ -92,8 +94,8 @@ public class Vector3d {
      *
      * @return the sum of this vector and the specified vector
      */
-    public Vector3d plus(Vector3d v) {
-        return new Vector3d(x + v.x, y + v.y, z + v.z);
+    public VectorCSGd plus(VectorCSGd v) {
+        return new VectorCSGd(x + v.x, y + v.y, z + v.z);
     }
 
     /**
@@ -106,8 +108,8 @@ public class Vector3d {
      *
      * @return the difference of this vector and the specified vector
      */
-    public Vector3d minus(Vector3d v) {
-        return new Vector3d(x - v.x, y - v.y, z - v.z);
+    public VectorCSGd minus(VectorCSGd v) {
+        return new VectorCSGd(x - v.x, y - v.y, z - v.z);
     }
 
     /**
@@ -120,8 +122,8 @@ public class Vector3d {
      *
      * @return the product of this vector and the specified value
      */
-    public Vector3d times(double a) {
-        return new Vector3d(x * a, y * a, z * a);
+    public VectorCSGd times(double a) {
+        return new VectorCSGd(x * a, y * a, z * a);
     }
 
     /**
@@ -134,8 +136,8 @@ public class Vector3d {
      *
      * @return the product of this vector and the specified vector
      */
-    public Vector3d times(Vector3d a) {
-        return new Vector3d(x * a.x, y * a.y, z * a.z);
+    public VectorCSGd times(VectorCSGd a) {
+        return new VectorCSGd(x * a.x, y * a.y, z * a.z);
     }
 
     /**
@@ -148,8 +150,8 @@ public class Vector3d {
      *
      * @return this vector devided by the specified value
      */
-    public Vector3d dividedBy(double a) {
-        return new Vector3d(x / a, y / a, z / a);
+    public VectorCSGd dividedBy(double a) {
+        return new VectorCSGd(x / a, y / a, z / a);
     }
 
     /**
@@ -162,26 +164,8 @@ public class Vector3d {
      *
      * @return the dot product of this vector and the specified vector
      */
-    public double dot(Vector3d a) {
+    public double dot(VectorCSGd a) {
         return this.x * a.x + this.y * a.y + this.z * a.z;
-    }
-
-    /**
-     * Linearly interpolates between this and the specified vector.
-     *
-     * <b>Note:</b> this vector is not modified.
-     *
-     * @param a
-     *            vector
-     * @param t
-     *            interpolation value
-     *
-     * @return copy of this vector if {@code t = 0}; copy of a if {@code t = 1};
-     *         the point midway between this and the specified vector if
-     *         {@code t = 0.5}
-     */
-    public Vector3d lerp(Vector3d a, double t) {
-        return this.plus(a.minus(this).times(t));
     }
 
     /**
@@ -202,7 +186,7 @@ public class Vector3d {
      *
      * @return a normalized copy of this vector with {@code length}
      */
-    public Vector3d unit() {
+    public VectorCSGd unit() {
         return this.dividedBy(this.magnitude());
     }
 
@@ -216,8 +200,8 @@ public class Vector3d {
      *
      * @return the cross product of this vector and the specified vector.
      */
-    public Vector3d cross(Vector3d a) {
-        return new Vector3d(this.y * a.z - this.z * a.y, this.z * a.x - this.x * a.z, this.x * a.y - this.y * a.x);
+    public VectorCSGd cross(VectorCSGd a) {
+        return new VectorCSGd(y * a.z - z * a.y, z * a.x - x * a.z, x * a.y - y * a.x);
     }
 
     @Override
@@ -227,32 +211,13 @@ public class Vector3d {
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
-        }
-        if (getClass() != obj.getClass()) {
-            return false;
-        }
-        final Vector3d other = (Vector3d) obj;
-        if (Double.doubleToLongBits(this.x) != Double.doubleToLongBits(other.x)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.y) != Double.doubleToLongBits(other.y)) {
-            return false;
-        }
-        if (Double.doubleToLongBits(this.z) != Double.doubleToLongBits(other.z)) {
-            return false;
-        }
-        return true;
+        VectorCSGd o = (VectorCSGd) obj;
+        return Math.abs(x - o.x) < epsilon && Math.abs(y - o.y) < epsilon && Math.abs(z - o.z) < epsilon;
     }
 
     @Override
     public int hashCode() {
-        int hash = 5;
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.x) ^ Double.doubleToLongBits(this.x) >>> 32);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.y) ^ Double.doubleToLongBits(this.y) >>> 32);
-        hash = 97 * hash + (int) (Double.doubleToLongBits(this.z) ^ Double.doubleToLongBits(this.z) >>> 32);
-        return hash;
+        return 1337;
     }
 
 
@@ -266,7 +231,36 @@ public class Vector3d {
      *            interpolation parameter
      * @return a new vertex between this and the specified vertex
      */
-    public Vector3d interpolate(Vector3d other, double t) {
-        return this.lerp(other, t);
+    public VectorCSGd interpolate(VectorCSGd other, double t) {
+        return plus(other.minus(this).times(t));
+    }
+
+    @Override
+    public int compareTo(VectorCSGd o) {
+        double d1 = x - o.x;
+        switch (Double.compare(Math.abs(d1), epsilon)) {
+        case 0:
+        case 1:
+            return d1 < 0f ? -1 : 1;
+        default:
+            break;
+        }
+        d1 = y - o.y;
+        switch (Double.compare(Math.abs(d1), epsilon)) {
+        case 0:
+        case 1:
+            return d1 < 0f ? -1 : 1;
+        default:
+            break;
+        }
+        d1 = z - o.z;
+        switch (Double.compare(Math.abs(d1), epsilon)) {
+        case 0:
+        case 1:
+            return d1 < 0f ? -1 : 1;
+        default:
+            break;
+        }
+        return 0;
     }
 }

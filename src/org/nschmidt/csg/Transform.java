@@ -38,7 +38,7 @@ import org.lwjgl.util.vector.Matrix4f;
 /**
  * Transform. Transformations (translation, rotation, scale) can be applied to
  * geometrical objects like {@link CSG}, {@link Polygon}, {@link Vertex2} and
- * {@link Vector3d}.
+ * {@link VectorCSGd}.
  * 
  * This transform class uses the builder pattern to define combined
  * transformations.<br>
@@ -96,7 +96,7 @@ public class Transform {
      * 
      * @return the specified vector
      */
-    public Vector3d transform(Vector3d vec) {
+    public VectorCSGd transform(VectorCSGd vec) {
         double x, y;
         x = m.m00 * vec.x + m.m01 * vec.y + m.m02 * vec.z + m.m30;
         y = m.m10 * vec.x + m.m11 * vec.y + m.m12 * vec.z + m.m31;

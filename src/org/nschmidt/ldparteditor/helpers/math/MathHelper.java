@@ -26,6 +26,7 @@ import java.util.TreeSet;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.csg.VectorCSGd;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
@@ -582,63 +583,30 @@ public enum MathHelper {
         return new Vector4f(ax, ay, az, 1f);
     }
 
-    public static org.nschmidt.csg.Vector3d getNearestPointToLineSegmentCSG(double lx1, double ly1, double lz1, double lx2, double ly2, double lz2, double px, double py, double pz) {
+    public static boolean canBeProjectedToLineSegmentCSG(VectorCSGd p1, VectorCSGd p2, VectorCSGd p) {
+        VectorCSGd v = p2.minus(p1);
+        VectorCSGd w = p.minus(p1);
+        double t = w.dot(v) / (v.dot(v));
+        return (t > 0.0) && (t < 1.0);
+    }
 
-        // Fastest iterative approach without objects
+    public static double getNearestPointDistanceToLineSegmentCSG(VectorCSGd p1, VectorCSGd p2, VectorCSGd p, double epsilon) {
 
-        // 0th Iteration
-        double ax = (lx1 + lx2) / 2d;
-        double ay = (ly1 + ly2) / 2d;
-        double az = (lz1 + lz2) / 2d;
+        VectorCSGd v = p2.minus(p1);
+        VectorCSGd w = p.minus(p1);
 
-        // 1st to n-th Iteration
-        double ux = lx1;
-        double uy = ly1;
-        double uz = lz1;
-        double vx = lx2;
-        double vy = ly2;
-        double vz = lz2;
-
-        double dup = 0d;
-        double dvp = 1d;
-
-        double dap = 0d;
-        double odap = 1d;
-
-        int refinements = 0;
-        while (Math.abs(dap - odap) > .0001d || (refinements++ < 3)) {
-            double dxup = ux - px;
-            double dyup = uy - py;
-            double dzup = uz - pz;
-            dup = dxup * dxup + dyup * dyup + dzup * dzup;
-            double dxvp = vx - px;
-            double dyvp = vy - py;
-            double dzvp = vz - pz;
-            dvp = dxvp * dxvp + dyvp * dyvp + dzvp * dzvp;
-
-            if (dup < dvp) {
-                vx = ax;
-                vy = ay;
-                vz = az;
-                ax = (ax + ux) / 2d;
-                ay = (ay + uy) / 2d;
-                az = (az + uz) / 2d;
-            } else {
-                ux = ax;
-                uy = ay;
-                uz = az;
-                ax = (ax + vx) / 2d;
-                ay = (ay + vy) / 2d;
-                az = (az + vz) / 2d;
-            }
-            odap = dap;
-            double dxap = ax - px;
-            double dyap = ay - py;
-            double dzap = az - pz;
-            dap = dxap * dxap + dyap * dyap + dzap * dzap;
-
+        double t = w.dot(v) / (v.dot(v));
+        if (t < 0.0) {
+            return 2.0 * epsilon; // p.minus(p1).magnitude();
         }
-        return new org.nschmidt.csg.Vector3d(ax, ay, az);
+        if (t > 1.0) {
+            return 2.0 * epsilon; // p.minus(p2).magnitude();
+        }
+
+        VectorCSGd pb = p1.plus(v.times(t));
+        double dist = p.minus(pb).magnitude();
+
+        return dist;
     }
 
     public static Vector4f getNearestPointToLineSegment2(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
@@ -1969,6 +1937,55 @@ public enum MathHelper {
                     z2,
                     dummyReference, df, true));
         }
+        return result;
+    }
+
+    public static boolean hasNarrowAngleDistribution(
+            VectorCSGd ta, VectorCSGd tb, VectorCSGd tc,
+            VectorCSGd oa, VectorCSGd ob, VectorCSGd oc,
+            VectorCSGd na, VectorCSGd nb, VectorCSGd nc,
+            VectorCSGd noa, VectorCSGd nob, VectorCSGd noc) {
+
+            double[] tangles = getTriangleAngles(ta, tb, tc);
+            double[] oangles = getTriangleAngles(oa, ob, oc);
+
+            double[] nangles = getTriangleAngles(na, nb, nc);
+            double[] noangles = getTriangleAngles(noa, nob, noc);
+
+            double tmax = -Double.MAX_VALUE;
+            double tmin = Double.MAX_VALUE;
+
+            double omax = -Double.MAX_VALUE;
+            double omin = Double.MAX_VALUE;
+
+            for (int i = 0; i < 3; i++) {
+                tmax = Math.max(tmax, tangles[i]);
+                tmax = Math.max(tmax, oangles[i]);
+                tmin = Math.min(tmin, tangles[i]);
+                tmin = Math.min(tmin, oangles[i]);
+                omax = Math.max(omax, nangles[i]);
+                omax = Math.max(omax, noangles[i]);
+                omin = Math.min(omin, nangles[i]);
+                omin = Math.min(omin, noangles[i]);
+            }
+
+            return (omax - omin) < (tmax - tmin);
+    }
+
+    private static double[] getTriangleAngles(VectorCSGd pa, VectorCSGd pb, VectorCSGd pc) {
+        double[] result = new double[3];
+        Vector3d a = new Vector3d(new BigDecimal(pa.x), new BigDecimal(pa.y), new BigDecimal(pa.z));
+        Vector3d b = new Vector3d(new BigDecimal(pb.x), new BigDecimal(pb.y), new BigDecimal(pb.z));
+        Vector3d c = new Vector3d(new BigDecimal(pc.x), new BigDecimal(pc.y), new BigDecimal(pc.z));
+        Vector3d ab = Vector3d.sub(b, a);
+        Vector3d bc = Vector3d.sub(c, b);
+        Vector3d ac = Vector3d.sub(c, a);
+
+        result[0] = Vector3d.fastAngle(ab, ac);
+        ab.negate();
+        result[1] = Vector3d.fastAngle(bc, ab);
+        result[2] = 180.0 - result[0] - result[1];
+
         return result;
     }
 }

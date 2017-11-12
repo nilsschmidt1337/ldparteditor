@@ -47,9 +47,9 @@ import org.nschmidt.csg.CSGExtrude;
 import org.nschmidt.csg.CSGMesh;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
+import org.nschmidt.csg.IdAndPlane;
 import org.nschmidt.csg.Plane;
 import org.nschmidt.csg.Polygon;
-import org.nschmidt.csg.Vector3d;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
@@ -62,7 +62,7 @@ import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
@@ -84,21 +84,19 @@ public final class GDataCSG extends GData {
     private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> backupSelectedTrianglesMap = new ThreadsafeHashMap<DatFile, HashSet<GData3>>();
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> backupSelectedBodyMap = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
 
-    private static boolean deleteAndRecompile = true;
+    private static volatile boolean deleteAndRecompile = true;
 
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
     private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
     private final static ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<DatFile, PathTruderSettings>();
     private final static ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
     private final static ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
-    private final static ThreadsafeHashMap<DatFile, ArrayList<Vector3d[]>> allNewPolygonVertices = new ThreadsafeHashMap<DatFile, ArrayList<Vector3d[]>>();
-    private final static ThreadsafeHashMap<DatFile, Boolean> compileAndInline = new ThreadsafeHashMap<DatFile, Boolean>();
 
     private final ArrayList<GData> cachedData = new ArrayList<GData>();
     private final List<Polygon> polygonCache = new ArrayList<Polygon>();
     private PathTruderSettings extruderConfig = new PathTruderSettings();
 
-    private static int quality = 16;
+    private static volatile int quality = 16;
     private int global_quality = 16;
     private double global_epsilon = 1e-6;
 
@@ -109,13 +107,11 @@ public final class GDataCSG extends GData {
     private CSG compiledCSG = null;
     private CSG dataCSG = null;
 
-    private final DatFile myDat;
     private final GColour colour;
     final Matrix4f matrix;
 
     public synchronized static void forceRecompile(DatFile df) {
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(null);
-        allNewPolygonVertices.putIfAbsent(df, new ArrayList<Vector3d[]>()).clear();
         clearPolygonCache.putIfAbsent(df, true);
         Plane.EPSILON = 1e-3;
     }
@@ -128,7 +124,6 @@ public final class GDataCSG extends GData {
         idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).clear();
         selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>()).clear();
         selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
-        allNewPolygonVertices.putIfAbsent(df, new ArrayList<Vector3d[]>()).clear();
         backupSelectionClear(df);
         Plane.EPSILON = 1e-3;
     }
@@ -139,9 +134,6 @@ public final class GDataCSG extends GData {
 
     public synchronized static void resetCSG(DatFile df, boolean useLowQuality) {
         if (useLowQuality) {
-            if (allNewPolygonVertices.containsKey(df)) {
-                allNewPolygonVertices.get(df).clear();
-            }
             quality = 12;
         } else {
             quality = 16;
@@ -150,7 +142,6 @@ public final class GDataCSG extends GData {
         ref.removeAll(parsedData.putIfAbsent(df, new HashSet<GDataCSG>()));
         clearPolygonCache.putIfAbsent(df, true);
         fullClearPolygonCache.putIfAbsent(df, true);
-        compileAndInline.putIfAbsent(df, false);
         deleteAndRecompile = !ref.isEmpty();
         if (deleteAndRecompile) {
             globalExtruderConfig.put(df, new PathTruderSettings());
@@ -182,7 +173,6 @@ public final class GDataCSG extends GData {
         super(parent);
         clearPolygonCache.put(df, true);
         fullClearPolygonCache.put(df, false);
-        myDat = df;
         registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(this);
         String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
         final GColour col16 = View.getLDConfigColour(16);
@@ -339,7 +329,7 @@ public final class GDataCSG extends GData {
 
     public void drawAndParse(Composite3D c3d, DatFile df, boolean doDraw) {
 
-        final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true) || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df) || type == CSG.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df);
+        final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true) || (type == CSG.MESH || type == CSG.EXTRUDE) && CSGMesh.needCacheRefresh(cachedData, this, df);
         if (clearCaches) {
             clearPolygonCache.put(df, true);
         }
@@ -489,11 +479,7 @@ public final class GDataCSG extends GData {
                     case CSG.COMPILE:
                         if (linkedCSG.containsKey(ref1)) {
                             compiledCSG = linkedCSG.get(ref1);
-                            if (GDataCSG.isInlining(df)) {
-                                compiledCSG.compile_without_t_junctions(df);
-                            } else {
-                                compiledCSG.compile();
-                            }
+                            compiledCSG.compile();
                         } else {
                             compiledCSG = null;
                         }
@@ -525,7 +511,7 @@ public final class GDataCSG extends GData {
                         }
                         break;
                     case CSG.QUALITY:
-                        quality = c3d != null && c3d.getManipulator().isModified() ? 12 : global_quality;
+                        quality = c3d != null && c3d.getManipulator().isModified() ? Math.min(global_quality, 12) : global_quality;
                         break;
                     case CSG.EPSILON:
                         Plane.EPSILON = global_epsilon;
@@ -537,15 +523,11 @@ public final class GDataCSG extends GData {
                         break;
                     }
                 }
+            /* Is not possible anymore...
             } catch (StackOverflowError e) {
-                registeredData.clear();
-                linkedCSG.clear();
-                parsedData.clear();
-                deleteAndRecompile = false;
-                registeredData.add(null);
-                Plane.EPSILON = Plane.EPSILON * 10d;
+            */
             } catch (Exception e) {
-
+                NLogger.error(getClass(), e);
             }
         }
         if (compiledCSG != null && c3d != null && doDraw) {
@@ -618,23 +600,6 @@ public final class GDataCSG extends GData {
             switch (type) {
             case CSG.COMPILE:
                 if (compiledCSG != null) {
-                    compileAndInline.put(myDat, true);
-                    resetCSG(myDat, false);
-                    GDataCSG.forceRecompile(myDat);
-                    GData g = myDat.getDrawChainStart();
-                    deleteAndRecompile = true;
-                    while ((g = g.getNext()) != null) {
-                        if (g.type() == 8) {
-                            GDataCSG gcsg = (GDataCSG) g;
-                            gcsg.drawAndParse(null, myDat, false);
-                        }
-                    }
-                    if (!deleteAndRecompile) {
-                        return getNiceString() + "<br>0 // INLINE FAILED! :("; //$NON-NLS-1$
-                    }
-
-                    compileAndInline.put(Project.getFileToEdit(), false);
-                    allNewPolygonVertices.get(myDat).clear();
 
                     final StringBuilder sb = new StringBuilder();
 
@@ -651,7 +616,7 @@ public final class GDataCSG extends GData {
 
                                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
-                                TreeMap<GData3, Integer> result = compiledCSG.getResult();
+                                TreeMap<GData3, IdAndPlane> result = compiledCSG.getResult();
 
                                 for (GData3 g3 : result.keySet()) {
                                     StringBuilder lineBuilder3 = new StringBuilder();
@@ -1017,8 +982,8 @@ public final class GDataCSG extends GData {
                     if (csg_pair.getKey() != null && csg_pair.getKey().endsWith("#>null")) { //$NON-NLS-1$
                         CSG csg = csg_pair.getValue();
                         if (csg != null) {
-                            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
-                                if (selectedBodyID.equals(pair.getValue())) {
+                            for(Entry<GData3, IdAndPlane> pair : csg.getResult().entrySet()) {
+                                if (selectedBodyID.equals(pair.getValue().id)) {
                                     selectedTriangles.add(pair.getKey());
                                 }
                             }
@@ -1055,7 +1020,7 @@ public final class GDataCSG extends GData {
         Integer result = null;
         GDataCSG resultObj = null;
         for (CSG csg : linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).values()) {
-            for(Entry<GData3, Integer> pair : csg.getResult().entrySet()) {
+            for(Entry<GData3, IdAndPlane> pair : csg.getResult().entrySet()) {
                 final GData3 triangle = pair.getKey();
 
                 triQuadVerts[0] = new Vertex(triangle.x1, triangle.y1, triangle.z1);
@@ -1064,7 +1029,7 @@ public final class GDataCSG extends GData {
 
                 if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
                     if (dist[0] < minDist) {
-                        Integer result2 = pair.getValue();
+                        Integer result2 = pair.getValue().id;
                         if (result2 != null) {
                             for (GDataCSG c : registeredData.get(df)) {
                                 if (dpl.containsValue(c) && idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).containsKey(result2)) {
@@ -1310,53 +1275,48 @@ public final class GDataCSG extends GData {
             if (fullClearPolygonCache.get(df) != true) {
                 fullClearPolygonCache.put(df, true);
                 clearPolygonCache.put(df, true);
-                if (allNewPolygonVertices.containsKey(df)) {
-                    allNewPolygonVertices.get(df).clear();
-                }
             } else {
                 clearPolygonCache.put(df, false);
             }
         }
     }
 
-    public static List<Vector3d[]> getNewPolyVertices(DatFile df) {
-        ArrayList<Vector3d[]> result = new ArrayList<Vector3d[]>();
-        if (compileAndInline.get(df)) {
-            return allNewPolygonVertices.putIfAbsent(df, result);
+    public int[] getDataSize() {
+        if (datasize != null) {
+            return datasize;
+        }
+        return new int[]{0, 0, 0};
+    }
+
+    public Set<GData3> getSurfaces() {
+        if (surfaces == null) {
+            return new HashSet<GData3>();
         } else {
-            return result;
+            return surfaces;
         }
     }
 
-    public static boolean isInlining(DatFile df) {
-        return compileAndInline.get(df);
+    public static HashSet<GData3> getSelectionData(DatFile df) {
+        return selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
     }
 
-    public int[] getDataSize() {
+    Set<GData3> surfaces = null;
+    int[] datasize = null;
+    public void cacheResult() {
         final int[] result = new int[]{0, 0, 0};
         if (compiledCSG != null) {
-            TreeMap<GData3, Integer> resultData = compiledCSG.getResult();
-            for (GData3 tri : resultData.keySet()) {
+            surfaces = new HashSet<GData3>(compiledCSG.getResult().keySet());
+            for (GData3 tri : surfaces) {
                 if (tri.a < 1f) {
                     result[2] += 6;
                 } else {
                     result[1] += 6;
                 }
             }
-            result[0] = 60 * resultData.size();
-        }
-        return result;
-    }
-
-    public Set<GData3> getSurfaces() {
-        if (compiledCSG == null) {
-            return new HashSet<GData3>();
+            result[0] = 60 * surfaces.size();
         } else {
-            return compiledCSG.getResult().keySet();
+            surfaces = new HashSet<GData3>();
         }
-    }
-
-    public static HashSet<GData3> getSelectionData(DatFile df) {
-        return selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
+        datasize = result;
     }
 }
