@@ -250,7 +250,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean addingDistance = false;
     private boolean addingProtractor = false;
     private boolean addingSubfiles = false;
-    private boolean movingAdjacentData = false;
+    private boolean movingAdjacentData = WorkbenchManager.getUserSettingState().isMovingAdjacentData();
     private boolean noTransparentSelection = false;
     private boolean bfcToggle = false;
     private boolean insertingAtCursorPosition = false;
@@ -7258,6 +7258,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public void setMovingAdjacentData(boolean movingAdjacentData) {
         btn_MoveAdjacentData[0].setSelection(movingAdjacentData);
         this.movingAdjacentData = movingAdjacentData;
+        WorkbenchManager.getUserSettingState().setMovingAdjacentData(movingAdjacentData);
     }
 
     public WorkingMode getWorkingAction() {

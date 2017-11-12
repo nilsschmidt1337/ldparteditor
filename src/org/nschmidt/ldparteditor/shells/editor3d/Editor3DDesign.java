@@ -3186,7 +3186,7 @@ class Editor3DDesign extends ApplicationWindow {
             this.btn_MoveAdjacentData[0] = btn_AdjacentMove;
             KeyStateManager.addTooltipText(btn_AdjacentMove, I18n.E3D_MoveAdjacentData, Task.MOVE_ADJACENT_DATA);
             btn_AdjacentMove.setImage(ResourceManager.getImage("icon16_adjacentmove.png")); //$NON-NLS-1$
-            btn_AdjacentMove.setSelection(false);
+            btn_AdjacentMove.setSelection(WorkbenchManager.getUserSettingState().isMovingAdjacentData());
         }
         {
             NButton btn_TransSelection = new NButton(toolItem_MiscToggle, SWT.TOGGLE | Cocoa.getSytle());
