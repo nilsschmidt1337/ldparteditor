@@ -24,7 +24,7 @@ enum CSGOptimizerEdgeCollapse {
     // TODO This epsilon should be accessible by the user!
     public static volatile double epsilon = 0.9999;
 
-    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, TreeMap<GData3, IdAndPlane> optimization) {
+    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization) {
         boolean result = false;
 
         for (List<GData3> triangles : trianglesPerPlane.values()) {
@@ -190,7 +190,7 @@ enum CSGOptimizerEdgeCollapse {
     }
 
     private static void doOptimize(VectorCSGd v, VectorCSGd t,
-            TreeMap<GData3, IdAndPlane> optimization,
+            Map<GData3, IdAndPlane> optimization,
             Map<VectorCSGd, List<GData3>> linkedSurfaceMap,
             Map<GData3, VectorCSGd[]> trimap) {
 

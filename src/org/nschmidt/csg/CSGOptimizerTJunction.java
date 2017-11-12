@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.data.GColour;
@@ -21,7 +20,7 @@ enum CSGOptimizerTJunction {
     // TODO This epsilon should be accessible by the user!
     public static volatile double epsilon = .1;
 
-    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, TreeMap<GData3, IdAndPlane> optimization) {
+    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization) {
         boolean result = false;
 
         for (List<GData3> triangles : trianglesPerPlane.values()) {
@@ -30,7 +29,11 @@ enum CSGOptimizerTJunction {
             final Map<GData3, VectorCSGd[]> trimap = new HashMap<>();
 
             for (GData3 tri : triangles) {
-                final VectorCSGd[] triverts = new VectorCSGd[]{new VectorCSGd(tri.x1, tri.y1, tri.z1), new VectorCSGd(tri.x2, tri.y2, tri.z2), new VectorCSGd(tri.x3, tri.y3, tri.z3)};
+                final VectorCSGd[] triverts = new VectorCSGd[]{
+                        new VectorCSGd(tri.x1, tri.y1, tri.z1),
+                        new VectorCSGd(tri.x2, tri.y2, tri.z2),
+                        new VectorCSGd(tri.x3, tri.y3, tri.z3)};
+
                 vertices.add(triverts[0]);
                 vertices.add(triverts[1]);
                 vertices.add(triverts[2]);
@@ -57,7 +60,6 @@ enum CSGOptimizerTJunction {
                             }
                         }
                     }
-
 
                     {
                         double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[1], triverts[2], v, epsilon);

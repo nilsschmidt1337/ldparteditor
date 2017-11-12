@@ -20,7 +20,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 enum CSGOptimizerFlipTriangle {
     INSTANCE;
 
-    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, TreeMap<GData3, IdAndPlane> optimization, Map<GData3, Map<GData3, Boolean>> flipCache) {
+    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization, Map<GData3, Map<GData3, Boolean>> flipCache) {
         boolean result = false;
 
         for (List<GData3> triangles : trianglesPerPlane.values()) {
@@ -30,7 +30,11 @@ enum CSGOptimizerFlipTriangle {
 
             // Get edge info
             for (GData3 tri : triangles) {
-                final VectorCSGd[] triverts = new VectorCSGd[]{new VectorCSGd(tri.x1, tri.y1, tri.z1), new VectorCSGd(tri.x2, tri.y2, tri.z2), new VectorCSGd(tri.x3, tri.y3, tri.z3)};
+                final VectorCSGd[] triverts = new VectorCSGd[]{
+                        new VectorCSGd(tri.x1, tri.y1, tri.z1),
+                        new VectorCSGd(tri.x2, tri.y2, tri.z2),
+                        new VectorCSGd(tri.x3, tri.y3, tri.z3)};
+
                 trimap.put(tri, triverts);
 
                 for (int i = 0; i < 3; i++) {
