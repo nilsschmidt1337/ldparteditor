@@ -401,8 +401,9 @@ public class UserSettingState implements Serializable {
     private boolean roundY = false;
     private boolean roundZ = false;
 
-
     private transient int openGLVersion = 20;
+
+    private boolean movingAdjacentData = false;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -1425,5 +1426,13 @@ public class UserSettingState implements Serializable {
 
     public void setFuzziness2D(int fuzziness2d) {
         fuzziness2D = fuzziness2d;
+    }
+
+    public boolean isMovingAdjacentData() {
+        return movingAdjacentData;
+    }
+
+    public void setMovingAdjacentData(boolean movingAdjacentData) {
+        this.movingAdjacentData = movingAdjacentData;
     }
 }
