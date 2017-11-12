@@ -35,24 +35,28 @@ package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Stack;
 import java.util.TreeMap;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ForkJoinPool;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import org.eclipse.swt.widgets.Display;
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
-import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
@@ -104,17 +108,19 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  * </blockquote>
  *
  * Subtraction and intersection naturally follow from set operations. If union
- * is {@code A | B}, differenceion is {@code A - B = ~(~A | B)} and intersection
+ * is {@code A | B}, difference is {@code A - B = ~(~A | B)} and intersection
  * is {@code A & B =
  * ~(~A | ~B)} where {@code ~} is the complement operator.
  */
 public class CSG {
 
-    TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
+    TreeMap<GData3, IdAndPlane> result = new TreeMap<>();
 
     private List<Polygon> polygons;
+    private Bounds bounds = null;
 
     private CSG() {
+        globalOptimizationRate = 100.0;
     }
 
     public static final byte UNION = 0;
@@ -210,56 +216,66 @@ public class CSG {
      */
     public CSG union(CSG csg) {
 
-        List<Polygon> inner = new ArrayList<Polygon>();
-        List<Polygon> outer = new ArrayList<Polygon>();
+        final List<Polygon> thisPolys = this.clone().polygons;
+        final List<Polygon> otherPolys = csg.clone().polygons;
+        final Bounds thisBounds = this.getBounds();
+        final Bounds otherBounds = csg.getBounds();
 
-        Bounds bounds = csg.getBounds();
+        final List<Polygon> nonIntersectingPolys = new ArrayList<>();
 
-        for (Polygon p : this.polygons) {
-            if (bounds.intersects(p.getBounds())) {
-                inner.add(p);
-            } else {
-                outer.add(p);
+        thisPolys.removeIf((poly) -> {
+            final boolean result;
+            if (result = !otherBounds.intersects(poly.getBounds())) {
+                nonIntersectingPolys.add(poly);
             }
+            return result;
+        });
+
+        otherPolys.removeIf((poly) -> {
+            final boolean result;
+            if (result = !thisBounds.intersects(poly.getBounds())) {
+                nonIntersectingPolys.add(poly);
+            }
+            return result;
+        });
+
+        CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(thisPolys));
+        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
+        CompletableFuture.allOf(f1, f2).join();
+
+        Node a = null;
+        Node b = null;
+
+        try {
+            a = f1.get();
+            b = f2.get();
+        } catch (ExecutionException e) {
+            NLogger.error(getClass(), e);
+        } catch (InterruptedException e) {
+            NLogger.error(getClass(), e);
         }
 
-        List<Polygon> allPolygons = new ArrayList<Polygon>();
-
-        if (!inner.isEmpty()) {
-            CSG innerCSG = CSG.fromPolygons(inner);
-
-            allPolygons.addAll(outer);
-            allPolygons.addAll(innerCSG._unionNoOpt(csg).polygons);
-        } else {
-            allPolygons.addAll(this.polygons);
-            allPolygons.addAll(csg.polygons);
-        }
-
-        return CSG.fromPolygons(allPolygons);
-    }
-
-    private CSG _unionNoOpt(CSG csg) {
-        Node a = new Node(this.clone().polygons);
-        Node b = new Node(csg.clone().polygons);
         a.clipTo(b);
         b.clipTo(a);
         b.invert();
         b.clipTo(a);
         b.invert();
 
-        // a.build(b.allPolygons());
-
-        Stack<NodePolygon> st = new Stack<>();
-        st.push(new NodePolygon(a, b.allPolygons()));
+        final List<Node> nodes = new ArrayList<>();
+        final Stack<NodePolygon> st = new Stack<>();
+        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
-            List<NodePolygon> npr = np.getNode().build(np.getPolygons());
+            Node n = np.getNode();
+            nodes.add(n);
+            List<NodePolygon> npr = n.buildForResult(np.getPolygons());
             for (NodePolygon np2 : npr) {
                 st.push(np2);
             }
         }
 
-        return CSG.fromPolygons(a.allPolygons());
+        final List<Polygon> resultPolys = a.allPolygons(nonIntersectingPolys);
+        return CSG.fromPolygons(resultPolys);
     }
 
     /**
@@ -291,32 +307,40 @@ public class CSG {
      */
     public CSG difference(CSG csg) {
 
-        List<Polygon> inner = new ArrayList<Polygon>();
-        List<Polygon> outer = new ArrayList<Polygon>();
+        final List<Polygon> thisPolys = this.clone().polygons;
+        final List<Polygon> otherPolys = csg.clone().polygons;
+        final Bounds thisBounds = this.getBounds();
+        final Bounds otherBounds = csg.getBounds();
 
-        Bounds bounds = csg.getBounds();
+        final List<Polygon> nonIntersectingPolys = new ArrayList<>();
 
-        for (Polygon p : this.polygons) {
-            if (bounds.intersects(p.getBounds())) {
-                inner.add(p);
-            } else {
-                outer.add(p);
+        thisPolys.removeIf((poly) -> {
+            final boolean result;
+            if (result = !otherBounds.intersects(poly.getBounds())) {
+                nonIntersectingPolys.add(poly);
             }
+            return result;
+        });
+
+        otherPolys.removeIf((poly) -> {
+            return !thisBounds.intersects(poly.getBounds());
+        });
+
+        CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(thisPolys));
+        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
+        CompletableFuture.allOf(f1, f2).join();
+
+        Node a = null;
+        Node b = null;
+
+        try {
+            a = f1.get();
+            b = f2.get();
+        } catch (ExecutionException e) {
+            NLogger.error(getClass(), e);
+        } catch (InterruptedException e) {
+            NLogger.error(getClass(), e);
         }
-
-        CSG innerCSG = CSG.fromPolygons(inner);
-
-        List<Polygon> allPolygons = new ArrayList<Polygon>();
-        allPolygons.addAll(outer);
-        allPolygons.addAll(innerCSG._differenceNoOpt(csg).polygons);
-
-        return CSG.fromPolygons(allPolygons);
-    }
-
-    private CSG _differenceNoOpt(CSG csg) {
-
-        Node a = new Node(this.clone().polygons);
-        Node b = new Node(csg.clone().polygons);
 
         a.invert();
         a.clipTo(b);
@@ -325,13 +349,11 @@ public class CSG {
         b.clipTo(a);
         b.invert();
 
-        // a.build(b.allPolygons());
-
         Stack<NodePolygon> st = new Stack<>();
-        st.push(new NodePolygon(a, b.allPolygons()));
+        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
-            List<NodePolygon> npr = np.getNode().build(np.getPolygons());
+            List<NodePolygon> npr = np.getNode().buildForResult(np.getPolygons());
             for (NodePolygon np2 : npr) {
                 st.push(np2);
             }
@@ -339,8 +361,8 @@ public class CSG {
 
         a.invert();
 
-        CSG csgA = CSG.fromPolygons(a.allPolygons());
-        return csgA;
+        final List<Polygon> resultPolys = a.allPolygons(nonIntersectingPolys);
+        return CSG.fromPolygons(resultPolys);
     }
 
     /**
@@ -372,28 +394,41 @@ public class CSG {
      * @return intersection of this csg and the specified csg
      */
     public CSG intersect(CSG csg) {
-        Node a = new Node(this.clone().polygons);
-        Node b = new Node(csg.clone().polygons);
+
+        CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(this.clone().polygons));
+        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(csg.clone().polygons));
+        CompletableFuture.allOf(f1, f2).join();
+
+        Node a = null;
+        Node b = null;
+
+        try {
+            a = f1.get();
+            b = f2.get();
+        } catch (ExecutionException e) {
+            NLogger.error(getClass(), e);
+        } catch (InterruptedException e) {
+            NLogger.error(getClass(), e);
+        }
+
         a.invert();
         b.clipTo(a);
         b.invert();
         a.clipTo(b);
         b.clipTo(a);
 
-        // a.build(b.allPolygons());
-
         Stack<NodePolygon> st = new Stack<>();
-        st.push(new NodePolygon(a, b.allPolygons()));
+        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
-            List<NodePolygon> npr = np.getNode().build(np.getPolygons());
+            List<NodePolygon> npr = np.getNode().buildForResult(np.getPolygons());
             for (NodePolygon np2 : npr) {
                 st.push(np2);
             }
         }
 
         a.invert();
-        return CSG.fromPolygons(a.allPolygons());
+        return CSG.fromPolygons(a.allPolygons(new ArrayList<>()));
     }
 
     /**
@@ -401,8 +436,8 @@ public class CSG {
      *
      * @return this csg as list of LDraw triangles
      */
-    public TreeMap<GData3, Integer> toLDrawTriangles(GData1 parent) {
-        TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
+    public TreeMap<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
+        TreeMap<GData3, IdAndPlane> result = new TreeMap<>();
         for (Polygon p : this.polygons) {
             result.putAll(p.toLDrawTriangles(parent));
         }
@@ -419,140 +454,133 @@ public class CSG {
         return g1;
     }
 
-    public GData1 compile_without_t_junctions(DatFile df) {
-
-        // Copy... and remove duplicates
-        ForkJoinPool forkJoinPool = new ForkJoinPool(View.NUM_CORES);
-        try {
-            forkJoinPool.submit(() -> {
-                this.polygons.parallelStream().forEach((poly) -> {
-                    poly.vertices = new ArrayList<>(poly.vertices);
-                    ArrayList<Vector3d> vertices = new ArrayList<>();
-                    for (Vector3d v1 :  poly.vertices) {
-                        for (Vector3d v2 :  poly.vertices) {
-                            if (v1 != v2) {
-                                if (v1.minus(v2).magnitude() < 0.01) {
-                                    if (!vertices.contains(v2)) vertices.add(v1);
-                                }
-                            }
-                        }
-                    }
-                    poly.vertices.removeAll(vertices);
-                });
-            }).get();
-        } catch (InterruptedException e) {
-            NLogger.error(getClass(), e);
-        } catch (ExecutionException e) {
-            NLogger.error(getClass(), e);
-        }
-
-
-        // 1. The interpolation has to be propagated to other polygons
-        // This process can be done in parallel, since the polygons are independent from each other.
-
-        final List<Vector3d[]> splitList = Collections.synchronizedList(GDataCSG.getNewPolyVertices(df));
-        try {
-            forkJoinPool.submit(() -> {
-                this.polygons.parallelStream().forEach((poly) -> {
-                    final List<Vector3d> verts = poly.vertices;
-                    for (Vector3d[] split : splitList) {
-                        final Vector3d vi = split[0];
-                        final Vector3d vj = split[1];
-                        final Vector3d v = split[2];
-                        final int size = verts.size();
-                        for (int k = 0; k < size; k++) {
-                            int l = (k + 1) % size;
-                            if (verts.get(k).equals(vi) && verts.get(l).equals(vj)) {
-                                verts.add(l, v.clone());
-                                break;
-                            } else if (verts.get(l).equals(vi) && verts.get(k).equals(vj)) {
-                                verts.add(l, v.clone());
-                                break;
-                            }
-                        }
-                    }
-                });
-            }).get();
-        } catch (InterruptedException e) {
-            NLogger.error(getClass(), e);
-        } catch (ExecutionException e) {
-            NLogger.error(getClass(), e);
-        }
-
-        // 2. Find and fix T-Junctions
-        // This process can be done in parallel, since the polygons are independent from each other.
-
-        final List<Vector3d> allVerts;
-        {
-            final Set<Vector3d> allVertsSet = new HashSet<Vector3d>();
-            this.polygons.stream().forEach((poly) -> {
-                allVertsSet.addAll(poly.vertices);
-            });
-            allVerts = Collections.synchronizedList(new ArrayList<Vector3d>(allVertsSet));
-        }
-
-        // Find T-Junctions
-        try {
-            forkJoinPool.submit(() -> {
-                this.polygons.parallelStream().forEach((poly) -> {
-                    final List<Vector3d> verts = poly.vertices;
-                    double min_dist = Double.MAX_VALUE;
-                    for (Vector3d v : allVerts) {
-                        final int size = verts.size();
-                        for (int k = 0; k < size; k++) {
-                            int l = (k + 1) % size;
-
-                            Vector3d a = verts.get(k);
-                            Vector3d b = verts.get(l);
-
-                            if (a.minus(v).magnitude() > 0.01 && b.minus(v).magnitude() > 0.01) {
-                                double dist = MathHelper.getNearestPointToLineSegmentCSG(a.x, a.y, a.z, b.x, b.y, b.z, v.x, v.y, v.z).minus(v).magnitude();
-                                if (dist < min_dist) min_dist = dist;
-                                if (dist < 0.1) {
-                                    verts.add(l, v.clone());
-                                }
-                            }
-                        }
-                    }
-                });
-            }).get();
-        } catch (InterruptedException e) {
-            NLogger.error(getClass(), e);
-        } catch (ExecutionException e) {
-            NLogger.error(getClass(), e);
-        }
-
-        Matrix4f id = new Matrix4f();
-        Matrix4f.setIdentity(id);
-        GColour col = View.getLDConfigColour(16);
-        GData1 g1 = new GData1(-1, col.getR(), col.getG(), col.getB(), 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
-                new HashSet<String>(), View.DUMMY_REFERENCE);
-        this.result = toLDrawTriangles2(g1);
-        return g1;
-    }
-
-    public TreeMap<GData3, Integer> toLDrawTriangles2(GData1 parent) {
-        TreeMap<GData3, Integer> result = new TreeMap<GData3, Integer>();
-        for (Polygon p : this.polygons) {
-            result.putAll(p.toLDrawTriangles2(parent));
-        }
-        return result;
-    }
-
     public void draw(Composite3D c3d) {
-        for (GData3 tri : result.keySet()) {
+        for (GData3 tri : getResult().keySet()) {
             tri.drawGL20(c3d);
         }
     }
 
     public void draw_textured(Composite3D c3d) {
-        for (GData3 tri : result.keySet()) {
+        for (GData3 tri : getResult().keySet()) {
             tri.drawGL20_BFC_Textured(c3d);
         }
     }
 
-    public TreeMap<GData3, Integer> getResult() {
-        return result;
+    private volatile boolean shouldOptimize = true;
+    private volatile TreeMap<GData3, IdAndPlane> optimizedResult = null;
+    private volatile TreeMap<GData3, IdAndPlane> optimizedTriangles = new TreeMap<>();
+    private final Random rnd = new Random(12345678L);
+    public static ExecutorService executorService = Executors.newSingleThreadExecutor();
+
+    public static volatile long timeOfLastOptimization = -1;
+    public static volatile double globalOptimizationRate = 100.0;
+
+    public volatile double optimizationTries = 1.0;
+    public volatile double optimizationSuccess = 1.0;
+    public volatile double failureStrike = 0;
+    private volatile int tjunctionPause = 0;
+    private volatile int flipPause = 0;
+
+    private final Map<GData3, Map<GData3, Boolean>> flipCache = new HashMap<>();
+
+    public TreeMap<GData3, IdAndPlane> getResult() {
+
+        if (optimizedTriangles.isEmpty()) {
+            optimizedTriangles = new TreeMap<>();
+            optimizedTriangles.putAll(result);
+        }
+
+        if (shouldOptimize) {
+            final Composite3D lastC3d = DatFile.getLastHoveredComposite();
+            if (lastC3d != null) {
+                Display.getDefault().asyncExec(() -> {GuiStatusManager.updateStatus(lastC3d);});
+            }
+
+            shouldOptimize = false;
+            executorService.execute(() -> {
+
+                TreeMap<GData3, IdAndPlane> optimization = new TreeMap<>();
+                if (optimizedResult != null) {
+                    optimization.putAll(optimizedResult);
+                } else {
+                    optimization.putAll(optimizedTriangles);
+                }
+
+                // Optimize for each plane
+                Map<Plane, List<GData3>> trianglesPerPlane = new TreeMap<>();
+                for (Entry<GData3, IdAndPlane> entry : optimization.entrySet()) {
+                    final Plane p = entry.getValue().plane;
+                    List<GData3> triangles = trianglesPerPlane.get(p);
+                    if (triangles == null) {
+                        triangles = new ArrayList<>();
+                        triangles.add(entry.getKey());
+                        trianglesPerPlane.put(p, triangles);
+                    } else {
+                        triangles.add(entry.getKey());
+                    }
+                }
+
+                int action = rnd.nextInt(3);
+                boolean foundOptimization = false;
+
+                if (action == 0 || action == 2) {
+                    if (tjunctionPause > 0) {
+                        tjunctionPause--;
+                        action = 2;
+                    } else {
+                        foundOptimization = CSGOptimizerTJunction.optimize(rnd, trianglesPerPlane, optimization);
+                        if (!foundOptimization) {
+                            tjunctionPause = 1000;
+                        }
+                    }
+                }
+
+                if (action == 1) {
+                    if (flipPause > 0) {
+                        flipPause--;
+                        action = 2;
+                    } else {
+                        foundOptimization = CSGOptimizerFlipTriangle.optimize(rnd, trianglesPerPlane, optimization, flipCache);
+                        if (!foundOptimization) {
+                            flipPause = 1000;
+                        }
+                    }
+                }
+
+                if (action == 2 && tjunctionPause > 0) {
+                    foundOptimization = CSGOptimizerEdgeCollapse.optimize(rnd, trianglesPerPlane, optimization);
+                    if (!foundOptimization) {
+                        flipPause = 0;
+                    }
+                }
+
+                if (foundOptimization) {
+                    optimizationSuccess++;
+                    failureStrike = 0;
+                } else if (optimizationSuccess > 0) {
+                    optimizationSuccess--;
+                    if (failureStrike < 100) {
+                        failureStrike++;
+                    }
+                }
+                optimizationTries++;
+
+                final double rate = Math.max((1.0 - (optimizationSuccess / optimizationTries)), failureStrike / 100.0) * 100.0;
+                if (rate < 99.0 && failureStrike < 100) {
+                    globalOptimizationRate = rate;
+                    timeOfLastOptimization = System.currentTimeMillis();
+                }
+
+                optimizedResult = optimization;
+                shouldOptimize = true;
+            });
+        }
+
+        if (optimizedResult == null) {
+            return result;
+        } else {
+            return optimizedResult;
+        }
     }
 
     /**
@@ -621,44 +649,19 @@ public class CSG {
      * @return bouds of this csg
      */
     public Bounds getBounds() {
-        double minX = Double.POSITIVE_INFINITY;
-        double minY = Double.POSITIVE_INFINITY;
-        double minZ = Double.POSITIVE_INFINITY;
-
-        double maxX = Double.NEGATIVE_INFINITY;
-        double maxY = Double.NEGATIVE_INFINITY;
-        double maxZ = Double.NEGATIVE_INFINITY;
-
-        for (Polygon p : getPolygons()) {
-
-            for (int i = 0; i < p.vertices.size(); i++) {
-
-                Vector3d vert = p.vertices.get(i);
-
-                if (vert.x < minX) {
-                    minX = vert.x;
+        Bounds result = bounds;
+        if (result == null) {
+            if (!polygons.isEmpty()) {
+                result = new Bounds();
+                for (Polygon t : polygons) {
+                    Bounds b = t.getBounds();
+                    result.union(b);
                 }
-                if (vert.y < minY) {
-                    minY = vert.y;
-                }
-                if (vert.z < minZ) {
-                    minZ = vert.z;
-                }
-
-                if (vert.x > maxX) {
-                    maxX = vert.x;
-                }
-                if (vert.y > maxY) {
-                    maxY = vert.y;
-                }
-                if (vert.z > maxZ) {
-                    maxZ = vert.z;
-                }
-
-            } // end for vertices
-
-        } // end for polygon
-
-        return new Bounds(new Vector3d(minX, minY, minZ), new Vector3d(maxX, maxY, maxZ));
+            } else {
+                result = new Bounds(new VectorCSGd(0, 0, 0), new VectorCSGd(0, 0, 0));
+            }
+            bounds = result;
+        }
+        return result;
     }
 }

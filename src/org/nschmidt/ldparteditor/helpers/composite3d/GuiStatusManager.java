@@ -22,6 +22,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.eclipse.swt.SWT;
+import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Matrix;
@@ -135,6 +136,12 @@ public enum GuiStatusManager {
                 sb.append(df.format(daz));
             }
             sb.append("]"); //$NON-NLS-1$
+        }
+
+        if (Math.abs(CSG.timeOfLastOptimization - System.currentTimeMillis()) < 10000) {
+            sb.append(" CSG: "); //$NON-NLS-1$
+            sb.append(df2.format(CSG.globalOptimizationRate));
+            sb.append("%"); //$NON-NLS-1$
         }
 
         Editor3DWindow.getStatusLabel().setText(sb.toString());

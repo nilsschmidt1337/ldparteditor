@@ -31,7 +31,7 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3r;
  */
 public class Vertex implements Comparable<Vertex> {
 
-    public static float epsilon = 0.0001f;
+    private static final float epsilon = 0.0001f;
 
     public final BigDecimal X;
     public final BigDecimal Y;

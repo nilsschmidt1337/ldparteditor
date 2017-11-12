@@ -38,10 +38,10 @@ package org.nschmidt.csg;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class Bounds {
+class Bounds {
 
-    private final Vector3d min;
-    private final Vector3d max;
+    private final VectorCSGd min;
+    private final VectorCSGd max;
 
     /**
      * Constructor.
@@ -51,9 +51,14 @@ public class Bounds {
      * @param max
      *            max x,y,z values
      */
-    public Bounds(Vector3d min, Vector3d max) {
+    public Bounds(VectorCSGd min, VectorCSGd max) {
         this.min = min.clone();
         this.max = max.clone();
+    }
+
+    public Bounds() {
+        this.min = new VectorCSGd(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+        this.max = new VectorCSGd(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
     }
 
     /**
@@ -84,14 +89,36 @@ public class Bounds {
     /**
      * @return the min x,y,z values
      */
-    public Vector3d getMin() {
+    public VectorCSGd getMin() {
         return min;
     }
 
     /**
      * @return the max x,y,z values
      */
-    public Vector3d getMax() {
+    public VectorCSGd getMax() {
         return max;
+    }
+
+    public void union(Bounds other) {
+        VectorCSGd o_max = other.max;
+        VectorCSGd o_min = other.min;
+        if (o_min.x > max.x) max.x = o_min.x;
+        if (o_min.y > max.y) max.y = o_min.y;
+        if (o_min.z > max.z) max.z = o_min.z;
+        if (o_min.x < min.x) min.x = o_min.x;
+        if (o_min.y < min.y) min.y = o_min.y;
+        if (o_min.z < min.z) min.z = o_min.z;
+        if (o_max.x > max.x) max.x = o_max.x;
+        if (o_max.y > max.y) max.y = o_max.y;
+        if (o_max.z > max.z) max.z = o_max.z;
+        if (o_max.x < min.x) min.x = o_max.x;
+        if (o_max.y < min.y) min.y = o_max.y;
+        if (o_max.z < min.z) min.z = o_max.z;
+    }
+
+    @Override
+    public String toString() {
+        return min.toString() + "->" + max.toString(); //$NON-NLS-1$
     }
 }

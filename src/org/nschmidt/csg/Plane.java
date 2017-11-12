@@ -38,14 +38,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.nschmidt.ldparteditor.data.DatFile;
-import org.nschmidt.ldparteditor.data.GDataCSG;
 
 /**
  * Represents a plane in 3D space.
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class Plane {
+public class Plane implements Comparable<Plane> {
 
     /**
      * EPSILON is the tolerance used by
@@ -55,23 +54,17 @@ public class Plane {
      */
     public static double EPSILON = 1e-3;
 
-    /**
-     * XY plane.
-     */
-    public static final Plane XY_PLANE = new Plane(Vector3d.Z_ONE, 1);
-    /**
-     * XZ plane.
-     */
-    public static final Plane XZ_PLANE = new Plane(Vector3d.Y_ONE, 1);
-    /**
-     * YZ plane.
-     */
-    public static final Plane YZ_PLANE = new Plane(Vector3d.X_ONE, 1);
+    private static final double epsilon = 0.001;
+
+    public static final int COPLANAR = 0;
+    public static final int FRONT = 1;
+    public static final int BACK = 2;
+    public static final int SPANNING = 3;
 
     /**
      * Normal vector.
      */
-    public Vector3d normal;
+    public VectorCSGd normal;
     /**
      * Distance to origin.
      */
@@ -86,7 +79,7 @@ public class Plane {
      * @param dist
      *            distance from origin
      */
-    public Plane(Vector3d normal, double dist) {
+    public Plane(VectorCSGd normal, double dist) {
         this.normal = normal;
         this.dist = dist;
     }
@@ -102,8 +95,8 @@ public class Plane {
      *            third point
      * @return a nedist plane
      */
-    public static Plane createFromPoints(Vector3d a, Vector3d b, Vector3d c) {
-        Vector3d n = b.minus(a).cross(c.minus(a)).unit();
+    public static Plane createFromPoints(VectorCSGd a, VectorCSGd b, VectorCSGd c) {
+        VectorCSGd n = b.minus(a).cross(c.minus(a)).unit();
         return new Plane(n, n.dot(a));
     }
 
@@ -118,6 +111,20 @@ public class Plane {
     public void flip() {
         normal = normal.negated();
         dist = -dist;
+    }
+
+    public int[] getTypes(final Polygon polygon) {
+        final int size = polygon.vertices.size();
+        final int[] types = new int[size + 1];
+        int polygonType = 0;
+        for (int i = 0; i < size; i++) {
+            double t = this.normal.dot(polygon.vertices.get(i)) - this.dist;
+            int type = t < -Plane.EPSILON ? BACK : t > Plane.EPSILON ? FRONT : COPLANAR;
+            polygonType |= type;
+            types[i] = type;
+        }
+        types[size] = polygonType;
+        return types;
     }
 
     /**
@@ -139,47 +146,37 @@ public class Plane {
      * @param back
      *            back polgons
      */
-    public void splitPolygon(final Polygon polygon, List<Polygon> coplanarFront, List<Polygon> coplanarBack, List<Polygon> front, List<Polygon> back) {
-        final int COPLANAR = 0;
-        final int FRONT = 1;
-        final int BACK = 2;
-        final int SPANNING = 3;
+    public void splitPolygonForClip(final Polygon polygon, final int[] types, List<Polygon> front, List<Polygon> back) {
 
         // Classify each point as well as the entire polygon into one of the
         // above
         // four classes.
-        int polygonType = 0;
-        List<Integer> types = new ArrayList<Integer>();
-        for (int i = 0; i < polygon.vertices.size(); i++) {
-            double t = this.normal.dot(polygon.vertices.get(i)) - this.dist;
-            int type = t < -Plane.EPSILON ? BACK : t > Plane.EPSILON ? FRONT : COPLANAR;
-            polygonType |= type;
-            types.add(type);
-        }
-
-        final DatFile df = polygon.df;
-        final boolean doOptimize = GDataCSG.isInlining(df);
-
         // Put the polygon in the correct list, splitting it when necessary.
-        switch (polygonType) {
+
+        final int size = polygon.vertices.size();
+        switch (types[types.length - 1]) {
         case COPLANAR:
-            (this.normal.dot(polygon.plane.normal) > 0 ? coplanarFront : coplanarBack).add(polygon);
-            break;
+            (this.normal.dot(polygon.plane.normal) > 0 ? front : back).add(polygon);
+            return;
         case FRONT:
             front.add(polygon);
-            break;
+            return;
         case BACK:
             back.add(polygon);
-            break;
+            return;
         case SPANNING:
-            List<Vector3d> f = new ArrayList<Vector3d>();
-            List<Vector3d> b = new ArrayList<Vector3d>();
-            for (int i = 0; i < polygon.vertices.size(); i++) {
-                int j = (i + 1) % polygon.vertices.size();
-                int ti = types.get(i);
-                int tj = types.get(j);
-                final Vector3d vi = polygon.vertices.get(i);
-                final Vector3d vj = polygon.vertices.get(j);
+
+            final DatFile df = polygon.df;
+
+            final List<VectorCSGd> f = new ArrayList<>(size);
+            final List<VectorCSGd> b = new ArrayList<>(size);
+
+            for (int i = 0; i < size; i++) {
+                int j = (i + 1) % size;
+                int ti = types[i];
+                int tj = types[j];
+                final VectorCSGd vi = polygon.vertices.get(i);
+                final VectorCSGd vj = polygon.vertices.get(j);
                 if (ti != BACK) {
                     f.add(vi);
                 }
@@ -190,12 +187,7 @@ public class Plane {
 
                     double t = (this.dist - this.normal.dot(vi)) / this.normal.dot(vj.minus(vi));
 
-                    final Vector3d v = vi.interpolate(vj, t);
-
-                    if (doOptimize) {
-                        GDataCSG.getNewPolyVertices(df).add(new Vector3d[]{vi.clone(), vj.clone(), v.clone()});
-                    }
-
+                    final VectorCSGd v = vi.interpolate(vj, t);
 
                     f.add(v);
                     b.add(v.clone());
@@ -203,12 +195,101 @@ public class Plane {
             }
 
             if (f.size() >= 3) {
-                front.add(new Polygon(df, f, polygon.getColour()));
+                front.add(new Polygon(df, f, polygon));
             }
             if (b.size() >= 3) {
-                back.add(new Polygon(df, b, polygon.getColour()));
+                back.add(new Polygon(df, b, polygon));
             }
-            break;
+            return;
         }
+    }
+
+    /**
+     * Splits a {@link Polygon} by this plane if needed. After that it puts the
+     * polygons or the polygon fragments in the appropriate lists ({@code front}
+     * , {@code back}). Coplanar polygons go into either {@code coplanarFront},
+     * {@code coplanarBack} depending on their orientation with respect to this
+     * plane. Polygons in front or back of this plane go into either
+     * {@code front} or {@code back}.
+     *
+     * @param polygon
+     *            polygon to split
+     * @param coplanarFront
+     *            "coplanar front" polygons
+     * @param coplanarBack
+     *            "coplanar back" polygons
+     * @param front
+     *            front polygons
+     * @param back
+     *            back polgons
+     */
+    public void splitPolygonForBuild(final Polygon polygon, final int[] types, List<Polygon> coplanarPolys, List<Polygon> front, List<Polygon> back) {
+
+        // Classify each point as well as the entire polygon into one of the
+        // above
+        // four classes.
+        // Put the polygon in the correct list, splitting it when necessary.
+
+        final int size = polygon.vertices.size();
+        switch (types[types.length - 1]) {
+        case COPLANAR:
+            coplanarPolys.add(polygon);
+            return;
+        case FRONT:
+            front.add(polygon);
+            return;
+        case BACK:
+            back.add(polygon);
+            return;
+        case SPANNING:
+
+            final DatFile df = polygon.df;
+
+            final List<VectorCSGd> f = new ArrayList<>(size);
+            final List<VectorCSGd> b = new ArrayList<>(size);
+
+            for (int i = 0; i < size; i++) {
+                int j = (i + 1) % size;
+                int ti = types[i];
+                int tj = types[j];
+                final VectorCSGd vi = polygon.vertices.get(i);
+                final VectorCSGd vj = polygon.vertices.get(j);
+                if (ti != BACK) {
+                    f.add(vi);
+                }
+                if (ti != FRONT) {
+                    b.add(ti != BACK ? vi.clone() : vi);
+                }
+                if ((ti | tj) == SPANNING) {
+
+                    double t = (this.dist - this.normal.dot(vi)) / this.normal.dot(vj.minus(vi));
+
+                    final VectorCSGd v = vi.interpolate(vj, t);
+
+                    f.add(v);
+                    b.add(v.clone());
+                }
+            }
+
+            if (f.size() >= 3) {
+                front.add(new Polygon(df, f, polygon));
+            }
+            if (b.size() >= 3) {
+                back.add(new Polygon(df, b, polygon));
+            }
+            return;
+        }
+    }
+
+    @Override
+    public int compareTo(Plane o) {
+        final int vc = normal.compareTo(o.normal);
+        if (vc == 0) {
+            if (Math.abs(dist - o.dist) < epsilon) {
+                return 0;
+            }
+            return Double.compare(dist, o.dist);
+        }
+        return vc;
     }
 }
