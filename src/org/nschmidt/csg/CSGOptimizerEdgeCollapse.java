@@ -74,9 +74,9 @@ enum CSGOptimizerEdgeCollapse {
                 }
 
                 // 3.2 Ist das Polygon geschlossen?
-                final boolean isPolygonLoop = (verts.size() - 1) == surfs.size();
-                int commonPoints = 0;
-                int commonSurfaces = 0;
+                if ((verts.size() - 1) != surfs.size()) {
+                    continue;
+                }
 
                 // 4. Entferne den Ursprungspunkt aus der Menge
                 verts.remove(v);
@@ -90,30 +90,21 @@ enum CSGOptimizerEdgeCollapse {
                     tsurfs.removeAll(surfs);
 
                     // 5.1 t muss zwei Flächen mit v teilen
-                    commonSurfaces = oldcount - tsurfs.size();
-                    if (commonSurfaces > 2 || commonSurfaces == 0) {
+                    if (oldcount - tsurfs.size() != 2) {
                         continue;
                     }
 
-                    // 5.2 t darf nur maximal zwei angrenzende Punkte mit v teilen
+                    // 5.2 t darf nur zwei angrenzende Punkte mit v teilen
                     {
                         final TreeSet<VectorCSGd> verts2 = new TreeSet<>();
-                        for (final GData3 gData : tsurfs) {
+                        for (final GData3 gData : new ArrayList<>(linkedSurfaceMap.get(t))) {
                             verts2.addAll(Arrays.asList(trimap.get(gData)));
                         }
                         verts2.remove(t);
-                        int oldcount2 = verts2.size();
-                        verts2.removeAll(verts);
-                        commonPoints = oldcount2 - verts2.size();
-                        if (commonPoints > 2 || commonPoints == 0) {
+                        verts2.retainAll(verts);
+                        if (verts2.size() != 2) {
                             continue;
                         }
-                    }
-
-                    if (isPolygonLoop && (commonPoints < 2 || commonSurfaces < 2)) {
-                        continue;
-                    } else if (!isPolygonLoop && (commonPoints != 1 || verts.size() != 3)) { //  || verts.size() > 4)) { <- no so trivial for 4 vertices!
-                        continue;
                     }
 
                     // 5.3 die Normalen dürfen nicht kippen!
@@ -136,10 +127,10 @@ enum CSGOptimizerEdgeCollapse {
                         HashSet<Integer> ignoreSet = new HashSet<Integer>();
                         for (s = 0; s < surfcount; s++) {
                             for (int i = 0; i < 3; i++) {
-                                if (surfsv[s][i].equals(t)) {
+                                if (surfsv[s][i].compareTo(t) == 0) {
                                     ignoreSet.add(s);
                                 }
-                                if (surfsv[s][i].equals(v)) {
+                                if (surfsv[s][i].compareTo(v) == 0) {
                                     surfsv[s][i] = t;
                                 }
                             }
@@ -159,11 +150,12 @@ enum CSGOptimizerEdgeCollapse {
                     // Als letzten Schritt => Kante zusammenfallen lassen
 
                     // v -> t
-                    if (false && isPolygonLoop) {
-                        doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
-                        foundOptimization = true;
-                        result = true;
-                        break;
+                    doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
+                    foundOptimization = true;
+                    result = true;
+                    break;
+                    /*
+                    if (isPolygonLoop) {
                     } else if (false) {
                         if (isBoundaryPoint(t, linkedSurfaceMap, trimap)) {
                             VectorCSGd ref = t.minus(v);
@@ -189,6 +181,7 @@ enum CSGOptimizerEdgeCollapse {
                             }
                         }
                     }
+                    */
                 }
             }
         }
