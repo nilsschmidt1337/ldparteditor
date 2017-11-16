@@ -196,8 +196,8 @@ public final class Polygon {
                     int dID = CSGPrimitive.id_counter.getAndIncrement();
                     result.put(new GData3(v1, v2, v3, parent, c16, true), new IdAndPlane(plane, dID));
                 } else {
-                    result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), new IdAndPlane(plane, colour.getIndex())); // only for test
-                    // TODO result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), new IdAndPlane(plane, colour.getIndex()));
+                    // TODO Debug-only: result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), new IdAndPlane(plane, colour.getIndex())); // only for test
+                    result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), new IdAndPlane(plane, colour.getIndex()));
                 }
             }
         }
