@@ -11,7 +11,6 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 
 enum CSGOptimizerTJunction {
@@ -53,8 +52,8 @@ enum CSGOptimizerTJunction {
                             if (isValidEdge(v, triverts[2], vertices)) {
                                 final IdAndPlane oldId = optimization.get(tri);
                                 optimization.remove(tri);
-                                optimization.put(createTriangle(tri, triverts[0], v, triverts[2], 490), oldId);
-                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2], 490), oldId);
+                                optimization.put(createTriangle(tri, triverts[0], v, triverts[2]), oldId);
+                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2]), oldId);
                                 result = true;
                                 break;
                             }
@@ -67,8 +66,8 @@ enum CSGOptimizerTJunction {
                             if (isValidEdge(v, triverts[0], vertices)) {
                                 final IdAndPlane oldId = optimization.get(tri);
                                 optimization.remove(tri);
-                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0], 490), oldId);
-                                optimization.put(createTriangle(tri, v, triverts[2], triverts[0], 490), oldId);
+                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0]), oldId);
+                                optimization.put(createTriangle(tri, v, triverts[2], triverts[0]), oldId);
                                 result = true;
                                 break;
                             }
@@ -81,8 +80,8 @@ enum CSGOptimizerTJunction {
                             if (isValidEdge(v, triverts[1], vertices)) {
                                 final IdAndPlane oldId = optimization.get(tri);
                                 optimization.remove(tri);
-                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0], 490), oldId);
-                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2], 490), oldId);
+                                optimization.put(createTriangle(tri, triverts[1], v, triverts[0]), oldId);
+                                optimization.put(createTriangle(tri, v, triverts[1], triverts[2]), oldId);
                                 result = true;
                                 break;
                             }
@@ -107,12 +106,12 @@ enum CSGOptimizerTJunction {
         return true;
     }
 
-    private static GData3 createTriangle(GData3 idol, VectorCSGd a, VectorCSGd b, VectorCSGd c, int col) {
+    private static GData3 createTriangle(GData3 idol, VectorCSGd a, VectorCSGd b, VectorCSGd c) {
         Vertex v1 = new Vertex((float) a.x, (float) a.y, (float) a.z);
         Vertex v2 = new Vertex((float) b.x, (float) b.y, (float) b.z);
         Vertex v3 = new Vertex((float) c.x, (float) c.y, (float) c.z);
         GData1 parent = idol.parent;
-        GColour colour = View.getLDConfigColour(col); // new GColour(idol.colourNumber, idol.r, idol.g, idol.b, idol.a);
+        GColour colour = new GColour(idol.colourNumber, idol.r, idol.g, idol.b, idol.a);
         return new GData3(v1, v2, v3, parent, colour, true);
     }
 }

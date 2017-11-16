@@ -14,7 +14,6 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 
 enum CSGOptimizerFlipTriangle {
@@ -130,8 +129,8 @@ enum CSGOptimizerFlipTriangle {
                 optimization.remove(tb);
                 flipCache.remove(ta);
                 flipCache.remove(tb);
-                optimization.put(createTriangle(ta, nc, na, nb, 4), oldIdA);
-                optimization.put(createTriangle(tb, nc, o, na, 14), oldIdB);
+                optimization.put(createTriangle(ta, nc, na, nb), oldIdA);
+                optimization.put(createTriangle(tb, nc, o, na), oldIdB);
                 result = true;
             }
         }
@@ -139,12 +138,12 @@ enum CSGOptimizerFlipTriangle {
         return result;
     }
 
-    private static GData3 createTriangle(GData3 idol, VectorCSGd a, VectorCSGd b, VectorCSGd c, int col) {
+    private static GData3 createTriangle(GData3 idol, VectorCSGd a, VectorCSGd b, VectorCSGd c) {
         Vertex v1 = new Vertex((float) a.x, (float) a.y, (float) a.z);
         Vertex v2 = new Vertex((float) b.x, (float) b.y, (float) b.z);
         Vertex v3 = new Vertex((float) c.x, (float) c.y, (float) c.z);
         GData1 parent = idol.parent;
-        GColour colour = View.getLDConfigColour(col); // new GColour(idol.colourNumber, idol.r, idol.g, idol.b, idol.a);
+        GColour colour = new GColour(idol.colourNumber, idol.r, idol.g, idol.b, idol.a);
         return new GData3(v1, v2, v3, parent, colour, true);
     }
 }

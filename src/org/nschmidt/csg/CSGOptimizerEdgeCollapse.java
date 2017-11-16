@@ -15,7 +15,6 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 
 enum CSGOptimizerEdgeCollapse {
@@ -74,9 +73,7 @@ enum CSGOptimizerEdgeCollapse {
                 }
 
                 // 3.2 Ist das Polygon geschlossen?
-                if ((verts.size() - 1) != surfs.size()) {
-                    continue;
-                }
+                final boolean polygonLoop = ((verts.size() - 1) == surfs.size());
 
                 // 4. Entferne den Ursprungspunkt aus der Menge
                 verts.remove(v);
@@ -90,7 +87,13 @@ enum CSGOptimizerEdgeCollapse {
                     tsurfs.removeAll(surfs);
 
                     // 5.1 t muss zwei Flächen mit v teilen
-                    if (oldcount - tsurfs.size() != 2) {
+
+                    int vexp = 2;
+
+                    final  int ds = oldcount - tsurfs.size();
+                    if (ds == 1) {
+                        vexp = 1;
+                    } else if (ds != 2 || !polygonLoop) {
                         continue;
                     }
 
@@ -102,7 +105,44 @@ enum CSGOptimizerEdgeCollapse {
                         }
                         verts2.remove(t);
                         verts2.retainAll(verts);
-                        if (verts2.size() != 2) {
+                        if (verts2.size() != vexp) {
+                            continue;
+                        }
+                    }
+
+                    if (!polygonLoop) {
+                        boolean noInterpolation = true;
+                        VectorCSGd ref = t.minus(v);
+                        double m = ref.magnitude();
+                        if (m > 0.0) {
+                            ref = ref.dividedBy(m);
+                            for (VectorCSGd r : verts) {
+                                if (r != t) {
+                                    VectorCSGd ref2 = v.minus(r);
+                                    double m2 = ref2.magnitude();
+                                    if (m2 > 0.0) {
+                                        ref2 = ref2.dividedBy(m2);
+                                        double diskr = ref.dot(ref2);
+                                        if (diskr > epsilon) {
+                                            {
+                                                final TreeSet<VectorCSGd> verts2 = new TreeSet<>();
+                                                for (final GData3 gData : new ArrayList<>(linkedSurfaceMap.get(r))) {
+                                                    verts2.addAll(Arrays.asList(trimap.get(gData)));
+                                                }
+                                                verts2.remove(r);
+                                                verts2.retainAll(verts);
+                                                if (verts2.size() != 1) {
+                                                    continue;
+                                                }
+                                            }
+                                            noInterpolation = false;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        if (noInterpolation) {
                             continue;
                         }
                     }
@@ -154,34 +194,6 @@ enum CSGOptimizerEdgeCollapse {
                     foundOptimization = true;
                     result = true;
                     break;
-                    /*
-                    if (isPolygonLoop) {
-                    } else if (false) {
-                        if (isBoundaryPoint(t, linkedSurfaceMap, trimap)) {
-                            VectorCSGd ref = t.minus(v);
-                            double m = ref.magnitude();
-                            if (m > 0.0) {
-                                ref = ref.dividedBy(m);
-                                for (VectorCSGd r : verts) {
-                                    if (r != t) {
-                                        VectorCSGd ref2 = v.minus(r);
-                                        double m2 = ref2.magnitude();
-                                        if (m2 > 0.0) {
-                                            ref2 = ref2.dividedBy(m2);
-                                            double diskr = ref.dot(ref2);
-                                            if (diskr > epsilon) {
-                                                doOptimize(v, t, optimization, linkedSurfaceMap, trimap);
-                                                foundOptimization = true;
-                                                result = true;
-                                                break;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    */
                 }
             }
         }
@@ -207,7 +219,7 @@ enum CSGOptimizerEdgeCollapse {
                 if (nv.get(2).compareTo(v) == 0) i = 2;
                 if (i > -1) {
                     nv.set(i, t);
-                    optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2), 449), optimization.get(g)); // Purple
+                    optimization.put(createTriangle(g, nv.get(0), nv.get(1), nv.get(2)), optimization.get(g)); // Purple
                 }
             }
 
@@ -216,30 +228,12 @@ enum CSGOptimizerEdgeCollapse {
 
     }
 
-    private static boolean isBoundaryPoint(VectorCSGd v, Map<VectorCSGd, List<GData3>> linkedSurfaceMap, Map<GData3, VectorCSGd[]> trimap) {
-        final List<GData3> surfs = linkedSurfaceMap.get(v);
-
-        // Ist es ein eindeutiger Eckpunkt?
-        if (surfs.size() == 1) {
-            return true;
-        }
-
-        // Ermittle alle angrenzenden Punkte
-        final TreeSet<VectorCSGd> verts = new TreeSet<VectorCSGd>();
-        for (final GData3 g : surfs) {
-            verts.addAll(Arrays.asList(trimap.get(g)));
-        }
-
-        // Ist das Polygon nicht geschlossen?
-        return (verts.size() - 1) != surfs.size();
-    }
-
-    private static GData3 createTriangle(GData3 idol, VectorCSGd a, VectorCSGd b, VectorCSGd c, int col) {
+    private static GData3 createTriangle(GData3 idol, VectorCSGd a, VectorCSGd b, VectorCSGd c) {
         Vertex v1 = new Vertex((float) a.x, (float) a.y, (float) a.z);
         Vertex v2 = new Vertex((float) b.x, (float) b.y, (float) b.z);
         Vertex v3 = new Vertex((float) c.x, (float) c.y, (float) c.z);
         GData1 parent = idol.parent;
-        GColour colour = View.getLDConfigColour(col); // new GColour(idol.colourNumber, idol.r, idol.g, idol.b, idol.a);
+        GColour colour = new GColour(idol.colourNumber, idol.r, idol.g, idol.b, idol.a);
         return new GData3(v1, v2, v3, parent, colour, true);
     }
 }
