@@ -105,7 +105,7 @@ public final class GDataCSG extends GData {
     private final String ref2;
     private final String ref3;
 
-    private CSG compiledCSG = null;
+    private volatile CSG compiledCSG = null;
     private CSG dataCSG = null;
 
     private final GColour colour;
@@ -592,6 +592,10 @@ public final class GDataCSG extends GData {
     @Override
     String getNiceString() {
         return text;
+    }
+
+    public boolean wasNotCompiled() {
+        return (CSG.COMPILE == type && compiledCSG == null);
     }
 
     @Override
