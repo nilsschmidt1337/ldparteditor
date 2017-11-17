@@ -86,6 +86,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
+import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.CompositeContainer;
 import org.nschmidt.ldparteditor.composites.CompositeScale;
@@ -6219,6 +6220,7 @@ public class Editor3DWindow extends Editor3DDesign {
         Project.getFileToEdit().addHistory();
         this.open();
         // Dispose all resources (never delete this!)
+        CSG.executorService.shutdown();
         cmp_Primitives[0].getOpenGL().dispose();
         ResourceManager.dispose();
         SWTResourceManager.dispose();
