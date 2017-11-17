@@ -123,6 +123,8 @@ public enum DatKeyword {
         keywords.add("CSG_EPSILON"); //$NON-NLS-1$
         keywords.add("CSG_TJUNCTION_EPSILON"); //$NON-NLS-1$
         keywords.add("CSG_EDGE_COLLAPSE_EPSILON"); //$NON-NLS-1$
+        keywords.add("CSG_DONT_OPTIMIZE"); //$NON-NLS-1$
+        keywords.add("CSG_DONT_OPTIMISE"); //$NON-NLS-1$
     }
 
     /**

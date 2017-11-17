@@ -136,6 +136,7 @@ public final class GDataCSG extends GData {
     }
 
     public synchronized static void resetCSG(DatFile df, boolean useLowQuality) {
+        df.setOptimizingCSG(true);
         if (useLowQuality) {
             quality = 12;
         } else {
@@ -368,6 +369,10 @@ public final class GDataCSG extends GData {
 
     public void drawAndParse(Composite3D c3d, DatFile df, boolean doDraw) {
 
+        if (type == CSG.DONTOPTIMIZE) {
+            df.setOptimizingCSG(false);
+        }
+
         final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true) || (type == CSG.MESH || type == CSG.EXTRUDE) && CSGMesh.needCacheRefresh(cachedData, this, df);
         if (clearCaches) {
             clearPolygonCache.put(df, true);
@@ -571,9 +576,9 @@ public final class GDataCSG extends GData {
         }
         if (compiledCSG != null && c3d != null && doDraw) {
             if (c3d.getRenderMode() != 5) {
-                compiledCSG.draw(c3d);
+                compiledCSG.draw(c3d, df);
             } else {
-                compiledCSG.draw_textured(c3d);
+                compiledCSG.draw_textured(c3d, df);
             }
         }
     }
@@ -676,7 +681,7 @@ public final class GDataCSG extends GData {
 
                                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
-                                TreeMap<GData3, IdAndPlane> result = compiledCSG.getResult();
+                                TreeMap<GData3, IdAndPlane> result = compiledCSG.getResult(null);
 
                                 for (GData3 g3 : result.keySet()) {
                                     StringBuilder lineBuilder3 = new StringBuilder();
@@ -1042,7 +1047,7 @@ public final class GDataCSG extends GData {
                     if (csg_pair.getKey() != null && csg_pair.getKey().endsWith("#>null")) { //$NON-NLS-1$
                         CSG csg = csg_pair.getValue();
                         if (csg != null) {
-                            for(Entry<GData3, IdAndPlane> pair : csg.getResult().entrySet()) {
+                            for(Entry<GData3, IdAndPlane> pair : csg.getResult(df).entrySet()) {
                                 if (selectedBodyID.equals(pair.getValue().id)) {
                                     selectedTriangles.add(pair.getKey());
                                 }
@@ -1080,7 +1085,7 @@ public final class GDataCSG extends GData {
         Integer result = null;
         GDataCSG resultObj = null;
         for (CSG csg : linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).values()) {
-            for(Entry<GData3, IdAndPlane> pair : csg.getResult().entrySet()) {
+            for(Entry<GData3, IdAndPlane> pair : csg.getResult(df).entrySet()) {
                 final GData3 triangle = pair.getKey();
 
                 triQuadVerts[0] = new Vertex(triangle.x1, triangle.y1, triangle.z1);
@@ -1139,7 +1144,7 @@ public final class GDataCSG extends GData {
 
     public synchronized boolean canSelect() {
         if (ref1 != null && ref2 == null && ref3 == null && type != CSG.COMPILE) {
-            if (ref1.endsWith("#>null") && type != CSG.QUALITY && type != CSG.EPSILON && type != CSG.TJUNCTION && type != CSG.COLLAPSE) { //$NON-NLS-1$
+            if (ref1.endsWith("#>null") && type != CSG.QUALITY && type != CSG.EPSILON && type != CSG.TJUNCTION && type != CSG.COLLAPSE && type != CSG.DONTOPTIMIZE) { //$NON-NLS-1$
                 return true;
             }
         }
@@ -1362,10 +1367,10 @@ public final class GDataCSG extends GData {
 
     Set<GData3> surfaces = null;
     int[] datasize = null;
-    public void cacheResult() {
+    public void cacheResult(DatFile df) {
         final int[] result = new int[]{0, 0, 0};
         if (compiledCSG != null) {
-            surfaces = new HashSet<GData3>(compiledCSG.getResult().keySet());
+            surfaces = new HashSet<GData3>(compiledCSG.getResult(df).keySet());
             for (GData3 tri : surfaces) {
                 if (tri.a < 1f) {
                     result[2] += 6;

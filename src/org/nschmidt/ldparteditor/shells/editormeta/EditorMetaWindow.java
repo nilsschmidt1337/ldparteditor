@@ -880,6 +880,13 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
+        ev_csgDontOptimize_btn[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                updateCSGdontOptimize();
+            }
+        });
+
         ev_csgCompile_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -1046,6 +1053,11 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
     private void updateCSGaction() {
         lbl_lineToInsert[0].setText("0 !LPE CSG_" + ev_csgAction_cmb[0].getText().trim() + " " + ev_csgAction1_txt[0].getText().trim() + " " + ev_csgAction2_txt[0].getText().trim() + " " + ev_csgAction3_txt[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        lbl_lineToInsert[0].getParent().layout();
+    }
+
+    private void updateCSGdontOptimize() {
+        lbl_lineToInsert[0].setText("0 !LPE CSG_DONT_OPTIMISE"); //$NON-NLS-1$
         lbl_lineToInsert[0].getParent().layout();
     }
 

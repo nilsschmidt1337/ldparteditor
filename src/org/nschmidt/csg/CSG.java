@@ -141,6 +141,7 @@ public class CSG {
     public static final byte EXTRUDE_CFG = 15;
     public static final byte TJUNCTION = 16;
     public static final byte COLLAPSE = 17;
+    public static final byte DONTOPTIMIZE = 18;
 
     /**
      * Constructs a CSG from a list of {@link Polygon} instances.
@@ -456,14 +457,14 @@ public class CSG {
         return g1;
     }
 
-    public void draw(Composite3D c3d) {
-        for (GData3 tri : getResult().keySet()) {
+    public void draw(Composite3D c3d, DatFile df) {
+        for (GData3 tri : getResult(df).keySet()) {
             tri.drawGL20(c3d);
         }
     }
 
-    public void draw_textured(Composite3D c3d) {
-        for (GData3 tri : getResult().keySet()) {
+    public void draw_textured(Composite3D c3d, DatFile df) {
+        for (GData3 tri : getResult(df).keySet()) {
             tri.drawGL20_BFC_Textured(c3d);
         }
     }
@@ -485,14 +486,14 @@ public class CSG {
 
     private final Map<GData3, Map<GData3, Boolean>> flipCache = new HashMap<>();
 
-    public TreeMap<GData3, IdAndPlane> getResult() {
+    public TreeMap<GData3, IdAndPlane> getResult(DatFile df) {
 
-        if (optimizedTriangles.isEmpty()) {
+        if (optimizedTriangles.isEmpty() && df != null && df.isOptimizingCSG()) {
             optimizedTriangles = new TreeMap<>();
             optimizedTriangles.putAll(result);
         }
 
-        if (shouldOptimize) {
+        if (shouldOptimize && df != null && df.isOptimizingCSG()) {
             final Composite3D lastC3d = DatFile.getLastHoveredComposite();
             if (lastC3d != null) {
                 Display.getDefault().asyncExec(() -> {GuiStatusManager.updateStatus(lastC3d);});

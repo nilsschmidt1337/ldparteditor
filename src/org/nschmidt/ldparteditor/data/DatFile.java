@@ -106,6 +106,8 @@ public final class DatFile {
     private boolean virtual;
     private boolean projectFile;
 
+    private boolean optimizingCSG = true;
+
     private DatType type = DatType.PART;
     private long lastModified = 0;
 
@@ -2022,5 +2024,13 @@ public final class DatFile {
 
     public static void setLastHoveredComposite(Composite3D lastHoveredComposite) {
         DatFile.lastHoveredComposite = lastHoveredComposite;
+    }
+
+    public boolean isOptimizingCSG() {
+        return optimizingCSG;
+    }
+
+    public void setOptimizingCSG(boolean optimizingCSG) {
+        this.optimizingCSG = optimizingCSG;
     }
 }

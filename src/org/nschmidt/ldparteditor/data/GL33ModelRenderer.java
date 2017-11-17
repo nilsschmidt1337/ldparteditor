@@ -597,7 +597,7 @@ public class GL33ModelRenderer {
                                     // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
                                     for (GDataCSG csg : csgData2) {
                                         if (modified) csg.drawAndParse(c3d, df, false);
-                                        csg.cacheResult();
+                                        csg.cacheResult(df);
                                         final int[] size = csg.getDataSize();
                                         csgDataSize += size[0];
                                         csgSolidVertexCount += size[1];
