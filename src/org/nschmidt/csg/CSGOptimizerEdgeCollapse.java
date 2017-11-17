@@ -73,7 +73,8 @@ enum CSGOptimizerEdgeCollapse {
                 }
 
                 // 3.2 Ist das Polygon geschlossen?
-                final boolean polygonLoop = ((verts.size() - 1) == surfs.size());
+                final int delta = ((verts.size() - 1) - surfs.size());
+                final boolean polygonLoop = delta == 0;
 
                 // 4. Entferne den Ursprungspunkt aus der Menge
                 verts.remove(v);
@@ -113,8 +114,8 @@ enum CSGOptimizerEdgeCollapse {
                     if (!polygonLoop) {
                         boolean noInterpolation = true;
                         VectorCSGd ref = t.minus(v);
-                        double m = ref.magnitude();
-                        if (m > 0.0) {
+                        double m;
+                        if (delta == 1 && (m = ref.magnitude())  > 0.0) {
                             ref = ref.dividedBy(m);
                             for (VectorCSGd r : verts) {
                                 if (r != t) {
