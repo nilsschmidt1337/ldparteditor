@@ -20,6 +20,7 @@ import java.io.File;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.DatType;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.HeaderState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -65,6 +66,9 @@ final class HintFixer {
                 text = QuickFixer.insertAfterLine(l,
                         "0 Author: " + WorkbenchManager.getUserSettingState().getRealUserName() + " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "]<br>", text); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
+            break;
+        case 66: // CSG parts are needed to be shown to enable optimization
+            EditorTextWindow.openIn3D(datFile);
             break;
         case 48: // The part type information is missing
             l = 0;

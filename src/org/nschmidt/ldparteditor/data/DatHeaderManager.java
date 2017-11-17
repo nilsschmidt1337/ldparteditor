@@ -75,6 +75,23 @@ public class DatHeaderManager {
                                 final HeaderState h = new HeaderState();
 
                                 GData gd = (GData) newEntry[0];
+
+                                boolean hasCSG = false;
+
+                                {
+                                    GData gd2 = gd;
+                                    while ((gd = gd.next) != null) {
+                                        if (gd.type() == 8) {
+                                            GDataCSG csg = (GDataCSG) gd;
+                                            if (csg.wasNotCompiled()) {
+                                                hasCSG = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    gd = gd2;
+                                }
+
                                 final TreeItem treeItem_Hints = (TreeItem) newEntry[1];
                                 final TreeItem treeItem_Warnings = (TreeItem) newEntry[2];
                                 final TreeItem treeItem_Errors = (TreeItem) newEntry[3];
@@ -578,6 +595,10 @@ public class DatHeaderManager {
                                     }
                                     if (!h.hasBFC()) {
                                         registerHint(firstEntry, -10 * r6 + -6 * (1 - r6), "60", I18n.DATFILE_MissingBFC, registered, allHints); //$NON-NLS-1$
+                                    }
+
+                                    if (hasCSG) {
+                                        registerHint(firstEntry, -999, "42", I18n.DATFILE_CSGtoCompile, registered, allHints); //$NON-NLS-1$
                                     }
                                 }
 

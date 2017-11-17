@@ -877,68 +877,7 @@ public class EditorTextWindow extends EditorTextDesign {
                         return;
                     }
                     DatFile df = selection.getState().getFileNameObj();
-                    ArrayList<OpenGLRenderer> renders = Editor3DWindow.getRenders();
-
-                    if (renders.isEmpty()) {
-
-                        if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
-                            int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
-                            Editor3DWindow.getSashForm().getChildren()[1].dispose();
-                            CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
-                            cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
-                            df.parseForData(true);
-                            Project.setFileToEdit(df);
-                            cmp_Container.getComposite3D().setLockableDatFileReference(df);
-                            df.getVertexManager().addSnapshot();
-                            Editor3DWindow.getSashForm().getParent().layout();
-                            Editor3DWindow.getSashForm().setWeights(mainSashWeights);
-                        }
-
-                    } else {
-
-                        boolean canUpdate = false;
-
-                        for (OpenGLRenderer renderer : renders) {
-                            Composite3D c3d = renderer.getC3D();
-                            if (!c3d.isDatFileLockedOnDisplay()) {
-                                canUpdate = true;
-                                break;
-                            }
-                        }
-
-                        if (!canUpdate) {
-                            for (OpenGLRenderer renderer : renders) {
-                                Composite3D c3d = renderer.getC3D();
-                                c3d.getModifier().switchLockedDat(false);
-                            }
-                        }
-
-                        final VertexManager vm = df.getVertexManager();
-                        if (vm.isModified()) {
-                            df.setText(df.getText());
-                        }
-                        df.parseForData(true);
-
-                        Project.setFileToEdit(df);
-                        for (OpenGLRenderer renderer : renders) {
-                            Composite3D c3d = renderer.getC3D();
-                            if (!c3d.isDatFileLockedOnDisplay()) {
-                                boolean hasState = Editor3DWindow.getWindow().hasState(df, c3d);
-                                c3d.setLockableDatFileReference(df);
-                                if (!hasState) c3d.getModifier().zoomToFit();
-                            }
-                        }
-
-                        df.getVertexManager().addSnapshot();
-
-                        if (!canUpdate) {
-                            for (OpenGLRenderer renderer : renders) {
-                                Composite3D c3d = renderer.getC3D();
-                                c3d.getModifier().switchLockedDat(true);
-                            }
-                        }
-                    }
-                    Editor3DWindow.getWindow().updateTree_selectedDatFile(df);
+                    openIn3D(df);
                 }
             }
         });
@@ -1488,6 +1427,71 @@ public class EditorTextWindow extends EditorTextDesign {
             break;
         }
         return false;
+    }
+
+    public static void openIn3D(DatFile df) {
+        ArrayList<OpenGLRenderer> renders = Editor3DWindow.getRenders();
+
+        if (renders.isEmpty()) {
+
+            if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
+                int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
+                Editor3DWindow.getSashForm().getChildren()[1].dispose();
+                CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
+                df.parseForData(true);
+                Project.setFileToEdit(df);
+                cmp_Container.getComposite3D().setLockableDatFileReference(df);
+                df.getVertexManager().addSnapshot();
+                Editor3DWindow.getSashForm().getParent().layout();
+                Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+            }
+
+        } else {
+
+            boolean canUpdate = false;
+
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (!c3d.isDatFileLockedOnDisplay()) {
+                    canUpdate = true;
+                    break;
+                }
+            }
+
+            if (!canUpdate) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    c3d.getModifier().switchLockedDat(false);
+                }
+            }
+
+            final VertexManager vm = df.getVertexManager();
+            if (vm.isModified()) {
+                df.setText(df.getText());
+            }
+            df.parseForData(true);
+
+            Project.setFileToEdit(df);
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (!c3d.isDatFileLockedOnDisplay()) {
+                    boolean hasState = Editor3DWindow.getWindow().hasState(df, c3d);
+                    c3d.setLockableDatFileReference(df);
+                    if (!hasState) c3d.getModifier().zoomToFit();
+                }
+            }
+
+            df.getVertexManager().addSnapshot();
+
+            if (!canUpdate) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    c3d.getModifier().switchLockedDat(true);
+                }
+            }
+        }
+        Editor3DWindow.getWindow().updateTree_selectedDatFile(df);
     }
 
     @Override
