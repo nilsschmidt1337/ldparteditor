@@ -845,6 +845,8 @@ public final class I18n {
     public static final String META_CSGExtrude6b = META.getString(getProperty());
     public static final String META_CSGExtrude7a = META.getString(getProperty());
     public static final String META_CSGExtrude7b = META.getString(getProperty());
+    public static final String META_CSGJunctionEpsilon1 = META.getString(getProperty());
+    public static final String META_CSGJunctionEpsilon2 = META.getString(getProperty());
     public static final String META_CSGSource1 = META.getString(getProperty());
     public static final String META_CSGSource2 = META.getString(getProperty());
     public static final String META_CSGSource3 = META.getString(getProperty());

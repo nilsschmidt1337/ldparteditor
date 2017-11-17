@@ -423,6 +423,9 @@ public enum DatParser {
                 } else if (line.startsWith("EPSILON", 11)) { //$NON-NLS-1$
                     result.remove(0);
                     result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EPSILON, line, parent)));
+                } else if (line.startsWith("TJUNCTION_EPSILON", 11)) { //$NON-NLS-1$
+                    result.remove(0);
+                    result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.TJUNCTION, line, parent)));
                 } else if (line.startsWith("EXTRUDE", 11)) { //$NON-NLS-1$
                     result.remove(0);
                     result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE, line, parent)));

@@ -121,7 +121,8 @@ public enum DatKeyword {
 
         keywords.add("CSG_QUALITY"); //$NON-NLS-1$
         keywords.add("CSG_EPSILON"); //$NON-NLS-1$
-        keywords.add("CSG_EPSILON_T_JUNCTION"); //$NON-NLS-1$
+        keywords.add("CSG_TJUNCTION_EPSILON"); //$NON-NLS-1$
+        // keywords.add("CSG_EDGE_COLLAPSE_EPSILON"); //$NON-NLS-1$
     }
 
     /**

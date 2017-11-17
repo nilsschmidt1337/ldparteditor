@@ -28,7 +28,6 @@ import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -39,6 +38,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -169,6 +169,7 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_csgCompile_txt  = new Text[1];
     final Text[] ev_csgQuality_txt  = new Text[1];
     final Text[] ev_csgEpsilon_txt  = new Text[1];
+    final Text[] ev_csgTJunctionEpsilon_txt  = new Text[1];
     final Text[] ev_png1_txt  = new Text[1];
     final Text[] ev_png2_txt  = new Text[1];
     final Text[] ev_png3_txt  = new Text[1];
@@ -280,18 +281,18 @@ class EditorMetaDesign extends ApplicationWindow {
                         if (userSettings.getRealUserName() != null) {
                             txt_realName.setText(userSettings.getRealUserName());
                         }
-                        
+
                         Label lbl_author2 = new Label(cmp_author, SWT.NONE);
                         lbl_author2.setText("["); //$NON-NLS-1$
 
                         Text txt_userName = new Text(cmp_author, SWT.SEARCH);
                         txt_userName.setMessage(I18n.META_Username);
                         ev_author_userName_txt[0] = txt_userName;
-                        
+
                         if (userSettings.getLdrawUserName() != null) {
                             txt_userName.setText(userSettings.getLdrawUserName());
                         }
-                        
+
                         Label lbl_author3 = new Label(cmp_author, SWT.NONE);
                         lbl_author3.setText("]"); //$NON-NLS-1$
                     }
@@ -1229,6 +1230,19 @@ class EditorMetaDesign extends ApplicationWindow {
                             txt_csgEpsilon.setMessage(I18n.META_CSGEpsilon1);
                             txt_csgEpsilon.setToolTipText(I18n.META_CSGEpsilon2);
                             ev_csgEpsilon_txt[0] = txt_csgEpsilon;
+                        }
+                    }
+
+                    {
+                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
+                        cmp_lpe.setLayout(new GridLayout(2, false));
+                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
+                        lbl_vertex.setText("0 !LPE CSG_TJUNCTION_EPSILON"); //$NON-NLS-1$
+                        {
+                            Text txt_csgTJunctionEpsilon = new Text(cmp_lpe, SWT.SEARCH);
+                            txt_csgTJunctionEpsilon.setMessage(I18n.META_CSGJunctionEpsilon1);
+                            txt_csgTJunctionEpsilon.setToolTipText(I18n.META_CSGJunctionEpsilon2);
+                            ev_csgTJunctionEpsilon_txt[0] = txt_csgTJunctionEpsilon;
                         }
                     }
 

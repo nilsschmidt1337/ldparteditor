@@ -852,6 +852,20 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
+        ev_csgTJunctionEpsilon_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                updateCSGtjunctionEpsilon();
+            }
+        });
+
+        ev_csgTJunctionEpsilon_txt[0].addModifyListener(new ModifyListener() {
+            @Override
+            public void modifyText(ModifyEvent e) {
+                updateCSGtjunctionEpsilon();
+            }
+        });
+
         ev_csgCompile_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
@@ -998,6 +1012,11 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
     private void updateCSGepsilon() {
         lbl_lineToInsert[0].setText("0 !LPE CSG_EPSILON " + ev_csgEpsilon_txt[0].getText().trim()); //$NON-NLS-1$
+        lbl_lineToInsert[0].getParent().layout();
+    }
+
+    private void updateCSGtjunctionEpsilon() {
+        lbl_lineToInsert[0].setText("0 !LPE CSG_TJUNCTION_EPSILON " + ev_csgTJunctionEpsilon_txt[0].getText().trim()); //$NON-NLS-1$
         lbl_lineToInsert[0].getParent().layout();
     }
 
