@@ -1254,6 +1254,9 @@ public class CompositeTab extends CompositeTabDesign {
                         event.newOffset++;
                         c = compositeText[0].getText().charAt(event.newOffset);
                     }
+                    if (c != ' ' && compositeText[0].getLineAtOffset(event.offset) == (compositeText[0].getLineCount() - 1)) {
+                        event.newOffset = Math.max(len + 1, event.newOffset + 1);
+                    }
                     break;
                 }
             }
