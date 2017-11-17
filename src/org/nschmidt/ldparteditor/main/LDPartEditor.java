@@ -15,7 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.main;
 
-import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.splash.SplashScreen;
 
@@ -38,7 +37,6 @@ public class LDPartEditor {
         NLogger.setDEBUG(args.length == 1 && "DEBUG".equals(args[0])); //$NON-NLS-1$
         NLogger.init();
         new SplashScreen().run();
-        CSG.executorService.shutdown();
         NLogger.flushErrorStream();
     }
 
