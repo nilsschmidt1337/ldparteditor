@@ -900,7 +900,7 @@ public final class VertexManager extends VM99Clipboard {
         }
 
         for (CSG csg : GDataCSG.getCSGs(linkedDatFile)) {
-            for(GData3 triangle : csg.getResult().keySet()) {
+            for(GData3 triangle : csg.getResult(linkedDatFile).keySet()) {
 
                 triQuadVerts[0] = new Vertex(triangle.x1, triangle.y1, triangle.z1);
                 triQuadVerts[1] = new Vertex(triangle.x2, triangle.y2, triangle.z2);

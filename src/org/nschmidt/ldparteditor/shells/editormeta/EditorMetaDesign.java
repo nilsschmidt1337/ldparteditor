@@ -171,6 +171,7 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_csgEpsilon_txt  = new Text[1];
     final Text[] ev_csgTJunctionEpsilon_txt  = new Text[1];
     final Text[] ev_csgEdgeCollapseEpsilon_txt  = new Text[1];
+    final NButton[] ev_csgDontOptimize_btn = new NButton[1];
     final Text[] ev_png1_txt  = new Text[1];
     final Text[] ev_png2_txt  = new Text[1];
     final Text[] ev_png3_txt  = new Text[1];
@@ -1258,6 +1259,12 @@ class EditorMetaDesign extends ApplicationWindow {
                             txt_csgEdgeCollapseEpsilon.setToolTipText(I18n.META_CSGCollapse2);
                             ev_csgEdgeCollapseEpsilon_txt[0] = txt_csgEdgeCollapseEpsilon;
                         }
+                    }
+
+                    {
+                        NButton btn_dontoptimize = new NButton(grp_meta, SWT.NONE);
+                        btn_dontoptimize.setText("0 !LPE CSG_DONT_OPTIMISE"); //$NON-NLS-1$
+                        ev_csgDontOptimize_btn[0] = btn_dontoptimize;
                     }
 
                     {
