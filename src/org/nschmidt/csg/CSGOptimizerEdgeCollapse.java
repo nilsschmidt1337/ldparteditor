@@ -17,13 +17,12 @@ import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 
-enum CSGOptimizerEdgeCollapse {
+public enum CSGOptimizerEdgeCollapse {
     INSTANCE;
 
-    // TODO This epsilon should be accessible by the user!
     public static volatile double epsilon = 0.9999;
 
-    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization) {
+    static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization) {
         boolean result = false;
 
         for (List<GData3> triangles : trianglesPerPlane.values()) {

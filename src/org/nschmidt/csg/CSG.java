@@ -140,6 +140,7 @@ public class CSG {
     public static final byte EXTRUDE = 14;
     public static final byte EXTRUDE_CFG = 15;
     public static final byte TJUNCTION = 16;
+    public static final byte COLLAPSE = 17;
 
     /**
      * Constructs a CSG from a list of {@link Polygon} instances.
