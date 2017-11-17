@@ -170,6 +170,7 @@ class EditorMetaDesign extends ApplicationWindow {
     final Text[] ev_csgQuality_txt  = new Text[1];
     final Text[] ev_csgEpsilon_txt  = new Text[1];
     final Text[] ev_csgTJunctionEpsilon_txt  = new Text[1];
+    final Text[] ev_csgEdgeCollapseEpsilon_txt  = new Text[1];
     final Text[] ev_png1_txt  = new Text[1];
     final Text[] ev_png2_txt  = new Text[1];
     final Text[] ev_png3_txt  = new Text[1];
@@ -1243,6 +1244,19 @@ class EditorMetaDesign extends ApplicationWindow {
                             txt_csgTJunctionEpsilon.setMessage(I18n.META_CSGJunctionEpsilon1);
                             txt_csgTJunctionEpsilon.setToolTipText(I18n.META_CSGJunctionEpsilon2);
                             ev_csgTJunctionEpsilon_txt[0] = txt_csgTJunctionEpsilon;
+                        }
+                    }
+
+                    {
+                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
+                        cmp_lpe.setLayout(new GridLayout(2, false));
+                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
+                        lbl_vertex.setText("0 !LPE CSG_EDGE_COLLAPSE_EPSILON"); //$NON-NLS-1$
+                        {
+                            Text txt_csgEdgeCollapseEpsilon = new Text(cmp_lpe, SWT.SEARCH);
+                            txt_csgEdgeCollapseEpsilon.setMessage(I18n.META_CSGCollapse1);
+                            txt_csgEdgeCollapseEpsilon.setToolTipText(I18n.META_CSGCollapse2);
+                            ev_csgEdgeCollapseEpsilon_txt[0] = txt_csgEdgeCollapseEpsilon;
                         }
                     }
 

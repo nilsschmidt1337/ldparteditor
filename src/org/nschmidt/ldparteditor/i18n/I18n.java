@@ -826,6 +826,8 @@ public final class I18n {
     public static final String MESHREDUCE_Title = MESHREDUCE.getString(getProperty());
     public static final String META_Author = META.getString(getProperty());
     public static final String META_BackFaceCulling = META.getString(getProperty());
+    public static final String META_CSGCollapse1 = META.getString(getProperty());
+    public static final String META_CSGCollapse2 = META.getString(getProperty());
     public static final String META_CSGCompile = META.getString(getProperty());
     public static final String META_CSGEpsilon1 = META.getString(getProperty());
     public static final String META_CSGEpsilon2 = META.getString(getProperty());

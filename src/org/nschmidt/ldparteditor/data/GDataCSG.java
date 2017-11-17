@@ -45,6 +45,7 @@ import org.nschmidt.csg.CSGCube;
 import org.nschmidt.csg.CSGCylinder;
 import org.nschmidt.csg.CSGExtrude;
 import org.nschmidt.csg.CSGMesh;
+import org.nschmidt.csg.CSGOptimizerEdgeCollapse;
 import org.nschmidt.csg.CSGOptimizerTJunction;
 import org.nschmidt.csg.CSGQuad;
 import org.nschmidt.csg.CSGSphere;
@@ -295,6 +296,24 @@ public final class GDataCSG extends GData {
                     double q = Double.parseDouble(data_segments[3]);
                     if (q > 0d) {
                         CSGOptimizerTJunction.epsilon = q;
+                    }
+                } catch (NumberFormatException e) {
+                }
+                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+            } else {
+                ref1 = null;
+            }
+            ref2 = null;
+            ref3 = null;
+            colour = null;
+            matrix = null;
+            break;
+        case CSG.COLLAPSE:
+            if (data_segments.length == 4) {
+                try {
+                    double q = Double.parseDouble(data_segments[3]);
+                    if (q > 0d && q <= 1d) {
+                        CSGOptimizerEdgeCollapse.epsilon = q;
                     }
                 } catch (NumberFormatException e) {
                 }
@@ -1120,7 +1139,7 @@ public final class GDataCSG extends GData {
 
     public synchronized boolean canSelect() {
         if (ref1 != null && ref2 == null && ref3 == null && type != CSG.COMPILE) {
-            if (ref1.endsWith("#>null") && type != CSG.QUALITY && type != CSG.EPSILON && type != CSG.TJUNCTION) { //$NON-NLS-1$
+            if (ref1.endsWith("#>null") && type != CSG.QUALITY && type != CSG.EPSILON && type != CSG.TJUNCTION && type != CSG.COLLAPSE) { //$NON-NLS-1$
                 return true;
             }
         }

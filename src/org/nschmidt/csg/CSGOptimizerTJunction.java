@@ -16,7 +16,6 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 public enum CSGOptimizerTJunction {
     INSTANCE;
 
-    // TODO This epsilon should be accessible by the user!
     public static volatile double epsilon = .1;
 
     static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization) {

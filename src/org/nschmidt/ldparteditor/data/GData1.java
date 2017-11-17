@@ -2070,6 +2070,7 @@ public final class GData1 extends GData {
                 case CSG.QUALITY:
                 case CSG.EPSILON:
                 case CSG.TJUNCTION:
+                case CSG.COLLAPSE:
                 case CSG.EXTRUDE_CFG:
                     lineBuilder8.append(g8.getNiceString());
                     break;
