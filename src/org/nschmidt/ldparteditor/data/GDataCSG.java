@@ -56,6 +56,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
+import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
@@ -599,6 +600,23 @@ public final class GDataCSG extends GData {
             static_lock.lock();
             switch (type) {
             case CSG.COMPILE:
+
+                if (compiledCSG == null) {
+                    // Try to do a rebuild
+                    final List<GDataCSG> csgData = new ArrayList<>();
+                    final DatFile df = Inliner.datfile;
+                    GDataCSG.resetCSG(df, true);
+                    GData g = df.getDrawChainStart();
+                    while ((g = g.next) != null) {
+                        if (g instanceof GDataCSG) {
+                            csgData.add((GDataCSG) g);
+                        }
+                    }
+                    for (GDataCSG csg : csgData) {
+                        csg.drawAndParse(null, df, false);
+                    }
+                }
+
                 if (compiledCSG != null) {
 
                     final StringBuilder sb = new StringBuilder();

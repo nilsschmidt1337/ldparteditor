@@ -47,6 +47,7 @@ public enum Inliner {
     public static boolean withSubfileReference = false;
     public static boolean recursively = false;
     public static boolean noComment = false;
+    public static DatFile datfile;
 
     /**
      * Inlines selected lines (clears the selection)
@@ -170,11 +171,13 @@ public enum Inliner {
             }
             text2 = sb.toString();
         }
+        Inliner.datfile = datFile;
         for (Integer l : lineNumbers) {
             String line = getLine(l, text2);
             NLogger.debug(Inliner.class, "Inlining: {0}", line); //$NON-NLS-1$
             text2 = Inliner.inline(l, line, text2, datFile, false);
         }
+        Inliner.datfile = null;
         cText.setText(restoreLineTermination(text2));
         int tl = cText.getText().length();
         try {
