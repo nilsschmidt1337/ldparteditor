@@ -837,6 +837,7 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glPopMatrix();
 
             if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
+                GL11.glLineWidth(2f);
                 if (!modifiedManipulator)
                     GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDisable(GL11.GL_LIGHTING);
