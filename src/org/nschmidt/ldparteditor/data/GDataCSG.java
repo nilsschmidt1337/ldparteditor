@@ -373,7 +373,10 @@ public final class GDataCSG extends GData {
             df.setOptimizingCSG(false);
         }
 
-        final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true) || (type == CSG.MESH || type == CSG.EXTRUDE) && CSGMesh.needCacheRefresh(cachedData, this, df);
+        final boolean clearCaches = clearPolygonCache.putIfAbsent(df, true)
+                || type == CSG.MESH && CSGMesh.needCacheRefresh(cachedData, this, df)
+                || type == CSG.EXTRUDE && CSGExtrude.needCacheRefresh(cachedData, this, df);
+
         if (clearCaches) {
             clearPolygonCache.put(df, true);
         }
