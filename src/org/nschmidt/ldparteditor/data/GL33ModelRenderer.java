@@ -41,6 +41,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.StudLogo;
@@ -1497,6 +1498,40 @@ public class GL33ModelRenderer {
                                         }
                                         continue;
                                     }
+                                    case 7:
+                                    {
+                                        pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                        pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(3, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                        pointAt(4, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                        pointAt(5, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+
+                                        colourise(0, 6, 0f, 0f, 1f, gd3.a, triangleData, tempIndex);
+
+                                        if (smoothShading) {
+                                            normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                            normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                            normal(2, 1, xn3, yn3, zn3, triangleData, tempIndex);
+                                            normal(3, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                            normal(4, 1, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                            normal(5, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                        } else {
+                                            if (gw.negativeDeterminant) {
+                                                normal(0, 3, xn, yn, zn, triangleData, tempIndex);
+                                                normal(3, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                            } else {
+                                                normal(0, 3, -xn, -yn, -zn, triangleData, tempIndex);
+                                                normal(3, 3, xn, yn, zn, triangleData, tempIndex);
+                                            }
+                                        }
+                                        if (transparent) {
+                                            transparentTriangleIndex += 6;
+                                        } else {
+                                            triangleIndex += 6;
+                                        }
+                                        continue;
+                                    }
                                     case 3:
                                     {
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
@@ -1882,6 +1917,66 @@ public class GL33ModelRenderer {
                                     default:
                                         break;
                                     }
+                                    if (smoothShading) {
+                                        normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                        normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
+                                        normal(2, 2, xn3, yn3, zn3, triangleData, tempIndex);
+                                        normal(4, 1, xn4, yn4, zn4, triangleData, tempIndex);
+                                        normal(5, 1, xn1, yn1, zn1, triangleData, tempIndex);
+                                        normal(6, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                        normal(7, 1, -xn4, -yn4, -zn4, triangleData, tempIndex);
+                                        normal(8, 2, -xn3, -yn3, -zn3, triangleData, tempIndex);
+                                        normal(10, 1, -xn2, -yn2, -zn2, triangleData, tempIndex);
+                                        normal(11, 1, -xn1, -yn1, -zn1, triangleData, tempIndex);
+                                    } else {
+                                        if (gw.negativeDeterminant) {
+                                            normal(0, 6, xn, yn, zn, triangleData, tempIndex);
+                                            normal(6, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                        } else {
+                                            normal(0, 6, -xn, -yn, -zn, triangleData, tempIndex);
+                                            normal(6, 6, xn, yn, zn, triangleData, tempIndex);
+                                        }
+                                    }
+                                    if (transparent) {
+                                        transparentTriangleIndex += 12;
+                                    } else {
+                                        triangleIndex += 12;
+                                    }
+                                    continue;
+                                }
+                                case 7:
+                                {
+                                    pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(3, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(4, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                                    pointAt(6, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+                                    pointAt(7, v[3].x, v[3].y, v[3].z, triangleData, tempIndex);
+                                    pointAt(8, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(9, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
+                                    pointAt(10, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
+                                    pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
+
+                                    final double angle = gd4.calculateAngle();
+                                    float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarity_angle_warning) / Threshold.coplanarity_angle_error);
+
+                                    float r = 0f;
+                                    float g = 0f;
+                                    float b = 0f;
+
+                                    if (f < .5) {
+                                        g = f / .5f;
+                                        b = (1f - g);
+                                    } else {
+                                        r = (f - .5f) / .5f;
+                                        g = (1f - r);
+                                    }
+
+                                    colourise(0, 12, r, g, b, gd4.a, triangleData, tempIndex);
+
                                     if (smoothShading) {
                                         normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
                                         normal(1, 1, xn2, yn2, zn2, triangleData, tempIndex);
