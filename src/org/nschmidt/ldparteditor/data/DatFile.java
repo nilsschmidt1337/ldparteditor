@@ -252,6 +252,12 @@ public final class DatFile {
                 data2draw.drawGL20_WhileAddCondlines(c3d);
             }
             break;
+        case 7: // Special mode for coplanar quads
+            data2draw.drawGL20_CoplanarityHeatmap(c3d);
+            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                data2draw.drawGL20_CoplanarityHeatmap(c3d);
+            }
+            break;
         default:
             break;
         }

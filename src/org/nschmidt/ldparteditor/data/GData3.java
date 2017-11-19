@@ -1209,6 +1209,40 @@ public final class GData3 extends GData {
     }
 
     @Override
+    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+        if (!visible)
+            return;
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+            return;
+        if (!isTriangle) {
+            drawProtractor_GL20(false, c3d, X1, Y1, Z1, X2, Y2, Z2, X3, Y3, Z3);
+            return;
+        }
+        GL11.glBegin(GL11.GL_TRIANGLES);
+        GL11.glColor4f(0f, 0f, 1f, a);
+        if (GData.globalNegativeDeterminant) {
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+        } else {
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+        }
+        GL11.glEnd();
+    }
+
+    @Override
     public int type() {
         return 3;
     }

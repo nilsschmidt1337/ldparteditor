@@ -264,6 +264,7 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmBFCReal = new MenuItem[1];
     final MenuItem[] mntmBFCTextured = new MenuItem[1];
     public final MenuItem[] mntmCondlineMode = new MenuItem[1];
+    public final MenuItem[] mntmCoplanarityHeatmapMode = new MenuItem[1];
     public final MenuItem[] mntmWireframeMode = new MenuItem[1];
     final MenuItem[] mntmAnaglyph = new MenuItem[1];
     final MenuItem[] mntmAxis = new MenuItem[1];
@@ -1365,6 +1366,18 @@ public class Composite3D extends ScalableComposite {
             });
             mntmCondlineMode.setText(I18n.C3D_CondlineMode);
 
+            final MenuItem mntmCoplanarityHeatmapMode = new MenuItem(mnu_renderMode, SWT.CHECK);
+            this.mntmCoplanarityHeatmapMode[0] = mntmCoplanarityHeatmapMode;
+            mntmCoplanarityHeatmapMode.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                    ((MenuItem) e.widget).setSelection(true);
+                    c3d_modifier.setRenderMode(7);
+                    getRenderer().disposeAllTextures();
+                }
+            });
+            mntmCoplanarityHeatmapMode.setText(I18n.C3D_CoplanarityMode);
 
             final MenuItem mntmWireframeMode = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmWireframeMode[0] = mntmWireframeMode;
@@ -2240,6 +2253,10 @@ public class Composite3D extends ScalableComposite {
         return mntmCondlineMode[0];
     }
 
+    public MenuItem getMntmCoplanarityHeatmapMode() {
+        return mntmCoplanarityHeatmapMode[0];
+    }
+
     public MenuItem getMntmWireframeMode() {
         return mntmWireframeMode[0];
     }
@@ -2734,6 +2751,9 @@ public class Composite3D extends ScalableComposite {
         case 6: // Special mode for "Add condlines"
             mntmCondlineMode[0].setSelection(true);
             break;
+        case 7: // Special mode for coplanar quads
+            mntmCoplanarityHeatmapMode[0].setSelection(true);
+            break;
         default:
             break;
         }
@@ -2797,6 +2817,7 @@ public class Composite3D extends ScalableComposite {
         getMntmBFCReal().setSelection(renderMode == 4);
         getMntmBFCTextured().setSelection(renderMode == 5);
         getMntmCondlineMode().setSelection(renderMode == 6);
+        getMntmCoplanarityHeatmapMode().setSelection(renderMode == 7);
         getMntmWireframeMode().setSelection(renderMode == -1);
 
         if (getMntmSmoothShading() != null) {

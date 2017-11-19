@@ -109,6 +109,7 @@ public final class I18n {
     public static final String C3D_Anaglyph3D = C3D.getString(getProperty());
     public static final String C3D_CondlineMode = C3D.getString(getProperty());
     public static final String C3D_CondlineVertices = C3D.getString(getProperty());
+    public static final String C3D_CoplanarityMode = C3D.getString(getProperty());
     public static final String C3D_GreenRed = C3D.getString(getProperty());
     public static final String C3D_GridSize = C3D.getString(getProperty());
     public static final String C3D_HiddenVertices = C3D.getString(getProperty());

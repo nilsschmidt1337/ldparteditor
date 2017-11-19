@@ -26,7 +26,7 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
  *
  */
 interface IGData {
-    
+
     public void drawGL20(Composite3D c3d);
 
     public void drawGL20_RandomColours(Composite3D c3d);
@@ -42,7 +42,9 @@ interface IGData {
     public void drawGL20_BFC_Textured(Composite3D c3d);
 
     public void drawGL20_WhileAddCondlines(Composite3D c3d);
-        
+
+    public void drawGL20_CoplanarityHeatmap(Composite3D c3d);
+
     public void getBFCorientationMap(HashMap<GData, Byte> map);
     public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map);
     public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map);
@@ -50,7 +52,7 @@ interface IGData {
     public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
     public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
     public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
-    
+
     public String inlinedString(byte bfcStatusTarget, GColour colour);
 
     public String transformAndColourReplace(String colour, Matrix matrix);
