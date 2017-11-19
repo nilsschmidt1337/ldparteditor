@@ -870,6 +870,11 @@ public final class GData5 extends GData {
     }
 
     @Override
+    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+        drawGL20(c3d);
+    }
+
+    @Override
     public int type() {
         return 5;
     }

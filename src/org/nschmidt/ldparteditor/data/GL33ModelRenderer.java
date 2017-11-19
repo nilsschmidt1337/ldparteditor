@@ -1001,6 +1001,7 @@ public class GL33ModelRenderer {
                                     case 2:
                                     case 3:
                                     case 6:
+                                    case 7:
                                         local_triangleSize += 60;
                                         if (gd3.a < 1f) {
                                             transparentTriangleVertexCount += 6;
@@ -1048,6 +1049,7 @@ public class GL33ModelRenderer {
                                 case 2:
                                 case 3:
                                 case 6:
+                                case 7:
                                     local_triangleSize += 120;
                                     if (gd4.a < 1f) {
                                         transparentTriangleVertexCount += 12;

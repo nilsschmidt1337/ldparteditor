@@ -73,6 +73,10 @@ public final class GData0 extends GData {
     }
 
     @Override
+    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+    }
+
+    @Override
     public void drawGL20_BFC_Textured(Composite3D c3d) {
         // done :)
         if (GData.globalFoundTEXMAPNEXT && !text.equals("")) { //$NON-NLS-1$

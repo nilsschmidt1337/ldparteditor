@@ -418,6 +418,11 @@ public final class GDataPNG extends GData {
     }
 
     @Override
+    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+        drawGL20(c3d);
+    }
+
+    @Override
     public void drawGL20_BFC_Textured(Composite3D c3d) {}
 
     @Override

@@ -78,47 +78,7 @@ public final class GData4 extends GData {
     public final float yn;
     public final float zn;
 
-    public GData4(final int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4,
-            Vector3d normal, GData1 parent, DatFile datFile) {
-
-        super(parent);
-        this.colourNumber = colourNumber;
-        this.r = r;
-        this.g = g;
-        this.b = b;
-        this.a = a;
-        this.x1 = x1 * 1000f;
-        this.y1 = y1 * 1000f;
-        this.z1 = z1 * 1000f;
-        this.x2 = x2 * 1000f;
-        this.y2 = y2 * 1000f;
-        this.z2 = z2 * 1000f;
-        this.x3 = x3 * 1000f;
-        this.y3 = y3 * 1000f;
-        this.z3 = z3 * 1000f;
-        this.x4 = x4 * 1000f;
-        this.y4 = y4 * 1000f;
-        this.z4 = z4 * 1000f;
-        float xn = -normal.getXf();
-        float yn = -normal.getYf();
-        float zn = -normal.getZf();
-        this.xn = xn;
-        this.yn = yn;
-        this.zn = zn;
-        datFile.getVertexManager().add(this);
-        this.X1 = null;
-        this.Y1 = null;
-        this.Z1 = null;
-        this.X2 = null;
-        this.Y2 = null;
-        this.Z2 = null;
-        this.X3 = null;
-        this.Y3 = null;
-        this.Z3 = null;
-        this.X4 = null;
-        this.Y4 = null;
-        this.Z4 = null;
-    }
+    private double angle = -1;
 
     public GData4(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
             BigDecimal z3, BigDecimal x4, BigDecimal y4, BigDecimal z4, Vector3d normal, GData1 parent, DatFile datFile) {
@@ -1296,6 +1256,55 @@ public final class GData4 extends GData {
     }
 
     @Override
+    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+        calculateAngle();
+        float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarity_angle_warning) / Threshold.coplanarity_angle_error);
+
+        float r = 0f;
+        float g = 0f;
+        float b = 0f;
+
+        if (f < .5) {
+            g = f / .5f;
+            b = (1f - g);
+        } else {
+            r = (f - .5f) / .5f;
+            g = (1f - r);
+        }
+
+        if (!visible)
+            return;
+        if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
+            return;
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glColor4f(r, g, b, a);
+        if (GData.globalNegativeDeterminant) {
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x4, y4, z4);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x4, y4, z4);
+        } else {
+            GL11.glNormal3f(-xn, -yn, -zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x4, y4, z4);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glNormal3f(xn, yn, zn);
+            GL11.glVertex3f(x1, y1, z1);
+            GL11.glVertex3f(x2, y2, z2);
+            GL11.glVertex3f(x3, y3, z3);
+            GL11.glVertex3f(x4, y4, z4);
+        }
+        GL11.glEnd();
+    }
+
+    @Override
     public int type() {
         return 4;
     }
@@ -1622,6 +1631,28 @@ public final class GData4 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(Z4));
         return lineBuilder.toString();
+    }
+
+    public double calculateAngle() {
+        if (angle < 0) {
+            Vector3d[] normals = new Vector3d[4];
+            Vector3d[] lineVectors = new Vector3d[4];
+            Vector3d vertexA = new Vector3d(X1, Y1, Z1);
+            Vector3d vertexB = new Vector3d(X2, Y2, Z2);
+            Vector3d vertexC = new Vector3d(X3, Y3, Z3);
+            Vector3d vertexD = new Vector3d(X4, Y4, Z4);
+            lineVectors[0] = Vector3d.sub(vertexB, vertexA);
+            lineVectors[1] = Vector3d.sub(vertexC, vertexB);
+            lineVectors[2] = Vector3d.sub(vertexD, vertexC);
+            lineVectors[3] = Vector3d.sub(vertexA, vertexD);
+            normals[0] = Vector3d.cross(lineVectors[0], lineVectors[1]);
+            normals[1] = Vector3d.cross(lineVectors[1], lineVectors[2]);
+            normals[2] = Vector3d.cross(lineVectors[2], lineVectors[3]);
+            normals[3] = Vector3d.cross(lineVectors[3], lineVectors[0]);
+
+            angle = Math.max(Vector3d.angle(normals[0], normals[2]), Vector3d.angle(normals[1], normals[3]));
+        }
+        return angle;
     }
 
     public boolean isCollinear() {

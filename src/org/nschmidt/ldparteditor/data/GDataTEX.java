@@ -69,6 +69,9 @@ public final class GDataTEX extends GData {
     }
 
     @Override
+    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {}
+
+    @Override
     public void drawGL20_BFC_Textured(Composite3D c3d) {
         boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
         if (GData.globalFoundTEXMAPNEXT) {

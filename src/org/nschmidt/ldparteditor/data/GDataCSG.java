@@ -631,6 +631,11 @@ public final class GDataCSG extends GData {
     }
 
     @Override
+    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+        drawAndParse(c3d);
+    }
+
+    @Override
     public int type() {
         return 8;
     }
