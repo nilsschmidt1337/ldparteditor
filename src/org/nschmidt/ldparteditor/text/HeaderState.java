@@ -52,7 +52,7 @@ public class HeaderState {
     private int lineTITLE = 0;
     private int lineNAME = 0;
     private int lineAUTHOR = 0;
-    private int lineTYPE = 0;
+    private int lineTYPE = -1;
     private int lineLICENSE = 0;
     private int lineHELP_start = 0;
     private int lineHELP_end = 0;

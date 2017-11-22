@@ -78,6 +78,10 @@ final class HintFixer {
                 l = h.getLineNAME();
             if (h.hasAUTHOR())
                 l = h.getLineAUTHOR();
+            if (!h.hasTYPE() && h.getLineTYPE() > -1) {
+                l = h.getLineTYPE();
+                text = QuickFixer.setLine(l, "<rm>", text); //$NON-NLS-1$
+            }
             if (type == DatType.SUBPART)
                 text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Subpart<br>", text); //$NON-NLS-1$
             else if (type == DatType.PRIMITIVE)

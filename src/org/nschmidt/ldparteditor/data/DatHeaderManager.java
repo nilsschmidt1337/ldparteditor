@@ -226,12 +226,18 @@ public class DatHeaderManager {
                                                 h.setHasTYPE(true);
                                                 headerState = HeaderState._04_LICENSE;
                                                 break;
+                                            } else if ("0 !LDRAW_ORG".equals(normalizedLine)) { //$NON-NLS-1$
+                                                h.setLineTYPE(lineNumber);
+                                                h.setHasTYPE(false);
+                                                headerState = HeaderState._04_LICENSE;
+                                                break;
                                             } else { // Its something else..
                                                 headerState = HeaderState._04_LICENSE;
                                             }
                                         } else {
                                             // I don't expect that this line is a valid Type
-                                            if ("0 !LDRAW_ORG Unofficial_Part".equals(normalizedLine) //$NON-NLS-1$
+                                            if ("0 !LDRAW_ORG".equals(normalizedLine) //$NON-NLS-1$
+                                                    || "0 !LDRAW_ORG Unofficial_Part".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_Subpart".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_Primitive".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_8_Primitive".equals(normalizedLine) //$NON-NLS-1$
@@ -243,7 +249,7 @@ public class DatHeaderManager {
                                                     || "0 !LDRAW_ORG Unofficial_Part Alias".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_Part Physical_Colour".equals(normalizedLine)) { //$NON-NLS-1$
                                                 // Its duplicated
-                                                if (h.hasTYPE()) {
+                                                if (h.hasTYPE() || h.getLineTYPE() > -1) {
                                                     registerHint(gd, lineNumber, "31", I18n.DATPARSER_DuplicatedType, registered, allHints); //$NON-NLS-1$
                                                 } else {
                                                     if (headerState > HeaderState._03_TYPE) { // Its misplaced
