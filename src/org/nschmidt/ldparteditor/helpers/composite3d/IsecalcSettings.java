@@ -21,7 +21,7 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
  *
  */
 public class IsecalcSettings {
-    private int scope = 0;
+    private int scope = 1;
     public int getScope() {
         return scope;
     }
