@@ -435,6 +435,7 @@ public final class I18n {
     public static final String E3D_IconSize6 = E3D.getString(getProperty());
     public static final String E3D_Image = E3D.getString(getProperty());
     public static final String E3D_InsertAtCursorPosition = E3D.getString(getProperty());
+    public static final String E3D_IntersectionPointsQuestion = E3D.getString(getProperty());
     public static final String E3D_Intersector = E3D.getString(getProperty());
     public static final String E3D_InvalidColour = E3D.getString(getProperty());
     public static final String E3D_InvalidFilename = E3D.getString(getProperty());

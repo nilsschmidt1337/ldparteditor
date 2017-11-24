@@ -15,14 +15,23 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.ProgressMonitorDialog;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
+import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 public class VM26LineIntersector extends VM25Smooth {
 
@@ -30,11 +39,20 @@ public class VM26LineIntersector extends VM25Smooth {
         super(linkedDatFile);
     }
 
-    public void intersectionVerticesBetweenLines3D() {
+    public void intersectionVerticesBetweenLines3D(boolean showPopup) {
 
         final Set<GData2> linesToIntersect = new HashSet<>();
 
         if (selectedLines.isEmpty()) {
+            if (showPopup) {
+                MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
+                messageBox.setText(I18n.E3D_LineIntersection);
+                messageBox.setMessage(I18n.E3D_IntersectionPointsQuestion);
+                int result = messageBox.open();
+                if (result != SWT.YES) {
+                    return;
+                }
+            }
             linesToIntersect.addAll(lines.keySet());
         } else {
             linesToIntersect.addAll(selectedLines);
@@ -64,24 +82,76 @@ public class VM26LineIntersector extends VM25Smooth {
         Set<Vertex> intersectionPoints = new TreeSet<Vertex>();
 
         // Calculate intersection points
-        int i = 0;
-        int j = 0;
-        for (Iterator<ArrayList<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {
-            ArrayList<Vector3dd> line = iterator.next();
-            i++;
-            j = 0;
-            for (ArrayList<Vector3dd> line2 : linesToParse) {
-                j++;
-                if (j > i) {
-                    TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
-                    for(int l = 0; l < 2; l++) {
-                        allVertices.add(line.get(l));
-                        allVertices.add(line2.get(l));
+
+
+        if (showPopup) {
+            try
+            {
+                new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
+                {
+                    @Override
+                    public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+                    {
+                        try
+                        {
+                            monitor.beginTask(I18n.VM_SearchIntersection, linesToParse.size());
+                            int i = 0;
+                            int j = 0;
+                            for (Iterator<ArrayList<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {
+                                if (monitor.isCanceled()) break;
+                                ArrayList<Vector3dd> line = iterator.next();
+                                i++;
+                                j = 0;
+                                for (ArrayList<Vector3dd> line2 : linesToParse) {
+                                    j++;
+                                    if (j > i) {
+                                        if (monitor.isCanceled()) break;
+                                        TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
+                                        for(int l = 0; l < 2; l++) {
+                                            allVertices.add(line.get(l));
+                                            allVertices.add(line2.get(l));
+                                        }
+                                        if (allVertices.size() == 4) {
+                                            Vector3d ip = intersectLineLineSegmentUnidirectional2(line.get(0), line.get(1), line2.get(0), line2.get(1));
+                                            if (ip != null) {
+                                                intersectionPoints.add(new Vertex(ip));
+                                            }
+                                        }
+                                    }
+                                }
+                                monitor.worked(1);
+                            }
+                        } catch (Exception ex) {
+                            NLogger.error(getClass(), ex);
+                        } finally {
+                            monitor.done();
+                        }
                     }
-                    if (allVertices.size() == 4) {
-                        Vector3d ip = intersectLineLineSegmentUnidirectional2(line.get(0), line.get(1), line2.get(0), line2.get(1));
-                        if (ip != null) {
-                            intersectionPoints.add(new Vertex(ip));
+                });
+            }
+            catch (InvocationTargetException consumed) {
+            } catch (InterruptedException consumed) {
+            }
+        } else {
+            int i = 0;
+            int j = 0;
+            for (Iterator<ArrayList<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {
+                ArrayList<Vector3dd> line = iterator.next();
+                i++;
+                j = 0;
+                for (ArrayList<Vector3dd> line2 : linesToParse) {
+                    j++;
+                    if (j > i) {
+                        TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
+                        for(int l = 0; l < 2; l++) {
+                            allVertices.add(line.get(l));
+                            allVertices.add(line2.get(l));
+                        }
+                        if (allVertices.size() == 4) {
+                            Vector3d ip = intersectLineLineSegmentUnidirectional2(line.get(0), line.get(1), line2.get(0), line2.get(1));
+                            if (ip != null) {
+                                intersectionPoints.add(new Vertex(ip));
+                            }
                         }
                     }
                 }
