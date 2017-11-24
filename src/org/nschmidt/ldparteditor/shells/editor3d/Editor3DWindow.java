@@ -1942,7 +1942,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
-                    Project.getFileToEdit().getVertexManager().intersectionVerticesBetweenLines3D();
+                    Project.getFileToEdit().getVertexManager().intersectionVerticesBetweenLines3D(true);
                 }
                 regainFocus();
             }
