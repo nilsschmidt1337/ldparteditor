@@ -212,6 +212,7 @@ public class DatHeaderManager {
                                         if (headerState == HeaderState._03_TYPE) {
                                             // I expect that this line is a valid Type
                                             if ("0 !LDRAW_ORG Unofficial_Part".equals(normalizedLine) //$NON-NLS-1$
+                                                    || "0 !LDRAW_ORG Unofficial_Part Flexible_Section".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_Subpart".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_Primitive".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_48_Primitive".equals(normalizedLine) //$NON-NLS-1$
@@ -238,6 +239,7 @@ public class DatHeaderManager {
                                             // I don't expect that this line is a valid Type
                                             if ("0 !LDRAW_ORG".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_Part".equals(normalizedLine) //$NON-NLS-1$
+                                                    || "0 !LDRAW_ORG Unofficial_Part Flexible_Section".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_Subpart".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_Primitive".equals(normalizedLine) //$NON-NLS-1$
                                                     || "0 !LDRAW_ORG Unofficial_8_Primitive".equals(normalizedLine) //$NON-NLS-1$
