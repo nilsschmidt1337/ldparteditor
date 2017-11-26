@@ -21,9 +21,13 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
+import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 class VM16Subdivide extends VM15Flipper {
 
@@ -31,9 +35,27 @@ class VM16Subdivide extends VM15Flipper {
         super(linkedDatFile);
     }
 
-    public void subdivideCatmullClark() {
+    public void subdivideCatmullClark(boolean showDialog) {
+
 
         if (linkedDatFile.isReadOnly()) return;
+
+        if (showDialog) {
+            if (selectedQuads.isEmpty() && selectedTriangles.isEmpty()) {
+                final MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                messageBox.setText(I18n.DIALOG_Info);
+                messageBox.setMessage(I18n.E3D_SubdivideNoSelection);
+                messageBox.open();
+                return;
+            }
+
+            final MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+            messageBox.setText(I18n.DIALOG_Warning);
+            messageBox.setMessage(I18n.E3D_SubdivideWarningCatmullClark);
+            if (messageBox.open() != SWT.YES) {
+                return;
+            }
+        }
 
         // Backup selected surfaces
         HashSet<GData> surfsToParse = new HashSet<GData>();
@@ -197,9 +219,27 @@ class VM16Subdivide extends VM15Flipper {
 
     }
 
-    public void subdivideLoop() {
+    public void subdivideLoop(boolean showDialog) {
 
         if (linkedDatFile.isReadOnly()) return;
+
+        if (showDialog) {
+            if (selectedQuads.isEmpty() && selectedTriangles.isEmpty()) {
+                final MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
+                messageBox.setText(I18n.DIALOG_Info);
+                messageBox.setMessage(I18n.E3D_SubdivideNoSelection);
+                messageBox.open();
+                return;
+            }
+
+            final MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
+            messageBox.setText(I18n.DIALOG_Warning);
+            messageBox.setMessage(I18n.E3D_SubdivideWarningLoop);
+            if (messageBox.open() != SWT.YES) {
+                return;
+            }
+        }
+
 
         // Backup selected surfaces
         HashSet<GData3> surfsToParse = new HashSet<GData3>();
