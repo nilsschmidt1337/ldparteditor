@@ -254,6 +254,7 @@ public final class I18n {
     public static final String DATFILE_MissingLicense = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingPartType = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingTitle = DATFILE.getString(getProperty());
+    public static final String DATFILE_MissingUnofficial = DATFILE.getString(getProperty());
     public static final String DATPARSER_CollinearVertices = DATPARSER.getString(getProperty());
     public static final String DATPARSER_ConcaveQuadrilateral = DATPARSER.getString(getProperty());
     public static final String DATPARSER_Coplanarity = DATPARSER.getString(getProperty());

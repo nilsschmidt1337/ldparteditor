@@ -93,6 +93,14 @@ final class HintFixer {
             else
                 text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Part<br>", text); //$NON-NLS-1$
             break;
+        case 49: // The "Unofficial_" prefix is missing from the part type
+            l = 0;
+            if (h.hasTYPE() && !h.hasUNOFFICIAL() && h.getLineTYPE() > -1) {
+                l = h.getLineTYPE();
+                final String typeLine = QuickFixer.getLine(l - 1, text);
+                text = QuickFixer.setLine(l, typeLine.replace("!LDRAW_ORG ", "!LDRAW_ORG Unofficial_"), text); //$NON-NLS-1$ //$NON-NLS-2$
+            }
+            break;
         case 64: // The license information is missing
             l = 0;
             if (h.hasTITLE())
