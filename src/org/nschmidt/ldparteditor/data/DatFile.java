@@ -1738,6 +1738,10 @@ public final class DatFile {
                             typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
                         }
 
+                        if (tLine.contains("Flexible_Section")) { //$NON-NLS-1$
+                            typeSuffix = typeSuffix + " Flexible_Section"; //$NON-NLS-1$
+                        }
+
                         if (!"".equals(typeSuffix)) { //$NON-NLS-1$
                             lines.set(i, "0 !LDRAW_ORG " + typeSuffix); //$NON-NLS-1$
                         }
