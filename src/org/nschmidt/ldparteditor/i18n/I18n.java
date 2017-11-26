@@ -627,6 +627,9 @@ public final class I18n {
     public static final String E3D_StopSelectionAtEdges = E3D.getString(getProperty());
     public static final String E3D_SubdivideCatmullClark = E3D.getString(getProperty());
     public static final String E3D_SubdivideLoop = E3D.getString(getProperty());
+    public static final String E3D_SubdivideNoSelection = E3D.getString(getProperty());
+    public static final String E3D_SubdivideWarningCatmullClark = E3D.getString(getProperty());
+    public static final String E3D_SubdivideWarningLoop = E3D.getString(getProperty());
     public static final String E3D_SubfileFromSelection = E3D.getString(getProperty());
     public static final String E3D_SubfileFromSelectionQuestion = E3D.getString(getProperty());
     public static final String E3D_SubfileFromSelectionQuestionCut = E3D.getString(getProperty());

@@ -5460,7 +5460,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
-                        vm.subdivideCatmullClark();
+                        vm.subdivideCatmullClark(true);
                         regainFocus();
                         return;
                     }
@@ -5477,7 +5477,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         vm.addSnapshot();
-                        vm.subdivideLoop();
+                        vm.subdivideLoop(true);
                         regainFocus();
                         return;
                     }
