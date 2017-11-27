@@ -1635,16 +1635,15 @@ public class CompositeTab extends CompositeTabDesign {
         tree_Problems[0].addListener(SWT.MouseDoubleClick, new Listener() {
             @Override
             public void handleEvent(Event e) {
-                if (tree_Problems[0].getSelectionCount() == 1 && tree_Problems[0].getSelection()[0] != null) {
-                    if (tree_Problems[0].getSelection()[0].getData() != null) {
-                        int pos = (Integer) tree_Problems[0].getSelection()[0].getData();
-                        if (pos < 0)
-                            pos = 0;
-                        compositeText[0].setSelection(pos);
+                final TreeItem[] selection = tree_Problems[0].getSelection();
+                final TreeItem sel;
+                if (selection.length == 1 && (sel = selection[0]) != null) {
+                    final Integer pos = (Integer) sel.getData();
+                    if (pos != null) {
+                        compositeText[0].setSelection(Math.max(0, pos));
                     }
-                    if (tree_Problems[0].getSelection()[0].getParentItem() == null) {
-                        tree_Problems[0].getSelection()[0].setVisible(!tree_Problems[0].getSelection()[0].isVisible());
-                        TreeItem sel = tree_Problems[0].getSelection()[0];
+                    if (sel.getParentItem() == null) {
+                        sel.setVisible(!sel.isVisible());
                         Display.getCurrent().asyncExec(new Runnable() {
                             @Override
                             public void run() {
