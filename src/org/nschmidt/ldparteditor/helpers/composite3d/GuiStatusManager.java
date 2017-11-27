@@ -22,6 +22,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
 import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -33,6 +34,7 @@ import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -55,98 +57,103 @@ public enum GuiStatusManager {
      *            the active {@linkplain Composite3D}
      */
     public static synchronized void updateStatus(Composite3D c3d) {
-        final StringBuilder sb = new StringBuilder();
-        if (c3d.isClassicPerspective()) {
-            sb.append("["); //$NON-NLS-1$
-            sb.append(c3d.getPerspectiveCalculator().getPerspectiveString(c3d.getPerspectiveIndex()));
+        try {
+            final StringBuilder sb = new StringBuilder();
+            if (c3d.isClassicPerspective()) {
+                sb.append("["); //$NON-NLS-1$
+                sb.append(c3d.getPerspectiveCalculator().getPerspectiveString(c3d.getPerspectiveIndex()));
+                sb.append("] "); //$NON-NLS-1$
+            }
+
+            final VertexManager vm = c3d.getVertexManager();
+            final Set<Vertex> vs;
+            updateSelection(sb, vm);
+            if ((vs = vm.getSelectedVertices()).size() == 1) {
+                try {
+                    Vertex v = vs.iterator().next();
+                    sb.append(" Vertex @  ["); //$NON-NLS-1$ I18N Needs translation!
+                    sb.append(df.format(v.X.multiply(View.unit_factor)));
+                    sb.append("; "); //$NON-NLS-1$
+                    sb.append(df.format(v.Y.multiply(View.unit_factor)));
+                    sb.append("; "); //$NON-NLS-1$
+                    sb.append(df.format(v.Z.multiply(View.unit_factor)));
+                    sb.append("]"); //$NON-NLS-1$
+                } catch (NoSuchElementException consumed) {}
+            }
+
+            sb.append(" "); //$NON-NLS-1$
+            sb.append(c3d.getLockableDatFileReference().getShortName());
+            sb.append(", "); //$NON-NLS-1$
+            sb.append(I18n.PERSPECTIVE_Zoom);
+            sb.append(": "); //$NON-NLS-1$
+            sb.append(df2.format(Math.round(c3d.getZoom() * 10000000) / 100f));
+            sb.append("% ["); //$NON-NLS-1$
+            BigDecimal[] cursor3D = c3d.getCursorSnapped3Dprecise();
+            sb.append(df.format(cursor3D[0].multiply(View.unit_factor)));
+            sb.append("; "); //$NON-NLS-1$
+            sb.append(df.format(cursor3D[1].multiply(View.unit_factor)));
+            sb.append("; "); //$NON-NLS-1$
+            sb.append(df.format(cursor3D[2].multiply(View.unit_factor)));
             sb.append("] "); //$NON-NLS-1$
-        }
 
-        final VertexManager vm = c3d.getVertexManager();
-        final Set<Vertex> vs;
-        updateSelection(sb, vm);
-        if ((vs = vm.getSelectedVertices()).size() == 1) {
-            try {
-                Vertex v = vs.iterator().next();
-                sb.append(" Vertex @  ["); //$NON-NLS-1$ I18N Needs translation!
-                sb.append(df.format(v.X.multiply(View.unit_factor)));
-                sb.append("; "); //$NON-NLS-1$
-                sb.append(df.format(v.Y.multiply(View.unit_factor)));
-                sb.append("; "); //$NON-NLS-1$
-                sb.append(df.format(v.Z.multiply(View.unit_factor)));
+            final Editor3DWindow win = Editor3DWindow.getWindow();
+            if (win.isMovingAdjacentData()) {
+                sb.append(I18n.E3D_AdjacentWarningStatus);
+            }
+
+            final SelectorSettings sels = win.loadSelectorSettings();
+            final ObjectMode om = win.getWorkingType();
+            if (om == ObjectMode.FACES) {
+                if (sels.isTriangles() && !sels.isQuads()) {
+                    sb.append(I18n.E3D_OnlyTriangles);
+                } else if (sels.isQuads() && !sels.isTriangles()) {
+                    sb.append(I18n.E3D_OnlyQuads);
+                }
+            } else if (om == ObjectMode.LINES) {
+                if (sels.isLines() && !sels.isCondlines()) {
+                    sb.append(I18n.E3D_OnlyLines);
+                } else if (sels.isCondlines() && !sels.isLines()) {
+                    sb.append(I18n.E3D_OnlyCondlines);
+                }
+            }
+
+            Manipulator m = c3d.getManipulator();
+            if (m.isModified()) {
+                Matrix t = m.getTempTransformationAccurate();
+                double dax = m.getAccurateRotationX() / Math.PI * 180.0 % 360;
+                double day = m.getAccurateRotationY() / Math.PI * 180.0 % 360;
+                double daz = m.getAccurateRotationZ() / Math.PI * 180.0 % 360;
+                if (dax == 0.0 && day == 0.0 && daz == 0.0) {
+                    sb.append("delta: ["); //$NON-NLS-1$ I18N Needs translation!
+                    sb.append(df.format(t.M30));
+                    sb.append("; "); //$NON-NLS-1$
+                    sb.append(df.format(t.M31));
+                    sb.append("; "); //$NON-NLS-1$
+                    sb.append(df.format(t.M32));
+                } else {
+                    sb.append("rotation: ["); //$NON-NLS-1$ I18N Needs translation!
+                    sb.append(df.format(dax));
+                    sb.append("; "); //$NON-NLS-1$
+                    sb.append(df.format(day));
+                    sb.append("; "); //$NON-NLS-1$
+                    sb.append(df.format(daz));
+                }
                 sb.append("]"); //$NON-NLS-1$
-            } catch (NoSuchElementException consumed) {}
-        }
-
-        sb.append(" "); //$NON-NLS-1$
-        sb.append(c3d.getLockableDatFileReference().getShortName());
-        sb.append(", "); //$NON-NLS-1$
-        sb.append(I18n.PERSPECTIVE_Zoom);
-        sb.append(": "); //$NON-NLS-1$
-        sb.append(df2.format(Math.round(c3d.getZoom() * 10000000) / 100f));
-        sb.append("% ["); //$NON-NLS-1$
-        BigDecimal[] cursor3D = c3d.getCursorSnapped3Dprecise();
-        sb.append(df.format(cursor3D[0].multiply(View.unit_factor)));
-        sb.append("; "); //$NON-NLS-1$
-        sb.append(df.format(cursor3D[1].multiply(View.unit_factor)));
-        sb.append("; "); //$NON-NLS-1$
-        sb.append(df.format(cursor3D[2].multiply(View.unit_factor)));
-        sb.append("] "); //$NON-NLS-1$
-
-        final Editor3DWindow win = Editor3DWindow.getWindow();
-        if (win.isMovingAdjacentData()) {
-            sb.append(I18n.E3D_AdjacentWarningStatus);
-        }
-
-        final SelectorSettings sels = win.loadSelectorSettings();
-        final ObjectMode om = win.getWorkingType();
-        if (om == ObjectMode.FACES) {
-            if (sels.isTriangles() && !sels.isQuads()) {
-                sb.append(I18n.E3D_OnlyTriangles);
-            } else if (sels.isQuads() && !sels.isTriangles()) {
-                sb.append(I18n.E3D_OnlyQuads);
             }
-        } else if (om == ObjectMode.LINES) {
-            if (sels.isLines() && !sels.isCondlines()) {
-                sb.append(I18n.E3D_OnlyLines);
-            } else if (sels.isCondlines() && !sels.isLines()) {
-                sb.append(I18n.E3D_OnlyCondlines);
+
+            if (Math.abs(CSG.timeOfLastOptimization - System.currentTimeMillis()) < 10000) {
+                sb.append(" CSG: "); //$NON-NLS-1$
+                sb.append(df2.format(CSG.globalOptimizationRate));
+                sb.append("%"); //$NON-NLS-1$
             }
-        }
 
-        Manipulator m = c3d.getManipulator();
-        if (m.isModified()) {
-            Matrix t = m.getTempTransformationAccurate();
-            double dax = (m.getAccurateRotationX() / Math.PI * 180.0) % 360;
-            double day = (m.getAccurateRotationY() / Math.PI * 180.0) % 360;
-            double daz = (m.getAccurateRotationZ() / Math.PI * 180.0) % 360;
-            if (dax == 0.0 && day == 0.0 && daz == 0.0) {
-                sb.append("delta: ["); //$NON-NLS-1$ I18N Needs translation!
-                sb.append(df.format(t.M30));
-                sb.append("; "); //$NON-NLS-1$
-                sb.append(df.format(t.M31));
-                sb.append("; "); //$NON-NLS-1$
-                sb.append(df.format(t.M32));
-            } else {
-                sb.append("rotation: ["); //$NON-NLS-1$ I18N Needs translation!
-                sb.append(df.format(dax));
-                sb.append("; "); //$NON-NLS-1$
-                sb.append(df.format(day));
-                sb.append("; "); //$NON-NLS-1$
-                sb.append(df.format(daz));
-            }
-            sb.append("]"); //$NON-NLS-1$
+            Editor3DWindow.getStatusLabel().setText(sb.toString());
+            Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+            // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
+        } catch (SWTException swtex) {
+            NLogger.debug(GuiStatusManager.class, "Uncritical SWTExecption. Widget is disposed."); //$NON-NLS-1$
+            NLogger.debug(GuiStatusManager.class, swtex);
         }
-
-        if (Math.abs(CSG.timeOfLastOptimization - System.currentTimeMillis()) < 10000) {
-            sb.append(" CSG: "); //$NON-NLS-1$
-            sb.append(df2.format(CSG.globalOptimizationRate));
-            sb.append("%"); //$NON-NLS-1$
-        }
-
-        Editor3DWindow.getStatusLabel().setText(sb.toString());
-        Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
-        // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
     }
 
     public static synchronized void updateStatus(DatFile df) {
@@ -204,5 +211,4 @@ public enum GuiStatusManager {
         }
         return doAppend;
     }
-
 }
