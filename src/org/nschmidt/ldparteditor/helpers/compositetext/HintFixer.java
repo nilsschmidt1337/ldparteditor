@@ -101,6 +101,17 @@ final class HintFixer {
                 text = QuickFixer.setLine(l, typeLine.replace("!LDRAW_ORG ", "!LDRAW_ORG Unofficial_"), text); //$NON-NLS-1$ //$NON-NLS-2$
             }
             break;
+        case 50: // There is an invalid UPDATE in the part type
+            l = 0;
+            if (h.hasTYPE() && h.getLineTYPE() > -1) {
+                l = h.getLineTYPE();
+                final String typeLine = QuickFixer.getLine(l - 1, text);
+                final int updateIndex = typeLine.indexOf("UPDATE"); //$NON-NLS-1$
+                if (updateIndex > -1) {
+                    text = QuickFixer.setLine(l, typeLine.substring(0, updateIndex).trim(), text);
+                }
+            }
+            break;
         case 64: // The license information is missing
             l = 0;
             if (h.hasTITLE())

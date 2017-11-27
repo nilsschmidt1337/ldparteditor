@@ -247,6 +247,7 @@ public final class I18n {
     public static final String DATFILE_HeaderHint = DATFILE.getString(getProperty());
     public static final String DATFILE_InlinePrefix = DATFILE.getString(getProperty());
     public static final String DATFILE_Inlined = DATFILE.getString(getProperty());
+    public static final String DATFILE_InvalidUpdate = DATFILE.getString(getProperty());
     public static final String DATFILE_Line = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingAuthor = DATFILE.getString(getProperty());
     public static final String DATFILE_MissingBFC = DATFILE.getString(getProperty());
