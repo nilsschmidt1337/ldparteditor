@@ -226,20 +226,34 @@ public class DatHeaderManager {
                                                 h.setLineTYPE(lineNumber);
                                                 h.setHasTYPE(true);
                                                 h.setHasUNOFFICIAL(true);
+                                                h.setHasUPDATE(false);
                                                 headerState = HeaderState._04_LICENSE;
                                                 break;
                                             } else if ("0 !LDRAW_ORG".equals(normalizedLine)) { //$NON-NLS-1$
                                                 h.setLineTYPE(lineNumber);
                                                 h.setHasTYPE(false);
                                                 h.setHasUNOFFICIAL(true);
+                                                h.setHasUPDATE(false);
                                                 headerState = HeaderState._04_LICENSE;
                                                 break;
-                                            } else if (normalizedLine.startsWith("0 !LDRAW_ORG ") && !normalizedLine.contains("Unofficial_")) { //$NON-NLS-1$ //$NON-NLS-2$
-                                                h.setLineTYPE(lineNumber);
-                                                h.setHasTYPE(true);
-                                                h.setHasUNOFFICIAL(false);
-                                                headerState = HeaderState._04_LICENSE;
-                                                break;
+                                            } else if (normalizedLine.startsWith("0 !LDRAW_ORG ")) { //$NON-NLS-1$
+                                                if (!normalizedLine.contains("Unofficial_")) { //$NON-NLS-1$
+                                                    h.setLineTYPE(lineNumber);
+                                                    h.setHasTYPE(true);
+                                                    h.setHasUNOFFICIAL(false);
+                                                    h.setHasUPDATE(false);
+                                                    headerState = HeaderState._04_LICENSE;
+                                                    break;
+                                                } else if (normalizedLine.contains("UPDATE")) { //$NON-NLS-1$
+                                                    h.setLineTYPE(lineNumber);
+                                                    h.setHasTYPE(true);
+                                                    h.setHasUNOFFICIAL(true);
+                                                    h.setHasUPDATE(true);
+                                                    headerState = HeaderState._04_LICENSE;
+                                                    break;
+                                                } else { // Its something else..
+                                                    headerState = HeaderState._04_LICENSE;
+                                                }
                                             } else { // Its something else..
                                                 headerState = HeaderState._04_LICENSE;
                                             }
@@ -248,10 +262,10 @@ public class DatHeaderManager {
                                             if (normalizedLine.startsWith("0 !LDRAW_ORG")) { //$NON-NLS-1$
                                                 // Its duplicated
                                                 if (h.hasTYPE() || h.getLineTYPE() > -1) {
-                                                    registerHint(gd, lineNumber, "31", I18n.DATPARSER_DuplicatedType, registered, allHints); //$NON-NLS-1$
+                                                    registerHint(gd, lineNumber, "33", I18n.DATPARSER_DuplicatedType, registered, allHints); //$NON-NLS-1$
                                                 } else {
                                                     if (headerState > HeaderState._03_TYPE) { // Its misplaced
-                                                        registerHint(gd, lineNumber, "32", I18n.DATPARSER_MisplacedType, registered, allHints); //$NON-NLS-1$
+                                                        registerHint(gd, lineNumber, "34", I18n.DATPARSER_MisplacedType, registered, allHints); //$NON-NLS-1$
                                                     }
                                                     h.setLineTYPE(lineNumber);
                                                     h.setHasTYPE(true);
@@ -569,7 +583,7 @@ public class DatHeaderManager {
                                             r2 = 1;
                                             if (!h.hasAUTHOR()) {
                                                 r3 = 1;
-                                                if (!h.hasTYPE() || !h.hasUNOFFICIAL()) {
+                                                if (!h.hasTYPE() || !h.hasUNOFFICIAL() || h.hasUPDATE()) {
                                                     r4 = 1;
                                                     if (!h.hasLICENSE()) {
                                                         r5 = 1;
@@ -595,6 +609,8 @@ public class DatHeaderManager {
                                         registerHint(firstEntry, -30 * r4 + -4 * (1 - r4), "30", I18n.DATFILE_MissingPartType, registered, allHints); //$NON-NLS-1$
                                     } else if (!h.hasUNOFFICIAL()) {
                                         registerHint(firstEntry, -30 * r4 + -4 * (1 - r4), "31", I18n.DATFILE_MissingUnofficial, registered, allHints); //$NON-NLS-1$
+                                    } else if (h.hasUPDATE()) {
+                                        registerHint(firstEntry, -30 * r4 + -4 * (1 - r4), "32", I18n.DATFILE_InvalidUpdate, registered, allHints); //$NON-NLS-1$
                                     }
                                     if (!h.hasLICENSE()) {
                                         registerHint(firstEntry, -20 * r5 + -5 * (1 - r5), "40", I18n.DATFILE_MissingLicense, registered, allHints); //$NON-NLS-1$

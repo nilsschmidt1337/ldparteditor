@@ -40,6 +40,7 @@ public class HeaderState {
     private boolean hasAUTHOR = false;
     private boolean hasTYPE = false;
     private boolean hasUNOFFICIAL = true;
+    private boolean hasUPDATE = false;
     private boolean hasLICENSE = false;
     private boolean hasHELP = false;
     private boolean hasBFC = false;
@@ -112,6 +113,14 @@ public class HeaderState {
 
     public void setHasUNOFFICIAL(boolean hasUNOFFICIAL) {
         this.hasUNOFFICIAL = hasUNOFFICIAL;
+    }
+
+    public boolean hasUPDATE() {
+        return hasUPDATE;
+    }
+
+    public void setHasUPDATE(boolean hasUPDATE) {
+        this.hasUPDATE = hasUPDATE;
     }
 
     public boolean hasHELP() {
