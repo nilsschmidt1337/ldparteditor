@@ -4963,9 +4963,9 @@ public class Editor3DWindow extends Editor3DDesign {
                             anchorData.setNext(null);
                             df.setDrawChainTail(anchorData);
                             vm.setModified(true, true);
-                            regainFocus();
-                            return;
                         }
+                        regainFocus();
+                        return;
                     }
                 }
                 regainFocus();
