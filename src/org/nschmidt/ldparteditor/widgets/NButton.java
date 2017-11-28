@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.widgets;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.eclipse.swt.SWT;
@@ -46,18 +47,19 @@ public class NButton extends Canvas {
     private final boolean canToggle;
     private final boolean canCheck;
     private final boolean hasBorder;
-
+    private final boolean isRadio;
 
     private Image img = null;
     private String text = ""; //$NON-NLS-1$
     private boolean hovered = false;
     private boolean pressed = false;
     private boolean selected = false;
-
+    private static HashMap<Composite, ArrayList<NButton>> radioGroups = new HashMap<>();
 
     public NButton(Composite parent, int style) {
         super(parent, style);
 
+        isRadio = (style & SWT.RADIO) == SWT.RADIO;
         canToggle = (style & SWT.TOGGLE) == SWT.TOGGLE;
         canCheck = (style & SWT.CHECK) == SWT.CHECK;
         hasBorder = (style & SWT.BORDER) == SWT.BORDER;
@@ -66,12 +68,29 @@ public class NButton extends Canvas {
             img = ResourceManager.getImage("icon16_unchecked.png"); //$NON-NLS-1$
         }
 
+        if (isRadio) {
+            ArrayList<NButton> groups = radioGroups.get(parent);
+            if (groups == null) {
+                groups = new ArrayList<>();
+                radioGroups.put(parent, groups);
+            }
+            groups.add(this);
+        }
+
         super.addPaintListener(this::paint);
 
         addListener(SWT.MouseDown, event -> {
             pressed = true;
-            if (canToggle || canCheck) {
+            if (canToggle || canCheck || isRadio) {
                 setSelection(!selected);
+            }
+            if (isRadio) {
+                for (NButton b : radioGroups.get(parent)) {
+                    if (this != b) {
+                        b.selected = false;
+                        b.redraw();
+                    }
+                }
             }
             redraw();
             final SelectionEvent se = new SelectionEvent(event);
@@ -154,7 +173,7 @@ public class NButton extends Canvas {
 
         // TODO 2. Draw Content
 
-        if (selected && canToggle) {
+        if (selected && (canToggle || isRadio)) {
             gc.setBackground(SWTResourceManager.getColor(160, 160, 200));
             gc.fillRoundRectangle(0, 0, Math.max(img_width + 9 + textExtent.x, this_width), Math.max(textExtent.y, img_height) + 9, 5, 5);
             gc.setBackground(getBackground());
@@ -183,7 +202,7 @@ public class NButton extends Canvas {
             if (hovered || focused) {
                 gc.setBackground(SWTResourceManager.getColor(160, 160, 200));
                 gc.fillRoundRectangle(1, 1, Math.max(img_width + 9 + textExtent.x, this_width) - 1, Math.max(textExtent.y, img_height) + 9 - 1, 5, 5);
-                if (selected && canToggle) {
+                if (selected && (canToggle || isRadio)) {
                     gc.setBackground(SWTResourceManager.getColor(160, 160, 200));
                 } else {
                     gc.setBackground(getBackground());
