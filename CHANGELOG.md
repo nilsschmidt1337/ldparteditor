@@ -1,4 +1,4 @@
-##1 Dec 2017
+### 1 Dec 2017
 With the release of **0.8.38** you are able to...
 -  ...use a brand new CSG engine (with automatic mesh optimisation, its on by default)
 -  ...remove the "UPDATE" info from the part type line with a quick fix.
@@ -25,7 +25,7 @@ The following critical issues are fixed:
 9. Rare NullPointerException during a double click on the text editor problem tree.
 
 
-##30 Aug 2017
+### 30 Aug 2017
 With the release of **0.8.37** the following critical issues are fixed:
 1. Edger2 created duplicated TYPE 2 lines which were hard to spot.
 2. The primitive text search field was sometimes failing / sometimes primitives were not shown at all.
@@ -36,7 +36,7 @@ With the release of **0.8.37** the following critical issues are fixed:
 7. There was an endless loop regarding the new numeric input fields (no crash, only performance degradation).
 
 
-##18 Aug 2017
+### 18 Aug 2017
 With the release of **0.8.36b** you are able to...
 -  ...benefit from more eye-catching buttons.
 
@@ -44,7 +44,7 @@ The following critical issues are fixed:
 1. The coplanarity calculation was incomplete
 
 
-##14 Aug 2017
+### 14 Aug 2017
 With the release of **0.8.36** you are able to...
 -  ...select (and see in 3D view) elements producing an error or warning (when meaningful).
 -  ...benefit from improved usability for the "hover over right click menu-icon" in the 3D view. 
@@ -64,7 +64,7 @@ The following critical issues are fixed:
 4. Selection issues with vertices which were close together on the screen.
 
 
-##5 Aug 2017
+### 5 Aug 2017
 With the release of **0.8.35** you are able to...
 -  ...benefit from better decimal spinner widgets.
 -  ...make use of a "Select All Types" and a "Select Nothing" menu item along with Vertices, Lines, Triangles, etc. 
@@ -84,7 +84,7 @@ The following critical issues are fixed:
 3. Snap on edges: The projection was incorrect.
 
 
-##20 Jul 2017
+### 20 Jul 2017
 With the release of **0.8.34** you are able to...
 -  ...see some information for the number of currently selected parts in the status bar.
 -  ...copy protractor and distance meter values in the clipboard. 
@@ -99,7 +99,7 @@ The following critical issues are fixed:
 1. The undo/redo feature for hidden and shown elements was not correct.
 
 
-##24 Jun 2017 (first official MacOS X release)
+### 24 Jun 2017 (first official MacOS X release)
 With the release of **0.8.33** you are able to...
 -  ...use LDPartEditor under Mac OS X.
 -  ...move the 3D view with Alt+Cursor Keys
@@ -117,7 +117,7 @@ The following critical issues are fixed:
 4. Minor bug: The primitive area renderer tried to render after the 3D window was closed.
 
 
-##18 Jun 2017
+### 18 Jun 2017
 With the release of **0.8.32** you are able to...
 -  ...see the distance traveled/angle rotated in the status bar while using the move or rotate tool.
 -  ...access the manipulator features from a sub menu in the 3D editor context menu.
@@ -139,7 +139,7 @@ The following critical issues are fixed:
 6. Implementation: Little resource leak with org.eclipse.swt.graphics.Cursor instances
 
 
-##8 Apr 2017
+### 8 Apr 2017
 With the release of **0.8.31** you are able to...
 -  ...delete a !LPE VERTEX without "Move Adjacent Data" being on.
 -  ...see the selection of !LPE VERTEX meta commands (3D -> text).
@@ -155,7 +155,7 @@ The following critical issues are fixed:
 4. SyncEdit did not mark the !LPE VERTEX meta command.
 
 
-##2 Apr 2017
+### 2 Apr 2017
 With the release of **0.8.30** you are able to...
 -  ...use a keyboard shortcut (F) to Flip/Rotate vertices.
 -  ...use Ytruder.
@@ -171,7 +171,7 @@ The following critical issues are fixed:
 6. All axes were enabled if you used the "Translate..." feature (X/Y/Z)
 
 
-##1 Mar 2017
+### 1 Mar 2017
 With the release of **0.8.29** you are able to...
 -  ...use a tool that creates a vertex on line intersection.
 -  ...use a "Create Copy" button for the transformation tools (translate / rotate / scale selection / set X,Y,Z)
@@ -186,7 +186,7 @@ The following critical issues are fixed:
 2. "More Colours..." did not work after the colour palette was reloaded.
 
 
-##17 Feb 2017
+### 17 Feb 2017
 With the release of **0.8.28** you are able to...
 -  ...override colour 16. 
 -  ...set the distance meter length in the selection window.
@@ -200,7 +200,7 @@ The following critical issues are fixed:
 4. "Local" mode for the distance meter showed sometimes wrong values for dx / dy / dz
 
 
-##31 Dec 2016
+### 31 Dec 2016
 With the release of **0.8.27** you are able to...
 - ...choose whether or not "Merge to Nearest Edge" splits the edge on merged vertices.
 - ...limit unrectifier to only inline rect primitives (hold Ctrl and press the unrectifier button).
@@ -216,7 +216,7 @@ The following critical issues are fixed:
 7. The quick fix of "invalid use of 'BFC INVERTNEXT' / Flat subfile" only removed the BFC INVERTNEXT statement. It should also invert the direction of the flat subfile in flat direction to keep the same BFC winding.
 
 
-##20 Nov 2016
+### 20 Nov 2016
 With the release of **0.8.26** you are able to...
 -  ...benefit from a brand new render engine (thanks to the power of OpenGL 3.3, which makes better use of the GPU).
 -  ...activate "Smooth Shading" (requires the new render engine).
@@ -234,7 +234,7 @@ The following critical issues are fixed:
 8. Fixed a rare exception regarding directory I/O
 
 
-##27 Sep 2016
+### 27 Sep 2016
 With the release of **0.8.25** you are able to...
 -  ...double click on a decimal number to select the whole value, including integer part, decimal part, decimal separator and minus sign if any (Text Editor).
 - ...see that all three coordinates are unchecked when the coordinate dialog opens. The coordinates where you type in a value will become active (3D Editor, Merge/Split -> Set X/Y/Z).
@@ -251,7 +251,7 @@ The following critical issues are fixed:
 8. There were non-threadsafe method calls within the logger class.
 
 
-##3 Sep 2016 (last 32-bit release)
+### 3 Sep 2016 (last 32-bit release)
 With the release of **0.8.24** you are able to...
 - ...use per-component rounding (X, Y, Z) instead of the per-vertex rounding (useful for patterns on slopes).
 - ...use the metadata dialog (AKA "header dialog") on the text editor, too. 
@@ -264,7 +264,7 @@ The following critical issues are fixed:
 4. The error message "Invalid use of 'BFC INVERTNEXT' / Flat subfile" got duplicated.
 
 
-##29 Aug 2016
+### 29 Aug 2016
 With the release of **0.8.23** you are able to...
 -  ...convert a unit to stud (20 LDU = 1.0 stud, rounded to one decimal place).
 -  ...access all context menu features from somewhere else, too.
@@ -284,7 +284,7 @@ The following critical issues are fixed:
 6. Wrong singular / plural use for the word "duplicate".
 
 
-##19 Aug 2016
+### 19 Aug 2016
 With the release of **0.8.22** you are able to...
 - ...use a "new" tool: A PrimGen2 clone is now added to the list of tools.
 - ...choose whether Intersector should hide things or not (default is not to hide).
@@ -305,7 +305,7 @@ The following critical issues are fixed:
 5. When you opened a file in the 3D editor sometimes it was not added to the recent file list.
 
 
-##6 Aug 2016
+### 6 Aug 2016
 With the release of **0.8.21** you are able to...
 -  ...set the second line in a angle protractor to a defined angle (with the selection tab).
 -  ...decide when "Move Adjacent Data" will be deactivated (new option).
@@ -329,7 +329,7 @@ The following critical issues are fixed:
 10. "Save As..." from the text editor opened the file in the 3D window, too (when sync. tabs was off). 
 
 
-##30 Jul 2016
+### 30 Jul 2016
 With the release of **0.8.20** you are able to...
 - ...use the 3D editor and the text editor in one window. You can enable this under "Options...->Misc. Options->Text and 3D editor arrangement". It needs a restart of the application.
 - ...use the TJunctionFinder to just "find" possible T-junctions without changing the mesh.
@@ -351,7 +351,7 @@ The following critical issues are fixed:
 5. The selection highlight feature in the text editor was sometimes not synchronised with the 3D view.
 
 
-##23 Jul 2016
+### 23 Jul 2016
 With the release of **0.8.19** you are able to...
 -  ...use tabs in the 3D editor along with the tree on the left side.
 -  ...use a button to sync. the tab selection from tabs in the 3D editor with the text editor.
@@ -367,7 +367,7 @@ The following critical issues are fixed:
 4. [CSG] Rotating a part at 90 degree: It got undesired 0.0 digits.
 
 
-##12 Jul 2016
+### 12 Jul 2016
 With the release of **0.8.18** you are able to...
 - ...trigger "Show selection in Text Editor" from a button on the GUI of the 3D editor.
 - ...benefit from the fact that selecting "Show Selection In Text Editor" jumps to the _next_ selected line.
@@ -380,7 +380,7 @@ The following critical issues are fixed:
 3. The "(!)" sign is set for (part) files which are created by the PartReview tool. This is not desired. (the "(!)" sign indicates that the file is located outside the project or the library structure of the project)
 
 
-##6 Jul 2016
+### 6 Jul 2016
 With the release of **0.8.17** you are able to...
 -  ...set the maximum amount of custom colours.
 -  ...export the colour palette (*_pal.dat)
@@ -397,7 +397,7 @@ The following critical issues are fixed:
 4. Select the last line in text editor by clicking on line number, and if that last line has no CRLF behind, then the last two characters of the line are not selected.
 
 
-##29 Jun 2016
+### 29 Jun 2016
 With the release of **0.8.16** you are able to...
 -  ...benefit from automatically deselection of a construction tool (create quad/line/triangle...), if you select a modification tool (select/move/rotate etc...).
 - ...use a shortkey to move the manipulator to the selection center (the "A" key).
@@ -420,7 +420,7 @@ The following critical issues are fixed:
 14. When you mirrored a selection, the winding of triangle/quads was correctly inverted. But primitives in selection were not BFC inverted!
 
 
-##17 May 2016
+### 17 May 2016
 With the release of **0.8.15** you are able to...
 - ...randomise the colours for a selection.
 - ...benefit from a little bit better 3D render performance.
@@ -435,7 +435,7 @@ The following critical issues are fixed:
 6. Line-type 1 Syntax Highlighting: Wrong yellow underline for files which were found on the hard-disk. 
 
 
-##13 May 2016
+### 13 May 2016
 The following critical issues are fixed:
 1. The PartReview progress monitor did not update the status info.
 2. "Split View Horizontally / Vertically" did not work correct with the new sync. feature (Zoom / Manipulator / Translation).
@@ -453,7 +453,7 @@ The following critical issues are fixed:
 14. The Subfiler didn't include and move comments. They're left behind in the main file. The structure of the file was lost.
 
 
-##9 May 2016
+### 9 May 2016
 With the release of **0.8.13** you are able to...
 -  ...use a new tabbed "Add Metadata" window.
 -  ...benefit from better "Sort" performance.
@@ -468,7 +468,7 @@ The following critical issues are fixed:
 2. The generated file name for downloaded files was not correct (PartReview tool)
 
 
-##30 Apr 2016
+### 30 Apr 2016
 With the release of **0.8.12** you are able to...
 - ...use the new "PartReview" tool. Enter a part name and start a review in no-time!
 - ...use the new "Decolour" function to quickly remove all colours from a file.
@@ -487,12 +487,12 @@ The following critical issues are fixed:
 4. Issues with "Select All", "Select Same Colour" in combination with CSG are gone.
 
 
-##20 Apr 2016
+### 20 Apr 2016
 With the release of **0.8.11b** the following critical issues are fixed:
 1. **Critical:** Broken triangle selection.
 
 
-##20 Apr 2016
+### 20 Apr 2016
 With the release of 0.8.11 (and also 0.8.11b) you are able to...
 - ...to manipulate the CSG bodies in the same way as the sub-parts (supports also colour changes, "Select All", "Select all with Same Colours" and "Select None", global and local transformation).
 - ...to quickly convert selected triangles into quads.
@@ -505,7 +505,7 @@ The following critical issues are fixed:
 1. If you copied a LPE vertex and then tried to move one of them, both copies were moved ("Move Adjacent Data" is OFF).
 
 
-##12 Apr 2016
+### 12 Apr 2016
 With the release of **0.8.10b** you are able to...
 - ...customise GUI colours with the new "Options" dialog (text / 3D editor).
 - ...activate/deactivate the error detection for new faces (with the new "Options" dialog)
@@ -523,7 +523,7 @@ The following critical issues are fixed:
 4.  Bounding-box calculation errors with empty sub-files (some sub-files were invisible).
 
 
-##2 Apr 2016
+### 2 Apr 2016
 With the release of **0.8.9** you are able to...
 - ...get a standard file header on any new *.dat file.
 - ...benefit from a better performing colour change and BFC swap in the text editor.
@@ -543,13 +543,13 @@ The following critical issues are fixed:
 8. Opening a file in the 3D editor was not sychronised with the part tree on the left. 
 
 
-##30 Mar 2016
+### 30 Mar 2016
 With the release of **0.8.8c** the following critical issues are fixed:
 1. Primitive caching issues, causing a stackoverflow on all systems and a slowdown on 32-bit (severe)
 2. The subfile creator added a capital S in front of the sub-part number, instead of a lower case s and created wrong names for primitives, too.
  
 
-##29 Mar 2016
+### 29 Mar 2016
 With the release of **0.8.8b** the following critical issues are fixed:
 1. Primitive caching freezes on 32-bit (severe)
 2. Quick Fix synchronisation errors with the text editor (severe)
@@ -561,7 +561,7 @@ With the release of **0.8.8b** the following critical issues are fixed:
 8. Spelling errors / typos on the "Customise Shortkeys" dialog.
 
 
-##26 Mar 2016
+### 26 Mar 2016
 With the release of **0.8.8** you are able to...
 -  ...insert a reference line (type 1) with Ctrl+R (Text Editor only)
 -  ...enable "Edge Adjacency" in combination with "Select Connected/Touching..." (instead of the default vertex adjacency)
@@ -585,7 +585,7 @@ The following critical issues are fixed:
 8. An uncritical drag&drop type exception is fixed.
 
 
-##23 Mar 2016
+### 23 Mar 2016
 With the release of **0.8.7** you are able to...
 - ...benefit from a faster program start.
 - ...toggle the visibility of conditional line control points.
@@ -605,7 +605,7 @@ The following critical issues are fixed:
 8. The coarse/medium/fine grid buttons don't stay pushed.
 
 
-##19 Mar 2016
+### 19 Mar 2016
 With the release of **0.8.6** you are able to...
 -  ...customise the layout of the 3D editor toolbars by placing one of the "layout_3D_editor.cfg" files in the application folder. You find different layouts in the attached archive "[layouts.zip](https://github.com/nilsschmidt1337/ldparteditor/files/181003/layouts.zip)".
 - ...zoom in/out on the primitive area with two new buttons (-) and (+) (instead of using Ctrl+Mousewheel)
@@ -631,7 +631,7 @@ The following critical issues are fixed:
 11. A small memory leak (<1KB)
 
 
-##7 Mar 2016
+### 7 Mar 2016
 With the release of **0.8.5** you are able to...
 -  ...use up to 9 decimal places for rounding (coordinates + matrix).
 -  ...open the part in the 3D editor from the text editor window (orange "3D" button)
@@ -651,7 +651,7 @@ The following critical issues are fixed:
 
 
 
-##19 Jan 2016
+### 19 Jan 2016
 With the release of **0.8.4c** the following issues are fixed:
 1. Fixed a critical bug within the primitive sorting algorithm (crash on start!)
 2. Fixed a  bug which disabled the possibility to split a condline.
@@ -661,20 +661,20 @@ With the release of **0.8.4c** the following issues are fixed:
 6. It was possible to modify read-only files with the functions from the "Selection:" tab.
 
 
-##23 Dec 2015
+### 23 Dec 2015
 With the release of **0.8.4b** the following issues are fixed:
 1. Fixed a bug for "Move Subfile To Manipulator"
 2. Fixed a critical bug for all "Move To Nearest..." functions
 
 
-##13 Dec 2015
+### 13 Dec 2015
 With the release of **0.8.4** you are able to...
 1. ...use the new "MeshReducer" tool, to simplify generated CSG meshes.
 2. ...use a more "aggressive" T-junction-finder (can destroy the mesh geometry under some circumstances!) 
 3. ...use the "Move on Line" function, to move a vertex on a line between two vertices (beta)
 
 
-##2 Dec 2015
+### 2 Dec 2015
 With the release of **0.8.3c** the following issues are fixed:
 1. An infinite loop, which could occur when "Single Vertex Replace Mode" was active ("SyncEdit")
 2. The Isecalc tool did not generate all intersection lines
@@ -682,7 +682,7 @@ With the release of **0.8.3c** the following issues are fixed:
 4. Undo/Redo triggered an infinite loop.
 
 
-##25 Nov 2015
+### 25 Nov 2015
 With the release of **0.8.3b** you will be able to...
 - ...enable Single Vertex Modification (aka SyncEdit) in the Text Editor when you select one vertex in the 3D Editor.
 - ...benefit from a little performance gain (due to some modifications related to logging in the debug mode).
@@ -690,7 +690,7 @@ With the release of **0.8.3b** you will be able to...
 This release includes 1 important bug fix as well.
 
 
-##24 Nov 2015
+### 24 Nov 2015
 With the release of **0.8.3** you will be able to...
 - ...configure shortkeys
 - ...experience a faster program start
@@ -699,14 +699,14 @@ With the release of **0.8.3** you will be able to...
 
 This release includes 9 important bug fixes as well.
 
-##26 Aug 2015
+### 26 Aug 2015
 With the release of **0.8.2d** you will be able to...
 - ...benefit from improved CSG triangulation. The process is not free from errors, but in general a great improvement.
 
 This release includes 5 important bug fixes as well.
 
 
-##17 Jun 2015
+### 17 Jun 2015
 With the release of **0.8.2c** you will be able to...
 - ...correct 0 BFC CERTIFY INVERTNEXT, NOCLIP and CLIP meta commands (MLCAD bug)
 - ...see dithered colours and convert dithered colour codes into direct colours.
@@ -714,14 +714,14 @@ With the release of **0.8.2c** you will be able to...
 This release includes 1 important bug fix as well.
 
 
-##8 Jun 2015
+### 8 Jun 2015
 With the release of **0.8.2b** you will be able to...
 - ...see and validate the log data before you upload it to the internet.
 
 This release includes 1 important bug fix as well.
 
 
-##4 Jun 2015
+### 4 Jun 2015
 With the release of **0.8.2** you will be able to...
 - ...experience a faster program start.
 - ...use a wireframe render mode.
@@ -729,14 +729,14 @@ With the release of **0.8.2** you will be able to...
 This release includes 9 important bug fixes as well.
 
 
-##1 Jun 2015
+### 1 Jun 2015
 With the release of **0.8.1d** you will be able to...
 - use a new program updater.
 
 This release includes bug fixes as well.
 
 
-##31 May 2015
+### 31 May 2015
 With the release of **0.8.1c** you will be able to...
 - use a even better "Delete" function in the parts tree (it creates .bak files for project parts and deletes only the reference path to non-project parts). 
 - emulate mouse keys on a focused 3D window with keyboard keys (K = Left Mouse Button, L = Right Mouse Button, M = Middle Mouse Button)
@@ -745,12 +745,12 @@ With the release of **0.8.1c** you will be able to...
 This release includes bug fixes as well.
 
 
-##25 May 2015
+### 25 May 2015
 With the release of **0.8.1b** you will be able to...
 - use the background picture feature. It was broken.
 
 
-##3 Jun 2015
+### 3 Jun 2015
 With the release of **0.8.1** you will be able to...
 - (you won't be able to) delete your parts physically from the harddisk anymore.
 - choose your locale.
@@ -763,17 +763,17 @@ With the release of **0.8.1** you will be able to...
 This release includes many bug fixes as well.
 
 
-##11 Apr 2015
+### 11 Apr 2015
 First public beta release of version **0.8.0**.
 
 
-##17 Feb 2015
+### 17 Feb 2015
 Switched from SVN repository (sf.net) to git (github.com), because the code-base exceeded 100.000 Lines of Code and I had to do offline commits. I did about 770 commits on sf.net. 
 
 
-##26 Jul 2012
+### 26 Jul 2012
 Project start / first commit on sourceforge.net
 
 
-##15 May 2012
+### 15 May 2012
 Project start, https://forums.ldraw.org/thread-4918.html
