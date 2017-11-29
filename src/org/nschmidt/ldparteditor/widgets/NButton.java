@@ -81,10 +81,11 @@ public class NButton extends Canvas {
 
         addListener(SWT.MouseDown, event -> {
             pressed = true;
-            if (canToggle || canCheck || isRadio) {
+            if (canToggle || canCheck) {
                 setSelection(!selected);
             }
             if (isRadio) {
+                setSelection(true);
                 for (NButton b : radioGroups.get(parent)) {
                     if (this != b) {
                         b.selected = false;
