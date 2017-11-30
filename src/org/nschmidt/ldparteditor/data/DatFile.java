@@ -167,6 +167,10 @@ public final class DatFile {
             renderMode = 6;
         switch (renderMode) {
         case -1: // Wireframe
+            data2draw.drawGL20_Wireframe(c3d);
+            while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
+                data2draw.drawGL20_Wireframe(c3d);
+            }
             break;
         case 0: // No BFC
             data2draw.drawGL20(c3d);

@@ -45,6 +45,8 @@ interface IGData {
 
     public void drawGL20_CoplanarityHeatmap(Composite3D c3d);
 
+    public void drawGL20_Wireframe(Composite3D c3d);
+
     public void getBFCorientationMap(HashMap<GData, Byte> map);
     public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map);
     public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map);
