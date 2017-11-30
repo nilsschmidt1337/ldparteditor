@@ -299,6 +299,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseMove
             public void handleEvent(Event event) {
+                canvas.forceFocus();
                 if (!stopDraw()) dontRefresh.set(true);
                 {
                     Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
