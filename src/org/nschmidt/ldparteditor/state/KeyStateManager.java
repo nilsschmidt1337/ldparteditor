@@ -584,40 +584,49 @@ public class KeyStateManager {
                         break;
                     case LMB:
                     {
-                        c3d.getCanvas().forceFocus();
+                        Composite3D lc3d = DatFile.getLastHoveredComposite();
+                        if (lc3d == null) lc3d = c3d;
+                        lc3d.forceFocus();
+                        lc3d.getCanvas().forceFocus();
                         Event mouseEvent = new Event();
                         mouseEvent.type = SWT.MouseDown;
                         mouseEvent.button = MouseButton.LEFT;
-                        Vector2f mpos = c3d.getMousePosition();
+                        Vector2f mpos = lc3d.getMousePosition();
                         mouseEvent.x = (int) mpos.x;
                         mouseEvent.y = (int) mpos.y;
-                        c3d.getMouse().mouseDown(mouseEvent);
+                        lc3d.getMouse().mouseDown(mouseEvent);
                         break;
                     }
                     case RMB:
                     {
                         if (!Cocoa.isCocoa) {
-                            c3d.getCanvas().forceFocus();
+                            Composite3D lc3d = DatFile.getLastHoveredComposite();
+                            if (lc3d == null) lc3d = c3d;
+                            lc3d.forceFocus();
+                            lc3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseDown;
                             mouseEvent.button = MouseButton.RIGHT;
-                            Vector2f mpos = c3d.getMousePosition();
+                            Vector2f mpos = lc3d.getMousePosition();
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
-                            c3d.getMouse().mouseDown(mouseEvent);
+                            lc3d.getMouse().mouseDown(mouseEvent);
                         }
                         break;
                     }
                     case MMB:
                     {
-                        c3d.getCanvas().forceFocus();
+                        Composite3D lc3d = DatFile.getLastHoveredComposite();
+                        if (lc3d == null) lc3d = c3d;
+                        lc3d.forceFocus();
+                        lc3d.getCanvas().forceFocus();
                         Event mouseEvent = new Event();
                         mouseEvent.type = SWT.MouseDown;
                         mouseEvent.button = MouseButton.MIDDLE;
-                        Vector2f mpos = c3d.getMousePosition();
+                        Vector2f mpos = lc3d.getMousePosition();
                         mouseEvent.x = (int) mpos.x;
                         mouseEvent.y = (int) mpos.y;
-                        c3d.getMouse().mouseDown(mouseEvent);
+                        lc3d.getMouse().mouseDown(mouseEvent);
                         break;
                     }
                     case REDO:
@@ -795,40 +804,49 @@ public class KeyStateManager {
                     case LMB:
                         vm.addSnapshot();
                         {
-                            c3d.getCanvas().forceFocus();
+                            Composite3D lc3d = DatFile.getLastHoveredComposite();
+                            if (lc3d == null) lc3d = c3d;
+                            lc3d.forceFocus();
+                            lc3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
                             mouseEvent.button = MouseButton.LEFT;
-                            Vector2f mpos = c3d.getMousePosition();
+                            Vector2f mpos = lc3d.getMousePosition();
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
-                            c3d.getMouse().mouseUp(mouseEvent);
+                            lc3d.getMouse().mouseUp(mouseEvent);
                             break;
                         }
                     case RMB:
                         vm.addSnapshot();
                         {
-                            c3d.getCanvas().forceFocus();
+                            Composite3D lc3d = DatFile.getLastHoveredComposite();
+                            if (lc3d == null) lc3d = c3d;
+                            lc3d.forceFocus();
+                            lc3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
                             mouseEvent.button = MouseButton.RIGHT;
-                            Vector2f mpos = c3d.getMousePosition();
+                            Vector2f mpos = lc3d.getMousePosition();
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
-                            c3d.getMouse().mouseUp(mouseEvent);
+                            lc3d.getMouse().mouseUp(mouseEvent);
                             break;
                         }
                     case MMB:
                         vm.addSnapshot();
                         {
-                            c3d.getCanvas().forceFocus();
+                            Composite3D lc3d = DatFile.getLastHoveredComposite();
+                            if (lc3d == null) lc3d = c3d;
+                            lc3d.forceFocus();
+                            lc3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
                             mouseEvent.button = MouseButton.MIDDLE;
-                            Vector2f mpos = c3d.getMousePosition();
+                            Vector2f mpos = lc3d.getMousePosition();
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
-                            c3d.getMouse().mouseUp(mouseEvent);
+                            lc3d.getMouse().mouseUp(mouseEvent);
                             break;
                         }
                     default:
