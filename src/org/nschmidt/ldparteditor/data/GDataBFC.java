@@ -159,6 +159,11 @@ public final class GDataBFC extends GData {
     }
 
     @Override
+    public void drawGL20_Wireframe(Composite3D c3d) {
+        drawGL20(c3d);
+    }
+
+    @Override
     public int type() {
         return 6;
     }

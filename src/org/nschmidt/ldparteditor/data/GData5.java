@@ -875,6 +875,9 @@ public final class GData5 extends GData {
     }
 
     @Override
+    public void drawGL20_Wireframe(Composite3D c3d) {}
+
+    @Override
     public int type() {
         return 5;
     }
