@@ -29,6 +29,7 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
 import org.lwjgl.util.vector.Matrix4f;
+import org.lwjgl.util.vector.Vector2f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
@@ -583,31 +584,40 @@ public class KeyStateManager {
                         break;
                     case LMB:
                     {
+                        c3d.getCanvas().forceFocus();
                         Event mouseEvent = new Event();
                         mouseEvent.type = SWT.MouseDown;
                         mouseEvent.button = MouseButton.LEFT;
-                        c3d.getCanvas().forceFocus();
-                        c3d.getCanvas().getDisplay().post(mouseEvent);
+                        Vector2f mpos = c3d.getMousePosition();
+                        mouseEvent.x = (int) mpos.x;
+                        mouseEvent.y = (int) mpos.y;
+                        c3d.getMouse().mouseDown(mouseEvent);
                         break;
                     }
                     case RMB:
                     {
                         if (!Cocoa.isCocoa) {
+                            c3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseDown;
                             mouseEvent.button = MouseButton.RIGHT;
-                            c3d.getCanvas().forceFocus();
-                            c3d.getCanvas().getDisplay().post(mouseEvent);
+                            Vector2f mpos = c3d.getMousePosition();
+                            mouseEvent.x = (int) mpos.x;
+                            mouseEvent.y = (int) mpos.y;
+                            c3d.getMouse().mouseDown(mouseEvent);
                         }
                         break;
                     }
                     case MMB:
                     {
+                        c3d.getCanvas().forceFocus();
                         Event mouseEvent = new Event();
                         mouseEvent.type = SWT.MouseDown;
                         mouseEvent.button = MouseButton.MIDDLE;
-                        c3d.getCanvas().forceFocus();
-                        c3d.getCanvas().getDisplay().post(mouseEvent);
+                        Vector2f mpos = c3d.getMousePosition();
+                        mouseEvent.x = (int) mpos.x;
+                        mouseEvent.y = (int) mpos.y;
+                        c3d.getMouse().mouseDown(mouseEvent);
                         break;
                     }
                     case REDO:
@@ -785,31 +795,40 @@ public class KeyStateManager {
                     case LMB:
                         vm.addSnapshot();
                         {
+                            c3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
                             mouseEvent.button = MouseButton.LEFT;
-                            c3d.getCanvas().forceFocus();
-                            c3d.getCanvas().getDisplay().post(mouseEvent);
+                            Vector2f mpos = c3d.getMousePosition();
+                            mouseEvent.x = (int) mpos.x;
+                            mouseEvent.y = (int) mpos.y;
+                            c3d.getMouse().mouseUp(mouseEvent);
                             break;
                         }
                     case RMB:
                         vm.addSnapshot();
                         {
+                            c3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
                             mouseEvent.button = MouseButton.RIGHT;
-                            c3d.getCanvas().forceFocus();
-                            c3d.getCanvas().getDisplay().post(mouseEvent);
+                            Vector2f mpos = c3d.getMousePosition();
+                            mouseEvent.x = (int) mpos.x;
+                            mouseEvent.y = (int) mpos.y;
+                            c3d.getMouse().mouseUp(mouseEvent);
                             break;
                         }
                     case MMB:
                         vm.addSnapshot();
                         {
+                            c3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
                             mouseEvent.button = MouseButton.MIDDLE;
-                            c3d.getCanvas().forceFocus();
-                            c3d.getCanvas().getDisplay().post(mouseEvent);
+                            Vector2f mpos = c3d.getMousePosition();
+                            mouseEvent.x = (int) mpos.x;
+                            mouseEvent.y = (int) mpos.y;
+                            c3d.getMouse().mouseUp(mouseEvent);
                             break;
                         }
                     default:
