@@ -123,6 +123,7 @@ public class CompositePrimitive extends Composite {
     private Primitive focusedPrimitive = null;
     private int mouse_button_pressed;
     private final Vector2f old_mouse_position = new Vector2f();
+    private final Vector2f mouse_position = new Vector2f();
     /** The old translation matrix of the view [NOT PUBLIC YET] */
     private final Matrix4f old_viewport_translation = new Matrix4f();
     private final Matrix4f old_viewport_rotation = new Matrix4f();
@@ -237,22 +238,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseDown
             public void handleEvent(Event event) {
-                mouse_button_pressed = event.button;
-                old_mouse_position.set(event.x, event.y);
-                switch (event.button) {
-                case MouseButton.LEFT:
-                    setSelectedPrimitive(getFocusedPrimitive());
-                    break;
-                case MouseButton.MIDDLE:
-                    Matrix4f.load(getRotation(), old_viewport_rotation);
-                    break;
-                case MouseButton.RIGHT:
-                    Matrix4f.load(getTranslation(), old_viewport_translation);
-                    break;
-                default:
-                }
-                openGL.drawScene(event.x, event.y);
-                Editor3DWindow.getWindow().regainFocus();
+                mouseDown(event);
             }
         });
 
@@ -299,6 +285,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseMove
             public void handleEvent(Event event) {
+                canvas.forceFocus();
                 if (!stopDraw()) dontRefresh.set(true);
                 {
                     Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
@@ -310,6 +297,7 @@ public class CompositePrimitive extends Composite {
                         canvas.setToolTipText(tooltipText);
                     }
                 }
+                mouse_position.set(event.x, event.y);
                 switch (mouse_button_pressed) {
                 case MouseButton.LEFT:
                     break;
@@ -357,16 +345,7 @@ public class CompositePrimitive extends Composite {
             @Override
             // MARK MouseUp
             public void handleEvent(Event event) {
-                mouse_button_pressed = 0;
-                switch (event.button) {
-                case MouseButton.LEFT:
-                    break;
-                case MouseButton.MIDDLE:
-                    break;
-                case MouseButton.RIGHT:
-                    break;
-                default:
-                }
+                mouseUp(event);
             }
         });
 
@@ -432,6 +411,38 @@ public class CompositePrimitive extends Composite {
                 } catch (SWTException consumed) {}
             }
         });
+    }
+
+    public void mouseUp(Event event) {
+        mouse_button_pressed = 0;
+        switch (event.button) {
+        case MouseButton.LEFT:
+            break;
+        case MouseButton.MIDDLE:
+            break;
+        case MouseButton.RIGHT:
+            break;
+        default:
+        }
+    }
+
+    public void mouseDown(Event event) {
+        mouse_button_pressed = event.button;
+        old_mouse_position.set(event.x, event.y);
+        switch (event.button) {
+        case MouseButton.LEFT:
+            setSelectedPrimitive(getFocusedPrimitive());
+            break;
+        case MouseButton.MIDDLE:
+            Matrix4f.load(getRotation(), old_viewport_rotation);
+            break;
+        case MouseButton.RIGHT:
+            Matrix4f.load(getTranslation(), old_viewport_translation);
+            break;
+        default:
+        }
+        openGL.drawScene(event.x, event.y);
+        Editor3DWindow.getWindow().regainFocus();
     }
 
     public GLCanvas getCanvas() {
@@ -1586,5 +1597,9 @@ public class CompositePrimitive extends Composite {
 
     public void disableRefresh() {
         dontRefresh.set(true);
+    }
+
+    public Vector2f getMousePosition() {
+        return mouse_position;
     }
 }
