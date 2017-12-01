@@ -1,4 +1,10 @@
 ### 1 Dec 2017
+With the release of **0.8.38b** the following critical issues are fixed:
+1. The CSG mesh optimisation was deactivated when one of the 3D view had the wireframe render mode enabled.
+2. Under linux mint it was not possible to rotate/translate the 3D view with the keyboard key (default keys: "M"/"L").
+
+
+### 30 Nov 2017
 With the release of **0.8.38** you are able to...
 -  ...use a brand new CSG engine (with automatic mesh optimisation, its on by default)
 -  ...remove the "UPDATE" info from the part type line with a quick fix.
