@@ -586,7 +586,6 @@ public class KeyStateManager {
                     {
                         Composite3D lc3d = DatFile.getLastHoveredComposite();
                         if (lc3d == null) lc3d = c3d;
-                        lc3d.forceFocus();
                         lc3d.getCanvas().forceFocus();
                         Event mouseEvent = new Event();
                         mouseEvent.type = SWT.MouseDown;
@@ -602,7 +601,6 @@ public class KeyStateManager {
                         if (!Cocoa.isCocoa) {
                             Composite3D lc3d = DatFile.getLastHoveredComposite();
                             if (lc3d == null) lc3d = c3d;
-                            lc3d.forceFocus();
                             lc3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseDown;
@@ -618,7 +616,6 @@ public class KeyStateManager {
                     {
                         Composite3D lc3d = DatFile.getLastHoveredComposite();
                         if (lc3d == null) lc3d = c3d;
-                        lc3d.forceFocus();
                         lc3d.getCanvas().forceFocus();
                         Event mouseEvent = new Event();
                         mouseEvent.type = SWT.MouseDown;
@@ -627,6 +624,7 @@ public class KeyStateManager {
                         mouseEvent.x = (int) mpos.x;
                         mouseEvent.y = (int) mpos.y;
                         lc3d.getMouse().mouseDown(mouseEvent);
+                        lc3d.getCanvas().getDisplay().post(mouseEvent);
                         break;
                     }
                     case REDO:
@@ -806,7 +804,6 @@ public class KeyStateManager {
                         {
                             Composite3D lc3d = DatFile.getLastHoveredComposite();
                             if (lc3d == null) lc3d = c3d;
-                            lc3d.forceFocus();
                             lc3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
@@ -822,7 +819,6 @@ public class KeyStateManager {
                         {
                             Composite3D lc3d = DatFile.getLastHoveredComposite();
                             if (lc3d == null) lc3d = c3d;
-                            lc3d.forceFocus();
                             lc3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
@@ -838,7 +834,6 @@ public class KeyStateManager {
                         {
                             Composite3D lc3d = DatFile.getLastHoveredComposite();
                             if (lc3d == null) lc3d = c3d;
-                            lc3d.forceFocus();
                             lc3d.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
@@ -847,6 +842,7 @@ public class KeyStateManager {
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
                             lc3d.getMouse().mouseUp(mouseEvent);
+                            lc3d.getCanvas().getDisplay().post(mouseEvent);
                             break;
                         }
                     default:
@@ -864,9 +860,68 @@ public class KeyStateManager {
             // Logic for CompositePrimitive
             if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
                 NLogger.debug(KeyStateManager.class, "[Key ({0}) down]", keyCode); //$NON-NLS-1$
-                if (keyCode == SWT.PAGE_UP || keyCode == SWT.UP) {
+                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
+                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
+                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                final boolean cmdPressed = (event.stateMask & SWT.COMMAND) != 0;
+                final StringBuilder sb = new StringBuilder();
+                sb.append(keyCode);
+                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                final String key = sb.toString();
+                final Task t = taskMap.get(key);
+                if (t != null) {
+                    switch (t) {
+                        case LMB:
+                        {
+                            cp.getCanvas().forceFocus();
+                            Event mouseEvent = new Event();
+                            mouseEvent.type = SWT.MouseDown;
+                            mouseEvent.button = MouseButton.LEFT;
+                            Vector2f mpos = cp.getMousePosition();
+                            mouseEvent.x = (int) mpos.x;
+                            mouseEvent.y = (int) mpos.y;
+                            cp.mouseDown(mouseEvent);
+                            cp.getCanvas().getDisplay().post(mouseEvent);
+                            break;
+                        }
+                        case RMB:
+                        {
+                            if (!Cocoa.isCocoa) {
+                                cp.getCanvas().forceFocus();
+                                Event mouseEvent = new Event();
+                                mouseEvent.type = SWT.MouseDown;
+                                mouseEvent.button = MouseButton.RIGHT;
+                                Vector2f mpos = cp.getMousePosition();
+                                mouseEvent.x = (int) mpos.x;
+                                mouseEvent.y = (int) mpos.y;
+                                cp.mouseDown(mouseEvent);
+                                cp.getCanvas().getDisplay().post(mouseEvent);
+                            }
+                            break;
+                        }
+                        case MMB:
+                        {
+                            cp.getCanvas().forceFocus();
+                            Event mouseEvent = new Event();
+                            mouseEvent.type = SWT.MouseDown;
+                            mouseEvent.button = MouseButton.MIDDLE;
+                            Vector2f mpos = cp.getMousePosition();
+                            mouseEvent.x = (int) mpos.x;
+                            mouseEvent.y = (int) mpos.y;
+                            cp.mouseDown(mouseEvent);
+                            cp.getCanvas().getDisplay().post(mouseEvent);
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
+                if (keyCode == SWT.PAGE_UP || keyCode == SWT.ARROW_UP) {
                     cp.scroll(false);
-                } else if (keyCode == SWT.PAGE_DOWN || keyCode == SWT.DOWN) {
+                } else if (keyCode == SWT.PAGE_DOWN || keyCode == SWT.ARROW_DOWN) {
                     cp.scroll(true);
                 } else {
                     pressedKeyCodes.add(keyCode);
@@ -876,6 +931,63 @@ public class KeyStateManager {
                 NLogger.debug(KeyStateManager.class, "[Key ({0}) up]", keyCode); //$NON-NLS-1$
                 pressedKeyCodes.remove(keyCode);
                 setKeyState(keyCode, false);
+                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
+                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
+                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                final StringBuilder sb = new StringBuilder();
+                sb.append(keyCode);
+                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                final String key = sb.toString();
+                final Task t = taskMap.get(key);
+                if (t != null) {
+                    switch (t) {
+                        case LMB:
+                        {
+                            cp.getCanvas().forceFocus();
+                            Event mouseEvent = new Event();
+                            mouseEvent.type = SWT.MouseUp;
+                            mouseEvent.button = MouseButton.LEFT;
+                            Vector2f mpos = cp.getMousePosition();
+                            mouseEvent.x = (int) mpos.x;
+                            mouseEvent.y = (int) mpos.y;
+                            cp.mouseUp(mouseEvent);
+                            cp.getCanvas().getDisplay().post(mouseEvent);
+                            break;
+                        }
+                        case RMB:
+                        {
+                            if (!Cocoa.isCocoa) {
+                                cp.getCanvas().forceFocus();
+                                Event mouseEvent = new Event();
+                                mouseEvent.type = SWT.MouseUp;
+                                mouseEvent.button = MouseButton.RIGHT;
+                                Vector2f mpos = cp.getMousePosition();
+                                mouseEvent.x = (int) mpos.x;
+                                mouseEvent.y = (int) mpos.y;
+                                cp.mouseUp(mouseEvent);
+                                cp.getCanvas().getDisplay().post(mouseEvent);
+                            }
+                            break;
+                        }
+                        case MMB:
+                        {
+                            cp.getCanvas().forceFocus();
+                            Event mouseEvent = new Event();
+                            mouseEvent.type = SWT.MouseUp;
+                            mouseEvent.button = MouseButton.MIDDLE;
+                            Vector2f mpos = cp.getMousePosition();
+                            mouseEvent.x = (int) mpos.x;
+                            mouseEvent.y = (int) mpos.y;
+                            cp.mouseUp(mouseEvent);
+                            cp.getCanvas().getDisplay().post(mouseEvent);
+                            break;
+                        }
+                        default:
+                            break;
+                    }
+                }
             }
         }
     }
