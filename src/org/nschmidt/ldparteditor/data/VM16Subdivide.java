@@ -129,7 +129,7 @@ class VM16Subdivide extends VM15Flipper {
             if (keepIt) {
                 newPoints.put(v, v);
             } else {
-                BigDecimal c = new BigDecimal(midEdge.size() * 2);
+                BigDecimal c = new BigDecimal(Math.max(midEdge.size() * 2, 1));
                 Vector3d np = new Vector3d();
                 for (Vector3d vd : midEdge) {
                     np = Vector3d.add(np, vd);
@@ -165,7 +165,7 @@ class VM16Subdivide extends VM15Flipper {
 
             final int c = originalVerts.length;
 
-            BigDecimal c2 = new BigDecimal(c);
+            BigDecimal c2 = new BigDecimal(Math.max(c, 1));
             Vector3d center = new Vector3d();
             for (Vertex vd : originalVerts) {
                 center = Vector3d.add(center, new Vector3d(vd));
