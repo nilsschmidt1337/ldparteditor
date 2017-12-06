@@ -1740,10 +1740,8 @@ public final class DatFile {
                             folderPrefix = "8\\"; //$NON-NLS-1$
                         } else if (path.endsWith(File.separator + "P") || path.endsWith(File.separator + "p")) { //$NON-NLS-1$ //$NON-NLS-2$
                             typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
-                        }
-
-                        if (tLine.contains("Flexible_Section")) { //$NON-NLS-1$
-                            typeSuffix = typeSuffix + " Flexible_Section"; //$NON-NLS-1$
+                        } else if (tLine.contains("Flexible_Section")) { //$NON-NLS-1$
+                            typeSuffix = "Unofficial_Part Flexible_Section"; //$NON-NLS-1$
                         }
 
                         if (!"".equals(typeSuffix)) { //$NON-NLS-1$
