@@ -196,7 +196,7 @@ public class VM27YTruder extends VM26LineIntersector {
                         {
                             for(int k=0; k<2; k++)
                             {
-                                if((MANHATTAN(InLine[current][end], InLine[j][k]) <SMALL) && (LineUsed[j]<2))
+                                if(MANHATTAN(InLine[current][end], InLine[j][k]) <SMALL && LineUsed[j]<2)
                                 {
                                     current=j;
                                     end=1-k;
@@ -285,7 +285,7 @@ public class VM27YTruder extends VM26LineIntersector {
 
         for(int k = 0; k<NumSurf; k++)
         {
-            if((MANHATTAN(Surf[k][0], Surf[k][3])<SMALL) && MANHATTAN(Surf[k][1], Surf[k][2])<SMALL) continue;
+            if(MANHATTAN(Surf[k][0], Surf[k][3])<SMALL && MANHATTAN(Surf[k][1], Surf[k][2])<SMALL) continue;
             if(MANHATTAN(Surf[k][0], Surf[k][3])<SMALL)
             {
                 Vertex v1 = new Vertex(new BigDecimal(Surf[k][0][x]), new BigDecimal(Surf[k][0][y]), new BigDecimal(Surf[k][0][z]));
@@ -304,7 +304,7 @@ public class VM27YTruder extends VM26LineIntersector {
                         bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(),
                         v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
             }
-            else if(Tri_Angle(Surf[k][0], Surf[k][1], Surf[k][2], Surf[k][0], Surf[k][2], Surf[k][3]) <= 0.5)
+            else if(mode == 1 || Tri_Angle(Surf[k][0], Surf[k][1], Surf[k][2], Surf[k][0], Surf[k][2], Surf[k][3]) <= 0.5)
             {
                 Vertex v1 = new Vertex(new BigDecimal(Surf[k][0][x]), new BigDecimal(Surf[k][0][y]), new BigDecimal(Surf[k][0][z]));
                 Vertex v2 = new Vertex(new BigDecimal(Surf[k][1][x]), new BigDecimal(Surf[k][1][y]), new BigDecimal(Surf[k][1][z]));
@@ -502,25 +502,24 @@ public class VM27YTruder extends VM26LineIntersector {
         return Math.sqrt((v1[0]-v2[0])*(v1[0]-v2[0]) + (v1[1]-v2[1])*(v1[1]-v2[1]) + (v1[2]-v2[2])*(v1[2]-v2[2]));
     }
 
-     // Tri_Angle computes the cosine of the angle between the planes of two triangles.
-     // They are assumed to be non-degenerated
-     private double Tri_Angle(double[] U0, double[] U1, double[] U2, double[] V0, double[] V1, double[] V2)
-     {
-         double[] Unorm = new double[3], Vnorm = new double[3];
-         double[] Temp = new double[3];
-         double[] U10 = new double[3], U20 = new double[3];
-         double[] V10 = new double[3], V20 = new double[3];
-         double len;
-         SUB(U10, U1, U0);
-         SUB(U20, U2, U0);
-         SUB(V10, V1, V0);
-         SUB(V20, V2, V0);
-         CROSS(Temp, U10, U20);
-         len = DIST(Temp, nullv);
-         MULT(Unorm, Temp, 1/len);
-         CROSS(Temp, V10, V20);
-         len = DIST(Temp, nullv);
-         MULT(Vnorm, Temp, 1/len);
-         return (180 / 3.14159 * Math.acos(DOT(Unorm, Vnorm)));
-     }
+    // Tri_Angle computes the cosine of the angle between the planes of two triangles.
+    // They are assumed to be non-degenerated
+    private double Tri_Angle(double[] U0, double[] U1, double[] U2, double[] V0, double[] V1, double[] V2) {
+        double[] Unorm = new double[3], Vnorm = new double[3];
+        double[] Temp = new double[3];
+        double[] U10 = new double[3], U20 = new double[3];
+        double[] V10 = new double[3], V20 = new double[3];
+        double len;
+        SUB(U10, U1, U0);
+        SUB(U20, U2, U0);
+        SUB(V10, V1, V0);
+        SUB(V20, V2, V0);
+        CROSS(Temp, U10, U20);
+        len = DIST(Temp, nullv);
+        MULT(Unorm, Temp, 1/len);
+        CROSS(Temp, V10, V20);
+        len = DIST(Temp, nullv);
+        MULT(Vnorm, Temp, 1/len);
+        return 180 / 3.14159 * Math.acos(DOT(Unorm, Vnorm));
+    }
 }
