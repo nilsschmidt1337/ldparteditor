@@ -517,12 +517,45 @@ public enum MathHelper {
         return new Vector4f(line_x1 + dotAu * ux, line_y1 + dotAu * uy, line_z1 + dotAu * uz, 1f);
     }
 
-    public static Vector4f getNearestPointToLineSegment(Vertex line1, Vertex line2, Vertex point) {
-        return getNearestPointToLineSegment(line1.x, line1.y, line1.z, line2.x, line2.y, line2.z, point.x, point.y, point.z);
-    }
+    public static Vector4f getNearestPointToLineSegment_new(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
 
-    public static Vector4f getNearestPointToLineSegment(float line_x1, float line_y1, float line_z1, float line_x2, float line_y2, float line_z2, Vertex point) {
-        return getNearestPointToLineSegment(line_x1, line_y1, line_z1, line_x2, line_y2, line_z2, point.x, point.y, point.z);
+        // FIXME Needs performance/accuracy test VS getNearestPointToLineSegment()
+
+        final Vector4f nearestPointToLine = getNearestPointToLine(lx1, ly1, lz1, lx2, ly2, lz2, px, py, pz);
+
+        final Vector4f dirToL1 = new Vector4f();
+        Vector4f.sub(new Vector4f(lx1, ly1, lz1, 1f), nearestPointToLine, dirToL1);
+        if (dirToL1.lengthSquared() > 0f) {
+            dirToL1.normalise();
+        } else {
+            return nearestPointToLine;
+        }
+
+        final Vector4f dirToL2 = new Vector4f();
+        Vector4f.sub(new Vector4f(lx2, ly2, lz2, 1f), nearestPointToLine, dirToL2);
+        if (dirToL2.lengthSquared() > 0f) {
+            dirToL2.normalise();
+        } else {
+            return nearestPointToLine;
+        }
+
+        final float dotp = Vector4f.dot(dirToL1, dirToL2);
+
+        if (dotp < 0f) {
+            return nearestPointToLine;
+        }
+
+        final Vector4f pToL1 = new Vector4f();
+        Vector4f.sub(new Vector4f(lx1, ly1, lz1, 1f), new Vector4f(px, py, pz, 1f), pToL1);
+
+        final Vector4f pToL2 = new Vector4f();
+        Vector4f.sub(new Vector4f(lx2, ly2, lz2, 1f), new Vector4f(px, py, pz, 1f), pToL2);
+
+        if (pToL1.lengthSquared() < pToL2.lengthSquared()) {
+            return new Vector4f(lx1, ly1, lz1, 1f);
+        } else {
+            return new Vector4f(lx2, ly2, lz2, 1f);
+        }
     }
 
     public static Vector4f getNearestPointToLineSegment(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
