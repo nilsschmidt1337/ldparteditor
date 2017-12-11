@@ -970,13 +970,14 @@ public class VM01SelectHelper extends VM01Select {
                 d[2] = selectionDepth.z;
 
                 // Segment line
-                // x(u) = a + (b - a)u
+                // x(u) = a + (g - a)u
 
                 // Difference
-                // x(t) - x(u) = (s - a) + dt + (a - b)u
+                // x(t) - x(u) = (s - a) + dt + (a - g)u
                 // x(t) - x(u) = e + dt + f u
 
                 float[] a = new float[3];
+                float[] g = new float[3];
                 float[] e = new float[3];
                 float[] f = new float[3];
 
@@ -992,6 +993,9 @@ public class VM01SelectHelper extends VM01Select {
                                 f[0] = a[0] - tvertex.x;
                                 f[1] = a[1] - tvertex.y;
                                 f[2] = a[2] - tvertex.z;
+                                g[0] = tvertex.x;
+                                g[1] = tvertex.y;
+                                g[2] = tvertex.z;
                             } else { // a
                                 a[0] = tvertex.x;
                                 a[1] = tvertex.y;
@@ -1015,7 +1019,7 @@ public class VM01SelectHelper extends VM01Select {
                             if (solution[1] >= 0f && solution[1] <= 1f) {
                                 float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
                                 if (distanceSquared < discr) {
-                                    if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
+                                    if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
                                         continue;
                                     // Vertex[] v = lines.get(line);
                                     // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
@@ -1043,6 +1047,9 @@ public class VM01SelectHelper extends VM01Select {
                                 f[0] = a[0] - tvertex.x;
                                 f[1] = a[1] - tvertex.y;
                                 f[2] = a[2] - tvertex.z;
+                                g[0] = tvertex.x;
+                                g[1] = tvertex.y;
+                                g[2] = tvertex.z;
                                 break;
                             } else { // a
                                 a[0] = tvertex.x;
@@ -1067,7 +1074,7 @@ public class VM01SelectHelper extends VM01Select {
                                 float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
                                         e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
                                 if (distanceSquared < discr) {
-                                    if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
+                                    if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
                                         continue;
                                     // Vertex[] v = condlines.get(line);
                                     // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
@@ -1202,13 +1209,14 @@ public class VM01SelectHelper extends VM01Select {
                 d[2] = selectionDepth.z;
 
                 // Segment line
-                // x(u) = a + (b - a)u
+                // x(u) = a + (g - a)u
 
                 // Difference
-                // x(t) - x(u) = (s - a) + dt + (a - b)u
+                // x(t) - x(u) = (s - a) + dt + (a - g)u
                 // x(t) - x(u) = e + dt + f u
 
                 float[] a = new float[3];
+                float[] g = new float[3];
                 float[] e = new float[3];
                 float[] f = new float[3];
 
@@ -1224,6 +1232,9 @@ public class VM01SelectHelper extends VM01Select {
                             f[0] = a[0] - tvertex.x;
                             f[1] = a[1] - tvertex.y;
                             f[2] = a[2] - tvertex.z;
+                            g[0] = tvertex.x;
+                            g[1] = tvertex.y;
+                            g[2] = tvertex.z;
                         } else { // a
                             a[0] = tvertex.x;
                             a[1] = tvertex.y;
@@ -1248,7 +1259,7 @@ public class VM01SelectHelper extends VM01Select {
                             float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
                                     e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
                             if (distanceSquared < discr) {
-                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
+                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
                                     continue;
                                 // Vertex[] v = lines.get(line);
                                 // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
@@ -1268,6 +1279,9 @@ public class VM01SelectHelper extends VM01Select {
                             f[0] = a[0] - tvertex.x;
                             f[1] = a[1] - tvertex.y;
                             f[2] = a[2] - tvertex.z;
+                            g[0] = tvertex.x;
+                            g[1] = tvertex.y;
+                            g[2] = tvertex.z;
                             break;
                         } else { // a
                             a[0] = tvertex.x;
@@ -1292,7 +1306,7 @@ public class VM01SelectHelper extends VM01Select {
                             float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
                                     e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
                             if (distanceSquared < discr) {
-                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], a[0] - f[0], a[1] - f[1], a[2] - f[2], s[0], s[1], s[2])), selectionDepth, noTrans))
+                                if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
                                     continue;
                                 // Vertex[] v = condlines.get(line);
                                 // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
