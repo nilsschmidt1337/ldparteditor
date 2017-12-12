@@ -137,6 +137,7 @@ import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialogs.scale.ScaleDialog;
 import org.nschmidt.ldparteditor.dialogs.selectvertex.VertexDialog;
 import org.nschmidt.ldparteditor.dialogs.setcoordinates.CoordinatesDialog;
+import org.nschmidt.ldparteditor.dialogs.slantingmatrixprojector.SlantingMatrixProjectorDialog;
 import org.nschmidt.ldparteditor.dialogs.slicerpro.SlicerProDialog;
 import org.nschmidt.ldparteditor.dialogs.smooth.SmoothDialog;
 import org.nschmidt.ldparteditor.dialogs.symsplitter.SymSplitterDialog;
@@ -4749,6 +4750,25 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (new IntersectorDialog(getShell(), ins).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
                             vm.intersector(ins, true);
+                        }
+                        regainFocus();
+                        return;
+                    }
+                }
+                regainFocus();
+            }
+        });
+
+        mntm_SlantingMatrixProjector[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        if (new SlantingMatrixProjectorDialog(getShell()).open() == IDialogConstants.OK_ID) {
+                            vm.addSnapshot();
+                            vm.projectWithSlantingMatrix();
                         }
                         regainFocus();
                         return;

@@ -616,6 +616,7 @@ public final class I18n {
     public static final String E3D_SetIconSize = E3D.getString(getProperty());
     public static final String E3D_SetXYZ = E3D.getString(getProperty());
     public static final String E3D_ShowAll = E3D.getString(getProperty());
+    public static final String E3D_SlantingMatrixProjector = E3D.getString(getProperty());
     public static final String E3D_SlicerPro = E3D.getString(getProperty());
     public static final String E3D_Smooth = E3D.getString(getProperty());
     public static final String E3D_Snapping = E3D.getString(getProperty());

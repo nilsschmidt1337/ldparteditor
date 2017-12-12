@@ -268,6 +268,7 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_Isecalc = new MenuItem[1];
     final MenuItem[] mntm_SlicerPro = new MenuItem[1];
     final MenuItem[] mntm_Intersector = new MenuItem[1];
+    final MenuItem[] mntm_SlantingMatrixProjector = new MenuItem[1];
     final MenuItem[] mntm_Lines2Pattern = new MenuItem[1];
     final MenuItem[] mntm_PathTruder = new MenuItem[1];
     final MenuItem[] mntm_YTruder = new MenuItem[1];
@@ -2562,6 +2563,11 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_Intersector = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_Intersector[0] = mntm_Intersector;
                     mntm_Intersector.setText(I18n.E3D_Intersector);
+                }
+                {
+                    MenuItem mntm_MatrixCalculator = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_SlantingMatrixProjector[0] = mntm_MatrixCalculator;
+                    mntm_MatrixCalculator.setText(I18n.E3D_SlantingMatrixProjector);
                 }
                 {
                     MenuItem mntm_Lines2Pattern = new MenuItem(mnu_Tools, SWT.PUSH);
