@@ -4768,7 +4768,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         if (new SlantingMatrixProjectorDialog(getShell()).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
-                            vm.projectWithSlantingMatrix();
+                            vm.projectWithSlantingMatrix(true);
                         }
                         regainFocus();
                         return;

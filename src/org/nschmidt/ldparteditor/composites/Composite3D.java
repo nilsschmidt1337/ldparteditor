@@ -1674,9 +1674,9 @@ public class Composite3D extends ScalableComposite {
                 ArrayList<ParsingResult> subfileLine = DatParser
                         .parseLine(
                                 "1 16 " + MathHelper.bigDecimalToString(cur[0]) + " " + MathHelper.bigDecimalToString(cur[1]) + " " + MathHelper.bigDecimalToString(cur[2]) + " 1 0 0 0 1 0 0 0 1 " + ref, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datfile, false, alreadyParsed, false); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                GData1 vertexLine = (GData1) subfileLine.get(0).getGraphicalData();
-                if (vertexLine != null) {
-                    datfile.addToTailOrInsertAfterCursor(vertexLine);
+                GData1 primitiveLine = (GData1) subfileLine.get(0).getGraphicalData();
+                if (primitiveLine != null) {
+                    datfile.addToTailOrInsertAfterCursor(primitiveLine);
                     datfile.getVertexManager().setModified(true, true);
                     if (!Project.getUnsavedFiles().contains(datfile)) {
                         Project.addUnsavedFile(datfile);
