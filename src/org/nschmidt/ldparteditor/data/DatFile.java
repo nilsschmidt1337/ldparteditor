@@ -1959,6 +1959,7 @@ public final class DatFile {
     public void addHistory() {
         NLogger.debug(getClass(), "Added history entry for {0}", getShortName()); //$NON-NLS-1$
         final long start = System.currentTimeMillis();
+        vertices.storeAxisForSlantingMatrixProjector();
         final int objCount = drawPerLine.size();
         GData[] backup = new GData[objCount];
         HashMap<String, ArrayList<Boolean>> backupHiddenData = null;
@@ -2007,6 +2008,7 @@ public final class DatFile {
 
     public void addHistory(String text, int selectionStart, int selectionEnd, int topIndex) {
         final long start = System.currentTimeMillis();
+        vertices.storeAxisForSlantingMatrixProjector();
         NLogger.debug(getClass(), "Added history entry for {0}", getShortName()); //$NON-NLS-1$
         history.pushHistory(
                 text,
