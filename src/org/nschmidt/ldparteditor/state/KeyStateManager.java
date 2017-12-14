@@ -454,6 +454,7 @@ public class KeyStateManager {
                         win.setWorkingLayer(ManipulatorAxisMode.NONE);
                         win.updateInitialScale(BigDecimal.ZERO, BigDecimal.ONE, true);
                         vm.clearSelection();
+                        vm.resetSlantingMatrixProjector();
                         break;
                     case COPY:
                         vm.copy();

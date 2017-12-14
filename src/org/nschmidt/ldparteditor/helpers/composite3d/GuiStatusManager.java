@@ -67,6 +67,9 @@ public enum GuiStatusManager {
 
             final VertexManager vm = c3d.getVertexManager();
             final Set<Vertex> vs;
+
+            sb.append(vm.getSlantingMatrixProjectorStatusString());
+
             updateSelection(sb, vm);
             if ((vs = vm.getSelectedVertices()).size() == 1) {
                 try {
@@ -159,7 +162,11 @@ public enum GuiStatusManager {
     public static synchronized void updateStatus(DatFile df) {
         final StringBuilder sb = new StringBuilder();
         final VertexManager vm = df.getVertexManager();
+
+        sb.append(vm.getSlantingMatrixProjectorStatusString());
+
         updateSelection(sb, vm);
+
         sb.append(" "); //$NON-NLS-1$
         sb.append(df.getShortName());
         Editor3DWindow.getStatusLabel().setText(sb.toString());

@@ -21,6 +21,7 @@ import java.util.Set;
 
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
@@ -37,6 +38,13 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
     private static Vertex[] axisZ = null;
 
     private static Matrix transformation = View.ACCURATE_ID;
+
+    public void resetSlantingMatrixProjector() {
+        axisX = null;
+        axisY = null;
+        axisZ = null;
+        transformation = View.ACCURATE_ID;
+    }
 
     public void storeAxisForSlantingMatrixProjector() {
         final int selectedLinesSize = selectedLines.size();
@@ -74,12 +82,26 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
         }
     }
 
+    public String getSlantingMatrixProjectorStatusString() {
+        if (axisX == null) {
+            return ""; //$NON-NLS-1$
+        } else if (axisZ == null) {
+            return I18n.SLANT_MatrixForXY;
+        } else {
+            return I18n.SLANT_MatrixForXYZ;
+        }
+    }
+
     public Matrix getSlantingMatrix() {
         final Matrix result = View.ACCURATE_ID;
         if (axisX == null || axisY == null) {
             return View.ACCURATE_ID;
         }
-        // FIXME Needs impl.
+        // FIXME Needs impl. (calculate Z axis)
+        if (axisZ == null) {
+
+        }
+        // FIXME Needs impl. (calculate matrix)
         transformation = result;
         return result;
     }
