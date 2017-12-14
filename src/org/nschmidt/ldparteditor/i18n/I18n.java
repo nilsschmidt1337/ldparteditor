@@ -81,6 +81,7 @@ public final class I18n {
     private static final ResourceBundle ROUND = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Round", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SCALE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Scale", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SEARCH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Search", MyLanguage.LOCALE); //$NON-NLS-1$
+    private static final ResourceBundle SLANT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.SlantingMatrixProjector", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SLICERPRO = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Slicerpro", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SMOOTH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Smooth", MyLanguage.LOCALE); //$NON-NLS-1$
     private static final ResourceBundle SORT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Sort", MyLanguage.LOCALE); //$NON-NLS-1$
@@ -1132,6 +1133,8 @@ public final class I18n {
     public static final String SEARCH_ReplaceWith = SEARCH.getString(getProperty());
     public static final String SEARCH_Scope = SEARCH.getString(getProperty());
     public static final String SEARCH_SelectedLines = SEARCH.getString(getProperty());
+    public static final String SLANT_MatrixForXY = SLANT.getString(getProperty());
+    public static final String SLANT_MatrixForXYZ = SLANT.getString(getProperty());
     public static final String SLICERPRO_Hint = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_Title = SLICERPRO.getString(getProperty());
     public static final String SMOOTH_Title = SMOOTH.getString(getProperty());
