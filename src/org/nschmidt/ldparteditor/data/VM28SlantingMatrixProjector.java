@@ -189,14 +189,14 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
         Vector3d origin = new Vector3d();
 
         if (originToAxisCenter) {
-            Vector3d axismidpoint1 = new Vector3d();
-            Vector3d axismidpoint2 = new Vector3d();
-            Vector3d.add(new Vector3d(axis1[0]).scaledByHalf(), new Vector3d(axis1[1]).scaledByHalf(), axismidpoint1);
-            Vector3d.add(new Vector3d(axis2[0]).scaledByHalf(), new Vector3d(axis2[1]).scaledByHalf(), axismidpoint2);
-            Vector3d.add(axismidpoint1.scaledByHalf(), axismidpoint2.scaledByHalf(), origin);
             mx = mx.scaledByHalf();
             my = my.scaledByHalf();
+            Vector3d.add(origin, zref, origin);
+            Vector3d.add(origin, mx, origin);
+            Vector3d.add(origin, my, origin);
         }
+
+        // FIXME Modes needs to be tested...
 
         switch (axisSelectionMode) {
         case 0: // X,Y,Z (no adjustment)
@@ -205,7 +205,7 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
         case 2: // X,Z (swap YZ)
             tmp = mz;
             mz = my;
-            my = tmp;
+            my = tmp.scale(BigDecimal.ONE.negate());
             break;
         case 3: // Y,Z (swap XY+YZ)
             tmp = mx;
@@ -220,24 +220,11 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
         }
 
         // Calculate matrix
-
-        // FIXME Origin and matrix needs to be corrected!
-
         result = new Matrix(
                 mx.X, mx.Y, mx.Z, BigDecimal.ZERO,
                 my.X, my.Y, my.Z, BigDecimal.ZERO,
                 mz.X, mz.Y, mz.Z, BigDecimal.ZERO,
-                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
-        /*
-
-
-        result = new Matrix(
-                mx.X, my.X, mz.X, BigDecimal.ZERO,
-                mx.Y, my.Y, mz.Y, BigDecimal.ZERO,
-                mx.Z, my.Z, mz.Z, BigDecimal.ZERO,
                 origin.X, origin.Y, origin.Z, BigDecimal.ONE);
-         */
-
 
         transformation = result;
         return result;
