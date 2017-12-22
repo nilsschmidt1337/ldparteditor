@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.enums;
 
 import java.util.Locale;
 
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -26,5 +27,13 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum MyLanguage {
     INSTANCE;
 
-    public static Locale LOCALE = WorkbenchManager.getUserSettingState().getLocale();
+    public static Locale LOCALE = getLocale();
+
+    private static Locale getLocale() {
+        final UserSettingState userConfig = WorkbenchManager.getUserSettingState();
+        if (userConfig == null || userConfig.getLocale() == null) {
+            return Locale.US;
+        }
+        return userConfig.getLocale();
+    }
 }
