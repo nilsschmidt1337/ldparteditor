@@ -1138,6 +1138,8 @@ public final class I18n {
     public static final String SLANT_MatrixForXYZ = SLANT.getString(getProperty());
     public static final String SLANT_MatrixForXZ = SLANT.getString(getProperty());
     public static final String SLANT_MatrixForYZ = SLANT.getString(getProperty());
+    public static final String SLANT_MatrixReady = SLANT.getString(getProperty());
+    public static final String SLANT_SetOrigin = SLANT.getString(getProperty());
     public static final String SLANT_Title = SLANT.getString(getProperty());
     public static final String SLICERPRO_Hint = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_Title = SLICERPRO.getString(getProperty());
