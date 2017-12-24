@@ -1133,10 +1133,12 @@ public final class I18n {
     public static final String SEARCH_ReplaceWith = SEARCH.getString(getProperty());
     public static final String SEARCH_Scope = SEARCH.getString(getProperty());
     public static final String SEARCH_SelectedLines = SEARCH.getString(getProperty());
+    public static final String SLANT_HowTo = SLANT.getString(getProperty());
     public static final String SLANT_MatrixForXY = SLANT.getString(getProperty());
     public static final String SLANT_MatrixForXYZ = SLANT.getString(getProperty());
     public static final String SLANT_MatrixForXZ = SLANT.getString(getProperty());
     public static final String SLANT_MatrixForYZ = SLANT.getString(getProperty());
+    public static final String SLANT_Title = SLANT.getString(getProperty());
     public static final String SLICERPRO_Hint = SLICERPRO.getString(getProperty());
     public static final String SLICERPRO_Title = SLICERPRO.getString(getProperty());
     public static final String SMOOTH_Title = SMOOTH.getString(getProperty());
