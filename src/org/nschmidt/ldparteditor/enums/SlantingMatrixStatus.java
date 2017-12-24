@@ -16,5 +16,5 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.enums;
 
 public enum SlantingMatrixStatus {
-
+    INIT, NO_SELECTION_TWO_AXIS, NO_SELECTION_THREE_AXIS, SELECTION
 }

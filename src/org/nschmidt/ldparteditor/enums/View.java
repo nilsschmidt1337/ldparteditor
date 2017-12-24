@@ -72,7 +72,7 @@ public enum View {
     /** The standard decimal format for floating point numbers (8 digits) */
     public static final String NUMBER_FORMAT8F = "###,##0.00000000;-###,##0.00000000"; //$NON-NLS-1$
     /** The decimal format for floating point numbers with four leading zeros (4 digits) */
-    public static final String NUMBER_FORMATL4F = "###,##0000.0000;-###,##0000.0000"; //$NON-NLS-1$
+    public static final String NUMBER_FORMATL4F = " ###,##0000.0000;-###,##0000.0000"; //$NON-NLS-1$
 
     public final static GColour RANDOM_COLOUR = new GColour(-1, 1f, 1f, 1f, 0f);
 

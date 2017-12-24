@@ -41,6 +41,7 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
     private static Vertex[] axis3 = null;
     private static int axisSelectionMode = -1;
     private static boolean movingOriginToAxisCenter = false;
+    private static boolean resettingSubfileTransformation = false;
 
     private static Matrix transformation = View.ACCURATE_ID;
 
@@ -121,20 +122,30 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
 
     public SlantingMatrixStatus getSlantingMatrixStatus() {
         if (axis1 == null) {
-            return ""; //$NON-NLS-1$
+            return SlantingMatrixStatus.INIT;
         } else {
-            switch (axisSelectionMode) {
-            case 0: // X,Y,Z
-                return I18n.SLANT_MatrixForXYZ;
-            case 1: // X,Y
-                return I18n.SLANT_MatrixForXY;
-            case 2: // X,Z
-                return I18n.SLANT_MatrixForXZ;
-            case 3: // Y,Z
-                return I18n.SLANT_MatrixForYZ;
-            default:
-                return ""; //$NON-NLS-1$
-            }
+            final boolean hasSelection =
+                    selectedVertices.size() > 0 ||
+                    selectedSubfiles.size() > 0 ||
+                    selectedLines.size() > 0 ||
+                    selectedTriangles.size() > 0 ||
+                    selectedQuads.size() > 0 ||
+                    selectedCondlines.size() > 0;
+
+                    if (hasSelection) {
+                        return SlantingMatrixStatus.SELECTION;
+                    }
+
+                    switch (axisSelectionMode) {
+                    case 0: // X,Y,Z
+                        return SlantingMatrixStatus.NO_SELECTION_THREE_AXIS;
+                    case 1: // X,Y
+                    case 2: // X,Z
+                    case 3: // Y,Z
+                        return SlantingMatrixStatus.NO_SELECTION_TWO_AXIS;
+                    default:
+                        return SlantingMatrixStatus.INIT;
+                    }
         }
     }
 
@@ -193,6 +204,9 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
 
         if (axis3 == null) {
             mz = Vector3d.cross(nmx, nmy);
+            if (Vector3d.distSquare(new Vector3d(), mz).compareTo(BigDecimal.ZERO) > 0) {
+                mz.normalise(mz);
+            }
         } else {
             BigDecimal dXZ0 = Vector3d.distSquare(zref, new Vector3d(axis3[0]));
             BigDecimal dXZ1 = Vector3d.distSquare(zref, new Vector3d(axis3[1]));
@@ -294,5 +308,13 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
 
     public static void setMovingOriginToAxisCenter(boolean movingOriginToAxisCenter) {
         VM28SlantingMatrixProjector.movingOriginToAxisCenter = movingOriginToAxisCenter;
+    }
+
+    public static boolean isResettingSubfileTransformation() {
+        return resettingSubfileTransformation;
+    }
+
+    public static void setResettingSubfileTransformation(boolean resettingSubfileTransformation) {
+        VM28SlantingMatrixProjector.resettingSubfileTransformation = resettingSubfileTransformation;
     }
 }
