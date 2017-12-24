@@ -13,40 +13,21 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.dialogs.slantingmatrixprojector;
+package org.nschmidt.ldparteditor.helpers.composite3d;
 
-import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.helpers.composite3d.SlantingMatrixProjectorSettings;
-
-/**
- *
- * <p>
- * Note: This class should be instantiated, it defines all listeners and part of
- * the business logic. It overrides the {@code open()} method to invoke the
- * listener definitions ;)
- *
- * @author nils
- *
- */
-public class SlantingMatrixProjectorDialog extends SlantingMatrixProjectorDesign {
-
-    /**
-     * Create the dialog.
-     *
-     * @param parentShell
-     * @param vm
-     */
-    public SlantingMatrixProjectorDialog(Shell parentShell, VertexManager vm, SlantingMatrixProjectorSettings mps) {
-        super(parentShell, vm, mps);
+public class SlantingMatrixProjectorSettings {
+    private boolean movingOriginToAxisCenter = true;
+    private boolean resettingSubfileTransformation = true;
+    public boolean isMovingOriginToAxisCenter() {
+        return movingOriginToAxisCenter;
     }
-
-    @Override
-    public int open() {
-        super.create();
-        // MARK All final listeners will be configured here..
-
-        return super.open();
+    public void setMovingOriginToAxisCenter(boolean movingOriginToAxisCenter) {
+        this.movingOriginToAxisCenter = movingOriginToAxisCenter;
     }
-
+    public boolean isResettingSubfileTransformation() {
+        return resettingSubfileTransformation;
+    }
+    public void setResettingSubfileTransformation(boolean resettingSubfileTransformation) {
+        this.resettingSubfileTransformation = resettingSubfileTransformation;
+    }
 }

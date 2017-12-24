@@ -177,6 +177,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.SlantingMatrixProjectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.TJunctionSettings;
@@ -280,6 +281,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private SelectorSettings sels = new SelectorSettings();
     private TJunctionSettings tjs = new TJunctionSettings();
     private MeshReducerSettings ms = new MeshReducerSettings();
+    private SlantingMatrixProjectorSettings mps = new SlantingMatrixProjectorSettings();
 
     private boolean updatingPngPictureTab;
     private int pngPictureUpdateCounter = 0;
@@ -4766,10 +4768,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new SlantingMatrixProjectorDialog(getShell(), vm).open() == IDialogConstants.OK_ID) {
+                        if (new SlantingMatrixProjectorDialog(getShell(), vm, mps).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
-                            vm.getSlantingMatrix(true);
-                            vm.projectWithSlantingMatrix(true);
+                            vm.projectWithSlantingMatrix(mps);
                         }
                         regainFocus();
                         return;
