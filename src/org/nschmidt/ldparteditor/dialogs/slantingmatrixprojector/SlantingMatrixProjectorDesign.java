@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
@@ -39,9 +40,11 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 class SlantingMatrixProjectorDesign extends Dialog {
 
     // Use final only for subclass/listener references!
+    final VertexManager vm;
 
-    SlantingMatrixProjectorDesign(Shell parentShell) {
+    SlantingMatrixProjectorDesign(Shell parentShell, VertexManager vm) {
         super(parentShell);
+        this.vm = vm;
     }
 
     /**
@@ -64,6 +67,10 @@ class SlantingMatrixProjectorDesign extends Dialog {
 
         Label lbl_info = new Label(cmp_container, SWT.NONE);
         lbl_info.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+        switch (vm.getSlantingMatrixStatus()) {
+
+        }
         lbl_info.setText(I18n.SLANT_HowTo);
 
         cmp_container.pack();

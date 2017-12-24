@@ -4766,7 +4766,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                         VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        if (new SlantingMatrixProjectorDialog(getShell()).open() == IDialogConstants.OK_ID) {
+                        if (new SlantingMatrixProjectorDialog(getShell(), vm).open() == IDialogConstants.OK_ID) {
                             vm.addSnapshot();
                             vm.getSlantingMatrix(true);
                             vm.projectWithSlantingMatrix(true);

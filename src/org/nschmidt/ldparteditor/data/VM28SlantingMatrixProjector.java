@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.nschmidt.ldparteditor.enums.SlantingMatrixStatus;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
@@ -39,7 +40,7 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
     private static Vertex[] axis2 = null;
     private static Vertex[] axis3 = null;
     private static int axisSelectionMode = -1;
-
+    private static boolean movingOriginToAxisCenter = false;
 
     private static Matrix transformation = View.ACCURATE_ID;
 
@@ -100,6 +101,25 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
     }
 
     public String getSlantingMatrixProjectorStatusString() {
+        if (axis1 == null) {
+            return ""; //$NON-NLS-1$
+        } else {
+            switch (axisSelectionMode) {
+            case 0: // X,Y,Z
+                return I18n.SLANT_MatrixForXYZ;
+            case 1: // X,Y
+                return I18n.SLANT_MatrixForXY;
+            case 2: // X,Z
+                return I18n.SLANT_MatrixForXZ;
+            case 3: // Y,Z
+                return I18n.SLANT_MatrixForYZ;
+            default:
+                return ""; //$NON-NLS-1$
+            }
+        }
+    }
+
+    public SlantingMatrixStatus getSlantingMatrixStatus() {
         if (axis1 == null) {
             return ""; //$NON-NLS-1$
         } else {
@@ -266,5 +286,13 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
             reSelectSubFiles();
         }
         transformSelection(transformation, null, Editor3DWindow.getWindow().isMovingAdjacentData());
+    }
+
+    public static boolean isMovingOriginToAxisCenter() {
+        return movingOriginToAxisCenter;
+    }
+
+    public static void setMovingOriginToAxisCenter(boolean movingOriginToAxisCenter) {
+        VM28SlantingMatrixProjector.movingOriginToAxisCenter = movingOriginToAxisCenter;
     }
 }
