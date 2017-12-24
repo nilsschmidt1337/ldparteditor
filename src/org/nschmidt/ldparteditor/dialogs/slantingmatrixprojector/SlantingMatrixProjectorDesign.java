@@ -15,6 +15,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.slantingmatrixprojector;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormatSymbols;
+
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
@@ -25,8 +28,14 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.data.Matrix;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.Font;
+import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The SlantingMatrixProjector dialog
@@ -41,6 +50,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
 
     // Use final only for subclass/listener references!
     final VertexManager vm;
+    private java.text.DecimalFormat numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMATL4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
 
     SlantingMatrixProjectorDesign(Shell parentShell, VertexManager vm) {
         super(parentShell);
@@ -55,26 +65,86 @@ class SlantingMatrixProjectorDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         Composite cmp_container = (Composite) super.createDialogArea(parent);
+        cmp_container.setLayout(new GridLayout(4, true));
         GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_title = new Label(cmp_container, SWT.NONE);
+        lbl_title.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
         lbl_title.setText(I18n.SLANT_Title);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
 
         Label lbl_info = new Label(cmp_container, SWT.NONE);
-        lbl_info.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        lbl_info.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
 
         switch (vm.getSlantingMatrixStatus()) {
+        case NO_SELECTION_THREE_AXIS:
+            lbl_info.setText(I18n.SLANT_NoSelectionThreeAxes);
+            insertMatrix(cmp_container);
+            break;
+        case NO_SELECTION_TWO_AXIS:
+            lbl_info.setText(I18n.SLANT_NoSelectionTwoAxes);
+            insertMatrix(cmp_container);
+            break;
+        case SELECTION:
+            lbl_info.setText(I18n.SLANT_MatrixReady);
+            insertMatrix(cmp_container);
+            NButton cb_setOrigin = new NButton(cmp_container, SWT.CHECK);
+            cb_setOrigin.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+            cb_setOrigin.setText(I18n.SLANT_SetOrigin);
+            cb_setOrigin.setSelection(VertexManager.isMovingOriginToAxisCenter());
 
+            NButton cb_resetSubfileOrientation = new NButton(cmp_container, SWT.CHECK);
+            cb_resetSubfileOrientation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+            cb_resetSubfileOrientation.setText(I18n.SLANT_ResetSubfileOrientation);
+            cb_resetSubfileOrientation.setSelection(VertexManager.isResettingSubfileTransformation());
+            break;
+        case INIT:
+        default:
+            lbl_info.setText(I18n.SLANT_HowTo);
+            break;
         }
-        lbl_info.setText(I18n.SLANT_HowTo);
 
         cmp_container.pack();
         return cmp_container;
+    }
+
+    private void insertMatrix(Composite cmp_container) {
+        // TODO Auto-generated method stub
+
+        Matrix M = vm.getSlantingMatrix(VertexManager.isMovingOriginToAxisCenter());
+
+        insertMatrixCell(cmp_container, M.M00);
+        insertMatrixCell(cmp_container, M.M10);
+        insertMatrixCell(cmp_container, M.M20);
+        insertMatrixCell(cmp_container, M.M30);
+        insertMatrixCell(cmp_container, M.M01);
+        insertMatrixCell(cmp_container, M.M11);
+        insertMatrixCell(cmp_container, M.M21);
+        insertMatrixCell(cmp_container, M.M31);
+        insertMatrixCell(cmp_container, M.M02);
+        insertMatrixCell(cmp_container, M.M12);
+        insertMatrixCell(cmp_container, M.M22);
+        insertMatrixCell(cmp_container, M.M32);
+        insertMatrixCell(cmp_container, BigDecimal.ZERO);
+        insertMatrixCell(cmp_container, BigDecimal.ZERO);
+        insertMatrixCell(cmp_container, BigDecimal.ZERO);
+        insertMatrixCell(cmp_container, BigDecimal.ONE);
+
+        NButton btn_CopyMatrixToClipboard = new NButton(cmp_container, SWT.NONE);
+        btn_CopyMatrixToClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+        btn_CopyMatrixToClipboard.setText(I18n.SLANT_CopyToClipboard);
+    }
+
+    private void insertMatrixCell(Composite cmp_container, BigDecimal val) {
+        Text txt_Cell = new Text(cmp_container, SWT.NONE);
+        txt_Cell.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        txt_Cell.setText(numberFormat.format(val));
+        txt_Cell.setFont(Font.MONOSPACE);
+        txt_Cell.setEditable(false);
     }
 
     /**
