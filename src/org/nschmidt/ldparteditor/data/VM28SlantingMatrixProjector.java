@@ -22,6 +22,7 @@ import java.util.Set;
 
 import org.nschmidt.ldparteditor.enums.SlantingMatrixStatus;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.composite3d.SlantingMatrixProjectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -40,8 +41,6 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
     private static Vertex[] axis2 = null;
     private static Vertex[] axis3 = null;
     private static int axisSelectionMode = -1;
-    private static boolean movingOriginToAxisCenter = false;
-    private static boolean resettingSubfileTransformation = false;
 
     private static Matrix transformation = View.ACCURATE_ID;
 
@@ -50,6 +49,7 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
         axis2 = null;
         axis3 = null;
         transformation = View.ACCURATE_ID;
+        axisSelectionMode = -1;
     }
 
     public void storeAxisForSlantingMatrixProjector() {
@@ -260,14 +260,19 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
                 mz.X, mz.Y, mz.Z, BigDecimal.ZERO,
                 origin.X, origin.Y, origin.Z, BigDecimal.ONE);
 
-        transformation = result;
         return result;
     }
 
-    public void projectWithSlantingMatrix(boolean moveSubfilesToOrigin) {
+    public void projectWithSlantingMatrix(SlantingMatrixProjectorSettings settings) {
         if (axis1 == null || axis2 == null) {
             return;
         }
+
+        final boolean moveSubfilesToOrigin = settings.isResettingSubfileTransformation();
+        final boolean originToAxisCenter = settings.isMovingOriginToAxisCenter();
+
+        transformation = getSlantingMatrix(originToAxisCenter);
+
         if (moveSubfilesToOrigin) {
             Set<GData1> newSubfileSelection = new HashSet<GData1>();
             for (GData1 s : selectedSubfiles) {
@@ -300,21 +305,5 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
             reSelectSubFiles();
         }
         transformSelection(transformation, null, Editor3DWindow.getWindow().isMovingAdjacentData());
-    }
-
-    public static boolean isMovingOriginToAxisCenter() {
-        return movingOriginToAxisCenter;
-    }
-
-    public static void setMovingOriginToAxisCenter(boolean movingOriginToAxisCenter) {
-        VM28SlantingMatrixProjector.movingOriginToAxisCenter = movingOriginToAxisCenter;
-    }
-
-    public static boolean isResettingSubfileTransformation() {
-        return resettingSubfileTransformation;
-    }
-
-    public static void setResettingSubfileTransformation(boolean resettingSubfileTransformation) {
-        VM28SlantingMatrixProjector.resettingSubfileTransformation = resettingSubfileTransformation;
     }
 }
