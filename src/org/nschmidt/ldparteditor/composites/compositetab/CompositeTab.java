@@ -40,11 +40,13 @@ import org.eclipse.swt.custom.MovementEvent;
 import org.eclipse.swt.custom.MovementListener;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.custom.VerifyKeyListener;
+import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
+import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlAdapter;
 import org.eclipse.swt.events.ControlEvent;
@@ -1151,6 +1153,10 @@ public class CompositeTab extends CompositeTabDesign {
                             return;
                         }
 
+                        Clipboard clipboard = new Clipboard(Display.getCurrent());
+                        String plainText = (String)clipboard.getContents(TextTransfer.getInstance());
+                        clipboard.dispose();
+
                         int delta = st.getLine(fromLine - 2).length();
 
                         st.setSelection(st.getOffsetAtLine(fromLine - 1), st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length());
@@ -1163,6 +1169,12 @@ public class CompositeTab extends CompositeTabDesign {
                         if (doCutPaste) st.paste();
                         st.insert(StringHelper.getLineDelimiter());
                         st.setSelectionRange(s1 - delta - StringHelper.getLineDelimiter().length(), s2 - s1);
+
+                        if (plainText != null) {
+                            clipboard = new Clipboard(Display.getCurrent());
+                            clipboard.setContents(new Object[] { plainText }, new Transfer[] { TextTransfer.getInstance() });
+                            clipboard.dispose();
+                        }
 
                         st.redraw();
                         break;
@@ -1186,20 +1198,30 @@ public class CompositeTab extends CompositeTabDesign {
                             return;
                         }
 
+                        Clipboard clipboard = new Clipboard(Display.getCurrent());
+                        String plainText = (String)clipboard.getContents(TextTransfer.getInstance());
+                        clipboard.dispose();
+
                         int delta = st.getLine(toLine).length();
 
                         st.setSelection(st.getOffsetAtLine(fromLine - 1), st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length());
                         boolean doCutPaste = st.getSelectionCount() > 0;
                         if (doCutPaste) st.cut();
-                        st.setSelectionRange(st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length(), StringHelper.getLineDelimiter().length());
+                        st.setSelection(st.getOffsetAtLine(fromLine - 1) - StringHelper.getLineDelimiter().length(), st.getOffsetAtLine(fromLine - 1));
                         st.insert(""); //$NON-NLS-1$
 
-                        st.setSelection(st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length());
+                        st.setSelection(st.getOffsetAtLine(fromLine - 1) + st.getLine(fromLine - 1).length());
                         st.insert(StringHelper.getLineDelimiter());
-                        st.setSelection(st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length() + StringHelper.getLineDelimiter().length());
+                        st.setSelection(st.getOffsetAtLine(fromLine - 1) + st.getLine(fromLine - 1).length() + StringHelper.getLineDelimiter().length());
                         if (doCutPaste) st.paste();
 
                         st.setSelectionRange(s1 + delta + StringHelper.getLineDelimiter().length(), s2 - s1);
+
+                        if (plainText != null) {
+                            clipboard = new Clipboard(Display.getCurrent());
+                            clipboard.setContents(new Object[] { plainText }, new Transfer[] { TextTransfer.getInstance() });
+                            clipboard.dispose();
+                        }
 
                         break;
                     }
