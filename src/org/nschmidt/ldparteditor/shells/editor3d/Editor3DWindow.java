@@ -4317,7 +4317,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (new PartReviewDialog(getShell()).open() == IDialogConstants.OK_ID) {
 
                     try {
-                        new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(false, false, new IRunnableWithProgress() {
+                        new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                             @Override
                             public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                                 monitor.beginTask(I18n.E3D_PartReview, IProgressMonitor.UNKNOWN);
@@ -4341,12 +4341,12 @@ public class Editor3DWindow extends Editor3DDesign {
                                 // Download first, then build the views
 
                                 // http://www.ldraw.org/library/unofficial
-                                monitor.subTask(fileName);
-                                String source = FileHelper.downloadPartFile("parts/" + fileName); //$NON-NLS-1$
-                                if (source == null) source = FileHelper.downloadPartFile("parts/s/" + fileName); //$NON-NLS-1$
-                                if (source == null) source = FileHelper.downloadPartFile("p/" + fileName); //$NON-NLS-1$
-                                if (source == null) source = FileHelper.downloadPartFile("p/8/" + fileName); //$NON-NLS-1$
-                                if (source == null) source = FileHelper.downloadPartFile("p/48/" + fileName); //$NON-NLS-1$
+                                monitor.beginTask(fileName, IProgressMonitor.UNKNOWN);
+                                String source = FileHelper.downloadPartFile("parts/" + fileName, monitor); //$NON-NLS-1$
+                                if (source == null) source = FileHelper.downloadPartFile("parts/s/" + fileName, monitor); //$NON-NLS-1$
+                                if (source == null) source = FileHelper.downloadPartFile("p/" + fileName, monitor); //$NON-NLS-1$
+                                if (source == null) source = FileHelper.downloadPartFile("p/8/" + fileName, monitor); //$NON-NLS-1$
+                                if (source == null) source = FileHelper.downloadPartFile("p/48/" + fileName, monitor); //$NON-NLS-1$
                                 if (source == null) {
                                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                                     messageBox.setText(I18n.DIALOG_Error);
@@ -4578,9 +4578,9 @@ public class Editor3DWindow extends Editor3DDesign {
                             if (files.contains(fileName)) continue;
                             files.add(fileName);
                             monitor.subTask(fileName);
-                            String source2 = FileHelper.downloadPartFile("parts/" + fileName); //$NON-NLS-1$
-                            if (source2 == null) source2 = FileHelper.downloadPartFile("parts/s/" + fileName); //$NON-NLS-1$
-                            if (source2 == null) source2 = FileHelper.downloadPartFile("p/" + fileName); //$NON-NLS-1$
+                            String source2 = FileHelper.downloadPartFile("parts/" + fileName, monitor); //$NON-NLS-1$
+                            if (source2 == null) source2 = FileHelper.downloadPartFile("parts/s/" + fileName, monitor); //$NON-NLS-1$
+                            if (source2 == null) source2 = FileHelper.downloadPartFile("p/" + fileName, monitor); //$NON-NLS-1$
 
                             if (source2 != null) {
 

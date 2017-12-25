@@ -18,10 +18,14 @@ package org.nschmidt.ldparteditor.helpers;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import org.eclipse.core.runtime.IProgressMonitor;
 
 /**
  * A helper enum class for file actions
@@ -162,4 +166,56 @@ public enum FileHelper {
         return sb.toString();
     }
 
+    public static String downloadPartFile(String name, IProgressMonitor monitor) {
+
+        final StringBuilder sb = new StringBuilder();
+        InputStreamReader in = null;
+        try {
+            final URL url = new URL("http://www.ldraw.org/library/unofficial/" + name); //$NON-NLS-1$
+            final int size = getFileSize(url);
+            in = new InputStreamReader(url.openStream(), "UTF-8"); //$NON-NLS-1$
+            monitor.beginTask(name, size);
+            int progress = 0;
+            int c;
+            while ((c = in.read()) != -1) {
+                sb.append((char) c);
+                if (progress < size) {
+                    monitor.worked(1);
+                    progress++;
+                }
+            }
+
+        } catch (MalformedURLException e) {
+            return null;
+        } catch (IOException e) {
+            return null;
+        } finally {
+            if (in != null) {
+                try {
+                    in.close();
+                } catch (IOException e) {
+                    return null;
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    private static int getFileSize(URL url) {
+        URLConnection conn = null;
+        try {
+            conn = url.openConnection();
+            if(conn instanceof HttpURLConnection) {
+                ((HttpURLConnection)conn).setRequestMethod("HEAD"); //$NON-NLS-1$
+            }
+            conn.getInputStream();
+            return conn.getContentLength();
+        } catch (IOException e) {
+            return 0;
+        } finally {
+            if(conn instanceof HttpURLConnection) {
+                ((HttpURLConnection)conn).disconnect();
+            }
+        }
+    }
 }
