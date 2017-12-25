@@ -1701,71 +1701,7 @@ class Editor3DDesign extends ApplicationWindow {
                         }
                     } else {
                         // MARK Load the configuration of multiple 3D windows
-                        Collections.sort(threeDconfig, new Comparator<Composite3DState>(
-                                ) {
-                            @Override
-                            public int compare(Composite3DState o1, Composite3DState o2) {
-                                final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());
-                                if (cmp == 0) {
-                                    return o1.getPath().compareTo(o2.getPath());
-                                }
-                                return cmp;
-                            }
-                        });
-                        CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
-
-                        HashSet<String> splitCandidate = new HashSet<String>();
-                        HashSet<String> splitAlready = new HashSet<String>();
-                        HashMap<String, CompositeContainer> cmpMap = new HashMap<String, CompositeContainer>();
-                        HashMap<String, Composite3DState> sMap = new HashMap<String, Composite3DState>();
-
-                        splitCandidate.add("|"); //$NON-NLS-1$
-                        splitAlready.add("|"); //$NON-NLS-1$
-                        {
-                            SashForm sf;
-                            if (!threeDconfig.get(0).isVertical()) {
-                                sf = cmp_Container.getComposite3D().getModifier().splitViewVertically();
-                            } else {
-                                sf = cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
-                            }
-                            sf.setWeights(threeDconfig.get(0).getWeights());
-                            cmpMap.put("|s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
-                            cmpMap.put("|s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
-                        }
-                        for (Composite3DState state : threeDconfig) {
-                            String path = state.getPath();
-                            String parentPath = state.getParentPath();
-                            if (state.isSash()) {
-                                sMap.put(path, state);
-                            }
-                            if (!splitAlready.contains(path) && !splitCandidate.contains(path)) {
-                                splitCandidate.add(path);
-                            }
-                            if (splitCandidate.contains(parentPath) && !splitAlready.contains(parentPath) && cmpMap.containsKey(parentPath) && sMap.containsKey(parentPath)) {
-                                {
-                                    Composite3DState state2 = sMap.get(parentPath);
-                                    CompositeContainer c = cmpMap.get(parentPath);
-                                    SashForm sf;
-                                    if (!state2.isVertical()) {
-                                        sf = c.getComposite3D().getModifier().splitViewVertically();
-                                    } else {
-                                        sf = c.getComposite3D().getModifier().splitViewHorizontally();
-                                    }
-                                    sf.setWeights(state2.getWeights());
-                                    cmpMap.remove(parentPath);
-                                    cmpMap.put(parentPath + "s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
-                                    cmpMap.put(parentPath + "s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
-                                }
-                                splitAlready.add(parentPath);
-                            }
-                        }
-
-                        for (Composite3DState state : threeDconfig) {
-                            String path = state.getPath();
-                            if (cmpMap.containsKey(path)) {
-                                createComposite3D(null, cmpMap.get(path), state);
-                            }
-                        }
+                        applyC3DStates(threeDconfig);
                     }
                 }
 
@@ -3624,5 +3560,74 @@ class Editor3DDesign extends ApplicationWindow {
 
     public static int getIconsize() {
         return iconSize;
+    }
+
+    public void applyC3DStates(ArrayList<Composite3DState> threeDconfig) {
+
+        Collections.sort(threeDconfig, new Comparator<Composite3DState>(
+                ) {
+            @Override
+            public int compare(Composite3DState o1, Composite3DState o2) {
+                final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());
+                if (cmp == 0) {
+                    return o1.getPath().compareTo(o2.getPath());
+                }
+                return cmp;
+            }
+        });
+        CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+
+        HashSet<String> splitCandidate = new HashSet<String>();
+        HashSet<String> splitAlready = new HashSet<String>();
+        HashMap<String, CompositeContainer> cmpMap = new HashMap<String, CompositeContainer>();
+        HashMap<String, Composite3DState> sMap = new HashMap<String, Composite3DState>();
+
+        splitCandidate.add("|"); //$NON-NLS-1$
+        splitAlready.add("|"); //$NON-NLS-1$
+        {
+            SashForm sf;
+            if (!threeDconfig.get(0).isVertical()) {
+                sf = cmp_Container.getComposite3D().getModifier().splitViewVertically();
+            } else {
+                sf = cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
+            }
+            sf.setWeights(threeDconfig.get(0).getWeights());
+            cmpMap.put("|s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
+            cmpMap.put("|s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
+        }
+        for (Composite3DState state : threeDconfig) {
+            String path = state.getPath();
+            String parentPath = state.getParentPath();
+            if (state.isSash()) {
+                sMap.put(path, state);
+            }
+            if (!splitAlready.contains(path) && !splitCandidate.contains(path)) {
+                splitCandidate.add(path);
+            }
+            if (splitCandidate.contains(parentPath) && !splitAlready.contains(parentPath) && cmpMap.containsKey(parentPath) && sMap.containsKey(parentPath)) {
+                {
+                    Composite3DState state2 = sMap.get(parentPath);
+                    CompositeContainer c = cmpMap.get(parentPath);
+                    SashForm sf;
+                    if (!state2.isVertical()) {
+                        sf = c.getComposite3D().getModifier().splitViewVertically();
+                    } else {
+                        sf = c.getComposite3D().getModifier().splitViewHorizontally();
+                    }
+                    sf.setWeights(state2.getWeights());
+                    cmpMap.remove(parentPath);
+                    cmpMap.put(parentPath + "s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
+                    cmpMap.put(parentPath + "s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
+                }
+                splitAlready.add(parentPath);
+            }
+        }
+
+        for (Composite3DState state : threeDconfig) {
+            String path = state.getPath();
+            if (cmpMap.containsKey(path)) {
+                createComposite3D(null, cmpMap.get(path), state);
+            }
+        }
     }
 }

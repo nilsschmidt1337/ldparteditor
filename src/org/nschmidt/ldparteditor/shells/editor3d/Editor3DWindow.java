@@ -4321,6 +4321,9 @@ public class Editor3DWindow extends Editor3DDesign {
                         return;
                     }
 
+                    final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
+                    winState.setThreeDwindowConfig(getC3DStates());
+
                     try {
                         new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                             @Override
@@ -6573,20 +6576,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         // Don't save the 3D view config when doing a part review
         if (!isReviewingAPart()) {
-            // Traverse the sash forms to store the 3D configuration
-            final ArrayList<Composite3DState> c3dStates = new ArrayList<Composite3DState>();
-            Control c = Editor3DDesign.getSashForm().getChildren()[1];
-            if (c != null) {
-                if (c instanceof SashForm|| c instanceof CompositeContainer) {
-                    // c instanceof CompositeContainer: Simple case, since its only one 3D view open -> No recursion!
-                    saveComposite3DStates(c, c3dStates, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
-                } else {
-                    // There is no 3D window open at the moment
-                }
-            } else {
-                // There is no 3D window open at the moment
-            }
-            winState.setThreeDwindowConfig(c3dStates);
+            winState.setThreeDwindowConfig(getC3DStates());
         }
 
         if (editorSashForm[0] != null) {
@@ -7371,7 +7361,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             });
         } else {
-            // TODO Needs implementation (save and restore the viewport)!
+            // TODO Needs implementation (restore the viewport)!
             partsForReview = (Set<DatFile>) cmp_SyncAndReview[0].getChildren()[1].getData();
             for (DatFile df : partsForReview) {
                 Project.removeOpenedFile(df);
@@ -9965,5 +9955,22 @@ public class Editor3DWindow extends Editor3DDesign {
         mntm_STriangles[0].setSelection(true);
         mntm_SQuads[0].setSelection(true);
         mntm_SCLines[0].setSelection(true);
+    }
+
+    public ArrayList<Composite3DState> getC3DStates() {
+        // Traverse the sash forms to store the 3D configuration
+        final ArrayList<Composite3DState> c3dStates = new ArrayList<Composite3DState>();
+        Control c = Editor3DDesign.getSashForm().getChildren()[1];
+        if (c != null) {
+            if (c instanceof SashForm|| c instanceof CompositeContainer) {
+                // c instanceof CompositeContainer: Simple case, since its only one 3D view open -> No recursion!
+                saveComposite3DStates(c, c3dStates, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
+            } else {
+                // There is no 3D window open at the moment
+            }
+        } else {
+            // There is no 3D window open at the moment
+        }
+        return c3dStates;
     }
 }
