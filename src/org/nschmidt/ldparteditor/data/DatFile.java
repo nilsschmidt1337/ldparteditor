@@ -77,6 +77,7 @@ public final class DatFile {
     private static final Pattern pattern = Pattern.compile("\r?\n|\r"); //$NON-NLS-1$
 
     private final boolean readOnly;
+    private final boolean fromPartReview;
     private volatile boolean drawSelection = true;
 
     private final GData drawChainAnchor = new GDataInit(View.DUMMY_REFERENCE);
@@ -128,11 +129,26 @@ public final class DatFile {
     private DuplicateManager duplicate = new DuplicateManager(this);
     private DatHeaderManager datHeader = new DatHeaderManager(this);
 
+    public static DatFile createDatFileForReview(String path) {
+        return new DatFile(path, true);
+    }
+
+    private DatFile(String path, boolean fromPartReview) {
+        this.projectFile = true;
+        this.oldName = path;
+        this.newName = path;
+        this.readOnly = false;
+        this.fromPartReview = fromPartReview;
+        this.setVirtual(true);
+        this.setType(DatType.PART);
+    }
+
     public DatFile(String path) {
         this.projectFile = true;
         this.oldName = path;
         this.newName = path;
         this.readOnly = false;
+        this.fromPartReview = false;
         this.setVirtual(true);
         this.setType(DatType.PART);
     }
@@ -143,6 +159,7 @@ public final class DatFile {
         this.oldName = path;
         this.newName = path;
         this.readOnly = isReadOnly;
+        this.fromPartReview = false;
         this.setVirtual(false);
         this.setType(type);
     }
@@ -2046,5 +2063,9 @@ public final class DatFile {
 
     public void setOptimizingCSG(boolean optimizingCSG) {
         this.optimizingCSG = optimizingCSG;
+    }
+
+    public boolean isFromPartReview() {
+        return fromPartReview;
     }
 }

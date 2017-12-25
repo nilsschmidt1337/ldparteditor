@@ -257,6 +257,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private boolean noTransparentSelection = false;
     private boolean bfcToggle = false;
     private boolean insertingAtCursorPosition = false;
+    private boolean reviewingAPart = false;
     private ObjectMode workingType = ObjectMode.VERTICES;
     private WorkingMode workingAction = WorkingMode.SELECT;
     private ManipulatorAxisMode workingLayer = ManipulatorAxisMode.NONE;
@@ -4314,7 +4315,11 @@ public class Editor3DWindow extends Editor3DDesign {
 
             @Override
             public void widgetSelected(SelectionEvent e) {
-                if (new PartReviewDialog(getShell()).open() == IDialogConstants.OK_ID) {
+                if (new PartReviewDialog(getShell(), isReviewingAPart()).open() == IDialogConstants.OK_ID) {
+                    if (isReviewingAPart()) {
+                        setReviewingAPart(false, null);
+                        return;
+                    }
 
                     try {
                         new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
@@ -4404,7 +4409,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             TreeItem n;
                                             fileName = list.get(i);
                                             source = list.get(i + 1);
-                                            df = new DatFile(fileName);
+                                            df = DatFile.createDatFileForReview(fileName);
                                             monitor.beginTask(fileName, IProgressMonitor.UNKNOWN);
                                             Display.getCurrent().readAndDispatch();
                                             dfsToOpen.add(df);
@@ -4539,6 +4544,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             txt.openNewDatFileTab(df, false);
                                         }
 
+                                        setReviewingAPart(true, dfsToOpen);
                                         regainFocus();
                                     }
                                 });
@@ -6565,20 +6571,23 @@ public class Editor3DWindow extends Editor3DDesign {
 
         final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
 
-        // Traverse the sash forms to store the 3D configuration
-        final ArrayList<Composite3DState> c3dStates = new ArrayList<Composite3DState>();
-        Control c = Editor3DDesign.getSashForm().getChildren()[1];
-        if (c != null) {
-            if (c instanceof SashForm|| c instanceof CompositeContainer) {
-                // c instanceof CompositeContainer: Simple case, since its only one 3D view open -> No recursion!
-                saveComposite3DStates(c, c3dStates, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
+        // Don't save the 3D view config when doing a part review
+        if (!isReviewingAPart()) {
+            // Traverse the sash forms to store the 3D configuration
+            final ArrayList<Composite3DState> c3dStates = new ArrayList<Composite3DState>();
+            Control c = Editor3DDesign.getSashForm().getChildren()[1];
+            if (c != null) {
+                if (c instanceof SashForm|| c instanceof CompositeContainer) {
+                    // c instanceof CompositeContainer: Simple case, since its only one 3D view open -> No recursion!
+                    saveComposite3DStates(c, c3dStates, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
+                } else {
+                    // There is no 3D window open at the moment
+                }
             } else {
                 // There is no 3D window open at the moment
             }
-        } else {
-            // There is no 3D window open at the moment
+            winState.setThreeDwindowConfig(c3dStates);
         }
-        winState.setThreeDwindowConfig(c3dStates);
 
         if (editorSashForm[0] != null) {
             winState.setEditorSashWeights(editorSashForm[0].getWeights());
@@ -7343,6 +7352,44 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void setInsertingAtCursorPosition(boolean insertAtCursor) {
         this.insertingAtCursorPosition = insertAtCursor;
+    }
+
+    public boolean isReviewingAPart() {
+        return reviewingAPart;
+    }
+
+    @SuppressWarnings("unchecked")
+    public void setReviewingAPart(boolean reviewingAPart, Set<DatFile> partsForReview) {
+        if (reviewingAPart) {
+            NButton btn_EndPartReview = new NButton(cmp_SyncAndReview[0], SWT.NONE);
+            btn_EndPartReview.setText(I18n.E3D_EndPartReview);
+            btn_EndPartReview.setData(partsForReview);
+            btn_EndPartReview.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    setReviewingAPart(false, null);
+                }
+            });
+        } else {
+            // TODO Needs implementation (save and restore the viewport)!
+            partsForReview = (Set<DatFile>) cmp_SyncAndReview[0].getChildren()[1].getData();
+            for (DatFile df : partsForReview) {
+                Project.removeOpenedFile(df);
+                closeDatfile(df);
+            }
+            cmp_SyncAndReview[0].getChildren()[1].dispose();
+            Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
+            getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            getShell().update();
+            treeItem_Project[0].setText(I18n.PROJECT_NewProject);
+            treeItem_Project[0].setData(Project.getProjectPath());
+            treeItem_Project[0].getParent().build();
+            treeItem_Project[0].getParent().redraw();
+            treeItem_Project[0].getParent().update();
+        }
+        cmp_SyncAndReview[0].getParent().layout(true);
+
+        this.reviewingAPart = reviewingAPart;
     }
 
     public ManipulatorAxisMode getWorkingLayer() {
@@ -9044,7 +9091,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public boolean closeDatfile(DatFile df) {
         boolean result2 = false;
-        if (Project.getUnsavedFiles().contains(df) && !df.isReadOnly()) {
+        if (Project.getUnsavedFiles().contains(df) && !df.isReadOnly() && !df.isFromPartReview()) {
             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
             messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
 
