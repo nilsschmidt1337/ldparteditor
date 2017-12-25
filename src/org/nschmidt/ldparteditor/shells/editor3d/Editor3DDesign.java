@@ -121,6 +121,7 @@ class Editor3DDesign extends ApplicationWindow {
 
     final CTabFolder[] tabFolder_OpenDatFiles = new CTabFolder[1];
     final NButton[] btn_SyncTabs = new NButton[1];
+    final Composite[] cmp_SyncAndReview = new Composite[1];
 
     private Composite cmpNorth;
     private Composite cmpEast;
@@ -657,17 +658,21 @@ class Editor3DDesign extends ApplicationWindow {
             cmp_main_editor.setLayoutData(BorderLayout.CENTER);
             cmp_main_editor.setLayout(new GridLayout(2, false));
             {
-                NButton btn_SyncTabs = new NButton(cmp_main_editor, SWT.TOGGLE);
-                this.btn_SyncTabs[0] = btn_SyncTabs;
-                btn_SyncTabs.setToolTipText(I18n.E3D_Sync3DEditor);
-                btn_SyncTabs.setImage(ResourceManager.getImage("icon16_sync3D.png")); //$NON-NLS-1$
+                Composite cmp_syncAndReview = new Composite(cmp_main_editor, SWT.NONE);
+                cmp_syncAndReview.setLayout(new GridLayout(2, false));
+                this.cmp_SyncAndReview[0] = cmp_syncAndReview;
+                {
+                    NButton btn_SyncTabs = new NButton(cmp_syncAndReview, SWT.TOGGLE);
+                    this.btn_SyncTabs[0] = btn_SyncTabs;
+                    btn_SyncTabs.setToolTipText(I18n.E3D_Sync3DEditor);
+                    btn_SyncTabs.setImage(ResourceManager.getImage("icon16_sync3D.png")); //$NON-NLS-1$
 
-                btn_SyncTabs.setSelection(userSettings.isSyncingTabs());
-
+                    btn_SyncTabs.setSelection(userSettings.isSyncingTabs());
+                }
                 {
                     GridData gridDataX = new GridData();
                     gridDataX.horizontalIndent = 10;
-                    btn_SyncTabs.setLayoutData(gridDataX);
+                    cmp_syncAndReview.setLayoutData(gridDataX);
                 }
 
                 CTabFolder tabFolder_OpenDatFiles = new CTabFolder(cmp_main_editor, SWT.CLOSE);

@@ -35,8 +35,11 @@ class PartReviewDesign extends Dialog {
 
     static String fileName = ""; //$NON-NLS-1$
 
-    protected PartReviewDesign(Shell parentShell) {
+    final boolean alreadyReviewing;
+
+    protected PartReviewDesign(Shell parentShell, boolean alreadyReviewing) {
         super(parentShell);
+        this.alreadyReviewing = alreadyReviewing;
     }
 
     Button[] btn_ok = new Button[1];
@@ -55,26 +58,30 @@ class PartReviewDesign extends Dialog {
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_Unit = new Label(cmp_Container, SWT.NONE);
-        lbl_Unit.setText(I18n.E3D_PartReviewEnterPartName);
+        if (alreadyReviewing) {
+            Label lbl_Info = new Label(cmp_Container, SWT.NONE);
+            lbl_Info.setText(I18n.E3D_PartReviewAlready);
+        } else {
+            Label lbl_PartName = new Label(cmp_Container, SWT.NONE);
+            lbl_PartName.setText(I18n.E3D_PartReviewEnterPartName);
 
-        Text txt_file2 = new Text(cmp_Container, SWT.NONE);
-        this.txt_file[0] = txt_file2;
-        GridData gd = new GridData();
-        gd.grabExcessHorizontalSpace = true;
-        gd.horizontalAlignment = SWT.FILL;
-        txt_file2.setLayoutData(gd);
+            Text txt_file2 = new Text(cmp_Container, SWT.NONE);
+            this.txt_file[0] = txt_file2;
+            GridData gd = new GridData();
+            gd.grabExcessHorizontalSpace = true;
+            gd.horizontalAlignment = SWT.FILL;
+            txt_file2.setLayoutData(gd);
 
-        this.txt_file[0].addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                fileName = txt_file[0].getText();
-            }
-        });
+            this.txt_file[0].addModifyListener(new ModifyListener() {
+                @Override
+                public void modifyText(ModifyEvent e) {
+                    fileName = txt_file[0].getText();
+                }
+            });
 
-        Label lbl_Info = new Label(cmp_Container, SWT.NONE);
-        lbl_Info.setText(I18n.E3D_PartReviewInfo);
-
+            Label lbl_Info = new Label(cmp_Container, SWT.NONE);
+            lbl_Info.setText(I18n.E3D_PartReviewInfo);
+        }
 
         cmp_Container.pack();
         return cmp_Container;
@@ -87,8 +94,13 @@ class PartReviewDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        if (alreadyReviewing) {
+            btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_Yes, true);
+            btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_No, false);
+        } else {
+            btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
+            btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        }
     }
 
     /**

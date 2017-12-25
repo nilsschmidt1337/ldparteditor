@@ -19,8 +19,8 @@ import org.eclipse.swt.widgets.Shell;
 
 public class PartReviewDialog extends PartReviewDesign {
 
-    public PartReviewDialog(Shell parentShell) {
-        super(parentShell);
+    public PartReviewDialog(Shell parentShell, boolean alreadyReviewing) {
+        super(parentShell, alreadyReviewing);
     }
 
     public static String getFileName() {

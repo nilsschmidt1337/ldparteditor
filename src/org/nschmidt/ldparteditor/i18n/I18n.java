@@ -412,6 +412,7 @@ public final class I18n {
     public static final String E3D_DownloadLDConfig = E3D.getString(getProperty());
     public static final String E3D_DragHint = E3D.getString(getProperty());
     public static final String E3D_Edger2 = E3D.getString(getProperty());
+    public static final String E3D_EndPartReview = E3D.getString(getProperty());
     public static final String E3D_Everything = E3D.getString(getProperty());
     public static final String E3D_ExceptSubfile = E3D.getString(getProperty());
     public static final String E3D_Exit = E3D.getString(getProperty());
@@ -540,6 +541,7 @@ public final class I18n {
     public static final String E3D_PaletteSetSize = E3D.getString(getProperty());
     public static final String E3D_ParseInline = E3D.getString(getProperty());
     public static final String E3D_PartReview = E3D.getString(getProperty());
+    public static final String E3D_PartReviewAlready = E3D.getString(getProperty());
     public static final String E3D_PartReviewEnterPartName = E3D.getString(getProperty());
     public static final String E3D_PartReviewError = E3D.getString(getProperty());
     public static final String E3D_PartReviewInfo = E3D.getString(getProperty());
