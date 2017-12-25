@@ -1132,6 +1132,22 @@ public class CompositeTab extends CompositeTabDesign {
                         compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + referenceLine.length() - delta);
                         break;
                     }
+                    case EDITORTEXT_LINE_UP:
+                    {
+                        if (!vm.isUpdated() || df.isReadOnly()) return;
+                        NLogger.debug(getClass(), "Move line up.."); //$NON-NLS-1$
+
+                        // TODO Needs implementation!
+                        break;
+                    }
+                    case EDITORTEXT_LINE_DOWN:
+                    {
+                        if (!vm.isUpdated() || df.isReadOnly()) return;
+                        NLogger.debug(getClass(), "Move line down.."); //$NON-NLS-1$
+
+                        // TODO Needs implementation!
+                        break;
+                    }
                     default:
                         break;
                     }
@@ -1254,7 +1270,7 @@ public class CompositeTab extends CompositeTabDesign {
                         event.newOffset++;
                         c = compositeText[0].getText().charAt(event.newOffset);
                     }
-                    if (c != ' ' && compositeText[0].getLineAtOffset(event.offset) == (compositeText[0].getLineCount() - 1)) {
+                    if (c != ' ' && compositeText[0].getLineAtOffset(event.offset) == compositeText[0].getLineCount() - 1) {
                         event.newOffset = Math.max(len + 1, event.newOffset + 1);
                     }
                     break;
