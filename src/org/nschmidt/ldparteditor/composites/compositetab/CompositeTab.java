@@ -1137,7 +1137,34 @@ public class CompositeTab extends CompositeTabDesign {
                         if (!vm.isUpdated() || df.isReadOnly()) return;
                         NLogger.debug(getClass(), "Move line up.."); //$NON-NLS-1$
 
-                        // TODO Needs implementation!
+                        final StyledText st = compositeText[0];
+                        int s1 = st.getSelectionRange().x;
+                        int s2 = s1 + st.getSelectionRange().y;
+                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                        fromLine++;
+                        toLine++;
+                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
+
+                        if (fromLine <= 1) {
+                            return;
+                        }
+
+                        int delta = st.getLine(fromLine - 2).length();
+
+                        st.setSelection(st.getOffsetAtLine(fromLine - 1), st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length());
+                        boolean doCutPaste = st.getSelectionCount() > 0;
+                        if (doCutPaste) st.cut();
+                        st.setSelection(st.getOffsetAtLine(fromLine - 1) - StringHelper.getLineDelimiter().length(), st.getOffsetAtLine(fromLine - 1));
+                        st.insert(""); //$NON-NLS-1$
+
+                        st.setSelection(st.getOffsetAtLine(fromLine - 2));
+                        if (doCutPaste) st.paste();
+                        st.insert(StringHelper.getLineDelimiter());
+                        st.setSelectionRange(s1 - delta - StringHelper.getLineDelimiter().length(), s2 - s1);
+
+                        st.redraw();
                         break;
                     }
                     case EDITORTEXT_LINE_DOWN:
@@ -1145,7 +1172,35 @@ public class CompositeTab extends CompositeTabDesign {
                         if (!vm.isUpdated() || df.isReadOnly()) return;
                         NLogger.debug(getClass(), "Move line down.."); //$NON-NLS-1$
 
-                        // TODO Needs implementation!
+                        final StyledText st = compositeText[0];
+                        int s1 = st.getSelectionRange().x;
+                        int s2 = s1 + st.getSelectionRange().y;
+                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                        fromLine++;
+                        toLine++;
+                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
+
+                        if (toLine >= st.getLineCount()) {
+                            return;
+                        }
+
+                        int delta = st.getLine(toLine).length();
+
+                        st.setSelection(st.getOffsetAtLine(fromLine - 1), st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length());
+                        boolean doCutPaste = st.getSelectionCount() > 0;
+                        if (doCutPaste) st.cut();
+                        st.setSelectionRange(st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length(), StringHelper.getLineDelimiter().length());
+                        st.insert(""); //$NON-NLS-1$
+
+                        st.setSelection(st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length());
+                        st.insert(StringHelper.getLineDelimiter());
+                        st.setSelection(st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length() + StringHelper.getLineDelimiter().length());
+                        if (doCutPaste) st.paste();
+
+                        st.setSelectionRange(s1 + delta + StringHelper.getLineDelimiter().length(), s2 - s1);
+
                         break;
                     }
                     default:
