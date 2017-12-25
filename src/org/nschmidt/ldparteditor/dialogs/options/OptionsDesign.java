@@ -22,7 +22,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -45,6 +44,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
+import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeColumn;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
@@ -243,6 +243,8 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_EditorText, I18n.KEYBOARD_InsertHistory, TextTask.EDITORTEXT_INSERT_HISTORY, true);
                 registerTask(trtm_EditorText, I18n.KEYBOARD_InsertKeyword, TextTask.EDITORTEXT_INSERT_KEYWORD, true);
                 registerTask(trtm_EditorText, I18n.KEYBOARD_InsertReference, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_MoveLineUp, TextTask.EDITORTEXT_LINE_UP, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_MoveLineDown, TextTask.EDITORTEXT_LINE_DOWN, true);
 
                 if (s1.size() != Task.values().length || s2.size() != TextTask.values().length) {
                     throw new AssertionError("Not all shortkey items are covered by this dialog! Please fix it"); //$NON-NLS-1$

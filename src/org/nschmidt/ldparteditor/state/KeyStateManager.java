@@ -243,6 +243,9 @@ public class KeyStateManager {
             addTask(TextTask.EDITORTEXT_INSERT_KEYWORD, SWT.COMMAND, 'k');
             addTask(TextTask.EDITORTEXT_INSERT_REFERENCE, SWT.COMMAND, 'r');
 
+            addTask(TextTask.EDITORTEXT_LINE_UP, SWT.ALT, SWT.ARROW_UP);
+            addTask(TextTask.EDITORTEXT_LINE_DOWN, SWT.ALT, SWT.ARROW_DOWN);
+
         } else {
 
             reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
@@ -347,6 +350,8 @@ public class KeyStateManager {
             addTask(TextTask.EDITORTEXT_INSERT_KEYWORD, SWT.CTRL, 'k');
             addTask(TextTask.EDITORTEXT_INSERT_REFERENCE, SWT.CTRL, 'r');
 
+            addTask(TextTask.EDITORTEXT_LINE_UP, SWT.ALT, SWT.ARROW_UP);
+            addTask(TextTask.EDITORTEXT_LINE_DOWN, SWT.ALT, SWT.ARROW_DOWN);
         }
     }
 
@@ -875,49 +880,49 @@ public class KeyStateManager {
                 final Task t = taskMap.get(key);
                 if (t != null) {
                     switch (t) {
-                        case LMB:
-                        {
+                    case LMB:
+                    {
+                        cp.getCanvas().forceFocus();
+                        Event mouseEvent = new Event();
+                        mouseEvent.type = SWT.MouseDown;
+                        mouseEvent.button = MouseButton.LEFT;
+                        Vector2f mpos = cp.getMousePosition();
+                        mouseEvent.x = (int) mpos.x;
+                        mouseEvent.y = (int) mpos.y;
+                        cp.mouseDown(mouseEvent);
+                        cp.getCanvas().getDisplay().post(mouseEvent);
+                        break;
+                    }
+                    case RMB:
+                    {
+                        if (!Cocoa.isCocoa) {
                             cp.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseDown;
-                            mouseEvent.button = MouseButton.LEFT;
+                            mouseEvent.button = MouseButton.RIGHT;
                             Vector2f mpos = cp.getMousePosition();
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
                             cp.mouseDown(mouseEvent);
                             cp.getCanvas().getDisplay().post(mouseEvent);
-                            break;
                         }
-                        case RMB:
-                        {
-                            if (!Cocoa.isCocoa) {
-                                cp.getCanvas().forceFocus();
-                                Event mouseEvent = new Event();
-                                mouseEvent.type = SWT.MouseDown;
-                                mouseEvent.button = MouseButton.RIGHT;
-                                Vector2f mpos = cp.getMousePosition();
-                                mouseEvent.x = (int) mpos.x;
-                                mouseEvent.y = (int) mpos.y;
-                                cp.mouseDown(mouseEvent);
-                                cp.getCanvas().getDisplay().post(mouseEvent);
-                            }
-                            break;
-                        }
-                        case MMB:
-                        {
-                            cp.getCanvas().forceFocus();
-                            Event mouseEvent = new Event();
-                            mouseEvent.type = SWT.MouseDown;
-                            mouseEvent.button = MouseButton.MIDDLE;
-                            Vector2f mpos = cp.getMousePosition();
-                            mouseEvent.x = (int) mpos.x;
-                            mouseEvent.y = (int) mpos.y;
-                            cp.mouseDown(mouseEvent);
-                            cp.getCanvas().getDisplay().post(mouseEvent);
-                            break;
-                        }
-                        default:
-                            break;
+                        break;
+                    }
+                    case MMB:
+                    {
+                        cp.getCanvas().forceFocus();
+                        Event mouseEvent = new Event();
+                        mouseEvent.type = SWT.MouseDown;
+                        mouseEvent.button = MouseButton.MIDDLE;
+                        Vector2f mpos = cp.getMousePosition();
+                        mouseEvent.x = (int) mpos.x;
+                        mouseEvent.y = (int) mpos.y;
+                        cp.mouseDown(mouseEvent);
+                        cp.getCanvas().getDisplay().post(mouseEvent);
+                        break;
+                    }
+                    default:
+                        break;
                     }
                 }
                 if (keyCode == SWT.PAGE_UP || keyCode == SWT.ARROW_UP) {
@@ -944,49 +949,49 @@ public class KeyStateManager {
                 final Task t = taskMap.get(key);
                 if (t != null) {
                     switch (t) {
-                        case LMB:
-                        {
+                    case LMB:
+                    {
+                        cp.getCanvas().forceFocus();
+                        Event mouseEvent = new Event();
+                        mouseEvent.type = SWT.MouseUp;
+                        mouseEvent.button = MouseButton.LEFT;
+                        Vector2f mpos = cp.getMousePosition();
+                        mouseEvent.x = (int) mpos.x;
+                        mouseEvent.y = (int) mpos.y;
+                        cp.mouseUp(mouseEvent);
+                        cp.getCanvas().getDisplay().post(mouseEvent);
+                        break;
+                    }
+                    case RMB:
+                    {
+                        if (!Cocoa.isCocoa) {
                             cp.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;
-                            mouseEvent.button = MouseButton.LEFT;
+                            mouseEvent.button = MouseButton.RIGHT;
                             Vector2f mpos = cp.getMousePosition();
                             mouseEvent.x = (int) mpos.x;
                             mouseEvent.y = (int) mpos.y;
                             cp.mouseUp(mouseEvent);
                             cp.getCanvas().getDisplay().post(mouseEvent);
-                            break;
                         }
-                        case RMB:
-                        {
-                            if (!Cocoa.isCocoa) {
-                                cp.getCanvas().forceFocus();
-                                Event mouseEvent = new Event();
-                                mouseEvent.type = SWT.MouseUp;
-                                mouseEvent.button = MouseButton.RIGHT;
-                                Vector2f mpos = cp.getMousePosition();
-                                mouseEvent.x = (int) mpos.x;
-                                mouseEvent.y = (int) mpos.y;
-                                cp.mouseUp(mouseEvent);
-                                cp.getCanvas().getDisplay().post(mouseEvent);
-                            }
-                            break;
-                        }
-                        case MMB:
-                        {
-                            cp.getCanvas().forceFocus();
-                            Event mouseEvent = new Event();
-                            mouseEvent.type = SWT.MouseUp;
-                            mouseEvent.button = MouseButton.MIDDLE;
-                            Vector2f mpos = cp.getMousePosition();
-                            mouseEvent.x = (int) mpos.x;
-                            mouseEvent.y = (int) mpos.y;
-                            cp.mouseUp(mouseEvent);
-                            cp.getCanvas().getDisplay().post(mouseEvent);
-                            break;
-                        }
-                        default:
-                            break;
+                        break;
+                    }
+                    case MMB:
+                    {
+                        cp.getCanvas().forceFocus();
+                        Event mouseEvent = new Event();
+                        mouseEvent.type = SWT.MouseUp;
+                        mouseEvent.button = MouseButton.MIDDLE;
+                        Vector2f mpos = cp.getMousePosition();
+                        mouseEvent.x = (int) mpos.x;
+                        mouseEvent.y = (int) mpos.y;
+                        cp.mouseUp(mouseEvent);
+                        cp.getCanvas().getDisplay().post(mouseEvent);
+                        break;
+                    }
+                    default:
+                        break;
                     }
                 }
             }

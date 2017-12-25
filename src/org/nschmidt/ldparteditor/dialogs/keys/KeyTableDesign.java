@@ -172,6 +172,9 @@ class KeyTableDesign extends Dialog {
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_InsertHistory, TextTask.EDITORTEXT_INSERT_HISTORY, true);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_InsertKeyword, TextTask.EDITORTEXT_INSERT_KEYWORD, true);
         registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_InsertReference, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_MoveLineUp, TextTask.EDITORTEXT_LINE_UP, true);
+        registerDoubleClickEvent(trtm_EditorText, I18n.KEYBOARD_MoveLineDown, TextTask.EDITORTEXT_LINE_DOWN, true);
+
 
         if (s1.size() != Task.values().length || s2.size() != TextTask.values().length) {
             throw new AssertionError("Not all shortkey items are covered by this dialog! Please fix it"); //$NON-NLS-1$
