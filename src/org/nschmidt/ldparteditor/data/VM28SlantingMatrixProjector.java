@@ -223,33 +223,43 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
         Vector3d origin = new Vector3d();
 
         if (originToAxisCenter) {
-            mx = mx.scaledByHalf();
-            my = my.scaledByHalf();
+            if (axis3 == null) {
+                mx = mx.scaledByHalf();
+                my = my.scaledByHalf();
+                Vector3d.add(origin, zref, origin);
+                Vector3d.add(origin, mx, origin);
+                Vector3d.add(origin, my, origin);
+            } else {
+                mx = mx.scaledByHalf();
+                mz = mz.scaledByHalf();
+                Vector3d.add(origin, zref, origin);
+                Vector3d.add(origin, mx, origin);
+                Vector3d.add(origin, mz, origin);
+            }
+        } else {
             Vector3d.add(origin, zref, origin);
-            Vector3d.add(origin, mx, origin);
-            Vector3d.add(origin, my, origin);
         }
 
-        // FIXME Modes needs to be tested...
-
         switch (axisSelectionMode) {
-        case 0: // X,Y,Z (no adjustment)
-        case 1: // X,Y (no adjustment)
+        case 0: // X,Y,Z (no adjustment) OK
+        case 1: // X,Y (no adjustment) OK
             break;
-        case 2: // X,Z (swap YZ)
+        case 2: // X,Z (swap YZ) OK
             tmp = mz;
             mz = my;
             my = tmp.scale(BigDecimal.ONE.negate());
             break;
-        case 3: // Y,Z (swap XY+YZ)
+        case 3: // Y,Z (swap XY+YZ) OK
             tmp = mx;
             mx = my;
             my = tmp;
             tmp = mz;
-            mz = my;
-            my = tmp;
+            mz = mx;
+            mx = tmp;
             break;
         default:
+            // Can't happen.
+            NLogger.error(getClass(), "getSlantingMatrix(): Invalid mode " + axisSelectionMode); //$NON-NLS-1$
             break;
         }
 

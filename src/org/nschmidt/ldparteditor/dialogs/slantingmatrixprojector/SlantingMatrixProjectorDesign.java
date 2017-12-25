@@ -172,7 +172,6 @@ class SlantingMatrixProjectorDesign extends Dialog {
     }
 
     private void insertMatrix(Composite cmp_container) {
-        // TODO Auto-generated method stub
 
         final Matrix M = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
 
