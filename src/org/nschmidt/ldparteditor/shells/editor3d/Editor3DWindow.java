@@ -7361,13 +7361,16 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             });
         } else {
-            // TODO Needs implementation (restore the viewport)!
+            // Close all review files
             partsForReview = (Set<DatFile>) cmp_SyncAndReview[0].getChildren()[1].getData();
             for (DatFile df : partsForReview) {
                 Project.removeOpenedFile(df);
                 closeDatfile(df);
             }
+            // Hide "End Review" button
             cmp_SyncAndReview[0].getChildren()[1].dispose();
+            // Reset project
+            Project.setFileToEdit(View.DUMMY_DATFILE);
             Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
             getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             getShell().update();
@@ -7376,6 +7379,13 @@ public class Editor3DWindow extends Editor3DDesign {
             treeItem_Project[0].getParent().build();
             treeItem_Project[0].getParent().redraw();
             treeItem_Project[0].getParent().update();
+            // Restore the viewport
+            int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
+            Editor3DWindow.getSashForm().getChildren()[1].dispose();
+            final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
+            final ArrayList<Composite3DState> threeDconfig = windowState.getThreeDwindowConfig();
+            applyC3DStates(threeDconfig);
+            Editor3DWindow.getSashForm().setWeights(mainSashWeights);
         }
         cmp_SyncAndReview[0].getParent().layout(true);
 

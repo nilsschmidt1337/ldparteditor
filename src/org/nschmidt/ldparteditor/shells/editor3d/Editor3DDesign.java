@@ -3576,6 +3576,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         });
         CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+        cmp_Container.moveBelow(sashForm.getChildren()[0]);
 
         HashSet<String> splitCandidate = new HashSet<String>();
         HashSet<String> splitAlready = new HashSet<String>();
