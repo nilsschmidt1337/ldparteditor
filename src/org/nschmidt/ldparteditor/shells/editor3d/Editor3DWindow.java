@@ -68,6 +68,8 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
@@ -437,6 +439,15 @@ public class Editor3DWindow extends Editor3DDesign {
                 );
         // MARK All final listeners will be configured here..
         NLogger.writeVersion();
+        sh.addShellListener(new ShellAdapter() {
+            @Override
+            public void shellActivated(ShellEvent e) {
+                if (WorkbenchManager.isReloadingWorkbench()) {
+                    WorkbenchManager.setReloadingWorkbench(false);
+                    WorkbenchManager.restoreFiles();
+                }
+            }
+        });
         sh.addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent consumed) {}
