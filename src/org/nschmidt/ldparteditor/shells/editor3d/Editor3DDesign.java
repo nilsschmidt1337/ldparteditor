@@ -280,6 +280,8 @@ class Editor3DDesign extends ApplicationWindow {
     final MenuItem[] mntm_MeshReducer = new MenuItem[1];
 
     final MenuItem[] mntm_Options = new MenuItem[1];
+    final MenuItem[] mntm_UserConfigLoad = new MenuItem[1];
+    final MenuItem[] mntm_UserConfigSave = new MenuItem[1];
     final MenuItem[] mntm_ResetSettingsOnRestart = new MenuItem[1];
     final MenuItem[] mntm_SelectAnotherLDConfig = new MenuItem[1];
     final MenuItem[] mntm_DownloadLDConfig = new MenuItem[1];
@@ -2577,6 +2579,16 @@ class Editor3DDesign extends ApplicationWindow {
                     MenuItem mntm_Options = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_Options[0] = mntm_Options;
                     mntm_Options.setText(I18n.E3D_Options);
+                }
+                {
+                    MenuItem mntm_UserConfigSave = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_UserConfigSave[0] = mntm_UserConfigSave;
+                    mntm_UserConfigSave.setText(I18n.E3D_UserConfigSave);
+                }
+                {
+                    MenuItem mntm_UserConfigLoad = new MenuItem(mnu_Tools, SWT.PUSH);
+                    this.mntm_UserConfigLoad[0] = mntm_UserConfigLoad;
+                    mntm_UserConfigLoad.setText(I18n.E3D_UserConfigLoad);
                 }
                 {
                     MenuItem mntm_ResetSettingsOnRestart = new MenuItem(mnu_Tools, SWT.PUSH);

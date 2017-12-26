@@ -151,7 +151,7 @@ class OptionsDesign extends ApplicationWindow {
                 Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
                 lbl_DoubleClick.setText(I18n.KEYBOARD_DoubleClick);
 
-                final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 11);
+                final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 24);
 
                 tree.setLinesVisible(true);
                 tree.setHeaderVisible(true);
@@ -289,7 +289,7 @@ class OptionsDesign extends ApplicationWindow {
                 Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
                 lbl_DoubleClick.setText(I18n.COLOUR_DoubleClick);
 
-                final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, 63);
+                final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, 67);
                 treeColours = tree;
 
                 tree.setLinesVisible(true);
