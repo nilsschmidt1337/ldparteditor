@@ -114,7 +114,7 @@ public class SplashScreen extends ApplicationWindow {
             // Start a little wizard for the user dependent properties.
             if (new StartupDialog(Display.getDefault().getActiveShell()).open() == IDialogConstants.OK_ID) {
                 // Save the changes, which are made by the user
-                WorkbenchManager.saveWorkbench();
+                WorkbenchManager.saveWorkbench("config.gz"); //$NON-NLS-1$
             } else {
                 configGzFile.delete();
                 // Oops..

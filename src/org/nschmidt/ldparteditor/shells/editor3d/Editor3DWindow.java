@@ -6593,7 +6593,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         WorkbenchManager.getUserSettingState().setRecentItems(getRecentItems());
         // Save the workbench
-        WorkbenchManager.saveWorkbench();
+        WorkbenchManager.saveWorkbench("config.gz"); //$NON-NLS-1$
         setReturnCode(CANCEL);
         close();
     }
