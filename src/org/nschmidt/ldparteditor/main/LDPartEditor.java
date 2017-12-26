@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.main;
 
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.splash.SplashScreen;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * The main class, which launches the Splash Screen
@@ -36,8 +37,9 @@ public class LDPartEditor {
     public static void main(String[] args) {
         NLogger.setDEBUG(args.length == 1 && "DEBUG".equals(args[0])); //$NON-NLS-1$
         NLogger.init();
-        new SplashScreen().run();
+        do {
+            new SplashScreen().run();
+        } while (WorkbenchManager.isReloadingWorkbench());
         NLogger.flushErrorStream();
     }
-
 }

@@ -52,6 +52,8 @@ public enum WorkbenchManager {
     private static UserSettingState userSettingState;
     /** The primitive cache */
     private static PrimitiveCache primitiveCache;
+    /** Indicator for reloading the workbench */
+    private static boolean reloadingWorkbench = false;
 
     /**
      * Writes a default config.gz file
@@ -72,7 +74,7 @@ public enum WorkbenchManager {
         w_text.setMaximized(false);
         w_text.setSizeAndPosition(new Rectangle(0, 0, 1024, 768));
         Colour.saveDefaultColours();
-        saveWorkbench();
+        saveWorkbench("config.gz"); //$NON-NLS-1$
     }
 
     /**
@@ -131,12 +133,12 @@ public enum WorkbenchManager {
     /**
      * Saves the workbench to config.gz
      */
-    public static void saveWorkbench() {
+    public static void saveWorkbench(String path) {
         ObjectOutputStream configFileStream = null;
         try {
-            File configGzFile = new File("config.gz"); //$NON-NLS-1$
+            File configGzFile = new File(path);
             configGzFile.delete();
-            configFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream("config.gz"))); //$NON-NLS-1$
+            configFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(path)));
             if (WorkbenchManager.editor3DWindow == null) {
                 // Write defaults here..
                 configFileStream.writeObject(WorkbenchManager.editor3DWindowState);
@@ -275,5 +277,13 @@ public enum WorkbenchManager {
         sb.append(StringHelper.getLineDelimiter());
         sb.append(StringHelper.getLineDelimiter());
         return sb.toString();
+    }
+
+    public static boolean isReloadingWorkbench() {
+        return reloadingWorkbench;
+    }
+
+    public static void setReloadingWorkbench(boolean reloadingWorkbench) {
+        WorkbenchManager.reloadingWorkbench = reloadingWorkbench;
     }
 }
