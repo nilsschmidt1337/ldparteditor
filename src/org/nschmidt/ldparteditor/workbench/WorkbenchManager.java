@@ -23,13 +23,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.eclipse.swt.graphics.Rectangle;
+import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
@@ -54,7 +59,14 @@ public enum WorkbenchManager {
     private static PrimitiveCache primitiveCache;
     /** Indicator for reloading the workbench */
     private static boolean reloadingWorkbench = false;
-
+    /** A backup set of all absolute filenames, which are not saved */
+    private static final HashSet<DatFile> backupUnsavedFiles = new HashSet<DatFile>();
+    /** A backup set of all absolute filenames, which were parsed */
+    private static final HashSet<DatFile> backupParsedFiles = new HashSet<DatFile>();
+    /** The backup file which is currently displayed in the 3D editor */
+    private static DatFile backupFileToEdit = null;
+    /** A backup list of all absolute filenames, which were opened */
+    private static final ArrayList<DatFile> backupOpenedFiles = new ArrayList<DatFile>();
     /**
      * Writes a default config.gz file
      */
@@ -279,11 +291,52 @@ public enum WorkbenchManager {
         return sb.toString();
     }
 
+    public static void restoreFiles() {
+        Editor3DWindow win3D = Editor3DWindow.getWindow();
+        if (win3D == null) {
+            NLogger.error(WorkbenchManager.class, "restoreFiles(): Can't restore because there is no Editor3DWindow instance!");  //$NON-NLS-1$
+            return;
+        }
+
+        Project.getUnsavedFiles().clear();
+        Project.getUnsavedFiles().addAll(backupUnsavedFiles);
+        Project.getParsedFiles().clear();
+        Project.getParsedFiles().addAll(backupParsedFiles);
+
+        for (DatFile df : backupOpenedFiles) {
+            win3D.openDatFile(df, OpenInWhat.EDITOR_3D, null);
+        }
+        win3D.openDatFile(backupFileToEdit, OpenInWhat.EDITOR_3D, null);
+
+        win3D.updateTree_unsavedEntries();
+        win3D.cleanupClosedData();
+    }
+
     public static boolean isReloadingWorkbench() {
         return reloadingWorkbench;
     }
 
     public static void setReloadingWorkbench(boolean reloadingWorkbench) {
         WorkbenchManager.reloadingWorkbench = reloadingWorkbench;
+    }
+
+    public static HashSet<DatFile> getBackupUnsavedFiles() {
+        return backupUnsavedFiles;
+    }
+
+    public static HashSet<DatFile> getBackupParsedFiles() {
+        return backupParsedFiles;
+    }
+
+    public static DatFile getBackupFileToEdit() {
+        return backupFileToEdit;
+    }
+
+    public static void setBackupFileToEdit(DatFile backupFileToEdit) {
+        WorkbenchManager.backupFileToEdit = backupFileToEdit;
+    }
+
+    public static ArrayList<DatFile> getBackupOpenedFiles() {
+        return backupOpenedFiles;
     }
 }
