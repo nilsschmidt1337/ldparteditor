@@ -151,6 +151,7 @@ public enum ResourceManager {
         for (String s : imageMap.keySet()) {
             imageMap.get(s).dispose();
         }
+        imageMap.clear();
         // Dispose all static fonts
         Font.SMALL.dispose();
         Font.SYSTEM.dispose();

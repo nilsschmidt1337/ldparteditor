@@ -98,9 +98,9 @@ public class SplashScreen extends ApplicationWindow {
      */
     public void run() {
 
-        final File configGzFile = new File("config.gz"); //$NON-NLS-1$
+        final File configGzFile = new File(WorkbenchManager.CONFIG_GZ);
 
-        // Load the workbench here if config.gz exists
+        // Load the workbench here if WorkbenchManager.CONFIG_GZ exists
         if (configGzFile.exists()) {
             WorkbenchManager.loadWorkbench();
             if (WorkbenchManager.getUserSettingState() == null || WorkbenchManager.getUserSettingState().isResetOnStart()) {
@@ -114,7 +114,7 @@ public class SplashScreen extends ApplicationWindow {
             // Start a little wizard for the user dependent properties.
             if (new StartupDialog(Display.getDefault().getActiveShell()).open() == IDialogConstants.OK_ID) {
                 // Save the changes, which are made by the user
-                WorkbenchManager.saveWorkbench("config.gz"); //$NON-NLS-1$
+                WorkbenchManager.saveWorkbench(WorkbenchManager.CONFIG_GZ);
             } else {
                 configGzFile.delete();
                 // Oops..

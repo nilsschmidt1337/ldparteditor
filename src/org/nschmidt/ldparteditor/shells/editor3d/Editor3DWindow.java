@@ -28,6 +28,8 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -444,7 +446,6 @@ public class Editor3DWindow extends Editor3DDesign {
             public void shellActivated(ShellEvent e) {
                 if (WorkbenchManager.isReloadingWorkbench()) {
                     WorkbenchManager.setReloadingWorkbench(false);
-                    WorkbenchManager.restoreFiles();
                 }
             }
         });
@@ -5016,6 +5017,87 @@ public class Editor3DWindow extends Editor3DDesign {
 
         // MARK Options
 
+        mntm_UserConfigSave[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
+                fd.setText(I18n.E3D_UserConfigSelectSave);
+                fd.setOverwrite(true);
+                String[] filterExt = { "*.gz", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                fd.setFilterExtensions(filterExt);
+                String[] filterNames = {I18n.E3D_UserConfigFile, I18n.E3D_AllFiles};
+                fd.setFilterNames(filterNames);
+
+                String selected = fd.open();
+                if (selected != null) {
+                    final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
+
+                    final ArrayList<Composite3DState> old3Dconfig = winState.getThreeDwindowConfig();
+                    winState.setThreeDwindowConfig(getC3DStates());
+
+                    if (editorSashForm[0] != null) {
+                        winState.setEditorSashWeights(editorSashForm[0].getWeights());
+                    }
+                    winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
+                    winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights());
+                    winState.setPrimitiveZoom(cmp_Primitives[0].getZoom());
+                    winState.setPrimitiveZoomExponent(cmp_Primitives[0].getZoom_exponent());
+                    winState.setPrimitiveViewport(cmp_Primitives[0].getViewport2());
+
+                    WorkbenchManager.getPrimitiveCache().setPrimitiveCache(CompositePrimitive.getCache());
+                    WorkbenchManager.getPrimitiveCache().setPrimitiveFileCache(CompositePrimitive.getFileCache());
+
+                    WorkbenchManager.getUserSettingState().setRecentItems(getRecentItems());
+
+                    if (!WorkbenchManager.saveWorkbench(selected)) {
+                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                        messageBox.setText(I18n.DIALOG_Error);
+                        messageBox.setMessage(I18n.E3D_UserConfigFailSave);
+                        messageBox.open();
+                    }
+
+                    winState.setThreeDwindowConfig(old3Dconfig);
+                }
+            }
+        });
+
+        mntm_UserConfigLoad[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
+                fd.setText(I18n.E3D_UserConfigSelectLoad);
+                String[] filterExt = { "*.gz", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                fd.setFilterExtensions(filterExt);
+                String[] filterNames = {I18n.E3D_UserConfigFile, I18n.E3D_AllFiles};
+                fd.setFilterNames(filterNames);
+
+                String selected = fd.open();
+                if (selected != null) {
+                    try {
+                        Files.delete(Paths.get(WorkbenchManager.CONFIG_GZ));
+                        Files.copy(Paths.get(selected), Paths.get(WorkbenchManager.CONFIG_GZ));
+                    } catch (IOException ioe) {
+                        MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
+                        messageBox.setText(I18n.DIALOG_Error);
+                        messageBox.setMessage(I18n.E3D_UserConfigFailLoad);
+                        messageBox.open();
+                        return;
+                    }
+                    WorkbenchManager.setReloadingWorkbench(true);
+                    Display.getCurrent().asyncExec(() -> {
+                        for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
+                            if (txtwin.isSeperateWindow()) {
+                                txtwin.getShell().close();
+                            } else {
+                                txtwin.closeAllTabs();
+                            }
+                        }
+                        getShell().close();
+                    });
+                }
+            }
+        });
+
         mntm_ResetSettingsOnRestart[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -6264,8 +6346,10 @@ public class Editor3DWindow extends Editor3DDesign {
         // Dispose all resources (never delete this!)
         CSG.executorService.shutdown();
         cmp_Primitives[0].getOpenGL().dispose();
-        ResourceManager.dispose();
-        SWTResourceManager.dispose();
+        if (!WorkbenchManager.isReloadingWorkbench()) {
+            ResourceManager.dispose();
+            SWTResourceManager.dispose();
+        }
         // Dispose the display (never delete this, too!)
         Display.getCurrent().dispose();
     }
@@ -6604,7 +6688,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         WorkbenchManager.getUserSettingState().setRecentItems(getRecentItems());
         // Save the workbench
-        WorkbenchManager.saveWorkbench("config.gz"); //$NON-NLS-1$
+        WorkbenchManager.saveWorkbench(WorkbenchManager.CONFIG_GZ);
         setReturnCode(CANCEL);
         close();
     }
