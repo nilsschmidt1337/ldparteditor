@@ -580,7 +580,7 @@ class OptionsDesign extends ApplicationWindow {
                     }
                 });
             }
-            tabFolder_Settings.setSelection(tItem1);
+            tabFolder_Settings.setSelection(tItem0);
         }
 
 
