@@ -3593,6 +3593,68 @@ class Editor3DDesign extends ApplicationWindow {
 
             if (threeDconfig.size() == 1) {
                 Editor3DWindow.getRenders().get(0).getC3D().loadState(threeDconfig.get(0));
+            } else {
+                HashSet<String> splitCandidate = new HashSet<String>();
+                HashSet<String> splitAlready = new HashSet<String>();
+                HashMap<String, CompositeContainer> cmpMap = new HashMap<String, CompositeContainer>();
+                HashMap<String, Composite3DState> sMap = new HashMap<String, Composite3DState>();
+
+                splitCandidate.add("|"); //$NON-NLS-1$
+                splitAlready.add("|"); //$NON-NLS-1$
+                {
+                    Composite3D root = Editor3DWindow.getRenders().get(0).getC3D();
+                    SashForm sf;
+                    if (!threeDconfig.get(0).isVertical()) {
+                        sf = root.getModifier().splitViewVertically();
+                    } else {
+                        sf = root.getModifier().splitViewHorizontally();
+                    }
+                    try {
+                        sf.setWeights(threeDconfig.get(0).getWeights());
+                    } catch (IllegalArgumentException iae) {
+                        NLogger.error(getClass(), iae);
+                    }
+                    cmpMap.put("|s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
+                    cmpMap.put("|s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
+                }
+                for (Composite3DState state : threeDconfig) {
+                    String path = state.getPath();
+                    String parentPath = state.getParentPath();
+                    if (state.isSash()) {
+                        sMap.put(path, state);
+                    }
+                    if (!splitAlready.contains(path) && !splitCandidate.contains(path)) {
+                        splitCandidate.add(path);
+                    }
+                    if (splitCandidate.contains(parentPath) && !splitAlready.contains(parentPath) && cmpMap.containsKey(parentPath) && sMap.containsKey(parentPath)) {
+                        {
+                            Composite3DState state2 = sMap.get(parentPath);
+                            CompositeContainer c = cmpMap.get(parentPath);
+                            SashForm sf;
+                            if (!state2.isVertical()) {
+                                sf = c.getComposite3D().getModifier().splitViewVertically();
+                            } else {
+                                sf = c.getComposite3D().getModifier().splitViewHorizontally();
+                            }
+                            try {
+                                sf.setWeights(state2.getWeights());
+                            } catch (IllegalArgumentException iae) {
+                                NLogger.error(getClass(), iae);
+                            }
+                            cmpMap.remove(parentPath);
+                            cmpMap.put(parentPath + "s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
+                            cmpMap.put(parentPath + "s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
+                        }
+                        splitAlready.add(parentPath);
+                    }
+                }
+
+                for (Composite3DState state : threeDconfig) {
+                    String path = state.getPath();
+                    if (cmpMap.containsKey(path)) {
+                        createComposite3D(null, cmpMap.get(path), state);
+                    }
+                }
             }
         }
     }
@@ -3654,7 +3716,11 @@ class Editor3DDesign extends ApplicationWindow {
                     } else {
                         sf = c.getComposite3D().getModifier().splitViewHorizontally();
                     }
-                    sf.setWeights(state2.getWeights());
+                    try {
+                        sf.setWeights(state2.getWeights());
+                    } catch (IllegalArgumentException iae) {
+                        NLogger.error(getClass(), iae);
+                    }
                     cmpMap.remove(parentPath);
                     cmpMap.put(parentPath + "s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
                     cmpMap.put(parentPath + "s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
