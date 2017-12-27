@@ -5045,6 +5045,9 @@ public class Editor3DWindow extends Editor3DDesign {
         mntm_UserConfigLoad[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
+                DatFile fileToEdit = Project.getFileToEdit();
+                if (fileToEdit == null) fileToEdit = View.DUMMY_DATFILE;
+
                 FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
                 fd.setText(I18n.E3D_UserConfigSelectLoad);
                 String[] filterExt = { "*.gz", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
@@ -5077,6 +5080,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     // Recompile
                     Editor3DWindow.getWindow().compileAll(true);
                     // Restore the viewport
+                    closeAllComposite3D();
                     final SashForm sashForm = Editor3DWindow.getSashForm();
                     int[] mainSashWeights = sashForm.getWeights();
                     sashForm.getChildren()[1].dispose();
@@ -5087,9 +5091,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (threeDconfig == null) {
                         @SuppressWarnings("unused")
                         CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
-                        // cmp_Container.getComposite3D().getMntmBottom().setSelection(true);
-                        // cmp_Container.getComposite3D().getPerspectiveCalculator().setPerspective(Perspective.BACK);
-                        // cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
                     } else {
                         final int configSize = threeDconfig.size();
                         if (configSize < 2) {
@@ -5105,6 +5106,12 @@ public class Editor3DWindow extends Editor3DDesign {
                             applyC3DStates(threeDconfig);
                         }
                     }
+                    // Link renderes with current file
+                    Project.setFileToEdit(fileToEdit);
+                    for (OpenGLRenderer renderer : renders) {
+                        renderer.getC3D().setLockableDatFileReference(fileToEdit);
+                    }
+                    // Reset the sash weights
                     Editor3DWindow.getSashForm().setWeights(mainSashWeights);
                     // Re-initialise the renderer
                     Editor3DWindow.getWindow().initAllRenderers();

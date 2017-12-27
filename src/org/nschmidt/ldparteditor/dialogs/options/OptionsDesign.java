@@ -139,11 +139,160 @@ class OptionsDesign extends ApplicationWindow {
             tabFolder_Settings.setLayoutData(gridData);
             tabFolder_Settings.setSize(1024, 768);
 
-            final CTabItem tItem = new CTabItem(tabFolder_Settings, SWT.NONE);
-            tItem.setText(I18n.KEYBOARD_CustomiseShortkeys);
+            CTabItem tItem0 = new CTabItem(tabFolder_Settings, SWT.NONE);
+            tItem0.setText(I18n.OPTIONS_MiscOptions);
+
+            {
+                final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
+
+                final Composite cmp_container = new Composite(tabFolder_Settings, SWT.NONE);
+                tItem0.setControl(cmp_container);
+
+                cmp_container.setLayout(new GridLayout());
+                cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+                NButton btn_AllowInvalidShapes = new NButton(cmp_container, SWT.CHECK);
+                this.btn_AllowInvalidShapes[0] = btn_AllowInvalidShapes;
+                btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
+                btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
+
+                NButton btn_disableMAD3D = new NButton(cmp_container, SWT.CHECK);
+                this.btn_disableMAD3D[0] = btn_disableMAD3D;
+                btn_disableMAD3D.setText(I18n.OPTIONS_MAD1);
+                btn_disableMAD3D.setSelection(userSettings.isDisableMAD3D());
+
+                NButton btn_disableMADtext = new NButton(cmp_container, SWT.CHECK);
+                this.btn_disableMADtext[0] = btn_disableMADtext;
+                btn_disableMADtext.setText(I18n.OPTIONS_MAD2);
+                btn_disableMADtext.setSelection(userSettings.isDisableMADtext());
+
+                {
+                    Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                }
+
+                Label lbl_textWinArr = new Label(cmp_container, SWT.NONE);
+                lbl_textWinArr.setText(I18n.OPTIONS_TextWindowArr);
+
+                Combo cmb_textWinArr = new Combo(cmp_container, SWT.READ_ONLY);
+                this.cmb_textWinArr[0] = cmb_textWinArr;
+                cmb_textWinArr.setItems(new String[]{I18n.OPTIONS_TextWindowSeparate, I18n.OPTIONS_TextWindowLeft, I18n.OPTIONS_TextWindowRight});
+                cmb_textWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmb_textWinArr.select(userSettings.getTextWinArr());
+
+                {
+                    Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                }
+
+                Label lbl_locale = new Label(cmp_container, SWT.NONE);
+                lbl_locale.setText(I18n.OPTIONS_ChooseLocale);
+
+                Combo cmb_locale = new Combo(cmp_container, SWT.READ_ONLY);
+                this.cmb_locale[0] = cmb_locale;
+
+                String[] locales = new String[DateFormat.getAvailableLocales().length];
+                Locale[] locs = DateFormat.getAvailableLocales();
+                final Locale l = userSettings.getLocale();
+                Arrays.sort(locs, new Comparator<Locale>() {
+                    @Override
+                    public int compare(Locale o1, Locale o2) {
+                        return Collator.getInstance(Locale.ENGLISH).compare(o1.getDisplayName(l), o2.getDisplayName(l));
+                    }
+                });
+                localeMap.clear();
+                int englishIndex = 0;
+                for (int i = 0; i < locales.length; i++) {
+                    locales[i] = locs[i].getDisplayName(l);
+                    localeMap.put(locales[i], locs[i]);
+                    if (locs[i].equals(l)) {
+                        englishIndex = i;
+                    }
+                }
+
+                cmb_locale.setItems(locales);
+                cmb_locale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmb_locale.select(englishIndex);
+
+                Label lbl_ldrawFolderQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_ldrawFolderQuestion.setText(I18n.OPTIONS_LdrawFolder);
+
+                Composite cmp_pathChooser1 = new Composite(cmp_container, SWT.NONE);
+                cmp_pathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+                Text txt_ldrawPath = new Text(cmp_pathChooser1, SWT.BORDER);
+                this.txt_ldrawPath[0] = txt_ldrawPath;
+                txt_ldrawPath.setEditable(false);
+                txt_ldrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+                txt_ldrawPath.setText(userSettings.getLdrawFolderPath());
+
+                NButton btn_BrowseLdrawPath = new NButton(cmp_pathChooser1, SWT.NONE);
+                this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
+                btn_BrowseLdrawPath.setText(I18n.OPTIONS_Browse);
+
+                Label lbl_ldrawUserQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_ldrawUserQuestion.setText(I18n.OPTIONS_LdrawName);
+
+                Text txt_ldrawUserName = new Text(cmp_container, SWT.BORDER);
+                this.txt_ldrawUserName[0] = txt_ldrawUserName;
+                txt_ldrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                txt_ldrawUserName.setText(userSettings.getLdrawUserName());
+
+                Label lbl_realNameQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_realNameQuestion.setText(I18n.OPTIONS_RealName);
+
+                Text txt_realName = new Text(cmp_container, SWT.BORDER);
+                this.txt_realName[0] = txt_realName;
+                txt_realName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                txt_realName.setText(userSettings.getRealUserName());
+
+                Label lbl_licenseQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_licenseQuestion.setText(I18n.OPTIONS_License);
+
+                Combo cmb_license = new Combo(cmp_container, SWT.NONE);
+                this.cmb_license[0] = cmb_license;
+                cmb_license.setItems(new String[] { "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
+                cmb_license.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmb_license.setText(userSettings.getLicense());
+
+                Label lbl_authoringFolderQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_authoringFolderQuestion.setText(I18n.OPTIONS_AuthoringFolder);
+
+                Composite cmp_pathChooser2 = new Composite(cmp_container, SWT.NONE);
+                cmp_pathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+                Text txt_partAuthoringPath = new Text(cmp_pathChooser2, SWT.BORDER);
+                this.txt_partAuthoringPath[0] = txt_partAuthoringPath;
+                txt_partAuthoringPath.setEditable(false);
+                txt_partAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+                txt_partAuthoringPath.setText(userSettings.getAuthoringFolderPath());
+
+                NButton btn_browseAuthoringPath = new NButton(cmp_pathChooser2, SWT.NONE);
+                this.btn_browseAuthoringPath[0] = btn_browseAuthoringPath;
+                btn_browseAuthoringPath.setText(I18n.OPTIONS_Browse);
+
+                Label lbl_unofficialPathQuestion = new Label(cmp_container, SWT.NONE);
+                lbl_unofficialPathQuestion.setText(I18n.OPTIONS_UnofficialFolder);
+
+                Composite cmp_pathChooser3 = new Composite(cmp_container, SWT.NONE);
+                cmp_pathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
+
+                Text txt_unofficialPath = new Text(cmp_pathChooser3, SWT.BORDER);
+                this.txt_unofficialPath[0] = txt_unofficialPath;
+                txt_unofficialPath.setEditable(false);
+                txt_unofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+                txt_unofficialPath.setText(userSettings.getUnofficialFolderPath());
+
+                NButton btn_browseUnofficialPath = new NButton(cmp_pathChooser3, SWT.NONE);
+                this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
+                btn_browseUnofficialPath.setText(I18n.OPTIONS_Browse);
+            }
+
+            final CTabItem tItem1 = new CTabItem(tabFolder_Settings, SWT.NONE);
+            tItem1.setText(I18n.KEYBOARD_CustomiseShortkeys);
             {
                 final Composite cmp_container = new Composite(tabFolder_Settings, SWT.NONE);
-                tItem.setControl(cmp_container);
+                tItem1.setControl(cmp_container);
 
                 cmp_container.setLayout(new GridLayout());
                 cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -431,159 +580,7 @@ class OptionsDesign extends ApplicationWindow {
                     }
                 });
             }
-
-
-            CTabItem tItem3 = new CTabItem(tabFolder_Settings, SWT.NONE);
-            tItem3.setText(I18n.OPTIONS_MiscOptions);
-
-            {
-                final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
-
-                final Composite cmp_container = new Composite(tabFolder_Settings, SWT.NONE);
-                tItem3.setControl(cmp_container);
-
-                cmp_container.setLayout(new GridLayout());
-                cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
-
-                NButton btn_AllowInvalidShapes = new NButton(cmp_container, SWT.CHECK);
-                this.btn_AllowInvalidShapes[0] = btn_AllowInvalidShapes;
-                btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
-                btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
-
-                NButton btn_disableMAD3D = new NButton(cmp_container, SWT.CHECK);
-                this.btn_disableMAD3D[0] = btn_disableMAD3D;
-                btn_disableMAD3D.setText(I18n.OPTIONS_MAD1);
-                btn_disableMAD3D.setSelection(userSettings.isDisableMAD3D());
-
-                NButton btn_disableMADtext = new NButton(cmp_container, SWT.CHECK);
-                this.btn_disableMADtext[0] = btn_disableMADtext;
-                btn_disableMADtext.setText(I18n.OPTIONS_MAD2);
-                btn_disableMADtext.setSelection(userSettings.isDisableMADtext());
-
-                {
-                    Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-                    lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                }
-
-                Label lbl_textWinArr = new Label(cmp_container, SWT.NONE);
-                lbl_textWinArr.setText(I18n.OPTIONS_TextWindowArr);
-
-                Combo cmb_textWinArr = new Combo(cmp_container, SWT.READ_ONLY);
-                this.cmb_textWinArr[0] = cmb_textWinArr;
-                cmb_textWinArr.setItems(new String[]{I18n.OPTIONS_TextWindowSeparate, I18n.OPTIONS_TextWindowLeft, I18n.OPTIONS_TextWindowRight});
-                cmb_textWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                cmb_textWinArr.select(userSettings.getTextWinArr());
-
-                {
-                    Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-                    lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                }
-
-                Label lbl_locale = new Label(cmp_container, SWT.NONE);
-                lbl_locale.setText(I18n.OPTIONS_ChooseLocale);
-
-                Combo cmb_locale = new Combo(cmp_container, SWT.READ_ONLY);
-                this.cmb_locale[0] = cmb_locale;
-
-                String[] locales = new String[DateFormat.getAvailableLocales().length];
-                Locale[] locs = DateFormat.getAvailableLocales();
-                final Locale l = userSettings.getLocale();
-                Arrays.sort(locs, new Comparator<Locale>() {
-                    @Override
-                    public int compare(Locale o1, Locale o2) {
-                        return Collator.getInstance(Locale.ENGLISH).compare(o1.getDisplayName(l), o2.getDisplayName(l));
-                    }
-                });
-                localeMap.clear();
-                int englishIndex = 0;
-                for (int i = 0; i < locales.length; i++) {
-                    locales[i] = locs[i].getDisplayName(l);
-                    localeMap.put(locales[i], locs[i]);
-                    if (locs[i].equals(l)) {
-                        englishIndex = i;
-                    }
-                }
-
-                cmb_locale.setItems(locales);
-                cmb_locale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                cmb_locale.select(englishIndex);
-
-                Label lbl_ldrawFolderQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_ldrawFolderQuestion.setText(I18n.OPTIONS_LdrawFolder);
-
-                Composite cmp_pathChooser1 = new Composite(cmp_container, SWT.NONE);
-                cmp_pathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-                Text txt_ldrawPath = new Text(cmp_pathChooser1, SWT.BORDER);
-                this.txt_ldrawPath[0] = txt_ldrawPath;
-                txt_ldrawPath.setEditable(false);
-                txt_ldrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
-                txt_ldrawPath.setText(userSettings.getLdrawFolderPath());
-
-                NButton btn_BrowseLdrawPath = new NButton(cmp_pathChooser1, SWT.NONE);
-                this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
-                btn_BrowseLdrawPath.setText(I18n.OPTIONS_Browse);
-
-                Label lbl_ldrawUserQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_ldrawUserQuestion.setText(I18n.OPTIONS_LdrawName);
-
-                Text txt_ldrawUserName = new Text(cmp_container, SWT.BORDER);
-                this.txt_ldrawUserName[0] = txt_ldrawUserName;
-                txt_ldrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                txt_ldrawUserName.setText(userSettings.getLdrawUserName());
-
-                Label lbl_realNameQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_realNameQuestion.setText(I18n.OPTIONS_RealName);
-
-                Text txt_realName = new Text(cmp_container, SWT.BORDER);
-                this.txt_realName[0] = txt_realName;
-                txt_realName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                txt_realName.setText(userSettings.getRealUserName());
-
-                Label lbl_licenseQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_licenseQuestion.setText(I18n.OPTIONS_License);
-
-                Combo cmb_license = new Combo(cmp_container, SWT.NONE);
-                this.cmb_license[0] = cmb_license;
-                cmb_license.setItems(new String[] { "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
-                cmb_license.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                cmb_license.setText(userSettings.getLicense());
-
-                Label lbl_authoringFolderQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_authoringFolderQuestion.setText(I18n.OPTIONS_AuthoringFolder);
-
-                Composite cmp_pathChooser2 = new Composite(cmp_container, SWT.NONE);
-                cmp_pathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-                Text txt_partAuthoringPath = new Text(cmp_pathChooser2, SWT.BORDER);
-                this.txt_partAuthoringPath[0] = txt_partAuthoringPath;
-                txt_partAuthoringPath.setEditable(false);
-                txt_partAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
-                txt_partAuthoringPath.setText(userSettings.getAuthoringFolderPath());
-
-                NButton btn_browseAuthoringPath = new NButton(cmp_pathChooser2, SWT.NONE);
-                this.btn_browseAuthoringPath[0] = btn_browseAuthoringPath;
-                btn_browseAuthoringPath.setText(I18n.OPTIONS_Browse);
-
-                Label lbl_unofficialPathQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_unofficialPathQuestion.setText(I18n.OPTIONS_UnofficialFolder);
-
-                Composite cmp_pathChooser3 = new Composite(cmp_container, SWT.NONE);
-                cmp_pathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-                Text txt_unofficialPath = new Text(cmp_pathChooser3, SWT.BORDER);
-                this.txt_unofficialPath[0] = txt_unofficialPath;
-                txt_unofficialPath.setEditable(false);
-                txt_unofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
-                txt_unofficialPath.setText(userSettings.getUnofficialFolderPath());
-
-                NButton btn_browseUnofficialPath = new NButton(cmp_pathChooser3, SWT.NONE);
-                this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
-                btn_browseUnofficialPath.setText(I18n.OPTIONS_Browse);
-            }
-
-
-            tabFolder_Settings.setSelection(tItem);
+            tabFolder_Settings.setSelection(tItem1);
         }
 
 
