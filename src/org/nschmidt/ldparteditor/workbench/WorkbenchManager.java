@@ -54,8 +54,6 @@ public enum WorkbenchManager {
     private static UserSettingState userSettingState;
     /** The primitive cache */
     private static PrimitiveCache primitiveCache;
-    /** Indicator for reloading the workbench */
-    private static boolean reloadingWorkbench = false;
     /**
      * Writes a default WorkbenchManager.CONFIG_GZ file
      */
@@ -283,13 +281,5 @@ public enum WorkbenchManager {
         sb.append(StringHelper.getLineDelimiter());
         sb.append(StringHelper.getLineDelimiter());
         return sb.toString();
-    }
-
-    public static boolean isReloadingWorkbench() {
-        return reloadingWorkbench;
-    }
-
-    public static void setReloadingWorkbench(boolean reloadingWorkbench) {
-        WorkbenchManager.reloadingWorkbench = reloadingWorkbench;
     }
 }

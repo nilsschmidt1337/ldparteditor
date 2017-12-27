@@ -70,8 +70,6 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
@@ -441,14 +439,6 @@ public class Editor3DWindow extends Editor3DDesign {
                 );
         // MARK All final listeners will be configured here..
         NLogger.writeVersion();
-        sh.addShellListener(new ShellAdapter() {
-            @Override
-            public void shellActivated(ShellEvent e) {
-                if (WorkbenchManager.isReloadingWorkbench()) {
-                    WorkbenchManager.setReloadingWorkbench(false);
-                }
-            }
-        });
         sh.addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent consumed) {}
@@ -5083,17 +5073,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         messageBox.open();
                         return;
                     }
-                    WorkbenchManager.setReloadingWorkbench(true);
-                    Display.getCurrent().asyncExec(() -> {
-                        for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
-                            if (txtwin.isSeperateWindow()) {
-                                txtwin.getShell().close();
-                            } else {
-                                txtwin.closeAllTabs();
-                            }
-                        }
-                        getShell().close();
-                    });
+                    // TODO Needs implementation!
                 }
             }
         });
@@ -6346,10 +6326,8 @@ public class Editor3DWindow extends Editor3DDesign {
         // Dispose all resources (never delete this!)
         CSG.executorService.shutdown();
         cmp_Primitives[0].getOpenGL().dispose();
-        if (!WorkbenchManager.isReloadingWorkbench()) {
-            ResourceManager.dispose();
-            SWTResourceManager.dispose();
-        }
+        ResourceManager.dispose();
+        SWTResourceManager.dispose();
         // Dispose the display (never delete this, too!)
         Display.getCurrent().dispose();
     }

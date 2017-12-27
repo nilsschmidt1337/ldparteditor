@@ -301,10 +301,6 @@ public class EditorTextWindow extends EditorTextDesign {
 
         unsavedFiles.retainAll(myFiles);
 
-        if (WorkbenchManager.isReloadingWorkbench()) {
-            unsavedFiles.clear();
-        }
-
         for (DatFile df : unsavedFiles) {
             final String text = df.getText();
             if (df != null && !text.equals(df.getOriginalText()) || df.isVirtual() && !text.trim().isEmpty() && !text.equals(WorkbenchManager.getDefaultFileHeader())) {
