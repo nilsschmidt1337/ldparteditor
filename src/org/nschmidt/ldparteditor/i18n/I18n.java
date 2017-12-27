@@ -670,7 +670,9 @@ public final class I18n {
     public static final String E3D_Unificator = E3D.getString(getProperty());
     public static final String E3D_UnsavedFiles = E3D.getString(getProperty());
     public static final String E3D_UploadErrorLogs = E3D.getString(getProperty());
-    public static final String E3D_UserConfigFail = E3D.getString(getProperty());
+    public static final String E3D_UserConfigFailLoad = E3D.getString(getProperty());
+    public static final String E3D_UserConfigFailSave = E3D.getString(getProperty());
+    public static final String E3D_UserConfigFile = E3D.getString(getProperty());
     public static final String E3D_UserConfigLoad = E3D.getString(getProperty());
     public static final String E3D_UserConfigSave = E3D.getString(getProperty());
     public static final String E3D_UserConfigSelectLoad = E3D.getString(getProperty());
