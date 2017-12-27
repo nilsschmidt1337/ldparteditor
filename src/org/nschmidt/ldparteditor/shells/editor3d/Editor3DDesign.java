@@ -66,6 +66,7 @@ import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -1688,9 +1689,6 @@ class Editor3DDesign extends ApplicationWindow {
                 if (threeDconfig == null) {
                     @SuppressWarnings("unused")
                     CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
-                    // cmp_Container.getComposite3D().getMntmBottom().setSelection(true);
-                    // cmp_Container.getComposite3D().getPerspectiveCalculator().setPerspective(Perspective.BACK);
-                    // cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
                 } else {
                     final int configSize = threeDconfig.size();
                     if (configSize < 2) {
@@ -1703,7 +1701,7 @@ class Editor3DDesign extends ApplicationWindow {
                         }
                     } else {
                         // MARK Load the configuration of multiple 3D windows
-                        applyC3DStates(threeDconfig);
+                        applyC3DStatesOnStartup(threeDconfig);
                     }
                 }
 
@@ -3574,7 +3572,32 @@ class Editor3DDesign extends ApplicationWindow {
         return iconSize;
     }
 
-    public void applyC3DStates(ArrayList<Composite3DState> threeDconfig) {
+    void reloadC3DStates(ArrayList<Composite3DState> threeDconfig) {
+
+        // TODO Needs implementation!
+
+        if (!threeDconfig.isEmpty()) {
+            Collections.sort(threeDconfig, new Comparator<Composite3DState>(
+                    ) {
+                @Override
+                public int compare(Composite3DState o1, Composite3DState o2) {
+                    final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());
+                    if (cmp == 0) {
+                        return o1.getPath().compareTo(o2.getPath());
+                    }
+                    return cmp;
+                }
+            });
+
+            Editor3DWindow.getWindow().openDatFile(View.DUMMY_DATFILE, OpenInWhat.EDITOR_3D, null);
+
+            if (threeDconfig.size() == 1) {
+                Editor3DWindow.getRenders().get(0).getC3D().loadState(threeDconfig.get(0));
+            }
+        }
+    }
+
+    private void applyC3DStatesOnStartup(ArrayList<Composite3DState> threeDconfig) {
 
         Collections.sort(threeDconfig, new Comparator<Composite3DState>(
                 ) {
