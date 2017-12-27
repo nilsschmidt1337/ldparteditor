@@ -229,12 +229,10 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class Editor3DWindow extends Editor3DDesign {
 
-    /** The window state of this window */
-    private Editor3DWindowState editor3DWindowState;
     /** The reference to this window */
     private static Editor3DWindow window;
 
-    /** The window state of this window */
+    /** The search window */
     private SearchWindow searchWindow;
 
     public static final ArrayList<GLCanvas> canvasList = new ArrayList<GLCanvas>();
@@ -5011,9 +5009,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 String selected = fd.open();
                 if (selected != null) {
-                    final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
-
-                    final ArrayList<Composite3DState> old3Dconfig = winState.getThreeDwindowConfig();
+                    final Editor3DWindowState winState = getEditor3DWindowState();
                     winState.setThreeDwindowConfig(getC3DStates());
 
                     if (editorSashForm[0] != null) {
@@ -5036,8 +5032,6 @@ public class Editor3DWindow extends Editor3DDesign {
                         messageBox.setMessage(I18n.E3D_UserConfigFailSave);
                         messageBox.open();
                     }
-
-                    winState.setThreeDwindowConfig(old3Dconfig);
                 }
             }
         });
@@ -5086,6 +5080,12 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                     // Re-initialise the renderer
                     Editor3DWindow.getWindow().initAllRenderers();
+                    // Update colours on text editor
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (CTabItem t : w.getTabFolder().getItems()) {
+                            ((CompositeTab) t).updateColours();
+                        }
+                    }
                 }
             }
         });
@@ -6733,21 +6733,6 @@ public class Editor3DWindow extends Editor3DDesign {
         st.setSyncManipulator(c3d.isSyncManipulator());
         st.setSyncTranslation(c3d.isSyncTranslation());
         st.setSyncZoom(c3d.isSyncZoom());
-    }
-
-    /**
-     * @return The serializable window state of the Editor3DWindow
-     */
-    public Editor3DWindowState getEditor3DWindowState() {
-        return this.editor3DWindowState;
-    }
-
-    /**
-     * @param editor3DWindowState
-     *            The serializable window state of the Editor3DWindow
-     */
-    public void setEditor3DWindowState(Editor3DWindowState editor3DWindowState) {
-        this.editor3DWindowState = editor3DWindowState;
     }
 
     /**
