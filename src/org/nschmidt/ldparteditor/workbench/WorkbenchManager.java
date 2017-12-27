@@ -79,12 +79,12 @@ public enum WorkbenchManager {
     /**
      * Loads the workbench from WorkbenchManager.CONFIG_GZ
      */
-    public static void loadWorkbench() {
+    public static boolean loadWorkbench(String path) {
         ObjectInputStream configFileStream = null;
         try {
-            File configGzFile = new File(WorkbenchManager.CONFIG_GZ);
+            File configGzFile = new File(path);
             if (configGzFile.exists()) {
-                configFileStream = new ObjectInputStream(new GZIPInputStream(new FileInputStream(WorkbenchManager.CONFIG_GZ)));
+                configFileStream = new ObjectInputStream(new GZIPInputStream(new FileInputStream(path)));
                 WorkbenchManager.editor3DWindowState = (Editor3DWindowState) configFileStream.readObject();
                 WorkbenchManager.editorTextWindowState = (EditorTextWindowState) configFileStream.readObject();
                 WorkbenchManager.userSettingState = (UserSettingState) configFileStream.readObject();
@@ -103,12 +103,16 @@ public enum WorkbenchManager {
             }
         } catch (FileNotFoundException e) {
             NLogger.error(WorkbenchManager.class, e);
+            return false;
         } catch (IOException e) {
             NLogger.error(WorkbenchManager.class, e);
+            return false;
         } catch (ClassNotFoundException e) {
             NLogger.error(WorkbenchManager.class, e);
+            return false;
         } catch (Exception e) {
             NLogger.error(WorkbenchManager.class, e);
+            return false;
         } finally {
             if (configFileStream != null) {
                 try {
@@ -127,6 +131,7 @@ public enum WorkbenchManager {
         if (WorkbenchManager.userSettingState.getFuzziness2D() == 0) {
             WorkbenchManager.userSettingState.setFuzziness2D(7);
         }
+        return true;
     }
 
     /**

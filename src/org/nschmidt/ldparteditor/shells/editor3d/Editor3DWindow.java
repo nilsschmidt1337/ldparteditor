@@ -5063,10 +5063,16 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 String selected = fd.open();
                 if (selected != null) {
+                    boolean issueDetected = false;
                     try {
                         Files.delete(Paths.get(WorkbenchManager.CONFIG_GZ));
                         Files.copy(Paths.get(selected), Paths.get(WorkbenchManager.CONFIG_GZ));
+                        issueDetected = !WorkbenchManager.loadWorkbench(WorkbenchManager.CONFIG_GZ);
                     } catch (IOException ioe) {
+                        NLogger.error(getClass(), ioe);
+                        issueDetected = true;
+                    }
+                    if (issueDetected) {
                         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                         messageBox.setText(I18n.DIALOG_Error);
                         messageBox.setMessage(I18n.E3D_UserConfigFailLoad);
@@ -5074,6 +5080,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         return;
                     }
                     // TODO Needs implementation!
+                    WorkbenchManager.getUserSettingState().loadColours();
+                    View.overrideColour16();
                 }
             }
         });
