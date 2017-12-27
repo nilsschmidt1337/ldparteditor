@@ -4493,22 +4493,12 @@ public class Editor3DWindow extends Editor3DDesign {
                                         treeItem_Project[0].getParent().redraw();
                                         treeItem_Project[0].getParent().update();
 
-                                        {
-                                            int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
-                                            Editor3DWindow.getSashForm().getChildren()[1].dispose();
-                                            CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false, true, true, true);
-                                            cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
-                                            DatFile df = main;
-                                            Project.setFileToEdit(df);
-                                            cmp_Container.getComposite3D().setLockableDatFileReference(df);
-                                            Editor3DWindow.getSashForm().getParent().layout();
-                                            Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+                                        Project.setFileToEdit(main);
 
-                                            SashForm s = cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
-                                            ((CompositeContainer) s.getChildren()[0]).getComposite3D().getModifier().splitViewVertically();
-                                            ((CompositeContainer) s.getChildren()[1]).getComposite3D().getModifier().splitViewVertically();
-                                        }
-
+                                        openDatFile(main, OpenInWhat.EDITOR_3D, null);
+                                        renders.get(0).getC3D().getModifier().splitViewHorizontally();
+                                        renders.get(0).getC3D().getModifier().splitViewVertically();
+                                        renders.get(1).getC3D().getModifier().splitViewVertically();
 
                                         int state = 0;
                                         for (OpenGLRenderer renderer : getRenders()) {
@@ -4534,6 +4524,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             }
                                             state++;
                                         }
+
                                         updateTree_unsavedEntries();
 
                                         EditorTextWindow txt;
