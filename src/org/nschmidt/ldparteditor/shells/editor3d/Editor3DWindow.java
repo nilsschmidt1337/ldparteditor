@@ -5045,8 +5045,6 @@ public class Editor3DWindow extends Editor3DDesign {
         mntm_UserConfigLoad[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                DatFile fileToEdit = Project.getFileToEdit();
-                if (fileToEdit == null) fileToEdit = View.DUMMY_DATFILE;
 
                 FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
                 fd.setText(I18n.E3D_UserConfigSelectLoad);
@@ -5073,7 +5071,6 @@ public class Editor3DWindow extends Editor3DDesign {
                         messageBox.open();
                         return;
                     }
-                    // TODO Needs implementation!
                     WorkbenchManager.getUserSettingState().loadColours();
                     // Override colour 16
                     View.overrideColour16();
@@ -5081,38 +5078,12 @@ public class Editor3DWindow extends Editor3DDesign {
                     Editor3DWindow.getWindow().compileAll(true);
                     // Restore the viewport
                     closeAllComposite3D();
-                    final SashForm sashForm = Editor3DWindow.getSashForm();
-                    int[] mainSashWeights = sashForm.getWeights();
-                    sashForm.getChildren()[1].dispose();
-                    renders.clear();
-                    canvasList.clear();
-                    final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
-                    final ArrayList<Composite3DState> threeDconfig = windowState.getThreeDwindowConfig();
-                    if (threeDconfig == null) {
-                        @SuppressWarnings("unused")
-                        CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
-                    } else {
-                        final int configSize = threeDconfig.size();
-                        if (configSize < 2) {
-                            if (configSize == 1) {
-                                Composite3DState state = threeDconfig.get(0);
-                                createComposite3D(sashForm, null, state);
-                            } else {
-                                @SuppressWarnings("unused")
-                                CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
-                            }
-                        } else {
-                            // MARK Load the configuration of multiple 3D windows
-                            applyC3DStates(threeDconfig);
-                        }
-                    }
-                    // Link renderes with current file
-                    Project.setFileToEdit(fileToEdit);
+                    reloadC3DStates(WorkbenchManager.getEditor3DWindowState().getThreeDwindowConfig());
+                    // Link renderes with dummy file
+                    Project.setFileToEdit(View.DUMMY_DATFILE);
                     for (OpenGLRenderer renderer : renders) {
-                        renderer.getC3D().setLockableDatFileReference(fileToEdit);
+                        renderer.getC3D().setLockableDatFileReference(View.DUMMY_DATFILE);
                     }
-                    // Reset the sash weights
-                    Editor3DWindow.getSashForm().setWeights(mainSashWeights);
                     // Re-initialise the renderer
                     Editor3DWindow.getWindow().initAllRenderers();
                 }
@@ -7494,33 +7465,8 @@ public class Editor3DWindow extends Editor3DDesign {
             treeItem_Project[0].getParent().redraw();
             treeItem_Project[0].getParent().update();
             // Restore the viewport
-            final SashForm sashForm = Editor3DWindow.getSashForm();
-            int[] mainSashWeights = sashForm.getWeights();
-            sashForm.getChildren()[1].dispose();
-            final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
-            final ArrayList<Composite3DState> threeDconfig = windowState.getThreeDwindowConfig();
-            if (threeDconfig == null) {
-                @SuppressWarnings("unused")
-                CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
-                // cmp_Container.getComposite3D().getMntmBottom().setSelection(true);
-                // cmp_Container.getComposite3D().getPerspectiveCalculator().setPerspective(Perspective.BACK);
-                // cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
-            } else {
-                final int configSize = threeDconfig.size();
-                if (configSize < 2) {
-                    if (configSize == 1) {
-                        Composite3DState state = threeDconfig.get(0);
-                        createComposite3D(sashForm, null, state);
-                    } else {
-                        @SuppressWarnings("unused")
-                        CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
-                    }
-                } else {
-                    // MARK Load the configuration of multiple 3D windows
-                    applyC3DStates(threeDconfig);
-                }
-            }
-            Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+            closeAllComposite3D();
+            reloadC3DStates(WorkbenchManager.getEditor3DWindowState().getThreeDwindowConfig());
         }
         cmp_SyncAndReview[0].getParent().layout(true);
 
