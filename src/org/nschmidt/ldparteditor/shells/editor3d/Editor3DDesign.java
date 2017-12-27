@@ -3307,7 +3307,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_Sync;
     }
 
-    private void createComposite3D(SashForm sashForm, CompositeContainer c, Composite3DState state) {
+    void createComposite3D(SashForm sashForm, CompositeContainer c, Composite3DState state) {
         // Load the configuration of one 3D window
         final Composite3D c3d;
         if (c == null) {
@@ -3604,7 +3604,11 @@ class Editor3DDesign extends ApplicationWindow {
             } else {
                 sf = cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
             }
-            sf.setWeights(threeDconfig.get(0).getWeights());
+            try {
+                sf.setWeights(threeDconfig.get(0).getWeights());
+            } catch (IllegalArgumentException iae) {
+                NLogger.error(getClass(), iae);
+            }
             cmpMap.put("|s1|", (CompositeContainer) sf.getChildren()[0]); //$NON-NLS-1$
             cmpMap.put("|s2|", (CompositeContainer) sf.getChildren()[1]); //$NON-NLS-1$
         }

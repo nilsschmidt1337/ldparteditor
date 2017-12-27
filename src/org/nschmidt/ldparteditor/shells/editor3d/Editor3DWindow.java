@@ -4588,7 +4588,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                             if (files.contains(fileName)) continue;
                             files.add(fileName);
-                            monitor.subTask(fileName);
+                            monitor.subTask(I18n.E3D_PartReviewCheck + fileName);
                             String source2 = FileHelper.downloadPartFile("parts/" + fileName, monitor); //$NON-NLS-1$
                             if (source2 == null) source2 = FileHelper.downloadPartFile("parts/s/" + fileName, monitor); //$NON-NLS-1$
                             if (source2 == null) source2 = FileHelper.downloadPartFile("p/" + fileName, monitor); //$NON-NLS-1$
@@ -5081,7 +5081,42 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                     // TODO Needs implementation!
                     WorkbenchManager.getUserSettingState().loadColours();
+                    // Override colour 16
                     View.overrideColour16();
+                    // Recompile
+                    Editor3DWindow.getWindow().compileAll(true);
+                    // Restore the viewport
+                    final SashForm sashForm = Editor3DWindow.getSashForm();
+                    int[] mainSashWeights = sashForm.getWeights();
+                    sashForm.getChildren()[1].dispose();
+                    renders.clear();
+                    canvasList.clear();
+                    final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
+                    final ArrayList<Composite3DState> threeDconfig = windowState.getThreeDwindowConfig();
+                    if (threeDconfig == null) {
+                        @SuppressWarnings("unused")
+                        CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+                        // cmp_Container.getComposite3D().getMntmBottom().setSelection(true);
+                        // cmp_Container.getComposite3D().getPerspectiveCalculator().setPerspective(Perspective.BACK);
+                        // cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
+                    } else {
+                        final int configSize = threeDconfig.size();
+                        if (configSize < 2) {
+                            if (configSize == 1) {
+                                Composite3DState state = threeDconfig.get(0);
+                                createComposite3D(sashForm, null, state);
+                            } else {
+                                @SuppressWarnings("unused")
+                                CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+                            }
+                        } else {
+                            // MARK Load the configuration of multiple 3D windows
+                            applyC3DStates(threeDconfig);
+                        }
+                    }
+                    Editor3DWindow.getSashForm().setWeights(mainSashWeights);
+                    // Re-initialise the renderer
+                    Editor3DWindow.getWindow().initAllRenderers();
                 }
             }
         });
@@ -7461,11 +7496,32 @@ public class Editor3DWindow extends Editor3DDesign {
             treeItem_Project[0].getParent().redraw();
             treeItem_Project[0].getParent().update();
             // Restore the viewport
-            int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
-            Editor3DWindow.getSashForm().getChildren()[1].dispose();
+            final SashForm sashForm = Editor3DWindow.getSashForm();
+            int[] mainSashWeights = sashForm.getWeights();
+            sashForm.getChildren()[1].dispose();
             final Editor3DWindowState windowState = WorkbenchManager.getEditor3DWindowState();
             final ArrayList<Composite3DState> threeDconfig = windowState.getThreeDwindowConfig();
-            applyC3DStates(threeDconfig);
+            if (threeDconfig == null) {
+                @SuppressWarnings("unused")
+                CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+                // cmp_Container.getComposite3D().getMntmBottom().setSelection(true);
+                // cmp_Container.getComposite3D().getPerspectiveCalculator().setPerspective(Perspective.BACK);
+                // cmp_Container.getComposite3D().getModifier().splitViewHorizontally();
+            } else {
+                final int configSize = threeDconfig.size();
+                if (configSize < 2) {
+                    if (configSize == 1) {
+                        Composite3DState state = threeDconfig.get(0);
+                        createComposite3D(sashForm, null, state);
+                    } else {
+                        @SuppressWarnings("unused")
+                        CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
+                    }
+                } else {
+                    // MARK Load the configuration of multiple 3D windows
+                    applyC3DStates(threeDconfig);
+                }
+            }
             Editor3DWindow.getSashForm().setWeights(mainSashWeights);
         }
         cmp_SyncAndReview[0].getParent().layout(true);
