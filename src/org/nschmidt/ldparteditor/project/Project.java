@@ -206,7 +206,7 @@ public enum Project {
         setDefaultProject(true);
         setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
         createFileStructure(false);
-        Editor3DWindow.getWindow().getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        Editor3DWindow.getWindow().getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         Editor3DWindow.getWindow().getShell().update();
     }
 
@@ -332,7 +332,7 @@ public enum Project {
             openedFiles.remove(file);
             openedFiles.add(0, file);
         }
-        */
+         */
     }
 
     public static void removeOpenedFile(DatFile file) {

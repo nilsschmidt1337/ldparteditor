@@ -393,7 +393,7 @@ public class Editor3DWindow extends Editor3DDesign {
         // Creating the window to get the shell
         this.create();
         final Shell sh = this.getShell();
-        sh.setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        sh.setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         sh.setMinimumSize(640, 480);
@@ -4384,7 +4384,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         }
                                         Project.setDefaultProject(true);
                                         Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
-                                        getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                        getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                         getShell().update();
                                         treeItem_Project[0].setText(fileName);
                                         treeItem_Project[0].setData(Project.getProjectPath());
@@ -7441,7 +7441,7 @@ public class Editor3DWindow extends Editor3DDesign {
             // Reset project
             Project.setFileToEdit(View.DUMMY_DATFILE);
             Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
-            getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (OpenGL " + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             getShell().update();
             treeItem_Project[0].setText(I18n.PROJECT_NewProject);
             treeItem_Project[0].setData(Project.getProjectPath());
