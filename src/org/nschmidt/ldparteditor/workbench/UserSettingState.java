@@ -1399,9 +1399,11 @@ public class UserSettingState implements Serializable {
     public String getOpenGLVersionString() {
         switch (openGLVersion) {
         case 20:
-            return "2.0"; //$NON-NLS-1$
+            return "OpenGL 2.0"; //$NON-NLS-1$
         case 33:
-            return "3.3"; //$NON-NLS-1$
+            return "OpenGL 3.3"; //$NON-NLS-1$
+        case 100:
+            return "Vulkan API 1.0"; //$NON-NLS-1$
         default:
             NLogger.error(getClass(), "getOpenGLVersionString(): No version string defined! OpenGL " + openGLVersion); //$NON-NLS-1$
             return openGLVersion + " [n.def.!]"; //$NON-NLS-1$
