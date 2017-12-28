@@ -13,6 +13,7 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
+import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Color;
@@ -145,8 +146,12 @@ class OptionsDesign extends ApplicationWindow {
             {
                 final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
 
-                final Composite cmp_container = new Composite(tabFolder_Settings, SWT.NONE);
-                tItem0.setControl(cmp_container);
+                final ScrolledComposite cmp_containerX = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
+                Composite cmp_container = new Composite(cmp_containerX, Cocoa.getStyle());
+                tItem0.setControl(cmp_containerX);
+                cmp_containerX.setContent(cmp_container);
+                cmp_containerX.setExpandHorizontal(true);
+                cmp_containerX.setExpandVertical(true);
 
                 cmp_container.setLayout(new GridLayout());
                 cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
@@ -286,6 +291,8 @@ class OptionsDesign extends ApplicationWindow {
                 NButton btn_browseUnofficialPath = new NButton(cmp_pathChooser3, SWT.NONE);
                 this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
                 btn_browseUnofficialPath.setText(I18n.OPTIONS_Browse);
+
+                cmp_containerX.setMinSize(cmp_container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
             }
 
             final CTabItem tItem1 = new CTabItem(tabFolder_Settings, SWT.NONE);
@@ -699,6 +706,6 @@ class OptionsDesign extends ApplicationWindow {
      */
     @Override
     protected Point getInitialSize() {
-        return new Point(super.getInitialSize().x, super.getInitialSize().y * 2);
+        return new Point(super.getInitialSize().x, (int) (super.getInitialSize().y * 2.5));
     }
 }
