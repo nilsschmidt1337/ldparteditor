@@ -3396,7 +3396,7 @@ class Editor3DDesign extends ApplicationWindow {
             public void widgetSelected(SelectionEvent e) {
                 if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                     // Choose new colour
-                    new ColourDialog(getShell(), gColour2, false).open();
+                    new ColourDialog(getShell(), gColour2, false).run();
                     WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
                     col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
                     int num = gColour2[0].getColourNumber();

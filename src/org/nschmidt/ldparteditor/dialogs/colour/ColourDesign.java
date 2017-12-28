@@ -18,7 +18,7 @@ package org.nschmidt.ldparteditor.dialogs.colour;
 import java.text.MessageFormat;
 import java.util.TreeSet;
 
-import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
@@ -33,9 +33,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
+import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
+import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.NButton;
@@ -50,7 +53,7 @@ import org.nschmidt.ldparteditor.widgets.NButton;
  * @author nils
  *
  */
-class ColourDesign extends Dialog {
+class ColourDesign extends ApplicationWindow {
 
     final GColour[] refCol;
     final ColourDesign me;
@@ -74,108 +77,84 @@ class ColourDesign extends Dialog {
      * @param parent
      */
     @Override
-    protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
-        gridLayout.verticalSpacing = 10;
-        gridLayout.horizontalSpacing = 10;
+    protected Control createContents(Composite parent) {
+        Composite cmp_container = new Composite(parent, SWT.NONE);
+        GridLayout gridLayout = new GridLayout(1, true);
+        gridLayout.verticalSpacing = 0;
+        gridLayout.horizontalSpacing = 0;
+        cmp_container.setLayout(gridLayout);
 
-        Label lbl_welcome = new Label(cmp_container, SWT.NONE);
-        lbl_welcome.setText(I18n.COLOURDIALOG_ColourTitle);
+        Label lbl_colourTitle = new Label(cmp_container, SWT.NONE);
+        lbl_colourTitle.setText(I18n.COLOURDIALOG_ColourTitle);
 
         {
             Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
             lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        }
+
+        {
+            Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
+            lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
         NButton btn_pickDirectColour = new NButton(cmp_container, SWT.NONE);
         btn_colourChoose[0] = btn_pickDirectColour;
         btn_pickDirectColour.setText(I18n.COLOURDIALOG_DirectColour);
 
+        {
+            Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
+            lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        }
+
         if (randomColours) {
             NButton btn_randomColour = new NButton(cmp_container, SWT.NONE);
             btn_randomColours[0] = btn_randomColour;
             btn_randomColour.setText(I18n.COLOURDIALOG_RandomColours);
             btn_randomColour.setImage(ResourceManager.getImage("icon16_randomColours.png")); //$NON-NLS-1$
+
+            {
+                Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
+                lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            }
         }
+
+        Label lbl_stdColour = new Label(cmp_container, SWT.NONE);
+        lbl_stdColour.setText(I18n.COLOURDIALOG_StandardColours);
 
         {
             Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
             lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
-        Label lbl_stdColour = new Label(cmp_container, SWT.NONE);
-        lbl_stdColour.setText(I18n.COLOURDIALOG_StandardColours);
+        {
+            Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
+            lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        }
 
         NButton btn_showTable = new NButton(cmp_container, SWT.NONE);
         btn_colourTable[0] = btn_showTable;
         btn_showTable.setText(I18n.COLOURDIALOG_ShowColourTable);
 
-        Composite cmpStdColours = new Composite(cmp_container, SWT.BORDER);
-        GridLayout gridLayout2 = new GridLayout(17, true);
-        gridLayout2.verticalSpacing = 0;
-        gridLayout2.horizontalSpacing = 0;
-        cmpStdColours.setLayout(gridLayout2);
+        {
+            Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
+            lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        }
 
         TreeSet<Integer> ldConfIndices = new TreeSet<Integer>(View.getColourMap().keySet());
 
-        final int btnSize = (int) (lbl_stdColour.computeSize(SWT.DEFAULT, SWT.DEFAULT).y * 1.5f);
-
+        int counter = 0;
+        ToolItem toolItem_Colours = new ToolItem(cmp_container, Cocoa.getStyle(), true);
         for (Integer index : ldConfIndices) {
-            final NButton btn_stdColour = new NButton(cmpStdColours, SWT.BORDER);
-            btn_stdColour.setBounds(0, 0, btnSize, btnSize);
-            GridData gd = new GridData();
-            gd.grabExcessHorizontalSpace = true;
-            gd.grabExcessVerticalSpace = true;
-            gd.minimumHeight = btnSize;
-            gd.minimumWidth = btnSize;
-            gd.heightHint = btnSize;
-            gd.widthHint = btnSize;
-            btn_stdColour.setLayoutData(gd);
-            Object[] messageArguments = {index, View.getLDConfigColourName(index)};
-            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.COLOURDIALOG_Colour);
-            btn_stdColour.setToolTipText(formatter.format(messageArguments));
+            if (counter == 17) {
+                toolItem_Colours = new ToolItem(cmp_container, Cocoa.getStyle(), true);
+                counter = 0;
+            }
             final GColour gColour2 = View.getLDConfigColour(index);
-            btn_stdColour.setData(gColour2);
-            final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
-            final int x = (int) (btnSize / 5f);
-            final int y = (int) (btnSize / 5f);
-            final int w = (int) (btnSize * (3f / 5f));
-            final int h = (int) (btnSize * (3f / 5f));
-            btn_stdColour.addPaintListener(new PaintListener() {
-                @Override
-                public void paintControl(PaintEvent e) {
-                    e.gc.setBackground(col);
-                    e.gc.fillRectangle(x, y, w, h);
-                    if (gColour2.getA() >= .99f) {
-                        e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png", 0), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
-                    } else {
-                        e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png", 0), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
-                    }
-                }
-            });
-            btn_stdColour.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    refCol[0] = (GColour) btn_stdColour.getData();
-                    me.close();
-                }
-            });
+            addColorButton(toolItem_Colours, gColour2);
+            counter++;
         }
-        cmpStdColours.pack();
         cmp_container.pack();
         return cmp_container;
-    }
-
-    /**
-     * Create contents of the button bar (no buttons)
-     *
-     * @param parent
-     */
-    @Override
-    protected void createButtonsForButtonBar(Composite parent) {
     }
 
     /**
@@ -186,4 +165,71 @@ class ColourDesign extends Dialog {
         return super.getInitialSize();
     }
 
+    private void addColorButton(ToolItem toolItem_Colours, GColour gColour) {
+        int cn = gColour.getColourNumber();
+        if (cn != -1 && View.hasLDConfigColour(cn)) {
+            gColour = View.getLDConfigColour(cn);
+        }
+        final int imgSize = 16;
+        final GColour[] gColour2 = new GColour[] { gColour };
+        final Color[] col = new Color[1];
+        col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
+
+        final NButton btn_Col = new NButton(toolItem_Colours, Cocoa.getStyle());
+        btn_Col.setData(gColour);
+        int num = gColour2[0].getColourNumber();
+        if (!View.hasLDConfigColour(num)) {
+            num = -1;
+        }
+        if (num != -1) {
+
+            Object[] messageArguments = {num, View.getLDConfigColourName(num)};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+
+            btn_Col.setToolTipText(formatter.format(messageArguments));
+        } else {
+
+            StringBuilder colourBuilder = new StringBuilder();
+            colourBuilder.append("0x2"); //$NON-NLS-1$
+            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
+            colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
+
+            Object[] messageArguments = {colourBuilder.toString()};
+            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+
+            btn_Col.setToolTipText(formatter.format(messageArguments));
+        }
+
+        btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
+
+        btn_Col.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                refCol[0] = (GColour) btn_Col.getData();
+                me.close();
+            }
+        });
+        final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+        final int x = Math.round(size.x / 5f);
+        final int y = Math.round(size.y / 5f);
+        final int w = Math.round(size.x * (3f / 5f));
+        final int h = Math.round(size.y * (3f / 5f));
+        btn_Col.addPaintListener(new PaintListener() {
+            @Override
+            public void paintControl(PaintEvent e) {
+                e.gc.setBackground(col[0]);
+                e.gc.fillRectangle(x, y, w, h);
+                if (gColour2[0].getA() == 1f) {
+                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                } else {
+                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                }
+            }
+        });
+    }
 }
