@@ -28,6 +28,7 @@ import java.util.zip.GZIPOutputStream;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.nschmidt.ldparteditor.enums.Colour;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -129,6 +130,18 @@ public enum WorkbenchManager {
         if (WorkbenchManager.userSettingState.getFuzziness2D() == 0) {
             WorkbenchManager.userSettingState.setFuzziness2D(7);
         }
+
+        if (Math.abs(WorkbenchManager.userSettingState.getCoplanarity_angle_warning() - 0.0) < 0.001) {
+            WorkbenchManager.userSettingState.setCoplanarity_angle_warning(1.0);
+        }
+
+        if (Math.abs(WorkbenchManager.userSettingState.getCoplanarity_angle_error() - 0.0) < 0.001) {
+            WorkbenchManager.userSettingState.setCoplanarity_angle_error(3.0);
+        }
+
+        Threshold.coplanarity_angle_warning = WorkbenchManager.userSettingState.getCoplanarity_angle_warning();
+        Threshold.coplanarity_angle_error = WorkbenchManager.userSettingState.getCoplanarity_angle_error();
+
         return true;
     }
 

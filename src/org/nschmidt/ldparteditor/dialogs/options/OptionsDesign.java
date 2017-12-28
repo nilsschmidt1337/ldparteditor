@@ -1,5 +1,6 @@
 package org.nschmidt.ldparteditor.dialogs.options;
 
+import java.math.BigDecimal;
 import java.text.Collator;
 import java.text.DateFormat;
 import java.util.Arrays;
@@ -38,6 +39,7 @@ import org.nschmidt.ldparteditor.dialogs.keys.KeyDialog;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -45,6 +47,7 @@ import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
+import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeColumn;
@@ -70,6 +73,8 @@ class OptionsDesign extends ApplicationWindow {
     final NButton[] btn_browseLdrawPath = new NButton[1];
     final NButton[] btn_browseUnofficialPath = new NButton[1];
     final NButton[] btn_browseAuthoringPath = new NButton[1];
+    final BigDecimalSpinner[] spn_coplanarityWarning = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spn_coplanarityError = new BigDecimalSpinner[1];
 
     final HashMap<String, Locale> localeMap = new HashMap<String, Locale>();
 
@@ -184,6 +189,33 @@ class OptionsDesign extends ApplicationWindow {
                 cmb_textWinArr.setItems(new String[]{I18n.OPTIONS_TextWindowSeparate, I18n.OPTIONS_TextWindowLeft, I18n.OPTIONS_TextWindowRight});
                 cmb_textWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmb_textWinArr.select(userSettings.getTextWinArr());
+
+                {
+                    Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                }
+
+                Label lbl_coplanarityWarning = new Label(cmp_container, SWT.NONE);
+                lbl_coplanarityWarning.setText(I18n.OPTIONS_CoplanarityWarning);
+                lbl_coplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+                BigDecimalSpinner spn_coplanarityWarning = new BigDecimalSpinner(cmp_container, Cocoa.getStyle());
+                this.spn_coplanarityWarning[0] = spn_coplanarityWarning;
+                spn_coplanarityWarning.setMaximum(new BigDecimal("179.9999")); //$NON-NLS-1$
+                spn_coplanarityWarning.setMinimum(new BigDecimal("0.01")); //$NON-NLS-1$
+                spn_coplanarityWarning.setValue(new BigDecimal(Threshold.coplanarity_angle_warning));
+                spn_coplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+                Label lbl_coplanarityError = new Label(cmp_container, SWT.NONE);
+                lbl_coplanarityError.setText(I18n.OPTIONS_CoplanarityError);
+                lbl_coplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+                BigDecimalSpinner spn_coplanarityError = new BigDecimalSpinner(cmp_container, Cocoa.getStyle());
+                this.spn_coplanarityError[0] = spn_coplanarityError;
+                spn_coplanarityError.setMaximum(new BigDecimal("179.9999")); //$NON-NLS-1$
+                spn_coplanarityError.setMinimum(new BigDecimal("0.01")); //$NON-NLS-1$
+                spn_coplanarityError.setValue(new BigDecimal(Threshold.coplanarity_angle_error));
+                spn_coplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 {
                     Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -706,6 +738,6 @@ class OptionsDesign extends ApplicationWindow {
      */
     @Override
     protected Point getInitialSize() {
-        return new Point(super.getInitialSize().x, (int) (super.getInitialSize().y * 2.5));
+        return new Point(super.getInitialSize().x, (int) (super.getInitialSize().y * 2.6));
     }
 }
