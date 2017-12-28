@@ -25,7 +25,7 @@ public enum Cocoa {
 
     public static final boolean isCocoa = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
 
-    public static int getSytle() {
+    public static int getStyle() {
         // TODO Inline after more testing on Mac OS X
         return SWT.NONE;// isCocoa ? SWT.FLAT : SWT.NONE;
     }
