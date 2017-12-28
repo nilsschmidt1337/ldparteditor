@@ -124,8 +124,10 @@ public class UserSettingState implements Serializable {
     /** {@code true} if anti-aliasing is enabled for 3D windows */
     private boolean antiAliasing = false;
 
-    /** {@code true} if the new engine is enabled for 3D windows */
+    /** {@code true} if the new OpenGL 3.3 engine is enabled for 3D windows */
     private boolean newEngine = false;
+    /** {@code true} if the Vulkan engine is enabled for 3D windows */
+    private boolean vulkanEngine = false;
 
     /** {@code true} if invalid shapes are allowed in the 3D editor */
     private boolean allowInvalidShapes = false;
@@ -797,12 +799,20 @@ public class UserSettingState implements Serializable {
         this.antiAliasing = antiAliasing;
     }
 
-    public boolean isNewEngine() {
+    public boolean isOpenGL33Engine() {
         return newEngine;
     }
 
-    public void setNewEngine(boolean newEngine) {
-        this.newEngine = newEngine;
+    public void setOpenGL33Engine(boolean openGL33Engine) {
+        this.newEngine = openGL33Engine;
+    }
+
+    public boolean isVulkanEngine() {
+        return vulkanEngine;
+    }
+
+    public void setVulkanEngine(boolean vulkanEngine) {
+        this.vulkanEngine = vulkanEngine;
     }
 
     public void saveColours() {

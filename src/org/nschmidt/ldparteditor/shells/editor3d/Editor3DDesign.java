@@ -295,7 +295,8 @@ class Editor3DDesign extends ApplicationWindow {
 
     final MenuItem[] mntm_UploadLogs = new MenuItem[1];
     final MenuItem[] mntm_AntiAliasing = new MenuItem[1];
-    final MenuItem[] mntm_NewEngine = new MenuItem[1];
+    final MenuItem[] mntm_OpenGL33Engine = new MenuItem[1];
+    final MenuItem[] mntm_VulkanEngine = new MenuItem[1];
     final MenuItem[] mntm_SyncLpeInline = new MenuItem[1];
 
     final MenuItem[] mntm_Flip = new MenuItem[1];
@@ -2685,19 +2686,25 @@ class Editor3DDesign extends ApplicationWindow {
                     mntm_AntiAliasing.setText(I18n.E3D_AntiAliasing);
                 }
                 {
-                    MenuItem mntm_NewEngine = new MenuItem(mnu_Tools, SWT.CHECK);
-                    mntm_NewEngine.setSelection(WorkbenchManager.getUserSettingState().isNewEngine());
-                    this.mntm_NewEngine[0] = mntm_NewEngine;
-                    mntm_NewEngine.setText(I18n.E3D_NewEngine);
+                    MenuItem mntm_OpenGL33Engine = new MenuItem(mnu_Tools, SWT.CHECK);
+                    mntm_OpenGL33Engine.setSelection(WorkbenchManager.getUserSettingState().isOpenGL33Engine());
+                    this.mntm_OpenGL33Engine[0] = mntm_OpenGL33Engine;
+                    mntm_OpenGL33Engine.setText(I18n.E3D_NewEngine);
+                }
+                if (NLogger.DEBUG) {
+                    MenuItem mntm_VulkanEngine = new MenuItem(mnu_Tools, SWT.CHECK);
+                    mntm_VulkanEngine.setSelection(WorkbenchManager.getUserSettingState().isVulkanEngine());
+                    this.mntm_VulkanEngine[0] = mntm_VulkanEngine;
+                    mntm_VulkanEngine.setText(I18n.E3D_VulkanEngine);
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator4 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
-                //                {
-                //                    MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
-                //                    mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
-                //                    this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
-                //                    mntm_SyncWithTextEditor.setText(I18n.E3D_Sync3DEditor);
-                //                }
+                // {
+                //     MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
+                //     mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
+                //     this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
+                //     mntm_SyncWithTextEditor.setText(I18n.E3D_Sync3DEditor);
+                // }
                 {
                     MenuItem mntm_SyncLpeInline = new MenuItem(mnu_Tools, SWT.CHECK);
                     mntm_SyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());

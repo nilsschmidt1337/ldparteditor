@@ -5523,10 +5523,24 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_NewEngine[0].addSelectionListener(new SelectionAdapter() {
+        mntm_OpenGL33Engine[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setNewEngine(mntm_NewEngine[0].getSelection());
+                WorkbenchManager.getUserSettingState().setOpenGL33Engine(mntm_OpenGL33Engine[0].getSelection());
+                WorkbenchManager.getUserSettingState().setVulkanEngine(false);
+                if (NLogger.DEBUG) {
+                    mntm_VulkanEngine[0].setSelection(false);
+                }
+                regainFocus();
+            }
+        });
+
+        if (NLogger.DEBUG) mntm_VulkanEngine[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                WorkbenchManager.getUserSettingState().setVulkanEngine(mntm_VulkanEngine[0].getSelection());
+                WorkbenchManager.getUserSettingState().setOpenGL33Engine(false);
+                mntm_OpenGL33Engine[0].setSelection(false);
                 regainFocus();
             }
         });
