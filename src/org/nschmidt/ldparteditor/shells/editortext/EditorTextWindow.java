@@ -1002,7 +1002,7 @@ public class EditorTextWindow extends EditorTextDesign {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final GColour[] gColour2 = new GColour[1];
-                new ColourDialog(btn_Palette[0].getShell(), gColour2, true).open();
+                new ColourDialog(btn_Palette[0].getShell(), gColour2, true).run();
                 if (gColour2[0] != null) {
                     int num = gColour2[0].getColourNumber();
                     if (!View.hasLDConfigColour(num)) {

@@ -237,6 +237,11 @@ public class NButton extends Canvas {
     }
 
     @Override
+    public Point computeSize(int wHint, int hHint) {
+        return computeSize(wHint, hHint, false);
+    }
+
+    @Override
     public Point computeSize(int wHint, int hHint, boolean changed) {
 
         final GC gc = new GC(this);

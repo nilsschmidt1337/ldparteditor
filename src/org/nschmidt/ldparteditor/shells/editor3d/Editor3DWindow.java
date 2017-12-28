@@ -9934,7 +9934,7 @@ public class Editor3DWindow extends Editor3DDesign {
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
                     final GColour[] gColour2 = new GColour[1];
-                    new ColourDialog(getShell(), gColour2, true).open();
+                    new ColourDialog(getShell(), gColour2, true).run();
                     if (gColour2[0] != null) {
                         setLastUsedColour(gColour2[0]);
                         int num = gColour2[0].getColourNumber();

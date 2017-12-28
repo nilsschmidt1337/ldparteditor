@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.colour;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.RGB;
@@ -46,9 +47,10 @@ public class ColourDialog extends ColourDesign {
         super(parentShell, refCol, randomColours);
     }
 
-    @Override
-    public int open() {
-        super.create();
+    public void run() {
+        this.setBlockOnOpen(true);
+        this.setShellStyle(SWT.APPLICATION_MODAL | SWT.SHELL_TRIM ^ SWT.MIN);
+        this.create();
         // MARK All final listeners will be configured here..
         btn_colourChoose[0].addSelectionListener(new SelectionAdapter() {
             @Override
@@ -77,7 +79,6 @@ public class ColourDialog extends ColourDesign {
                 me.close();
             }
         });
-        return super.open();
+        this.open();
     }
-
 }
