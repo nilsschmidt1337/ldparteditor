@@ -405,6 +405,9 @@ public class UserSettingState implements Serializable {
 
     private boolean movingAdjacentData = false;
 
+    private double coplanarity_angle_warning = 1d;
+    private double coplanarity_angle_error = 3d;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -1436,5 +1439,21 @@ public class UserSettingState implements Serializable {
 
     public void setMovingAdjacentData(boolean movingAdjacentData) {
         this.movingAdjacentData = movingAdjacentData;
+    }
+
+    public double getCoplanarity_angle_warning() {
+        return coplanarity_angle_warning;
+    }
+
+    public void setCoplanarity_angle_warning(double coplanarity_angle_warning) {
+        this.coplanarity_angle_warning = coplanarity_angle_warning;
+    }
+
+    public double getCoplanarity_angle_error() {
+        return coplanarity_angle_error;
+    }
+
+    public void setCoplanarity_angle_error(double coplanarity_angle_error) {
+        this.coplanarity_angle_error = coplanarity_angle_error;
     }
 }

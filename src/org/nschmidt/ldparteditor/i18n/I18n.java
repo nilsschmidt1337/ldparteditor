@@ -944,6 +944,8 @@ public final class I18n {
     public static final String OPTIONS_AuthoringWhere = OPTIONS.getString(getProperty());
     public static final String OPTIONS_Browse = OPTIONS.getString(getProperty());
     public static final String OPTIONS_ChooseLocale = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_CoplanarityError = OPTIONS.getString(getProperty());
+    public static final String OPTIONS_CoplanarityWarning = OPTIONS.getString(getProperty());
     public static final String OPTIONS_Directory = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LdrawFolder = OPTIONS.getString(getProperty());
     public static final String OPTIONS_LdrawName = OPTIONS.getString(getProperty());
