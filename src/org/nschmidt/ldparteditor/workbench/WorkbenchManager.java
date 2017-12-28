@@ -44,8 +44,6 @@ public enum WorkbenchManager {
 
     public static final String CONFIG_GZ = "config.gz"; //$NON-NLS-1$
 
-    /** The reference to the 3D editor */
-    private static Editor3DWindow editor3DWindow;
     /** The window state of the 3D editor */
     private static Editor3DWindowState editor3DWindowState;
     /** The window state of the text editor */
@@ -140,16 +138,17 @@ public enum WorkbenchManager {
     public static boolean saveWorkbench(String path) {
         ObjectOutputStream configFileStream = null;
         try {
+            Editor3DWindow editor3DWindow = Editor3DWindow.getWindow();
             File configGzFile = new File(path);
             configGzFile.delete();
             configFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(path)));
-            if (WorkbenchManager.editor3DWindow == null) {
+            if (editor3DWindow == null) {
                 // Write defaults here..
                 configFileStream.writeObject(WorkbenchManager.editor3DWindowState);
             } else {
                 // Write the data which was last set
-                Editor3DWindow win3D = WorkbenchManager.editor3DWindow;
-                Editor3DWindowState state3D = WorkbenchManager.editor3DWindow.getEditor3DWindowState();
+                Editor3DWindow win3D = editor3DWindow;
+                Editor3DWindowState state3D = WorkbenchManager.getEditor3DWindowState();
                 state3D.getWindowState().setCentered(false);
                 state3D.getWindowState().setMaximized(win3D.getShell().getMaximized());
                 state3D.getWindowState().setSizeAndPosition(win3D.getShell().getBounds());
@@ -196,29 +195,6 @@ public enum WorkbenchManager {
      */
     public static Editor3DWindowState getEditor3DWindowState() {
         return editor3DWindowState;
-    }
-
-    /**
-     * @param editor3DWindowState
-     *            The serializable window state of the Editor3DWindow
-     */
-    public static void setEditor3DWindowState(Editor3DWindowState editor3DWindowState) {
-        WorkbenchManager.editor3DWindowState = editor3DWindowState;
-    }
-
-    /**
-     * @return The ApplicationWindow of the 3D editor
-     */
-    public static Editor3DWindow getEditor3DWindow() {
-        return editor3DWindow;
-    }
-
-    /**
-     * @param editor3dWindow
-     *            Sets the ApplicationWindow of the 3D editor
-     */
-    public static void setEditor3DWindow(Editor3DWindow editor3dWindow) {
-        WorkbenchManager.editor3DWindow = editor3dWindow;
     }
 
     /**

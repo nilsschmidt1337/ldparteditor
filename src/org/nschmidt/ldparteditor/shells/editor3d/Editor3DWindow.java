@@ -388,9 +388,6 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         }
-        // Load the window state data
-        editor3DWindowState = WorkbenchManager.getEditor3DWindowState();
-        WorkbenchManager.setEditor3DWindow(this);
         // Closing this window causes the whole application to quit
         this.setBlockOnOpen(true);
         // Creating the window to get the shell
@@ -400,15 +397,15 @@ public class Editor3DWindow extends Editor3DDesign {
 
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         sh.setMinimumSize(640, 480);
-        sh.setBounds(this.editor3DWindowState.getWindowState().getSizeAndPosition());
-        if (this.editor3DWindowState.getWindowState().isCentered()) {
+        sh.setBounds(WorkbenchManager.getEditor3DWindowState().getWindowState().getSizeAndPosition());
+        if (WorkbenchManager.getEditor3DWindowState().getWindowState().isCentered()) {
             ShellHelper.centerShellOnPrimaryScreen(sh);
         }
         // Maximize / tab creation on text editor has to be called asynchronously
         sh.getDisplay().asyncExec(new Runnable() {
             @Override
             public void run() {
-                sh.setMaximized(editor3DWindowState.getWindowState().isMaximized());
+                sh.setMaximized(WorkbenchManager.getEditor3DWindowState().getWindowState().isMaximized());
 
                 if (WorkbenchManager.getUserSettingState().getTextWinArr() != TEXT_3D_SEPARATE) {
                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -5009,8 +5006,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 String selected = fd.open();
                 if (selected != null) {
-                    final Editor3DWindowState winState = getEditor3DWindowState();
-                    winState.setThreeDwindowConfig(getC3DStates());
+                    final Editor3DWindowState winState = WorkbenchManager.getEditor3DWindowState();
+                    if (!isReviewingAPart()) {
+                        winState.setThreeDwindowConfig(getC3DStates());
+                    }
 
                     if (editorSashForm[0] != null) {
                         winState.setEditorSashWeights(editorSashForm[0].getWeights());
