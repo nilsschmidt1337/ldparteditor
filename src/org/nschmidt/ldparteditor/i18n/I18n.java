@@ -682,6 +682,7 @@ public final class I18n {
     public static final String E3D_Vertices = E3D.getString(getProperty());
     public static final String E3D_ViewActions = E3D.getString(getProperty());
     public static final String E3D_ViewingAngles = E3D.getString(getProperty());
+    public static final String E3D_VulkanEngine = E3D.getString(getProperty());
     public static final String E3D_WaitForUpdate = E3D.getString(getProperty());
     public static final String E3D_WhatIsHidden = E3D.getString(getProperty());
     public static final String E3D_WithAccuracy = E3D.getString(getProperty());
