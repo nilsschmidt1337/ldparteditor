@@ -164,6 +164,11 @@ public class SplashScreen extends ApplicationWindow {
             openGLerror[0] = major < 2;
             if (WorkbenchManager.getUserSettingState().isOpenGL33Engine() && (major > 3 || major == 3 && minor > 2)) {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(33);
+            } else if (WorkbenchManager.getUserSettingState().isVulkanEngine() && NLogger.DEBUG) {
+                // FIXME I have to implement a SWT VKCanvas first!
+                // see https://github.com/httpdigest/lwjgl3-swt
+                // WorkbenchManager.getUserSettingState().setOpenGLVersion(100);
+                WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
             } else {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
             }
