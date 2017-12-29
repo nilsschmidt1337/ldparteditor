@@ -24,6 +24,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
@@ -103,6 +105,13 @@ class ColourTableDesign extends Dialog {
             }
         });
 
+        table.addMouseMoveListener(new MouseMoveListener() {
+            @Override
+            public void mouseMove(MouseEvent e) {
+                composite.forceFocus();
+            }
+        });
+
         composite.setContent(table);
         composite.setExpandHorizontal(true);
         composite.setExpandVertical(true);
@@ -137,7 +146,6 @@ class ColourTableDesign extends Dialog {
             item.setBackground(0, col);
             item.setText(1, name + "   "); //$NON-NLS-1$
             item.setText(2, id + ""); //$NON-NLS-1$
-
             int l = name.length();
             if (l > longestNameLenght) {
                 longestNameLenght = l;
