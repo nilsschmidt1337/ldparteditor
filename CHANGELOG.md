@@ -1,3 +1,22 @@
+### 29 Dec 2017
+With the release of **0.8.39** you are able to...
+-  ...use a SlantingMatrixProjector tool.
+-  ...save all your user settings in a file, and restore it when you want to.
+-  ...restore your 3D view settings when you completed a PartReview.
+-  ...use ALT + UP/DOWN to move a line up and down in the text editor.
+-  ...see a progress bar when downloading files from the PT for PartReview.
+-  ...set the coplanarity threshold (Tools... -> Options...).
+
+The following critical issues are fixed:
+1. Colour palette: The window was sometimes not wide enough.
+2. Sometimes long edges were hard to select until both vertices were visible.
+3. The logger did not detect errors while loading the workbench.
+4. An edge, or cond-line was selectable through a surface, even if it was hidden behind that surface.
+5. Ytruder generated triangles when it should generate quads.
+6. "Save As..." created a wrong part type (Flexible_Section).
+7. Divide by zero during Catmull-Clark subdivision
+
+
 ### 1 Dec 2017
 With the release of **0.8.38b** the following critical issues are fixed:
 1. The CSG mesh optimisation was deactivated when one of the 3D view had the wireframe render mode enabled.
