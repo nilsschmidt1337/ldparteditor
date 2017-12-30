@@ -61,14 +61,10 @@ class VM06Edger2 extends VM05Distance {
         }
     }
 
-    private void addLineEdger2(TreeSet<Vertex> h1, TreeSet<Vertex> h2, Edger2Settings es) {
+    private void addLineEdger2(Vertex v1, Vertex v2, TreeSet<Vertex> h1, TreeSet<Vertex> h2, Edger2Settings es) {
 
-        Vertex[] rv1 = new Vertex[1];
-        Vertex[] rv2 = new Vertex[1];
-        ArrayList<GData> faces = linkedCommonFaces(h1, h2, rv1, rv2);
+        ArrayList<GData> faces = linkedCommonFaces(h1, h2);
         if (faces.size() == 2) {
-            Vertex v1 = rv1[0];
-            Vertex v2 = rv2[0];
 
             GData g1 = faces.get(0);
             GData g2 = faces.get(1);
@@ -85,8 +81,9 @@ class VM06Edger2 extends VM05Distance {
                 tvs.add(vt[0]);
                 tvs.add(vt[1]);
                 tvs.add(vt[2]);
-                tvs.remove(v1);
-                tvs.remove(v2);
+                tvs.removeAll(h1);
+                tvs.removeAll(h2);
+                if (tvs.isEmpty()) return;
                 v3 = tvs.iterator().next();
                 n1 = Vector3d.getNormal(new Vector3d(vt[2]), new Vector3d(vt[0]), new Vector3d(vt[1]));
             } else {
@@ -125,8 +122,9 @@ class VM06Edger2 extends VM05Distance {
                 tvs.add(vt[0]);
                 tvs.add(vt[1]);
                 tvs.add(vt[2]);
-                tvs.remove(v1);
-                tvs.remove(v2);
+                tvs.removeAll(h1);
+                tvs.removeAll(h2);
+                if (tvs.isEmpty()) return;
                 v4 = tvs.iterator().next();
                 n2 = Vector3d.getNormal(new Vector3d(vt[2]), new Vector3d(vt[0]), new Vector3d(vt[1]));
             } else {
@@ -376,7 +374,7 @@ class VM06Edger2 extends VM05Distance {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
                     if (edges.get(e) > 1) {
-                        addLineEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
+                        addLineEdger2(e.v1, e.v2, snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
                     }
                 }
             }
@@ -511,7 +509,7 @@ class VM06Edger2 extends VM05Distance {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
                     if (edges.get(e) > 1) {
-                        addLineEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
+                        addLineEdger2(e.v1, e.v2, snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
                     }
                 }
             }
@@ -708,7 +706,7 @@ class VM06Edger2 extends VM05Distance {
                 Set<AccurateEdge> ee = edges.keySet();
                 for (AccurateEdge e : ee) {
                     if (edges.get(e) > 1) {
-                        addLineEdger2(snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
+                        addLineEdger2(e.v1, e.v2, snapToOriginal.get(e.v1),  snapToOriginal.get(e.v2), es);
                     }
                 }
             }
