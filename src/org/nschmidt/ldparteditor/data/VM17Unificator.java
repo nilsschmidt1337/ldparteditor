@@ -34,6 +34,10 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 class VM17Unificator extends VM16Subdivide {
 
+    private static final int VERTICES = 0;
+    private static final int SUBPART_VERTICES = 1;
+    private static final int VERTICES_AND_SUBPART_VERTICES = 2;
+
     protected VM17Unificator(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
@@ -129,7 +133,7 @@ class VM17Unificator extends VM16Subdivide {
                     }
 
 
-                    if (us.getSnapOn() == 0 || us.getSnapOn() == 2) {
+                    if (us.getSnapOn() == VERTICES || us.getSnapOn() == VERTICES_AND_SUBPART_VERTICES) {
                         monitor.subTask(I18n.VM_Unify);
                         int i = 0;
                         int j = 0;
@@ -140,7 +144,7 @@ class VM17Unificator extends VM16Subdivide {
                             TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
 
                             for (Vertex v1 : fileVertices) {
-                                if (us.getSnapOn() == 2 && subfileVertices.contains(v1)) {
+                                if (us.getSnapOn() == VERTICES_AND_SUBPART_VERTICES && subfileVertices.contains(v1)) {
                                     i++;
                                     continue;
                                 }
@@ -202,7 +206,7 @@ class VM17Unificator extends VM16Subdivide {
                         }
                     }
 
-                    if (us.getSnapOn() == 1 || us.getSnapOn() == 2) {
+                    if (us.getSnapOn() == SUBPART_VERTICES || us.getSnapOn() == VERTICES_AND_SUBPART_VERTICES) {
                         monitor.subTask(I18n.VM_Snap);
 
                         TreeMap<Vertex, Vertex> mergeTargets = new TreeMap<Vertex, Vertex>();
