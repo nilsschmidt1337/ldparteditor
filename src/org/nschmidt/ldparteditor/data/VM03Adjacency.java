@@ -210,7 +210,7 @@ class VM03Adjacency extends VM02Add {
         return hasCondline;
     }
 
-    protected ArrayList<GData> linkedCommonFaces(TreeSet<Vertex> h1, TreeSet<Vertex> h2, Vertex[] rv1, Vertex[] rv2) {
+    protected ArrayList<GData> linkedCommonFaces(TreeSet<Vertex> h1, TreeSet<Vertex> h2) {
         ArrayList<GData> result = new ArrayList<GData>();
         Set<VertexManifestation> m1 = new HashSet<VertexManifestation>();
         Set<VertexManifestation> m2 = new HashSet<VertexManifestation>();
@@ -242,8 +242,6 @@ class VM03Adjacency extends VM02Add {
                 }
             }
         }
-        rv1[0] = h1.iterator().next();
-        rv2[0] = h2.iterator().next();
         return result;
     }
 
