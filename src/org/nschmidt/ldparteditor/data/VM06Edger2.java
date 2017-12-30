@@ -89,31 +89,17 @@ class VM06Edger2 extends VM05Distance {
             } else {
                 GData4 g4 = (GData4) g1;
                 Vertex[] vq = quads.get(g4);
-                if (vq[0].equals(v1) && vq[1].equals(v2)) {
-                    n1 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
-                    v3 = vq[2];
-                } else if (vq[1].equals(v1) && vq[2].equals(v2)) {
-                    n1 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
-                    v3 = vq[0];
-                } else if (vq[2].equals(v1) && vq[3].equals(v2)) {
-                    n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // 22 3-4-1
-                    v3 = vq[0];
-                } else if (vq[3].equals(v1) && vq[0].equals(v2)) {
-                    n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // 22 3-4-1
-                    v3 = vq[2];
-                } else if (vq[0].equals(v2) && vq[1].equals(v1)) {
-                    n1 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
-                    v3 = vq[2];
-                } else if (vq[1].equals(v2) && vq[2].equals(v1)) {
-                    n1 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
-                    v3 = vq[0];
-                } else if (vq[2].equals(v2) && vq[3].equals(v1)) {
-                    n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // T2 3-4-1
-                    v3 = vq[0];
-                } else {
-                    n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // T2 3-4-1
-                    v3 = vq[2];
-                }
+                TreeSet<Vertex> qvs = new TreeSet<Vertex>();
+                qvs.add(vq[0]);
+                qvs.add(vq[1]);
+                qvs.add(vq[2]);
+                qvs.add(vq[3]);
+                qvs.removeAll(h1);
+                qvs.removeAll(h2);
+                if (qvs.isEmpty()) return;
+                // FIXME Need to calculate the correct normal!
+                v3 = qvs.iterator().next();
+                n1 = Vector3d.getNormal(new Vector3d(v1), new Vector3d(v2), new Vector3d(v3));
             }
             if (g2.type() == 3) {
                 GData3 g3 = (GData3) g2;
@@ -125,36 +111,22 @@ class VM06Edger2 extends VM05Distance {
                 tvs.removeAll(h1);
                 tvs.removeAll(h2);
                 if (tvs.isEmpty()) return;
+                // FIXME Need to calculate the correct normal!
                 v4 = tvs.iterator().next();
                 n2 = Vector3d.getNormal(new Vector3d(vt[2]), new Vector3d(vt[0]), new Vector3d(vt[1]));
             } else {
                 GData4 g4 = (GData4) g2;
                 Vertex[] vq = quads.get(g4);
-                if (vq[0].equals(v1) && vq[1].equals(v2)) {
-                    n2 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
-                    v4 = vq[2];
-                } else if (vq[1].equals(v1) && vq[2].equals(v2)) {
-                    n2 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
-                    v4 = vq[0];
-                } else if (vq[2].equals(v1) && vq[3].equals(v2)) {
-                    n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // 22 3-4-1
-                    v4 = vq[0];
-                } else if (vq[3].equals(v1) && vq[0].equals(v2)) {
-                    n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // 22 3-4-1
-                    v4 = vq[2];
-                } else if (vq[0].equals(v2) && vq[1].equals(v1)) {
-                    n2 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
-                    v4 = vq[2];
-                } else if (vq[1].equals(v2) && vq[2].equals(v1)) {
-                    n2 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[0]), new Vector3d(vq[1])); // T1 1-2-3
-                    v4 = vq[0];
-                } else if (vq[2].equals(v2) && vq[3].equals(v1)) {
-                    n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // T2 3-4-1
-                    v4 = vq[0];
-                } else {
-                    n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[3])); // T2 3-4-1
-                    v4 = vq[2];
-                }
+                TreeSet<Vertex> qvs = new TreeSet<Vertex>();
+                qvs.add(vq[0]);
+                qvs.add(vq[1]);
+                qvs.add(vq[2]);
+                qvs.add(vq[3]);
+                qvs.removeAll(h1);
+                qvs.removeAll(h2);
+                if (qvs.isEmpty()) return;
+                v4 = qvs.iterator().next();
+                n2 = Vector3d.getNormal(new Vector3d(v1), new Vector3d(v2), new Vector3d(v4));
             }
 
             double angle;
