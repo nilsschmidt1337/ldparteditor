@@ -97,9 +97,19 @@ class VM06Edger2 extends VM05Distance {
                 qvs.removeAll(h1);
                 qvs.removeAll(h2);
                 if (qvs.isEmpty()) return;
-                // FIXME Need to calculate the correct normal!
-                v3 = qvs.iterator().next();
-                n1 = Vector3d.getNormal(new Vector3d(v1), new Vector3d(v2), new Vector3d(v3));
+                if (qvs.contains(vq[0]) && qvs.contains(vq[1])) {
+                    v3 = vq[0];
+                    n1 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[3]), new Vector3d(vq[0]));
+                } else if (qvs.contains(vq[1]) && qvs.contains(vq[2])) {
+                    v3 = vq[1];
+                    n1 = Vector3d.getNormal(new Vector3d(vq[3]), new Vector3d(vq[0]), new Vector3d(vq[1]));
+                } else if (qvs.contains(vq[2]) && qvs.contains(vq[3])) {
+                    v3 = vq[2];
+                    n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[2]));
+                } else { // if (qvs.contains(vq[3]) && qvs.contains(vq[0])) {
+                    v3 = vq[3];
+                    n1 = Vector3d.getNormal(new Vector3d(vq[1]), new Vector3d(vq[2]), new Vector3d(vq[3]));
+                }
             }
             if (g2.type() == 3) {
                 GData3 g3 = (GData3) g2;
@@ -111,7 +121,6 @@ class VM06Edger2 extends VM05Distance {
                 tvs.removeAll(h1);
                 tvs.removeAll(h2);
                 if (tvs.isEmpty()) return;
-                // FIXME Need to calculate the correct normal!
                 v4 = tvs.iterator().next();
                 n2 = Vector3d.getNormal(new Vector3d(vt[2]), new Vector3d(vt[0]), new Vector3d(vt[1]));
             } else {
@@ -125,8 +134,19 @@ class VM06Edger2 extends VM05Distance {
                 qvs.removeAll(h1);
                 qvs.removeAll(h2);
                 if (qvs.isEmpty()) return;
-                v4 = qvs.iterator().next();
-                n2 = Vector3d.getNormal(new Vector3d(v1), new Vector3d(v2), new Vector3d(v4));
+                if (qvs.contains(vq[0]) && qvs.contains(vq[1])) {
+                    v4 = vq[0];
+                    n2 = Vector3d.getNormal(new Vector3d(vq[2]), new Vector3d(vq[3]), new Vector3d(vq[0]));
+                } else if (qvs.contains(vq[1]) && qvs.contains(vq[2])) {
+                    v4 = vq[1];
+                    n2 = Vector3d.getNormal(new Vector3d(vq[3]), new Vector3d(vq[0]), new Vector3d(vq[1]));
+                } else if (qvs.contains(vq[2]) && qvs.contains(vq[3])) {
+                    v4 = vq[2];
+                    n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[2]));
+                } else { // if (qvs.contains(vq[3]) && qvs.contains(vq[0])) {
+                    v4 = vq[3];
+                    n2 = Vector3d.getNormal(new Vector3d(vq[1]), new Vector3d(vq[2]), new Vector3d(vq[3]));
+                }
             }
 
             double angle;
