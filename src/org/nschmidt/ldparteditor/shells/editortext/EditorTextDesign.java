@@ -43,6 +43,7 @@ import org.nschmidt.ldparteditor.data.ColourChanger;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
+import org.nschmidt.ldparteditor.enums.IconSize;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
@@ -193,7 +194,7 @@ class EditorTextDesign extends ApplicationWindow {
         if (cn != -1 && View.hasLDConfigColour(cn)) {
             gColour = View.getLDConfigColour(cn);
         }
-        final int imgSize = View.getImageSizeFromIconSize();
+        final int imgSize = IconSize.getImageSizeFromIconSize();
         final GColour[] gColour2 = new GColour[] { gColour };
         final Color[] col = new Color[1];
         col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
@@ -311,6 +312,9 @@ class EditorTextDesign extends ApplicationWindow {
             public void paintControl(PaintEvent e) {
                 e.gc.setBackground(col[0]);
                 e.gc.fillRectangle(x, y, w, h);
+                if (IconSize.getIconsize() < 0) {
+                    return;
+                }
                 if (gColour2[0].getA() == 1f) {
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 } else {

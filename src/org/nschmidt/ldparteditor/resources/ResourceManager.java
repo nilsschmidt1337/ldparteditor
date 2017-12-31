@@ -24,7 +24,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
-import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.IconSize;
 
 /**
  * The resource manager, which returns pictures, sounds and so on..
@@ -49,7 +49,7 @@ public enum ResourceManager {
      */
     public static Image getImage(String name) {
         if (!name.startsWith("img")) { //$NON-NLS-1$
-            return getImage(name, View.getIconsize());
+            return getImage(name, IconSize.getIconsize());
         } else {
             return getImage(name, 0);
         }
@@ -59,6 +59,17 @@ public enum ResourceManager {
         Image img = null;
         if (!name.startsWith("img")) { //$NON-NLS-1$
             switch (iconSize) {
+            case -1:
+                name = name.replace("icon8", "icon8"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon12", "icon8"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon16", "icon12"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon20", "icon16"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon24", "icon20"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon28", "icon24"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon32", "icon28"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon36", "icon32"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon40", "icon36"); //$NON-NLS-1$ //$NON-NLS-2$
+                break;
             case 0:
                 // Default size.
                 break;

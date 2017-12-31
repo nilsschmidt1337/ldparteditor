@@ -56,6 +56,7 @@ import org.nschmidt.ldparteditor.data.colour.GCGlitter;
 import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.data.colour.GCType;
 import org.nschmidt.ldparteditor.enums.GL33Primitives;
+import org.nschmidt.ldparteditor.enums.IconSize;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Arc;
@@ -1418,8 +1419,33 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     // We have no custom manipulator settings yet => create a fake array
                     mSize = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
                 }
-                switch (View.getIconsize()) {
+                switch (IconSize.getIconsize()) {
+                case 1:
+                    lineWidth = 2.5f * mSize[0];
+                    cone_height = .019f * mSize[1];
+                    cone_width = .005f * mSize[2];
+                    bluntSize = .0125f * mSize[3];
+                    circleWidth = (negDet ? -1f : 1f) * 0.0125f * mSize[4];
+                    arcWidth = 0.004f * mSize[5];
+                    break;
                 case 2:
+                    lineWidth = 3f * mSize[0];
+                    cone_height = .023f * mSize[1];
+                    cone_width = .006f * mSize[2];
+                    bluntSize = .015f * mSize[3];
+                    circleWidth = (negDet ? -1f : 1f) * 0.015f * mSize[4];
+                    arcWidth = 0.004f * mSize[5];
+                    break;
+                case 3:
+                    lineWidth = 3.5f * mSize[0];
+                    cone_height = .027f * mSize[1];
+                    cone_width = .007f * mSize[2];
+                    bluntSize = .0175f * mSize[3];
+                    circleWidth = (negDet ? -1f : 1f) * 0.0175f * mSize[4];
+                    arcWidth = 0.004f * mSize[5];
+                    break;
+                case 4:
+                case 5:
                     lineWidth = 4f * mSize[0];
                     cone_height = .030f * mSize[1];
                     cone_width = .008f * mSize[2];
@@ -1427,32 +1453,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     circleWidth = (negDet ? -1f : 1f) * 0.02f * mSize[4];
                     arcWidth = 0.004f * mSize[5];
                     break;
-                case 3:
-                    lineWidth = 6f * mSize[0];
-                    cone_height = .045f * mSize[1];
-                    cone_width = .012f * mSize[2];
-                    bluntSize = .03f * mSize[3];
-                    circleWidth = (negDet ? -1f : 1f) * 0.03f * mSize[4];
-                    arcWidth = 0.006f * mSize[5];
-                    break;
-                case 4:
-                    lineWidth = 8f * mSize[0];
-                    cone_height = .060f * mSize[1];
-                    cone_width = .016f * mSize[2];
-                    bluntSize = .04f * mSize[3];
-                    circleWidth = (negDet ? -1f : 1f) * 0.04f * mSize[4];
-                    arcWidth = 0.008f * mSize[5];
-                    break;
-                case 5:
-                    lineWidth = 9f * mSize[0];
-                    cone_height = .075f * mSize[1];
-                    cone_width = .018f * mSize[2];
-                    bluntSize = .045f * mSize[3];
-                    circleWidth = (negDet ? -1f : 1f) * 0.045f * mSize[4];
-                    arcWidth = 0.009f * mSize[5];
-                    break;
+                case -1:
                 case 0:
-                case 1:
                 default:
                     lineWidth = 2f * mSize[0];
                     cone_height = .015f * mSize[1];
@@ -2051,7 +2053,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     final float cone_height;
                     final float cone_width;
                     final float line_width;
-                    switch (View.getIconsize()) {
+                    switch (IconSize.getIconsize()) {
                     case 4:
                     case 5:
                         l = 1f;
