@@ -128,7 +128,7 @@ class Editor3DDesign extends ApplicationWindow {
     private Composite cmpEast;
     private Composite cmpWest;
     private static Composite status;
-    private static final int iconSize = WorkbenchManager.getUserSettingState().getIconSize();
+
     final NButton[] btn_Sync = new NButton[1];
     final NButton[] btn_LastOpen = new NButton[1];
     final NButton[] btn_New = new NButton[1];
@@ -1847,30 +1847,7 @@ class Editor3DDesign extends ApplicationWindow {
 
         ToolItem toolItem_ColourFunctions = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            final int imgSize;
-            switch (Editor3DWindow.getIconsize()) {
-            case 0:
-                imgSize = 16;
-                break;
-            case 1:
-                imgSize = 24;
-                break;
-            case 2:
-                imgSize = 32;
-                break;
-            case 3:
-                imgSize = 48;
-                break;
-            case 4:
-                imgSize = 64;
-                break;
-            case 5:
-                imgSize = 72;
-                break;
-            default:
-                imgSize = 16;
-                break;
-            }
+            final int imgSize = View.getImageSizeFromIconSize();
             NButton btn_LastUsedColour = new NButton(toolItem_ColourFunctions, Cocoa.getStyle());
             this.btn_LastUsedColour[0] = btn_LastUsedColour;
             btn_LastUsedColour.setToolTipText(I18n.E3D_Colour16);
@@ -2625,42 +2602,42 @@ class Editor3DDesign extends ApplicationWindow {
                     mntm_SetIconSize.setText(I18n.E3D_SetIconSize);
                     final Menu mnu_IconSize = new Menu(mntm_SetIconSize);
                     mntm_SetIconSize.setMenu(mnu_IconSize);
-                    final int iconSize = Editor3DWindow.getIconsize();
+                    final int iconSize = View.getIconsize();
                     {
                         MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                         this.mntm_IconSize1[0] = mntm_IconSize;
                         mntm_IconSize.setText(I18n.E3D_IconSize1);
-                        mntm_IconSize.setSelection(iconSize == 0);
+                        mntm_IconSize.setSelection(iconSize == -1);
                     }
                     {
                         MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                         this.mntm_IconSize2[0] = mntm_IconSize;
                         mntm_IconSize.setText(I18n.E3D_IconSize2);
-                        mntm_IconSize.setSelection(iconSize == 1);
+                        mntm_IconSize.setSelection(iconSize == 0);
                     }
                     {
                         MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                         this.mntm_IconSize3[0] = mntm_IconSize;
                         mntm_IconSize.setText(I18n.E3D_IconSize3);
-                        mntm_IconSize.setSelection(iconSize == 2);
+                        mntm_IconSize.setSelection(iconSize == 1);
                     }
                     {
                         MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                         this.mntm_IconSize4[0] = mntm_IconSize;
                         mntm_IconSize.setText(I18n.E3D_IconSize4);
-                        mntm_IconSize.setSelection(iconSize == 3);
+                        mntm_IconSize.setSelection(iconSize == 2);
                     }
                     {
                         MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                         this.mntm_IconSize5[0] = mntm_IconSize;
                         mntm_IconSize.setText(I18n.E3D_IconSize5);
-                        mntm_IconSize.setSelection(iconSize == 4);
+                        mntm_IconSize.setSelection(iconSize == 3);
                     }
                     {
                         MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                         this.mntm_IconSize6[0] = mntm_IconSize;
                         mntm_IconSize.setText(I18n.E3D_IconSize6);
-                        mntm_IconSize.setSelection(iconSize == 5);
+                        mntm_IconSize.setSelection(iconSize >= 4);
                     }
                     @SuppressWarnings("unused")
                     final MenuItem mntmSeparator2 = new MenuItem(mnu_IconSize, SWT.SEPARATOR);
@@ -3331,31 +3308,7 @@ class Editor3DDesign extends ApplicationWindow {
             gColour = View.getLDConfigColour(cn);
         }
 
-        final int imgSize;
-        switch (Editor3DWindow.getIconsize()) {
-        case 0:
-            imgSize = 16;
-            break;
-        case 1:
-            imgSize = 24;
-            break;
-        case 2:
-            imgSize = 32;
-            break;
-        case 3:
-            imgSize = 48;
-            break;
-        case 4:
-            imgSize = 64;
-            break;
-        case 5:
-            imgSize = 72;
-            break;
-        default:
-            imgSize = 16;
-            break;
-        }
-
+        final int imgSize = View.getImageSizeFromIconSize();
         final GColour[] gColour2 = new GColour[] { gColour };
         final Color[] col = new Color[1];
         col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
@@ -3573,10 +3526,6 @@ class Editor3DDesign extends ApplicationWindow {
         Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
         mnu_Select.setLocation(getShell().getDisplay().map(btn_Select2[0].getParent(), null, mLoc));
         mnu_Select.setVisible(true);
-    }
-
-    public static int getIconsize() {
-        return iconSize;
     }
 
     void reloadC3DStates(ArrayList<Composite3DState> threeDconfig) {

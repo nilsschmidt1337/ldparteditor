@@ -39,10 +39,10 @@ import org.nschmidt.ldparteditor.data.colour.GCRubber;
 import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * This class provides constants for the 3D view
@@ -316,12 +316,12 @@ public enum View {
     public static final float[] primitive_condline_Colour_g = new float[] { 0f };
     public static final float[] primitive_condline_Colour_b = new float[] { 1f };
 
-    public final static Set<PGData3> FRONT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_FRONT, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
-    public final static Set<PGData3> BACK = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BACK, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
-    public final static Set<PGData3> BOTTOM = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BOTTOM, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
-    public final static Set<PGData3> LEFT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_LEFT, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
-    public final static Set<PGData3> RIGHT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_RIGHT, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
-    public final static Set<PGData3> TOP = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_TOP, 0.07, 0.3, .012f * (1f + Editor3DWindow.getIconsize()), 16.9);
+    public final static Set<PGData3> FRONT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_FRONT, 0.07, 0.3, .012f * (1f + View.getIconsize()), 16.9);
+    public final static Set<PGData3> BACK = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BACK, 0.07, 0.3, .012f * (1f + View.getIconsize()), 16.9);
+    public final static Set<PGData3> BOTTOM = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BOTTOM, 0.07, 0.3, .012f * (1f + View.getIconsize()), 16.9);
+    public final static Set<PGData3> LEFT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_LEFT, 0.07, 0.3, .012f * (1f + View.getIconsize()), 16.9);
+    public final static Set<PGData3> RIGHT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_RIGHT, 0.07, 0.3, .012f * (1f + View.getIconsize()), 16.9);
+    public final static Set<PGData3> TOP = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_TOP, 0.07, 0.3, .012f * (1f + View.getIconsize()), 16.9);
 
     public final static Set<PGData3> S = TextTriangulator.triangulateGLText(Font.MONOSPACE, "*", 0.07, 0.3, 16.9); //$NON-NLS-1$
     public final static Set<PGData3> D0 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "0", 0.07, 0.3, 16.9); //$NON-NLS-1$
@@ -348,6 +348,8 @@ public enum View {
     private static GColour original_col16 = new GColour(-1, 0f, 0f, 0f, 1f);
 
     public static final int NUM_CORES = Runtime.getRuntime().availableProcessors();
+
+    private static final int iconSize = WorkbenchManager.getUserSettingState().getIconSize();
 
     public static final Matrix4f ID = Matrix4f.setIdentity(new Matrix4f());
     public static final GData1 DUMMY_REFERENCE = new GData1();
@@ -447,6 +449,41 @@ public enum View {
             return true;
         }
 
+    }
+
+    public static int getIconsize() {
+        return iconSize;
+    }
+
+    public static int getImageSizeFromIconSize() {
+        final int imgSize;
+        switch (View.getIconsize()) {
+        case -1:
+            imgSize = 12;
+            break;
+        case 0:
+            imgSize = 16;
+            break;
+        case 1:
+            imgSize = 20;
+            break;
+        case 2:
+            imgSize = 24;
+            break;
+        case 3:
+            imgSize = 28;
+            break;
+        case 4:
+            imgSize = 32;
+            break;
+        case 5:
+            imgSize = 32;
+            break;
+        default:
+            imgSize = 16;
+            break;
+        }
+        return imgSize;
     }
 
     public static final boolean loadLDConfig(String location) {
