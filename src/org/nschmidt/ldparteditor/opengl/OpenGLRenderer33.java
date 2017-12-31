@@ -1418,7 +1418,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     // We have no custom manipulator settings yet => create a fake array
                     mSize = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
                 }
-                switch (Editor3DWindow.getIconsize()) {
+                switch (View.getIconsize()) {
                 case 2:
                     lineWidth = 4f * mSize[0];
                     cone_height = .030f * mSize[1];
@@ -2051,7 +2051,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     final float cone_height;
                     final float cone_width;
                     final float line_width;
-                    switch (Editor3DWindow.getIconsize()) {
+                    switch (View.getIconsize()) {
                     case 4:
                     case 5:
                         l = 1f;

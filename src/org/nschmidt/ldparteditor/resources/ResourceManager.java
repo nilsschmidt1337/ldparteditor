@@ -24,7 +24,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
-import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.enums.View;
 
 /**
  * The resource manager, which returns pictures, sounds and so on..
@@ -49,7 +49,7 @@ public enum ResourceManager {
      */
     public static Image getImage(String name) {
         if (!name.startsWith("img")) { //$NON-NLS-1$
-            return getImage(name, Editor3DWindow.getIconsize());
+            return getImage(name, View.getIconsize());
         } else {
             return getImage(name, 0);
         }
@@ -63,59 +63,59 @@ public enum ResourceManager {
                 // Default size.
                 break;
             case 1:
-                name = name.replace("icon128", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon96", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon72", "icon96"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon64", "icon72"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon48", "icon64"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon32", "icon48"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon24", "icon32"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon16", "icon24"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon8", "icon16"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon40", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon36", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon32", "icon36"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon28", "icon32"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon24", "icon28"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon20", "icon24"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon16", "icon20"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon12", "icon16"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon8", "icon12"); //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             case 2:
-                name = name.replace("icon128", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon96", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon72", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon64", "icon96"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon48", "icon72"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon32", "icon64"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon24", "icon48"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon16", "icon32"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon8", "icon24"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon40", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon36", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon32", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon28", "icon36"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon24", "icon32"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon20", "icon28"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon16", "icon24"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon12", "icon20"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon8", "icon16"); //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             case 3:
-                name = name.replace("icon128", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon96", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon72", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon64", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon48", "icon96"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon32", "icon72"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon24", "icon64"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon16", "icon48"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon8", "icon32"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon40", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon36", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon32", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon28", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon24", "icon36"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon20", "icon32"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon16", "icon28"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon12", "icon24"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon8", "icon20"); //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             case 4:
-                name = name.replace("icon128", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon96", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon72", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon64", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon48", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon32", "icon96"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon24", "icon72"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon16", "icon64"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon8", "icon48"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon40", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon36", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon32", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon28", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon24", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon20", "icon36"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon16", "icon32"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon12", "icon28"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon8", "icon24"); //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             case 5:
-                name = name.replace("icon128", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon96", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon72", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon64", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon48", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon32", "icon128"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon24", "icon96"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon16", "icon72"); //$NON-NLS-1$ //$NON-NLS-2$
-                name = name.replace("icon8", "icon64"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon40", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon36", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon32", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon28", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon24", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon20", "icon40"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon16", "icon36"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon12", "icon32"); //$NON-NLS-1$ //$NON-NLS-2$
+                name = name.replace("icon8", "icon28"); //$NON-NLS-1$ //$NON-NLS-2$
                 break;
             default:
                 break;

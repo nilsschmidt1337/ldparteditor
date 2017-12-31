@@ -193,31 +193,7 @@ class EditorTextDesign extends ApplicationWindow {
         if (cn != -1 && View.hasLDConfigColour(cn)) {
             gColour = View.getLDConfigColour(cn);
         }
-        final int imgSize;
-        switch (Editor3DWindow.getIconsize()) {
-        case 0:
-            imgSize = 16;
-            break;
-        case 1:
-            imgSize = 24;
-            break;
-        case 2:
-            imgSize = 32;
-            break;
-        case 3:
-            imgSize = 48;
-            break;
-        case 4:
-            imgSize = 64;
-            break;
-        case 5:
-            imgSize = 72;
-            break;
-        default:
-            imgSize = 16;
-            break;
-        }
-
+        final int imgSize = View.getImageSizeFromIconSize();
         final GColour[] gColour2 = new GColour[] { gColour };
         final Color[] col = new Color[1];
         col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));

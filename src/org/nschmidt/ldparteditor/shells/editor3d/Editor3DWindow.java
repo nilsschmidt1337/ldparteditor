@@ -6172,42 +6172,42 @@ public class Editor3DWindow extends Editor3DDesign {
         mntm_IconSize1[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setIconSize(0);
+                WorkbenchManager.getUserSettingState().setIconSize(-1);
                 regainFocus();
             }
         });
         mntm_IconSize2[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setIconSize(1);
+                WorkbenchManager.getUserSettingState().setIconSize(0);
                 regainFocus();
             }
         });
         mntm_IconSize3[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setIconSize(2);
+                WorkbenchManager.getUserSettingState().setIconSize(1);
                 regainFocus();
             }
         });
         mntm_IconSize4[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setIconSize(3);
+                WorkbenchManager.getUserSettingState().setIconSize(2);
                 regainFocus();
             }
         });
         mntm_IconSize5[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setIconSize(4);
+                WorkbenchManager.getUserSettingState().setIconSize(3);
                 regainFocus();
             }
         });
         mntm_IconSize6[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setIconSize(5);
+                WorkbenchManager.getUserSettingState().setIconSize(4);
                 regainFocus();
             }
         });
@@ -7488,30 +7488,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void setLastUsedColour2(GColour lastUsedColour) {
-        final int imgSize;
-        switch (Editor3DWindow.getIconsize()) {
-        case 0:
-            imgSize = 16;
-            break;
-        case 1:
-            imgSize = 24;
-            break;
-        case 2:
-            imgSize = 32;
-            break;
-        case 3:
-            imgSize = 48;
-            break;
-        case 4:
-            imgSize = 64;
-            break;
-        case 5:
-            imgSize = 72;
-            break;
-        default:
-            imgSize = 16;
-            break;
-        }
+        final int imgSize = View.getImageSizeFromIconSize();
         final GColour[] gColour2 = new GColour[] { lastUsedColour };
         int num = gColour2[0].getColourNumber();
         if (View.hasLDConfigColour(num)) {
