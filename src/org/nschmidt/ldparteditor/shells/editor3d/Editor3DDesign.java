@@ -65,6 +65,7 @@ import org.nschmidt.ldparteditor.composites.ToolItemState;
 import org.nschmidt.ldparteditor.composites.primitive.CompositePrimitive;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
+import org.nschmidt.ldparteditor.enums.IconSize;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Task;
@@ -1847,7 +1848,7 @@ class Editor3DDesign extends ApplicationWindow {
 
         ToolItem toolItem_ColourFunctions = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
         {
-            final int imgSize = View.getImageSizeFromIconSize();
+            final int imgSize = IconSize.getImageSizeFromIconSize();
             NButton btn_LastUsedColour = new NButton(toolItem_ColourFunctions, Cocoa.getStyle());
             this.btn_LastUsedColour[0] = btn_LastUsedColour;
             btn_LastUsedColour.setToolTipText(I18n.E3D_Colour16);
@@ -1865,6 +1866,9 @@ class Editor3DDesign extends ApplicationWindow {
                 public void paintControl(PaintEvent e) {
                     e.gc.setBackground(col);
                     e.gc.fillRectangle(x, y, w, h);
+                    if (IconSize.getIconsize() < 0) {
+                        return;
+                    }
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 }
             });
@@ -2602,7 +2606,7 @@ class Editor3DDesign extends ApplicationWindow {
                     mntm_SetIconSize.setText(I18n.E3D_SetIconSize);
                     final Menu mnu_IconSize = new Menu(mntm_SetIconSize);
                     mntm_SetIconSize.setMenu(mnu_IconSize);
-                    final int iconSize = View.getIconsize();
+                    final int iconSize = IconSize.getIconsize();
                     {
                         MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.RADIO);
                         this.mntm_IconSize1[0] = mntm_IconSize;
@@ -3308,7 +3312,7 @@ class Editor3DDesign extends ApplicationWindow {
             gColour = View.getLDConfigColour(cn);
         }
 
-        final int imgSize = View.getImageSizeFromIconSize();
+        final int imgSize = IconSize.getImageSizeFromIconSize();
         final GColour[] gColour2 = new GColour[] { gColour };
         final Color[] col = new Color[1];
         col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
@@ -3406,6 +3410,9 @@ class Editor3DDesign extends ApplicationWindow {
                         public void paintControl(PaintEvent e) {
                             e.gc.setBackground(col);
                             e.gc.fillRectangle(x, y, w, h);
+                            if (IconSize.getIconsize() < 0) {
+                                return;
+                            }
                             if (gColour2[0].getA() == 1f) {
                                 e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                             } else {
@@ -3466,6 +3473,9 @@ class Editor3DDesign extends ApplicationWindow {
             public void paintControl(PaintEvent e) {
                 e.gc.setBackground(col[0]);
                 e.gc.fillRectangle(x, y, w, h);
+                if (IconSize.getIconsize() < 0) {
+                    return;
+                }
                 if (gColour2[0].getA() == 1f) {
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 } else {

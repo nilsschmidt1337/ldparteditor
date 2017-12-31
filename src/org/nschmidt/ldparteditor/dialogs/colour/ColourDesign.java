@@ -35,6 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.GColour;
+import org.nschmidt.ldparteditor.enums.IconSize;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
@@ -170,7 +171,7 @@ class ColourDesign extends ApplicationWindow {
         if (cn != -1 && View.hasLDConfigColour(cn)) {
             gColour = View.getLDConfigColour(cn);
         }
-        final int imgSize = 16;
+        final int imgSize = IconSize.getIconsize() < 0 ? 12 : 16;
         final GColour[] gColour2 = new GColour[] { gColour };
         final Color[] col = new Color[1];
         col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));

@@ -151,6 +151,7 @@ import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialogInt;
 import org.nschmidt.ldparteditor.dialogs.ytruder.YTruderDialog;
 import org.nschmidt.ldparteditor.enums.GL20Primitives;
+import org.nschmidt.ldparteditor.enums.IconSize;
 import org.nschmidt.ldparteditor.enums.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.MergeTo;
@@ -1632,6 +1633,9 @@ public class Editor3DWindow extends Editor3DDesign {
                         public void paintControl(PaintEvent e) {
                             e.gc.setBackground(col);
                             e.gc.fillRectangle(x, y, w, h);
+                            if (IconSize.getIconsize() < 0) {
+                                return;
+                            }
                             if (gColour2.getA() >= .99f) {
                                 e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
                             } else {
@@ -7488,7 +7492,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void setLastUsedColour2(GColour lastUsedColour) {
-        final int imgSize = View.getImageSizeFromIconSize();
+        final int imgSize = IconSize.getImageSizeFromIconSize();
         final GColour[] gColour2 = new GColour[] { lastUsedColour };
         int num = gColour2[0].getColourNumber();
         if (View.hasLDConfigColour(num)) {
@@ -7510,6 +7514,9 @@ public class Editor3DWindow extends Editor3DDesign {
             public void paintControl(PaintEvent e) {
                 e.gc.setBackground(col);
                 e.gc.fillRectangle(x, y, w, h);
+                if (IconSize.getIconsize() < 0) {
+                    return;
+                }
                 if (gColour2[0].getA() >= .99f) {
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 } else if (gColour2[0].getA() == 0f) {
@@ -9934,6 +9941,9 @@ public class Editor3DWindow extends Editor3DDesign {
                             public void paintControl(PaintEvent e) {
                                 e.gc.setBackground(col);
                                 e.gc.fillRectangle(x, y, w, h);
+                                if (IconSize.getIconsize() < 0) {
+                                    return;
+                                }
                                 if (gColour2[0].getA() >= .99f) {
                                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
                                 } else if (gColour2[0].getA() == 0f) {
