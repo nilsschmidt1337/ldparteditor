@@ -300,7 +300,7 @@ class VM17Unificator extends VM16Subdivide {
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
-                if (verts2.size() < 4 || g4.isCollinear()) {
+                if (verts2.size() < 3 || g4.isCollinear()) {
                     quadsToDelete2.add(g4);
                 }
             }
