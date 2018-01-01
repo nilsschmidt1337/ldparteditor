@@ -30,7 +30,7 @@ public enum IconSize {
         final int imgSize;
         switch (IconSize.getIconsize()) {
         case -1:
-            imgSize = 16;
+            imgSize = 12;
             break;
         case 0:
             imgSize = 16;

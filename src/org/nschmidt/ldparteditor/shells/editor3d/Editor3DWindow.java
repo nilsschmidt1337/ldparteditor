@@ -1621,6 +1621,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     setLastUsedColour(gColour2);
                     btn_LastUsedColour[0].clearPaintListeners();
                     btn_LastUsedColour[0].clearSelectionListeners();
+                    final int imgSize = IconSize.getImageSizeFromIconSize();
                     final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
                     final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
                     final int x = Math.round(size.x / 5f);
@@ -1633,13 +1634,10 @@ public class Editor3DWindow extends Editor3DDesign {
                         public void paintControl(PaintEvent e) {
                             e.gc.setBackground(col);
                             e.gc.fillRectangle(x, y, w, h);
-                            if (IconSize.getIconsize() < 0) {
-                                return;
-                            }
                             if (gColour2.getA() >= .99f) {
-                                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                             } else {
-                                e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                                e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                             }
                         }
                     });
@@ -7514,13 +7512,10 @@ public class Editor3DWindow extends Editor3DDesign {
             public void paintControl(PaintEvent e) {
                 e.gc.setBackground(col);
                 e.gc.fillRectangle(x, y, w, h);
-                if (IconSize.getIconsize() < 0) {
-                    return;
-                }
                 if (gColour2[0].getA() >= .99f) {
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 } else if (gColour2[0].getA() == 0f) {
-                    e.gc.drawImage(ResourceManager.getImage("icon16_randomColours.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                    e.gc.drawImage(ResourceManager.getImage("icon16_randomColours.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 } else {
                     e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 }
@@ -9936,20 +9931,18 @@ public class Editor3DWindow extends Editor3DDesign {
                         final int y = Math.round(size.y / 5f);
                         final int w = Math.round(size.x * (3f / 5f));
                         final int h = Math.round(size.y * (3f / 5f));
+                        final int imgSize = IconSize.getImageSizeFromIconSize();
                         btn_LastUsedColour[0].addPaintListener(new PaintListener() {
                             @Override
                             public void paintControl(PaintEvent e) {
                                 e.gc.setBackground(col);
                                 e.gc.fillRectangle(x, y, w, h);
-                                if (IconSize.getIconsize() < 0) {
-                                    return;
-                                }
                                 if (gColour2[0].getA() >= .99f) {
-                                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                                 } else if (gColour2[0].getA() == 0f) {
-                                    e.gc.drawImage(ResourceManager.getImage("icon16_randomColours.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                                    e.gc.drawImage(ResourceManager.getImage("icon16_randomColours.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                                 } else {
-                                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, 16, 16, x, y, w, h); //$NON-NLS-1$
+                                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                                 }
                             }
                         });
