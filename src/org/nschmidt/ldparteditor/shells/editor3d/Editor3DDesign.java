@@ -1866,9 +1866,6 @@ class Editor3DDesign extends ApplicationWindow {
                 public void paintControl(PaintEvent e) {
                     e.gc.setBackground(col);
                     e.gc.fillRectangle(x, y, w, h);
-                    if (IconSize.getIconsize() < 0) {
-                        return;
-                    }
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 }
             });
@@ -3410,9 +3407,6 @@ class Editor3DDesign extends ApplicationWindow {
                         public void paintControl(PaintEvent e) {
                             e.gc.setBackground(col);
                             e.gc.fillRectangle(x, y, w, h);
-                            if (IconSize.getIconsize() < 0) {
-                                return;
-                            }
                             if (gColour2[0].getA() == 1f) {
                                 e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                             } else {
@@ -3473,9 +3467,6 @@ class Editor3DDesign extends ApplicationWindow {
             public void paintControl(PaintEvent e) {
                 e.gc.setBackground(col[0]);
                 e.gc.fillRectangle(x, y, w, h);
-                if (IconSize.getIconsize() < 0) {
-                    return;
-                }
                 if (gColour2[0].getA() == 1f) {
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 } else {
