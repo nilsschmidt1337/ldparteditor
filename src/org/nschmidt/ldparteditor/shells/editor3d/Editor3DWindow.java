@@ -3044,7 +3044,7 @@ public class Editor3DWindow extends Editor3DDesign {
         if (btn_Manipulator_32_subfileTo[0] != null) btn_Manipulator_32_subfileTo[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_32_subfileTo();
+                mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask));
             }
         });
 
@@ -3183,7 +3183,7 @@ public class Editor3DWindow extends Editor3DDesign {
         if (mntm_Manipulator_32_subfileTo[0] != null) mntm_Manipulator_32_subfileTo[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                mntm_Manipulator_32_subfileTo();
+                mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask));
             }
         });
 
@@ -8711,7 +8711,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    public void mntm_Manipulator_32_subfileTo() {
+    public void mntm_Manipulator_32_subfileTo(boolean resetScale) {
         if (Project.getFileToEdit() != null) {
             VertexManager vm = Project.getFileToEdit().getVertexManager();
             Set<GData1> subfiles = vm.getSelectedSubfiles();
@@ -8732,7 +8732,9 @@ public class Editor3DWindow extends Editor3DDesign {
                         vm.addSnapshot();
                         vm.backupHideShowState();
                         Manipulator ma = c3d.getManipulator();
-                        vm.transformSubfile(subfile, ma.getAccurateMatrix(), true, true);
+                        if (resetScale) {
+                            vm.transformSubfile(subfile, ma.getAccurateMatrix(), true, true);
+                        }
                         break;
                     }
                 }

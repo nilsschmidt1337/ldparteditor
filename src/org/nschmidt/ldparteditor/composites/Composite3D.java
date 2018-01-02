@@ -886,7 +886,7 @@ public class Composite3D extends ScalableComposite {
                 btn_Mani.addSelectionListener(new SelectionAdapter() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
-                        Editor3DWindow.getWindow().mntm_Manipulator_32_subfileTo();
+                        Editor3DWindow.getWindow().mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask));
                     }
                 });
             }
