@@ -52,18 +52,22 @@ public enum ProtractorHelper {
     }
 
     public static BigDecimal[] changeAngle(double angle, GData3 tri) {
+        return changeAngle(angle, new Vector3d(tri.X1, tri.Y1, tri.Z1), new Vector3d(tri.X2, tri.Y2, tri.Z2), new Vector3d(tri.X3, tri.Y3, tri.Z3), 6, 10);
+    }
+
+    public static BigDecimal[] changeAngle(double angle, Vector3d a, Vector3d b, Vector3d c, int angleAccuracy, int lenghtAccuracy) {
 
         BigDecimal[] result = new BigDecimal[3];
-        result[0] = tri.X3;
-        result[1] = tri.Y3;
-        result[2] = tri.Z3;
+        result[0] = c.X;
+        result[1] = c.Y;
+        result[2] = c.Z;
 
-        Vector3d oldPos = new Vector3d(tri.X3, tri.Y3, tri.Z3);
-        Vector3d center = new Vector3d(tri.X1, tri.Y1, tri.Z1);
+        Vector3d oldPos = new Vector3d(c.X, c.Y, c.Z);
+        Vector3d center = new Vector3d(a.X, a.Y, a.Z);
 
-        Vector3d AtoB = Vector3d.sub(new Vector3d(tri.X2, tri.Y2, tri.Z2), center);
-        Vector3d AtoC = Vector3d.sub(new Vector3d(tri.X3, tri.Y3, tri.Z3), center);
-        BigDecimal targetDistSq = Vector3d.distSquare(new Vector3d(tri.X3, tri.Y3, tri.Z3), center);
+        Vector3d AtoB = Vector3d.sub(new Vector3d(b.X, b.Y, b.Z), center);
+        Vector3d AtoC = Vector3d.sub(new Vector3d(c.X, c.Y, c.Z), center);
+        BigDecimal targetDistSq = Vector3d.distSquare(new Vector3d(c.X, c.Y, c.Z), center);
         if (angle == 0.0 || angle == 180.0 || BigDecimal.ZERO.compareTo(AtoB.length()) == 0 || BigDecimal.ZERO.compareTo(AtoC.length()) == 0) {
             return result;
         }
@@ -84,7 +88,7 @@ public enum ProtractorHelper {
 
         int innerIterations = 0;
 
-        while (iterations < 6) {
+        while (iterations < angleAccuracy) {
             itearatedPositions.clear();
             innerIterations = 0;
             while (!itearatedPositions.contains(pMin) && innerIterations < 1000) {
@@ -128,7 +132,7 @@ public enum ProtractorHelper {
         u.normalise(u);
 
         iterations = 0;
-        while (iterations < 10) {
+        while (iterations < lenghtAccuracy) {
             itearatedPositions.clear();
             innerIterations = 0;
             while (!itearatedPositions.contains(pMin) && innerIterations < 1000) {
