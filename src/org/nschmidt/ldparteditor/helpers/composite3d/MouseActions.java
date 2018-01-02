@@ -55,6 +55,7 @@ import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.MatrixOperations;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
@@ -297,7 +298,7 @@ public class MouseActions {
             float rx = 0;
             float ry = 0;
 
-            if (keyboard.isCtrlPressed() || (Cocoa.isCocoa && keyboard.isAltPressed())) {
+            if (keyboard.isCtrlPressed() || Cocoa.isCocoa && keyboard.isAltPressed()) {
                 if (c3d.hasNegDeterminant()) {
                     rx = (float) (Math.atan2(-cSize.y / 2f + old_mouse_position.y, -cSize.x / 2f + old_mouse_position.x)
                             - Math.atan2(-cSize.y / 2f + event.y, -cSize.x / 2f + event.x));
@@ -336,10 +337,10 @@ public class MouseActions {
                 break;
             float dx = 0;
             float dy = 0;
-            if (!(keyboard.isShiftPressed() || (Cocoa.isCocoa && keyboard.isAltPressed())) ) {
+            if (!(keyboard.isShiftPressed() || Cocoa.isCocoa && keyboard.isAltPressed()) ) {
                 dx = (old_mouse_position.x - event.x) / viewport_pixel_per_ldu;
             }
-            if (!(keyboard.isCtrlPressed() || (Cocoa.isCocoa && keyboard.isCmdPressed())) || Editor3DWindow.getWindow().isAddingSomething()) {
+            if (!(keyboard.isCtrlPressed() || Cocoa.isCocoa && keyboard.isCmdPressed()) || Editor3DWindow.getWindow().isAddingSomething()) {
                 dy = (event.y - old_mouse_position.y) / viewport_pixel_per_ldu;
             }
             Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
@@ -1345,31 +1346,11 @@ public class MouseActions {
         ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
 
         if (vm.getSelectedSubfiles().size() == 1) {
-            GData1 subfile = null;
-            for (GData1 g1 : vm.getSelectedSubfiles()) {
-                subfile = g1;
-                break;
-            }
-            Matrix4f m = subfile.getProductMatrix();
-            Matrix M = subfile.getAccurateProductMatrix();
+            final GData1 subfile = vm.getSelectedSubfiles().iterator().next();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                c3d.getManipulator().getPosition().set(m.m30, m.m31, m.m32, 1f);
-                c3d.getManipulator().setAccuratePosition(M.M30, M.M31, M.M32);
-                Vector3f x = new Vector3f(m.m00, m.m01, m.m02);
-                x.normalise();
-                Vector3f y = new Vector3f(m.m10, m.m11, m.m12);
-                y.normalise();
-                Vector3f z = new Vector3f(m.m20, m.m21, m.m22);
-                z.normalise();
-                c3d.getManipulator().getXaxis().set(x.x, x.y, x.z, 1f);
-                c3d.getManipulator().getYaxis().set(y.x, y.y, y.z, 1f);
-                c3d.getManipulator().getZaxis().set(z.x, z.y, z.z, 1f);
-                c3d.getManipulator().setAccurateXaxis(new BigDecimal(c3d.getManipulator().getXaxis().x), new BigDecimal(c3d.getManipulator().getXaxis().y),
-                        new BigDecimal(c3d.getManipulator().getXaxis().z));
-                c3d.getManipulator().setAccurateYaxis(new BigDecimal(c3d.getManipulator().getYaxis().x), new BigDecimal(c3d.getManipulator().getYaxis().y),
-                        new BigDecimal(c3d.getManipulator().getYaxis().z));
-                c3d.getManipulator().setAccurateZaxis(new BigDecimal(c3d.getManipulator().getZaxis().x), new BigDecimal(c3d.getManipulator().getZaxis().y),
-                        new BigDecimal(c3d.getManipulator().getZaxis().z));
+                Matrix4f m = subfile.getProductMatrix();
+                Matrix M = subfile.getAccurateProductMatrix();
+                MatrixOperations.moveManipulatorToSubfileMatrix(c3d, M, m);
             }
         } else if (GDataCSG.getSelection(c3d.getLockableDatFileReference()).size() == 1) {
             GDataCSG csg = null;
@@ -1390,23 +1371,7 @@ public class MouseActions {
             m2.m32 = m2.m32 / 1000f;
             Matrix M = new Matrix(m2);
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                c3d.getManipulator().getPosition().set(m.m30, m.m31, m.m32, 1f);
-                c3d.getManipulator().setAccuratePosition(M.M30, M.M31, M.M32);
-                Vector3f x = new Vector3f(m.m00, m.m01, m.m02);
-                x.normalise();
-                Vector3f y = new Vector3f(m.m10, m.m11, m.m12);
-                y.normalise();
-                Vector3f z = new Vector3f(m.m20, m.m21, m.m22);
-                z.normalise();
-                c3d.getManipulator().getXaxis().set(x.x, x.y, x.z, 1f);
-                c3d.getManipulator().getYaxis().set(y.x, y.y, y.z, 1f);
-                c3d.getManipulator().getZaxis().set(z.x, z.y, z.z, 1f);
-                c3d.getManipulator().setAccurateXaxis(new BigDecimal(c3d.getManipulator().getXaxis().x), new BigDecimal(c3d.getManipulator().getXaxis().y),
-                        new BigDecimal(c3d.getManipulator().getXaxis().z));
-                c3d.getManipulator().setAccurateYaxis(new BigDecimal(c3d.getManipulator().getYaxis().x), new BigDecimal(c3d.getManipulator().getYaxis().y),
-                        new BigDecimal(c3d.getManipulator().getYaxis().z));
-                c3d.getManipulator().setAccurateZaxis(new BigDecimal(c3d.getManipulator().getZaxis().x), new BigDecimal(c3d.getManipulator().getZaxis().y),
-                        new BigDecimal(c3d.getManipulator().getZaxis().z));
+                MatrixOperations.moveManipulatorToCSGMatrix(c3d, M, m);
             }
         }
     }

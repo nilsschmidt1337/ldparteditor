@@ -192,6 +192,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.YTruderSettings;
 import org.nschmidt.ldparteditor.helpers.compositetext.ProjectActions;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
+import org.nschmidt.ldparteditor.helpers.math.MatrixOperations;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.ldraworg.CategoriesUtils;
@@ -8677,33 +8678,21 @@ public class Editor3DWindow extends Editor3DDesign {
         if (Project.getFileToEdit() != null) {
             Set<GData1> subfiles = Project.getFileToEdit().getVertexManager().getSelectedSubfiles();
             if (!subfiles.isEmpty()) {
-                GData1 subfile = null;
-                for (GData1 g1 : subfiles) {
-                    subfile = g1;
-                    break;
-                }
-                Matrix4f m = subfile.getProductMatrix();
-                Matrix M = subfile.getAccurateProductMatrix();
+                final GData1 subfile = subfiles.iterator().next();
+                Manipulator origin = null;
                 for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
+                    final Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                        c3d.getManipulator().getPosition().set(m.m30, m.m31, m.m32, 1f);
-                        c3d.getManipulator().setAccuratePosition(M.M30, M.M31, M.M32);
-                        Vector3f x = new Vector3f(m.m00, m.m01, m.m02);
-                        x.normalise();
-                        Vector3f y = new Vector3f(m.m10, m.m11, m.m12);
-                        y.normalise();
-                        Vector3f z = new Vector3f(m.m20, m.m21, m.m22);
-                        z.normalise();
-                        c3d.getManipulator().getXaxis().set(x.x, x.y, x.z, 1f);
-                        c3d.getManipulator().getYaxis().set(y.x, y.y, y.z, 1f);
-                        c3d.getManipulator().getZaxis().set(z.x, z.y, z.z, 1f);
-                        c3d.getManipulator().setAccurateXaxis(new BigDecimal(c3d.getManipulator().getXaxis().x), new BigDecimal(c3d.getManipulator().getXaxis().y),
-                                new BigDecimal(c3d.getManipulator().getXaxis().z));
-                        c3d.getManipulator().setAccurateYaxis(new BigDecimal(c3d.getManipulator().getYaxis().x), new BigDecimal(c3d.getManipulator().getYaxis().y),
-                                new BigDecimal(c3d.getManipulator().getYaxis().z));
-                        c3d.getManipulator().setAccurateZaxis(new BigDecimal(c3d.getManipulator().getZaxis().x), new BigDecimal(c3d.getManipulator().getZaxis().y),
-                                new BigDecimal(c3d.getManipulator().getZaxis().z));
+                        Matrix4f m = subfile.getProductMatrix();
+                        Matrix M = subfile.getAccurateProductMatrix();
+                        MatrixOperations.moveManipulatorToSubfileMatrix(c3d, M, m);
+                        origin = c3d.getManipulator();
+                        break;
+                    }
+                }
+                if (origin != null) {
+                    for (OpenGLRenderer renderer : renders) {
+                        renderer.getC3D().getManipulator().copyState(origin);
                     }
                 }
             }
