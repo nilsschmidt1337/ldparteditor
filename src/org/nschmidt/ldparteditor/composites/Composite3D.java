@@ -87,6 +87,7 @@ import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.composite3d.Composite3DModifier;
@@ -880,7 +881,7 @@ public class Composite3D extends ScalableComposite {
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_SubfileToManipulator);
+                btn_Mani.setText(Cocoa.replaceCtrlByCmd(I18n.E3D_SubfileToManipulator));
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                 btn_Mani.addSelectionListener(new SelectionAdapter() {
                     @Override

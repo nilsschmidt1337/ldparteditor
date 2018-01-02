@@ -2812,7 +2812,7 @@ class Editor3DDesign extends ApplicationWindow {
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                     this.mntm_Manipulator_32_subfileTo[0] = btn_Mani;
-                    btn_Mani.setText(I18n.E3D_SubfileToManipulator);
+                    btn_Mani.setText(Cocoa.replaceCtrlByCmd(I18n.E3D_SubfileToManipulator));
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                 }
                 @SuppressWarnings("unused")
@@ -2942,7 +2942,7 @@ class Editor3DDesign extends ApplicationWindow {
             {
                 NButton btn_Mani = new NButton(toolItem_ManipulatorActions, Cocoa.getStyle());
                 this.btn_Manipulator_32_subfileTo[0] = btn_Mani;
-                btn_Mani.setToolTipText(I18n.E3D_SubfileToManipulator);
+                btn_Mani.setToolTipText(Cocoa.replaceCtrlByCmd(I18n.E3D_SubfileToManipulator));
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile2.png")); //$NON-NLS-1$
             }
             {
