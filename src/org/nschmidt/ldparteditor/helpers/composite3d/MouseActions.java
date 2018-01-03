@@ -1350,7 +1350,7 @@ public class MouseActions {
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                 Matrix4f m = subfile.getProductMatrix();
                 Matrix M = subfile.getAccurateProductMatrix();
-                MatrixOperations.moveManipulatorToSubfileMatrix(c3d, M, m);
+                MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, M, m);
             }
         } else if (GDataCSG.getSelection(c3d.getLockableDatFileReference()).size() == 1) {
             GDataCSG csg = null;
@@ -1371,7 +1371,7 @@ public class MouseActions {
             m2.m32 = m2.m32 / 1000f;
             Matrix M = new Matrix(m2);
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                MatrixOperations.moveManipulatorToCSGMatrix(c3d, M, m);
+                MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, M, m);
             }
         }
     }
