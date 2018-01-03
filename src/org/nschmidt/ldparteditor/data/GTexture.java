@@ -681,16 +681,20 @@ public class GTexture {
                     || (fileToOpen = FileHelper.exist(texture)) != null)
                     && fileToOpen.isFile();
 
-            if (fileExists) {
-                filename = fileToOpen.getAbsolutePath();
-            } else {
-                return -1;
-            }
-
             InputStream in = null;
             try {
-                // Open the PNG file as an InputStream
-                in = new FileInputStream(filename);
+                if (fileExists) {
+                    // Open the PNG file as an FileInputStream
+                    filename = fileToOpen.getAbsolutePath();
+                    in = new FileInputStream(filename);
+                } else {
+                    // Try to get PNG file from org.nschmidt.ldparteditor.opengl
+                    in = GLShader.class.getResourceAsStream(filename);
+                    if (in == null) {
+                        return -1;
+                    }
+                }
+
                 // Link the PNG decoder to this stream
                 PNGDecoder decoder = new PNGDecoder(in);
 

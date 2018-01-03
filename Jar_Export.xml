@@ -60,13 +60,8 @@
         <echo message="${ui.workbench}"/>
         <echo message="${icu}"/>
 
-    	<!-- Copy resource files (shaders, PNGs, txt) -->
-    	<copy file="${ws}/LDPartEditor_linux/cmap.png" overwrite="true" todir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"/>
-        <copy file="${ws}/LDPartEditor_linux/matte_metal.png" overwrite="true" todir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"/>
-        <copy file="${ws}/LDPartEditor_linux/metal.png" overwrite="true" todir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"/>
+    	<!-- Copy resource files (txt) -->
         <copy file="${ws}/LDPartEditor_linux/categories.txt" overwrite="true" todir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"/>
-        <copy file="${ws}/LDPartEditor_linux/gloss.frag" overwrite="true" todir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"/>
-        <copy file="${ws}/LDPartEditor_linux/gloss.vert" overwrite="true" todir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"/>
         <copy file="${ws}/LDPartEditor_linux/primitive_rules.txt" overwrite="true" todir="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}"/>
     	<!-- Create JAR file -->
         <jar destfile="${ws}/LDPartEditor/LDPartEditor_${os}_${arc}/LDPartEditor.jar" filesetmanifest="mergewithoutmain">
