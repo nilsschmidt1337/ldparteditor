@@ -161,7 +161,9 @@ public class SplashScreen extends ApplicationWindow {
             String glVersion = GL11.glGetString(GL11.GL_VERSION);
             int major = Integer.parseInt(glVersion.substring(0, 1));
             int minor = Integer.parseInt(glVersion.substring(2, 3));
-            openGLerror[0] = major < 2;
+            // Don't check legacy OpenGL compatibility from the stone age
+            // openGLerror[0] = major < 2;
+            openGLerror[0] = false;
             if (WorkbenchManager.getUserSettingState().isOpenGL33Engine() && (major > 3 || major == 3 && minor > 2)) {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(33);
             } else if (WorkbenchManager.getUserSettingState().isVulkanEngine() && NLogger.DEBUG) {
@@ -173,6 +175,7 @@ public class SplashScreen extends ApplicationWindow {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
             }
         } catch (Exception e) {
+            NLogger.error(getClass(), e);
             openGLerror[0] = true;
         }
 
