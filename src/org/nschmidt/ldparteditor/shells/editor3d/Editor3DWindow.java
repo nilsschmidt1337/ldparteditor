@@ -8685,7 +8685,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         Matrix4f m = subfile.getProductMatrix();
                         Matrix M = subfile.getAccurateProductMatrix();
-                        MatrixOperations.moveManipulatorToSubfileMatrix(c3d, M, m);
+                        MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, M, m);
                         origin = c3d.getManipulator();
                         break;
                     }
