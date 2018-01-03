@@ -755,7 +755,8 @@ class Editor3DDesign extends ApplicationWindow {
                         tabFolder_Settings.setSize(700, 500);
 
                         CTabItem tItem = new CTabItem(tabFolder_Settings, Cocoa.getStyle());
-                        tItem.setText(I18n.E3D_Snapping);
+                        tItem.setText("(1)"); //$NON-NLS-1$
+                        tItem.setToolTipText(I18n.E3D_Snapping);
                         {
                             final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
                             Composite cmp_snappingArea = new Composite(cmp_scroll, Cocoa.getStyle());
@@ -770,11 +771,14 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_snappingArea.getLayout()).marginWidth = 0;
 
                             {
+                                Label lbl_tabHeader = new Label(cmp_snappingArea, Cocoa.getStyle());
+                                lbl_tabHeader.setText(I18n.E3D_Snapping);
+                                lbl_tabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
                                 NButton btn_showUpper = new NButton(cmp_snappingArea, Cocoa.getStyle());
                                 this.btn_showUpper1[0] = btn_showUpper;
                                 btn_showUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
                                 btn_showUpper.setToolTipText(I18n.E3D_SashUpper);
-                                btn_showUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 3, 1));
+                                btn_showUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
                             }
 
                             {
@@ -1010,31 +1014,34 @@ class Editor3DDesign extends ApplicationWindow {
                         }
 
                         CTabItem tItem2 = new CTabItem(tabFolder_Settings, Cocoa.getStyle());
-                        tItem2.setText(I18n.E3D_Selection);
-
+                        tItem2.setText("(2)"); //$NON-NLS-1$
+                        tItem2.setToolTipText(I18n.E3D_Selection);
                         {
                             final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
-                            Composite cmp_bgArea = new Composite(cmp_scroll, Cocoa.getStyle());
+                            Composite cmp_selArea = new Composite(cmp_scroll, Cocoa.getStyle());
                             tItem2.setControl(cmp_scroll);
-                            cmp_scroll.setContent(cmp_bgArea);
+                            cmp_scroll.setContent(cmp_selArea);
                             cmp_scroll.setExpandHorizontal(true);
                             cmp_scroll.setExpandVertical(true);
 
-                            cmp_bgArea.setLayout(new GridLayout(3, false));
-                            ((GridLayout) cmp_bgArea.getLayout()).verticalSpacing = 0;
-                            ((GridLayout) cmp_bgArea.getLayout()).marginHeight = 0;
-                            ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
+                            cmp_selArea.setLayout(new GridLayout(3, false));
+                            ((GridLayout) cmp_selArea.getLayout()).verticalSpacing = 0;
+                            ((GridLayout) cmp_selArea.getLayout()).marginHeight = 0;
+                            ((GridLayout) cmp_selArea.getLayout()).marginWidth = 0;
 
                             {
-                                NButton btn_showUpper = new NButton(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_tabHeader = new Label(cmp_selArea, Cocoa.getStyle());
+                                lbl_tabHeader.setText(I18n.E3D_Selection);
+                                lbl_tabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
+                                NButton btn_showUpper = new NButton(cmp_selArea, Cocoa.getStyle());
                                 this.btn_showUpper2[0] = btn_showUpper;
                                 btn_showUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
                                 btn_showUpper.setToolTipText(I18n.E3D_SashUpper);
-                                btn_showUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 3, 1));
+                                btn_showUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
                             }
 
                             {
-                                Composite cmp_Dummy = new Composite(cmp_bgArea, Cocoa.getStyle());
+                                Composite cmp_Dummy = new Composite(cmp_selArea, Cocoa.getStyle());
                                 cmp_Dummy.setLayout(new FillLayout(SWT.HORIZONTAL));
 
                                 NButton btn_PreviousSelection = new NButton(cmp_Dummy, Cocoa.getStyle());
@@ -1051,7 +1058,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
 
                             {
-                                Composite cmp_LineSetup = new Composite(cmp_bgArea, Cocoa.getStyle());
+                                Composite cmp_LineSetup = new Composite(cmp_selArea, Cocoa.getStyle());
                                 cmp_LineSetup.setLayout(new GridLayout(1, false));
 
                                 Text txt_Line = new Text(cmp_LineSetup, SWT.BORDER);
@@ -1068,15 +1075,15 @@ class Editor3DDesign extends ApplicationWindow {
                                 cmp_LineSetup.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, SWT.SEPARATOR | SWT.HORIZONTAL);
+                                Label lbl_Label = new Label(cmp_selArea, SWT.SEPARATOR | SWT.HORIZONTAL);
                                 lbl_Label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionAngle[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_ProtractorAngle);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle());
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle());
                                 this.spn_SelectionAngle[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("179.9999")); //$NON-NLS-1$
@@ -1085,11 +1092,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionLength[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_ProtractorLength);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle());
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle());
                                 this.spn_SelectionLength[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1098,11 +1105,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionX1[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionX1);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionX1[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1111,11 +1118,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionY1[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionY1);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionY1[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1124,11 +1131,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionZ1[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionZ1);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionZ1[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1137,11 +1144,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionX2[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionX2);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionX2[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1150,11 +1157,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionY2[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionY2);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionY2[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1163,11 +1170,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionZ2[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionZ2);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionZ2[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1176,11 +1183,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionX3[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionX3);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionX3[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1189,11 +1196,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionY3[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionY3);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionY3[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1202,11 +1209,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionZ3[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionZ3);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionZ3[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1215,11 +1222,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionX4[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionX4);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionX4[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1228,11 +1235,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionY4[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionY4);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionY4[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1241,11 +1248,11 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
                             {
-                                Label lbl_Label = new Label(cmp_bgArea, Cocoa.getStyle());
+                                Label lbl_Label = new Label(cmp_selArea, Cocoa.getStyle());
                                 this.lbl_SelectionZ4[0] = lbl_Label;
                                 lbl_Label.setText(I18n.E3D_PositionZ4);
                                 lbl_Label.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_bgArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
+                                BigDecimalSpinner spinner = new BigDecimalSpinner(cmp_selArea, Cocoa.getStyle(), View.NUMBER_FORMAT8F);
                                 this.spn_SelectionZ4[0] = spinner;
                                 spinner.setEnabled(false);
                                 spinner.setMaximum(new BigDecimal("1E10")); //$NON-NLS-1$
@@ -1253,11 +1260,12 @@ class Editor3DDesign extends ApplicationWindow {
                                 spinner.setValue(new BigDecimal(0));
                                 spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
                             }
-                            cmp_scroll.setMinSize(cmp_bgArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+                            cmp_scroll.setMinSize(cmp_selArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
                         }
 
                         CTabItem tItem3 = new CTabItem(tabFolder_Settings, Cocoa.getStyle());
-                        tItem3.setText(I18n.E3D_BackgroundImage);
+                        tItem3.setText("(3)"); //$NON-NLS-1$
+                        tItem3.setToolTipText(I18n.E3D_BackgroundImage);
 
                         {
                             final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
@@ -1273,11 +1281,14 @@ class Editor3DDesign extends ApplicationWindow {
                             ((GridLayout) cmp_bgArea.getLayout()).marginWidth = 0;
 
                             {
+                                Label lbl_tabHeader = new Label(cmp_bgArea, Cocoa.getStyle());
+                                lbl_tabHeader.setText(I18n.E3D_BackgroundImage);
+                                lbl_tabHeader.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, true, 1, 1));
                                 NButton btn_showUpper = new NButton(cmp_bgArea, Cocoa.getStyle());
                                 this.btn_showUpper3[0] = btn_showUpper;
                                 btn_showUpper.setImage(ResourceManager.getImage("icon16_upper.png")); //$NON-NLS-1$
                                 btn_showUpper.setToolTipText(I18n.E3D_SashUpper);
-                                btn_showUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 3, 1));
+                                btn_showUpper.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 2, 1));
                             }
 
                             {
