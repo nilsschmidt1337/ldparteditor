@@ -19,9 +19,9 @@ import java.math.BigDecimal;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
+import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.Matrix;
-import org.nschmidt.ldparteditor.data.ProtractorHelper;
 
 public enum MatrixOperations {
     INSTANCE;
@@ -65,18 +65,24 @@ public enum MatrixOperations {
         final double dyz = Math.abs(Vector3f.dot(y, z));
 
         if (dxy > EPSILON) {
-            BigDecimal[] ny = ProtractorHelper.changeAngle(90.0, new Vector3d(), new Vector3d(new BigDecimal(x.x), new BigDecimal(x.y), new BigDecimal(x.z)), new Vector3d(new BigDecimal(y.x), new BigDecimal(y.y), new BigDecimal(y.z)), 7, 10);
-            y.set(ny[0].floatValue(), ny[1].floatValue(), ny[2].floatValue());
+            Vector4f ny = MathHelper.getNearestPointToLine(0, 0, 0, x.x, x.y, x.z, y.x, y.y, y.z);
+            Vector4f.sub(new Vector4f(y.x, y.y, y.z, 1f), ny, ny);
+            ny.normalise(ny);
+            y.set(ny.x, ny.y, ny.z);
         }
 
         if (dxz > EPSILON) {
-            BigDecimal[] nz1 = ProtractorHelper.changeAngle(90.0, new Vector3d(), new Vector3d(new BigDecimal(x.x), new BigDecimal(x.y), new BigDecimal(x.z)), new Vector3d(new BigDecimal(z.x), new BigDecimal(z.y), new BigDecimal(z.z)), 7, 10);
-            z.set(nz1[0].floatValue(), nz1[1].floatValue(), nz1[2].floatValue());
+            Vector4f nz1 = MathHelper.getNearestPointToLine(0, 0, 0, x.x, x.y, x.z, z.x, z.y, z.z);
+            Vector4f.sub(new Vector4f(z.x, z.y, z.z, 1f), nz1, nz1);
+            nz1.normalise(nz1);
+            z.set(nz1.x, nz1.y, nz1.z);
         }
 
         if (dyz > EPSILON) {
-            BigDecimal[] nz2 = ProtractorHelper.changeAngle(90.0, new Vector3d(), new Vector3d(new BigDecimal(y.x), new BigDecimal(y.y), new BigDecimal(y.z)), new Vector3d(new BigDecimal(z.x), new BigDecimal(z.y), new BigDecimal(z.z)), 7, 10);
-            z.set(nz2[0].floatValue(), nz2[1].floatValue(), nz2[2].floatValue());
+            Vector4f nz2 = MathHelper.getNearestPointToLine(0, 0, 0, y.x, y.y, y.z, z.x, z.y, z.z);
+            Vector4f.sub(new Vector4f(z.x, z.y, z.z, 1f), nz2, nz2);
+            nz2.normalise(nz2);
+            z.set(nz2.x, nz2.y, nz2.z);
         }
 
         c3d.getManipulator().getXaxis().set(x.x, x.y, x.z, 1f);
@@ -90,6 +96,7 @@ public enum MatrixOperations {
                 new BigDecimal(c3d.getManipulator().getZaxis().z));
     }
 
+    // FIXME moveManipulatorToCSGMatrix seems to be identical to moveManipulatorToSubfileMatrix!
     public static void moveManipulatorToCSGMatrix(Composite3D c3d, Matrix M, Matrix4f m) {
         c3d.getManipulator().getPosition().set(m.m30, m.m31, m.m32, 1f);
         c3d.getManipulator().setAccuratePosition(M.M30, M.M31, M.M32);
@@ -105,18 +112,24 @@ public enum MatrixOperations {
         final double dyz = Math.abs(Vector3f.dot(y, z));
 
         if (dxy > EPSILON) {
-            BigDecimal[] ny = ProtractorHelper.changeAngle(90.0, new Vector3d(), new Vector3d(new BigDecimal(x.x), new BigDecimal(x.y), new BigDecimal(x.z)), new Vector3d(new BigDecimal(y.x), new BigDecimal(y.y), new BigDecimal(y.z)), 7, 10);
-            y.set(ny[0].floatValue(), ny[1].floatValue(), ny[2].floatValue());
+            Vector4f ny = MathHelper.getNearestPointToLine(0, 0, 0, x.x, x.y, x.z, y.x, y.y, y.z);
+            Vector4f.sub(new Vector4f(y.x, y.y, y.z, 1f), ny, ny);
+            ny.normalise(ny);
+            y.set(ny.x, ny.y, ny.z);
         }
 
         if (dxz > EPSILON) {
-            BigDecimal[] nz1 = ProtractorHelper.changeAngle(90.0, new Vector3d(), new Vector3d(new BigDecimal(x.x), new BigDecimal(x.y), new BigDecimal(x.z)), new Vector3d(new BigDecimal(z.x), new BigDecimal(z.y), new BigDecimal(z.z)), 7, 10);
-            z.set(nz1[0].floatValue(), nz1[1].floatValue(), nz1[2].floatValue());
+            Vector4f nz1 = MathHelper.getNearestPointToLine(0, 0, 0, x.x, x.y, x.z, z.x, z.y, z.z);
+            Vector4f.sub(new Vector4f(z.x, z.y, z.z, 1f), nz1, nz1);
+            nz1.normalise(nz1);
+            z.set(nz1.x, nz1.y, nz1.z);
         }
 
         if (dyz > EPSILON) {
-            BigDecimal[] nz2 = ProtractorHelper.changeAngle(90.0, new Vector3d(), new Vector3d(new BigDecimal(y.x), new BigDecimal(y.y), new BigDecimal(y.z)), new Vector3d(new BigDecimal(z.x), new BigDecimal(z.y), new BigDecimal(z.z)), 7, 10);
-            z.set(nz2[0].floatValue(), nz2[1].floatValue(), nz2[2].floatValue());
+            Vector4f nz2 = MathHelper.getNearestPointToLine(0, 0, 0, y.x, y.y, y.z, z.x, z.y, z.z);
+            Vector4f.sub(new Vector4f(z.x, z.y, z.z, 1f), nz2, nz2);
+            nz2.normalise(nz2);
+            z.set(nz2.x, nz2.y, nz2.z);
         }
 
         c3d.getManipulator().getXaxis().set(x.x, x.y, x.z, 1f);
