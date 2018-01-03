@@ -142,6 +142,8 @@ public class SplashScreen extends ApplicationWindow {
         ShellHelper.centerShellOnPrimaryScreen(sh);
         this.open();
 
+        String openGLerrorRootCause = "---???---"; //$NON-NLS-1$
+
         // Check OpenGL version
         final boolean[] openGLerror = new boolean[1];
         try {
@@ -176,6 +178,7 @@ public class SplashScreen extends ApplicationWindow {
             }
         } catch (Exception e) {
             NLogger.error(getClass(), e);
+            openGLerrorRootCause = e.getMessage() + "\n" + NLogger.getStackTrace(e); //$NON-NLS-1$
             openGLerror[0] = true;
         }
 
@@ -350,7 +353,7 @@ public class SplashScreen extends ApplicationWindow {
                 // because the OpenGL version 2.1
                 // is not supported by the graphics card.
                 messageBox.setText(I18n.DIALOG_Error);
-                messageBox.setMessage(I18n.SPLASH_InvalidOpenGLVersion);
+                messageBox.setMessage(I18n.SPLASH_InvalidOpenGLVersion + openGLerrorRootCause);
                 break;
             case NO_ERROR:
                 // No error occurs, all fine :)

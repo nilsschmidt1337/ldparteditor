@@ -333,7 +333,7 @@ public enum NLogger {
      *            Throwable whose stack trace is required
      * @return String representing the stack trace of the exception
      */
-    private static synchronized String getStackTrace(Throwable t) {
+    public static synchronized String getStackTrace(Throwable t) {
         StringWriter stringWriter = new StringWriter();
         PrintWriter printWriter = new PrintWriter(stringWriter, true);
         t.printStackTrace(printWriter);
