@@ -517,9 +517,7 @@ public enum MathHelper {
         return new Vector4f(line_x1 + dotAu * ux, line_y1 + dotAu * uy, line_z1 + dotAu * uz, 1f);
     }
 
-    public static Vector4f getNearestPointToLineSegment_new(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
-
-        // FIXME Needs performance/accuracy test VS getNearestPointToLineSegment()
+    public static Vector4f getNearestPointToLineSegment(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
 
         final Vector4f nearestPointToLine = getNearestPointToLine(lx1, ly1, lz1, lx2, ly2, lz2, px, py, pz);
 
@@ -558,69 +556,11 @@ public enum MathHelper {
         }
     }
 
-    public static Vector4f getNearestPointToLineSegment(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
-
-        // Fastest iterative approach without objects
-
-        // 0th Iteration
-        float ax = (lx1 + lx2) / 2f;
-        float ay = (ly1 + ly2) / 2f;
-        float az = (lz1 + lz2) / 2f;
-
-        // 1st to n-th Iteration
-        float ux = lx1;
-        float uy = ly1;
-        float uz = lz1;
-        float vx = lx2;
-        float vy = ly2;
-        float vz = lz2;
-
-        float dup = 0f;
-        float dvp = 1f;
-
-        float dap = 0f;
-        float odap = 1f;
-        int refinements = 0;
-        while (Math.abs(dap - odap) > .001f || (refinements++ < 3)) {
-            float dxup = ux - px;
-            float dyup = uy - py;
-            float dzup = uz - pz;
-            dup = dxup * dxup + dyup * dyup + dzup * dzup;
-            float dxvp = vx - px;
-            float dyvp = vy - py;
-            float dzvp = vz - pz;
-            dvp = dxvp * dxvp + dyvp * dyvp + dzvp * dzvp;
-
-            if (dup < dvp) {
-                vx = ax;
-                vy = ay;
-                vz = az;
-                ax = (ax + ux) / 2f;
-                ay = (ay + uy) / 2f;
-                az = (az + uz) / 2f;
-            } else {
-                ux = ax;
-                uy = ay;
-                uz = az;
-                ax = (ax + vx) / 2f;
-                ay = (ay + vy) / 2f;
-                az = (az + vz) / 2f;
-            }
-            odap = dap;
-            float dxap = ax - px;
-            float dyap = ay - py;
-            float dzap = az - pz;
-            dap = dxap * dxap + dyap * dyap + dzap * dzap;
-
-        }
-        return new Vector4f(ax, ay, az, 1f);
-    }
-
     public static boolean canBeProjectedToLineSegmentCSG(VectorCSGd p1, VectorCSGd p2, VectorCSGd p) {
         VectorCSGd v = p2.minus(p1);
         VectorCSGd w = p.minus(p1);
-        double t = w.dot(v) / (v.dot(v));
-        return (t > 0.0) && (t < 1.0);
+        double t = w.dot(v) / v.dot(v);
+        return t > 0.0 && t < 1.0;
     }
 
     public static double getNearestPointDistanceToLineSegmentCSG(VectorCSGd p1, VectorCSGd p2, VectorCSGd p, double epsilon) {
@@ -628,7 +568,7 @@ public enum MathHelper {
         VectorCSGd v = p2.minus(p1);
         VectorCSGd w = p.minus(p1);
 
-        double t = w.dot(v) / (v.dot(v));
+        double t = w.dot(v) / v.dot(v);
         if (t < 0.0) {
             return 2.0 * epsilon; // p.minus(p1).magnitude();
         }
@@ -640,65 +580,6 @@ public enum MathHelper {
         double dist = p.minus(pb).magnitude();
 
         return dist;
-    }
-
-    public static Vector4f getNearestPointToLineSegment2(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
-
-        // Fastest iterative approach without objects
-
-        // 0th Iteration
-        float ax = (lx1 + lx2) / 2f;
-        float ay = (ly1 + ly2) / 2f;
-        float az = (lz1 + lz2) / 2f;
-
-        // 1st to n-th Iteration
-        float ux = lx1;
-        float uy = ly1;
-        float uz = lz1;
-        float vx = lx2;
-        float vy = ly2;
-        float vz = lz2;
-
-        float dup = 0f;
-        float dvp = 1f;
-
-        float dap = 0f;
-        float odap = 1f;
-
-        int refinements = 0;
-        while (Math.abs(dap - odap) > .0000001f || (refinements++ < 3)) {
-            float dxup = ux - px;
-            float dyup = uy - py;
-            float dzup = uz - pz;
-            dup = dxup * dxup + dyup * dyup + dzup * dzup;
-            float dxvp = vx - px;
-            float dyvp = vy - py;
-            float dzvp = vz - pz;
-            dvp = dxvp * dxvp + dyvp * dyvp + dzvp * dzvp;
-
-            if (dup < dvp) {
-                vx = ax;
-                vy = ay;
-                vz = az;
-                ax = (ax + ux) / 2f;
-                ay = (ay + uy) / 2f;
-                az = (az + uz) / 2f;
-            } else {
-                ux = ax;
-                uy = ay;
-                uz = az;
-                ax = (ax + vx) / 2f;
-                ay = (ay + vy) / 2f;
-                az = (az + vz) / 2f;
-            }
-            odap = dap;
-            float dxap = ax - px;
-            float dyap = ay - py;
-            float dzap = az - pz;
-            dap = dxap * dxap + dyap * dyap + dzap * dzap;
-
-        }
-        return new Vector4f(ax, ay, az, 1f);
     }
 
     public static Vector4f getNearestPointToLinePoints(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
@@ -1979,30 +1860,30 @@ public enum MathHelper {
             VectorCSGd na, VectorCSGd nb, VectorCSGd nc,
             VectorCSGd noa, VectorCSGd nob, VectorCSGd noc) {
 
-            double[] tangles = getTriangleAngles(ta, tb, tc);
-            double[] oangles = getTriangleAngles(oa, ob, oc);
+        double[] tangles = getTriangleAngles(ta, tb, tc);
+        double[] oangles = getTriangleAngles(oa, ob, oc);
 
-            double[] nangles = getTriangleAngles(na, nb, nc);
-            double[] noangles = getTriangleAngles(noa, nob, noc);
+        double[] nangles = getTriangleAngles(na, nb, nc);
+        double[] noangles = getTriangleAngles(noa, nob, noc);
 
-            double tmax = -Double.MAX_VALUE;
-            double tmin = Double.MAX_VALUE;
+        double tmax = -Double.MAX_VALUE;
+        double tmin = Double.MAX_VALUE;
 
-            double omax = -Double.MAX_VALUE;
-            double omin = Double.MAX_VALUE;
+        double omax = -Double.MAX_VALUE;
+        double omin = Double.MAX_VALUE;
 
-            for (int i = 0; i < 3; i++) {
-                tmax = Math.max(tmax, tangles[i]);
-                tmax = Math.max(tmax, oangles[i]);
-                tmin = Math.min(tmin, tangles[i]);
-                tmin = Math.min(tmin, oangles[i]);
-                omax = Math.max(omax, nangles[i]);
-                omax = Math.max(omax, noangles[i]);
-                omin = Math.min(omin, nangles[i]);
-                omin = Math.min(omin, noangles[i]);
-            }
+        for (int i = 0; i < 3; i++) {
+            tmax = Math.max(tmax, tangles[i]);
+            tmax = Math.max(tmax, oangles[i]);
+            tmin = Math.min(tmin, tangles[i]);
+            tmin = Math.min(tmin, oangles[i]);
+            omax = Math.max(omax, nangles[i]);
+            omax = Math.max(omax, noangles[i]);
+            omin = Math.min(omin, nangles[i]);
+            omin = Math.min(omin, noangles[i]);
+        }
 
-            return (omax - omin) < (tmax - tmin);
+        return omax - omin < tmax - tmin;
     }
 
     private static double[] getTriangleAngles(VectorCSGd pa, VectorCSGd pb, VectorCSGd pc) {
