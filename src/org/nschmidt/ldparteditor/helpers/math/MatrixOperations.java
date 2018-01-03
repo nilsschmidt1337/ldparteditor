@@ -37,8 +37,6 @@ public enum MatrixOperations {
      */
     public static Matrix removeRotationAndTranslation(final Matrix M) {
 
-        // TODO Needs BigDecimal accuracy?
-
         // Quick test with FP arithmetic if this removal is necessary
         {
             Vector3f x = new Vector3f(M.M00.floatValue(), M.M01.floatValue(), M.M02.floatValue());
@@ -57,36 +55,38 @@ public enum MatrixOperations {
             }
         }
 
-        final Matrix4f m = new Matrix4f();
-        m.setIdentity();
-        Vector3f x = new Vector3f(M.M00.floatValue(), M.M01.floatValue(), M.M02.floatValue());
-        Vector3f y = new Vector3f(M.M10.floatValue(), M.M11.floatValue(), M.M12.floatValue());
-        Vector3f z = new Vector3f(M.M20.floatValue(), M.M21.floatValue(), M.M22.floatValue());
-        final float xl = x.length();
-        final float yl = y.length();
-        final float zl = z.length();
-        final double xy_angle = Vector3d.angleRad(new Vector3d(M.M00, M.M01, M.M02), new Vector3d(M.M10, M.M11, M.M12));
-        final double xz_angle = Vector3d.angleRad(new Vector3d(M.M00, M.M01, M.M02), new Vector3d(M.M20, M.M21, M.M22));
-        final double yz_angle = Vector3d.angleRad(new Vector3d(M.M10, M.M11, M.M12), new Vector3d(M.M20, M.M21, M.M22));
+        Vector3d x = new Vector3d(M.M00, M.M01, M.M02);
+        Vector3d y = new Vector3d(M.M10, M.M11, M.M12);
+        Vector3d z = new Vector3d(M.M20, M.M21, M.M22);
+        final BigDecimal xl = x.length();
+        final BigDecimal yl = y.length();
+        final BigDecimal zl = z.length();
+        final BigDecimal xy_angle = new BigDecimal(Vector3d.angleRad(x, y));
+        final BigDecimal xz_angle = new BigDecimal(Vector3d.angleRad(x, z));
+        final BigDecimal yz_angle = new BigDecimal(Vector3d.angleRad(y, z));
 
-        m.m10 = (float) (Math.cos(xy_angle) * yl);
-        m.m11 = (float) (Math.sin(xy_angle) * yl);
+        final BigDecimal M10 = MathHelper.cos(xy_angle).multiply(yl);
+        final BigDecimal M11 = MathHelper.sin(xy_angle).multiply(yl);
 
-        Vector3f pz = new Vector3f();
-        Vector3f.cross(x, y, pz);
-        pz.normalise();
-        z.normalise();
+        Vector3d pz = Vector3d.cross(x, y);
+        pz.normalise(pz);
+        z.normalise(z);
 
-        final float z_dir = Vector3f.dot(z, pz);
-        final float z_coeff = z_dir > 0 ? 1f : -1f;
+        final double z_dir = Vector3d.dot(z, pz);
+        final BigDecimal z_coeff = z_dir > 0 ? BigDecimal.ONE : BigDecimal.ONE.negate();
 
-        m.m20 = (float) (Math.cos(xz_angle) * zl);
-        m.m21 = (float) (Math.cos(yz_angle) * zl);
-        m.m22 = (float) (Math.sin(xz_angle) * Math.sin(yz_angle) * zl * z_coeff);
+        final BigDecimal M20 = MathHelper.cos(xz_angle).multiply(zl);
+        final BigDecimal M21 = MathHelper.cos(yz_angle).multiply(zl);
+        final BigDecimal M22 = MathHelper.sin(xz_angle).multiply(MathHelper.sin(yz_angle)).multiply(zl).multiply(z_coeff);
 
-        m.m00 = xl;
+        final BigDecimal M00 = xl;
 
-        return new Matrix(m);
+        return new Matrix(
+                M00, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                M10, M11, BigDecimal.ZERO, BigDecimal.ZERO,
+                M20, M21, M22, BigDecimal.ZERO,
+                BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE
+                );
     }
 
     public static void moveManipulatorToSubfileOrCSGMatrix(Composite3D c3d, Matrix M, Matrix4f m) {
