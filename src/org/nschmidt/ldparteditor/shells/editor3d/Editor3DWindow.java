@@ -2201,6 +2201,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     case 1:
                                         vm.getSelectedVertices().clear();
+                                        btn_MoveAdjacentData2[0].setSelection(false);
                                         btn_MoveAdjacentData2[0].setEnabled(false);
                                         GData1 g1 = (GData1) gdata;
                                         spn_SelectionX1[0].setValue(g1.getAccurateProductMatrix().M30);
@@ -2383,6 +2384,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         break;
                                     case 1:
                                         vm.getSelectedVertices().clear();
+                                        btn_MoveAdjacentData2[0].setSelection(false);
                                         btn_MoveAdjacentData2[0].setEnabled(false);
                                         GData1 g1 = (GData1) gdata;
                                         spn_SelectionX1[0].setValue(g1.getAccurateProductMatrix().M30);
@@ -8282,6 +8284,7 @@ public class Editor3DWindow extends Editor3DDesign {
         if (Thread.currentThread() == Display.getDefault().getThread()) {
             updatingSelectionTab = true;
             txt_Line[0].setText(""); //$NON-NLS-1$
+            btn_MoveAdjacentData2[0].setSelection(false);
             spn_SelectionAngle[0].setEnabled(false);
             spn_SelectionLength[0].setEnabled(false);
             spn_SelectionX1[0].setEnabled(false);
@@ -8334,6 +8337,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     try {
                         updatingSelectionTab = true;
                         txt_Line[0].setText(""); //$NON-NLS-1$
+                        btn_MoveAdjacentData2[0].setSelection(false);
                         spn_SelectionAngle[0].setEnabled(false);
                         spn_SelectionLength[0].setEnabled(false);
                         spn_SelectionX1[0].setEnabled(false);
