@@ -22,7 +22,6 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.Matrix;
-import org.nschmidt.ldparteditor.enums.View;
 
 public enum MatrixOperations {
     INSTANCE;
@@ -51,7 +50,16 @@ public enum MatrixOperations {
             final double dyz = Math.abs(Vector3f.dot(y, z));
 
             if (dxy < EPSILON && dxz < EPSILON && dyz < EPSILON) {
-                return View.ACCURATE_ID;
+                // Keep scale!
+                final BigDecimal M00 = new Vector3d(M.M00, M.M01, M.M02).length();
+                final BigDecimal M11 = new Vector3d(M.M10, M.M11, M.M12).length();
+                final BigDecimal M22 = new Vector3d(M.M20, M.M21, M.M22).length();
+                return new Matrix(
+                        M00, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                        BigDecimal.ZERO, M11, BigDecimal.ZERO, BigDecimal.ZERO,
+                        BigDecimal.ZERO, BigDecimal.ZERO, M22, BigDecimal.ZERO,
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE
+                        );
             }
         }
 
