@@ -209,13 +209,26 @@ public class Vector3d {
      * @return the angle between the two vectors [Degree].
      */
     public static double angle(Vector3d vectorA1, Vector3d vectorB1) {
+        return angleRad(vectorA1, vectorB1) * 180d / Math.PI;
+    }
+
+    /**
+     * Calculates the angle between the two vectors in radians.
+     *
+     * @param vectorA
+     *            a {@linkplain Vector3d}.
+     * @param vectorB
+     *            a {@linkplain Vector3d}.
+     * @return the angle between the two vectors [rad].
+     */
+    public static double angleRad(Vector3d vectorA1, Vector3d vectorB1) {
         Vector3d vectorA = new Vector3d();
         Vector3d vectorB = new Vector3d();
         vectorA1.normalise(vectorA);
         vectorB1.normalise(vectorB);
         double cosinus = vectorA.X.multiply(vectorB.X, mc).add(vectorA.Y.multiply(vectorB.Y, mc), mc).add(vectorA.Z.multiply(vectorB.Z, mc), mc)
                 .divide(vectorA.length().multiply(vectorB.length(), mc), mc).doubleValue();
-        return Math.acos(cosinus) * 180d / Math.PI;
+        return Math.acos(cosinus);
     }
 
     public static double fastAngle(Vector3d vectorA1, Vector3d vectorB1) {

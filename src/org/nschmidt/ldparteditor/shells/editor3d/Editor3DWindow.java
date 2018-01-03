@@ -8723,6 +8723,10 @@ public class Editor3DWindow extends Editor3DDesign {
                         Manipulator ma = c3d.getManipulator();
                         if (resetScale) {
                             vm.transformSubfile(subfile, ma.getAccurateMatrix(), true, true);
+                        } else {
+                            vm.transformSubfile(subfile, Matrix.mul(
+                                    ma.getAccurateMatrix(),
+                                    MatrixOperations.removeRotationAndTranslation(subfile.getAccurateProductMatrix())), true, true);
                         }
                         break;
                     }

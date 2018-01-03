@@ -22,6 +22,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.Matrix;
+import org.nschmidt.ldparteditor.enums.View;
 
 public enum MatrixOperations {
     INSTANCE;
@@ -29,25 +30,63 @@ public enum MatrixOperations {
     private static double EPSILON = 0.01;
 
     /**
-     * Returns an approximted rotation matrix from an input matrix.
-     * Useful for moving the manipulator to a subfile
-     * @param m
-     * @return
-     */
-    public static Matrix extractRotation(final Matrix m) {
-        // TODO Needs implementation!
-        return m;
-    }
-
-    /**
      * Returns matrix without rotation and translation components.
-     * Useful for moving a subfile to the maniulator position
-     * @param m
+     * Useful for moving a subfile to the manipulator position
+     * @param M
      * @return
      */
-    public static Matrix removeRotationAndTranslation(final Matrix m) {
-        // TODO Needs implementation!
-        return m;
+    public static Matrix removeRotationAndTranslation(final Matrix M) {
+
+        // TODO Needs BigDecimal accuracy?
+
+        // Quick test with FP arithmetic if this removal is necessary
+        {
+            Vector3f x = new Vector3f(M.M00.floatValue(), M.M01.floatValue(), M.M02.floatValue());
+            x.normalise();
+            Vector3f y = new Vector3f(M.M10.floatValue(), M.M11.floatValue(), M.M12.floatValue());
+            y.normalise();
+            Vector3f z = new Vector3f(M.M20.floatValue(), M.M21.floatValue(), M.M22.floatValue());
+            z.normalise();
+
+            final double dxy = Math.abs(Vector3f.dot(x, y));
+            final double dxz = Math.abs(Vector3f.dot(x, z));
+            final double dyz = Math.abs(Vector3f.dot(y, z));
+
+            if (dxy < EPSILON && dxz < EPSILON && dyz < EPSILON) {
+                return View.ACCURATE_ID;
+            }
+        }
+
+        final Matrix4f m = new Matrix4f();
+        m.setIdentity();
+        Vector3f x = new Vector3f(M.M00.floatValue(), M.M01.floatValue(), M.M02.floatValue());
+        Vector3f y = new Vector3f(M.M10.floatValue(), M.M11.floatValue(), M.M12.floatValue());
+        Vector3f z = new Vector3f(M.M20.floatValue(), M.M21.floatValue(), M.M22.floatValue());
+        final float xl = x.length();
+        final float yl = y.length();
+        final float zl = z.length();
+        final double xy_angle = Vector3d.angleRad(new Vector3d(M.M00, M.M01, M.M02), new Vector3d(M.M10, M.M11, M.M12));
+        final double xz_angle = Vector3d.angleRad(new Vector3d(M.M00, M.M01, M.M02), new Vector3d(M.M20, M.M21, M.M22));
+        final double yz_angle = Vector3d.angleRad(new Vector3d(M.M10, M.M11, M.M12), new Vector3d(M.M20, M.M21, M.M22));
+
+        m.m10 = (float) (Math.cos(xy_angle) * yl);
+        m.m11 = (float) (Math.sin(xy_angle) * yl);
+
+        Vector3f pz = new Vector3f();
+        Vector3f.cross(x, y, pz);
+        pz.normalise();
+        z.normalise();
+
+        final float z_dir = Vector3f.dot(z, pz);
+        final float z_coeff = z_dir > 0 ? 1f : -1f;
+
+        m.m20 = (float) (Math.cos(xz_angle) * zl);
+        m.m21 = (float) (Math.cos(yz_angle) * zl);
+        m.m22 = (float) (Math.sin(xz_angle) * Math.sin(yz_angle) * zl * z_coeff);
+
+        m.m00 = xl;
+
+        return new Matrix(m);
     }
 
     public static void moveManipulatorToSubfileOrCSGMatrix(Composite3D c3d, Matrix M, Matrix4f m) {
