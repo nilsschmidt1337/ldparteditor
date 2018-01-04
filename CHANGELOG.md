@@ -1,4 +1,4 @@
-### 29 Dec 2017
+### 04 Jan 2018
 With the release of **0.8.40** you are able to...
 -  ...unscale something without losing current origin/orientation (double click on selected subfile -> hold ctrl and click on "Move selected subfile to manipulator").
 -  ..."Move selected subfile to manipulator" and it keeps subfile scaling when doing so.
