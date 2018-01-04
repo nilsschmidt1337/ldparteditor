@@ -1,4 +1,20 @@
 ### 29 Dec 2017
+With the release of **0.8.40** you are able to...
+-  ...unscale something without losing current origin/orientation (double click on selected subfile -> hold ctrl and click on "Move selected subfile to manipulator").
+-  ..."Move selected subfile to manipulator" and it keeps subfile scaling when doing so.
+-  ...choose more practical icon sizes (range 12px ... 32px).
+-  ...benefit from more "clean" tabs (Snap/Selection/BG-Image) on the 3D editor.
+-  ...benefit from little performance improvements.
+
+The following critical issues are fixed:
+1. Unificator deleted some surfaces from the unified mesh.
+2. Edger2 created wrong condlines if there is a slighty mismatch. 
+3. "Move Manipulator to Subfile" warped the manipulator if there was shearing involved.
+4. Colour table, linux-only: The scroll on mouse over, in the list view, only worked when the pointer was over the slider. Not when it was over the list.
+5. It was possible to activate "Move Adjacent Data" on the selection tab for subfiles, but it has no effect (it should not be possible to activate the button in this case!)
+
+
+### 29 Dec 2017
 With the release of **0.8.39** you are able to...
 -  ...use a SlantingMatrixProjector tool.
 -  ...save all your user settings in a file, and restore it when you want to.
