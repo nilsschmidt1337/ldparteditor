@@ -27,6 +27,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -102,6 +103,32 @@ public class StartupDialog extends StartupDesign {
                     txt_ldrawPath[0].setText(dir);
                     ldrawPath = dir;
                     path1valid = FileHelper.canReadFromPath(ldrawPath);
+
+                    if (path1valid && unofficialPath.isEmpty()) {
+                        if (ldrawPath.endsWith(File.separator)) {
+                            unofficialPath = ldrawPath + "Unofficial"; //$NON-NLS-1$
+                        } else {
+                            unofficialPath = ldrawPath + File.separator + "Unofficial"; //$NON-NLS-1$
+                        }
+                        if (!FileHelper.canReadFromPath(unofficialPath)) {
+                            if (FileHelper.canWriteToPath(ldrawPath)) {
+                                try {
+                                    File plugInFolder = new File(unofficialPath);
+                                    if (!plugInFolder.exists()) {
+                                        plugInFolder.mkdir();
+                                    }
+                                    path3valid = true;
+                                } catch (SecurityException s) {
+                                    NLogger.error(getClass(), "Failed to create unofficial library folder."); //$NON-NLS-1$
+                                    unofficialPath = ""; //$NON-NLS-1$
+                                }
+                            } else {
+                                unofficialPath = ""; //$NON-NLS-1$
+                            }
+                        }
+                        txt_unofficialPath[0].setText(unofficialPath);
+                    }
+
                     btn_ok[0].setEnabled(path1valid && path2valid && path3valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
                 }
             }
