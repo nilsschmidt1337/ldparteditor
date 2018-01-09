@@ -17,6 +17,8 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.RGB;
@@ -652,9 +654,9 @@ class OptionsDesign extends ApplicationWindow {
         gridData3.grabExcessHorizontalSpace = true;
         btnOK.setLayoutData(gridData3);
 
-        Display.getCurrent().timerExec(1000, new Runnable() {
+        getShell().addShellListener(new ShellAdapter() {
             @Override
-            public void run() {
+            public void shellActivated(ShellEvent e) {
                 updateColours(treeColours);
                 treeColours.redraw();
             }

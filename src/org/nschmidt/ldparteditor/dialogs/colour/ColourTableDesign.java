@@ -16,56 +16,45 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.colour;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widgets.Tree;
+import org.nschmidt.ldparteditor.widgets.TreeColumn;
+import org.nschmidt.ldparteditor.widgets.TreeItem;
 
 /**
  * @author nils
  *
  */
-class ColourTableDesign extends Dialog {
+class ColourTableDesign extends ApplicationWindow {
 
-    final ScrolledComposite[] scmp = new ScrolledComposite[1];
-    final Table[] tbl_Colours = new Table[1];
-    final Text[] txt_Search = new Text[1];
+    final Tree[] tree_Colours = new Tree[1];
     final GColour[] refCol;
-    final TreeSet<String>[] names;
 
-    @SuppressWarnings("unchecked")
     protected ColourTableDesign(Shell parentShell, final GColour[] refCol) {
         super(parentShell);
         this.refCol = refCol;
-        this.names = new TreeSet[1];
     }
-
-
-    private int bestWidth = 0;
 
     /**
      * Create contents of the dialog.
@@ -73,115 +62,88 @@ class ColourTableDesign extends Dialog {
      * @param parent
      */
     @Override
-    protected Control createDialogArea(final Composite parent) {
-        Composite cmp_container = parent;
-        cmp_container.setLayout(new GridLayout());
+    protected Control createContents(Composite parent) {
+        Composite cmp_container = new Composite(parent, SWT.NONE);
+        GridLayout gridLayout = new GridLayout(1, true);
+        gridLayout.verticalSpacing = 10;
+        gridLayout.horizontalSpacing = 10;
+        cmp_container.setLayout(gridLayout);
 
-        final ScrolledComposite composite = new ScrolledComposite(cmp_container, SWT.V_SCROLL);
-        this.scmp[0] = composite;
-        composite.setLayout(new GridLayout());
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        final Set<String> names = new TreeSet<String>(View.getNameMap().values());
+        final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, names.size());
+        tree_Colours[0] = tree;
+        tree.setLinesVisible(true);
+        tree.setHeaderVisible(true);
+        tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-        final Table table = new Table(composite, SWT.NO_SCROLL | SWT.FULL_SELECTION);
-        table.setLayout(new GridLayout());
-        this.tbl_Colours[0] = table;
-        table.addListener(SWT.MouseDoubleClick, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                refCol[0] = (GColour) table.getSelection()[0].getData();
-                parent.getShell().getParent().getShell().close();
-            }
-        });
-        table.setHeaderVisible(false);
+        TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
+        trclmn_Description.setWidth(300);
+        trclmn_Description.setText(I18n.COLOUR_Description);
 
-        table.addFocusListener(new FocusListener() {
-            @Override
-            public void focusLost(FocusEvent e) {
-            }
+        TreeColumn trclmn_Number = new TreeColumn(tree, SWT.NONE);
+        trclmn_Number.setWidth(60);
 
-            @Override
-            public void focusGained(FocusEvent e) {
-                composite.forceFocus();
-            }
-        });
+        TreeColumn trclmn_Colour = new TreeColumn(tree, SWT.NONE);
+        trclmn_Colour.setWidth(100);
+        trclmn_Colour.setText(I18n.COLOUR_Colour);
 
-        table.addMouseMoveListener(new MouseMoveListener() {
-            @Override
-            public void mouseMove(MouseEvent e) {
-                composite.forceFocus();
-            }
-        });
-
-        composite.setContent(table);
-        composite.setExpandHorizontal(true);
-        composite.setExpandVertical(true);
-        composite.setAlwaysShowScrollBars(true);
-
-        {
-            TableColumn column = new TableColumn(table, SWT.NONE);
-            column.setWidth(table.getItemHeight());
-        }
-        {
-            @SuppressWarnings("unused")
-            TableColumn column = new TableColumn(table, SWT.NONE);
-        }
-        {
-            @SuppressWarnings("unused")
-            TableColumn column = new TableColumn(table, SWT.NONE);
-        }
         Set<Integer> ldConfIndices = View.getColourMap().keySet();
-        names[0] = new TreeSet<String>(View.getNameMap().values());
-        HashMap<String, Integer> nameToIndex = new HashMap<String, Integer>();
+        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
         for (Integer index : ldConfIndices) {
             nameToIndex.put(View.getLDConfigColourName(index), index);
         }
-        int longestNameLenght = 0;
-        String longestName = "                      "; //$NON-NLS-1$
-        for (String name : names[0]) {
-            TableItem item = new TableItem(table, SWT.NONE);
+        for (String name : names) {
+            TreeItem trtm_Colour = new TreeItem(tree, SWT.PUSH);
             Integer id = nameToIndex.get(name);
+            trtm_Colour.setText(new String[] { name, id + "", ""  }); //$NON-NLS-1$ //$NON-NLS-2$
+            trtm_Colour.setVisible(true);
             final GColour gColour2 = View.getLDConfigColour(id);
-            item.setData(gColour2);
             final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
-            item.setBackground(0, col);
-            item.setText(1, name + "   "); //$NON-NLS-1$
-            item.setText(2, id + ""); //$NON-NLS-1$
-            int l = name.length();
-            if (l > longestNameLenght) {
-                longestNameLenght = l;
-                longestName = name;
+            trtm_Colour.setData(new Object[] {gColour2, col});
+        }
+
+        tree.build();
+
+        tree.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                final TreeItem selection;
+                if (tree.getSelectionCount() == 1 && (selection = tree.getSelection()[0]).getData() != null) {
+                    refCol[0] = (GColour) ((Object[]) selection.getData())[0];
+                    Display.getCurrent().timerExec(100, new Runnable() {
+                        @Override
+                        public void run() {
+                            close();
+                        }
+                    });
+                }
             }
-        }
+        });
 
-        {
-            Label tmp = new Label(cmp_container, SWT.NONE);
-            GC gc = new GC(tmp);
-            Point size = gc.textExtent(longestName + "           99999"); //$NON-NLS-1$
-            bestWidth = size.x + table.getItemHeight()+ ((GridLayout) cmp_container.getLayout()).horizontalSpacing * 4;
-            gc.dispose ();
-            tmp.dispose();
-        }
+        cmp_container.pack();
 
-        table.getColumn(1).pack();
-        table.getColumn(2).pack();
+        getShell().addShellListener(new ShellAdapter() {
+            @Override
+            public void shellActivated(ShellEvent e) {
+                updateColours(tree);
+                tree.redraw();
+            }
+        });
 
-        Text txt_Search = new Text(cmp_container, SWT.NONE);
-        this.txt_Search[0] = txt_Search;
-        txt_Search.setLayoutData(new GridData(SWT.FILL, SWT.END, true, false));
-
-        cmp_container.layout();
-        composite.setMinSize(table.computeSize(SWT.DEFAULT, SWT.DEFAULT));
         return cmp_container;
     }
 
+    private void updateColours(Tree tree) {
+        for(TreeItem ti : tree.getItems()) {
+            updateColoursHelper(ti);
+        }
+    }
 
-    /**
-     * Create contents of the button bar (no buttons)
-     *
-     * @param parent
-     */
-    @Override
-    protected void createButtonsForButtonBar(Composite parent) {
+    private void updateColoursHelper(TreeItem ti) {
+        org.eclipse.swt.widgets.TreeItem key = ti.getParent().getMapInv().get(ti);
+        if (key != null && ti.getData() != null && ((Object[]) ti.getData()).length == 2) {
+            key.setBackground(2, (Color) ((Object[]) ti.getData())[1]);
+        }
     }
 
     /**
@@ -189,7 +151,6 @@ class ColourTableDesign extends Dialog {
      */
     @Override
     protected Point getInitialSize() {
-        return new Point(bestWidth, bestWidth * 2);
+        return super.getInitialSize();
     }
-
 }
