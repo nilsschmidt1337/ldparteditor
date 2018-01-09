@@ -69,7 +69,8 @@ public class ColourDialog extends ColourDesign {
         btn_colourTable[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                new ColourTableDialog(getShell(), refCol).open();
+                new ColourTableDialog(getShell(), refCol).run();
+                me.close();
             }
         });
         if (randomColours) btn_randomColours[0].addSelectionListener(new SelectionAdapter() {
