@@ -349,6 +349,13 @@ public class CompositePrimitive extends Composite {
             }
         });
 
+        canvas.addListener(SWT.Paint, new Listener() {
+            @Override
+            public void handleEvent(Event event) {
+                openGL.drawScene(-1, -1);
+            }
+        });
+
         canvas.addListener(SWT.MouseVerticalWheel, new Listener() {
             @Override
             // MARK MouseVerticalWheel
