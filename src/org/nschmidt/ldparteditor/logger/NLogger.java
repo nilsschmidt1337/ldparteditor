@@ -27,6 +27,7 @@ import java.util.Locale;
 
 import org.eclipse.swt.SWT;
 import org.nschmidt.ldparteditor.helpers.Version;
+import org.nschmidt.ldparteditor.win32appdata.AppData;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -39,6 +40,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum NLogger {
     INSTANCE;
 
+
+
     public static boolean DEBUG = false;
 
     /**
@@ -46,10 +49,18 @@ public enum NLogger {
      * errors will be evaluated.
      */
     private static int error_Count = 0;
-    /** A flag which indicates, if the logger writes to "error_log2.txt" */
+
+    /** A flag which indicates, if the logger writes to ERROR_LOG2 */
     private static boolean writeInNewFile;
+
     /** The print stream for errors */
     private static PrintStream errorStream = null;
+
+    /** path to log-file 1 */
+    public static final String ERROR_LOG = AppData.getPath() + "error_log.txt"; //$NON-NLS-1$
+
+    /** path to log-file 2 */
+    public static final String ERROR_LOG2 = AppData.getPath() + "error_log2.txt"; //$NON-NLS-1$
 
     /**
      * Initializes the logger.
@@ -57,11 +68,11 @@ public enum NLogger {
     public static void init() {
         try {
             if (!DEBUG) {
-                File log = new File("error_log.txt"); //$NON-NLS-1$
+                File log = new File(ERROR_LOG);
                 if (log.length() > 100000) {
                     log.delete();
                 }
-                errorStream = new PrintStream(new FileOutputStream("error_log.txt", true)); //$NON-NLS-1$
+                errorStream = new PrintStream(new FileOutputStream(ERROR_LOG, true));
                 System.setErr(errorStream);
             }
             StringBuilder sb = new StringBuilder();
@@ -244,8 +255,8 @@ public enum NLogger {
     }
 
     /**
-     * Logs a error to the flatfiles {@code "error_log.txt"} and
-     * {@code "error_log2.txt"} Each file is limited to 100KB file size (~4000
+     * Logs a error to the flatfiles {@code ERROR_LOG} and
+     * {@code ERROR_LOG2} Each file is limited to 100KB file size (~4000
      * lines)
      *
      * @param clazz
@@ -260,13 +271,13 @@ public enum NLogger {
             FileWriter fw = null;
             if (!writeInNewFile) {
                 // Check if "error_log1.txt" is greater than 100KB
-                File log1 = new File("error_log.txt"); //$NON-NLS-1$
+                File log1 = new File(ERROR_LOG);
                 writeInNewFile = log1.length() > 100000;
             }
             if (writeInNewFile) {
-                // Write in the new "error_log2.txt" file
+                // Write in the new ERROR_LOG2 file
                 try {
-                    fw = new FileWriter("error_log2.txt", true); //$NON-NLS-1$
+                    fw = new FileWriter(ERROR_LOG2, true);
                     StringBuilder sb = new StringBuilder();
                     sb.append("[ERROR "); //$NON-NLS-1$
                     sb.append(Version.getVersion());
@@ -287,13 +298,13 @@ public enum NLogger {
                         }
                 }
                 try {
-                    // Check if "error_log2.txt" is greater than 100KB
-                    File log2 = new File("error_log2.txt"); //$NON-NLS-1$
+                    // Check if ERROR_LOG2 is greater than 100KB
+                    File log2 = new File(ERROR_LOG2);
                     if (log2.length() > 100000) {
-                        // if so, delete "error_log.txt",
-                        File log1 = new File("error_log.txt"); //$NON-NLS-1$
+                        // if so, delete ERROR_LOG,
+                        File log1 = new File(ERROR_LOG);
                         log1.delete();
-                        // rename "error_log2.txt" to "error_log1.txt"
+                        // rename ERROR_LOG2 to ERROR_LOG
                         log2.renameTo(log1);
                     }
                 } catch (SecurityException ex) {
@@ -302,7 +313,7 @@ public enum NLogger {
             } else {
                 // Write in the old "error_log1.txt" file
                 try {
-                    fw = new FileWriter("error_log.txt", true); //$NON-NLS-1$
+                    fw = new FileWriter(ERROR_LOG, true);
                     StringBuilder sb = new StringBuilder();
                     sb.append("[ERROR "); //$NON-NLS-1$
                     sb.append(Version.getVersion());

@@ -62,6 +62,7 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
+import org.nschmidt.ldparteditor.win32appdata.AppData;
 import org.nschmidt.ldparteditor.workbench.PrimitiveCache;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -239,6 +240,17 @@ public class SplashScreen extends ApplicationWindow {
                 if (pfcache != null) {
                     CompositePrimitive.setFileCache(pfcache);
                 }
+
+                // Check if the config file fot the 3D editor layout was moved to the AppData\LDPartEditor folder on Windows
+                // This file is NOT part of the standard installation. Only for the advanced users.
+                String pathToLayout3Dconfig = AppData.getPath() + "layout_3D_editor.cfg"; //$NON-NLS-1$
+                try {
+                    File layout3Dconfig = new File(pathToLayout3Dconfig);
+                    if (!layout3Dconfig.exists()) {
+                        pathToLayout3Dconfig = "layout_3D_editor.cfg"; //$NON-NLS-1$
+                    }
+                } catch (SecurityException consumed) {}
+
                 // Load the toolItem state for the 3D editor
                 UTF8BufferedReader reader = null;
                 String line = null;
@@ -248,7 +260,9 @@ public class SplashScreen extends ApplicationWindow {
                         states = new ArrayList<ToolItemState>();
                         WorkbenchManager.getUserSettingState().setToolItemConfig3D(states);
                     }
-                    reader = new UTF8BufferedReader("layout_3D_editor.cfg"); //$NON-NLS-1$
+                    // "layout_3D_editor.cfg" is not stored in the AppData\LDPartEditor folder on Windows
+                    // It is considered to be "read-only" by the application.
+                    reader = new UTF8BufferedReader(pathToLayout3Dconfig);
                     states.clear();
                     while (true) {
                         line = reader.readLine();
@@ -369,7 +383,7 @@ public class SplashScreen extends ApplicationWindow {
             // Everything's under control..
             // Prepare the default project folder
             try {
-                File projectFolder = new File("project"); //$NON-NLS-1$
+                File projectFolder = new File(Project.DEFAULT_PROJECT_PATH);
                 if (projectFolder.exists()) {
                     FileHelper.deleteDirectory(projectFolder);
                 }

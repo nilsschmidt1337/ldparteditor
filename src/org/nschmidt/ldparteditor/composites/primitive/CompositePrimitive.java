@@ -697,6 +697,8 @@ public class CompositePrimitive extends Composite {
                 try {
 
                     // Creating the categories / Rules
+                    // "primitive_rules.txt" is not stored in the AppData\LDPartEditor folder on Windows
+                    // It is considered to be "read-only" by the application.
                     File rulesFile = new File("primitive_rules.txt"); //$NON-NLS-1$
                     if (rulesFile.exists() && rulesFile.isFile()) {
                         UTF8BufferedReader reader = null;

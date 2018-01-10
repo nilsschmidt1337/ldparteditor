@@ -85,7 +85,7 @@ class NewProjectDesign extends Dialog {
         this.txt_projectPath[0] = txt_ldrawPath;
         txt_ldrawPath.setEditable(false);
         txt_ldrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
-        if (!saveAs || Project.getProjectPath().equals(new File("project").getAbsolutePath())) { //$NON-NLS-1$
+        if (!saveAs || Project.getProjectPath().equals(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath())) {
             txt_ldrawPath.setText(""); //$NON-NLS-1$
         } else {
             String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();

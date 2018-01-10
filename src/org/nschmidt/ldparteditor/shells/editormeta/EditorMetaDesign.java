@@ -39,6 +39,7 @@ import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.NButton;
+import org.nschmidt.ldparteditor.win32appdata.AppData;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -378,7 +379,10 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Combo cmb_category = new Combo(cmp_category, SWT.NONE);
                         ev_category_cmb[0] = cmb_category;
-                        File categoryFile = new File("categories.txt"); //$NON-NLS-1$
+                        File categoryFile = new File(AppData.getPath() + "categories.txt"); //$NON-NLS-1$
+                        if (!categoryFile.exists() || !categoryFile.isFile()) {
+                            categoryFile = new File("categories.txt"); //$NON-NLS-1$
+                        }
                         if (categoryFile.exists() && categoryFile.isFile()) {
                             UTF8BufferedReader reader = null;
                             try {

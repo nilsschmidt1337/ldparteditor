@@ -70,9 +70,9 @@ public class NewProjectDialog extends NewProjectDesign {
                 String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
 
                 // Set the initial filter path according
-                // to the authoring folder if the project path is "project",
+                // to the authoring folder if the project path is Project.PROJECT,
                 // else choose the parent folder of the last opened project.
-                if (firstchoose[0] && Project.getProjectPath().equals(new File("project").getAbsolutePath())) { //$NON-NLS-1$
+                if (firstchoose[0] && Project.getProjectPath().equals(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath())) {
                     dlg.setFilterPath(authorFolder);
                     firstchoose[0] = false;
                 } else {
