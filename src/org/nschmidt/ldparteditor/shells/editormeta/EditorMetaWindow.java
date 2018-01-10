@@ -431,12 +431,12 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     FileDialog fd = new FileDialog(sh, SWT.OPEN);
                     fd.setText(I18n.META_ChoosePng);
 
-                    if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
+                    if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                         try {
                             String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                             String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                             decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                            fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
+                            fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
                         } catch (Exception consumed) {
                             fd.setFilterPath(Project.getProjectPath());
                         }
@@ -503,12 +503,12 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     FileDialog fd = new FileDialog(sh, SWT.OPEN);
                     fd.setText(I18n.META_ChoosePng);
 
-                    if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
+                    if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                         try {
                             String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                             String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                             decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                            fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
+                            fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
                         } catch (Exception consumed) {
                             fd.setFilterPath(Project.getProjectPath());
                         }
@@ -577,12 +577,12 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     FileDialog fd = new FileDialog(sh, SWT.OPEN);
                     fd.setText(I18n.META_ChoosePng);
 
-                    if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
+                    if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                         try {
                             String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                             String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                             decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                            fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
+                            fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
                         } catch (Exception consumed) {
                             fd.setFilterPath(Project.getProjectPath());
                         }
@@ -972,12 +972,12 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     FileDialog fd = new FileDialog(sh, SWT.OPEN);
                     fd.setText(I18n.META_ChoosePng);
 
-                    if ("project".equals(Project.getProjectPath())) { //$NON-NLS-1$
+                    if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                         try {
                             String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
                             String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
                             decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                            fd.setFilterPath(decodedPath + "project"); //$NON-NLS-1$
+                            fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
                         } catch (Exception consumed) {
                             fd.setFilterPath(Project.getProjectPath());
                         }

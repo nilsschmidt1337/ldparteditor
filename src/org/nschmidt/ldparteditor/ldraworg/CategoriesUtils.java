@@ -32,6 +32,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
+import org.nschmidt.ldparteditor.win32appdata.AppData;
 
 public enum CategoriesUtils {
     INSTANCE;
@@ -105,7 +106,7 @@ public enum CategoriesUtils {
             return;
         }
 
-        Object[] messageArguments = {"categories.txt", categories.size()}; //$NON-NLS-1$
+        Object[] messageArguments = {AppData.getPath() + "categories.txt", categories.size()}; //$NON-NLS-1$
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
         formatter.applyPattern(I18n.E3D_ReplaceCategories);
@@ -117,7 +118,7 @@ public enum CategoriesUtils {
             return;
         }
 
-        try (UTF8PrintWriter out = new UTF8PrintWriter("categories.txt")) { //$NON-NLS-1$
+        try (UTF8PrintWriter out = new UTF8PrintWriter(AppData.getPath() + "categories.txt")) { //$NON-NLS-1$
             for (String line : categories) {
                 out.println(line);
             }

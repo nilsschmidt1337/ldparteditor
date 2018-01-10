@@ -110,19 +110,15 @@ public class StartupDialog extends StartupDesign {
                         } else {
                             unofficialPath = ldrawPath + File.separator + "Unofficial"; //$NON-NLS-1$
                         }
-                        if (!FileHelper.canReadFromPath(unofficialPath)) {
-                            if (FileHelper.canWriteToPath(ldrawPath)) {
-                                try {
-                                    File plugInFolder = new File(unofficialPath);
-                                    if (!plugInFolder.exists()) {
-                                        plugInFolder.mkdir();
-                                    }
-                                    path3valid = true;
-                                } catch (SecurityException s) {
-                                    NLogger.error(getClass(), "Failed to create unofficial library folder."); //$NON-NLS-1$
-                                    unofficialPath = ""; //$NON-NLS-1$
+                        if (FileHelper.canWriteToPath(ldrawPath)) {
+                            try {
+                                File unofficialFolder = new File(unofficialPath);
+                                if (!unofficialFolder.exists()) {
+                                    unofficialFolder.mkdir();
                                 }
-                            } else {
+                                path3valid = true;
+                            } catch (SecurityException s) {
+                                NLogger.error(getClass(), "Failed to create unofficial library folder."); //$NON-NLS-1$
                                 unofficialPath = ""; //$NON-NLS-1$
                             }
                         }

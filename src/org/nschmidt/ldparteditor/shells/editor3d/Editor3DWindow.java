@@ -4388,7 +4388,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             }
                                         }
                                         Project.setDefaultProject(true);
-                                        Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
+                                        Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
                                         getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                         getShell().update();
                                         treeItem_Project[0].setText(fileName);
@@ -4400,7 +4400,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                         treeItem_OfficialParts[0].setData(null);
 
-                                        list.add(0, new File("project").getAbsolutePath() + File.separator + oldFileName2); //$NON-NLS-1$
+                                        list.add(0, new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator + oldFileName2);
                                         list.add(1, source);
 
                                         DatFile main = View.DUMMY_DATFILE;
@@ -4599,7 +4599,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     fileName = fileName.replace("\\", File.separator); //$NON-NLS-1$
                                 }
 
-                                result.add(new File("project").getAbsolutePath() + File.separator + fileName); //$NON-NLS-1$
+                                result.add(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator + fileName);
                                 result.add(source2);
                                 buildFileList(source2, result, files, monitor);
                             }
@@ -5349,13 +5349,13 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     StringBuilder code = new StringBuilder();
 
-                    File l1 = new File("error_log.txt");//$NON-NLS-1$
-                    File l2 = new File("error_log2.txt");//$NON-NLS-1$
+                    File l1 = new File(NLogger.ERROR_LOG);
+                    File l2 = new File(NLogger.ERROR_LOG2);
 
                     if (l1.exists() || l2.exists()) {
                         try {
                             if (l1.exists()) {
-                                b1 = new UTF8BufferedReader("error_log.txt"); //$NON-NLS-1$
+                                b1 = new UTF8BufferedReader(NLogger.ERROR_LOG);
                                 String line;
                                 while ((line = b1.readLine()) != null) {
                                     code.append(line);
@@ -5364,7 +5364,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
 
                             if (l2.exists()) {
-                                b2 = new UTF8BufferedReader("error_log2.txt"); //$NON-NLS-1$
+                                b2 = new UTF8BufferedReader(NLogger.ERROR_LOG2);
                                 String line;
                                 while ((line = b2.readLine()) != null) {
                                     code.append(line);
@@ -5443,13 +5443,13 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         StringBuilder code = new StringBuilder();
 
-                        File l1 = new File("error_log.txt");//$NON-NLS-1$
-                        File l2 = new File("error_log2.txt");//$NON-NLS-1$
+                        File l1 = new File(NLogger.ERROR_LOG);
+                        File l2 = new File(NLogger.ERROR_LOG2);
 
                         if (l1.exists() || l2.exists()) {
 
                             if (l1.exists()) {
-                                b1 = new UTF8BufferedReader("error_log.txt"); //$NON-NLS-1$
+                                b1 = new UTF8BufferedReader(NLogger.ERROR_LOG);
                                 String line;
                                 while ((line = b1.readLine()) != null) {
                                     code.append(line);
@@ -5458,7 +5458,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
 
                             if (l2.exists()) {
-                                b2 = new UTF8BufferedReader("error_log2.txt"); //$NON-NLS-1$
+                                b2 = new UTF8BufferedReader(NLogger.ERROR_LOG2);
                                 String line;
                                 while ((line = b2.readLine()) != null) {
                                     code.append(line);
@@ -7459,7 +7459,7 @@ public class Editor3DWindow extends Editor3DDesign {
             cmp_SyncAndReview[0].getChildren()[1].dispose();
             // Reset project
             Project.setFileToEdit(View.DUMMY_DATFILE);
-            Project.setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
+            Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
             getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             getShell().update();
             treeItem_Project[0].setText(I18n.PROJECT_NewProject);

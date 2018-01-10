@@ -33,6 +33,7 @@ import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
+import org.nschmidt.ldparteditor.win32appdata.AppData;
 
 /**
  * The manager for loading or creating a default workbench
@@ -43,7 +44,7 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 public enum WorkbenchManager {
     INSTANCE;
 
-    public static final String CONFIG_GZ = "config.gz"; //$NON-NLS-1$
+    public static final String CONFIG_GZ = AppData.getPath() + "config.gz"; //$NON-NLS-1$
 
     /** The window state of the 3D editor */
     private static Editor3DWindowState editor3DWindowState;

@@ -29,6 +29,7 @@ import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.win32appdata.AppData;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -40,11 +41,13 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum Project {
     INSTANCE;
 
+    public static final String PROJECT = "project";  //$NON-NLS-1$
+    public static final String DEFAULT_PROJECT_PATH = AppData.getPath() + "project";  //$NON-NLS-1$
     private static String projectName = "default"; //$NON-NLS-1$
-    private static String projectPath = new File("project").getAbsolutePath(); //$NON-NLS-1$
+    private static String projectPath = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath();
     private static String tempProjectName = "default"; //$NON-NLS-1$
-    private static String tempProjectPath = new File("project").getAbsolutePath(); //$NON-NLS-1$
-    private static String lastVisitedPath = new File("project").getAbsolutePath(); //$NON-NLS-1$
+    private static String tempProjectPath = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath();
+    private static String lastVisitedPath = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath();
     private static boolean defaultProject = true;
 
     /** A set of all open EditorTextWindow instances */
@@ -98,7 +101,7 @@ public enum Project {
         HashSet<DatFile> projectFiles = new HashSet<DatFile>();
         if (isDefaultProject()) {
             // Linked project parts need a new path, because they were copied to a new directory
-            String defaultPrefix = new File("project").getAbsolutePath() + File.separator; //$NON-NLS-1$
+            String defaultPrefix = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator;
             String projectPrefix = new File(projectPath).getAbsolutePath() + File.separator;
             Editor3DWindow.getWindow().getProjectParts().getParentItem().setData(projectPath);
             projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData());
@@ -126,7 +129,7 @@ public enum Project {
         }
         try {
             if (isDefaultProject()) {
-                copyFolder(new File("project"), new File(projectPath)); //$NON-NLS-1$
+                copyFolder(new File(Project.DEFAULT_PROJECT_PATH), new File(projectPath));
                 for (DatFile df : projectFiles) {
                     df.updateLastModified();
                 }
@@ -204,7 +207,7 @@ public enum Project {
     public static void createDefault() {
         resetEditor();
         setDefaultProject(true);
-        setProjectPath(new File("project").getAbsolutePath()); //$NON-NLS-1$
+        setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
         createFileStructure(false);
         Editor3DWindow.getWindow().getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         Editor3DWindow.getWindow().getShell().update();
