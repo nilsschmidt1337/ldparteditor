@@ -77,8 +77,8 @@
         	<zipfileset excludes="META-INF/*.SF" src="${ws}/org.eclipse.swt_${src}/swt.jar"/>
         	<fileset dir="${ws}/com.sun.tools/bin"/>
             <zipfileset excludes="META-INF/*.SF" src="${ws}/runtime_compiler/tools.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/swt-grouplayout.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/libs/swt-grouplayout.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${ws}/LDPartEditor_linux/libs/swing2swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
