@@ -1,5 +1,5 @@
 #define MyAppName "LDPartEditor"
-#define MyAppVersion "0.8.41"
+#define MyAppVersion "0.8.42"
 #define MyAppPublisher "Nils Schmidt"
 #define MyAppExeName "LDPartEditor.exe"
 
@@ -42,8 +42,6 @@ Source: "I:\LDPE\OpenAL.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "I:\LDPE\LICENSE"; DestDir: "{app}"; Flags: ignoreversion
 Source: "I:\LDPE\categories.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "I:\LDPE\primitive_rules.txt"; DestDir: "{app}"; Flags: ignoreversion
-Source: "I:\LDPE\update.bat"; DestDir: "{app}"; Flags: ignoreversion
-Source: "I:\LDPE\SearchForUpdates.jar"; DestDir: "{app}"; Flags: ignoreversion
 
 [Dirs]
 Name: "{app}\plugin"
