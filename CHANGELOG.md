@@ -1,3 +1,12 @@
+### 11 Jan 2018
+With the release of **0.8.41** you are able to...
+-  ...launch an LDPartEditor executable under Windows / install it with a setup file.
+
+The following critical issues are fixed:
+1. Colour table (OS: Windows) - The scroll on mouse over, in the list view, only worked when the pointer was over the slider. Not when it was over the list.
+2. The primitive area disappeared sometimes, because a paint event cleared the canvas.
+
+
 ### 04 Jan 2018
 With the release of **0.8.40** you are able to...
 -  ...unscale something without losing current origin/orientation (double click on selected subfile -> hold ctrl and click on "Move selected subfile to manipulator").
