@@ -163,6 +163,10 @@ public class VM09WindingChange extends VM08SlicerPro {
                 untransformedSubfile = (GData1) DatParser
                         .parseLine("1 " + colourBuilder.toString() + " 0 0 0 1 0 0 0 1 0 0 0 1 " + subf.shortName , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$ //$NON-NLS-2$
                                 new HashSet<String>(), false).get(0).getGraphicalData();
+                if (untransformedSubfile == null) {
+                    continue;
+                }
+
                 boolean plainOnX = untransformedSubfile.boundingBoxMin.x - untransformedSubfile.boundingBoxMax.x == 0f;
                 boolean plainOnY = untransformedSubfile.boundingBoxMin.y - untransformedSubfile.boundingBoxMax.y == 0f;
                 boolean plainOnZ = untransformedSubfile.boundingBoxMin.z - untransformedSubfile.boundingBoxMax.z == 0f;
@@ -208,6 +212,10 @@ public class VM09WindingChange extends VM08SlicerPro {
                     newSubfile = (GData1) DatParser
                             .parseLine(untransformedSubfile.getTransformedString(m, null, linkedDatFile, false) , dpl.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
+
+                    if (newSubfile == null) {
+                        continue;
+                    }
                 } else {
                     needsInvertNext = true;
                 }

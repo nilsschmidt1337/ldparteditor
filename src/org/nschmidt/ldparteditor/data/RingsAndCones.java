@@ -348,9 +348,11 @@ public enum RingsAndCones {
                         GData quad = DatParser.parseLine(line3
                                 , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                 new HashSet<String>(), false).get(0).getGraphicalData();
-                        vm.getSelectedData().add(quad);
-                        vm.getSelectedQuads().add((GData4) quad);
-                        df.addToTailOrInsertAfterCursor(quad);
+                        if (quad != null) {
+                            vm.getSelectedData().add(quad);
+                            vm.getSelectedQuads().add((GData4) quad);
+                            df.addToTailOrInsertAfterCursor(quad);
+                        }
 
                         if (rs.isUsingCones() && ignoreLastCondline && i < numFaces - 1) {
                             BigDecimal nx = new BigDecimal(Math.cos(a + deltaA));
@@ -364,9 +366,11 @@ public enum RingsAndCones {
                             GData condline = DatParser.parseLine(line5
                                     , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
-                            vm.getSelectedData().add(condline);
-                            vm.getSelectedCondlines().add((GData5) condline);
-                            df.addToTailOrInsertAfterCursor(condline);
+                            if (condline != null) {
+                                vm.getSelectedData().add(condline);
+                                vm.getSelectedCondlines().add((GData5) condline);
+                                df.addToTailOrInsertAfterCursor(condline);
+                            }
                         }
 
                         px1 = x1;
@@ -488,9 +492,11 @@ public enum RingsAndCones {
                         GData tri = DatParser.parseLine(line3
                                 , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                 new HashSet<String>(), false).get(0).getGraphicalData();
-                        vm.getSelectedData().add(tri);
-                        vm.getSelectedTriangles().add((GData3) tri);
-                        df.addToTailOrInsertAfterCursor(tri);
+                        if (tri != null) {
+                            vm.getSelectedData().add(tri);
+                            vm.getSelectedTriangles().add((GData3) tri);
+                            df.addToTailOrInsertAfterCursor(tri);
+                        }
 
                         if (rs.isUsingCones() && ignoreLastCondline && i < numFaces - 1) {
                             BigDecimal nx = new BigDecimal(Math.cos(a + deltaA));
@@ -504,9 +510,11 @@ public enum RingsAndCones {
                             GData condline = DatParser.parseLine(line5
                                     , -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
-                            vm.getSelectedData().add(condline);
-                            vm.getSelectedCondlines().add((GData5) condline);
-                            df.addToTailOrInsertAfterCursor(condline);
+                            if (condline != null) {
+                                vm.getSelectedData().add(condline);
+                                vm.getSelectedCondlines().add((GData5) condline);
+                                df.addToTailOrInsertAfterCursor(condline);
+                            }
                         }
 
                         px = x;
