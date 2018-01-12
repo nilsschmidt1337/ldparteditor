@@ -92,7 +92,7 @@ public class HistoryManager {
                                 final String resultFullText;
                                 String text = (String) newEntry[0];
                                 GData[] data = (GData[]) newEntry[3];
-                                if (text != null) {
+                                if (text != null && !text.isEmpty()) {
                                     if (text.charAt(text.length() - 1) == '\r') {
                                         text = text.substring(0, text.length() - 1);
                                     }

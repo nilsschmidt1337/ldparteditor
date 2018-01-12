@@ -162,6 +162,9 @@ public class SplashScreen extends ApplicationWindow {
             canvas.setCurrent();
             GL.createCapabilities();
             String glVersion = GL11.glGetString(GL11.GL_VERSION);
+            if (glVersion == null || glVersion.length() < 4) {
+                glVersion = "0.0.0"; //$NON-NLS-1$
+            }
             int major = Integer.parseInt(glVersion.substring(0, 1));
             int minor = Integer.parseInt(glVersion.substring(2, 3));
             // Don't check legacy OpenGL compatibility from the stone age
