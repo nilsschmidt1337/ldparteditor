@@ -2002,8 +2002,14 @@ public final class DatFile {
             }
         }
         while (count < objCount) {
-            data2draw = data2draw.getNext();
-            backup[count] = data2draw;
+            if (data2draw == null) {
+                backup[count] = new GData0("", false, View.DUMMY_REFERENCE);     //$NON-NLS-1$
+            } else {
+                data2draw = data2draw.getNext();
+            }
+            if (data2draw != null) {
+                backup[count] = data2draw;
+            }
             count++;
         }
 
