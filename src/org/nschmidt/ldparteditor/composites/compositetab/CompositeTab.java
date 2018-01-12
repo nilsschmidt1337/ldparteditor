@@ -479,7 +479,7 @@ public class CompositeTab extends CompositeTabDesign {
                             NLogger.debug(getClass(), "VerifyEvent.Text {0}", event.text); //$NON-NLS-1$
                             if (doReplace) {
                                 int off = compositeText[0].getOffsetAtLine(state.currentCaretPositionLine);
-                                newLine = oldLine.substring(0, event.start - off) + event.text + oldLine.substring(event.end - off);
+                                newLine = oldLine.substring(0, Math.max(0, event.start - off)) + event.text + oldLine.substring(Math.max(0, event.end - off));
                             } else if (event.text.length() == 0 && state.currentCaretPositionChar > 0) {
                                 if (!isDelPressed[0])
                                     state.currentCaretPositionChar--;

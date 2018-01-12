@@ -9490,7 +9490,7 @@ public class Editor3DWindow extends Editor3DDesign {
             FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
 
             File tmp = new File(df.getNewName());
-            dlg.setFilterPath(tmp.getAbsolutePath().substring(0, tmp.getAbsolutePath().length() - tmp.getName().length()));
+            dlg.setFilterPath(tmp.getAbsolutePath().substring(0, Math.max(0, tmp.getAbsolutePath().length() - tmp.getName().length())));
             dlg.setFileName(tmp.getName());
             dlg.setFilterExtensions(new String[]{"*.dat"}); //$NON-NLS-1$
             dlg.setOverwrite(true);
