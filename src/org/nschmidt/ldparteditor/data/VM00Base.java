@@ -37,6 +37,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
@@ -261,7 +262,12 @@ class VM00Base {
                                 // the state of the program may not allow a synchronisation anymore
                                 for (EditorTextWindow w : Project.getOpenTextWindows()) {
                                     for (final CTabItem t : w.getTabFolder().getItems()) {
-                                        final DatFile txtDat = ((CompositeTab) t).getState().getFileNameObj();
+                                        // FIXME Implement a solid solution against this NullPointer errors here...
+                                        final CompositeTab ctab = ((CompositeTab) t);
+                                        if (ctab == null) continue;
+                                        final CompositeTabState state = ctab.getState();
+                                        if (state == null) continue;
+                                        final DatFile txtDat = state.getFileNameObj();
                                         if (txtDat != null && txtDat.equals(linkedDatFile)) {
                                             notFound = false;
                                             final String txt;
@@ -274,19 +280,19 @@ class VM00Base {
                                                 @Override
                                                 public void run() {
                                                     try {
-                                                        int ti = ((CompositeTab) t).getTextComposite().getTopIndex();
-                                                        Point r = ((CompositeTab) t).getTextComposite().getSelectionRange();
-                                                        ((CompositeTab) t).getState().setSync(true);
+                                                        int ti = ctab.getTextComposite().getTopIndex();
+                                                        Point r = ctab.getTextComposite().getSelectionRange();
+                                                        ctab.getState().setSync(true);
                                                         if (isModified() && txt != null) {
-                                                            ((CompositeTab) t).getTextComposite().setText(txt);
+                                                            ctab.getTextComposite().setText(txt);
                                                         }
-                                                        ((CompositeTab) t).getTextComposite().setTopIndex(ti);
+                                                        ctab.getTextComposite().setTopIndex(ti);
                                                         try {
-                                                            ((CompositeTab) t).getTextComposite().setSelectionRange(r.x, r.y);
+                                                            ctab.getTextComposite().setSelectionRange(r.x, r.y);
                                                         } catch (IllegalArgumentException consumed) {}
-                                                        ((CompositeTab) t).getTextComposite().redraw();
-                                                        ((CompositeTab) t).getControl().redraw();
-                                                        ((CompositeTab) t).getState().setSync(false);
+                                                        ctab.getTextComposite().redraw();
+                                                        ctab.getControl().redraw();
+                                                        ctab.getState().setSync(false);
                                                     } catch (SWTException ex) {
                                                         // The text editor widget could be disposed
                                                         NLogger.error(getClass(), ex);
