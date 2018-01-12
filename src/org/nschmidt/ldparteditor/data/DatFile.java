@@ -2009,6 +2009,8 @@ public final class DatFile {
             }
             if (data2draw != null) {
                 backup[count] = data2draw;
+            } else {
+                backup[count] = new GData0("", false, View.DUMMY_REFERENCE);     //$NON-NLS-1$
             }
             count++;
         }
