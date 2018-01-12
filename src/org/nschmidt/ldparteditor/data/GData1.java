@@ -1541,6 +1541,9 @@ public final class GData1 extends GData {
         untransformedSubfile = (GData1) DatParser
                 .parseLine("1 " + colourBuilder.toString() + " 0 0 0 1 0 0 0 1 0 0 0 1 " + this.shortName , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false, //$NON-NLS-1$ //$NON-NLS-2$
                         new HashSet<String>(), false).get(0).getGraphicalData();
+        if (untransformedSubfile == null) {
+            return getNiceString();
+        }
         // Clear the cache..
         GData.parsedLines.clear();
         GData.CACHE_parsedFilesSource.clear();

@@ -386,17 +386,20 @@ class VM01Select extends VM00Snapshot {
                             .parseLine(transformedString, drawPerLine.getKey(g1).intValue(), 0, g1.r, g1.g, g1.b, g1.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                 }
-                if (g1.equals(linkedDatFile.getDrawChainTail()))
-                    linkedDatFile.setDrawChainTail(newData);
+                // The transformation can be invalid!
+                if (newData != null) {
+                    if (g1.equals(linkedDatFile.getDrawChainTail()))
+                        linkedDatFile.setDrawChainTail(newData);
 
-                before.setNext(newData);
-                newData.setNext(next);
-                drawPerLine.put(drawPerLine.getKey(selectedLine), newData);
-                if (remove(selectedLine)) {
-                    linkedDatFile.setDrawChainTail(newData);
+                    before.setNext(newData);
+                    newData.setNext(next);
+                    drawPerLine.put(drawPerLine.getKey(selectedLine), newData);
+                    if (remove(selectedLine)) {
+                        linkedDatFile.setDrawChainTail(newData);
+                    }
+                    selectSubfile(newData);
+                    selectedLine = newData;
                 }
-                selectSubfile(newData);
-                selectedLine = newData;
                 setModified(true, true);
                 updateUnsavedStatus();
                 return selectedLine;

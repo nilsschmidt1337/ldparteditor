@@ -205,15 +205,17 @@ class VM19ColourChanger extends VM18LineConverter {
                             .parseLine(colouredString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                                     new HashSet<String>(), false).get(0).getGraphicalData();
                 }
-                if (subf.equals(linkedDatFile.getDrawChainTail()))
-                    linkedDatFile.setDrawChainTail(colouredSubfile);
+                if (colouredSubfile != null) {
+                    if (subf.equals(linkedDatFile.getDrawChainTail()))
+                        linkedDatFile.setDrawChainTail(colouredSubfile);
 
-                oldBefore.setNext(colouredSubfile);
-                colouredSubfile.setNext(oldNext);
-                Integer oldNumber = drawPerLine.getKey(subf);
-                if (oldNumber != null)
-                    drawPerLine.put(oldNumber, colouredSubfile);
-                newSubfiles.add((GData1) colouredSubfile);
+                    oldBefore.setNext(colouredSubfile);
+                    colouredSubfile.setNext(oldNext);
+                    Integer oldNumber = drawPerLine.getKey(subf);
+                    if (oldNumber != null)
+                        drawPerLine.put(oldNumber, colouredSubfile);
+                    newSubfiles.add((GData1) colouredSubfile);
+                }
             }
             selectedSubfiles.clear();
             selectedSubfiles.addAll(newSubfiles);

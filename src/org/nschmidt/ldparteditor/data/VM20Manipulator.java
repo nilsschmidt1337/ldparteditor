@@ -558,17 +558,20 @@ public class VM20Manipulator extends VM19ColourChanger {
                     GData transformedSubfile = DatParser
                             .parseLine(transformedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
                                     false, new HashSet<String>(), false).get(0).getGraphicalData();
-                    if (subf.equals(linkedDatFile.getDrawChainTail()))
-                        linkedDatFile.setDrawChainTail(transformedSubfile);
-                    GData oldNext = subf.getNext();
-                    GData oldBefore = subf.getBefore();
-                    oldBefore.setNext(transformedSubfile);
-                    transformedSubfile.setNext(oldNext);
-                    Integer oldNumber = drawPerLine.getKey(subf);
-                    if (oldNumber != null)
-                        drawPerLine.put(oldNumber, transformedSubfile);
-                    remove(subf);
-                    newSubfiles.add((GData1) transformedSubfile);
+                    // The transformation can be invalid!
+                    if (transformedSubfile != null) {
+                        if (subf.equals(linkedDatFile.getDrawChainTail()))
+                            linkedDatFile.setDrawChainTail(transformedSubfile);
+                        GData oldNext = subf.getNext();
+                        GData oldBefore = subf.getBefore();
+                        oldBefore.setNext(transformedSubfile);
+                        transformedSubfile.setNext(oldNext);
+                        Integer oldNumber = drawPerLine.getKey(subf);
+                        if (oldNumber != null)
+                            drawPerLine.put(oldNumber, transformedSubfile);
+                        remove(subf);
+                        newSubfiles.add((GData1) transformedSubfile);
+                    }
                 }
                 selectedSubfiles.clear();
                 selectedSubfiles.addAll(newSubfiles);
@@ -821,22 +824,27 @@ public class VM20Manipulator extends VM19ColourChanger {
         // Clear the cache..
         GData.parsedLines.clear();
         GData.CACHE_parsedFilesSource.clear();
-        GData oldNext = g.getNext();
-        GData oldBefore = g.getBefore();
-        oldBefore.setNext(reloadedSubfile);
-        reloadedSubfile.setNext(oldNext);
-        Integer oldNumber = drawPerLine.getKey(g);
-        if (oldNumber != null)
-            drawPerLine.put(oldNumber, reloadedSubfile);
-        remove(g);
-        if (clearSelection) {
+        // The transformation can be invalid!
+        if (reloadedSubfile != null) {
+            GData oldNext = g.getNext();
+            GData oldBefore = g.getBefore();
+            oldBefore.setNext(reloadedSubfile);
+            reloadedSubfile.setNext(oldNext);
+            Integer oldNumber = drawPerLine.getKey(g);
+            if (oldNumber != null)
+                drawPerLine.put(oldNumber, reloadedSubfile);
+            remove(g);
+            if (clearSelection) {
+                clearSelection();
+            } else {
+                selectedData.remove(g);
+                selectedSubfiles.remove(g);
+            }
+            selectedData.add(reloadedSubfile);
+            selectedSubfiles.add(reloadedSubfile);
+        } else if (clearSelection) {
             clearSelection();
-        } else {
-            selectedData.remove(g);
-            selectedSubfiles.remove(g);
         }
-        selectedData.add(reloadedSubfile);
-        selectedSubfiles.add(reloadedSubfile);
         selectWholeSubfiles();
         if (syncWithTextEditor) {
             restoreHideShowState();

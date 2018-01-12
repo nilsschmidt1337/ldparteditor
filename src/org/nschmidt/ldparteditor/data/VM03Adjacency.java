@@ -866,17 +866,19 @@ class VM03Adjacency extends VM02Add {
                                 .parseLine(roundedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
                                         false, new HashSet<String>(), false).get(0).getGraphicalData();
                     }
-                    if (subf.equals(linkedDatFile.getDrawChainTail()))
-                        linkedDatFile.setDrawChainTail(roundedSubfile);
-                    GData oldNext = subf.getNext();
-                    GData oldBefore = subf.getBefore();
-                    oldBefore.setNext(roundedSubfile);
-                    roundedSubfile.setNext(oldNext);
-                    Integer oldNumber = drawPerLine.getKey(subf);
-                    if (oldNumber != null)
-                        drawPerLine.put(oldNumber, roundedSubfile);
-                    remove(subf);
-                    newSubfiles.add((GData1) roundedSubfile);
+                    if (roundedSubfile != null) {
+                        if (subf.equals(linkedDatFile.getDrawChainTail()))
+                            linkedDatFile.setDrawChainTail(roundedSubfile);
+                        GData oldNext = subf.getNext();
+                        GData oldBefore = subf.getBefore();
+                        oldBefore.setNext(roundedSubfile);
+                        roundedSubfile.setNext(oldNext);
+                        Integer oldNumber = drawPerLine.getKey(subf);
+                        if (oldNumber != null)
+                            drawPerLine.put(oldNumber, roundedSubfile);
+                        remove(subf);
+                        newSubfiles.add((GData1) roundedSubfile);
+                    }
                 }
                 selectedSubfiles.clear();
                 selectedSubfiles.addAll(newSubfiles);
@@ -927,17 +929,19 @@ class VM03Adjacency extends VM02Add {
                                 .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col.getR(), col.getG(), col.getB(), col.getA(), View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
                                         new HashSet<String>(), false).get(0).getGraphicalData();
                     }
-                    if (csg.equals(linkedDatFile.getDrawChainTail()))
-                        linkedDatFile.setDrawChainTail(roundedCSG);
-                    GData oldNext = csg.getNext();
-                    GData oldBefore = csg.getBefore();
-                    oldBefore.setNext(roundedCSG);
-                    roundedCSG.setNext(oldNext);
-                    Integer oldNumber = drawPerLine.getKey(csg);
-                    if (oldNumber != null)
-                        drawPerLine.put(oldNumber, roundedCSG);
-                    remove(csg);
-                    newCSGSelection.add((GDataCSG) roundedCSG);
+                    if (roundedCSG != null) {
+                        if (csg.equals(linkedDatFile.getDrawChainTail()))
+                            linkedDatFile.setDrawChainTail(roundedCSG);
+                        GData oldNext = csg.getNext();
+                        GData oldBefore = csg.getBefore();
+                        oldBefore.setNext(roundedCSG);
+                        roundedCSG.setNext(oldNext);
+                        Integer oldNumber = drawPerLine.getKey(csg);
+                        if (oldNumber != null)
+                            drawPerLine.put(oldNumber, roundedCSG);
+                        remove(csg);
+                        newCSGSelection.add((GDataCSG) roundedCSG);
+                    }
                 }
                 GDataCSG.getSelection(linkedDatFile).clear();
                 GDataCSG.getSelection(linkedDatFile).addAll(newCSGSelection);
