@@ -15,27 +15,6 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.win32openWith;
 
-import java.io.IOException;
-import java.nio.file.Paths;
-
-import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
-
-public class TryToOpen {
-
-    public static FileActionResult File(String path) {
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).getParent(), Paths.get(path)).watchEvents();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        }.start();
-
-        // FIXME Needs to be adjusted
-        return FileActionResult.FILE_NOT_FOUND;
-    }
+public enum FileActionResult {
+    DELEGATED_TO_ANOTHER_INSTANCE, WILL_OPEN_FILE, FILE_NOT_FOUND
 }
