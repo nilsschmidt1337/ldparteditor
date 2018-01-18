@@ -13,37 +13,26 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.main;
+package org.nschmidt.ldparteditor.win32openWith;
 
-import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.splash.SplashScreen;
-import org.nschmidt.ldparteditor.win32openWith.TryToOpen;
+import java.io.IOException;
+import java.nio.file.Paths;
 
-/**
- * The main class, which launches the Splash Screen
- *
- * @author nils
- *
- */
-// Nothing more to do here..
-public class LDPartEditor {
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-    /**
-     * Program entry point
-     *
-     * @param args
-     *            startup arguments
-     */
-    public static void main(String[] args) {
+public class TryToOpen {
 
-        NLogger.setDEBUG(args.length == 1 && "DEBUG".equals(args[0])); //$NON-NLS-1$
-        NLogger.init();
-
-        if (args.length > 0 && args[0] != null) {
-            TryToOpen.File(args[0]);
-        }
-
-        new SplashScreen().run();
-        NLogger.flushErrorStream();
+    public static void File(String path) {
+        new Thread() {
+            @Override
+            public void run() {
+                try {
+                    new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).getParent(), Paths.get(path)).watchEvents();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 }
