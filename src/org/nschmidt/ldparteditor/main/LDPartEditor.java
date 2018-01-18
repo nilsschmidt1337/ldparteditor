@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.main;
 
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.splash.SplashScreen;
+import org.nschmidt.ldparteditor.win32openWith.FileActionResult;
 import org.nschmidt.ldparteditor.win32openWith.TryToOpen;
 
 /**
@@ -36,11 +37,16 @@ public class LDPartEditor {
      */
     public static void main(String[] args) {
 
+        // Initialize the logger
         NLogger.setDEBUG(args.length == 1 && "DEBUG".equals(args[0])); //$NON-NLS-1$
         NLogger.init();
 
-        if (args.length > 0 && args[0] != null) {
-            TryToOpen.File(args[0]);
+        // Check if LDPartEditor should open a file
+        if (args.length > 0) {
+            if (TryToOpen.File(args[0]) == FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE) {
+                NLogger.flushErrorStream();
+                return;
+            }
         }
 
         new SplashScreen().run();
