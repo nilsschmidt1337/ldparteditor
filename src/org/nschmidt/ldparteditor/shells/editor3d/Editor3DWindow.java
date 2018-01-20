@@ -215,6 +215,7 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
+import org.nschmidt.ldparteditor.win32openWith.TryToOpen;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
@@ -6352,6 +6353,21 @@ public class Editor3DWindow extends Editor3DDesign {
 
         updateBgPictureTab();
         Project.getFileToEdit().addHistory();
+
+        // Parse a file here if it should be opened
+        if (TryToOpen.getFileToOpen() != null) {
+            final DatFile fileToOpen = TryToOpen.getDatFileToOpen();
+            Project.addOpenedFile(fileToOpen);
+            updateTabs();
+            tabFolder_OpenDatFiles[0].setSelection(2);
+            Project.setFileToEdit(fileToOpen);
+            Project.getFileToEdit().parseForData(true);
+            Project.getFileToEdit().setLastSelectedComposite(Editor3DWindow.renders.get(0).getC3D());
+            for (OpenGLRenderer renderer : renders) {
+                renderer.getC3D().setLockableDatFileReference(Project.getFileToEdit());
+            }
+        }
+
         this.open();
         // Dispose all resources (never delete this!)
         CSG.executorService.shutdown();
@@ -8481,6 +8497,11 @@ public class Editor3DWindow extends Editor3DDesign {
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
             ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
+            // Null-check is only required when a file is opened on program start
+            if (cachedReferences == null) {
+                cachedReferences = new ArrayList<>();
+                folder.setData(cachedReferences);
+            }
             for (DatFile d : cachedReferences) {
                 if (dir.equals(d.getOldName()) || dir.equals(d.getNewName())) {
                     return d;
