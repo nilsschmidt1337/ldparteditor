@@ -22,7 +22,11 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.enums.OpenInWhat;
+import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -30,6 +34,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public enum TryToOpen {
     INSTANCE;
+
+    private static DatFile datFileToOpen = null;
 
     /**
      * Tries to open a file with an LDPE instance
@@ -75,21 +81,33 @@ public enum TryToOpen {
         return result;
     }
 
-    public static String getFileName() {
+    public static String getFileToOpen() {
+        final Path path = WatchConfigDirectory.getFileToOpen();
+        if (path != null) {
+            return path.toString();
+        }
+        return null;
+    }
+
+    public static DatFile getDatFileToOpen() {
+        if (datFileToOpen == null) {
+            final Editor3DWindow win = Editor3DWindow.getWindow();
+            datFileToOpen = win.openDatFile(win.getShell(), OpenInWhat.EDITOR_TEXT, getFileToOpen(), false);
+            if (datFileToOpen == null) {
+                NLogger.error(TryToOpen.class, "Could not open file " + getFileName()); //$NON-NLS-1$
+                datFileToOpen = View.DUMMY_DATFILE;
+            }
+        }
+        return datFileToOpen;
+    }
+
+    private static String getFileName() {
         final Path path = WatchConfigDirectory.getFileToOpen();
         if (path != null) {
             Path fileName = path.getFileName();
             if (fileName != null) {
                 return fileName.toString();
             }
-        }
-        return null;
-    }
-
-    public static String getFileToOpen() {
-        final Path path = WatchConfigDirectory.getFileToOpen();
-        if (path != null) {
-            return path.toString();
         }
         return null;
     }
