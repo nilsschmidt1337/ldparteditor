@@ -15,27 +15,61 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.win32openWith;
 
+import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE;
+import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.FILE_NOT_FOUND;
+
 import java.io.IOException;
 import java.nio.file.Paths;
 
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-public class TryToOpen {
+/**
+ * Provides a method of emulating "Open with..."
+ */
+public enum TryToOpen {
+    INSTANCE;
 
+    /**
+     * Tries to open a file with an LDPE instance
+     * @param path the path to the file
+     * @return a {@linkplain FileActionResult} which indicates if the file was not found/accessible, if it will be opened or if it was delegated to another LDPE instance
+     */
     public static FileActionResult File(String path) {
-        new Thread() {
-            @Override
-            public void run() {
+
+        FileActionResult result = FILE_NOT_FOUND;
+
+        // Try to call another LDPE instance
+        try {
+            if (path != null && new java.io.File(path).exists()) {
                 try {
-                    new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).getParent(), Paths.get(path)).watchEvents();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                    final WatchConfigDirectory wcd = new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).getParent(), Paths.get(path));
+                    result = wcd.callAnotherLDPartEditorInstance();
+                } catch (IOException ioe) {
+                    NLogger.error(TryToOpen.class, ioe);
                 }
             }
-        }.start();
+        } catch (SecurityException se) {
+            NLogger.debug(TryToOpen.class, se);
+        }
 
-        // FIXME Needs to be adjusted
-        return FileActionResult.FILE_NOT_FOUND;
+        // Listen to fileOpen calls from other LDPE instances
+        if (result != DELEGATED_TO_ANOTHER_INSTANCE) {
+            new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).getParent()).waitForCall();
+                    } catch (IOException ioe) {
+                        NLogger.error(TryToOpen.class, ioe);
+                    }
+                }
+            }.start();
+        }
+
+        // Return FILE_NOT_FOUND when there was no file to open
+        // it returns DELEGATED_TO_ANOTHER_INSTANCE if there is another LDPE instance which will open it
+        // it returns WILL_OPEN_FILE if this instance is going to open the file
+        return result;
     }
 }
