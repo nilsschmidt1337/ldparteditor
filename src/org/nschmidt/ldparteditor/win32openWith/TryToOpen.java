@@ -19,6 +19,7 @@ import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.DELEGATED
 import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.FILE_NOT_FOUND;
 
 import java.io.IOException;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -41,7 +42,8 @@ public enum TryToOpen {
 
         // Try to call another LDPE instance
         try {
-            if (path != null && new java.io.File(path).exists()) {
+            final java.io.File file = new java.io.File(path);
+            if (path != null && file.exists() && file.isFile()) {
                 try {
                     final WatchConfigDirectory wcd = new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).getParent(), Paths.get(path));
                     result = wcd.callAnotherLDPartEditorInstance();
@@ -71,5 +73,24 @@ public enum TryToOpen {
         // it returns DELEGATED_TO_ANOTHER_INSTANCE if there is another LDPE instance which will open it
         // it returns WILL_OPEN_FILE if this instance is going to open the file
         return result;
+    }
+
+    public static String getFileName() {
+        final Path path = WatchConfigDirectory.getFileToOpen();
+        if (path != null) {
+            Path fileName = path.getFileName();
+            if (fileName != null) {
+                return fileName.toString();
+            }
+        }
+        return null;
+    }
+
+    public static String getFileToOpen() {
+        final Path path = WatchConfigDirectory.getFileToOpen();
+        if (path != null) {
+            return path.toString();
+        }
+        return null;
     }
 }
