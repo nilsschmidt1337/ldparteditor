@@ -33,6 +33,8 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
+import java.util.LinkedList;
+import java.util.Queue;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
@@ -42,7 +44,7 @@ import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
 
 /**
- * Watches the configuration directory to detect if a DAT file should be opened by LDPE
+ * Watches the configuration directory to detect if a DAT file should be opened by LDPartEditor
  */
 class WatchConfigDirectory {
 
@@ -80,6 +82,9 @@ class WatchConfigDirectory {
     }
 
     public void waitForCall() {
+
+        final Queue<String> filesToOpen = new LinkedList<>();
+
         while (Editor3DWindow.getAlive().get()) {
 
             // Wait for the WatchKey
@@ -104,11 +109,14 @@ class WatchConfigDirectory {
 
                     // ev.context() = file name
                     WatchEvent<Path> ev = cast(event);
-                    Path name = ev.context();
-                    Path child = this.dir.resolve(name);
+                    String name = ev.context().toString();
 
                     // print out event
-                    NLogger.debug(getClass(), "Kind: {0} -> {1}", kind.name(), child); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "ENTRY_MODIFY: {0}", name); //$NON-NLS-1$
+
+                    // This thread needs to send an asynchronous call to the UI
+                    // and should keep waiting for other file open calls
+                    // the calls have to be stored in a queue.
                 }
 
                 if (!key.reset()) {
@@ -135,6 +143,7 @@ class WatchConfigDirectory {
                 try (UTF8PrintWriter writer = new UTF8PrintWriter(reqFile)) {
                     final String pathToOpen = fileToOpen.toString();
                     writer.println(pathToOpen);
+                    state = S1_ACK;
                 } catch (FileNotFoundException fnfe) {
                     if (cycles == 0) {
                         NLogger.error(getClass(), fnfe);
@@ -144,7 +153,6 @@ class WatchConfigDirectory {
                         NLogger.error(getClass(), uee);
                     }
                 }
-                state = S1_ACK;
             }
 
             // Wait for the WatchKey
@@ -172,11 +180,10 @@ class WatchConfigDirectory {
 
                     // ev.context() = file name
                     WatchEvent<Path> ev = cast(event);
-                    Path name = ev.context();
-                    Path child = this.dir.resolve(name);
+                    String name = ev.context().toString();
 
                     // print out event
-                    NLogger.debug(getClass(), "Kind: {0} -> {1}", kind.name(), child); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "ENTRY_MODIFY: {0}", name); //$NON-NLS-1$
                 }
 
                 if (!key.reset()) {

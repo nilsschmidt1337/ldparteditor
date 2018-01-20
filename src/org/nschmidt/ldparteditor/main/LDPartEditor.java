@@ -15,15 +15,14 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.main;
 
+import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE;
+
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.splash.SplashScreen;
-import org.nschmidt.ldparteditor.win32openWith.FileActionResult;
 import org.nschmidt.ldparteditor.win32openWith.TryToOpen;
 
 /**
  * The main class, which launches the Splash Screen
- *
- * @author nils
  *
  */
 // Nothing more to do here..
@@ -43,13 +42,16 @@ public class LDPartEditor {
 
         // Check if LDPartEditor should open a file
         if (args.length > 0) {
-            if (TryToOpen.File(args[0]) == FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE) {
+            if (TryToOpen.File(args[0]) == DELEGATED_TO_ANOTHER_INSTANCE) {
                 NLogger.flushErrorStream();
                 return;
             }
         }
 
+        // Show the SplashScreen
         new SplashScreen().run();
+
+        // Flush the error stream to write the complete log file
         NLogger.flushErrorStream();
     }
 }
