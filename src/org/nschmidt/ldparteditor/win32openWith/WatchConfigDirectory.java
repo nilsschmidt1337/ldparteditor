@@ -199,6 +199,7 @@ class WatchConfigDirectory {
                                                }
                                            }
                                            win.updateTree_unsavedEntries();
+
                                            // Hack to bring LDPartEditor to front
                                            if (!win.getShell().getMinimized())
                                            {
