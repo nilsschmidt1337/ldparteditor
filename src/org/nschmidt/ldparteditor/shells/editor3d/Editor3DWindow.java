@@ -6358,9 +6358,9 @@ public class Editor3DWindow extends Editor3DDesign {
         if (TryToOpen.getFileToOpen() != null) {
             final DatFile fileToOpen = TryToOpen.getDatFileToOpen();
             Project.addOpenedFile(fileToOpen);
+            Project.setFileToEdit(fileToOpen);
             updateTabs();
             tabFolder_OpenDatFiles[0].setSelection(2);
-            Project.setFileToEdit(fileToOpen);
             Project.getFileToEdit().parseForData(true);
             Project.getFileToEdit().setLastSelectedComposite(Editor3DWindow.renders.get(0).getC3D());
             for (OpenGLRenderer renderer : renders) {
