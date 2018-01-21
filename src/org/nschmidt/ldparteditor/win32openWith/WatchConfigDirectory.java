@@ -50,6 +50,7 @@ import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
+import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
  * Watches the configuration directory to detect if a DAT file should be opened by LDPartEditor
@@ -185,28 +186,36 @@ class WatchConfigDirectory {
                             if (shouldOpenFile) {
                                 final String path = pathToOpen;
                                 CompletableFuture.runAsync(() -> {
+                                   final boolean syncingTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
                                    try {
                                        fileOpenLock.lock();
                                        // Load file here
                                        final Editor3DWindow win = Editor3DWindow.getWindow();
                                        win.getShell().getDisplay().asyncExec(() -> {
-                                           final DatFile df = win.openDatFile(win.getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, path, false);
-                                           if (df != null) {
-                                               win.addRecentFile(df);
-                                               final File f = new File(df.getNewName());
-                                               if (f.getParentFile() != null) {
-                                                   Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                           try {
+                                               WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                                               final DatFile df = win.openDatFile(win.getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, path, false);
+                                               if (df != null) {
+                                                   win.addRecentFile(df);
+                                                   final File f = new File(df.getNewName());
+                                                   if (f.getParentFile() != null) {
+                                                       Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                                   }
                                                }
-                                           }
-                                           win.updateTree_unsavedEntries();
 
-                                           // Hack to bring LDPartEditor to front
-                                           if (!win.getShell().getMinimized())
-                                           {
-                                               win.getShell().setMinimized(true);
+                                               win.updateTree_unsavedEntries();
+
+                                               // Hack to bring LDPartEditor to front
+                                               if (!win.getShell().getMinimized())
+                                               {
+                                                   win.getShell().setMinimized(true);
+                                               }
+
+                                               win.getShell().setMinimized(false);
+                                               win.getShell().setActive();
+                                           } finally {
+                                               WorkbenchManager.getUserSettingState().setSyncingTabs(syncingTabs);
                                            }
-                                           win.getShell().setMinimized(false);
-                                           win.getShell().setActive();
                                        });
                                    } finally {
                                        fileOpenLock.unlock();
