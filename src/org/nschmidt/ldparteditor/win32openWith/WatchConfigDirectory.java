@@ -19,7 +19,9 @@ import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
 import static org.nschmidt.ldparteditor.win32openWith.CallState.S0_REQ;
 import static org.nschmidt.ldparteditor.win32openWith.CallState.S1_ACK;
+import static org.nschmidt.ldparteditor.win32openWith.CallState.S2_SEND;
 import static org.nschmidt.ldparteditor.win32openWith.CallState.S3_DONE;
+import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE;
 import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.WILL_OPEN_FILE;
 
 import java.io.File;
@@ -33,13 +35,19 @@ import java.nio.file.WatchEvent;
 import java.nio.file.WatchEvent.Kind;
 import java.nio.file.WatchKey;
 import java.nio.file.WatchService;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Random;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
+import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.logger.NLogger;
+import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.text.LDParsingException;
+import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.win32appdata.AppData;
 
@@ -48,7 +56,10 @@ import org.nschmidt.ldparteditor.win32appdata.AppData;
  */
 class WatchConfigDirectory {
 
+    private static final String FILE_OPEN_ACKNOWLEDGEMENT = AppData.getPath() + "ACK"; //$NON-NLS-1$
     private static final String FILE_OPEN_REQUEST = AppData.getPath() + "REQ"; //$NON-NLS-1$
+    private static final String FILE_OPEN_SEND = AppData.getPath() + "SEND"; //$NON-NLS-1$
+    private static final String FILE_OPEN_DONE = AppData.getPath() + "DONE"; //$NON-NLS-1$
 
     private final String watchId = new Random().nextLong() + "-" + new Random().nextLong() + "-" + new Random().nextLong(); //$NON-NLS-1$ //$NON-NLS-2$
     private final int token = new Random().nextInt(10);
@@ -56,6 +67,8 @@ class WatchConfigDirectory {
     private final Path dir;
     private static Path fileToOpen = null;
     private final WatchService watcher;
+
+    private final Lock fileOpenLock = new ReentrantLock();
 
     @SuppressWarnings("unchecked")
     static <T> WatchEvent<T> cast(WatchEvent<?> event) {
@@ -83,7 +96,11 @@ class WatchConfigDirectory {
 
     public void waitForCall() {
 
-        final Queue<String> filesToOpen = new LinkedList<>();
+        // This thread needs to send an asynchronous call to the UI
+        // and should keep waiting for other file open calls
+        // the calls have to be stored in a queue.
+
+        CallState state = S0_REQ;
 
         while (Editor3DWindow.getAlive().get()) {
 
@@ -92,10 +109,10 @@ class WatchConfigDirectory {
             try {
                 key = this.watcher.poll(10, TimeUnit.MILLISECONDS);
             } catch (ClosedWatchServiceException cwse) {
-                // TODO Needs logging
+                NLogger.error(getClass(), cwse);
                 return;
             } catch (InterruptedException ie) {
-                // TODO Needs logging
+                NLogger.error(getClass(), ie);
                 return;
             }
 
@@ -109,14 +126,94 @@ class WatchConfigDirectory {
 
                     // ev.context() = file name
                     WatchEvent<Path> ev = cast(event);
-                    String name = ev.context().toString();
+                    final String action = ev.context() + ""; //$NON-NLS-1$
 
-                    // print out event
-                    NLogger.debug(getClass(), "ENTRY_MODIFY: {0}", name); //$NON-NLS-1$
+                    if (action.startsWith("REQ")) { //$NON-NLS-1$
+                        state = S0_REQ;
+                        final String reqFile = dir.resolve(action).toString();
+                        String reqSignalMsg = null;
+                        try (UTF8BufferedReader reader = new UTF8BufferedReader(reqFile)) {
+                            reqSignalMsg = reader.readLine();
+                        } catch (LDParsingException ldpe) {
+                            NLogger.error(getClass(), ldpe);
+                        } catch (FileNotFoundException consumed) {
+                            // Do nothing if the file was not found
+                        } catch (UnsupportedEncodingException uee) {
+                            NLogger.error(getClass(), uee);
+                        }
 
-                    // This thread needs to send an asynchronous call to the UI
-                    // and should keep waiting for other file open calls
-                    // the calls have to be stored in a queue.
+                        if (reqSignalMsg != null) {
+                            final String ackFile = dir.resolve("ACK" + token).toString(); //$NON-NLS-1$
+                            try (UTF8PrintWriter writer = new UTF8PrintWriter(ackFile)) {
+                                writer.println(watchId);
+                            } catch (FileNotFoundException fnfe) {
+                                NLogger.error(getClass(), fnfe);
+                            } catch (UnsupportedEncodingException uee) {
+                                NLogger.error(getClass(), uee);
+                            }
+                        }
+                    }
+
+                    if (state == S0_REQ && action.startsWith("SEND")) { //$NON-NLS-1$
+                        final String reqFile = dir.resolve(action).toString();
+                        String targetWatchId = null;
+                        String pathToOpen = null;
+                        try (UTF8BufferedReader reader = new UTF8BufferedReader(reqFile)) {
+                            targetWatchId = reader.readLine();
+                            pathToOpen = reader.readLine();
+                        } catch (LDParsingException ldpe) {
+                            NLogger.error(getClass(), ldpe);
+                        } catch (FileNotFoundException consumed) {
+                            // Do nothing if the file was not found
+                        } catch (UnsupportedEncodingException uee) {
+                            NLogger.error(getClass(), uee);
+                        }
+
+                        if (targetWatchId != null && pathToOpen != null && watchId.equals(targetWatchId)) {
+                            boolean shouldOpenFile = false;
+                            final String ackFile = dir.resolve("DONE" + token).toString(); //$NON-NLS-1$
+                            try (UTF8PrintWriter writer = new UTF8PrintWriter(ackFile)) {
+                                writer.println(watchId);
+                                shouldOpenFile = true;
+                                state = S3_DONE;
+                            } catch (FileNotFoundException fnfe) {
+                                NLogger.error(getClass(), fnfe);
+                            } catch (UnsupportedEncodingException uee) {
+                                NLogger.error(getClass(), uee);
+                            }
+
+                            if (shouldOpenFile) {
+                                final String path = pathToOpen;
+                                CompletableFuture.runAsync(() -> {
+                                   try {
+                                       fileOpenLock.lock();
+                                       // Load file here
+                                       final Editor3DWindow win = Editor3DWindow.getWindow();
+                                       win.getShell().getDisplay().asyncExec(() -> {
+                                           final DatFile df = win.openDatFile(win.getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, path, false);
+                                           if (df != null) {
+                                               win.addRecentFile(df);
+                                               final File f = new File(df.getNewName());
+                                               if (f.getParentFile() != null) {
+                                                   Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                               }
+                                           }
+                                           win.updateTree_unsavedEntries();
+                                           // Hack to bring LDPartEditor to front
+                                           if (!win.getShell().getMinimized())
+                                           {
+                                               win.getShell().setMinimized(true);
+                                           }
+                                           win.getShell().setMinimized(false);
+                                           win.getShell().setActive();
+                                       });
+                                   } finally {
+                                       fileOpenLock.unlock();
+                                   }
+                                });
+                            }
+                        }
+                    }
                 }
 
                 if (!key.reset()) {
@@ -128,26 +225,26 @@ class WatchConfigDirectory {
 
     public FileActionResult callAnotherLDPartEditorInstance() {
 
+        FileActionResult result = WILL_OPEN_FILE;
+
         // Make sure that there is no pending request anymore
         deleteRequest();
 
         CallState state = S0_REQ;
         int cycles = 0;
+        String targetWatchId = null;
 
         // Try for up to 2 seconds to call another LDPE instance
         while (state != S3_DONE && cycles < 200) {
 
             // Create a request
             if (state == S0_REQ) {
-                final String reqFile = dir.resolve("REQ").toString(); //$NON-NLS-1$
+                final String reqFile = dir.resolve("REQ" + token).toString(); //$NON-NLS-1$
                 try (UTF8PrintWriter writer = new UTF8PrintWriter(reqFile)) {
-                    final String pathToOpen = fileToOpen.toString();
-                    writer.println(pathToOpen);
+                    writer.println("REQ"); //$NON-NLS-1$
                     state = S1_ACK;
-                } catch (FileNotFoundException fnfe) {
-                    if (cycles == 0) {
-                        NLogger.error(getClass(), fnfe);
-                    }
+                } catch (FileNotFoundException consumed) {
+                    // Do nothing if the file was not found
                 } catch (UnsupportedEncodingException uee) {
                     if (cycles == 0) {
                         NLogger.error(getClass(), uee);
@@ -175,36 +272,95 @@ class WatchConfigDirectory {
                     if (kind == OVERFLOW) {
                         // Try it again
                         state = S0_REQ;
+                        targetWatchId = null;
                         continue;
                     }
 
                     // ev.context() = file name
                     WatchEvent<Path> ev = cast(event);
-                    String name = ev.context().toString();
+                    String action = ev.context() + ""; //$NON-NLS-1$
 
-                    // print out event
-                    NLogger.debug(getClass(), "ENTRY_MODIFY: {0}", name); //$NON-NLS-1$
+                    if (state == S1_ACK && action.startsWith("ACK")) { //$NON-NLS-1$
+                        final String ackFile = dir.resolve(action).toString();
+                        try (UTF8BufferedReader reader = new UTF8BufferedReader(ackFile)) {
+                            targetWatchId = reader.readLine();
+                        } catch (LDParsingException ldpe) {
+                            NLogger.error(getClass(), ldpe);
+                        } catch (FileNotFoundException consumed) {
+                            // Do nothing if the file was not found
+                        } catch (UnsupportedEncodingException uee) {
+                            NLogger.error(getClass(), uee);
+                        }
+
+                        if (targetWatchId != null) {
+                            final String sendFile = dir.resolve("SEND" + token).toString(); //$NON-NLS-1$
+                            try (UTF8PrintWriter writer = new UTF8PrintWriter(sendFile)) {
+                                final String pathToOpen = fileToOpen.toString();
+                                writer.println(targetWatchId);
+                                writer.println(pathToOpen);
+                                state = S2_SEND;
+                            } catch (FileNotFoundException consumed) {
+                                // Do nothing if the file was not found
+                            } catch (UnsupportedEncodingException uee) {
+                                NLogger.error(getClass(), uee);
+                            }
+                        }
+                    }
+
+                    if (state == S2_SEND && action.startsWith("DONE")) { //$NON-NLS-1$
+                        final String doneFile = dir.resolve(action).toString();
+                        String confirmationWatchId = null;
+                        try (UTF8BufferedReader reader = new UTF8BufferedReader(doneFile)) {
+                            confirmationWatchId = reader.readLine();
+                        } catch (LDParsingException ldpe) {
+                            NLogger.error(getClass(), ldpe);
+                        } catch (FileNotFoundException consumed) {
+                            // Do nothing if the file was not found
+                        } catch (UnsupportedEncodingException uee) {
+                            NLogger.error(getClass(), uee);
+                        }
+
+                        if (confirmationWatchId != null && confirmationWatchId.equals(targetWatchId)) {
+                            state = S3_DONE;
+                            result = DELEGATED_TO_ANOTHER_INSTANCE;
+                            cleanupStateFiles();
+                        }
+                    }
                 }
 
                 if (!key.reset()) {
                     break;
                 }
             }
-
-            // TODO Needs state machine
         }
 
-        return WILL_OPEN_FILE;
+        return result;
     }
 
     private void deleteRequest() {
-        final File fileOpenRequest = new File(FILE_OPEN_REQUEST);
-        if (fileOpenRequest.exists()) {
-            fileOpenRequest.delete();
+        for (int i = 0; i < 10; i++) {
+            final File fileOpenRequest = new File(FILE_OPEN_REQUEST + i);
+            if (fileOpenRequest.exists()) {
+                fileOpenRequest.delete();
+            }
         }
     }
 
     private void cleanupStateFiles() {
         deleteRequest();
+        for (int i = 0; i < 10; i++) {
+            final File fileAck = new File(FILE_OPEN_ACKNOWLEDGEMENT + i);
+            if (fileAck.exists()) {
+                fileAck.delete();
+            }
+            final File fileSend = new File(FILE_OPEN_SEND + i);
+            if (fileSend.exists()) {
+                fileSend.delete();
+            }
+            final File fileDone = new File(FILE_OPEN_DONE + i);
+            if (fileDone.exists()) {
+                fileDone.delete();
+            }
+        }
     }
 }
