@@ -51,7 +51,7 @@ public enum TryToOpen {
             final java.io.File file = new java.io.File(path);
             if (path != null && file.exists() && file.isFile()) {
                 try {
-                    final WatchConfigDirectory wcd = new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).getParent(), Paths.get(path));
+                    final WatchConfigDirectory wcd = new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).toAbsolutePath().getParent(), Paths.get(path));
                     result = wcd.callAnotherLDPartEditorInstance();
                 } catch (IOException ioe) {
                     NLogger.error(TryToOpen.class, ioe);
@@ -67,7 +67,7 @@ public enum TryToOpen {
                 @Override
                 public void run() {
                     try {
-                        new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).getParent()).waitForCall();
+                        new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).toAbsolutePath().getParent()).waitForCall();
                     } catch (IOException ioe) {
                         NLogger.error(TryToOpen.class, ioe);
                     }
