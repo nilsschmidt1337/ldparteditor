@@ -57,8 +57,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 class WatchConfigDirectory {
 
-    private static final String FILE_OPEN_ACKNOWLEDGEMENT = AppData.getPath() + "ACK"; //$NON-NLS-1$
     private static final String FILE_OPEN_REQUEST = AppData.getPath() + "REQ"; //$NON-NLS-1$
+    private static final String FILE_OPEN_ACKNOWLEDGEMENT = AppData.getPath() + "ACK"; //$NON-NLS-1$
     private static final String FILE_OPEN_SEND = AppData.getPath() + "SEND"; //$NON-NLS-1$
     private static final String FILE_OPEN_DONE = AppData.getPath() + "DONE"; //$NON-NLS-1$
 
@@ -70,6 +70,7 @@ class WatchConfigDirectory {
     private final WatchService watcher;
 
     private final Lock fileOpenLock = new ReentrantLock();
+    private final Lock fileOpenLock2 = new ReentrantLock();
 
     @SuppressWarnings("unchecked")
     static <T> WatchEvent<T> cast(WatchEvent<?> event) {
@@ -186,35 +187,40 @@ class WatchConfigDirectory {
                             if (shouldOpenFile) {
                                 final String path = pathToOpen;
                                 CompletableFuture.runAsync(() -> {
-                                   final boolean syncingTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
                                    try {
                                        fileOpenLock.lock();
                                        // Load file here
                                        final Editor3DWindow win = Editor3DWindow.getWindow();
                                        win.getShell().getDisplay().asyncExec(() -> {
                                            try {
+                                               fileOpenLock2.lock();
+                                               final boolean syncingTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
                                                WorkbenchManager.getUserSettingState().setSyncingTabs(false);
-                                               final DatFile df = win.openDatFile(win.getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, path, false);
-                                               if (df != null) {
-                                                   win.addRecentFile(df);
-                                                   final File f = new File(df.getNewName());
-                                                   if (f.getParentFile() != null) {
-                                                       Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                               try {
+                                                   final DatFile df = win.openDatFile(win.getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, path, false);
+                                                   if (df != null) {
+                                                       win.addRecentFile(df);
+                                                       final File f = new File(df.getNewName());
+                                                       if (f.getParentFile() != null) {
+                                                           Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                                                       }
                                                    }
+
+                                                   win.updateTree_unsavedEntries();
+
+                                                   // Hack to bring LDPartEditor to front
+                                                   if (!win.getShell().getMinimized())
+                                                   {
+                                                       win.getShell().setMinimized(true);
+                                                   }
+
+                                                   win.getShell().setMinimized(false);
+                                                   win.getShell().setActive();
+                                               } finally {
                                                }
-
-                                               win.updateTree_unsavedEntries();
-
-                                               // Hack to bring LDPartEditor to front
-                                               if (!win.getShell().getMinimized())
-                                               {
-                                                   win.getShell().setMinimized(true);
-                                               }
-
-                                               win.getShell().setMinimized(false);
-                                               win.getShell().setActive();
-                                           } finally {
                                                WorkbenchManager.getUserSettingState().setSyncingTabs(syncingTabs);
+                                           } finally {
+                                              fileOpenLock2.unlock();
                                            }
                                        });
                                    } finally {
