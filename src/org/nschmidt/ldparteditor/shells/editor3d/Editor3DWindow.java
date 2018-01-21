@@ -6369,13 +6369,18 @@ public class Editor3DWindow extends Editor3DDesign {
         }
 
         this.open();
+
         // Dispose all resources (never delete this!)
         CSG.executorService.shutdown();
         cmp_Primitives[0].getOpenGL().dispose();
         ResourceManager.dispose();
         SWTResourceManager.dispose();
         // Dispose the display (never delete this, too!)
-        Display.getCurrent().dispose();
+        try {
+            Display.getCurrent().dispose();
+        } catch (SWTException consumed) {
+            // Display can already be disposed.
+        }
     }
 
     protected void addRecentFile(String projectPath) {
@@ -8109,7 +8114,7 @@ public class Editor3DWindow extends Editor3DDesign {
             {
                 @SuppressWarnings("unchecked")
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
-                cachedReferences.add(df);
+                if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
             break;
@@ -8117,7 +8122,7 @@ public class Editor3DWindow extends Editor3DDesign {
             {
                 @SuppressWarnings("unchecked")
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
-                cachedReferences.add(df);
+                if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItem_ProjectSubparts[0], SWT.NONE);
             break;
@@ -8125,7 +8130,7 @@ public class Editor3DWindow extends Editor3DDesign {
             {
                 @SuppressWarnings("unchecked")
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
-                cachedReferences.add(df);
+                if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItem_ProjectPrimitives[0], SWT.NONE);
             break;
@@ -8133,7 +8138,7 @@ public class Editor3DWindow extends Editor3DDesign {
             {
                 @SuppressWarnings("unchecked")
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
-                cachedReferences.add(df);
+                if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItem_ProjectPrimitives48[0], SWT.NONE);
             break;
@@ -8141,7 +8146,7 @@ public class Editor3DWindow extends Editor3DDesign {
             {
                 @SuppressWarnings("unchecked")
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives8[0].getData();
-                cachedReferences.add(df);
+                if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItem_ProjectPrimitives8[0], SWT.NONE);
             break;
@@ -8149,7 +8154,7 @@ public class Editor3DWindow extends Editor3DDesign {
             {
                 @SuppressWarnings("unchecked")
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
-                cachedReferences.add(df);
+                if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
             break;
@@ -8499,8 +8504,7 @@ public class Editor3DWindow extends Editor3DDesign {
             ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
             // Null-check is only required when a file is opened on program start
             if (cachedReferences == null) {
-                cachedReferences = new ArrayList<>();
-                folder.setData(cachedReferences);
+                continue;
             }
             for (DatFile d : cachedReferences) {
                 if (dir.equals(d.getOldName()) || dir.equals(d.getNewName())) {

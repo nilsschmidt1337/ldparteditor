@@ -70,6 +70,8 @@ public enum TryToOpen {
                     NLogger.error(TryToOpen.class, ioe);
                 }
             }).start();
+        } else {
+            NLogger.error(TryToOpen.class, "File was delegated to another LDPE instance."); //$NON-NLS-1$
         }
 
         // Return FILE_NOT_FOUND when there was no file to open
