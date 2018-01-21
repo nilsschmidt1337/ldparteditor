@@ -66,7 +66,7 @@ public class CompositeTabState {
     private BigDecimal toReplaceX = BigDecimal.ONE;
     private BigDecimal toReplaceY = new BigDecimal(2);
     private BigDecimal toReplaceZ = new BigDecimal(3);
-    
+
     private int oldLineIndex = -1;
     private boolean doingPaste = false;
 
@@ -81,6 +81,8 @@ public class CompositeTabState {
             filename = filename + " " + I18n.EDITORTEXT_ReadOnly; //$NON-NLS-1$
             setFilenameWithStar(getFilenameWithStar() + " " + I18n.EDITORTEXT_ReadOnly); //$NON-NLS-1$
             getTab().getTextComposite().setEditable(false);
+        } else {
+            getTab().getTextComposite().setEditable(true);
         }
         this.datFileObj = fileNameObj;
         if (Project.getUnsavedFiles().contains(fileNameObj) || !fileNameObj.getOldName().equals(fileNameObj.getNewName())) {
@@ -229,7 +231,7 @@ public class CompositeTabState {
     public void setOldLineIndex(int oldLineIndex) {
         this.oldLineIndex = oldLineIndex;
     }
-    
+
     public ApplicationWindow getWindow() {
         return this.window[0];
     }

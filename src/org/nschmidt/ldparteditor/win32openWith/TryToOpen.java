@@ -63,16 +63,13 @@ public enum TryToOpen {
 
         // Listen to fileOpen calls from other LDPE instances
         if (result != DELEGATED_TO_ANOTHER_INSTANCE) {
-            new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).toAbsolutePath().getParent()).waitForCall();
-                    } catch (IOException ioe) {
-                        NLogger.error(TryToOpen.class, ioe);
-                    }
+            new Thread(() -> {
+                try {
+                    new WatchConfigDirectory(Paths.get(WorkbenchManager.CONFIG_GZ).toAbsolutePath().getParent()).waitForCall();
+                } catch (IOException ioe) {
+                    NLogger.error(TryToOpen.class, ioe);
                 }
-            }.start();
+            }).start();
         }
 
         // Return FILE_NOT_FOUND when there was no file to open
