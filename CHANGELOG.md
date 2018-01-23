@@ -1,3 +1,13 @@
+### 23 Jan 2018
+With the release of 0.8.42 you are able to...
+-  ...to open *.dat files with LDPartEditor from the Windows file explorer ("Open with..." and select LDPartEditor.exe).
+
+The following critical issues are fixed:
+1. Fixed a rare but critical undo/redo bug.
+2. Fixed a synchronization bug between the text and 3D editor.
+3. Fixed a bug which could freeze the text editor.
+
+
 ### 11 Jan 2018
 With the release of **0.8.41** you are able to...
 -  ...launch an LDPartEditor executable under Windows / install it with a setup file.
