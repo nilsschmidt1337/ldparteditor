@@ -476,22 +476,32 @@ public class KeyStateManager {
                         }
                         break;
                     case MODE_COMBINED:
+                        c3d.getManipulator().applyTranslation(c3d);
+                        c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.COMBINED);
                         win.disableAddAction();
                         break;
                     case MODE_MOVE:
+                        c3d.getManipulator().applyTranslation(c3d);
+                        c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.MOVE);
                         win.disableAddAction();
                         break;
                     case MODE_ROTATE:
+                        c3d.getManipulator().applyTranslation(c3d);
+                        c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.ROTATE);
                         win.disableAddAction();
                         break;
                     case MODE_SCALE:
+                        c3d.getManipulator().applyTranslation(c3d);
+                        c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.SCALE);
                         win.disableAddAction();
                         break;
                     case MODE_SELECT:
+                        c3d.getManipulator().applyTranslation(c3d);
+                        c3d.getMouse().checkSyncEditMode(vm, df);
                         win.setWorkingAction(WorkingMode.SELECT);
                         win.disableAddAction();
                         break;
