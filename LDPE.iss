@@ -2,6 +2,7 @@
 #define MyAppVersion "0.8.43"
 #define MyAppPublisher "Nils Schmidt"
 #define MyAppExeName "LDPartEditor.exe"
+#define MyExtension "*.dat"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application.
@@ -32,6 +33,7 @@ Name: "danish"; MessagesFile: "compiler:Languages\Danish.isl"
 
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
+Name: "associate"; Description: "{cm:AssocFileExtension,{#MyAppName},{#MyExtension}}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
 Source: "I:\LDPE\LDPartEditor.exe"; DestDir: "{app}"; Flags: ignoreversion
@@ -57,3 +59,6 @@ Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: 
 [Run]
 Filename: "{app}\{#MyAppExeName}"; Description: "{cm:LaunchProgram,{#StringChange(MyAppName, "&", "&&")}}"; Flags: nowait postinstall skipifsilent
 
+[Registry]
+Root: HKCR; Subkey: ".dat"; ValueType: string; ValueName: ; ValueData: "datfile"; Flags: uninsdeletekey; Tasks: associate
+Root: HKCR; Subkey: "datfile\shell\open\command"; ValueType: string; ValueName: ; ValueData: "{app}\{#MyAppExeName} %1"; Flags: uninsdeletekey; Tasks: associate
