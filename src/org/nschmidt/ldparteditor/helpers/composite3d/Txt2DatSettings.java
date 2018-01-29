@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 import java.math.BigDecimal;
 
 import org.eclipse.swt.graphics.FontData;
+import org.eclipse.swt.graphics.RGB;
 
 public class Txt2DatSettings {
 
@@ -27,6 +28,7 @@ public class Txt2DatSettings {
     private BigDecimal deltaAngle = new BigDecimal("12.5"); //$NON-NLS-1$
     private FontData fontData = null;
     private String text = "";  //$NON-NLS-1$
+    private RGB rgb = null;
     public BigDecimal getInterpolateFlatness() {
         return interpolateFlatness;
     }
@@ -62,5 +64,11 @@ public class Txt2DatSettings {
     }
     public void setText(String text) {
         this.text = text;
+    }
+    public RGB getRGB() {
+        return rgb;
+    }
+    public void setRGB(RGB rgb) {
+        this.rgb = rgb;
     }
 }

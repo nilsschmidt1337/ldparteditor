@@ -73,6 +73,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
@@ -4952,11 +4953,21 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (new Txt2DatDialog(getShell(), ts).open() == IDialogConstants.OK_ID && !ts.getText().trim().isEmpty()) {
 
                             java.awt.Font myFont;
+                            float r = 0.1f;
+                            float g = 0.1f;
+                            float b = 0.1f;
 
                             if (ts.getFontData() == null) {
                                 myFont = new java.awt.Font(org.nschmidt.ldparteditor.enums.Font.MONOSPACE.getFontData()[0].getName(), java.awt.Font.PLAIN, 32);
                             } else {
                                 FontData fd = ts.getFontData();
+                                RGB fontColour = ts.getRGB();
+                                if (fontColour != null) {
+                                    r = fontColour.red / 255f;
+                                    g = fontColour.green / 255f;
+                                    b = fontColour.blue / 255f;
+                                }
+
                                 int style = 0;
                                 final int c2 = SWT.BOLD | SWT.ITALIC;
                                 switch (fd.getStyle()) {
@@ -4977,7 +4988,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                             GData anchorData = df.getDrawChainTail();
                             int lineNumber = df.getDrawPerLine_NOCLONE().getKey(anchorData);
-                            Set<GData> triangleSet = TextTriangulator.triangulateText(myFont, ts.getText().trim(), ts.getFlatness().doubleValue(), ts.getInterpolateFlatness().doubleValue(), View.DUMMY_REFERENCE, df, ts.getFontHeight().intValue(), ts.getDeltaAngle().doubleValue());
+                            Set<GData> triangleSet = TextTriangulator.triangulateText(myFont, r, g, b, ts.getText().trim(), ts.getFlatness().doubleValue(), ts.getInterpolateFlatness().doubleValue(), View.DUMMY_REFERENCE, df, ts.getFontHeight().intValue(), ts.getDeltaAngle().doubleValue());
                             for (GData gda3 : triangleSet) {
                                 lineNumber++;
                                 df.getDrawPerLine_NOCLONE().put(lineNumber, gda3);
