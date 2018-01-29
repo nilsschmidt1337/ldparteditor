@@ -82,7 +82,11 @@ public class Txt2DatDialog extends Txt2DatDesign {
                 final FontDialog fd = new FontDialog(getShell());
                 final FontData data = ts.getFontData();
                 fd.setFontList(new FontData[]{data});
+                if (ts.getRGB() != null) {
+                    fd.setRGB(ts.getRGB());
+                }
                 ts.setFontData(fd.open());
+                ts.setRGB(fd.getRGB());
             }
         });
         txt_text[0].addModifyListener(new ModifyListener() {
