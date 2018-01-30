@@ -7165,7 +7165,9 @@ public class Editor3DWindow extends Editor3DDesign {
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
             ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
-            cachedReferences.remove(e);
+            if (cachedReferences != null) {
+                cachedReferences.remove(e);
+            }
         }
 
         this.treeParts[0].build();
