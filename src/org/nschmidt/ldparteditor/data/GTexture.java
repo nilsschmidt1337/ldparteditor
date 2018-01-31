@@ -70,6 +70,7 @@ public class GTexture {
     private Vector3f point1 = new Vector3f();
     private Vector3f point2 = new Vector3f();
     private Vector3f point3 = new Vector3f();
+    private Vector3f[] tripoints = new Vector3f[]{new Vector3f(), new Vector3f(), new Vector3f()};
     private float a = 0f;
     private float b = 0f;
 
@@ -114,14 +115,17 @@ public class GTexture {
     }
 
     public void calcUVcoords1(float x, float y, float z, GData1 parent, GData ID) {
+        if (type == TexType.SPHERICAL) tripoints[0].set(x, y, z);
         calcUVcoords(x, y, z, parent, 0, ID);
     }
 
     public void calcUVcoords2(float x, float y, float z, GData1 parent) {
+        if (type == TexType.SPHERICAL) tripoints[1].set(x, y, z);
         calcUVcoords(x, y, z, parent, 1, null);
     }
 
     public void calcUVcoords3(float x, float y, float z, GData1 parent) {
+        if (type == TexType.SPHERICAL) tripoints[2].set(x, y, z);
         calcUVcoords(x, y, z, parent, 2, null);
     }
 
@@ -335,6 +339,40 @@ public class GTexture {
                 result[r + 1] = tV[i];
             }
         } else {
+
+            // Correct poles
+            if (isTriangle) {
+                int poleIndex = -1;
+                for (int i = 0; i < size; i++) {
+                    float u = tU[i];
+                    float v = tV[i];
+                    if (u < 0.001f && (v < -1.56f || v > 1.56f  )) {
+                        poleIndex = i;
+                        break;
+                    }
+                }
+
+                if (poleIndex != -1) {
+
+                    Vector3f pole = tripoints[poleIndex];
+
+                    Vector3f adjacent1 = tripoints[(poleIndex + 1) % 3];
+                    Vector3f adjacent2 = tripoints[(poleIndex + 2) % 3];
+
+                    Vector3f adjacentMidpoint = new Vector3f();
+                    Vector3f.add(adjacent1, adjacent2, adjacentMidpoint);
+                    adjacentMidpoint.scale(0.5f);
+
+                    Vector3f deltaPoleMidpoint = new Vector3f();
+                    Vector3f.sub(pole, adjacentMidpoint, deltaPoleMidpoint);
+                    deltaPoleMidpoint.scale(0.999f);
+
+                    Vector3f.add(adjacentMidpoint, deltaPoleMidpoint, pole);
+
+                    calcUVcoords(pole.x, pole.y, pole.z, ID.parent, poleIndex, ID);
+                }
+            }
+
             // Sign check
             boolean hasNegative = false;
             boolean hasPositive = false;
