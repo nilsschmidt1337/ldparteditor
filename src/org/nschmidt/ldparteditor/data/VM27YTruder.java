@@ -29,22 +29,25 @@ public class VM27YTruder extends VM26LineIntersector {
 
     private final double EPSILON = 0.000001;
     private final double SMALL = 0.01;
-    private double[] nullv = new double[]{0.0,0.0,0.0};
+    private double[] nullv = new double[] { 0.0, 0.0, 0.0 };
 
     protected VM27YTruder(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 
     public void yTruder(YTruderSettings ys) {
-        if (linkedDatFile.isReadOnly()) return;
+        if (linkedDatFile.isReadOnly())
+            return;
 
         final double distance = ys.getDistance();
         int mode = ys.getMode();
-        if (distance == 0 && (mode == 1 || mode == 4)) return;
+        if (distance == 0 && (mode == YTruderSettings.MODE_TRANSLATE_BY_DISTANCE || mode == YTruderSettings.MODE_EXTRUDE_RADIALLY))
+            return;
 
         final Set<GData2> originalSelection = new HashSet<>();
         originalSelection.addAll(selectedLines);
-        if (originalSelection.isEmpty()) return;
+        if (originalSelection.isEmpty())
+            return;
 
         final Set<GData2> newLines = new HashSet<>();
         final Set<GData3> newTriangles = new HashSet<>();
@@ -66,8 +69,7 @@ public class VM27YTruder extends VM26LineIntersector {
         int NumSurf;
         int NumCond;
 
-        int x=0, y=1, z=2;
-
+        int x = 0, y = 1, z = 2;
 
         double AngleLineThr = ys.getCondlineAngleThreshold();
 
@@ -77,11 +79,17 @@ public class VM27YTruder extends VM26LineIntersector {
         boolean flag = false;
 
         if (ys.getAxis() == 0) {
-            x=1; y=0; z=2;
+            x = 1;
+            y = 0;
+            z = 2;
         } else if (ys.getAxis() == 1) {
-            x=0; y=1; z=2;
+            x = 0;
+            y = 1;
+            z = 2;
         } else if (ys.getAxis() == 2) {
-            x=0; y=2; z=1;
+            x = 0;
+            y = 2;
+            z = 1;
         }
 
         int originalLineCount = 0;
@@ -92,93 +100,87 @@ public class VM27YTruder extends VM26LineIntersector {
             InLine[originalLineCount][1][x] = gData2.X2.doubleValue();
             InLine[originalLineCount][1][y] = gData2.Y2.doubleValue();
             InLine[originalLineCount][1][z] = gData2.Z2.doubleValue();
-            LineUsed[originalLineCount]=0;
+            LineUsed[originalLineCount] = 0;
             originalLineCount++;
         }
 
         // Extruding...
 
-        NumSurf=0;
-        NumCond=0;
-        CondFlag[NumCond]=0;
-        for(int i=0; i<originalLineCount; i++)
-        {
+        NumSurf = 0;
+        NumCond = 0;
+        CondFlag[NumCond] = 0;
+        for (int i = 0; i < originalLineCount; i++) {
             double[] p0 = new double[3], p1 = new double[3];
             double d0, d1;
-            if(LineUsed[i] == 0)
-            {
-                LineUsed[i]=1;
-                current=i;
-                end=0;
-                do
-                {
-                    flag=false;
-                    for(int j=0; j<originalLineCount; j++)
-                    {
-                        if(LineUsed[j] == 0)
-                        {
-                            for(int k=0; k<2; k++)
-                            {
-                                if(MANHATTAN(InLine[current][end],InLine[j][k])<SMALL)
-                                {
-                                    current=j;
-                                    end=1-k;
-                                    LineUsed[current]=1;
-                                    flag=true;
+            if (LineUsed[i] == 0) {
+                LineUsed[i] = 1;
+                current = i;
+                end = 0;
+                do {
+                    flag = false;
+                    for (int j = 0; j < originalLineCount; j++) {
+                        if (LineUsed[j] == 0) {
+                            for (int k = 0; k < 2; k++) {
+                                if (MANHATTAN(InLine[current][end], InLine[j][k]) < SMALL) {
+                                    current = j;
+                                    end = 1 - k;
+                                    LineUsed[current] = 1;
+                                    flag = true;
                                     break;
                                 }
-                                if(flag) break;
+                                if (flag)
+                                    break;
                             }
                         }
-                        if(flag) break;
+                        if (flag)
+                            break;
                     }
-                }
-                while(flag);
+                } while (flag);
 
-                end=1-end;
-                surfstart=NumSurf;
-                SET(Surf[NumSurf][0], InLine[current][1-end]);
+                end = 1 - end;
+                surfstart = NumSurf;
+                SET(Surf[NumSurf][0], InLine[current][1 - end]);
                 SET(Surf[NumSurf][1], InLine[current][end]);
                 SET(Surf[NumSurf][2], InLine[current][end]);
-                SET(Surf[NumSurf][3], InLine[current][1-end]);
-                switch (mode)
-                {
-                case 1 :
-                    Surf[NumSurf][2][1]=Surf[NumSurf][2][1] + distance;
-                    Surf[NumSurf][3][1]=Surf[NumSurf][3][1] + distance;
+                SET(Surf[NumSurf][3], InLine[current][1 - end]);
+                switch (mode) {
+                case YTruderSettings.MODE_TRANSLATE_BY_DISTANCE:
+                    Surf[NumSurf][2][1] = Surf[NumSurf][2][1] + distance;
+                    Surf[NumSurf][3][1] = Surf[NumSurf][3][1] + distance;
                     break;
-                case 2:
-                    Surf[NumSurf][2][1]= 2*distance - Surf[NumSurf][2][1];
-                    Surf[NumSurf][3][1]= 2*distance - Surf[NumSurf][3][1] ;
+                case YTruderSettings.MODE_SYMMETRY_ACROSS_PLANE:
+                    Surf[NumSurf][2][1] = 2 * distance - Surf[NumSurf][2][1];
+                    Surf[NumSurf][3][1] = 2 * distance - Surf[NumSurf][3][1];
                     break;
-                case 3:
-                    Surf[NumSurf][2][1]=distance;
-                    Surf[NumSurf][3][1]=distance;
+                case YTruderSettings.MODE_PROJECTION_ON_PLANE:
+                    Surf[NumSurf][2][1] = distance;
+                    Surf[NumSurf][3][1] = distance;
                     break;
-                case 4:
-                    p0[0]=0; p0[1]=Surf[NumSurf][0][1]; p0[2]=0;
-                    p1[0]=0; p1[1]=Surf[NumSurf][1][1]; p1[2]=0;
-                    d0=DIST(p0, Surf[NumSurf][0]);
-                    d1=DIST(p1, Surf[NumSurf][1]);
-                    if(d0 > EPSILON)
-                    {
-                        Surf[NumSurf][3][0] = Surf[NumSurf][3][0] * (d0+distance)/d0;
-                        Surf[NumSurf][3][2] = Surf[NumSurf][3][2] * (d0+distance)/d0;
+                case YTruderSettings.MODE_EXTRUDE_RADIALLY:
+                    p0[0] = 0;
+                    p0[1] = Surf[NumSurf][0][1];
+                    p0[2] = 0;
+                    p1[0] = 0;
+                    p1[1] = Surf[NumSurf][1][1];
+                    p1[2] = 0;
+                    d0 = DIST(p0, Surf[NumSurf][0]);
+                    d1 = DIST(p1, Surf[NumSurf][1]);
+                    if (d0 > EPSILON) {
+                        Surf[NumSurf][3][0] = Surf[NumSurf][3][0] * (d0 + distance) / d0;
+                        Surf[NumSurf][3][2] = Surf[NumSurf][3][2] * (d0 + distance) / d0;
                     }
-                    if(d1 > EPSILON)
-                    {
-                        Surf[NumSurf][2][0] = Surf[NumSurf][2][0] * (d1+distance)/d1;
-                        Surf[NumSurf][2][2] = Surf[NumSurf][2][2] * (d1+distance)/d1;
+                    if (d1 > EPSILON) {
+                        Surf[NumSurf][2][0] = Surf[NumSurf][2][0] * (d1 + distance) / d1;
+                        Surf[NumSurf][2][2] = Surf[NumSurf][2][2] * (d1 + distance) / d1;
                     }
                     double a;
-                    a=Tri_Angle(Surf[NumSurf][0], Surf[NumSurf][1], Surf[NumSurf][2], Surf[NumSurf][0], Surf[NumSurf][2], Surf[NumSurf][3]);
-                    if(a > 0.5)
-                    {
-                        SET(CondLine[NumCond][0],Surf[NumSurf][0]);
-                        SET(CondLine[NumCond][1],Surf[NumSurf][2]);
-                        SET(CondLine[NumCond][2],Surf[NumSurf][1]);
-                        SET(CondLine[NumCond][3],Surf[NumSurf][3]);
-                        CondFlag[NumCond]=5;
+                    a = Tri_Angle(Surf[NumSurf][0], Surf[NumSurf][1], Surf[NumSurf][2], Surf[NumSurf][0], Surf[NumSurf][2], Surf[NumSurf][3]);
+                    if (a > 0.5) {
+                        SET(CondLine[NumCond][0], Surf[NumSurf][0]);
+                        SET(CondLine[NumCond][1], Surf[NumSurf][2]);
+                        SET(CondLine[NumCond][2], Surf[NumSurf][1]);
+                        SET(CondLine[NumCond][3], Surf[NumSurf][3]);
+                        CondFlag[NumCond] = 5;
                         NumCond++;
                     }
                     break;
@@ -187,125 +189,115 @@ public class VM27YTruder extends VM26LineIntersector {
                 NumSurf++;
                 LineUsed[current] = 2;
 
-                do
-                {
-                    flag=false;
-                    for(int j=0; j<originalLineCount; j++)
-                    {
-                        if(LineUsed[j]<2)
-                        {
-                            for(int k=0; k<2; k++)
-                            {
-                                if(MANHATTAN(InLine[current][end], InLine[j][k]) <SMALL && LineUsed[j]<2)
-                                {
-                                    current=j;
-                                    end=1-k;
-                                    flag=true;
-                                    SET(Surf[NumSurf][0], InLine[current][1-end]);
+                do {
+                    flag = false;
+                    for (int j = 0; j < originalLineCount; j++) {
+                        if (LineUsed[j] < 2) {
+                            for (int k = 0; k < 2; k++) {
+                                if (MANHATTAN(InLine[current][end], InLine[j][k]) < SMALL && LineUsed[j] < 2) {
+                                    current = j;
+                                    end = 1 - k;
+                                    flag = true;
+                                    SET(Surf[NumSurf][0], InLine[current][1 - end]);
                                     SET(Surf[NumSurf][1], InLine[current][end]);
                                     SET(Surf[NumSurf][2], InLine[current][end]);
-                                    SET(Surf[NumSurf][3], InLine[current][1-end]);
-                                    switch (mode)
-                                    {
-                                    case 1 :
-                                        Surf[NumSurf][2][1]=Surf[NumSurf][2][1] + distance;
-                                        Surf[NumSurf][3][1]=Surf[NumSurf][3][1] + distance;
+                                    SET(Surf[NumSurf][3], InLine[current][1 - end]);
+                                    switch (mode) {
+                                    case YTruderSettings.MODE_TRANSLATE_BY_DISTANCE:
+                                        Surf[NumSurf][2][1] = Surf[NumSurf][2][1] + distance;
+                                        Surf[NumSurf][3][1] = Surf[NumSurf][3][1] + distance;
                                         break;
-                                    case 2:
-                                        Surf[NumSurf][2][1]= 2*distance - Surf[NumSurf][2][1];
-                                        Surf[NumSurf][3][1]= 2*distance - Surf[NumSurf][3][1] ;
+                                    case YTruderSettings.MODE_SYMMETRY_ACROSS_PLANE:
+                                        Surf[NumSurf][2][1] = 2 * distance - Surf[NumSurf][2][1];
+                                        Surf[NumSurf][3][1] = 2 * distance - Surf[NumSurf][3][1];
                                         break;
-                                    case 3:
-                                        Surf[NumSurf][2][1]=distance;
-                                        Surf[NumSurf][3][1]=distance;
+                                    case YTruderSettings.MODE_PROJECTION_ON_PLANE:
+                                        Surf[NumSurf][2][1] = distance;
+                                        Surf[NumSurf][3][1] = distance;
                                         break;
-                                    case 4:
-                                        p0[0]=0; p0[1]=Surf[NumSurf][0][1]; p0[2]=0;
-                                        p1[0]=0; p1[1]=Surf[NumSurf][1][1]; p1[2]=0;
-                                        d0=DIST(p0, Surf[NumSurf][0]);
-                                        d1=DIST(p1, Surf[NumSurf][1]);
-                                        if(d0 > EPSILON)
-                                        {
-                                            Surf[NumSurf][3][0] = Surf[NumSurf][3][0] * (d0+distance)/d0;
-                                            Surf[NumSurf][3][2] = Surf[NumSurf][3][2] * (d0+distance)/d0;
+                                    case YTruderSettings.MODE_EXTRUDE_RADIALLY:
+                                        p0[0] = 0;
+                                        p0[1] = Surf[NumSurf][0][1];
+                                        p0[2] = 0;
+                                        p1[0] = 0;
+                                        p1[1] = Surf[NumSurf][1][1];
+                                        p1[2] = 0;
+                                        d0 = DIST(p0, Surf[NumSurf][0]);
+                                        d1 = DIST(p1, Surf[NumSurf][1]);
+                                        if (d0 > EPSILON) {
+                                            Surf[NumSurf][3][0] = Surf[NumSurf][3][0] * (d0 + distance) / d0;
+                                            Surf[NumSurf][3][2] = Surf[NumSurf][3][2] * (d0 + distance) / d0;
                                         }
-                                        if(d1 > EPSILON)
-                                        {
-                                            Surf[NumSurf][2][0] = Surf[NumSurf][2][0] * (d1+distance)/d1;
-                                            Surf[NumSurf][2][2] = Surf[NumSurf][2][2] * (d1+distance)/d1;
-                                        }
-                                        {
-                                            SET(CondLine[NumCond][0],Surf[NumSurf][0]);
-                                            SET(CondLine[NumCond][1],Surf[NumSurf][2]);
-                                            SET(CondLine[NumCond][2],Surf[NumSurf][1]);
-                                            SET(CondLine[NumCond][3],Surf[NumSurf][3]);
-                                            CondFlag[NumCond]=5;
-                                            NumCond++;
-                                        }
+                                        if (d1 > EPSILON) {
+                                            Surf[NumSurf][2][0] = Surf[NumSurf][2][0] * (d1 + distance) / d1;
+                                            Surf[NumSurf][2][2] = Surf[NumSurf][2][2] * (d1 + distance) / d1;
+                                        } {
+                                        SET(CondLine[NumCond][0], Surf[NumSurf][0]);
+                                        SET(CondLine[NumCond][1], Surf[NumSurf][2]);
+                                        SET(CondLine[NumCond][2], Surf[NumSurf][1]);
+                                        SET(CondLine[NumCond][3], Surf[NumSurf][3]);
+                                        CondFlag[NumCond] = 5;
+                                        NumCond++;
+                                    }
                                         break;
                                     }
-                                    SET(CondLine[NumCond][0],Surf[NumSurf][0]);
-                                    SET(CondLine[NumCond][1],Surf[NumSurf][3]);
-                                    SET(CondLine[NumCond][2],Surf[NumSurf][1]);
-                                    SET(CondLine[NumCond][3],Surf[NumSurf-1][0]);
-                                    CondFlag[NumCond]=5;
+                                    SET(CondLine[NumCond][0], Surf[NumSurf][0]);
+                                    SET(CondLine[NumCond][1], Surf[NumSurf][3]);
+                                    SET(CondLine[NumCond][2], Surf[NumSurf][1]);
+                                    SET(CondLine[NumCond][3], Surf[NumSurf - 1][0]);
+                                    CondFlag[NumCond] = 5;
                                     NumSurf++;
                                     NumCond++;
                                     LineUsed[current] = 2;
                                 }
-                                if(flag) break;
+                                if (flag)
+                                    break;
                             }
                         }
-                        if(flag) break;
+                        if (flag)
+                            break;
                     }
-                }
-                while(flag);
-                if(MANHATTAN(Surf[NumSurf-1][1], Surf[surfstart][0])<SMALL)
-                {
-                    SET(CondLine[NumCond][0],Surf[NumSurf-1][1]);
-                    SET(CondLine[NumCond][1],Surf[NumSurf-1][2]);
-                    SET(CondLine[NumCond][2],Surf[NumSurf-1][0]);
-                    SET(CondLine[NumCond][3],Surf[surfstart][1]);
-                    CondFlag[NumCond]=5;
+                } while (flag);
+                if (MANHATTAN(Surf[NumSurf - 1][1], Surf[surfstart][0]) < SMALL) {
+                    SET(CondLine[NumCond][0], Surf[NumSurf - 1][1]);
+                    SET(CondLine[NumCond][1], Surf[NumSurf - 1][2]);
+                    SET(CondLine[NumCond][2], Surf[NumSurf - 1][0]);
+                    SET(CondLine[NumCond][3], Surf[surfstart][1]);
+                    CondFlag[NumCond] = 5;
                     NumCond++;
-                }
-                else
-                {
-                    SET(CondLine[NumCond][0],Surf[NumSurf-1][1]);
-                    SET(CondLine[NumCond][1],Surf[NumSurf-1][2]);
-                    CondFlag[NumCond]=2;
+                } else {
+                    SET(CondLine[NumCond][0], Surf[NumSurf - 1][1]);
+                    SET(CondLine[NumCond][1], Surf[NumSurf - 1][2]);
+                    CondFlag[NumCond] = 2;
                     NumCond++;
-                    SET(CondLine[NumCond][0],Surf[surfstart][0]);
-                    SET(CondLine[NumCond][1],Surf[surfstart][3]);
-                    CondFlag[NumCond]=2;
+                    SET(CondLine[NumCond][0], Surf[surfstart][0]);
+                    SET(CondLine[NumCond][1], Surf[surfstart][3]);
+                    CondFlag[NumCond] = 2;
                     NumCond++;
                 }
             }
         }
 
-        for(int k = 0; k<NumSurf; k++)
-        {
-            if(MANHATTAN(Surf[k][0], Surf[k][3])<SMALL && MANHATTAN(Surf[k][1], Surf[k][2])<SMALL) continue;
-            if(MANHATTAN(Surf[k][0], Surf[k][3])<SMALL)
-            {
+        for (int k = 0; k < NumSurf; k++) {
+            if (MANHATTAN(Surf[k][0], Surf[k][3]) < SMALL && MANHATTAN(Surf[k][1], Surf[k][2]) < SMALL)
+                continue;
+            if (MANHATTAN(Surf[k][0], Surf[k][3]) < SMALL) {
                 Vertex v1 = new Vertex(new BigDecimal(Surf[k][0][x]), new BigDecimal(Surf[k][0][y]), new BigDecimal(Surf[k][0][z]));
                 Vertex v2 = new Vertex(new BigDecimal(Surf[k][1][x]), new BigDecimal(Surf[k][1][y]), new BigDecimal(Surf[k][1][z]));
                 Vertex v3 = new Vertex(new BigDecimal(Surf[k][2][x]), new BigDecimal(Surf[k][2][y]), new BigDecimal(Surf[k][2][z]));
                 newTriangles.add(new GData3(
                         bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(),
                         v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
-            }
-            else if(MANHATTAN(Surf[k][1], Surf[k][2])<SMALL)
-            {
+            } else if (MANHATTAN(Surf[k][1], Surf[k][2]) < SMALL) {
                 Vertex v1 = new Vertex(new BigDecimal(Surf[k][0][x]), new BigDecimal(Surf[k][0][y]), new BigDecimal(Surf[k][0][z]));
                 Vertex v2 = new Vertex(new BigDecimal(Surf[k][1][x]), new BigDecimal(Surf[k][1][y]), new BigDecimal(Surf[k][1][z]));
                 Vertex v3 = new Vertex(new BigDecimal(Surf[k][3][x]), new BigDecimal(Surf[k][3][y]), new BigDecimal(Surf[k][3][z]));
                 newTriangles.add(new GData3(
                         bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(),
                         v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
-            }
-            else if(mode == 1 || Tri_Angle(Surf[k][0], Surf[k][1], Surf[k][2], Surf[k][0], Surf[k][2], Surf[k][3]) <= 0.5)
-            {
+            } else if (mode == YTruderSettings.MODE_TRANSLATE_BY_DISTANCE
+                    || mode == YTruderSettings.MODE_SYMMETRY_ACROSS_PLANE
+                    || Tri_Angle(Surf[k][0], Surf[k][1], Surf[k][2], Surf[k][0], Surf[k][2], Surf[k][3]) <= 0.5) {
                 Vertex v1 = new Vertex(new BigDecimal(Surf[k][0][x]), new BigDecimal(Surf[k][0][y]), new BigDecimal(Surf[k][0][z]));
                 Vertex v2 = new Vertex(new BigDecimal(Surf[k][1][x]), new BigDecimal(Surf[k][1][y]), new BigDecimal(Surf[k][1][z]));
                 Vertex v3 = new Vertex(new BigDecimal(Surf[k][2][x]), new BigDecimal(Surf[k][2][y]), new BigDecimal(Surf[k][2][z]));
@@ -313,9 +305,7 @@ public class VM27YTruder extends VM26LineIntersector {
                 newQuads.add(new GData4(
                         bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(),
                         v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
-            }
-            else
-            {
+            } else {
                 {
                     Vertex v1 = new Vertex(new BigDecimal(Surf[k][0][x]), new BigDecimal(Surf[k][0][y]), new BigDecimal(Surf[k][0][z]));
                     Vertex v2 = new Vertex(new BigDecimal(Surf[k][1][x]), new BigDecimal(Surf[k][1][y]), new BigDecimal(Surf[k][1][z]));
@@ -335,15 +325,13 @@ public class VM27YTruder extends VM26LineIntersector {
             }
         }
 
-        for(int k=0; k<NumCond; k++)
-        {
-            if(MANHATTAN(CondLine[k][0], CondLine[k][1]) <SMALL) continue;
-            if(CondFlag[k] == 5)
-            {
+        for (int k = 0; k < NumCond; k++) {
+            if (MANHATTAN(CondLine[k][0], CondLine[k][1]) < SMALL)
+                continue;
+            if (CondFlag[k] == 5) {
                 double a;
-                a = Tri_Angle (CondLine[k][0], CondLine[k][1], CondLine[k][2], CondLine[k][0], CondLine[k][3], CondLine[k][1]);
-                if(a<AngleLineThr)
-                {
+                a = Tri_Angle(CondLine[k][0], CondLine[k][1], CondLine[k][2], CondLine[k][0], CondLine[k][3], CondLine[k][1]);
+                if (a < AngleLineThr) {
                     Vertex v1 = new Vertex(new BigDecimal(CondLine[k][0][x]), new BigDecimal(CondLine[k][0][y]), new BigDecimal(CondLine[k][0][z]));
                     Vertex v2 = new Vertex(new BigDecimal(CondLine[k][1][x]), new BigDecimal(CondLine[k][1][y]), new BigDecimal(CondLine[k][1][z]));
                     Vertex v3 = new Vertex(new BigDecimal(CondLine[k][2][x]), new BigDecimal(CondLine[k][2][y]), new BigDecimal(CondLine[k][2][z]));
@@ -351,9 +339,7 @@ public class VM27YTruder extends VM26LineIntersector {
                     newCondlines.add(new GData5(
                             lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(),
                             v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
-                }
-                else
-                {
+                } else {
                     Vertex v1 = new Vertex(new BigDecimal(CondLine[k][0][x]), new BigDecimal(CondLine[k][0][y]), new BigDecimal(CondLine[k][0][z]));
                     Vertex v2 = new Vertex(new BigDecimal(CondLine[k][1][x]), new BigDecimal(CondLine[k][1][y]), new BigDecimal(CondLine[k][1][z]));
                     newLines.add(new GData2(
@@ -362,8 +348,7 @@ public class VM27YTruder extends VM26LineIntersector {
                 }
             }
 
-            if(CondFlag[k] == 2)
-            {
+            if (CondFlag[k] == 2) {
                 Vertex v1 = new Vertex(new BigDecimal(CondLine[k][0][x]), new BigDecimal(CondLine[k][0][y]), new BigDecimal(CondLine[k][0][z]));
                 Vertex v2 = new Vertex(new BigDecimal(CondLine[k][1][x]), new BigDecimal(CondLine[k][1][y]), new BigDecimal(CondLine[k][1][z]));
                 newLines.add(new GData2(
@@ -473,36 +458,43 @@ public class VM27YTruder extends VM26LineIntersector {
     }
 
     private void CROSS(double[] dest, double[] left, double[] right) {
-        dest[0]=left[1]*right[2]-left[2]*right[1];
-        dest[1]=left[2]*right[0]-left[0]*right[2];
-        dest[2]=left[0]*right[1]-left[1]*right[0];
+        dest[0] = left[1] * right[2] - left[2] * right[1];
+        dest[1] = left[2] * right[0] - left[0] * right[2];
+        dest[2] = left[0] * right[1] - left[1] * right[0];
     }
 
     private double DOT(double[] v1, double[] v2) {
-        return v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2];
+        return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
     }
 
     private void SUB(double[] dest, double[] left, double[] right) {
-        dest[0]=left[0]-right[0]; dest[1]=left[1]-right[1]; dest[2]=left[2]-right[2];
+        dest[0] = left[0] - right[0];
+        dest[1] = left[1] - right[1];
+        dest[2] = left[2] - right[2];
     }
 
     private void MULT(double[] dest, double[] v, double factor) {
-        dest[0]=factor*v[0]; dest[1]=factor*v[1]; dest[2]=factor*v[2];
+        dest[0] = factor * v[0];
+        dest[1] = factor * v[1];
+        dest[2] = factor * v[2];
     }
 
     private void SET(double[] dest, double[] src) {
-        dest[0]=src[0]; dest[1]=src[1]; dest[2]=src[2];
+        dest[0] = src[0];
+        dest[1] = src[1];
+        dest[2] = src[2];
     }
 
     private double MANHATTAN(double[] v1, double[] v2) {
-        return Math.abs(v1[0]-v2[0]) + Math.abs(v1[1]-v2[1]) + Math.abs(v1[2]-v2[2]);
+        return Math.abs(v1[0] - v2[0]) + Math.abs(v1[1] - v2[1]) + Math.abs(v1[2] - v2[2]);
     }
 
     private double DIST(double[] v1, double[] v2) {
-        return Math.sqrt((v1[0]-v2[0])*(v1[0]-v2[0]) + (v1[1]-v2[1])*(v1[1]-v2[1]) + (v1[2]-v2[2])*(v1[2]-v2[2]));
+        return Math.sqrt((v1[0] - v2[0]) * (v1[0] - v2[0]) + (v1[1] - v2[1]) * (v1[1] - v2[1]) + (v1[2] - v2[2]) * (v1[2] - v2[2]));
     }
 
-    // Tri_Angle computes the cosine of the angle between the planes of two triangles.
+    // Tri_Angle computes the cosine of the angle between the planes of two
+    // triangles.
     // They are assumed to be non-degenerated
     private double Tri_Angle(double[] U0, double[] U1, double[] U2, double[] V0, double[] V1, double[] V2) {
         double[] Unorm = new double[3], Vnorm = new double[3];
@@ -516,10 +508,10 @@ public class VM27YTruder extends VM26LineIntersector {
         SUB(V20, V2, V0);
         CROSS(Temp, U10, U20);
         len = DIST(Temp, nullv);
-        MULT(Unorm, Temp, 1/len);
+        MULT(Unorm, Temp, 1 / len);
         CROSS(Temp, V10, V20);
         len = DIST(Temp, nullv);
-        MULT(Vnorm, Temp, 1/len);
+        MULT(Vnorm, Temp, 1 / len);
         return 180 / 3.14159 * Math.acos(DOT(Unorm, Vnorm));
     }
 }
