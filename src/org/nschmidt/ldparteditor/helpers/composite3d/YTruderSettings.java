@@ -20,6 +20,10 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
  *
  */
 public class YTruderSettings {
+    public static final int MODE_TRANSLATE_BY_DISTANCE = 1;
+    public static final int MODE_SYMMETRY_ACROSS_PLANE = 2;
+    public static final int MODE_PROJECTION_ON_PLANE = 3;
+    public static final int MODE_EXTRUDE_RADIALLY = 4;
     private int axis = 1;
     private int mode = 1;
     private double condlineAngleThreshold = 30.0;
