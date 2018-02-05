@@ -40,6 +40,7 @@ import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
+import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
@@ -1578,6 +1579,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
         final Set<GData3> originalSelectionTriangles = new HashSet<GData3>();
         final Set<GData4> originalSelectionQuads = new HashSet<GData4>();
         final Set<GData3> newTriangles = new HashSet<GData3>();
+        final Set<GData3> colouredTriangles = new HashSet<GData3>();
 
         final ArrayList<ArrayList<Vector3dd>> linesToParse = new ArrayList<ArrayList<Vector3dd>>();
         final ArrayList<ArrayList<Vector3dd>> colourLines = new ArrayList<ArrayList<Vector3dd>>();
@@ -2370,6 +2372,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                                         break;
                                                                     }
                                                                 }
+
                                                                 rlock.lock();
                                                                 if (MathHelper.directionOfVectors(Vector3d.cross(Vector3d.sub(triVerts[2], triVerts[0]), Vector3d.sub(triVerts[1], triVerts[0])), originalNormal) == 1) {
                                                                     resultVertices.add(triVerts[0]);
@@ -2380,13 +2383,13 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                                     resultVertices.add(triVerts[2]);
                                                                     resultVertices.add(triVerts[1]);
                                                                 }
+
                                                                 if (intersected != null) {
                                                                     resultColours.add(colours.get(intersected) != null ? colours.get(intersected) : View.getLDConfigColour(16));
-                                                                    resultIsLine.add(0);
                                                                 } else {
                                                                     resultColours.add(View.getLDConfigColour(16));
-                                                                    resultIsLine.add(0);
                                                                 }
+                                                                resultIsLine.add(0);
                                                                 rlock.unlock();
                                                             }
                                                         } else {
@@ -2472,6 +2475,60 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
             NLogger.debug(getClass(), "Round."); //$NON-NLS-1$
             roundSelection(6, 10, true, false, true, true, true);
 
+            // Fill surfaces
+            NLogger.debug(getClass(), "Colour fill."); //$NON-NLS-1$
+
+            newTriangles.clear();
+            newTriangles.addAll(selectedTriangles);
+            clearSelection();
+
+            final VertexManager vm = linkedDatFile.getVertexManager();
+            final SelectorSettings ss = new SelectorSettings();
+            ss.setScope(SelectorSettings.CONNECTED);
+            ss.setEdgeStop(true);
+            ss.setCondlines(false);
+            ss.setLines(false);
+            ss.setVertices(false);
+
+            colouredTriangles.addAll(newTriangles);
+
+            for (Iterator<GData3> it = newTriangles.iterator(); it.hasNext();) {
+                final GData3 tri = it.next();
+
+                // Skip uncoloured or subfile triangles
+                if (tri.colourNumber == 16 || !lineLinkedToVertices.containsKey(tri)) {
+                    continue;
+                }
+
+                clearSelection();
+                selectedTriangles.add(tri);
+                selectorSilent(ss);
+
+                // Remove the old selected triangles from the set of new triangles
+                if (newTriangles.removeAll(selectedTriangles)) {
+                    // Reset the iterator
+                    it = newTriangles.iterator();
+                }
+
+                // Don't want to colour already coloured triangles
+                selectedTriangles.removeIf((g) -> g.colourNumber != 16);
+
+                // Change the colour
+                vm.colourChangeSelection(tri.colourNumber, tri.r, tri.g, tri.b, tri.a, false);
+                // Add the new coloured triangles to the final selection
+                colouredTriangles.addAll(selectedTriangles);
+            }
+
+            // Cleanup coloured triangle selection, remove subfile/deleted content
+            colouredTriangles.removeIf((g) -> !lineLinkedToVertices.containsKey(g));
+
+            // FIXME Needs triangle angle optimisation
+
+            // Restore selection
+            clearSelection();
+            selectedTriangles.addAll(colouredTriangles);
+            selectedData.addAll(selectedTriangles);
+
             setModified(true, true);
 
             NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
@@ -2483,10 +2540,6 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
     private boolean intersectLineLineSegmentUnidirectionalFast(Vector3dd p, Vector3dd p2, Vector3d sp, Vector3d dir, BigDecimal len, Vector3dd q, Vector3dd q2) {
 
         Vector3d sq = Vector3d.sub(q2, q);
-        //        Vector3d c = Vector3d.add(Vector3d.cross(sp, sq), p, null);
-        //        Vector3d d = Vector3d.sub(p, Vector3d.cross(sp, sq));
-        //
-        //        return intersectLineTriangleSuperFast(q, q2, d, p2, c);
 
         Vector3d cross = Vector3d.cross(sq, sp);
         Vector3d c = Vector3d.add(cross, q);
