@@ -13,7 +13,7 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.csg;
+package org.nschmidt.ldparteditor.data.tools;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,19 +25,20 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.nschmidt.csg.VectorCSGd;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 
-enum CSGOptimizerFlipTriangle {
+public enum FlipTriangleOptimizer {
     INSTANCE;
 
-    public static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization, Map<GData3, Map<GData3, Boolean>> flipCache) {
+    public static boolean optimize(Random rnd, List<GData3> triangles, List<GData3> optimization, Map<GData3, Map<GData3, Boolean>> flipCache) {
         boolean result = false;
 
-        for (List<GData3> triangles : trianglesPerPlane.values()) {
+        {
 
             final Map<VectorCSGd, Map<VectorCSGd, List<GData3>>> edgeMap = new TreeMap<>();
             final Map<GData3, VectorCSGd[]> trimap = new HashMap<>();
@@ -90,7 +91,7 @@ enum CSGOptimizerFlipTriangle {
                     if (commonTris.size() == 2) {
                         GData3 other = commonTris.get(0) == tri ? commonTris.get(1) : commonTris.get(0);
 
-                        if (flipCache.containsKey(tri) && flipCache.get(tri).containsKey(other)) {
+                        if ((flipCache.containsKey(tri) && flipCache.get(tri).containsKey(other)) || tri.colourNumber != other.colourNumber || (tri.colourNumber == -1 && (tri.r != other.r || tri.g != other.g || tri.b != other.b))) {
                             continue;
                         }
 
@@ -138,14 +139,12 @@ enum CSGOptimizerFlipTriangle {
             }
 
             if (na != null) {
-                final IdAndPlane oldIdA = optimization.get(ta);
-                final IdAndPlane oldIdB = optimization.get(tb);
                 optimization.remove(ta);
                 optimization.remove(tb);
                 flipCache.remove(ta);
                 flipCache.remove(tb);
-                optimization.put(createTriangle(ta, nc, na, nb), oldIdA);
-                optimization.put(createTriangle(tb, nc, o, na), oldIdB);
+                optimization.add(createTriangle(ta, nc, na, nb));
+                optimization.add(createTriangle(tb, nc, o, na));
                 result = true;
             }
         }
@@ -162,3 +161,4 @@ enum CSGOptimizerFlipTriangle {
         return new GData3(v1, v2, v3, parent, colour, true);
     }
 }
+
