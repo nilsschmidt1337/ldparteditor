@@ -24,6 +24,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -35,6 +38,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.nschmidt.ldparteditor.composites.Composite3D;
+import org.nschmidt.ldparteditor.data.tools.FlipTriangleOptimizer;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -2522,10 +2526,64 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
             // Cleanup coloured triangle selection, remove subfile/deleted content
             colouredTriangles.removeIf((g) -> !lineLinkedToVertices.containsKey(g));
 
-            // FIXME Needs triangle angle optimisation
+            // Restore selection
+            clearSelection();
+            selectedTriangles.addAll(colouredTriangles);
+            selectedData.addAll(selectedTriangles);
+
+            // Prepare triangle set for the FlipTriangleOptimizer
+            final List<GData3> unbindTriangles = new ArrayList<>();
+            for (final GData3 tri : colouredTriangles) {
+                final Vertex v1 = new Vertex(tri.X1, tri.Y1, tri.Z1);
+                final Vertex v2 = new Vertex(tri.X2, tri.Y2, tri.Z2);
+                final Vertex v3 = new Vertex(tri.X3, tri.Y3, tri.Z3);
+                unbindTriangles.add(new GData3(v1, v2, v3, tri.parent, new GColour(tri.colourNumber, tri.r, tri.g, tri.b, tri.a), true));
+            }
+
+            delete(false, false);
+
+            final List<GData3> optimization = new ArrayList<>();
+            final Random rnd = new Random(12345L);
+            final  Map<GData3, Map<GData3, Boolean>> flipCache = new HashMap<>();
+            optimization.addAll(unbindTriangles);
+
+            try
+            {
+                new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
+                {
+                    @Override
+                    public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
+                    {
+                        try
+                        {
+                            monitor.beginTask(I18n.VM_Lines2Pattern, IProgressMonitor.UNKNOWN);
+
+                            while (FlipTriangleOptimizer.optimize(rnd, unbindTriangles, optimization, flipCache) && !monitor.isCanceled()) {
+                                unbindTriangles.clear();
+                                unbindTriangles.addAll(optimization);
+                            }
+                        } finally {
+                            monitor.done();
+                        }
+                    }
+                });
+            }
+            catch (InvocationTargetException consumed) {
+            } catch (InterruptedException consumed) {
+            }
 
             // Restore selection
             clearSelection();
+            colouredTriangles.clear();
+            for (final GData3 tri : optimization) {
+                final Vertex v1 = new Vertex(tri.X1, tri.Y1, tri.Z1);
+                final Vertex v2 = new Vertex(tri.X2, tri.Y2, tri.Z2);
+                final Vertex v3 = new Vertex(tri.X3, tri.Y3, tri.Z3);
+                final GData3 newTri = new GData3(tri.colourNumber, tri.r, tri.g, tri.b, tri.a, v1, v2, v3, tri.parent, linkedDatFile, true);
+                colouredTriangles.add(newTri);
+                linkedDatFile.addToTailOrInsertAfterCursor(newTri);
+            }
+
             selectedTriangles.addAll(colouredTriangles);
             selectedData.addAll(selectedTriangles);
 
