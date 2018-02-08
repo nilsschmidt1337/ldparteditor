@@ -1,3 +1,16 @@
+### 08 Feb 2018
+With the release of 0.8.43 you are able to...
+-  ...check an option during setup which associates *.dat files to LDPartEditor.
+-  ...benefit from an enhanced surface creation by Lines2Pattern.
+-  ...see the poles correctly on !TEXMAP SPHERICAL.
+
+The following critical issues are fixed:
+1. Ytruder still generated triangles sometimes when it should generate quads.
+2. Switching the manipulator via keyboard (translate, rotate, scale) "cleared" the current transformation.
+3. Selecting a color for the font in Txt2dat did not work. Letters were always rendered in black.
+4. Fixed a rare NullPointerException which occured while closing the application.
+
+
 ### 23 Jan 2018
 With the release of 0.8.42 you are able to...
 -  ...to open *.dat files with LDPartEditor from the Windows file explorer ("Open with..." and select LDPartEditor.exe).
