@@ -21,7 +21,6 @@ import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.ldparteditor.data.GL33ModelRenderer.GDataAndWinding;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLShader;
@@ -185,7 +184,7 @@ public enum GL33TexmapRenderer {
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndices);
-                    if (gw.noclip) {
+                    if (gw.noclip || gd3.a < 1f) {
                         flipnormals(3, triVertices);
                         GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndicesNOCLIP);
                     }
@@ -347,7 +346,7 @@ public enum GL33TexmapRenderer {
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndices);
-                    if (gw.noclip) {
+                    if (gw.noclip || gd4.a < 1f) {
                         flipnormals(4, quadVertices);
                         GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndicesNOCLIP);
                     }
@@ -407,5 +406,4 @@ public enum GL33TexmapRenderer {
         data[j + 10] = u;
         data[j + 11] = v;
     }
-
 }

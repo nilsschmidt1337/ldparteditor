@@ -659,8 +659,6 @@ public class GL33ModelRenderer {
                                                 Matrix4f.transform(m, v[2], v[2]);
                                                 Matrix4f.transform(m, v[3], v[3]);
                                                 // No normalization necessary (the shader does the job)!
-                                                // v[3].w = 0f;
-                                                // v[3].normalise();
                                                 final float xn = v[3].x;
                                                 final float yn = v[3].y;
                                                 final float zn = v[3].z;
@@ -2332,9 +2330,9 @@ public class GL33ModelRenderer {
         final float zoom = c3d.getZoom();
         final boolean drawLines = View.lineWidthGL[0] > 0.01f;
         final boolean studlogo = c3d.isShowingLogo();
-        final boolean noRaytrace = c3d.getRenderMode() != 5;
+        final boolean ldrawStandardMode = c3d.getRenderMode() == 5;
 
-        if (!noRaytrace) {
+        if (ldrawStandardMode) {
             CUBEMAP_TEXTURE.bindGL33(renderer, mainShader);
             CUBEMAP_MATTE_TEXTURE.bindGL33(renderer, mainShader);
             CUBEMAP_METAL_TEXTURE.bindGL33(renderer, mainShader);
@@ -2359,7 +2357,7 @@ public class GL33ModelRenderer {
         }
 
         // TODO Draw CSG VAOs here
-        if (noRaytrace && usesCSG) {
+        if (!ldrawStandardMode && usesCSG) {
             if (drawSolidMaterials) {
 
                 GL30.glBindVertexArray(vaoCSG);
@@ -2480,7 +2478,7 @@ public class GL33ModelRenderer {
                 GL11.glLineWidth(1f);
             }
 
-            if (noRaytrace && tls > 0) {
+            if (!ldrawStandardMode && tls > 0) {
                 GL30.glBindVertexArray(vaoTempLines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTempLines);
                 lock.lock();
@@ -2512,7 +2510,7 @@ public class GL33ModelRenderer {
             GL11.glDrawArrays(GL11.GL_TRIANGLES, to, ts);
             mainShader.setFactor(1f);
 
-            if (noRaytrace && c3d.isShowingVertices()) {
+            if (!ldrawStandardMode && c3d.isShowingVertices()) {
                 GL30.glBindVertexArray(vaoVertices);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVertices);
                 lock.lock();
@@ -2596,7 +2594,7 @@ public class GL33ModelRenderer {
             }
         } else {
 
-            if (!noRaytrace) {
+            if (ldrawStandardMode) {
                 GL30.glBindVertexArray(0);
                 return;
             }
@@ -3107,20 +3105,5 @@ public class GL33ModelRenderer {
         vertexData[pos + 3] = x;
         vertexData[pos + 4] = y;
         vertexData[pos + 5] = z;
-    }
-
-    class GDataAndWinding {
-        final GData data;
-        final byte winding;
-        final boolean negativeDeterminant;
-        final boolean invertNext;
-        final boolean noclip;
-        public GDataAndWinding(GData gd, byte bfc, boolean negDet, boolean iNext, int accumClip) {
-            data = gd;
-            winding = bfc;
-            negativeDeterminant = negDet;
-            invertNext = iNext;
-            noclip = accumClip > 0;
-        }
     }
 }
