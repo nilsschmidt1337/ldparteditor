@@ -34,6 +34,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GL33ModelRenderer;
+import org.nschmidt.ldparteditor.data.GL33ModelRendererLDrawStandard;
 import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
@@ -67,6 +68,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private final GLMatrixStack stack = new GLMatrixStack();
     private final GL33Helper helper = new GL33Helper();
     private final GL33ModelRenderer modelRenderer = new GL33ModelRenderer(c3d, this);
+    private final GL33ModelRendererLDrawStandard modelRendererLDrawStandard = new GL33ModelRendererLDrawStandard(c3d, this);
 
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
@@ -147,6 +149,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         GL11.glPointSize(5);
 
         modelRenderer.init();
+        modelRendererLDrawStandard.init();
     }
 
     @Override
@@ -334,7 +337,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram.lightsOff();
             }
 
-            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true, c3d.getLockableDatFileReference());
+            if (ldrawStandardMode) {
+                modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true, c3d.getLockableDatFileReference());
+            } else {
+                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true, c3d.getLockableDatFileReference());
+            }
 
             if (window.getCompositePrimitive().isDoingDND()) {
                 final Primitive p = c3d.getDraggedPrimitive();
@@ -354,7 +361,11 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 c3d.setDraggedPrimitive(null);
             }
 
-            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false, c3d.getLockableDatFileReference());
+            if (ldrawStandardMode) {
+                modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false, c3d.getLockableDatFileReference());
+            } else {
+                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false, c3d.getLockableDatFileReference());
+            }
 
             stack.setShader(shaderProgram2);
             shaderProgram2.use();
@@ -1210,6 +1221,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     public void dispose() {
         // Properly de-allocate all resources once they've outlived their purpose
         modelRenderer.dispose();
+        modelRendererLDrawStandard.dispose();
         shaderProgram.dispose();
         shaderProgram2.dispose();
         shaderProgram2D.dispose();

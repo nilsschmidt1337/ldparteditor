@@ -1,7 +1,7 @@
 #version 330 core
 
 layout(location = 0) in vec3 in_position;
-layout(location = 1) in vec3 in_normal;       
+layout(location = 1) in vec3 in_normal;
 layout(location = 2) in vec4 in_color;
 layout(location = 3) in vec2 in_tex;  
 
@@ -21,11 +21,11 @@ out vec2 tex;
 
 void main()
 {
-	if (pngswitch > 0.5f || texmapswitch > 0.5f) {
-		tex = in_tex;
-	}
-	gl_Position = projection * view * model * vec4(in_position, 1.0f);
-	position = vec3(view * model * vec4(in_position, 1.0f));
+    if (pngswitch > 0.5f || texmapswitch > 0.5f) {
+        tex = in_tex;
+    }
+    gl_Position = projection * view * model * vec4(in_position, 1.0f);
+    position = vec3(view * model * vec4(in_position, 1.0f));
     sceneColor = vec4(in_color.r * factor, in_color.g * factor, in_color.b * factor, in_color.a);
     
     mat4 glNormalMatrix_m;
@@ -49,7 +49,7 @@ void main()
     n3 = normalize(n3);
     
     for (int i=0; i<3; ++i)
-	{
+    {
         glNormalMatrix_m[0][i] = n1[i];
         glNormalMatrix_m[1][i] = n2[i];
         glNormalMatrix_m[2][i] = n3[i];
