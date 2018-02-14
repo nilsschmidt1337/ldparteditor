@@ -598,14 +598,7 @@ public class GL33ModelRendererLDrawStandard {
                                             zn = Nv.z;
                                         }
                                     }
-
-                                    int tmpRenderMode = renderMode;
                                     if (gw.noclip) {
-                                        tmpRenderMode = 0;
-                                    }
-                                    switch (tmpRenderMode) {
-                                    case 0:
-                                    {
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                         pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
@@ -629,15 +622,13 @@ public class GL33ModelRendererLDrawStandard {
                                                 normal(3, 3, xn, yn, zn, triangleData, tempIndex);
                                             }
                                         }
+
                                         if (transparent) {
                                             transparentTriangleIndex += 6;
                                         } else {
                                             triangleIndex += 6;
                                         }
-                                        continue;
-                                    }
-                                    case 5:
-                                    {
+                                    } else {
                                         GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd3.r, gd3.g, gd3.b));
                                         GColourType ct = c.getType();
                                         boolean hasColourType = ct != null;
@@ -734,10 +725,6 @@ public class GL33ModelRendererLDrawStandard {
                                         } else {
                                             triangleIndex += 3;
                                         }
-                                        continue;
-                                    }
-                                    default:
-                                        continue;
                                     }
                                 }
                                 continue;
@@ -803,13 +790,7 @@ public class GL33ModelRendererLDrawStandard {
                                     }
                                 }
 
-                                int tmpRenderMode = renderMode;
                                 if (gw.noclip) {
-                                    tmpRenderMode = 0;
-                                }
-                                switch (tmpRenderMode) {
-                                case 0:
-                                {
                                     pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                     pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                     pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
@@ -845,15 +826,13 @@ public class GL33ModelRendererLDrawStandard {
                                             normal(6, 6, xn, yn, zn, triangleData, tempIndex);
                                         }
                                     }
+
                                     if (transparent) {
                                         transparentTriangleIndex += 12;
                                     } else {
                                         triangleIndex += 12;
                                     }
-                                    continue;
-                                }
-                                case 5:
-                                {
+                                } else {
                                     GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd4.r, gd4.g, gd4.b));
                                     GColourType ct = c.getType();
                                     boolean hasColourType = ct != null;
@@ -972,11 +951,8 @@ public class GL33ModelRendererLDrawStandard {
                                     } else {
                                         triangleIndex += 6;
                                     }
-                                    continue;
                                 }
-                                default:
-                                    continue;
-                                }
+                                continue;
                             case 5:
                                 if (hideCondlines) {
                                     continue;
