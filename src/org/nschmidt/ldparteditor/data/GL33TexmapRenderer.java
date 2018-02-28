@@ -29,7 +29,7 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 public enum GL33TexmapRenderer {
     INSTANCE;
 
-    public static void render(ArrayList<GDataAndWinding> texmapData, GLShader mainShader, OpenGLRenderer renderer,
+    public static void render(ArrayList<GDataAndTexture> texmapData, GLShader mainShader, OpenGLRenderer renderer,
             HashMap<GData, Vector3f[]> normalMap, HashMap<GData, Vertex[]> vertexMap, boolean smoothShading) {
         GTexture lastTexture = null;
         float[] uv;
@@ -43,8 +43,17 @@ public enum GL33TexmapRenderer {
         int[] triIndicesNOCLIP = new int[]{0, 2, 1};
         int[] quadIndicesNOCLIP = new int[]{0, 3, 2, 2, 1, 0};
 
-        for (GDataAndWinding gw : texmapData) {
+        boolean texmap = true;
+
+        for (GDataAndTexture gw : texmapData) {
             final GData gd = gw.data;
+            if (texmap && gw.texture == GTexture.NO_TEXTURE) {
+                mainShader.texmapOff();
+                texmap = false;
+            } else if (!texmap && gw.texture != GTexture.NO_TEXTURE){
+                mainShader.texmapOn();
+                texmap = true;
+            }
             switch (gd.type()) {
             case 3:
                 GData3 gd3 = (GData3) gd;
