@@ -106,7 +106,7 @@ public class GL33ModelRendererLDrawStandard {
     private volatile int lineSize = 0;
     private volatile int condlineSize = 0;
 
-    private volatile ArrayList<GDataAndWinding> texmapData = new ArrayList<>();
+    private volatile ArrayList<GDataAndTexture> texmapData = new ArrayList<>();
     private volatile HashMap<GData, Vertex[]> sharedVertexMap = new HashMap<>();
     private volatile HashMap<GData, Vector3f[]> shared_TEXMAP_NormalMap = new HashMap<>();
 
@@ -209,7 +209,7 @@ public class GL33ModelRendererLDrawStandard {
                 Matrix4f.setIdentity(Mm);
 
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
-                final ArrayList<GDataAndWinding> texmapDataInOrder = new ArrayList<>();
+                final ArrayList<GDataAndTexture> texmapDataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, Vertex[]> vertexMap2 = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
@@ -273,7 +273,7 @@ public class GL33ModelRendererLDrawStandard {
                                     lines, triangles, quads, condlines, drawStudLogo);
                             HashSet<GData> allData = new HashSet<>();
                             if (usesTEXMAP) {
-                                for (GDataAndWinding gw : texmapDataInOrder) {
+                                for (GDataAndTexture gw : texmapDataInOrder) {
                                     allData.add(gw.data);
                                     dataToRemove.remove(gw.data);
                                 }
@@ -1211,7 +1211,7 @@ public class GL33ModelRendererLDrawStandard {
 
     private boolean load_BFC_and_TEXMAP_info(
             final ArrayList<GDataAndWinding> dataInOrder,
-            final ArrayList<GDataAndWinding> texmapDataInOrder,
+            final ArrayList<GDataAndTexture> texmapDataInOrder,
             final ArrayList<GDataCSG> csgData,
             final HashMap<GData, Vertex[]> vertexMap,
             final HashMap<GData1, Matrix4f> matrixMap, final DatFile df,
@@ -1403,7 +1403,7 @@ public class GL33ModelRendererLDrawStandard {
                             verts = new Vertex[]{new Vertex(v1.x, v1.y, v1.z, true), new Vertex(v2.x, v2.y, v2.z, true), new Vertex(v3.x, v3.y, v3.z, true)};
                         }
                         vertexMap.put(gd, verts);
-                        texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                        texmapDataInOrder.add(new GDataAndTexture(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                         if (texmapNext && !parseTexmapSubfile) {
                             texmap = false;
                             texmapNext = false;
@@ -1434,7 +1434,7 @@ public class GL33ModelRendererLDrawStandard {
                         verts = new Vertex[]{new Vertex(v1.x, v1.y, v1.z, true), new Vertex(v2.x, v2.y, v2.z, true), new Vertex(v3.x, v3.y, v3.z, true), new Vertex(v4.x, v4.y, v4.z, true)};
                     }
                     vertexMap.put(gd, verts);
-                    texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                    texmapDataInOrder.add(new GDataAndTexture(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                     if (texmapNext && !parseTexmapSubfile) {
                         texmap = false;
                         texmapNext = false;
@@ -1467,12 +1467,12 @@ public class GL33ModelRendererLDrawStandard {
                 switch (tex.meta) {
                 case START:
                     texmap = true;
-                    texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                    texmapDataInOrder.add(new GDataAndTexture(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                     break;
                 case NEXT:
                     texmapNext = true;
                     texmap = true;
-                    texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
+                    texmapDataInOrder.add(new GDataAndTexture(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                     break;
                 case GEOMETRY:
                     // Shouldn't happen...
@@ -1490,6 +1490,28 @@ public class GL33ModelRendererLDrawStandard {
                 continue;
             }
         }
+
+        // If there is TEXMAP then render all transparent surfaces with the TEXMAP renderer
+        // for most accurate OIT rendering.
+        if (hasTEXMAP) {
+            for (Iterator<GDataAndWinding> iterator = dataInOrder.iterator(); iterator.hasNext();) {
+                GDataAndWinding gaw = iterator.next();
+                if (gaw.data instanceof GData3) {
+                    final GData3 gd3 = (GData3) gaw.data;
+                    if (gd3.a < 1f) {
+                        texmapDataInOrder.add(new GDataAndTexture(gaw));
+                        iterator.remove();
+                    }
+                } else if (gaw.data instanceof GData4) {
+                    final GData4 gd4 = (GData4) gaw.data;
+                    if (gd4.a < 1f) {
+                        texmapDataInOrder.add(new GDataAndTexture(gaw));
+                        iterator.remove();
+                    }
+                }
+            }
+        }
+
         return hasTEXMAP;
     }
 

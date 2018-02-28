@@ -51,6 +51,8 @@ import de.matthiasmann.twl.utils.PNGDecoder.Format;
  */
 public class GTexture {
 
+    public static final GTexture NO_TEXTURE = new GTexture();
+
     private long accessTime = System.currentTimeMillis();
 
     private HashMap<OpenGLRenderer, Integer> OpenGlID = new HashMap<OpenGLRenderer, Integer>();
@@ -81,6 +83,10 @@ public class GTexture {
 
     private Map<GData, UV> uvCache = new HashMap<GData, UV>();
     private Set<GData> cacheUsage = new HashSet<GData>();
+
+    private GTexture() {
+        this.type = TexType.NONE;
+    }
 
     public GTexture(TexType type, String texture, String glossmap, int useCubemap, Vector3f point1, Vector3f point2, Vector3f point3, float a, float b) {
         this.type = type;
