@@ -46,11 +46,19 @@ public enum GL33TexmapRenderer {
         boolean texmap = true;
 
         for (GDataAndTexture gw : texmapData) {
-            final GData gd = gw.data;
-            if (texmap && gw.texture == GTexture.NO_TEXTURE) {
+        	final GTexture tex = gw.texture;
+        	final GData gd = gw.data;
+        	
+        	if (tex != GTexture.NO_TEXTURE && tex != lastTexture) {
+                lastTexture = tex;
+                lastTexture.refreshCache();
+                lastTexture.bindGL33(renderer, mainShader);
+        	}
+        	
+            if (texmap && tex == GTexture.NO_TEXTURE) {
                 mainShader.texmapOff();
                 texmap = false;
-            } else if (!texmap && gw.texture != GTexture.NO_TEXTURE){
+            } else if (!texmap && tex != GTexture.NO_TEXTURE){
                 mainShader.texmapOn();
                 texmap = true;
             }
@@ -359,14 +367,6 @@ public enum GL33TexmapRenderer {
                         flipnormals(4, quadVertices);
                         GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndicesNOCLIP);
                     }
-                }
-                continue;
-            case 9:
-                GDataTEX tex = (GDataTEX) gd;
-                if (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) {
-                    lastTexture = tex.linkedTexture;
-                    lastTexture.refreshCache();
-                    lastTexture.bindGL33(renderer, mainShader);
                 }
                 continue;
             default:
