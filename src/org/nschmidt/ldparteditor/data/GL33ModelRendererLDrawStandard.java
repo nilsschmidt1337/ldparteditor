@@ -263,7 +263,7 @@ public class GL33ModelRendererLDrawStandard {
                         final HashSet<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
                         final Matrix4f viewport = new Matrix4f();
                         viewport.load(c3d.getViewport());
-                        
+
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
                         texmapDataInOrder.clear();
@@ -276,112 +276,112 @@ public class GL33ModelRendererLDrawStandard {
                                     lines, triangles, quads, condlines, drawStudLogo);
                             HashSet<GData> allData = new HashSet<>();
                             if (usesTEXMAP) {
-                            	
-                            	GTexture lastTexture = null;
-                            	
+
+                                GTexture lastTexture = null;
+
                                 for (GDataAndTexture gw : texmapDataInOrder) {
                                     allData.add(gw.data);
                                     dataToRemove.remove(gw.data);
-                                    
+
                                     if (gw.texture == null && lastTexture != null) {
-                                    	gw.texture = lastTexture;
+                                        gw.texture = lastTexture;
                                     }
-                                    
+
                                     if (gw.data instanceof GDataTEX) {
-                                    	GDataTEX tex = (GDataTEX) gw.data;
-                                    	if (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) {
+                                        GDataTEX tex = (GDataTEX) gw.data;
+                                        if (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) {
                                             lastTexture = tex.linkedTexture;
                                         }
                                     }
                                 }
-                                
+
                                 Collections.sort(texmapDataInOrder, (a, b) -> {
-                                	final GData ga = a.data;
-                                	final GData gb = b.data;
-                                	final boolean aIsTransparentSurface = 
-                                			ga instanceof GData3 && ((GData3) ga).a < 1f
-                                			|| ga instanceof GData4 && ((GData4) ga).a < 1f;
-                                	final boolean bIsTransparentSurface = 
-                                			gb instanceof GData3 && ((GData3) gb).a < 1f
-                                			|| gb instanceof GData4 && ((GData4) gb).a < 1f;
-                                	
-                                	if (aIsTransparentSurface && bIsTransparentSurface) {
-                                		final Vertex[] sa_verts =  ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
-                                		final Vertex[] sb_verts =  gb.type() == 3 ? triangles.get(gb) : quads.get(gb);
-                                		if (sa_verts == null || sb_verts == null) {                                			
-                                			return 0;
-                                		}
-                                		
-                                		final Vector4f vf = new Vector4f();
-                                		final Vector4f vt = new Vector4f();
-                                		
-                                		float aTopmostZ = -Float.MAX_VALUE;
-                                		for (Vertex v : sa_verts) {
-                                			vf.set(v.x, v.y, v.z, 1f);
-                                			Matrix4f.transform(viewport, vf, vt);
-                                			aTopmostZ = Math.max(aTopmostZ, vt.z);
-                                		}
-                                		
-                                		float bTopmostZ = -Float.MAX_VALUE;
-                                		for (Vertex v : sb_verts) {
-                                			vf.set(v.x, v.y, v.z, 1f);
-                                			Matrix4f.transform(viewport, vf, vt);
-                                			bTopmostZ = Math.max(bTopmostZ, vt.z);
-                                		}
-                                		
-                                		return Float.compare(aTopmostZ, bTopmostZ);
-                                	} else if (aIsTransparentSurface) {
-                                		return 1;
-                                	} else if (bIsTransparentSurface) {
-                                		return -1;	
-                                	} else {
-                                		return 0;
-                                	}
+                                    final GData ga = a.data;
+                                    final GData gb = b.data;
+                                    final boolean aIsTransparentSurface =
+                                            ga instanceof GData3 && ((GData3) ga).a < 1f
+                                            || ga instanceof GData4 && ((GData4) ga).a < 1f;
+                                    final boolean bIsTransparentSurface =
+                                            gb instanceof GData3 && ((GData3) gb).a < 1f
+                                            || gb instanceof GData4 && ((GData4) gb).a < 1f;
+
+                                    if (aIsTransparentSurface && bIsTransparentSurface) {
+                                        final Vertex[] sa_verts =  vertexMap.containsKey(ga) ? vertexMap.get(ga) : ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
+                                        final Vertex[] sb_verts =  vertexMap.containsKey(gb) ? vertexMap.get(gb) : gb.type() == 3 ? triangles.get(gb) : quads.get(gb);
+                                        if (sa_verts == null || sb_verts == null) {
+                                            return 0;
+                                        }
+
+                                        final Vector4f vf = new Vector4f();
+                                        final Vector4f vt = new Vector4f();
+
+                                        float aTopmostZ = -Float.MAX_VALUE;
+                                        for (Vertex v : sa_verts) {
+                                            vf.set(v.x, v.y, v.z, 1f);
+                                            Matrix4f.transform(viewport, vf, vt);
+                                            aTopmostZ = Math.max(aTopmostZ, vt.z);
+                                        }
+
+                                        float bTopmostZ = -Float.MAX_VALUE;
+                                        for (Vertex v : sb_verts) {
+                                            vf.set(v.x, v.y, v.z, 1f);
+                                            Matrix4f.transform(viewport, vf, vt);
+                                            bTopmostZ = Math.max(bTopmostZ, vt.z);
+                                        }
+
+                                        return Float.compare(aTopmostZ, bTopmostZ);
+                                    } else if (aIsTransparentSurface) {
+                                        return 1;
+                                    } else if (bIsTransparentSurface) {
+                                        return -1;
+                                    } else {
+                                        return 0;
+                                    }
                                 });
                                 texmapData = new ArrayList<>(texmapDataInOrder);
                             } else {
-                            	Collections.sort(dataInOrder, (a, b) -> {
-                                	final GData ga = a.data;
-                                	final GData gb = b.data;
-                                	final boolean aIsTransparentSurface = 
-                                			ga instanceof GData3 && ((GData3) ga).a < 1f
-                                			|| ga instanceof GData4 && ((GData4) ga).a < 1f;
-                                	final boolean bIsTransparentSurface = 
-                                			gb instanceof GData3 && ((GData3) gb).a < 1f
-                                			|| gb instanceof GData4 && ((GData4) gb).a < 1f;
-                                	
-                                	if (aIsTransparentSurface && bIsTransparentSurface) {
-                                		final Vertex[] sa_verts =  ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
-                                		final Vertex[] sb_verts =  gb.type() == 3 ? triangles.get(gb) : quads.get(gb);
-                                		if (sa_verts == null || sb_verts == null) {                                			
-                                			return 0;
-                                		}
-                                		
-                                		final Vector4f vf = new Vector4f();
-                                		final Vector4f vt = new Vector4f();
-                                		
-                                		float aTopmostZ = -Float.MAX_VALUE;
-                                		for (Vertex v : sa_verts) {
-                                			vf.set(v.x, v.y, v.z, 1f);
-                                			Matrix4f.transform(viewport, vf, vt);
-                                			aTopmostZ = Math.max(aTopmostZ, vt.z);
-                                		}
-                                		
-                                		float bTopmostZ = -Float.MAX_VALUE;
-                                		for (Vertex v : sb_verts) {
-                                			vf.set(v.x, v.y, v.z, 1f);
-                                			Matrix4f.transform(viewport, vf, vt);
-                                			bTopmostZ = Math.max(bTopmostZ, vt.z);
-                                		}
-                                		
-                                		return Float.compare(aTopmostZ, bTopmostZ);
-                                	} else if (aIsTransparentSurface) {
-                                		return 1;
-                                	} else if (bIsTransparentSurface) {
-                                		return -1;	
-                                	} else {
-                                		return 0;
-                                	}
+                                Collections.sort(dataInOrder, (a, b) -> {
+                                    final GData ga = a.data;
+                                    final GData gb = b.data;
+                                    final boolean aIsTransparentSurface =
+                                            ga instanceof GData3 && ((GData3) ga).a < 1f
+                                            || ga instanceof GData4 && ((GData4) ga).a < 1f;
+                                    final boolean bIsTransparentSurface =
+                                            gb instanceof GData3 && ((GData3) gb).a < 1f
+                                            || gb instanceof GData4 && ((GData4) gb).a < 1f;
+
+                                    if (aIsTransparentSurface && bIsTransparentSurface) {
+                                        final Vertex[] sa_verts =  ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
+                                        final Vertex[] sb_verts =  gb.type() == 3 ? triangles.get(gb) : quads.get(gb);
+                                        if (sa_verts == null || sb_verts == null) {
+                                            return 0;
+                                        }
+
+                                        final Vector4f vf = new Vector4f();
+                                        final Vector4f vt = new Vector4f();
+
+                                        float aTopmostZ = -Float.MAX_VALUE;
+                                        for (Vertex v : sa_verts) {
+                                            vf.set(v.x, v.y, v.z, 1f);
+                                            Matrix4f.transform(viewport, vf, vt);
+                                            aTopmostZ = Math.max(aTopmostZ, vt.z);
+                                        }
+
+                                        float bTopmostZ = -Float.MAX_VALUE;
+                                        for (Vertex v : sb_verts) {
+                                            vf.set(v.x, v.y, v.z, 1f);
+                                            Matrix4f.transform(viewport, vf, vt);
+                                            bTopmostZ = Math.max(bTopmostZ, vt.z);
+                                        }
+
+                                        return Float.compare(aTopmostZ, bTopmostZ);
+                                    } else if (aIsTransparentSurface) {
+                                        return 1;
+                                    } else if (bIsTransparentSurface) {
+                                        return -1;
+                                    } else {
+                                        return 0;
+                                    }
                                 });
                             }
                             Iterator<Entry<GData, Vector3f[]>> iter = shared_TEXMAP_NormalMap.entrySet().iterator();

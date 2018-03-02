@@ -48,17 +48,18 @@ public enum GL33TexmapRenderer {
         for (GDataAndTexture gw : texmapData) {
         	final GTexture tex = gw.texture;
         	final GData gd = gw.data;
-        	
-        	if (tex != GTexture.NO_TEXTURE && tex != lastTexture) {
+        	final boolean isTextured = tex != GTexture.NO_TEXTURE;
+
+        	if (isTextured && tex != lastTexture) {
                 lastTexture = tex;
                 lastTexture.refreshCache();
                 lastTexture.bindGL33(renderer, mainShader);
         	}
-        	
-            if (texmap && tex == GTexture.NO_TEXTURE) {
+
+            if (texmap && !isTextured) {
                 mainShader.texmapOff();
                 texmap = false;
-            } else if (!texmap && tex != GTexture.NO_TEXTURE){
+            } else if (!texmap && isTextured){
                 mainShader.texmapOn();
                 texmap = true;
             }
@@ -201,7 +202,7 @@ public enum GL33TexmapRenderer {
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndices);
-                    if (gw.noclip || gd3.a < 1f) {
+                    if (gw.noclip || (isTextured && gd3.a < 1f)) {
                         flipnormals(3, triVertices);
                         GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndicesNOCLIP);
                     }
@@ -363,7 +364,7 @@ public enum GL33TexmapRenderer {
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndices);
-                    if (gw.noclip || gd4.a < 1f) {
+                    if (gw.noclip || (isTextured && gd4.a < 1f)) {
                         flipnormals(4, quadVertices);
                         GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndicesNOCLIP);
                     }
