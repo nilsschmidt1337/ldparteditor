@@ -1173,7 +1173,7 @@ public class GL33ModelRendererLDrawStandard {
             } else {
                 mainShader.transparentOn();
             }
-            GL33TexmapRenderer.render(texmapData, mainShader, renderer, shared_TEXMAP_NormalMap, sharedVertexMap, c3d.isSmoothShading());
+            GL33TexmapRenderer.render(texmapData, mainShader, renderer, shared_TEXMAP_NormalMap, sharedVertexMap, c3d.isSmoothShading(), drawSolidMaterials);
             mainShader.texmapOff();
         }
 

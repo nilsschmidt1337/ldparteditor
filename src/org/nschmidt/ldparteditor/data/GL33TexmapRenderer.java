@@ -30,7 +30,7 @@ public enum GL33TexmapRenderer {
     INSTANCE;
 
     public static void render(ArrayList<GDataAndTexture> texmapData, GLShader mainShader, OpenGLRenderer renderer,
-            HashMap<GData, Vector3f[]> normalMap, HashMap<GData, Vertex[]> vertexMap, boolean smoothShading) {
+            HashMap<GData, Vector3f[]> normalMap, HashMap<GData, Vertex[]> vertexMap, boolean smoothShading, boolean drawSolidMaterials) {
         GTexture lastTexture = null;
         float[] uv;
         float[] triVertices = new float[36];
@@ -66,6 +66,7 @@ public enum GL33TexmapRenderer {
             switch (gd.type()) {
             case 3:
                 GData3 gd3 = (GData3) gd;
+                if (!isTextured && gd3.a < 1f && drawSolidMaterials) continue;
                 Vertex[] v = vertexMap.get(gd);
                 Vector3f[] n = normalMap.get(gd);
                 if (n == null) {
@@ -210,6 +211,7 @@ public enum GL33TexmapRenderer {
                 continue;
             case 4:
                 GData4 gd4 = (GData4) gd;
+                if (!isTextured && gd4.a < 1f && drawSolidMaterials) continue;
                 v = vertexMap.get(gd);
                 n = normalMap.get(gd);
                 if (n == null) {
