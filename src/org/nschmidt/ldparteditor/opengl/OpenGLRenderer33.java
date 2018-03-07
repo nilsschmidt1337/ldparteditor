@@ -16,17 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.opengl;
 
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Random;
-import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.opengl.GLCanvas;
@@ -43,18 +33,12 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
-import org.nschmidt.ldparteditor.data.GColourType;
-import org.nschmidt.ldparteditor.data.GData1;
-import org.nschmidt.ldparteditor.data.GData3;
-import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GL33ModelRenderer;
+import org.nschmidt.ldparteditor.data.GL33ModelRendererLDrawStandard;
 import org.nschmidt.ldparteditor.data.GTexture;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.data.colour.GCGlitter;
-import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
-import org.nschmidt.ldparteditor.data.colour.GCType;
 import org.nschmidt.ldparteditor.enums.GL33Primitives;
 import org.nschmidt.ldparteditor.enums.IconSize;
 import org.nschmidt.ldparteditor.enums.View;
@@ -64,8 +48,6 @@ import org.nschmidt.ldparteditor.helpers.Arrow;
 import org.nschmidt.ldparteditor.helpers.ArrowBlunt;
 import org.nschmidt.ldparteditor.helpers.Circle;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
-import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
-import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -86,28 +68,12 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private final GLMatrixStack stack = new GLMatrixStack();
     private final GL33Helper helper = new GL33Helper();
     private final GL33ModelRenderer modelRenderer = new GL33ModelRenderer(c3d, this);
-
-    private int skipFrame;
+    private final GL33ModelRendererLDrawStandard modelRendererLDrawStandard = new GL33ModelRendererLDrawStandard(c3d, this);
 
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer rot_buf = BufferUtils.createFloatBuffer(16);
     private final Matrix4f rotation_inv4f = new Matrix4f();
-
-    private final float[][][] renderedPoints = new float[1][][];
-    private final float[][] solidColours = new float[1][];
-    private final float[][] transparentColours = new float[1][];
-    private final float[] cWidth = new float[1];
-    private final float[] cHeight = new float[1];
-
-    private final Lock lock = new ReentrantLock();
-
-    private final Lock lockSpeckle = new ReentrantLock();
-    private final Lock lockGlitter = new ReentrantLock();
-
-    private final AtomicBoolean alive = new AtomicBoolean(true);
-    private final AtomicInteger needData = new AtomicInteger(0);
-    private Thread raytracer = null;
 
     private static long hoverSettingsTime = System.currentTimeMillis();
 
@@ -183,6 +149,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         GL11.glPointSize(5);
 
         modelRenderer.init();
+        modelRendererLDrawStandard.init();
     }
 
     @Override
@@ -191,17 +158,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         // final long start = System.currentTimeMillis();
 
         final boolean negDet = c3d.hasNegDeterminant();
-        final boolean raytraceMode = c3d.getRenderMode() == 5;
-
-        if (raytraceMode) {
-            if (skipFrame < 1) {
-                skipFrame++;
-
-            } else {
-                skipFrame = 0;
-                return;
-            }
-        }
+        final boolean ldrawStandardMode = c3d.getRenderMode() == 5;
 
         final GLCanvas canvas = c3d.getCanvas();
 
@@ -218,7 +175,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         helper.createVBO();
 
         int state3d = 0;
-        if (c3d.isAnaglyph3d() && !raytraceMode) {
+        if (c3d.isAnaglyph3d() && !ldrawStandardMode) {
             GL11.glColorMask(true, false, false, true);
         } else {
             GL11.glColorMask(true, true, true, true);
@@ -290,7 +247,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 GL20.glUniformMatrix4fv(view, false, rot_buf);
             }
 
-            if (c3d.isAnaglyph3d() && !raytraceMode) {
+            if (c3d.isAnaglyph3d() && !ldrawStandardMode) {
 
                 Matrix4f viewport_rotation2 = new Matrix4f();
 
@@ -380,19 +337,10 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 shaderProgram.lightsOff();
             }
 
-            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true, c3d.getLockableDatFileReference());
-
-            if (raytraceMode) {
-                Rectangle b = c3d.getCanvas().getBounds();
-                final int w =  b.width;
-                final int h =  b.height;
-                FloatBuffer pixels = BufferUtils.createFloatBuffer(w * h * 4);
-                GL11.glReadPixels(0, 0, w, h, GL11.GL_RGBA, GL11.GL_FLOAT, pixels);
-                pixels.position(0);
-                float[] arr = new float[pixels.capacity()];
-                pixels.get(arr);
-                solidColours[0] = arr;
-                // NLogger.debug(getClass(), arr[(int) (w * 50.5f * 4)] + " " + arr[(int) (w * 50.5f * 4 + 1)] + " " + arr[(int) (w * 50.5f * 4 + 2)] + " " + arr[(int) (w * 50.5f * 4 + 3)]);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
+            if (ldrawStandardMode) {
+                modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true, c3d.getLockableDatFileReference());
+            } else {
+                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true, c3d.getLockableDatFileReference());
             }
 
             if (window.getCompositePrimitive().isDoingDND()) {
@@ -413,982 +361,16 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 c3d.setDraggedPrimitive(null);
             }
 
-            modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false, c3d.getLockableDatFileReference());
+            if (ldrawStandardMode) {
+                modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false, c3d.getLockableDatFileReference());
+            } else {
+                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false, c3d.getLockableDatFileReference());
+            }
 
             stack.setShader(shaderProgram2);
             shaderProgram2.use();
 
-            if (raytraceMode) {
-                Rectangle b = c3d.getCanvas().getBounds();
-                final float w =  b.width;
-                final float h =  b.height;
-                FloatBuffer pixels = BufferUtils.createFloatBuffer((int) (w * h * 4));
-                GL11.glReadPixels(0, 0, (int) w, (int) h, GL11.GL_RGBA, GL11.GL_FLOAT, pixels);
-                pixels.position(0);
-                float[] arr = new float[pixels.capacity()];
-                pixels.get(arr);
-                transparentColours[0] = arr;
-                cWidth[0] = w;
-                cHeight[0] = h;
-                // NLogger.debug(getClass(), "Trans: " + arr[(int) (w * 50.5f * 4)] + " " + arr[(int) (w * 50.5f * 4 + 1)] + " " + arr[(int) (w * 50.5f * 4 + 2)] + " " + arr[(int) (w * 50.5f * 4 + 3)]);  //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-
-                if (lock.tryLock()) {
-                    try {
-                        if (renderedPoints[0] != null) {
-                            stack.glPushMatrix();
-                            stack.glLoadIdentity();
-                            final float xf = 2f * viewport_width;
-                            final float yf = 2f * viewport_height;
-                            stack.glTranslatef(-viewport_width, -viewport_height, 0f);
-                            stack.glScalef(1f / w * xf, 1f / h * yf, 1f);
-                            // FIXME Needs adjustments for negative determinants!
-
-                            GL33HelperPrimitives.backupVBO_PrimitiveArea();
-                            GL33HelperPrimitives.createVBO_PrimitiveArea();
-                            for (float[] p : renderedPoints[0]) {
-                                GL33HelperPrimitives.drawTrianglesIndexedRGB_Triangle(
-                                        new float[] {
-                                                p[3], p[4], 0f,
-                                                p[0], p[1], p[2],
-                                                p[5], p[6], 0f,
-                                                p[0], p[1], p[2],
-                                                p[7], p[8], 0f,
-                                                p[0], p[1], p[2],
-                                                p[9], p[10], 0f,
-                                                p[0], p[1], p[2]
-                                        }
-                                        , new int[]{0, 1, 2, 2, 3, 0});
-                            }
-                            GL33HelperPrimitives.destroyVBO_PrimitiveArea();
-                            GL33HelperPrimitives.restoreVBO_PrimitiveArea();
-                            stack.glPopMatrix();
-                        }
-                    } finally {
-                        lock.unlock();
-                    }
-                }
-
-                if (raytracer == null || !raytracer.isAlive()) {
-                    raytracer = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            while(alive.get()) {
-
-                                needData.set(1);
-                                int counter = 0;
-                                while (needData.get() < 2) {
-                                    counter++;
-                                    if (counter > 100) {
-                                        NLogger.debug(getClass(), "Stopped raytracer."); //$NON-NLS-1$
-                                        return;
-                                    }
-                                    try {
-                                        Thread.sleep(100);
-                                    } catch (InterruptedException e) {}
-                                }
-                                counter++;
-
-                                final int cs = solidColours[0].length;
-                                final float[] sc = Arrays.copyOf(solidColours[0], cs);
-                                final float[] tc = Arrays.copyOf(transparentColours[0], cs);
-                                final int w = (int) cWidth[0];
-                                final int h = (int) cHeight[0];
-
-                                final float[] ray;
-                                final Vector3f ray3f;
-                                final Vector3f ray3f2 = new Vector3f(-20f, -20f, 100f);
-                                ray3f2.normalise();
-                                final Matrix4f vInverse = c3d.getViewport_Inverse();
-                                final Matrix4f vM = c3d.getViewport();
-                                final float z = 100f;
-                                {
-                                    // FIXME Negative Determinant check is needed somewhere???
-                                    Vector4f zAxis4f = new Vector4f(0, 0, 1f, 1f);
-                                    Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
-                                    Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
-                                    Vector4f ray2 = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
-                                    ray = new float[]{ray2.x, ray2.y, ray2.z};
-                                    ray3f = new Vector3f(ray[0], ray[1], ray[2]);
-                                }
-
-                                needData.decrementAndGet();
-                                needData.decrementAndGet();
-
-                                NLogger.debug(getClass(), "Initialised raytracer."); //$NON-NLS-1$
-                                final boolean lights = c3d.isLightOn();
-                                // Read triangles and quads
-                                final ArrayList<float[]> tris = new ArrayList<float[]>();
-                                {
-                                    HashMap<GData4, Vertex[]> quads = c3d.getLockableDatFileReference().getVertexManager().getQuads();
-                                    HashMap<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
-                                    for (GData3 g : tris2.keySet()) {
-                                        Vertex[] v = tris2.get(g);
-                                        Vector4f[] nv = new Vector4f[3];
-                                        {
-                                            boolean notShown = true;
-                                            float max_x = -Float.MAX_VALUE;
-                                            float min_x = Float.MAX_VALUE;
-                                            float max_y = -Float.MAX_VALUE;
-                                            float min_y = Float.MAX_VALUE;
-                                            for(int i = 0; i < 3; i++) {
-                                                Vector4f sz = getScreenZFrom3D(v[i].x, v[i].y, v[i].z, w, h, vM);
-                                                nv[i] = sz;
-                                                max_x = Math.max(max_x, sz.x);
-                                                min_x = Math.min(min_x, sz.x);
-                                                max_y = Math.max(max_y, sz.y);
-                                                min_y = Math.min(min_y, sz.y);
-                                            }
-
-                                            Rectangle bounds = new Rectangle(0, 0, w, h);
-                                            Rectangle boundingBox = new Rectangle((int) min_x, (int) min_y, (int) (max_x - min_x), (int) (max_y - min_y));
-
-                                            if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
-                                                    || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
-                                                    || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
-                                                notShown = false;
-                                            }
-
-                                            if (notShown) continue;
-                                        }
-
-                                        int c = g.colourNumber;
-                                        float rv = g.r;
-                                        float gv = g.g;
-                                        float bv = g.b;
-                                        float av = g.a;
-                                        GData1 p = g.parent;
-                                        while (c == 16 && !p.equals(View.DUMMY_REFERENCE)) {
-                                            c = p.colourNumber;
-                                            rv = p.r;
-                                            gv = p.g;
-                                            bv = p.b;
-                                            av = p.a;
-                                            p = p.parent;
-                                        }
-
-                                        Vector3f normal = new Vector3f(
-                                                (nv[2].y - nv[0].y) * (nv[1].z - nv[0].z) - (nv[2].z - nv[0].z) * (nv[1].y - nv[0].y),
-                                                (nv[2].z - nv[0].z) * (nv[1].x - nv[0].x) - (nv[2].x - nv[0].x) * (nv[1].z - nv[0].z),
-                                                (nv[2].x - nv[0].x) * (nv[1].y - nv[0].y) - (nv[2].y - nv[0].y) * (nv[1].x - nv[0].x));
-                                        if (normal.lengthSquared() > 0f) {
-                                            normal.normalise();
-                                            normal.negate();
-                                        } else {
-                                            normal.setX(0f);
-                                            normal.setY(0f);
-                                            normal.setZ(1f);
-                                        }
-                                        float[] nt = new float[]{
-                                                v[0].x, v[0].y, v[0].z,
-                                                v[1].x, v[1].y, v[1].z,
-                                                v[2].x, v[2].y, v[2].z,
-                                                normal.x,
-                                                normal.y,
-                                                normal.z,
-                                                rv, gv, bv, av, c
-                                        };
-                                        tris.add(nt);
-
-
-
-                                    }
-                                    for (GData4 g : quads.keySet()) {
-                                        Vertex[] v = quads.get(g);
-                                        Vector4f[] nv = new Vector4f[4];
-                                        {
-                                            boolean notShown = true;
-                                            float max_x = -Float.MAX_VALUE;
-                                            float min_x = Float.MAX_VALUE;
-                                            float max_y = -Float.MAX_VALUE;
-                                            float min_y = Float.MAX_VALUE;
-                                            for(int i = 0; i < 4; i++) {
-                                                Vector4f sz = getScreenZFrom3D(v[i].x, v[i].y, v[i].z, w, h, vM);
-                                                nv[i] = sz;
-                                                max_x = Math.max(max_x, sz.x);
-                                                min_x = Math.min(min_x, sz.x);
-                                                max_y = Math.max(max_y, sz.y);
-                                                min_y = Math.min(min_y, sz.y);
-                                            }
-
-                                            Rectangle bounds = new Rectangle(0, 0, w, h);
-                                            Rectangle boundingBox = new Rectangle((int) min_x, (int) min_y, (int) (max_x - min_x), (int) (max_y - min_y));
-
-                                            if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
-                                                    || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
-                                                    || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
-                                                notShown = false;
-                                            }
-
-                                            if (notShown) continue;
-                                        }
-
-                                        final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
-                                        {
-                                            final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
-                                            Vector3f.sub(new Vector3f(nv[1].x, nv[1].y, nv[1].z), new Vector3f(nv[0].x, nv[0].y, nv[0].z), lineVectors[0]);
-                                            Vector3f.sub(new Vector3f(nv[2].x, nv[2].y, nv[2].z), new Vector3f(nv[1].x, nv[1].y, nv[1].z), lineVectors[1]);
-                                            Vector3f.sub(new Vector3f(nv[3].x, nv[3].y, nv[3].z), new Vector3f(nv[2].x, nv[2].y, nv[2].z), lineVectors[2]);
-                                            Vector3f.sub(new Vector3f(nv[0].x, nv[0].y, nv[0].z), new Vector3f(nv[3].x, nv[3].y, nv[3].z), lineVectors[3]);
-                                            Vector3f.cross(lineVectors[0], lineVectors[1], normals[0]);
-                                            Vector3f.cross(lineVectors[1], lineVectors[2], normals[1]);
-                                            Vector3f.cross(lineVectors[2], lineVectors[3], normals[2]);
-                                            Vector3f.cross(lineVectors[3], lineVectors[0], normals[3]);
-                                        }
-                                        Vector3f normal = new Vector3f();
-                                        for (int i = 0; i < 4; i++) {
-                                            Vector3f.add(normals[i], normal, normal);
-                                        }
-                                        if (normal.lengthSquared() > 0f) {
-                                            normal.normalise();
-                                        } else {
-                                            normal.setX(0f);
-                                            normal.setY(0f);
-                                            normal.setZ(1f);
-                                        }
-
-                                        int c = g.colourNumber;
-                                        float rv = g.r;
-                                        float gv = g.g;
-                                        float bv = g.b;
-                                        float av = g.a;
-                                        GData1 p = g.parent;
-                                        while (c == 16 && !p.equals(View.DUMMY_REFERENCE)) {
-                                            c = p.colourNumber;
-                                            rv = p.r;
-                                            gv = p.g;
-                                            bv = p.b;
-                                            av = p.a;
-                                            p = p.parent;
-                                        }
-
-                                        float[] nt = new float[]{
-                                                v[0].x, v[0].y, v[0].z,
-                                                v[1].x, v[1].y, v[1].z,
-                                                v[2].x, v[2].y, v[2].z,
-                                                normal.x,
-                                                normal.y,
-                                                normal.z,
-                                                rv, gv, bv, av, c
-                                        };
-                                        tris.add(nt);
-                                        float[] nt2 = new float[]{
-                                                v[2].x, v[2].y, v[2].z,
-                                                v[3].x, v[3].y, v[3].z,
-                                                v[0].x, v[0].y, v[0].z,
-                                                normal.x,
-                                                normal.y,
-                                                normal.z,
-                                                rv, gv, bv, av, c
-                                        };
-                                        tris.add(nt2);
-                                    }
-                                }
-
-                                NLogger.debug(getClass(), "Started raytracer."); //$NON-NLS-1$
-
-                                final ArrayList<float[]> points = new ArrayList<float[]>(10000);
-
-
-                                final LinkedList<float[]> speckles = new LinkedList<float[]>();
-                                final LinkedList<float[]> glitters = new LinkedList<float[]>();
-                                final HashMap<float[], Long> specklesCreation = new HashMap<float[], Long>();
-                                final HashMap<float[], Long> glittersCreation = new HashMap<float[], Long>();
-
-                                // Light positions
-                                final Vector3f lp1 = new Vector3f(-2.0f, -2.0f, 2.0f);
-                                final Vector3f lp2 = new Vector3f(-2.0f, 2.0f, 2.0f);
-                                final Vector3f lp3 = new Vector3f(2.0f, -2.0f, 2.0f);
-                                final Vector3f lp4 = new Vector3f(2.0f, 2.0f, 2.0f);
-
-                                {
-
-                                    final Lock lock = new ReentrantLock();
-
-                                    final int chunks = Math.max(View.NUM_CORES - 1, 1);
-                                    final Thread[] threads = new Thread[chunks];
-                                    for (int j = 0; j < chunks; ++j) {
-                                        final int[] start = new int[] { j };
-                                        final int[] ti = new int[] { start[0] * 4 * w};
-                                        threads[j] = new Thread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                final TreeMap<Float, float[]>  zSort = new TreeMap<Float, float[]>();
-                                                final TreeMap<Float, Vector4f>  hitSort = new TreeMap<Float, Vector4f>();
-                                                final Random tRnd = new Random(12348729642643L * start[0]);
-                                                ArrayList<float[]> points2 = new ArrayList<float[]>(10000 / chunks);
-                                                final PowerRay pr = new PowerRay();
-                                                final int s = start[0];
-                                                int i = ti[0];
-                                                int skip = 0;
-                                                for (int y = s; y < h; y += chunks) {
-                                                    final int sy = h - y - 1;
-                                                    for (int x = 0; x < w; x++) {
-                                                        final int sx = w - x - 1;
-                                                        float rS = sc[i];
-                                                        float gS = sc[i + 1];
-                                                        float bS = sc[i + 2];
-                                                        float rT = tc[i];
-                                                        float gT = tc[i + 1];
-                                                        float bT = tc[i + 2];
-                                                        if (rS != rT || gS != gT || bS != bT) {
-                                                            zSort.clear();
-                                                            hitSort.clear();
-                                                            final Vector4f posv = get3DCoordinatesFromScreen(x, y, z, w, h, vInverse);
-                                                            for (float[] tri : tris) {
-                                                                float[] zHit = pr.TRIANGLE_INTERSECT(posv, ray, tri);
-                                                                if (zHit != null) {
-                                                                    Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
-                                                                    hitSort.put(sz.z, sz);
-                                                                    zSort.put(sz.z, tri);
-                                                                }
-                                                            }
-
-
-                                                            final int size = zSort.size();
-
-                                                            switch(size) {
-                                                            case 0:
-                                                            {
-                                                                float[] point = new float[11];
-                                                                point[0] = rT;
-                                                                point[1] = gT;
-                                                                point[2] = bT;
-                                                                point[3] = sx;
-                                                                point[4] = sy;
-                                                                point[5] = sx;
-                                                                point[6] = sy + 1;
-                                                                point[7] = sx + 1;
-                                                                point[8] = sy + 1;
-                                                                point[9] = sx + 1;
-                                                                point[10] = sy;
-                                                                points2.add(point);
-                                                                break;
-                                                            }
-                                                            case 1:
-                                                            {
-                                                                float[] ze = zSort.get(zSort.firstKey());
-                                                                GColour c = View.getLDConfigColour((int) ze[16]);
-                                                                GColourType ct = c.getType();
-                                                                if (ct == null) {
-                                                                    float[] point = new float[11];
-                                                                    float a = ze[15];
-                                                                    float oneMinusAlpha = 1f - a;
-                                                                    point[0] = rT * a + rS * oneMinusAlpha;
-                                                                    point[1] = gT * a + gS * oneMinusAlpha;
-                                                                    point[2] = bT * a + bS * oneMinusAlpha;
-                                                                    point[3] = sx;
-                                                                    point[4] = sy;
-                                                                    point[5] = sx;
-                                                                    point[6] = sy + 1;
-                                                                    point[7] = sx + 1;
-                                                                    point[8] = sy + 1;
-                                                                    point[9] = sx + 1;
-                                                                    point[10] = sy;
-                                                                    points2.add(point);
-                                                                } else {
-                                                                    // Compute light (with specular!)
-                                                                    float light = 0f;
-                                                                    float lightSpecular = 0f;
-                                                                    final Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                    final Vector4f pos = hitSort.get(hitSort.firstKey());
-                                                                    if (lights) {
-                                                                        Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
-                                                                        Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
-                                                                        Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
-                                                                        Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
-                                                                        Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
-                                                                        lightDir1.normalise();
-                                                                        lightDir2.normalise();
-                                                                        lightDir3.normalise();
-                                                                        lightDir4.normalise();
-                                                                        // attenuation and light direction
-                                                                        // ambient + diffuse
-                                                                        light = 0.09f; // Ambient
-                                                                        light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
-                                                                        light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
-                                                                        light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
-                                                                        light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-                                                                        lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
-                                                                    }
-                                                                    float r = ze[12];
-                                                                    float g = ze[13];
-                                                                    float b = ze[14];
-                                                                    switch (ct.type()) {
-                                                                    case PEARL:
-                                                                    {
-                                                                        Vector3f normal2 = new Vector3f(
-                                                                                normal.x * (.8f + .2f * tRnd.nextFloat()),
-                                                                                normal.y * (.8f + .2f * tRnd.nextFloat()),
-                                                                                normal.z * (.8f + .2f * tRnd.nextFloat())
-                                                                                );
-                                                                        float sp = Vector3f.dot(normal2, ray3f);
-                                                                        float spI = 1f - sp;
-                                                                        Vector3f v = Vector3f.cross(ray3f, normal2, null);
-                                                                        Random rnd = new Random((long) (129642643f * (1f + r) * (1f + g) * (1f + b)));
-                                                                        r = r + Math.abs(sp + v.x * spI) * rnd.nextFloat() / 4f;
-                                                                        g = g + Math.abs(sp + v.y * spI) * rnd.nextFloat() / 4f;
-                                                                        b = b + Math.abs(sp + v.z * spI) * rnd.nextFloat() / 4f;
-                                                                        if (lights) {
-                                                                            r = (light + lightSpecular) / 4f + r;
-                                                                            g = (light + lightSpecular) / 4f + g;
-                                                                            b = (light + lightSpecular) / 4f + b;
-                                                                        }
-                                                                        break;
-                                                                    }
-                                                                    case GLITTER:
-                                                                    {
-                                                                        float a = ze[15];
-                                                                        GCGlitter type = (GCGlitter) ct;
-                                                                        final int sSize = glitters.size();
-                                                                        float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
-                                                                        boolean hit = false;
-                                                                        final int glitterCount = 30000;
-                                                                        boolean buildable = sSize < glitterCount;
-                                                                        Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
-                                                                        final float px = v.x;
-                                                                        final float py = v.y;
-                                                                        final float pz = v.z;
-                                                                        float[] newGlitter = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
-                                                                        try {
-                                                                            lockGlitter.lock();
-                                                                            final long now = System.currentTimeMillis();
-                                                                            for (Iterator<float[]> iterator = glitters.iterator(); iterator.hasNext();) {
-                                                                                float[] glitter = iterator.next();
-                                                                                final long age = now - glittersCreation.get(glitter);
-                                                                                if (age > 500L) {
-                                                                                    iterator.remove();
-                                                                                } else {
-                                                                                    float dx = glitter[0] - px;
-                                                                                    float dy = glitter[1] - py;
-                                                                                    float dz = glitter[2] - pz;
-                                                                                    float dist = Math.abs(dx) + Math.abs(dy) + Math.abs(dz);
-                                                                                    if (dist < glitter[3]) {
-                                                                                        hit = true;
-                                                                                        break;
-                                                                                    }
-                                                                                    if (buildable) {
-                                                                                        if (dist * 0.5 < radi) {
-                                                                                            buildable = false;
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            if (buildable && !hit) {
-                                                                                glittersCreation.put(newGlitter, System.currentTimeMillis());
-                                                                                glitters.add(newGlitter);
-                                                                            }
-                                                                        } finally {
-                                                                            lockGlitter.unlock();
-                                                                        }
-
-                                                                        float vari = tRnd.nextFloat();
-                                                                        if (hit) {
-                                                                            lightSpecular *= 1f + vari;
-                                                                            r = type.getR();
-                                                                            g = type.getG();
-                                                                            b = type.getB();
-                                                                            a = 1f;
-                                                                        } else {
-                                                                            r = r * .8f + vari * .2f * r;
-                                                                            g = g * .8f + vari * .2f * g;
-                                                                            b = b * .8f + vari * .2f * b;
-                                                                        }
-                                                                        float oneMinusAlpha = 1f - a;
-                                                                        if (lights) {
-                                                                            float resLight = light + lightSpecular * 2f;
-                                                                            r = resLight + r;
-                                                                            g = resLight + g;
-                                                                            b = resLight + b;
-                                                                        }
-                                                                        r = r * a + rS * oneMinusAlpha;
-                                                                        g = g * a + gS * oneMinusAlpha;
-                                                                        b = b * a + bS * oneMinusAlpha;
-                                                                        break;
-                                                                    }
-                                                                    case SPECKLE:
-                                                                    {
-                                                                        float a = ze[15];
-                                                                        GCSpeckle type = (GCSpeckle) ct;
-                                                                        final int sSize = speckles.size();
-                                                                        float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
-                                                                        boolean hit = false;
-                                                                        final int speckleCount = 30000;
-                                                                        boolean buildable = sSize < speckleCount;
-                                                                        Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
-                                                                        final float px = v.x;
-                                                                        final float py = v.y;
-                                                                        final float pz = v.z;
-                                                                        float[] newSpeckle = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
-                                                                        try {
-                                                                            lockSpeckle.lock();
-                                                                            final long now = System.currentTimeMillis();
-                                                                            for (Iterator<float[]> iterator = speckles.iterator(); iterator.hasNext();) {
-                                                                                float[] speckle = iterator.next();
-                                                                                final long age = now - specklesCreation.get(speckle);
-                                                                                if (age > 500L) {
-                                                                                    iterator.remove();
-                                                                                } else {
-                                                                                    double dx = speckle[0] - px;
-                                                                                    double dy = speckle[1] - py;
-                                                                                    double dz = speckle[2] - pz;
-                                                                                    float dist = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-                                                                                    if (dist < speckle[3]) {
-                                                                                        hit = true;
-                                                                                        break;
-                                                                                    }
-                                                                                    if (buildable) {
-                                                                                        if (dist * 0.5 < radi) {
-                                                                                            buildable = false;
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                            if (buildable && !hit) {
-                                                                                specklesCreation.put(newSpeckle, System.currentTimeMillis());
-                                                                                speckles.add(newSpeckle);
-                                                                            }
-                                                                        } finally {
-                                                                            lockSpeckle.unlock();
-                                                                        }
-
-                                                                        float vari = tRnd.nextFloat();
-                                                                        if (hit) {
-                                                                            r = (type.getR() * .8f + vari * .2f * type.getR()) * .5f + r * .5f;
-                                                                            g = (type.getG() * .8f + vari * .2f * type.getG()) * .5f + g * .5f;
-                                                                            b = (type.getB() * .8f + vari * .2f * type.getB()) * .5f + b * .5f;
-                                                                            a = 1f;
-                                                                        } else {
-                                                                            r = r * .8f + vari * .2f * r;
-                                                                            g = g * .8f + vari * .2f * g;
-                                                                            b = b * .8f + vari * .2f * b;
-                                                                        }
-                                                                        float oneMinusAlpha = 1f - a;
-                                                                        if (lights) {
-                                                                            float resLight = light + lightSpecular * 2f;
-                                                                            r = resLight + r;
-                                                                            g = resLight + g;
-                                                                            b = resLight + b;
-                                                                        }
-                                                                        r = r * a + rS * oneMinusAlpha;
-                                                                        g = g * a + gS * oneMinusAlpha;
-                                                                        b = b * a + bS * oneMinusAlpha;
-                                                                        break;
-                                                                    }
-                                                                    default:
-                                                                        break;
-                                                                    }
-
-                                                                    float[] point = new float[11];
-                                                                    point[0] = r;
-                                                                    point[1] = g;
-                                                                    point[2] = b;
-                                                                    point[3] = sx;
-                                                                    point[4] = sy;
-                                                                    point[5] = sx;
-                                                                    point[6] = sy + 1;
-                                                                    point[7] = sx + 1;
-                                                                    point[8] = sy + 1;
-                                                                    point[9] = sx + 1;
-                                                                    point[10] = sy;
-                                                                    points2.add(point);
-                                                                }
-                                                                break;
-                                                            }
-                                                            default:
-                                                                float[] point = new float[11];
-                                                                int k = 0;
-
-                                                                point[0] = 1f;
-                                                                point[1] = 1f;
-                                                                point[2] = 1f;
-
-                                                                for (Float f : zSort.keySet()) {
-                                                                    k++;
-                                                                    float[] ze = zSort.get(f);
-                                                                    float a = ze[15];
-                                                                    float r = ze[12];
-                                                                    float g = ze[13];
-                                                                    float b = ze[14];
-
-                                                                    GColour c = View.getLDConfigColour((int) ze[16]);
-                                                                    GColourType ct = c.getType();
-                                                                    if (ct == null || GCType.hasCubeMap(ct.type())) {
-                                                                        float oneMinusAlpha = 1f - a;
-                                                                        if (a == 1f) {
-                                                                            point[0] = rS;
-                                                                            point[1] = gS;
-                                                                            point[2] = bS;
-                                                                        } else if (k < size) {
-                                                                            // Compute light (with specular!)
-                                                                            float lightSpecular = 0f;
-                                                                            if (lights) {
-                                                                                Vector4f pos = hitSort.get(f);
-                                                                                Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
-                                                                                Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                                Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
-                                                                                Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
-                                                                                Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
-                                                                                Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
-                                                                                lightDir1.normalise();
-                                                                                lightDir2.normalise();
-                                                                                lightDir3.normalise();
-                                                                                lightDir4.normalise();
-                                                                                // attenuation and light direction
-                                                                                // ambient + diffuse
-                                                                                float light = 0.09f; // Ambient
-                                                                                light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
-                                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
-                                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
-                                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-                                                                                lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
-                                                                                // compute final color
-                                                                                r = r + light;
-                                                                                g = g + light;
-                                                                                b = b + light;
-                                                                            }
-
-                                                                            point[0] = (r + lightSpecular) * a + point[0] * oneMinusAlpha;
-                                                                            point[1] = (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
-                                                                            point[2] = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
-
-                                                                        } else {
-                                                                            float lightSpecular = 0f;
-                                                                            Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                            lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
-                                                                            point[0] = (rT + lightSpecular) * a + point[0] * oneMinusAlpha;
-                                                                            point[1] = (gT + lightSpecular) * a + point[1] * oneMinusAlpha;
-                                                                            point[2] = (bT + lightSpecular) * a + point[2] * oneMinusAlpha;
-                                                                        }
-                                                                    } else {
-                                                                        // Compute light (with specular!)
-                                                                        float light = 0f;
-                                                                        float lightSpecular = 0f;
-                                                                        final Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                        final Vector4f pos = hitSort.get(hitSort.firstKey());
-                                                                        if (lights) {
-                                                                            Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
-                                                                            Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
-                                                                            Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
-                                                                            Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
-                                                                            Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
-                                                                            lightDir1.normalise();
-                                                                            lightDir2.normalise();
-                                                                            lightDir3.normalise();
-                                                                            lightDir4.normalise();
-                                                                            // attenuation and light direction
-                                                                            // ambient + diffuse
-                                                                            light = 0.09f; // Ambient
-                                                                            light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
-                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
-                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
-                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-                                                                            lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
-                                                                        }
-                                                                        switch (ct.type()) {
-                                                                        case PEARL:
-                                                                        {
-                                                                            Vector3f normal2 = new Vector3f(
-                                                                                    normal.x * (.8f + .2f * tRnd.nextFloat()),
-                                                                                    normal.y * (.8f + .2f * tRnd.nextFloat()),
-                                                                                    normal.z * (.8f + .2f * tRnd.nextFloat())
-                                                                                    );
-                                                                            float sp = Vector3f.dot(normal2, ray3f);
-                                                                            float spI = 1f - sp;
-                                                                            Vector3f v = Vector3f.cross(ray3f, normal2, null);
-                                                                            Random rnd = new Random((long) (129642643f * (1f + r) * (1f + g) * (1f + b)));
-                                                                            r = r + Math.abs(sp + v.x * spI) * rnd.nextFloat() / 4f;
-                                                                            g = g + Math.abs(sp + v.y * spI) * rnd.nextFloat() / 4f;
-                                                                            b = b + Math.abs(sp + v.z * spI) * rnd.nextFloat() / 4f;
-                                                                            if (lights) {
-                                                                                r = (light + lightSpecular) / 4f + r;
-                                                                                g = (light + lightSpecular) / 4f + g;
-                                                                                b = (light + lightSpecular) / 4f + b;
-                                                                            }
-                                                                            break;
-                                                                        }
-                                                                        case GLITTER:
-                                                                        {
-                                                                            GCGlitter type = (GCGlitter) ct;
-                                                                            final int sSize = glitters.size();
-                                                                            float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
-                                                                            boolean hit = false;
-                                                                            final int glitterCount = 30000;
-                                                                            boolean buildable = sSize < glitterCount;
-                                                                            Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
-                                                                            final float px = v.x;
-                                                                            final float py = v.y;
-                                                                            final float pz = v.z;
-                                                                            float[] newGlitter = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
-                                                                            try {
-                                                                                lockGlitter.lock();
-                                                                                final long now = System.currentTimeMillis();
-                                                                                for (Iterator<float[]> iterator = glitters.iterator(); iterator.hasNext();) {
-                                                                                    float[] glitter = iterator.next();
-                                                                                    final long age = now - glittersCreation.get(glitter);
-                                                                                    if (age > 500L) {
-                                                                                        iterator.remove();
-                                                                                    } else {
-                                                                                        float dx = glitter[0] - px;
-                                                                                        float dy = glitter[1] - py;
-                                                                                        float dz = glitter[2] - pz;
-                                                                                        float dist = Math.abs(dx) + Math.abs(dy) + Math.abs(dz);
-                                                                                        if (dist < glitter[3]) {
-                                                                                            hit = true;
-                                                                                            break;
-                                                                                        }
-                                                                                        if (buildable) {
-                                                                                            if (dist * 0.5 < radi) {
-                                                                                                buildable = false;
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                if (buildable && !hit) {
-                                                                                    glittersCreation.put(newGlitter, System.currentTimeMillis());
-                                                                                    glitters.add(newGlitter);
-                                                                                }
-                                                                            } finally {
-                                                                                lockGlitter.unlock();
-                                                                            }
-
-                                                                            float vari = tRnd.nextFloat();
-                                                                            if (hit) {
-                                                                                lightSpecular *= 1f + vari;
-                                                                                r = type.getR();
-                                                                                g = type.getG();
-                                                                                b = type.getB();
-                                                                                a = 1f;
-                                                                            } else {
-                                                                                r = r * .8f + vari * .2f * r;
-                                                                                g = g * .8f + vari * .2f * g;
-                                                                                b = b * .8f + vari * .2f * b;
-                                                                            }
-                                                                            float oneMinusAlpha = 1f - a;
-                                                                            if (lights) {
-                                                                                float resLight = light + lightSpecular * 2f;
-                                                                                r = resLight + r;
-                                                                                g = resLight + g;
-                                                                                b = resLight + b;
-                                                                            }
-                                                                            r = r * a + point[0] * oneMinusAlpha;
-                                                                            g = g * a + point[1] * oneMinusAlpha;
-                                                                            b = b * a + point[2] * oneMinusAlpha;
-                                                                            break;
-                                                                        }
-                                                                        case SPECKLE:
-                                                                        {
-                                                                            GCSpeckle type = (GCSpeckle) ct;
-                                                                            final int sSize = speckles.size();
-                                                                            float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
-                                                                            boolean hit = false;
-                                                                            final int speckleCount = 30000;
-                                                                            boolean buildable = sSize < speckleCount;
-                                                                            Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
-                                                                            final float px = v.x;
-                                                                            final float py = v.y;
-                                                                            final float pz = v.z;
-                                                                            float[] newSpeckle = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
-                                                                            try {
-                                                                                lockSpeckle.lock();
-                                                                                final long now = System.currentTimeMillis();
-                                                                                for (Iterator<float[]> iterator = speckles.iterator(); iterator.hasNext();) {
-                                                                                    float[] speckle = iterator.next();
-                                                                                    final long age = now - specklesCreation.get(speckle);
-                                                                                    if (age > 500L) {
-                                                                                        iterator.remove();
-                                                                                    } else {
-                                                                                        double dx = speckle[0] - px;
-                                                                                        double dy = speckle[1] - py;
-                                                                                        double dz = speckle[2] - pz;
-                                                                                        float dist = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-                                                                                        if (dist < speckle[3]) {
-                                                                                            hit = true;
-                                                                                            break;
-                                                                                        }
-                                                                                        if (buildable) {
-                                                                                            if (dist * 0.5 < radi) {
-                                                                                                buildable = false;
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                if (buildable && !hit) {
-                                                                                    specklesCreation.put(newSpeckle, System.currentTimeMillis());
-                                                                                    speckles.add(newSpeckle);
-                                                                                }
-                                                                            } finally {
-                                                                                lockSpeckle.unlock();
-                                                                            }
-
-                                                                            float vari = tRnd.nextFloat();
-                                                                            if (hit) {
-                                                                                r = (type.getR() * .8f + vari * .2f * type.getR()) * .5f + r * .5f;
-                                                                                g = (type.getG() * .8f + vari * .2f * type.getG()) * .5f + g * .5f;
-                                                                                b = (type.getB() * .8f + vari * .2f * type.getB()) * .5f + b * .5f;
-                                                                                a = 1f;
-                                                                            } else {
-                                                                                r = r * .8f + vari * .2f * r;
-                                                                                g = g * .8f + vari * .2f * g;
-                                                                                b = b * .8f + vari * .2f * b;
-                                                                            }
-                                                                            float oneMinusAlpha = 1f - a;
-                                                                            if (lights) {
-                                                                                float resLight = light + lightSpecular * 2f;
-                                                                                r = resLight + r;
-                                                                                g = resLight + g;
-                                                                                b = resLight + b;
-                                                                            }
-                                                                            r = r * a + point[0] * oneMinusAlpha;
-                                                                            g = g * a + point[1] * oneMinusAlpha;
-                                                                            b = b * a + point[2] * oneMinusAlpha;
-                                                                            break;
-                                                                        }
-                                                                        default:
-                                                                            break;
-                                                                        }
-                                                                        point[0] = r;
-                                                                        point[1] = g;
-                                                                        point[2] = b;
-                                                                    }
-                                                                }
-                                                                point[3] = sx;
-                                                                point[4] = sy;
-                                                                point[5] = sx;
-                                                                point[6] = sy + 1;
-                                                                point[7] = sx + 1;
-                                                                point[8] = sy + 1;
-                                                                point[9] = sx + 1;
-                                                                point[10] = sy;
-                                                                points2.add(point);
-                                                            }
-                                                        }
-                                                        i += 4;
-                                                    }
-                                                    if (s < 1) {
-                                                        int size = points2.size();
-                                                        int size2 = renderedPoints[0] == null ? -1 : renderedPoints[0].length;
-                                                        float[][] r;
-                                                        if (size2 < size) {
-                                                            r = new float[size][];
-                                                            skip = 0;
-                                                        } else {
-                                                            r = renderedPoints[0];
-                                                        }
-                                                        for (int j = skip; j < size; j++) {
-                                                            r[j] = points2.get(j);
-                                                        }
-                                                        skip = size;
-                                                        try {
-                                                            lock.lock();
-                                                            // Update renderedPoints here!
-                                                            renderedPoints[0] = r;
-                                                        } finally {
-                                                            lock.unlock();
-                                                        }
-                                                    }
-                                                    i += 4 * w * (chunks - 1);
-                                                }
-                                                try {
-                                                    lock.lock();
-                                                    points.addAll(points2);
-                                                } finally {
-                                                    lock.unlock();
-                                                }
-                                            }
-
-
-                                        });
-                                        threads[j].start();
-                                    }
-                                    boolean isRunning = true;
-                                    while (isRunning) {
-                                        try {
-                                            Thread.sleep(100);
-                                        } catch (InterruptedException e) {
-                                        }
-                                        isRunning = false;
-                                        for (Thread thread : threads) {
-                                            if (thread.isAlive())
-                                                isRunning = true;
-                                        }
-                                    }
-                                }
-
-                                final int size = points.size();
-                                float[][] r = new float[size][];
-                                for (int j = 0; j < size; j++) {
-                                    r[j] = points.get(j);
-                                }
-                                try {
-                                    lock.lock();
-                                    // Update renderedPoints here!
-                                    renderedPoints[0] = r;
-                                    ViewIdleManager.renderLDrawStandard[0].set(true);
-                                } finally {
-                                    lock.unlock();
-                                }
-
-                                alive.set(false);
-                                counter = 0;
-                                while(!alive.get()) {
-                                    counter++;
-                                    if (counter > 100) {
-                                        NLogger.debug(getClass(), "Stopped raytracer."); //$NON-NLS-1$
-                                        return;
-                                    }
-                                    try {
-                                        Thread.sleep(100);
-                                    } catch (InterruptedException e) {}
-                                }
-                            }
-                        }
-
-                        private Vector4f getScreenZFrom3D(float x, float y, float z, int w, int h, Matrix4f v) {
-                            Vector4f relPos = new Vector4f(x, y, z, 1f);
-                            Matrix4f.transform(v, relPos, relPos);
-                            float cursor_x = 0.5f * w - relPos.x * View.PIXEL_PER_LDU / w;
-                            float cursor_y = 0.5f * h - relPos.y * View.PIXEL_PER_LDU / h;
-                            relPos.x = cursor_x;
-                            relPos.y = cursor_y;
-                            return relPos;
-                        }
-
-                        private Vector4f get3DCoordinatesFromScreen(int x, int y, float z, int w, int h, Matrix4f v_inverse) {
-                            Vector4f relPos = new Vector4f();
-                            relPos.x = (0.5f * w - x) / View.PIXEL_PER_LDU;
-                            relPos.y = (0.5f * h - y) / View.PIXEL_PER_LDU;
-                            relPos.z = z;
-                            relPos.w = 1.0f;
-                            Matrix4f.transform(v_inverse, relPos, relPos);
-                            return relPos;
-                        }
-
-                        private Vector4f get3DCoordinatesFromScreen(float x, float y, float z, int w, int h, Matrix4f v_inverse) {
-                            Vector4f relPos = new Vector4f();
-                            relPos.x = x;
-                            relPos.y = y;
-                            relPos.z = z;
-                            relPos.w = 1.0f;
-                            Matrix4f.transform(v_inverse, relPos, relPos);
-                            return relPos;
-                        }
-                    });
-                    raytracer.start();
-                } else {
-                    if (needData.get() > 0) {
-                        needData.incrementAndGet();
-                        while(needData.get() > 0) {
-                            try {
-                                Thread.sleep(10);
-                            } catch (InterruptedException e) {}
-                        }
-                    }
-                }
-                alive.set(true);
-            } else {
-                GL11.glDisable(GL11.GL_DEPTH_TEST);
-            }
+            GL11.glDisable(GL11.GL_DEPTH_TEST);
 
             Manipulator manipulator = c3d.getManipulator();
             final float mx = manipulator.getPosition().x;
@@ -1398,7 +380,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             // MARK Manipulator
             boolean singleMode = true;
             GColour c;
-            if (!raytraceMode && window.getWorkingAction() != WorkingMode.SELECT) {
+            if (!ldrawStandardMode && window.getWorkingAction() != WorkingMode.SELECT) {
                 final float lineWidth;
                 final float cone_height;
                 final float cone_width;
@@ -1830,7 +812,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 }
             }
 
-            if (!raytraceMode && DatFile.getLastHoveredComposite() == c3d) {
+            if (!ldrawStandardMode && DatFile.getLastHoveredComposite() == c3d) {
                 Vector4f selectionEnd_MODELVIEW = new Vector4f(c3d.getCursor3D());
                 float viewport_pixel_per_ldu = c3d.getViewportPixelPerLDU();
                 float dx = 0;
@@ -2041,7 +1023,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0]});
             }
 
-            if (c3d.isAnaglyph3d() && !raytraceMode && state3d == 0) {
+            if (c3d.isAnaglyph3d() && !ldrawStandardMode && state3d == 0) {
                 GL11.glColorMask(false, true, true, true);
                 state3d++;
             } else {
@@ -2239,6 +1221,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     public void dispose() {
         // Properly de-allocate all resources once they've outlived their purpose
         modelRenderer.dispose();
+        modelRendererLDrawStandard.dispose();
         shaderProgram.dispose();
         shaderProgram2.dispose();
         shaderProgram2D.dispose();

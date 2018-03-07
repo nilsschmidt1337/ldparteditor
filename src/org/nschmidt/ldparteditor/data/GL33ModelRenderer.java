@@ -19,9 +19,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 import java.util.TreeMap;
@@ -56,14 +54,8 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
  * New OpenGL 3.3 high performance render function for the model (VAO accelerated)
- * @author nils
- *
  */
 public class GL33ModelRenderer {
-
-    private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GTexture CUBEMAP_MATTE_TEXTURE = new GTexture(TexType.PLANAR, "matte_metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
-    private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 3, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
 
     private static Set<String> filesWithLogo1 = new HashSet<String>();
     private static Set<String> filesWithLogo2 = new HashSet<String>();
@@ -152,14 +144,11 @@ public class GL33ModelRenderer {
     private volatile int condlineSize = 0;
     private volatile int selectionSize = 0;
 
-    private volatile ArrayList<GDataAndWinding> texmapData = new ArrayList<>();
     private volatile ArrayList<GDataPNG> images = new ArrayList<>();
     private volatile ArrayList<GData2> distanceMeters = new ArrayList<>();
     private volatile ArrayList<GData3> protractors = new ArrayList<>();
     private volatile HashMap<GData, Vertex[]> sharedVertexMap = new HashMap<>();
-    private volatile HashMap<GData, Vector3f[]> shared_TEXMAP_NormalMap = new HashMap<>();
 
-    private volatile boolean usesTEXMAP = false;
     private volatile boolean usesCSG = false;
 
     private volatile ArrayList<Matrix4f> stud1_Matrices = new ArrayList<>();
@@ -321,7 +310,6 @@ public class GL33ModelRenderer {
                 final Set<GData> selectionSet = new HashSet<GData>();
                 final Set<GData> hiddenSet = new HashSet<GData>();
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
-                final ArrayList<GDataAndWinding> texmapDataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, Vertex[]> vertexMap2 = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
@@ -349,7 +337,10 @@ public class GL33ModelRenderer {
                         continue;
                     }
 
-                    try {
+                    final int renderMode = c3d.getRenderMode();
+
+                    // Skip render mode 5
+                    if (renderMode != 5) try {
                         static_lock.lock();
                         // final long start = System.currentTimeMillis();
 
@@ -411,39 +402,19 @@ public class GL33ModelRenderer {
                         final ArrayList<GData2> tmpDistanceMeters = new ArrayList<>();
                         final ArrayList<GData3> tmpProtractors = new ArrayList<>();
                         final HashSet<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
-                        final int renderMode = c3d.getRenderMode();
                         final boolean drawWireframe = renderMode == -1;
 
                         // Build the list of the data from the datfile
                         dataInOrder.clear();
-                        texmapDataInOrder.clear();
                         normalMap.clear();
                         selectionSet.clear();
                         hiddenSet.clear();
                         CACHE_viewByProjection.clear();
 
-                        {
-                            boolean[] special = load_BFC_and_TEXMAP_info(
-                                    dataInOrder, texmapDataInOrder, csgData, vertexMap, matrixMap, df,
-                                    lines, triangles, quads, condlines, drawStudLogo, renderMode == 5,
-                                    pngImages, tmpDistanceMeters, tmpProtractors);
-                            usesTEXMAP = special[0];
-                            usesCSG = special[1];
-                            HashSet<GData> allData = new HashSet<>();
-                            if (usesTEXMAP) {
-                                for (GDataAndWinding gw : texmapDataInOrder) {
-                                    allData.add(gw.data);
-                                    dataToRemove.remove(gw.data);
-                                }
-                                texmapData = new ArrayList<>(texmapDataInOrder);
-                            }
-                            Iterator<Entry<GData, Vector3f[]>> iter = shared_TEXMAP_NormalMap.entrySet().iterator();
-                            while (iter.hasNext()) {
-                                if(!allData.contains(iter.next().getKey())){
-                                    iter.remove();
-                                }
-                            }
-                        }
+                        usesCSG = load_BFC_info(
+                                dataInOrder, csgData, vertexMap, matrixMap, df,
+                                lines, triangles, quads, condlines, drawStudLogo,
+                                pngImages, tmpDistanceMeters, tmpProtractors);
 
                         final boolean smoothShading = c3d.isSmoothShading() && !drawWireframe;
                         final HashMap<GData, Vector3f[]> vertexNormals;
@@ -451,12 +422,7 @@ public class GL33ModelRenderer {
                             // MARK Calculate normals here...
                             vertexNormals = new HashMap<>();
                             final ArrayList<GDataAndWinding> data;
-                            if (usesTEXMAP) {
-                                data = new ArrayList<>(dataInOrder);
-                                data.addAll(texmapDataInOrder);
-                            } else {
-                                data = dataInOrder;
-                            }
+                            data = dataInOrder;
                             final HashMap<GData, Vector3f> surfaceNormals = new HashMap<>();
                             for (GDataAndWinding gw : data) {
                                 final GData gd = gw.data;
@@ -538,13 +504,6 @@ public class GL33ModelRenderer {
                             vertexNormals.values().parallelStream().forEach((normals) -> {
                                 for (Vector3f n : normals) if (n.lengthSquared() > 0f) n.normalise();
                             });
-                            // Put the new TEXMAP normals to the shared map
-                            if (usesTEXMAP) {
-                                for (GDataAndWinding gw : texmapDataInOrder) {
-                                    final GData key = gw.data;
-                                    shared_TEXMAP_NormalMap.put(key, vertexNormals.get(key));
-                                }
-                            }
                         } else {
                             vertexNormals = null;
                         }
@@ -659,8 +618,6 @@ public class GL33ModelRenderer {
                                                 Matrix4f.transform(m, v[2], v[2]);
                                                 Matrix4f.transform(m, v[3], v[3]);
                                                 // No normalization necessary (the shader does the job)!
-                                                // v[3].w = 0f;
-                                                // v[3].normalise();
                                                 final float xn = v[3].x;
                                                 final float yn = v[3].y;
                                                 final float zn = v[3].z;
@@ -1011,7 +968,6 @@ public class GL33ModelRenderer {
                                         }
                                         continue;
                                     case 4:
-                                    case 5:
                                         if (gw.noclip) {
                                             local_triangleSize += 60;
                                             if (gd3.a < 1f) {
@@ -1059,7 +1015,6 @@ public class GL33ModelRenderer {
                                     }
                                     continue;
                                 case 4:
-                                case 5:
                                     if (gw.noclip) {
                                         local_triangleSize += 120;
                                         if (gd4.a < 1f) {
@@ -1591,36 +1546,8 @@ public class GL33ModelRenderer {
                                         continue;
                                     }
                                     case 4:
-                                    case 5:
                                     {
-                                        if (tmpRenderMode != 5) {
-                                            colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
-                                        } else {
-                                            GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd3.r, gd3.g, gd3.b));
-                                            GColourType ct = c.getType();
-                                            boolean hasColourType = ct != null;
-                                            if (hasColourType) {
-                                                switch (ct.type()) {
-                                                case CHROME:
-                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, 2f, triangleData, tempIndex);
-                                                    break;
-                                                case MATTE_METALLIC:
-                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, 4.2f, triangleData, tempIndex);
-                                                    break;
-                                                case METAL:
-                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, 3.2f, triangleData, tempIndex);
-                                                    break;
-                                                case RUBBER:
-                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, 5.2f, triangleData, tempIndex);
-                                                    break;
-                                                default:
-                                                    colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
-                                                    break;
-                                                }
-                                            } else {
-                                                colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
-                                            }
-                                        }
+                                        colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
 
                                         switch (gw.winding) {
                                         case BFC.CW:
@@ -2073,36 +2000,8 @@ public class GL33ModelRenderer {
                                     continue;
                                 }
                                 case 4:
-                                case 5:
                                 {
-                                    if (tmpRenderMode != 5) {
-                                        colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                    } else {
-                                        GColour c = View.getLDConfigColour(View.getLDConfigIndex(gd4.r, gd4.g, gd4.b));
-                                        GColourType ct = c.getType();
-                                        boolean hasColourType = ct != null;
-                                        if (hasColourType) {
-                                            switch (ct.type()) {
-                                            case CHROME:
-                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, 2f, triangleData, tempIndex);
-                                                break;
-                                            case MATTE_METALLIC:
-                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, 4.2f, triangleData, tempIndex);
-                                                break;
-                                            case METAL:
-                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, 3.2f, triangleData, tempIndex);
-                                                break;
-                                            case RUBBER:
-                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, 5.2f, triangleData, tempIndex);
-                                                break;
-                                            default:
-                                                colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                                break;
-                                            }
-                                        } else {
-                                            colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                        }
-                                    }
+                                    colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
                                     switch (gw.winding) {
                                     case BFC.CW:
                                         if (smoothShading) {
@@ -2332,13 +2231,6 @@ public class GL33ModelRenderer {
         final float zoom = c3d.getZoom();
         final boolean drawLines = View.lineWidthGL[0] > 0.01f;
         final boolean studlogo = c3d.isShowingLogo();
-        final boolean noRaytrace = c3d.getRenderMode() != 5;
-
-        if (!noRaytrace) {
-            CUBEMAP_TEXTURE.bindGL33(renderer, mainShader);
-            CUBEMAP_MATTE_TEXTURE.bindGL33(renderer, mainShader);
-            CUBEMAP_METAL_TEXTURE.bindGL33(renderer, mainShader);
-        }
 
         if (c3d.isLightOn()) {
             mainShader.setFactor(.9f);
@@ -2346,20 +2238,8 @@ public class GL33ModelRenderer {
             mainShader.setFactor(1f);
         }
 
-        // TODO Draw !TEXMAP VAOs here (slow)
-        if (usesTEXMAP) {
-            mainShader.texmapOn();
-            if (drawSolidMaterials) {
-                mainShader.transparentOff();
-            } else {
-                mainShader.transparentOn();
-            }
-            GL33TexmapRenderer.render(texmapData, mainShader, renderer, shared_TEXMAP_NormalMap, sharedVertexMap, c3d.isSmoothShading());
-            mainShader.texmapOff();
-        }
-
         // TODO Draw CSG VAOs here
-        if (noRaytrace && usesCSG) {
+        if (usesCSG) {
             if (drawSolidMaterials) {
 
                 GL30.glBindVertexArray(vaoCSG);
@@ -2480,7 +2360,7 @@ public class GL33ModelRenderer {
                 GL11.glLineWidth(1f);
             }
 
-            if (noRaytrace && tls > 0) {
+            if (tls > 0) {
                 GL30.glBindVertexArray(vaoTempLines);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTempLines);
                 lock.lock();
@@ -2512,7 +2392,7 @@ public class GL33ModelRenderer {
             GL11.glDrawArrays(GL11.GL_TRIANGLES, to, ts);
             mainShader.setFactor(1f);
 
-            if (noRaytrace && c3d.isShowingVertices()) {
+            if (c3d.isShowingVertices()) {
                 GL30.glBindVertexArray(vaoVertices);
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboVertices);
                 lock.lock();
@@ -2596,11 +2476,6 @@ public class GL33ModelRenderer {
             }
         } else {
 
-            if (!noRaytrace) {
-                GL30.glBindVertexArray(0);
-                return;
-            }
-
             GL11.glDisable(GL11.GL_DEPTH_TEST);
 
             // Draw lines from the selection
@@ -2645,7 +2520,7 @@ public class GL33ModelRenderer {
                 GL11.glDrawArrays(GL11.GL_LINES, 0, sCSG);
             }
 
-            // TODO Draw glyphs here (Distance meters, protractors)
+            // Draw glyphs here (distance meters, protractors)
             if (!protractors.isEmpty() || !distanceMeters.isEmpty()) {
                 glyphShader.use();
                 stack.setShader(glyphShader);
@@ -2728,9 +2603,8 @@ public class GL33ModelRenderer {
         GL30.glBindVertexArray(0);
     }
 
-    private boolean[] load_BFC_and_TEXMAP_info(
+    private boolean load_BFC_info(
             final ArrayList<GDataAndWinding> dataInOrder,
-            final ArrayList<GDataAndWinding> texmapDataInOrder,
             final ArrayList<GDataCSG> csgData,
             final HashMap<GData, Vertex[]> vertexMap,
             final HashMap<GData1, Matrix4f> matrixMap, final DatFile df,
@@ -2739,13 +2613,10 @@ public class GL33ModelRenderer {
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
             final ThreadsafeHashMap<GData5, Vertex[]> condlines,
             final boolean drawStudLogo,
-            final boolean parseTexmap,
             ArrayList<GDataPNG> pngImages,
             ArrayList<GData2> tmpDistanceMeters,
             ArrayList<GData3> tmpProtractors) {
 
-        final boolean[] result = new boolean[3];
-        boolean hasTEXMAP = false;
         boolean hasCSG = false;
         Stack<GData> stack = new Stack<>();
         Stack<Byte> tempWinding = new Stack<>();
@@ -2761,30 +2632,14 @@ public class GL33ModelRenderer {
         boolean globalInvertNext = false;
         boolean globalInvertNextFound = false;
         boolean globalNegativeDeterminant = false;
-        boolean texmap = false;
-        boolean texmapNext = false;
-        GData firstTexmapObject = null;
-
-        Vector4f v1 = new Vector4f(0f, 0f, 0f, 1f);
-        Vector4f v2 = new Vector4f(0f, 0f, 0f, 1f);
-        Vector4f v3 = new Vector4f(0f, 0f, 0f, 1f);
-        Vector4f v4 = new Vector4f(0f, 0f, 0f, 1f);
 
         // The BFC logic/state machine is not correct yet? (for BFC INVERTNEXT).
         while ((gd = backup.next) != null || !stack.isEmpty()) {
-            final boolean parseTexmapSubfile = firstTexmapObject != null;
             if (gd == null) {
                 if (accumClip > 0) {
                     accumClip--;
                 }
                 backup = stack.pop();
-                if (backup == firstTexmapObject) {
-                    firstTexmapObject = null;
-                    if (texmapNext) {
-                        texmap = false;
-                        texmapNext = false;
-                    }
-                }
                 localWinding = tempWinding.pop();
                 globalInvertNextFound = tempInvertNextFound.pop();
                 if (globalInvertNextFound) {
@@ -2798,17 +2653,8 @@ public class GL33ModelRenderer {
             }
             Vertex[] verts = null;
             backup = gd;
-            if (parseTexmap && gd.type() == 9) {
-                final GDataTEX tex = (GDataTEX) gd;
-                if (tex.linkedData != null) {
-                    gd = tex.linkedData;
-                }
-            }
             switch (gd.type()) {
             case 1:
-                if (texmap && !parseTexmapSubfile) {
-                    firstTexmapObject = backup;
-                }
                 final GData1 gd1 = (GData1) gd;
                 final Matrix4f rotation = new Matrix4f(gd1.productMatrix);
                 rotation.m30 = 0f;
@@ -2899,10 +2745,6 @@ public class GL33ModelRenderer {
                     }
                 }
             case 2:
-                if (texmapNext && !parseTexmapSubfile) {
-                    texmap = false;
-                    texmapNext = false;
-                }
                 GData2 gd2 = (GData2) gd;
                 verts = lines.get(gd2);
                 if (verts != null) {
@@ -2915,72 +2757,23 @@ public class GL33ModelRenderer {
                 continue;
             case 3:
                 GData3 gd3 = (GData3) gd;
-                if (texmap) {
-                    if (gd3.isTriangle) {
-                        verts = triangles.get(gd3);
-                        if (verts == null) {
-                            v1.set(gd3.x1, gd3.y1, gd3.z1, 1f);
-                            v2.set(gd3.x2, gd3.y2, gd3.z2, 1f);
-                            v3.set(gd3.x3, gd3.y3, gd3.z3, 1f);
-                            Matrix4f m = gd3.parent.productMatrix;
-                            Matrix4f.transform(m, v1, v1);
-                            Matrix4f.transform(m, v2, v2);
-                            Matrix4f.transform(m, v3, v3);
-                            verts = new Vertex[]{new Vertex(v1.x, v1.y, v1.z, true), new Vertex(v2.x, v2.y, v2.z, true), new Vertex(v3.x, v3.y, v3.z, true)};
-                        }
-                        vertexMap.put(gd, verts);
-                        texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
-                        if (texmapNext && !parseTexmapSubfile) {
-                            texmap = false;
-                            texmapNext = false;
-                        }
+                verts = triangles.get(gd3);
+                if (verts != null) {
+                    if (!gd3.isTriangle) {
+                        tmpProtractors.add(gd3);
                     }
-                } else {
-                    verts = triangles.get(gd3);
-                    if (verts != null) {
-                        if (!gd3.isTriangle) {
-                            tmpProtractors.add(gd3);
-                        }
-                        vertexMap.put(gd, verts);
-                        dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
-                    }
+                    vertexMap.put(gd, verts);
+                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 }
                 continue;
             case 4:
-                if (texmap) {
-                    GData4 gd4 = (GData4) gd;
-                    verts = quads.get(gd4);
-                    if (verts == null) {
-                        v1.set(gd4.x1, gd4.y1, gd4.z1, 1f);
-                        v2.set(gd4.x2, gd4.y2, gd4.z2, 1f);
-                        v3.set(gd4.x3, gd4.y3, gd4.z3, 1f);
-                        v4.set(gd4.x4, gd4.y4, gd4.z4, 1f);
-                        Matrix4f m = gd4.parent.productMatrix;
-                        Matrix4f.transform(m, v1, v1);
-                        Matrix4f.transform(m, v2, v2);
-                        Matrix4f.transform(m, v3, v3);
-                        Matrix4f.transform(m, v4, v4);
-                        verts = new Vertex[]{new Vertex(v1.x, v1.y, v1.z, true), new Vertex(v2.x, v2.y, v2.z, true), new Vertex(v3.x, v3.y, v3.z, true), new Vertex(v4.x, v4.y, v4.z, true)};
-                    }
+                verts = quads.get(gd);
+                if (verts != null) {
                     vertexMap.put(gd, verts);
-                    texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
-                    if (texmapNext && !parseTexmapSubfile) {
-                        texmap = false;
-                        texmapNext = false;
-                    }
-                } else {
-                    verts = quads.get(gd);
-                    if (verts != null) {
-                        vertexMap.put(gd, verts);
-                        dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
-                    }
+                    dataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
                 }
                 continue;
             case 5:
-                if (texmapNext && !parseTexmapSubfile) {
-                    texmap = false;
-                    texmapNext = false;
-                }
                 verts = condlines.get(gd);
                 if (verts != null) {
                     vertexMap.put(gd, verts);
@@ -2988,51 +2781,18 @@ public class GL33ModelRenderer {
                 }
                 continue;
             case 8:
-                if (!texmap) {
-                    csgData.add((GDataCSG) gd);
-                    hasCSG = true;
-                }
-                continue;
-            case 9:
-                if (!parseTexmap || parseTexmapSubfile) {
-                    continue;
-                }
-                GDataTEX tex = (GDataTEX) gd;
-                hasTEXMAP = true;
-                switch (tex.meta) {
-                case START:
-                    texmap = true;
-                    texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
-                    break;
-                case NEXT:
-                    texmapNext = true;
-                    texmap = true;
-                    texmapDataInOrder.add(new GDataAndWinding(gd, localWinding, globalNegativeDeterminant, globalInvertNext, accumClip));
-                    break;
-                case GEOMETRY:
-                    // Shouldn't happen...
-                    break;
-                case FALLBACK:
-                    while ((backup = backup.next) != null && !(backup instanceof GDataTEX && ((GDataTEX) backup).meta == TexMeta.END));
-                    texmap = false;
-                    break;
-                case END:
-                    // Won't happen...
-                    break;
-                }
+                csgData.add((GDataCSG) gd);
+                hasCSG = true;
                 continue;
             case 10:
-                if (!texmap) {
-                    pngImages.add((GDataPNG) gd);
-                }
+                pngImages.add((GDataPNG) gd);
                 continue;
             default:
                 continue;
             }
         }
-        result[0] = hasTEXMAP;
-        result[1] = hasCSG;
-        return result;
+
+        return hasCSG;
     }
 
     private void normal(int offset, int times, float xn, float yn, float zn,
@@ -3107,20 +2867,5 @@ public class GL33ModelRenderer {
         vertexData[pos + 3] = x;
         vertexData[pos + 4] = y;
         vertexData[pos + 5] = z;
-    }
-
-    class GDataAndWinding {
-        final GData data;
-        final byte winding;
-        final boolean negativeDeterminant;
-        final boolean invertNext;
-        final boolean noclip;
-        public GDataAndWinding(GData gd, byte bfc, boolean negDet, boolean iNext, int accumClip) {
-            data = gd;
-            winding = bfc;
-            negativeDeterminant = negDet;
-            invertNext = iNext;
-            noclip = accumClip > 0;
-        }
     }
 }

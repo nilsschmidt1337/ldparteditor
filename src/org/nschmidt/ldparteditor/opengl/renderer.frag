@@ -229,6 +229,10 @@ void main()
 		lightSpecular += lights[i].specular * frontMaterial.specular * pow(max(dot(r, eyeDir), 0.0), frontMaterial.shininess) * attenFactor;
 		
 	}
+	
+	lightAmbientDiffuse.a = 0f;
+	lightSpecular.a = 0f;
+	
 	if (texmapswitch > 0.5f) {
 		vec4 texColor = texture2D(ldpePngSampler, tex.xy);
 		texColor.r *= factor;

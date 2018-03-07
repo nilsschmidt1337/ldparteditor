@@ -21,7 +21,6 @@ import java.util.HashMap;
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.ldparteditor.data.GL33ModelRenderer.GDataAndWinding;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLShader;
@@ -30,8 +29,8 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 public enum GL33TexmapRenderer {
     INSTANCE;
 
-    public static void render(ArrayList<GDataAndWinding> texmapData, GLShader mainShader, OpenGLRenderer renderer,
-            HashMap<GData, Vector3f[]> normalMap, HashMap<GData, Vertex[]> vertexMap, boolean smoothShading) {
+    public static void render(ArrayList<GDataAndTexture> texmapData, GLShader mainShader, OpenGLRenderer renderer,
+            HashMap<GData, Vector3f[]> normalMap, HashMap<GData, Vertex[]> vertexMap, boolean smoothShading, boolean drawSolidMaterials) {
         GTexture lastTexture = null;
         float[] uv;
         float[] triVertices = new float[36];
@@ -44,11 +43,30 @@ public enum GL33TexmapRenderer {
         int[] triIndicesNOCLIP = new int[]{0, 2, 1};
         int[] quadIndicesNOCLIP = new int[]{0, 3, 2, 2, 1, 0};
 
-        for (GDataAndWinding gw : texmapData) {
-            final GData gd = gw.data;
+        boolean texmap = true;
+
+        for (GDataAndTexture gw : texmapData) {
+        	final GTexture tex = gw.texture;
+        	final GData gd = gw.data;
+        	final boolean isTextured = tex != GTexture.NO_TEXTURE;
+
+        	if (isTextured && tex != lastTexture) {
+                lastTexture = tex;
+                lastTexture.refreshCache();
+                lastTexture.bindGL33(renderer, mainShader);
+        	}
+
+            if (texmap && !isTextured) {
+                mainShader.texmapOff();
+                texmap = false;
+            } else if (!texmap && isTextured){
+                mainShader.texmapOn();
+                texmap = true;
+            }
             switch (gd.type()) {
             case 3:
                 GData3 gd3 = (GData3) gd;
+                if (!isTextured && gd3.a < 1f && drawSolidMaterials) continue;
                 Vertex[] v = vertexMap.get(gd);
                 Vector3f[] n = normalMap.get(gd);
                 if (n == null) {
@@ -185,7 +203,7 @@ public enum GL33TexmapRenderer {
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndices);
-                    if (gw.noclip) {
+                    if (gw.noclip || (isTextured && gd3.a < 1f)) {
                         flipnormals(3, triVertices);
                         GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndicesNOCLIP);
                     }
@@ -193,6 +211,7 @@ public enum GL33TexmapRenderer {
                 continue;
             case 4:
                 GData4 gd4 = (GData4) gd;
+                if (!isTextured && gd4.a < 1f && drawSolidMaterials) continue;
                 v = vertexMap.get(gd);
                 n = normalMap.get(gd);
                 if (n == null) {
@@ -347,18 +366,10 @@ public enum GL33TexmapRenderer {
                         continue;
                     }
                     GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndices);
-                    if (gw.noclip) {
+                    if (gw.noclip || (isTextured && gd4.a < 1f)) {
                         flipnormals(4, quadVertices);
                         GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndicesNOCLIP);
                     }
-                }
-                continue;
-            case 9:
-                GDataTEX tex = (GDataTEX) gd;
-                if (tex.meta == TexMeta.START || tex.meta == TexMeta.NEXT) {
-                    lastTexture = tex.linkedTexture;
-                    lastTexture.refreshCache();
-                    lastTexture.bindGL33(renderer, mainShader);
                 }
                 continue;
             default:
@@ -407,5 +418,4 @@ public enum GL33TexmapRenderer {
         data[j + 10] = u;
         data[j + 11] = v;
     }
-
 }
