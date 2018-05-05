@@ -298,6 +298,8 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmSyncManipulator = new MenuItem[1];
     final MenuItem[] mntmSyncZoom = new MenuItem[1];
 
+    final CompositeVertexWindow[] cmpVertexWindow = new CompositeVertexWindow[1];
+
     public Composite3D(Composite parentCompositeContainer, boolean syncManipulator, boolean syncTranslation, boolean syncZoom) {
         this(parentCompositeContainer);
         setSyncManipulator(syncManipulator);
@@ -2832,5 +2834,9 @@ public class Composite3D extends ScalableComposite {
 
     public void setHasMouse(boolean hasMouse) {
         this.hasMouse = hasMouse;
+    }
+
+    public static void updateVertexWindows() {
+        // TODO Needs implementation!
     }
 }
