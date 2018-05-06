@@ -38,8 +38,8 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
- * Manages GUI Actions, which are triggered by the {@linkplain Composite3D} and
- * changing the {@linkplain Editor3DWindow}
+ * Manages status text updates, which are triggered by the {@linkplain Composite3D} and
+ * changing the {@linkplain Editor3DWindow} text in the status bar
  *
  * @author nils
  *
@@ -66,12 +66,12 @@ public enum GuiStatusManager {
             }
 
             final VertexManager vm = c3d.getVertexManager();
-            final Set<Vertex> vs;
+            final Set<Vertex> vs = vm.getSelectedVertices();
 
             sb.append(vm.getSlantingMatrixProjectorStatusString());
 
             updateSelection(sb, vm);
-            if ((vs = vm.getSelectedVertices()).size() == 1) {
+            if (vs.size() == 1) {
                 try {
                     Vertex v = vs.iterator().next();
                     sb.append(" Vertex @  ["); //$NON-NLS-1$ I18N Needs translation!
@@ -153,6 +153,9 @@ public enum GuiStatusManager {
             Editor3DWindow.getStatusLabel().setText(sb.toString());
             Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
             // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
+
+            Composite3D.updateVertexWindows();
+
         } catch (SWTException swtex) {
             NLogger.debug(GuiStatusManager.class, "Uncritical SWTExecption. Widget is disposed."); //$NON-NLS-1$
             NLogger.debug(GuiStatusManager.class, swtex);

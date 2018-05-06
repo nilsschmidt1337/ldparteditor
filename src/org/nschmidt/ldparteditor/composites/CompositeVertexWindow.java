@@ -42,6 +42,9 @@ import org.nschmidt.ldparteditor.widgets.NButton;
  */
 public class CompositeVertexWindow  extends Composite{
 
+    private Composite vertexWindow;
+    private ControlEditor editor;
+
     /**
      * Creates a new vertex window
      * @param canvas the {@linkplain GLCanvas} from the underlying 3D composite.
@@ -49,9 +52,13 @@ public class CompositeVertexWindow  extends Composite{
      */
     public CompositeVertexWindow(Composite canvas, int style) {
         super(canvas, style);
-        ControlEditor editor = new ControlEditor(canvas);
+        editor = new ControlEditor(canvas);
+        editor.horizontalAlignment = SWT.RIGHT;
+        editor.verticalAlignment = SWT.TOP;
+        editor.grabHorizontal = false;
+        editor.grabVertical = false;
 
-        Composite vertexWindow = new Composite(canvas, SWT.BORDER);
+        vertexWindow = new Composite(canvas, SWT.BORDER);
         GridLayout gridLayout = new GridLayout();
         gridLayout.verticalSpacing = -2;
         gridLayout.horizontalSpacing = 1;
@@ -122,15 +129,16 @@ public class CompositeVertexWindow  extends Composite{
             vertexWindow.pack();
         }
 
-        editor.horizontalAlignment = SWT.RIGHT;
-        editor.verticalAlignment = SWT.TOP;
-        editor.grabHorizontal = false;
-        editor.grabVertical = false;
-
         Point size = vertexWindow.computeSize(SWT.DEFAULT, SWT.DEFAULT);
         editor.minimumWidth = size.x;
         editor.minimumHeight = size.y;
         editor.setEditor(vertexWindow);
     }
 
+    @Override
+    public void dispose() {
+        super.dispose();
+        vertexWindow.dispose();
+        editor.dispose();
+    }
 }
