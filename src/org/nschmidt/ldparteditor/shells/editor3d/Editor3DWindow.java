@@ -70,6 +70,8 @@ import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Point;
@@ -444,14 +446,32 @@ public class Editor3DWindow extends Editor3DDesign {
         NLogger.writeVersion();
         sh.addFocusListener(new FocusListener() {
             @Override
-            public void focusLost(FocusEvent e) {
-                if (vertexWindow.getShell() != null) {
-                    vertexWindow.close();
-                }
-            }
+            public void focusLost(FocusEvent consumed) {}
             @Override
             public void focusGained(FocusEvent e) {
                 regainFocus();
+                VertexWindow.placeVertexWindow();
+            }
+        });
+        sh.addShellListener(new ShellListener() {
+            @Override
+            public void shellIconified(ShellEvent consumed) {}
+
+            @Override
+            public void shellDeiconified(ShellEvent consumed) { }
+
+            @Override
+            public void shellDeactivated(ShellEvent e) {
+                if (vertexWindow.getShell() != null && !vertexWindow.isYoung()) {
+                    vertexWindow.close();
+                }
+            }
+
+            @Override
+            public void shellClosed(ShellEvent consumed) {}
+
+            @Override
+            public void shellActivated(ShellEvent e) {
                 VertexWindow.placeVertexWindow();
             }
         });

@@ -46,6 +46,8 @@ import org.nschmidt.ldparteditor.widgets.NButton;
 public class VertexWindow extends ApplicationWindow {
 
 
+    private long showupTime = System.currentTimeMillis();
+
     /**
      * Creates a new instance of the vertex window
      */
@@ -73,6 +75,10 @@ public class VertexWindow extends ApplicationWindow {
         for (OpenGLRenderer renderer : Editor3DWindow.renders) {
             final Composite3D c3d = renderer.getC3D();
             final boolean singleVertex = !c3d.getLockableDatFileReference().isReadOnly() && c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().size() == 1;
+
+            if (singleVertex) {
+                Editor3DWindow.getWindow().getVertexWindow().renew();
+            }
 
             if (singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() == null) {
                 Editor3DWindow.getWindow().getVertexWindow().run();
@@ -164,5 +170,13 @@ public class VertexWindow extends ApplicationWindow {
         }
         vertexWindow.pack();
         return vertexWindow;
+    }
+
+    public void renew() {
+        showupTime = System.currentTimeMillis();
+    }
+
+    public boolean isYoung() {
+        return Math.abs(showupTime - System.currentTimeMillis()) < 200;
     }
 }
