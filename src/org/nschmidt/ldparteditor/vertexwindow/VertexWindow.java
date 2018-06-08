@@ -17,9 +17,13 @@ package org.nschmidt.ldparteditor.vertexwindow;
 
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -70,6 +74,24 @@ public class VertexWindow extends ApplicationWindow {
         this.setParentShell(Editor3DWindow.getWindow().getShell());
         this.create();
         this.open();
+        getShell().addShellListener(new ShellListener() {
+            @Override
+            public void shellIconified(ShellEvent consumed) {}
+
+            @Override
+            public void shellDeiconified(ShellEvent consumed) { }
+
+            @Override
+            public void shellDeactivated(ShellEvent e) {
+                requestSelfDestruct();
+            }
+
+            @Override
+            public void shellClosed(ShellEvent consumed) {}
+
+            @Override
+            public void shellActivated(ShellEvent consumed) {}
+        });
     }
 
     /**
@@ -94,6 +116,8 @@ public class VertexWindow extends ApplicationWindow {
 
             if (singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() == null) {
                 Editor3DWindow.getWindow().getVertexWindow().run();
+                c3d.setFocus();
+                Editor3DWindow.getWindow().getShell().setActive();
             } else if (!singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() != null) {
                 Editor3DWindow.getWindow().getVertexWindow().close();
             }
@@ -107,22 +131,31 @@ public class VertexWindow extends ApplicationWindow {
             return;
         }
         if (lastHoveredC3d != null) {
-            Point a = ShellHelper.absolutePositionOnShell(lastHoveredC3d);
-            Point s = vertexWindow.getShell().getSize();
-            vertexWindow.getShell().setLocation(a.x - s.x + lastHoveredC3d.getSize().x, a.y);
+            final Point old = vertexWindow.getShell().getLocation();
+            final Point a = ShellHelper.absolutePositionOnShell(lastHoveredC3d);
+            final Point s = vertexWindow.getShell().getSize();
+
+            final int xPos = a.x - s.x + lastHoveredC3d.getSize().x;
+            final int yPos = a.y;
+
+            if (old.x != xPos || old.y != yPos) {
+                vertexWindow.getShell().setLocation(xPos, yPos);
+            }
         }
     }
 
     private void updateVertex(Vertex selected) {
-        selectedVertex = selected;
-        spn_X[0].setValue(selectedVertex.X);
-        spn_Y[0].setValue(selectedVertex.Y);
-        spn_Z[0].setValue(selectedVertex.Z);
+        if (!selectedVertex.equals(selected)) {
+            selectedVertex = selected;
+            spn_X[0].setValue(selectedVertex.X);
+            spn_Y[0].setValue(selectedVertex.Y);
+            spn_Z[0].setValue(selectedVertex.Z);
+        }
     }
 
     @Override
     protected Control createContents(Composite parent) {
-        final Composite vertexWindow = new Composite(parent, SWT.BORDER);
+        final Composite vertexWindow = new Composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout();
         gridLayout.verticalSpacing = -2;
         gridLayout.horizontalSpacing = 1;
@@ -203,5 +236,23 @@ public class VertexWindow extends ApplicationWindow {
 
     public boolean isYoung() {
         return Math.abs(showupTime - System.currentTimeMillis()) < 200;
+    }
+
+    public void requestClose() {
+        ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+        exec.schedule(() -> {
+            if (!this.getShell().isFocusControl()) {
+                close();
+                }
+            }, 200, TimeUnit.MILLISECONDS);
+    }
+
+    private void requestSelfDestruct() {
+        ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
+        exec.schedule(() -> {
+            if (!Editor3DWindow.getWindow().getShell().isFocusControl()) {
+                close();
+                }
+            }, 200, TimeUnit.MILLISECONDS);
     }
 }
