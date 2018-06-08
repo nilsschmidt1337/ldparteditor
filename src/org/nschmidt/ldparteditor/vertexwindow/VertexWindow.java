@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.vertexwindow;
 
 import java.math.BigDecimal;
+import java.util.NoSuchElementException;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
@@ -27,6 +28,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
+import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
@@ -45,8 +47,13 @@ import org.nschmidt.ldparteditor.widgets.NButton;
  */
 public class VertexWindow extends ApplicationWindow {
 
+    private static Vertex selectedVertex = new Vertex(0,0,0);
 
     private long showupTime = System.currentTimeMillis();
+
+    private BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
+    private BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
+    private BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
 
     /**
      * Creates a new instance of the vertex window
@@ -77,6 +84,11 @@ public class VertexWindow extends ApplicationWindow {
             final boolean singleVertex = !c3d.getLockableDatFileReference().isReadOnly() && c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().size() == 1;
 
             if (singleVertex) {
+                try {
+                    selectedVertex = c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().iterator().next();
+                } catch (NoSuchElementException nse) {
+                    selectedVertex = new Vertex(0,0,0);
+                }
                 Editor3DWindow.getWindow().getVertexWindow().renew();
             }
 
@@ -84,6 +96,10 @@ public class VertexWindow extends ApplicationWindow {
                 Editor3DWindow.getWindow().getVertexWindow().run();
             } else if (!singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() != null) {
                 Editor3DWindow.getWindow().getVertexWindow().close();
+            }
+
+            if (singleVertex) {
+                vertexWindow.updateVertex(selectedVertex);
             }
         }
 
@@ -97,6 +113,12 @@ public class VertexWindow extends ApplicationWindow {
         }
     }
 
+    private void updateVertex(Vertex selected) {
+        selectedVertex = selected;
+        spn_X[0].setValue(selectedVertex.X);
+        spn_Y[0].setValue(selectedVertex.Y);
+        spn_Z[0].setValue(selectedVertex.Z);
+    }
 
     @Override
     protected Control createContents(Composite parent) {
@@ -138,10 +160,11 @@ public class VertexWindow extends ApplicationWindow {
                 cmp_txt.setLayout(new GridLayout(1, true));
 
                 BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
+                this.spn_X[0] = spn_X;
                 spn_X.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
                 spn_X.setMaximum(new BigDecimal(1000000));
                 spn_X.setMinimum(new BigDecimal(-1000000));
-                spn_X.setValue(BigDecimal.ZERO);
+                spn_X.setValue(selectedVertex.X);
             }
 
             {
@@ -150,10 +173,11 @@ public class VertexWindow extends ApplicationWindow {
                 cmp_txt.setLayout(new GridLayout(1, true));
 
                 BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
+                this.spn_Y[0] = spn_Y;
                 spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
                 spn_Y.setMaximum(new BigDecimal(1000000));
                 spn_Y.setMinimum(new BigDecimal(-1000000));
-                spn_Y.setValue(BigDecimal.ZERO);
+                spn_Y.setValue(selectedVertex.Y);
             }
 
             {
@@ -162,10 +186,11 @@ public class VertexWindow extends ApplicationWindow {
                 cmp_txt.setLayout(new GridLayout(1, true));
 
                 BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
+                this.spn_Z[0] = spn_Z;
                 spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
                 spn_Z.setMaximum(new BigDecimal(1000000));
                 spn_Z.setMinimum(new BigDecimal(-1000000));
-                spn_Z.setValue(BigDecimal.ZERO);
+                spn_Z.setValue(selectedVertex.Z);
             }
         }
         vertexWindow.pack();
