@@ -40,7 +40,7 @@ import org.nschmidt.ldparteditor.widgets.NButton;
  * @author nils
  *
  */
-public class CompositeVertexWindow  extends Composite{
+public class CompositeVertexWindow extends Composite{
 
     private Composite vertexWindow;
     private ControlEditor editor;

@@ -39,6 +39,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.NButton;
@@ -68,7 +69,7 @@ public class CompositeScale extends ScalableComposite {
         gl_compositeScale.horizontalSpacing = 0;
         this.setLayout(gl_compositeScale);
 
-        NButton btn_openContextMenu = new NButton(this, SWT.CENTER);
+        NButton btn_openContextMenu = new NButton(this, Cocoa.getStyle());
         GridData gd_btn_openContextMenu = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
         gd_btn_openContextMenu.heightHint = 20;
         gd_btn_openContextMenu.widthHint = 20;
