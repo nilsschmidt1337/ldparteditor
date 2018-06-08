@@ -212,6 +212,7 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
+import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
@@ -238,6 +239,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
     /** The search window */
     private SearchWindow searchWindow;
+
+    /** The vertex window */
+    private final VertexWindow vertexWindow = new VertexWindow();
 
     public static final ArrayList<GLCanvas> canvasList = new ArrayList<GLCanvas>();
     public static final ArrayList<OpenGLRenderer> renders = new ArrayList<OpenGLRenderer>();
@@ -440,11 +444,22 @@ public class Editor3DWindow extends Editor3DDesign {
         NLogger.writeVersion();
         sh.addFocusListener(new FocusListener() {
             @Override
-            public void focusLost(FocusEvent consumed) {}
+            public void focusLost(FocusEvent e) {
+                if (vertexWindow.getShell() != null) {
+                    vertexWindow.close();
+                }
+            }
             @Override
             public void focusGained(FocusEvent e) {
                 regainFocus();
+                VertexWindow.placeVertexWindow();
             }
+        });
+        sh.addListener(SWT.Move, (event) -> {
+            VertexWindow.placeVertexWindow();
+        });
+        sh.addListener(SWT.Resize, (event) -> {
+            VertexWindow.placeVertexWindow();
         });
         tabFolder_Settings[0].addSelectionListener(new SelectionAdapter() {
             @Override
@@ -10078,5 +10093,9 @@ public class Editor3DWindow extends Editor3DDesign {
             // There is no 3D window open at the moment
         }
         return c3dStates;
+    }
+
+    public VertexWindow getVertexWindow() {
+        return vertexWindow;
     }
 }

@@ -63,6 +63,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
+import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -250,6 +251,7 @@ public class MouseActions {
     public void mouseMove(Event event) {
         DatFile.setLastHoveredComposite(c3d);
         if (!c3d.getLockableDatFileReference().isDrawSelection()) return;
+        VertexWindow.placeVertexWindow();
         c3d.getKeys().setKeyState(SWT.COMMAND, (event.stateMask & SWT.COMMAND) == SWT.COMMAND);
         c3d.getKeys().setKeyState(SWT.CTRL, (event.stateMask & SWT.CTRL) == SWT.CTRL);
         c3d.getKeys().setKeyState(SWT.SHIFT, (event.stateMask & SWT.SHIFT) == SWT.SHIFT);

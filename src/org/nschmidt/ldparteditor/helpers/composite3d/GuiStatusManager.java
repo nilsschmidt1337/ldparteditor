@@ -36,6 +36,7 @@ import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 
 /**
  * Manages status text updates, which are triggered by the {@linkplain Composite3D} and
@@ -154,7 +155,7 @@ public enum GuiStatusManager {
             Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
             // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
 
-            Composite3D.updateVertexWindows();
+            VertexWindow.placeVertexWindow();
 
         } catch (SWTException swtex) {
             NLogger.debug(GuiStatusManager.class, "Uncritical SWTExecption. Widget is disposed."); //$NON-NLS-1$

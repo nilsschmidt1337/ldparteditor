@@ -109,6 +109,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.DatParser;
+import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 import org.nschmidt.ldparteditor.widgets.listeners.Win32MouseWheelFilter;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -297,8 +298,6 @@ public class Composite3D extends ScalableComposite {
     final MenuItem[] mntmSyncTranslate = new MenuItem[1];
     final MenuItem[] mntmSyncManipulator = new MenuItem[1];
     final MenuItem[] mntmSyncZoom = new MenuItem[1];
-
-    final CompositeVertexWindow[] cmpVertexWindow = new CompositeVertexWindow[1];
 
     public Composite3D(Composite parentCompositeContainer, boolean syncManipulator, boolean syncTranslation, boolean syncZoom) {
         this(parentCompositeContainer);
@@ -1465,6 +1464,7 @@ public class Composite3D extends ScalableComposite {
                 GL.setCapabilities(capabilities);
                 perspective.initializeViewportPerspective();
                 ViewIdleManager.pause[0].compareAndSet(false, true);
+                VertexWindow.placeVertexWindow();
             }
         });
 
@@ -2834,26 +2834,5 @@ public class Composite3D extends ScalableComposite {
 
     public void setHasMouse(boolean hasMouse) {
         this.hasMouse = hasMouse;
-    }
-
-    public static void updateVertexWindows() {
-        // TODO Needs implementation!
-        for (OpenGLRenderer renderer : Editor3DWindow.renders) {
-            final Composite3D c3d = renderer.getC3D();
-            final boolean singleVertex = !c3d.lockableDatFileReference.isReadOnly() && c3d.lockableDatFileReference.getVertexManager().getSelectedVertices().size() == 1;
-
-            if (c3d.cmpVertexWindow[0] != null) {
-                if (singleVertex) {
-
-                } else {
-                    c3d.cmpVertexWindow[0].dispose();
-                    c3d.cmpVertexWindow[0] = null;
-                }
-            }
-
-            if (singleVertex && c3d.cmpVertexWindow[0] == null) {
-                c3d.cmpVertexWindow[0] = new CompositeVertexWindow(c3d.getCanvas(), SWT.NONE);
-            }
-        }
     }
 }
