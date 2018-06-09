@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.vertexwindow;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -67,6 +66,7 @@ public class VertexWindow extends ApplicationWindow {
 
     private final NButton[] btn_Copy = new NButton[1];
     private final NButton[] btn_Paste = new NButton[1];
+    private final NButton[] btn_Merge = new NButton[1];
 
     private boolean isUpdating = false;
 
@@ -138,6 +138,18 @@ public class VertexWindow extends ApplicationWindow {
                 VertexManager.copySingleVertexIntoClipboard(selectedVertex);
             }
         });
+        btn_Merge[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
+                if (lastHoveredC3d == null) return;
+                final DatFile df = lastHoveredC3d.getLockableDatFileReference();
+                final VertexManager vm = df.getVertexManager();
+                vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
+                vm.setVertexToReplace(selectedVertex);
+                lastHoveredC3d.getMouse().checkSyncEditMode(vm, df);
+            }
+        });
     }
 
     private void changeVertex() {
@@ -147,7 +159,10 @@ public class VertexWindow extends ApplicationWindow {
         if (lastHoveredC3d == null) return;
         final DatFile df = lastHoveredC3d.getLockableDatFileReference();
         final VertexManager vm = df.getVertexManager();
-        vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
+        btn_Merge[0].setEnabled(vm.getVertices().contains(selectedVertex));
+        if (!btn_Merge[0].isEnabled()) {
+            vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
+        }
         vm.setVertexToReplace(selectedVertex);
         lastHoveredC3d.getMouse().checkSyncEditMode(vm, df);
     }
@@ -285,15 +300,22 @@ public class VertexWindow extends ApplicationWindow {
                 spn_Z.setMinimum(new BigDecimal(-1000000));
                 spn_Z.setValue(selectedVertex.Z);
             }
+
+            {
+                Composite cmp_txt = new Composite(vertexWindow, SWT.NONE);
+                cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmp_txt.setLayout(new GridLayout(1, true));
+
+                NButton btn_Merge = new NButton(cmp_txt, Cocoa.getStyle());
+                this.btn_Merge[0] = btn_Merge;
+                btn_Merge.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+                btn_Merge.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
+                btn_Merge.setText(I18n.E3D_MergeVertex);
+                btn_Merge.setEnabled(false);
+            }
         }
 
-        // Trick to get more width on the BigDecimalSpinner for larger values
         vertexWindow.pack();
-
-        final DecimalFormat numberFormat = new DecimalFormat(NUMBER_FORMAT);
-        this.spn_X[0].setNumberFormat(numberFormat);
-        this.spn_Y[0].setNumberFormat(numberFormat);
-        this.spn_Z[0].setNumberFormat(numberFormat);
 
         return vertexWindow;
     }

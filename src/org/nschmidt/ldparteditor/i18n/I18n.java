@@ -494,6 +494,7 @@ public final class I18n {
     public static final String E3D_MergeToNearestFace = E3D.getString(getProperty());
     public static final String E3D_MergeToNearestFaceDir = E3D.getString(getProperty());
     public static final String E3D_MergeToNearestVertex = E3D.getString(getProperty());
+    public static final String E3D_MergeVertex = E3D.getString(getProperty());
     public static final String E3D_MeshReduce = E3D.getString(getProperty());
     public static final String E3D_ModeLine = E3D.getString(getProperty());
     public static final String E3D_ModeSubpart = E3D.getString(getProperty());
