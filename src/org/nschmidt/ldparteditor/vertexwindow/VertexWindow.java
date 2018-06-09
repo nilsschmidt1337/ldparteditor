@@ -17,9 +17,12 @@ package org.nschmidt.ldparteditor.vertexwindow;
 
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
+import java.util.Set;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Point;
@@ -29,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -48,8 +52,7 @@ import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
- * @author nils
- *
+ * A window for manipulating the coordinates of a single vertex
  */
 public class VertexWindow extends ApplicationWindow {
 
@@ -57,9 +60,12 @@ public class VertexWindow extends ApplicationWindow {
 
     private long showupTime = System.currentTimeMillis();
 
-    private BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
-    private BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
-    private BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+    private final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
+    private final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
+    private final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+
+    private final NButton[] btn_Copy = new NButton[1];
+    private final NButton[] btn_Paste = new NButton[1];
 
     private boolean isUpdating = false;
 
@@ -115,6 +121,12 @@ public class VertexWindow extends ApplicationWindow {
                 changeVertex();
             }
         });
+        btn_Paste[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+
+            }
+        });
     }
 
     private void changeVertex() {
@@ -138,40 +150,42 @@ public class VertexWindow extends ApplicationWindow {
 
         final VertexWindow vertexWindow = Editor3DWindow.getWindow().getVertexWindow();
         final DatFile df = lastHoveredC3d.getLockableDatFileReference();
-        final boolean singleVertex = !df.isReadOnly() && df.getVertexManager().getSelectedVertices().size() == 1;
+        final Set<Vertex> selectedVertices = df.getVertexManager().getSelectedVertices();
+        final boolean singleVertex = !df.isReadOnly() && selectedVertices.size() == 1;
         Vertex newSelectedVertex = new Vertex(0,0,0);
 
         if (singleVertex) {
             try {
-                newSelectedVertex = df.getVertexManager().getSelectedVertices().iterator().next();
+                newSelectedVertex = selectedVertices.iterator().next();
             } catch (NoSuchElementException consumed) {}
-            Editor3DWindow.getWindow().getVertexWindow().renew();
+            vertexWindow.renew();
         }
 
-        if (singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() == null) {
-            Editor3DWindow.getWindow().getVertexWindow().run();
+        if (singleVertex && vertexWindow.getShell() == null) {
+            vertexWindow.run();
             lastHoveredC3d.setFocus();
             Editor3DWindow.getWindow().getShell().setActive();
-        } else if (!singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() != null) {
-            Editor3DWindow.getWindow().getVertexWindow().close();
+        } else if (!singleVertex && vertexWindow.getShell() != null) {
+            vertexWindow.close();
         }
 
         if (singleVertex) {
             vertexWindow.updateVertex(newSelectedVertex);
         }
 
-        if (vertexWindow.getShell() == null || vertexWindow.getShell().isDisposed()) {
+        final Shell vertexWindowShell = vertexWindow.getShell();
+        if (vertexWindowShell == null || vertexWindowShell.isDisposed()) {
             return;
         }
-        final Point old = vertexWindow.getShell().getLocation();
+        final Point old = vertexWindowShell.getLocation();
         final Point a = ShellHelper.absolutePositionOnShell(lastHoveredC3d);
-        final Point s = vertexWindow.getShell().getSize();
+        final Point s = vertexWindowShell.getSize();
 
         final int xPos = a.x - s.x + lastHoveredC3d.getSize().x;
         final int yPos = a.y;
 
         if (old.x != xPos || old.y != yPos) {
-            vertexWindow.getShell().setLocation(xPos, yPos);
+            vertexWindowShell.setLocation(xPos, yPos);
         }
     }
 
@@ -208,12 +222,14 @@ public class VertexWindow extends ApplicationWindow {
 
                 {
                     NButton btn_Copy = new NButton(cmp_txt, Cocoa.getStyle());
+                    this.btn_Copy[0] = btn_Copy;
                     btn_Copy.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                     btn_Copy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
                     KeyStateManager.addTooltipText(btn_Copy, I18n.COPYNPASTE_Copy, Task.COPY);
                 }
                 {
                     NButton btn_Paste = new NButton(cmp_txt, Cocoa.getStyle());
+                    this.btn_Paste[0] = btn_Paste;
                     btn_Paste.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                     btn_Paste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
                     KeyStateManager.addTooltipText(btn_Paste, I18n.COPYNPASTE_Paste, Task.PASTE);
