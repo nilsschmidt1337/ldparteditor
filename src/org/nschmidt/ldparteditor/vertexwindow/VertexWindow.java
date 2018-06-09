@@ -32,17 +32,20 @@ import org.eclipse.swt.widgets.Label;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Vertex;
+import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.Task;
+import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
-import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.NButton;
+import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  * @author nils
@@ -57,6 +60,8 @@ public class VertexWindow extends ApplicationWindow {
     private BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
     private BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
     private BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+
+    private boolean isUpdating = false;
 
     /**
      * Creates a new instance of the vertex window
@@ -73,6 +78,7 @@ public class VertexWindow extends ApplicationWindow {
         this.setParentShell(Editor3DWindow.getWindow().getShell());
         this.create();
         this.open();
+        // MARK Add listeners...
         getShell().addShellListener(new ShellListener() {
             @Override
             public void shellIconified(ShellEvent consumed) {}
@@ -91,63 +97,92 @@ public class VertexWindow extends ApplicationWindow {
             @Override
             public void shellActivated(ShellEvent consumed) {}
         });
+        spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                changeVertex();
+            }
+        });
+        spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                changeVertex();
+            }
+        });
+        spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
+            @Override
+            public void valueChanged(BigDecimalSpinner spn) {
+                changeVertex();
+            }
+        });
+    }
+
+    private void changeVertex() {
+        if (isUpdating) return;
+        selectedVertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+        final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
+        if (lastHoveredC3d == null) return;
+        final DatFile df = lastHoveredC3d.getLockableDatFileReference();
+        final VertexManager vm = df.getVertexManager();
+        vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
+        vm.setVertexToReplace(selectedVertex);
+        lastHoveredC3d.getMouse().checkSyncEditMode(vm, df);
     }
 
     /**
      * Places the vertex window on the 3D editor
      */
     public static void placeVertexWindow() {
-        final VertexWindow vertexWindow = Editor3DWindow.getWindow().getVertexWindow();
         final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
+        if (lastHoveredC3d == null) return;
 
-        for (OpenGLRenderer renderer : Editor3DWindow.renders) {
-            final Composite3D c3d = renderer.getC3D();
-            final boolean singleVertex = !c3d.getLockableDatFileReference().isReadOnly() && c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().size() == 1;
-            Vertex newSelectedVertex = new Vertex(0,0,0);
+        final VertexWindow vertexWindow = Editor3DWindow.getWindow().getVertexWindow();
+        final DatFile df = lastHoveredC3d.getLockableDatFileReference();
+        final boolean singleVertex = !df.isReadOnly() && df.getVertexManager().getSelectedVertices().size() == 1;
+        Vertex newSelectedVertex = new Vertex(0,0,0);
 
-            if (singleVertex) {
-                try {
-                    newSelectedVertex = c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().iterator().next();
-                } catch (NoSuchElementException consumed) {}
-                Editor3DWindow.getWindow().getVertexWindow().renew();
-            }
-
-            if (singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() == null) {
-                Editor3DWindow.getWindow().getVertexWindow().run();
-                c3d.setFocus();
-                Editor3DWindow.getWindow().getShell().setActive();
-            } else if (!singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() != null) {
-                Editor3DWindow.getWindow().getVertexWindow().close();
-            }
-
-            if (singleVertex) {
-                vertexWindow.updateVertex(newSelectedVertex);
-            }
+        if (singleVertex) {
+            try {
+                newSelectedVertex = df.getVertexManager().getSelectedVertices().iterator().next();
+            } catch (NoSuchElementException consumed) {}
+            Editor3DWindow.getWindow().getVertexWindow().renew();
         }
 
-        if (vertexWindow.getShell() == null) {
+        if (singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() == null) {
+            Editor3DWindow.getWindow().getVertexWindow().run();
+            lastHoveredC3d.setFocus();
+            Editor3DWindow.getWindow().getShell().setActive();
+        } else if (!singleVertex && Editor3DWindow.getWindow().getVertexWindow().getShell() != null) {
+            Editor3DWindow.getWindow().getVertexWindow().close();
+        }
+
+        if (singleVertex) {
+            vertexWindow.updateVertex(newSelectedVertex);
+        }
+
+        if (vertexWindow.getShell() == null || vertexWindow.getShell().isDisposed()) {
             return;
         }
-        if (lastHoveredC3d != null) {
-            final Point old = vertexWindow.getShell().getLocation();
-            final Point a = ShellHelper.absolutePositionOnShell(lastHoveredC3d);
-            final Point s = vertexWindow.getShell().getSize();
+        final Point old = vertexWindow.getShell().getLocation();
+        final Point a = ShellHelper.absolutePositionOnShell(lastHoveredC3d);
+        final Point s = vertexWindow.getShell().getSize();
 
-            final int xPos = a.x - s.x + lastHoveredC3d.getSize().x;
-            final int yPos = a.y;
+        final int xPos = a.x - s.x + lastHoveredC3d.getSize().x;
+        final int yPos = a.y;
 
-            if (old.x != xPos || old.y != yPos) {
-                vertexWindow.getShell().setLocation(xPos, yPos);
-            }
+        if (old.x != xPos || old.y != yPos) {
+            vertexWindow.getShell().setLocation(xPos, yPos);
         }
     }
 
     private void updateVertex(Vertex selected) {
         if (!selectedVertex.equals(selected)) {
             selectedVertex = selected;
+            isUpdating = true;
             spn_X[0].setValue(selectedVertex.X);
             spn_Y[0].setValue(selectedVertex.Y);
             spn_Z[0].setValue(selectedVertex.Z);
+            isUpdating = false;
         }
     }
 
@@ -241,7 +276,7 @@ public class VertexWindow extends ApplicationWindow {
             try {
                 Thread.sleep(200);
                 Display.getDefault().asyncExec(() -> {
-                    if (!this.getShell().isFocusControl()) {
+                    if (Editor3DWindow.getWindow().getShell().isFocusControl()) {
                         close();
                     }
                 });

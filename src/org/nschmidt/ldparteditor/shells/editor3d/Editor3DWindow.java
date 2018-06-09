@@ -462,7 +462,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             @Override
             public void shellDeactivated(ShellEvent e) {
-                if (vertexWindow.getShell() != null && !vertexWindow.isYoung()) {
+                if (vertexWindow.getShell() != null && !vertexWindow.isYoung() && !vertexWindow.getShell().isDisposed()) {
                     vertexWindow.requestClose();
                 }
             }
