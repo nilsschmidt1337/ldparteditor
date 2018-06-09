@@ -17,8 +17,6 @@ package org.nschmidt.ldparteditor.vertexwindow;
 
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
@@ -29,6 +27,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -104,13 +103,12 @@ public class VertexWindow extends ApplicationWindow {
         for (OpenGLRenderer renderer : Editor3DWindow.renders) {
             final Composite3D c3d = renderer.getC3D();
             final boolean singleVertex = !c3d.getLockableDatFileReference().isReadOnly() && c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().size() == 1;
+            Vertex newSelectedVertex = new Vertex(0,0,0);
 
             if (singleVertex) {
                 try {
-                    selectedVertex = c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().iterator().next();
-                } catch (NoSuchElementException nse) {
-                    selectedVertex = new Vertex(0,0,0);
-                }
+                    newSelectedVertex = c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().iterator().next();
+                } catch (NoSuchElementException consumed) {}
                 Editor3DWindow.getWindow().getVertexWindow().renew();
             }
 
@@ -123,7 +121,7 @@ public class VertexWindow extends ApplicationWindow {
             }
 
             if (singleVertex) {
-                vertexWindow.updateVertex(selectedVertex);
+                vertexWindow.updateVertex(newSelectedVertex);
             }
         }
 
@@ -239,20 +237,28 @@ public class VertexWindow extends ApplicationWindow {
     }
 
     public void requestClose() {
-        ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
-        exec.schedule(() -> {
-            if (!this.getShell().isFocusControl()) {
-                close();
-                }
-            }, 200, TimeUnit.MILLISECONDS);
+        new Thread(() -> {
+            try {
+                Thread.sleep(200);
+                Display.getDefault().asyncExec(() -> {
+                    if (!this.getShell().isFocusControl()) {
+                        close();
+                    }
+                });
+            } catch (InterruptedException consumed) {}
+        }).start();
     }
 
     private void requestSelfDestruct() {
-        ScheduledThreadPoolExecutor exec = new ScheduledThreadPoolExecutor(1);
-        exec.schedule(() -> {
-            if (!Editor3DWindow.getWindow().getShell().isFocusControl()) {
-                close();
-                }
-            }, 200, TimeUnit.MILLISECONDS);
+        new Thread(() -> {
+            try {
+                Thread.sleep(100);
+                Display.getDefault().asyncExec(() -> {
+                    if (!Editor3DWindow.getWindow().getShell().isFocusControl() && !isYoung()) {
+                        close();
+                    }
+                });
+            } catch (InterruptedException consumed) {}
+        }).start();
     }
 }
