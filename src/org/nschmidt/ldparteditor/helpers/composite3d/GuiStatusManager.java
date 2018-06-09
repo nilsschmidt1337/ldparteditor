@@ -100,27 +100,6 @@ public enum GuiStatusManager {
             sb.append(df.format(cursor3D[2].multiply(View.unit_factor)));
             sb.append("] "); //$NON-NLS-1$
 
-            final Editor3DWindow win = Editor3DWindow.getWindow();
-            if (win.isMovingAdjacentData()) {
-                sb.append(I18n.E3D_AdjacentWarningStatus);
-            }
-
-            final SelectorSettings sels = win.loadSelectorSettings();
-            final ObjectMode om = win.getWorkingType();
-            if (om == ObjectMode.FACES) {
-                if (sels.isTriangles() && !sels.isQuads()) {
-                    sb.append(I18n.E3D_OnlyTriangles);
-                } else if (sels.isQuads() && !sels.isTriangles()) {
-                    sb.append(I18n.E3D_OnlyQuads);
-                }
-            } else if (om == ObjectMode.LINES) {
-                if (sels.isLines() && !sels.isCondlines()) {
-                    sb.append(I18n.E3D_OnlyLines);
-                } else if (sels.isCondlines() && !sels.isLines()) {
-                    sb.append(I18n.E3D_OnlyCondlines);
-                }
-            }
-
             Manipulator m = c3d.getManipulator();
             if (m.isModified()) {
                 Matrix t = m.getTempTransformationAccurate();
@@ -142,7 +121,28 @@ public enum GuiStatusManager {
                     sb.append("; "); //$NON-NLS-1$
                     sb.append(df.format(daz));
                 }
-                sb.append("]"); //$NON-NLS-1$
+                sb.append("] "); //$NON-NLS-1$
+            }
+
+            final Editor3DWindow win = Editor3DWindow.getWindow();
+            if (win.isMovingAdjacentData()) {
+                sb.append(I18n.E3D_AdjacentWarningStatus);
+            }
+
+            final SelectorSettings sels = win.loadSelectorSettings();
+            final ObjectMode om = win.getWorkingType();
+            if (om == ObjectMode.FACES) {
+                if (sels.isTriangles() && !sels.isQuads()) {
+                    sb.append(I18n.E3D_OnlyTriangles);
+                } else if (sels.isQuads() && !sels.isTriangles()) {
+                    sb.append(I18n.E3D_OnlyQuads);
+                }
+            } else if (om == ObjectMode.LINES) {
+                if (sels.isLines() && !sels.isCondlines()) {
+                    sb.append(I18n.E3D_OnlyLines);
+                } else if (sels.isCondlines() && !sels.isLines()) {
+                    sb.append(I18n.E3D_OnlyCondlines);
+                }
             }
 
             if (Math.abs(CSG.timeOfLastOptimization - System.currentTimeMillis()) < 10000) {
