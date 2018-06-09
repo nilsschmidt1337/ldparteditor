@@ -3997,53 +3997,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
                         final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                         final Set<Vertex> sv = vm.getSelectedVertices();
-                        final boolean hasNoClipboardVertex;
-
-                        if (VertexManager.getClipboard().size() == 1) {
-                            GData vertex = VertexManager.getClipboard().get(0);
-                            if (vertex.type() == 0) {
-                                String line = vertex.toString();
-                                line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                String[] data_segments = line.split("\\s+"); //$NON-NLS-1$
-                                if (line.startsWith("0 !LPE VERTEX ")) { //$NON-NLS-1$
-                                    Vector3d start = new Vector3d();
-                                    boolean numberError = false;
-                                    if (data_segments.length == 6) {
-                                        try {
-                                            start.setX(new BigDecimal(data_segments[3], Threshold.mc));
-                                        } catch (NumberFormatException nfe) {
-                                            numberError = true;
-                                        }
-                                        try {
-                                            start.setY(new BigDecimal(data_segments[4], Threshold.mc));
-                                        } catch (NumberFormatException nfe) {
-                                            numberError = true;
-                                        }
-                                        try {
-                                            start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
-                                        } catch (NumberFormatException nfe) {
-                                            numberError = true;
-                                        }
-                                    } else {
-                                        numberError = true;
-                                    }
-                                    if (!numberError) {
-                                        v = new Vertex(start);
-                                        hasNoClipboardVertex = false;
-                                    } else {
-                                        hasNoClipboardVertex = true;
-                                    }
-                                } else {
-                                    hasNoClipboardVertex = true;
-                                }
-                            } else {
-                                hasNoClipboardVertex = true;
-                            }
-                        } else {
-                            hasNoClipboardVertex = true;
-                        }
-
-                        if (hasNoClipboardVertex) {
+                        final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
+                        if (clipboardVertex == null) {
                             if (sv.size() == 1 && vm.getSelectedData().size() == 0) {
                                 v = sv.iterator().next();
                             } else {
@@ -4052,6 +4007,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                 CoordinatesDialog.setStart(null);
                                 CoordinatesDialog.setEnd(null);
                             }
+                        } else {
+                            v = clipboardVertex;
                         }
                         final Vertex mani = new Vertex(c3d.getManipulator().getAccuratePosition());
                         final WorkingMode action = Editor3DWindow.getWindow().getWorkingAction();

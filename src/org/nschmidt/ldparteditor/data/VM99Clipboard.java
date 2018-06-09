@@ -34,9 +34,11 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
+import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
+import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
@@ -901,5 +903,61 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         result = (String) clipboard.getContents(TextTransfer.getInstance());
         clipboard.dispose();
         return result == null ? "" : result; //$NON-NLS-1$
+    }
+
+    public static void copySingleVertexIntoClipboard(final Vertex vertex) {
+        CLIPBOARD.clear();
+        CLIPBOARD_InvNext.clear();
+        final StringBuilder sb = new StringBuilder();
+        sb.append("0 !LPE VERTEX "); //$NON-NLS-1$
+        sb.append(MathHelper.bigDecimalToString(vertex.X));
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(MathHelper.bigDecimalToString(vertex.Y));
+        sb.append(" "); //$NON-NLS-1$
+        sb.append(MathHelper.bigDecimalToString(vertex.Z));
+        CLIPBOARD.add(new GData0(sb.toString(), View.DUMMY_REFERENCE));
+    }
+
+    public static Vertex getSingleVertexFromClipboard() {
+        Vertex result = null;
+        if (VertexManager.getClipboard().size() == 1) {
+            GData vertex = VertexManager.getClipboard().get(0);
+            if (vertex.type() == 0) {
+                String line = vertex.toString();
+                line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                String[] data_segments = line.split("\\s+"); //$NON-NLS-1$
+                if (line.startsWith("0 !LPE VERTEX ")) { //$NON-NLS-1$
+                    Vector3d start = new Vector3d();
+                    boolean numberError = false;
+                    if (data_segments.length == 6) {
+                        try {
+                            start.setX(new BigDecimal(data_segments[3], Threshold.mc));
+                        } catch (NumberFormatException nfe) {
+                            numberError = true;
+                        }
+
+                        try {
+                            start.setY(new BigDecimal(data_segments[4], Threshold.mc));
+                        } catch (NumberFormatException nfe) {
+                            numberError = true;
+                        }
+
+                        try {
+                            start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                        } catch (NumberFormatException nfe) {
+                            numberError = true;
+                        }
+                    } else {
+                        numberError = true;
+                    }
+
+                    if (!numberError) {
+                        result = new Vertex(start);
+                    }
+                }
+            }
+        }
+
+        return result;
     }
 }

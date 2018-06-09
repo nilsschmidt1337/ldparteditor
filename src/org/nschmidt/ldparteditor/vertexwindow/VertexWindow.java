@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.vertexwindow;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -124,7 +125,17 @@ public class VertexWindow extends ApplicationWindow {
         btn_Paste[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-
+                final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
+                if (clipboardVertex != null) {
+                    updateVertex(clipboardVertex);
+                    changeVertex();
+                }
+            }
+        });
+        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                VertexManager.copySingleVertexIntoClipboard(selectedVertex);
             }
         });
     }
@@ -203,14 +214,14 @@ public class VertexWindow extends ApplicationWindow {
     @Override
     protected Control createContents(Composite parent) {
         final Composite vertexWindow = new Composite(parent, SWT.NONE);
+        final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
+
         GridLayout gridLayout = new GridLayout();
         gridLayout.verticalSpacing = -2;
         gridLayout.horizontalSpacing = 1;
         vertexWindow.setLayout(gridLayout);
 
         {
-            final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
-
             {
                 Composite cmp_txt = new Composite(vertexWindow, SWT.NONE);
                 cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -275,7 +286,15 @@ public class VertexWindow extends ApplicationWindow {
                 spn_Z.setValue(selectedVertex.Z);
             }
         }
+
+        // Trick to get more width on the BigDecimalSpinner for larger values
         vertexWindow.pack();
+
+        final DecimalFormat numberFormat = new DecimalFormat(NUMBER_FORMAT);
+        this.spn_X[0].setNumberFormat(numberFormat);
+        this.spn_Y[0].setNumberFormat(numberFormat);
+        this.spn_Z[0].setNumberFormat(numberFormat);
+
         return vertexWindow;
     }
 
