@@ -16,12 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.unificator;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.UnificatorSettings;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -48,30 +44,10 @@ public class UnificatorDialog extends UnificatorDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_vertexThreshold[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                us.setVertexThreshold(spn.getValue());
-            }
-        });
-        cmb_scope[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                us.setScope(cmb_scope[0].getSelectionIndex());
-            }
-        });
-        cmb_whatToUnify[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                us.setSnapOn(cmb_whatToUnify[0].getSelectionIndex());
-            }
-        });
-        spn_subfileThreshold[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                us.setSubvertexThreshold(spn.getValue());
-            }
-        });
+        spn_vertexThreshold[0].addValueChangeListener(spn -> us.setVertexThreshold(spn.getValue()));
+        cmb_scope[0].addListener(SWT.Selection, event -> us.setScope(cmb_scope[0].getSelectionIndex()));
+        cmb_whatToUnify[0].addListener(SWT.Selection, event -> us.setSnapOn(cmb_whatToUnify[0].getSelectionIndex()));
+        spn_subfileThreshold[0].addValueChangeListener(spn -> us.setSubvertexThreshold(spn.getValue()));
         return super.open();
     }
 

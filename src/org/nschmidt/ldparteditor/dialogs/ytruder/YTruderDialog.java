@@ -18,12 +18,8 @@ package org.nschmidt.ldparteditor.dialogs.ytruder;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.YTruderSettings;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -53,24 +49,9 @@ public class YTruderDialog extends YTruderDesign {
 
         // MARK All final listeners will be configured here..
 
-        spn_value[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                ys.setDistance(spn.getValue().doubleValue());
-            }
-        });
-        spn_condlineAngleThreshold[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                ys.setCondlineAngleThreshold(spn.getValue().doubleValue());
-            }
-        });
-        cmb_axis[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ys.setAxis(cmb_axis[0].getSelectionIndex());
-            }
-        });
+        spn_value[0].addValueChangeListener(spn -> ys.setDistance(spn.getValue().doubleValue()));
+        spn_condlineAngleThreshold[0].addValueChangeListener(spn -> ys.setCondlineAngleThreshold(spn.getValue().doubleValue()));
+        cmb_axis[0].addListener(SWT.Selection, event -> ys.setAxis(cmb_axis[0].getSelectionIndex()));
         btn_TranslateByDistance[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

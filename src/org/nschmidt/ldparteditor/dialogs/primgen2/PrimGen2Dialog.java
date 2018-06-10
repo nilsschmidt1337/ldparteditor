@@ -52,9 +52,8 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.text.SyntaxFormatter;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
+import org.nschmidt.ldparteditor.widgets.DecimalValueChangeAdapter;
+import org.nschmidt.ldparteditor.widgets.IntValueChangeAdapter;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -460,22 +459,14 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         };
 
-        final ValueChangeAdapter vca = new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(IntegerSpinner spn) {
-                rebuildPrimitive(EventType.SPN, spn);
-            }
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                rebuildPrimitive(EventType.SPN, spn);
-            }
-        };
+        final IntValueChangeAdapter vca = spn -> rebuildPrimitive(EventType.SPN, spn);
+        final DecimalValueChangeAdapter vcad = spn -> rebuildPrimitive(EventType.SPN, spn);
 
         spn_divisions[0].addValueChangeListener(vca);
         spn_major[0].addValueChangeListener(vca);
-        spn_minor[0].addValueChangeListener(vca);
+        spn_minor[0].addValueChangeListener(vcad);
         spn_segments[0].addValueChangeListener(vca);
-        spn_size[0].addValueChangeListener(vca);
+        spn_size[0].addValueChangeListener(vcad);
 
         cmb_divisions[0].addSelectionListener(sa);
         cmb_segments[0].addSelectionListener(sa);

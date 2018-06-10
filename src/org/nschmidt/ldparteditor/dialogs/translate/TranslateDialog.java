@@ -24,9 +24,6 @@ import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -127,24 +124,9 @@ public class TranslateDialog extends TranslateDesign {
                 z = cb_Zaxis[0].getSelection();
             }
         });
-        spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
-            }
-        });
-        spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
-            }
-        });
-        spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
-            }
-        });
+        spn_X[0].addValueChangeListener(spn -> setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
+        spn_Y[0].addValueChangeListener(spn -> setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
+        spn_Z[0].addValueChangeListener(spn -> setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
         btn_Copy[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -153,12 +135,7 @@ public class TranslateDialog extends TranslateDesign {
                 close();
             }
         });
-        spn_Iterations[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(IntegerSpinner spn) {
-                iterations = spn.getValue();
-            }
-        });
+        spn_Iterations[0].addValueChangeListener(spn -> iterations = spn.getValue());
         return super.open();
     }
 

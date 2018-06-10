@@ -49,7 +49,6 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.state.KeyStateManager;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.NButton;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  * A window for manipulating the coordinates of a single vertex
@@ -104,24 +103,9 @@ public class VertexWindow extends ApplicationWindow {
             @Override
             public void shellActivated(ShellEvent consumed) {}
         });
-        spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                changeVertex();
-            }
-        });
-        spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                changeVertex();
-            }
-        });
-        spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                changeVertex();
-            }
-        });
+        spn_X[0].addValueChangeListener(spn -> changeVertex());
+        spn_Y[0].addValueChangeListener(spn -> changeVertex());
+        spn_Z[0].addValueChangeListener(spn -> changeVertex());
         btn_Paste[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

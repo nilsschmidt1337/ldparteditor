@@ -215,10 +215,9 @@ import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.text.UTF8PrintWriter;
 import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.DecimalValueChangeAdapter;
 import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 import org.nschmidt.ldparteditor.win32openWith.TryToOpen;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
@@ -2029,90 +2028,76 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        spn_Move[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                BigDecimal m, r, s;
-                m = spn.getValue();
-                switch (snapSize) {
-                case 0:
-                    WorkbenchManager.getUserSettingState().setFine_move_snap(m);
-                    r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
-                    s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
-                    break;
-                case 2:
-                    WorkbenchManager.getUserSettingState().setCoarse_move_snap(m);
-                    r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
-                    s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
-                    break;
-                default:
-                    WorkbenchManager.getUserSettingState().setMedium_move_snap(m);
-                    r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
-                    s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
-                    break;
-                }
-                Manipulator.setSnap(m, r, s);
+        spn_Move[0].addValueChangeListener(spn -> {
+            BigDecimal m, r, s;
+            m = spn.getValue();
+            switch (snapSize) {
+            case 0:
+                WorkbenchManager.getUserSettingState().setFine_move_snap(m);
+                r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
+                s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
+                break;
+            case 2:
+                WorkbenchManager.getUserSettingState().setCoarse_move_snap(m);
+                r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
+                s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
+                break;
+            default:
+                WorkbenchManager.getUserSettingState().setMedium_move_snap(m);
+                r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
+                s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
+                break;
             }
+            Manipulator.setSnap(m, r, s);
         });
 
-        spn_Rotate[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                BigDecimal m, r, s;
-                r = spn.getValue();
-                switch (snapSize) {
-                case 0:
-                    m = WorkbenchManager.getUserSettingState().getFine_move_snap();
-                    WorkbenchManager.getUserSettingState().setFine_rotate_snap(r);
-                    s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
-                    break;
-                case 2:
-                    m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
-                    WorkbenchManager.getUserSettingState().setCoarse_rotate_snap(r);
-                    s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
-                    break;
-                default:
-                    m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
-                    WorkbenchManager.getUserSettingState().setMedium_rotate_snap(r);
-                    s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
-                    break;
-                }
-                Manipulator.setSnap(m, r, s);
+        spn_Rotate[0].addValueChangeListener(spn -> {
+            BigDecimal m, r, s;
+            r = spn.getValue();
+            switch (snapSize) {
+            case 0:
+                m = WorkbenchManager.getUserSettingState().getFine_move_snap();
+                WorkbenchManager.getUserSettingState().setFine_rotate_snap(r);
+                s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
+                break;
+            case 2:
+                m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
+                WorkbenchManager.getUserSettingState().setCoarse_rotate_snap(r);
+                s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
+                break;
+            default:
+                m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
+                WorkbenchManager.getUserSettingState().setMedium_rotate_snap(r);
+                s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
+                break;
             }
+            Manipulator.setSnap(m, r, s);
         });
 
-        spn_Scale[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                BigDecimal m, r, s;
-                s = spn.getValue();
-                switch (snapSize) {
-                case 0:
-                    m = WorkbenchManager.getUserSettingState().getFine_move_snap();
-                    r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
-                    WorkbenchManager.getUserSettingState().setFine_scale_snap(s);
-                    break;
-                case 2:
-                    m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
-                    r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
-                    WorkbenchManager.getUserSettingState().setCoarse_scale_snap(s);
-                    break;
-                default:
-                    m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
-                    r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
-                    WorkbenchManager.getUserSettingState().setMedium_scale_snap(s);
-                    break;
-                }
-                Manipulator.setSnap(m, r, s);
+        spn_Scale[0].addValueChangeListener(spn -> {
+            BigDecimal m, r, s;
+            s = spn.getValue();
+            switch (snapSize) {
+            case 0:
+                m = WorkbenchManager.getUserSettingState().getFine_move_snap();
+                r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
+                WorkbenchManager.getUserSettingState().setFine_scale_snap(s);
+                break;
+            case 2:
+                m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
+                r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
+                WorkbenchManager.getUserSettingState().setCoarse_scale_snap(s);
+                break;
+            default:
+                m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
+                r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
+                WorkbenchManager.getUserSettingState().setMedium_scale_snap(s);
+                break;
             }
+            Manipulator.setSnap(m, r, s);
         });
 
-        spn_ScaleInitial[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                Manipulator.setInitialScale(spn.getValue());
-            }
-        });
+        spn_ScaleInitial[0].addValueChangeListener(spn -> Manipulator.setInitialScale(spn.getValue()));
 
         btn_PreviousSelection[0].addSelectionListener(new SelectionAdapter() {
             @Override
@@ -2480,45 +2465,107 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        final ValueChangeAdapter va = new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                if (updatingSelectionTab || Project.getFileToEdit() == null) return;
-                Project.getFileToEdit().getVertexManager().addSnapshot();
-                final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
+        final DecimalValueChangeAdapter va = spn -> {
+            if (updatingSelectionTab || Project.getFileToEdit() == null) return;
+            Project.getFileToEdit().getVertexManager().addSnapshot();
+            final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
+                    spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
+                    spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
+                    spn_SelectionX3[0].getValue(), spn_SelectionY3[0].getValue(), spn_SelectionZ3[0].getValue(),
+                    spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
+                    btn_MoveAdjacentData2[0].getSelection()
+                    );
+            if (newLine == null) {
+                disableSelectionTab();
+            } else {
+
+                if (newLine.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) newLine).isLine) {
+                    updatingSelectionTab = true;
+                    spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData2) newLine).getLength());
+                    updatingSelectionTab = false;
+                }
+                if (newLine.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) newLine).isTriangle) {
+                    updatingSelectionTab = true;
+                    spn_SelectionAngle[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorAngle()));
+                    spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorLength());
+                    updatingSelectionTab = false;
+                }
+
+                txt_Line[0].setText(newLine.toString());
+            }
+        };
+
+        spn_SelectionAngle[0].addValueChangeListener(spn -> {
+            if (updatingSelectionTab || Project.getFileToEdit() == null) return;
+            VertexManager vm = Project.getFileToEdit().getVertexManager();
+            vm.addSnapshot();
+
+            org.nschmidt.ldparteditor.data.GData3 tri = null;
+            if (vm.getSelectedTriangles().size() == 0) {
+                disableSelectionTab();
+                return;
+            }
+            tri = vm.getSelectedTriangles().iterator().next();
+            if (tri.isTriangle) {
+                disableSelectionTab();
+                return;
+            }
+
+            BigDecimal[] c = ProtractorHelper.changeAngle(spn.getValue().doubleValue(), tri);
+            updatingSelectionTab = true;
+            spn_SelectionX3[0].setValue(c[0]);
+            spn_SelectionY3[0].setValue(c[1]);
+            spn_SelectionZ3[0].setValue(c[2]);
+            updatingSelectionTab = false;
+
+            final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
+                    spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
+                    spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
+                    c[0], c[1], c[2],
+                    spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
+                    btn_MoveAdjacentData2[0].getSelection()
+                    );
+            if (newLine == null) {
+                disableSelectionTab();
+            } else {
+                txt_Line[0].setText(newLine.toString());
+            }
+        });
+
+        spn_SelectionLength[0].addValueChangeListener(spn -> {
+            if (updatingSelectionTab || Project.getFileToEdit() == null) return;
+            VertexManager vm = Project.getFileToEdit().getVertexManager();
+            vm.addSnapshot();
+
+            if (vm.getSelectedLines().size() > 0) {
+                org.nschmidt.ldparteditor.data.GData2 line = null;
+                line = vm.getSelectedLines().iterator().next();
+                if (line.isLine) {
+                    disableSelectionTab();
+                    return;
+                }
+
+                BigDecimal[] c1 = ProtractorHelper.changeLength(spn.getValue(), line);
+                updatingSelectionTab = true;
+                spn_SelectionX2[0].setValue(c1[0]);
+                spn_SelectionY2[0].setValue(c1[1]);
+                spn_SelectionZ2[0].setValue(c1[2]);
+                updatingSelectionTab = false;
+
+                final GData newLine1 = Project.getFileToEdit().getVertexManager().updateSelectedLine(
                         spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
-                        spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
+                        c1[0], c1[1], c1[2],
                         spn_SelectionX3[0].getValue(), spn_SelectionY3[0].getValue(), spn_SelectionZ3[0].getValue(),
                         spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
                         btn_MoveAdjacentData2[0].getSelection()
                         );
-                if (newLine == null) {
+                if (newLine1 == null) {
                     disableSelectionTab();
                 } else {
-
-                    if (newLine.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) newLine).isLine) {
-                        updatingSelectionTab = true;
-                        spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData2) newLine).getLength());
-                        updatingSelectionTab = false;
-                    }
-                    if (newLine.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) newLine).isTriangle) {
-                        updatingSelectionTab = true;
-                        spn_SelectionAngle[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorAngle()));
-                        spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorLength());
-                        updatingSelectionTab = false;
-                    }
-
-                    txt_Line[0].setText(newLine.toString());
+                    txt_Line[0].setText(newLine1.toString());
                 }
-            }
-        };
 
-        spn_SelectionAngle[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                if (updatingSelectionTab || Project.getFileToEdit() == null) return;
-                VertexManager vm = Project.getFileToEdit().getVertexManager();
-                vm.addSnapshot();
+            } else {
 
                 org.nschmidt.ldparteditor.data.GData3 tri = null;
                 if (vm.getSelectedTriangles().size() == 0) {
@@ -2531,95 +2578,24 @@ public class Editor3DWindow extends Editor3DDesign {
                     return;
                 }
 
-                BigDecimal[] c = ProtractorHelper.changeAngle(spn.getValue().doubleValue(), tri);
+                BigDecimal[] c2 = ProtractorHelper.changeLength(spn.getValue(), tri);
                 updatingSelectionTab = true;
-                spn_SelectionX3[0].setValue(c[0]);
-                spn_SelectionY3[0].setValue(c[1]);
-                spn_SelectionZ3[0].setValue(c[2]);
+                spn_SelectionX3[0].setValue(c2[0]);
+                spn_SelectionY3[0].setValue(c2[1]);
+                spn_SelectionZ3[0].setValue(c2[2]);
                 updatingSelectionTab = false;
 
-                final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
+                final GData newLine2 = Project.getFileToEdit().getVertexManager().updateSelectedLine(
                         spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
                         spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
-                        c[0], c[1], c[2],
+                        c2[0], c2[1], c2[2],
                         spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
                         btn_MoveAdjacentData2[0].getSelection()
                         );
-                if (newLine == null) {
+                if (newLine2 == null) {
                     disableSelectionTab();
                 } else {
-                    txt_Line[0].setText(newLine.toString());
-                }
-            }
-        });
-
-        spn_SelectionLength[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                if (updatingSelectionTab || Project.getFileToEdit() == null) return;
-                VertexManager vm = Project.getFileToEdit().getVertexManager();
-                vm.addSnapshot();
-
-                if (vm.getSelectedLines().size() > 0) {
-                    org.nschmidt.ldparteditor.data.GData2 line = null;
-                    line = vm.getSelectedLines().iterator().next();
-                    if (line.isLine) {
-                        disableSelectionTab();
-                        return;
-                    }
-
-                    BigDecimal[] c = ProtractorHelper.changeLength(spn.getValue(), line);
-                    updatingSelectionTab = true;
-                    spn_SelectionX2[0].setValue(c[0]);
-                    spn_SelectionY2[0].setValue(c[1]);
-                    spn_SelectionZ2[0].setValue(c[2]);
-                    updatingSelectionTab = false;
-
-                    final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
-                            spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
-                            c[0], c[1], c[2],
-                            spn_SelectionX3[0].getValue(), spn_SelectionY3[0].getValue(), spn_SelectionZ3[0].getValue(),
-                            spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
-                            btn_MoveAdjacentData2[0].getSelection()
-                            );
-                    if (newLine == null) {
-                        disableSelectionTab();
-                    } else {
-                        txt_Line[0].setText(newLine.toString());
-                    }
-
-                } else {
-
-                    org.nschmidt.ldparteditor.data.GData3 tri = null;
-                    if (vm.getSelectedTriangles().size() == 0) {
-                        disableSelectionTab();
-                        return;
-                    }
-                    tri = vm.getSelectedTriangles().iterator().next();
-                    if (tri.isTriangle) {
-                        disableSelectionTab();
-                        return;
-                    }
-
-                    BigDecimal[] c = ProtractorHelper.changeLength(spn.getValue(), tri);
-                    updatingSelectionTab = true;
-                    spn_SelectionX3[0].setValue(c[0]);
-                    spn_SelectionY3[0].setValue(c[1]);
-                    spn_SelectionZ3[0].setValue(c[2]);
-                    updatingSelectionTab = false;
-
-                    final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
-                            spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
-                            spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
-                            c[0], c[1], c[2],
-                            spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
-                            btn_MoveAdjacentData2[0].getSelection()
-                            );
-                    if (newLine == null) {
-                        disableSelectionTab();
-                    } else {
-                        txt_Line[0].setText(newLine.toString());
-                    }
+                    txt_Line[0].setText(newLine2.toString());
                 }
             }
         });
@@ -5841,339 +5817,315 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        spn_PngA1[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        GDataPNG png = vm.getSelectedBgPicture();
-                        if (updatingPngPictureTab) return;
-                        if (png == null) {
-                            if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
-                                for (OpenGLRenderer renderer2 : renders) {
-                                    renderer2.disposeAllTextures();
-                                }
-                                vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                                vm.setModified(true, true);
+        spn_PngA1[0].addValueChangeListener(spn -> {
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
+                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                    GDataPNG png = vm.getSelectedBgPicture();
+                    if (updatingPngPictureTab) return;
+                    if (png == null) {
+                        if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
+                            for (OpenGLRenderer renderer21 : renders) {
+                                renderer21.disposeAllTextures();
                             }
-                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
-                            png = vm.getSelectedBgPicture();
-                            updateBgPictureTab();
+                            vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
                         }
-
-
-
-                        String newText = png.getString(png.offset, spn.getValue(), png.angleB, png.angleC, png.scale, png.texturePath);
-
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, spn.getValue(), png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
-                        replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
-
-                        pngPictureUpdateCounter++;
-                        if (pngPictureUpdateCounter > 3) {
-                            for (OpenGLRenderer renderer2 : renders) {
-                                renderer2.disposeOldTextures();
-                            }
-                            pngPictureUpdateCounter = 0;
-                        }
-
-                        vm.setModified(true, true);
-                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
-                        return;
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                        png = vm.getSelectedBgPicture();
+                        updateBgPictureTab();
                     }
+
+
+
+                    String newText = png.getString(png.offset, spn.getValue(), png.angleB, png.angleC, png.scale, png.texturePath);
+
+                    GDataPNG newPngPicture = new GDataPNG(newText, png.offset, spn.getValue(), png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
+                    replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
+
+                    pngPictureUpdateCounter++;
+                    if (pngPictureUpdateCounter > 3) {
+                        for (OpenGLRenderer renderer22 : renders) {
+                            renderer22.disposeOldTextures();
+                        }
+                        pngPictureUpdateCounter = 0;
+                    }
+
+                    vm.setModified(true, true);
+                    vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
+                    return;
                 }
             }
         });
-        spn_PngA2[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        GDataPNG png = vm.getSelectedBgPicture();
-                        if (updatingPngPictureTab) return;
-                        if (png == null) {
-                            if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
-                                for (OpenGLRenderer renderer2 : renders) {
-                                    renderer2.disposeAllTextures();
-                                }
-                                vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                                vm.setModified(true, true);
+        spn_PngA2[0].addValueChangeListener(spn -> {
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
+                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                    GDataPNG png = vm.getSelectedBgPicture();
+                    if (updatingPngPictureTab) return;
+                    if (png == null) {
+                        if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
+                            for (OpenGLRenderer renderer21 : renders) {
+                                renderer21.disposeAllTextures();
                             }
-                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
-                            png = vm.getSelectedBgPicture();
-                            updateBgPictureTab();
+                            vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
                         }
-
-                        String newText = png.getString(png.offset, png.angleA, spn.getValue(), png.angleC, png.scale, png.texturePath);
-
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, spn.getValue(), png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
-                        replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
-
-                        pngPictureUpdateCounter++;
-                        if (pngPictureUpdateCounter > 3) {
-                            for (OpenGLRenderer renderer2 : renders) {
-                                renderer2.disposeOldTextures();
-                            }
-                            pngPictureUpdateCounter = 0;
-                        }
-
-                        vm.setModified(true, true);
-                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
-                        return;
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                        png = vm.getSelectedBgPicture();
+                        updateBgPictureTab();
                     }
+
+                    String newText = png.getString(png.offset, png.angleA, spn.getValue(), png.angleC, png.scale, png.texturePath);
+
+                    GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, spn.getValue(), png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
+                    replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
+
+                    pngPictureUpdateCounter++;
+                    if (pngPictureUpdateCounter > 3) {
+                        for (OpenGLRenderer renderer22 : renders) {
+                            renderer22.disposeOldTextures();
+                        }
+                        pngPictureUpdateCounter = 0;
+                    }
+
+                    vm.setModified(true, true);
+                    vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
+                    return;
                 }
             }
         });
-        spn_PngA3[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        GDataPNG png = vm.getSelectedBgPicture();
-                        if (updatingPngPictureTab) return;
-                        if (png == null) {
-                            if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
-                                for (OpenGLRenderer renderer2 : renders) {
-                                    renderer2.disposeAllTextures();
-                                }
-                                vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                                vm.setModified(true, true);
+        spn_PngA3[0].addValueChangeListener(spn -> {
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
+                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                    GDataPNG png = vm.getSelectedBgPicture();
+                    if (updatingPngPictureTab) return;
+                    if (png == null) {
+                        if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
+                            for (OpenGLRenderer renderer21 : renders) {
+                                renderer21.disposeAllTextures();
                             }
-                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
-                            png = vm.getSelectedBgPicture();
-                            updateBgPictureTab();
+                            vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
                         }
-
-                        String newText = png.getString(png.offset, png.angleA, png.angleB, spn.getValue(), png.scale, png.texturePath);
-
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, spn.getValue(), png.scale, png.texturePath, View.DUMMY_REFERENCE);
-                        replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
-
-                        pngPictureUpdateCounter++;
-                        if (pngPictureUpdateCounter > 3) {
-                            for (OpenGLRenderer renderer2 : renders) {
-                                renderer2.disposeOldTextures();
-                            }
-                            pngPictureUpdateCounter = 0;
-                        }
-
-                        vm.setModified(true, true);
-                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
-                        return;
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                        png = vm.getSelectedBgPicture();
+                        updateBgPictureTab();
                     }
+
+                    String newText = png.getString(png.offset, png.angleA, png.angleB, spn.getValue(), png.scale, png.texturePath);
+
+                    GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, spn.getValue(), png.scale, png.texturePath, View.DUMMY_REFERENCE);
+                    replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
+
+                    pngPictureUpdateCounter++;
+                    if (pngPictureUpdateCounter > 3) {
+                        for (OpenGLRenderer renderer22 : renders) {
+                            renderer22.disposeOldTextures();
+                        }
+                        pngPictureUpdateCounter = 0;
+                    }
+
+                    vm.setModified(true, true);
+                    vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
+                    return;
                 }
             }
         });
-        spn_PngSX[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        GDataPNG png = vm.getSelectedBgPicture();
-                        if (updatingPngPictureTab) return;
-                        if (png == null) {
-                            if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
-                                for (OpenGLRenderer renderer2 : renders) {
-                                    renderer2.disposeAllTextures();
-                                }
-                                vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                                vm.setModified(true, true);
+        spn_PngSX[0].addValueChangeListener(spn -> {
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
+                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                    GDataPNG png = vm.getSelectedBgPicture();
+                    if (updatingPngPictureTab) return;
+                    if (png == null) {
+                        if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
+                            for (OpenGLRenderer renderer21 : renders) {
+                                renderer21.disposeAllTextures();
                             }
-                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
-                            png = vm.getSelectedBgPicture();
-                            updateBgPictureTab();
+                            vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
                         }
-
-                        Vertex newScale = new Vertex(spn.getValue(), png.scale.Y, png.scale.Z);
-                        String newText = png.getString(png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
-
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath, View.DUMMY_REFERENCE);
-                        replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
-
-                        pngPictureUpdateCounter++;
-                        if (pngPictureUpdateCounter > 3) {
-                            for (OpenGLRenderer renderer2 : renders) {
-                                renderer2.disposeOldTextures();
-                            }
-                            pngPictureUpdateCounter = 0;
-                        }
-
-                        vm.setModified(true, true);
-                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
-                        return;
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                        png = vm.getSelectedBgPicture();
+                        updateBgPictureTab();
                     }
+
+                    Vertex newScale = new Vertex(spn.getValue(), png.scale.Y, png.scale.Z);
+                    String newText = png.getString(png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
+
+                    GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath, View.DUMMY_REFERENCE);
+                    replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
+
+                    pngPictureUpdateCounter++;
+                    if (pngPictureUpdateCounter > 3) {
+                        for (OpenGLRenderer renderer22 : renders) {
+                            renderer22.disposeOldTextures();
+                        }
+                        pngPictureUpdateCounter = 0;
+                    }
+
+                    vm.setModified(true, true);
+                    vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
+                    return;
                 }
             }
         });
-        spn_PngSY[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        GDataPNG png = vm.getSelectedBgPicture();
-                        if (updatingPngPictureTab) return;
-                        if (png == null) {
-                            if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
-                                for (OpenGLRenderer renderer2 : renders) {
-                                    renderer2.disposeAllTextures();
-                                }
-                                vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                                vm.setModified(true, true);
+        spn_PngSY[0].addValueChangeListener(spn -> {
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
+                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                    GDataPNG png = vm.getSelectedBgPicture();
+                    if (updatingPngPictureTab) return;
+                    if (png == null) {
+                        if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
+                            for (OpenGLRenderer renderer2 : renders) {
+                                renderer2.disposeAllTextures();
                             }
-                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
-                            png = vm.getSelectedBgPicture();
-                            updateBgPictureTab();
+                            vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
                         }
-
-                        Vertex newScale = new Vertex(png.scale.X, spn.getValue(), png.scale.Z);
-                        String newText = png.getString(png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
-
-                        GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath, View.DUMMY_REFERENCE);
-                        replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
-
-                        vm.setModified(true, true);
-                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
-                        return;
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                        png = vm.getSelectedBgPicture();
+                        updateBgPictureTab();
                     }
+
+                    Vertex newScale = new Vertex(png.scale.X, spn.getValue(), png.scale.Z);
+                    String newText = png.getString(png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
+
+                    GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath, View.DUMMY_REFERENCE);
+                    replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
+
+                    vm.setModified(true, true);
+                    vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
+                    return;
                 }
             }
         });
-        spn_PngX[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        GDataPNG png = vm.getSelectedBgPicture();
-                        if (updatingPngPictureTab) return;
-                        if (png == null) {
-                            if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
-                                for (OpenGLRenderer renderer2 : renders) {
-                                    renderer2.disposeAllTextures();
-                                }
-                                vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                                vm.setModified(true, true);
+        spn_PngX[0].addValueChangeListener(spn -> {
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
+                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                    GDataPNG png = vm.getSelectedBgPicture();
+                    if (updatingPngPictureTab) return;
+                    if (png == null) {
+                        if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
+                            for (OpenGLRenderer renderer21 : renders) {
+                                renderer21.disposeAllTextures();
                             }
-                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
-                            png = vm.getSelectedBgPicture();
-                            updateBgPictureTab();
+                            vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
                         }
-
-
-                        Vertex newOffset = new Vertex(spn.getValue(), png.offset.Y, png.offset.Z);
-                        String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
-
-                        GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
-                        replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
-
-                        pngPictureUpdateCounter++;
-                        if (pngPictureUpdateCounter > 3) {
-                            for (OpenGLRenderer renderer2 : renders) {
-                                renderer2.disposeOldTextures();
-                            }
-                            pngPictureUpdateCounter = 0;
-                        }
-
-                        vm.setModified(true, true);
-                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
-                        return;
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                        png = vm.getSelectedBgPicture();
+                        updateBgPictureTab();
                     }
+
+
+                    Vertex newOffset = new Vertex(spn.getValue(), png.offset.Y, png.offset.Z);
+                    String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
+
+                    GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
+                    replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
+
+                    pngPictureUpdateCounter++;
+                    if (pngPictureUpdateCounter > 3) {
+                        for (OpenGLRenderer renderer22 : renders) {
+                            renderer22.disposeOldTextures();
+                        }
+                        pngPictureUpdateCounter = 0;
+                    }
+
+                    vm.setModified(true, true);
+                    vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
+                    return;
                 }
             }
         });
-        spn_PngY[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        GDataPNG png = vm.getSelectedBgPicture();
-                        if (updatingPngPictureTab) return;
-                        if (png == null) {
-                            if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
-                                for (OpenGLRenderer renderer2 : renders) {
-                                    renderer2.disposeAllTextures();
-                                }
-                                vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                                vm.setModified(true, true);
+        spn_PngY[0].addValueChangeListener(spn -> {
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
+                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                    GDataPNG png = vm.getSelectedBgPicture();
+                    if (updatingPngPictureTab) return;
+                    if (png == null) {
+                        if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
+                            for (OpenGLRenderer renderer21 : renders) {
+                                renderer21.disposeAllTextures();
                             }
-                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
-                            png = vm.getSelectedBgPicture();
-                            updateBgPictureTab();
+                            vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
                         }
-
-                        Vertex newOffset = new Vertex(png.offset.X, spn.getValue(), png.offset.Z);
-                        String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
-
-                        GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
-                        replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
-
-                        pngPictureUpdateCounter++;
-                        if (pngPictureUpdateCounter > 3) {
-                            for (OpenGLRenderer renderer2 : renders) {
-                                renderer2.disposeOldTextures();
-                            }
-                            pngPictureUpdateCounter = 0;
-                        }
-
-                        vm.setModified(true, true);
-                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
-                        return;
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                        png = vm.getSelectedBgPicture();
+                        updateBgPictureTab();
                     }
+
+                    Vertex newOffset = new Vertex(png.offset.X, spn.getValue(), png.offset.Z);
+                    String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
+
+                    GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
+                    replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
+
+                    pngPictureUpdateCounter++;
+                    if (pngPictureUpdateCounter > 3) {
+                        for (OpenGLRenderer renderer22 : renders) {
+                            renderer22.disposeOldTextures();
+                        }
+                        pngPictureUpdateCounter = 0;
+                    }
+
+                    vm.setModified(true, true);
+                    vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
+                    return;
                 }
             }
         });
-        spn_PngZ[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                for (OpenGLRenderer renderer : renders) {
-                    Composite3D c3d = renderer.getC3D();
-                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
-                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                        GDataPNG png = vm.getSelectedBgPicture();
-                        if (updatingPngPictureTab) return;
-                        if (png == null) {
-                            if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
-                                for (OpenGLRenderer renderer2 : renders) {
-                                    renderer2.disposeAllTextures();
-                                }
-                                vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
-                                vm.setModified(true, true);
+        spn_PngZ[0].addValueChangeListener(spn -> {
+            for (OpenGLRenderer renderer : renders) {
+                Composite3D c3d = renderer.getC3D();
+                if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
+                    VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                    GDataPNG png = vm.getSelectedBgPicture();
+                    if (updatingPngPictureTab) return;
+                    if (png == null) {
+                        if (c3d.getLockableDatFileReference().hasNoBackgroundPictures()) {
+                            for (OpenGLRenderer renderer21 : renders) {
+                                renderer21.disposeAllTextures();
                             }
-                            vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
-                            png = vm.getSelectedBgPicture();
-                            updateBgPictureTab();
+                            vm.addBackgroundPicture("", new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE), Project.getProjectPath() + File.separator + ".png");  //$NON-NLS-1$ //$NON-NLS-2$
+                            vm.setModified(true, true);
                         }
-
-                        Vertex newOffset = new Vertex(png.offset.X, png.offset.Y, spn.getValue());
-                        String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
-
-                        GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
-                        replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
-
-                        pngPictureUpdateCounter++;
-                        if (pngPictureUpdateCounter > 3) {
-                            for (OpenGLRenderer renderer2 : renders) {
-                                renderer2.disposeOldTextures();
-                            }
-                            pngPictureUpdateCounter = 0;
-                        }
-
-                        vm.setModified(true, true);
-                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
-                        return;
+                        vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(0));
+                        png = vm.getSelectedBgPicture();
+                        updateBgPictureTab();
                     }
+
+                    Vertex newOffset = new Vertex(png.offset.X, png.offset.Y, spn.getValue());
+                    String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
+
+                    GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
+                    replaceBgPicture(png, newPngPicture, c3d.getLockableDatFileReference());
+
+                    pngPictureUpdateCounter++;
+                    if (pngPictureUpdateCounter > 3) {
+                        for (OpenGLRenderer renderer22 : renders) {
+                            renderer22.disposeOldTextures();
+                        }
+                        pngPictureUpdateCounter = 0;
+                    }
+
+                    vm.setModified(true, true);
+                    vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
+                    return;
                 }
             }
         });

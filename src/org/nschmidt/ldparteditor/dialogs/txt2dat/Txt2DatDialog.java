@@ -23,8 +23,6 @@ import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.Txt2DatSettings;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -52,30 +50,10 @@ public class Txt2DatDialog extends Txt2DatDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_interpolateFlatness[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                ts.setInterpolateFlatness(spn.getValue());
-            }
-        });
-        spn_flatness[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                ts.setFlatness(spn.getValue());
-            }
-        });
-        spn_fontHeight[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                ts.setFontHeight(spn.getValue());
-            }
-        });
-        spn_deltaAngle[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                ts.setDeltaAngle(spn.getValue());
-            }
-        });
+        spn_interpolateFlatness[0].addValueChangeListener(spn -> ts.setInterpolateFlatness(spn.getValue()));
+        spn_flatness[0].addValueChangeListener(spn -> ts.setFlatness(spn.getValue()));
+        spn_fontHeight[0].addValueChangeListener(spn -> ts.setFontHeight(spn.getValue()));
+        spn_deltaAngle[0].addValueChangeListener(spn -> ts.setDeltaAngle(spn.getValue()));
         btn_chooseFont[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

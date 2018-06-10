@@ -18,12 +18,8 @@ package org.nschmidt.ldparteditor.dialogs.rectifier;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -50,42 +46,12 @@ public class RectifierDialog extends RectifierDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_angle[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                rs.setMaximumAngle(spn.getValue());
-            }
-        });
-        cmb_scope[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setScope(cmb_scope[0].getSelectionIndex());
-            }
-        });
-        cmb_colourise[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setColourise(cmb_colourise[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_noBorderedQuadToRectConversation[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setNoBorderedQuadToRectConversation(cmb_noBorderedQuadToRectConversation[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_noQuadConversation[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setNoQuadConversation(cmb_noQuadConversation[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_noRectConversationOnAdjacentCondlines[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                rs.setNoRectConversationOnAdjacentCondlines(cmb_noRectConversationOnAdjacentCondlines[0].getSelectionIndex() == 1);
-            }
-        });
+        spn_angle[0].addValueChangeListener(spn -> rs.setMaximumAngle(spn.getValue()));
+        cmb_scope[0].addListener(SWT.Selection, event -> rs.setScope(cmb_scope[0].getSelectionIndex()));
+        cmb_colourise[0].addListener(SWT.Selection, event -> rs.setColourise(cmb_colourise[0].getSelectionIndex() == 1));
+        cmb_noBorderedQuadToRectConversation[0].addListener(SWT.Selection, event -> rs.setNoBorderedQuadToRectConversation(cmb_noBorderedQuadToRectConversation[0].getSelectionIndex() == 1));
+        cmb_noQuadConversation[0].addListener(SWT.Selection, event -> rs.setNoQuadConversation(cmb_noQuadConversation[0].getSelectionIndex() == 1));
+        cmb_noRectConversationOnAdjacentCondlines[0].addListener(SWT.Selection, event -> rs.setNoRectConversationOnAdjacentCondlines(cmb_noRectConversationOnAdjacentCondlines[0].getSelectionIndex() == 1));
         btn_verbose[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

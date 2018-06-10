@@ -28,8 +28,6 @@ import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -138,59 +136,41 @@ public class DirectionDialog extends DirectionDesign {
                 updateValues();
             }
         });
-        spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                if (stopCalculations) return;
-                cart = new double[]{spn_X[0].getValue().doubleValue(), spn_Y[0].getValue().doubleValue(), spn_Z[0].getValue().doubleValue()};
-                sphe = cartesianToSpherical(cart);
-                updateValues();
-            }
+        spn_X[0].addValueChangeListener(spn -> {
+            if (stopCalculations) return;
+            cart = new double[]{spn_X[0].getValue().doubleValue(), spn_Y[0].getValue().doubleValue(), spn_Z[0].getValue().doubleValue()};
+            sphe = cartesianToSpherical(cart);
+            updateValues();
         });
-        spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                if (stopCalculations) return;
-                cart = new double[]{spn_X[0].getValue().doubleValue(), spn_Y[0].getValue().doubleValue(), spn_Z[0].getValue().doubleValue()};
-                sphe = cartesianToSpherical(cart);
-                updateValues();
-            }
+        spn_Y[0].addValueChangeListener(spn -> {
+            if (stopCalculations) return;
+            cart = new double[]{spn_X[0].getValue().doubleValue(), spn_Y[0].getValue().doubleValue(), spn_Z[0].getValue().doubleValue()};
+            sphe = cartesianToSpherical(cart);
+            updateValues();
         });
-        spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                if (stopCalculations) return;
-                cart = new double[]{spn_X[0].getValue().doubleValue(), spn_Y[0].getValue().doubleValue(), spn_Z[0].getValue().doubleValue()};
-                sphe = cartesianToSpherical(cart);
-                updateValues();
-            }
+        spn_Z[0].addValueChangeListener(spn -> {
+            if (stopCalculations) return;
+            cart = new double[]{spn_X[0].getValue().doubleValue(), spn_Y[0].getValue().doubleValue(), spn_Z[0].getValue().doubleValue()};
+            sphe = cartesianToSpherical(cart);
+            updateValues();
         });
-        spn_Rho[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                if (stopCalculations) return;
-                sphe = new double[]{spn_Rho[0].getValue().doubleValue(), spn_Theta[0].getValue().doubleValue(), spn_Phi[0].getValue().doubleValue()};
-                cart = sphericalToCartesian(sphe);
-                updateValues();
-            }
+        spn_Rho[0].addValueChangeListener(spn -> {
+            if (stopCalculations) return;
+            sphe = new double[]{spn_Rho[0].getValue().doubleValue(), spn_Theta[0].getValue().doubleValue(), spn_Phi[0].getValue().doubleValue()};
+            cart = sphericalToCartesian(sphe);
+            updateValues();
         });
-        spn_Theta[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                if (stopCalculations) return;
-                sphe = new double[]{spn_Rho[0].getValue().doubleValue(), spn_Theta[0].getValue().doubleValue(), spn_Phi[0].getValue().doubleValue()};
-                cart = sphericalToCartesian(sphe);
-                updateValues();
-            }
+        spn_Theta[0].addValueChangeListener(spn -> {
+            if (stopCalculations) return;
+            sphe = new double[]{spn_Rho[0].getValue().doubleValue(), spn_Theta[0].getValue().doubleValue(), spn_Phi[0].getValue().doubleValue()};
+            cart = sphericalToCartesian(sphe);
+            updateValues();
         });
-        spn_Phi[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                if (stopCalculations) return;
-                sphe = new double[]{spn_Rho[0].getValue().doubleValue(), spn_Theta[0].getValue().doubleValue(), spn_Phi[0].getValue().doubleValue()};
-                cart = sphericalToCartesian(sphe);
-                updateValues();
-            }
+        spn_Phi[0].addValueChangeListener(spn -> {
+            if (stopCalculations) return;
+            sphe = new double[]{spn_Rho[0].getValue().doubleValue(), spn_Theta[0].getValue().doubleValue(), spn_Phi[0].getValue().doubleValue()};
+            cart = sphericalToCartesian(sphe);
+            updateValues();
         });
         return super.open();
     }

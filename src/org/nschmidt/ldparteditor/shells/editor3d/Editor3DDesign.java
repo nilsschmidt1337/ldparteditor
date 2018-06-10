@@ -87,7 +87,6 @@ import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.Tree;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
@@ -917,52 +916,40 @@ class Editor3DDesign extends ApplicationWindow {
 
                             final AtomicBoolean change = new AtomicBoolean();
 
-                            spinnerLDU.addValueChangeListener(new ValueChangeAdapter() {
-                                @Override
-                                public void valueChanged(BigDecimalSpinner spn) {
-                                    if (change.get()) return;
-                                    change.set(true);
-                                    spinnerInch.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
-                                    spinnerMM.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
-                                    spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
-                                    change.set(false);
-                                }
+                            spinnerLDU.addValueChangeListener(spn -> {
+                                if (change.get()) return;
+                                change.set(true);
+                                spinnerInch.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
+                                spinnerMM.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
+                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
+                                change.set(false);
                             });
 
-                            spinnerInch.addValueChangeListener(new ValueChangeAdapter() {
-                                @Override
-                                public void valueChanged(BigDecimalSpinner spn) {
-                                    if (change.get()) return;
-                                    change.set(true);
-                                    spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
-                                    spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
-                                    spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
-                                    change.set(false);
-                                }
+                            spinnerInch.addValueChangeListener(spn -> {
+                                if (change.get()) return;
+                                change.set(true);
+                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
+                                spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
+                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
+                                change.set(false);
                             });
 
-                            spinnerMM.addValueChangeListener(new ValueChangeAdapter() {
-                                @Override
-                                public void valueChanged(BigDecimalSpinner spn) {
-                                    if (change.get()) return;
-                                    change.set(true);
-                                    spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
-                                    spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
-                                    spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
-                                    change.set(false);
-                                }
+                            spinnerMM.addValueChangeListener(spn -> {
+                                if (change.get()) return;
+                                change.set(true);
+                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
+                                spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
+                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
+                                change.set(false);
                             });
 
-                            spinnerStud.addValueChangeListener(new ValueChangeAdapter() {
-                                @Override
-                                public void valueChanged(BigDecimalSpinner spn) {
-                                    if (change.get()) return;
-                                    change.set(true);
-                                    spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc));
-                                    spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
-                                    spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
-                                    change.set(false);
-                                }
+                            spinnerStud.addValueChangeListener(spn -> {
+                                if (change.get()) return;
+                                change.set(true);
+                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_Factor_tertiary), Threshold.mc));
+                                spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_primary), Threshold.mc));
+                                spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_Factor_secondary), Threshold.mc));
+                                change.set(false);
                             });
 
                             Label separator2 = new Label(cmp_snappingArea, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -982,12 +969,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinnerT3D.setValue(userSettings.getFuzziness3D());
                             spinnerT3D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            spinnerT3D.addValueChangeListener(new ValueChangeAdapter() {
-                                @Override
-                                public void valueChanged(BigDecimalSpinner spn) {
-                                    WorkbenchManager.getUserSettingState().setFuzziness3D(spn.getValue());
-                                }
-                            });
+                            spinnerT3D.addValueChangeListener(spn -> WorkbenchManager.getUserSettingState().setFuzziness3D(spn.getValue()));
 
                             Label lblNewLabel9 = new Label(cmp_snappingArea, Cocoa.getStyle());
                             lblNewLabel9.setText(I18n.E3D_ThreshForAddingElements2D);
@@ -999,12 +981,7 @@ class Editor3DDesign extends ApplicationWindow {
                             spinnerT2D.setValue(userSettings.getFuzziness2D());
                             spinnerT2D.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
-                            spinnerT2D.addValueChangeListener(new ValueChangeAdapter() {
-                                @Override
-                                public void valueChanged(IntegerSpinner spn) {
-                                    WorkbenchManager.getUserSettingState().setFuzziness2D(spn.getValue());
-                                }
-                            });
+                            spinnerT2D.addValueChangeListener(spn -> WorkbenchManager.getUserSettingState().setFuzziness2D(spn.getValue()));
 
                             Label lblSpacer4 = new Label(cmp_snappingArea, Cocoa.getStyle());
                             lblSpacer4.setText(" "); //$NON-NLS-1$

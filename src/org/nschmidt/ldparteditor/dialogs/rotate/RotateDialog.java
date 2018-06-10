@@ -26,9 +26,6 @@ import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -126,60 +123,36 @@ public class RotateDialog extends RotateDesign {
                 }
             }
         });
-        spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
-                rb_Xaxis[0].setSelection(true);
-                rb_Yaxis[0].setSelection(false);
-                rb_Zaxis[0].setSelection(false);
-                x = true;
-                y = false;
-                z = false;
-            }
+        spn_X[0].addValueChangeListener(spn -> {
+            setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
+            rb_Xaxis[0].setSelection(true);
+            rb_Yaxis[0].setSelection(false);
+            rb_Zaxis[0].setSelection(false);
+            x = true;
+            y = false;
+            z = false;
         });
-        spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
-                rb_Xaxis[0].setSelection(false);
-                rb_Yaxis[0].setSelection(true);
-                rb_Zaxis[0].setSelection(false);
-                x = false;
-                y = true;
-                z = false;
-            }
+        spn_Y[0].addValueChangeListener(spn -> {
+            setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
+            rb_Xaxis[0].setSelection(false);
+            rb_Yaxis[0].setSelection(true);
+            rb_Zaxis[0].setSelection(false);
+            x = false;
+            y = true;
+            z = false;
         });
-        spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
-                rb_Xaxis[0].setSelection(false);
-                rb_Yaxis[0].setSelection(false);
-                rb_Zaxis[0].setSelection(true);
-                x = false;
-                y = false;
-                z = true;
-            }
+        spn_Z[0].addValueChangeListener(spn -> {
+            setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
+            rb_Xaxis[0].setSelection(false);
+            rb_Yaxis[0].setSelection(false);
+            rb_Zaxis[0].setSelection(true);
+            x = false;
+            y = false;
+            z = true;
         });
-        spn_pX[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue()));
-            }
-        });
-        spn_pY[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue()));
-            }
-        });
-        spn_pZ[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue()));
-            }
-        });
+        spn_pX[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
+        spn_pY[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
+        spn_pZ[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
         btn_PivotManipulator[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
@@ -204,12 +177,7 @@ public class RotateDialog extends RotateDesign {
                 close();
             }
         });
-        spn_Iterations[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(IntegerSpinner spn) {
-                iterations = spn.getValue();
-            }
-        });
+        spn_Iterations[0].addValueChangeListener(spn -> iterations = spn.getValue());
         return super.open();
     }
 

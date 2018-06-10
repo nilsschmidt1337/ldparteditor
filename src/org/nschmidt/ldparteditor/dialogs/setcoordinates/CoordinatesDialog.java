@@ -28,8 +28,6 @@ import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -126,29 +124,20 @@ public class CoordinatesDialog extends CoordinatesDesign {
                 z = cb_Zaxis[0].getSelection();
             }
         });
-        spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
-                cb_Xaxis[0].setSelection(true);
-                x = true;
-            }
+        spn_X[0].addValueChangeListener(spn -> {
+            vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+            cb_Xaxis[0].setSelection(true);
+            x = true;
         });
-        spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
-                cb_Yaxis[0].setSelection(true);
-                y = true;
-            }
+        spn_Y[0].addValueChangeListener(spn -> {
+            vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+            cb_Yaxis[0].setSelection(true);
+            y = true;
         });
-        spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
-                cb_Zaxis[0].setSelection(true);
-                z = true;
-            }
+        spn_Z[0].addValueChangeListener(spn -> {
+            vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+            cb_Zaxis[0].setSelection(true);
+            z = true;
         });
         btn_Manipulator[0].addSelectionListener(new SelectionAdapter() {
             @Override

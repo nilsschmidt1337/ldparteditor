@@ -16,8 +16,6 @@ import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -184,21 +182,15 @@ public class OptionsDialog extends OptionsDesign {
                 }
             }
         });
-        spn_coplanarityWarning[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                final double angle = spn_coplanarityWarning[0].getValue().doubleValue();
-                Threshold.coplanarity_angle_warning = angle;
-                userSettingState.setCoplanarity_angle_warning(angle);
-            }
+        spn_coplanarityWarning[0].addValueChangeListener(spn -> {
+            final double angle = spn_coplanarityWarning[0].getValue().doubleValue();
+            Threshold.coplanarity_angle_warning = angle;
+            userSettingState.setCoplanarity_angle_warning(angle);
         });
-        spn_coplanarityError[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                final double angle = spn_coplanarityError[0].getValue().doubleValue();
-                Threshold.coplanarity_angle_error = angle;
-                userSettingState.setCoplanarity_angle_error(angle);
-            }
+        spn_coplanarityError[0].addValueChangeListener(spn -> {
+            final double angle = spn_coplanarityError[0].getValue().doubleValue();
+            Threshold.coplanarity_angle_error = angle;
+            userSettingState.setCoplanarity_angle_error(angle);
         });
         this.open();
     }

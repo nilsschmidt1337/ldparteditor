@@ -15,22 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.widgets;
 
-/**
- * @author nils
- *
- */
-public class ValueChangeAdapter {
-
-    /**
-     *
-     */
-    public ValueChangeAdapter() {
-    }
-
-    public void valueChanged(BigDecimalSpinner spn) {
-    }
-
-    public void valueChanged(IntegerSpinner spn) {
-    }
-
+@FunctionalInterface
+public interface DecimalValueChangeAdapter {
+    public void valueChanged(BigDecimalSpinner spn);
 }

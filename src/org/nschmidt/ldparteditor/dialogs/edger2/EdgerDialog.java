@@ -19,8 +19,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -48,30 +46,10 @@ public class EdgerDialog extends EdgerDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_ac[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                es.setAc(spn.getValue());
-            }
-        });
-        spn_af[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                es.setAf(spn.getValue());
-            }
-        });
-        spn_ae[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                es.setAe(spn.getValue());
-            }
-        });
-        spn_vequ[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                es.setEqualDistance(spn.getValue());
-            }
-        });
+        spn_ac[0].addValueChangeListener(spn -> es.setAc(spn.getValue()));
+        spn_af[0].addValueChangeListener(spn -> es.setAf(spn.getValue()));
+        spn_ae[0].addValueChangeListener(spn -> es.setAe(spn.getValue()));
+        spn_vequ[0].addValueChangeListener(spn -> es.setEqualDistance(spn.getValue()));
         cmb_b[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {

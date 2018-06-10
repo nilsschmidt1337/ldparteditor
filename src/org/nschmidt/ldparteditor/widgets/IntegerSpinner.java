@@ -50,7 +50,7 @@ public class IntegerSpinner extends Composite {
     private int value;
     private int maximum;
     private int minimum;
-    private ValueChangeAdapter myListener;
+    private IntValueChangeAdapter myListener;
 
     private final IntegerSpinner me;
     private final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.LOCALE));
@@ -253,7 +253,7 @@ public class IntegerSpinner extends Composite {
         this.pack();
     }
 
-    public void addValueChangeListener(ValueChangeAdapter vcl) {
+    public void addValueChangeListener(IntValueChangeAdapter vcl) {
         this.myListener = vcl;
 
     }

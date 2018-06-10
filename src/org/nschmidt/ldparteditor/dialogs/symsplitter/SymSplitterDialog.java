@@ -20,8 +20,6 @@ import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -48,12 +46,7 @@ public class SymSplitterDialog extends SymSplitterDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_offset[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                ss.setOffset(spn.getValue());
-            }
-        });
+        spn_offset[0].addValueChangeListener(spn -> ss.setOffset(spn.getValue()));
         cmb_scope[0].addListener(SWT.Selection, new Listener() {
             @Override
             public void handleEvent(Event event) {
@@ -90,12 +83,7 @@ public class SymSplitterDialog extends SymSplitterDesign {
                 ss.setValidate(cmb_validate[0].getSelectionIndex() == 1);
             }
         });
-        spn_precision[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                ss.setPrecision(spn.getValue());
-            }
-        });
+        spn_precision[0].addValueChangeListener(spn -> ss.setPrecision(spn.getValue()));
         return super.open();
     }
 

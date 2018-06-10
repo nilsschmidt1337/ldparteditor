@@ -52,7 +52,7 @@ public class BigDecimalSpinner extends Composite {
     private BigDecimal value;
     private BigDecimal maximum;
     private BigDecimal minimum;
-    private ValueChangeAdapter myListener;
+    private DecimalValueChangeAdapter myListener;
 
     private final BigDecimalSpinner me;
     private java.text.DecimalFormat numberFormat;
@@ -295,7 +295,7 @@ public class BigDecimalSpinner extends Composite {
         this.pack();
     }
 
-    public void addValueChangeListener(ValueChangeAdapter vcl) {
+    public void addValueChangeListener(DecimalValueChangeAdapter vcl) {
         this.myListener = vcl;
 
     }

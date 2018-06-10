@@ -24,9 +24,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.project.Project;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -43,9 +40,9 @@ public class SmoothDialog extends SmoothDesign {
     private static boolean x = true;
     private static boolean y = true;
     private static boolean z = true;
-    private static int iterations = 1; 
-    private static BigDecimal factor = BigDecimal.ONE; 
-    
+    private static int iterations = 1;
+    private static BigDecimal factor = BigDecimal.ONE;
+
     /**
      * Create the dialog.
      *
@@ -57,24 +54,24 @@ public class SmoothDialog extends SmoothDesign {
         y = true;
         z = true;
         iterations = 1;
-        factor = BigDecimal.ONE; 
+        factor = BigDecimal.ONE;
     }
 
     @Override
     public int open() {
         super.create();
-        
+
         {
             final VertexManager vm = Project.getFileToEdit().getVertexManager();
-            ArrayList<Vertex> selectedVerts = new ArrayList<Vertex>(); 
-            selectedVerts.addAll(vm.getSelectedVertices());            
-            Project.getFileToEdit().getVertexManager().clearSelection();            
+            ArrayList<Vertex> selectedVerts = new ArrayList<Vertex>();
+            selectedVerts.addAll(vm.getSelectedVertices());
+            Project.getFileToEdit().getVertexManager().clearSelection();
             if (selectedVerts.isEmpty()) {
                 selectedVerts.addAll(vm.getVertices());
-            }        
-            vm.getSelectedVertices().addAll(selectedVerts);   
+            }
+            vm.getSelectedVertices().addAll(selectedVerts);
         }
-        
+
         // MARK All final listeners will be configured here..
         cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
@@ -85,7 +82,7 @@ public class SmoothDialog extends SmoothDesign {
         cb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent e) {
-                y = cb_Yaxis[0].getSelection();                
+                y = cb_Yaxis[0].getSelection();
             }
         });
         cb_Zaxis[0].addSelectionListener(new SelectionAdapter() {
@@ -94,18 +91,8 @@ public class SmoothDialog extends SmoothDesign {
                 z = cb_Zaxis[0].getSelection();
             }
         });
-        spn_pX[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(IntegerSpinner spn) {
-               iterations = spn.getValue();
-            }
-        });
-        spn_pY[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                factor = spn.getValue();
-            }
-        });
+        spn_pX[0].addValueChangeListener(spn -> iterations = spn.getValue());
+        spn_pY[0].addValueChangeListener(spn -> factor = spn.getValue());
         return super.open();
     }
 
@@ -136,17 +123,17 @@ public class SmoothDialog extends SmoothDesign {
     public static int getIterations() {
         return iterations;
     }
-    
+
     public static void setIterations(int iterations2) {
         iterations = iterations2;
-        
+
     }
 
     public static BigDecimal getFactor() {
         return factor;
     }
-    
+
     public static void setFactor(BigDecimal factor2) {
-        factor = factor2;        
-    }    
+        factor = factor2;
+    }
 }

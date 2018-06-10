@@ -17,8 +17,6 @@ package org.nschmidt.ldparteditor.dialogs.selectvertex;
 
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
-import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.ValueChangeAdapter;
 
 /**
  *
@@ -47,24 +45,9 @@ public class VertexDialog extends VertexDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_X[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
-            }
-        });
-        spn_Y[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
-            }
-        });
-        spn_Z[0].addValueChangeListener(new ValueChangeAdapter() {
-            @Override
-            public void valueChanged(BigDecimalSpinner spn) {
-                vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
-            }
-        });
+        spn_X[0].addValueChangeListener(spn -> vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
+        spn_Y[0].addValueChangeListener(spn -> vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
+        spn_Z[0].addValueChangeListener(spn -> vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
         return super.open();
     }
 
