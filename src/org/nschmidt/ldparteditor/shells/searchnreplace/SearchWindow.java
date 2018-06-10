@@ -23,8 +23,6 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
@@ -62,47 +60,44 @@ public class SearchWindow extends SearchDesign {
         // MARK All final listeners will be configured here..
         WidgetUtil(btn_find[0]).addSelectionListener(e -> find());
 
-        txt_find[0].addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                setDisabledButtonStatus(textComposite);
+        txt_find[0].addModifyListener(e -> {
+            setDisabledButtonStatus(textComposite);
 
-                if (btn_find[0].isEnabled() && cb_incremental[0].getSelection()) {
+            if (btn_find[0].isEnabled() && cb_incremental[0].getSelection()) {
 
-                    final String text;
-                    final String criteria;
+                final String text;
+                final String criteria;
 
-                    if (cb_caseSensitive[0].getSelection()) {
-                        text = textComposite.getText();
-                        criteria = txt_find[0].getText();
+                if (cb_caseSensitive[0].getSelection()) {
+                    text = textComposite.getText();
+                    criteria = txt_find[0].getText();
+                } else {
+                    text = textComposite.getText().toLowerCase(Locale.ENGLISH);
+                    criteria = txt_find[0].getText().toLowerCase(Locale.ENGLISH);
+                }
+
+                int len = criteria.length();
+                if (len > 0) {
+
+                    if (textComposite.getSelectionRange().x == 0 && text.startsWith(criteria)) {
+                        textComposite.setSelectionRange(0, len);
+                        textComposite.showSelection();
                     } else {
-                        text = textComposite.getText().toLowerCase(Locale.ENGLISH);
-                        criteria = txt_find[0].getText().toLowerCase(Locale.ENGLISH);
-                    }
+                        int index = text.indexOf(criteria, textComposite.getSelectionRange().x);
 
-                    int len = criteria.length();
-                    if (len > 0) {
-
-                        if (textComposite.getSelectionRange().x == 0 && text.startsWith(criteria)) {
-                            textComposite.setSelectionRange(0, len);
+                        if (index != -1) {
+                            textComposite.setSelectionRange(index, len);
                             textComposite.showSelection();
                         } else {
-                            int index = text.indexOf(criteria, textComposite.getSelectionRange().x);
-
-                            if (index != -1) {
-                                textComposite.setSelectionRange(index, len);
-                                textComposite.showSelection();
-                            } else {
-                                textComposite.setSelectionRange(0, 0);
-                            }
-
+                            textComposite.setSelectionRange(0, 0);
                         }
 
-                    } else {
-                        textComposite.setSelectionRange(textComposite.getSelectionRange().x, 0);
                     }
 
+                } else {
+                    textComposite.setSelectionRange(textComposite.getSelectionRange().x, 0);
                 }
+
             }
         });
 

@@ -65,8 +65,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
@@ -2494,12 +2492,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        txt_Search[0].addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                search(txt_Search[0].getText());
-            }
-        });
+        txt_Search[0].addModifyListener(e -> search(txt_Search[0].getText()));
         WidgetUtil(btn_ResetSearch[0]).addSelectionListener(e -> {
             txt_Search[0].setText(""); //$NON-NLS-1$
             txt_Search[0].setFocus();

@@ -18,8 +18,6 @@ package org.nschmidt.ldparteditor.dialogs.partreview;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -72,12 +70,7 @@ class PartReviewDesign extends Dialog {
             gd.horizontalAlignment = SWT.FILL;
             txt_file2.setLayoutData(gd);
 
-            this.txt_file[0].addModifyListener(new ModifyListener() {
-                @Override
-                public void modifyText(ModifyEvent e) {
-                    fileName = txt_file[0].getText();
-                }
-            });
+            this.txt_file[0].addModifyListener(e -> fileName = txt_file[0].getText());
 
             Label lbl_Info = new Label(cmp_Container, SWT.NONE);
             lbl_Info.setText(I18n.E3D_PartReviewInfo);

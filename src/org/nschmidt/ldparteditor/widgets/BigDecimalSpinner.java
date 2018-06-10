@@ -22,8 +22,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.MouseWheelListener;
@@ -176,93 +174,90 @@ public class BigDecimalSpinner extends Composite {
         });
 
         final BigDecimal[] oldValue = new BigDecimal[] { BigDecimal.ZERO };
-        txt.addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
+        txt.addModifyListener(e -> {
 
-                if (invalidInput) {
-                    invalidInput = false;
-                    return;
+            if (invalidInput) {
+                invalidInput = false;
+                return;
+            }
+
+
+            int caret = txt_val[0].getCaretPosition();
+            String text = null;
+            final String result;
+            try {
+                numberFormat.setParseBigDecimal(true);
+                BigDecimal val = (BigDecimal) numberFormat.parseObject(txt_val[0].getText());
+
+                value = val;
+                if (value.compareTo(maximum) > 0 || value.compareTo(minimum) < 0) {
+                    oldValue[0] = value;
+                    forceUpdate = true;
+                    value = value.compareTo(maximum) > 0 ? maximum : value;
+                    value = value.compareTo(minimum) < 0 ? minimum : value;
                 }
 
+                if (myListener != null)
+                    myListener.valueChanged(me);
 
-                int caret = txt_val[0].getCaretPosition();
-                String text = null;
-                final String result;
-                try {
-                    numberFormat.setParseBigDecimal(true);
-                    BigDecimal val = (BigDecimal) numberFormat.parseObject(txt_val[0].getText());
-
-                    value = val;
-                    if (value.compareTo(maximum) > 0 || value.compareTo(minimum) < 0) {
-                        oldValue[0] = value;
-                        forceUpdate = true;
-                        value = value.compareTo(maximum) > 0 ? maximum : value;
-                        value = value.compareTo(minimum) < 0 ? minimum : value;
-                    }
-
-                    if (myListener != null)
-                        myListener.valueChanged(me);
-
-                    boolean differenceBetweenDisplayedAndInput = false;
-                    if (oldValue[0].compareTo(value) != 0) {
-                        oldValue[0] = value;
-                        text = numberFormat.format(value);
-                        try {
-                            BigDecimal val2 = (BigDecimal) numberFormat.parseObject(text);
-                            if (val2.compareTo(value) != 0) {
-                                differenceBetweenDisplayedAndInput = true;
-                            }
-                        } catch (ParseException consumed) {}
-                    }
-                    if (differenceBetweenDisplayedAndInput) {
-                        lbl_warn[0].setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
-                        lbl_warn[0].setToolTipText("The real value is " + value.toEngineeringString() + " which differs from the displayed number!\nValue between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
-                    } else {
-                        lbl_warn[0].setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-                        lbl_warn[0].setToolTipText("Value between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
-                    }
-                } catch (ParseException ex) {
-                    lbl_warn[0].setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
-                    lbl_warn[0].setToolTipText("Please insert a valid number."); //$NON-NLS-1$ I18N Needs translation!
-                    if (!invalidInput) {
-                        text = numberFormat.format(value);
-                    }
+                boolean differenceBetweenDisplayedAndInput = false;
+                if (oldValue[0].compareTo(value) != 0) {
+                    oldValue[0] = value;
+                    text = numberFormat.format(value);
+                    try {
+                        BigDecimal val2 = (BigDecimal) numberFormat.parseObject(text);
+                        if (val2.compareTo(value) != 0) {
+                            differenceBetweenDisplayedAndInput = true;
+                        }
+                    } catch (ParseException consumed) {}
                 }
-                result = text;
+                if (differenceBetweenDisplayedAndInput) {
+                    lbl_warn[0].setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
+                    lbl_warn[0].setToolTipText("The real value is " + value.toEngineeringString() + " which differs from the displayed number!\nValue between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
+                } else {
+                    lbl_warn[0].setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
+                    lbl_warn[0].setToolTipText("Value between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+                }
+            } catch (ParseException ex) {
+                lbl_warn[0].setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
+                lbl_warn[0].setToolTipText("Please insert a valid number."); //$NON-NLS-1$ I18N Needs translation!
+                if (!invalidInput) {
+                    text = numberFormat.format(value);
+                }
+            }
+            result = text;
 
-                new Thread(() -> {
-                    final int id = counter.getAndIncrement() + 1;
-                    focus = true;
-                    while (focus && counter.compareAndSet(id, id) && !forceUpdate && !txt_val[0].isDisposed()) {
-                        Display.getDefault().asyncExec(() -> {
-                            try  {
-                                focus = txt_val[0].isFocusControl();
-                            } catch (SWTException swte) {
-                                NLogger.debug(getClass(), swte);
-                                return;
-                            }
-                        });
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException ie) {}
-                    }
-                    if (!counter.compareAndSet(id, id) || result == null || txt_val[0].isDisposed()) {
-                        return;
-                    }
+            new Thread(() -> {
+                final int id = counter.getAndIncrement() + 1;
+                focus = true;
+                while (focus && counter.compareAndSet(id, id) && !forceUpdate && !txt_val[0].isDisposed()) {
                     Display.getDefault().asyncExec(() -> {
-                        invalidInput = true;
-                        forceUpdate = false;
-                        try {
-                            txt_val[0].setText(result);
-                        } catch (SWTException swte) {
-                            NLogger.debug(getClass(), swte);
+                        try  {
+                            focus = txt_val[0].isFocusControl();
+                        } catch (SWTException swte1) {
+                            NLogger.debug(getClass(), swte1);
+                            return;
                         }
                     });
-                }).start();
+                    try {
+                        Thread.sleep(10);
+                    } catch (InterruptedException ie) {}
+                }
+                if (!counter.compareAndSet(id, id) || result == null || txt_val[0].isDisposed()) {
+                    return;
+                }
+                Display.getDefault().asyncExec(() -> {
+                    invalidInput = true;
+                    forceUpdate = false;
+                    try {
+                        txt_val[0].setText(result);
+                    } catch (SWTException swte2) {
+                        NLogger.debug(getClass(), swte2);
+                    }
+                });
+            }).start();
 
-                txt_val[0].setSelection(caret);
-            }
+            txt_val[0].setSelection(caret);
         });
 
         NButton up = new NButton(this, SWT.NONE);
