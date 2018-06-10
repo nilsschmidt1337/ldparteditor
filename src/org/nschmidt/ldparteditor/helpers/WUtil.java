@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helpers;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Widget;
 import org.nschmidt.ldparteditor.widgets.NButton;
@@ -35,9 +36,16 @@ public class WUtil {
         this.w = w;
     }
 
-    public void addXSelectionListener(final WidgetSelectionListener listener) {
+    public void addSelectionListener(final WidgetSelectionListener listener) {
         if (w instanceof NButton) {
             ((NButton)w).addSelectionListener(listener);
+        } else if (w instanceof Combo) {
+            ((Combo)w).addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    listener.widgetSelected(e);
+                }
+            });
         } else if (w instanceof Button) {
             ((Button)w).addSelectionListener(new SelectionAdapter() {
                 @Override

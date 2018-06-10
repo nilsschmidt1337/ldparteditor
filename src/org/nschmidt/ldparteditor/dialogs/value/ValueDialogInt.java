@@ -17,9 +17,7 @@ package org.nschmidt.ldparteditor.dialogs.value;
 
 import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 
 /**
  * @author nils
@@ -41,16 +39,10 @@ public abstract class ValueDialogInt extends ValueDesignInt {
         getShell().setText(shellText);
         initializeSpinner();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_ok[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                applyValue();
-            }
-        });
+        WidgetUtil(btn_ok[0]).addSelectionListener(e -> applyValue());
         return super.open();
     }
 
     public abstract void initializeSpinner();
     public abstract void applyValue();
-
 }

@@ -23,7 +23,6 @@ import java.text.DecimalFormatSymbols;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Rectangle;
@@ -40,7 +39,6 @@ import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.NButton;
@@ -78,17 +76,14 @@ public class CompositeScale extends ScalableComposite {
         btn_openContextMenu.setImage(ResourceManager.getImage("icon16_contextMenu.png")); //$NON-NLS-1$
         btn_openContextMenu.setBounds(0, 0, 20, 20);
 
-        WidgetUtil(btn_openContextMenu).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                PointerInfo a = MouseInfo.getPointerInfo();
-                java.awt.Point b = a.getLocation();
-                int x = (int) b.getX();
-                int y = (int) b.getY();
-                if (!me.getComposite3D().getMenu().isDisposed()) {
-                    me.getComposite3D().getMenu().setLocation(x, y);
-                    me.getComposite3D().getMenu().setVisible(true);
-                }
+        WidgetUtil(btn_openContextMenu).addSelectionListener(e -> {
+            PointerInfo a = MouseInfo.getPointerInfo();
+            java.awt.Point b = a.getLocation();
+            int x = (int) b.getX();
+            int y = (int) b.getY();
+            if (!me.getComposite3D().getMenu().isDisposed()) {
+                me.getComposite3D().getMenu().setLocation(x, y);
+                me.getComposite3D().getMenu().setVisible(true);
             }
         });
 

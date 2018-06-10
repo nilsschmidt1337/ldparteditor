@@ -24,7 +24,6 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.widgets.FileDialog;
@@ -32,7 +31,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.helpers.Version;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.main.LDPartEditor;
 import org.nschmidt.ldparteditor.project.Project;
@@ -89,36 +87,28 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        WidgetUtil(btn_Create[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                String textToCompile = lbl_lineToInsert[0].getText();
-                final DatFile df = Project.getFileToEdit();
-                if (df != null) {
-                    final boolean insertAtCursor = Editor3DWindow.getWindow().isInsertingAtCursorPosition();
-                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                        if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+        WidgetUtil(btn_Create[0]).addSelectionListener(e -> {
+            String textToCompile = lbl_lineToInsert[0].getText();
+            final DatFile df = Project.getFileToEdit();
+            if (df != null) {
+                final boolean insertAtCursor = Editor3DWindow.getWindow().isInsertingAtCursorPosition();
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
+                        break;
+                    }
+                    for (CTabItem t : w.getTabFolder().getItems()) {
+                        if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                            Editor3DWindow.getWindow().setInsertingAtCursorPosition(true);
                             break;
                         }
-                        for (CTabItem t : w.getTabFolder().getItems()) {
-                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                Editor3DWindow.getWindow().setInsertingAtCursorPosition(true);
-                                break;
-                            }
-                        }
                     }
-                    df.getVertexManager().addParsedLine(textToCompile);
-                    Editor3DWindow.getWindow().setInsertingAtCursorPosition(insertAtCursor);
                 }
+                df.getVertexManager().addParsedLine(textToCompile);
+                Editor3DWindow.getWindow().setInsertingAtCursorPosition(insertAtCursor);
             }
         });
 
-        WidgetUtil(ev_description_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                updateDescription();
-            }
-        });
+        WidgetUtil(ev_description_btn[0]).addSelectionListener(e -> updateDescription());
         ev_description_txt[0].addModifyListener(new ModifyListener() {
             @Override
             public void modifyText(ModifyEvent e) {
@@ -194,18 +184,8 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 updateType();
             }
         });
-        WidgetUtil(ev_type_unofficial_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                updateType();
-            }
-        });
-        WidgetUtil(ev_type_update_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                updateType();
-            }
-        });
+        WidgetUtil(ev_type_unofficial_btn[0]).addSelectionListener(e -> updateType());
+        WidgetUtil(ev_type_update_btn[0]).addSelectionListener(e -> updateType());
 
         ev_license_cmb[0].addModifyListener(new ModifyListener() {
             @Override
@@ -370,12 +350,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 updateComment();
             }
         });
-        WidgetUtil(ev_comment_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                updateComment();
-            }
-        });
+        WidgetUtil(ev_comment_btn[0]).addSelectionListener(e -> updateComment());
 
         ev_bfc_cmb[0].addModifyListener(new ModifyListener() {
             @Override
@@ -426,36 +401,33 @@ public class EditorMetaWindow extends EditorMetaDesign {
             ev_texmapPlanar10_txt[0].addFocusListener(a);
             ev_texmapPlanar10_txt[0].addModifyListener(m);
 
-            WidgetUtil(ev_texmapPlanar_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
+            WidgetUtil(ev_texmapPlanar_btn[0]).addSelectionListener(e -> {
 
-                    FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                    fd.setText(I18n.META_ChoosePng);
+                FileDialog fd = new FileDialog(sh, SWT.OPEN);
+                fd.setText(I18n.META_ChoosePng);
 
-                    if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
-                        try {
-                            String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                            String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
-                            decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                            fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
-                        } catch (Exception consumed) {
-                            fd.setFilterPath(Project.getProjectPath());
-                        }
-                    } else {
+                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
+                    try {
+                        String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                        String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
+                        decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
+                        fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
+                    } catch (Exception consumed) {
                         fd.setFilterPath(Project.getProjectPath());
                     }
-
-                    String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-                    fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
-                    fd.setFilterNames(filterNames);
-                    String selected = fd.open();
-                    if (selected != null) {
-                        ev_texmapPlanar10_txt[0].setText(selected);
-                    }
-                    updateTexmapPlanar();
+                } else {
+                    fd.setFilterPath(Project.getProjectPath());
                 }
+
+                String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                fd.setFilterExtensions(filterExt);
+                String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
+                fd.setFilterNames(filterNames);
+                String selected = fd.open();
+                if (selected != null) {
+                    ev_texmapPlanar10_txt[0].setText(selected);
+                }
+                updateTexmapPlanar();
             });
 
         }
@@ -498,36 +470,33 @@ public class EditorMetaWindow extends EditorMetaDesign {
             ev_texmapCyli11_txt[0].addFocusListener(a);
             ev_texmapCyli11_txt[0].addModifyListener(m);
 
-            WidgetUtil(ev_texmapCyli_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
+            WidgetUtil(ev_texmapCyli_btn[0]).addSelectionListener(e -> {
 
-                    FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                    fd.setText(I18n.META_ChoosePng);
+                FileDialog fd = new FileDialog(sh, SWT.OPEN);
+                fd.setText(I18n.META_ChoosePng);
 
-                    if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
-                        try {
-                            String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                            String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
-                            decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                            fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
-                        } catch (Exception consumed) {
-                            fd.setFilterPath(Project.getProjectPath());
-                        }
-                    } else {
+                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
+                    try {
+                        String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                        String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
+                        decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
+                        fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
+                    } catch (Exception consumed) {
                         fd.setFilterPath(Project.getProjectPath());
                     }
-
-                    String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-                    fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
-                    fd.setFilterNames(filterNames);
-                    String selected = fd.open();
-                    if (selected != null) {
-                        ev_texmapCyli11_txt[0].setText(selected);
-                    }
-                    updateTexmapCylindrical();
+                } else {
+                    fd.setFilterPath(Project.getProjectPath());
                 }
+
+                String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                fd.setFilterExtensions(filterExt);
+                String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
+                fd.setFilterNames(filterNames);
+                String selected = fd.open();
+                if (selected != null) {
+                    ev_texmapCyli11_txt[0].setText(selected);
+                }
+                updateTexmapCylindrical();
             });
 
         }
@@ -572,46 +541,40 @@ public class EditorMetaWindow extends EditorMetaDesign {
             ev_texmapSphere12_txt[0].addFocusListener(a);
             ev_texmapSphere12_txt[0].addModifyListener(m);
 
-            WidgetUtil(ev_texmapSphere_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
+            WidgetUtil(ev_texmapSphere_btn[0]).addSelectionListener(e -> {
 
-                    FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                    fd.setText(I18n.META_ChoosePng);
+                FileDialog fd = new FileDialog(sh, SWT.OPEN);
+                fd.setText(I18n.META_ChoosePng);
 
-                    if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
-                        try {
-                            String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                            String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
-                            decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                            fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
-                        } catch (Exception consumed) {
-                            fd.setFilterPath(Project.getProjectPath());
-                        }
-                    } else {
+                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
+                    try {
+                        String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                        String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
+                        decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
+                        fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
+                    } catch (Exception consumed) {
                         fd.setFilterPath(Project.getProjectPath());
                     }
-
-                    String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-                    fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
-                    fd.setFilterNames(filterNames);
-                    String selected = fd.open();
-                    if (selected != null) {
-                        ev_texmapSphere12_txt[0].setText(selected);
-                    }
-                    updateTexmapSpherical();
+                } else {
+                    fd.setFilterPath(Project.getProjectPath());
                 }
+
+                String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                fd.setFilterExtensions(filterExt);
+                String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
+                fd.setFilterNames(filterNames);
+                String selected = fd.open();
+                if (selected != null) {
+                    ev_texmapSphere12_txt[0].setText(selected);
+                }
+                updateTexmapSpherical();
             });
 
         }
 
-        WidgetUtil(ev_texmapFallback_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                lbl_lineToInsert[0].setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
-                lbl_lineToInsert[0].getParent().layout();
-            }
+        WidgetUtil(ev_texmapFallback_btn[0]).addSelectionListener(e -> {
+            lbl_lineToInsert[0].setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
+            lbl_lineToInsert[0].getParent().layout();
         });
 
         ev_texmapMeta_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
@@ -628,12 +591,9 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        WidgetUtil(ev_texmapEnd_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                lbl_lineToInsert[0].setText("0 !TEXMAP END"); //$NON-NLS-1$
-                lbl_lineToInsert[0].getParent().layout();
-            }
+        WidgetUtil(ev_texmapEnd_btn[0]).addSelectionListener(e -> {
+            lbl_lineToInsert[0].setText("0 !TEXMAP END"); //$NON-NLS-1$
+            lbl_lineToInsert[0].getParent().layout();
         });
 
         ev_todo_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
@@ -882,12 +842,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        WidgetUtil(ev_csgDontOptimize_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                updateCSGdontOptimize();
-            }
-        });
+        WidgetUtil(ev_csgDontOptimize_btn[0]).addSelectionListener(e -> updateCSGdontOptimize());
 
         ev_csgCompile_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -942,12 +897,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     updatePNGdef();
                 }
             };
-            WidgetUtil(ev_png_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    updatePNGdef();
-                }
-            });
+            WidgetUtil(ev_png_btn[0]).addSelectionListener(e -> updatePNGdef());
             ev_png1_txt[0].addFocusListener(a);
             ev_png1_txt[0].addModifyListener(m);
             ev_png2_txt[0].addFocusListener(a);
@@ -967,34 +917,31 @@ public class EditorMetaWindow extends EditorMetaDesign {
             ev_png9_txt[0].addFocusListener(a);
             ev_png9_txt[0].addModifyListener(m);
 
-            WidgetUtil(ev_png_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
+            WidgetUtil(ev_png_btn[0]).addSelectionListener(e -> {
 
-                    FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                    fd.setText(I18n.META_ChoosePng);
+                FileDialog fd = new FileDialog(sh, SWT.OPEN);
+                fd.setText(I18n.META_ChoosePng);
 
-                    if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
-                        try {
-                            String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-                            String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
-                            decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
-                            fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
-                        } catch (Exception consumed) {
-                            fd.setFilterPath(Project.getProjectPath());
-                        }
-                    } else {
+                if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
+                    try {
+                        String path = LDPartEditor.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+                        String decodedPath = URLDecoder.decode(path, "UTF-8"); //$NON-NLS-1$
+                        decodedPath = decodedPath.substring(0, decodedPath.length() - 4);
+                        fd.setFilterPath(decodedPath + Project.DEFAULT_PROJECT_PATH);
+                    } catch (Exception consumed) {
                         fd.setFilterPath(Project.getProjectPath());
                     }
+                } else {
+                    fd.setFilterPath(Project.getProjectPath());
+                }
 
-                    String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-                    fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
-                    fd.setFilterNames(filterNames);
-                    String selected = fd.open();
-                    if (selected != null) {
-                        ev_png9_txt[0].setText(selected);
-                    }
+                String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+                fd.setFilterExtensions(filterExt);
+                String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
+                fd.setFilterNames(filterNames);
+                String selected = fd.open();
+                if (selected != null) {
+                    ev_png9_txt[0].setText(selected);
                 }
             });
 

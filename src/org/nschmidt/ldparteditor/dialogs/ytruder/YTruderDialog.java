@@ -18,9 +18,7 @@ package org.nschmidt.ldparteditor.dialogs.ytruder;
 import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.YTruderSettings;
 
 /**
@@ -48,37 +46,14 @@ public class YTruderDialog extends YTruderDesign {
     @Override
     public int open() {
         super.create();
-
         // MARK All final listeners will be configured here..
-
         spn_value[0].addValueChangeListener(spn -> ys.setDistance(spn.getValue().doubleValue()));
         spn_condlineAngleThreshold[0].addValueChangeListener(spn -> ys.setCondlineAngleThreshold(spn.getValue().doubleValue()));
         cmb_axis[0].addListener(SWT.Selection, event -> ys.setAxis(cmb_axis[0].getSelectionIndex()));
-        WidgetUtil(btn_TranslateByDistance[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ys.setMode(1);
-            }
-        });
-        WidgetUtil(btn_SymmetryAcrossPlane[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ys.setMode(2);
-            }
-        });
-        WidgetUtil(btn_ProjectionOnPlane[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ys.setMode(3);
-            }
-        });
-        WidgetUtil(btn_ExtrudeRadially[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ys.setMode(4);
-            }
-        });
+        WidgetUtil(btn_TranslateByDistance[0]).addSelectionListener(e -> ys.setMode(1));
+        WidgetUtil(btn_SymmetryAcrossPlane[0]).addSelectionListener(e -> ys.setMode(2));
+        WidgetUtil(btn_ProjectionOnPlane[0]).addSelectionListener(e -> ys.setMode(3));
+        WidgetUtil(btn_ExtrudeRadially[0]).addSelectionListener(e -> ys.setMode(4));
         return super.open();
     }
-
 }

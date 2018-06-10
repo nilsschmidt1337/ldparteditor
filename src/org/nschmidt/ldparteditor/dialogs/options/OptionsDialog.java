@@ -5,14 +5,12 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Version;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -35,111 +33,82 @@ public class OptionsDialog extends OptionsDesign {
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         final UserSettingState userSettingState = WorkbenchManager.getUserSettingState();
 
-        WidgetUtil(btn_OK[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                closingProcedure();
-                me.close();
-            }
+        WidgetUtil(btn_OK[0]).addSelectionListener(e -> {
+            closingProcedure();
+            me.close();
         });
 
-        WidgetUtil( btn_AllowInvalidShapes[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection());
+        WidgetUtil( btn_AllowInvalidShapes[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection()));
+        WidgetUtil(btn_disableMAD3D[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btn_disableMAD3D[0].getSelection()));
+        WidgetUtil(btn_disableMADtext[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btn_disableMADtext[0].getSelection()));
+
+        WidgetUtil(btn_browseLdrawPath[0]).addSelectionListener(e -> {
+            DirectoryDialog dlg = new DirectoryDialog(getShell());
+
+            // Set the initial filter to the last selected path
+            dlg.setFilterPath(userSettingState.getLdrawFolderPath());
+
+            // Change the title bar text
+            dlg.setText(I18n.OPTIONS_LdrawFolder);
+
+            // Customizable message displayed in the dialog
+            dlg.setMessage(I18n.OPTIONS_Directory);
+
+            // Calling open() will open and run the dialog.
+            // It will return the selected directory, or
+            // null if user cancels
+            String dir = dlg.open();
+            if (dir != null) {
+                // Set the text box to the new selection
+                txt_ldrawPath[0].setText(dir);
+                String ldrawPath = dir;
+                userSettingState.setLdrawFolderPath(ldrawPath);
             }
         });
+        WidgetUtil(btn_browseAuthoringPath[0]).addSelectionListener(e -> {
+            DirectoryDialog dlg = new DirectoryDialog(getShell());
 
-        WidgetUtil(btn_disableMAD3D[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setDisableMAD3D(btn_disableMAD3D[0].getSelection());
+            // Set the initial filter to the last selected path
+            dlg.setFilterPath(userSettingState.getAuthoringFolderPath());
+
+            // Change the title bar text
+            dlg.setText(I18n.OPTIONS_AuthoringWhere);
+
+            // Customizable message displayed in the dialog
+            dlg.setMessage(I18n.OPTIONS_Directory);
+
+            // Calling open() will open and run the dialog.
+            // It will return the selected directory, or
+            // null if user cancels
+            String dir = dlg.open();
+            if (dir != null) {
+                // Set the text box to the new selection
+                txt_partAuthoringPath[0].setText(dir);
+                String partAuthoringPath = dir;
+                userSettingState.setAuthoringFolderPath(partAuthoringPath);
             }
         });
+        WidgetUtil(btn_browseUnofficialPath[0]).addSelectionListener(e -> {
+            DirectoryDialog dlg = new DirectoryDialog(getShell());
 
-        WidgetUtil(btn_disableMADtext[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WorkbenchManager.getUserSettingState().setDisableMADtext(btn_disableMADtext[0].getSelection());
-            }
-        });
+            // Set the initial filter to the last selected path
+            dlg.setFilterPath(userSettingState.getUnofficialFolderPath());
 
-        WidgetUtil(btn_browseLdrawPath[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                DirectoryDialog dlg = new DirectoryDialog(getShell());
+            // Change the title bar text
+            dlg.setText(I18n.OPTIONS_UnofficialWhere);
 
-                // Set the initial filter to the last selected path
-                dlg.setFilterPath(userSettingState.getLdrawFolderPath());
+            // Customizable message displayed in the dialog
+            dlg.setMessage(I18n.OPTIONS_Directory);
 
-                // Change the title bar text
-                dlg.setText(I18n.OPTIONS_LdrawFolder);
-
-                // Customizable message displayed in the dialog
-                dlg.setMessage(I18n.OPTIONS_Directory);
-
-                // Calling open() will open and run the dialog.
-                // It will return the selected directory, or
-                // null if user cancels
-                String dir = dlg.open();
-                if (dir != null) {
-                    // Set the text box to the new selection
-                    txt_ldrawPath[0].setText(dir);
-                    String ldrawPath = dir;
-                    userSettingState.setLdrawFolderPath(ldrawPath);
-                }
-            }
-        });
-        WidgetUtil(btn_browseAuthoringPath[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                DirectoryDialog dlg = new DirectoryDialog(getShell());
-
-                // Set the initial filter to the last selected path
-                dlg.setFilterPath(userSettingState.getAuthoringFolderPath());
-
-                // Change the title bar text
-                dlg.setText(I18n.OPTIONS_AuthoringWhere);
-
-                // Customizable message displayed in the dialog
-                dlg.setMessage(I18n.OPTIONS_Directory);
-
-                // Calling open() will open and run the dialog.
-                // It will return the selected directory, or
-                // null if user cancels
-                String dir = dlg.open();
-                if (dir != null) {
-                    // Set the text box to the new selection
-                    txt_partAuthoringPath[0].setText(dir);
-                    String partAuthoringPath = dir;
-                    userSettingState.setAuthoringFolderPath(partAuthoringPath);
-                }
-            }
-        });
-        WidgetUtil(btn_browseUnofficialPath[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                DirectoryDialog dlg = new DirectoryDialog(getShell());
-
-                // Set the initial filter to the last selected path
-                dlg.setFilterPath(userSettingState.getUnofficialFolderPath());
-
-                // Change the title bar text
-                dlg.setText(I18n.OPTIONS_UnofficialWhere);
-
-                // Customizable message displayed in the dialog
-                dlg.setMessage(I18n.OPTIONS_Directory);
-
-                // Calling open() will open and run the dialog.
-                // It will return the selected directory, or
-                // null if user cancels
-                String dir = dlg.open();
-                if (dir != null) {
-                    // Set the text box to the new selection
-                    txt_unofficialPath[0].setText(dir);
-                    String unofficialPath = dir;
-                    userSettingState.setUnofficialFolderPath(unofficialPath);
-                }
+            // Calling open() will open and run the dialog.
+            // It will return the selected directory, or
+            // null if user cancels
+            String dir = dlg.open();
+            if (dir != null) {
+                // Set the text box to the new selection
+                txt_unofficialPath[0].setText(dir);
+                String unofficialPath = dir;
+                userSettingState.setUnofficialFolderPath(unofficialPath);
             }
         });
         txt_ldrawUserName[0].addListener(SWT.Modify, e -> {

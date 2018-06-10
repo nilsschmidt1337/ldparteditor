@@ -26,7 +26,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FillLayout;
@@ -50,7 +49,6 @@ import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -233,71 +231,68 @@ class EditorTextDesign extends ApplicationWindow {
 
         btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-        WidgetUtil(btn_Col).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                    // Choose new colour
-                    new ColourDialog(btn_Col.getShell(), gColour2, false).run();
-                    WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
-                    col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-                    int num = gColour2[0].getColourNumber();
-                    if (View.hasLDConfigColour(num)) {
-                        gColour2[0] = View.getLDConfigColour(num);
-                    } else {
-                        num = -1;
-                    }
-                    if (num != -1) {
-                        Object[] messageArguments = {num, View.getLDConfigColourName(num)};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour1 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
-
-                        btn_Col.setToolTipText(formatter.format(messageArguments));
-                    } else {
-                        StringBuilder colourBuilder = new StringBuilder();
-                        colourBuilder.append("0x2"); //$NON-NLS-1$
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-                        Object[] messageArguments = {colourBuilder.toString()};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour2 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
-
-                        btn_Col.setToolTipText(formatter.format(messageArguments));
-
-                    }
-                    Editor3DWindow.reloadAllColours();
+        WidgetUtil(btn_Col).addSelectionListener(e -> {
+            if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
+                // Choose new colour
+                new ColourDialog(btn_Col.getShell(), gColour2, false).run();
+                WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
+                col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
+                int num1 = gColour2[0].getColourNumber();
+                if (View.hasLDConfigColour(num1)) {
+                    gColour2[0] = View.getLDConfigColour(num1);
                 } else {
-                    int num = gColour2[0].getColourNumber();
-                    if (View.hasLDConfigColour(num)) {
-                        gColour2[0] = View.getLDConfigColour(num);
-                    } else {
-                        num = -1;
-                    }
+                    num1 = -1;
+                }
+                if (num1 != -1) {
+                    Object[] messageArguments1 = {num1, View.getLDConfigColourName(num1)};
+                    MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
+                    formatter1.setLocale(MyLanguage.LOCALE);
+                    formatter1.applyPattern(I18n.EDITORTEXT_Colour1 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
 
-                    CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
-                    if (selection != null) {
-                        DatFile df = selection.getState().getFileNameObj();
-                        if (!df.isReadOnly()) {
-                            NLogger.debug(getClass(), "Change colours..."); //$NON-NLS-1$
-                            final StyledText st = selection.getTextComposite();
-                            int s1 = st.getSelectionRange().x;
-                            int s2 = s1 + st.getSelectionRange().y;
-                            int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                            int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                            fromLine++;
-                            toLine++;
-                            NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
-                            NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                            ColourChanger.changeColour(fromLine, toLine, df, num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
-                            st.forceFocus();
-                        }
-                    }
+                    btn_Col.setToolTipText(formatter1.format(messageArguments1));
+                } else {
+                    StringBuilder colourBuilder = new StringBuilder();
+                    colourBuilder.append("0x2"); //$NON-NLS-1$
+                    colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
+
+                    Object[] messageArguments2 = {colourBuilder.toString()};
+                    MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
+                    formatter2.setLocale(MyLanguage.LOCALE);
+                    formatter2.applyPattern(I18n.EDITORTEXT_Colour2 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
+
+                    btn_Col.setToolTipText(formatter2.format(messageArguments2));
 
                 }
+                Editor3DWindow.reloadAllColours();
+            } else {
+                int num2 = gColour2[0].getColourNumber();
+                if (View.hasLDConfigColour(num2)) {
+                    gColour2[0] = View.getLDConfigColour(num2);
+                } else {
+                    num2 = -1;
+                }
+
+                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                if (selection != null) {
+                    DatFile df = selection.getState().getFileNameObj();
+                    if (!df.isReadOnly()) {
+                        NLogger.debug(getClass(), "Change colours..."); //$NON-NLS-1$
+                        final StyledText st = selection.getTextComposite();
+                        int s1 = st.getSelectionRange().x;
+                        int s2 = s1 + st.getSelectionRange().y;
+                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+                        fromLine++;
+                        toLine++;
+                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
+                        ColourChanger.changeColour(fromLine, toLine, df, num2, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA());
+                        st.forceFocus();
+                    }
+                }
+
             }
         });
         final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);

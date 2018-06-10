@@ -30,7 +30,6 @@ import org.eclipse.swt.custom.ExtendedModifyEvent;
 import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -247,213 +246,173 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        WidgetUtil(mntm_Delete[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                final int x = txt_data[0].getSelection().x;
-                if (txt_data[0].getSelection().y == x) {
-                    final int start = txt_data[0].getOffsetAtLine(txt_data[0].getLineAtOffset(x));
-                    txt_data[0].setSelection(start, start + txt_data[0].getLine(txt_data[0].getLineAtOffset(x)).length());
-                }
-                final int x2 = txt_data[0].getSelection().x;
-                if (txt_data[0].getSelection().y == x2) {
-                    txt_data[0].forceFocus();
-                    return;
-                }
-                txt_data[0].insert(""); //$NON-NLS-1$
-                txt_data[0].setSelection(new Point(x, x));
+        WidgetUtil(mntm_Delete[0]).addSelectionListener(e -> {
+            final int x = txt_data[0].getSelection().x;
+            if (txt_data[0].getSelection().y == x) {
+                final int start = txt_data[0].getOffsetAtLine(txt_data[0].getLineAtOffset(x));
+                txt_data[0].setSelection(start, start + txt_data[0].getLine(txt_data[0].getLineAtOffset(x)).length());
+            }
+            final int x2 = txt_data[0].getSelection().x;
+            if (txt_data[0].getSelection().y == x2) {
                 txt_data[0].forceFocus();
+                return;
             }
+            txt_data[0].insert(""); //$NON-NLS-1$
+            txt_data[0].setSelection(new Point(x, x));
+            txt_data[0].forceFocus();
         });
-        WidgetUtil(mntm_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                txt_data[0].copy();
-            }
-        });
-        WidgetUtil(mntm_Cut[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                txt_data[0].cut();
-            }
-        });
-        WidgetUtil(mntm_Paste[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                txt_data[0].paste();
-            }
-        });
+        WidgetUtil(mntm_Copy[0]).addSelectionListener(e -> txt_data[0].copy());
+        WidgetUtil(mntm_Cut[0]).addSelectionListener(e -> txt_data[0].cut());
+        WidgetUtil(mntm_Paste[0]).addSelectionListener(e -> txt_data[0].paste());
 
         btn_ok[0].removeListener(SWT.Selection, btn_ok[0].getListeners(SWT.Selection)[0]);
         btn_cancel[0].removeListener(SWT.Selection, btn_cancel[0].getListeners(SWT.Selection)[0]);
 
-        WidgetUtil(btn_ok[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
+        WidgetUtil(btn_ok[0]).addSelectionListener(e -> {
 
-                EditorTextWindow w = null;
-                for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
-                    if (w2.getTabFolder().getItems().length == 0) {
-                        w = w2;
-                        break;
-                    }
-                }
-
-                // Project.getParsedFiles().add(df); IS NECESSARY HERE
-                Project.getParsedFiles().add(df);
-                Project.addOpenedFile(df);
-                if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
-                    w.openNewDatFileTab(df, true);
-                } else {
-                    w = new EditorTextWindow();
-                    w.run(df, false);
-                }
-
-                final boolean doClose = w.saveAs(df, name, Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name); //$NON-NLS-1$
-                w.closeTabWithDatfile(df);
-
-                if (doClose) {
-                    ok = true;
-                    getShell().close();
+            EditorTextWindow w = null;
+            for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
+                if (w2.getTabFolder().getItems().length == 0) {
+                    w = w2;
+                    break;
                 }
             }
-        });
 
-        WidgetUtil(btn_cancel[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
+            // Project.getParsedFiles().add(df); IS NECESSARY HERE
+            Project.getParsedFiles().add(df);
+            Project.addOpenedFile(df);
+            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
+                w.openNewDatFileTab(df, true);
+            } else {
+                w = new EditorTextWindow();
+                w.run(df, false);
+            }
+
+            final boolean doClose = w.saveAs(df, name, Project.getProjectPath() + File.separator + "p" + File.separator + resPrefix + name); //$NON-NLS-1$
+            w.closeTabWithDatfile(df);
+
+            if (doClose) {
+                ok = true;
                 getShell().close();
             }
         });
 
-        WidgetUtil(btn_saveAs[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
+        WidgetUtil(btn_cancel[0]).addSelectionListener(e -> getShell().close());
 
-                EditorTextWindow w = null;
-                for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
-                    if (w2.getTabFolder().getItems().length == 0) {
-                        w = w2;
-                        break;
-                    }
+        WidgetUtil(btn_saveAs[0]).addSelectionListener(e -> {
+
+            EditorTextWindow w = null;
+            for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
+                if (w2.getTabFolder().getItems().length == 0) {
+                    w = w2;
+                    break;
                 }
+            }
 
-                // Project.getParsedFiles().add(df); IS NECESSARY HERE
-                Project.getParsedFiles().add(df);
-                Project.addOpenedFile(df);
-                if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
-                    w.openNewDatFileTab(df, true);
-                } else {
-                    w = new EditorTextWindow();
-                    w.run(df, false);
-                }
+            // Project.getParsedFiles().add(df); IS NECESSARY HERE
+            Project.getParsedFiles().add(df);
+            Project.addOpenedFile(df);
+            if (!Project.getOpenTextWindows().isEmpty() && (w != null || !(w = Project.getOpenTextWindows().iterator().next()).isSeperateWindow())) {
+                w.openNewDatFileTab(df, true);
+            } else {
+                w = new EditorTextWindow();
+                w.run(df, false);
+            }
 
-                final boolean doClose = w.saveAs(df, name, null);
-                w.closeTabWithDatfile(df);
+            final boolean doClose = w.saveAs(df, name, null);
+            w.closeTabWithDatfile(df);
 
-                if (doClose) {
-                    ok = true;
-                    getShell().close();
-                }
+            if (doClose) {
+                ok = true;
+                getShell().close();
             }
         });
 
-        WidgetUtil(btn_top[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
-                Display.getCurrent().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        c3d.getRenderer().drawScene();
-                    }
-                });
-            }
-        });
-
-        WidgetUtil(cmb_type[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-
-                doUpdate = true;
-
-                switch (cmb_type[0].getSelectionIndex()) {
-                case CIRCLE:
-                case CYLINDER:
-                case DISC:
-                case DISC_NEGATIVE:
-                case CHORD:
-                    lbl_minor[0].setText(I18n.PRIMGEN_Minor);
-                    lbl_major[0].setEnabled(false);
-                    lbl_minor[0].setEnabled(false);
-                    lbl_size[0].setEnabled(false);
-                    lbl_torusType[0].setEnabled(false);
-                    spn_major[0].setEnabled(false);
-                    spn_minor[0].setEnabled(false);
-                    spn_size[0].setEnabled(false);
-                    cmb_torusType[0].setEnabled(false);
-                    spn_minor[0].setNumberFormat(DEC_VFORMAT_0F);
-                    spn_size[0].setNumberFormat(DEC_VFORMAT_0F);
-                    spn_size[0].setValue(BigDecimal.ONE);
-                    cmb_torusType[0].select(1);
-                    break;
-                case RING:
-                case CONE:
-                    lbl_minor[0].setText(I18n.PRIMGEN_Width);
-                    lbl_major[0].setEnabled(false);
-                    lbl_minor[0].setEnabled(true);
-                    lbl_size[0].setEnabled(true);
-                    lbl_torusType[0].setEnabled(false);
-                    spn_major[0].setEnabled(false);
-                    spn_minor[0].setEnabled(true);
-                    spn_size[0].setEnabled(true);
-                    cmb_torusType[0].setEnabled(false);
-                    spn_minor[0].setNumberFormat(DEC_VFORMAT_4F);
-                    spn_size[0].setNumberFormat(DEC_VFORMAT_4F);
-                    spn_size[0].setValue(BigDecimal.ONE);
-                    cmb_torusType[0].select(1);
-                    break;
-                case TORUS:
-                    lbl_minor[0].setText(I18n.PRIMGEN_Minor);
-                    lbl_major[0].setEnabled(true);
-                    lbl_minor[0].setEnabled(true);
-                    lbl_size[0].setEnabled(false);
-                    lbl_torusType[0].setEnabled(true);
-                    spn_major[0].setEnabled(true);
-                    spn_minor[0].setEnabled(true);
-                    spn_size[0].setEnabled(false);
-                    cmb_torusType[0].setEnabled(true);
-                    spn_minor[0].setNumberFormat(DEC_VFORMAT_0F);
-                    spn_size[0].setNumberFormat(DEC_VFORMAT_4F);
-                    spn_size[0].setValue(BigDecimal.ONE);
-                    cmb_torusType[0].select(1);
-                    break;
-                default:
-                    break;
+        WidgetUtil(btn_top[0]).addSelectionListener(e -> {
+            c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
+            Display.getCurrent().asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    c3d.getRenderer().drawScene();
                 }
-
-                BigDecimal minor = spn_minor[0].getValue();
-                BigDecimal size = spn_size[0].getValue();
-
-                spn_minor[0].setValue(BigDecimal.ZERO);
-                spn_size[0].setValue(BigDecimal.ZERO);
-
-                spn_minor[0].setValue(minor);
-                spn_size[0].setValue(size);
-
-
-                doUpdate = false;
-
-                rebuildPrimitive(EventType.CBO, cmb_type[0]);
-            }
+            });
         });
 
-        final WidgetSelectionListener sa = new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                rebuildPrimitive(EventType.CBO, e.widget);
+        WidgetUtil(cmb_type[0]).addSelectionListener(e -> {
+
+            doUpdate = true;
+
+            switch (cmb_type[0].getSelectionIndex()) {
+            case CIRCLE:
+            case CYLINDER:
+            case DISC:
+            case DISC_NEGATIVE:
+            case CHORD:
+                lbl_minor[0].setText(I18n.PRIMGEN_Minor);
+                lbl_major[0].setEnabled(false);
+                lbl_minor[0].setEnabled(false);
+                lbl_size[0].setEnabled(false);
+                lbl_torusType[0].setEnabled(false);
+                spn_major[0].setEnabled(false);
+                spn_minor[0].setEnabled(false);
+                spn_size[0].setEnabled(false);
+                cmb_torusType[0].setEnabled(false);
+                spn_minor[0].setNumberFormat(DEC_VFORMAT_0F);
+                spn_size[0].setNumberFormat(DEC_VFORMAT_0F);
+                spn_size[0].setValue(BigDecimal.ONE);
+                cmb_torusType[0].select(1);
+                break;
+            case RING:
+            case CONE:
+                lbl_minor[0].setText(I18n.PRIMGEN_Width);
+                lbl_major[0].setEnabled(false);
+                lbl_minor[0].setEnabled(true);
+                lbl_size[0].setEnabled(true);
+                lbl_torusType[0].setEnabled(false);
+                spn_major[0].setEnabled(false);
+                spn_minor[0].setEnabled(true);
+                spn_size[0].setEnabled(true);
+                cmb_torusType[0].setEnabled(false);
+                spn_minor[0].setNumberFormat(DEC_VFORMAT_4F);
+                spn_size[0].setNumberFormat(DEC_VFORMAT_4F);
+                spn_size[0].setValue(BigDecimal.ONE);
+                cmb_torusType[0].select(1);
+                break;
+            case TORUS:
+                lbl_minor[0].setText(I18n.PRIMGEN_Minor);
+                lbl_major[0].setEnabled(true);
+                lbl_minor[0].setEnabled(true);
+                lbl_size[0].setEnabled(false);
+                lbl_torusType[0].setEnabled(true);
+                spn_major[0].setEnabled(true);
+                spn_minor[0].setEnabled(true);
+                spn_size[0].setEnabled(false);
+                cmb_torusType[0].setEnabled(true);
+                spn_minor[0].setNumberFormat(DEC_VFORMAT_0F);
+                spn_size[0].setNumberFormat(DEC_VFORMAT_4F);
+                spn_size[0].setValue(BigDecimal.ONE);
+                cmb_torusType[0].select(1);
+                break;
+            default:
+                break;
             }
-        };
+
+            BigDecimal minor = spn_minor[0].getValue();
+            BigDecimal size = spn_size[0].getValue();
+
+            spn_minor[0].setValue(BigDecimal.ZERO);
+            spn_size[0].setValue(BigDecimal.ZERO);
+
+            spn_minor[0].setValue(minor);
+            spn_size[0].setValue(size);
+
+
+            doUpdate = false;
+
+            rebuildPrimitive(EventType.CBO, cmb_type[0]);
+        });
+
+        final WidgetSelectionListener sa = e -> rebuildPrimitive(EventType.CBO, e.widget);
 
         final IntValueChangeAdapter vca = spn -> rebuildPrimitive(EventType.SPN, spn);
         final DecimalValueChangeAdapter vcad = spn -> rebuildPrimitive(EventType.SPN, spn);
@@ -464,10 +423,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
         spn_segments[0].addValueChangeListener(vca);
         spn_size[0].addValueChangeListener(vcad);
 
-        WidgetUtil(cmb_divisions[0]).addXSelectionListener(sa);
-        WidgetUtil(cmb_segments[0]).addXSelectionListener(sa);
-        WidgetUtil(cmb_torusType[0]).addXSelectionListener(sa);
-        WidgetUtil(cmb_winding[0]).addXSelectionListener(sa);
+        WidgetUtil(cmb_divisions[0]).addSelectionListener(sa);
+        WidgetUtil(cmb_segments[0]).addSelectionListener(sa);
+        WidgetUtil(cmb_torusType[0]).addSelectionListener(sa);
+        WidgetUtil(cmb_winding[0]).addSelectionListener(sa);
 
         float backup = View.edge_threshold;
         View.edge_threshold = 5e6f;

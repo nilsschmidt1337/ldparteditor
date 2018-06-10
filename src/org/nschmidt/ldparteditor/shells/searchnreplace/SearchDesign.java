@@ -167,7 +167,7 @@ public class SearchDesign extends ApplicationWindow {
             btn_close.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btn_close.setText(I18n.SEARCH_Close);
 
-            WidgetUtil(btn_close).addXSelectionListener(e -> getShell().close());
+            WidgetUtil(btn_close).addSelectionListener(e -> getShell().close());
         }
 
         cmp_container.pack();

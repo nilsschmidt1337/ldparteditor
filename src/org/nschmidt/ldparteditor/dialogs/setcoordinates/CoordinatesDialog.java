@@ -19,7 +19,6 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
 import java.math.BigDecimal;
 
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -27,7 +26,6 @@ import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -82,50 +80,29 @@ public class CoordinatesDialog extends CoordinatesDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_Local[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
-                btn_Local[0].setSelection(true);
-                if (transformationMode != ManipulatorScope.LOCAL) {
-                    transformationMode = ManipulatorScope.LOCAL;
-                    Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
-                    vertex = globalToLocal(vertex);
-                }
-                updateXYZ();
+        WidgetUtil(btn_Local[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
+            btn_Local[0].setSelection(true);
+            if (transformationMode != ManipulatorScope.LOCAL) {
+                transformationMode = ManipulatorScope.LOCAL;
+                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                vertex = globalToLocal(vertex);
             }
+            updateXYZ();
         });
-        WidgetUtil(btn_Global[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-                btn_Global[0].setSelection(true);
-                if (transformationMode != ManipulatorScope.GLOBAL) {
-                    transformationMode = ManipulatorScope.GLOBAL;
-                    Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
-                    vertex = localToGlobal(vertex);
-                }
-                updateXYZ();
+        WidgetUtil(btn_Global[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+            btn_Global[0].setSelection(true);
+            if (transformationMode != ManipulatorScope.GLOBAL) {
+                transformationMode = ManipulatorScope.GLOBAL;
+                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                vertex = localToGlobal(vertex);
             }
+            updateXYZ();
         });
-        WidgetUtil(cb_Xaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                x = cb_Xaxis[0].getSelection();
-            }
-        });
-        WidgetUtil(cb_Yaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                y = cb_Yaxis[0].getSelection();
-            }
-        });
-        WidgetUtil(cb_Zaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                z = cb_Zaxis[0].getSelection();
-            }
-        });
+        WidgetUtil(cb_Xaxis[0]).addSelectionListener(e -> x = cb_Xaxis[0].getSelection());
+        WidgetUtil(cb_Yaxis[0]).addSelectionListener(e -> y = cb_Yaxis[0].getSelection());
+        WidgetUtil(cb_Zaxis[0]).addSelectionListener(e -> z = cb_Zaxis[0].getSelection());
         spn_X[0].addValueChangeListener(spn -> {
             vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
             cb_Xaxis[0].setSelection(true);
@@ -141,35 +118,26 @@ public class CoordinatesDialog extends CoordinatesDesign {
             cb_Zaxis[0].setSelection(true);
             z = true;
         });
-        WidgetUtil(btn_Manipulator[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (transformationMode == ManipulatorScope.GLOBAL) {
-                    vertex = new Vertex(m.X, m.Y, m.Z);
-                } else {
-                    vertex = globalToLocal(new Vertex(m.X, m.Y, m.Z));
-                }
-                updateXYZ();
+        WidgetUtil(btn_Manipulator[0]).addSelectionListener(e -> {
+            if (transformationMode == ManipulatorScope.GLOBAL) {
+                vertex = new Vertex(m.X, m.Y, m.Z);
+            } else {
+                vertex = globalToLocal(new Vertex(m.X, m.Y, m.Z));
             }
+            updateXYZ();
         });
-        WidgetUtil(btn_Clipboard[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (transformationMode == ManipulatorScope.GLOBAL) {
-                    vertex = new Vertex(c.X, c.Y, c.Z);
-                } else {
-                    vertex = globalToLocal(new Vertex(c.X, c.Y, c.Z));
-                }
-                updateXYZ();
+        WidgetUtil(btn_Clipboard[0]).addSelectionListener(e -> {
+            if (transformationMode == ManipulatorScope.GLOBAL) {
+                vertex = new Vertex(c.X, c.Y, c.Z);
+            } else {
+                vertex = globalToLocal(new Vertex(c.X, c.Y, c.Z));
             }
+            updateXYZ();
         });
-        WidgetUtil(btn_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                creatingCopy = true;
-                setReturnCode(OK);
-                close();
-            }
+        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> {
+            creatingCopy = true;
+            setReturnCode(OK);
+            close();
         });
         return super.open();
     }

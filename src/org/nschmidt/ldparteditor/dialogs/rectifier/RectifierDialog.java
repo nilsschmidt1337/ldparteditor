@@ -18,9 +18,7 @@ package org.nschmidt.ldparteditor.dialogs.rectifier;
 import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 
 /**
@@ -54,12 +52,7 @@ public class RectifierDialog extends RectifierDesign {
         cmb_noBorderedQuadToRectConversation[0].addListener(SWT.Selection, event -> rs.setNoBorderedQuadToRectConversation(cmb_noBorderedQuadToRectConversation[0].getSelectionIndex() == 1));
         cmb_noQuadConversation[0].addListener(SWT.Selection, event -> rs.setNoQuadConversation(cmb_noQuadConversation[0].getSelectionIndex() == 1));
         cmb_noRectConversationOnAdjacentCondlines[0].addListener(SWT.Selection, event -> rs.setNoRectConversationOnAdjacentCondlines(cmb_noRectConversationOnAdjacentCondlines[0].getSelectionIndex() == 1));
-        WidgetUtil(btn_verbose[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                rs.setVerbose(btn_verbose[0].getSelection());
-            }
-        });
+        WidgetUtil(btn_verbose[0]).addSelectionListener(e -> rs.setVerbose(btn_verbose[0].getSelection()));
         return super.open();
     }
 }

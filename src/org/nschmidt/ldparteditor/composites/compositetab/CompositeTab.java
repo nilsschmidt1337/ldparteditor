@@ -56,7 +56,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Point;
@@ -1411,302 +1410,290 @@ public class CompositeTab extends CompositeTabDesign {
                 event.doit = false;
             }
         });
-        final WidgetSelectionListener quickFix = new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
-                    final VertexManager vm = state.getFileNameObj().getVertexManager();
-                    if (!vm.isUpdated()) return;
-                    HashSet<TreeItem> items = new HashSet<TreeItem>();
-                    for (TreeItem sort : tree_Problems[0].getSelection()) {
-                        items.add(sort);
-                    }
-                    if (items.contains(treeItem_Hints[0])) {
-                        NLogger.debug(getClass(), "+Quick fix all hints."); //$NON-NLS-1$
-                        items.remove(treeItem_Hints[0]);
-                        for (TreeItem sort : treeItem_Hints[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Errors[0])) {
-                        NLogger.debug(getClass(), "+Quick fix all errors."); //$NON-NLS-1$
-                        items.remove(treeItem_Errors[0]);
-                        for (TreeItem sort : treeItem_Errors[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Warnings[0])) {
-                        NLogger.debug(getClass(), "+Quick fix all warnings."); //$NON-NLS-1$
-                        items.remove(treeItem_Warnings[0]);
-                        for (TreeItem sort : treeItem_Warnings[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Duplicates[0])) {
-                        NLogger.debug(getClass(), "+Quick fix all duplicates."); //$NON-NLS-1$
-                        items.remove(treeItem_Duplicates[0]);
-                        for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-
-                    for (TreeItem issue : items) {
-                        if (issue != null && issue.getData() != null) {
-                            NLogger.debug(getClass(), "+Fix {0}", issue.getText(1)); //$NON-NLS-1$
-                        }
-                    }
-
-                    QuickFixer.fixTextIssues(compositeText[0], items, getState().getFileNameObj());
+        final WidgetSelectionListener quickFix = e -> {
+            if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                if (!vm.isUpdated()) return;
+                HashSet<TreeItem> items = new HashSet<TreeItem>();
+                for (TreeItem sort1 : tree_Problems[0].getSelection()) {
+                    items.add(sort1);
                 }
+                if (items.contains(treeItem_Hints[0])) {
+                    NLogger.debug(getClass(), "+Quick fix all hints."); //$NON-NLS-1$
+                    items.remove(treeItem_Hints[0]);
+                    for (TreeItem sort2 : treeItem_Hints[0].getItems()) {
+                        if (!items.contains(sort2))
+                            items.add(sort2);
+                    }
+                }
+                if (items.contains(treeItem_Errors[0])) {
+                    NLogger.debug(getClass(), "+Quick fix all errors."); //$NON-NLS-1$
+                    items.remove(treeItem_Errors[0]);
+                    for (TreeItem sort3 : treeItem_Errors[0].getItems()) {
+                        if (!items.contains(sort3))
+                            items.add(sort3);
+                    }
+                }
+                if (items.contains(treeItem_Warnings[0])) {
+                    NLogger.debug(getClass(), "+Quick fix all warnings."); //$NON-NLS-1$
+                    items.remove(treeItem_Warnings[0]);
+                    for (TreeItem sort4 : treeItem_Warnings[0].getItems()) {
+                        if (!items.contains(sort4))
+                            items.add(sort4);
+                    }
+                }
+                if (items.contains(treeItem_Duplicates[0])) {
+                    NLogger.debug(getClass(), "+Quick fix all duplicates."); //$NON-NLS-1$
+                    items.remove(treeItem_Duplicates[0]);
+                    for (TreeItem sort5 : treeItem_Duplicates[0].getItems()) {
+                        if (!items.contains(sort5))
+                            items.add(sort5);
+                    }
+                }
+
+                for (TreeItem issue : items) {
+                    if (issue != null && issue.getData() != null) {
+                        NLogger.debug(getClass(), "+Fix {0}", issue.getText(1)); //$NON-NLS-1$
+                    }
+                }
+
+                QuickFixer.fixTextIssues(compositeText[0], items, getState().getFileNameObj());
             }
         };
-        final WidgetSelectionListener quickFixSame = new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
-                    final VertexManager vm = state.getFileNameObj().getVertexManager();
-                    if (!vm.isUpdated()) return;
-                    HashSet<TreeItem> items = new HashSet<TreeItem>();
-                    HashSet<String> sorts = new HashSet<String>();
-                    for (TreeItem sort : tree_Problems[0].getSelection()) {
-                        if (sort == null) continue;
-                        if (sort.equals(treeItem_Hints[0])) {
-                            items.add(treeItem_Hints[0]);
-                        } else if (sort.equals(treeItem_Errors[0])) {
-                            items.add(treeItem_Errors[0]);
-                        } else if (sort.equals(treeItem_Warnings[0])) {
-                            items.add(treeItem_Warnings[0]);
-                        } else if (sort.equals(treeItem_Duplicates[0])) {
-                            items.add(treeItem_Duplicates[0]);
-                        }
-                        if (sort.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$
-                            if (!sorts.contains(sort.getText(2)))
-                                sorts.add(sort.getText(2));
-                        } else if (sort.getText(2).startsWith("[E01]")) { //$NON-NLS-1$
-                            if (!sorts.contains(sort.getText(2)))
-                                sorts.add(sort.getText(2));
-                        } else {
-                            if (!sorts.contains(sort.getText(0)))
-                                sorts.add(sort.getText(0));
-                        }
-
+        final WidgetSelectionListener quickFixSame = e -> {
+            if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                if (!vm.isUpdated()) return;
+                HashSet<TreeItem> items = new HashSet<TreeItem>();
+                HashSet<String> sorts = new HashSet<String>();
+                for (TreeItem sort1 : tree_Problems[0].getSelection()) {
+                    if (sort1 == null) continue;
+                    if (sort1.equals(treeItem_Hints[0])) {
+                        items.add(treeItem_Hints[0]);
+                    } else if (sort1.equals(treeItem_Errors[0])) {
+                        items.add(treeItem_Errors[0]);
+                    } else if (sort1.equals(treeItem_Warnings[0])) {
+                        items.add(treeItem_Warnings[0]);
+                    } else if (sort1.equals(treeItem_Duplicates[0])) {
+                        items.add(treeItem_Duplicates[0]);
                     }
-                    for (TreeItem sort : treeItem_Hints[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) && !items.contains(sort))
-                            items.add(sort);
-                    }
-                    for (TreeItem sort : treeItem_Errors[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) && !items.contains(sort))
-                            items.add(sort);
-                    }
-                    for (TreeItem sort : treeItem_Warnings[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) || sorts.contains(sort.getText(2)) && !items.contains(sort))
-                            items.add(sort);
-                    }
-                    for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) || sorts.contains(sort.getText(2)) && !items.contains(sort))
-                            items.add(sort);
+                    if (sort1.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$
+                        if (!sorts.contains(sort1.getText(2)))
+                            sorts.add(sort1.getText(2));
+                    } else if (sort1.getText(2).startsWith("[E01]")) { //$NON-NLS-1$
+                        if (!sorts.contains(sort1.getText(2)))
+                            sorts.add(sort1.getText(2));
+                    } else {
+                        if (!sorts.contains(sort1.getText(0)))
+                            sorts.add(sort1.getText(0));
                     }
 
-                    if (items.contains(treeItem_Hints[0])) {
-                        NLogger.debug(getClass(), "+Quick fix all hints."); //$NON-NLS-1$
-                        items.remove(treeItem_Hints[0]);
-                        for (TreeItem sort : treeItem_Hints[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Errors[0])) {
-                        NLogger.debug(getClass(), "+Quick fix all errors."); //$NON-NLS-1$
-                        items.remove(treeItem_Errors[0]);
-                        for (TreeItem sort : treeItem_Errors[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Warnings[0])) {
-                        NLogger.debug(getClass(), "+Quick fix all warnings."); //$NON-NLS-1$
-                        items.remove(treeItem_Warnings[0]);
-                        for (TreeItem sort : treeItem_Warnings[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Duplicates[0])) {
-                        NLogger.debug(getClass(), "+Quick fix all duplicates."); //$NON-NLS-1$
-                        items.remove(treeItem_Duplicates[0]);
-                        for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-
-                    for (TreeItem issue : items) {
-                        if (issue.getData() != null) {
-                            NLogger.debug(getClass(), "+Fix {0}", issue.getText(1)); //$NON-NLS-1$
-                        }
-                    }
-
-                    QuickFixer.fixTextIssues(compositeText[0], items, getState().getFileNameObj());
                 }
+                for (TreeItem sort2 : treeItem_Hints[0].getItems()) {
+                    if (sorts.contains(sort2.getText(0)) && !items.contains(sort2))
+                        items.add(sort2);
+                }
+                for (TreeItem sort3 : treeItem_Errors[0].getItems()) {
+                    if (sorts.contains(sort3.getText(0)) && !items.contains(sort3))
+                        items.add(sort3);
+                }
+                for (TreeItem sort4 : treeItem_Warnings[0].getItems()) {
+                    if (sorts.contains(sort4.getText(0)) || sorts.contains(sort4.getText(2)) && !items.contains(sort4))
+                        items.add(sort4);
+                }
+                for (TreeItem sort5 : treeItem_Duplicates[0].getItems()) {
+                    if (sorts.contains(sort5.getText(0)) || sorts.contains(sort5.getText(2)) && !items.contains(sort5))
+                        items.add(sort5);
+                }
+
+                if (items.contains(treeItem_Hints[0])) {
+                    NLogger.debug(getClass(), "+Quick fix all hints."); //$NON-NLS-1$
+                    items.remove(treeItem_Hints[0]);
+                    for (TreeItem sort6 : treeItem_Hints[0].getItems()) {
+                        if (!items.contains(sort6))
+                            items.add(sort6);
+                    }
+                }
+                if (items.contains(treeItem_Errors[0])) {
+                    NLogger.debug(getClass(), "+Quick fix all errors."); //$NON-NLS-1$
+                    items.remove(treeItem_Errors[0]);
+                    for (TreeItem sort7 : treeItem_Errors[0].getItems()) {
+                        if (!items.contains(sort7))
+                            items.add(sort7);
+                    }
+                }
+                if (items.contains(treeItem_Warnings[0])) {
+                    NLogger.debug(getClass(), "+Quick fix all warnings."); //$NON-NLS-1$
+                    items.remove(treeItem_Warnings[0]);
+                    for (TreeItem sort8 : treeItem_Warnings[0].getItems()) {
+                        if (!items.contains(sort8))
+                            items.add(sort8);
+                    }
+                }
+                if (items.contains(treeItem_Duplicates[0])) {
+                    NLogger.debug(getClass(), "+Quick fix all duplicates."); //$NON-NLS-1$
+                    items.remove(treeItem_Duplicates[0]);
+                    for (TreeItem sort9 : treeItem_Duplicates[0].getItems()) {
+                        if (!items.contains(sort9))
+                            items.add(sort9);
+                    }
+                }
+
+                for (TreeItem issue : items) {
+                    if (issue.getData() != null) {
+                        NLogger.debug(getClass(), "+Fix {0}", issue.getText(1)); //$NON-NLS-1$
+                    }
+                }
+
+                QuickFixer.fixTextIssues(compositeText[0], items, getState().getFileNameObj());
             }
         };
-        final WidgetSelectionListener inspect = new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
-                    final VertexManager vm = state.getFileNameObj().getVertexManager();
-                    if (!vm.isUpdated()) return;
-                    HashSet<TreeItem> items = new HashSet<TreeItem>();
-                    for (TreeItem sort : tree_Problems[0].getSelection()) {
-                        items.add(sort);
-                    }
-                    if (items.contains(treeItem_Hints[0])) {
-                        NLogger.debug(getClass(), "+Inspect all hints."); //$NON-NLS-1$
-                        items.remove(treeItem_Hints[0]);
-                        for (TreeItem sort : treeItem_Hints[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Errors[0])) {
-                        NLogger.debug(getClass(), "+Inspect all errors."); //$NON-NLS-1$
-                        items.remove(treeItem_Errors[0]);
-                        for (TreeItem sort : treeItem_Errors[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Warnings[0])) {
-                        NLogger.debug(getClass(), "+Inspect all warnings."); //$NON-NLS-1$
-                        items.remove(treeItem_Warnings[0]);
-                        for (TreeItem sort : treeItem_Warnings[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Duplicates[0])) {
-                        NLogger.debug(getClass(), "+Inspect all duplicates."); //$NON-NLS-1$
-                        items.remove(treeItem_Duplicates[0]);
-                        for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-
-                    for (TreeItem issue : items) {
-                        if (issue != null && issue.getData() != null) {
-                            NLogger.debug(getClass(), "+Inspect {0}", issue.getText(1)); //$NON-NLS-1$
-                        }
-                    }
-
-                    Inspector.inspectTextIssues(compositeText[0], items, getState().getFileNameObj());
+        final WidgetSelectionListener inspect = e -> {
+            if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                if (!vm.isUpdated()) return;
+                HashSet<TreeItem> items = new HashSet<TreeItem>();
+                for (TreeItem sort1 : tree_Problems[0].getSelection()) {
+                    items.add(sort1);
                 }
+                if (items.contains(treeItem_Hints[0])) {
+                    NLogger.debug(getClass(), "+Inspect all hints."); //$NON-NLS-1$
+                    items.remove(treeItem_Hints[0]);
+                    for (TreeItem sort2 : treeItem_Hints[0].getItems()) {
+                        if (!items.contains(sort2))
+                            items.add(sort2);
+                    }
+                }
+                if (items.contains(treeItem_Errors[0])) {
+                    NLogger.debug(getClass(), "+Inspect all errors."); //$NON-NLS-1$
+                    items.remove(treeItem_Errors[0]);
+                    for (TreeItem sort3 : treeItem_Errors[0].getItems()) {
+                        if (!items.contains(sort3))
+                            items.add(sort3);
+                    }
+                }
+                if (items.contains(treeItem_Warnings[0])) {
+                    NLogger.debug(getClass(), "+Inspect all warnings."); //$NON-NLS-1$
+                    items.remove(treeItem_Warnings[0]);
+                    for (TreeItem sort4 : treeItem_Warnings[0].getItems()) {
+                        if (!items.contains(sort4))
+                            items.add(sort4);
+                    }
+                }
+                if (items.contains(treeItem_Duplicates[0])) {
+                    NLogger.debug(getClass(), "+Inspect all duplicates."); //$NON-NLS-1$
+                    items.remove(treeItem_Duplicates[0]);
+                    for (TreeItem sort5 : treeItem_Duplicates[0].getItems()) {
+                        if (!items.contains(sort5))
+                            items.add(sort5);
+                    }
+                }
+
+                for (TreeItem issue : items) {
+                    if (issue != null && issue.getData() != null) {
+                        NLogger.debug(getClass(), "+Inspect {0}", issue.getText(1)); //$NON-NLS-1$
+                    }
+                }
+
+                Inspector.inspectTextIssues(compositeText[0], items, getState().getFileNameObj());
             }
         };
-        final WidgetSelectionListener inspectSame = new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
-                    final VertexManager vm = state.getFileNameObj().getVertexManager();
-                    if (!vm.isUpdated()) return;
-                    HashSet<TreeItem> items = new HashSet<TreeItem>();
-                    HashSet<String> sorts = new HashSet<String>();
-                    for (TreeItem sort : tree_Problems[0].getSelection()) {
-                        if (sort == null) continue;
-                        if (sort.equals(treeItem_Hints[0])) {
-                            items.add(treeItem_Hints[0]);
-                        } else if (sort.equals(treeItem_Errors[0])) {
-                            items.add(treeItem_Errors[0]);
-                        } else if (sort.equals(treeItem_Warnings[0])) {
-                            items.add(treeItem_Warnings[0]);
-                        } else if (sort.equals(treeItem_Duplicates[0])) {
-                            items.add(treeItem_Duplicates[0]);
-                        }
-                        if (sort.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$
-                            if (!sorts.contains(sort.getText(2)))
-                                sorts.add(sort.getText(2));
-                        } else if (sort.getText(2).startsWith("[E01]")) { //$NON-NLS-1$
-                            if (!sorts.contains(sort.getText(2)))
-                                sorts.add(sort.getText(2));
-                        } else {
-                            if (!sorts.contains(sort.getText(0)))
-                                sorts.add(sort.getText(0));
-                        }
-
+        final WidgetSelectionListener inspectSame = e -> {
+            if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                if (!vm.isUpdated()) return;
+                HashSet<TreeItem> items = new HashSet<TreeItem>();
+                HashSet<String> sorts = new HashSet<String>();
+                for (TreeItem sort1 : tree_Problems[0].getSelection()) {
+                    if (sort1 == null) continue;
+                    if (sort1.equals(treeItem_Hints[0])) {
+                        items.add(treeItem_Hints[0]);
+                    } else if (sort1.equals(treeItem_Errors[0])) {
+                        items.add(treeItem_Errors[0]);
+                    } else if (sort1.equals(treeItem_Warnings[0])) {
+                        items.add(treeItem_Warnings[0]);
+                    } else if (sort1.equals(treeItem_Duplicates[0])) {
+                        items.add(treeItem_Duplicates[0]);
                     }
-                    for (TreeItem sort : treeItem_Hints[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) && !items.contains(sort))
-                            items.add(sort);
-                    }
-                    for (TreeItem sort : treeItem_Errors[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) && !items.contains(sort))
-                            items.add(sort);
-                    }
-                    for (TreeItem sort : treeItem_Warnings[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) || sorts.contains(sort.getText(2)) && !items.contains(sort))
-                            items.add(sort);
-                    }
-                    for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
-                        if (sorts.contains(sort.getText(0)) || sorts.contains(sort.getText(2)) && !items.contains(sort))
-                            items.add(sort);
+                    if (sort1.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$
+                        if (!sorts.contains(sort1.getText(2)))
+                            sorts.add(sort1.getText(2));
+                    } else if (sort1.getText(2).startsWith("[E01]")) { //$NON-NLS-1$
+                        if (!sorts.contains(sort1.getText(2)))
+                            sorts.add(sort1.getText(2));
+                    } else {
+                        if (!sorts.contains(sort1.getText(0)))
+                            sorts.add(sort1.getText(0));
                     }
 
-                    if (items.contains(treeItem_Hints[0])) {
-                        NLogger.debug(getClass(), "+Inspect all hints."); //$NON-NLS-1$
-                        items.remove(treeItem_Hints[0]);
-                        for (TreeItem sort : treeItem_Hints[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Errors[0])) {
-                        NLogger.debug(getClass(), "+Inspect all errors."); //$NON-NLS-1$
-                        items.remove(treeItem_Errors[0]);
-                        for (TreeItem sort : treeItem_Errors[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Warnings[0])) {
-                        NLogger.debug(getClass(), "+Inspect all warnings."); //$NON-NLS-1$
-                        items.remove(treeItem_Warnings[0]);
-                        for (TreeItem sort : treeItem_Warnings[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-                    if (items.contains(treeItem_Duplicates[0])) {
-                        NLogger.debug(getClass(), "+Inspect all duplicates."); //$NON-NLS-1$
-                        items.remove(treeItem_Duplicates[0]);
-                        for (TreeItem sort : treeItem_Duplicates[0].getItems()) {
-                            if (!items.contains(sort))
-                                items.add(sort);
-                        }
-                    }
-
-                    for (TreeItem issue : items) {
-                        if (issue.getData() != null) {
-                            NLogger.debug(getClass(), "+Inspect {0}", issue.getText(1)); //$NON-NLS-1$
-                        }
-                    }
-
-                    Inspector.inspectTextIssues(compositeText[0], items, getState().getFileNameObj());
                 }
+                for (TreeItem sort2 : treeItem_Hints[0].getItems()) {
+                    if (sorts.contains(sort2.getText(0)) && !items.contains(sort2))
+                        items.add(sort2);
+                }
+                for (TreeItem sort3 : treeItem_Errors[0].getItems()) {
+                    if (sorts.contains(sort3.getText(0)) && !items.contains(sort3))
+                        items.add(sort3);
+                }
+                for (TreeItem sort4 : treeItem_Warnings[0].getItems()) {
+                    if (sorts.contains(sort4.getText(0)) || sorts.contains(sort4.getText(2)) && !items.contains(sort4))
+                        items.add(sort4);
+                }
+                for (TreeItem sort5 : treeItem_Duplicates[0].getItems()) {
+                    if (sorts.contains(sort5.getText(0)) || sorts.contains(sort5.getText(2)) && !items.contains(sort5))
+                        items.add(sort5);
+                }
+
+                if (items.contains(treeItem_Hints[0])) {
+                    NLogger.debug(getClass(), "+Inspect all hints."); //$NON-NLS-1$
+                    items.remove(treeItem_Hints[0]);
+                    for (TreeItem sort6 : treeItem_Hints[0].getItems()) {
+                        if (!items.contains(sort6))
+                            items.add(sort6);
+                    }
+                }
+                if (items.contains(treeItem_Errors[0])) {
+                    NLogger.debug(getClass(), "+Inspect all errors."); //$NON-NLS-1$
+                    items.remove(treeItem_Errors[0]);
+                    for (TreeItem sort7 : treeItem_Errors[0].getItems()) {
+                        if (!items.contains(sort7))
+                            items.add(sort7);
+                    }
+                }
+                if (items.contains(treeItem_Warnings[0])) {
+                    NLogger.debug(getClass(), "+Inspect all warnings."); //$NON-NLS-1$
+                    items.remove(treeItem_Warnings[0]);
+                    for (TreeItem sort8 : treeItem_Warnings[0].getItems()) {
+                        if (!items.contains(sort8))
+                            items.add(sort8);
+                    }
+                }
+                if (items.contains(treeItem_Duplicates[0])) {
+                    NLogger.debug(getClass(), "+Inspect all duplicates."); //$NON-NLS-1$
+                    items.remove(treeItem_Duplicates[0]);
+                    for (TreeItem sort9 : treeItem_Duplicates[0].getItems()) {
+                        if (!items.contains(sort9))
+                            items.add(sort9);
+                    }
+                }
+
+                for (TreeItem issue : items) {
+                    if (issue.getData() != null) {
+                        NLogger.debug(getClass(), "+Inspect {0}", issue.getText(1)); //$NON-NLS-1$
+                    }
+                }
+
+                Inspector.inspectTextIssues(compositeText[0], items, getState().getFileNameObj());
             }
         };
-        WidgetUtil(mntm_QuickFix[0]).addXSelectionListener(quickFix);
-        WidgetUtil(mntm_QuickFixSame[0]).addXSelectionListener(quickFixSame);
-        WidgetUtil(btn_QuickFix[0]).addXSelectionListener(quickFix);
-        WidgetUtil(btn_QuickFixSame[0]).addXSelectionListener(quickFixSame);
-        WidgetUtil(mntm_Inspect[0]).addXSelectionListener(inspect);
-        WidgetUtil(mntm_InspectSame[0]).addXSelectionListener(inspectSame);
-        WidgetUtil(btn_Inspect[0]).addXSelectionListener(inspect);
-        WidgetUtil( btn_InspectSame[0]).addXSelectionListener(inspectSame);
+        WidgetUtil(mntm_QuickFix[0]).addSelectionListener(quickFix);
+        WidgetUtil(mntm_QuickFixSame[0]).addSelectionListener(quickFixSame);
+        WidgetUtil(btn_QuickFix[0]).addSelectionListener(quickFix);
+        WidgetUtil(btn_QuickFixSame[0]).addSelectionListener(quickFixSame);
+        WidgetUtil(mntm_Inspect[0]).addSelectionListener(inspect);
+        WidgetUtil(mntm_InspectSame[0]).addSelectionListener(inspectSame);
+        WidgetUtil(btn_Inspect[0]).addSelectionListener(inspect);
+        WidgetUtil( btn_InspectSame[0]).addSelectionListener(inspectSame);
 
         tree_Problems[0].addSelectionListener(e -> {
             boolean enabled = tree_Problems[0].getSelectionCount() == 1 && tree_Problems[0].getSelection()[0] != null;
@@ -1856,122 +1843,79 @@ public class CompositeTab extends CompositeTabDesign {
             }
 
         });
-        WidgetUtil(compositeText[0].getVerticalBar()).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (!isDisposed()) {
-                    canvas_lineNumberArea[0].redraw();
-                    getDisplay().update();
-                }
+        WidgetUtil(compositeText[0].getVerticalBar()).addSelectionListener(e -> {
+            if (!isDisposed()) {
+                canvas_lineNumberArea[0].redraw();
+                getDisplay().update();
             }
         });
-        WidgetUtil(mntm_Delete[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                state.folder[0].delete();
+        WidgetUtil(mntm_Delete[0]).addSelectionListener(e -> state.folder[0].delete());
+        WidgetUtil(mntm_Copy[0]).addSelectionListener(e -> state.folder[0].copy());
+        WidgetUtil(mntm_Cut[0]).addSelectionListener(e -> state.folder[0].cut());
+        WidgetUtil(mntm_Paste[0]).addSelectionListener(e -> state.folder[0].paste());
+
+        WidgetUtil(mntm_DrawSelection[0]).addSelectionListener(e -> {
+            if (!state.getFileNameObj().getVertexManager().isUpdated()){
+                return;
             }
-        });
-        WidgetUtil(mntm_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                state.folder[0].copy();
-            }
-        });
-        WidgetUtil(mntm_Cut[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                state.folder[0].cut();
-            }
-        });
-        WidgetUtil(mntm_Paste[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                state.folder[0].paste();
-            }
+            final DatFile df = state.getFileNameObj();
+            final VertexManager vm = df.getVertexManager();
+            vm.addSnapshot();
+            vm.showAll();
+            final StyledText st = getTextComposite();
+            int s1 = st.getSelectionRange().x;
+            int s2 = s1 + st.getSelectionRange().y;
+            int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+            int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
+            fromLine++;
+            toLine++;
+            Text2SelectionConverter.convert(fromLine, toLine, df);
+            vm.selectInverse(new SelectorSettings());
+            vm.hideSelection();
+            Text2SelectionConverter.convert(fromLine, toLine, df);
+            df.addHistory();
+            st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+            st.forceFocus();
         });
 
-        WidgetUtil(mntm_DrawSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (!state.getFileNameObj().getVertexManager().isUpdated()){
-                    return;
-                }
-                final DatFile df = state.getFileNameObj();
-                final VertexManager vm = df.getVertexManager();
-                vm.addSnapshot();
-                vm.showAll();
-                final StyledText st = getTextComposite();
-                int s1 = st.getSelectionRange().x;
-                int s2 = s1 + st.getSelectionRange().y;
-                int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                fromLine++;
-                toLine++;
-                Text2SelectionConverter.convert(fromLine, toLine, df);
-                vm.selectInverse(new SelectorSettings());
+        WidgetUtil(mntm_DrawUntilSelection[0]).addSelectionListener(e -> {
+            if (!state.getFileNameObj().getVertexManager().isUpdated()){
+                return;
+            }
+            final DatFile df = state.getFileNameObj();
+            final VertexManager vm = df.getVertexManager();
+            vm.addSnapshot();
+            vm.showAll();
+            final StyledText st = getTextComposite();
+            int s1 = st.getSelectionRange().x;
+            int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
+            int toLine = st.getLineCount();
+            fromLine++;
+            if (Math.min(fromLine, toLine) != toLine) {
+                Text2SelectionConverter.convert(Math.min(fromLine + 1, toLine), toLine, df);
                 vm.hideSelection();
-                Text2SelectionConverter.convert(fromLine, toLine, df);
-                df.addHistory();
-                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
-                st.forceFocus();
             }
+            Text2SelectionConverter.convert(1, fromLine, df);
+            df.addHistory();
+            st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+            st.forceFocus();
         });
 
-        WidgetUtil(mntm_DrawUntilSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (!state.getFileNameObj().getVertexManager().isUpdated()){
-                    return;
-                }
-                final DatFile df = state.getFileNameObj();
-                final VertexManager vm = df.getVertexManager();
-                vm.addSnapshot();
-                vm.showAll();
-                final StyledText st = getTextComposite();
-                int s1 = st.getSelectionRange().x;
-                int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                int toLine = st.getLineCount();
-                fromLine++;
-                if (Math.min(fromLine, toLine) != toLine) {
-                    Text2SelectionConverter.convert(Math.min(fromLine + 1, toLine), toLine, df);
-                    vm.hideSelection();
-                }
-                Text2SelectionConverter.convert(1, fromLine, df);
-                df.addHistory();
-                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
-                st.forceFocus();
-            }
-        });
+        WidgetUtil(mntm_HideSelection[0]).addSelectionListener(e -> hideSelection());
+        WidgetUtil(mntm_ShowSelection[0]).addSelectionListener(e -> showSelection());
 
-        WidgetUtil(mntm_HideSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                hideSelection();
+        WidgetUtil(mntm_ShowAll[0]).addSelectionListener(e -> {
+            if (!state.getFileNameObj().getVertexManager().isUpdated()){
+                return;
             }
-        });
-
-        WidgetUtil(mntm_ShowSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                showSelection();
-            }
-        });
-
-        WidgetUtil(mntm_ShowAll[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (!state.getFileNameObj().getVertexManager().isUpdated()){
-                    return;
-                }
-                final DatFile df = state.getFileNameObj();
-                final VertexManager vm = df.getVertexManager();
-                final StyledText st = getTextComposite();
-                vm.addSnapshot();
-                vm.showAll();
-                df.addHistory();
-                st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
-                st.forceFocus();
-            }
+            final DatFile df = state.getFileNameObj();
+            final VertexManager vm = df.getVertexManager();
+            final StyledText st = getTextComposite();
+            vm.addSnapshot();
+            vm.showAll();
+            df.addHistory();
+            st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
+            st.forceFocus();
         });
     }
 

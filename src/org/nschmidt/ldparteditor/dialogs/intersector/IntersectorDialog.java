@@ -18,9 +18,7 @@ package org.nschmidt.ldparteditor.dialogs.intersector;
 import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 
 /**
@@ -50,12 +48,7 @@ public class IntersectorDialog extends IntersectorDesign {
         // MARK All final listeners will be configured here..
         cmb_scope[0].addListener(SWT.Selection, event -> ins.setScope(cmb_scope[0].getSelectionIndex()));
         cmb_colourise[0].addListener(SWT.Selection, event -> ins.setColourise(cmb_colourise[0].getSelectionIndex() == 1));
-        WidgetUtil(btn_hideOther[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                ins.setHidingOther(btn_hideOther[0].getSelection());
-            }
-        });
+        WidgetUtil(btn_hideOther[0]).addSelectionListener(e -> ins.setHidingOther(btn_hideOther[0].getSelection()));
         return super.open();
     }
 

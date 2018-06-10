@@ -39,7 +39,6 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -73,7 +72,6 @@ import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -1859,16 +1857,13 @@ class Editor3DDesign extends ApplicationWindow {
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 }
             });
-            WidgetUtil(btn_LastUsedColour).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    if (Project.getFileToEdit() != null) {
-                        Project.getFileToEdit().getVertexManager().addSnapshot();
-                        GColour col = View.getLDConfigColour(16);
-                        Project.getFileToEdit().getVertexManager().colourChangeSelection(16, col.getR(), col.getG(), col.getB(), 1f, true);
-                    }
-                    Editor3DWindow.getWindow().regainFocus();
+            WidgetUtil(btn_LastUsedColour).addSelectionListener(e -> {
+                if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    GColour col1 = View.getLDConfigColour(16);
+                    Project.getFileToEdit().getVertexManager().colourChangeSelection(16, col1.getR(), col1.getG(), col1.getB(), 1f, true);
                 }
+                Editor3DWindow.getWindow().regainFocus();
             });
         }
         {
@@ -2128,12 +2123,9 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Select.setToolTipText(I18n.E3D_AdvancedSelect);
             btn_Select.setText(I18n.E3D_AdvancedSelect);
             this.mnu_Select = new Menu(this.getShell(), SWT.POP_UP);
-            WidgetUtil(btn_Select).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    showSelectMenu();
-                    Editor3DWindow.getWindow().regainFocus();
-                }
+            WidgetUtil(btn_Select).addSelectionListener(e -> {
+                showSelectMenu();
+                Editor3DWindow.getWindow().regainFocus();
             });
             {
                 {
@@ -2309,16 +2301,13 @@ class Editor3DDesign extends ApplicationWindow {
             btn_MergeNSplit.setToolTipText(I18n.E3D_MergeSplit);
             btn_MergeNSplit.setText(I18n.E3D_MergeSplit);
             this.mnu_Merge = new Menu(this.getShell(), SWT.POP_UP);
-            WidgetUtil(btn_MergeNSplit).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    Point loc = btn_MergeNSplit.getLocation();
-                    Rectangle rect = btn_MergeNSplit.getBounds();
-                    Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                    mnu_Merge.setLocation(getShell().getDisplay().map(btn_MergeNSplit.getParent(), null, mLoc));
-                    mnu_Merge.setVisible(true);
-                    Editor3DWindow.getWindow().regainFocus();
-                }
+            WidgetUtil(btn_MergeNSplit).addSelectionListener(e -> {
+                Point loc = btn_MergeNSplit.getLocation();
+                Rectangle rect = btn_MergeNSplit.getBounds();
+                Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
+                mnu_Merge.setLocation(getShell().getDisplay().map(btn_MergeNSplit.getParent(), null, mLoc));
+                mnu_Merge.setVisible(true);
+                Editor3DWindow.getWindow().regainFocus();
             });
             {
                 MenuItem mntm_Flip = new MenuItem(mnu_Merge, SWT.PUSH);
@@ -2422,16 +2411,13 @@ class Editor3DDesign extends ApplicationWindow {
             btn_ToolsActions.setText(I18n.E3D_Tools);
             btn_ToolsActions.setToolTipText(I18n.E3D_ToolsOptions);
             this.mnu_Tools = new Menu(this.getShell(), SWT.POP_UP);
-            WidgetUtil(btn_ToolsActions).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    Point loc = btn_ToolsActions.getLocation();
-                    Rectangle rect = btn_ToolsActions.getBounds();
-                    Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                    mnu_Tools.setLocation(getShell().getDisplay().map(btn_ToolsActions.getParent(), null, mLoc));
-                    mnu_Tools.setVisible(true);
-                    Editor3DWindow.getWindow().regainFocus();
-                }
+            WidgetUtil(btn_ToolsActions).addSelectionListener(e -> {
+                Point loc = btn_ToolsActions.getLocation();
+                Rectangle rect = btn_ToolsActions.getBounds();
+                Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
+                mnu_Tools.setLocation(getShell().getDisplay().map(btn_ToolsActions.getParent(), null, mLoc));
+                mnu_Tools.setVisible(true);
+                Editor3DWindow.getWindow().regainFocus();
             });
             {
                 {
@@ -2706,16 +2692,13 @@ class Editor3DDesign extends ApplicationWindow {
             final NButton btn_ManipulatorActions = new NButton(toolItem, SWT.ARROW | SWT.DOWN);
             btn_ManipulatorActions.setToolTipText(I18n.E3D_ModifyManipulator);
             this.mnu_Manipulator = new Menu(this.getShell(), SWT.POP_UP);
-            WidgetUtil(btn_ManipulatorActions).addXSelectionListener(new WidgetSelectionListener() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    Point loc = btn_ManipulatorActions.getLocation();
-                    Rectangle rect = btn_ManipulatorActions.getBounds();
-                    Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
-                    mnu_Manipulator.setLocation(getShell().getDisplay().map(btn_ManipulatorActions.getParent(), null, mLoc));
-                    mnu_Manipulator.setVisible(true);
-                    Editor3DWindow.getWindow().regainFocus();
-                }
+            WidgetUtil(btn_ManipulatorActions).addSelectionListener(e -> {
+                Point loc = btn_ManipulatorActions.getLocation();
+                Rectangle rect = btn_ManipulatorActions.getBounds();
+                Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
+                mnu_Manipulator.setLocation(getShell().getDisplay().map(btn_ManipulatorActions.getParent(), null, mLoc));
+                mnu_Manipulator.setVisible(true);
+                Editor3DWindow.getWindow().regainFocus();
             });
             {
                 {
@@ -3335,117 +3318,111 @@ class Editor3DDesign extends ApplicationWindow {
 
         btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-        WidgetUtil(btn_Col).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                    // Choose new colour
-                    new ColourDialog(getShell(), gColour2, false).run();
-                    WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
-                    col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-                    int num = gColour2[0].getColourNumber();
-                    if (View.hasLDConfigColour(num)) {
-                        gColour2[0] = View.getLDConfigColour(num);
-                    } else {
-                        num = -1;
-                    }
-                    if (num != -1) {
-
-                        Object[] messageArguments = {num, View.getLDConfigColourName(num)};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour1 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
-
-                        btn_Col.setToolTipText(formatter.format(messageArguments));
-                    } else {
-                        StringBuilder colourBuilder = new StringBuilder();
-                        colourBuilder.append("0x2"); //$NON-NLS-1$
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-                        Object[] messageArguments = {colourBuilder.toString()};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour2 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
-
-                        btn_Col.setToolTipText(formatter.format(messageArguments));
-                    }
-                    Editor3DWindow.reloadAllColours();
+        WidgetUtil(btn_Col).addSelectionListener(e -> {
+            if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
+                // Choose new colour
+                new ColourDialog(getShell(), gColour2, false).run();
+                WorkbenchManager.getUserSettingState().getUserPalette().set(index, gColour2[0]);
+                col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
+                int num2 = gColour2[0].getColourNumber();
+                if (View.hasLDConfigColour(num2)) {
+                    gColour2[0] = View.getLDConfigColour(num2);
                 } else {
-                    int num = gColour2[0].getColourNumber();
-                    if (View.hasLDConfigColour(num)) {
-                        gColour2[0] = View.getLDConfigColour(num);
-                    } else {
-                        num = -1;
-                    }
-                    if (Project.getFileToEdit() != null) {
-                        Project.getFileToEdit().getVertexManager().addSnapshot();
-                        Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
-                    }
-                    Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
-                    btn_LastUsedColour[0].clearPaintListeners();
-                    btn_LastUsedColour[0].clearSelectionListeners();
-                    final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-                    final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
-                    final int x = Math.round(size.x / 5f);
-                    final int y = Math.round(size.y / 5f);
-                    final int w = Math.round(size.x * (3f / 5f));
-                    final int h = Math.round(size.y * (3f / 5f));
-                    btn_LastUsedColour[0].addPaintListener(new PaintListener() {
-                        @Override
-                        public void paintControl(PaintEvent e) {
-                            e.gc.setBackground(col);
-                            e.gc.fillRectangle(x, y, w, h);
-                            if (gColour2[0].getA() == 1f) {
-                                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                            } else {
-                                e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                            }
-                        }
-                    });
-                    WidgetUtil(btn_LastUsedColour[0]).addXSelectionListener(new WidgetSelectionListener() {
-                        @Override
-                        public void widgetSelected(SelectionEvent e) {
-                            if (Project.getFileToEdit() != null) {
-                                Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
-                                int num = gColour2[0].getColourNumber();
-                                if (View.hasLDConfigColour(num)) {
-                                    gColour2[0] = View.getLDConfigColour(num);
-                                } else {
-                                    num = -1;
-                                }
-                                Project.getFileToEdit().getVertexManager().addSnapshot();
-                                Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
-                            }
-                            Editor3DWindow.getWindow().regainFocus();
-                        }
-                    });
-                    if (num != -1) {
-                        Object[] messageArguments = {num, View.getLDConfigColourName(num)};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour1);
-
-                        btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
-                    } else {
-                        StringBuilder colourBuilder = new StringBuilder();
-                        colourBuilder.append("0x2"); //$NON-NLS-1$
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
-                        colourBuilder.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
-
-                        Object[] messageArguments = {colourBuilder.toString()};
-                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.EDITORTEXT_Colour2);
-
-                        btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
-                    }
-                    btn_LastUsedColour[0].redraw();
+                    num2 = -1;
                 }
-                Editor3DWindow.getWindow().regainFocus();
+                if (num2 != -1) {
+
+                    Object[] messageArguments1 = {num2, View.getLDConfigColourName(num2)};
+                    MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
+                    formatter1.setLocale(MyLanguage.LOCALE);
+                    formatter1.applyPattern(I18n.EDITORTEXT_Colour1 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
+
+                    btn_Col.setToolTipText(formatter1.format(messageArguments1));
+                } else {
+                    StringBuilder colourBuilder1 = new StringBuilder();
+                    colourBuilder1.append("0x2"); //$NON-NLS-1$
+                    colourBuilder1.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
+                    colourBuilder1.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
+                    colourBuilder1.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
+
+                    Object[] messageArguments2 = {colourBuilder1.toString()};
+                    MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
+                    formatter2.setLocale(MyLanguage.LOCALE);
+                    formatter2.applyPattern(I18n.EDITORTEXT_Colour2 + Cocoa.replaceCtrlByCmd(I18n.E3D_ControlClickModify));
+
+                    btn_Col.setToolTipText(formatter2.format(messageArguments2));
+                }
+                Editor3DWindow.reloadAllColours();
+            } else {
+                int num3 = gColour2[0].getColourNumber();
+                if (View.hasLDConfigColour(num3)) {
+                    gColour2[0] = View.getLDConfigColour(num3);
+                } else {
+                    num3 = -1;
+                }
+                if (Project.getFileToEdit() != null) {
+                    Project.getFileToEdit().getVertexManager().addSnapshot();
+                    Project.getFileToEdit().getVertexManager().colourChangeSelection(num3, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
+                }
+                Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
+                btn_LastUsedColour[0].clearPaintListeners();
+                btn_LastUsedColour[0].clearSelectionListeners();
+                final Color col1 = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
+                final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
+                final int x = Math.round(size.x / 5f);
+                final int y = Math.round(size.y / 5f);
+                final int w = Math.round(size.x * (3f / 5f));
+                final int h = Math.round(size.y * (3f / 5f));
+                btn_LastUsedColour[0].addPaintListener(new PaintListener() {
+                    @Override
+                    public void paintControl(PaintEvent e) {
+                        e.gc.setBackground(col1);
+                        e.gc.fillRectangle(x, y, w, h);
+                        if (gColour2[0].getA() == 1f) {
+                            e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                        } else {
+                            e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                        }
+                    }
+                });
+                WidgetUtil(btn_LastUsedColour[0]).addSelectionListener(e1 -> {
+                    if (Project.getFileToEdit() != null) {
+                        Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
+                        int num1 = gColour2[0].getColourNumber();
+                        if (View.hasLDConfigColour(num1)) {
+                            gColour2[0] = View.getLDConfigColour(num1);
+                        } else {
+                            num1 = -1;
+                        }
+                        Project.getFileToEdit().getVertexManager().addSnapshot();
+                        Project.getFileToEdit().getVertexManager().colourChangeSelection(num1, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
+                    }
+                    Editor3DWindow.getWindow().regainFocus();
+                });
+                if (num3 != -1) {
+                    Object[] messageArguments3 = {num3, View.getLDConfigColourName(num3)};
+                    MessageFormat formatter3 = new MessageFormat(""); //$NON-NLS-1$
+                    formatter3.setLocale(MyLanguage.LOCALE);
+                    formatter3.applyPattern(I18n.EDITORTEXT_Colour1);
+
+                    btn_LastUsedColour[0].setToolTipText(formatter3.format(messageArguments3));
+                } else {
+                    StringBuilder colourBuilder2 = new StringBuilder();
+                    colourBuilder2.append("0x2"); //$NON-NLS-1$
+                    colourBuilder2.append(MathHelper.toHex((int) (255f * gColour2[0].getR())).toUpperCase());
+                    colourBuilder2.append(MathHelper.toHex((int) (255f * gColour2[0].getG())).toUpperCase());
+                    colourBuilder2.append(MathHelper.toHex((int) (255f * gColour2[0].getB())).toUpperCase());
+
+                    Object[] messageArguments4 = {colourBuilder2.toString()};
+                    MessageFormat formatter4 = new MessageFormat(""); //$NON-NLS-1$
+                    formatter4.setLocale(MyLanguage.LOCALE);
+                    formatter4.applyPattern(I18n.EDITORTEXT_Colour2);
+
+                    btn_LastUsedColour[0].setToolTipText(formatter4.format(messageArguments4));
+                }
+                btn_LastUsedColour[0].redraw();
             }
+            Editor3DWindow.getWindow().regainFocus();
         });
         final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);
         final int x = Math.round(size.x / 5f);

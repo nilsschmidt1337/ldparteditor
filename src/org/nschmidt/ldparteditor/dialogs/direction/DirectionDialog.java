@@ -19,7 +19,6 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
 import java.math.BigDecimal;
 
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -27,7 +26,6 @@ import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -77,66 +75,51 @@ public class DirectionDialog extends DirectionDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_mX[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-                btn_Global[0].setSelection(true);
-                BigDecimal[] axis = mani.getAccurateXaxis();
-                cart = new double[]{axis[0].doubleValue(), axis[1].doubleValue(), axis[2].doubleValue()};
+        WidgetUtil(btn_mX[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+            btn_Global[0].setSelection(true);
+            BigDecimal[] axis = mani.getAccurateXaxis();
+            cart = new double[]{axis[0].doubleValue(), axis[1].doubleValue(), axis[2].doubleValue()};
+            sphe = cartesianToSpherical(cart);
+            updateValues();
+        });
+        WidgetUtil(btn_mY[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+            btn_Global[0].setSelection(true);
+            BigDecimal[] axis = mani.getAccurateYaxis();
+            cart = new double[]{axis[0].doubleValue(), axis[1].doubleValue(), axis[2].doubleValue()};
+            sphe = cartesianToSpherical(cart);
+            updateValues();
+        });
+        WidgetUtil(btn_mZ[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+            btn_Global[0].setSelection(true);
+            BigDecimal[] axis = mani.getAccurateZaxis();
+            cart = new double[]{axis[0].doubleValue(), axis[1].doubleValue(), axis[2].doubleValue()};
+            sphe = cartesianToSpherical(cart);
+            updateValues();
+        });
+        WidgetUtil(btn_Local[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
+            btn_Local[0].setSelection(true);
+            if (transformationMode != ManipulatorScope.LOCAL) {
+                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+                transformationMode = ManipulatorScope.LOCAL;
+                cart = globalToLocal(cart);
                 sphe = cartesianToSpherical(cart);
-                updateValues();
             }
+            updateValues();
         });
-        WidgetUtil(btn_mY[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-                btn_Global[0].setSelection(true);
-                BigDecimal[] axis = mani.getAccurateYaxis();
-                cart = new double[]{axis[0].doubleValue(), axis[1].doubleValue(), axis[2].doubleValue()};
+        WidgetUtil(btn_Global[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+            btn_Global[0].setSelection(true);
+            if (transformationMode != ManipulatorScope.GLOBAL) {
+                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+                transformationMode = ManipulatorScope.GLOBAL;
+                cart = localToGlobal(cart);
                 sphe = cartesianToSpherical(cart);
-                updateValues();
             }
-        });
-        WidgetUtil(btn_mZ[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-                btn_Global[0].setSelection(true);
-                BigDecimal[] axis = mani.getAccurateZaxis();
-                cart = new double[]{axis[0].doubleValue(), axis[1].doubleValue(), axis[2].doubleValue()};
-                sphe = cartesianToSpherical(cart);
-                updateValues();
-            }
-        });
-        WidgetUtil(btn_Local[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
-                btn_Local[0].setSelection(true);
-                if (transformationMode != ManipulatorScope.LOCAL) {
-                    Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
-                    transformationMode = ManipulatorScope.LOCAL;
-                    cart = globalToLocal(cart);
-                    sphe = cartesianToSpherical(cart);
-                }
-                updateValues();
-            }
-        });
-        WidgetUtil(btn_Global[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-                btn_Global[0].setSelection(true);
-                if (transformationMode != ManipulatorScope.GLOBAL) {
-                    Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
-                    transformationMode = ManipulatorScope.GLOBAL;
-                    cart = localToGlobal(cart);
-                    sphe = cartesianToSpherical(cart);
-                }
-                updateValues();
-            }
+            updateValues();
         });
         spn_X[0].addValueChangeListener(spn -> {
             if (stopCalculations) return;

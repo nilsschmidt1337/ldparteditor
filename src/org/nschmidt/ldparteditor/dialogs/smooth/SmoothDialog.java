@@ -20,11 +20,9 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.project.Project;
 
 /**
@@ -75,24 +73,9 @@ public class SmoothDialog extends SmoothDesign {
         }
 
         // MARK All final listeners will be configured here..
-        WidgetUtil(cb_Xaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                x = cb_Xaxis[0].getSelection();
-            }
-        });
-        WidgetUtil(cb_Yaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                y = cb_Yaxis[0].getSelection();
-            }
-        });
-        WidgetUtil(cb_Zaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                z = cb_Zaxis[0].getSelection();
-            }
-        });
+        WidgetUtil(cb_Xaxis[0]).addSelectionListener(e -> x = cb_Xaxis[0].getSelection());
+        WidgetUtil(cb_Yaxis[0]).addSelectionListener(e -> y = cb_Yaxis[0].getSelection());
+        WidgetUtil(cb_Zaxis[0]).addSelectionListener(e -> z = cb_Zaxis[0].getSelection());
         spn_pX[0].addValueChangeListener(spn -> iterations = spn.getValue());
         spn_pY[0].addValueChangeListener(spn -> factor = spn.getValue());
         return super.open();

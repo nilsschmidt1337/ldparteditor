@@ -19,14 +19,12 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
 import java.util.Set;
 
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -77,52 +75,37 @@ public class RotateDialog extends RotateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_Local[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
-                btn_Local[0].setSelection(true);
-                transformationMode = ManipulatorScope.LOCAL;
-                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+        WidgetUtil(btn_Local[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
+            btn_Local[0].setSelection(true);
+            transformationMode = ManipulatorScope.LOCAL;
+            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+        });
+        WidgetUtil(btn_Global[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
+            btn_Global[0].setSelection(true);
+            transformationMode = ManipulatorScope.GLOBAL;
+            Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+        });
+        WidgetUtil(rb_Xaxis[0]).addSelectionListener(e -> {
+            if (rb_Xaxis[0].getSelection()) {
+                x = true;
+                y = false;
+                z = false;
             }
         });
-        WidgetUtil(btn_Global[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-                btn_Global[0].setSelection(true);
-                transformationMode = ManipulatorScope.GLOBAL;
-                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+        WidgetUtil(rb_Yaxis[0]).addSelectionListener(e -> {
+            if (rb_Yaxis[0].getSelection()) {
+                x = false;
+                y = true;
+                z = false;
             }
         });
-        WidgetUtil(rb_Xaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (rb_Xaxis[0].getSelection()) {
-                    x = true;
-                    y = false;
-                    z = false;
-                }
-            }
-        });
-        WidgetUtil(rb_Yaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (rb_Yaxis[0].getSelection()) {
-                    x = false;
-                    y = true;
-                    z = false;
-                }
-            }
-        });
-        WidgetUtil(rb_Zaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                if (rb_Zaxis[0].getSelection()) {
-                    x = false;
-                    y = false;
-                    z = true;
-                }
+        WidgetUtil(rb_Zaxis[0]).addSelectionListener(e -> {
+            if (rb_Zaxis[0].getSelection()) {
+                x = false;
+                y = false;
+                z = true;
             }
         });
         spn_X[0].addValueChangeListener(spn -> {
@@ -155,29 +138,20 @@ public class RotateDialog extends RotateDesign {
         spn_pX[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
         spn_pY[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
         spn_pZ[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
-        WidgetUtil(btn_PivotManipulator[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                spn_pX[0].setValue(m.X);
-                spn_pY[0].setValue(m.Y);
-                spn_pZ[0].setValue(m.Z);
-            }
+        WidgetUtil(btn_PivotManipulator[0]).addSelectionListener(e -> {
+            spn_pX[0].setValue(m.X);
+            spn_pY[0].setValue(m.Y);
+            spn_pZ[0].setValue(m.Z);
         });
-        WidgetUtil(btn_PivotClipboard[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                spn_pX[0].setValue(c.X);
-                spn_pY[0].setValue(c.Y);
-                spn_pZ[0].setValue(c.Z);
-            }
+        WidgetUtil(btn_PivotClipboard[0]).addSelectionListener(e -> {
+            spn_pX[0].setValue(c.X);
+            spn_pY[0].setValue(c.Y);
+            spn_pZ[0].setValue(c.Z);
         });
-        WidgetUtil(btn_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                creatingCopy = true;
-                setReturnCode(OK);
-                close();
-            }
+        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> {
+            creatingCopy = true;
+            setReturnCode(OK);
+            close();
         });
         spn_Iterations[0].addValueChangeListener(spn -> iterations = spn.getValue());
         return super.open();

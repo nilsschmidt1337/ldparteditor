@@ -26,7 +26,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -41,7 +40,6 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlantingMatrixProjectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.NButton;
@@ -122,12 +120,9 @@ class SlantingMatrixProjectorDesign extends Dialog {
                 cb_setOrigin.setText(I18n.SLANT_SetOrigin);
                 cb_setOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                WidgetUtil(cb_setOrigin).addXSelectionListener(new WidgetSelectionListener() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
-                        updateMatrix();
-                    }
+                WidgetUtil(cb_setOrigin).addSelectionListener(e -> {
+                    mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
+                    updateMatrix();
                 });
             }
             break;
@@ -140,12 +135,9 @@ class SlantingMatrixProjectorDesign extends Dialog {
                 cb_setOrigin.setText(I18n.SLANT_SetOrigin);
                 cb_setOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                WidgetUtil(cb_setOrigin).addXSelectionListener(new WidgetSelectionListener() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
-                        updateMatrix();
-                    }
+                WidgetUtil(cb_setOrigin).addSelectionListener(e -> {
+                    mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
+                    updateMatrix();
                 });
             }
             {
@@ -155,12 +147,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
                 cb_resetSubfileOrientation.setSelection(mps.isResettingSubfileTransformation());
 
 
-                WidgetUtil(cb_resetSubfileOrientation).addXSelectionListener(new WidgetSelectionListener() {
-                    @Override
-                    public void widgetSelected(SelectionEvent e) {
-                        mps.setResettingSubfileTransformation(!mps.isResettingSubfileTransformation());
-                    }
-                });
+                WidgetUtil(cb_resetSubfileOrientation).addSelectionListener(e -> mps.setResettingSubfileTransformation(!mps.isResettingSubfileTransformation()));
             }
             break;
         case INIT:
@@ -198,20 +185,17 @@ class SlantingMatrixProjectorDesign extends Dialog {
         btn_CopyMatrixToClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
         btn_CopyMatrixToClipboard.setText(I18n.SLANT_CopyToClipboard);
 
-        WidgetUtil(btn_CopyMatrixToClipboard).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                final Matrix M = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
-                final StringBuilder cbString = new StringBuilder();
-                cbString.append("1 16 "); //$NON-NLS-1$
-                cbString.append(M.toLDrawString());
-                cbString.append(" "); //$NON-NLS-1$
-                final String cbs = cbString.toString();
-                Display display = Display.getCurrent();
-                Clipboard clipboard = new Clipboard(display);
-                clipboard.setContents(new Object[] { cbs }, new Transfer[] { TextTransfer.getInstance() });
-                clipboard.dispose();
-            }
+        WidgetUtil(btn_CopyMatrixToClipboard).addSelectionListener(e -> {
+            final Matrix M1 = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
+            final StringBuilder cbString = new StringBuilder();
+            cbString.append("1 16 "); //$NON-NLS-1$
+            cbString.append(M1.toLDrawString());
+            cbString.append(" "); //$NON-NLS-1$
+            final String cbs = cbString.toString();
+            Display display = Display.getCurrent();
+            Clipboard clipboard = new Clipboard(display);
+            clipboard.setContents(new Object[] { cbs }, new Transfer[] { TextTransfer.getInstance() });
+            clipboard.dispose();
         });
     }
 

@@ -25,16 +25,13 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 
 public class SearchWindow extends SearchDesign {
-
 
     private StyledText textComposite = null;
     private CompositeTab tab = null;
@@ -63,12 +60,7 @@ public class SearchWindow extends SearchDesign {
         sh.setMinimumSize(super.getInitialSize());
 
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_find[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                find();
-            }
-        });
+        WidgetUtil(btn_find[0]).addSelectionListener(e -> find());
 
         txt_find[0].addModifyListener(new ModifyListener() {
             @Override
@@ -125,27 +117,12 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        WidgetUtil(btn_replace[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                replace();
-            }
-        });
-
-        WidgetUtil(btn_replaceAll[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                replaceAll();
-            }
-        });
-
-        WidgetUtil(btn_findAndReplace[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                replace();
-                find();
-                replace();
-            }
+        WidgetUtil(btn_replace[0]).addSelectionListener(e -> replace());
+        WidgetUtil(btn_replaceAll[0]).addSelectionListener(e -> replaceAll());
+        WidgetUtil(btn_findAndReplace[0]).addSelectionListener(e -> {
+            replace();
+            find();
+            replace();
         });
 
         txt_replace[0].addFocusListener(new FocusListener() {
@@ -159,30 +136,27 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        WidgetUtil(rb_selectedLines[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                try {
-                    if (rb_selectedLines[0].getSelection()) {
-                        scopeAll = false;
+        WidgetUtil(rb_selectedLines[0]).addSelectionListener(e -> {
+            try {
+                if (rb_selectedLines[0].getSelection()) {
+                    scopeAll = false;
 
-                        {
-                            int offset = textComposite.getSelectionRange().x;
-                            selectionStart = textComposite.getOffsetAtLine(offset > -1 ? textComposite.getLineAtOffset(offset) : offset * -1);
-                        }
-
-                        {
-                            int offset = textComposite.getSelectionRange().x + textComposite.getSelectionRange().y;
-                            selectionEnd = textComposite.getOffsetAtLine((offset > -1 ? textComposite.getLineAtOffset(offset) : offset * -1) + 1);
-                        }
-
-                        textComposite.setSelectionRange(selectionStart, selectionEnd - selectionStart);
-                    } else {
-                        scopeAll = true;
+                    {
+                        int offset1 = textComposite.getSelectionRange().x;
+                        selectionStart = textComposite.getOffsetAtLine(offset1 > -1 ? textComposite.getLineAtOffset(offset1) : offset1 * -1);
                     }
-                } catch (IllegalArgumentException iae) {
 
+                    {
+                        int offset2 = textComposite.getSelectionRange().x + textComposite.getSelectionRange().y;
+                        selectionEnd = textComposite.getOffsetAtLine((offset2 > -1 ? textComposite.getLineAtOffset(offset2) : offset2 * -1) + 1);
+                    }
+
+                    textComposite.setSelectionRange(selectionStart, selectionEnd - selectionStart);
+                } else {
+                    scopeAll = true;
                 }
+            } catch (IllegalArgumentException iae) {
+
             }
         });
 

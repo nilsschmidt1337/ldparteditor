@@ -18,9 +18,7 @@ package org.nschmidt.ldparteditor.dialogs.copy;
 import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 
 /**
  *
@@ -48,26 +46,17 @@ public class CopyDialog extends CopyDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_1[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                setReturnCode(IDialogConstants.OK_ID);
-                close();
-            }
+        WidgetUtil(btn_1[0]).addSelectionListener(e -> {
+            setReturnCode(IDialogConstants.OK_ID);
+            close();
         });
-        WidgetUtil(btn_2[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                setReturnCode(IDialogConstants.YES_ID);
-                close();
-            }
+        WidgetUtil(btn_2[0]).addSelectionListener(e -> {
+            setReturnCode(IDialogConstants.YES_ID);
+            close();
         });
-        WidgetUtil(btn_3[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                setReturnCode(IDialogConstants.NO_ID);
-                close();
-            }
+        WidgetUtil(btn_3[0]).addSelectionListener(e -> {
+            setReturnCode(IDialogConstants.NO_ID);
+            close();
         });
         return super.open();
     }

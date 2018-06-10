@@ -21,12 +21,10 @@ import java.io.File;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -80,107 +78,98 @@ public class StartupDialog extends StartupDesign {
         super.create();
         btn_ok[0].setEnabled(false);
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_browseLdrawPath[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                DirectoryDialog dlg = new DirectoryDialog(getShell());
+        WidgetUtil(btn_browseLdrawPath[0]).addSelectionListener(e -> {
+            DirectoryDialog dlg = new DirectoryDialog(getShell());
 
-                // Set the initial filter to null
-                dlg.setFilterPath(null);
+            // Set the initial filter to null
+            dlg.setFilterPath(null);
 
-                // Change the title bar text
-                dlg.setText("Define the LDraw Folder Path:"); //$NON-NLS-1$ NO_I18N!!
+            // Change the title bar text
+            dlg.setText("Define the LDraw Folder Path:"); //$NON-NLS-1$ NO_I18N!!
 
-                // Customizable message displayed in the dialog
-                dlg.setMessage("Select a Directory"); //$NON-NLS-1$ NO_I18N!!
+            // Customizable message displayed in the dialog
+            dlg.setMessage("Select a Directory"); //$NON-NLS-1$ NO_I18N!!
 
-                // Calling open() will open and run the dialog.
-                // It will return the selected directory, or
-                // null if user cancels
-                String dir = dlg.open();
-                if (dir != null) {
-                    // Set the text box to the new selection
-                    txt_ldrawPath[0].setText(dir);
-                    ldrawPath = dir;
-                    path1valid = FileHelper.canReadFromPath(ldrawPath);
+            // Calling open() will open and run the dialog.
+            // It will return the selected directory, or
+            // null if user cancels
+            String dir = dlg.open();
+            if (dir != null) {
+                // Set the text box to the new selection
+                txt_ldrawPath[0].setText(dir);
+                ldrawPath = dir;
+                path1valid = FileHelper.canReadFromPath(ldrawPath);
 
-                    if (path1valid && unofficialPath.isEmpty()) {
-                        if (ldrawPath.endsWith(File.separator)) {
-                            unofficialPath = ldrawPath + "Unofficial"; //$NON-NLS-1$
-                        } else {
-                            unofficialPath = ldrawPath + File.separator + "Unofficial"; //$NON-NLS-1$
-                        }
-                        if (FileHelper.canWriteToPath(ldrawPath)) {
-                            try {
-                                File unofficialFolder = new File(unofficialPath);
-                                if (!unofficialFolder.exists()) {
-                                    unofficialFolder.mkdir();
-                                }
-                                path3valid = true;
-                            } catch (SecurityException s) {
-                                NLogger.error(getClass(), "Failed to create unofficial library folder."); //$NON-NLS-1$
-                                unofficialPath = ""; //$NON-NLS-1$
-                            }
-                        }
-                        txt_unofficialPath[0].setText(unofficialPath);
+                if (path1valid && unofficialPath.isEmpty()) {
+                    if (ldrawPath.endsWith(File.separator)) {
+                        unofficialPath = ldrawPath + "Unofficial"; //$NON-NLS-1$
+                    } else {
+                        unofficialPath = ldrawPath + File.separator + "Unofficial"; //$NON-NLS-1$
                     }
-
-                    btn_ok[0].setEnabled(path1valid && path2valid && path3valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
+                    if (FileHelper.canWriteToPath(ldrawPath)) {
+                        try {
+                            File unofficialFolder = new File(unofficialPath);
+                            if (!unofficialFolder.exists()) {
+                                unofficialFolder.mkdir();
+                            }
+                            path3valid = true;
+                        } catch (SecurityException s) {
+                            NLogger.error(getClass(), "Failed to create unofficial library folder."); //$NON-NLS-1$
+                            unofficialPath = ""; //$NON-NLS-1$
+                        }
+                    }
+                    txt_unofficialPath[0].setText(unofficialPath);
                 }
+
+                btn_ok[0].setEnabled(path1valid && path2valid && path3valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
             }
         });
-        WidgetUtil(btn_browseAuthoringPath[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                DirectoryDialog dlg = new DirectoryDialog(getShell());
+        WidgetUtil(btn_browseAuthoringPath[0]).addSelectionListener(e -> {
+            DirectoryDialog dlg = new DirectoryDialog(getShell());
 
-                // Set the initial filter to null
-                dlg.setFilterPath(null);
+            // Set the initial filter to null
+            dlg.setFilterPath(null);
 
-                // Change the title bar text
-                dlg.setText("Where is your parts authoring folder located?"); //$NON-NLS-1$ NO_I18N!!
+            // Change the title bar text
+            dlg.setText("Where is your parts authoring folder located?"); //$NON-NLS-1$ NO_I18N!!
 
-                // Customizable message displayed in the dialog
-                dlg.setMessage("Select a Directory"); //$NON-NLS-1$ NO_I18N!!
+            // Customizable message displayed in the dialog
+            dlg.setMessage("Select a Directory"); //$NON-NLS-1$ NO_I18N!!
 
-                // Calling open() will open and run the dialog.
-                // It will return the selected directory, or
-                // null if user cancels
-                String dir = dlg.open();
-                if (dir != null) {
-                    // Set the text box to the new selection
-                    txt_partAuthoringPath[0].setText(dir);
-                    partAuthoringPath = dir;
-                    path2valid = FileHelper.canReadFromPath(partAuthoringPath) && FileHelper.canWriteToPath(partAuthoringPath);
-                    btn_ok[0].setEnabled(path1valid && path2valid && path3valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
-                }
+            // Calling open() will open and run the dialog.
+            // It will return the selected directory, or
+            // null if user cancels
+            String dir = dlg.open();
+            if (dir != null) {
+                // Set the text box to the new selection
+                txt_partAuthoringPath[0].setText(dir);
+                partAuthoringPath = dir;
+                path2valid = FileHelper.canReadFromPath(partAuthoringPath) && FileHelper.canWriteToPath(partAuthoringPath);
+                btn_ok[0].setEnabled(path1valid && path2valid && path3valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
             }
         });
-        WidgetUtil(btn_browseUnofficialPath[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                DirectoryDialog dlg = new DirectoryDialog(getShell());
+        WidgetUtil(btn_browseUnofficialPath[0]).addSelectionListener(e -> {
+            DirectoryDialog dlg = new DirectoryDialog(getShell());
 
-                // Set the initial filter to null
-                dlg.setFilterPath(null);
+            // Set the initial filter to null
+            dlg.setFilterPath(null);
 
-                // Change the title bar text
-                dlg.setText("Where is your unofficial parts folder located?"); //$NON-NLS-1$ NO_I18N!!
+            // Change the title bar text
+            dlg.setText("Where is your unofficial parts folder located?"); //$NON-NLS-1$ NO_I18N!!
 
-                // Customizable message displayed in the dialog
-                dlg.setMessage("Select a Directory"); //$NON-NLS-1$ NO_I18N!!
+            // Customizable message displayed in the dialog
+            dlg.setMessage("Select a Directory"); //$NON-NLS-1$ NO_I18N!!
 
-                // Calling open() will open and run the dialog.
-                // It will return the selected directory, or
-                // null if user cancels
-                String dir = dlg.open();
-                if (dir != null) {
-                    // Set the text box to the new selection
-                    txt_unofficialPath[0].setText(dir);
-                    unofficialPath = dir;
-                    path3valid = FileHelper.canReadFromPath(unofficialPath);
-                    btn_ok[0].setEnabled(path1valid && path2valid && path3valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
-                }
+            // Calling open() will open and run the dialog.
+            // It will return the selected directory, or
+            // null if user cancels
+            String dir = dlg.open();
+            if (dir != null) {
+                // Set the text box to the new selection
+                txt_unofficialPath[0].setText(dir);
+                unofficialPath = dir;
+                path3valid = FileHelper.canReadFromPath(unofficialPath);
+                btn_ok[0].setEnabled(path1valid && path2valid && path3valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
             }
         });
         txt_ldrawUserName[0].addListener(SWT.Modify, e -> {

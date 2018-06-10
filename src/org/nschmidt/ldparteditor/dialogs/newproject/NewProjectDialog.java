@@ -20,10 +20,8 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -60,54 +58,48 @@ public class NewProjectDialog extends NewProjectDesign {
         });
         final boolean[] firstchoose = new boolean[1];
         firstchoose[0] = true;
-        WidgetUtil(btn_browseProjectPath[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                DirectoryDialog dlg = new DirectoryDialog(getShell());
-                String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
+        WidgetUtil(btn_browseProjectPath[0]).addSelectionListener(e -> {
+            DirectoryDialog dlg = new DirectoryDialog(getShell());
+            String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
 
-                // Set the initial filter path according
-                // to the authoring folder if the project path is Project.PROJECT,
-                // else choose the parent folder of the last opened project.
-                if (firstchoose[0] && Project.getProjectPath().equals(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath())) {
-                    dlg.setFilterPath(authorFolder);
-                    firstchoose[0] = false;
-                } else {
-                    dlg.setFilterPath(projectPath);
-                }
+            // Set the initial filter path according
+            // to the authoring folder if the project path is Project.PROJECT,
+            // else choose the parent folder of the last opened project.
+            if (firstchoose[0] && Project.getProjectPath().equals(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath())) {
+                dlg.setFilterPath(authorFolder);
+                firstchoose[0] = false;
+            } else {
+                dlg.setFilterPath(projectPath);
+            }
 
-                // Change the title bar text
-                dlg.setText(I18n.PROJECT_DefineProjectLocation);
+            // Change the title bar text
+            dlg.setText(I18n.PROJECT_DefineProjectLocation);
 
-                // Customizable message displayed in the dialog
-                dlg.setMessage(I18n.DIALOG_DirectorySelect);
+            // Customizable message displayed in the dialog
+            dlg.setMessage(I18n.DIALOG_DirectorySelect);
 
-                // Calling open() will open and run the dialog.
-                // It will return the selected directory, or
-                // null if user cancels
-                String dir = dlg.open();
-                if (dir != null) {
-                    String lcdir = dir.toLowerCase();
-                    if (lcdir.startsWith(authorFolder.toLowerCase()) && !lcdir.endsWith(File.separator + "parts") //$NON-NLS-1$
-                            && !lcdir.endsWith(File.separator + "s") //$NON-NLS-1$
-                            && !lcdir.endsWith(File.separator + "p") //$NON-NLS-1$
-                            && !dir.endsWith(File.separator + "48")) { //$NON-NLS-1$
-                        // Set the text box to the new selection
-                        txt_projectPath[0].setText(dir.substring(authorFolder.length()));
-                        projectPath = authorFolder + txt_projectPath[0].getText();
-                    } // do nothing otherwise
-                } else {
-                    txt_projectPath[0].setText(""); //$NON-NLS-1$
-                    projectPath = authorFolder;
-                }
+            // Calling open() will open and run the dialog.
+            // It will return the selected directory, or
+            // null if user cancels
+            String dir = dlg.open();
+            if (dir != null) {
+                String lcdir = dir.toLowerCase();
+                if (lcdir.startsWith(authorFolder.toLowerCase()) && !lcdir.endsWith(File.separator + "parts") //$NON-NLS-1$
+                        && !lcdir.endsWith(File.separator + "s") //$NON-NLS-1$
+                        && !lcdir.endsWith(File.separator + "p") //$NON-NLS-1$
+                        && !dir.endsWith(File.separator + "48")) { //$NON-NLS-1$
+                    // Set the text box to the new selection
+                    txt_projectPath[0].setText(dir.substring(authorFolder.length()));
+                    projectPath = authorFolder + txt_projectPath[0].getText();
+                } // do nothing otherwise
+            } else {
+                txt_projectPath[0].setText(""); //$NON-NLS-1$
+                projectPath = authorFolder;
             }
         });
-        WidgetUtil(btn_ok[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                Project.setTempProjectName(projectName);
-                Project.setTempProjectPath(projectPath + File.separator + projectName);
-            }
+        WidgetUtil(btn_ok[0]).addSelectionListener(e -> {
+            Project.setTempProjectName(projectName);
+            Project.setTempProjectPath(projectPath + File.separator + projectName);
         });
         return super.open();
     }

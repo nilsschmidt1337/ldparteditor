@@ -19,11 +19,9 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.Txt2DatSettings;
 
 /**
@@ -56,18 +54,15 @@ public class Txt2DatDialog extends Txt2DatDesign {
         spn_flatness[0].addValueChangeListener(spn -> ts.setFlatness(spn.getValue()));
         spn_fontHeight[0].addValueChangeListener(spn -> ts.setFontHeight(spn.getValue()));
         spn_deltaAngle[0].addValueChangeListener(spn -> ts.setDeltaAngle(spn.getValue()));
-        WidgetUtil(btn_chooseFont[0]).addXSelectionListener(new WidgetSelectionListener() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                final FontDialog fd = new FontDialog(getShell());
-                final FontData data = ts.getFontData();
-                fd.setFontList(new FontData[]{data});
-                if (ts.getRGB() != null) {
-                    fd.setRGB(ts.getRGB());
-                }
-                ts.setFontData(fd.open());
-                ts.setRGB(fd.getRGB());
+        WidgetUtil(btn_chooseFont[0]).addSelectionListener(e -> {
+            final FontDialog fd = new FontDialog(getShell());
+            final FontData data = ts.getFontData();
+            fd.setFontList(new FontData[]{data});
+            if (ts.getRGB() != null) {
+                fd.setRGB(ts.getRGB());
             }
+            ts.setFontData(fd.open());
+            ts.setRGB(fd.getRGB());
         });
         txt_text[0].addModifyListener(new ModifyListener() {
             @Override
