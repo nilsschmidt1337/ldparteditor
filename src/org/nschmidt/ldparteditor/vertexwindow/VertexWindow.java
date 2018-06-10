@@ -15,14 +15,14 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.vertexwindow;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Point;
@@ -106,33 +106,24 @@ public class VertexWindow extends ApplicationWindow {
         spn_X[0].addValueChangeListener(spn -> changeVertex());
         spn_Y[0].addValueChangeListener(spn -> changeVertex());
         spn_Z[0].addValueChangeListener(spn -> changeVertex());
-        btn_Paste[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
-                if (clipboardVertex != null) {
-                    updateVertex(clipboardVertex);
-                    changeVertex();
-                }
+        WidgetUtil(btn_Paste[0]).addSelectionListener(e -> {
+            final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
+            if (clipboardVertex != null) {
+                updateVertex(clipboardVertex);
+                changeVertex();
             }
         });
-        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                VertexManager.copySingleVertexIntoClipboard(selectedVertex);
-            }
+        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> {
+            VertexManager.copySingleVertexIntoClipboard(selectedVertex);
         });
-        btn_Merge[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
-                if (lastHoveredC3d == null) return;
-                final DatFile df = lastHoveredC3d.getLockableDatFileReference();
-                final VertexManager vm = df.getVertexManager();
-                vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
-                vm.setVertexToReplace(selectedVertex);
-                lastHoveredC3d.getMouse().checkSyncEditMode(vm, df);
-            }
+        WidgetUtil(btn_Merge[0]).addSelectionListener(e -> {
+            final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
+            if (lastHoveredC3d == null) return;
+            final DatFile df = lastHoveredC3d.getLockableDatFileReference();
+            final VertexManager vm = df.getVertexManager();
+            vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
+            vm.setVertexToReplace(selectedVertex);
+            lastHoveredC3d.getMouse().checkSyncEditMode(vm, df);
         });
     }
 
