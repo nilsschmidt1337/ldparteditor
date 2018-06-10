@@ -21,8 +21,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
@@ -53,13 +51,10 @@ public class NewProjectDialog extends NewProjectDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        txt_projectName[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                String txt = txt_projectName[0].getText().toLowerCase();
-                btn_ok[0].setEnabled(FileHelper.isFilenameValid(txt) && !txt.equals("48") && !txt.equalsIgnoreCase("parts") && !txt.equalsIgnoreCase("s") && !txt.equalsIgnoreCase("p")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                projectName = txt_projectName[0].getText();
-            }
+        txt_projectName[0].addListener(SWT.Modify, e -> {
+            String txt = txt_projectName[0].getText().toLowerCase();
+            btn_ok[0].setEnabled(FileHelper.isFilenameValid(txt) && !txt.equals("48") && !txt.equalsIgnoreCase("parts") && !txt.equalsIgnoreCase("s") && !txt.equalsIgnoreCase("p")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            projectName = txt_projectName[0].getText();
         });
         final boolean[] firstchoose = new boolean[1];
         firstchoose[0] = true;

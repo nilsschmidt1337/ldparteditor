@@ -6,8 +6,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
@@ -142,44 +140,29 @@ public class OptionsDialog extends OptionsDesign {
                 }
             }
         });
-        txt_ldrawUserName[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                String ldrawUserName = txt_ldrawUserName[0].getText();
-                userSettingState.setLdrawUserName(ldrawUserName);
+        txt_ldrawUserName[0].addListener(SWT.Modify, e -> {
+            String ldrawUserName = txt_ldrawUserName[0].getText();
+            userSettingState.setLdrawUserName(ldrawUserName);
+        });
+        txt_realName[0].addListener(SWT.Modify, e -> {
+            String realName = txt_realName[0].getText();
+            userSettingState.setRealUserName(realName);
+        });
+        cmb_license[0].addListener(SWT.Modify, e -> {
+            String license = cmb_license[0].getText();
+            userSettingState.setLicense(license);
+        });
+        cmb_locale[0].addListener(SWT.Modify, e -> {
+            if (localeMap.containsKey(cmb_locale[0].getText())) {
+                Locale locale = localeMap.get(cmb_locale[0].getText());
+                userSettingState.setLocale(locale);
+                MyLanguage.LOCALE = locale;
             }
         });
-        txt_realName[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                String realName = txt_realName[0].getText();
-                userSettingState.setRealUserName(realName);
-            }
-        });
-        cmb_license[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                String license = cmb_license[0].getText();
-                userSettingState.setLicense(license);
-            }
-        });
-        cmb_locale[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                if (localeMap.containsKey(cmb_locale[0].getText())) {
-                    Locale locale = localeMap.get(cmb_locale[0].getText());
-                    userSettingState.setLocale(locale);
-                    MyLanguage.LOCALE = locale;
-                }
-            }
-        });
-        cmb_textWinArr[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                final int index = cmb_textWinArr[0].getSelectionIndex();
-                if (index != -1) {
-                    userSettingState.setTextWinArr(index);
-                }
+        cmb_textWinArr[0].addListener(SWT.Modify, e -> {
+            final int index = cmb_textWinArr[0].getSelectionIndex();
+            if (index != -1) {
+                userSettingState.setTextWinArr(index);
             }
         });
         spn_coplanarityWarning[0].addValueChangeListener(spn -> {

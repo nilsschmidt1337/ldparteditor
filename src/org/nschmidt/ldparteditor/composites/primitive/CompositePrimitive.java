@@ -53,7 +53,6 @@ import org.eclipse.swt.opengl.GLData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL;
@@ -220,176 +219,130 @@ public class CompositePrimitive extends Composite {
             }
         });
         // MARK Resize
-        canvas.addListener(SWT.Resize, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                canvas.setCurrent();
-                GL.setCapabilities(capabilities);
-                Display.getCurrent().timerExec(500, new Runnable() {
-                    @Override
-                    public void run() {
-                        openGL.drawScene(-1, -1);
-                    }
-                });
-            }
-        });
-
-        canvas.addListener(SWT.MouseDown, new Listener() {
-            @Override
-            // MARK MouseDown
-            public void handleEvent(Event event) {
-                mouseDown(event);
-            }
-        });
-
-        canvas.addListener(SWT.MouseDoubleClick, new Listener() {
-            @Override
-            // MARK MouseDown
-            public void handleEvent(Event event) {
-                mouse_button_pressed = event.button;
-                old_mouse_position.set(event.x, event.y);
-                switch (event.button) {
-                case MouseButton.LEFT:
-                    setSelectedPrimitive(getFocusedPrimitive());
-                    if (getSelectedPrimitive() != null) getSelectedPrimitive().toggle();
-                    break;
-                case MouseButton.MIDDLE:
-                    break;
-                case MouseButton.RIGHT:
-                    Matrix4f.load(getTranslation(), old_viewport_translation);
-                    break;
-                default:
+        canvas.addListener(SWT.Resize, event -> {
+            canvas.setCurrent();
+            GL.setCapabilities(capabilities);
+            Display.getCurrent().timerExec(500, new Runnable() {
+                @Override
+                public void run() {
+                    openGL.drawScene(-1, -1);
                 }
-                openGL.drawScene(event.x, event.y);
-                Editor3DWindow.getWindow().regainFocus();
-            }
+            });
         });
 
-        canvas.addListener(SWT.KeyDown, new Listener() {
-            @Override
-            // MARK KeyDown
-            public void handleEvent(Event event) {
-                keyboard.setStates(event.keyCode, SWT.KeyDown, event);
+        canvas.addListener(SWT.MouseDown, event -> mouseDown(event));
+
+        canvas.addListener(SWT.MouseDoubleClick, event -> {
+            mouse_button_pressed = event.button;
+            old_mouse_position.set(event.x, event.y);
+            switch (event.button) {
+            case MouseButton.LEFT:
+                setSelectedPrimitive(getFocusedPrimitive());
+                if (getSelectedPrimitive() != null) getSelectedPrimitive().toggle();
+                break;
+            case MouseButton.MIDDLE:
+                break;
+            case MouseButton.RIGHT:
+                Matrix4f.load(getTranslation(), old_viewport_translation);
+                break;
+            default:
             }
+            openGL.drawScene(event.x, event.y);
+            Editor3DWindow.getWindow().regainFocus();
         });
 
-        canvas.addListener(SWT.KeyUp, new Listener() {
-            @Override
-            // MARK KeyUp
-            public void handleEvent(Event event) {
-                keyboard.setStates(event.keyCode, SWT.KeyUp, event);
-            }
-        });
+        canvas.addListener(SWT.KeyDown, event -> keyboard.setStates(event.keyCode, SWT.KeyDown, event));
 
-        canvas.addListener(SWT.MouseMove, new Listener() {
-            @Override
-            // MARK MouseMove
-            public void handleEvent(Event event) {
-                canvas.forceFocus();
-                if (!stopDraw()) dontRefresh.set(true);
-                {
-                    Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
-                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(Cocoa.isCocoa ? I18n.E3D_RotateViewHintMac : I18n.E3D_RotateViewHint);
-                    String tooltipText = formatter.format(messageArguments);
-                    if (!tooltipText.equals(canvas.getToolTipText())) {
-                        canvas.setToolTipText(tooltipText);
-                    }
+        canvas.addListener(SWT.KeyUp, event -> keyboard.setStates(event.keyCode, SWT.KeyUp, event));
+
+        canvas.addListener(SWT.MouseMove, event -> {
+            canvas.forceFocus();
+            if (!stopDraw()) dontRefresh.set(true);
+            {
+                Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
+                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.applyPattern(Cocoa.isCocoa ? I18n.E3D_RotateViewHintMac : I18n.E3D_RotateViewHint);
+                String tooltipText = formatter.format(messageArguments);
+                if (!tooltipText.equals(canvas.getToolTipText())) {
+                    canvas.setToolTipText(tooltipText);
                 }
-                mouse_position.set(event.x, event.y);
-                switch (mouse_button_pressed) {
-                case MouseButton.LEFT:
-                    break;
-                case MouseButton.MIDDLE:
-                    float rx = 0;
-                    float ry = 0;
-                    rx = (event.x - old_mouse_position.x) / rotationWidth * (float) Math.PI;
-                    ry = (old_mouse_position.y - event.y) / rotationWidth * (float) Math.PI;
-                    Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0, 0, 1.0f);
-                    Vector4f yAxis4f_rotation = new Vector4f(0, 1.0f, 0, 1.0f);
-                    Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
-                    Matrix4f.transform(ovr_inverse, xAxis4f_rotation, xAxis4f_rotation);
-                    Matrix4f.transform(ovr_inverse, yAxis4f_rotation, yAxis4f_rotation);
-                    Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
-                    Vector3f yAxis3f_rotation = new Vector3f(yAxis4f_rotation.x, yAxis4f_rotation.y, yAxis4f_rotation.z);
-                    Matrix4f.rotate(rx, yAxis3f_rotation, old_viewport_rotation, viewport_rotation);
-                    Matrix4f.rotate(ry, xAxis3f_rotation, viewport_rotation, viewport_rotation);
-                    break;
-                case MouseButton.RIGHT:
-                    float dx = 0;
-                    float dy = 0;
-                    dx = (event.x - old_mouse_position.x) / viewport_pixel_per_ldu;
-                    dy = (event.y - old_mouse_position.y) / viewport_pixel_per_ldu;
-                    Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
-                    Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-                    Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
-                    Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
-                    Matrix4f.load(old_viewport_translation, viewport_translation);
-                    Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
-                    Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
-
-                    // if (viewport_translation.m30 > 0f) viewport_translation.m30 = 0f;
-
-                    viewport_translation.m30 = 0f;
-                    if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
-                    if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
-                    break;
-                default:
-                }
-                openGL.drawScene(event.x, event.y);
             }
+            mouse_position.set(event.x, event.y);
+            switch (mouse_button_pressed) {
+            case MouseButton.LEFT:
+                break;
+            case MouseButton.MIDDLE:
+                float rx = 0;
+                float ry = 0;
+                rx = (event.x - old_mouse_position.x) / rotationWidth * (float) Math.PI;
+                ry = (old_mouse_position.y - event.y) / rotationWidth * (float) Math.PI;
+                Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0, 0, 1.0f);
+                Vector4f yAxis4f_rotation = new Vector4f(0, 1.0f, 0, 1.0f);
+                Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
+                Matrix4f.transform(ovr_inverse, xAxis4f_rotation, xAxis4f_rotation);
+                Matrix4f.transform(ovr_inverse, yAxis4f_rotation, yAxis4f_rotation);
+                Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
+                Vector3f yAxis3f_rotation = new Vector3f(yAxis4f_rotation.x, yAxis4f_rotation.y, yAxis4f_rotation.z);
+                Matrix4f.rotate(rx, yAxis3f_rotation, old_viewport_rotation, viewport_rotation);
+                Matrix4f.rotate(ry, xAxis3f_rotation, viewport_rotation, viewport_rotation);
+                break;
+            case MouseButton.RIGHT:
+                float dx = 0;
+                float dy = 0;
+                dx = (event.x - old_mouse_position.x) / viewport_pixel_per_ldu;
+                dy = (event.y - old_mouse_position.y) / viewport_pixel_per_ldu;
+                Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
+                Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+                Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
+                Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+                Matrix4f.load(old_viewport_translation, viewport_translation);
+                Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
+                Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+
+                // if (viewport_translation.m30 > 0f) viewport_translation.m30 = 0f;
+
+                viewport_translation.m30 = 0f;
+                if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
+                if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
+                break;
+            default:
+            }
+            openGL.drawScene(event.x, event.y);
         });
 
-        canvas.addListener(SWT.MouseUp, new Listener() {
-            @Override
-            // MARK MouseUp
-            public void handleEvent(Event event) {
-                mouseUp(event);
-            }
-        });
+        canvas.addListener(SWT.MouseUp, event -> mouseUp(event));
+        canvas.addListener(SWT.Paint, event -> openGL.drawScene(-1, -1));
+        canvas.addListener(SWT.MouseVerticalWheel, event -> {
 
-        canvas.addListener(SWT.Paint, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                openGL.drawScene(-1, -1);
-            }
-        });
+            if (Cocoa.checkCtrlOrCmdPressed(event.stateMask)) {
+                if (event.count < 0)
+                    zoomIn();
+                else
+                    zoomOut();
+            } else {
+                float dy = 0;
 
-        canvas.addListener(SWT.MouseVerticalWheel, new Listener() {
-            @Override
-            // MARK MouseVerticalWheel
-            public void handleEvent(Event event) {
+                Matrix4f.load(getTranslation(), old_viewport_translation);
 
-                if (Cocoa.checkCtrlOrCmdPressed(event.stateMask)) {
-                    if (event.count < 0)
-                        zoomIn();
-                    else
-                        zoomOut();
+                if (event.count < 0) {
+                    dy = -17f /  viewport_pixel_per_ldu;
                 } else {
-                    float dy = 0;
-
-                    Matrix4f.load(getTranslation(), old_viewport_translation);
-
-                    if (event.count < 0) {
-                        dy = -17f /  viewport_pixel_per_ldu;
-                    } else {
-                        dy = 17f /  viewport_pixel_per_ldu;
-                    }
-
-                    Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-                    Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
-                    Matrix4f.load(old_viewport_translation, viewport_translation);
-                    Matrix4f.translate(yAxis3, old_viewport_translation, viewport_translation);
-
-                    if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
-                    if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
+                    dy = 17f /  viewport_pixel_per_ldu;
                 }
 
-                openGL.drawScene(event.x, event.y);
+                Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+                Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+                Matrix4f.load(old_viewport_translation, viewport_translation);
+                Matrix4f.translate(yAxis3, old_viewport_translation, viewport_translation);
 
-
+                if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
+                if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
             }
+
+            openGL.drawScene(event.x, event.y);
+
+
         });
 
         openGL.init();

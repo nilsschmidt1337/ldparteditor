@@ -18,8 +18,6 @@ package org.nschmidt.ldparteditor.dialogs.snapshot;
 import java.util.ArrayList;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.MemorySnapshot;
 
@@ -48,16 +46,12 @@ public class SnapshotDialog extends SnapshotDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        cmb_snapshot[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                final int index = cmb_snapshot[0].getSelectionIndex();
-                if (index > -1) {
-                    selection[0] = snapshots.get(snapshots.size() - index - 1);
-                }
+        cmb_snapshot[0].addListener(SWT.Selection, event -> {
+            final int index = cmb_snapshot[0].getSelectionIndex();
+            if (index > -1) {
+                selection[0] = snapshots.get(snapshots.size() - index - 1);
             }
         });
         return super.open();
     }
-
 }

@@ -16,8 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.symsplitter;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.SymSplitterSettings;
 
@@ -47,44 +45,13 @@ public class SymSplitterDialog extends SymSplitterDesign {
         super.create();
         // MARK All final listeners will be configured here..
         spn_offset[0].addValueChangeListener(spn -> ss.setOffset(spn.getValue()));
-        cmb_scope[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setScope(cmb_scope[0].getSelectionIndex());
-            }
-        });
-        cmb_splitPlane[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setSplitPlane(cmb_splitPlane[0].getSelectionIndex());
-            }
-        });
-        cmb_hide[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setHideLevel(cmb_hide[0].getSelectionIndex());
-            }
-        });
-        cmb_colourise[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setColourise(cmb_colourise[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_cutAcross[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setCutAcross(cmb_cutAcross[0].getSelectionIndex() == 1);
-            }
-        });
-        cmb_validate[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                ss.setValidate(cmb_validate[0].getSelectionIndex() == 1);
-            }
-        });
+        cmb_scope[0].addListener(SWT.Selection, event -> ss.setScope(cmb_scope[0].getSelectionIndex()));
+        cmb_splitPlane[0].addListener(SWT.Selection, event -> ss.setSplitPlane(cmb_splitPlane[0].getSelectionIndex()));
+        cmb_hide[0].addListener(SWT.Selection, event -> ss.setHideLevel(cmb_hide[0].getSelectionIndex()));
+        cmb_colourise[0].addListener(SWT.Selection, event -> ss.setColourise(cmb_colourise[0].getSelectionIndex() == 1));
+        cmb_cutAcross[0].addListener(SWT.Selection, event -> ss.setCutAcross(cmb_cutAcross[0].getSelectionIndex() == 1));
+        cmb_validate[0].addListener(SWT.Selection, event -> ss.setValidate(cmb_validate[0].getSelectionIndex() == 1));
         spn_precision[0].addValueChangeListener(spn -> ss.setPrecision(spn.getValue()));
         return super.open();
     }
-
 }

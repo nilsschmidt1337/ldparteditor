@@ -32,8 +32,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Widget;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -222,31 +220,27 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        txt_data[0].addListener(SWT.KeyDown, new Listener() {
-            @Override
-            // MARK KeyDown (Quick Fix)
-            public void handleEvent(Event event) {
+        txt_data[0].addListener(SWT.KeyDown, event -> {
 
-                final int keyCode = event.keyCode;
-                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
-                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
-                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
-                StringBuilder sb = new StringBuilder();
-                sb.append(keyCode);
-                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                TextTask task = KeyStateManager.getTextTaskmap().get(sb.toString());
+            final int keyCode = event.keyCode;
+            final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
+            final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
+            final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+            StringBuilder sb = new StringBuilder();
+            sb.append(keyCode);
+            sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+            sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+            sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+            TextTask task = KeyStateManager.getTextTaskmap().get(sb.toString());
 
-                if (task != null) {
-                    ViewIdleManager.pause[0].compareAndSet(false, true);
-                    switch (task) {
-                    case EDITORTEXT_SELECTALL:
-                        txt_data[0].setSelection(0, txt_data[0].getText().length());
-                        break;
-                    default:
-                        break;
-                    }
+            if (task != null) {
+                ViewIdleManager.pause[0].compareAndSet(false, true);
+                switch (task) {
+                case EDITORTEXT_SELECTALL:
+                    txt_data[0].setSelection(0, txt_data[0].getText().length());
+                    break;
+                default:
+                    break;
                 }
             }
         });

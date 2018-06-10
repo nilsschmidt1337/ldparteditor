@@ -19,8 +19,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Sorter;
@@ -57,19 +55,8 @@ public class SortDialog extends SortDesign {
             }
         });
 
-        cmb_scope[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                scope = cmb_scope[0].getSelectionIndex();
-            }
-        });
-
-        cmb_sortCriteria[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                criteria = cmb_sortCriteria[0].getSelectionIndex();
-            }
-        });
+        cmb_scope[0].addListener(SWT.Selection, event -> scope = cmb_scope[0].getSelectionIndex());
+        cmb_sortCriteria[0].addListener(SWT.Selection, event -> criteria = cmb_sortCriteria[0].getSelectionIndex());
 
         btn_ignoreStructure[0].addSelectionListener(new SelectionAdapter() {
             @Override

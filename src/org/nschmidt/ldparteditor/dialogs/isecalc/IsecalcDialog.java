@@ -16,8 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.isecalc;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
 
@@ -46,13 +44,7 @@ public class IsecalcDialog extends IsecalcDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        cmb_scope[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                is.setScope(cmb_scope[0].getSelectionIndex());
-            }
-        });
+        cmb_scope[0].addListener(SWT.Selection, event -> is.setScope(cmb_scope[0].getSelectionIndex()));
         return super.open();
     }
-
 }

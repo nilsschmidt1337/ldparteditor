@@ -18,8 +18,6 @@ package org.nschmidt.ldparteditor.dialogs.round;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
@@ -71,15 +69,12 @@ public class RoundDialog extends RoundDesign {
                 onZ = cb_Zaxis[0].getSelection();
             }
         });
-        btn_ok[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                WorkbenchManager.getUserSettingState().setCoordsPrecision(spn_coords[0].getValue());
-                WorkbenchManager.getUserSettingState().setTransMatrixPrecision(spn_matrix[0].getValue());
-                WorkbenchManager.getUserSettingState().setRoundX(onX);
-                WorkbenchManager.getUserSettingState().setRoundY(onY);
-                WorkbenchManager.getUserSettingState().setRoundZ(onZ);
-            }
+        btn_ok[0].addListener(SWT.Selection, event -> {
+            WorkbenchManager.getUserSettingState().setCoordsPrecision(spn_coords[0].getValue());
+            WorkbenchManager.getUserSettingState().setTransMatrixPrecision(spn_matrix[0].getValue());
+            WorkbenchManager.getUserSettingState().setRoundX(onX);
+            WorkbenchManager.getUserSettingState().setRoundY(onY);
+            WorkbenchManager.getUserSettingState().setRoundZ(onZ);
         });
         return super.open();
     }

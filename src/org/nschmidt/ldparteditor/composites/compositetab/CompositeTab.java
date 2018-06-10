@@ -63,8 +63,6 @@ import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -852,382 +850,378 @@ public class CompositeTab extends CompositeTabDesign {
             }
         });
         final CompositeTab me = this;
-        compositeText[0].addListener(SWT.KeyDown, new Listener() {
-            @Override
-            // MARK KeyDown (Quick Fix)
-            public void handleEvent(Event event) {
+        compositeText[0].addListener(SWT.KeyDown, event -> {
 
-                final DatFile df = state.getFileNameObj();
-                final VertexManager vm = df.getVertexManager();
+            final DatFile df = state.getFileNameObj();
+            final VertexManager vm = df.getVertexManager();
 
-                vm.addSnapshot();
+            vm.addSnapshot();
 
-                final int keyCode = event.keyCode;
-                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
-                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
-                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
-                final boolean cmdPressed = (event.stateMask & SWT.COMMAND) != 0;
-                StringBuilder sb = new StringBuilder();
-                sb.append(keyCode);
-                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                TextTask task = KeyStateManager.getTextTaskmap().get(sb.toString());
+            final int keyCode = event.keyCode;
+            final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
+            final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
+            final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+            final boolean cmdPressed = (event.stateMask & SWT.COMMAND) != 0;
+            StringBuilder sb = new StringBuilder();
+            sb.append(keyCode);
+            sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+            sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+            sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+            sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
+            TextTask task = KeyStateManager.getTextTaskmap().get(sb.toString());
 
-                if (task != null) {
-                    ViewIdleManager.pause[0].compareAndSet(false, true);
+            if (task != null) {
+                ViewIdleManager.pause[0].compareAndSet(false, true);
 
-                    switch (task) {
-                    case EDITORTEXT_REPLACE_VERTEX:
-                        if (compositeText[0].getEditable()) {
-                            if (!vm.isUpdated()) return;
-                            VertexMarker.markTheVertex(state, compositeText[0], df);
-                            if (state.isReplacingVertex()) {
-                                if (state.window[0] == Editor3DWindow.getWindow()) {
-                                    Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEdit);
-                                    Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
-                                    Editor3DWindow.getStatusLabel().update();
-                                } else {
-                                    state.window[0].setStatus(I18n.EDITORTEXT_SyncEdit);
-                                }
-                            }
-                        }
-                        break;
-                    case EDITORTEXT_ESC:
-                        if (compositeText[0].getEditable()) {
-                            if (!vm.isUpdated()) return;
-                            state.setReplacingVertex(false);
-                            vm.setVertexToReplace(null);
-                            compositeText[0].redraw(0, 0, compositeText[0].getBounds().width, compositeText[0].getBounds().height, true);
+                switch (task) {
+                case EDITORTEXT_REPLACE_VERTEX:
+                    if (compositeText[0].getEditable()) {
+                        if (!vm.isUpdated()) return;
+                        VertexMarker.markTheVertex(state, compositeText[0], df);
+                        if (state.isReplacingVertex()) {
                             if (state.window[0] == Editor3DWindow.getWindow()) {
-                                Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEditDeactivated);
+                                Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEdit);
                                 Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                                 Editor3DWindow.getStatusLabel().update();
                             } else {
-                                state.window[0].setStatus(I18n.EDITORTEXT_SyncEditDeactivated);
+                                state.window[0].setStatus(I18n.EDITORTEXT_SyncEdit);
                             }
                         }
-                        break;
-                    case EDITORTEXT_QUICKFIX:
-                        if (compositeText[0].getEditable()) {
-                            if (!vm.isUpdated()) return;
-                            HashSet<TreeItem> items = new HashSet<TreeItem>();
-                            int offset = compositeText[0].getOffsetAtLine(Math.max(Math.min(state.currentLineIndex, compositeText[0].getLineCount() - 1), 0));
-                            for (TreeItem t : treeItem_Hints[0].getItems()) {
-                                if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                                    NLogger.debug(getClass(), "Found hint at {0}", t.getText(1)); //$NON-NLS-1$
-                                    items.add(t);
-                                }
-                            }
-                            for (TreeItem t : treeItem_Warnings[0].getItems()) {
-                                if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                                    NLogger.debug(getClass(), "Found warning at {0}", t.getText(1)); //$NON-NLS-1$
-                                    items.add(t);
-                                }
-                            }
-                            for (TreeItem t : treeItem_Errors[0].getItems()) {
-                                if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                                    NLogger.debug(getClass(), "Found error at {0}", t.getText(1)); //$NON-NLS-1$
-                                    items.add(t);
-                                }
-                            }
-                            for (TreeItem t : treeItem_Duplicates[0].getItems()) {
-                                if (!t.getText(0).isEmpty() && ((Integer) t.getData()).intValue() == offset) {
-                                    NLogger.debug(getClass(), "Found duplicate at {0}", t.getText(1)); //$NON-NLS-1$
-                                    items.add(t);
-                                }
-                            }
-
-                            QuickFixer.fixTextIssues(compositeText[0], items, df);
-                        }
-                        break;
-                    case EDITORTEXT_SELECTALL:
-                        compositeText[0].setSelection(0, compositeText[0].getText().length());
-                        break;
-                    case EDITORTEXT_INLINE:
-                    {
-                        if (!vm.isUpdated()) return;
-                        NLogger.debug(getClass(), "Inlining per action key.."); //$NON-NLS-1$
-                        final StyledText st = compositeText[0];
-                        int s1 = st.getSelectionRange().x;
-                        int s2 = s1 + st.getSelectionRange().y;
-                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                        fromLine++;
-                        toLine++;
-                        Inliner.withSubfileReference = false;
-                        Inliner.recursively = false;
-                        Inliner.noComment = false;
-                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                        Inliner.inline(st, fromLine, toLine, df);
-                        st.forceFocus();
-                        break;
-                    }
-                    case EDITORTEXT_ROUND:
-                    {
-                        if (!vm.isUpdated()) return;
-                        if (new RoundDialog(compositeText[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
-                        NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$
-                        final StyledText st = compositeText[0];
-                        int s1 = st.getSelectionRange().x;
-                        int s2 = s1 + st.getSelectionRange().y;
-                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                        fromLine++;
-                        toLine++;
-                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                        Rounder.round(state, st, fromLine, toLine, df);
-                        st.forceFocus();
-                        break;
-                    }
-                    case EDITORTEXT_REDO:
-                    {
-                        final Shell sh = compositeText[0].getDisplay().getActiveShell();
-                        if (vm.isUpdated() && sh != null) df.redo(sh, true);
                     }
                     break;
-                    case EDITORTEXT_UNDO:
-                    {
-                        final Shell sh = compositeText[0].getDisplay().getActiveShell();
-                        if (vm.isUpdated() && sh != null) df.undo(sh, true);
+                case EDITORTEXT_ESC:
+                    if (compositeText[0].getEditable()) {
+                        if (!vm.isUpdated()) return;
+                        state.setReplacingVertex(false);
+                        vm.setVertexToReplace(null);
+                        compositeText[0].redraw(0, 0, compositeText[0].getBounds().width, compositeText[0].getBounds().height, true);
+                        if (state.window[0] == Editor3DWindow.getWindow()) {
+                            Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEditDeactivated);
+                            Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
+                            Editor3DWindow.getStatusLabel().update();
+                        } else {
+                            state.window[0].setStatus(I18n.EDITORTEXT_SyncEditDeactivated);
+                        }
                     }
                     break;
-                    case EDITORTEXT_SAVE:
-                        if (!df.isReadOnly()) {
-                            final Shell sh = compositeText[0].getDisplay().getActiveShell();
-                            if (df.save()) {
-                                Editor3DWindow.getWindow().addRecentFile(df);
-                                Project.removeUnsavedFile(df);
-                                Editor3DWindow.getWindow().updateTree_unsavedEntries();
-                            } else if (sh != null) {
-                                MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_ERROR | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_Error);
-                                messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
-                                messageBoxError.open();
+                case EDITORTEXT_QUICKFIX:
+                    if (compositeText[0].getEditable()) {
+                        if (!vm.isUpdated()) return;
+                        HashSet<TreeItem> items = new HashSet<TreeItem>();
+                        int offset = compositeText[0].getOffsetAtLine(Math.max(Math.min(state.currentLineIndex, compositeText[0].getLineCount() - 1), 0));
+                        for (TreeItem t1 : treeItem_Hints[0].getItems()) {
+                            if (!t1.getText(0).isEmpty() && ((Integer) t1.getData()).intValue() == offset) {
+                                NLogger.debug(getClass(), "Found hint at {0}", t1.getText(1)); //$NON-NLS-1$
+                                items.add(t1);
                             }
                         }
-                        break;
-                    case EDITORTEXT_FIND:
-                    {
-                        final Shell sh = compositeText[0].getDisplay().getActiveShell();
-                        if (!vm.isUpdated() || sh == null) return;
-                        NLogger.debug(getClass(), "Find and Replace.."); //$NON-NLS-1$
-                        SearchWindow win = Editor3DWindow.getWindow().getSearchWindow();
-                        if (win != null) {
-                            win.close();
-                        }
-                        Editor3DWindow.getWindow().setSearchWindow(new SearchWindow(sh));
-                        Editor3DWindow.getWindow().getSearchWindow().run();
-                        Editor3DWindow.getWindow().getSearchWindow().setTextComposite(me);
-                        Editor3DWindow.getWindow().getSearchWindow().setScopeToAll();
-                        break;
-                    }
-                    case EDITORTEXT_INSERT_HISTORY:
-                    {
-                        if (!vm.isUpdated() || df.isReadOnly()) return;
-                        NLogger.debug(getClass(), "Insert history line.."); //$NON-NLS-1$
-
-                        final StyledText st = compositeText[0];
-                        int s1 = st.getSelectionRange().x;
-                        int s2 = s1 + st.getSelectionRange().y;
-                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                        if (fromLine != toLine) return;
-                        String currentLine = st.getLine(fromLine);
-                        fromLine++;
-                        NLogger.debug(getClass(), "Line {0}", fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), currentLine);
-
-                        final boolean needNewLine = StringHelper.isNotBlank(currentLine);
-
-                        final String username;
-                        if (WorkbenchManager.getUserSettingState().getLdrawUserName().trim().isEmpty()) {
-                            username = " {" + WorkbenchManager.getUserSettingState().getRealUserName() + "} ";    //$NON-NLS-1$//$NON-NLS-2$
-                        } else {
-                            username = " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "] ";    //$NON-NLS-1$//$NON-NLS-2$
-                        }
-
-                        final String historyLine = (needNewLine ? StringHelper.getLineDelimiter() : "") + "0 !HISTORY " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + username; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-
-                        int delta = 0;
-                        s1 = compositeText[0].getOffsetAtLine(toLine);
-                        if (needNewLine) {
-                            compositeText[0].setSelection(s1 + currentLine.length());
-                        } else {
-                            if (!currentLine.isEmpty()) {
-                                compositeText[0].setSelection(s1, s1 + currentLine.length());
-                                delta = historyLine.length();
+                        for (TreeItem t2 : treeItem_Warnings[0].getItems()) {
+                            if (!t2.getText(0).isEmpty() && ((Integer) t2.getData()).intValue() == offset) {
+                                NLogger.debug(getClass(), "Found warning at {0}", t2.getText(1)); //$NON-NLS-1$
+                                items.add(t2);
                             }
                         }
-                        compositeText[0].insert(historyLine);
-                        compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + historyLine.length() - delta);
-                        break;
-                    }
-                    case EDITORTEXT_INSERT_KEYWORD:
-                    {
-                        if (!vm.isUpdated() || df.isReadOnly()) return;
-                        NLogger.debug(getClass(), "Insert keyword line.."); //$NON-NLS-1$
-
-                        final StyledText st = compositeText[0];
-                        int s1 = st.getSelectionRange().x;
-                        int s2 = s1 + st.getSelectionRange().y;
-                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                        if (fromLine != toLine) return;
-                        String currentLine = st.getLine(fromLine);
-                        fromLine++;
-                        NLogger.debug(getClass(), "Line {0}", fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), currentLine);
-
-                        final boolean needNewLine = StringHelper.isNotBlank(currentLine);
-
-                        final String keywordLine = (needNewLine ? StringHelper.getLineDelimiter() : "") + "0 !KEYWORDS "; //$NON-NLS-1$ //$NON-NLS-2$
-
-                        int delta = 0;
-                        s1 = compositeText[0].getOffsetAtLine(toLine);
-                        if (needNewLine) {
-                            compositeText[0].setSelection(s1 + currentLine.length());
-                        } else {
-                            if (!currentLine.isEmpty()) {
-                                compositeText[0].setSelection(s1, s1 + currentLine.length());
-                                delta = keywordLine.length();
+                        for (TreeItem t3 : treeItem_Errors[0].getItems()) {
+                            if (!t3.getText(0).isEmpty() && ((Integer) t3.getData()).intValue() == offset) {
+                                NLogger.debug(getClass(), "Found error at {0}", t3.getText(1)); //$NON-NLS-1$
+                                items.add(t3);
                             }
                         }
-                        compositeText[0].insert(keywordLine);
-                        compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + keywordLine.length() - delta);
-                        break;
-                    }
-                    case EDITORTEXT_INSERT_REFERENCE:
-                    {
-                        if (!vm.isUpdated() || df.isReadOnly()) return;
-                        NLogger.debug(getClass(), "Insert TYPE 1 reference line.."); //$NON-NLS-1$
-
-                        final StyledText st = compositeText[0];
-                        int s1 = st.getSelectionRange().x;
-                        int s2 = s1 + st.getSelectionRange().y;
-                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                        if (fromLine != toLine) return;
-                        String currentLine = st.getLine(fromLine);
-                        fromLine++;
-                        NLogger.debug(getClass(), "Line {0}", fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), currentLine);
-
-                        final boolean needNewLine = StringHelper.isNotBlank(currentLine);
-
-                        final String referenceLine = (needNewLine ? StringHelper.getLineDelimiter() : "") + "1 16 0 0 0 1 0 0 0 1 0 0 0 1 "; //$NON-NLS-1$ //$NON-NLS-2$
-
-                        int delta = 0;
-                        s1 = compositeText[0].getOffsetAtLine(toLine);
-                        if (needNewLine) {
-                            compositeText[0].setSelection(s1 + currentLine.length());
-                        } else {
-                            if (!currentLine.isEmpty()) {
-                                compositeText[0].setSelection(s1, s1 + currentLine.length());
-                                delta = referenceLine.length();
+                        for (TreeItem t4 : treeItem_Duplicates[0].getItems()) {
+                            if (!t4.getText(0).isEmpty() && ((Integer) t4.getData()).intValue() == offset) {
+                                NLogger.debug(getClass(), "Found duplicate at {0}", t4.getText(1)); //$NON-NLS-1$
+                                items.add(t4);
                             }
                         }
-                        compositeText[0].insert(referenceLine);
-                        compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + referenceLine.length() - delta);
-                        break;
+
+                        QuickFixer.fixTextIssues(compositeText[0], items, df);
                     }
-                    case EDITORTEXT_LINE_UP:
-                    {
-                        if (!vm.isUpdated() || df.isReadOnly()) return;
-                        NLogger.debug(getClass(), "Move line up.."); //$NON-NLS-1$
-
-                        final StyledText st = compositeText[0];
-                        int s1 = st.getSelectionRange().x;
-                        int s2 = s1 + st.getSelectionRange().y;
-                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                        fromLine++;
-                        toLine++;
-                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-
-                        if (fromLine <= 1) {
-                            return;
+                    break;
+                case EDITORTEXT_SELECTALL:
+                    compositeText[0].setSelection(0, compositeText[0].getText().length());
+                    break;
+                case EDITORTEXT_INLINE:
+                {
+                    if (!vm.isUpdated()) return;
+                    NLogger.debug(getClass(), "Inlining per action key.."); //$NON-NLS-1$
+                    final StyledText st1 = compositeText[0];
+                    int s11 = st1.getSelectionRange().x;
+                    int s21 = s11 + st1.getSelectionRange().y;
+                    int fromLine1 = s11 > -1 ? st1.getLineAtOffset(s11) : s11 * -1;
+                    int toLine1 = s21 > -1 ? st1.getLineAtOffset(s21) : s21 * -1;
+                    fromLine1++;
+                    toLine1++;
+                    Inliner.withSubfileReference = false;
+                    Inliner.recursively = false;
+                    Inliner.noComment = false;
+                    NLogger.debug(getClass(), "From line {0}", fromLine1); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine1); //$NON-NLS-1$
+                    Inliner.inline(st1, fromLine1, toLine1, df);
+                    st1.forceFocus();
+                    break;
+                }
+                case EDITORTEXT_ROUND:
+                {
+                    if (!vm.isUpdated()) return;
+                    if (new RoundDialog(compositeText[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
+                    NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$
+                    final StyledText st2 = compositeText[0];
+                    int s12 = st2.getSelectionRange().x;
+                    int s22 = s12 + st2.getSelectionRange().y;
+                    int fromLine2 = s12 > -1 ? st2.getLineAtOffset(s12) : s12 * -1;
+                    int toLine2 = s22 > -1 ? st2.getLineAtOffset(s22) : s22 * -1;
+                    fromLine2++;
+                    toLine2++;
+                    NLogger.debug(getClass(), "From line {0}", fromLine2); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine2); //$NON-NLS-1$
+                    Rounder.round(state, st2, fromLine2, toLine2, df);
+                    st2.forceFocus();
+                    break;
+                }
+                case EDITORTEXT_REDO:
+                {
+                    final Shell sh1 = compositeText[0].getDisplay().getActiveShell();
+                    if (vm.isUpdated() && sh1 != null) df.redo(sh1, true);
+                }
+                break;
+                case EDITORTEXT_UNDO:
+                {
+                    final Shell sh2 = compositeText[0].getDisplay().getActiveShell();
+                    if (vm.isUpdated() && sh2 != null) df.undo(sh2, true);
+                }
+                break;
+                case EDITORTEXT_SAVE:
+                    if (!df.isReadOnly()) {
+                        final Shell sh3 = compositeText[0].getDisplay().getActiveShell();
+                        if (df.save()) {
+                            Editor3DWindow.getWindow().addRecentFile(df);
+                            Project.removeUnsavedFile(df);
+                            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                        } else if (sh3 != null) {
+                            MessageBox messageBoxError = new MessageBox(sh3, SWT.ICON_ERROR | SWT.OK);
+                            messageBoxError.setText(I18n.DIALOG_Error);
+                            messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                            messageBoxError.open();
                         }
-
-                        Clipboard clipboard = new Clipboard(Display.getCurrent());
-                        String plainText = (String)clipboard.getContents(TextTransfer.getInstance());
-                        clipboard.dispose();
-
-                        int delta = st.getLine(fromLine - 2).length();
-
-                        st.setSelection(st.getOffsetAtLine(fromLine - 1), st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length());
-                        boolean doCutPaste = st.getSelectionCount() > 0;
-                        if (doCutPaste) st.cut();
-                        st.setSelection(st.getOffsetAtLine(fromLine - 1) - StringHelper.getLineDelimiter().length(), st.getOffsetAtLine(fromLine - 1));
-                        st.insert(""); //$NON-NLS-1$
-
-                        st.setSelection(st.getOffsetAtLine(fromLine - 2));
-                        if (doCutPaste) st.paste();
-                        st.insert(StringHelper.getLineDelimiter());
-                        st.setSelectionRange(s1 - delta - StringHelper.getLineDelimiter().length(), s2 - s1);
-
-                        if (plainText != null) {
-                            clipboard = new Clipboard(Display.getCurrent());
-                            clipboard.setContents(new Object[] { plainText }, new Transfer[] { TextTransfer.getInstance() });
-                            clipboard.dispose();
-                        }
-
-                        st.redraw();
-                        break;
                     }
-                    case EDITORTEXT_LINE_DOWN:
-                    {
-                        if (!vm.isUpdated() || df.isReadOnly()) return;
-                        NLogger.debug(getClass(), "Move line down.."); //$NON-NLS-1$
-
-                        final StyledText st = compositeText[0];
-                        int s1 = st.getSelectionRange().x;
-                        int s2 = s1 + st.getSelectionRange().y;
-                        int fromLine = s1 > -1 ? st.getLineAtOffset(s1) : s1 * -1;
-                        int toLine = s2 > -1 ? st.getLineAtOffset(s2) : s2 * -1;
-                        fromLine++;
-                        toLine++;
-                        NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-
-                        if (toLine >= st.getLineCount()) {
-                            return;
-                        }
-
-                        Clipboard clipboard = new Clipboard(Display.getCurrent());
-                        String plainText = (String)clipboard.getContents(TextTransfer.getInstance());
-                        clipboard.dispose();
-
-                        int delta = st.getLine(toLine).length();
-
-                        st.setSelection(st.getOffsetAtLine(fromLine - 1), st.getOffsetAtLine(toLine - 1) + st.getLine(toLine - 1).length());
-                        boolean doCutPaste = st.getSelectionCount() > 0;
-                        if (doCutPaste) st.cut();
-                        st.setSelection(st.getOffsetAtLine(fromLine - 1) - StringHelper.getLineDelimiter().length(), st.getOffsetAtLine(fromLine - 1));
-                        st.insert(""); //$NON-NLS-1$
-
-                        st.setSelection(st.getOffsetAtLine(fromLine - 1) + st.getLine(fromLine - 1).length());
-                        st.insert(StringHelper.getLineDelimiter());
-                        st.setSelection(st.getOffsetAtLine(fromLine - 1) + st.getLine(fromLine - 1).length() + StringHelper.getLineDelimiter().length());
-                        if (doCutPaste) st.paste();
-
-                        st.setSelectionRange(s1 + delta + StringHelper.getLineDelimiter().length(), s2 - s1);
-
-                        if (plainText != null) {
-                            clipboard = new Clipboard(Display.getCurrent());
-                            clipboard.setContents(new Object[] { plainText }, new Transfer[] { TextTransfer.getInstance() });
-                            clipboard.dispose();
-                        }
-
-                        break;
+                    break;
+                case EDITORTEXT_FIND:
+                {
+                    final Shell sh4 = compositeText[0].getDisplay().getActiveShell();
+                    if (!vm.isUpdated() || sh4 == null) return;
+                    NLogger.debug(getClass(), "Find and Replace.."); //$NON-NLS-1$
+                    SearchWindow win = Editor3DWindow.getWindow().getSearchWindow();
+                    if (win != null) {
+                        win.close();
                     }
-                    default:
-                        break;
+                    Editor3DWindow.getWindow().setSearchWindow(new SearchWindow(sh4));
+                    Editor3DWindow.getWindow().getSearchWindow().run();
+                    Editor3DWindow.getWindow().getSearchWindow().setTextComposite(me);
+                    Editor3DWindow.getWindow().getSearchWindow().setScopeToAll();
+                    break;
+                }
+                case EDITORTEXT_INSERT_HISTORY:
+                {
+                    if (!vm.isUpdated() || df.isReadOnly()) return;
+                    NLogger.debug(getClass(), "Insert history line.."); //$NON-NLS-1$
+
+                    final StyledText st3 = compositeText[0];
+                    int s13 = st3.getSelectionRange().x;
+                    int s23 = s13 + st3.getSelectionRange().y;
+                    int fromLine3 = s13 > -1 ? st3.getLineAtOffset(s13) : s13 * -1;
+                    int toLine3 = s23 > -1 ? st3.getLineAtOffset(s23) : s23 * -1;
+                    if (fromLine3 != toLine3) return;
+                    String currentLine1 = st3.getLine(fromLine3);
+                    fromLine3++;
+                    NLogger.debug(getClass(), "Line {0}", fromLine3); //$NON-NLS-1$
+                    NLogger.debug(getClass(), currentLine1);
+
+                    final boolean needNewLine1 = StringHelper.isNotBlank(currentLine1);
+
+                    final String username;
+                    if (WorkbenchManager.getUserSettingState().getLdrawUserName().trim().isEmpty()) {
+                        username = " {" + WorkbenchManager.getUserSettingState().getRealUserName() + "} ";    //$NON-NLS-1$//$NON-NLS-2$
+                    } else {
+                        username = " [" + WorkbenchManager.getUserSettingState().getLdrawUserName() + "] ";    //$NON-NLS-1$//$NON-NLS-2$
                     }
+
+                    final String historyLine = (needNewLine1 ? StringHelper.getLineDelimiter() : "") + "0 !HISTORY " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + username; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+
+                    int delta1 = 0;
+                    s13 = compositeText[0].getOffsetAtLine(toLine3);
+                    if (needNewLine1) {
+                        compositeText[0].setSelection(s13 + currentLine1.length());
+                    } else {
+                        if (!currentLine1.isEmpty()) {
+                            compositeText[0].setSelection(s13, s13 + currentLine1.length());
+                            delta1 = historyLine.length();
+                        }
+                    }
+                    compositeText[0].insert(historyLine);
+                    compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + historyLine.length() - delta1);
+                    break;
+                }
+                case EDITORTEXT_INSERT_KEYWORD:
+                {
+                    if (!vm.isUpdated() || df.isReadOnly()) return;
+                    NLogger.debug(getClass(), "Insert keyword line.."); //$NON-NLS-1$
+
+                    final StyledText st4 = compositeText[0];
+                    int s14 = st4.getSelectionRange().x;
+                    int s24 = s14 + st4.getSelectionRange().y;
+                    int fromLine4 = s14 > -1 ? st4.getLineAtOffset(s14) : s14 * -1;
+                    int toLine4 = s24 > -1 ? st4.getLineAtOffset(s24) : s24 * -1;
+                    if (fromLine4 != toLine4) return;
+                    String currentLine2 = st4.getLine(fromLine4);
+                    fromLine4++;
+                    NLogger.debug(getClass(), "Line {0}", fromLine4); //$NON-NLS-1$
+                    NLogger.debug(getClass(), currentLine2);
+
+                    final boolean needNewLine2 = StringHelper.isNotBlank(currentLine2);
+
+                    final String keywordLine = (needNewLine2 ? StringHelper.getLineDelimiter() : "") + "0 !KEYWORDS "; //$NON-NLS-1$ //$NON-NLS-2$
+
+                    int delta2 = 0;
+                    s14 = compositeText[0].getOffsetAtLine(toLine4);
+                    if (needNewLine2) {
+                        compositeText[0].setSelection(s14 + currentLine2.length());
+                    } else {
+                        if (!currentLine2.isEmpty()) {
+                            compositeText[0].setSelection(s14, s14 + currentLine2.length());
+                            delta2 = keywordLine.length();
+                        }
+                    }
+                    compositeText[0].insert(keywordLine);
+                    compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + keywordLine.length() - delta2);
+                    break;
+                }
+                case EDITORTEXT_INSERT_REFERENCE:
+                {
+                    if (!vm.isUpdated() || df.isReadOnly()) return;
+                    NLogger.debug(getClass(), "Insert TYPE 1 reference line.."); //$NON-NLS-1$
+
+                    final StyledText st5 = compositeText[0];
+                    int s15 = st5.getSelectionRange().x;
+                    int s25 = s15 + st5.getSelectionRange().y;
+                    int fromLine5 = s15 > -1 ? st5.getLineAtOffset(s15) : s15 * -1;
+                    int toLine5 = s25 > -1 ? st5.getLineAtOffset(s25) : s25 * -1;
+                    if (fromLine5 != toLine5) return;
+                    String currentLine3 = st5.getLine(fromLine5);
+                    fromLine5++;
+                    NLogger.debug(getClass(), "Line {0}", fromLine5); //$NON-NLS-1$
+                    NLogger.debug(getClass(), currentLine3);
+
+                    final boolean needNewLine3 = StringHelper.isNotBlank(currentLine3);
+
+                    final String referenceLine = (needNewLine3 ? StringHelper.getLineDelimiter() : "") + "1 16 0 0 0 1 0 0 0 1 0 0 0 1 "; //$NON-NLS-1$ //$NON-NLS-2$
+
+                    int delta3 = 0;
+                    s15 = compositeText[0].getOffsetAtLine(toLine5);
+                    if (needNewLine3) {
+                        compositeText[0].setSelection(s15 + currentLine3.length());
+                    } else {
+                        if (!currentLine3.isEmpty()) {
+                            compositeText[0].setSelection(s15, s15 + currentLine3.length());
+                            delta3 = referenceLine.length();
+                        }
+                    }
+                    compositeText[0].insert(referenceLine);
+                    compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + referenceLine.length() - delta3);
+                    break;
+                }
+                case EDITORTEXT_LINE_UP:
+                {
+                    if (!vm.isUpdated() || df.isReadOnly()) return;
+                    NLogger.debug(getClass(), "Move line up.."); //$NON-NLS-1$
+
+                    final StyledText st6 = compositeText[0];
+                    int s16 = st6.getSelectionRange().x;
+                    int s26 = s16 + st6.getSelectionRange().y;
+                    int fromLine6 = s16 > -1 ? st6.getLineAtOffset(s16) : s16 * -1;
+                    int toLine6 = s26 > -1 ? st6.getLineAtOffset(s26) : s26 * -1;
+                    fromLine6++;
+                    toLine6++;
+                    NLogger.debug(getClass(), "From line {0}", fromLine6); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine6); //$NON-NLS-1$
+
+                    if (fromLine6 <= 1) {
+                        return;
+                    }
+
+                    Clipboard clipboard1 = new Clipboard(Display.getCurrent());
+                    String plainText1 = (String)clipboard1.getContents(TextTransfer.getInstance());
+                    clipboard1.dispose();
+
+                    int delta4 = st6.getLine(fromLine6 - 2).length();
+
+                    st6.setSelection(st6.getOffsetAtLine(fromLine6 - 1), st6.getOffsetAtLine(toLine6 - 1) + st6.getLine(toLine6 - 1).length());
+                    boolean doCutPaste1 = st6.getSelectionCount() > 0;
+                    if (doCutPaste1) st6.cut();
+                    st6.setSelection(st6.getOffsetAtLine(fromLine6 - 1) - StringHelper.getLineDelimiter().length(), st6.getOffsetAtLine(fromLine6 - 1));
+                    st6.insert(""); //$NON-NLS-1$
+
+                    st6.setSelection(st6.getOffsetAtLine(fromLine6 - 2));
+                    if (doCutPaste1) st6.paste();
+                    st6.insert(StringHelper.getLineDelimiter());
+                    st6.setSelectionRange(s16 - delta4 - StringHelper.getLineDelimiter().length(), s26 - s16);
+
+                    if (plainText1 != null) {
+                        clipboard1 = new Clipboard(Display.getCurrent());
+                        clipboard1.setContents(new Object[] { plainText1 }, new Transfer[] { TextTransfer.getInstance() });
+                        clipboard1.dispose();
+                    }
+
+                    st6.redraw();
+                    break;
+                }
+                case EDITORTEXT_LINE_DOWN:
+                {
+                    if (!vm.isUpdated() || df.isReadOnly()) return;
+                    NLogger.debug(getClass(), "Move line down.."); //$NON-NLS-1$
+
+                    final StyledText st7 = compositeText[0];
+                    int s17 = st7.getSelectionRange().x;
+                    int s27 = s17 + st7.getSelectionRange().y;
+                    int fromLine7 = s17 > -1 ? st7.getLineAtOffset(s17) : s17 * -1;
+                    int toLine7 = s27 > -1 ? st7.getLineAtOffset(s27) : s27 * -1;
+                    fromLine7++;
+                    toLine7++;
+                    NLogger.debug(getClass(), "From line {0}", fromLine7); //$NON-NLS-1$
+                    NLogger.debug(getClass(), "To   line {0}", toLine7); //$NON-NLS-1$
+
+                    if (toLine7 >= st7.getLineCount()) {
+                        return;
+                    }
+
+                    Clipboard clipboard2 = new Clipboard(Display.getCurrent());
+                    String plainText2 = (String)clipboard2.getContents(TextTransfer.getInstance());
+                    clipboard2.dispose();
+
+                    int delta5 = st7.getLine(toLine7).length();
+
+                    st7.setSelection(st7.getOffsetAtLine(fromLine7 - 1), st7.getOffsetAtLine(toLine7 - 1) + st7.getLine(toLine7 - 1).length());
+                    boolean doCutPaste2 = st7.getSelectionCount() > 0;
+                    if (doCutPaste2) st7.cut();
+                    st7.setSelection(st7.getOffsetAtLine(fromLine7 - 1) - StringHelper.getLineDelimiter().length(), st7.getOffsetAtLine(fromLine7 - 1));
+                    st7.insert(""); //$NON-NLS-1$
+
+                    st7.setSelection(st7.getOffsetAtLine(fromLine7 - 1) + st7.getLine(fromLine7 - 1).length());
+                    st7.insert(StringHelper.getLineDelimiter());
+                    st7.setSelection(st7.getOffsetAtLine(fromLine7 - 1) + st7.getLine(fromLine7 - 1).length() + StringHelper.getLineDelimiter().length());
+                    if (doCutPaste2) st7.paste();
+
+                    st7.setSelectionRange(s17 + delta5 + StringHelper.getLineDelimiter().length(), s27 - s17);
+
+                    if (plainText2 != null) {
+                        clipboard2 = new Clipboard(Display.getCurrent());
+                        clipboard2.setContents(new Object[] { plainText2 }, new Transfer[] { TextTransfer.getInstance() });
+                        clipboard2.dispose();
+                    }
+
+                    break;
+                }
+                default:
+                    break;
                 }
             }
         });
@@ -1725,28 +1719,25 @@ public class CompositeTab extends CompositeTabDesign {
                 btn_QuickFixSame[0].setEnabled(enabled);
             }
         });
-        tree_Problems[0].addListener(SWT.MouseDoubleClick, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                final TreeItem[] selection = tree_Problems[0].getSelection();
-                final TreeItem sel;
-                if (selection.length == 1 && (sel = selection[0]) != null) {
-                    final Integer pos = (Integer) sel.getData();
-                    if (pos != null) {
-                        compositeText[0].setSelection(Math.max(0, pos));
-                    }
-                    if (sel.getParentItem() == null) {
-                        sel.setVisible(!sel.isVisible());
-                        Display.getCurrent().asyncExec(new Runnable() {
-                            @Override
-                            public void run() {
-                                tree_Problems[0].build();
-                            }
-                        });
-                        tree_Problems[0].redraw();
-                        tree_Problems[0].update();
-                        tree_Problems[0].getTree().select(tree_Problems[0].getMapInv().get(sel));
-                    }
+        tree_Problems[0].addListener(SWT.MouseDoubleClick, e -> {
+            final TreeItem[] selection = tree_Problems[0].getSelection();
+            final TreeItem sel;
+            if (selection.length == 1 && (sel = selection[0]) != null) {
+                final Integer pos = (Integer) sel.getData();
+                if (pos != null) {
+                    compositeText[0].setSelection(Math.max(0, pos));
+                }
+                if (sel.getParentItem() == null) {
+                    sel.setVisible(!sel.isVisible());
+                    Display.getCurrent().asyncExec(new Runnable() {
+                        @Override
+                        public void run() {
+                            tree_Problems[0].build();
+                        }
+                    });
+                    tree_Problems[0].redraw();
+                    tree_Problems[0].update();
+                    tree_Problems[0].getTree().select(tree_Problems[0].getMapInv().get(sel));
                 }
             }
         });

@@ -22,8 +22,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
@@ -183,50 +181,35 @@ public class StartupDialog extends StartupDesign {
                 }
             }
         });
-        txt_ldrawUserName[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                ldrawUserName = txt_ldrawUserName[0].getText();
-                btn_ok[0].setEnabled(path1valid && path2valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
+        txt_ldrawUserName[0].addListener(SWT.Modify, e -> {
+            ldrawUserName = txt_ldrawUserName[0].getText();
+            btn_ok[0].setEnabled(path1valid && path2valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
+        });
+        txt_realName[0].addListener(SWT.Modify, e -> {
+            realName = txt_realName[0].getText();
+            btn_ok[0].setEnabled(path1valid && path2valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
+        });
+        cmb_license[0].addListener(SWT.Modify, e -> {
+            license = cmb_license[0].getText();
+            btn_ok[0].setEnabled(path1valid && path2valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
+        });
+        cmb_locale[0].addListener(SWT.Modify, e -> {
+            if (localeMap.containsKey(cmb_locale[0].getText())) {
+                locale = localeMap.get(cmb_locale[0].getText());
             }
         });
-        txt_realName[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                realName = txt_realName[0].getText();
-                btn_ok[0].setEnabled(path1valid && path2valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
-            }
-        });
-        cmb_license[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                license = cmb_license[0].getText();
-                btn_ok[0].setEnabled(path1valid && path2valid && !ldrawUserName.isEmpty() && !license.isEmpty() && !realName.isEmpty());
-            }
-        });
-        cmb_locale[0].addListener(SWT.Modify, new Listener() {
-            @Override
-            public void handleEvent(Event e) {
-                if (localeMap.containsKey(cmb_locale[0].getText())) {
-                    locale = localeMap.get(cmb_locale[0].getText());
-                }
-            }
-        });
-        btn_ok[0].addListener(SWT.Selection, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                UserSettingState userSettingState = new UserSettingState();
-                userSettingState.setAuthoringFolderPath(partAuthoringPath);
-                userSettingState.setLdrawFolderPath(ldrawPath);
-                userSettingState.setUnofficialFolderPath(unofficialPath);
-                userSettingState.setLdrawUserName(ldrawUserName);
-                userSettingState.setLicense(license);
-                userSettingState.setRealUserName(realName);
-                userSettingState.setUsingRelativePaths(false);
-                userSettingState.setLocale(locale);
-                MyLanguage.LOCALE = locale;
-                WorkbenchManager.setUserSettingState(userSettingState);
-            }
+        btn_ok[0].addListener(SWT.Selection, event -> {
+            UserSettingState userSettingState = new UserSettingState();
+            userSettingState.setAuthoringFolderPath(partAuthoringPath);
+            userSettingState.setLdrawFolderPath(ldrawPath);
+            userSettingState.setUnofficialFolderPath(unofficialPath);
+            userSettingState.setLdrawUserName(ldrawUserName);
+            userSettingState.setLicense(license);
+            userSettingState.setRealUserName(realName);
+            userSettingState.setUsingRelativePaths(false);
+            userSettingState.setLocale(locale);
+            MyLanguage.LOCALE = locale;
+            WorkbenchManager.setUserSettingState(userSettingState);
         });
         return super.open();
     }

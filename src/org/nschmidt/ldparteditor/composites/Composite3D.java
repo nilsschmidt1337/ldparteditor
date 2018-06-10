@@ -39,8 +39,6 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MenuDetectEvent;
@@ -54,7 +52,6 @@ import org.eclipse.swt.opengl.GLData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -1450,112 +1447,55 @@ public class Composite3D extends ScalableComposite {
         }
 
         GL.setCapabilities(capabilities);
-        canvas.addDisposeListener(new DisposeListener() {
-            @Override
-            public void widgetDisposed(DisposeEvent e) {
-                canvas.getCursor().dispose();
-            }
-        });
+        canvas.addDisposeListener(e -> canvas.getCursor().dispose());
+
         // MARK Resize
-        canvas.addListener(SWT.Resize, new Listener() {
-            @Override
-            public void handleEvent(Event event) {
-                canvas.setCurrent();
-                GL.setCapabilities(capabilities);
-                perspective.initializeViewportPerspective();
-                ViewIdleManager.pause[0].compareAndSet(false, true);
-                VertexWindow.placeVertexWindow();
-            }
+        canvas.addListener(SWT.Resize, event -> {
+            canvas.setCurrent();
+            GL.setCapabilities(capabilities);
+            perspective.initializeViewportPerspective();
+            ViewIdleManager.pause[0].compareAndSet(false, true);
+            VertexWindow.placeVertexWindow();
         });
 
-        canvas.addListener(SWT.MouseDown, new Listener() {
-            @Override
-            // MARK MouseDown
-            public void handleEvent(Event event) {
-                mouse.mouseDown(event);
-            }
-        });
+        canvas.addListener(SWT.MouseDown, event -> mouse.mouseDown(event));
+        canvas.addListener(SWT.MouseMove, event -> mouse.mouseMove(event));
+        canvas.addListener(SWT.MouseUp, event -> mouse.mouseUp(event));
+        canvas.addListener(SWT.MouseEnter, event -> setHasMouse(true));
+        canvas.addListener(SWT.MouseExit, event -> setHasMouse(false));
 
-        canvas.addListener(SWT.MouseMove, new Listener() {
-            @Override
-            // MARK MouseMove
-            public void handleEvent(Event event) {
-                mouse.mouseMove(event);
-            }
-        });
+        canvas.addListener(SWT.MouseVerticalWheel, event -> {
+            Project.setFileToEdit(lockableDatFileReference);
+            final Composite3D c3d = getComposite3D();
+            canvas.forceFocus();
+            lockableDatFileReference.setLastSelectedComposite(c3d);
+            sb1.setSelection(0);
+            sb2.setSelection(0);
+            if (event.count < 0)
+                perspective.zoomIn();
+            else
+                perspective.zoomOut();
 
-        canvas.addListener(SWT.MouseUp, new Listener() {
-            @Override
-            // MARK MouseUp
-            public void handleEvent(Event event) {
-                mouse.mouseUp(event);
-            }
-        });
-
-        canvas.addListener(SWT.MouseEnter, new Listener() {
-            @Override
-            // MARK MouseEnter
-            public void handleEvent(Event event) {
-                setHasMouse(true);
-            }
-        });
-
-        canvas.addListener(SWT.MouseExit, new Listener() {
-            @Override
-            // MARK MouseExit
-            public void handleEvent(Event event) {
-                setHasMouse(false);
-            }
-        });
-
-        canvas.addListener(SWT.MouseVerticalWheel, new Listener() {
-            @Override
-            // MARK MouseVerticalWheel
-            public void handleEvent(Event event) {
-                Project.setFileToEdit(lockableDatFileReference);
-                final Composite3D c3d = getComposite3D();
-                canvas.forceFocus();
-                lockableDatFileReference.setLastSelectedComposite(c3d);
-                sb1.setSelection(0);
-                sb2.setSelection(0);
-                if (event.count < 0)
-                    perspective.zoomIn();
-                else
-                    perspective.zoomOut();
-
-                ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
-            }
+            ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
         });
 
         new Win32MouseWheelFilter(canvas.getDisplay());
 
-        canvas.addListener(SWT.MouseDoubleClick, new Listener() {
-            @Override
-            // MARK MouseDoubleClick
-            public void handleEvent(Event event) {
-                Project.setFileToEdit(lockableDatFileReference);
-                mouse.mouseDoubleClick(event);
-            }
+        canvas.addListener(SWT.MouseDoubleClick, event -> {
+            Project.setFileToEdit(lockableDatFileReference);
+            mouse.mouseDoubleClick(event);
         });
 
-        canvas.addListener(SWT.KeyDown, new Listener() {
-            @Override
-            // MARK KeyDown
-            public void handleEvent(Event event) {
-                final Composite3D c3d = getComposite3D();
-                ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
-                keyboard.setStates(event.keyCode, SWT.KeyDown, event);
-            }
+        canvas.addListener(SWT.KeyDown, event -> {
+            final Composite3D c3d = getComposite3D();
+            ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
+            keyboard.setStates(event.keyCode, SWT.KeyDown, event);
         });
 
-        canvas.addListener(SWT.KeyUp, new Listener() {
-            @Override
-            // MARK KeyUp
-            public void handleEvent(Event event) {
-                final Composite3D c3d = getComposite3D();
-                ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
-                keyboard.setStates(event.keyCode, SWT.KeyUp, event);
-            }
+        canvas.addListener(SWT.KeyUp, event -> {
+            final Composite3D c3d = getComposite3D();
+            ViewIdleManager.refresh(c3d.getCanvas(), c3d.getRenderer());
+            keyboard.setStates(event.keyCode, SWT.KeyUp, event);
         });
 
         canvas.addFocusListener(new FocusAdapter() {
