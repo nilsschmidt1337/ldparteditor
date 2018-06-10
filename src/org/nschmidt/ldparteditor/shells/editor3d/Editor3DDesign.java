@@ -37,8 +37,6 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -1849,13 +1847,10 @@ class Editor3DDesign extends ApplicationWindow {
             final int y = Math.round(size.y / 5f);
             final int w = Math.round(size.x * (3f / 5f));
             final int h = Math.round(size.y * (3f / 5f));
-            btn_LastUsedColour.addPaintListener(new PaintListener() {
-                @Override
-                public void paintControl(PaintEvent e) {
-                    e.gc.setBackground(col);
-                    e.gc.fillRectangle(x, y, w, h);
-                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                }
+            btn_LastUsedColour.addPaintListener(e -> {
+                e.gc.setBackground(col);
+                e.gc.fillRectangle(x, y, w, h);
+                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
             });
             WidgetUtil(btn_LastUsedColour).addSelectionListener(e -> {
                 if (Project.getFileToEdit() != null) {
@@ -3373,16 +3368,13 @@ class Editor3DDesign extends ApplicationWindow {
                 final int y = Math.round(size.y / 5f);
                 final int w = Math.round(size.x * (3f / 5f));
                 final int h = Math.round(size.y * (3f / 5f));
-                btn_LastUsedColour[0].addPaintListener(new PaintListener() {
-                    @Override
-                    public void paintControl(PaintEvent e) {
-                        e.gc.setBackground(col1);
-                        e.gc.fillRectangle(x, y, w, h);
-                        if (gColour2[0].getA() == 1f) {
-                            e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                        } else {
-                            e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                        }
+                btn_LastUsedColour[0].addPaintListener(e1 -> {
+                    e1.gc.setBackground(col1);
+                    e1.gc.fillRectangle(x, y, w, h);
+                    if (gColour2[0].getA() == 1f) {
+                        e1.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+                    } else {
+                        e1.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                     }
                 });
                 WidgetUtil(btn_LastUsedColour[0]).addSelectionListener(e1 -> {
