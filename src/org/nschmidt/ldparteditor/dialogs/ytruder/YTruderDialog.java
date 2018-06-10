@@ -15,10 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.ytruder;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.YTruderSettings;
 
 /**
@@ -52,25 +54,25 @@ public class YTruderDialog extends YTruderDesign {
         spn_value[0].addValueChangeListener(spn -> ys.setDistance(spn.getValue().doubleValue()));
         spn_condlineAngleThreshold[0].addValueChangeListener(spn -> ys.setCondlineAngleThreshold(spn.getValue().doubleValue()));
         cmb_axis[0].addListener(SWT.Selection, event -> ys.setAxis(cmb_axis[0].getSelectionIndex()));
-        btn_TranslateByDistance[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_TranslateByDistance[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 ys.setMode(1);
             }
         });
-        btn_SymmetryAcrossPlane[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_SymmetryAcrossPlane[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 ys.setMode(2);
             }
         });
-        btn_ProjectionOnPlane[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ProjectionOnPlane[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 ys.setMode(3);
             }
         });
-        btn_ExtrudeRadially[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ExtrudeRadially[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 ys.setMode(4);

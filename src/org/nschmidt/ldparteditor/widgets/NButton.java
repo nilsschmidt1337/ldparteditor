@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.enums.Font;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 
 /**
@@ -146,8 +147,13 @@ public class NButton extends Canvas {
         img = image;
     }
 
-    public void addSelectionListener(SelectionAdapter listener) {
-        selectors.add(listener);
+    public void addSelectionListener(WidgetSelectionListener selectionListener) {
+        selectors.add(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                selectionListener.widgetSelected(e);
+            }
+        });
     }
 
     public void addSelectionListener(SelectionListener listener) {

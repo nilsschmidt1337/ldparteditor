@@ -16,14 +16,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.shells.searchnreplace;
 
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -31,6 +30,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 public class SearchDesign extends ApplicationWindow {
 
@@ -167,12 +167,7 @@ public class SearchDesign extends ApplicationWindow {
             btn_close.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btn_close.setText(I18n.SEARCH_Close);
 
-            btn_close.addSelectionListener(new SelectionAdapter() {
-                @Override
-                public void widgetSelected(SelectionEvent e) {
-                    getShell().close();
-                }
-            });
+            WidgetUtil(btn_close).addXSelectionListener(e -> getShell().close());
         }
 
         cmp_container.pack();

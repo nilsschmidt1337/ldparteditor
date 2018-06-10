@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -43,7 +45,6 @@ import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
@@ -87,6 +88,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.Composite3DModifier;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.MouseActions;
@@ -421,7 +423,7 @@ public class Composite3D extends ScalableComposite {
         final MenuItem mntmSeparator3 = new MenuItem(menu, SWT.SEPARATOR);
 
         final MenuItem mntmCloseDat = new MenuItem(menu, SWT.NONE);
-        mntmCloseDat.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmCloseDat).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Project.removeOpenedFile(lockableDatFileReference);
@@ -437,7 +439,7 @@ public class Composite3D extends ScalableComposite {
 
         final MenuItem mntmLockedDat = new MenuItem(menu, SWT.CHECK);
         locked = mntmLockedDat;
-        mntmLockedDat.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmLockedDat).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (!lockableDatFileReference.equals(View.DUMMY_DATFILE)) {
@@ -449,7 +451,7 @@ public class Composite3D extends ScalableComposite {
         mntmLockedDat.setSelection(false);
 
         final MenuItem mntmOpenInTextEditor = new MenuItem(menu, SWT.NONE);
-        mntmOpenInTextEditor.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmOpenInTextEditor).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 openInTextEditor();
@@ -459,7 +461,7 @@ public class Composite3D extends ScalableComposite {
         mntmOpenInTextEditor.setSelection(false);
 
         final MenuItem mntmSelectionInTextEditor = new MenuItem(menu, SWT.NONE);
-        mntmSelectionInTextEditor.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmSelectionInTextEditor).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 showSelectionInTextEditor(lockableDatFileReference, true);
@@ -469,7 +471,7 @@ public class Composite3D extends ScalableComposite {
         mntmSelectionInTextEditor.setSelection(false);
 
         final MenuItem mntmJoinInTextEditor = new MenuItem(menu, SWT.NONE);
-        mntmJoinInTextEditor.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmJoinInTextEditor).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 joinSelectionInTextEditor(lockableDatFileReference);
@@ -483,7 +485,7 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmSeparator = new MenuItem(menu, SWT.SEPARATOR);
 
             final MenuItem mntmOpenSnapshot = new MenuItem(menu, SWT.NONE);
-            mntmOpenSnapshot.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmOpenSnapshot).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     DatFile df = lockableDatFileReference;
@@ -508,7 +510,7 @@ public class Composite3D extends ScalableComposite {
         final MenuItem mntmSeparator = new MenuItem(menu, SWT.SEPARATOR);
 
         MenuItem mntmMaxClip = new MenuItem(menu, I18n.I18N_RTL());
-        mntmMaxClip.addSelectionListener(new SelectionAdapter() {
+        mntmMaxClip).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 new ValueDialog(getShell(), I18n.EDITOR3D_NearClippingHint, I18n.UNIT_CurrentUnit()) {
@@ -530,7 +532,7 @@ public class Composite3D extends ScalableComposite {
         mntmMaxClip.setText(I18n.EDITOR3D_NearClipping);
 
         MenuItem mntmMinClip = new MenuItem(menu, I18n.I18N_RTL());
-        mntmMinClip.addSelectionListener(new SelectionAdapter() {
+        mntmMinClip).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 new ValueDialog(getShell(), I18n.EDITOR3D_FarClippingHint, I18n.UNIT_CurrentUnit()) {
@@ -556,7 +558,7 @@ public class Composite3D extends ScalableComposite {
         final MenuItem mntmSeparatorCP = new MenuItem(menu, SWT.SEPARATOR);
 
         MenuItem mntmCut = new MenuItem(menu, I18n.I18N_RTL());
-        mntmCut.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmCut).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
@@ -568,7 +570,7 @@ public class Composite3D extends ScalableComposite {
         mntmCut.setText(I18n.COPYNPASTE_Cut);
         mntmCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
         MenuItem mntmCopy = new MenuItem(menu, I18n.I18N_RTL());
-        mntmCopy.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmCopy).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
@@ -579,7 +581,7 @@ public class Composite3D extends ScalableComposite {
         mntmCopy.setText(I18n.COPYNPASTE_Copy);
         mntmCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
         MenuItem mntmPaste = new MenuItem(menu, I18n.I18N_RTL());
-        mntmPaste.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmPaste).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
@@ -594,7 +596,7 @@ public class Composite3D extends ScalableComposite {
         mntmPaste.setText(I18n.COPYNPASTE_Paste);
         mntmPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
         MenuItem mntmDelete = new MenuItem(menu, I18n.I18N_RTL());
-        mntmDelete.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmDelete).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
@@ -609,7 +611,7 @@ public class Composite3D extends ScalableComposite {
         final MenuItem mntmSeparator2 = new MenuItem(menu, SWT.SEPARATOR);
 
         MenuItem mntmGridSize = new MenuItem(menu, I18n.I18N_RTL());
-        mntmGridSize.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntmGridSize).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 new ValueDialog(getShell(), I18n.C3D_SetGridSize, I18n.UNIT_CurrentUnit()) {
@@ -639,7 +641,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmFront = new MenuItem(mnu_viewAngles, SWT.CHECK);
             this.mntmFront[0] = mntmFront;
-            mntmFront.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmFront).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
@@ -653,7 +655,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmBack = new MenuItem(mnu_viewAngles, SWT.CHECK);
             this.mntmBack[0] = mntmBack;
-            mntmBack.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmBack).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
@@ -666,7 +668,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmLeft = new MenuItem(mnu_viewAngles, SWT.CHECK);
             this.mntmLeft[0] = mntmLeft;
-            mntmLeft.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmLeft).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
@@ -679,7 +681,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmRight = new MenuItem(mnu_viewAngles, SWT.CHECK);
             this.mntmRight[0] = mntmRight;
-            mntmRight.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmRight).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
@@ -692,7 +694,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmTop = new MenuItem(mnu_viewAngles, SWT.CHECK);
             this.mntmTop[0] = mntmTop;
-            mntmTop.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmTop).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
@@ -705,7 +707,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmBottom = new MenuItem(mnu_viewAngles, SWT.CHECK);
             this.mntmBottom[0] = mntmBottom;
-            mntmBottom.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmBottom).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
@@ -721,7 +723,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmTwoThirds = new MenuItem(mnu_viewAngles, SWT.NONE);
             this.mntmTwoThirds[0] = mntmTwoThirds;
-            mntmTwoThirds.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmTwoThirds).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
@@ -740,7 +742,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToOrigin);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_0_toOrigin();
@@ -751,7 +753,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToWorld);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_XIII_toWorld();
@@ -762,7 +764,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_AdjustRotationCenter);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_XIV_adjustRotationCenter();
@@ -775,7 +777,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ReverseX);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_X_XReverse();
@@ -786,7 +788,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ReverseY);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_XI_YReverse();
@@ -797,7 +799,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ReverseZ);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_XII_ZReverse();
@@ -810,7 +812,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_SwapXY);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_SwitchXY();
@@ -821,7 +823,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_SwapXZ);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_SwitchXZ();
@@ -832,7 +834,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_SwapYZ);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_SwitchYZ();
@@ -845,7 +847,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_CamToManipulator);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_1_cameraToPos();
@@ -857,7 +859,7 @@ public class Composite3D extends ScalableComposite {
                 btn_Mani.setText(I18n.E3D_ManipulatorToAvg);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
                 KeyStateManager.addKeyText(btn_Mani, I18n.E3D_ManipulatorToAvg, Task.MOVE_TO_AVG);
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_2_toAverage();
@@ -870,7 +872,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToSubfile);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_3_toSubfile();
@@ -881,7 +883,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(Cocoa.replaceCtrlByCmd(I18n.E3D_SubfileToManipulator));
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask));
@@ -894,7 +896,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToVertex);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_4_toVertex();
@@ -905,7 +907,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToEdge);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_5_toEdge();
@@ -916,7 +918,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToFace);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_6_toSurface();
@@ -929,7 +931,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToVertexN);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_7_toVertexNormal();
@@ -940,7 +942,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToVertexP);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_XV_toVertexPosition();
@@ -951,7 +953,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToEdgeN);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_8_toEdgeNormal();
@@ -962,7 +964,7 @@ public class Composite3D extends ScalableComposite {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                 btn_Mani.setText(I18n.E3D_ManipulatorToFaceN);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
-                btn_Mani.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(btn_Mani).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         Editor3DWindow.getWindow().mntm_Manipulator_9_toSurfaceNormal();
@@ -978,7 +980,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmShowOrigin = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmShowOrigin[0] = mntmShowOrigin;
-            mntmShowOrigin.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmShowOrigin).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.showOrigin(mntmShowOrigin.getSelection());
@@ -989,7 +991,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmSwitchLights = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmSwitchLights[0] = mntmSwitchLights;
-            mntmSwitchLights.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmSwitchLights).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchLigths(mntmSwitchLights.getSelection());
@@ -1000,7 +1002,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmMeshLines = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmMeshLines[0] = mntmMeshLines;
-            mntmMeshLines.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmMeshLines).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchMeshLines(mntmMeshLines.getSelection());
@@ -1011,7 +1013,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmSubMeshLines = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmSubMeshLines[0] = mntmSubMeshLines;
-            mntmSubMeshLines.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmSubMeshLines).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchSubMeshLines(mntmSubMeshLines.getSelection());
@@ -1022,7 +1024,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmVertices[0] = mntmVertices;
-            mntmVertices.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmVertices).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchVertices(mntmVertices.getSelection());
@@ -1033,7 +1035,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmHiddenVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmHiddenVertices[0] = mntmHiddenVertices;
-            mntmHiddenVertices.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmHiddenVertices).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchHiddenVertices(mntmHiddenVertices.getSelection());
@@ -1044,7 +1046,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmControlPointVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmControlPointVertices[0] = mntmControlPointVertices;
-            mntmControlPointVertices.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmControlPointVertices).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchCondlineControlPoints(mntmControlPointVertices.getSelection());
@@ -1055,7 +1057,7 @@ public class Composite3D extends ScalableComposite {
             if (WorkbenchManager.getUserSettingState().getOpenGLVersion() >= 33) {
                 final MenuItem mntmSmoothShading = new MenuItem(mnu_viewActions, SWT.CHECK);
                 this.mntmSmoothShading[0] = mntmSmoothShading;
-                mntmSmoothShading.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntmSmoothShading).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         c3d_modifier.switchSmoothShading(mntmSmoothShading.getSelection());
@@ -1067,7 +1069,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmStudLogo = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmStudLogo[0] = mntmStudLogo;
-            mntmStudLogo.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmStudLogo).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchShowingLogo(mntmStudLogo.getSelection());
@@ -1081,7 +1083,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmShowGrid = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmShowGrid[0] = mntmShowGrid;
-            mntmShowGrid.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmShowGrid).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.showGrid(mntmShowGrid.getSelection());
@@ -1092,7 +1094,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmShowScale = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmShowScale[0] = mntmShowScale;
-            mntmShowScale.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmShowScale).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.showScale(mntmShowScale.getSelection());
@@ -1103,7 +1105,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmAxis = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmAxis[0] = mntmAxis;
-            mntmAxis.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmAxis).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchAxis(mntmAxis.getSelection());
@@ -1114,7 +1116,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmLabel = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmLabel[0] = mntmLabel;
-            mntmLabel.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmLabel).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchLabel(mntmLabel.getSelection());
@@ -1125,7 +1127,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmAnaglyph = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmAnaglyph[0] = mntmAnaglyph;
-            mntmAnaglyph.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmAnaglyph).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.switchAnaglyph3D(mntmAnaglyph.getSelection());
@@ -1138,7 +1140,7 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmViewSeparator = new MenuItem(mnu_viewActions, SWT.SEPARATOR);
 
             MenuItem mntmSplitHorizontally = new MenuItem(mnu_viewActions, SWT.NONE);
-            mntmSplitHorizontally.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmSplitHorizontally).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.splitViewHorizontally();
@@ -1147,7 +1149,7 @@ public class Composite3D extends ScalableComposite {
             mntmSplitHorizontally.setText(I18n.E3D_SplitHorizontally);
 
             MenuItem mntmSplitVertically = new MenuItem(mnu_viewActions, SWT.NONE);
-            mntmSplitVertically.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmSplitVertically).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.splitViewVertically();
@@ -1159,7 +1161,7 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmViewSeparator2 = new MenuItem(mnu_viewActions, SWT.SEPARATOR);
 
             MenuItem mntmRotateView = new MenuItem(mnu_viewActions, SWT.NONE);
-            mntmRotateView.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmRotateView).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.spinView();
@@ -1171,7 +1173,7 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmViewSeparator3 = new MenuItem(mnu_viewActions, SWT.SEPARATOR);
 
             MenuItem mntmClose = new MenuItem(mnu_viewActions, SWT.NONE);
-            mntmClose.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmClose).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     c3d_modifier.closeView();
@@ -1187,7 +1189,7 @@ public class Composite3D extends ScalableComposite {
 
                 final MenuItem mntmRealPreview = new MenuItem(mnu_lineMode, SWT.CHECK);
                 this.mntmRealPreview[0] = mntmRealPreview;
-                mntmRealPreview.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntmRealPreview).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         WidgetSelectionHelper.unselectAllChildButtons(mnu_lineMode);
@@ -1201,7 +1203,7 @@ public class Composite3D extends ScalableComposite {
 
                 final MenuItem mntmShowAll = new MenuItem(mnu_lineMode, SWT.CHECK);
                 this.mntmShowAll[0] = mntmShowAll;
-                mntmShowAll.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntmShowAll).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         WidgetSelectionHelper.unselectAllChildButtons(mnu_lineMode);
@@ -1214,7 +1216,7 @@ public class Composite3D extends ScalableComposite {
 
                 final MenuItem mntmStdLines = new MenuItem(mnu_lineMode, SWT.CHECK);
                 this.mntmStdLines[0] = mntmStdLines;
-                mntmStdLines.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntmStdLines).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         WidgetSelectionHelper.unselectAllChildButtons(mnu_lineMode);
@@ -1227,7 +1229,7 @@ public class Composite3D extends ScalableComposite {
 
                 final MenuItem mntmHideAll = new MenuItem(mnu_lineMode, SWT.CHECK);
                 this.mntmHideAll[0] = mntmHideAll;
-                mntmHideAll.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntmHideAll).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         WidgetSelectionHelper.unselectAllChildButtons(mnu_lineMode);
@@ -1243,7 +1245,7 @@ public class Composite3D extends ScalableComposite {
                 final MenuItem mntmSeperator = new MenuItem(mnu_lineMode, SWT.SEPARATOR);
 
                 mntmAlwaysBlack[0] = new MenuItem(mnu_lineMode, SWT.CHECK);
-                mntmAlwaysBlack[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntmAlwaysBlack[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         setBlackEdges(mntmAlwaysBlack[0].getSelection());
@@ -1262,7 +1264,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmNoBFC = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmNoBFC[0] = mntmNoBFC;
-            mntmNoBFC.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmNoBFC).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
@@ -1276,7 +1278,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmRandomColours = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmRandomColours[0] = mntmRandomColours;
-            mntmRandomColours.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmRandomColours).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
@@ -1289,7 +1291,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmBFCFrontBack = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCFrontBack[0] = mntmBFCFrontBack;
-            mntmBFCFrontBack.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmBFCFrontBack).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
@@ -1302,7 +1304,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmBFCBack = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCBack[0] = mntmBFCBack;
-            mntmBFCBack.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmBFCBack).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
@@ -1315,7 +1317,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmBFCReal = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCReal[0] = mntmBFCReal;
-            mntmBFCReal.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmBFCReal).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
@@ -1328,7 +1330,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmBFCTextured = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCTextured[0] = mntmBFCTextured;
-            mntmBFCTextured.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmBFCTextured).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
 
@@ -1354,7 +1356,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmCondlineMode = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmCondlineMode[0] = mntmCondlineMode;
-            mntmCondlineMode.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmCondlineMode).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
@@ -1367,7 +1369,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmCoplanarityHeatmapMode = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmCoplanarityHeatmapMode[0] = mntmCoplanarityHeatmapMode;
-            mntmCoplanarityHeatmapMode.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmCoplanarityHeatmapMode).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
@@ -1380,7 +1382,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmWireframeMode = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmWireframeMode[0] = mntmWireframeMode;
-            mntmWireframeMode.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmWireframeMode).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
@@ -1399,7 +1401,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmSyncroniseManipulator = new MenuItem(mnu_syncronise, SWT.CHECK);
             this.mntmSyncManipulator[0] = mntmSyncroniseManipulator;
-            mntmSyncroniseManipulator.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmSyncroniseManipulator).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     setSyncManipulator(mntmSyncManipulator[0].getSelection());
@@ -1415,7 +1417,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmSyncTranslation = new MenuItem(mnu_syncronise, SWT.CHECK);
             this.mntmSyncTranslate[0] = mntmSyncTranslation;
-            mntmSyncTranslation.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmSyncTranslation).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     setSyncTranslation(mntmSyncTranslate[0].getSelection());
@@ -1431,7 +1433,7 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmSyncroniseZoom = new MenuItem(mnu_syncronise, SWT.CHECK);
             this.mntmSyncZoom[0] = mntmSyncroniseZoom;
-            mntmSyncroniseZoom.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(mntmSyncroniseZoom).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     setSyncZoom(mntmSyncZoom[0].getSelection());

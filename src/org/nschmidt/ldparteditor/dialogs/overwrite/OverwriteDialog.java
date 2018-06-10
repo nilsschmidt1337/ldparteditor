@@ -15,9 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.overwrite;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -43,21 +45,21 @@ public class OverwriteDialog extends OverwriteDesign {
         super.create();
         getShell().setText(I18n.DIALOG_ReplaceTitle);
         // MARK All final listeners will be configured here..
-        getButton(IDialogConstants.YES_ID).addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(getButton(IDialogConstants.YES_ID)).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setReturnCode(IDialogConstants.YES_ID);
                 close();
             }
         });
-        getButton(IDialogConstants.NO_ID).addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(getButton(IDialogConstants.NO_ID)).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setReturnCode(IDialogConstants.NO_ID);
                 close();
             }
         });
-        getButton(IDialogConstants.SKIP_ID).addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(getButton(IDialogConstants.SKIP_ID)).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setReturnCode(IDialogConstants.SKIP_ID);

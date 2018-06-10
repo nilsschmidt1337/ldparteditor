@@ -15,9 +15,10 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.rotate;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.util.Set;
 
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
@@ -25,6 +26,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -75,7 +77,7 @@ public class RotateDialog extends RotateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        btn_Local[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Local[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
@@ -84,7 +86,7 @@ public class RotateDialog extends RotateDesign {
                 Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
             }
         });
-        btn_Global[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Global[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
@@ -93,7 +95,7 @@ public class RotateDialog extends RotateDesign {
                 Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
             }
         });
-        rb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(rb_Xaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (rb_Xaxis[0].getSelection()) {
@@ -103,7 +105,7 @@ public class RotateDialog extends RotateDesign {
                 }
             }
         });
-        rb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(rb_Yaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (rb_Yaxis[0].getSelection()) {
@@ -113,7 +115,7 @@ public class RotateDialog extends RotateDesign {
                 }
             }
         });
-        rb_Zaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(rb_Zaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (rb_Zaxis[0].getSelection()) {
@@ -153,7 +155,7 @@ public class RotateDialog extends RotateDesign {
         spn_pX[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
         spn_pY[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
         spn_pZ[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
-        btn_PivotManipulator[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_PivotManipulator[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 spn_pX[0].setValue(m.X);
@@ -161,7 +163,7 @@ public class RotateDialog extends RotateDesign {
                 spn_pZ[0].setValue(m.Z);
             }
         });
-        btn_PivotClipboard[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_PivotClipboard[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 spn_pX[0].setValue(c.X);
@@ -169,7 +171,7 @@ public class RotateDialog extends RotateDesign {
                 spn_pZ[0].setValue(c.Z);
             }
         });
-        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 creatingCopy = true;

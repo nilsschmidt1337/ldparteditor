@@ -15,14 +15,16 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.smooth;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.project.Project;
 
 /**
@@ -73,19 +75,19 @@ public class SmoothDialog extends SmoothDesign {
         }
 
         // MARK All final listeners will be configured here..
-        cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Xaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 x = cb_Xaxis[0].getSelection();
             }
         });
-        cb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Yaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 y = cb_Yaxis[0].getSelection();
             }
         });
-        cb_Zaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Zaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 z = cb_Zaxis[0].getSelection();

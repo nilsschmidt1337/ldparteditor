@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editortext;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.io.File;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -42,9 +44,7 @@ import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
@@ -74,6 +74,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Version;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.compositetext.Annotator;
 import org.nschmidt.ldparteditor.helpers.compositetext.AnnotatorTexmap;
 import org.nschmidt.ldparteditor.helpers.compositetext.BFCswapper;
@@ -480,7 +481,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             });
         }
-        tabFolder[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(tabFolder[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab ct = (CompositeTab) e.item;
@@ -500,7 +501,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (btn_showLeft[0] != null) btn_showLeft[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_showLeft[0] != null) WidgetUtil(btn_showLeft[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm();
@@ -513,7 +514,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (btn_showRight[0] != null) btn_showRight[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_showRight[0] != null) WidgetUtil(btn_showRight[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm();
@@ -526,14 +527,14 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (btn_sameWidth[0] != null) btn_sameWidth[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_sameWidth[0] != null) WidgetUtil(btn_sameWidth[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Editor3DWindow.getWindow().getSplitSashForm().setWeights(new int[]{50, 50});
             }
         });
 
-        btn_New[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_New[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final boolean isSyncTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
@@ -559,7 +560,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
-        btn_Open[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Open[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
@@ -589,7 +590,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
             }
         });
-        btn_Save[0].addSelectionListener(new SelectionListener() {
+        WidgetUtil(btn_Save[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final CompositeTab ct = (CompositeTab) tabFolder[0].getSelection();
@@ -615,12 +616,8 @@ public class EditorTextWindow extends EditorTextDesign {
                     ct.getTextComposite().forceFocus();
                 }
             }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
-            }
         });
-        btn_SaveAs[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_SaveAs[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (tabFolder[0].getSelection() != null) {
@@ -628,32 +625,32 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
-        btn_Cut[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Cut[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 tabFolder[0].cut();
             }
         });
-        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 tabFolder[0].copy();
             }
         });
-        btn_Paste[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Paste[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 tabFolder[0].paste();
             }
         });
-        btn_Delete[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Delete[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 tabFolder[0].delete();
             }
         });
 
-        btn_Undo[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Undo[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -666,7 +663,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_Redo[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Redo[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -680,7 +677,7 @@ public class EditorTextWindow extends EditorTextDesign {
         });
 
         if (NLogger.DEBUG) {
-            btn_AddHistory[0].addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(btn_AddHistory[0]).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -694,7 +691,7 @@ public class EditorTextWindow extends EditorTextDesign {
             });
         }
 
-        btn_SyncEdit[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_SyncEdit[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -731,7 +728,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_Inline[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Inline[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -758,7 +755,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_InlineDeep[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_InlineDeep[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -785,7 +782,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_Annotate[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Annotate[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -814,7 +811,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_Texmap[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Texmap[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -843,8 +840,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-
-        btn_ShowSelectionIn3D[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ShowSelectionIn3D[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -869,7 +865,8 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
-        btn_OpenIn3D[0].addSelectionListener(new SelectionAdapter() {
+
+        WidgetUtil(btn_OpenIn3D[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -883,8 +880,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-
-        btn_FindAndReplace[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_FindAndReplace[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -901,7 +897,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_Sort[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Sort[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -926,7 +922,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_SplitQuad[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_SplitQuad[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -950,7 +946,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_MergeQuad[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_MergeQuad[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -974,9 +970,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-
-
-        btn_Unrectify[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Unrectify[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -998,7 +992,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_Palette[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Palette[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final GColour[] gColour2 = new GColour[1];
@@ -1031,7 +1025,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_InlineLinked[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_InlineLinked[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -1057,7 +1051,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
-        btn_BFCswap[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_BFCswap[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -1084,7 +1078,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
-        btn_CompileSubfile[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_CompileSubfile[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -1098,7 +1092,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
-        btn_RoundSelection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_RoundSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -1125,7 +1119,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_ShowErrors[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ShowErrors[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
@@ -1135,7 +1129,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_Hide[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Hide[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selectedTab = (CompositeTab) tabFolder[0].getSelection();
@@ -1145,7 +1139,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        btn_Show[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Show[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CompositeTab selectedTab = (CompositeTab) tabFolder[0].getSelection();
@@ -1193,7 +1187,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 EditorTextWindow.dragFolderOrigin = tabFolder[0];
             }
         });
-        tabFolder[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(tabFolder[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 ((CompositeTab) tabFolder[0].getSelection()).getTextComposite().forceFocus();

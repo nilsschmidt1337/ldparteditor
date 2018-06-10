@@ -15,10 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.round;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -50,20 +52,19 @@ public class RoundDialog extends RoundDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-
-        cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Xaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 onX = cb_Xaxis[0].getSelection();
             }
         });
-        cb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Yaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 onY = cb_Yaxis[0].getSelection();
             }
         });
-        cb_Zaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Zaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 onZ = cb_Zaxis[0].getSelection();
@@ -78,5 +79,4 @@ public class RoundDialog extends RoundDesign {
         });
         return super.open();
     }
-
 }

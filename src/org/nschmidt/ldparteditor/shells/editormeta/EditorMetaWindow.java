@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editormeta;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.net.URLDecoder;
 
 import org.eclipse.swt.SWT;
@@ -22,7 +24,6 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
@@ -31,6 +32,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.helpers.Version;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.main.LDPartEditor;
 import org.nschmidt.ldparteditor.project.Project;
@@ -87,7 +89,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        btn_Create[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Create[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 String textToCompile = lbl_lineToInsert[0].getText();
@@ -111,7 +113,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        ev_description_btn[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(ev_description_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 updateDescription();
@@ -192,13 +194,13 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 updateType();
             }
         });
-        ev_type_unofficial_btn[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(ev_type_unofficial_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 updateType();
             }
         });
-        ev_type_update_btn[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(ev_type_update_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 updateType();
@@ -368,7 +370,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 updateComment();
             }
         });
-        ev_comment_btn[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(ev_comment_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 updateComment();
@@ -424,7 +426,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             ev_texmapPlanar10_txt[0].addFocusListener(a);
             ev_texmapPlanar10_txt[0].addModifyListener(m);
 
-            ev_texmapPlanar_btn[0].addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(ev_texmapPlanar_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
 
@@ -496,7 +498,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             ev_texmapCyli11_txt[0].addFocusListener(a);
             ev_texmapCyli11_txt[0].addModifyListener(m);
 
-            ev_texmapCyli_btn[0].addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(ev_texmapCyli_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
 
@@ -570,7 +572,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             ev_texmapSphere12_txt[0].addFocusListener(a);
             ev_texmapSphere12_txt[0].addModifyListener(m);
 
-            ev_texmapSphere_btn[0].addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(ev_texmapSphere_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
 
@@ -604,7 +606,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
         }
 
-        ev_texmapFallback_btn[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(ev_texmapFallback_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 lbl_lineToInsert[0].setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
@@ -626,7 +628,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        ev_texmapEnd_btn[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(ev_texmapEnd_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 lbl_lineToInsert[0].setText("0 !TEXMAP END"); //$NON-NLS-1$
@@ -880,7 +882,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        ev_csgDontOptimize_btn[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(ev_csgDontOptimize_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 updateCSGdontOptimize();
@@ -940,7 +942,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                     updatePNGdef();
                 }
             };
-            ev_png_btn[0].addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(ev_png_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     updatePNGdef();
@@ -965,7 +967,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             ev_png9_txt[0].addFocusListener(a);
             ev_png9_txt[0].addModifyListener(m);
 
-            ev_png_btn[0].addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(ev_png_btn[0]).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
 

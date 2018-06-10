@@ -15,14 +15,16 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.colour;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.ColorDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
 /**
@@ -52,7 +54,7 @@ public class ColourDialog extends ColourDesign {
         this.setShellStyle(SWT.APPLICATION_MODAL | SWT.SHELL_TRIM ^ SWT.MIN);
         this.create();
         // MARK All final listeners will be configured here..
-        btn_colourChoose[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_colourChoose[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 ColorDialog dlg = new ColorDialog(getShell());
@@ -66,14 +68,14 @@ public class ColourDialog extends ColourDesign {
                 }
             }
         });
-        btn_colourTable[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_colourTable[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 new ColourTableDialog(getShell(), refCol).run();
                 me.close();
             }
         });
-        if (randomColours) btn_randomColours[0].addSelectionListener(new SelectionAdapter() {
+        if (randomColours) WidgetUtil(btn_randomColours[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 refCol[0] = View.RANDOM_COLOUR;

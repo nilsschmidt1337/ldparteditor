@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editor3d;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -67,9 +69,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Color;
@@ -173,6 +173,7 @@ import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.SphereGL20;
 import org.nschmidt.ldparteditor.helpers.Version;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
@@ -473,67 +474,50 @@ public class Editor3DWindow extends Editor3DDesign {
                 VertexWindow.placeVertexWindow();
             }
         });
-        sh.addListener(SWT.Move, (event) -> {
+        sh.addListener(SWT.Move, event -> {
             VertexWindow.placeVertexWindow();
         });
-        sh.addListener(SWT.Resize, (event) -> {
+        sh.addListener(SWT.Resize, event -> {
             VertexWindow.placeVertexWindow();
         });
-        tabFolder_Settings[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                regainFocus();
-            }
-        });
+        WidgetUtil(tabFolder_Settings[0]).addXSelectionListener(e ->  regainFocus());
 
-        SelectionAdapter sa = new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                int[] w = leftSash[0].getWeights();
-                if (w[0] == 800 && w[1] == 100 && w[2] == 100) {
-                    leftSash[0].setWeights(new int[]{33, 33, 33});
-                } else {
-                    leftSash[0].setWeights(new int[]{80, 10, 10});
-                }
+        WidgetSelectionListener sa = e -> {
+            int[] w = leftSash[0].getWeights();
+            if (w[0] == 800 && w[1] == 100 && w[2] == 100) {
+                leftSash[0].setWeights(new int[]{33, 33, 33});
+            } else {
+                leftSash[0].setWeights(new int[]{80, 10, 10});
             }
         };
 
-        btn_showUpper1[0].addSelectionListener(sa);
-        btn_showUpper2[0].addSelectionListener(sa);
-        btn_showUpper3[0].addSelectionListener(sa);
+        WidgetUtil(btn_showUpper1[0]).addXSelectionListener(sa);
+        WidgetUtil(btn_showUpper2[0]).addXSelectionListener(sa);
+        WidgetUtil(btn_showUpper3[0]).addXSelectionListener(sa);
 
-        btn_showMiddle[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                int[] w = leftSash[0].getWeights();
-                if (w[0] == 100 && w[1] == 800 && w[2] == 100) {
-                    leftSash[0].setWeights(new int[]{33, 33, 33});
-                } else {
-                    leftSash[0].setWeights(new int[]{10, 80, 10});
-                }
-            }
-        });
-
-        btn_sameHeight[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
+        WidgetUtil(btn_showMiddle[0]).addXSelectionListener(e -> {
+            int[] w = leftSash[0].getWeights();
+            if (w[0] == 100 && w[1] == 800 && w[2] == 100) {
                 leftSash[0].setWeights(new int[]{33, 33, 33});
+            } else {
+                leftSash[0].setWeights(new int[]{10, 80, 10});
             }
         });
 
-        btn_showLower[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                int[] w = leftSash[0].getWeights();
-                if (w[0] == 100 && w[1] == 100 && w[2] == 800) {
-                    leftSash[0].setWeights(new int[]{33, 33, 33});
-                } else {
-                    leftSash[0].setWeights(new int[]{10, 10, 80});
-                }
+        WidgetUtil(btn_sameHeight[0]).addXSelectionListener(e -> {
+            leftSash[0].setWeights(new int[]{33, 33, 33});
+        });
+
+        WidgetUtil(btn_showLower[0]).addXSelectionListener(e -> {
+            int[] w = leftSash[0].getWeights();
+            if (w[0] == 100 && w[1] == 100 && w[2] == 800) {
+                leftSash[0].setWeights(new int[]{33, 33, 33});
+            } else {
+                leftSash[0].setWeights(new int[]{10, 10, 80});
             }
         });
 
-        if (btn_showLeft[0] != null) btn_showLeft[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_showLeft[0] != null) WidgetUtil(btn_showLeft[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final SashForm sf = splitSash[0];
@@ -546,7 +530,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (btn_showRight[0] != null) btn_showRight[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_showRight[0] != null) WidgetUtil(btn_showRight[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final SashForm sf = splitSash[0];
@@ -559,7 +543,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (btn_sameWidth[0] != null) btn_sameWidth[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_sameWidth[0] != null) WidgetUtil(btn_sameWidth[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 splitSash[0].setWeights(new int[]{50, 50});
@@ -580,7 +564,7 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
 
-        btn_Sync[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Sync[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -654,7 +638,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_LastOpen[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_LastOpen[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -670,7 +654,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             MenuItem mntmItem = new MenuItem(lastOpenedMenu, I18n.I18N_NON_BIDIRECT());
                             mntmItem.setEnabled(true);
                             mntmItem.setText(path);
-                            mntmItem.addSelectionListener(new SelectionAdapter() {
+                            WidgetUtil(mntmItem).addXSelectionListener(new WidgetSelectionListener() {
                                 @Override
                                 public void widgetSelected(SelectionEvent e) {
                                     File f = new File(path);
@@ -708,7 +692,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             formatter.applyPattern(I18n.E3D_LastProject);
 
                             mntmItem.setText(formatter.format(messageArguments));
-                            mntmItem.addSelectionListener(new SelectionAdapter() {
+                            WidgetUtil(mntmItem).addXSelectionListener(new WidgetSelectionListener() {
                                 @Override
                                 public void widgetSelected(SelectionEvent e) {
                                     File f = new File(path);
@@ -743,7 +727,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_New[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_New[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), false)) {
@@ -752,7 +736,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Open[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Open[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (ProjectActions.openProject(null)) {
@@ -775,7 +759,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Save[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Save[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (treeParts[0].getSelectionCount() == 1) {
@@ -869,7 +853,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        btn_SaveAll[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_SaveAll[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 HashSet<DatFile> dfs = new HashSet<DatFile>(Project.getUnsavedFiles());
@@ -896,7 +880,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_NewDat[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_NewDat[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 DatFile dat = createNewDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
@@ -911,7 +895,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_OpenDat[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_OpenDat[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
@@ -946,7 +930,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_SaveDat[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_SaveDat[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
@@ -967,7 +951,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_SaveAsDat[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_SaveAsDat[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
@@ -1032,7 +1016,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Undo[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Undo[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -1043,7 +1027,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Redo[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Redo[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -1055,7 +1039,7 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         if (NLogger.DEBUG) {
-            btn_AddHistory[0].addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(btn_AddHistory[0]).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     if (Project.getFileToEdit() != null) {
@@ -1066,7 +1050,7 @@ public class Editor3DWindow extends Editor3DDesign {
             });
         }
 
-        btn_Select[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Select[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Select[0]);
@@ -1075,7 +1059,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Move[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Move[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Move[0]);
@@ -1084,7 +1068,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Rotate[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Rotate[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Rotate[0]);
@@ -1093,7 +1077,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Scale[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Scale[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Scale[0]);
@@ -1102,7 +1086,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Combined[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Combined[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Combined[0]);
@@ -1112,7 +1096,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Local[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Local[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Local[0]);
@@ -1120,7 +1104,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Global[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Global[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Global[0]);
@@ -1129,7 +1113,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Vertices[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Vertices[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Vertices[0]);
@@ -1148,7 +1132,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_TrisNQuads[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_TrisNQuads[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_TrisNQuads[0]);
@@ -1170,7 +1154,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Lines[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Lines[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Lines[0]);
@@ -1192,7 +1176,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Subfiles[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Subfiles[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickBtnTest(btn_Subfiles[0]);
@@ -1210,7 +1194,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_AddComment[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_AddComment[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (!metaWindow.isOpened()) {
@@ -1220,7 +1204,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        btn_AddVertex[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_AddVertex[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 resetAddState();
@@ -1230,7 +1214,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_AddPrimitive[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_AddPrimitive[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -1473,7 +1457,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_AddLine[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_AddLine[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 resetAddState();
@@ -1483,7 +1467,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_AddTriangle[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_AddTriangle[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 resetAddState();
@@ -1493,7 +1477,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_AddQuad[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_AddQuad[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 resetAddState();
@@ -1503,7 +1487,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_AddCondline[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_AddCondline[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 resetAddState();
@@ -1513,7 +1497,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_AddDistance[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_AddDistance[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 resetAddState();
@@ -1523,7 +1507,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_AddProtractor[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_AddProtractor[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 resetAddState();
@@ -1533,7 +1517,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_MoveAdjacentData[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_MoveAdjacentData[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 clickSingleBtn(btn_MoveAdjacentData[0]);
@@ -1542,7 +1526,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_CompileSubfile[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_CompileSubfile[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -1552,7 +1536,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        if (btn_ToggleLinesOpenGL[0] != null) btn_ToggleLinesOpenGL[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_ToggleLinesOpenGL[0] != null) WidgetUtil(btn_ToggleLinesOpenGL[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (btn_ToggleLinesOpenGL[0].getSelection()) {
@@ -1563,35 +1547,35 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_lineSize0[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_lineSize0[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setLineSize(GL20Primitives.SPHERE0, GL20Primitives.SPHERE_INV0, 0f, 0f, 0.01f, btn_lineSize0[0]);
                 regainFocus();
             }
         });
-        btn_lineSize1[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_lineSize1[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, 1f, btn_lineSize1[0]);
                 regainFocus();
             }
         });
-        btn_lineSize2[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_lineSize2[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, 2f, btn_lineSize2[0]);
                 regainFocus();
             }
         });
-        btn_lineSize3[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_lineSize3[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 3f, btn_lineSize3[0]);
                 regainFocus();
             }
         });
-        btn_lineSize4[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_lineSize4[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 4f, btn_lineSize4[0]);
@@ -1599,7 +1583,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_ShowSelectionInTextEditor[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ShowSelectionInTextEditor[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -1609,7 +1593,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_BFCswap[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_BFCswap[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -1621,7 +1605,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_RoundSelection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_RoundSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -1638,7 +1622,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Pipette[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Pipette[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -1677,7 +1661,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                     });
-                    btn_LastUsedColour[0].addSelectionListener(new SelectionListener() {
+                    WidgetUtil(btn_LastUsedColour[0]).addXSelectionListener(new WidgetSelectionListener() {
                         @Override
                         public void widgetSelected(SelectionEvent e) {
                             if (Project.getFileToEdit() != null) {
@@ -1689,10 +1673,6 @@ public class Editor3DWindow extends Editor3DDesign {
                                 Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2.getR(), gColour2.getG(), gColour2.getB(), gColour2.getA(), true);
                             }
                             regainFocus();
-                        }
-
-                        @Override
-                        public void widgetDefaultSelected(SelectionEvent e) {
                         }
                     });
                     if (num != -1) {
@@ -1723,7 +1703,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Decolour[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Decolour[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
@@ -1747,7 +1727,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         initPaletteEvent();
 
-        btn_Coarse[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Coarse[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 BigDecimal m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
@@ -1762,7 +1742,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Medium[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Medium[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 BigDecimal m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
@@ -1777,7 +1757,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Fine[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Fine[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 BigDecimal m = WorkbenchManager.getUserSettingState().getFine_move_snap();
@@ -1810,7 +1790,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmGridCoarseDefault.setEnabled(true);
                 mntmGridCoarseDefault.setText(I18n.E3D_GridCoarseDefault);
 
-                mntm_gridCoarseDefault[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntm_gridCoarseDefault[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         WorkbenchManager.getUserSettingState().setCoarse_move_snap(new BigDecimal("1")); //$NON-NLS-1$
@@ -1860,7 +1840,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmGridMediumDefault.setEnabled(true);
                 mntmGridMediumDefault.setText(I18n.E3D_GridMediumDefault);
 
-                mntm_gridMediumDefault[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntm_gridMediumDefault[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         WorkbenchManager.getUserSettingState().setMedium_move_snap(new BigDecimal("0.01")); //$NON-NLS-1$
@@ -1910,7 +1890,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmGridFineDefault.setEnabled(true);
                 mntmGridFineDefault.setText(I18n.E3D_GridFineDefault);
 
-                mntm_gridFineDefault[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntm_gridFineDefault[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         WorkbenchManager.getUserSettingState().setFine_move_snap(new BigDecimal("0.0001")); //$NON-NLS-1$
@@ -1942,7 +1922,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_SplitQuad[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_SplitQuad[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
@@ -1953,7 +1933,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_MergeQuad[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_MergeQuad[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
@@ -1967,7 +1947,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_LineIntersection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_LineIntersection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
@@ -1978,7 +1958,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_CondlineToLine[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_CondlineToLine[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
@@ -1989,7 +1969,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_LineToCondline[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_LineToCondline[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
@@ -2000,7 +1980,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_MoveOnLine[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_MoveOnLine[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
@@ -2089,7 +2069,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         spn_ScaleInitial[0].addValueChangeListener(spn -> Manipulator.setInitialScale(spn.getValue()));
 
-        btn_PreviousSelection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_PreviousSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 updatingSelectionTab = true;
@@ -2273,7 +2253,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_NextSelection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_NextSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 updatingSelectionTab = true;
@@ -2603,44 +2583,44 @@ public class Editor3DWindow extends Editor3DDesign {
         spn_SelectionY4[0].addValueChangeListener(va);
         spn_SelectionZ4[0].addValueChangeListener(va);
 
-        btn_MoveAdjacentData2[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_MoveAdjacentData2[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 regainFocus();
             }
         });
 
-        btn_OpenInTextEditor[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_OpenInTextEditor[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 action_OpenInTextEditor();
             }
         });
-        btn_OpenIn3DEditor[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_OpenIn3DEditor[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 action_OpenIn3DEditor();
             }
         });
-        btn_Revert[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Revert[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 action_Revert();
             }
         });
-        btn_Close[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Close[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 action_Close();
             }
         });
-        btn_Rename[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Rename[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 action_Rename();
             }
         });
-        btn_CopyToUnofficial[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_CopyToUnofficial[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 action_CopyToUnofficial();
@@ -2706,37 +2686,37 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmCopyToUnofficial.setEnabled(enabled && isNotUnofficial);
                 mntmCopyToUnofficial.setText(I18n.E3D_CopyToUnofficialLibrary);
 
-                mntm_OpenInTextEditor[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntm_OpenInTextEditor[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         action_OpenInTextEditor();
                     }
                 });
-                mntm_OpenIn3DEditor[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntm_OpenIn3DEditor[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         action_OpenIn3DEditor();
                     }
                 });
-                mntm_Revert[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntm_Revert[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         action_Revert();
                     }
                 });
-                mntm_Close[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntm_Close[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         action_Close();
                     }
                 });
-                mntm_Rename[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntm_Rename[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         action_Rename();
                     }
                 });
-                mntm_CopyToUnofficial[0].addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(mntm_CopyToUnofficial[0]).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         action_CopyToUnofficial();
@@ -2754,20 +2734,16 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        treeParts[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                super.widgetSelected(e);
-                final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null ? treeParts[0].getSelection()[0].getData() instanceof DatFile : false;
-                final boolean writable = enabled ? !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly() : false;
-                final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null ? !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItem_Unofficial[0]) : false;
-                btn_OpenIn3DEditor[0].setEnabled(enabled);
-                btn_OpenInTextEditor[0].setEnabled(enabled);
-                btn_Close[0].setEnabled(enabled);
-                btn_Rename[0].setEnabled(enabled && writable);
-                btn_Revert[0].setEnabled(enabled && writable);
-                btn_CopyToUnofficial[0].setEnabled(enabled && isNotUnofficial);
-            }
+        treeParts[0].addSelectionListener(e -> {
+            final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null ? treeParts[0].getSelection()[0].getData() instanceof DatFile : false;
+            final boolean writable = enabled ? !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly() : false;
+            final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null ? !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItem_Unofficial[0]) : false;
+            btn_OpenIn3DEditor[0].setEnabled(enabled);
+            btn_OpenInTextEditor[0].setEnabled(enabled);
+            btn_Close[0].setEnabled(enabled);
+            btn_Rename[0].setEnabled(enabled && writable);
+            btn_Revert[0].setEnabled(enabled && writable);
+            btn_CopyToUnofficial[0].setEnabled(enabled && isNotUnofficial);
         });
 
         treeParts[0].addListener(SWT.MouseDoubleClick, event -> {
@@ -2792,75 +2768,72 @@ public class Editor3DWindow extends Editor3DDesign {
                 search(txt_Search[0].getText());
             }
         });
-        btn_ResetSearch[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ResetSearch[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 txt_Search[0].setText(""); //$NON-NLS-1$
                 txt_Search[0].setFocus();
             }
         });
-        txt_primitiveSearch[0].addModifyListener(new ModifyListener() {
-            @Override
-            public void modifyText(ModifyEvent e) {
-                if (getCompositePrimitive().stopDraw()) {
-                    txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
-                    return;
-                } else {
-                    getCompositePrimitive().disableRefresh();
-                }
-                getCompositePrimitive().collapseAll();
-                ArrayList<Primitive> prims = getCompositePrimitive().getPrimitives();
-                final String crit = txt_primitiveSearch[0].getText();
-                if (crit.trim().isEmpty()) {
-                    getCompositePrimitive().setSearchResults(new ArrayList<Primitive>());
-                    Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
-                    getCompositePrimitive().getOpenGL().drawScene(-1, -1);
-                    return;
-                }
-                String criteria = ".*" + crit + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
-                try {
-                    "DUMMY".matches(criteria); //$NON-NLS-1$
-                } catch (PatternSyntaxException pe) {
-                    getCompositePrimitive().setSearchResults(new ArrayList<Primitive>());
-                    Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
-                    getCompositePrimitive().getOpenGL().drawScene(-1, -1);
-                    return;
-                }
-                final Pattern pattern = Pattern.compile(criteria);
-                ArrayList<Primitive> results = new ArrayList<Primitive>();
-                for (Primitive p : prims) {
-                    p.search(pattern, results);
-                }
-                if (results.isEmpty()) {
-                    results.add(null);
-                }
-                getCompositePrimitive().setSearchResults(results);
+        txt_primitiveSearch[0].addModifyListener(e -> {
+            if (getCompositePrimitive().stopDraw()) {
+                txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
+                return;
+            } else {
+                getCompositePrimitive().disableRefresh();
+            }
+            getCompositePrimitive().collapseAll();
+            ArrayList<Primitive> prims = getCompositePrimitive().getPrimitives();
+            final String crit = txt_primitiveSearch[0].getText();
+            if (crit.trim().isEmpty()) {
+                getCompositePrimitive().setSearchResults(new ArrayList<Primitive>());
                 Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
                 getCompositePrimitive().getOpenGL().drawScene(-1, -1);
+                return;
             }
+            String criteria = ".*" + crit + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
+            try {
+                "DUMMY".matches(criteria); //$NON-NLS-1$
+            } catch (PatternSyntaxException pe) {
+                getCompositePrimitive().setSearchResults(new ArrayList<Primitive>());
+                Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
+                getCompositePrimitive().getOpenGL().drawScene(-1, -1);
+                return;
+            }
+            final Pattern pattern = Pattern.compile(criteria);
+            ArrayList<Primitive> results = new ArrayList<Primitive>();
+            for (Primitive p : prims) {
+                p.search(pattern, results);
+            }
+            if (results.isEmpty()) {
+                results.add(null);
+            }
+            getCompositePrimitive().setSearchResults(results);
+            Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
+            getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
-        btn_resetPrimitiveSearch[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_resetPrimitiveSearch[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
                 txt_primitiveSearch[0].setFocus();
             }
         });
-        btn_zoomInPrimitives[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_zoomInPrimitives[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 getCompositePrimitive().zoomIn();
                 getCompositePrimitive().getOpenGL().drawScene(-1, -1);
             }
         });
-        btn_zoomOutPrimitives[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_zoomOutPrimitives[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 getCompositePrimitive().zoomOut();
                 getCompositePrimitive().getOpenGL().drawScene(-1, -1);
             }
         });
-        btn_Hide[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Hide[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -2881,7 +2854,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_ShowAll[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ShowAll[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -2900,21 +2873,21 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_NoTransparentSelection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_NoTransparentSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setNoTransparentSelection(btn_NoTransparentSelection[0].getSelection());
                 regainFocus();
             }
         });
-        btn_BFCToggle[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_BFCToggle[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setBfcToggle(btn_BFCToggle[0].getSelection());
                 regainFocus();
             }
         });
-        btn_InsertAtCursorPosition[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_InsertAtCursorPosition[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setInsertingAtCursorPosition(btn_InsertAtCursorPosition[0].getSelection());
@@ -2922,7 +2895,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_Delete[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Delete[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -2932,7 +2905,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -2942,7 +2915,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Cut[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Cut[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -2953,7 +2926,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_Paste[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Paste[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -2968,285 +2941,285 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (btn_Manipulator_0_toOrigin[0] != null) btn_Manipulator_0_toOrigin[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_0_toOrigin[0] != null) WidgetUtil(btn_Manipulator_0_toOrigin[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_0_toOrigin();
             }
         });
 
-        if (btn_Manipulator_XIII_toWorld[0] != null) btn_Manipulator_XIII_toWorld[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_XIII_toWorld[0] != null) WidgetUtil(btn_Manipulator_XIII_toWorld[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XIII_toWorld();
             }
         });
 
-        if (btn_Manipulator_X_XReverse[0] != null) btn_Manipulator_X_XReverse[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_X_XReverse[0] != null) WidgetUtil(btn_Manipulator_X_XReverse[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_X_XReverse();
             }
         });
 
-        if (btn_Manipulator_XI_YReverse[0] != null) btn_Manipulator_XI_YReverse[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_XI_YReverse[0] != null) WidgetUtil(btn_Manipulator_XI_YReverse[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XI_YReverse();
             }
         });
 
-        if (btn_Manipulator_XII_ZReverse[0] != null) btn_Manipulator_XII_ZReverse[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_XII_ZReverse[0] != null) WidgetUtil(btn_Manipulator_XII_ZReverse[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XII_ZReverse();
             }
         });
 
-        if (btn_Manipulator_SwitchXY[0] != null) btn_Manipulator_SwitchXY[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_SwitchXY[0] != null) WidgetUtil(btn_Manipulator_SwitchXY[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_SwitchXY();
             }
         });
 
-        if (btn_Manipulator_SwitchXZ[0] != null) btn_Manipulator_SwitchXZ[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_SwitchXZ[0] != null) WidgetUtil(btn_Manipulator_SwitchXZ[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_SwitchXZ();
             }
         });
 
-        if (btn_Manipulator_SwitchYZ[0] != null) btn_Manipulator_SwitchYZ[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_SwitchYZ[0] != null) WidgetUtil(btn_Manipulator_SwitchYZ[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_SwitchYZ();
             }
         });
 
-        if (btn_Manipulator_1_cameraToPos[0] != null) btn_Manipulator_1_cameraToPos[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_1_cameraToPos[0] != null) WidgetUtil(btn_Manipulator_1_cameraToPos[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_1_cameraToPos();
             }
         });
-        if (btn_Manipulator_2_toAverage[0] != null) btn_Manipulator_2_toAverage[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_2_toAverage[0] != null) WidgetUtil(btn_Manipulator_2_toAverage[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_2_toAverage();
             }
         });
 
-        if (btn_Manipulator_3_toSubfile[0] != null) btn_Manipulator_3_toSubfile[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_3_toSubfile[0] != null) WidgetUtil(btn_Manipulator_3_toSubfile[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_3_toSubfile();
             }
         });
 
-        if (btn_Manipulator_32_subfileTo[0] != null) btn_Manipulator_32_subfileTo[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_32_subfileTo[0] != null) WidgetUtil(btn_Manipulator_32_subfileTo[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask));
             }
         });
 
-        if (btn_Manipulator_4_toVertex[0] != null) btn_Manipulator_4_toVertex[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_4_toVertex[0] != null) WidgetUtil(btn_Manipulator_4_toVertex[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_4_toVertex();
             }
         });
 
-        if (btn_Manipulator_5_toEdge[0] != null) btn_Manipulator_5_toEdge[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_5_toEdge[0] != null) WidgetUtil(btn_Manipulator_5_toEdge[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_5_toEdge();
             }
         });
 
-        if (btn_Manipulator_6_toSurface[0] != null) btn_Manipulator_6_toSurface[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_6_toSurface[0] != null) WidgetUtil(btn_Manipulator_6_toSurface[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_6_toSurface();
             }
         });
 
-        if (btn_Manipulator_7_toVertexNormal[0] != null) btn_Manipulator_7_toVertexNormal[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_7_toVertexNormal[0] != null) WidgetUtil(btn_Manipulator_7_toVertexNormal[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_7_toVertexNormal();
             }
         });
 
-        if (btn_Manipulator_8_toEdgeNormal[0] != null) btn_Manipulator_8_toEdgeNormal[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_8_toEdgeNormal[0] != null) WidgetUtil(btn_Manipulator_8_toEdgeNormal[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_8_toEdgeNormal();
             }
         });
 
-        if (btn_Manipulator_9_toSurfaceNormal[0] != null) btn_Manipulator_9_toSurfaceNormal[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_9_toSurfaceNormal[0] != null) WidgetUtil(btn_Manipulator_9_toSurfaceNormal[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_9_toSurfaceNormal();
             }
         });
 
-        if (btn_Manipulator_XIV_adjustRotationCenter[0] != null) btn_Manipulator_XIV_adjustRotationCenter[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_XIV_adjustRotationCenter[0] != null) WidgetUtil(btn_Manipulator_XIV_adjustRotationCenter[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XIV_adjustRotationCenter();
             }
         });
 
-        if (btn_Manipulator_XV_toVertexPosition[0] != null) btn_Manipulator_XV_toVertexPosition[0].addSelectionListener(new SelectionAdapter() {
+        if (btn_Manipulator_XV_toVertexPosition[0] != null) WidgetUtil(btn_Manipulator_XV_toVertexPosition[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XV_toVertexPosition();
             }
         });
 
-        if (mntm_Manipulator_0_toOrigin[0] != null) mntm_Manipulator_0_toOrigin[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_0_toOrigin[0] != null) WidgetUtil(mntm_Manipulator_0_toOrigin[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_0_toOrigin();
             }
         });
 
-        if (mntm_Manipulator_XIII_toWorld[0] != null) mntm_Manipulator_XIII_toWorld[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_XIII_toWorld[0] != null) WidgetUtil(mntm_Manipulator_XIII_toWorld[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XIII_toWorld();
             }
         });
 
-        if (mntm_Manipulator_X_XReverse[0] != null) mntm_Manipulator_X_XReverse[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_X_XReverse[0] != null) WidgetUtil(mntm_Manipulator_X_XReverse[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_X_XReverse();
             }
         });
 
-        if (mntm_Manipulator_XI_YReverse[0] != null) mntm_Manipulator_XI_YReverse[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_XI_YReverse[0] != null) WidgetUtil(mntm_Manipulator_XI_YReverse[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XI_YReverse();
             }
         });
 
-        if (mntm_Manipulator_XII_ZReverse[0] != null) mntm_Manipulator_XII_ZReverse[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_XII_ZReverse[0] != null) WidgetUtil(mntm_Manipulator_XII_ZReverse[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XII_ZReverse();
             }
         });
 
-        if (mntm_Manipulator_SwitchXY[0] != null) mntm_Manipulator_SwitchXY[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_SwitchXY[0] != null) WidgetUtil(mntm_Manipulator_SwitchXY[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_SwitchXY();
             }
         });
 
-        if (mntm_Manipulator_SwitchXZ[0] != null) mntm_Manipulator_SwitchXZ[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_SwitchXZ[0] != null) WidgetUtil(mntm_Manipulator_SwitchXZ[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_SwitchXZ();
             }
         });
 
-        if (mntm_Manipulator_SwitchYZ[0] != null) mntm_Manipulator_SwitchYZ[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_SwitchYZ[0] != null) WidgetUtil(mntm_Manipulator_SwitchYZ[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_SwitchYZ();
             }
         });
 
-        if (mntm_Manipulator_1_cameraToPos[0] != null) mntm_Manipulator_1_cameraToPos[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_1_cameraToPos[0] != null) WidgetUtil(mntm_Manipulator_1_cameraToPos[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_1_cameraToPos();
             }
         });
-        if (mntm_Manipulator_2_toAverage[0] != null) mntm_Manipulator_2_toAverage[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_2_toAverage[0] != null) WidgetUtil(mntm_Manipulator_2_toAverage[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_2_toAverage();
             }
         });
 
-        if (mntm_Manipulator_3_toSubfile[0] != null) mntm_Manipulator_3_toSubfile[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_3_toSubfile[0] != null) WidgetUtil(mntm_Manipulator_3_toSubfile[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_3_toSubfile();
             }
         });
 
-        if (mntm_Manipulator_32_subfileTo[0] != null) mntm_Manipulator_32_subfileTo[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_32_subfileTo[0] != null) WidgetUtil(mntm_Manipulator_32_subfileTo[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask));
             }
         });
 
-        if (mntm_Manipulator_4_toVertex[0] != null) mntm_Manipulator_4_toVertex[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_4_toVertex[0] != null) WidgetUtil(mntm_Manipulator_4_toVertex[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_4_toVertex();
             }
         });
 
-        if (mntm_Manipulator_5_toEdge[0] != null) mntm_Manipulator_5_toEdge[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_5_toEdge[0] != null) WidgetUtil(mntm_Manipulator_5_toEdge[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_5_toEdge();
             }
         });
 
-        if (mntm_Manipulator_6_toSurface[0] != null) mntm_Manipulator_6_toSurface[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_6_toSurface[0] != null) WidgetUtil(mntm_Manipulator_6_toSurface[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_6_toSurface();
             }
         });
 
-        if (mntm_Manipulator_7_toVertexNormal[0] != null) mntm_Manipulator_7_toVertexNormal[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_7_toVertexNormal[0] != null) WidgetUtil(mntm_Manipulator_7_toVertexNormal[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_7_toVertexNormal();
             }
         });
 
-        if (mntm_Manipulator_8_toEdgeNormal[0] != null) mntm_Manipulator_8_toEdgeNormal[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_8_toEdgeNormal[0] != null) WidgetUtil(mntm_Manipulator_8_toEdgeNormal[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_8_toEdgeNormal();
             }
         });
 
-        if (mntm_Manipulator_9_toSurfaceNormal[0] != null) mntm_Manipulator_9_toSurfaceNormal[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_9_toSurfaceNormal[0] != null) WidgetUtil(mntm_Manipulator_9_toSurfaceNormal[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_9_toSurfaceNormal();
             }
         });
 
-        if (mntm_Manipulator_XIV_adjustRotationCenter[0] != null) mntm_Manipulator_XIV_adjustRotationCenter[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_XIV_adjustRotationCenter[0] != null) WidgetUtil(mntm_Manipulator_XIV_adjustRotationCenter[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XIV_adjustRotationCenter();
             }
         });
 
-        if (mntm_Manipulator_XV_toVertexPosition[0] != null) mntm_Manipulator_XV_toVertexPosition[0].addSelectionListener(new SelectionAdapter() {
+        if (mntm_Manipulator_XV_toVertexPosition[0] != null) WidgetUtil(mntm_Manipulator_XV_toVertexPosition[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 mntm_Manipulator_XV_toVertexPosition();
             }
         });
 
-        mntm_SelectAll[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectAll[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3264,7 +3237,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SelectAllVisible[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectAllVisible[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3282,7 +3255,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SelectAllWithColours[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectAllWithColours[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3300,7 +3273,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SelectAllVisibleWithColours[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectAllVisibleWithColours[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3318,7 +3291,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SelectNone[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectNone[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3335,7 +3308,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SelectInverse[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectInverse[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3354,7 +3327,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_WithSameColour[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_WithSameColour[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3374,7 +3347,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_WithSameType[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_WithSameType[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3394,7 +3367,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_WithSameOrientation[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_WithSameOrientation[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3432,7 +3405,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_WithAccuracy[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_WithAccuracy[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3468,7 +3441,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_WithHiddenData[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_WithHiddenData[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3487,7 +3460,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_WithWholeSubfiles[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_WithWholeSubfiles[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3499,7 +3472,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_WithAdjacency[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_WithAdjacency[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3511,7 +3484,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_ExceptSubfiles[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_ExceptSubfiles[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3531,7 +3504,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_StopAtEdges[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_StopAtEdges[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3543,7 +3516,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SAllTypes[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SAllTypes[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3556,7 +3529,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SNothing[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SNothing[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3573,7 +3546,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_STriangles[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_STriangles[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3585,7 +3558,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SQuads[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SQuads[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3597,7 +3570,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SCLines[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SCLines[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3609,7 +3582,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SVertices[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SVertices[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3621,7 +3594,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_SLines[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SLines[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3634,7 +3607,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SelectEverything[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectEverything[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3654,7 +3627,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SelectConnected[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectConnected[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3674,7 +3647,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SelectTouching[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectTouching[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3694,7 +3667,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SelectIsolatedVertices[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectIsolatedVertices[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3717,7 +3690,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Split[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Split[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3739,7 +3712,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SplitNTimes[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SplitNTimes[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3780,7 +3753,7 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
 
-        mntm_Smooth[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Smooth[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -3806,7 +3779,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_MergeToAverage[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_MergeToAverage[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3822,7 +3795,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_MergeToLastSelected[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_MergeToLastSelected[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3838,7 +3811,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_MergeToNearestVertex[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_MergeToNearestVertex[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3854,7 +3827,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_MergeToNearestEdge[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_MergeToNearestEdge[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3870,7 +3843,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_MergeToNearestEdgeSplit[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_MergeToNearestEdgeSplit[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3886,7 +3859,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        mntm_MergeToNearestFace[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_MergeToNearestFace[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3903,7 +3876,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_MergeToNearestFaceDir[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_MergeToNearestFaceDir[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3927,7 +3900,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SelectSingleVertex[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectSingleVertex[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -3950,7 +3923,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_setXYZ[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_setXYZ[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final boolean noReset = !Cocoa.checkCtrlOrCmdPressed(e.stateMask);
@@ -4096,7 +4069,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Translate[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Translate[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4135,7 +4108,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Rotate[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Rotate[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4202,7 +4175,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Scale[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Scale[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4267,7 +4240,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_PartReview[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_PartReview[0]).addXSelectionListener(new WidgetSelectionListener() {
 
             final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
             final Pattern pattern = Pattern.compile("\r?\n|\r"); //$NON-NLS-1$
@@ -4567,7 +4540,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Edger2[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Edger2[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4617,7 +4590,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_PrimGen2[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_PrimGen2[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 new PrimGen2Dialog(getShell()).open();
@@ -4625,7 +4598,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Rectifier[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Rectifier[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4663,7 +4636,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Isecalc[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Isecalc[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4682,7 +4655,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SlicerPro[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SlicerPro[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4701,7 +4674,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Intersector[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Intersector[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4720,7 +4693,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SlantingMatrixProjector[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SlantingMatrixProjector[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4739,7 +4712,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Lines2Pattern[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Lines2Pattern[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4758,7 +4731,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_PathTruder[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_PathTruder[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4777,7 +4750,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_YTruder[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_YTruder[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4796,7 +4769,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SymSplitter[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SymSplitter[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4815,7 +4788,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Unificator[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Unificator[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4834,7 +4807,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_RingsAndCones[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_RingsAndCones[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4852,7 +4825,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_TJunctionFinder[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_TJunctionFinder[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4872,7 +4845,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_MeshReducer[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_MeshReducer[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4892,7 +4865,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Txt2Dat[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Txt2Dat[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -4965,7 +4938,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         // MARK Options
 
-        mntm_UserConfigSave[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_UserConfigSave[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
@@ -5007,7 +4980,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_UserConfigLoad[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_UserConfigLoad[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -5061,7 +5034,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_ResetSettingsOnRestart[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_ResetSettingsOnRestart[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
@@ -5077,7 +5050,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_Options[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Options[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 OptionsDialog dialog = new OptionsDialog(getShell());
@@ -5086,7 +5059,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SelectAnotherLDConfig[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SelectAnotherLDConfig[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
@@ -5104,7 +5077,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_DownloadLDConfig[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_DownloadLDConfig[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 LDConfigUtils.downloadLDConfig();
@@ -5112,7 +5085,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_DownloadCategories[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_DownloadCategories[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 CategoriesUtils.downloadCategories();
@@ -5120,7 +5093,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SavePalette[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SavePalette[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -5171,7 +5144,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_LoadPalette[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_LoadPalette[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -5234,7 +5207,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SetPaletteSize[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SetPaletteSize[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -5285,7 +5258,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_ResetPalette[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_ResetPalette[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -5306,7 +5279,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_UploadLogs[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_UploadLogs[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -5487,7 +5460,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_AntiAliasing[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_AntiAliasing[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setAntiAliasing(mntm_AntiAliasing[0].getSelection());
@@ -5495,7 +5468,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_OpenGL33Engine[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_OpenGL33Engine[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setOpenGL33Engine(mntm_OpenGL33Engine[0].getSelection());
@@ -5507,7 +5480,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (NLogger.DEBUG) mntm_VulkanEngine[0].addSelectionListener(new SelectionAdapter() {
+        if (NLogger.DEBUG) WidgetUtil(mntm_VulkanEngine[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setVulkanEngine(mntm_VulkanEngine[0].getSelection());
@@ -5517,16 +5490,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        //        mntm_SyncWithTextEditor[0].addSelectionListener(new SelectionAdapter() {
-        //            @Override
-        //            public void widgetSelected(SelectionEvent e) {
-        //                WorkbenchManager.getUserSettingState().getSyncWithTextEditor().set(mntm_SyncWithTextEditor[0].getSelection());
-        //                mntm_SyncLpeInline[0].setEnabled(mntm_SyncWithTextEditor[0].getSelection());
-        //                regainFocus();
-        //            }
-        //        });
-
-        mntm_SyncLpeInline[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SyncLpeInline[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().getSyncWithLpeInline().set(mntm_SyncLpeInline[0].getSelection());
@@ -5536,7 +5500,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         // MARK Merge, split...
 
-        mntm_Flip[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Flip[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -5553,7 +5517,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SubdivideCatmullClark[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SubdivideCatmullClark[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -5570,7 +5534,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_SubdivideLoop[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_SubdivideLoop[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -5588,7 +5552,7 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         // MARK Background PNG
-        btn_PngFocus[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_PngFocus[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Composite3D c3d = null;
@@ -5670,7 +5634,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_PngImage[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_PngImage[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -5732,7 +5696,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        btn_PngNext[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_PngNext[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -5768,7 +5732,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 regainFocus();
             }
         });
-        btn_PngPrevious[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_PngPrevious[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 for (OpenGLRenderer renderer : renders) {
@@ -6117,42 +6081,42 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        mntm_IconSize1[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_IconSize1[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(-1);
                 regainFocus();
             }
         });
-        mntm_IconSize2[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_IconSize2[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(0);
                 regainFocus();
             }
         });
-        mntm_IconSize3[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_IconSize3[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(1);
                 regainFocus();
             }
         });
-        mntm_IconSize4[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_IconSize4[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(2);
                 regainFocus();
             }
         });
-        mntm_IconSize5[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_IconSize5[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(3);
                 regainFocus();
             }
         });
-        mntm_IconSize6[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_IconSize6[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setIconSize(4);
@@ -6229,7 +6193,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        tabFolder_OpenDatFiles[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(tabFolder_OpenDatFiles[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -6280,7 +6244,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        btn_SyncTabs[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_SyncTabs[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setSyncingTabs(btn_SyncTabs[0].getSelection());
@@ -7407,7 +7371,7 @@ public class Editor3DWindow extends Editor3DDesign {
             NButton btn_EndPartReview = new NButton(cmp_SyncAndReview[0], SWT.NONE);
             btn_EndPartReview.setText(I18n.E3D_EndPartReview);
             btn_EndPartReview.setData(partsForReview);
-            btn_EndPartReview.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(btn_EndPartReview).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     setReviewingAPart(false, null);
@@ -7489,7 +7453,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        btn_LastUsedColour[0].addSelectionListener(new SelectionListener() {
+        WidgetUtil(btn_LastUsedColour[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -7500,10 +7464,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                     Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
                 }
-            }
-
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {
             }
         });
         if (num != -1) {
@@ -9876,7 +9836,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     void initPaletteEvent() {
-        btn_Palette[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Palette[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Project.getFileToEdit() != null) {
@@ -9914,7 +9874,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 }
                             }
                         });
-                        btn_LastUsedColour[0].addSelectionListener(new SelectionListener() {
+                        WidgetUtil(btn_LastUsedColour[0]).addXSelectionListener(new WidgetSelectionListener() {
                             @Override
                             public void widgetSelected(SelectionEvent e) {
                                 if (Project.getFileToEdit() != null) {
@@ -9926,10 +9886,6 @@ public class Editor3DWindow extends Editor3DDesign {
                                     Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
                                 }
                                 regainFocus();
-                            }
-
-                            @Override
-                            public void widgetDefaultSelected(SelectionEvent e) {
                             }
                         });
                         if (num != -1) {

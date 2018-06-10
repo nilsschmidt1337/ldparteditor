@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.slantingmatrixprojector;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
 
@@ -24,7 +26,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.Clipboard;
 import org.eclipse.swt.dnd.TextTransfer;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -40,6 +41,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlantingMatrixProjectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.NButton;
@@ -120,7 +122,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
                 cb_setOrigin.setText(I18n.SLANT_SetOrigin);
                 cb_setOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                cb_setOrigin.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(cb_setOrigin).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
@@ -138,7 +140,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
                 cb_setOrigin.setText(I18n.SLANT_SetOrigin);
                 cb_setOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                cb_setOrigin.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(cb_setOrigin).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
@@ -153,7 +155,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
                 cb_resetSubfileOrientation.setSelection(mps.isResettingSubfileTransformation());
 
 
-                cb_resetSubfileOrientation.addSelectionListener(new SelectionAdapter() {
+                WidgetUtil(cb_resetSubfileOrientation).addXSelectionListener(new WidgetSelectionListener() {
                     @Override
                     public void widgetSelected(SelectionEvent e) {
                         mps.setResettingSubfileTransformation(!mps.isResettingSubfileTransformation());
@@ -196,7 +198,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
         btn_CopyMatrixToClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
         btn_CopyMatrixToClipboard.setText(I18n.SLANT_CopyToClipboard);
 
-        btn_CopyMatrixToClipboard.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_CopyMatrixToClipboard).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final Matrix M = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());

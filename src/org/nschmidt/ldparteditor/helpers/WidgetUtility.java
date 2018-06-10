@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers;
 
-import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Widget;
 
 /**
  * Provides useful utility functions for controls and widgets (e.g. lambda expression syntax sugar)
@@ -30,7 +30,7 @@ public enum WidgetUtility {
      * @param ctrl
      * @return
      */
-    public static WUtil WidgetUtil(Control ctrl) {
-        return new WUtil(ctrl);
+    public static WUtil WidgetUtil(Widget w) {
+        return new WUtil(w);
     }
 }

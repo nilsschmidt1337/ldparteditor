@@ -15,10 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.copy;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 
 /**
  *
@@ -45,38 +47,28 @@ public class CopyDialog extends CopyDesign {
     @Override
     public int open() {
         super.create();
-
         // MARK All final listeners will be configured here..
-        btn_1[0].addSelectionListener(new SelectionListener() {
+        WidgetUtil(btn_1[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setReturnCode(IDialogConstants.OK_ID);
                 close();
             }
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {}
         });
-
-        btn_2[0].addSelectionListener(new SelectionListener() {
+        WidgetUtil(btn_2[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setReturnCode(IDialogConstants.YES_ID);
                 close();
             }
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {}
         });
-
-        btn_3[0].addSelectionListener(new SelectionListener() {
+        WidgetUtil(btn_3[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 setReturnCode(IDialogConstants.NO_ID);
                 close();
             }
-            @Override
-            public void widgetDefaultSelected(SelectionEvent e) {}
         });
         return super.open();
     }
-
 }

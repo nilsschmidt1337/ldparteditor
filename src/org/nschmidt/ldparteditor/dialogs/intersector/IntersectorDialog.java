@@ -15,10 +15,12 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.intersector;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 
 /**
@@ -48,7 +50,7 @@ public class IntersectorDialog extends IntersectorDesign {
         // MARK All final listeners will be configured here..
         cmb_scope[0].addListener(SWT.Selection, event -> ins.setScope(cmb_scope[0].getSelectionIndex()));
         cmb_colourise[0].addListener(SWT.Selection, event -> ins.setColourise(cmb_colourise[0].getSelectionIndex() == 1));
-        btn_hideOther[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_hideOther[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 ins.setHidingOther(btn_hideOther[0].getSelection());

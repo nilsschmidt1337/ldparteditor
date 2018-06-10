@@ -1,9 +1,10 @@
 package org.nschmidt.ldparteditor.dialogs.options;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -11,6 +12,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Version;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -33,7 +35,7 @@ public class OptionsDialog extends OptionsDesign {
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         final UserSettingState userSettingState = WorkbenchManager.getUserSettingState();
 
-        btn_OK[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_OK[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 closingProcedure();
@@ -41,28 +43,28 @@ public class OptionsDialog extends OptionsDesign {
             }
         });
 
-        btn_AllowInvalidShapes[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil( btn_AllowInvalidShapes[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection());
             }
         });
 
-        btn_disableMAD3D[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_disableMAD3D[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setDisableMAD3D(btn_disableMAD3D[0].getSelection());
             }
         });
 
-        btn_disableMADtext[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_disableMADtext[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WorkbenchManager.getUserSettingState().setDisableMADtext(btn_disableMADtext[0].getSelection());
             }
         });
 
-        btn_browseLdrawPath[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_browseLdrawPath[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
@@ -88,7 +90,7 @@ public class OptionsDialog extends OptionsDesign {
                 }
             }
         });
-        btn_browseAuthoringPath[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_browseAuthoringPath[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
@@ -114,7 +116,7 @@ public class OptionsDialog extends OptionsDesign {
                 }
             }
         });
-        btn_browseUnofficialPath[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_browseUnofficialPath[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());

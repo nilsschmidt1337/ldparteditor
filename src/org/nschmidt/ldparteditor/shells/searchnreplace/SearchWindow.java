@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.searchnreplace;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -23,10 +25,10 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
@@ -61,7 +63,7 @@ public class SearchWindow extends SearchDesign {
         sh.setMinimumSize(super.getInitialSize());
 
         // MARK All final listeners will be configured here..
-        btn_find[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_find[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 find();
@@ -123,21 +125,21 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        btn_replace[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_replace[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 replace();
             }
         });
 
-        btn_replaceAll[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_replaceAll[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 replaceAll();
             }
         });
 
-        btn_findAndReplace[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_findAndReplace[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 replace();
@@ -157,7 +159,7 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        rb_selectedLines[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(rb_selectedLines[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 try {

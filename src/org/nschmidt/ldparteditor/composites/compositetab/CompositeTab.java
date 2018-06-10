@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.compositetab;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
@@ -54,9 +56,6 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
@@ -80,6 +79,7 @@ import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.TextTask;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
@@ -1411,7 +1411,7 @@ public class CompositeTab extends CompositeTabDesign {
                 event.doit = false;
             }
         });
-        final SelectionAdapter quickFix = new SelectionAdapter() {
+        final WidgetSelectionListener quickFix = new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
@@ -1464,7 +1464,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
         };
-        final SelectionAdapter quickFixSame = new SelectionAdapter() {
+        final WidgetSelectionListener quickFixSame = new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
@@ -1555,7 +1555,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
         };
-        final SelectionAdapter inspect = new SelectionAdapter() {
+        final WidgetSelectionListener inspect = new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
@@ -1608,7 +1608,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
         };
-        final SelectionAdapter inspectSame = new SelectionAdapter() {
+        final WidgetSelectionListener inspectSame = new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
@@ -1699,25 +1699,21 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
         };
-        mntm_QuickFix[0].addSelectionListener(quickFix);
-        mntm_QuickFixSame[0].addSelectionListener(quickFixSame);
-        btn_QuickFix[0].addSelectionListener(quickFix);
-        btn_QuickFixSame[0].addSelectionListener(quickFixSame);
-        mntm_Inspect[0].addSelectionListener(inspect);
-        mntm_InspectSame[0].addSelectionListener(inspectSame);
-        btn_Inspect[0].addSelectionListener(inspect);
-        btn_InspectSame[0].addSelectionListener(inspectSame);
+        WidgetUtil(mntm_QuickFix[0]).addXSelectionListener(quickFix);
+        WidgetUtil(mntm_QuickFixSame[0]).addXSelectionListener(quickFixSame);
+        WidgetUtil(btn_QuickFix[0]).addXSelectionListener(quickFix);
+        WidgetUtil(btn_QuickFixSame[0]).addXSelectionListener(quickFixSame);
+        WidgetUtil(mntm_Inspect[0]).addXSelectionListener(inspect);
+        WidgetUtil(mntm_InspectSame[0]).addXSelectionListener(inspectSame);
+        WidgetUtil(btn_Inspect[0]).addXSelectionListener(inspect);
+        WidgetUtil( btn_InspectSame[0]).addXSelectionListener(inspectSame);
 
-        tree_Problems[0].addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                super.widgetSelected(e);
-                boolean enabled = tree_Problems[0].getSelectionCount() == 1 && tree_Problems[0].getSelection()[0] != null;
-                btn_Inspect[0].setEnabled(enabled);
-                btn_InspectSame[0].setEnabled(enabled);
-                btn_QuickFix[0].setEnabled(enabled);
-                btn_QuickFixSame[0].setEnabled(enabled);
-            }
+        tree_Problems[0].addSelectionListener(e -> {
+            boolean enabled = tree_Problems[0].getSelectionCount() == 1 && tree_Problems[0].getSelection()[0] != null;
+            btn_Inspect[0].setEnabled(enabled);
+            btn_InspectSame[0].setEnabled(enabled);
+            btn_QuickFix[0].setEnabled(enabled);
+            btn_QuickFixSame[0].setEnabled(enabled);
         });
         tree_Problems[0].addListener(SWT.MouseDoubleClick, e -> {
             final TreeItem[] selection = tree_Problems[0].getSelection();
@@ -1729,12 +1725,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
                 if (sel.getParentItem() == null) {
                     sel.setVisible(!sel.isVisible());
-                    Display.getCurrent().asyncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            tree_Problems[0].build();
-                        }
-                    });
+                    Display.getCurrent().asyncExec(() -> tree_Problems[0].build());
                     tree_Problems[0].redraw();
                     tree_Problems[0].update();
                     tree_Problems[0].getTree().select(tree_Problems[0].getMapInv().get(sel));
@@ -1817,58 +1808,55 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void mouseDoubleClick(MouseEvent e) {}
         });
-        canvas_lineNumberArea[0].addPaintListener(new PaintListener() {
-            @Override
-            public void paintControl(PaintEvent e) {
-                e.gc.setFont(Font.MONOSPACE);
-                int y_offset = -compositeText[0].getVerticalBar().getSelection() % caretHeight;
-                int height = compositeContainer[0].getBounds().height;
-                int start_line = compositeText[0].getVerticalBar().getSelection() / caretHeight + 1;
-                int end_line = compositeText[0].getLineCount() - 1;
+        canvas_lineNumberArea[0].addPaintListener(e -> {
+            e.gc.setFont(Font.MONOSPACE);
+            int y_offset = -compositeText[0].getVerticalBar().getSelection() % caretHeight;
+            int height = compositeContainer[0].getBounds().height;
+            int start_line = compositeText[0].getVerticalBar().getSelection() / caretHeight + 1;
+            int end_line = compositeText[0].getLineCount() - 1;
 
-                for (int y = y_offset; y < height; y += caretHeight) { // Font.MONOSPACE_HEIGHT) {
+            for (int y = y_offset; y < height; y += caretHeight) { // Font.MONOSPACE_HEIGHT) {
 
-                    if (NLogger.DEBUG && Project.getFileToEdit() != null) {
+                if (NLogger.DEBUG && Project.getFileToEdit() != null) {
 
-                        // TODO DEBUG Emergency reference debugging
+                    // TODO DEBUG Emergency reference debugging
 
-                        StringBuilder sb = new StringBuilder();
-                        sb.append(start_line);
-                        sb.append(" "); //$NON-NLS-1$
-                        GData source = Project.getFileToEdit().getDrawPerLine().getValue(start_line);
-                        if (source != null) {
-                            if (source.getBefore() != null) {
-                                sb.append(source.getBefore().hashCode());
-                                sb.append(" -> "); //$NON-NLS-1$
-                            } else {
-                                sb.append("null"); //$NON-NLS-1$
-                                sb.append(" -> "); //$NON-NLS-1$
-                            }
-                            sb.append(source.hashCode());
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(start_line);
+                    sb.append(" "); //$NON-NLS-1$
+                    GData source = Project.getFileToEdit().getDrawPerLine().getValue(start_line);
+                    if (source != null) {
+                        if (source.getBefore() != null) {
+                            sb.append(source.getBefore().hashCode());
                             sb.append(" -> "); //$NON-NLS-1$
-                            source = Project.getFileToEdit().getDrawPerLine().getValue(start_line).getNext();
-                            if (source != null) {
-                                sb.append(source.hashCode());
-                            } else {
-                                sb.append("null"); //$NON-NLS-1$
-                            }
+                        } else {
+                            sb.append("null"); //$NON-NLS-1$
+                            sb.append(" -> "); //$NON-NLS-1$
+                        }
+                        sb.append(source.hashCode());
+                        sb.append(" -> "); //$NON-NLS-1$
+                        source = Project.getFileToEdit().getDrawPerLine().getValue(start_line).getNext();
+                        if (source != null) {
+                            sb.append(source.hashCode());
                         } else {
                             sb.append("null"); //$NON-NLS-1$
                         }
-                        e.gc.drawText(sb.toString(), 0, y);
                     } else {
-                        e.gc.drawText(Integer.toString(start_line), 0, y);
+                        sb.append("null"); //$NON-NLS-1$
                     }
-
-                    if (start_line > end_line) {
-                        break;
-                    }
-                    start_line++;
+                    e.gc.drawText(sb.toString(), 0, y);
+                } else {
+                    e.gc.drawText(Integer.toString(start_line), 0, y);
                 }
 
+                if (start_line > end_line) {
+                    break;
+                }
+                start_line++;
             }
+
         });
-        compositeText[0].getVerticalBar().addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(compositeText[0].getVerticalBar()).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (!isDisposed()) {
@@ -1877,32 +1865,32 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
         });
-        mntm_Delete[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Delete[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 state.folder[0].delete();
             }
         });
-        mntm_Copy[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 state.folder[0].copy();
             }
         });
-        mntm_Cut[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Cut[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 state.folder[0].cut();
             }
         });
-        mntm_Paste[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Paste[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 state.folder[0].paste();
             }
         });
 
-        mntm_DrawSelection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_DrawSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (!state.getFileNameObj().getVertexManager().isUpdated()){
@@ -1929,7 +1917,7 @@ public class CompositeTab extends CompositeTabDesign {
             }
         });
 
-        mntm_DrawUntilSelection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_DrawUntilSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (!state.getFileNameObj().getVertexManager().isUpdated()){
@@ -1955,21 +1943,21 @@ public class CompositeTab extends CompositeTabDesign {
             }
         });
 
-        mntm_HideSelection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_HideSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 hideSelection();
             }
         });
 
-        mntm_ShowSelection[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_ShowSelection[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 showSelection();
             }
         });
 
-        mntm_ShowAll[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_ShowAll[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (!state.getFileNameObj().getVertexManager().isUpdated()){

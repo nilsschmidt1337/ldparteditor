@@ -15,9 +15,10 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.setcoordinates;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.math.BigDecimal;
 
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
@@ -26,6 +27,7 @@ import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -80,7 +82,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        btn_Local[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Local[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
@@ -93,7 +95,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
                 updateXYZ();
             }
         });
-        btn_Global[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Global[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
@@ -106,19 +108,19 @@ public class CoordinatesDialog extends CoordinatesDesign {
                 updateXYZ();
             }
         });
-        cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Xaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 x = cb_Xaxis[0].getSelection();
             }
         });
-        cb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Yaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 y = cb_Yaxis[0].getSelection();
             }
         });
-        cb_Zaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Zaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 z = cb_Zaxis[0].getSelection();
@@ -139,7 +141,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
             cb_Zaxis[0].setSelection(true);
             z = true;
         });
-        btn_Manipulator[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Manipulator[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (transformationMode == ManipulatorScope.GLOBAL) {
@@ -150,7 +152,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
                 updateXYZ();
             }
         });
-        btn_Clipboard[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Clipboard[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (transformationMode == ManipulatorScope.GLOBAL) {
@@ -161,7 +163,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
                 updateXYZ();
             }
         });
-        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 creatingCopy = true;

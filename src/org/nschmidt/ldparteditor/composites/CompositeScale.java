@@ -15,13 +15,14 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
 import java.text.DecimalFormatSymbols;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.SashForm;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Image;
@@ -39,6 +40,7 @@ import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.NButton;
@@ -76,7 +78,7 @@ public class CompositeScale extends ScalableComposite {
         btn_openContextMenu.setImage(ResourceManager.getImage("icon16_contextMenu.png")); //$NON-NLS-1$
         btn_openContextMenu.setBounds(0, 0, 20, 20);
 
-        btn_openContextMenu.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_openContextMenu).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 PointerInfo a = MouseInfo.getPointerInfo();

@@ -15,7 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.translate;
 
-import org.eclipse.swt.events.SelectionAdapter;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
@@ -23,6 +24,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 /**
@@ -63,7 +65,7 @@ public class TranslateDialog extends TranslateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        btn_Local[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Local[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
@@ -72,7 +74,7 @@ public class TranslateDialog extends TranslateDesign {
                 Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
             }
         });
-        btn_Global[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Global[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
@@ -81,7 +83,7 @@ public class TranslateDialog extends TranslateDesign {
                 Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
             }
         });
-        btn_ToManipulatorPosition[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ToManipulatorPosition[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
@@ -93,7 +95,7 @@ public class TranslateDialog extends TranslateDesign {
                 spn_Z[0].setValue(manipulator.Z);
             }
         });
-        btn_ToManipulatorPositionInverted[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ToManipulatorPositionInverted[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
@@ -106,19 +108,19 @@ public class TranslateDialog extends TranslateDesign {
             }
         });
 
-        cb_Xaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Xaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 x = cb_Xaxis[0].getSelection();
             }
         });
-        cb_Yaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Yaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 y = cb_Yaxis[0].getSelection();
             }
         });
-        cb_Zaxis[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cb_Zaxis[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 z = cb_Zaxis[0].getSelection();
@@ -127,7 +129,7 @@ public class TranslateDialog extends TranslateDesign {
         spn_X[0].addValueChangeListener(spn -> setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
         spn_Y[0].addValueChangeListener(spn -> setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
         spn_Z[0].addValueChangeListener(spn -> setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
-        btn_Copy[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 creatingCopy = true;

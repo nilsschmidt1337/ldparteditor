@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editor3d;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
@@ -37,7 +39,6 @@ import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
@@ -72,6 +73,7 @@ import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -1857,7 +1859,7 @@ class Editor3DDesign extends ApplicationWindow {
                     e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                 }
             });
-            btn_LastUsedColour.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(btn_LastUsedColour).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     if (Project.getFileToEdit() != null) {
@@ -2126,7 +2128,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_Select.setToolTipText(I18n.E3D_AdvancedSelect);
             btn_Select.setText(I18n.E3D_AdvancedSelect);
             this.mnu_Select = new Menu(this.getShell(), SWT.POP_UP);
-            btn_Select.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(btn_Select).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     showSelectMenu();
@@ -2307,7 +2309,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_MergeNSplit.setToolTipText(I18n.E3D_MergeSplit);
             btn_MergeNSplit.setText(I18n.E3D_MergeSplit);
             this.mnu_Merge = new Menu(this.getShell(), SWT.POP_UP);
-            btn_MergeNSplit.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(btn_MergeNSplit).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     Point loc = btn_MergeNSplit.getLocation();
@@ -2420,7 +2422,7 @@ class Editor3DDesign extends ApplicationWindow {
             btn_ToolsActions.setText(I18n.E3D_Tools);
             btn_ToolsActions.setToolTipText(I18n.E3D_ToolsOptions);
             this.mnu_Tools = new Menu(this.getShell(), SWT.POP_UP);
-            btn_ToolsActions.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(btn_ToolsActions).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     Point loc = btn_ToolsActions.getLocation();
@@ -2704,7 +2706,7 @@ class Editor3DDesign extends ApplicationWindow {
             final NButton btn_ManipulatorActions = new NButton(toolItem, SWT.ARROW | SWT.DOWN);
             btn_ManipulatorActions.setToolTipText(I18n.E3D_ModifyManipulator);
             this.mnu_Manipulator = new Menu(this.getShell(), SWT.POP_UP);
-            btn_ManipulatorActions.addSelectionListener(new SelectionAdapter() {
+            WidgetUtil(btn_ManipulatorActions).addXSelectionListener(new WidgetSelectionListener() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     Point loc = btn_ManipulatorActions.getLocation();
@@ -3333,7 +3335,7 @@ class Editor3DDesign extends ApplicationWindow {
 
         btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-        btn_Col.addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Col).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
@@ -3402,7 +3404,7 @@ class Editor3DDesign extends ApplicationWindow {
                             }
                         }
                     });
-                    btn_LastUsedColour[0].addSelectionListener(new SelectionAdapter() {
+                    WidgetUtil(btn_LastUsedColour[0]).addXSelectionListener(new WidgetSelectionListener() {
                         @Override
                         public void widgetSelected(SelectionEvent e) {
                             if (Project.getFileToEdit() != null) {
@@ -3450,16 +3452,13 @@ class Editor3DDesign extends ApplicationWindow {
         final int y = Math.round(size.y / 5f);
         final int w = Math.round(size.x * (3f / 5f));
         final int h = Math.round(size.y * (3f / 5f));
-        btn_Col.addPaintListener(new PaintListener() {
-            @Override
-            public void paintControl(PaintEvent e) {
-                e.gc.setBackground(col[0]);
-                e.gc.fillRectangle(x, y, w, h);
-                if (gColour2[0].getA() == 1f) {
-                    e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                } else {
-                    e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
-                }
+        btn_Col.addPaintListener(e -> {
+            e.gc.setBackground(col[0]);
+            e.gc.fillRectangle(x, y, w, h);
+            if (gColour2[0].getA() == 1f) {
+                e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
+            } else {
+                e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
             }
         });
     }

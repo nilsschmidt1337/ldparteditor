@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.colour;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.text.MessageFormat;
 import java.util.TreeSet;
 
@@ -22,8 +24,6 @@ import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
@@ -208,12 +208,9 @@ class ColourDesign extends ApplicationWindow {
 
         btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-        btn_Col.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                refCol[0] = (GColour) btn_Col.getData();
-                me.close();
-            }
+        WidgetUtil(btn_Col).addXSelectionListener(e -> {
+            refCol[0] = (GColour) btn_Col.getData();
+            me.close();
         });
         final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);
         final int x = Math.round(size.x / 5f);

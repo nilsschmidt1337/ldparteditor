@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.primgen2;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.io.File;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -28,7 +30,6 @@ import org.eclipse.swt.custom.ExtendedModifyEvent;
 import org.eclipse.swt.custom.ExtendedModifyListener;
 import org.eclipse.swt.custom.LineStyleEvent;
 import org.eclipse.swt.custom.LineStyleListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
@@ -42,6 +43,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -245,7 +247,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        mntm_Delete[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Delete[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final int x = txt_data[0].getSelection().x;
@@ -263,19 +265,19 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 txt_data[0].forceFocus();
             }
         });
-        mntm_Copy[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Copy[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 txt_data[0].copy();
             }
         });
-        mntm_Cut[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Cut[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 txt_data[0].cut();
             }
         });
-        mntm_Paste[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(mntm_Paste[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 txt_data[0].paste();
@@ -285,7 +287,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         btn_ok[0].removeListener(SWT.Selection, btn_ok[0].getListeners(SWT.Selection)[0]);
         btn_cancel[0].removeListener(SWT.Selection, btn_cancel[0].getListeners(SWT.Selection)[0]);
 
-        btn_ok[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ok[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -317,14 +319,14 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        btn_cancel[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_cancel[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 getShell().close();
             }
         });
 
-        btn_saveAs[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_saveAs[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -356,7 +358,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        btn_top[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_top[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
@@ -369,7 +371,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        cmb_type[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cmb_type[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
 
@@ -446,7 +448,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        final SelectionAdapter sa = new SelectionAdapter() {
+        final WidgetSelectionListener sa = new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 rebuildPrimitive(EventType.CBO, e.widget);
@@ -462,10 +464,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
         spn_segments[0].addValueChangeListener(vca);
         spn_size[0].addValueChangeListener(vcad);
 
-        cmb_divisions[0].addSelectionListener(sa);
-        cmb_segments[0].addSelectionListener(sa);
-        cmb_torusType[0].addSelectionListener(sa);
-        cmb_winding[0].addSelectionListener(sa);
+        WidgetUtil(cmb_divisions[0]).addXSelectionListener(sa);
+        WidgetUtil(cmb_segments[0]).addXSelectionListener(sa);
+        WidgetUtil(cmb_torusType[0]).addXSelectionListener(sa);
+        WidgetUtil(cmb_winding[0]).addXSelectionListener(sa);
 
         float backup = View.edge_threshold;
         View.edge_threshold = 5e6f;

@@ -15,16 +15,18 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.startup;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.io.File;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -78,7 +80,7 @@ public class StartupDialog extends StartupDesign {
         super.create();
         btn_ok[0].setEnabled(false);
         // MARK All final listeners will be configured here..
-        btn_browseLdrawPath[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_browseLdrawPath[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
@@ -127,7 +129,7 @@ public class StartupDialog extends StartupDesign {
                 }
             }
         });
-        btn_browseAuthoringPath[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_browseAuthoringPath[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
@@ -154,7 +156,7 @@ public class StartupDialog extends StartupDesign {
                 }
             }
         });
-        btn_browseUnofficialPath[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_browseUnofficialPath[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());

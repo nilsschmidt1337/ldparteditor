@@ -15,13 +15,15 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.sort;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Sorter;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 
 /**
  *
@@ -48,7 +50,7 @@ public class SortDialog extends SortDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        btn_OK[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_OK[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Sorter.sort(st, fromLine, toLine, fileNameObj, scope, criteria, destructive);
@@ -58,7 +60,7 @@ public class SortDialog extends SortDesign {
         cmb_scope[0].addListener(SWT.Selection, event -> scope = cmb_scope[0].getSelectionIndex());
         cmb_sortCriteria[0].addListener(SWT.Selection, event -> criteria = cmb_sortCriteria[0].getSelectionIndex());
 
-        btn_ignoreStructure[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ignoreStructure[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 destructive = btn_ignoreStructure[0].getSelection();

@@ -15,13 +15,15 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.txt2dat;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.Txt2DatSettings;
 
 /**
@@ -54,7 +56,7 @@ public class Txt2DatDialog extends Txt2DatDesign {
         spn_flatness[0].addValueChangeListener(spn -> ts.setFlatness(spn.getValue()));
         spn_fontHeight[0].addValueChangeListener(spn -> ts.setFontHeight(spn.getValue()));
         spn_deltaAngle[0].addValueChangeListener(spn -> ts.setDeltaAngle(spn.getValue()));
-        btn_chooseFont[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_chooseFont[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 final FontDialog fd = new FontDialog(getShell());

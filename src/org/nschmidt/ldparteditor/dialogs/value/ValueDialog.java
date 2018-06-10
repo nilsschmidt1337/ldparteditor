@@ -15,9 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.value;
 
-import org.eclipse.swt.events.SelectionAdapter;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 
 /**
  * @author nils
@@ -32,18 +34,17 @@ public abstract class ValueDialog extends ValueDesign {
     public ValueDialog(Shell shell, String shellText, String unitText) {
         super(shell, shellText, unitText);
     }
-    
+
     @Override
     public int open() {
         super.create();
         getShell().setText(shellText);
         initializeSpinner();
         // MARK All final listeners will be configured here..
-        btn_ok[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ok[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 applyValue();
-                super.widgetSelected(e);
             }
         });
         return super.open();

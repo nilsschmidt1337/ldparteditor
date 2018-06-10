@@ -15,9 +15,10 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.direction;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.math.BigDecimal;
 
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
@@ -26,6 +27,7 @@ import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -75,7 +77,7 @@ public class DirectionDialog extends DirectionDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        btn_mX[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_mX[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
@@ -86,7 +88,7 @@ public class DirectionDialog extends DirectionDesign {
                 updateValues();
             }
         });
-        btn_mY[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_mY[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
@@ -97,7 +99,7 @@ public class DirectionDialog extends DirectionDesign {
                 updateValues();
             }
         });
-        btn_mZ[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_mZ[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
@@ -108,7 +110,7 @@ public class DirectionDialog extends DirectionDesign {
                 updateValues();
             }
         });
-        btn_Local[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Local[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
@@ -122,7 +124,7 @@ public class DirectionDialog extends DirectionDesign {
                 updateValues();
             }
         });
-        btn_Global[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_Global[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());

@@ -22,11 +22,13 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 
 /**
  * @author nils
@@ -66,8 +68,14 @@ public class Tree {
         return result;
     }
 
-    public void addSelectionListener(SelectionAdapter selectionAdapter) {
-        tree.addSelectionListener(selectionAdapter);
+    public void addSelectionListener(WidgetSelectionListener selectionListener) {
+        tree.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                super.widgetSelected(e);
+                selectionListener.widgetSelected(e);
+            }
+        });
     }
 
     public void addMouseListener(MouseAdapter mouseAdapter) {

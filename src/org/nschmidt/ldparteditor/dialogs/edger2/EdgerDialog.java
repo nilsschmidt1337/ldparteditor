@@ -15,9 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.edger2;
 
-import org.eclipse.swt.events.SelectionAdapter;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Shell;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
 
 /**
@@ -50,31 +52,31 @@ public class EdgerDialog extends EdgerDesign {
         spn_af[0].addValueChangeListener(spn -> es.setAf(spn.getValue()));
         spn_ae[0].addValueChangeListener(spn -> es.setAe(spn.getValue()));
         spn_vequ[0].addValueChangeListener(spn -> es.setEqualDistance(spn.getValue()));
-        cmb_b[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cmb_b[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 es.setExtendedRange(cmb_b[0].getSelectionIndex() == 1);
             }
         });
-        cmb_c[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cmb_c[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 es.setCondlineOnQuads(cmb_c[0].getSelectionIndex() == 1);
             }
         });
-        cmb_u[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cmb_u[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 es.setUnmatchedMode(cmb_u[0].getSelectionIndex());
             }
         });
-        cmb_scope[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(cmb_scope[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 es.setScope(cmb_scope[0].getSelectionIndex());
             }
         });
-        btn_verbose[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_verbose[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 es.setVerbose(btn_verbose[0].getSelection());

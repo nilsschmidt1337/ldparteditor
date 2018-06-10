@@ -15,13 +15,15 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.newproject;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.io.File;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
+import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -58,7 +60,7 @@ public class NewProjectDialog extends NewProjectDesign {
         });
         final boolean[] firstchoose = new boolean[1];
         firstchoose[0] = true;
-        btn_browseProjectPath[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_browseProjectPath[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 DirectoryDialog dlg = new DirectoryDialog(getShell());
@@ -100,7 +102,7 @@ public class NewProjectDialog extends NewProjectDesign {
                 }
             }
         });
-        btn_ok[0].addSelectionListener(new SelectionAdapter() {
+        WidgetUtil(btn_ok[0]).addXSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 Project.setTempProjectName(projectName);
