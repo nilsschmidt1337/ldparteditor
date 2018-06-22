@@ -60,6 +60,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 class OptionsDesign extends ApplicationWindow {
 
     NButton[] btn_AllowInvalidShapes = new NButton[1];
+    NButton[] btn_translateViewByCursor = new NButton[1];
     NButton[] btn_disableMAD3D = new NButton[1];
     NButton[] btn_disableMADtext = new NButton[1];
     NButton[] btn_OK = new NButton[1];
@@ -168,6 +169,11 @@ class OptionsDesign extends ApplicationWindow {
                 btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
                 btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
 
+                NButton btn_translateViewByCursor = new NButton(cmp_container, SWT.CHECK);
+                this.btn_translateViewByCursor[0] = btn_translateViewByCursor;
+                btn_translateViewByCursor.setText(I18n.OPTIONS_TranslateByCursor);
+                btn_translateViewByCursor.setSelection(userSettings.isTranslatingViewByCursor());
+                
                 NButton btn_disableMAD3D = new NButton(cmp_container, SWT.CHECK);
                 this.btn_disableMAD3D[0] = btn_disableMAD3D;
                 btn_disableMAD3D.setText(I18n.OPTIONS_MAD1);

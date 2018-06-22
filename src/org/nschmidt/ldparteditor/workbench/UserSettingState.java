@@ -131,6 +131,9 @@ public class UserSettingState implements Serializable {
 
     /** {@code true} if invalid shapes are allowed in the 3D editor */
     private boolean allowInvalidShapes = false;
+    
+    /** {@code true} if the user can translate the 3D view with the cursor */
+    private boolean translateViewByCursor = false;
 
     private boolean disableMAD3D = false;
     private boolean disableMADtext = false;
@@ -1449,6 +1452,14 @@ public class UserSettingState implements Serializable {
 
     public void setMovingAdjacentData(boolean movingAdjacentData) {
         this.movingAdjacentData = movingAdjacentData;
+    }
+    
+    public boolean isTranslatingViewByCursor() {
+        return translateViewByCursor;
+    }
+
+    public void setTranslatingViewByCursor(boolean translateViewByCursor) {
+        this.translateViewByCursor = translateViewByCursor;
     }
 
     public double getCoplanarity_angle_warning() {

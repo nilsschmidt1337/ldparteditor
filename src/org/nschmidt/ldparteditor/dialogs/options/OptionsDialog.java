@@ -38,7 +38,8 @@ public class OptionsDialog extends OptionsDesign {
             me.close();
         });
 
-        WidgetUtil( btn_AllowInvalidShapes[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection()));
+        WidgetUtil(btn_AllowInvalidShapes[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection()));
+        WidgetUtil(btn_translateViewByCursor[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setTranslatingViewByCursor( btn_translateViewByCursor[0].getSelection()));
         WidgetUtil(btn_disableMAD3D[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btn_disableMAD3D[0].getSelection()));
         WidgetUtil(btn_disableMADtext[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btn_disableMADtext[0].getSelection()));
 
