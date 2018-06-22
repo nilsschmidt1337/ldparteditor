@@ -152,25 +152,29 @@ public class VertexWindow extends ApplicationWindow {
         final VertexWindow vertexWindow = Editor3DWindow.getWindow().getVertexWindow();
         final DatFile df = lastHoveredC3d.getLockableDatFileReference();
         final Set<Vertex> selectedVertices = df.getVertexManager().getSelectedVertices();
-        final boolean singleVertex = !df.isReadOnly() && selectedVertices.size() == 1;
+        final boolean singleVertexSelected = !df.isReadOnly() && selectedVertices.size() == 1;
+        final boolean addingSomething = Editor3DWindow.getWindow().isAddingSomething();
+        
+        final boolean windowShouldBeDisplayed = singleVertexSelected && !addingSomething; 
+        
         Vertex newSelectedVertex = new Vertex(0,0,0);
 
-        if (singleVertex) {
+        if (singleVertexSelected) {
             try {
                 newSelectedVertex = selectedVertices.iterator().next();
             } catch (NoSuchElementException consumed) {}
             vertexWindow.renew();
         }
 
-        if (singleVertex && vertexWindow.getShell() == null) {
+        if (windowShouldBeDisplayed && vertexWindow.getShell() == null) {
             vertexWindow.run();
             lastHoveredC3d.setFocus();
             Editor3DWindow.getWindow().getShell().setActive();
-        } else if (!singleVertex && vertexWindow.getShell() != null) {
+        } else if (!windowShouldBeDisplayed && vertexWindow.getShell() != null) {
             vertexWindow.close();
         }
 
-        if (singleVertex) {
+        if (singleVertexSelected) {
             vertexWindow.updateVertex(newSelectedVertex);
         }
 
