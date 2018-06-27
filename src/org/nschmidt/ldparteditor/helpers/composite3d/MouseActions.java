@@ -345,17 +345,7 @@ public class MouseActions {
             if (!(keyboard.isCtrlPressed() || Cocoa.isCocoa && keyboard.isCmdPressed()) || Editor3DWindow.getWindow().isAddingSomething()) {
                 dy = (event.y - old_mouse_position.y) / viewport_pixel_per_ldu;
             }
-            Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
-            Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-            Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
-            Matrix4f.transform(ovr_inverse2, xAxis4f_translation, xAxis4f_translation);
-            Matrix4f.transform(ovr_inverse2, yAxis4f_translation, yAxis4f_translation);
-            Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
-            Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
-            Matrix4f.load(old_viewport_translation, viewport_translation);
-            Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
-            Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
-            perspective.calculateOriginData();
+            translateViewport(dx, dy, viewport_translation, viewport_rotation, perspective);
             c3d.getVertexManager().getResetTimer().set(true);
             break;
         }
@@ -671,6 +661,25 @@ public class MouseActions {
             }
         }
     }
+    
+    public void prepareTranslateViewport() {
+    	Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
+    }
+
+	public void translateViewport(float dx, float dy, Matrix4f viewport_translation, Matrix4f viewport_rotation,
+			PerspectiveCalculator perspective) {
+		Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
+		Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+		Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
+		Matrix4f.transform(ovr_inverse2, xAxis4f_translation, xAxis4f_translation);
+		Matrix4f.transform(ovr_inverse2, yAxis4f_translation, yAxis4f_translation);
+		Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
+		Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+		Matrix4f.load(old_viewport_translation, viewport_translation);
+		Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
+		Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+		perspective.calculateOriginData();
+	}
 
     /**
      * Triggered actions on {@code SWT.MouseUp}
