@@ -71,6 +71,7 @@ import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -226,6 +227,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     public void drawScene() {
 
         final long start = System.currentTimeMillis();
+        final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
 
         final boolean negDet = c3d.hasNegDeterminant();
         final boolean raytraceMode = c3d.getRenderMode() == 5;
@@ -1390,7 +1392,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 // (lineWidth, cone_height, cone_width, bluntSize, circleWidth, arcWidth,
                 // moveSizeFactor, rotateSizeFactor, rotateOuterSizeFactor, scaleSizeFactor
                 // and activationTreshold)
-                float[] mSize = WorkbenchManager.getUserSettingState().getManipulatorSize();
+                float[] mSize = userSettings.getManipulatorSize();
                 if (mSize == null) {
                     // We have no custom manipulator settings yet => create a fake array
                     mSize = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
@@ -1961,7 +1963,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     GL20Primitives.GEAR_MENU_INV.draw(gx, gy, viewport_origin_axis[0].z);
                     
                     // Draw arrows for cursor-on-border-scrolling
-                    if (true && c3d.hasMouse()) {
+                    if (userSettings.isTranslatingViewByCursor() && c3d.hasMouse()) {
                     	
                     	final float duration = Math.max(10f, Math.min(1000f, System.currentTimeMillis() - start));
                     	final float speed = 0.05f / duration / zoom;
