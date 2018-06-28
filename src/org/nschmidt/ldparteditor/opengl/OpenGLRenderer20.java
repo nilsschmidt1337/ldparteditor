@@ -1961,92 +1961,84 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     final float gy = -viewport_height + 0.018f;
                     GL20Primitives.GEAR_MENU.draw(gx, gy, viewport_origin_axis[0].z);
                     GL20Primitives.GEAR_MENU_INV.draw(gx, gy, viewport_origin_axis[0].z);
-                    
+
                     // Draw arrows for cursor-on-border-scrolling
-                    if (userSettings.isTranslatingViewByCursor() && c3d.hasMouse()) {
-                    	
+                    if (userSettings.isTranslatingViewByCursor() && c3d.hasMouse() && c3d.equals(Project.getFileToEdit().getLastSelectedComposite())) {
+
                     	final float duration = Math.max(10f, Math.min(1000f, System.currentTimeMillis() - start));
                     	final float speed = 0.05f / duration / zoom;
-                    	
+
                     	// TOP
                         GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                         if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y > 25f) {
                             GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                         } else if (mp.y > 0f && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
                             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
-                            if (DatFile.getLastHoveredComposite() == c3d) {
-                            	c3d.getMouse().prepareTranslateViewport();
-                            	c3d.getMouse().translateViewport(0f, speed, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
-                            }
+                            c3d.getMouse().prepareTranslateViewport();
+                            c3d.getMouse().translateViewport(0f, speed, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
                         }
-                    	
+
                         GL11.glBegin(GL11.GL_TRIANGLES);
                         GL11.glVertex3f(-0.018f, -viewport_height + 0.018f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(0.018f, -viewport_height + 0.018f, viewport_origin_axis[0].z);
-                        GL11.glVertex3f(0, -viewport_height + 0.009f, viewport_origin_axis[0].z);                        
+                        GL11.glVertex3f(0, -viewport_height + 0.009f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(-0.018f, -viewport_height + 0.018f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(0, -viewport_height + 0.009f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(0.018f, -viewport_height + 0.018f, viewport_origin_axis[0].z);
                         GL11.glEnd();
-                        
-                    	// BOTTOM
+
+                        // BOTTOM
                         GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                         if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y <= (bounds.height - 25)) {
                             GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                         } else if (mp.y > (bounds.height - 25) && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
                             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
-                            if (DatFile.getLastHoveredComposite() == c3d) {
-                            	c3d.getMouse().prepareTranslateViewport();
-                            	c3d.getMouse().translateViewport(0f, -speed, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
-                            }
+                            c3d.getMouse().prepareTranslateViewport();
+                            c3d.getMouse().translateViewport(0f, -speed, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
                         }
-                    	
+
                         GL11.glBegin(GL11.GL_TRIANGLES);
                         GL11.glVertex3f(-0.018f, viewport_height - 0.018f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(0.018f, viewport_height - 0.018f, viewport_origin_axis[0].z);
-                        GL11.glVertex3f(0, viewport_height - 0.009f, viewport_origin_axis[0].z);                        
+                        GL11.glVertex3f(0, viewport_height - 0.009f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(-0.018f, viewport_height - 0.018f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(0, viewport_height - 0.009f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(0.018f, viewport_height - 0.018f, viewport_origin_axis[0].z);
                         GL11.glEnd();
-                        
+
                         // LEFT
                         GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                         if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x >= 25) {
                             GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                         } else if (mp.x < 25 && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
                             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
-                            if (DatFile.getLastHoveredComposite() == c3d) {
-                            	c3d.getMouse().prepareTranslateViewport();
-                            	c3d.getMouse().translateViewport(-speed, 0f, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
-                            }
+                            c3d.getMouse().prepareTranslateViewport();
+                            c3d.getMouse().translateViewport(-speed, 0f, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
                         }
-                    	
+
                         GL11.glBegin(GL11.GL_TRIANGLES);
                         GL11.glVertex3f(viewport_width - 0.018f, -0.018f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(viewport_width - 0.018f, 0.018f, viewport_origin_axis[0].z);
-                        GL11.glVertex3f(viewport_width - 0.009f, 0, viewport_origin_axis[0].z);                        
+                        GL11.glVertex3f(viewport_width - 0.009f, 0, viewport_origin_axis[0].z);
                         GL11.glVertex3f(viewport_width - 0.018f, -0.018f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(viewport_width - 0.009f, 0, viewport_origin_axis[0].z);
                         GL11.glVertex3f(viewport_width - 0.018f, 0.018f, viewport_origin_axis[0].z);
                         GL11.glEnd();
-                        
+
                         // RIGHT
                         GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                         if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x <= (bounds.width - 25)) {
                             GL11.glColor3f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
                         } else if (mp.x > (bounds.width - 25) && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
                             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
-                            if (DatFile.getLastHoveredComposite() == c3d) {
-                            	c3d.getMouse().prepareTranslateViewport();
-                            	c3d.getMouse().translateViewport(speed, 0f, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
-                            }
+                            c3d.getMouse().prepareTranslateViewport();
+                            c3d.getMouse().translateViewport(speed, 0f, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
                         }
-                    	
+
                         GL11.glBegin(GL11.GL_TRIANGLES);
                         GL11.glVertex3f(-viewport_width + 0.018f, -0.018f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(-viewport_width + 0.018f, 0.018f, viewport_origin_axis[0].z);
-                        GL11.glVertex3f(-viewport_width + 0.009f, 0, viewport_origin_axis[0].z);                        
+                        GL11.glVertex3f(-viewport_width + 0.009f, 0, viewport_origin_axis[0].z);
                         GL11.glVertex3f(-viewport_width + 0.018f, -0.018f, viewport_origin_axis[0].z);
                         GL11.glVertex3f(-viewport_width + 0.009f, 0, viewport_origin_axis[0].z);
                         GL11.glVertex3f(-viewport_width + 0.018f, 0.018f, viewport_origin_axis[0].z);

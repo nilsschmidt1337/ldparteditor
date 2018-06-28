@@ -51,6 +51,7 @@ import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
+import org.nschmidt.ldparteditor.workbench.UserSettingState;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -155,7 +156,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     @Override
     public void drawScene() {
 
-        // final long start = System.currentTimeMillis();
+        final long start = System.currentTimeMillis();
+        final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
 
         final boolean negDet = c3d.hasNegDeterminant();
         final boolean ldrawStandardMode = c3d.getRenderMode() == 5;
@@ -396,7 +398,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 // (lineWidth, cone_height, cone_width, bluntSize, circleWidth, arcWidth,
                 // moveSizeFactor, rotateSizeFactor, rotateOuterSizeFactor, scaleSizeFactor
                 // and activationTreshold)
-                float[] mSize = WorkbenchManager.getUserSettingState().getManipulatorSize();
+                float[] mSize = userSettings.getManipulatorSize();
                 if (mSize == null) {
                     // We have no custom manipulator settings yet => create a fake array
                     mSize = new float[]{1f, 1f, 1f, 1f, 1f, 1f};
@@ -1203,6 +1205,153 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     final float gy = -viewport_height + 0.018f;
                     GL33Primitives.GEAR_MENU.draw(stack, shaderProgram2D, gx, gy, viewport_origin_axis[0].z, r, g, b);
                     GL33Primitives.GEAR_MENU_INV.draw(stack, shaderProgram2D, gx, gy, viewport_origin_axis[0].z, r, g, b);
+
+                    // Draw arrows for cursor-on-border-scrolling
+                    if (userSettings.isTranslatingViewByCursor() && c3d.hasMouse() && c3d.equals(Project.getFileToEdit().getLastSelectedComposite())) {
+
+                        final float duration = Math.max(10f, Math.min(1000f, System.currentTimeMillis() - start));
+                        final float speed = 0.05f / duration / zoom;
+                        final int[] indices = new int[] { 0, 1, 2, 0, 2, 1};
+                        final float[] vertices = new float[18];
+
+                        // TOP
+                        for (int i = 0; i < 18; i += 6) {
+                            vertices[i + 3] = View.text_Colour_r[0];
+                            vertices[i + 4] = View.text_Colour_g[0];
+                            vertices[i + 5] = View.text_Colour_b[0];
+                        }
+                        if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y > 25f) {
+                            for (int i = 0; i < 18; i += 6) {
+                                vertices[i + 3] = View.text_Colour_r[0];
+                                vertices[i + 4] = View.text_Colour_g[0];
+                                vertices[i + 5] = View.text_Colour_b[0];
+                            }
+                        } else if (mp.y > 0f && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
+                            for (int i = 0; i < 18; i += 6) {
+                                vertices[i + 3] = View.vertex_selected_Colour_r[0];
+                                vertices[i + 4] = View.vertex_selected_Colour_g[0];
+                                vertices[i + 5] = View.vertex_selected_Colour_b[0];
+                            }
+                            if (DatFile.getLastHoveredComposite() == c3d) {
+                                c3d.getMouse().prepareTranslateViewport();
+                                c3d.getMouse().translateViewport(0f, speed, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
+                            }
+                        }
+
+                        vertices[0] = -0.018f;
+                        vertices[1] = -viewport_height + 0.018f;
+                        vertices[2] = viewport_origin_axis[0].z;
+                        vertices[6] = 0.018f;
+                        vertices[7] = -viewport_height + 0.018f;
+                        vertices[8] = viewport_origin_axis[0].z;
+                        vertices[12] = 0;
+                        vertices[13] = -viewport_height + 0.009f;
+                        vertices[14] = viewport_origin_axis[0].z;
+
+                        helper.drawTrianglesIndexedRGB_General(vertices, indices);
+
+                        // BOTTOM
+                        for (int i = 0; i < 18; i += 6) {
+                            vertices[i + 3] = View.text_Colour_r[0];
+                            vertices[i + 4] = View.text_Colour_g[0];
+                            vertices[i + 5] = View.text_Colour_b[0];
+                        }
+                        if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y <= (bounds.height - 25)) {
+                            for (int i = 0; i < 18; i += 6) {
+                                vertices[i + 3] = View.text_Colour_r[0];
+                                vertices[i + 4] = View.text_Colour_g[0];
+                                vertices[i + 5] = View.text_Colour_b[0];
+                            }
+                        } else if (mp.y > (bounds.height - 25) && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
+                            for (int i = 0; i < 18; i += 6) {
+                                vertices[i + 3] = View.vertex_selected_Colour_r[0];
+                                vertices[i + 4] = View.vertex_selected_Colour_g[0];
+                                vertices[i + 5] = View.vertex_selected_Colour_b[0];
+                            }
+                            c3d.getMouse().prepareTranslateViewport();
+                            c3d.getMouse().translateViewport(0f, -speed, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
+                        }
+
+                        vertices[0] = -0.018f;
+                        vertices[1] = viewport_height - 0.018f;
+                        vertices[2] = viewport_origin_axis[0].z;
+                        vertices[6] = 0.018f;
+                        vertices[7] = viewport_height - 0.018f;
+                        vertices[8] = viewport_origin_axis[0].z;
+                        vertices[12] = 0;
+                        vertices[13] = viewport_height - 0.009f;
+                        vertices[14] = viewport_origin_axis[0].z;
+
+                        helper.drawTrianglesIndexedRGB_General(vertices, indices);
+
+                        // LEFT
+                        for (int i = 0; i < 18; i += 6) {
+                            vertices[i + 3] = View.text_Colour_r[0];
+                            vertices[i + 4] = View.text_Colour_g[0];
+                            vertices[i + 5] = View.text_Colour_b[0];
+                        }
+                        if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x >= 25) {
+                            for (int i = 0; i < 18; i += 6) {
+                                vertices[i + 3] = View.text_Colour_r[0];
+                                vertices[i + 4] = View.text_Colour_g[0];
+                                vertices[i + 5] = View.text_Colour_b[0];
+                            }
+                        } else if (mp.x < 25 && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
+                            for (int i = 0; i < 18; i += 6) {
+                                vertices[i + 3] = View.vertex_selected_Colour_r[0];
+                                vertices[i + 4] = View.vertex_selected_Colour_g[0];
+                                vertices[i + 5] = View.vertex_selected_Colour_b[0];
+                            }
+                            c3d.getMouse().prepareTranslateViewport();
+                            c3d.getMouse().translateViewport(-speed, 0f, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
+                        }
+
+                        vertices[0] = viewport_width - 0.018f;
+                        vertices[1] = -0.018f;
+                        vertices[2] = viewport_origin_axis[0].z;
+                        vertices[6] = viewport_width - 0.018f;
+                        vertices[7] = 0.018f;
+                        vertices[8] = viewport_origin_axis[0].z;
+                        vertices[12] = viewport_width - 0.009f;
+                        vertices[13] = 0;
+                        vertices[14] = viewport_origin_axis[0].z;
+
+                        helper.drawTrianglesIndexedRGB_General(vertices, indices);
+
+                        // RIGHT
+                        for (int i = 0; i < 18; i += 6) {
+                            vertices[i + 3] = View.text_Colour_r[0];
+                            vertices[i + 4] = View.text_Colour_g[0];
+                            vertices[i + 5] = View.text_Colour_b[0];
+                        }
+                        if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x <= (bounds.width - 25)) {
+                            for (int i = 0; i < 18; i += 6) {
+                                vertices[i + 3] = View.text_Colour_r[0];
+                                vertices[i + 4] = View.text_Colour_g[0];
+                                vertices[i + 5] = View.text_Colour_b[0];
+                            }
+                        } else if (mp.x > (bounds.width - 25) && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
+                            for (int i = 0; i < 18; i += 6) {
+                                vertices[i + 3] = View.vertex_selected_Colour_r[0];
+                                vertices[i + 4] = View.vertex_selected_Colour_g[0];
+                                vertices[i + 5] = View.vertex_selected_Colour_b[0];
+                            }
+                            c3d.getMouse().prepareTranslateViewport();
+                            c3d.getMouse().translateViewport(speed, 0f, viewport_translation, viewport_rotation, c3d.getPerspectiveCalculator());
+                        }
+
+                        vertices[0] = -viewport_width + 0.018f;
+                        vertices[1] = -0.018f;
+                        vertices[2] = viewport_origin_axis[0].z;
+                        vertices[6] = -viewport_width + 0.018f;
+                        vertices[7] = 0.018f;
+                        vertices[8] = viewport_origin_axis[0].z;
+                        vertices[12] = -viewport_width + 0.009f;
+                        vertices[13] = 0;
+                        vertices[14] = viewport_origin_axis[0].z;
+
+                        helper.drawTrianglesIndexedRGB_General(vertices, indices);
+                    }
                 }
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
