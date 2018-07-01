@@ -1,3 +1,14 @@
+### 01 Jul 2018
+With the release of 0.8.44 you are able to...
+-  ...translate the 3D view by just moving the cursor to the border of the 3D view (open the options menu to enable this).
+-  ...use a vertex window in the top right corner to show/modify the x, y, z values of the selected vertex.
+-  ...see the transformation delta info placed right after the cursor coordinates on the status bar.
+-  ...benefit from an enhanced "BFC + TEXMAP / Materials" render mode (OpenGL 3.3 only)
+
+The following critical issues are fixed:
+1. The context menu button was invisible when rulers were shown on the 3D view.
+
+
 ### 08 Feb 2018
 With the release of 0.8.43 you are able to...
 -  ...check an option during setup which associates *.dat files to LDPartEditor.
