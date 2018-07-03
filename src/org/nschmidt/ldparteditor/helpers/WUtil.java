@@ -15,12 +15,16 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers;
 
+import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Widget;
+import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabFolder;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
@@ -60,6 +64,29 @@ public class WUtil {
                     listener.widgetSelected(e);
                 }
             });
+        } else if (w instanceof CompositeTabFolder) {
+            ((CompositeTabFolder)w).addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    listener.widgetSelected(e);
+                }
+            });
+        } else if (w instanceof CTabFolder) {
+            ((CTabFolder)w).addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    listener.widgetSelected(e);
+                }
+            });
+        } else if (w instanceof ScrollBar) {
+            ((ScrollBar)w).addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    listener.widgetSelected(e);
+                }
+            });
+        } else if (w != null){
+            NLogger.error(getClass(), "No mapping for type:" + w.getClass().getName()); //$NON-NLS-1$
         }
     }
 }
