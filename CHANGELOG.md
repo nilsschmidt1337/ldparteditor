@@ -1,3 +1,8 @@
+### 04 Jul 2018
+With the release of 0.8.44b the following critical issues are fixed:
+1. Clicking on the tabs no longer changed the 3D view. / Scrolling in the text editor didn't refresh line numbers.
+
+
 ### 01 Jul 2018
 With the release of 0.8.44 you are able to...
 -  ...translate the 3D view by just moving the cursor to the border of the 3D view (open the options menu to enable this).
