@@ -36,6 +36,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
@@ -289,8 +290,12 @@ public class GTexture {
     }
 
     public float[] getUVcoords(boolean isTriangle, GData ID) {
-        final int size = isTriangle ? 3 : 4;
         float[] result = new float[8];
+        if (ID == null) {
+            NLogger.debug(getClass(), "getUVcoords(): ID is null."); //$NON-NLS-1$
+            return result;
+        }
+        final int size = isTriangle ? 3 : 4;
         if (cacheTriggered) {
             for (int i = 0; i < size; i++) {
                 int r = 2 * i;
