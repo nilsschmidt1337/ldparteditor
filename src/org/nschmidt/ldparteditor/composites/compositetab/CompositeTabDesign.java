@@ -273,7 +273,7 @@ class CompositeTabDesign extends CTabItem {
                 btn_QuickFixSame.setText(I18n.COMPOSITETAB_QuickFixSimilar);
             }
             composite.pack();
-            sashForm.setWeights(new int[] { this.compositeText[0].getSize().y, this.compositeText[0].getSize().y / 2 });
+            sashForm.setWeights(new int[] { 2, 1 } );
 
             this.menu[0] = new Menu(compositeText);
             compositeText.setMenu(this.menu[0]);
