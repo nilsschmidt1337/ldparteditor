@@ -43,7 +43,7 @@ public class CompositeTabState {
     /** The current {@linkplain CompositeTabFolder} of the composite tab */
     final CompositeTabFolder[] folder = new CompositeTabFolder[1];
     /** The DatFile object */
-    private DatFile datFileObj;
+    private DatFile datFileObj = View.DUMMY_DATFILE;
     /** The filename of the file, which is displayed by this tab */
     String filename = I18n.EDITORTEXT_NewFile;
     /**
