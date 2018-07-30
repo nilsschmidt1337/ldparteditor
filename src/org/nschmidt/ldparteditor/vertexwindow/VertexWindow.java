@@ -57,8 +57,6 @@ public class VertexWindow extends ApplicationWindow {
 
     private static Vertex selectedVertex = new Vertex(0,0,0);
 
-    private long showupTime = System.currentTimeMillis();
-
     private final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
     private final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
     private final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
@@ -94,7 +92,11 @@ public class VertexWindow extends ApplicationWindow {
 
             @Override
             public void shellDeactivated(ShellEvent e) {
-                requestSelfDestruct();
+                Display.getDefault().timerExec(1000, () -> {
+                    if (Display.getDefault().getActiveShell() == null) {
+                        close();
+                    }
+                });
             }
 
             @Override
@@ -147,23 +149,22 @@ public class VertexWindow extends ApplicationWindow {
      */
     public static void placeVertexWindow() {
         final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
-        if (lastHoveredC3d == null) return;
+        if (lastHoveredC3d == null || Display.getDefault().getActiveShell() == null) return;
 
         final VertexWindow vertexWindow = Editor3DWindow.getWindow().getVertexWindow();
         final DatFile df = lastHoveredC3d.getLockableDatFileReference();
         final Set<Vertex> selectedVertices = df.getVertexManager().getSelectedVertices();
         final boolean singleVertexSelected = !df.isReadOnly() && selectedVertices.size() == 1;
         final boolean addingSomething = Editor3DWindow.getWindow().isAddingSomething();
-        
-        final boolean windowShouldBeDisplayed = singleVertexSelected && !addingSomething; 
-        
+
+        final boolean windowShouldBeDisplayed = singleVertexSelected && !addingSomething;
+
         Vertex newSelectedVertex = new Vertex(0,0,0);
 
         if (singleVertexSelected) {
             try {
                 newSelectedVertex = selectedVertices.iterator().next();
             } catch (NoSuchElementException consumed) {}
-            vertexWindow.renew();
         }
 
         if (windowShouldBeDisplayed && vertexWindow.getShell() == null) {
@@ -297,39 +298,5 @@ public class VertexWindow extends ApplicationWindow {
         vertexWindow.pack();
 
         return vertexWindow;
-    }
-
-    public void renew() {
-        showupTime = System.currentTimeMillis();
-    }
-
-    public boolean isYoung() {
-        return Math.abs(showupTime - System.currentTimeMillis()) < 200;
-    }
-
-    public void requestClose() {
-        new Thread(() -> {
-            try {
-                Thread.sleep(200);
-                Display.getDefault().asyncExec(() -> {
-                    if (Editor3DWindow.getWindow().getShell().isFocusControl()) {
-                        close();
-                    }
-                });
-            } catch (InterruptedException consumed) {}
-        }).start();
-    }
-
-    private void requestSelfDestruct() {
-        new Thread(() -> {
-            try {
-                Thread.sleep(100);
-                Display.getDefault().asyncExec(() -> {
-                    if (!Editor3DWindow.getWindow().getShell().isFocusControl() && !isYoung()) {
-                        close();
-                    }
-                });
-            } catch (InterruptedException consumed) {}
-        }).start();
     }
 }
