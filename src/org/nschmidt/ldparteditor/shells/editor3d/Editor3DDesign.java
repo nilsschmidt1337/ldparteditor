@@ -387,6 +387,8 @@ class Editor3DDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spn_PngSX = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_PngSY = new BigDecimalSpinner[1];
 
+    final NButton[] btn_CloseView = new NButton[1];
+
     final NButton[] btn_ToggleLinesOpenGL = new NButton[1];
     final NButton[] btn_lineSize0 = new NButton[1];
     final NButton[] btn_lineSize1 = new NButton[1];
@@ -568,6 +570,7 @@ class Editor3DDesign extends ApplicationWindow {
         missingItemsToCreate.add("ADD_SOMETHING"); //$NON-NLS-1$
         missingItemsToCreate.add("COLOUR_BAR"); //$NON-NLS-1$
         missingItemsToCreate.add("LINE_THICKNESS"); //$NON-NLS-1$
+        missingItemsToCreate.add("CLOSE_VIEW"); //$NON-NLS-1$
 
         ToolItem lastToolItem = null;
         for (ToolItemState s : userSettings.getToolItemConfig3D()) {
@@ -636,6 +639,10 @@ class Editor3DDesign extends ApplicationWindow {
                 lastToolItem = createToolItemLineThickness(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // LINE_THICKNESS
                 missingItemsToCreate.remove(obj);
             }
+            if (obj.equals("CLOSE_VIEW")) { //$NON-NLS-1$
+                lastToolItem = createToolItemCloseView(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // LINE_THICKNESS
+                missingItemsToCreate.remove(obj);
+            }
         }
 
         if (missingItemsToCreate.contains("SYNC_AND_RECENT_FILES")) lastToolItem = createToolItemSync(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // SYNC_AND_RECENT_FILES //$NON-NLS-1$ //$NON-NLS-2$
@@ -652,6 +659,7 @@ class Editor3DDesign extends ApplicationWindow {
         if (missingItemsToCreate.contains("MISC_CLICK")) lastToolItem = createToolItemMiscClick(""); // MISC_CLICK //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("INSERT_AT_CURSOR")) lastToolItem = createToolItemInsertAtCursorPosition(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // INSERT_AT_CURSOR //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("ADD_SOMETHING")) lastToolItem = createToolItemAdd(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // ADD_SOMETHING //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("CLOSE_VIEW")) lastToolItem = createToolItemCloseView(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // CLOSE_VIEW //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("COLOUR_BAR")) lastToolItem = createToolItemColours(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // COLOUR_BAR //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("LINE_THICKNESS")) lastToolItem = createToolItemLineThickness(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // LINE_THICKNESS //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -1743,6 +1751,30 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
         return container;
+    }
+
+    private ToolItem createToolItemCloseView(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_CloseView = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
+        {
+            NButton btn_CloseView = new NButton(toolItem_CloseView, Cocoa.getStyle());
+            this.btn_CloseView[0] = btn_CloseView;
+            KeyStateManager.addTooltipText(btn_CloseView, I18n.E3D_CloseView, Task.CLOSE_VIEW);
+            btn_CloseView.setImage(ResourceManager.getImage("icon16_closeview.png")); //$NON-NLS-1$
+        }
+        return toolItem_CloseView;
     }
 
     private ToolItem createToolItemLineThickness(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {

@@ -246,6 +246,8 @@ public class KeyStateManager {
             addTask(TextTask.EDITORTEXT_LINE_UP, SWT.ALT, SWT.ARROW_UP);
             addTask(TextTask.EDITORTEXT_LINE_DOWN, SWT.ALT, SWT.ARROW_DOWN);
 
+            addTask(Task.CLOSE_VIEW, 'q');
+
         } else {
 
             reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
@@ -352,6 +354,8 @@ public class KeyStateManager {
 
             addTask(TextTask.EDITORTEXT_LINE_UP, SWT.ALT, SWT.ARROW_UP);
             addTask(TextTask.EDITORTEXT_LINE_DOWN, SWT.ALT, SWT.ARROW_DOWN);
+
+            addTask(Task.CLOSE_VIEW, 'q');
         }
     }
 
@@ -794,6 +798,9 @@ public class KeyStateManager {
                         break;
                     case TRANSLATE_LEFT:
                         translateView(c3d, 100 / c3d.getViewportPixelPerLDU(), 0);
+                        break;
+                    case CLOSE_VIEW:
+                        c3d.getModifier().closeView();
                         break;
                     }
                 }

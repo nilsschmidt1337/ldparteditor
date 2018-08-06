@@ -115,5 +115,7 @@ public enum Task {
 
     MOVE_ADJACENT_DATA,
 
-    SWAP_WINDING
+    SWAP_WINDING,
+
+    CLOSE_VIEW
 }

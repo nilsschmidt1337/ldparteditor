@@ -173,7 +173,7 @@ class OptionsDesign extends ApplicationWindow {
                 this.btn_translateViewByCursor[0] = btn_translateViewByCursor;
                 btn_translateViewByCursor.setText(I18n.OPTIONS_TranslateByCursor);
                 btn_translateViewByCursor.setSelection(userSettings.isTranslatingViewByCursor());
-                
+
                 NButton btn_disableMAD3D = new NButton(cmp_container, SWT.CHECK);
                 this.btn_disableMAD3D[0] = btn_disableMAD3D;
                 btn_disableMAD3D.setText(I18n.OPTIONS_MAD1);
@@ -374,6 +374,7 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB, !Cocoa.isCocoa);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, !Cocoa.isCocoa);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_CloseView, Task.CLOSE_VIEW, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AddVertex, Task.ADD_VERTEX, true);

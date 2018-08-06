@@ -1443,6 +1443,25 @@ public class Editor3DWindow extends Editor3DDesign {
             setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 4f, btn_lineSize4[0]);
             regainFocus();
         });
+        WidgetUtil(btn_CloseView[0]).addSelectionListener(e -> {
+            Composite3D c3d = null;
+            if (Project.getFileToEdit() != null
+                    && Project.getFileToEdit().getLastSelectedComposite() != null
+                    && !Project.getFileToEdit().getLastSelectedComposite().isDisposed()) {
+                c3d = Project.getFileToEdit().getLastSelectedComposite();
+            } else if (DatFile.getLastHoveredComposite() != null
+                    && !DatFile.getLastHoveredComposite().isDisposed()) {
+                c3d = DatFile.getLastHoveredComposite();
+            } else if (!renders.isEmpty()){
+                OpenGLRenderer renderer = renders.get(0);
+                c3d = renderer.getC3D();
+            }
+
+            if (c3d != null && !c3d.isDisposed()) {
+                c3d.getModifier().closeView();
+            }
+            regainFocus();
+        });
 
         WidgetUtil(btn_ShowSelectionInTextEditor[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
@@ -7664,6 +7683,15 @@ public class Editor3DWindow extends Editor3DDesign {
     public void regainFocus() {
         for (OpenGLRenderer r : renders) {
             if (r.getC3D().getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                if (!r.getC3D().isDisposed() && !r.getC3D().getCanvas().isDisposed()) {
+                    r.getC3D().getCanvas().setFocus();
+                    return;
+                }
+            }
+        }
+
+        for (OpenGLRenderer r : renders) {
+            if (!r.getC3D().isDisposed() && !r.getC3D().getCanvas().isDisposed()) {
                 r.getC3D().getCanvas().setFocus();
                 return;
             }
