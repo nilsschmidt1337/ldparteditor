@@ -426,6 +426,13 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Redo, Task.REDO, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ZoomIn, Task.ZOOM_IN, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ZoomOut, Task.ZOOM_OUT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveFront, Task.PERSPECTIVE_FRONT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveBack, Task.PERSPECTIVE_BACK, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveLeft, Task.PERSPECTIVE_LEFT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveRight, Task.PERSPECTIVE_RIGHT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveTop, Task.PERSPECTIVE_TOP, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveBottom, Task.PERSPECTIVE_BOTTOM, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveTwoThirds, Task.PERSPECTIVE_TwoThirds, true);
 
                 registerTask(trtm_EditorText, I18n.KEYBOARD_Esc2, TextTask.EDITORTEXT_ESC, true);
                 registerTask(trtm_EditorText, I18n.KEYBOARD_Inline, TextTask.EDITORTEXT_INLINE, true);

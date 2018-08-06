@@ -1444,21 +1444,65 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
         WidgetUtil(btn_CloseView[0]).addSelectionListener(e -> {
-            Composite3D c3d = null;
-            if (Project.getFileToEdit() != null
-                    && Project.getFileToEdit().getLastSelectedComposite() != null
-                    && !Project.getFileToEdit().getLastSelectedComposite().isDisposed()) {
-                c3d = Project.getFileToEdit().getLastSelectedComposite();
-            } else if (DatFile.getLastHoveredComposite() != null
-                    && !DatFile.getLastHoveredComposite().isDisposed()) {
-                c3d = DatFile.getLastHoveredComposite();
-            } else if (!renders.isEmpty()){
-                OpenGLRenderer renderer = renders.get(0);
-                c3d = renderer.getC3D();
-            }
-
-            if (c3d != null && !c3d.isDisposed()) {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
                 c3d.getModifier().closeView();
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_perspectiveFront[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.getPerspectiveCalculator().setPerspective(Perspective.FRONT);
+                c3d.setPerspectiveOnContextMenu(Perspective.FRONT);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_perspectiveBack[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.getPerspectiveCalculator().setPerspective(Perspective.BACK);
+                c3d.setPerspectiveOnContextMenu(Perspective.BACK);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_perspectiveLeft[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.getPerspectiveCalculator().setPerspective(Perspective.LEFT);
+                c3d.setPerspectiveOnContextMenu(Perspective.LEFT);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_perspectiveRight[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.getPerspectiveCalculator().setPerspective(Perspective.RIGHT);
+                c3d.setPerspectiveOnContextMenu(Perspective.RIGHT);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_perspectiveTop[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
+                c3d.setPerspectiveOnContextMenu(Perspective.TOP);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_perspectiveBottom[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.getPerspectiveCalculator().setPerspective(Perspective.BOTTOM);
+                c3d.setPerspectiveOnContextMenu(Perspective.BOTTOM);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_perspectiveTwoThirds[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
+                c3d.setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
             }
             regainFocus();
         });
@@ -5490,6 +5534,25 @@ public class Editor3DWindow extends Editor3DDesign {
         } catch (SWTException consumed) {
             // Display can already be disposed.
         }
+    }
+
+    private Composite3D getCurrentCoposite3d() {
+        Composite3D c3d = null;
+        if (Project.getFileToEdit() != null
+                && Project.getFileToEdit().getLastSelectedComposite() != null
+                && !Project.getFileToEdit().getLastSelectedComposite().isDisposed()) {
+            c3d = Project.getFileToEdit().getLastSelectedComposite();
+        } else if (DatFile.getLastHoveredComposite() != null
+                && !DatFile.getLastHoveredComposite().isDisposed()) {
+            c3d = DatFile.getLastHoveredComposite();
+        } else if (!renders.isEmpty()){
+            OpenGLRenderer renderer = renders.get(0);
+            c3d = renderer.getC3D();
+        }
+        if (c3d !=null && c3d.isDisposed()) {
+            c3d = null;
+        }
+        return c3d;
     }
 
     protected void addRecentFile(String projectPath) {

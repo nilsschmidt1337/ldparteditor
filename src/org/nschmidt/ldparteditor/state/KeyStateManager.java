@@ -40,6 +40,7 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.ManipulatorAxisMode;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MouseButton;
+import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.TextTask;
 import org.nschmidt.ldparteditor.enums.View;
@@ -248,6 +249,15 @@ public class KeyStateManager {
 
             addTask(Task.CLOSE_VIEW, 'q');
 
+            addTask(Task.PERSPECTIVE_TOP, SWT.COMMAND, SWT.KEYPAD_5);
+            addTask(Task.PERSPECTIVE_BACK, SWT.COMMAND, SWT.KEYPAD_8);
+            addTask(Task.PERSPECTIVE_FRONT, SWT.COMMAND, SWT.KEYPAD_2);
+            addTask(Task.PERSPECTIVE_LEFT, SWT.COMMAND, SWT.KEYPAD_4);
+            addTask(Task.PERSPECTIVE_RIGHT, SWT.COMMAND, SWT.KEYPAD_6);
+            addTask(Task.PERSPECTIVE_BOTTOM, SWT.COMMAND, SWT.KEYPAD_0);
+
+            addTask(Task.PERSPECTIVE_TwoThirds, SWT.COMMAND, SWT.KEYPAD_3);
+
         } else {
 
             reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
@@ -356,6 +366,15 @@ public class KeyStateManager {
             addTask(TextTask.EDITORTEXT_LINE_DOWN, SWT.ALT, SWT.ARROW_DOWN);
 
             addTask(Task.CLOSE_VIEW, 'q');
+
+            addTask(Task.PERSPECTIVE_TOP, SWT.CTRL, SWT.KEYPAD_5);
+            addTask(Task.PERSPECTIVE_BACK, SWT.CTRL, SWT.KEYPAD_8);
+            addTask(Task.PERSPECTIVE_FRONT, SWT.CTRL, SWT.KEYPAD_2);
+            addTask(Task.PERSPECTIVE_LEFT, SWT.CTRL, SWT.KEYPAD_4);
+            addTask(Task.PERSPECTIVE_RIGHT, SWT.CTRL, SWT.KEYPAD_6);
+            addTask(Task.PERSPECTIVE_BOTTOM, SWT.CTRL, SWT.KEYPAD_0);
+
+            addTask(Task.PERSPECTIVE_TwoThirds, SWT.CTRL, SWT.KEYPAD_3);
         }
     }
 
@@ -801,6 +820,34 @@ public class KeyStateManager {
                         break;
                     case CLOSE_VIEW:
                         c3d.getModifier().closeView();
+                        break;
+                    case PERSPECTIVE_FRONT:
+                        c3d.getPerspectiveCalculator().setPerspective(Perspective.FRONT);
+                        c3d.setPerspectiveOnContextMenu(Perspective.FRONT);
+                        break;
+                    case PERSPECTIVE_BACK:
+                        c3d.getPerspectiveCalculator().setPerspective(Perspective.BACK);
+                        c3d.setPerspectiveOnContextMenu(Perspective.BACK);
+                        break;
+                    case PERSPECTIVE_LEFT:
+                        c3d.getPerspectiveCalculator().setPerspective(Perspective.LEFT);
+                        c3d.setPerspectiveOnContextMenu(Perspective.LEFT);
+                        break;
+                    case PERSPECTIVE_RIGHT:
+                        c3d.getPerspectiveCalculator().setPerspective(Perspective.RIGHT);
+                        c3d.setPerspectiveOnContextMenu(Perspective.RIGHT);
+                        break;
+                    case PERSPECTIVE_TOP:
+                        c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
+                        c3d.setPerspectiveOnContextMenu(Perspective.TOP);
+                        break;
+                    case PERSPECTIVE_BOTTOM:
+                        c3d.getPerspectiveCalculator().setPerspective(Perspective.BOTTOM);
+                        c3d.setPerspectiveOnContextMenu(Perspective.BOTTOM);
+                        break;
+                    case PERSPECTIVE_TwoThirds:
+                        c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
+                        c3d.setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
                         break;
                     }
                 }

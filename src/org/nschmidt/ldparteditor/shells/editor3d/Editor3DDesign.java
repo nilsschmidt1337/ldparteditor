@@ -396,6 +396,14 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btn_lineSize3 = new NButton[1];
     final NButton[] btn_lineSize4 = new NButton[1];
 
+    final NButton[] btn_perspectiveFront = new NButton[1];
+    final NButton[] btn_perspectiveBack = new NButton[1];
+    final NButton[] btn_perspectiveTop = new NButton[1];
+    final NButton[] btn_perspectiveBottom = new NButton[1];
+    final NButton[] btn_perspectiveLeft = new NButton[1];
+    final NButton[] btn_perspectiveRight = new NButton[1];
+    final NButton[] btn_perspectiveTwoThirds = new NButton[1];
+
     final NButton[] btn_NewDat = new NButton[1];
     final NButton[] btn_OpenDat = new NButton[1];
     final NButton[] btn_SaveDat = new NButton[1];
@@ -571,6 +579,7 @@ class Editor3DDesign extends ApplicationWindow {
         missingItemsToCreate.add("COLOUR_BAR"); //$NON-NLS-1$
         missingItemsToCreate.add("LINE_THICKNESS"); //$NON-NLS-1$
         missingItemsToCreate.add("CLOSE_VIEW"); //$NON-NLS-1$
+        missingItemsToCreate.add("CHANGE_PERSPECTIVE"); //$NON-NLS-1$
 
         ToolItem lastToolItem = null;
         for (ToolItemState s : userSettings.getToolItemConfig3D()) {
@@ -643,6 +652,10 @@ class Editor3DDesign extends ApplicationWindow {
                 lastToolItem = createToolItemCloseView(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // LINE_THICKNESS
                 missingItemsToCreate.remove(obj);
             }
+            if (obj.equals("CHANGE_PERSPECTIVE")) { //$NON-NLS-1$
+                lastToolItem = createToolItemPerspective(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // LINE_THICKNESS
+                missingItemsToCreate.remove(obj);
+            }
         }
 
         if (missingItemsToCreate.contains("SYNC_AND_RECENT_FILES")) lastToolItem = createToolItemSync(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // SYNC_AND_RECENT_FILES //$NON-NLS-1$ //$NON-NLS-2$
@@ -659,6 +672,7 @@ class Editor3DDesign extends ApplicationWindow {
         if (missingItemsToCreate.contains("MISC_CLICK")) lastToolItem = createToolItemMiscClick(""); // MISC_CLICK //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("INSERT_AT_CURSOR")) lastToolItem = createToolItemInsertAtCursorPosition(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // INSERT_AT_CURSOR //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("ADD_SOMETHING")) lastToolItem = createToolItemAdd(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // ADD_SOMETHING //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("CHANGE_PERSPECTIVE")) lastToolItem = createToolItemPerspective(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // ADD_SOMETHING //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("CLOSE_VIEW")) lastToolItem = createToolItemCloseView(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // CLOSE_VIEW //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("COLOUR_BAR")) lastToolItem = createToolItemColours(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // COLOUR_BAR //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("LINE_THICKNESS")) lastToolItem = createToolItemLineThickness(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // LINE_THICKNESS //$NON-NLS-1$ //$NON-NLS-2$
@@ -1775,6 +1789,66 @@ class Editor3DDesign extends ApplicationWindow {
             btn_CloseView.setImage(ResourceManager.getImage("icon16_closeview.png")); //$NON-NLS-1$
         }
         return toolItem_CloseView;
+    }
+
+    private ToolItem createToolItemPerspective(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+        final Composite target;
+        switch (location) {
+        case NORTH:
+        default:
+            target = cmpNorth;
+            break;
+        case EAST:
+            target = cmpEast;
+            break;
+        case WEST:
+            target = cmpWest;
+            break;
+        }
+        ToolItem toolItem_ViewPerspective = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
+        {
+            NButton btn_PerspectiveFront = new NButton(toolItem_ViewPerspective, Cocoa.getStyle());
+            this.btn_perspectiveFront[0] = btn_PerspectiveFront;
+            KeyStateManager.addTooltipText(btn_PerspectiveFront, I18n.PERSPECTIVE_FRONT, Task.PERSPECTIVE_FRONT);
+            btn_PerspectiveFront.setImage(ResourceManager.getImage("icon16_front.png")); //$NON-NLS-1$
+        }
+        {
+            NButton btn_Perspective = new NButton(toolItem_ViewPerspective, Cocoa.getStyle());
+            this.btn_perspectiveBack[0] = btn_Perspective;
+            KeyStateManager.addTooltipText(btn_Perspective, I18n.PERSPECTIVE_BACK, Task.PERSPECTIVE_BACK);
+            btn_Perspective.setImage(ResourceManager.getImage("icon16_back.png")); //$NON-NLS-1$
+        }
+        {
+            NButton btn_Perspective = new NButton(toolItem_ViewPerspective, Cocoa.getStyle());
+            this.btn_perspectiveLeft[0] = btn_Perspective;
+            KeyStateManager.addTooltipText(btn_Perspective, I18n.PERSPECTIVE_LEFT, Task.PERSPECTIVE_LEFT);
+            btn_Perspective.setImage(ResourceManager.getImage("icon16_left.png")); //$NON-NLS-1$
+        }
+        {
+            NButton btn_Perspective = new NButton(toolItem_ViewPerspective, Cocoa.getStyle());
+            this.btn_perspectiveRight[0] = btn_Perspective;
+            KeyStateManager.addTooltipText(btn_Perspective, I18n.PERSPECTIVE_RIGHT, Task.PERSPECTIVE_RIGHT);
+            btn_Perspective.setImage(ResourceManager.getImage("icon16_right.png")); //$NON-NLS-1$
+        }
+        {
+            NButton btn_Perspective = new NButton(toolItem_ViewPerspective, Cocoa.getStyle());
+            this.btn_perspectiveTop[0] = btn_Perspective;
+            KeyStateManager.addTooltipText(btn_Perspective, I18n.PERSPECTIVE_TOP, Task.PERSPECTIVE_TOP);
+            btn_Perspective.setImage(ResourceManager.getImage("icon16_top.png")); //$NON-NLS-1$
+        }
+        {
+            NButton btn_Perspective = new NButton(toolItem_ViewPerspective, Cocoa.getStyle());
+            this.btn_perspectiveBottom[0] = btn_Perspective;
+            KeyStateManager.addTooltipText(btn_Perspective, I18n.PERSPECTIVE_BOTTOM, Task.PERSPECTIVE_BOTTOM);
+            btn_Perspective.setImage(ResourceManager.getImage("icon16_bottom.png")); //$NON-NLS-1$
+        }
+        {
+            NButton btn_Perspective = new NButton(toolItem_ViewPerspective, Cocoa.getStyle());
+            this.btn_perspectiveTwoThirds[0] = btn_Perspective;
+            KeyStateManager.addTooltipText(btn_Perspective, I18n.PERSPECTIVE_TwoThirds, Task.PERSPECTIVE_TwoThirds);
+            btn_Perspective.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+        }
+        return toolItem_ViewPerspective;
     }
 
     private ToolItem createToolItemLineThickness(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {

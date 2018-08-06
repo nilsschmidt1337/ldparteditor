@@ -818,6 +818,13 @@ public final class I18n {
     public static final String KEYBOARD_ObjPrimitive = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ObjVertex = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Paste = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_PerspectiveBack = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_PerspectiveBottom = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_PerspectiveFront = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_PerspectiveLeft = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_PerspectiveRight = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_PerspectiveTop = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_PerspectiveTwoThirds = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_PressAKey = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_QuickFix = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RMB = KEYBOARD.getString(getProperty());

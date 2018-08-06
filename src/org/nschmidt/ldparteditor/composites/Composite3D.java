@@ -2377,12 +2377,7 @@ public class Composite3D extends ScalableComposite {
         setSyncTranslation(state.isSyncTranslation());
         setSyncZoom(state.isSyncZoom());
 
-        getMntmFront().setSelection(perspective == Perspective.FRONT);
-        getMntmBack().setSelection(perspective == Perspective.BACK);
-        getMntmLeft().setSelection(perspective == Perspective.LEFT);
-        getMntmRight().setSelection(perspective == Perspective.RIGHT);
-        getMntmTop().setSelection(perspective == Perspective.TOP);
-        getMntmBottom().setSelection(perspective == Perspective.BOTTOM);
+        setPerspectiveOnContextMenu(perspective);;
         getMntmRealPreview().setSelection(lineMode == 0);
         getMntmShowAll().setSelection(lineMode == 1);
         getMntmStdLines().setSelection(lineMode == 2);
@@ -2422,5 +2417,14 @@ public class Composite3D extends ScalableComposite {
 
     public void setHasMouse(boolean hasMouse) {
         this.hasMouse = hasMouse;
+    }
+
+    public void setPerspectiveOnContextMenu(Perspective perspective) {
+        getMntmFront().setSelection(perspective == Perspective.FRONT);
+        getMntmBack().setSelection(perspective == Perspective.BACK);
+        getMntmLeft().setSelection(perspective == Perspective.LEFT);
+        getMntmRight().setSelection(perspective == Perspective.RIGHT);
+        getMntmTop().setSelection(perspective == Perspective.TOP);
+        getMntmBottom().setSelection(perspective == Perspective.BOTTOM);
     }
 }
