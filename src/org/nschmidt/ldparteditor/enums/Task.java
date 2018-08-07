@@ -125,5 +125,15 @@ public enum Task {
     PERSPECTIVE_RIGHT,
     PERSPECTIVE_TOP,
     PERSPECTIVE_BOTTOM,
-    PERSPECTIVE_TwoThirds
+    PERSPECTIVE_TwoThirds,
+
+    RENDERMODE_NoBackfaceCulling,
+    RENDERMODE_RandomColours,
+    RENDERMODE_GreenFrontfacesRedBackfaces,
+    RENDERMODE_RedBackfaces,
+    RENDERMODE_RealBackfaceCulling,
+    RENDERMODE_LDrawStandard,
+    RENDERMODE_SpecialCondline,
+    RENDERMODE_CoplanarityHeatmap,
+    RENDERMODE_Wireframe
 }

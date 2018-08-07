@@ -2396,15 +2396,7 @@ public class Composite3D extends ScalableComposite {
         getMntmStudLogo().setSelection(state.isStudLogo());
         getMntmAxis().setSelection(state.isShowAxis());
         getMntmAnaglyph().setSelection(state.isAnaglyph3d());
-        getMntmNoBFC().setSelection(renderMode == 0);
-        getMntmRandomColours().setSelection(renderMode == 1);
-        getMntmBFCFrontBack().setSelection(renderMode == 2);
-        getMntmBFCBack().setSelection(renderMode == 3);
-        getMntmBFCReal().setSelection(renderMode == 4);
-        getMntmBFCTextured().setSelection(renderMode == 5);
-        getMntmCondlineMode().setSelection(renderMode == 6);
-        getMntmCoplanarityHeatmapMode().setSelection(renderMode == 7);
-        getMntmWireframeMode().setSelection(renderMode == -1);
+        setRenderModeOnContextMenu(renderMode);
 
         if (getMntmSmoothShading() != null) {
             getMntmSmoothShading().setSelection(state.isSmooth());
@@ -2426,5 +2418,17 @@ public class Composite3D extends ScalableComposite {
         getMntmRight().setSelection(perspective == Perspective.RIGHT);
         getMntmTop().setSelection(perspective == Perspective.TOP);
         getMntmBottom().setSelection(perspective == Perspective.BOTTOM);
+    }
+
+    private void setRenderModeOnContextMenu(int renderMode) {
+        getMntmNoBFC().setSelection(renderMode == 0);
+        getMntmRandomColours().setSelection(renderMode == 1);
+        getMntmBFCFrontBack().setSelection(renderMode == 2);
+        getMntmBFCBack().setSelection(renderMode == 3);
+        getMntmBFCReal().setSelection(renderMode == 4);
+        getMntmBFCTextured().setSelection(renderMode == 5);
+        getMntmCondlineMode().setSelection(renderMode == 6);
+        getMntmCoplanarityHeatmapMode().setSelection(renderMode == 7);
+        getMntmWireframeMode().setSelection(renderMode == -1);
     }
 }
