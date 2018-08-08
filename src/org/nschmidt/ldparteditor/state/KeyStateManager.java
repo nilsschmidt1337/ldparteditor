@@ -258,6 +258,16 @@ public class KeyStateManager {
 
             addTask(Task.PERSPECTIVE_TwoThirds, SWT.COMMAND, SWT.KEYPAD_3);
 
+            addTask(Task.RENDERMODE_NoBackfaceCulling, SWT.ALT, SWT.KEYPAD_1);
+            addTask(Task.RENDERMODE_RandomColours, SWT.ALT, SWT.KEYPAD_2);
+            addTask(Task.RENDERMODE_GreenFrontfacesRedBackfaces, SWT.ALT, SWT.KEYPAD_3);
+            addTask(Task.RENDERMODE_RedBackfaces, SWT.ALT, SWT.KEYPAD_4);
+            addTask(Task.RENDERMODE_RealBackfaceCulling, SWT.ALT, SWT.KEYPAD_5);
+            addTask(Task.RENDERMODE_LDrawStandard, SWT.ALT, SWT.KEYPAD_6);
+            addTask(Task.RENDERMODE_SpecialCondline, SWT.ALT, SWT.KEYPAD_7);
+            addTask(Task.RENDERMODE_CoplanarityHeatmap, SWT.ALT, SWT.KEYPAD_8);
+            addTask(Task.RENDERMODE_Wireframe, SWT.ALT, SWT.KEYPAD_9);
+
         } else {
 
             reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
@@ -375,6 +385,16 @@ public class KeyStateManager {
             addTask(Task.PERSPECTIVE_BOTTOM, SWT.CTRL, SWT.KEYPAD_0);
 
             addTask(Task.PERSPECTIVE_TwoThirds, SWT.CTRL, SWT.KEYPAD_3);
+
+            addTask(Task.RENDERMODE_NoBackfaceCulling, SWT.ALT, SWT.KEYPAD_1);
+            addTask(Task.RENDERMODE_RandomColours, SWT.ALT, SWT.KEYPAD_2);
+            addTask(Task.RENDERMODE_GreenFrontfacesRedBackfaces, SWT.ALT, SWT.KEYPAD_3);
+            addTask(Task.RENDERMODE_RedBackfaces, SWT.ALT, SWT.KEYPAD_4);
+            addTask(Task.RENDERMODE_RealBackfaceCulling, SWT.ALT, SWT.KEYPAD_5);
+            addTask(Task.RENDERMODE_LDrawStandard, SWT.ALT, SWT.KEYPAD_6);
+            addTask(Task.RENDERMODE_SpecialCondline, SWT.ALT, SWT.KEYPAD_7);
+            addTask(Task.RENDERMODE_CoplanarityHeatmap, SWT.ALT, SWT.KEYPAD_8);
+            addTask(Task.RENDERMODE_Wireframe, SWT.ALT, SWT.KEYPAD_9);
         }
     }
 
@@ -848,6 +868,42 @@ public class KeyStateManager {
                     case PERSPECTIVE_TwoThirds:
                         c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
                         c3d.setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
+                        break;
+                    case RENDERMODE_NoBackfaceCulling:
+                        c3d.setRenderMode(0);
+                        c3d.setRenderModeOnContextMenu(0);
+                        break;
+                    case RENDERMODE_RandomColours:
+                        c3d.setRenderMode(1);
+                        c3d.setRenderModeOnContextMenu(1);
+                        break;
+                    case RENDERMODE_GreenFrontfacesRedBackfaces:
+                        c3d.setRenderMode(2);
+                        c3d.setRenderModeOnContextMenu(2);
+                        break;
+                    case RENDERMODE_RedBackfaces:
+                        c3d.setRenderMode(3);
+                        c3d.setRenderModeOnContextMenu(3);
+                        break;
+                    case RENDERMODE_RealBackfaceCulling:
+                        c3d.setRenderMode(4);
+                        c3d.setRenderModeOnContextMenu(4);
+                        break;
+                    case RENDERMODE_LDrawStandard:
+                        c3d.setRenderMode(5);
+                        c3d.setRenderModeOnContextMenu(5);
+                        break;
+                    case RENDERMODE_SpecialCondline:
+                        c3d.setRenderMode(6);
+                        c3d.setRenderModeOnContextMenu(6);
+                        break;
+                    case RENDERMODE_CoplanarityHeatmap:
+                        c3d.setRenderMode(7);
+                        c3d.setRenderModeOnContextMenu(7);
+                        break;
+                    case RENDERMODE_Wireframe:
+                        c3d.setRenderMode(-1);
+                        c3d.setRenderModeOnContextMenu(-1);
                         break;
                     }
                 }

@@ -829,6 +829,7 @@ public final class I18n {
     public static final String KEYBOARD_QuickFix = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RMB = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Redo = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_RendermodeCondlineMode = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RendermodeCoplanarityHeatmap = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RendermodeGreenFrontfacesRedBackfaces = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RendermodeLdrawStandard = KEYBOARD.getString(getProperty());
@@ -836,7 +837,6 @@ public final class I18n {
     public static final String KEYBOARD_RendermodeRandomColours = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RendermodeRealBackfaceCulling = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RendermodeRedBackfaces = KEYBOARD.getString(getProperty());
-    public static final String KEYBOARD_RendermodeCondlineMode = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RendermodeWireframe = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ReplaceVertex = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ResetView = KEYBOARD.getString(getProperty());

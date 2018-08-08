@@ -426,6 +426,15 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Redo, Task.REDO, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ZoomIn, Task.ZOOM_IN, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ZoomOut, Task.ZOOM_OUT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeNoBackfaceCulling, Task.RENDERMODE_NoBackfaceCulling, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeRandomColours, Task.RENDERMODE_RandomColours, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeGreenFrontfacesRedBackfaces, Task.RENDERMODE_GreenFrontfacesRedBackfaces, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeRedBackfaces, Task.RENDERMODE_RedBackfaces, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeRealBackfaceCulling, Task.RENDERMODE_RealBackfaceCulling, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeLdrawStandard, Task.RENDERMODE_LDrawStandard, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeCondlineMode, Task.RENDERMODE_SpecialCondline, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeCoplanarityHeatmap, Task.RENDERMODE_CoplanarityHeatmap, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeWireframe, Task.RENDERMODE_Wireframe, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveFront, Task.PERSPECTIVE_FRONT, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveBack, Task.PERSPECTIVE_BACK, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveLeft, Task.PERSPECTIVE_LEFT, true);
