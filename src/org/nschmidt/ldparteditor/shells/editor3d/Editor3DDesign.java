@@ -675,8 +675,10 @@ class Editor3DDesign extends ApplicationWindow {
 
         if (missingItemsToCreate.contains("SYNC_AND_RECENT_FILES")) lastToolItem = createToolItemSync(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // SYNC_AND_RECENT_FILES //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("PROJECT_MANAGEMENT")) lastToolItem = createToolItemNewOpenSave(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // PROJECT_MANAGEMENT //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("MANIPULATOR_MODE")) lastToolItem = createToolItemManipulatorMode(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // MANIPULATOR_MODE //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("CHANGE_PERSPECTIVE")) lastToolItem = createToolItemPerspective(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // CHANGE_PERSPECTIVE //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("RENDER_MODE")) lastToolItem = createToolItemRenderMode(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // RENDER_MODE //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("MANIPULATOR_ACTIONS")) lastToolItem = createToolItemManipulatorActions(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, "", lastToolItem); // MANIPULATOR_ACTIONS //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("MANIPULATOR_MODE")) lastToolItem = createToolItemManipulatorMode(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // MANIPULATOR_MODE //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("MISC_TOGGLE")) lastToolItem = createToolItemMiscToggle(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // MISC_TOGGLE //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("OPEN_SAVE_DATFILE")) lastToolItem = createToolItemNewOpenDat(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // OPEN_SAVE_DATFILE //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("SHOW_AND_HIDE")) lastToolItem = createToolItemHideUnhide(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // SHOW_AND_HIDE //$NON-NLS-1$ //$NON-NLS-2$
@@ -687,8 +689,6 @@ class Editor3DDesign extends ApplicationWindow {
         if (missingItemsToCreate.contains("MISC_CLICK")) lastToolItem = createToolItemMiscClick(""); // MISC_CLICK //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("INSERT_AT_CURSOR")) lastToolItem = createToolItemInsertAtCursorPosition(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // INSERT_AT_CURSOR //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("ADD_SOMETHING")) lastToolItem = createToolItemAdd(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // ADD_SOMETHING //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("CHANGE_PERSPECTIVE")) lastToolItem = createToolItemPerspective(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // CHANGE_PERSPECTIVE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("RENDER_MODE")) lastToolItem = createToolItemRenderMode(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // RENDER_MODE //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("CLOSE_VIEW")) lastToolItem = createToolItemCloseView(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // CLOSE_VIEW //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("COLOUR_BAR")) lastToolItem = createToolItemColours(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // COLOUR_BAR //$NON-NLS-1$ //$NON-NLS-2$
         if (missingItemsToCreate.contains("LINE_THICKNESS")) lastToolItem = createToolItemLineThickness(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // LINE_THICKNESS //$NON-NLS-1$ //$NON-NLS-2$
