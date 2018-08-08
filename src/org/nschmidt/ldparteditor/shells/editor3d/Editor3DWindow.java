@@ -1506,6 +1506,78 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
+        WidgetUtil(btn_renderModeNoBackfaceCulling[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.setRenderMode(0);
+                c3d.setRenderModeOnContextMenu(0);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_renderModeRandomColours[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.setRenderMode(1);
+                c3d.setRenderModeOnContextMenu(1);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_renderModeGreenRed[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.setRenderMode(2);
+                c3d.setRenderModeOnContextMenu(2);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_renderModeRedBackfaces[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.setRenderMode(3);
+                c3d.setRenderModeOnContextMenu(3);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_renderModeRealBackfaceCulling[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.setRenderMode(4);
+                c3d.setRenderModeOnContextMenu(4);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_renderModeLDrawStandard[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.setRenderMode(5);
+                c3d.setRenderModeOnContextMenu(5);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_renderModeCondlineMode[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.setRenderMode(6);
+                c3d.setRenderModeOnContextMenu(6);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_renderModeCoplanarityMode[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.setRenderMode(7);
+                c3d.setRenderModeOnContextMenu(7);
+            }
+            regainFocus();
+        });
+        WidgetUtil(btn_renderModeWireframe[0]).addSelectionListener(e -> {
+            Composite3D c3d = getCurrentCoposite3d();
+            if (c3d != null) {
+                c3d.setRenderMode(-1);
+                c3d.setRenderModeOnContextMenu(-1);
+            }
+            regainFocus();
+        });
 
         WidgetUtil(btn_ShowSelectionInTextEditor[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {

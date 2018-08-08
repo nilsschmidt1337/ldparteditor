@@ -2420,7 +2420,7 @@ public class Composite3D extends ScalableComposite {
         getMntmBottom().setSelection(perspective == Perspective.BOTTOM);
     }
 
-    private void setRenderModeOnContextMenu(int renderMode) {
+    public void setRenderModeOnContextMenu(int renderMode) {
         getMntmNoBFC().setSelection(renderMode == 0);
         getMntmRandomColours().setSelection(renderMode == 1);
         getMntmBFCFrontBack().setSelection(renderMode == 2);
