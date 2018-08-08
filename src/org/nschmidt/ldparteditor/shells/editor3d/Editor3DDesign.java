@@ -1886,31 +1886,31 @@ class Editor3DDesign extends ApplicationWindow {
             NButton btn_renderModeNoBackfaceCulling = new NButton(toolItem_RenderMode, Cocoa.getStyle());
             this.btn_renderModeNoBackfaceCulling[0] = btn_renderModeNoBackfaceCulling;
             KeyStateManager.addTooltipText(btn_renderModeNoBackfaceCulling, I18n.C3D_NoBackfaceCulling, Task.RENDERMODE_NoBackfaceCulling);
-            btn_renderModeNoBackfaceCulling.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+            btn_renderModeNoBackfaceCulling.setImage(ResourceManager.getImage("icon16_noBfc.png")); //$NON-NLS-1$
         }
         {
             NButton btn_renderModeRandomColours = new NButton(toolItem_RenderMode, Cocoa.getStyle());
             this.btn_renderModeRandomColours[0] = btn_renderModeRandomColours;
             KeyStateManager.addTooltipText(btn_renderModeRandomColours, I18n.C3D_RandomColours, Task.RENDERMODE_RandomColours);
-            btn_renderModeRandomColours.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+            btn_renderModeRandomColours.setImage(ResourceManager.getImage("icon16_randomColour.png")); //$NON-NLS-1$
         }
         {
             NButton btn_renderModeGreenRed = new NButton(toolItem_RenderMode, Cocoa.getStyle());
             this.btn_renderModeGreenRed[0] = btn_renderModeGreenRed;
             KeyStateManager.addTooltipText(btn_renderModeGreenRed, I18n.C3D_GreenRed, Task.RENDERMODE_GreenFrontfacesRedBackfaces);
-            btn_renderModeGreenRed.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+            btn_renderModeGreenRed.setImage(ResourceManager.getImage("icon16_greenFrontRedBack.png")); //$NON-NLS-1$
         }
         {
             NButton btn_renderModeRedBackfaces = new NButton(toolItem_RenderMode, Cocoa.getStyle());
             this.btn_renderModeRedBackfaces[0] = btn_renderModeRedBackfaces;
             KeyStateManager.addTooltipText(btn_renderModeRedBackfaces, I18n.C3D_RedBackfaces, Task.RENDERMODE_RedBackfaces);
-            btn_renderModeRedBackfaces.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+            btn_renderModeRedBackfaces.setImage(ResourceManager.getImage("icon16_redBackfaces.png")); //$NON-NLS-1$
         }
         {
             NButton btn_renderModeRealBackfaceCulling = new NButton(toolItem_RenderMode, Cocoa.getStyle());
             this.btn_renderModeRealBackfaceCulling[0] = btn_renderModeRealBackfaceCulling;
             KeyStateManager.addTooltipText(btn_renderModeRealBackfaceCulling, I18n.C3D_RealBackfaceCulling, Task.RENDERMODE_RealBackfaceCulling);
-            btn_renderModeRealBackfaceCulling.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+            btn_renderModeRealBackfaceCulling.setImage(ResourceManager.getImage("icon16_realBfc.png")); //$NON-NLS-1$
         }
         {
             NButton btn_renderModeLDrawStandard = new NButton(toolItem_RenderMode, Cocoa.getStyle());
