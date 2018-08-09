@@ -1,3 +1,14 @@
+### 19 Aug 2018
+With the release of 0.8.45 you are able to...
+-  ...directly set the render mode (via GUI toolbar and shortkeys, Alt + NUMPAD + 1 to 9)
+-  ...set the viewport perspective (via GUI toolbar and shortkeys, Ctrl + NUMPAD + 8,4,5,6,2,0)
+-  ...close the view (via GUI toolbar and shortkey, Q)
+
+The following critical issues are fixed:
+1. The vertex window stayed on top of all open programs.
+2. [OpenGL 2.0 only] TEXMAP with transparency did not show the expected result.
+
+
 ### 04 Jul 2018
 With the release of 0.8.44b the following critical issues are fixed:
 1. Clicking on the tabs no longer changed the 3D view. / Scrolling in the text editor didn't refresh line numbers.
