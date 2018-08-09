@@ -1922,13 +1922,13 @@ class Editor3DDesign extends ApplicationWindow {
             NButton btn_renderModeCondlineMode = new NButton(toolItem_RenderMode, Cocoa.getStyle());
             this.btn_renderModeCondlineMode[0] = btn_renderModeCondlineMode;
             KeyStateManager.addTooltipText(btn_renderModeCondlineMode, I18n.C3D_CondlineMode, Task.RENDERMODE_SpecialCondline);
-            btn_renderModeCondlineMode.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+            btn_renderModeCondlineMode.setImage(ResourceManager.getImage("icon16_specialCondline.png")); //$NON-NLS-1$
         }
         {
             NButton btn_renderModeCoplanarityMode = new NButton(toolItem_RenderMode, Cocoa.getStyle());
             this.btn_renderModeCoplanarityMode[0] = btn_renderModeCoplanarityMode;
             KeyStateManager.addTooltipText(btn_renderModeCoplanarityMode, I18n.C3D_CoplanarityMode, Task.RENDERMODE_CoplanarityHeatmap);
-            btn_renderModeCoplanarityMode.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+            btn_renderModeCoplanarityMode.setImage(ResourceManager.getImage("icon16_coplanarityHeatmap.png")); //$NON-NLS-1$
         }
         {
             NButton btn_renderModeWireframe = new NButton(toolItem_RenderMode, Cocoa.getStyle());
