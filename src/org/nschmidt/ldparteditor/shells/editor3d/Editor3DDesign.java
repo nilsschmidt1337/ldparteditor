@@ -1934,7 +1934,7 @@ class Editor3DDesign extends ApplicationWindow {
             NButton btn_renderModeWireframe = new NButton(toolItem_RenderMode, Cocoa.getStyle());
             this.btn_renderModeWireframe[0] = btn_renderModeWireframe;
             KeyStateManager.addTooltipText(btn_renderModeWireframe, I18n.C3D_Wireframe, Task.RENDERMODE_Wireframe);
-            btn_renderModeWireframe.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+            btn_renderModeWireframe.setImage(ResourceManager.getImage("icon16_wireframe.png")); //$NON-NLS-1$
         }
         return toolItem_RenderMode;
     }
