@@ -1916,7 +1916,7 @@ class Editor3DDesign extends ApplicationWindow {
             NButton btn_renderModeLDrawStandard = new NButton(toolItem_RenderMode, Cocoa.getStyle());
             this.btn_renderModeLDrawStandard[0] = btn_renderModeLDrawStandard;
             KeyStateManager.addTooltipText(btn_renderModeLDrawStandard, I18n.C3D_LDrawStandard, Task.RENDERMODE_LDrawStandard);
-            btn_renderModeLDrawStandard.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
+            btn_renderModeLDrawStandard.setImage(ResourceManager.getImage("icon16_ldrawStandard.png")); //$NON-NLS-1$
         }
         {
             NButton btn_renderModeCondlineMode = new NButton(toolItem_RenderMode, Cocoa.getStyle());
