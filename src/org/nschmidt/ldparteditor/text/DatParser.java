@@ -63,8 +63,9 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * @author nils
  *
  */
-public enum DatParser {
-    INSTANCE;
+public class DatParser {
+
+    private DatParser() {}
 
     private static boolean upatePngImages = false;
 

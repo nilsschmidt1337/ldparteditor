@@ -501,7 +501,8 @@ public final class DatFile {
             // Remove overwritten content
             int actionStartLine = startLine;
             for (int i = 0; i < affectedOldLineCount; i++) {
-                tailRemoved = vertices.remove(drawPerLine.getValue(actionStartLine)) | tailRemoved;
+                boolean vertexRemoved = vertices.remove(drawPerLine.getValue(actionStartLine));
+                tailRemoved |= vertexRemoved;
                 drawPerLine.removeByKey(actionStartLine);
                 actionStartLine++;
             }

@@ -82,11 +82,6 @@ public enum DescriptionManager {
             }).start();
         }
 
-        while (!workQueue.offer(ti)) {
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {}
-        }
-
+        workQueue.offer(ti);
     }
 }

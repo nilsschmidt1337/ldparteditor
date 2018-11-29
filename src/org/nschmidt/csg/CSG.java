@@ -246,39 +246,36 @@ public class CSG {
         CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
         CompletableFuture.allOf(f1, f2).join();
 
-        Node a = null;
-        Node b = null;
-
         try {
-            a = f1.get();
-            b = f2.get();
-        } catch (ExecutionException e) {
-            NLogger.error(getClass(), e);
-        } catch (InterruptedException e) {
-            NLogger.error(getClass(), e);
-        }
+            Node a = f1.get();
+            Node b = f2.get();
 
-        a.clipTo(b);
-        b.clipTo(a);
-        b.invert();
-        b.clipTo(a);
-        b.invert();
+            a.clipTo(b);
+            b.clipTo(a);
+            b.invert();
+            b.clipTo(a);
+            b.invert();
 
-        final List<Node> nodes = new ArrayList<>();
-        final Stack<NodePolygon> st = new Stack<>();
-        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
-        while (!st.isEmpty()) {
-            NodePolygon np = st.pop();
-            Node n = np.getNode();
-            nodes.add(n);
-            List<NodePolygon> npr = n.buildForResult(np.getPolygons());
-            for (NodePolygon np2 : npr) {
-                st.push(np2);
+            final List<Node> nodes = new ArrayList<>();
+            final Stack<NodePolygon> st = new Stack<>();
+            st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
+            while (!st.isEmpty()) {
+                NodePolygon np = st.pop();
+                Node n = np.getNode();
+                nodes.add(n);
+                List<NodePolygon> npr = n.buildForResult(np.getPolygons());
+                for (NodePolygon np2 : npr) {
+                    st.push(np2);
+                }
             }
-        }
 
-        final List<Polygon> resultPolys = a.allPolygons(nonIntersectingPolys);
-        return CSG.fromPolygons(resultPolys);
+            final List<Polygon> resultPolys = a.allPolygons(nonIntersectingPolys);
+            return CSG.fromPolygons(resultPolys);
+        } catch (ExecutionException | InterruptedException e) {
+            // Exceptions sollten (tm) schon im "join" geworfen worden sein.
+            NLogger.error(getClass(), e);
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -577,7 +574,7 @@ public class CSG {
                 }
                 optimizationTries++;
 
-                final double rate = Math.max((1.0 - (optimizationSuccess / optimizationTries)), failureStrike / 100.0) * 100.0;
+                final double rate = Math.max(1.0 - optimizationSuccess / optimizationTries, failureStrike / 100.0) * 100.0;
                 if (rate < 99.0 && failureStrike < 100) {
                     globalOptimizationRate = rate;
                     timeOfLastOptimization = System.currentTimeMillis();
