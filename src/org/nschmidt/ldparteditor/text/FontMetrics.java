@@ -38,7 +38,7 @@ public enum FontMetrics {
      *            the string to evaluate
      * @param font
      *            the font object reference
-     * @return the average(!) width
+     * @return the average(!) width in pixels
      */
     public static int getStringWidth(String string, Font font) {
         Shell shell = new Shell(Display.getCurrent());
@@ -46,7 +46,7 @@ public enum FontMetrics {
         text.setFont(font);
         GC gc = new GC(text);
         org.eclipse.swt.graphics.FontMetrics fm = gc.getFontMetrics();
-        int charWidth = fm.getAverageCharWidth();
+        int charWidth = (int) fm.getAverageCharacterWidth();
         gc.dispose();
         shell.dispose();
         return string.length() * charWidth;
