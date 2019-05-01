@@ -119,6 +119,8 @@ public class SplashScreen extends ApplicationWindow {
             } else {
                 configGzFile.delete();
                 // Oops..
+                // Kill the editors alive flag (the editor did not open. It is dead.)
+                Editor3DWindow.getAlive().set(false);
                 // Dispose all resources (never delete this!)
                 ResourceManager.dispose();
                 // Dispose the display (never delete this, too!)
