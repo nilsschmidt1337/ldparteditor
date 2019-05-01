@@ -46,7 +46,15 @@ public enum FontMetrics {
         text.setFont(font);
         GC gc = new GC(text);
         org.eclipse.swt.graphics.FontMetrics fm = gc.getFontMetrics();
-        int charWidth = (int) fm.getAverageCharacterWidth();
+        // The following method was just renamed to getAverageCharacterWidth() and returns a double
+        // instead of an int. The width calculation does not need the extra accuracy from the double data type.
+        // Therefore it is legitimate to keep using the deprecated call.
+        // Also it is backwards compatible to older SWT versions.
+        // If the deprecated method will be removed in future versions, then and only then, I have to use
+        // dirty reflection methods to access either the old getAverageCharWidth() or the newer getAverageCharacterWidth()
+        // method.
+        @SuppressWarnings("deprecation")
+		int charWidth = fm.getAverageCharWidth();
         gc.dispose();
         shell.dispose();
         return string.length() * charWidth;
