@@ -38,6 +38,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
@@ -61,6 +62,8 @@ class StartupDesign extends Dialog {
     final Text[] txt_realName = new Text[1];
     final Text[] txt_partAuthoringPath = new Text[1];
     final Combo[] cmb_license = new Combo[1];
+    final Label[] lbl_formStatusIcon = new Label[1];
+    final Label[] lbl_formStatus = new Label[1];
     final NButton[] btn_browseLdrawPath = new NButton[1];
     final NButton[] btn_browseUnofficialPath = new NButton[1];
     final NButton[] btn_browseAuthoringPath = new NButton[1];
@@ -197,7 +200,18 @@ class StartupDesign extends Dialog {
         NButton btn_browseUnofficialPath = new NButton(cmp_pathChooser3, SWT.NONE);
         this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
         btn_browseUnofficialPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
-
+        
+        Composite cmp_formStatus = new Composite(cmp_container, SWT.NONE);
+        cmp_formStatus.setLayout(new RowLayout(SWT.HORIZONTAL));
+        
+        Label lbl_formStatusIcon = new Label(cmp_formStatus, SWT.NONE);
+        this.lbl_formStatusIcon[0] = lbl_formStatusIcon;
+        lbl_formStatusIcon.setImage(ResourceManager.getImage("icon16_info.png", 16)); //$NON-NLS-1$
+        
+        Label lbl_formStatus = new Label(cmp_formStatus, SWT.NONE);
+        this.lbl_formStatus[0] = lbl_formStatus;
+        lbl_formStatus.setText("Please complete the form."); //$NON-NLS-1$ NO_I18N!!
+        
         return cmp_container;
     }
 
@@ -219,5 +233,4 @@ class StartupDesign extends Dialog {
     protected Point getInitialSize() {
         return super.getInitialSize();
     }
-
 }
