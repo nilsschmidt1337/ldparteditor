@@ -3742,7 +3742,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                 // Download first, then build the views
 
-                                // http://www.ldraw.org/library/unofficial
+                                // https://www.ldraw.org/library/unofficial
                                 monitor.beginTask(fileName, IProgressMonitor.UNKNOWN);
                                 String source = FileHelper.downloadPartFile("parts/" + fileName, monitor); //$NON-NLS-1$
                                 if (source == null) source = FileHelper.downloadPartFile("parts/s/" + fileName, monitor); //$NON-NLS-1$

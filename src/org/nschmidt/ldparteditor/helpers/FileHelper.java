@@ -144,7 +144,7 @@ public enum FileHelper {
 
         InputStreamReader in = null;
         try {
-            in = new InputStreamReader(new URL("http://www.ldraw.org/library/unofficial/" + name).openStream(), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
+            in = new InputStreamReader(new URL("https://www.ldraw.org/library/unofficial/" + name).openStream(), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
             int c;
             while ((c = in.read()) != -1) {
                 sb.append((char) c);
@@ -171,7 +171,7 @@ public enum FileHelper {
         final StringBuilder sb = new StringBuilder();
         InputStreamReader in = null;
         try {
-            final URL url = new URL("http://www.ldraw.org/library/unofficial/" + name); //$NON-NLS-1$
+            final URL url = new URL("https://www.ldraw.org/library/unofficial/" + name); //$NON-NLS-1$
             final int size = getFileSize(url);
             in = new InputStreamReader(url.openStream(), "UTF-8"); //$NON-NLS-1$
             monitor.beginTask(name, size);

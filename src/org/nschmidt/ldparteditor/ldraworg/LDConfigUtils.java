@@ -50,7 +50,7 @@ public enum LDConfigUtils {
         final List<String> lines = new ArrayList<>();
 
         try {
-            URL go = new URL("http://www.ldraw.org/library/official/ldconfig.ldr");//$NON-NLS-1$
+            URL go = new URL("https://www.ldraw.org/library/official/ldconfig.ldr");//$NON-NLS-1$
             URLConnection uc = go.openConnection();
             try (BufferedReader in =
                     new BufferedReader(

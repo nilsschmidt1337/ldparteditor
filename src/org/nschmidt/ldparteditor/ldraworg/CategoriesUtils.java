@@ -42,7 +42,7 @@ public enum CategoriesUtils {
         final List<String> categories = new ArrayList<>();
 
         try {
-            URL go = new URL("http://www.ldraw.org/library/tracker/ref/catkeyfaq/"); //$NON-NLS-1$
+            URL go = new URL("https://www.ldraw.org/library/tracker/ref/catkeyfaq/"); //$NON-NLS-1$
             URLConnection uc = go.openConnection();
             try (BufferedReader in =
                     new BufferedReader(
