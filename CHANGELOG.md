@@ -1,3 +1,13 @@
+### 08 Jun 2019
+With the release of 0.8.46 you are able to...
+-  ...see some hints on the configuration screen when you are launching LDPartEditor for the first time.
+
+The following critical issues are fixed:
+1. The PartReview tool got broken by the introduction of HTTPS on the Parts Tracker.
+2. The access to categories.txt and ldconfig.ldr got broken by the introduction of HTTPS on LDraw.org
+3. The program did nor really quit when the configuration screen was cancelled.
+
+
 ### 19 Aug 2018
 With the release of 0.8.45 you are able to...
 -  ...directly set the render mode (via GUI toolbar and shortkeys, Alt + NUMPAD + 1 to 9)
