@@ -474,9 +474,15 @@ public enum View {
                     if (data_segments.length > 6) {
                         if ("!COLOUR".equals(data_segments[1])) { //$NON-NLS-1$
                             int index = Integer.parseInt(data_segments[4]);
-                            float R = Integer.parseInt(data_segments[6].substring(1, 3), 16) / 255f + .000001f * index;
-                            float G = Integer.parseInt(data_segments[6].substring(3, 5), 16) / 255f + .000001f * index;
-                            float B = Integer.parseInt(data_segments[6].substring(5, 7), 16) / 255f + .000001f * index;
+
+                            float magicIndexNumber = index;
+                            while (magicIndexNumber > 512f) {
+                                magicIndexNumber = magicIndexNumber / 13.37f;
+                            }
+
+                            float R = Integer.parseInt(data_segments[6].substring(1, 3), 16) / 255f + .000001f * magicIndexNumber;
+                            float G = Integer.parseInt(data_segments[6].substring(3, 5), 16) / 255f + .000001f * magicIndexNumber;
+                            float B = Integer.parseInt(data_segments[6].substring(5, 7), 16) / 255f + .000001f * magicIndexNumber;
 
                             float R2 = Integer.parseInt(data_segments[8].substring(1, 3), 16) / 255f;
                             float G2 = Integer.parseInt(data_segments[8].substring(3, 5), 16) / 255f;
