@@ -1,3 +1,8 @@
+### 29 Jul 2019
+With the release of 0.8.47 the following critical issue is fixed:
+1. High colour numbers prevent the colour dialog from showing up
+
+
 ### 08 Jun 2019
 With the release of 0.8.46 you are able to...
 -  ...see some hints on the configuration screen when you are launching LDPartEditor for the first time.
