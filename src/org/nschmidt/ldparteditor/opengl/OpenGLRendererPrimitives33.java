@@ -80,7 +80,8 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         }
 
         final Rectangle bounds = cp.getBounds();
-        GL11.glViewport(0, 0, bounds.width, bounds.height);
+        final Rectangle scaledBounds = cp.getScaledBounds();
+        GL11.glViewport(0, 0, scaledBounds.width, scaledBounds.height);
 
         shaderProgram.use();
 

@@ -187,7 +187,8 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 
             Rectangle bounds = c3d.getBounds();
-            GL11.glViewport(0, 0, bounds.width, bounds.height);
+            Rectangle scaledBounds = c3d.getScaledBounds();
+            GL11.glViewport(0, 0, scaledBounds.width, scaledBounds.height);
 
             shaderProgram.use();
             stack.setShader(shaderProgram);

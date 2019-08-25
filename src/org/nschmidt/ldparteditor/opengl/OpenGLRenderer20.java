@@ -269,7 +269,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             GL11.glClear(GL11.GL_COLOR_BUFFER_BIT | GL11.GL_DEPTH_BUFFER_BIT | GL11.GL_STENCIL_BUFFER_BIT);
 
             Rectangle bounds = c3d.getBounds();
-            GL11.glViewport(0, 0, bounds.width, bounds.height);
+            Rectangle scaledBounds = c3d.getScaledBounds();
+            GL11.glViewport(0, 0, scaledBounds.width, scaledBounds.height);
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
             float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;
@@ -374,10 +375,12 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
             c3d.setDrawingSolidMaterials(true);
             c3d.getLockableDatFileReference().draw(c3d);
+
             if (raytraceMode) {
+                final float scaleFactor = (float) userSettings.getViewportScaleFactor();
                 Rectangle b = c3d.getCanvas().getBounds();
-                final int w =  b.width;
-                final int h =  b.height;
+                final int w =  (int) (b.width * scaleFactor);
+                final int h =  (int) (b.height * scaleFactor);
                 FloatBuffer pixels = BufferUtils.createFloatBuffer(w * h * 4);
                 GL11.glReadPixels(0, 0, w, h, GL11.GL_RGBA, GL11.GL_FLOAT, pixels);
                 pixels.position(0);
@@ -403,9 +406,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             c3d.getLockableDatFileReference().draw(c3d);
 
             if (raytraceMode) {
+                final float scaleFactor = (float) userSettings.getViewportScaleFactor();
                 Rectangle b = c3d.getCanvas().getBounds();
-                final float w =  b.width;
-                final float h =  b.height;
+                final float w =  b.width * scaleFactor;
+                final float h =  b.height * scaleFactor;
                 FloatBuffer pixels = BufferUtils.createFloatBuffer((int) (w * h * 4));
                 GL11.glReadPixels(0, 0, (int) w, (int) h, GL11.GL_RGBA, GL11.GL_FLOAT, pixels);
                 pixels.position(0);

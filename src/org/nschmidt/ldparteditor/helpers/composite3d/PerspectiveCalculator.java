@@ -190,14 +190,14 @@ public class PerspectiveCalculator {
     private void calculateOrigin(Matrix4f realViewport) {
         Rectangle bounds = c3d.getBounds();
         z_eff = (float) ((c3d.getzFar() + c3d.getzNear()) / -2.0 * c3d.getZoom());
-        width = (float) bounds.width / (float) bounds.height * .5f;
+        width = (float) bounds.width / (float) bounds.height;
         Vector3f[] axes = c3d.getViewportOriginAxis();
         offset.set(0, 0, 0, 1f);
         Matrix4f.transform(realViewport, offset, offset);
         axes[0].set(-width, offset.y, z_eff);
         axes[1].set(width, offset.y, z_eff);
-        axes[2].set(offset.x, -.5f, z_eff);
-        axes[3].set(offset.x, .5f, z_eff);
+        axes[2].set(offset.x, -1f, z_eff);
+        axes[3].set(offset.x, 1f, z_eff);
     }
 
     /**
@@ -386,10 +386,11 @@ public class PerspectiveCalculator {
      * Initializes the viewport and perspective
      */
     public void initializeViewportPerspective() {
-        Rectangle bounds = c3d.getBounds();
         if (c3d.getRenderer() instanceof OpenGLRenderer20) {
             // MARK OpenGL Viewport and Perspective
-            GL11.glViewport(0, 0, bounds.width, bounds.height);
+            Rectangle bounds = c3d.getBounds();
+            Rectangle scaledBounds = c3d.getScaledBounds();
+            GL11.glViewport(0, 0, scaledBounds.width, scaledBounds.height);
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
             float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;

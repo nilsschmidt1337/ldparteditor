@@ -131,7 +131,7 @@ public class UserSettingState implements Serializable {
 
     /** {@code true} if invalid shapes are allowed in the 3D editor */
     private boolean allowInvalidShapes = false;
-    
+
     /** {@code true} if the user can translate the 3D view with the cursor */
     private boolean translateViewByCursor = false;
 
@@ -412,6 +412,7 @@ public class UserSettingState implements Serializable {
 
     private double coplanarity_angle_warning = 1d;
     private double coplanarity_angle_error = 3d;
+    private double viewportScaleFactor = 1d;
 
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
@@ -1453,7 +1454,7 @@ public class UserSettingState implements Serializable {
     public void setMovingAdjacentData(boolean movingAdjacentData) {
         this.movingAdjacentData = movingAdjacentData;
     }
-    
+
     public boolean isTranslatingViewByCursor() {
         return translateViewByCursor;
     }
@@ -1476,5 +1477,13 @@ public class UserSettingState implements Serializable {
 
     public void setCoplanarity_angle_error(double coplanarity_angle_error) {
         this.coplanarity_angle_error = coplanarity_angle_error;
+    }
+
+    public double getViewportScaleFactor() {
+        return viewportScaleFactor;
+    }
+
+    public void setViewportScaleFactor(double viewportScaleFactor) {
+        this.viewportScaleFactor = viewportScaleFactor;
     }
 }

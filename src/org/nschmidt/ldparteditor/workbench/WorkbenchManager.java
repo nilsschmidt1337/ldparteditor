@@ -140,6 +140,10 @@ public enum WorkbenchManager {
             WorkbenchManager.userSettingState.setCoplanarity_angle_error(3.0);
         }
 
+        if (Math.abs(WorkbenchManager.userSettingState.getViewportScaleFactor() - 0.0) < 0.001) {
+            WorkbenchManager.userSettingState.setViewportScaleFactor(1.0);
+        }
+
         Threshold.coplanarity_angle_warning = WorkbenchManager.userSettingState.getCoplanarity_angle_warning();
         Threshold.coplanarity_angle_error = WorkbenchManager.userSettingState.getCoplanarity_angle_error();
 

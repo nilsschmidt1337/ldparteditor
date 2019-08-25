@@ -47,6 +47,7 @@ import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.opengl.GLData;
@@ -1563,5 +1564,16 @@ public class CompositePrimitive extends Composite {
 
     public Vector2f getMousePosition() {
         return mouse_position;
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return super.getBounds();
+    }
+
+    public Rectangle getScaledBounds() {
+        final double factor = WorkbenchManager.getUserSettingState().getViewportScaleFactor();
+        final Rectangle bounds = super.getBounds();
+        return new Rectangle(bounds.x, bounds.y, (int) (bounds.width * factor), (int) (bounds.height * factor));
     }
 }

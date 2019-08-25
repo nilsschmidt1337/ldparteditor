@@ -101,7 +101,8 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         }
 
         Rectangle bounds = cp.getBounds();
-        GL11.glViewport(0, 0, bounds.width, bounds.height);
+        Rectangle scaledBounds = cp.getScaledBounds();
+        GL11.glViewport(0, 0, scaledBounds.width, scaledBounds.height);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
         float viewport_width = bounds.width / View.PIXEL_PER_LDU;
