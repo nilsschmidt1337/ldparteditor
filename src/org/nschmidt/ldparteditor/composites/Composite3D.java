@@ -46,6 +46,7 @@ import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.MenuDetectEvent;
 import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.graphics.Cursor;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.opengl.GLData;
@@ -2430,5 +2431,16 @@ public class Composite3D extends ScalableComposite {
         getMntmCondlineMode().setSelection(renderMode == 6);
         getMntmCoplanarityHeatmapMode().setSelection(renderMode == 7);
         getMntmWireframeMode().setSelection(renderMode == -1);
+    }
+
+    @Override
+    public Rectangle getBounds() {
+        return super.getBounds();
+    }
+
+    public Rectangle getScaledBounds() {
+        final double factor = WorkbenchManager.getUserSettingState().getViewportScaleFactor();
+        final Rectangle bounds = super.getBounds();
+        return new Rectangle(bounds.x, bounds.y, (int) (bounds.width * factor), (int) (bounds.height * factor));
     }
 }

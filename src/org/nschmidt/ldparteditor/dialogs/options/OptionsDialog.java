@@ -147,6 +147,10 @@ public class OptionsDialog extends OptionsDesign {
             Threshold.coplanarity_angle_error = angle;
             userSettingState.setCoplanarity_angle_error(angle);
         });
+        spn_viewportScale[0].addValueChangeListener(spn -> {
+            final double scaleFactor = spn_viewportScale[0].getValue().doubleValue();
+            userSettingState.setViewportScaleFactor(scaleFactor);
+        });
         this.open();
     }
 

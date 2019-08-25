@@ -78,7 +78,7 @@ class OptionsDesign extends ApplicationWindow {
     final NButton[] btn_browseAuthoringPath = new NButton[1];
     final BigDecimalSpinner[] spn_coplanarityWarning = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_coplanarityError = new BigDecimalSpinner[1];
-
+    final BigDecimalSpinner[] spn_viewportScale = new BigDecimalSpinner[1];
     final HashMap<String, Locale> localeMap = new HashMap<String, Locale>();
 
     private HashSet<Task>  s1 = new HashSet<Task>();
@@ -224,6 +224,22 @@ class OptionsDesign extends ApplicationWindow {
                 spn_coplanarityError.setMinimum(new BigDecimal("0.01")); //$NON-NLS-1$
                 spn_coplanarityError.setValue(new BigDecimal(Threshold.coplanarity_angle_error));
                 spn_coplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+                {
+                    Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                }
+
+                Label lbl_viewportScale = new Label(cmp_container, SWT.NONE);
+                lbl_viewportScale.setText(I18n.OPTIONS_ScaleFactor);
+                lbl_viewportScale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+                BigDecimalSpinner spn_viewportScale = new BigDecimalSpinner(cmp_container, Cocoa.getStyle());
+                this.spn_viewportScale[0] = spn_viewportScale;
+                spn_viewportScale.setMaximum(new BigDecimal("10")); //$NON-NLS-1$
+                spn_viewportScale.setMinimum(new BigDecimal("0.1")); //$NON-NLS-1$
+                spn_viewportScale.setValue(new BigDecimal(userSettings.getViewportScaleFactor()));
+                spn_viewportScale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 {
                     Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
