@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
@@ -36,10 +37,12 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 import de.matthiasmann.twl.utils.PNGDecoder;
@@ -727,15 +730,28 @@ public class GTexture {
 
             InputStream in = null;
             try {
-                if (fileExists) {
-                    // Open the PNG file as an FileInputStream
-                    filename = fileToOpen.getAbsolutePath();
-                    in = new FileInputStream(filename);
-                } else {
-                    // Try to get PNG file from org.nschmidt.ldparteditor.opengl
-                    in = GLShader.class.getResourceAsStream(filename);
-                    if (in == null) {
-                        return -1;
+                // Try to download the png file from the parts tracker if part review mode is enabled
+                if (Editor3DWindow.getWindow().isReviewingAPart()) {
+                    try {
+                        final URL url = new URL("https://www.ldraw.org/library/unofficial/parts/textures/" + filename); //$NON-NLS-1$
+                        in = url.openStream();
+                    } catch (IOException ioe) {
+                        NLogger.debug(GTexture.class, ioe);
+                    }
+                }
+
+                if (in == null) {
+                    if (fileExists) {
+                        // Open the PNG file as an FileInputStream
+                        filename = fileToOpen.getAbsolutePath();
+                        in = new FileInputStream(filename);
+                    } else {
+                        // Try to get PNG file from org.nschmidt.ldparteditor.opengl
+                        in = GLShader.class.getResourceAsStream(filename);
+
+                        if (in == null) {
+                            return -1;
+                        }
                     }
                 }
 
