@@ -175,14 +175,15 @@ public class VertexWindow extends ApplicationWindow {
             vertexWindow.close();
         }
 
-        if (singleVertexSelected) {
-            vertexWindow.updateVertex(newSelectedVertex);
-        }
-
         final Shell vertexWindowShell = vertexWindow.getShell();
         if (vertexWindowShell == null || vertexWindowShell.isDisposed()) {
             return;
         }
+
+        if (singleVertexSelected) {
+            vertexWindow.updateVertex(newSelectedVertex);
+        }
+
         final Point old = vertexWindowShell.getLocation();
         final Point a = ShellHelper.absolutePositionOnShell(lastHoveredC3d);
         final Point s = vertexWindowShell.getSize();
