@@ -151,6 +151,12 @@ public class OptionsDialog extends OptionsDesign {
             final double scaleFactor = spn_viewportScale[0].getValue().doubleValue();
             userSettingState.setViewportScaleFactor(scaleFactor);
         });
+        cmb_mouseButtonLayout[0].addListener(SWT.Modify, e -> {
+            final int index = cmb_mouseButtonLayout[0].getSelectionIndex();
+            if (index != -1) {
+                userSettingState.setMouseButtonLayout(index);
+            }
+        });
         this.open();
     }
 

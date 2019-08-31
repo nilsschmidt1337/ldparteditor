@@ -67,6 +67,7 @@ class OptionsDesign extends ApplicationWindow {
 
     final Combo[] cmb_textWinArr = new Combo[1];
     final Combo[] cmb_locale = new Combo[1];
+    final Combo[] cmb_mouseButtonLayout = new Combo[1];
     final Text[] txt_ldrawPath = new Text[1];
     final Text[] txt_unofficialPath = new Text[1];
     final Text[] txt_ldrawUserName = new Text[1];
@@ -126,6 +127,7 @@ class OptionsDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite parent) {
+        final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
         final Tree treeColours;
         setStatus(I18n.E3D_ReadyStatus);
         Composite container = new Composite(parent, SWT.BORDER);
@@ -152,7 +154,6 @@ class OptionsDesign extends ApplicationWindow {
             tItem0.setText(I18n.OPTIONS_MiscOptions);
 
             {
-                final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
 
                 final ScrolledComposite cmp_containerX = new ScrolledComposite(tabFolder_Settings, SWT.V_SCROLL | SWT.H_SCROLL);
                 Composite cmp_container = new Composite(cmp_containerX, Cocoa.getStyle());
@@ -359,6 +360,20 @@ class OptionsDesign extends ApplicationWindow {
 
                 cmp_container.setLayout(new GridLayout());
                 cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
+
+                Label lbl_mouseButtonLayout = new Label(cmp_container, SWT.NONE);
+                lbl_mouseButtonLayout.setText(I18n.KEYBOARD_MouseButtonLayoutTitle);
+
+                Combo cmb_mouseButtonLayout = new Combo(cmp_container, SWT.READ_ONLY);
+                this.cmb_mouseButtonLayout[0] = cmb_mouseButtonLayout;
+                cmb_mouseButtonLayout.setItems(new String[]{I18n.KEYBOARD_MouseButtonLayoutA, I18n.KEYBOARD_MouseButtonLayoutB});
+                cmb_mouseButtonLayout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmb_mouseButtonLayout.select(userSettings.getMouseButtonLayout());
+
+                {
+                    Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
+                    lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                }
 
                 Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
                 lbl_DoubleClick.setText(I18n.KEYBOARD_DoubleClick);

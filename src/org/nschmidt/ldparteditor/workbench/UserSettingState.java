@@ -414,6 +414,8 @@ public class UserSettingState implements Serializable {
     private double coplanarity_angle_error = 3d;
     private double viewportScaleFactor = 1d;
 
+    private int mouseButtonLayout = 0;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -1485,5 +1487,13 @@ public class UserSettingState implements Serializable {
 
     public void setViewportScaleFactor(double viewportScaleFactor) {
         this.viewportScaleFactor = viewportScaleFactor;
+    }
+
+    public int getMouseButtonLayout() {
+        return mouseButtonLayout;
+    }
+
+    public void setMouseButtonLayout(int mouseButtonLayout) {
+        this.mouseButtonLayout = mouseButtonLayout;
     }
 }
