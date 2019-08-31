@@ -258,9 +258,6 @@ public class MouseActions {
         DatFile.setLastHoveredComposite(c3d);
         if (!c3d.getLockableDatFileReference().isDrawSelection()) return;
 
-        // The user can switch rotation and translation
-        reMapMouseEvent(event);
-
         VertexWindow.placeVertexWindow();
         c3d.getKeys().setKeyState(SWT.COMMAND, (event.stateMask & SWT.COMMAND) == SWT.COMMAND);
         c3d.getKeys().setKeyState(SWT.CTRL, (event.stateMask & SWT.CTRL) == SWT.CTRL);

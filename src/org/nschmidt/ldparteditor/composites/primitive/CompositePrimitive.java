@@ -258,7 +258,6 @@ public class CompositePrimitive extends Composite {
         canvas.addListener(SWT.KeyUp, event -> keyboard.setStates(event.keyCode, SWT.KeyUp, event));
 
         canvas.addListener(SWT.MouseMove, event -> {
-            reMapMouseEvent(event);
             canvas.forceFocus();
             if (!stopDraw()) dontRefresh.set(true);
             {
