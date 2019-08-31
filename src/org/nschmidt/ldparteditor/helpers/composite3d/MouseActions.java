@@ -80,6 +80,9 @@ public class MouseActions {
 
     private static final long[] lastTextureGC = new long[] { System.currentTimeMillis() };
 
+    public static final int MOUSE_LAYOUT_DEFAULT = 0;
+    public static final int MOUSE_LAYOUT_SWITCH_ROTATE_AND_TRANSLATE = 1;
+
     // Non-public properties
     /** The 3D Composite [NOT PUBLIC YET] */
     private final Composite3D c3d;
@@ -117,12 +120,15 @@ public class MouseActions {
      *            Event data.
      */
     public void mouseDown(Event event) {
-
         syncManipulator();
         c3d.getManipulator().lock();
 
         final DatFile datfile = c3d.getLockableDatFileReference();
         if (!datfile.isDrawSelection()) return;
+
+        // The user can switch rotation and translation
+        reMapMouseEvent(event);
+
         final VertexManager vm = datfile.getVertexManager();
         vm.addSnapshot();
         vm.getResetTimer().set(true);
@@ -251,6 +257,10 @@ public class MouseActions {
     public void mouseMove(Event event) {
         DatFile.setLastHoveredComposite(c3d);
         if (!c3d.getLockableDatFileReference().isDrawSelection()) return;
+
+        // The user can switch rotation and translation
+        reMapMouseEvent(event);
+
         VertexWindow.placeVertexWindow();
         c3d.getKeys().setKeyState(SWT.COMMAND, (event.stateMask & SWT.COMMAND) == SWT.COMMAND);
         c3d.getKeys().setKeyState(SWT.CTRL, (event.stateMask & SWT.CTRL) == SWT.CTRL);
@@ -661,25 +671,25 @@ public class MouseActions {
             }
         }
     }
-    
+
     public void prepareTranslateViewport() {
-    	Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
+        Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
     }
 
-	public void translateViewport(float dx, float dy, Matrix4f viewport_translation, Matrix4f viewport_rotation,
-			PerspectiveCalculator perspective) {
-		Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
-		Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-		Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
-		Matrix4f.transform(ovr_inverse2, xAxis4f_translation, xAxis4f_translation);
-		Matrix4f.transform(ovr_inverse2, yAxis4f_translation, yAxis4f_translation);
-		Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
-		Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
-		Matrix4f.load(old_viewport_translation, viewport_translation);
-		Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
-		Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
-		perspective.calculateOriginData();
-	}
+    public void translateViewport(float dx, float dy, Matrix4f viewport_translation, Matrix4f viewport_rotation,
+            PerspectiveCalculator perspective) {
+        Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
+        Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+        Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
+        Matrix4f.transform(ovr_inverse2, xAxis4f_translation, xAxis4f_translation);
+        Matrix4f.transform(ovr_inverse2, yAxis4f_translation, yAxis4f_translation);
+        Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
+        Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+        Matrix4f.load(old_viewport_translation, viewport_translation);
+        Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
+        Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+        perspective.calculateOriginData();
+    }
 
     /**
      * Triggered actions on {@code SWT.MouseUp}
@@ -1383,6 +1393,17 @@ public class MouseActions {
             Matrix M = new Matrix(m2);
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                 MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, M, m);
+            }
+        }
+    }
+
+    private void reMapMouseEvent(Event event) {
+        final int mouseButtonLayout = WorkbenchManager.getUserSettingState().getMouseButtonLayout();
+        if (mouseButtonLayout == MOUSE_LAYOUT_SWITCH_ROTATE_AND_TRANSLATE) {
+            if (event.button == MouseButton.MIDDLE) {
+                event.button = MouseButton.RIGHT;
+            } else if (event.button == MouseButton.RIGHT) {
+                event.button = MouseButton.MIDDLE;
             }
         }
     }

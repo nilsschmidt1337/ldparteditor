@@ -83,6 +83,7 @@ import org.nschmidt.ldparteditor.enums.Rule;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
+import org.nschmidt.ldparteditor.helpers.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRendererPrimitives;
@@ -257,13 +258,23 @@ public class CompositePrimitive extends Composite {
         canvas.addListener(SWT.KeyUp, event -> keyboard.setStates(event.keyCode, SWT.KeyUp, event));
 
         canvas.addListener(SWT.MouseMove, event -> {
+            reMapMouseEvent(event);
             canvas.forceFocus();
             if (!stopDraw()) dontRefresh.set(true);
             {
-                Object[] messageArguments = {KeyStateManager.getTaskKeymap().get(Task.MMB)};
+                final Object[] messageArguments;
+                final boolean hasDefaultMouseButtonLayout;
+                hasDefaultMouseButtonLayout = WorkbenchManager.getUserSettingState().getMouseButtonLayout() == MouseActions.MOUSE_LAYOUT_DEFAULT;
+                if (hasDefaultMouseButtonLayout) {
+                    messageArguments = new Object[]{KeyStateManager.getTaskKeymap().get(Task.MMB)};
+                } else {
+                    messageArguments = new Object[]{KeyStateManager.getTaskKeymap().get(Task.RMB)};
+                }
+
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(Cocoa.isCocoa ? I18n.E3D_RotateViewHintMac : I18n.E3D_RotateViewHint);
+                formatter.applyPattern(Cocoa.isCocoa ? I18n.E3D_RotateViewHintMac :
+                    hasDefaultMouseButtonLayout ? I18n.E3D_RotateViewHintMiddleMouse : I18n.E3D_RotateViewHintRightMouse);
                 String tooltipText = formatter.format(messageArguments);
                 if (!tooltipText.equals(canvas.getToolTipText())) {
                     canvas.setToolTipText(tooltipText);
@@ -388,6 +399,7 @@ public class CompositePrimitive extends Composite {
     }
 
     public void mouseDown(Event event) {
+        reMapMouseEvent(event);
         mouse_button_pressed = event.button;
         old_mouse_position.set(event.x, event.y);
         switch (event.button) {
@@ -1575,5 +1587,16 @@ public class CompositePrimitive extends Composite {
         final double factor = WorkbenchManager.getUserSettingState().getViewportScaleFactor();
         final Rectangle bounds = super.getBounds();
         return new Rectangle(bounds.x, bounds.y, (int) (bounds.width * factor), (int) (bounds.height * factor));
+    }
+
+    private void reMapMouseEvent(Event event) {
+        final int mouseButtonLayout = WorkbenchManager.getUserSettingState().getMouseButtonLayout();
+        if (mouseButtonLayout == MouseActions.MOUSE_LAYOUT_SWITCH_ROTATE_AND_TRANSLATE) {
+            if (event.button == MouseButton.MIDDLE) {
+                event.button = MouseButton.RIGHT;
+            } else if (event.button == MouseButton.RIGHT) {
+                event.button = MouseButton.MIDDLE;
+            }
+        }
     }
 }

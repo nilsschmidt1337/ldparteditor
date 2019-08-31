@@ -590,8 +590,9 @@ public final class I18n {
     public static final String E3D_RotateClockwise = E3D.getString(getProperty());
     public static final String E3D_RotateSelection = E3D.getString(getProperty());
     public static final String E3D_RotateSnap = E3D.getString(getProperty());
-    public static final String E3D_RotateViewHint = E3D.getString(getProperty());
     public static final String E3D_RotateViewHintMac = E3D.getString(getProperty());
+    public static final String E3D_RotateViewHintMiddleMouse = E3D.getString(getProperty());
+    public static final String E3D_RotateViewHintRightMouse = E3D.getString(getProperty());
     public static final String E3D_Round = E3D.getString(getProperty());
     public static final String E3D_Ruler = E3D.getString(getProperty());
     public static final String E3D_SashLeft = E3D.getString(getProperty());
@@ -809,6 +810,9 @@ public final class I18n {
     public static final String KEYBOARD_ModeRotate = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ModeScale = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ModeSelect = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_MouseButtonLayoutA = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_MouseButtonLayoutB = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_MouseButtonLayoutTitle = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_MoveAdjacentData = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_MoveLineDown = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_MoveLineUp = KEYBOARD.getString(getProperty());
