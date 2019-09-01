@@ -1,5 +1,5 @@
 #define MyAppName "LDPartEditor"
-#define MyAppVersion "0.8.48"
+#define MyAppVersion "0.8.49"
 #define MyAppPublisher "Nils Schmidt"
 #define MyAppExeName "LDPartEditor.exe"
 #define MyExtension "*.dat"
