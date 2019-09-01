@@ -1,3 +1,14 @@
+### 01 Sep 2019
+With the release of 0.8.48 you are able to...
+-  ...swap the middle and right mouse button assignment (view translation and view rotation)
+-  ...get the PNG textures from the PartsTracker when you are using the PartReview tool.
+-  ...configure a viewport scale factor (this is only necessary for 4K screens with a high pixel density)
+
+The following critical issues are fixed:
+1. Display issues on a 3840x2160 display: empty regions & missplaced cursor.
+2. The vertex window popup was causing an internal error (with no negative side effects for the user).
+
+
 ### 29 Jul 2019
 With the release of 0.8.47 the following critical issue is fixed:
 1. High colour numbers prevent the colour dialog from showing up
