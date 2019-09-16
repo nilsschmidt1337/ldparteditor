@@ -434,7 +434,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                     final File fileToOpen = new File(f);
                                     if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
                                     if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
-                                        DatFile df = Editor3DWindow.getWindow().openDatFile(tabFolder[0].getWindow().getShell(), OpenInWhat.EDITOR_3D, f, true);
+                                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
                                         if (df != null) {
                                             Editor3DWindow.getWindow().addRecentFile(df);
                                             final File f2 = new File(df.getNewName());
@@ -453,7 +453,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                             }
                                         }
                                     } else {
-                                        DatFile df = Editor3DWindow.getWindow().openDatFile(tabFolder[0].getShell(), OpenInWhat.EDITOR_TEXT, f, true);
+                                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, f, true);
                                         if (df != null) {
                                             for (EditorTextWindow w : Project.getOpenTextWindows()) {
                                                 for (CTabItem t : w.getTabFolder().getItems()) {
@@ -542,27 +542,46 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
         WidgetUtil(btn_Open[0]).addSelectionListener(e -> {
-            if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
-                DatFile df1 = Editor3DWindow.getWindow().openDatFile(btn_Open[0].getShell(), OpenInWhat.EDITOR_3D, null, true);
-                if (df1 != null) {
-                    openNewDatFileTab(df1, true);
-                }
-            } else {
-                DatFile df2 = Editor3DWindow.getWindow().openDatFile(btn_Open[0].getShell(), OpenInWhat.EDITOR_TEXT, null, true);
-                if (df2 != null) {
-                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                        for (CTabItem t : w.getTabFolder().getItems()) {
-                            if (df2.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                w.getTabFolder().setSelection(t);
-                                ((CompositeTab) t).getControl().getShell().forceActive();
-                                if (w.isSeperateWindow()) {
-                                    w.open();
+
+            FileDialog fd = new FileDialog(btn_Open[0].getShell(), SWT.MULTI);
+            fd.setText(I18n.E3D_OpenDatFile);
+
+            fd.setFilterPath(Project.getLastVisitedPath());
+
+            String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+            fd.setFilterExtensions(filterExt);
+            String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+            fd.setFilterNames(filterNames);
+
+            String selected = fd.open();
+            if (selected == null) {
+                return;
+            }
+
+            for (String fileName : fd.getFileNames()) {
+                final String filePath = fd.getFilterPath() + fileName;
+                if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
+                    DatFile df1 = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, filePath, true);
+                    if (df1 != null) {
+                        openNewDatFileTab(df1, true);
+                    }
+                } else {
+                    DatFile df2 = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, filePath, true);
+                    if (df2 != null) {
+                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                            for (CTabItem t : w.getTabFolder().getItems()) {
+                                if (df2.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                    w.getTabFolder().setSelection(t);
+                                    ((CompositeTab) t).getControl().getShell().forceActive();
+                                    if (w.isSeperateWindow()) {
+                                        w.open();
+                                    }
+                                    df2.getVertexManager().setUpdated(true);
                                 }
-                                df2.getVertexManager().setUpdated(true);
                             }
                         }
+                        df2.getVertexManager().addSnapshot();
                     }
-                    df2.getVertexManager().addSnapshot();
                 }
             }
             Editor3DWindow.getWindow().cleanupClosedData();
@@ -1123,7 +1142,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                 if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
 
                                 if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
-                                    DatFile df = Editor3DWindow.getWindow().openDatFile(tabFolder[0].getWindow().getShell(), OpenInWhat.EDITOR_3D, f, true);
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
                                     if (df != null) {
                                         Editor3DWindow.getWindow().addRecentFile(df);
                                         final File f2 = new File(df.getNewName());
@@ -1142,7 +1161,7 @@ public class EditorTextWindow extends EditorTextDesign {
                                         }
                                     }
                                 } else {
-                                    DatFile df = Editor3DWindow.getWindow().openDatFile(tabFolder[0].getWindow().getShell(), OpenInWhat.EDITOR_TEXT, f, true);
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, f, true);
                                     if (df != null) {
                                         for (EditorTextWindow w : Project.getOpenTextWindows()) {
                                             for (CTabItem t : w.getTabFolder().getItems()) {
@@ -1256,7 +1275,7 @@ public class EditorTextWindow extends EditorTextDesign {
                     dfToSave.saveAs(selected);
 
                     if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
-                        DatFile df = Editor3DWindow.getWindow().openDatFile(btn_SaveAs[0].getShell(), OpenInWhat.EDITOR_3D, selected, false);
+                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, selected, false);
                         if (df != null) {
                             Editor3DWindow.getWindow().addRecentFile(df);
                             final File f = new File(df.getNewName());
@@ -1273,7 +1292,7 @@ public class EditorTextWindow extends EditorTextDesign {
                             }
                         }
                     } else {
-                        DatFile df = Editor3DWindow.getWindow().openDatFile(btn_SaveAs[0].getShell(), OpenInWhat.EDITOR_TEXT, selected, false);
+                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, selected, false);
                         if (df != null) {
                             for (EditorTextWindow w : Project.getOpenTextWindows()) {
                                 for (CTabItem t : w.getTabFolder().getItems()) {

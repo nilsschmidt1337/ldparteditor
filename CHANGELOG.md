@@ -5,8 +5,8 @@ With the release of 0.8.48 you are able to...
 -  ...configure a viewport scale factor (this is only necessary for 4K screens with a high pixel density)
 
 The following critical issues are fixed:
-1. Display issues on a 3840x2160 display: empty regions & missplaced cursor.
-2. The vertex window popup was causing an internal error (with no negative side effects for the user).
+1. Display issues on a 3840x2160 display: empty regions & misplaced cursor.
+2. The vertex window pop-up was causing an internal error (with no negative side effects for the user).
 
 
 ### 29 Jul 2019

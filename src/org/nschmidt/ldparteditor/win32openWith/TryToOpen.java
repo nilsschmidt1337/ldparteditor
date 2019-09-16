@@ -91,7 +91,7 @@ public enum TryToOpen {
     public static DatFile getDatFileToOpen() {
         if (datFileToOpen == null) {
             final Editor3DWindow win = Editor3DWindow.getWindow();
-            datFileToOpen = win.openDatFile(win.getShell(), OpenInWhat.EDITOR_TEXT, getFileToOpen(), false);
+            datFileToOpen = win.openDatFile(OpenInWhat.EDITOR_TEXT, getFileToOpen(), false);
             if (datFileToOpen == null) {
                 NLogger.error(TryToOpen.class, "Could not open file " + getFileName()); //$NON-NLS-1$
                 datFileToOpen = View.DUMMY_DATFILE;
