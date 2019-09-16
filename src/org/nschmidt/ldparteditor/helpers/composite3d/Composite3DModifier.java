@@ -397,7 +397,7 @@ public class Composite3DModifier {
                                 if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                     final File fileToOpen = new File(f);
                                     if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
-                                    DatFile df = Editor3DWindow.getWindow().openDatFile(Editor3DWindow.getWindow().getShell(), OpenInWhat.EDITOR_3D, f, true);
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
                                     if (df != null) {
                                         Editor3DWindow.getWindow().addRecentFile(df);
                                         final File f2 = new File(df.getNewName());

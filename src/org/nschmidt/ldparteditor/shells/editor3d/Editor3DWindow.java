@@ -639,7 +639,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         WidgetUtil(mntmItem1).addSelectionListener(e11 -> {
                             File f11 = new File(path);
                             if (f11.exists() && f11.isFile() && f11.canRead()) {
-                                DatFile df = openDatFile(getShell(), OpenInWhat.EDITOR_3D, path, false);
+                                DatFile df = openDatFile(OpenInWhat.EDITOR_3D, path, false);
                                 if (df != null && !df.equals(View.DUMMY_DATFILE) && WorkbenchManager.getUserSettingState().isSyncingTabs()) {
                                     boolean fileIsOpenInTextEditor = false;
                                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -861,31 +861,51 @@ public class Editor3DWindow extends Editor3DDesign {
         WidgetUtil(btn_OpenDat[0]).addSelectionListener(e -> {
             boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
             WorkbenchManager.getUserSettingState().setSyncingTabs(false);
-            DatFile dat = openDatFile(getShell(), OpenInWhat.EDITOR_3D, null, true);
-            if (dat != null) {
-                addRecentFile(dat);
-                final File f = new File(dat.getNewName());
-                if (f.getParentFile() != null) {
-                    Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
-                }
-                boolean fileIsOpenInTextEditor = false;
-                for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                    for (CTabItem t : w.getTabFolder().getItems()) {
-                        if (dat.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                            fileIsOpenInTextEditor = true;
+
+            FileDialog fd = new FileDialog(btn_Open[0].getShell(), SWT.MULTI);
+            fd.setText(I18n.E3D_OpenDatFile);
+
+            fd.setFilterPath(Project.getLastVisitedPath());
+
+            String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
+            fd.setFilterExtensions(filterExt);
+            String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+            fd.setFilterNames(filterNames);
+
+            String selected = fd.open();
+            if (selected == null) {
+                return;
+            }
+
+            for (String fileName : fd.getFileNames()) {
+                final String filePath = fd.getFilterPath() + fileName;
+                DatFile dat = openDatFile(OpenInWhat.EDITOR_3D, filePath, true);
+                if (dat != null) {
+                    addRecentFile(dat);
+                    final File f = new File(dat.getNewName());
+                    if (f.getParentFile() != null) {
+                        Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
+                    }
+                    boolean fileIsOpenInTextEditor = false;
+                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                        for (CTabItem t : w.getTabFolder().getItems()) {
+                            if (dat.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                fileIsOpenInTextEditor = true;
+                            }
+                            if (fileIsOpenInTextEditor) break;
                         }
                         if (fileIsOpenInTextEditor) break;
                     }
-                    if (fileIsOpenInTextEditor) break;
+                    if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
+                        openDatFile(dat, OpenInWhat.EDITOR_TEXT, null);
+                    } else {
+                        Project.getOpenTextWindows().iterator().next().openNewDatFileTab(dat, true);
+                    }
+                    Project.setFileToEdit(dat);
                 }
-                if (Project.getOpenTextWindows().isEmpty() || fileIsOpenInTextEditor) {
-                    openDatFile(dat, OpenInWhat.EDITOR_TEXT, null);
-                } else {
-                    Project.getOpenTextWindows().iterator().next().openNewDatFileTab(dat, true);
-                }
-                Project.setFileToEdit(dat);
-                updateTabs();
             }
+
+            updateTabs();
             WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
             regainFocus();
         });
@@ -951,7 +971,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                             df2.saveAs(selected);
 
-                            DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_3D, selected, false);
+                            DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, selected, false);
                             if (df != null) {
                                 Editor3DWindow.getWindow().addRecentFile(df);
                                 final File f2 = new File(df.getNewName());
@@ -1332,7 +1352,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             vm.delete(false, true);
                                         }
 
-                                        DatFile df = Editor3DWindow.getWindow().openDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
+                                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, selected, false);
                                         if (df != null) {
                                             addRecentFile(df);
                                             final File f2 = new File(df.getNewName());
@@ -7167,37 +7187,24 @@ public class Editor3DWindow extends Editor3DDesign {
         return null;
     }
 
-    public DatFile openDatFile(Shell sh, OpenInWhat where, String filePath, boolean canRevert) {
+    public DatFile openDatFile(OpenInWhat where, String filePath, boolean canRevert) {
 
-
-        FileDialog fd = new FileDialog(sh, SWT.OPEN);
-        fd.setText(I18n.E3D_OpenDatFile);
-
-        fd.setFilterPath(Project.getLastVisitedPath());
-
-        String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
-        fd.setFilterExtensions(filterExt);
-        String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
-        fd.setFilterNames(filterNames);
-
-        String selected = filePath == null ? fd.open() : filePath;
-        System.out.println(selected);
-
-        if (selected != null) {
+        if (filePath != null) {
+            NLogger.debug(Editor3DWindow.class, filePath);
 
             // Check if its already created
 
             DatType type = DatType.PART;
 
-            DatFile df = new DatFile(selected);
-            DatFile original = isFileNameAllocated2(selected, df);
+            DatFile df = new DatFile(filePath);
+            DatFile original = isFileNameAllocated2(filePath, df);
 
             if (original == null) {
 
                 // Type Check and Description Parsing!!
                 StringBuilder titleSb = new StringBuilder();
                 UTF8BufferedReader reader = null;
-                File f = new File(selected);
+                File f = new File(filePath);
                 try {
                     reader = new UTF8BufferedReader(f.getAbsolutePath());
                     String title = reader.readLine();
@@ -7260,7 +7267,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
 
-                df = new DatFile(selected, titleSb.toString(), false, type);
+                df = new DatFile(filePath, titleSb.toString(), false, type);
                 df.setProjectFile(df.getNewName().startsWith(Project.getProjectPath()));
 
             } else {
@@ -7424,7 +7431,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
             openDatFile(df, where, null);
             return df;
+        } else {
+            NLogger.error(Editor3DWindow.class, new IllegalArgumentException("No filename to open was specified.")); //$NON-NLS-1$
         }
+
         return null;
     }
 

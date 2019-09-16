@@ -166,7 +166,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     final File fileToOpen = new File(f);
                                     if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
                                     if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
-                                        DatFile df = Editor3DWindow.getWindow().openDatFile(state.window[0].getShell(), OpenInWhat.EDITOR_3D, f, true);
+                                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
                                         if (df != null) {
                                             Editor3DWindow.getWindow().addRecentFile(df);
                                             final File f2 = new File(df.getNewName());
@@ -185,7 +185,7 @@ public class CompositeTab extends CompositeTabDesign {
                                             }
                                         }
                                     } else {
-                                        DatFile df = Editor3DWindow.getWindow().openDatFile(state.window[0].getShell(), OpenInWhat.EDITOR_TEXT, f, true);
+                                        DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_TEXT, f, true);
                                         if (df != null) {
                                             for (EditorTextWindow w : Project.getOpenTextWindows()) {
                                                 for (CTabItem t : w.getTabFolder().getItems()) {

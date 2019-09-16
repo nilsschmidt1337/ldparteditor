@@ -197,7 +197,7 @@ class WatchConfigDirectory {
                                                final boolean syncingTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
                                                WorkbenchManager.getUserSettingState().setSyncingTabs(false);
                                                try {
-                                                   final DatFile df = win.openDatFile(win.getShell(), OpenInWhat.EDITOR_TEXT_AND_3D, path, false);
+                                                   final DatFile df = win.openDatFile(OpenInWhat.EDITOR_TEXT_AND_3D, path, false);
                                                    if (df != null) {
                                                        win.addRecentFile(df);
                                                        final File f = new File(df.getNewName());
