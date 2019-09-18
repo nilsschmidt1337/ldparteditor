@@ -63,6 +63,7 @@ class OptionsDesign extends ApplicationWindow {
     NButton[] btn_translateViewByCursor = new NButton[1];
     NButton[] btn_disableMAD3D = new NButton[1];
     NButton[] btn_disableMADtext = new NButton[1];
+    NButton[] btn_invertInvertWheelZoomDirection = new NButton[1];
     NButton[] btn_OK = new NButton[1];
 
     final Combo[] cmb_textWinArr = new Combo[1];
@@ -369,6 +370,11 @@ class OptionsDesign extends ApplicationWindow {
                 cmb_mouseButtonLayout.setItems(new String[]{I18n.KEYBOARD_MouseButtonLayoutA, I18n.KEYBOARD_MouseButtonLayoutB});
                 cmb_mouseButtonLayout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmb_mouseButtonLayout.select(userSettings.getMouseButtonLayout());
+
+                NButton btn_invertInvertWheelZoomDirection = new NButton(cmp_container, SWT.CHECK);
+                this.btn_invertInvertWheelZoomDirection[0] = btn_invertInvertWheelZoomDirection;
+                btn_invertInvertWheelZoomDirection.setText(I18n.KEYBOARD_InvertWheelZoomDirection);
+                btn_invertInvertWheelZoomDirection.setSelection(userSettings.isInvertingWheelZoomDirection());
 
                 {
                     Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);

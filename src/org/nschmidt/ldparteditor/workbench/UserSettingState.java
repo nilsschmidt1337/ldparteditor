@@ -416,6 +416,8 @@ public class UserSettingState implements Serializable {
 
     private int mouseButtonLayout = 0;
 
+    private boolean invertingWheelZoomDirection = false;
+
     public UserSettingState() {
         this.getUserPalette().add(new GColour(0, 0.02f, 0.075f, 0.114f, 1f));
 
@@ -1495,5 +1497,13 @@ public class UserSettingState implements Serializable {
 
     public void setMouseButtonLayout(int mouseButtonLayout) {
         this.mouseButtonLayout = mouseButtonLayout;
+    }
+
+    public boolean isInvertingWheelZoomDirection() {
+        return invertingWheelZoomDirection;
+    }
+
+    public void setInvertingWheelZoomDirection(boolean invertingWheelZoomDirection) {
+        this.invertingWheelZoomDirection = invertingWheelZoomDirection;
     }
 }
