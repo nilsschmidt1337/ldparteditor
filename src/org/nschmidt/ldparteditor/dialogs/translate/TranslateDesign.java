@@ -32,6 +32,7 @@ import org.eclipse.wb.swt.SWTResourceManager;
 import org.nschmidt.ldparteditor.composites.ToolItem;
 import org.nschmidt.ldparteditor.enums.ManipulatorScope;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -109,15 +110,21 @@ class TranslateDesign extends Dialog {
             NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Local[0] = btn_Local;
             btn_Local.setToolTipText(I18n.E3D_Local);
-            if (transformationMode == ManipulatorScope.LOCAL) btn_Local.setSelection(true);
             btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            if (transformationMode == ManipulatorScope.LOCAL) {
+                btn_Local.setSelection(true);
+                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
+            }
         }
         {
             NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Global[0] = btn_Global;
             btn_Global.setToolTipText(I18n.E3D_Global);
-            if (transformationMode == ManipulatorScope.GLOBAL) btn_Global.setSelection(true);
             btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+            if (transformationMode == ManipulatorScope.GLOBAL) {
+                btn_Global.setSelection(true);
+                Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
+            }
         }
 
         {
