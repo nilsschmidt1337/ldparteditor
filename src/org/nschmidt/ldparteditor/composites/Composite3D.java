@@ -1120,7 +1120,7 @@ public class Composite3D extends ScalableComposite {
             lockableDatFileReference.setLastSelectedComposite(c3d);
             sb1.setSelection(0);
             sb2.setSelection(0);
-            if (event.count < 0)
+            if (event.count < 0 ^ WorkbenchManager.getUserSettingState().isInvertingWheelZoomDirection())
                 perspective.zoomIn();
             else
                 perspective.zoomOut();

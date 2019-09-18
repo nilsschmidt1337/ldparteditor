@@ -45,11 +45,11 @@ public class CompositeContainer extends ScalableComposite {
             composite3D.setParent(this);
         }
     }
-    
+
     public CompositeContainer(Composite parentSashForm, boolean scaleShown, boolean syncManipulator, boolean syncTranslation, boolean syncZoom) {
         super(parentSashForm, org.eclipse.swt.SWT.NONE);
         this.setLayout(new FillLayout());
-        Composite3D composite3D = new Composite3D(this, syncManipulator, syncTranslation, syncZoom);        
+        Composite3D composite3D = new Composite3D(this, syncManipulator, syncTranslation, syncZoom);
         if (scaleShown) {
             new CompositeScale(this, composite3D, SWT.NONE);
         } else {

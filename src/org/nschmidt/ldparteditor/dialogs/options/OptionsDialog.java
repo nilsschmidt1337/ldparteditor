@@ -42,6 +42,7 @@ public class OptionsDialog extends OptionsDesign {
         WidgetUtil(btn_translateViewByCursor[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setTranslatingViewByCursor( btn_translateViewByCursor[0].getSelection()));
         WidgetUtil(btn_disableMAD3D[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btn_disableMAD3D[0].getSelection()));
         WidgetUtil(btn_disableMADtext[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btn_disableMADtext[0].getSelection()));
+        WidgetUtil(btn_invertInvertWheelZoomDirection[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btn_invertInvertWheelZoomDirection[0].getSelection()));
 
         WidgetUtil(btn_browseLdrawPath[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
