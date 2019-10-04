@@ -6575,6 +6575,23 @@ public class Editor3DWindow extends Editor3DDesign {
         btn_AddDistance[0].setSelection(false);
         btn_AddProtractor[0].setSelection(false);
         btn_AddPrimitive[0].setSelection(false);
+
+        for (DatFile df : Project.getOpenedFiles()) {
+            final VertexManager vm2 = df.getVertexManager();
+            final Vertex[] vertices = new Vertex[] {df.getObjVertex1(), df.getObjVertex2(), df.getObjVertex3(), df.getObjVertex4()};
+            for (Vertex v : vertices) {
+                if (v != null) {
+                    vm2.getSelectedVertices().remove(v);
+                }
+            }
+
+            df.setObjVertex1(null);
+            df.setObjVertex2(null);
+            df.setObjVertex3(null);
+            df.setObjVertex4(null);
+            df.setNearestObjVertex1(null);
+            df.setNearestObjVertex2(null);
+        }
     }
 
     public TreeItem getProjectParts() {
