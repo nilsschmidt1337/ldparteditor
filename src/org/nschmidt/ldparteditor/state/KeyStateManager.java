@@ -268,6 +268,7 @@ public class KeyStateManager {
             addTask(Task.RENDERMODE_CoplanarityHeatmap, SWT.ALT, SWT.KEYPAD_8);
             addTask(Task.RENDERMODE_Wireframe, SWT.ALT, SWT.KEYPAD_9);
 
+            addTask(Task.RESET_MANIPULATOR, 'r');
         } else {
 
             reservedKeyCodes.add(SWT.ARROW_UP + "+Ctrl"); //$NON-NLS-1$
@@ -395,6 +396,8 @@ public class KeyStateManager {
             addTask(Task.RENDERMODE_SpecialCondline, SWT.ALT, SWT.KEYPAD_7);
             addTask(Task.RENDERMODE_CoplanarityHeatmap, SWT.ALT, SWT.KEYPAD_8);
             addTask(Task.RENDERMODE_Wireframe, SWT.ALT, SWT.KEYPAD_9);
+
+            addTask(Task.RESET_MANIPULATOR, 'r');
         }
     }
 
@@ -628,6 +631,9 @@ public class KeyStateManager {
                         break;
                     case RESET_VIEW:
                         c3d.getPerspectiveCalculator().zoomReset();
+                        break;
+                    case RESET_MANIPULATOR:
+                        c3d.getManipulator().reset();
                         break;
                     case OBJ_FACE:
                         win.setObjMode(1);
