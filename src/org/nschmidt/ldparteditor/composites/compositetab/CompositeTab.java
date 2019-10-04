@@ -1251,6 +1251,10 @@ public class CompositeTab extends CompositeTabDesign {
                     sw.setTextComposite(state.getTab());
                     sw.setScopeToAll();
                 }
+                if (Editor3DWindow.getWindow().isAddingSomething()) {
+                    NLogger.debug(getClass(), "Editor3DWindow.getWindow().disableAddAction()"); //$NON-NLS-1$
+                    Editor3DWindow.getWindow().disableAddAction();
+                }
             }
         });
         //
