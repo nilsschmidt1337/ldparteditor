@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
 
@@ -48,8 +49,10 @@ import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 public enum GuiStatusManager {
     INSTANCE;
 
-    private static DecimalFormat df = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
-    private static DecimalFormat df2 = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private static final DecimalFormat DF0F = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private static final DecimalFormat DF1F = new java.text.DecimalFormat(View.NUMBER_FORMAT1F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private static final DecimalFormat DF2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private static final DecimalFormat DF4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
 
     /**
      * Updates the status text from {@linkplain Editor3DWindow}
@@ -68,21 +71,36 @@ public enum GuiStatusManager {
 
             final VertexManager vm = c3d.getVertexManager();
             final Set<Vertex> vs = vm.getSelectedVertices();
+            final int selectedVertexCount = vs.size();
 
             sb.append(vm.getSlantingMatrixProjectorStatusString());
 
             updateSelection(sb, vm);
-            if (vs.size() == 1) {
-                try {
-                    Vertex v = vs.iterator().next();
-                    sb.append(" Vertex @  ["); //$NON-NLS-1$ I18N Needs translation!
-                    sb.append(df.format(v.X.multiply(View.unit_factor)));
-                    sb.append("; "); //$NON-NLS-1$
-                    sb.append(df.format(v.Y.multiply(View.unit_factor)));
-                    sb.append("; "); //$NON-NLS-1$
-                    sb.append(df.format(v.Z.multiply(View.unit_factor)));
-                    sb.append("]"); //$NON-NLS-1$
-                } catch (NoSuchElementException consumed) {}
+            if (selectedVertexCount < 5 && selectedVertexCount > 0) {
+                final Iterator<Vertex> vsi = vs.iterator();
+                switch (selectedVertexCount) {
+                case 1:
+                    formatForOneSelectedVertex(sb, vsi);
+                    break;
+                case 2:
+                    sb.append("2 Vertices @ ~"); //$NON-NLS-1$ I18N Needs translation!
+                    formatForTwoSelectedVertices(sb, vsi);
+                    formatForTwoSelectedVertices(sb, vsi);
+                    break;
+                case 3:
+                    sb.append("3 Vertices @ ~"); //$NON-NLS-1$ I18N Needs translation!
+                    formatForThreeSelectedVertices(sb, vsi);
+                    formatForThreeSelectedVertices(sb, vsi);
+                    formatForThreeSelectedVertices(sb, vsi);
+                    break;
+                case 4:
+                    sb.append("4 Vertices @ ~"); //$NON-NLS-1$ I18N Needs translation!
+                    formatForFourSelectedVertices(sb, vsi);
+                    formatForFourSelectedVertices(sb, vsi);
+                    formatForFourSelectedVertices(sb, vsi);
+                    formatForFourSelectedVertices(sb, vsi);
+                    break;
+                }
             }
 
             sb.append(" "); //$NON-NLS-1$
@@ -90,14 +108,14 @@ public enum GuiStatusManager {
             sb.append(", "); //$NON-NLS-1$
             sb.append(I18n.PERSPECTIVE_Zoom);
             sb.append(": "); //$NON-NLS-1$
-            sb.append(df2.format(Math.round(c3d.getZoom() * 10000000) / 100f));
+            sb.append(DF2F.format(Math.round(c3d.getZoom() * 10000000) / 100f));
             sb.append("% ["); //$NON-NLS-1$
             BigDecimal[] cursor3D = c3d.getCursorSnapped3Dprecise();
-            sb.append(df.format(cursor3D[0].multiply(View.unit_factor)));
+            sb.append(DF4F.format(cursor3D[0].multiply(View.unit_factor)));
             sb.append("; "); //$NON-NLS-1$
-            sb.append(df.format(cursor3D[1].multiply(View.unit_factor)));
+            sb.append(DF4F.format(cursor3D[1].multiply(View.unit_factor)));
             sb.append("; "); //$NON-NLS-1$
-            sb.append(df.format(cursor3D[2].multiply(View.unit_factor)));
+            sb.append(DF4F.format(cursor3D[2].multiply(View.unit_factor)));
             sb.append("] "); //$NON-NLS-1$
 
             Manipulator m = c3d.getManipulator();
@@ -108,18 +126,18 @@ public enum GuiStatusManager {
                 double daz = m.getAccurateRotationZ() / Math.PI * 180.0 % 360;
                 if (dax == 0.0 && day == 0.0 && daz == 0.0) {
                     sb.append("delta: ["); //$NON-NLS-1$ I18N Needs translation!
-                    sb.append(df.format(t.M30));
+                    sb.append(DF4F.format(t.M30));
                     sb.append("; "); //$NON-NLS-1$
-                    sb.append(df.format(t.M31));
+                    sb.append(DF4F.format(t.M31));
                     sb.append("; "); //$NON-NLS-1$
-                    sb.append(df.format(t.M32));
+                    sb.append(DF4F.format(t.M32));
                 } else {
                     sb.append("rotation: ["); //$NON-NLS-1$ I18N Needs translation!
-                    sb.append(df.format(dax));
+                    sb.append(DF4F.format(dax));
                     sb.append("; "); //$NON-NLS-1$
-                    sb.append(df.format(day));
+                    sb.append(DF4F.format(day));
                     sb.append("; "); //$NON-NLS-1$
-                    sb.append(df.format(daz));
+                    sb.append(DF4F.format(daz));
                 }
                 sb.append("] "); //$NON-NLS-1$
             }
@@ -147,7 +165,7 @@ public enum GuiStatusManager {
 
             if (Math.abs(CSG.timeOfLastOptimization - System.currentTimeMillis()) < 10000) {
                 sb.append(" CSG: "); //$NON-NLS-1$
-                sb.append(df2.format(CSG.globalOptimizationRate));
+                sb.append(DF2F.format(CSG.globalOptimizationRate));
                 sb.append("%"); //$NON-NLS-1$
             }
 
@@ -161,6 +179,58 @@ public enum GuiStatusManager {
             NLogger.debug(GuiStatusManager.class, "Uncritical SWTExecption. Widget is disposed."); //$NON-NLS-1$
             NLogger.debug(GuiStatusManager.class, swtex);
         }
+    }
+
+    private static void formatForOneSelectedVertex(final StringBuilder sb, final Iterator<Vertex> vsi) {
+        try {
+            Vertex v = vsi.next();
+            sb.append(" Vertex @  ["); //$NON-NLS-1$ I18N Needs translation!
+            sb.append(DF4F.format(v.X.multiply(View.unit_factor)));
+            sb.append("; "); //$NON-NLS-1$
+            sb.append(DF4F.format(v.Y.multiply(View.unit_factor)));
+            sb.append("; "); //$NON-NLS-1$
+            sb.append(DF4F.format(v.Z.multiply(View.unit_factor)));
+            sb.append("]"); //$NON-NLS-1$
+        } catch (NoSuchElementException consumed) {}
+    }
+
+    private static void formatForTwoSelectedVertices(final StringBuilder sb, final Iterator<Vertex> vsi) {
+        try {
+            Vertex v = vsi.next();
+            sb.append("["); //$NON-NLS-1$ I18N Needs translation!
+            sb.append(DF2F.format(v.X.multiply(View.unit_factor)));
+            sb.append("; "); //$NON-NLS-1$
+            sb.append(DF2F.format(v.Y.multiply(View.unit_factor)));
+            sb.append("; "); //$NON-NLS-1$
+            sb.append(DF2F.format(v.Z.multiply(View.unit_factor)));
+            sb.append("]"); //$NON-NLS-1$
+        } catch (NoSuchElementException consumed) {}
+    }
+
+    private static void formatForThreeSelectedVertices(final StringBuilder sb, final Iterator<Vertex> vsi) {
+        try {
+            Vertex v = vsi.next();
+            sb.append("["); //$NON-NLS-1$ I18N Needs translation!
+            sb.append(DF1F.format(v.X.multiply(View.unit_factor)));
+            sb.append(";"); //$NON-NLS-1$
+            sb.append(DF1F.format(v.Y.multiply(View.unit_factor)));
+            sb.append(";"); //$NON-NLS-1$
+            sb.append(DF1F.format(v.Z.multiply(View.unit_factor)));
+            sb.append("]"); //$NON-NLS-1$
+        } catch (NoSuchElementException consumed) {}
+    }
+
+    private static void formatForFourSelectedVertices(final StringBuilder sb, final Iterator<Vertex> vsi) {
+        try {
+            Vertex v = vsi.next();
+            sb.append("["); //$NON-NLS-1$ I18N Needs translation!
+            sb.append(DF0F.format(v.X.multiply(View.unit_factor)));
+            sb.append(";"); //$NON-NLS-1$
+            sb.append(DF0F.format(v.Y.multiply(View.unit_factor)));
+            sb.append(";"); //$NON-NLS-1$
+            sb.append(DF0F.format(v.Z.multiply(View.unit_factor)));
+            sb.append("]"); //$NON-NLS-1$
+        } catch (NoSuchElementException consumed) {}
     }
 
     public static synchronized void updateStatus(DatFile df) {
@@ -220,6 +290,6 @@ public enum GuiStatusManager {
                 sb.append(plural);
             }
         }
-        return doAppend;
+        return doAppend || needsComma;
     }
 }
