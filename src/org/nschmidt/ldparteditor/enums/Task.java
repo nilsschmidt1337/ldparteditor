@@ -135,5 +135,7 @@ public enum Task {
     RENDERMODE_LDrawStandard,
     RENDERMODE_SpecialCondline,
     RENDERMODE_CoplanarityHeatmap,
-    RENDERMODE_Wireframe
+    RENDERMODE_Wireframe,
+
+    RESET_MANIPULATOR
 }

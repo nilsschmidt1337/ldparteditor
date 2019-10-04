@@ -844,6 +844,7 @@ public final class I18n {
     public static final String KEYBOARD_RendermodeRedBackfaces = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_RendermodeWireframe = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ReplaceVertex = KEYBOARD.getString(getProperty());
+    public static final String KEYBOARD_ResetManipulator = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_ResetView = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Round = KEYBOARD.getString(getProperty());
     public static final String KEYBOARD_Save = KEYBOARD.getString(getProperty());

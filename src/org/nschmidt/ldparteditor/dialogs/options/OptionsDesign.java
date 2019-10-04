@@ -449,6 +449,7 @@ class OptionsDesign extends ApplicationWindow {
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisXZ, Task.MODE_XZ, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisYZ, Task.MODE_YZ, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisXYZ, Task.MODE_XYZ, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ResetManipulator, Task.RESET_MANIPULATOR, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_ResetView, Task.RESET_VIEW, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_Save, Task.SAVE, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectAll, Task.SELECT_ALL, true);
