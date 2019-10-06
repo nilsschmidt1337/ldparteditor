@@ -21,6 +21,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -77,28 +78,28 @@ public enum GuiStatusManager {
 
             updateSelection(sb, vm);
             if (selectedVertexCount < 5 && selectedVertexCount > 0) {
-                final Iterator<Vertex> vsi = vs.iterator();
+                final Iterator<ScreenVertex> orderedScreenVertexIterator = getVerticesOrderedByScreenCoordinate(vs.iterator(), c3d.getPerspectiveCalculator());
                 switch (selectedVertexCount) {
                 case 1:
-                    formatForOneSelectedVertex(sb, vsi);
+                    formatForOneSelectedVertex(sb, orderedScreenVertexIterator);
                     break;
                 case 2:
                     sb.append("2 Vertices @ ~"); //$NON-NLS-1$ I18N Needs translation!
-                    formatForTwoSelectedVertices(sb, vsi);
-                    formatForTwoSelectedVertices(sb, vsi);
+                    formatForTwoSelectedVertices(sb, orderedScreenVertexIterator);
+                    formatForTwoSelectedVertices(sb, orderedScreenVertexIterator);
                     break;
                 case 3:
                     sb.append("3 Vertices @ ~"); //$NON-NLS-1$ I18N Needs translation!
-                    formatForThreeSelectedVertices(sb, vsi);
-                    formatForThreeSelectedVertices(sb, vsi);
-                    formatForThreeSelectedVertices(sb, vsi);
+                    formatForThreeSelectedVertices(sb, orderedScreenVertexIterator);
+                    formatForThreeSelectedVertices(sb, orderedScreenVertexIterator);
+                    formatForThreeSelectedVertices(sb, orderedScreenVertexIterator);
                     break;
                 case 4:
                     sb.append("4 Vertices @ ~"); //$NON-NLS-1$ I18N Needs translation!
-                    formatForFourSelectedVertices(sb, vsi);
-                    formatForFourSelectedVertices(sb, vsi);
-                    formatForFourSelectedVertices(sb, vsi);
-                    formatForFourSelectedVertices(sb, vsi);
+                    formatForFourSelectedVertices(sb, orderedScreenVertexIterator);
+                    formatForFourSelectedVertices(sb, orderedScreenVertexIterator);
+                    formatForFourSelectedVertices(sb, orderedScreenVertexIterator);
+                    formatForFourSelectedVertices(sb, orderedScreenVertexIterator);
                     break;
                 }
             }
@@ -181,9 +182,20 @@ public enum GuiStatusManager {
         }
     }
 
-    private static void formatForOneSelectedVertex(final StringBuilder sb, final Iterator<Vertex> vsi) {
+    private static Iterator<ScreenVertex> getVerticesOrderedByScreenCoordinate(Iterator<Vertex> vsi, PerspectiveCalculator pc) {
+        final Set<ScreenVertex> result = new TreeSet<>();
         try {
-            Vertex v = vsi.next();
+            while (vsi.hasNext()) {
+                Vertex v = vsi.next();
+                result.add(new ScreenVertex(v, pc.getScreenCoordinatesFrom3D(v.X, v.Y, v.Z)));
+            }
+        } catch (NoSuchElementException consumed) {}
+        return result.iterator();
+    }
+
+    private static void formatForOneSelectedVertex(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
+        try {
+            Vertex v = vsi.next().getVertex3D();
             sb.append(" Vertex @  ["); //$NON-NLS-1$ I18N Needs translation!
             sb.append(DF4F.format(v.X.multiply(View.unit_factor)));
             sb.append("; "); //$NON-NLS-1$
@@ -194,9 +206,9 @@ public enum GuiStatusManager {
         } catch (NoSuchElementException consumed) {}
     }
 
-    private static void formatForTwoSelectedVertices(final StringBuilder sb, final Iterator<Vertex> vsi) {
+    private static void formatForTwoSelectedVertices(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
         try {
-            Vertex v = vsi.next();
+            Vertex v = vsi.next().getVertex3D();
             sb.append("["); //$NON-NLS-1$ I18N Needs translation!
             sb.append(DF2F.format(v.X.multiply(View.unit_factor)));
             sb.append("; "); //$NON-NLS-1$
@@ -207,9 +219,9 @@ public enum GuiStatusManager {
         } catch (NoSuchElementException consumed) {}
     }
 
-    private static void formatForThreeSelectedVertices(final StringBuilder sb, final Iterator<Vertex> vsi) {
+    private static void formatForThreeSelectedVertices(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
         try {
-            Vertex v = vsi.next();
+            Vertex v = vsi.next().getVertex3D();
             sb.append("["); //$NON-NLS-1$ I18N Needs translation!
             sb.append(DF1F.format(v.X.multiply(View.unit_factor)));
             sb.append(";"); //$NON-NLS-1$
@@ -220,9 +232,9 @@ public enum GuiStatusManager {
         } catch (NoSuchElementException consumed) {}
     }
 
-    private static void formatForFourSelectedVertices(final StringBuilder sb, final Iterator<Vertex> vsi) {
+    private static void formatForFourSelectedVertices(final StringBuilder sb, final Iterator<ScreenVertex> vsi) {
         try {
-            Vertex v = vsi.next();
+            Vertex v = vsi.next().getVertex3D();
             sb.append("["); //$NON-NLS-1$ I18N Needs translation!
             sb.append(DF0F.format(v.X.multiply(View.unit_factor)));
             sb.append(";"); //$NON-NLS-1$
