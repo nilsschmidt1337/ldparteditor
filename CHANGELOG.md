@@ -1,3 +1,16 @@
+### 07 Oct 2019
+With the release of 0.8.49 you are able to...
+-  ...invert the mouse wheel zoom direction (Tools... -> Options... -> Customise Shortkeys).
+-  ...open multiple files in one go.
+-  ...use a shortcut to reset the manipulator to the origin and world orientation ("R" key).
+-  ...see the coordinates of up to 4 selected vertices in the status bar.
+-  ...benefit from the automatically deactivation of "Add..." when you focus or select something in the text editor.
+
+The following critical issues are fixed:
+1. The scale tool displayed the manipulator with "global" coordinates when "local" coordinates were active.
+2. There was a missing comma in the selection info on the status bar.
+
+
 ### 01 Sep 2019
 With the release of 0.8.48 you are able to...
 -  ...swap the middle and right mouse button assignment (view translation and view rotation)
