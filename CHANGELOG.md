@@ -1,3 +1,8 @@
+### 08 Oct 2019
+With the release of 0.8.49b the following critical issue is fixed:
+1. "Open File" : A "\" character was missing between the folder name and the file name.
+
+
 ### 07 Oct 2019
 With the release of 0.8.49 you are able to...
 -  ...invert the mouse wheel zoom direction (Tools... -> Options... -> Customise Shortkeys).
