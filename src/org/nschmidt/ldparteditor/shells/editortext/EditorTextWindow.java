@@ -559,7 +559,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
 
             for (String fileName : fd.getFileNames()) {
-                final String filePath = fd.getFilterPath() + fileName;
+                final String filePath = fd.getFilterPath() + File.separator + fileName;
                 if (WorkbenchManager.getUserSettingState().isSyncingTabs()) {
                     DatFile df1 = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, filePath, true);
                     if (df1 != null) {

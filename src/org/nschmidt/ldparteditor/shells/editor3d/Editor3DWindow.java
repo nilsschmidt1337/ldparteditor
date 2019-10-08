@@ -878,7 +878,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
 
             for (String fileName : fd.getFileNames()) {
-                final String filePath = fd.getFilterPath() + fileName;
+                final String filePath = fd.getFilterPath() + File.separator + fileName;
                 DatFile dat = openDatFile(OpenInWhat.EDITOR_3D, filePath, true);
                 if (dat != null) {
                     addRecentFile(dat);
