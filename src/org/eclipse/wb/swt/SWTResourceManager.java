@@ -27,6 +27,7 @@ import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * Utility class for managing OS resources associated with SWT controls such as
@@ -39,7 +40,7 @@ import org.eclipse.swt.widgets.Display;
  * <p>
  * This class may be freely distributed as part of any application or plugin.
  * <p>
- * 
+ *
  * @author scheglov_ke
  * @author Dan Rubel
  */
@@ -53,7 +54,7 @@ public class SWTResourceManager {
 
     /**
      * Returns the system {@link Color} matching the specific ID.
-     * 
+     *
      * @param systemColorID
      *            the ID value for the color
      * @return the system {@link Color} matching the specific ID
@@ -65,7 +66,7 @@ public class SWTResourceManager {
 
     /**
      * Returns a {@link Color} given its red, green and blue component values.
-     * 
+     *
      * @param r
      *            the red component of the color
      * @param g
@@ -76,12 +77,20 @@ public class SWTResourceManager {
      *         component values
      */
     public static Color getColor(int r, int g, int b) {
-        return getColor(new RGB(r, g, b));
+        // Validation for RGB argument range
+        int clamp_r = Math.max(0, Math.min(255, r));
+        int clamp_g = Math.max(0, Math.min(255, g));
+        int clamp_b = Math.max(0, Math.min(255, b));
+        if (clamp_r != r || clamp_g != g || clamp_b != b) {
+            NLogger.error(SWTResourceManager.class, new IllegalArgumentException("Illegal argument on getColor (R:" + r + " G:" + g + " B:" + b + ")")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        }
+
+        return getColor(new RGB(clamp_r, clamp_g, clamp_b));
     }
 
     /**
      * Returns a {@link Color} given its RGB value.
-     * 
+     *
      * @param rgb
      *            the {@link RGB} value of the color
      * @return the {@link Color} matching the RGB value
@@ -118,7 +127,7 @@ public class SWTResourceManager {
 
     /**
      * Returns an {@link Image} encoded by the specified {@link InputStream}.
-     * 
+     *
      * @param stream
      *            the {@link InputStream} encoding the image data
      * @return the {@link Image} encoded by the specified input stream
@@ -138,7 +147,7 @@ public class SWTResourceManager {
 
     /**
      * Returns an {@link Image} stored in the file at the specified path.
-     * 
+     *
      * @param path
      *            the path to the image file
      * @return the {@link Image} stored in the file at the specified path
@@ -160,7 +169,7 @@ public class SWTResourceManager {
     /**
      * Returns an {@link Image} stored in the file at the specified path
      * relative to the specified class.
-     * 
+     *
      * @param clazz
      *            the {@link Class} relative to which to find the image
      * @param path
@@ -232,7 +241,7 @@ public class SWTResourceManager {
     /**
      * Returns an {@link Image} composed of a base image decorated by another
      * image.
-     * 
+     *
      * @param baseImage
      *            the base {@link Image} that should be decorated
      * @param decorator
@@ -246,7 +255,7 @@ public class SWTResourceManager {
     /**
      * Returns an {@link Image} composed of a base image decorated by another
      * image.
-     * 
+     *
      * @param baseImage
      *            the base {@link Image} that should be decorated
      * @param decorator
@@ -337,7 +346,7 @@ public class SWTResourceManager {
 
     /**
      * Returns a {@link Font} based on its name, height and style.
-     * 
+     *
      * @param name
      *            the name of the font
      * @param height
@@ -353,7 +362,7 @@ public class SWTResourceManager {
     /**
      * Returns a {@link Font} based on its name, height and style.
      * Windows-specific strikeout and underline flags are also supported.
-     * 
+     *
      * @param name
      *            the name of the font
      * @param size
@@ -396,7 +405,7 @@ public class SWTResourceManager {
 
     /**
      * Returns a bold version of the given {@link Font}.
-     * 
+     *
      * @param baseFont
      *            the {@link Font} for which a bold version is desired
      * @return the bold version of the given {@link Font}
@@ -440,7 +449,7 @@ public class SWTResourceManager {
 
     /**
      * Returns the system cursor matching the specific ID.
-     * 
+     *
      * @param id
      *            int The ID value for the cursor
      * @return Cursor The system cursor matching the specific ID
