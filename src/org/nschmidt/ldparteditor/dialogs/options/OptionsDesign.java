@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -511,13 +512,23 @@ class OptionsDesign extends ApplicationWindow {
                             KeyStateManager.tmp_keyString = null;
                             if (new KeyDialog(getShell()).open() == IDialogConstants.OK_ID && KeyStateManager.tmp_keyString != null) {
                                 Object[] data = (Object[]) selection.getData();
-                                if (data[0] == null && !KeyStateManager.hasTextTaskKey(KeyStateManager.tmp_mapKey)) {
-                                    KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (TextTask) data[1]);
-                                    selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                                if (data[0] == null) {
+                                    if (KeyStateManager.hasTextTaskKey(KeyStateManager.tmp_mapKey)) {
+                                        showKeyAlreadyInUseWarning(selection.getParentItem(), KeyStateManager.tmp_keyString);
+                                    } else {
+                                        KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (TextTask) data[1]);
+                                        selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                                        data[2] = KeyStateManager.tmp_mapKey;
+                                    }
                                 }
-                                if (data[1] == null && !KeyStateManager.hasTaskKey(KeyStateManager.tmp_mapKey)) {
-                                    KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (Task) data[0]);
-                                    selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                                if (data[1] == null) {
+                                    if (KeyStateManager.hasTaskKey(KeyStateManager.tmp_mapKey)) {
+                                        showKeyAlreadyInUseWarning(selection.getParentItem(), KeyStateManager.tmp_keyString);
+                                    } else {
+                                        KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (Task) data[0]);
+                                        selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                                        data[2] = KeyStateManager.tmp_mapKey;
+                                    }
                                 }
                                 tree.build();
                                 tree.update();
@@ -724,6 +735,32 @@ class OptionsDesign extends ApplicationWindow {
         });
 
         return container;
+    }
+
+    private void showKeyAlreadyInUseWarning(TreeItem parentItem, String keyString) {
+        String actionString = "advanced usage by LDPartEditor"; //$NON-NLS-1$ I18N Needs translation!
+        final MessageBox messageBoxInfo = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
+        final HashMap<String, String> reservedKeysMappedToAction = new HashMap<>();
+        final String inputTheColourNumber = "colour number input";//$NON-NLS-1$ I18N Needs translation!
+        
+        for (int n = 0; n < 10; n++) {
+            reservedKeysMappedToAction.put("NUMPAD_" + n, inputTheColourNumber); //$NON-NLS-1$ I18N Needs translation!
+        }
+        
+        if (reservedKeysMappedToAction.containsKey(keyString)) {
+            actionString = reservedKeysMappedToAction.get(keyString);
+        } else {
+            for (TreeItem item : parentItem.getItems()) {
+                if (keyString.equals(item.getText(1))) {
+                    actionString = item.getText(0);
+                    break;
+                }
+            }
+        }
+        
+        messageBoxInfo.setText(I18n.DIALOG_Info);
+        messageBoxInfo.setMessage("The key combination " + keyString + " is already in use for '" + actionString + "'."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+        messageBoxInfo.open();
     }
 
     private void updateColours(Tree tree) {
