@@ -220,13 +220,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
         </jar>
         
-        <taskdef name="launch4j"
-            classname="net.sf.launch4j.ant.Launch4jTask"
-            classpath="${dependenciesFolder}/${launch4j.dir}/launch4j.jar
-                :${dependenciesFolder}/${launch4j.dir}/lib/xstream.jar" />
-        
-        <launch4j configFile="launch4j_ant.xml" />
-        
         <!-- Copy dll files -->
         <copy file="${dependenciesFolder}/lwjgl.dll" overwrite="true" todir="${binariesFolder}"/>
         <copy file="${dependenciesFolder}/jemalloc.dll" overwrite="true" todir="${binariesFolder}"/>
@@ -236,6 +229,13 @@
         <!-- Copy resource files (txt) -->
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}"/>
+        
+        <taskdef name="launch4j"
+            classname="net.sf.launch4j.ant.Launch4jTask"
+            classpath="${dependenciesFolder}/${launch4j.dir}/launch4j.jar
+                :${dependenciesFolder}/${launch4j.dir}/lib/xstream.jar" />
+        
+        <launch4j configFile="launch4j_ant.xml" />
         
         <delete file="LDPartEditor.jar"/>
 
