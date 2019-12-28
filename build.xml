@@ -120,6 +120,12 @@
             destdir="${dependenciesFolder}"
             checksum="6b05b5ccb95e6841eca55dfb3612a30bc94d2003" />
             
+        <!-- Get tools.jar -->
+        <get-and-checksum
+            file="tools.jar"
+            destdir="${dependenciesFolder}"
+            checksum="25f5280e2b946d3a25fcf2a764306c1966858f18" />
+            
         <!-- Get launch4j.zip -->
         <get-and-checksum
             file="launch4j.zip"
@@ -218,6 +224,7 @@
             <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
             <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
         </jar>
         
         <!-- Copy dll files -->
