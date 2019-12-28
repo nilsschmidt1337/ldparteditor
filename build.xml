@@ -42,6 +42,10 @@
 
         <!-- JARs from org.eclipse and com.ibm -->
         <get-and-checksum
+            file="swt.jar"
+            destdir="${dependenciesFolder}"
+            checksum="a3221e7d7a36a6e4a3d1071743d4b08b40b50e88" />
+        <get-and-checksum
             file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
             destdir="${dependenciesFolder}"
             checksum="0209c198c2fdb66d6e91baf0a404d358bbd217ea" />
@@ -199,6 +203,9 @@
             <fileset dir="src"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="libs/swt-grouplayout.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="libs/swing2swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
