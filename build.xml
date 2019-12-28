@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar"
+    name="Create Runnable LDPartEditor Exe (Windows only, 64-bit)">
+    <!--ANT 1.7 is required -->
+
+    <macrodef name="get-and-checksum">
+        <attribute name="url" />
+        <attribute name="dest" />
+        <sequential>
+            <available file="@{dest}" property="file.found" />
+            <condition property="file.not.found">
+                <equals arg1="${file.found}" arg2="false" />
+            </condition>
+            <local name="destdir" />
+            <dirname property="destdir" file="@{dest}" />
+            <get dest="${destdir}" if="file.not.found">
+                <url url="@{url}" />
+                <url url="@{url}.sha1" />
+                <firstmatchmapper>
+                    <globmapper from="@{url}.sha1"
+                        to="@{dest}.sha" />
+                    <globmapper from="@{url}" to="@{dest}" />
+                </firstmatchmapper>
+            </get>
+            <local name="checksum.matches" />
+            <local name="checksum.matches.fail" />
+            <checksum file="@{dest}" algorithm="sha"
+                fileext=".sha" verifyproperty="checksum.matches" />
+            <condition property="checksum.matches.fail">
+                <equals arg1="${checksum.matches}" arg2="false" />
+            </condition>
+            <fail if="checksum.matches.fail">Checksum error</fail>
+            <delete if="checksum.matches.fail" file="@{dest}" />
+        </sequential>
+    </macrodef>
+
+    <target name="create_run_jar">
+
+    </target>
+</project>
