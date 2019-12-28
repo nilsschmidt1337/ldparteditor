@@ -27,12 +27,18 @@
 
         <property name="dependenciesFolder"
             value="dependencies" />
+       <property name="binariesFolder"
+            value="bin" />
+       <property name="pluginFolder"
+            value="plugin" />
             
         <!-- Set a launch4j directory property -->
         <property name="launch4j.dir"
             value="launch4j" />
             
         <mkdir dir="${dependenciesFolder}" />
+        <mkdir dir="${binariesFolder}" />
+        <mkdir dir="${binariesFolder}/${pluginFolder}" />
 
         <!-- JARs from org.eclipse and com.ibm -->
         <get-and-checksum
@@ -83,7 +89,33 @@
             file="com.ibm.icu_64.2.0.v20190507-1337.jar"
             destdir="${dependenciesFolder}"
             checksum="44a6ed1520203654584556434fadc9e294310388" />
-        
+            
+        <!-- JARs and DLLs from LWJGL -->
+        <get-and-checksum
+            file="lwjgl.jar"
+            destdir="${dependenciesFolder}"
+            checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395" />
+        <get-and-checksum
+            file="lwjgl_util.jar"
+            destdir="${dependenciesFolder}"
+            checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149" />
+        <get-and-checksum
+            file="lwjgl.dll"
+            destdir="${dependenciesFolder}"
+            checksum="a88f7b2e81ca860b28c6d21463c44a4d0fb29553" />
+        <get-and-checksum
+            file="jemalloc.dll"
+            destdir="${dependenciesFolder}"
+            checksum="2e9087e72d2072b3da45a8b06ada5264e77a1b4a" />
+        <get-and-checksum
+            file="OpenAL.dll"
+            destdir="${dependenciesFolder}"
+            checksum="8bf21574699ecf224bf977a894b88fd96cf3b21a" />
+        <get-and-checksum
+            file="glfw.dll"
+            destdir="${dependenciesFolder}"
+            checksum="6b05b5ccb95e6841eca55dfb3612a30bc94d2003" />
+            
         <!-- Get launch4j.zip -->
         <get-and-checksum
             file="launch4j.zip"
@@ -165,6 +197,8 @@
                 <attribute name="Class-Path" value=". plugin/"/>
             </manifest>
             <fileset dir="src"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
@@ -185,6 +219,16 @@
                 :${dependenciesFolder}/${launch4j.dir}/lib/xstream.jar" />
         
         <launch4j configFile="launch4j_ant.xml" />
+        
+        <!-- Copy dll files -->
+        <copy file="${dependenciesFolder}/lwjgl.dll" overwrite="true" todir="${binariesFolder}"/>
+        <copy file="${dependenciesFolder}/jemalloc.dll" overwrite="true" todir="${binariesFolder}"/>
+        <copy file="${dependenciesFolder}/OpenAL.dll" overwrite="true" todir="${binariesFolder}"/>
+        <copy file="${dependenciesFolder}/glfw.dll" overwrite="true" todir="${binariesFolder}"/>
+        
+        <!-- Copy resource files (txt) -->
+        <copy file="categories.txt" overwrite="true" todir="${binariesFolder}"/>
+        <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}"/>
         
         <delete file="LDPartEditor.jar"/>
 
