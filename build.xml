@@ -27,8 +27,14 @@
 
         <property name="dependenciesFolder"
             value="dependencies" />
+       <property name="libsFolder"
+            value="libs" />
        <property name="binariesFolder"
             value="bin" />
+       <property name="sourcesFolder"
+            value="src" />
+       <property name="targetFolder"
+            value="target" />
        <property name="pluginFolder"
             value="plugin" />
             
@@ -37,6 +43,7 @@
             value="launch4j" />
             
         <mkdir dir="${dependenciesFolder}" />
+        <mkdir dir="${targetFolder}" />
         <mkdir dir="${binariesFolder}" />
         <mkdir dir="${binariesFolder}/${pluginFolder}" />
 
@@ -198,6 +205,23 @@
         <echo message="${osgi}" />
         <echo message="${ui.workbench}" />
         <echo message="${icu}" />
+
+        <path id="master-classpath">
+           <fileset dir="${dependenciesFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+           <fileset dir="${libsFolder}">
+             <include name="**/*.jar"/>
+           </fileset>
+         </path>
+
+         <!-- Compile -->
+         <javac
+            srcdir="${sourcesFolder}"
+            destdir="${targetFolder}"
+            debug="on" source="1.8" >
+            <classpath refid="master-classpath"/>
+         </javac>
         
         <!-- Create JAR file -->
         <jar destfile="LDPartEditor.jar" filesetmanifest="mergewithoutmain">
@@ -206,12 +230,12 @@
                 <!-- Modified Classpath -->
                 <attribute name="Class-Path" value=". plugin/"/>
             </manifest>
-            <fileset dir="src"/>
+            <fileset dir="target"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/swt.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="libs/swt-grouplayout.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="libs/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
