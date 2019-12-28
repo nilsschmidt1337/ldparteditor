@@ -9,6 +9,9 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
+    - name: Create directory for dependencies
+        shell: bash
+        run: mkdir dependecies
     - name: Cache dependent binaries
       uses: actions/cache@v1
       with:
