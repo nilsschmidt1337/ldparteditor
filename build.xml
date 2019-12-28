@@ -28,6 +28,10 @@
         <property name="dependenciesFolder"
             value="dependencies" />
             
+        <!-- Set a launch4j directory property -->
+        <property name="launch4j.dir"
+            value="launch4j" />
+            
         <mkdir dir="${dependenciesFolder}" />
 
         <!-- JARs from org.eclipse and com.ibm -->
@@ -79,7 +83,16 @@
             file="com.ibm.icu_64.2.0.v20190507-1337.jar"
             destdir="${dependenciesFolder}"
             checksum="44a6ed1520203654584556434fadc9e294310388" />
-
+        
+        <!-- Get launch4j.zip -->
+        <get-and-checksum
+            file="launch4j.zip"
+            destdir="${dependenciesFolder}"
+            checksum="2f7b6debacee464b79cc6355d86e880eac08a994" />
+            
+        <unzip src="${dependenciesFolder}/launch4j.zip" dest="${dependenciesFolder}"/>
+        <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/ld" perm="777"/>
+        <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/windres" perm="777"/>
 
         <pathconvert property="core.commands">
             <fileset dir="${dependenciesFolder}"
@@ -144,7 +157,6 @@
         <echo message="${ui.workbench}" />
         <echo message="${icu}" />
         
-        
         <!-- Create JAR file -->
         <jar destfile="LDPartEditor.jar" filesetmanifest="mergewithoutmain">
             <manifest>
@@ -166,7 +178,15 @@
             <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
         </jar>
-
+        
+        <taskdef name="launch4j"
+            classname="net.sf.launch4j.ant.Launch4jTask"
+            classpath="${dependenciesFolder}/${launch4j.dir}/launch4j.jar
+                :${dependenciesFolder}/${launch4j.dir}/lib/xstream.jar" />
+        
+        <launch4j configFile="launch4j_ant.xml" />
+        
+        <delete file="LDPartEditor.jar"/>
 
     </target>
 </project>
