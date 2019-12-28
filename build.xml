@@ -20,7 +20,6 @@
                 <equals arg1="${checksum.matches}" arg2="false" />
             </condition>
             <fail if="checksum.matches.fail">Checksum-error</fail>
-            <sleep seconds="1" />
         </sequential>
     </macrodef>
 
@@ -28,55 +27,57 @@
 
         <property name="dependenciesFolder"
             value="dependencies" />
+            
+        <mkdir dir="${dependenciesFolder}" />
 
         <!-- JARs from org.eclipse and com.ibm -->
         <get-and-checksum
             file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="0209c198c2fdb66d6e91baf0a404d358bbd217ea" />
         <get-and-checksum
             file="org.eclipse.core.databinding_1.7.700.v20191122-2109.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="24fdcedca32360003c475de6f468fc0f59ee6c3f" />
         <get-and-checksum
             file="org.eclipse.core.databinding.beans_1.6.0.v20191118-0932.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="d4e438befefea163c1d3ec93696071b366abdf7b" />
         <get-and-checksum
             file="org.eclipse.core.databinding.observable_1.8.100.v20191118-0932.jar"
-            destdir="dependencies"
-            checksum="edb7a2cd4dcfc1e7dc75a7e717f099489a89a6b1" />
+            destdir="${dependenciesFolder}"
+            checksum="9b4c919bc0b3985025ac8861bfda5c2b2b4edfb1" />
         <get-and-checksum
             file="org.eclipse.core.databinding.property_1.7.200.v20191105-1311.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="d77268dbd229e1175121206264d3cd38773c3e59" />
         <get-and-checksum
             file="org.eclipse.equinox.common_3.10.600.v20191004-1420.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="21782c2c89c2afb085ba74ff4994867d2a0849a9" />
         <get-and-checksum
             file="org.eclipse.jface_3.18.0.v20191122-2109.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="e2495d6767af33ee01e7f6d9d4325aa21d7cfa55" />
         <get-and-checksum
             file="org.eclipse.jface.databinding_1.9.200.v20191113-1050.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="ac748de1c80f151753d89787eeb626ad0c63af55" />
         <get-and-checksum
             file="org.eclipse.jface.text_3.16.100.v20191203-1634.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="51b79c4ce5b624390fadc51dd38a2e37df920be4" />
         <get-and-checksum
             file="org.eclipse.osgi_3.15.100.v20191114-1701.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="84d26b2d0b597803386918c464b831b54c6321b2" />
         <get-and-checksum
             file="org.eclipse.ui.workbench_3.117.0.v20191126-1131.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="767859ff5a2fac870eae74615bffaf1c9daabd46" />
         <get-and-checksum
             file="com.ibm.icu_64.2.0.v20190507-1337.jar"
-            destdir="dependencies"
+            destdir="${dependenciesFolder}"
             checksum="44a6ed1520203654584556434fadc9e294310388" />
 
 
