@@ -16,11 +16,11 @@
             </get>
             <local name="checksum.matches" />
             <local name="checksum.matches.fail" />
-            <checksum file="@{destdir}/@{file}" algorithm="sha" property="@{checksum}" verifyproperty="checksum.matches" />
+            <!--  <checksum file="@{destdir}/@{file}" algorithm="sha" property="@{checksum}" verifyproperty="checksum.matches" />
             <condition property="checksum.matches.fail">
                 <equals arg1="${checksum.matches}" arg2="false" />
             </condition>
-            <fail if="checksum.matches.fail">Checksum error</fail>
+            <fail if="checksum.matches.fail">Checksum error</fail>  -->
             <sleep seconds="1"/>
         </sequential>
     </macrodef>
