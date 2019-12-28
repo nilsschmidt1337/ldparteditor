@@ -8,10 +8,10 @@
         <attribute name="destdir" />
         <attribute name="checksum" />
         <sequential>
-            <get dest="@{destdir}" usetimestamp="true">
-                <url url="https://sourceforge.net/projects/partcreator/files/buildfiles/@{file}/download" />
+            <get dest="@{destdir}" usetimestamp="true" verbose="on">
+                <url url="https://downloads.sourceforge.net/project/partcreator/buildfiles/@{file}?r=&#038;use_mirror=netcologne" />
                 <firstmatchmapper>
-                    <globmapper from="https://sourceforge.net/projects/partcreator/files/buildfiles/@{file}/download" to="@{file}" />
+                    <globmapper from="https://downloads.sourceforge.net/project/partcreator/buildfiles/@{file}?r=&#038;use_mirror=netcologne" to="@{file}" />
                 </firstmatchmapper>
             </get>
             <local name="checksum.matches" />
@@ -21,6 +21,7 @@
                 <equals arg1="${checksum.matches}" arg2="false" />
             </condition>
             <fail if="checksum.matches.fail">Checksum error</fail>
+            <sleep seconds="1"/>
         </sequential>
     </macrodef>
 
