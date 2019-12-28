@@ -143,6 +143,29 @@
         <echo message="${osgi}" />
         <echo message="${ui.workbench}" />
         <echo message="${icu}" />
+        
+        
+        <!-- Create JAR file -->
+        <jar destfile="LDPartEditor.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
+                <!-- Modified Classpath -->
+                <attribute name="Class-Path" value=". plugin/"/>
+            </manifest>
+            <fileset dir="src"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.observable}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.property}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${equinox.common}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.text}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
+        </jar>
 
 
     </target>
