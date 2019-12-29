@@ -35,8 +35,6 @@
             value="src" />
        <property name="targetFolder"
             value="target" />
-       <property name="windowsSwtFolder"
-            value="org.eclipse.swt_win32_x64" />
 
         <!-- Set a launch4j directory property -->
         <property name="launch4j.dir"
@@ -45,14 +43,12 @@
         <mkdir dir="${dependenciesFolder}" />
         <mkdir dir="${targetFolder}" />
         <mkdir dir="${binariesFolder}" />
-        <mkdir dir="${dependenciesFolder}/${windowsSwtFolder}" />
 
         <!-- JARs from org.eclipse and com.ibm -->
-        <!-- TODO is swt.jar enough? -->
         <get-and-checksum
-            file="org.eclipse.swt_win32_x64.zip"
+            file="swt.jar"
             destdir="${dependenciesFolder}"
-            checksum="ed53556f0dc3fc33e863d6d265223096f9933e83" />
+            checksum="34ff8b10574f876926d5c749c25cbd10c0e8fea5" />
         <get-and-checksum
             file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
             destdir="${dependenciesFolder}"
@@ -245,8 +241,7 @@
             <fileset dir="target"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
-            <fileset dir="${dependenciesFolder}/${windowsSwtFolder}"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${windowsSwtFolder}/swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
@@ -271,6 +266,7 @@
         <copy file="${dependenciesFolder}/glfw.dll" overwrite="true" todir="${binariesFolder}"/>
         
         <!-- Copy resource files (txt) -->
+        <copy file="LICENSE" overwrite="true" todir="${binariesFolder}"/>
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}"/>
         
