@@ -140,8 +140,6 @@
         <unzip src="${dependenciesFolder}/launch4j.zip" dest="${dependenciesFolder}"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/ld" perm="777"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/windres" perm="777"/>
-        
-        <unzip src="${dependenciesFolder}/org.eclipse.swt_win32_x64.zip" dest="${dependenciesFolder}/${windowsSwtFolder}"/>
 
         <pathconvert property="core.commands">
             <fileset dir="${dependenciesFolder}"
