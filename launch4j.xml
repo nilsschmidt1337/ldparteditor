@@ -3,7 +3,7 @@
   <dontWrapJar>false</dontWrapJar>
   <headerType>gui</headerType>
   <jar>LDPartEditor.jar</jar>
-  <outfile>bin/LDPartEditor.exe</outfile>
+  <outfile>bin/windows/LDPartEditor.exe</outfile>
   <errTitle></errTitle>
   <cmdLine></cmdLine>
   <chdir>.</chdir>
