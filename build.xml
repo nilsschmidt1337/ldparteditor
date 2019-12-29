@@ -7,9 +7,10 @@
         <attribute name="file" />
         <attribute name="destdir" />
         <attribute name="checksum" />
+        <attribute name="dir" />
         <sequential>
             <get
-                src="https://downloads.sourceforge.net/project/partcreator/buildfiles/@{file}?r=&#038;use_mirror=netcologne"
+                src="https://downloads.sourceforge.net/project/partcreator/@{dir}/@{file}?r=&#038;use_mirror=netcologne"
                 dest="@{destdir}/@{file}" skipexisting="true"
                 verbose="on" />
             <local name="checksum.matches" />
@@ -48,94 +49,115 @@
         <get-and-checksum
             file="swt.jar"
             destdir="${dependenciesFolder}"
-            checksum="34ff8b10574f876926d5c749c25cbd10c0e8fea5" />
+            checksum="34ff8b10574f876926d5c749c25cbd10c0e8fea5"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
             destdir="${dependenciesFolder}"
-            checksum="0209c198c2fdb66d6e91baf0a404d358bbd217ea" />
+            checksum="0209c198c2fdb66d6e91baf0a404d358bbd217ea"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.core.databinding_1.7.700.v20191122-2109.jar"
             destdir="${dependenciesFolder}"
-            checksum="24fdcedca32360003c475de6f468fc0f59ee6c3f" />
+            checksum="24fdcedca32360003c475de6f468fc0f59ee6c3f"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.core.databinding.beans_1.6.0.v20191118-0932.jar"
             destdir="${dependenciesFolder}"
-            checksum="d4e438befefea163c1d3ec93696071b366abdf7b" />
+            checksum="d4e438befefea163c1d3ec93696071b366abdf7b"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.core.databinding.observable_1.8.100.v20191118-0932.jar"
             destdir="${dependenciesFolder}"
-            checksum="9b4c919bc0b3985025ac8861bfda5c2b2b4edfb1" />
+            checksum="9b4c919bc0b3985025ac8861bfda5c2b2b4edfb1"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.core.databinding.property_1.7.200.v20191105-1311.jar"
             destdir="${dependenciesFolder}"
-            checksum="d77268dbd229e1175121206264d3cd38773c3e59" />
+            checksum="d77268dbd229e1175121206264d3cd38773c3e59"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.equinox.common_3.10.600.v20191004-1420.jar"
             destdir="${dependenciesFolder}"
-            checksum="21782c2c89c2afb085ba74ff4994867d2a0849a9" />
+            checksum="21782c2c89c2afb085ba74ff4994867d2a0849a9"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.jface_3.18.0.v20191122-2109.jar"
             destdir="${dependenciesFolder}"
-            checksum="e2495d6767af33ee01e7f6d9d4325aa21d7cfa55" />
+            checksum="e2495d6767af33ee01e7f6d9d4325aa21d7cfa55"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.jface.databinding_1.9.200.v20191113-1050.jar"
             destdir="${dependenciesFolder}"
-            checksum="ac748de1c80f151753d89787eeb626ad0c63af55" />
+            checksum="ac748de1c80f151753d89787eeb626ad0c63af55"
+            dir="buildfiles" />
         <!-- TODO do I really need org.eclipse.jface.text? -->
         <get-and-checksum
             file="org.eclipse.jface.text_3.16.100.v20191203-1634.jar"
             destdir="${dependenciesFolder}"
-            checksum="51b79c4ce5b624390fadc51dd38a2e37df920be4" />
+            checksum="51b79c4ce5b624390fadc51dd38a2e37df920be4"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.osgi_3.15.100.v20191114-1701.jar"
             destdir="${dependenciesFolder}"
-            checksum="84d26b2d0b597803386918c464b831b54c6321b2" />
+            checksum="84d26b2d0b597803386918c464b831b54c6321b2"
+            dir="buildfiles" />
         <get-and-checksum
             file="org.eclipse.ui.workbench_3.117.0.v20191126-1131.jar"
             destdir="${dependenciesFolder}"
-            checksum="767859ff5a2fac870eae74615bffaf1c9daabd46" />
+            checksum="767859ff5a2fac870eae74615bffaf1c9daabd46"
+            dir="buildfiles" />
         <get-and-checksum
             file="com.ibm.icu_64.2.0.v20190507-1337.jar"
             destdir="${dependenciesFolder}"
-            checksum="44a6ed1520203654584556434fadc9e294310388" />
+            checksum="44a6ed1520203654584556434fadc9e294310388"
+            dir="buildfiles" />
             
         <!-- JARs and DLLs from LWJGL -->
         <get-and-checksum
             file="lwjgl.jar"
             destdir="${dependenciesFolder}"
-            checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395" />
+            checksum="50ce421ca1ed411ca45e16c1686bda3a5fe8c395"
+            dir="buildfiles" />
         <get-and-checksum
             file="lwjgl_util.jar"
             destdir="${dependenciesFolder}"
-            checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149" />
+            checksum="a636bedc604ab1cc396165dc7a32cf1fe1257149"
+            dir="buildfiles" />
         <get-and-checksum
             file="lwjgl.dll"
             destdir="${dependenciesFolder}"
-            checksum="a88f7b2e81ca860b28c6d21463c44a4d0fb29553" />
+            checksum="a88f7b2e81ca860b28c6d21463c44a4d0fb29553"
+            dir="buildfiles" />
         <get-and-checksum
             file="jemalloc.dll"
             destdir="${dependenciesFolder}"
-            checksum="2e9087e72d2072b3da45a8b06ada5264e77a1b4a" />
+            checksum="2e9087e72d2072b3da45a8b06ada5264e77a1b4a"
+            dir="buildfiles" />
         <get-and-checksum
             file="OpenAL.dll"
             destdir="${dependenciesFolder}"
-            checksum="8bf21574699ecf224bf977a894b88fd96cf3b21a" />
+            checksum="8bf21574699ecf224bf977a894b88fd96cf3b21a"
+            dir="buildfiles" />
         <get-and-checksum
             file="glfw.dll"
             destdir="${dependenciesFolder}"
-            checksum="6b05b5ccb95e6841eca55dfb3612a30bc94d2003" />
+            checksum="6b05b5ccb95e6841eca55dfb3612a30bc94d2003"
+            dir="buildfiles" />
             
         <!-- Get tools.jar -->
         <get-and-checksum
             file="tools.jar"
             destdir="${dependenciesFolder}"
-            checksum="25f5280e2b946d3a25fcf2a764306c1966858f18" />
+            checksum="25f5280e2b946d3a25fcf2a764306c1966858f18"
+            dir="buildfiles" />
             
         <!-- Get launch4j.zip -->
         <get-and-checksum
             file="launch4j.zip"
             destdir="${dependenciesFolder}"
-            checksum="2f7b6debacee464b79cc6355d86e880eac08a994" />
+            checksum="2f7b6debacee464b79cc6355d86e880eac08a994"
+            dir="buildfiles" />
             
         <unzip src="${dependenciesFolder}/launch4j.zip" dest="${dependenciesFolder}"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/ld" perm="777"/>
