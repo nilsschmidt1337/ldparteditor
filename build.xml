@@ -50,6 +50,10 @@
             value="launch4j" />
             
         <mkdir dir="${dependenciesFolder}" />
+        <mkdir dir="${dependenciesFolder}/${windowsFolder}" />
+        <mkdir dir="${dependenciesFolder}/${linuxGtk2Folder}" />
+        <mkdir dir="${dependenciesFolder}/${linuxGtk3Folder}" />
+        <mkdir dir="${dependenciesFolder}/${macosxFolder}" />
         <mkdir dir="${targetFolder}" />
         <mkdir dir="${binariesFolder}" />
         <mkdir dir="${binariesFolder}/${windowsFolder}" />
@@ -229,7 +233,29 @@
         <unzip src="${dependenciesFolder}/launch4j.zip" dest="${dependenciesFolder}"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/ld" perm="777"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/windres" perm="777"/>
-
+        
+        <!-- Unzip SWT libraries -->
+        <pathconvert property="swt.windows.zipfile">
+            <fileset dir="${dependenciesFolder}"
+                includes="swt-*win32*.zip" />
+        </pathconvert>
+        <pathconvert property="swt.linux.gtk3.zipfile">
+            <fileset dir="${dependenciesFolder}"
+                includes="swt-*linux*.zip" />
+        </pathconvert>
+        <pathconvert property="swt.macosx.zipfile">
+            <fileset dir="${dependenciesFolder}"
+                includes="swt-*macosx*.zip" />
+        </pathconvert>
+        
+        <unzip src="${swt.windows.zipfile}" dest="${dependenciesFolder}/${windowsFolder}"/>
+        <unzip src="${swt.linux.gtk3.zipfile}" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
+        <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
+        <unzip src="${dependenciesFolder}/${windowsFolder}/swt.jar" dest="${dependenciesFolder}/${windowsFolder}"/>
+        <unzip src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
+        <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
+        
+        <!-- Auto-detect other paths -->
         <pathconvert property="core.commands">
             <fileset dir="${dependenciesFolder}"
                 includes="org.eclipse.core.commands_*.jar" />
