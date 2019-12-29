@@ -25,7 +25,7 @@
 
     <target name="create_run_jar">
 
-        <property name="dependenciesFolder"
+       <property name="dependenciesFolder"
             value="dependencies" />
        <property name="libsFolder"
             value="libs" />
@@ -223,6 +223,7 @@
          <javac
             srcdir="${sourceFolder}"
             destdir="${targetFolder}"
+            includeantruntime="false"
             debug="on" source="1.8" >
             <classpath refid="master-classpath"/>
          </javac>
