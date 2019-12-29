@@ -78,11 +78,6 @@
             checksum="72840b087674b72e4de210bffc5495c72e62366f"
             dir="buildfiles/swt-lib" />
         <get-and-checksum
-            file="swt.jar"
-            destdir="${dependenciesFolder}"
-            checksum="34ff8b10574f876926d5c749c25cbd10c0e8fea5"
-            dir="buildfiles" />
-        <get-and-checksum
             file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
             destdir="${dependenciesFolder}"
             checksum="0209c198c2fdb66d6e91baf0a404d358bbd217ea"
@@ -251,7 +246,6 @@
         <unzip src="${swt.windows.zipfile}" dest="${dependenciesFolder}/${windowsFolder}"/>
         <unzip src="${swt.linux.gtk3.zipfile}" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
         <unzip src="${swt.macosx.zipfile}" dest="${dependenciesFolder}/${macosxFolder}"/>
-        <unzip src="${dependenciesFolder}/${windowsFolder}/swt.jar" dest="${dependenciesFolder}/${windowsFolder}"/>
         <unzip src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar" dest="${dependenciesFolder}/${linuxGtk3Folder}"/>
         <unzip src="${dependenciesFolder}/${macosxFolder}/swt.jar" dest="${dependenciesFolder}/${macosxFolder}"/>
         
@@ -354,7 +348,7 @@
             <fileset dir="target"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${windowsFolder}/swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
