@@ -273,7 +273,7 @@
             classpath="${dependenciesFolder}/${launch4j.dir}/launch4j.jar
                 :${dependenciesFolder}/${launch4j.dir}/lib/xstream.jar" />
         
-        <launch4j configFile="launch4j_ant.xml" />
+        <launch4j configFile="launch4j.xml" />
         
         <delete file="LDPartEditor.jar"/>
 
