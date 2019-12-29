@@ -1,6 +1,8 @@
 # LDPartEditor - The LDraw™ Part Editor
 "Create and edit LDraw™ Parts quick and easy."
 
+![](https://github.com/nilsschmidt1337/ldparteditor/workflows/Java%20CI/badge.svg?branch=master)
+
 This repository contains the full sourcecode of "LDPartEditor" (further referred to as LDPE).
 LDPE aims to be the platform independent LEGO® CAD tool for [LDraw™](http://www.ldraw.org) parts.
 You can find a user manual and wiki [here](https://github.com/nilsschmidt1337/ldparteditor/wiki). The manual does not cover all [official LDraw specifications](http://www.ldraw.org/documentation/ldraw-org-file-format-standards.html) which were ratified by the LDraw Standards Commitee. If you want to start from the beginning, you should probably read the specifications first and gather some experience from [the community forums](http://forums.ldraw.org) to get started.
