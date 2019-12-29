@@ -9,7 +9,7 @@ jobs:
 
     steps:
     - uses: actions/checkout@v1
-    - name: Cache dependent binaries
+    - name: Get dependent binaries from cache
       uses: actions/cache@v1
       with:
         path: ./dependencies
@@ -20,3 +20,8 @@ jobs:
         java-version: 1.8
     - name: Build with Ant
       run: ant -noinput -buildfile build.xml
+    - name: Archive windows executable for win32-x64
+      uses: actions/upload-artifact@v1
+      with:
+        name: LDPartEditor-win32-x64
+        path: bin
