@@ -31,13 +31,13 @@
             value="libs" />
        <property name="binariesFolder"
             value="bin" />
-       <property name="sourcesFolder"
+       <property name="sourceFolder"
             value="src" />
        <property name="targetFolder"
             value="target" />
-       <property name="pluginFolder"
-            value="plugin" />
-            
+       <property name="windowsSwtFolder"
+            value="org.eclipse.swt_win32_x64" />
+
         <!-- Set a launch4j directory property -->
         <property name="launch4j.dir"
             value="launch4j" />
@@ -45,13 +45,14 @@
         <mkdir dir="${dependenciesFolder}" />
         <mkdir dir="${targetFolder}" />
         <mkdir dir="${binariesFolder}" />
-        <mkdir dir="${binariesFolder}/${pluginFolder}" />
+        <mkdir dir="${dependenciesFolder}/${windowsSwtFolder}" />
 
         <!-- JARs from org.eclipse and com.ibm -->
+        <!-- TODO is swt.jar enough? -->
         <get-and-checksum
-            file="swt.jar"
+            file="org.eclipse.swt_win32_x64.zip"
             destdir="${dependenciesFolder}"
-            checksum="a3221e7d7a36a6e4a3d1071743d4b08b40b50e88" />
+            checksum="ed53556f0dc3fc33e863d6d265223096f9933e83" />
         <get-and-checksum
             file="org.eclipse.core.commands_3.9.600.v20191122-2109.jar"
             destdir="${dependenciesFolder}"
@@ -84,6 +85,7 @@
             file="org.eclipse.jface.databinding_1.9.200.v20191113-1050.jar"
             destdir="${dependenciesFolder}"
             checksum="ac748de1c80f151753d89787eeb626ad0c63af55" />
+        <!-- TODO do I really need org.eclipse.jface.text? -->
         <get-and-checksum
             file="org.eclipse.jface.text_3.16.100.v20191203-1634.jar"
             destdir="${dependenciesFolder}"
@@ -142,6 +144,8 @@
         <unzip src="${dependenciesFolder}/launch4j.zip" dest="${dependenciesFolder}"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/ld" perm="777"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/windres" perm="777"/>
+        
+        <unzip src="${dependenciesFolder}/org.eclipse.swt_win32_x64.zip" dest="${dependenciesFolder}/${windowsSwtFolder}"/>
 
         <pathconvert property="core.commands">
             <fileset dir="${dependenciesFolder}"
@@ -217,11 +221,18 @@
 
          <!-- Compile -->
          <javac
-            srcdir="${sourcesFolder}"
+            srcdir="${sourceFolder}"
             destdir="${targetFolder}"
             debug="on" source="1.8" >
             <classpath refid="master-classpath"/>
          </javac>
+        
+        <!-- Copy non-java files -->
+        <copy todir="${targetFolder}" overwrite="true">
+          <fileset dir="${sourceFolder}">
+            <exclude name="**/*.java"/>
+          </fileset>
+        </copy>
         
         <!-- Create JAR file -->
         <jar destfile="LDPartEditor.jar" filesetmanifest="mergewithoutmain">
@@ -233,7 +244,9 @@
             <fileset dir="target"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/swt.jar"/>
+            <fileset dir="${dependenciesFolder}/${windowsSwtFolder}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${windowsSwtFolder}/swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
@@ -248,7 +261,6 @@
             <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
             <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
             <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
         </jar>
         
         <!-- Copy dll files -->
