@@ -396,6 +396,53 @@
         <launch4j configFile="launch4j.xml" />
         
         <delete file="LDPartEditor.jar"/>
+        
+        <!-- Create JAR file for Linux with GTK3 (64-bit) -->
+        <jar destfile="${binariesFolder}/${linuxGtk3Folder}/LDPartEditor.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
+                <!-- Modified Classpath -->
+                <attribute name="Class-Path" value=". plugin/"/>
+            </manifest>
+            <fileset dir="target"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.observable}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.property}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${equinox.common}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.text}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
+        </jar>
+        
+         <!-- Copy so files for Linux with GTK3 (64-bit) -->
+        <copy file="${dependenciesFolder}/liblwjgl.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}"/>
+        <copy file="${dependenciesFolder}/libjemalloc.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}"/>
+        <copy file="${dependenciesFolder}/libopenal.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}"/>
+        <copy file="${dependenciesFolder}/libglfw.so" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}"/>
+        <copy todir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}" overwrite="true">
+          <fileset dir="${dependenciesFolder}/${linuxGtk3Folder}">
+            <include name="**/*.so"/>
+          </fileset>
+        </copy>
+        
+        <!-- Copy resource files for Linux with GTK3 (64-bit) -->
+        <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${scriptsFolder}/${linuxFolder}/run.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${scriptsFolder}/${linuxFolder}/update.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
+        <copy file="${scriptsFolder}/${linuxFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
 
     </target>
 </project>
