@@ -30,8 +30,12 @@
             value="dependencies" />
        <property name="libsFolder"
             value="libs" />
+       <property name="scriptsFolder"
+            value="scripts" />
        <property name="binariesFolder"
             value="bin" />
+       <property name="nativesFolder"
+            value="natives" />
        <property name="sourceFolder"
             value="src" />
        <property name="targetFolder"
@@ -62,7 +66,10 @@
         <mkdir dir="${binariesFolder}/${linuxGtk2Folder}" />
         <mkdir dir="${binariesFolder}/${linuxGtk3Folder}" />
         <mkdir dir="${binariesFolder}/${macosxFolder}" />
-
+        <mkdir dir="${binariesFolder}/${linuxGtk2Folder}/${nativesFolder}" />
+        <mkdir dir="${binariesFolder}/${linuxGtk3Folder}/${nativesFolder}" />
+        <mkdir dir="${binariesFolder}/${macosxFolder}/${nativesFolder}" />
+        
         <!-- JARs from org.eclipse and com.ibm -->
         <get-and-checksum
             file="swt-4.14-win32-win32-x86_64.zip"
