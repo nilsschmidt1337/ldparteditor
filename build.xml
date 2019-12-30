@@ -38,6 +38,8 @@
             value="target" />
        <property name="windowsFolder"
             value="windows" />
+       <property name="linuxFolder"
+            value="linux" />
        <property name="linuxGtk2Folder"
             value="linux-gtk2" />
        <property name="linuxGtk3Folder"
