@@ -381,10 +381,12 @@
         <copy file="${dependenciesFolder}/OpenAL.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="${dependenciesFolder}/glfw.dll" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         
-        <!-- Copy resource files (txt) for Windows (64-bit) -->
+        <!-- Copy resource files for Windows (64-bit) -->
         <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
+        <copy file="${scriptsFolder}/${windowsFolder}/update.bat" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
+        <copy file="${scriptsFolder}/${windowsFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${windowsFolder}"/>
         
         <taskdef name="launch4j"
             classname="net.sf.launch4j.ant.Launch4jTask"
