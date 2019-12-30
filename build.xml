@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar"
-    name="Create Runnable LDPartEditor Exe (Windows only, 64-bit)">
+    name="Create Runnable LDPartEditor JAR and Exe (Windows, Linux, Mac OS X, only 64-bit)">
     <!--ANT 1.7 is required -->
-
+    
     <macrodef name="get-and-checksum">
         <attribute name="file" />
         <attribute name="destdir" />
@@ -23,9 +23,9 @@
             <fail if="checksum.matches.fail">Checksum-error</fail>
         </sequential>
     </macrodef>
-
+    
     <target name="create_run_jar">
-
+    
        <property name="dependenciesFolder"
             value="dependencies" />
        <property name="libsFolder"
@@ -50,7 +50,7 @@
             value="linux-gtk3" />
        <property name="macosxFolder"
             value="macosx" />
-
+            
         <!-- Set a launch4j directory property -->
         <property name="launch4j.dir"
             value="launch4j" />
@@ -307,7 +307,7 @@
             <fileset dir="${dependenciesFolder}"
                 includes="com.ibm.icu_*.jar" />
         </pathconvert>
-
+        
         <!-- Do some echo for the important paths -->
         <echo message="${core.commands}" />
         <echo message="${core.databinding}" />
@@ -321,7 +321,7 @@
         <echo message="${osgi}" />
         <echo message="${ui.workbench}" />
         <echo message="${icu}" />
-
+        
         <path id="master-classpath">
            <fileset dir="${dependenciesFolder}">
              <include name="**/*.jar"/>
@@ -330,7 +330,7 @@
              <include name="**/*.jar"/>
            </fileset>
          </path>
-
+         
          <!-- Compile -->
          <javac
             srcdir="${sourceFolder}"
@@ -443,6 +443,53 @@
         <copy file="${scriptsFolder}/${linuxFolder}/run.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="${scriptsFolder}/${linuxFolder}/update.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
         <copy file="${scriptsFolder}/${linuxFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${linuxGtk3Folder}"/>
-
+        
+        <!-- Create JAR file for Mac OS X (64-bit) -->
+        <jar destfile="${binariesFolder}/${macosxFolder}/LDPartEditor.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="org.nschmidt.ldparteditor.main.LDPartEditor"/>
+                <!-- Modified Classpath -->
+                <attribute name="Class-Path" value=". plugin/"/>
+            </manifest>
+            <fileset dir="target"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${macosxFolder}/swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/tools.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swt-grouplayout.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${libsFolder}/swing2swt.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.commands}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.beans}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.observable}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${core.databinding.property}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${equinox.common}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.databinding}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${jface.text}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${ui.workbench}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${osgi}"/>
+            <zipfileset excludes="META-INF/*.SF" src="${icu}"/>
+        </jar>
+        
+         <!-- Copy dylib and jnilib files for Mac OS X (64-bit) -->
+        <copy file="${dependenciesFolder}/liblwjgl.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
+        <copy file="${dependenciesFolder}/libjemalloc.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
+        <copy file="${dependenciesFolder}/libopenal.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
+        <copy file="${dependenciesFolder}/libglfw.dylib" overwrite="true" todir="${binariesFolder}/${macosxFolder}/${nativesFolder}"/>
+        <copy todir="${binariesFolder}/${macosxFolder}/${nativesFolder}" overwrite="true">
+          <fileset dir="${dependenciesFolder}/${macosxFolder}">
+            <include name="**/*.jnilib"/>
+          </fileset>
+        </copy>
+        
+        <!-- Copy resource files for Mac OS X (64-bit) -->
+        <copy file="LICENSE" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="categories.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="${scriptsFolder}/${macosxFolder}/run.sh" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="${scriptsFolder}/${macosxFolder}/update.sh" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        <copy file="${scriptsFolder}/${macosxFolder}/SearchForUpdates.jar" overwrite="true" todir="${binariesFolder}/${macosxFolder}"/>
+        
     </target>
 </project>

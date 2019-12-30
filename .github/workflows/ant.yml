@@ -30,3 +30,8 @@ jobs:
       with:
         name: LDPartEditor_linux_x64
         path: bin/linux-gtk3
+    - name: Archive macosx artifact for cocoa-x64
+      uses: actions/upload-artifact@v1
+      with:
+        name: LDPartEditor_mac_x64
+        path: bin/macosx
