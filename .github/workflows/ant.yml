@@ -13,7 +13,7 @@ jobs:
       uses: actions/cache@v1
       with:
         path: ./dependencies
-        key: swt-jface-lwjgl-tools-launch4j-multiplatform
+        key: swt-jface-lwjgl-tools-launch4j-multiplatform-gtk2
     - name: Set up JDK 1.8
       uses: actions/setup-java@v1
       with:
@@ -35,3 +35,8 @@ jobs:
       with:
         name: LDPartEditor_mac_x64
         path: bin/macosx
+    - name: Archive linux artifact for gtk2-x64
+      uses: actions/upload-artifact@v1
+      with:
+        name: LDPartEditor_linux_x64_alternative
+        path: bin/linux-gtk2
