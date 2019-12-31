@@ -2,7 +2,13 @@
 <project default="create_run_jar"
     name="Create Runnable LDPartEditor JAR and Exe (Windows, Linux, Mac OS X, only 64-bit)">
     <!--ANT 1.7 is required -->
-    
+    <property name="dependenciesFolder"
+            value="dependencies" />
+    <property name="binariesFolder"
+            value="bin" />
+    <property name="targetFolder"
+            value="target" />
+            
     <macrodef name="get-and-checksum">
         <attribute name="file" />
         <attribute name="destdir" />
@@ -26,20 +32,14 @@
     
     <target name="create_run_jar">
     
-       <property name="dependenciesFolder"
-            value="dependencies" />
        <property name="libsFolder"
             value="libs" />
        <property name="scriptsFolder"
             value="scripts" />
-       <property name="binariesFolder"
-            value="bin" />
        <property name="nativesFolder"
             value="natives" />
        <property name="sourceFolder"
             value="src" />
-       <property name="targetFolder"
-            value="target" />
        <property name="windowsFolder"
             value="windows" />
        <property name="linuxFolder"
@@ -422,7 +422,7 @@
                 <!-- Modified Classpath -->
                 <attribute name="Class-Path" value=". plugin/"/>
             </manifest>
-            <fileset dir="target"/>
+            <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${windowsFolder}/swt.jar"/>
@@ -472,7 +472,7 @@
                 <!-- Modified Classpath -->
                 <attribute name="Class-Path" value=". plugin/"/>
             </manifest>
-            <fileset dir="target"/>
+            <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk3Folder}/swt.jar"/>
@@ -519,7 +519,7 @@
                 <!-- Modified Classpath -->
                 <attribute name="Class-Path" value=". plugin/"/>
             </manifest>
-            <fileset dir="target"/>
+            <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${macosxFolder}/swt.jar"/>
@@ -566,7 +566,7 @@
                 <!-- Modified Classpath -->
                 <attribute name="Class-Path" value=". plugin/"/>
             </manifest>
-            <fileset dir="target"/>
+            <fileset dir="${targetFolder}"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl_util.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dependenciesFolder}/${linuxGtk2Folder}/swt.jar"/>
@@ -604,5 +604,11 @@
         <copy file="primitive_rules.txt" overwrite="true" todir="${binariesFolder}/${linuxGtk2Folder}"/>
         <copy file="${scriptsFolder}/${linuxFolder}/run.sh" overwrite="true" todir="${binariesFolder}/${linuxGtk2Folder}"/>
 
+    </target>
+    
+    <target name="clean">
+        <delete dir="${binariesFolder}" />
+        <delete dir="${targetFolder}" />
+        <delete dir="${dependenciesFolder}" />
     </target>
 </project>
