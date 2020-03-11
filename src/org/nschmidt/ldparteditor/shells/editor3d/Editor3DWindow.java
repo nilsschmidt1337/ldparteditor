@@ -158,6 +158,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Perspective;
+import org.nschmidt.ldparteditor.enums.SnapSize;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.TransformationMode;
 import org.nschmidt.ldparteditor.enums.View;
@@ -271,7 +272,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     private ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
-    private int snapSize = 1;
+    private SnapSize snapSize = SnapSize.MEDIUM;
 
     private Txt2DatSettings ts = new Txt2DatSettings();
     private Edger2Settings es = new Edger2Settings();
@@ -1726,7 +1727,7 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
-            snapSize = 2;
+            snapSize = SnapSize.COARSE;
             spn_Move[0].setValue(m);
             spn_Rotate[0].setValue(r);
             spn_Scale[0].setValue(s);
@@ -1738,7 +1739,7 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
-            snapSize = 1;
+            snapSize = SnapSize.MEDIUM;
             spn_Move[0].setValue(m);
             spn_Rotate[0].setValue(r);
             spn_Scale[0].setValue(s);
@@ -1750,7 +1751,7 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal m = WorkbenchManager.getUserSettingState().getFine_move_snap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
-            snapSize = 0;
+            snapSize = SnapSize.FINE;
             spn_Move[0].setValue(m);
             spn_Rotate[0].setValue(r);
             spn_Scale[0].setValue(s);
@@ -1783,7 +1784,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     BigDecimal m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
                     BigDecimal r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
                     BigDecimal s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
-                    snapSize = 2;
+                    snapSize = SnapSize.COARSE;
                     spn_Move[0].setValue(m);
                     spn_Rotate[0].setValue(r);
                     spn_Scale[0].setValue(s);
@@ -1830,7 +1831,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     BigDecimal m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
                     BigDecimal r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
                     BigDecimal s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
-                    snapSize = 1;
+                    snapSize = SnapSize.MEDIUM;
                     spn_Move[0].setValue(m);
                     spn_Rotate[0].setValue(r);
                     spn_Scale[0].setValue(s);
@@ -1877,7 +1878,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     BigDecimal m = WorkbenchManager.getUserSettingState().getFine_move_snap();
                     BigDecimal r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
                     BigDecimal s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
-                    snapSize = 0;
+                    snapSize = SnapSize.FINE;
                     spn_Move[0].setValue(m);
                     spn_Rotate[0].setValue(r);
                     spn_Scale[0].setValue(s);
@@ -1961,20 +1962,21 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal m, r, s;
             m = spn.getValue();
             switch (snapSize) {
-            case 0:
+            case FINE:
                 WorkbenchManager.getUserSettingState().setFine_move_snap(m);
                 r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
                 s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
                 break;
-            case 2:
-                WorkbenchManager.getUserSettingState().setCoarse_move_snap(m);
-                r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
-                s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
-                break;
-            default:
+            case MEDIUM:
                 WorkbenchManager.getUserSettingState().setMedium_move_snap(m);
                 r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
                 s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
+                break;
+            case COARSE:
+            default:
+                WorkbenchManager.getUserSettingState().setCoarse_move_snap(m);
+                r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
+                s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
                 break;
             }
             Manipulator.setSnap(m, r, s);
@@ -1984,20 +1986,21 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal m, r, s;
             r = spn.getValue();
             switch (snapSize) {
-            case 0:
+            case FINE:
                 m = WorkbenchManager.getUserSettingState().getFine_move_snap();
                 WorkbenchManager.getUserSettingState().setFine_rotate_snap(r);
                 s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
                 break;
-            case 2:
-                m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
-                WorkbenchManager.getUserSettingState().setCoarse_rotate_snap(r);
-                s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
-                break;
-            default:
+            case MEDIUM:
                 m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
                 WorkbenchManager.getUserSettingState().setMedium_rotate_snap(r);
                 s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
+                break;
+            case COARSE:
+            default:
+                m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
+                WorkbenchManager.getUserSettingState().setCoarse_rotate_snap(r);
+                s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
                 break;
             }
             Manipulator.setSnap(m, r, s);
@@ -2007,20 +2010,21 @@ public class Editor3DWindow extends Editor3DDesign {
             BigDecimal m, r, s;
             s = spn.getValue();
             switch (snapSize) {
-            case 0:
+            case FINE:
                 m = WorkbenchManager.getUserSettingState().getFine_move_snap();
                 r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
                 WorkbenchManager.getUserSettingState().setFine_scale_snap(s);
                 break;
-            case 2:
-                m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
-                r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
-                WorkbenchManager.getUserSettingState().setCoarse_scale_snap(s);
-                break;
-            default:
+            case MEDIUM:
                 m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
                 r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
                 WorkbenchManager.getUserSettingState().setMedium_scale_snap(s);
+                break;
+            case COARSE:
+            default:
+                m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
+                r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
+                WorkbenchManager.getUserSettingState().setCoarse_scale_snap(s);
                 break;
             }
             Manipulator.setSnap(m, r, s);
@@ -9274,26 +9278,29 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void updateInitialScale(BigDecimal initialScale, BigDecimal scaleFacor, boolean setDefaults) {
-        if (setDefaults) {
-            switch (snapSize) {
-            case 0:
-                WorkbenchManager.getUserSettingState().setCoarse_scale_snap(new BigDecimal("2")); //$NON-NLS-1$
-                scaleFacor = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
-                break;
-            case 1:
-                WorkbenchManager.getUserSettingState().setCoarse_scale_snap(new BigDecimal("1.1")); //$NON-NLS-1$
-                scaleFacor = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
-                break;
-            case 2:
-                WorkbenchManager.getUserSettingState().setCoarse_scale_snap(new BigDecimal("1.001")); //$NON-NLS-1$
-                scaleFacor = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
-                break;
-            default:
-                break;
+        if (BigDecimal.ZERO.compareTo(spn_ScaleInitial[0].getValue()) != 0) {
+            if (setDefaults) {
+                switch (snapSize) {
+                case FINE:
+                    WorkbenchManager.getUserSettingState().setFine_scale_snap(new BigDecimal("1.001")); //$NON-NLS-1$
+                    scaleFacor = WorkbenchManager.getUserSettingState().getFine_scale_snap();
+                    break;
+                case MEDIUM:
+                    WorkbenchManager.getUserSettingState().setMedium_scale_snap(new BigDecimal("1.1")); //$NON-NLS-1$
+                    scaleFacor = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
+                    break;
+                case COARSE:
+                    WorkbenchManager.getUserSettingState().setCoarse_scale_snap(new BigDecimal("2")); //$NON-NLS-1$
+                    scaleFacor = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
+                    break;
+                default:
+                    break;
+                }
             }
+
+            spn_ScaleInitial[0].setValue(initialScale);
+            spn_Scale[0].setValue(scaleFacor);
         }
-        spn_ScaleInitial[0].setValue(initialScale);
-        spn_Scale[0].setValue(scaleFacor);
     }
 
     public void activateAllTypes() {
