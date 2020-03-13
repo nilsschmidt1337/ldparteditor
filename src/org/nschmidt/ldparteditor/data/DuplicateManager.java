@@ -63,7 +63,7 @@ public class DuplicateManager {
                                 String lastCommentLine = null;
                                 final HashMap<String, Integer> lines = new HashMap<String, Integer>();
 
-                                allKeys.addAll(GData.CACHE_duplicates.keySet());
+                                allKeys.addAll(GData.CACHE_duplicates.threadsafeKeySet());
                                 GData gd = newEntry;
                                 int lineNumber = 1;
                                 while ((gd = gd.next) != null) {

@@ -36,141 +36,196 @@ public class ThreadsafeTreeMap<K, V> implements Map<K, V> {
     private final Lock wl = rwl.writeLock();
 
     public ThreadsafeTreeMap() {
-        wl.lock();
-        map = new TreeMap<K, V>();
-        wl.unlock();
+        try {
+            wl.lock();
+            map = new TreeMap<K, V>();
+        } finally {
+            wl.unlock();
+        }
     }
 
     public ThreadsafeTreeMap(Map<? extends K, ? extends V> m) {
-        wl.lock();
-        map = new TreeMap<K, V>(m);
-        wl.unlock();
+        try {
+            wl.lock();
+            map = new TreeMap<K, V>(m);
+        } finally {
+            wl.unlock();
+        }
     }
 
     @Override
     public void clear() {
-        wl.lock();
-        map.clear();
-        wl.unlock();
+        try {
+            wl.lock();
+            map.clear();
+        } finally {
+            wl.unlock();
+        }
     }
 
     @Override
     public Object clone() {
-        rl.lock();
-        final Object obj = map.clone();
-        rl.unlock();
-        return obj;
+        try {
+            rl.lock();
+            final Object obj = map.clone();
+            return obj;
+        } finally {
+            rl.unlock();
+        }
     }
 
     @Override
     public boolean containsKey(Object key) {
-        rl.lock();
-        final boolean value = map.containsKey(key);
-        rl.unlock();
-        return value;
+        try {
+            rl.lock();
+            final boolean value = map.containsKey(key);
+            return value;
+        } finally {
+            rl.unlock();
+        }
     }
 
     @Override
     public boolean containsValue(Object value) {
-        rl.lock();
-        final boolean rvalue = map.containsValue(value);
-        rl.unlock();
-        return rvalue;
+        try {
+            rl.lock();
+            final boolean rvalue = map.containsValue(value);
+            return rvalue;
+        } finally {
+            rl.unlock();
+        }
     }
 
     @Override
     public Set<java.util.Map.Entry<K, V>> entrySet() {
-        rl.lock();
-        final Set<java.util.Map.Entry<K, V>> rvalue = map.entrySet();
-        rl.unlock();
-        return rvalue;
-    }
-    
-    public Set<java.util.Map.Entry<K, V>> threadSafeEntrySet() {
-        rl.lock();
-        final Set<java.util.Map.Entry<K, V>> val = map.entrySet();
-        final Set<java.util.Map.Entry<K, V>> result = new HashSet<>();
-        for (Entry<K, V> entry : val) {
-            result.add(entry);
+        try {
+            rl.lock();
+            final Set<java.util.Map.Entry<K, V>> rvalue = map.entrySet();
+            return rvalue;
+        } finally {
+            rl.unlock();
         }
-        rl.unlock();
-        return result;
     }
-    
+
+    public Set<java.util.Map.Entry<K, V>> threadSafeEntrySet() {
+        try {
+            rl.lock();
+            final Set<java.util.Map.Entry<K, V>> val = map.entrySet();
+            final Set<java.util.Map.Entry<K, V>> result = new HashSet<>();
+            for (Entry<K, V> entry : val) {
+                result.add(entry);
+            }
+
+            return result;
+        } finally {
+            rl.unlock();
+        }
+    }
+
     @Override
     public V get(Object key) {
-        rl.lock();
-        final V val = map.get(key);
-        rl.unlock();
-        return val;
+        try {
+            rl.lock();
+            final V val = map.get(key);
+            return val;
+        } finally {
+            rl.unlock();
+        }
     }
 
     @Override
     public boolean isEmpty() {
-        rl.lock();
-        final boolean rvalue = map.isEmpty();
-        rl.unlock();
-        return rvalue;
+        try {
+            rl.lock();
+            final boolean rvalue = map.isEmpty();
+            return rvalue;
+        } finally {
+            rl.unlock();
+        }
     }
 
     @Override
     public Set<K> keySet() {
-        rl.lock();
-        final Set<K> val = map.keySet();
-        rl.unlock();
-        return val;
+        try {
+            rl.lock();
+            final Set<K> val = map.keySet();
+            return val;
+        } finally {
+            rl.unlock();
+        }
     }
 
     @Override
     public V put(K key, V value) {
-        wl.lock();
-        final V val = map.put(key, value);
-        wl.unlock();
-        return val;
+        try {
+            wl.lock();
+            final V val = map.put(key, value);
+            return val;
+        } finally {
+            wl.unlock();
+        }
     }
 
     @Override
     public void putAll(Map<? extends K, ? extends V> m) {
-        wl.lock();
-        map.putAll(m);
-        wl.unlock();
+        try {
+            wl.lock();
+            map.putAll(m);
+        } finally {
+            wl.unlock();
+        }
     }
 
     @Override
     public V remove(Object key) {
-        wl.lock();
-        final V val = map.remove(key);
+        try {
+            wl.lock();
+            final V val = map.remove(key);
+            return val;
+    } finally {
         wl.unlock();
-        return val;
+    }
     }
 
     @Override
     public int size() {
-        rl.lock();
-        final int rvalue = map.size();
-        rl.unlock();
-        return rvalue;
+        try {
+            rl.lock();
+            final int rvalue = map.size();
+            return rvalue;
+        } finally {
+            rl.unlock();
+        }
     }
 
     public K firstKey() {
-        rl.lock();
-        final K val = map.firstKey();
-        rl.unlock();
-        return val;
+        try {
+            rl.lock();
+            final K val = map.firstKey();
+            return val;
+        } finally {
+            rl.unlock();
+        }
     }
 
     public K lastKey() {
-        rl.lock();
-        final K val = map.lastKey();
-        rl.unlock();
-        return val;
+        try {
+            rl.lock();
+            final K val = map.lastKey();
+            return val;
+        } finally {
+            rl.unlock();
+        }
     }
 
     @Override
     public Collection<V> values() {
-        rl.lock();
-        final Collection<V> rvalue = map.values();
-        rl.unlock();
-        return rvalue;
+        try {
+            rl.lock();
+            final Collection<V> rvalue = map.values();
+            return rvalue;
+        } finally {
+            rl.unlock();
+        }
     }
 }
