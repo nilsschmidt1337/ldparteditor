@@ -86,7 +86,7 @@ public enum Annotator {
                     try {
                         ((CompositeTab) t).getTextComposite().setSelection(s);
                     } catch (IllegalArgumentException iae) {
-                        NLogger.debug(AnnotatorTexmap.class, iae);
+                        NLogger.debug(Annotator.class, iae);
                     }
                     ((CompositeTab) t).getState().setSync(false);
                     ((CompositeTab) t).parseForErrorAndHints();
