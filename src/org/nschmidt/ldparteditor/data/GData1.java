@@ -153,6 +153,7 @@ public final class GData1 extends GData {
 
             if (lines == null) {
                 lines = new ArrayList<String>();
+                NLogger.debug(GData1.class, "Subfile has no lines to parse: {0}", name); //$NON-NLS-1$
             }
 
             if (!GData.CACHE_parsedFilesSource.containsKey(name)) {

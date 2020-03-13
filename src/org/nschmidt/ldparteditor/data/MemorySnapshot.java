@@ -18,6 +18,8 @@ package org.nschmidt.ldparteditor.data;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.nschmidt.ldparteditor.logger.NLogger;
+
 /**
  * @author nils
  *
@@ -36,11 +38,26 @@ public class MemorySnapshot {
         String[] backup = new String[objCount];
         int count = 0;
         GData data2draw = df.getDrawChainStart();
-        while (count < objCount) {
+        while (count < objCount && data2draw != null) {
             data2draw = data2draw.getNext();
+            if (data2draw == null) {
+                NLogger.debug(MemorySnapshot.class, "Unexpected end of file. It has {0} linked objects, but {1} lines", count, objCount); //$NON-NLS-1$
+                break;
+            }
+
             backup[count] = data2draw.toString();
             count++;
         }
+
+        if (count < objCount) {
+            String[] smallerBackup = new String[count];
+            for (int i = 0; i < count; i++) {
+                smallerBackup[i] = backup[i];
+            }
+
+            backup = smallerBackup;
+        }
+
         this.backup = backup;
     }
 
