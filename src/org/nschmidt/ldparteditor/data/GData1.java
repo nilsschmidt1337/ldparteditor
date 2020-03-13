@@ -151,6 +151,10 @@ public final class GData1 extends GData {
 
             matrix.position(0);
 
+            if (lines == null) {
+                lines = new ArrayList<String>();
+            }
+
             if (!GData.CACHE_parsedFilesSource.containsKey(name)) {
                 GData.CACHE_parsedFilesSource.put(name, lines);
             }
