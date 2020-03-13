@@ -1600,6 +1600,7 @@ public final class DatFile {
 
         UTF8PrintWriter r = null;
         try {
+            File newFile = new File(newName);
             if (deleteFirst) {
                 File oldFile = new File(oldName);
                 if (oldFile.exists()) {
@@ -1609,7 +1610,6 @@ public final class DatFile {
                     oldFile.delete();
                 }
             } else {
-                File newFile = new File(newName);
                 if (newFile.exists()) {
                     if (checkFileCollision(newFile)) {
                         return true;
@@ -1621,6 +1621,9 @@ public final class DatFile {
                         oldFile.delete();
                     }
                 }
+            }
+            if (!newFile.getParentFile().exists()) {
+                newFile.getParentFile().mkdirs();
             }
             r = new UTF8PrintWriter(newName);
             ArrayList<String> lines = new ArrayList<String>();
@@ -1674,6 +1677,9 @@ public final class DatFile {
             if (newFile.exists()) {
                 newFile.delete();
             }
+            if (!newFile.getParentFile().exists()) {
+                newFile.getParentFile().mkdirs();
+            }
             r = new UTF8PrintWriter(newName);
             ArrayList<String> lines = new ArrayList<String>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
@@ -1720,6 +1726,9 @@ public final class DatFile {
             File newFile = new File(newName);
             if (newFile.exists()) {
                 newFile.delete();
+            }
+            if (!newFile.getParentFile().exists()) {
+                newFile.getParentFile().mkdirs();
             }
             r = new UTF8PrintWriter(newName);
             ArrayList<String> lines = new ArrayList<String>();
