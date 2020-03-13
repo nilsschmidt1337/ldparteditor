@@ -102,14 +102,10 @@ public class SplashScreen extends ApplicationWindow {
         final File configGzFile = new File(WorkbenchManager.CONFIG_GZ);
 
         // Load the workbench here if WorkbenchManager.CONFIG_GZ exists
-        if (configGzFile.exists()) {
-            WorkbenchManager.loadWorkbench(WorkbenchManager.CONFIG_GZ);
-            if (WorkbenchManager.getUserSettingState() == null || WorkbenchManager.getUserSettingState().isResetOnStart()) {
-                // Do a reset, if needed.
-                configGzFile.delete();
-            }
-        }
-        if (!configGzFile.exists()) {
+        final boolean successfulLoad = configGzFile.exists()
+                && WorkbenchManager.loadWorkbench(WorkbenchManager.CONFIG_GZ);
+
+        if (!successfulLoad || WorkbenchManager.getUserSettingState() == null || WorkbenchManager.getUserSettingState().isResetOnStart()) {
             WorkbenchManager.createDefaultWorkbench();
             // This is our first time we use the application.
             // Start a little wizard for the user dependent properties.

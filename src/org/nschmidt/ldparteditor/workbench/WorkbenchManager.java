@@ -97,7 +97,9 @@ public enum WorkbenchManager {
                 try {
                     WorkbenchManager.primitiveCache = (PrimitiveCache) configFileStream.readObject();
                 } catch (Exception e) {
-                    NLogger.error(WorkbenchManager.class, e);
+                    WorkbenchManager.primitiveCache = new PrimitiveCache();
+                    NLogger.debug(WorkbenchManager.class, "Could not load the primitive cache."); //$NON-NLS-1$
+                    NLogger.debug(WorkbenchManager.class, e);
                 }
                 configFileStream.close();
             }
