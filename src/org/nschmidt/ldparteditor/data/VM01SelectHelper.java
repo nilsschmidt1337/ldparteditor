@@ -1415,7 +1415,7 @@ public class VM01SelectHelper extends VM01Select {
                             selectedData.add(gd4);
                             selectedQuads.add(gd4);
                         }
-                    } else if (sels.isTriangles() || !sels.isQuads()) {
+                    } else if (selection.type() == 3 && (sels.isTriangles() || !sels.isQuads())) {
                         GData3 gd3 = (GData3) selection;
                         if (selectedTriangles.contains(gd3)) {
                             if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(gd3);
@@ -1523,7 +1523,7 @@ public class VM01SelectHelper extends VM01Select {
                     if (selection.type() == 4) {
                         GData4 gd4 = (GData4) selection;
                         selectedQuadsForSubfile.add(gd4);
-                    } else {
+                    } else if (selection.type() == 3) {
                         GData3 gd3 = (GData3) selection;
                         selectedTrianglesForSubfile.add(gd3);
                     }
