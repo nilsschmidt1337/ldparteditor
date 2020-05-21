@@ -909,7 +909,7 @@ public class CompositePrimitive extends Composite {
                             continue;
                         }
                         UTF8BufferedReader reader = null;
-                        File[] files = libFolder.listFiles();
+                        final File[] files = libFolder.listFiles();
                         if (files == null) {
                             isUppercase = !isUppercase;
                             continue;

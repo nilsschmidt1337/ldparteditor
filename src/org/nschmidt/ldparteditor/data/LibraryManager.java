@@ -591,7 +591,7 @@ public class LibraryManager {
     private static void readLibraryFolder(String basePath, String prefix1, String prefix2, TreeItem treeItem, boolean isPrimitiveFolder, boolean isReadOnlyFolder, DatType type) {
         String folderPath = basePath;
         boolean canSearch = true;
-        File baseFolder = new File(basePath);
+        final File baseFolder = new File(basePath);
         if (prefix1.isEmpty()) {
             HashMap<DatFileName, TreeItem> parentMap = new HashMap<DatFileName, TreeItem>();
             HashMap<DatFileName, DatType> typeMap = new HashMap<DatFileName, DatType>();
@@ -710,7 +710,12 @@ public class LibraryManager {
                 }
             }
         } else {
-            for (File sub : baseFolder.listFiles()) {
+            final File[] baseFolderFiles = baseFolder.listFiles();
+            if (baseFolderFiles == null) {
+                return;
+            }
+
+            for (File sub : baseFolderFiles) {
                 // Check if the sub-folder exist
                 if (sub.isDirectory() && sub.getName().equalsIgnoreCase(prefix1)) {
                     folderPath = folderPath + File.separator + sub.getName();
@@ -719,11 +724,14 @@ public class LibraryManager {
                         // sub-sub-folder exist (e.g. D:\LDRAW\PARTS\S)
                         canSearch = false;
                         File subFolder = new File(basePath + File.separator + sub.getName());
-                        for (File subsub : subFolder.listFiles()) {
-                            if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(prefix2)) {
-                                folderPath = folderPath + File.separator + subsub.getName();
-                                canSearch = true;
-                                break;
+                        File[] subFolderFiles = subFolder.listFiles();
+                        if (subFolderFiles != null) {
+                            for (File subsub : subFolderFiles) {
+                                if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(prefix2)) {
+                                    folderPath = folderPath + File.separator + subsub.getName();
+                                    canSearch = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -731,11 +739,15 @@ public class LibraryManager {
                         // Do the search for DAT files
                         ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
                         File libFolder = new File(folderPath);
-                        for (File f : libFolder.listFiles()) {
-                            if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
-                                datFiles.add(new DatFileName(f.getName(), "", isPrimitiveFolder)); //$NON-NLS-1$
+                        final File[] libFolderFiles = libFolder.listFiles();
+                        if (libFolderFiles != null) {
+                            for (File f : libFolderFiles) {
+                                if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
+                                    datFiles.add(new DatFileName(f.getName(), "", isPrimitiveFolder)); //$NON-NLS-1$
+                                }
                             }
                         }
+
                         // Sort the file list
                         Collections.sort(datFiles);
                         // Create the file entries
@@ -1203,7 +1215,12 @@ public class LibraryManager {
             }
         } else {
             boolean canSearch = true;
-            for (File sub : baseFolder.listFiles()) {
+            final File[] baseFolderFiles = baseFolder.listFiles();
+            if (baseFolderFiles == null) {
+                return;
+            }
+
+            for (File sub : baseFolderFiles) {
                 // Check if the sub-folder exist
                 if (sub.isDirectory() && sub.getName().equalsIgnoreCase(prefix1)) {
                     String folderPath = basePath + File.separator + sub.getName();
@@ -1212,11 +1229,14 @@ public class LibraryManager {
                         // sub-sub-folder exist (e.g. D:\LDRAW\PARTS\S)
                         canSearch = false;
                         File subFolder = new File(basePath + File.separator + sub.getName());
-                        for (File subsub : subFolder.listFiles()) {
-                            if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(prefix2)) {
-                                folderPath = folderPath + File.separator + subsub.getName();
-                                canSearch = true;
-                                break;
+                        final File[] files = subFolder.listFiles();
+                        if (files != null) {
+                            for (File subsub : files) {
+                                if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(prefix2)) {
+                                    folderPath = folderPath + File.separator + subsub.getName();
+                                    canSearch = true;
+                                    break;
+                                }
                             }
                         }
                     }
@@ -1225,7 +1245,12 @@ public class LibraryManager {
                         File libFolder = new File(folderPath);
                         UTF8BufferedReader reader = null;
                         StringBuilder titleSb = new StringBuilder();
-                        for (File f : libFolder.listFiles()) {
+                        final File[] files = libFolder.listFiles();
+                        if (files == null) {
+                            break;
+                        }
+
+                        for (File f : files) {
                             if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
                                 final String path = f.getAbsolutePath();
                                 if (locked.contains(path)) {
