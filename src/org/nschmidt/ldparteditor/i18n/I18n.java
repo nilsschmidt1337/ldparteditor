@@ -576,6 +576,7 @@ public final class I18n {
     public static final String E3D_Redo = E3D.getString(getProperty());
     public static final String E3D_ReduceCount = E3D.getString(getProperty());
     public static final String E3D_RenameMove = E3D.getString(getProperty());
+    public static final String E3D_Reopen3DView = E3D.getString(getProperty());
     public static final String E3D_ReplaceCategories = E3D.getString(getProperty());
     public static final String E3D_ReplaceLDConfig = E3D.getString(getProperty());
     public static final String E3D_RequiresRestart = E3D.getString(getProperty());

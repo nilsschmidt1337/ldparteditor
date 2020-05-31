@@ -15,6 +15,8 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers.composite3d;
 
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+
 import java.io.File;
 import java.util.Locale;
 
@@ -28,6 +30,8 @@ import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
 import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.opengl.GLCanvas;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -42,11 +46,15 @@ import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.Cocoa;
+import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * Provides functions to perform view actions for the {@linkplain Composite3D}
@@ -380,6 +388,29 @@ public class Composite3DModifier {
 
             Composite nc = new Composite(oldParentSashForm, SWT.NONE);
             nc.setData("%EMPTY%"); //$NON-NLS-1$
+            nc.setLayout(new GridLayout());
+            {
+                GridData gd = new GridData();
+                gd.horizontalAlignment = SWT.CENTER;
+                gd.verticalAlignment = SWT.CENTER;
+                gd.grabExcessHorizontalSpace = true;
+                gd.grabExcessVerticalSpace = true;
+                NButton btn_OpenIn3DEditor = new NButton(nc, Cocoa.getStyle());
+                btn_OpenIn3DEditor.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
+                btn_OpenIn3DEditor.setText(I18n.E3D_Reopen3DView);
+                btn_OpenIn3DEditor.setLayoutData(gd);
+                btn_OpenIn3DEditor.setData(Project.getFileToEdit());
+
+                WidgetUtil(btn_OpenIn3DEditor).addSelectionListener(e -> {
+                    DatFile df = (DatFile) btn_OpenIn3DEditor.getData();
+                    if (df == null) {
+                        df = View.DUMMY_DATFILE;
+                    }
+
+                    Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_3D, null);
+                });
+            }
+
             nc.moveBelow(oldParentSashForm.getChildren()[0]);
 
             DropTarget dt = new DropTarget(nc, DND.DROP_DEFAULT | DND.DROP_MOVE );
