@@ -1,3 +1,19 @@
+### 01 Jun 2020
+With the release of 0.8.50 you are able to...
+-  ...use a button to re-open the 3D view (if no view is shown)
+-  ...see a warning if you try to configure a shortcut key which can't be assigned.
+-  ...start the program with a broken config file (it's not a bug, it's a feature!).
+
+The following critical issues are fixed:
+1. The program could break if a subfile refered to a non-existent or read-protected nested subfile in very rare cases.
+2. There was a critical selection problem which occured if you have tried to select a single quad, but you deactivated the selection of quads before (selection filter).
+3. It was problematic if the program could not read from the official and unoffical LDRAW library folder.
+4. It was impossible to save a file if its directory does not exist anymore.
+5. There was a breaking bug which could deactivate the duplication check on a single file (did not affect other files).
+6. Pressing the ESC key reset the (scale) snapping to an unexpected 2.00 value.
+
+
+
 ### 08 Oct 2019
 With the release of 0.8.49b the following critical issue is fixed:
 1. "Open File" : A "\" character was missing between the folder name and the file name.
