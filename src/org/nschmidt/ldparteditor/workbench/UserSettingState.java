@@ -739,20 +739,14 @@ public class UserSettingState implements Serializable {
         if (key3DStrings != null && key3DKeys != null && key3DTasks != null) {
             final int size = key3DStrings.length;
             for (int i = 0; i < size; i++) {
-                final String oldKey = KeyStateManager.getMapKey(key3DTasks[i]);
-                if (oldKey != null) {
-                    KeyStateManager.changeKey(oldKey, key3DKeys[i], key3DStrings[i], key3DTasks[i]);
-                }
+                KeyStateManager.changeKey(key3DKeys[i], key3DStrings[i], key3DTasks[i]);
             }
         }
 
         if (keyTextStrings != null && keyTextKeys != null && keyTextTasks != null) {
             final int size = keyTextStrings.length;
             for (int i = 0; i < size; i++) {
-                final String oldKey = KeyStateManager.getMapKey(keyTextTasks[i]);
-                if (oldKey != null) {
-                    KeyStateManager.changeKey(oldKey, keyTextKeys[i], keyTextStrings[i], keyTextTasks[i]);
-                }
+                KeyStateManager.changeKey(keyTextKeys[i], keyTextStrings[i], keyTextTasks[i]);
             }
         }
     }

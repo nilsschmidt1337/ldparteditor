@@ -19,6 +19,8 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ArmEvent;
@@ -1291,14 +1293,26 @@ public class KeyStateManager {
         return null;
     }
 
-    public static void changeKey(String oldKey, String newKey, String keyString, Task t) {
-        taskMap.remove(oldKey);
+    public static void changeKey(String newKey, String keyString, Task t) {
+        for (Iterator<Entry<String, Task>> it = taskMap.entrySet().iterator(); it.hasNext();) {
+            Entry<String, Task> entry = it.next();
+            if (entry.getValue() == t) {
+                it.remove();
+            }
+        }
+
         taskMap.put(newKey, t);
         taskKeyMap.put(t, keyString);
     }
 
-    public static void changeKey(String oldKey, String newKey, String keyString, TextTask t) {
-        textTaskMap.remove(oldKey);
+    public static void changeKey(String newKey, String keyString, TextTask t) {
+        for (Iterator<Entry<String, TextTask>> it = textTaskMap.entrySet().iterator(); it.hasNext();) {
+            Entry<String, TextTask> entry = it.next();
+            if (entry.getValue() == t) {
+                it.remove();
+            }
+        }
+
         textTaskMap.put(newKey, t);
         textTaskKeyMap.put(t, keyString);
     }

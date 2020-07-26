@@ -516,18 +516,16 @@ class OptionsDesign extends ApplicationWindow {
                                     if (KeyStateManager.hasTextTaskKey(KeyStateManager.tmp_mapKey)) {
                                         showKeyAlreadyInUseWarning(selection.getParentItem(), KeyStateManager.tmp_keyString);
                                     } else {
-                                        KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (TextTask) data[1]);
+                                        KeyStateManager.changeKey(KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (TextTask) data[1]);
                                         selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
-                                        data[2] = KeyStateManager.tmp_mapKey;
                                     }
                                 }
                                 if (data[1] == null) {
                                     if (KeyStateManager.hasTaskKey(KeyStateManager.tmp_mapKey)) {
                                         showKeyAlreadyInUseWarning(selection.getParentItem(), KeyStateManager.tmp_keyString);
                                     } else {
-                                        KeyStateManager.changeKey((String) data[2], KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (Task) data[0]);
+                                        KeyStateManager.changeKey(KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (Task) data[0]);
                                         selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
-                                        data[2] = KeyStateManager.tmp_mapKey;
                                     }
                                 }
                                 tree.build();
@@ -742,11 +740,11 @@ class OptionsDesign extends ApplicationWindow {
         final MessageBox messageBoxInfo = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
         final HashMap<String, String> reservedKeysMappedToAction = new HashMap<>();
         final String inputTheColourNumber = "colour number input";//$NON-NLS-1$ I18N Needs translation!
-        
+
         for (int n = 0; n < 10; n++) {
             reservedKeysMappedToAction.put("NUMPAD_" + n, inputTheColourNumber); //$NON-NLS-1$ I18N Needs translation!
         }
-        
+
         if (reservedKeysMappedToAction.containsKey(keyString)) {
             actionString = reservedKeysMappedToAction.get(keyString);
         } else {
@@ -757,7 +755,7 @@ class OptionsDesign extends ApplicationWindow {
                 }
             }
         }
-        
+
         messageBoxInfo.setText(I18n.DIALOG_Info);
         messageBoxInfo.setMessage("The key combination " + keyString + " is already in use for '" + actionString + "'."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
         messageBoxInfo.open();
@@ -807,22 +805,18 @@ class OptionsDesign extends ApplicationWindow {
 
         String keyCombination = ""; //$NON-NLS-1$
 
-        String key = null;
-
         if (t1 != null) {
             HashMap<Task, String> m = KeyStateManager.getTaskKeymap();
             keyCombination = m.get(t1);
-            key = KeyStateManager.getMapKey(t1);
         } else if (t2 != null) {
             HashMap<TextTask, String> m = KeyStateManager.getTextTaskKeymap();
             keyCombination = m.get(t2);
-            key = KeyStateManager.getMapKey(t2);
         }
         if (visibility) {
             TreeItem trtm_newKey = new TreeItem(parent, SWT.PUSH);
             trtm_newKey.setText(new String[] { description, keyCombination });
             trtm_newKey.setVisible(true);
-            trtm_newKey.setData(new Object[]{t1, t2, key});
+            trtm_newKey.setData(new Object[]{t1, t2});
         }
     }
 
