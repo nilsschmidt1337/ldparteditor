@@ -1,3 +1,8 @@
+### 10 Aug 2020
+With the release of 0.8.51 the following critical issue is fixed:
+1. Some keyboard keys can't be properly assigned as a shortcut for the 3D editor view (e.g. the 'R' key).
+
+
 ### 01 Jun 2020
 With the release of 0.8.50 you are able to...
 -  ...use a button to re-open the 3D view (if no view is shown)
@@ -11,7 +16,6 @@ The following critical issues are fixed:
 4. It was impossible to save a file if its directory does not exist anymore.
 5. There was a breaking bug which could deactivate the duplication check on a single file (did not affect other files).
 6. Pressing the ESC key reset the (scale) snapping to an unexpected 2.00 value.
-
 
 
 ### 08 Oct 2019
