@@ -296,12 +296,12 @@
             
         <!-- Get launch4j.zip -->
         <get-and-checksum
-            file="launch4j.zip"
+            file="launch4j-3.12.zip"
             destdir="${dependenciesFolder}"
-            checksum="2f7b6debacee464b79cc6355d86e880eac08a994"
+            checksum="8334fd5ed02206f8479de9e6e2502f0ea39836b2"
             dir="buildfiles" />
             
-        <unzip src="${dependenciesFolder}/launch4j.zip" dest="${dependenciesFolder}"/>
+        <unzip src="${dependenciesFolder}/launch4j-3.12.zip" dest="${dependenciesFolder}"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/ld" perm="777"/>
         <chmod file="${dependenciesFolder}/${launch4j.dir}/bin/windres" perm="777"/>
         
