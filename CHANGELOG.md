@@ -1,3 +1,8 @@
+### 01 Sep 2020
+With the release of 0.8.52 the following critical issue is fixed:
+1. The Windows program (LDPartEditor.exe) will now start with support of newer Java versions.
+
+
 ### 10 Aug 2020
 With the release of 0.8.51 the following critical issue is fixed:
 1. Some keyboard keys can't be properly assigned as a shortcut for the 3D editor view (e.g. the 'R' key).
