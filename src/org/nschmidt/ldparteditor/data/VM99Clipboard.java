@@ -870,11 +870,21 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     remove(g);
                 }
             }
+            // Remove the first INVERTNEXT meta above the selection, since it will be included again in the subfile
+            if (li.hasNext()) {
+                GData g = li.next().getBefore();
+                if (g.type() == 6 && ((GDataBFC) g).getType() == BFC.INVERTNEXT) {
+                    dpl.removeByValue(g);
+                    g.getBefore().setNext(g.getNext());
+                    remove(g);
+                }
+            }
         }
 
         final StringBuilder cbString = new StringBuilder();
+        boolean hasInsertedInvertnext = false;
         for (GData data : CLIPBOARD) {
-            if (CLIPBOARD_InvNext.contains(data)) {
+            if (!hasInsertedInvertnext && CLIPBOARD_InvNext.contains(data)) {
                 cbString.append("0 BFC INVERTNEXT"); //$NON-NLS-1$
                 cbString.append(StringHelper.getLineDelimiter());
                 cbString.append(data.toString());
@@ -883,6 +893,8 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                 cbString.append(data.toString());
                 cbString.append(StringHelper.getLineDelimiter());
             }
+            // Avoid duplication of INVERTNEXT meta commands
+            hasInsertedInvertnext = data.type() == 6 && ((GDataBFC) data).getType() == BFC.INVERTNEXT;
         }
         int len = cbString.length();
         if (len > StringHelper.getLineDelimiter().length()) cbString.delete(len - StringHelper.getLineDelimiter().length(), len);
