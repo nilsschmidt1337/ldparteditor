@@ -5808,7 +5808,6 @@ public class Editor3DWindow extends Editor3DDesign {
      */
     @Override
     protected void handleShellCloseEvent() {
-        boolean unsavedProjectFiles = false;
         Set<DatFile> unsavedFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
         for (DatFile df : unsavedFiles) {
             final String text = df.getText();
@@ -5855,97 +5854,6 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         }
 
-        {
-            ArrayList<TreeItem> ta = getProjectParts().getItems();
-            for (TreeItem ti : ta) {
-                unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals("") || !Project.getUnsavedFiles().contains(ti.getData()); //$NON-NLS-1$
-            }
-        }
-        {
-            ArrayList<TreeItem> ta = getProjectSubparts().getItems();
-            for (TreeItem ti : ta) {
-                unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals("") || !Project.getUnsavedFiles().contains(ti.getData()); ; //$NON-NLS-1$
-            }
-        }
-        {
-            ArrayList<TreeItem> ta = getProjectPrimitives().getItems();
-            for (TreeItem ti : ta) {
-                unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals("") || !Project.getUnsavedFiles().contains(ti.getData()); ; //$NON-NLS-1$
-            }
-        }
-        {
-            ArrayList<TreeItem> ta = getProjectPrimitives48().getItems();
-            for (TreeItem ti : ta) {
-                unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals("") || !Project.getUnsavedFiles().contains(ti.getData()); ; //$NON-NLS-1$
-            }
-        }
-        {
-            ArrayList<TreeItem> ta = getProjectPrimitives8().getItems();
-            for (TreeItem ti : ta) {
-                unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals("") || !Project.getUnsavedFiles().contains(ti.getData()); ; //$NON-NLS-1$
-            }
-        }
-
-        final boolean ENABLE_DEFAULT_PROJECT_SAVE = !(Math.random() + 1 > 0);
-        if (unsavedProjectFiles && Project.isDefaultProject() && ENABLE_DEFAULT_PROJECT_SAVE) {
-            // Save new project here, if the project contains at least one non-empty file
-            boolean cancelIt = false;
-            boolean secondRun = false;
-            while (true) {
-                int result = IDialogConstants.CANCEL_ID;
-                if (secondRun) result = new NewProjectDialog(true).open();
-                if (result == IDialogConstants.OK_ID) {
-                    while (new File(Project.getTempProjectPath()).isDirectory()) {
-                        MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.YES | SWT.CANCEL | SWT.NO);
-                        messageBoxError.setText(I18n.PROJECT_ProjectOverwriteTitle);
-                        messageBoxError.setMessage(I18n.PROJECT_ProjectOverwrite);
-                        int result2 = messageBoxError.open();
-                        if (result2 == SWT.NO) {
-                            result = new NewProjectDialog(true).open();
-                        } else if (result2 == SWT.YES) {
-                            break;
-                        } else {
-                            cancelIt = true;
-                            break;
-                        }
-                    }
-                    if (!cancelIt) {
-                        Project.setProjectName(Project.getTempProjectName());
-                        Project.setProjectPath(Project.getTempProjectPath());
-                        NLogger.debug(getClass(), "Saving new project..."); //$NON-NLS-1$
-                        if (!Project.save()) {
-                            MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                            messageBoxError.setText(I18n.DIALOG_Error);
-                            messageBoxError.setMessage(I18n.DIALOG_CantSaveProject);
-                        }
-                    }
-                    break;
-                } else {
-                    secondRun = true;
-                    MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
-                    messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
-
-                    Object[] messageArguments = {I18n.DIALOG_TheNewProject};
-                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
-                    messageBox.setMessage(formatter.format(messageArguments));
-
-                    int result2 = messageBox.open();
-                    if (result2 == SWT.CANCEL) {
-                        cancelIt = true;
-                        break;
-                    } else if (result2 == SWT.NO) {
-                        break;
-                    }
-                }
-            }
-            if (cancelIt) {
-                cleanupClosedData();
-                updateTree_unsavedEntries();
-                return;
-            }
-        }
         // NEVER DELETE THIS!
         final int s = renders.size();
         for (int i = 0; i < s; i++) {
