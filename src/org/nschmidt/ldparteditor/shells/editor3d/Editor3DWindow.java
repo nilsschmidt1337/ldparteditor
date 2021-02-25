@@ -8233,10 +8233,10 @@ public class Editor3DWindow extends Editor3DDesign {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                final VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                 float minDist = Float.MAX_VALUE;
                 Vector4f next = new Vector4f(c3d.getManipulator().getPosition());
                 Vertex min = null;
-                VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                 Set<Vertex> vertices;
                 if (vm.getSelectedVertices().isEmpty()) {
                     vertices = vm.getVertices();
@@ -8251,20 +8251,21 @@ public class Editor3DWindow extends Editor3DDesign {
                         min = vertex;
                     }
                 }
-                vm = c3d.getLockableDatFileReference().getVertexManager();
-                Vector4f n = new Vector4f(min.x, min.y, min.z, 0f);
-                if (min.x == 0f && min.y == 0f && min.z == 0f) {
+                final Vector4f n;
+                if (min == null || min.x == 0f && min.y == 0f && min.z == 0f) {
                     n = new Vector4f(0f, 0f, 1f, 0f);
+                } else {
+                    n = new Vector4f(min.x, min.y, min.z, 0f);
                 }
                 n.normalise();
                 n.setW(1f);
 
-                float tx = 1f;
+                float tx = -1f;
                 float ty = 0f;
                 float tz = 0f;
 
                 if (n.x <= 0f) {
-                    tx = -1;
+                    tx = 1;
                 }
 
                 if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(0f, 0f, tx), null).length()) > .00001f) {
@@ -8272,12 +8273,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     tx = 0f;
                     ty = 0f;
                 } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(tx, 0f, 0f), null).length()) > .00001f) {
-                    // ty = 0f;
-                    // tz = 0f;
-                } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(0f, 0f, tx), null).length()) > .00001f) {
-                    ty = tx;
-                    tx = 0f;
-                    tz = 0f;
+                    // it is ty = 0
+                    // and   tz = 0
                 } else {
                     regainFocus();
                     return;
@@ -8285,18 +8282,18 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 Vector3f cross = (Vector3f) Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(tx, ty, tz), null).normalise();
                 c3d.getManipulator().getZaxis().set(n.x, n.y, n.z, 1f);
-                c3d.getManipulator().getXaxis().set(cross.x, cross.y, cross.z, 1f);
-                Vector4f zaxis = c3d.getManipulator().getZaxis();
-                Vector4f xaxis = c3d.getManipulator().getXaxis();
-                cross = Vector3f.cross(new Vector3f(xaxis.x, xaxis.y, xaxis.z), new Vector3f(zaxis.x, zaxis.y, zaxis.z), null);
                 c3d.getManipulator().getYaxis().set(cross.x, cross.y, cross.z, 1f);
+                Vector4f zaxis = c3d.getManipulator().getZaxis();
+                Vector4f yaxis = c3d.getManipulator().getYaxis();
+                cross = Vector3f.cross(new Vector3f(yaxis.x, yaxis.y, yaxis.z), new Vector3f(zaxis.x, zaxis.y, zaxis.z), null);
+                c3d.getManipulator().getXaxis().set(cross.x, cross.y, cross.z, 1f);
 
-                c3d.getManipulator().setAccurateXaxis(new BigDecimal(c3d.getManipulator().getXaxis().x), new BigDecimal(c3d.getManipulator().getXaxis().y),
-                        new BigDecimal(c3d.getManipulator().getXaxis().z));
-                c3d.getManipulator().setAccurateYaxis(new BigDecimal(c3d.getManipulator().getYaxis().x), new BigDecimal(c3d.getManipulator().getYaxis().y),
-                        new BigDecimal(c3d.getManipulator().getYaxis().z));
-                c3d.getManipulator().setAccurateZaxis(new BigDecimal(c3d.getManipulator().getZaxis().x), new BigDecimal(c3d.getManipulator().getZaxis().y),
-                        new BigDecimal(c3d.getManipulator().getZaxis().z));
+                c3d.getManipulator().setAccurateXaxis(BigDecimal.valueOf(c3d.getManipulator().getXaxis().x), BigDecimal.valueOf(c3d.getManipulator().getXaxis().y),
+                        BigDecimal.valueOf(c3d.getManipulator().getXaxis().z));
+                c3d.getManipulator().setAccurateYaxis(BigDecimal.valueOf(c3d.getManipulator().getYaxis().x), BigDecimal.valueOf(c3d.getManipulator().getYaxis().y),
+                        BigDecimal.valueOf(c3d.getManipulator().getYaxis().z));
+                c3d.getManipulator().setAccurateZaxis(BigDecimal.valueOf(c3d.getManipulator().getZaxis().x), BigDecimal.valueOf(c3d.getManipulator().getZaxis().y),
+                        BigDecimal.valueOf(c3d.getManipulator().getZaxis().z));
             }
         }
         regainFocus();
