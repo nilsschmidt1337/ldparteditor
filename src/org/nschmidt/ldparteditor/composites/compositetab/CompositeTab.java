@@ -1372,7 +1372,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (!ignoreLineBreak && event.offset == compositeText[0].getOffsetAtLine(compositeText[0].getLineAtOffset(event.offset))) {
                         return;
                     }
-                    char c = ignoreLineBreak ? '#' : compositeText[0].getText().charAt(event.newOffset);
+                    char c = ignoreLineBreak || event.newOffset < 0 ? '#' : compositeText[0].getText().charAt(event.newOffset);
                     if (!ignoreLineBreak && event.newOffset > 0 && c == '\n'  || c == '\r') {
                         event.newOffset--;
                         c = '#';
