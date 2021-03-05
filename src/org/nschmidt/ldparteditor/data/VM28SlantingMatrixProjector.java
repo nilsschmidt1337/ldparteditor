@@ -303,7 +303,7 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
                 Set<String> alreadyParsed = new HashSet<String>();
                 alreadyParsed.add(linkedDatFile.getShortName());
                 ArrayList<ParsingResult> subfileLine = DatParser
-                        .parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                        .parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                 GData1 subfile = (GData1) subfileLine.get(0).getGraphicalData();
                 if (subfile != null) {
                     linker(s, subfile);

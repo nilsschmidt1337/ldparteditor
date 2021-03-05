@@ -557,7 +557,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                     String transformedString = subf.getTransformedString(transformation, newVertex, linkedDatFile, true);
                     GData transformedSubfile = DatParser
                             .parseLine(transformedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
-                                    false, new HashSet<String>(), false).get(0).getGraphicalData();
+                                    false, new HashSet<String>()).get(0).getGraphicalData();
                     // The transformation can be invalid!
                     if (transformedSubfile != null) {
                         if (subf.equals(linkedDatFile.getDrawChainTail()))
@@ -820,7 +820,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         GData.CACHE_parsedFilesSource.clear();
         GData1 reloadedSubfile = (GData1) DatParser
                 .parseLine("1 " + colourBuilder.toString() + M.toLDrawString() + g.shortName , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$
-                        new HashSet<String>(), false).get(0).getGraphicalData();
+                        new HashSet<String>()).get(0).getGraphicalData();
         // Clear the cache..
         GData.parsedLines.clear();
         GData.CACHE_parsedFilesSource.clear();

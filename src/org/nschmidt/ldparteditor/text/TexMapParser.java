@@ -64,7 +64,7 @@ public enum TexMapParser {
         return new GDataTEX(data, line, TexMeta.GEOMETRY, null, parent);
     }
 
-    public static GDataTEX parseTEXMAP(String[] data_segments, String line, GData1 parent, DatFile datFile) {
+    public static GDataTEX parseTEXMAP(String[] data_segments, String line, GData1 parent) {
         int segs = data_segments.length;
         if (segs == 3) {
             if (data_segments[2].equals("END")) { //$NON-NLS-1$
@@ -380,7 +380,7 @@ public enum TexMapParser {
             GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
             return newLPEmetaTag;
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
-            GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent, datFile);
+            GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent);
             return newLPEmetaTag;
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$

@@ -1900,7 +1900,7 @@ public class VM01SelectHelper extends VM01Select {
             alreadyParsed.add(linkedDatFile.getShortName());
             GData pasted;
             if (StringHelper.isNotBlank(lineToParse)) {
-                ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                 pasted = result.get(0).getGraphicalData();
                 if (pasted == null)
                     pasted = new GData0(lineToParse, View.DUMMY_REFERENCE);

@@ -86,7 +86,7 @@ public enum DatParser {
     private static final Vector3d vertexD2 = new Vector3d();
 
     public static ArrayList<ParsingResult> parseLine(String line, int lineNumber, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
-            DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed, boolean checkForFlatScaling) {
+            DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed) {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         // Get the linetype
         int linetype = 0;
@@ -101,10 +101,10 @@ public enum DatParser {
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            result.addAll(parse_Comment(line, lineNumber, data_segments, depth, r, g, b, a, parent, productMatrix, datFile, errorCheckOnly, alreadyParsed));
+            result.addAll(parse_Comment(line, data_segments, depth, r, g, b, a, parent, productMatrix, datFile, errorCheckOnly, alreadyParsed));
             break;
         case 1:
-            result.addAll(parse_Reference(data_segments, depth, r, g, b, a, parent, productMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed, checkForFlatScaling, lineNumber));
+            result.addAll(parse_Reference(data_segments, depth, r, g, b, a, parent, productMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed, lineNumber));
             break;
         case 2:
             result.addAll(parse_Line(data_segments, r, g, b, a, parent, datFile, errorCheckOnly));
@@ -241,20 +241,10 @@ public enum DatParser {
     /**
      * Checks comment lines
      *
-     * @param line
-     *            the line to check
-     * @param data_segments
-     * @param parent
-     * @param productMatrix
-     * @param datFile
-     * @param errorCheckOnly
-     * @param det
-     * @param invertNext
-     * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Comment(String line, int lineNumber, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix,
-            DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed) {
+    private static ArrayList<ParsingResult> parse_Comment(String line, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, DatFile datFile,
+            boolean errorCheckOnly, Set<String> alreadyParsed) {
 
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
@@ -272,7 +262,7 @@ public enum DatParser {
                 result.add(new ParsingResult(newLPEmetaTag));
             }
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
-            GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent, datFile);
+            GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent);
             if (newLPEmetaTag == null) {
                 newLPEmetaTag = new GData0(line, parent);
                 result.add(new ParsingResult(newLPEmetaTag));
@@ -521,24 +511,10 @@ public enum DatParser {
     /**
      * Checks reference lines and highlights syntax errors
      *
-     * @param data_segments
-     * @param r
-     * @param g
-     * @param b
-     * @param parent
-     * @param accurateProductMatrix
-     * @param datFile
-     * @param errorCheckOnly
-     * @param alreadyParsed
-     * @param line
-     *            the line to check
-     * @param det2
-     * @param invertNext
-     * @param isCCW
      * @return an empty list if there was no error
      */
     private static ArrayList<ParsingResult> parse_Reference(String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
-            DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed, boolean checkForFlatScaling, int lineNumber) {
+            DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed, int lineNumber) {
         ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
         boolean parseError = false;
         boolean hasDitheredColour = false;

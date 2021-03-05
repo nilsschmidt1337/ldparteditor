@@ -860,11 +860,11 @@ class VM03Adjacency extends VM02Add {
                     if (16 == subf.colourNumber) {
                         roundedSubfile = DatParser
                                 .parseLine(roundedString, drawPerLine.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                        new HashSet<String>(), false).get(0).getGraphicalData();
+                                        new HashSet<String>()).get(0).getGraphicalData();
                     } else {
                         roundedSubfile = DatParser
                                 .parseLine(roundedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
-                                        false, new HashSet<String>(), false).get(0).getGraphicalData();
+                                        false, new HashSet<String>()).get(0).getGraphicalData();
                     }
                     if (roundedSubfile != null) {
                         if (subf.equals(linkedDatFile.getDrawChainTail()))
@@ -922,12 +922,12 @@ class VM03Adjacency extends VM02Add {
                     GData roundedCSG;
                     if (16 == col.getColourNumber()) {
                         roundedCSG = DatParser
-                                .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, new HashSet<String>(), false)
+                                .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, new HashSet<String>())
                                 .get(0).getGraphicalData();
                     } else {
                         roundedCSG = DatParser
                                 .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col.getR(), col.getG(), col.getB(), col.getA(), View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                        new HashSet<String>(), false).get(0).getGraphicalData();
+                                        new HashSet<String>()).get(0).getGraphicalData();
                     }
                     if (roundedCSG != null) {
                         if (csg.equals(linkedDatFile.getDrawChainTail()))

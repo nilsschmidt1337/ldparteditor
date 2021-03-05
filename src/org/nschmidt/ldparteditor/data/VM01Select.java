@@ -380,11 +380,11 @@ class VM01Select extends VM00Snapshot {
                 if (16 == g1.colourNumber) {
                     newData = DatParser
                             .parseLine(transformedString, drawPerLine.getKey(g1).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                    new HashSet<String>(), false).get(0).getGraphicalData();
+                                    new HashSet<String>()).get(0).getGraphicalData();
                 } else {
                     newData = DatParser
                             .parseLine(transformedString, drawPerLine.getKey(g1).intValue(), 0, g1.r, g1.g, g1.b, g1.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                    new HashSet<String>(), false).get(0).getGraphicalData();
+                                    new HashSet<String>()).get(0).getGraphicalData();
                 }
                 // The transformation can be invalid!
                 if (newData != null) {

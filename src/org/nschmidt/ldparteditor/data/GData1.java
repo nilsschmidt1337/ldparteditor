@@ -254,7 +254,7 @@ public final class GData1 extends GData {
                         anchorData = res_gdata;
 
                     } else {
-                        GData gdata = DatParser.parseLine(line, 0, depth, r, g, b, a, this, pMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed, false).get(0).getGraphicalData();
+                        GData gdata = DatParser.parseLine(line, 0, depth, r, g, b, a, this, pMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed).get(0).getGraphicalData();
                         if (gdata != null) {
                             GData.parsedLines.put(key3, gdata);
                             if (gdata.type() == 1) {
@@ -1545,7 +1545,7 @@ public final class GData1 extends GData {
         GData.CACHE_parsedFilesSource.clear();
         untransformedSubfile = (GData1) DatParser
                 .parseLine("1 " + colourBuilder.toString() + " 0 0 0 1 0 0 0 1 0 0 0 1 " + this.shortName , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false, //$NON-NLS-1$ //$NON-NLS-2$
-                        new HashSet<String>(), false).get(0).getGraphicalData();
+                        new HashSet<String>()).get(0).getGraphicalData();
         if (untransformedSubfile == null) {
             return getNiceString();
         }

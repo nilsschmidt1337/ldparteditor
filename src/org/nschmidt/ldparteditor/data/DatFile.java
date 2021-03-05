@@ -596,7 +596,7 @@ public final class DatFile {
 
             if (isNotBlank(line)) {
 
-                results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, true);
+                results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
 
                 gdata = results.get(0).getGraphicalData();
                 if (gdata == null) {
@@ -809,7 +809,7 @@ public final class DatFile {
                 GData gd = drawPerLine.getValue(lineNumber);
                 results = GData.CACHE_warningsAndErrors.get(gd);
                 if (results == null) {
-                    results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed, true);
+                    results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, true, alreadyParsed);
                     GData.CACHE_warningsAndErrors.put(gd, results);
                 }
 
@@ -1098,7 +1098,7 @@ public final class DatFile {
         for (String line : lines) {
             if (oldG == null) {
                 if (isNotBlank(line)) {
-                    ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, false);
+                    ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
                     newG = results.get(0).getGraphicalData();
                     if (newG == null) {
                         newG = new GData0(line, View.DUMMY_REFERENCE);
@@ -1118,7 +1118,7 @@ public final class DatFile {
                         candidateForRemoval.remove(line);
                     } else {
                         if (isNotBlank(line)) {
-                            ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, false);
+                            ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
                             newG = results.get(0).getGraphicalData();
                             if (newG == null) {
                                 newG = new GData0(line, View.DUMMY_REFERENCE);
@@ -1235,7 +1235,7 @@ public final class DatFile {
         for (String line : lines) {
 
             if (isNotBlank(line)) {
-                results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed, false);
+                results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
 
                 gdata = results.get(0).getGraphicalData();
                 if (gdata == null) {

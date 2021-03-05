@@ -199,11 +199,11 @@ class VM19ColourChanger extends VM18LineConverter {
                 if ("16".equals(col)) { //$NON-NLS-1$
                     colouredSubfile = DatParser
                             .parseLine(colouredString, drawPerLine.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                    new HashSet<String>(), false).get(0).getGraphicalData();
+                                    new HashSet<String>()).get(0).getGraphicalData();
                 } else {
                     colouredSubfile = DatParser
                             .parseLine(colouredString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                    new HashSet<String>(), false).get(0).getGraphicalData();
+                                    new HashSet<String>()).get(0).getGraphicalData();
                 }
                 if (colouredSubfile != null) {
                     if (subf.equals(linkedDatFile.getDrawChainTail()))

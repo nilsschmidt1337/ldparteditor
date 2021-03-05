@@ -535,7 +535,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                         GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE);
                         linkedDatFile.insertAfterCursor(invNext);
                     }
-                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                     GData pasted = result.get(0).getGraphicalData();
                     if (pasted == null)
                         pasted = new GData0(g.toString(), View.DUMMY_REFERENCE);
@@ -628,7 +628,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                         linecount++;
                         dpl.put(linecount, invNext);
                     }
-                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                     GData pasted = result.get(0).getGraphicalData();
                     if (pasted == null)
                         pasted = new GData0(g.toString(), View.DUMMY_REFERENCE);
@@ -723,7 +723,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     before = invNext;
                     linecount++;
                 }
-                ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed, false);
+                ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                 GData pasted = result.get(0).getGraphicalData();
                 if (pasted == null)
                     pasted = new GData0(g.toString(), View.DUMMY_REFERENCE);
