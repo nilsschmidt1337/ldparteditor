@@ -517,7 +517,7 @@ public enum TexMapParser {
                         for (int a3 = 0; a3 < suffix.length; a3++) {
                             String s3 = suffix[a3];
                             if (fn.equals(s1 + s2 + s3)) {
-                                lines = new ArrayList<String>(4096);
+                                lines = new ArrayList<>(4096);
                                 lines.addAll(Arrays.asList(df.getText().split(StringHelper.getLineDelimiter())));
                                 absoluteFilename = fn;
                                 isVirtual = true;
@@ -548,7 +548,7 @@ public enum TexMapParser {
                 absoluteFilename = fileToOpen.getAbsolutePath();
                 UTF8BufferedReader reader = null;
                 String line = null;
-                lines = new ArrayList<String>(4096);
+                lines = new ArrayList<>(4096);
                 try {
                     reader = new UTF8BufferedReader(absoluteFilename);
                     while (true) {

@@ -153,13 +153,13 @@ class VM01Select extends VM00Snapshot {
 
     public void selectAllWithSameColours(SelectorSettings ss, boolean includeHidden) {
 
-        final Set<GColour> allColours = new HashSet<GColour>();
+        final Set<GColour> allColours = new HashSet<>();
 
-        final Set<GData1> effSelectedSubfiles = new HashSet<GData1>();
-        final Set<GData2> effSelectedLines = new HashSet<GData2>();
-        final Set<GData3> effSelectedTriangles = new HashSet<GData3>();
-        final Set<GData4> effSelectedQuads = new HashSet<GData4>();
-        final Set<GData5> effSelectedCondlines = new HashSet<GData5>();
+        final Set<GData1> effSelectedSubfiles = new HashSet<>();
+        final Set<GData2> effSelectedLines = new HashSet<>();
+        final Set<GData3> effSelectedTriangles = new HashSet<>();
+        final Set<GData4> effSelectedQuads = new HashSet<>();
+        final Set<GData5> effSelectedCondlines = new HashSet<>();
 
         for (GData1 g : selectedSubfiles) {
             allColours.add(new GColour(g.colourNumber, g.r, g.g, g.b, g.a));
@@ -380,11 +380,11 @@ class VM01Select extends VM00Snapshot {
                 if (16 == g1.colourNumber) {
                     newData = DatParser
                             .parseLine(transformedString, drawPerLine.getKey(g1).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                    new HashSet<String>()).get(0).getGraphicalData();
+                                    new HashSet<>()).get(0).getGraphicalData();
                 } else {
                     newData = DatParser
                             .parseLine(transformedString, drawPerLine.getKey(g1).intValue(), 0, g1.r, g1.g, g1.b, g1.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                    new HashSet<String>()).get(0).getGraphicalData();
+                                    new HashSet<>()).get(0).getGraphicalData();
                 }
                 // The transformation can be invalid!
                 if (newData != null) {
@@ -416,8 +416,8 @@ class VM01Select extends VM00Snapshot {
                 Vertex oldVertex = null;
                 Vertex newVertex = null;
 
-                TreeSet<Vertex> ov = new TreeSet<Vertex>();
-                TreeSet<Vertex> nv = new TreeSet<Vertex>();
+                TreeSet<Vertex> ov = new TreeSet<>();
+                TreeSet<Vertex> nv = new TreeSet<>();
 
                 switch (selectedLine.type()) {
                 case 5:
@@ -442,7 +442,7 @@ class VM01Select extends VM00Snapshot {
                     return null;
                 }
 
-                TreeSet<Vertex> nv2 = new TreeSet<Vertex>(nv);
+                TreeSet<Vertex> nv2 = new TreeSet<>(nv);
                 nv2.removeAll(ov);
                 ov.removeAll(nv);
 
@@ -559,12 +559,12 @@ class VM01Select extends VM00Snapshot {
 
     public void selectInverse(SelectorSettings sels) {
 
-        final Set<Vertex> lastSelectedVertices = new TreeSet<Vertex>();
-        final Set<GData1> lastSelectedSubfiles = new HashSet<GData1>();
-        final Set<GData2> lastSelectedLines = new HashSet<GData2>();
-        final Set<GData3> lastSelectedTriangles = new HashSet<GData3>();
-        final Set<GData4> lastSelectedQuads = new HashSet<GData4>();
-        final Set<GData5> lastSelectedCondlines = new HashSet<GData5>();
+        final Set<Vertex> lastSelectedVertices = new TreeSet<>();
+        final Set<GData1> lastSelectedSubfiles = new HashSet<>();
+        final Set<GData2> lastSelectedLines = new HashSet<>();
+        final Set<GData3> lastSelectedTriangles = new HashSet<>();
+        final Set<GData4> lastSelectedQuads = new HashSet<>();
+        final Set<GData5> lastSelectedCondlines = new HashSet<>();
 
         lastSelectedVertices.addAll(selectedVertices);
         lastSelectedSubfiles.addAll(selectedSubfiles);

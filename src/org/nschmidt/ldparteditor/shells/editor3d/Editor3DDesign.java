@@ -571,7 +571,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
 
-        HashSet<String> missingItemsToCreate = new HashSet<String>();
+        HashSet<String> missingItemsToCreate = new HashSet<>();
         missingItemsToCreate.add("SYNC_AND_RECENT_FILES"); //$NON-NLS-1$
         missingItemsToCreate.add("PROJECT_MANAGEMENT"); //$NON-NLS-1$
         missingItemsToCreate.add("OPEN_SAVE_DATFILE"); //$NON-NLS-1$
@@ -3701,10 +3701,10 @@ class Editor3DDesign extends ApplicationWindow {
             if (threeDconfig.size() == 1) {
                 Editor3DWindow.getRenders().get(0).getC3D().loadState(threeDconfig.get(0));
             } else {
-                HashSet<String> splitCandidate = new HashSet<String>();
-                HashSet<String> splitAlready = new HashSet<String>();
-                HashMap<String, CompositeContainer> cmpMap = new HashMap<String, CompositeContainer>();
-                HashMap<String, Composite3DState> sMap = new HashMap<String, Composite3DState>();
+                HashSet<String> splitCandidate = new HashSet<>();
+                HashSet<String> splitAlready = new HashSet<>();
+                HashMap<String, CompositeContainer> cmpMap = new HashMap<>();
+                HashMap<String, Composite3DState> sMap = new HashMap<>();
 
                 splitCandidate.add("|"); //$NON-NLS-1$
                 splitAlready.add("|"); //$NON-NLS-1$
@@ -3782,10 +3782,10 @@ class Editor3DDesign extends ApplicationWindow {
         CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
         cmp_Container.moveBelow(sashForm.getChildren()[0]);
 
-        HashSet<String> splitCandidate = new HashSet<String>();
-        HashSet<String> splitAlready = new HashSet<String>();
-        HashMap<String, CompositeContainer> cmpMap = new HashMap<String, CompositeContainer>();
-        HashMap<String, Composite3DState> sMap = new HashMap<String, Composite3DState>();
+        HashSet<String> splitCandidate = new HashSet<>();
+        HashSet<String> splitAlready = new HashSet<>();
+        HashMap<String, CompositeContainer> cmpMap = new HashMap<>();
+        HashMap<String, Composite3DState> sMap = new HashMap<>();
 
         splitCandidate.add("|"); //$NON-NLS-1$
         splitAlready.add("|"); //$NON-NLS-1$

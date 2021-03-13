@@ -54,8 +54,8 @@ public class GL33ModelRendererLDrawStandard {
     private static final GTexture CUBEMAP_MATTE_TEXTURE = new GTexture(TexType.PLANAR, "matte_metal.png", null, 2, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GTexture CUBEMAP_METAL_TEXTURE = new GTexture(TexType.PLANAR, "metal.png", null, 3, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
 
-    private static Set<String> filesWithLogo1 = new HashSet<String>();
-    private static Set<String> filesWithLogo2 = new HashSet<String>();
+    private static Set<String> filesWithLogo1 = new HashSet<>();
+    private static Set<String> filesWithLogo2 = new HashSet<>();
 
     static {
         filesWithLogo1.add("STUD.DAT"); //$NON-NLS-1$
@@ -214,7 +214,7 @@ public class GL33ModelRendererLDrawStandard {
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, Vertex[]> vertexMap2 = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
-                final ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection = new ThreadsafeHashMap<GData1, Matrix4f>(1000);
+                final ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection = new ThreadsafeHashMap<>(1000);
                 final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
                 final Integer myID = idGen.getAndIncrement();
                 matrixMap.put(View.DUMMY_REFERENCE, View.ID);

@@ -78,7 +78,7 @@ public final class VertexManager extends VM99Clipboard {
 
         if (calculateCondlineControlPoints.compareAndSet(true, false)) {
             CompletableFuture.runAsync( () -> {
-                final Set<Vertex> tmpHiddenVertices2 = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+                final Set<Vertex> tmpHiddenVertices2 = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
                 tmpHiddenVertices2.addAll(hiddenVertices);
                 if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
                     if (!tmpHiddenVertices.isEmpty()) {
@@ -165,9 +165,9 @@ public final class VertexManager extends VM99Clipboard {
         GL11.glMultMatrixf(matrix);
 
         if (modifiedManipulator) {
-            Set<GData> alreadyMoved = new HashSet<GData>();
+            Set<GData> alreadyMoved = new HashSet<>();
 
-            Set<Vertex> allVertices = new TreeSet<Vertex>(selectedVertices);
+            Set<Vertex> allVertices = new TreeSet<>(selectedVertices);
             GL11.glLineWidth(2f);
             if (c3d.isShowingVertices()) {
                 GL11.glBegin(GL11.GL_POINTS);

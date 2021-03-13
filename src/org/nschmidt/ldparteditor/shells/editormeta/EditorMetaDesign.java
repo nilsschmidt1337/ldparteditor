@@ -386,7 +386,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         if (categoryFile.exists() && categoryFile.isFile()) {
                             UTF8BufferedReader reader = null;
                             try {
-                                ArrayList<String> categories = new ArrayList<String>();
+                                ArrayList<String> categories = new ArrayList<>();
                                 categories.add(""); //$NON-NLS-1$
                                 reader = new UTF8BufferedReader(categoryFile.getAbsolutePath());
                                 String line ;

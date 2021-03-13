@@ -76,7 +76,7 @@ class VM23FlatSubfileTester extends VM22TJunctionFixer {
     }
 
     public ArrayList<ParsingResult> checkForFlatScaling(GData1 ref) {
-        ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
+        ArrayList<ParsingResult> result = new ArrayList<>();
 
         Matrix4f tMatrix = (Matrix4f) ref.accurateLocalMatrix.getMatrix4f().invert();
 

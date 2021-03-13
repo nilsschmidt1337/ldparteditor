@@ -34,9 +34,9 @@ public class Primitive implements Comparable<Primitive> {
 
     private String name = ""; //$NON-NLS-1$
     private String description = ""; //$NON-NLS-1$
-    private ArrayList<PGData> graphicalData = new ArrayList<PGData>();
-    private ArrayList<Primitive> primitives = new ArrayList<Primitive>();
-    private ArrayList<Primitive> primitivesExtended = new ArrayList<Primitive>();
+    private ArrayList<PGData> graphicalData = new ArrayList<>();
+    private ArrayList<Primitive> primitives = new ArrayList<>();
+    private ArrayList<Primitive> primitivesExtended = new ArrayList<>();
     private boolean extended = false;
     private boolean category = false;
     private float zoom = 1f;
@@ -60,33 +60,33 @@ public class Primitive implements Comparable<Primitive> {
 
     public ArrayList<Primitive> getPrimitives() {
         if (isExtended()) {
-            ArrayList<Primitive> result = new ArrayList<Primitive>();
+            ArrayList<Primitive> result = new ArrayList<>();
             result.addAll(primitives);
             for (Primitive p : primitivesExtended) {
                 result.addAll(p.getPrimitives());
             }
             if (result.size() == 1) {
-                return new ArrayList<Primitive>();
+                return new ArrayList<>();
             }
             return result;
         } else {
-            return new ArrayList<Primitive>(primitives);
+            return new ArrayList<>(primitives);
         }
     }
 
     public ArrayList<Primitive> getAllPrimitives() {
         if (isCategory()) {
-            ArrayList<Primitive> result = new ArrayList<Primitive>();
+            ArrayList<Primitive> result = new ArrayList<>();
             result.addAll(primitives);
             for (Primitive p : primitivesExtended) {
                 result.addAll(p.getPrimitives());
             }
             if (result.size() == 1) {
-                return new ArrayList<Primitive>();
+                return new ArrayList<>();
             }
             return result;
         } else {
-            return new ArrayList<Primitive>(primitives);
+            return new ArrayList<>(primitives);
         }
     }
 
@@ -134,7 +134,7 @@ public class Primitive implements Comparable<Primitive> {
         }
         GL11.glPopMatrix();
     }
-    
+
     public void drawGL33(GLMatrixStack stack, float x, float y, Matrix4f m) {
         stack.glPushMatrix();
         stack.glTranslatef(x + 10f, y + 10f, 0f);
@@ -185,7 +185,7 @@ public class Primitive implements Comparable<Primitive> {
         }
         GL11.glPopMatrix();
     }
-    
+
     public void drawGL33(GLMatrixStack stack, float x, float y, float z) {
         stack.glPushMatrix();
         stack.glTranslatef(x, y, z);
@@ -195,7 +195,7 @@ public class Primitive implements Comparable<Primitive> {
         }
         stack.glPopMatrix();
     }
-    
+
     public void setPrimitives(ArrayList<Primitive> primitives) {
         this.primitives = primitives;
     }

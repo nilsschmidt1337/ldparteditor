@@ -31,11 +31,11 @@ public class SphereGL20 {
     private final FloatBuffer bvertices;
     private final ShortBuffer bindices;
 
-    final ArrayList<Short> indices = new ArrayList<Short>();
+    final ArrayList<Short> indices = new ArrayList<>();
 
     public SphereGL20(float radius, int segments) {
 
-        final ArrayList<Float> vertices = new ArrayList<Float>();
+        final ArrayList<Float> vertices = new ArrayList<>();
 
         final double R = 1d / (segments - 1);
         final double S = 1d / (segments - 1);

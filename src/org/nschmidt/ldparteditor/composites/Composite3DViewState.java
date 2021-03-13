@@ -36,7 +36,7 @@ public class Composite3DViewState {
     private Vector4f offset = new Vector4f(0, 0, 0, 1f);
     public final Composite3DState STATE = new Composite3DState();
     private boolean negDeterminant = false;
-    
+
     private final Matrix4f viewport_translation = new Matrix4f();
     private final Matrix4f viewport_rotation = new Matrix4f();
     private final Matrix4f viewport_matrix = new Matrix4f();
@@ -51,13 +51,13 @@ public class Composite3DViewState {
     private double zNear = 1000000f;
     /** The viewport z-Far value */
     private double zFar = 1000001f;
-    
-    private final HashMap<String, ArrayList<Boolean>> hideShowState = new HashMap<String, ArrayList<Boolean>>();
-    private final HashMap<String, ArrayList<Boolean>> selection = new HashMap<String, ArrayList<Boolean>>();
-    
-    private final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-    private final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-    
+
+    private final HashMap<String, ArrayList<Boolean>> hideShowState = new HashMap<>();
+    private final HashMap<String, ArrayList<Boolean>> selection = new HashMap<>();
+
+    private final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+    private final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+
     float getZoom() {
         return zoom;
     }
@@ -73,7 +73,7 @@ public class Composite3DViewState {
     void setZoom_exponent(float zoom_exponent) {
         this.zoom_exponent = zoom_exponent;
     }
-    
+
     public float getViewportPixelPerLDU() {
         return viewport_pixel_per_ldu;
     }
@@ -89,7 +89,7 @@ public class Composite3DViewState {
     public void setOffset(Vector4f offset) {
         this.offset = offset;
     }
-    
+
     public boolean hasNegDeterminant() {
         return negDeterminant;
     }

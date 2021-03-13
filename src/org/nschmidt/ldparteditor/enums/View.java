@@ -355,11 +355,11 @@ public enum View {
     public static final Matrix ACCURATE_ID = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
             BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
 
-    private static final HashMap<Integer, GColour> colourFromIndex = new HashMap<Integer, GColour>();
-    private static final HashMap<Integer, GColour> edgeColourFromIndex = new HashMap<Integer, GColour>();
-    private static final HashMap<Integer, String> colourNameFromIndex = new HashMap<Integer, String>();
+    private static final HashMap<Integer, GColour> colourFromIndex = new HashMap<>();
+    private static final HashMap<Integer, GColour> edgeColourFromIndex = new HashMap<>();
+    private static final HashMap<Integer, String> colourNameFromIndex = new HashMap<>();
 
-    private static final HashMap<IndexedEntry, Integer> indexFromColour = new HashMap<IndexedEntry, Integer>();
+    private static final HashMap<IndexedEntry, Integer> indexFromColour = new HashMap<>();
 
     public static final GColour getLDConfigColour(int index) {
         GColour result =  colourFromIndex.get(index);

@@ -77,7 +77,7 @@ class VM06Edger2 extends VM05Distance {
             if (g1.type() == 3) {
                 GData3 g3 = (GData3) g1;
                 Vertex[] vt = triangles.get(g3);
-                TreeSet<Vertex> tvs = new TreeSet<Vertex>();
+                TreeSet<Vertex> tvs = new TreeSet<>();
                 tvs.add(vt[0]);
                 tvs.add(vt[1]);
                 tvs.add(vt[2]);
@@ -89,7 +89,7 @@ class VM06Edger2 extends VM05Distance {
             } else {
                 GData4 g4 = (GData4) g1;
                 Vertex[] vq = quads.get(g4);
-                TreeSet<Vertex> qvs = new TreeSet<Vertex>();
+                TreeSet<Vertex> qvs = new TreeSet<>();
                 qvs.add(vq[0]);
                 qvs.add(vq[1]);
                 qvs.add(vq[2]);
@@ -114,7 +114,7 @@ class VM06Edger2 extends VM05Distance {
             if (g2.type() == 3) {
                 GData3 g3 = (GData3) g2;
                 Vertex[] vt = triangles.get(g3);
-                TreeSet<Vertex> tvs = new TreeSet<Vertex>();
+                TreeSet<Vertex> tvs = new TreeSet<>();
                 tvs.add(vt[0]);
                 tvs.add(vt[1]);
                 tvs.add(vt[2]);
@@ -126,7 +126,7 @@ class VM06Edger2 extends VM05Distance {
             } else {
                 GData4 g4 = (GData4) g2;
                 Vertex[] vq = quads.get(g4);
-                TreeSet<Vertex> qvs = new TreeSet<Vertex>();
+                TreeSet<Vertex> qvs = new TreeSet<>();
                 qvs.add(vq[0]);
                 qvs.add(vq[1]);
                 qvs.add(vq[2]);
@@ -241,11 +241,11 @@ class VM06Edger2 extends VM05Distance {
         verticesToCheck.clear();
 
         final double edsquare = es.getEqualDistance().multiply(es.getEqualDistance(), Threshold.mc).doubleValue() * 1E6;
-        TreeMap<Vertex, Vertex> snap = new TreeMap<Vertex, Vertex>();
-        TreeMap<Vertex, TreeSet<Vertex>> snapToOriginal = new TreeMap<Vertex, TreeSet<Vertex>>();
+        TreeMap<Vertex, Vertex> snap = new TreeMap<>();
+        TreeMap<Vertex, TreeSet<Vertex>> snapToOriginal = new TreeMap<>();
 
-        HashMap<AccurateEdge, Integer> edges = new HashMap<AccurateEdge, Integer>();
-        HashSet<AccurateEdge> presentEdges = new HashSet<AccurateEdge>();
+        HashMap<AccurateEdge, Integer> edges = new HashMap<>();
+        HashSet<AccurateEdge> presentEdges = new HashSet<>();
 
         switch (es.getScope()) {
         case 0: // All Data
@@ -256,7 +256,7 @@ class VM06Edger2 extends VM05Distance {
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
-                    TreeSet<Vertex> h = new TreeSet<Vertex>();
+                    TreeSet<Vertex> h = new TreeSet<>();
                     h.add(vertex);
                     snapToOriginal.put(snap.get(vertex), h);
                 }
@@ -392,7 +392,7 @@ class VM06Edger2 extends VM05Distance {
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
-                    TreeSet<Vertex> h = new TreeSet<Vertex>();
+                    TreeSet<Vertex> h = new TreeSet<>();
                     h.add(vertex);
                     snapToOriginal.put(snap.get(vertex), h);
                 }
@@ -527,7 +527,7 @@ class VM06Edger2 extends VM05Distance {
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
-                    TreeSet<Vertex> h = new TreeSet<Vertex>();
+                    TreeSet<Vertex> h = new TreeSet<>();
                     h.add(vertex);
                     snapToOriginal.put(snap.get(vertex), h);
                 }
@@ -631,7 +631,7 @@ class VM06Edger2 extends VM05Distance {
 
 
             {
-                HashSet<AccurateEdge> selectedEdges = new HashSet<AccurateEdge>();
+                HashSet<AccurateEdge> selectedEdges = new HashSet<>();
 
                 for (GData3 g3 : selectedTriangles) {
                     if (!g3.isTriangle) continue;

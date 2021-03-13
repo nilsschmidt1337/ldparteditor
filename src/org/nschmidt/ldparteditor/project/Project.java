@@ -51,15 +51,15 @@ public enum Project {
     private static boolean defaultProject = true;
 
     /** A set of all open EditorTextWindow instances */
-    private static HashSet<EditorTextWindow> openTextWindows = new HashSet<EditorTextWindow>();
+    private static HashSet<EditorTextWindow> openTextWindows = new HashSet<>();
     /** A set of all absolute filenames, which are not saved */
-    private static final HashSet<DatFile> unsavedFiles = new HashSet<DatFile>();
+    private static final HashSet<DatFile> unsavedFiles = new HashSet<>();
     /** A set of all absolute filenames, which were parsed */
-    private static final HashSet<DatFile> parsedFiles = new HashSet<DatFile>();
+    private static final HashSet<DatFile> parsedFiles = new HashSet<>();
     /** The file which is currently displayed in the 3D editor */
     private static DatFile fileToEdit = new DatFile(getProjectPath() + File.separator + "parts" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
     /** A list of all absolute filenames, which were opened */
-    private static final ArrayList<DatFile> openedFiles = new ArrayList<DatFile>();
+    private static final ArrayList<DatFile> openedFiles = new ArrayList<>();
 
 
     /**
@@ -72,19 +72,19 @@ public enum Project {
         updateEditor();
 
         Editor3DWindow.getWindow().getProjectParts().getItems().clear();
-        Editor3DWindow.getWindow().getProjectParts().setData(new ArrayList<DatFile>());
+        Editor3DWindow.getWindow().getProjectParts().setData(new ArrayList<>());
 
         Editor3DWindow.getWindow().getProjectSubparts().getItems().clear();
-        Editor3DWindow.getWindow().getProjectSubparts().setData(new ArrayList<DatFile>());
+        Editor3DWindow.getWindow().getProjectSubparts().setData(new ArrayList<>());
 
         Editor3DWindow.getWindow().getProjectPrimitives().getItems().clear();
-        Editor3DWindow.getWindow().getProjectPrimitives().setData(new ArrayList<DatFile>());
+        Editor3DWindow.getWindow().getProjectPrimitives().setData(new ArrayList<>());
 
         Editor3DWindow.getWindow().getProjectPrimitives48().getItems().clear();
-        Editor3DWindow.getWindow().getProjectPrimitives48().setData(new ArrayList<DatFile>());
+        Editor3DWindow.getWindow().getProjectPrimitives48().setData(new ArrayList<>());
 
         Editor3DWindow.getWindow().getProjectPrimitives8().getItems().clear();
-        Editor3DWindow.getWindow().getProjectPrimitives8().setData(new ArrayList<DatFile>());
+        Editor3DWindow.getWindow().getProjectPrimitives8().setData(new ArrayList<>());
 
         Editor3DWindow.getWindow().getShell().update();
         Editor3DWindow.getWindow().getProjectParts().getParent().build();
@@ -98,7 +98,7 @@ public enum Project {
      */
     @SuppressWarnings("unchecked")
     public static boolean save() {
-        HashSet<DatFile> projectFiles = new HashSet<DatFile>();
+        HashSet<DatFile> projectFiles = new HashSet<>();
         if (isDefaultProject()) {
             // Linked project parts need a new path, because they were copied to a new directory
             String defaultPrefix = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator;
@@ -236,7 +236,7 @@ public enum Project {
     }
 
     private static void resetEditor() {
-        HashSet<EditorTextWindow> openWindows = new HashSet<EditorTextWindow>();
+        HashSet<EditorTextWindow> openWindows = new HashSet<>();
         openWindows.addAll(openTextWindows);
         for (EditorTextWindow txtwin : openWindows) {
             if (txtwin.isSeperateWindow()) {

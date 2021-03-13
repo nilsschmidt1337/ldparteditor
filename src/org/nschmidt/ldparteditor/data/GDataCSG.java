@@ -79,24 +79,24 @@ public final class GDataCSG extends GData {
 
     static volatile Lock static_lock = new ReentrantLock();
 
-    private final static ThreadsafeHashMap<DatFile, HashMap<String, CSG>> linkedCSG = new ThreadsafeHashMap<DatFile, HashMap<String, CSG>>();
-    private final static ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>> idToGDataCSG = new ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>>();
-    private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new ThreadsafeHashMap<DatFile, HashSet<GData3>>();
-    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> selectedBodyMap = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
+    private final static ThreadsafeHashMap<DatFile, HashMap<String, CSG>> linkedCSG = new ThreadsafeHashMap<>();
+    private final static ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>> idToGDataCSG = new ThreadsafeHashMap<>();
+    private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new ThreadsafeHashMap<>();
+    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> selectedBodyMap = new ThreadsafeHashMap<>();
 
-    private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> backupSelectedTrianglesMap = new ThreadsafeHashMap<DatFile, HashSet<GData3>>();
-    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> backupSelectedBodyMap = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
+    private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> backupSelectedTrianglesMap = new ThreadsafeHashMap<>();
+    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> backupSelectedBodyMap = new ThreadsafeHashMap<>();
 
     private static volatile boolean deleteAndRecompile = true;
 
-    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
-    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<DatFile, HashSet<GDataCSG>>();
-    private final static ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<DatFile, PathTruderSettings>();
-    private final static ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
-    private final static ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<DatFile, Boolean>();
+    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<>();
+    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<>();
+    private final static ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<>();
+    private final static ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<>();
+    private final static ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<>();
 
-    private final ArrayList<GData> cachedData = new ArrayList<GData>();
-    private final List<Polygon> polygonCache = new ArrayList<Polygon>();
+    private final ArrayList<GData> cachedData = new ArrayList<>();
+    private final List<Polygon> polygonCache = new ArrayList<>();
     private PathTruderSettings extruderConfig = new PathTruderSettings();
 
     private static volatile int quality = 16;
@@ -114,19 +114,19 @@ public final class GDataCSG extends GData {
     final Matrix4f matrix;
 
     public synchronized static void forceRecompile(DatFile df) {
-        registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(null);
+        registeredData.putIfAbsent(df, new HashSet<>()).add(null);
         clearPolygonCache.putIfAbsent(df, true);
         Plane.EPSILON = 1e-3;
     }
 
     public synchronized static void fullReset(DatFile df) {
         quality = 16;
-        registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
-        linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).clear();
-        parsedData.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
-        idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).clear();
-        selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>()).clear();
-        selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
+        registeredData.putIfAbsent(df, new HashSet<>()).clear();
+        linkedCSG.putIfAbsent(df, new HashMap<>()).clear();
+        parsedData.putIfAbsent(df, new HashSet<>()).clear();
+        idToGDataCSG.putIfAbsent(df, new HashBiMap<>()).clear();
+        selectedTrianglesMap.putIfAbsent(df, new HashSet<>()).clear();
+        selectedBodyMap.putIfAbsent(df, new HashSet<>()).clear();
         backupSelectionClear(df);
         Plane.EPSILON = 1e-3;
     }
@@ -142,8 +142,8 @@ public final class GDataCSG extends GData {
         } else {
             quality = 16;
         }
-        HashSet<GDataCSG> ref = new HashSet<GDataCSG>(registeredData.putIfAbsent(df, new HashSet<GDataCSG>()));
-        ref.removeAll(parsedData.putIfAbsent(df, new HashSet<GDataCSG>()));
+        HashSet<GDataCSG> ref = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
+        ref.removeAll(parsedData.putIfAbsent(df, new HashSet<>()));
         clearPolygonCache.putIfAbsent(df, true);
         fullClearPolygonCache.putIfAbsent(df, true);
         deleteAndRecompile = !ref.isEmpty();
@@ -151,8 +151,8 @@ public final class GDataCSG extends GData {
             globalExtruderConfig.put(df, new PathTruderSettings());
             registeredData.get(df).clear();
             registeredData.get(df).add(null);
-            linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).clear();
-            idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).clear();
+            linkedCSG.putIfAbsent(df, new HashMap<>()).clear();
+            idToGDataCSG.putIfAbsent(df, new HashBiMap<>()).clear();
         }
         parsedData.get(df).clear();
     }
@@ -177,7 +177,7 @@ public final class GDataCSG extends GData {
         super(parent);
         clearPolygonCache.put(df, true);
         fullClearPolygonCache.put(df, false);
-        registeredData.putIfAbsent(df, new HashSet<GDataCSG>()).add(this);
+        registeredData.putIfAbsent(df, new HashSet<>()).add(this);
         String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
         final GColour col16 = View.getLDConfigColour(16);
         this.type = type;
@@ -380,13 +380,13 @@ public final class GDataCSG extends GData {
         if (clearCaches) {
             clearPolygonCache.put(df, true);
         }
-        final HashSet<GDataCSG> parsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<GDataCSG>());
+        final HashSet<GDataCSG> parsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<>());
         parsedData.add(this);
         final boolean modified = c3d != null && c3d.getManipulator().isModified();
         if (deleteAndRecompile || modified || clearCaches) {
-            final HashBiMap<Integer, GDataCSG> idToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>());
-            final HashMap<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<String, CSG>());
-            final HashSet<GDataCSG> registeredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<GDataCSG>());
+            final HashBiMap<Integer, GDataCSG> idToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<>());
+            final HashMap<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<>());
+            final HashSet<GDataCSG> registeredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<>());
             final Matrix4f m;
             if (modified) {
                 m = c3d.getManipulator().getTempTransformationCSG4f();
@@ -1022,15 +1022,15 @@ public final class GDataCSG extends GData {
     public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
     public synchronized static boolean hasSelectionCSG(DatFile df) {
-        return !selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).isEmpty();
+        return !selectedBodyMap.putIfAbsent(df, new HashSet<>()).isEmpty();
     }
 
     public synchronized boolean isSelected(DatFile df) {
-        return selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).contains(this);
+        return selectedBodyMap.putIfAbsent(df, new HashSet<>()).contains(this);
     }
 
     public synchronized static void drawSelectionCSG(Composite3D c3d, final boolean modifiedManipulator) {
-        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<GData3>());
+        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<>());
         if (!selectedTriangles.isEmpty()) {
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
             GL11.glBegin(GL11.GL_LINES);
@@ -1050,13 +1050,13 @@ public final class GDataCSG extends GData {
         try {
             static_lock.lock();
             final DatFile df = c3d.getLockableDatFileReference();
-            final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
+            final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
             if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
                 selectedTriangles.clear();
             }
             final Integer selectedBodyID = selectCSG_helper(c3d, event);
             if (selectedBodyID != null) {
-                for (Entry<String, CSG> csg_pair : linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).entrySet()) {
+                for (Entry<String, CSG> csg_pair : linkedCSG.putIfAbsent(df, new HashMap<>()).entrySet()) {
                     if (csg_pair.getKey() != null && csg_pair.getKey().endsWith("#>null")) { //$NON-NLS-1$
                         CSG csg = csg_pair.getValue();
                         if (csg != null) {
@@ -1078,7 +1078,7 @@ public final class GDataCSG extends GData {
         final PowerRay powerRay = new PowerRay();
         final DatFile df = c3d.getLockableDatFileReference();
         final HashBiMap<Integer, GData> dpl = df.getDrawPerLine_NOCLONE();
-        registeredData.putIfAbsent(df, new HashSet<GDataCSG>());
+        registeredData.putIfAbsent(df, new HashSet<>());
 
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
         Matrix4f viewport_rotation = c3d.getRotation();
@@ -1097,7 +1097,7 @@ public final class GDataCSG extends GData {
         final double[] dist = new double[1];
         Integer result = null;
         GDataCSG resultObj = null;
-        for (CSG csg : linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).values()) {
+        for (CSG csg : linkedCSG.putIfAbsent(df, new HashMap<>()).values()) {
             for(Entry<GData3, IdAndPlane> pair : csg.getResult(df).entrySet()) {
                 final GData3 triangle = pair.getKey();
 
@@ -1110,7 +1110,7 @@ public final class GDataCSG extends GData {
                         Integer result2 = pair.getValue().id;
                         if (result2 != null) {
                             for (GDataCSG c : registeredData.get(df)) {
-                                if (dpl.containsValue(c) && idToGDataCSG.putIfAbsent(df, new HashBiMap<Integer, GDataCSG>()).containsKey(result2)) {
+                                if (dpl.containsValue(c) && idToGDataCSG.putIfAbsent(df, new HashBiMap<>()).containsKey(result2)) {
                                     if (c.type == CSG.TRANSFORM && c.ref1 != null && c.ref2 != null || c.ref1 != null && c.ref2 == null && c.ref3 == null && c.type != CSG.COMPILE) {
                                         resultObj = idToGDataCSG.get(df).getValue(result2);
                                         if (resultObj != null && resultObj.ref1 != null && resultObj.ref1.endsWith("#>null")) { //$NON-NLS-1$
@@ -1126,7 +1126,7 @@ public final class GDataCSG extends GData {
                 }
             }
         }
-        selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>());
+        selectedBodyMap.putIfAbsent(df, new HashSet<>());
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             selectedBodyMap.get(df).clear();
         }
@@ -1135,7 +1135,7 @@ public final class GDataCSG extends GData {
     }
 
     public synchronized static HashSet<GDataCSG> getSelection(DatFile df) {
-        HashSet<GDataCSG> result = selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>());
+        HashSet<GDataCSG> result = selectedBodyMap.putIfAbsent(df, new HashSet<>());
         for (Iterator<GDataCSG> it = result.iterator(); it.hasNext();) {
             if (it.next() == null) it.remove();
         }
@@ -1144,7 +1144,7 @@ public final class GDataCSG extends GData {
 
     public synchronized static void selectAll(DatFile df) {
         clearSelection(df);
-        HashSet<GDataCSG> newSelection = new HashSet<GDataCSG>(registeredData.putIfAbsent(df, new HashSet<GDataCSG>()));
+        HashSet<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
             final GDataCSG g = it.next();
             if (g != null && g.canSelect()) {
@@ -1165,7 +1165,7 @@ public final class GDataCSG extends GData {
     }
 
     public synchronized static HashSet<GColour> getSelectedColours(DatFile df) {
-        final HashSet<GColour> colours = new HashSet<GColour>();
+        final HashSet<GColour> colours = new HashSet<>();
         final HashSet<GDataCSG> selection = getSelection(df);
         for (GDataCSG g : selection) {
             colours.add(g.colour);
@@ -1174,7 +1174,7 @@ public final class GDataCSG extends GData {
     }
 
     public synchronized static void selectAllWithSameColours(DatFile df, Set<GColour> allColours) {
-        HashSet<GDataCSG> newSelection = new HashSet<GDataCSG>(registeredData.putIfAbsent(df, new HashSet<GDataCSG>()));
+        HashSet<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
             final GDataCSG g = it.next();
             if (g != null && g.canSelect() && allColours.contains(g.colour)) {
@@ -1186,13 +1186,13 @@ public final class GDataCSG extends GData {
     }
 
     public synchronized static void clearSelection(DatFile df) {
-        selectedBodyMap.putIfAbsent(df, new HashSet<GDataCSG>()).clear();
+        selectedBodyMap.putIfAbsent(df, new HashSet<>()).clear();
     }
 
     public static void rebuildSelection(DatFile df) {
         final Composite3D c3d = df.getLastSelectedComposite();
         if (c3d == null || df.getLastSelectedComposite().isDisposed()) return;
-        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
+        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
         final HashSet<GDataCSG> selectedBodies = selectedBodyMap.get(df);
         selectedTriangles.clear();
         if (selectedBodies != null) {
@@ -1209,8 +1209,8 @@ public final class GDataCSG extends GData {
                         for (Polygon p : c.dataCSG.getPolygons()) {
                             Matrix4f id = new Matrix4f();
                             Matrix4f.setIdentity(id);
-                            GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
-                                    new HashSet<String>(), View.DUMMY_REFERENCE);
+                            GData1 g1 = new GData1(-1, .5f, .5f, .5f, 1f, id, View.ACCURATE_ID, new ArrayList<>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
+                                    new HashSet<>(), View.DUMMY_REFERENCE);
                             selectedTriangles.addAll(p.toLDrawTriangles(g1).keySet());
                         }
                     }
@@ -1317,8 +1317,8 @@ public final class GDataCSG extends GData {
     public static synchronized void backupSelection(DatFile linkedDatFile) {
         while (true) {
             try {
-                backupSelectedBodyMap.put(linkedDatFile, new HashSet<GDataCSG>(selectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<GDataCSG>())));
-                backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<GData3>(selectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<GData3>())));
+                backupSelectedBodyMap.put(linkedDatFile, new HashSet<>(selectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<>())));
+                backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<>(selectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<>())));
                 break;
             } catch (ConcurrentModificationException cme) {}
         }
@@ -1327,8 +1327,8 @@ public final class GDataCSG extends GData {
     public static synchronized void backupSelectionClear(DatFile linkedDatFile) {
         while (true) {
             try {
-                backupSelectedBodyMap.put(linkedDatFile, new HashSet<GDataCSG>());
-                backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<GData3>());
+                backupSelectedBodyMap.put(linkedDatFile, new HashSet<>());
+                backupSelectedTrianglesMap.put(linkedDatFile, new HashSet<>());
                 break;
             } catch (ConcurrentModificationException cme) {}
         }
@@ -1337,15 +1337,15 @@ public final class GDataCSG extends GData {
     public static synchronized void restoreSelection(DatFile linkedDatFile) {
         while (true) {
             try {
-                selectedBodyMap.put(linkedDatFile, backupSelectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<GDataCSG>()));
-                selectedTrianglesMap.put(linkedDatFile, backupSelectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<GData3>()));
+                selectedBodyMap.put(linkedDatFile, backupSelectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<>()));
+                selectedTrianglesMap.put(linkedDatFile, backupSelectedTrianglesMap.putIfAbsent(linkedDatFile, new HashSet<>()));
                 break;
             } catch (ConcurrentModificationException cme) {}
         }
     }
 
     public static Collection<CSG> getCSGs(final DatFile df) {
-        return linkedCSG.putIfAbsent(df, new HashMap<String, CSG>()).values();
+        return linkedCSG.putIfAbsent(df, new HashMap<>()).values();
     }
 
     public static void finishCacheCleanup(DatFile df) {
@@ -1368,14 +1368,14 @@ public final class GDataCSG extends GData {
 
     public Set<GData3> getSurfaces() {
         if (surfaces == null) {
-            return new HashSet<GData3>();
+            return new HashSet<>();
         } else {
             return surfaces;
         }
     }
 
     public static HashSet<GData3> getSelectionData(DatFile df) {
-        return selectedTrianglesMap.putIfAbsent(df, new HashSet<GData3>());
+        return selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
     }
 
     Set<GData3> surfaces = null;
@@ -1383,7 +1383,7 @@ public final class GDataCSG extends GData {
     public void cacheResult(DatFile df) {
         final int[] result = new int[]{0, 0, 0};
         if (compiledCSG != null) {
-            surfaces = new HashSet<GData3>(compiledCSG.getResult(df).keySet());
+            surfaces = new HashSet<>(compiledCSG.getResult(df).keySet());
             for (GData3 tri : surfaces) {
                 if (tri.a < 1f) {
                     result[2] += 6;
@@ -1393,7 +1393,7 @@ public final class GDataCSG extends GData {
             }
             result[0] = 60 * surfaces.size();
         } else {
-            surfaces = new HashSet<GData3>();
+            surfaces = new HashSet<>();
         }
         datasize = result;
     }

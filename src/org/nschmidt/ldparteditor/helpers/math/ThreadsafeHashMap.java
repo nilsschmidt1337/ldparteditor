@@ -38,7 +38,7 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     public ThreadsafeHashMap() {
         try {
             wl.lock();
-            map = new HashMap<K, V>();
+            map = new HashMap<>();
         } finally {
             wl.unlock();
         }
@@ -47,7 +47,7 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     public ThreadsafeHashMap(int initialCapacity, float loadFactor) {
         try {
             wl.lock();
-            map = new HashMap<K, V>(initialCapacity, loadFactor);
+            map = new HashMap<>(initialCapacity, loadFactor);
         } finally {
             wl.unlock();
         }
@@ -56,7 +56,7 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     public ThreadsafeHashMap(int initialCapacity) {
         try {
             wl.lock();
-            map = new HashMap<K, V>(initialCapacity);
+            map = new HashMap<>(initialCapacity);
         } finally {
             wl.unlock();
         }
@@ -65,7 +65,7 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
     public ThreadsafeHashMap(Map<? extends K, ? extends V> m) {
         try {
             wl.lock();
-            map = new HashMap<K, V>(m);
+            map = new HashMap<>(m);
         } finally {
             wl.unlock();
         }

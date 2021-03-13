@@ -74,7 +74,7 @@ public class CSGCircle extends CSGPrimitive implements Primitive {
         final VectorCSGd axisY = axisX.cross(axisZ).unit();
         VectorCSGd startV = s.clone();
         VectorCSGd endV = e.clone();
-        List<Polygon> polygons = new ArrayList<Polygon>();
+        List<Polygon> polygons = new ArrayList<>();
 
         for (int i = 0; i < numSlices; i++) {
             double t0 = i / (double) numSlices, t1 = (i + 1) / (double) numSlices;

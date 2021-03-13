@@ -41,8 +41,8 @@ public class GearGL33 {
         final float radius2 = radius1 + width;
         final float radius3 = radius2 + toothHeight;
 
-        final ArrayList<Float> vertices = new ArrayList<Float>();
-        final ArrayList<Integer> indices = new ArrayList<Integer>();
+        final ArrayList<Float> vertices = new ArrayList<>();
+        final ArrayList<Integer> indices = new ArrayList<>();
 
         final double R = 2 * Math.PI / segments;
         double r;
@@ -160,12 +160,12 @@ public class GearGL33 {
     }
 
     public void draw(GLMatrixStack stack, GLShader shader, float x, float y, float z, float r, float g, float b) {
-        
+
         final GLShader backup = stack.getShader();
-        
+
         stack.setShader(shader);
         shader.use();
-        
+
         stack.glPushMatrix();
         stack.glLoadIdentity();
         stack.glTranslatef(x, y, z);
@@ -173,17 +173,17 @@ public class GearGL33 {
         final int colour = shader.getUniformLocation("color"); //$NON-NLS-1$
         GL20.glUniform3f(colour, r, g, b);
         final int VBO = GL15.glGenBuffers();
-        final int EBO = GL15.glGenBuffers();        
-        
+        final int EBO = GL15.glGenBuffers();
+
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, bvertices, GL15.GL_STREAM_DRAW);
-        
+
         GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, bindices, GL15.GL_STREAM_DRAW);
-        
+
         GL20.glEnableVertexAttribArray(0);
         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 12, 0);
-        
+
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
         GL11.glDrawElements(GL11.GL_TRIANGLES, bindices.capacity(), GL11.GL_UNSIGNED_INT, 0);
@@ -193,7 +193,7 @@ public class GearGL33 {
 
         stack.setShader(backup);
         backup.use();
-        
+
         stack.glPopMatrix();
     }
 }

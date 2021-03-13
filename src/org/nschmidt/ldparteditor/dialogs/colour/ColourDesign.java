@@ -139,7 +139,7 @@ class ColourDesign extends ApplicationWindow {
             lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
-        TreeSet<Integer> ldConfIndices = new TreeSet<Integer>(View.getColourMap().keySet());
+        TreeSet<Integer> ldConfIndices = new TreeSet<>(View.getColourMap().keySet());
 
         int counter = 0;
         ToolItem toolItem_Colours = new ToolItem(cmp_container, Cocoa.getStyle(), true);

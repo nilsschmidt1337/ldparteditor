@@ -75,15 +75,15 @@ public class KeyStateManager {
     private final CompositePrimitive cp;
 
     /** A set of all keys which are pressed at the moment */
-    private HashSet<Integer> pressedKeyCodes = new HashSet<Integer>();
+    private HashSet<Integer> pressedKeyCodes = new HashSet<>();
     /** A map which assigns a pressed key to a task */
-    private static final HashMap<String, Task> taskMap = new HashMap<String, Task>();
-    private static final HashMap<Task, String> taskKeyMap = new HashMap<Task, String>();
+    private static final HashMap<String, Task> taskMap = new HashMap<>();
+    private static final HashMap<Task, String> taskKeyMap = new HashMap<>();
     /** A set of all reserved keys */
-    private static final HashSet<String> reservedKeyCodes = new HashSet<String>();
+    private static final HashSet<String> reservedKeyCodes = new HashSet<>();
     /** A map which assigns a pressed key to a task (for the text editor)*/
-    private static final HashMap<String, TextTask> textTaskMap = new HashMap<String, TextTask>();
-    private static final HashMap<TextTask, String> textTaskKeyMap = new HashMap<TextTask, String>();
+    private static final HashMap<String, TextTask> textTaskMap = new HashMap<>();
+    private static final HashMap<TextTask, String> textTaskKeyMap = new HashMap<>();
 
     private int multi = 100;
     private int colourNumber = 0;

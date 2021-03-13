@@ -192,7 +192,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     int c1 = txt_data[0].getLineCount();
                     int c2 = txt_data2[0].getLineCount();
                     int matches = 0;
-                    HashSet<String> lines = new HashSet<String>();
+                    HashSet<String> lines = new HashSet<>();
                     for (int i = 0; i < c2; i++) {
                         String line = txt_data2[0].getLine(i);
                         if (!line.isEmpty() && !line.startsWith("0") && !line.startsWith("5")) { //$NON-NLS-1$ //$NON-NLS-2$

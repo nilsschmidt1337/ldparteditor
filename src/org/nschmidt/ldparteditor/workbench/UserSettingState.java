@@ -58,7 +58,7 @@ public class UserSettingState implements Serializable {
     /** {@code true} if the user wants to use relative paths */
     private boolean usingRelativePaths = false;
     /** Your colour palette. */
-    private ArrayList<GColour> userPalette = new ArrayList<GColour>();
+    private ArrayList<GColour> userPalette = new ArrayList<>();
 
     /** Your coarse move snap value */
     private BigDecimal coarse_move_snap = new BigDecimal("1"); //$NON-NLS-1$
@@ -104,7 +104,7 @@ public class UserSettingState implements Serializable {
 
     private float[] manipulatorSize = null;
 
-    private ArrayList<String> recentItems = new ArrayList<String>();
+    private ArrayList<String> recentItems = new ArrayList<>();
 
     private Locale locale = Locale.US;
 
@@ -119,7 +119,7 @@ public class UserSettingState implements Serializable {
     private String[] keyTextKeys = null;
     private TextTask[] keyTextTasks = null;
 
-    private ArrayList<ToolItemState> toolItemConfig3D = new ArrayList<ToolItemState>();
+    private ArrayList<ToolItemState> toolItemConfig3D = new ArrayList<>();
 
     /** {@code true} if anti-aliasing is enabled for 3D windows */
     private boolean antiAliasing = false;

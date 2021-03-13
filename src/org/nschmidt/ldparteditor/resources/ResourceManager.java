@@ -36,7 +36,7 @@ public enum ResourceManager {
     INSTANCE;
 
     /** The hash map, which stores already loaded images in-memory. */
-    private static HashMap<String, Image> imageMap = new HashMap<String, Image>();
+    private static HashMap<String, Image> imageMap = new HashMap<>();
 
     /**
      * Loads a image with a given name from the resource package. Note: By

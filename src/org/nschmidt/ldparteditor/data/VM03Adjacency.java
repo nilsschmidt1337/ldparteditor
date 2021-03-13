@@ -42,8 +42,8 @@ class VM03Adjacency extends VM02Add {
         int t1 = g1.type();
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
-        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v1 = new TreeSet<>();
+        TreeSet<Vertex> v2 = new TreeSet<>();
 
         GData1 p1 = null;
         GData1 p2 = null;
@@ -98,7 +98,7 @@ class VM03Adjacency extends VM02Add {
     }
 
     public HashSet<GData> getLinkedSurfaces(Vertex vertex) {
-        HashSet<GData> rval = new HashSet<GData>();
+        HashSet<GData> rval = new HashSet<>();
         Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
         if (vm != null) {
             getManifestationLock().lock();
@@ -113,7 +113,7 @@ class VM03Adjacency extends VM02Add {
     }
 
     public HashSet<GData> getLinkedSurfacesOfSameColour(Vertex vertex) {
-        HashSet<GData> rval = new HashSet<GData>();
+        HashSet<GData> rval = new HashSet<>();
         Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
         if (vm != null) {
             GColour colour = null;
@@ -211,9 +211,9 @@ class VM03Adjacency extends VM02Add {
     }
 
     protected ArrayList<GData> linkedCommonFaces(TreeSet<Vertex> h1, TreeSet<Vertex> h2) {
-        ArrayList<GData> result = new ArrayList<GData>();
-        Set<VertexManifestation> m1 = new HashSet<VertexManifestation>();
-        Set<VertexManifestation> m2 = new HashSet<VertexManifestation>();
+        ArrayList<GData> result = new ArrayList<>();
+        Set<VertexManifestation> m1 = new HashSet<>();
+        Set<VertexManifestation> m2 = new HashSet<>();
         if (m1 == null || m2 == null) {
             return result;
         }
@@ -246,7 +246,7 @@ class VM03Adjacency extends VM02Add {
     }
 
     public ArrayList<GData> linkedCommonFaces(Vertex v1, Vertex v2) {
-        ArrayList<GData> result = new ArrayList<GData>();
+        ArrayList<GData> result = new ArrayList<>();
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
         if (m1 == null || m2 == null) {
@@ -303,8 +303,8 @@ class VM03Adjacency extends VM02Add {
         int t1 = g1.type();
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
-        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v1 = new TreeSet<>();
+        TreeSet<Vertex> v2 = new TreeSet<>();
 
         switch (t1) {
         case 3:
@@ -361,8 +361,8 @@ class VM03Adjacency extends VM02Add {
         int t1 = g1.type();
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
-        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v1 = new TreeSet<>();
+        TreeSet<Vertex> v2 = new TreeSet<>();
 
 
         switch (t1) {
@@ -413,17 +413,17 @@ class VM03Adjacency extends VM02Add {
 
         // Create the sets
 
-        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<TreeSet<Vertex>>();
-        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<TreeSet<Vertex>>();
+        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<>();
+        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<>();
 
         for (Vertex v : v1) {
-            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList1.add(newSet);
         }
 
         for (Vertex v : v2) {
-            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList2.add(newSet);
         }
@@ -433,7 +433,7 @@ class VM03Adjacency extends VM02Add {
         int intersections = 0;
         for (TreeSet<Vertex> s1 : setList1) {
             for (TreeSet<Vertex> s2 : setList2) {
-                TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+                TreeSet<Vertex> newSet = new TreeSet<>();
                 newSet.addAll(s1);
                 int co = newSet.size();
                 newSet.removeAll(s2);
@@ -475,8 +475,8 @@ class VM03Adjacency extends VM02Add {
         int t1 = g1.type();
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
-        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v1 = new TreeSet<>();
+        TreeSet<Vertex> v2 = new TreeSet<>();
 
         switch (t1) {
         case 2:
@@ -536,17 +536,17 @@ class VM03Adjacency extends VM02Add {
 
         // Create the sets
 
-        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<TreeSet<Vertex>>();
-        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<TreeSet<Vertex>>();
+        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<>();
+        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<>();
 
         for (Vertex v : v1) {
-            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList1.add(newSet);
         }
 
         for (Vertex v : v2) {
-            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList2.add(newSet);
         }
@@ -556,7 +556,7 @@ class VM03Adjacency extends VM02Add {
         int intersections = 0;
         for (TreeSet<Vertex> s1 : setList1) {
             for (TreeSet<Vertex> s2 : setList2) {
-                TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+                TreeSet<Vertex> newSet = new TreeSet<>();
                 newSet.addAll(s1);
                 int co = newSet.size();
                 newSet.removeAll(s2);
@@ -584,8 +584,8 @@ class VM03Adjacency extends VM02Add {
 
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<Vertex>();
-        TreeSet<Vertex> v2 = new TreeSet<Vertex>();
+        TreeSet<Vertex> v1 = new TreeSet<>();
+        TreeSet<Vertex> v2 = new TreeSet<>();
 
         v1.add(e1.v1);
         v1.add(e1.v2);
@@ -615,17 +615,17 @@ class VM03Adjacency extends VM02Add {
 
         // Create the sets
 
-        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<TreeSet<Vertex>>();
-        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<TreeSet<Vertex>>();
+        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<>();
+        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<>();
 
         for (Vertex v : v1) {
-            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList1.add(newSet);
         }
 
         for (Vertex v : v2) {
-            TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+            TreeSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList2.add(newSet);
         }
@@ -635,7 +635,7 @@ class VM03Adjacency extends VM02Add {
         int intersections = 0;
         for (TreeSet<Vertex> s1 : setList1) {
             for (TreeSet<Vertex> s2 : setList2) {
-                TreeSet<Vertex> newSet = new TreeSet<Vertex>();
+                TreeSet<Vertex> newSet = new TreeSet<>();
                 newSet.addAll(s1);
                 int co = newSet.size();
                 newSet.removeAll(s2);
@@ -653,7 +653,7 @@ class VM03Adjacency extends VM02Add {
     }
 
     public HashSet<GData3> getLinkedTriangles(Vertex vertex) {
-        HashSet<GData3> rval = new HashSet<GData3>();
+        HashSet<GData3> rval = new HashSet<>();
         Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
         if (vm != null) {
             for (VertexManifestation m : vm) {
@@ -670,13 +670,13 @@ class VM03Adjacency extends VM02Add {
         if (linkedDatFile.isReadOnly())
             return;
 
-        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
 
-        final HashSet<GData0> effSelectedVertices = new HashSet<GData0>();
-        final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
-        final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
-        final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
-        final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
+        final HashSet<GData0> effSelectedVertices = new HashSet<>();
+        final HashSet<GData2> effSelectedLines = new HashSet<>();
+        final HashSet<GData3> effSelectedTriangles = new HashSet<>();
+        final HashSet<GData4> effSelectedQuads = new HashSet<>();
+        final HashSet<GData5> effSelectedCondlines = new HashSet<>();
 
         final GColour col16 = View.getLDConfigColour(16);
 
@@ -711,9 +711,9 @@ class VM03Adjacency extends VM02Add {
 
         // 1. Vertex Based Selection
         {
-            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
             {
-                HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
+                HashMap<GData, Integer> occurMap = new HashMap<>();
                 for (Vertex vertex : selectedVertices) {
                     Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
                     if (occurences == null)
@@ -828,7 +828,7 @@ class VM03Adjacency extends VM02Add {
                 }
             }
 
-            Set<GData0> vs = new HashSet<GData0>(effSelectedVertices);
+            Set<GData0> vs = new HashSet<>(effSelectedVertices);
             for (GData0 effvert : vs) {
                 Vertex v = effvert.getVertex();
                 if (v != null && objectVertices.contains(v)) {
@@ -853,18 +853,18 @@ class VM03Adjacency extends VM02Add {
             // 4. Subfile Based Rounding & Selection
             if (!selectedSubfiles.isEmpty()) {
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
-                HashSet<GData1> newSubfiles = new HashSet<GData1>();
+                HashSet<GData1> newSubfiles = new HashSet<>();
                 for (GData1 subf : selectedSubfiles) {
                     String roundedString = subf.getRoundedString(coordsDecimalPlaces, matrixDecimalPlaces, onX, onY, onZ);
                     GData roundedSubfile;
                     if (16 == subf.colourNumber) {
                         roundedSubfile = DatParser
                                 .parseLine(roundedString, drawPerLine.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                        new HashSet<String>()).get(0).getGraphicalData();
+                                        new HashSet<>()).get(0).getGraphicalData();
                     } else {
                         roundedSubfile = DatParser
                                 .parseLine(roundedString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile,
-                                        false, new HashSet<String>()).get(0).getGraphicalData();
+                                        false, new HashSet<>()).get(0).getGraphicalData();
                     }
                     if (roundedSubfile != null) {
                         if (subf.equals(linkedDatFile.getDrawChainTail()))
@@ -911,7 +911,7 @@ class VM03Adjacency extends VM02Add {
             }
 
             if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
-                HashSet<GDataCSG> newCSGSelection = new HashSet<GDataCSG>();
+                HashSet<GDataCSG> newCSGSelection = new HashSet<>();
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
                 for (GDataCSG csg : GDataCSG.getSelection(linkedDatFile)) {
                     if (csg.type == CSG.COMPILE || csg.type == CSG.QUALITY || csg.type == CSG.UNION || csg.type == CSG.DIFFERENCE || csg.type == CSG.INTERSECTION  || csg.type == CSG.EPSILON || csg.type == CSG.TJUNCTION || csg.type == CSG.COLLAPSE || csg.type == CSG.DONTOPTIMIZE || csg.type == CSG.EXTRUDE_CFG) {
@@ -922,12 +922,12 @@ class VM03Adjacency extends VM02Add {
                     GData roundedCSG;
                     if (16 == col.getColourNumber()) {
                         roundedCSG = DatParser
-                                .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, new HashSet<String>())
+                                .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, new HashSet<>())
                                 .get(0).getGraphicalData();
                     } else {
                         roundedCSG = DatParser
                                 .parseLine(roundedString, drawPerLine.getKey(csg).intValue(), 0, col.getR(), col.getG(), col.getB(), col.getA(), View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                        new HashSet<String>()).get(0).getGraphicalData();
+                                        new HashSet<>()).get(0).getGraphicalData();
                     }
                     if (roundedCSG != null) {
                         if (csg.equals(linkedDatFile.getDrawChainTail()))

@@ -61,10 +61,10 @@ public class VM08SlicerPro extends VM07PathTruder {
 
             final int[] isCancelled = new int[]{0};
 
-            final Set<GData2> debugLines = new HashSet<GData2>();
+            final Set<GData2> debugLines = new HashSet<>();
 
-            final Set<GData3> trisToDelete = new HashSet<GData3>();
-            final Set<GData4> quadsToDelete = new HashSet<GData4>();
+            final Set<GData3> trisToDelete = new HashSet<>();
+            final Set<GData4> quadsToDelete = new HashSet<>();
 
             Vector4f dir4f = new Vector4f(c3d.getGenerator()[2]);
             final Vector3r dir = new Vector3r(dir4f);
@@ -83,7 +83,7 @@ public class VM08SlicerPro extends VM07PathTruder {
 
             NLogger.debug(getClass(), "Get target surfaces to parse."); //$NON-NLS-1$
 
-            final HashSet<GData> targetSurfs = new HashSet<GData>();
+            final HashSet<GData> targetSurfs = new HashSet<>();
             {
                 Set<GData3> tris = triangles.keySet();
                 for (GData3 tri : tris) {
@@ -119,14 +119,14 @@ public class VM08SlicerPro extends VM07PathTruder {
             targetSurfs.removeAll(selectedTriangles);
             targetSurfs.removeAll(selectedQuads);
 
-            final ArrayList<GData> originSurfs = new ArrayList<GData>();
+            final ArrayList<GData> originSurfs = new ArrayList<>();
             originSurfs.addAll(selectedTriangles);
             originSurfs.addAll(selectedQuads);
 
             clearSelection();
 
-            final ArrayList<ArrayList<IntersectionInfo>> intersections = new ArrayList<ArrayList<IntersectionInfo>>();
-            final Set<GData3> newTriangles = Collections.newSetFromMap(new ThreadsafeHashMap<GData3, Boolean>());
+            final ArrayList<ArrayList<IntersectionInfo>> intersections = new ArrayList<>();
+            final Set<GData3> newTriangles = Collections.newSetFromMap(new ThreadsafeHashMap<>());
 
             try
             {
@@ -141,7 +141,7 @@ public class VM08SlicerPro extends VM07PathTruder {
 
                             {
 
-                                final Set<ArrayList<IntersectionInfo>> intersectionSet = Collections.newSetFromMap(new ThreadsafeHashMap<ArrayList<IntersectionInfo>, Boolean>());
+                                final Set<ArrayList<IntersectionInfo>> intersectionSet = Collections.newSetFromMap(new ThreadsafeHashMap<>());
 
                                 final int iterations = originSurfs.size();
                                 final int chunks = View.NUM_CORES;
@@ -314,12 +314,12 @@ public class VM08SlicerPro extends VM07PathTruder {
 
 
             NLogger.debug(getClass(), "Check for identical vertices, invalid winding and collinearity."); //$NON-NLS-1$
-            final Set<GData3> trisToDelete2 = new HashSet<GData3>();
+            final Set<GData3> trisToDelete2 = new HashSet<>();
             {
-                final Set<GData3> newTriangles2 = new HashSet<GData3>();
+                final Set<GData3> newTriangles2 = new HashSet<>();
                 for (GData3 g3 : newTriangles) {
                     Vertex[] verts = triangles.get(g3);
-                    Set<Vertex> verts2 = new TreeSet<Vertex>();
+                    Set<Vertex> verts2 = new TreeSet<>();
                     for (Vertex vert : verts) {
                         verts2.add(vert);
                     }
@@ -430,8 +430,8 @@ public class VM08SlicerPro extends VM07PathTruder {
 
     private IntersectionInfo getTriangleTriangleIntersection(Vector3r[] ov, Vector3r[] tv, GData origin, GData target, Vector3r dir, Vector3r dirN, RationalMatrix m, RationalMatrix minv, PerspectiveCalculator pc, SlicerProSettings ss) {
 
-        ArrayList<Vector3r> insideTarget = new ArrayList<Vector3r>();
-        ArrayList<Vector3r> insideOrigin = new ArrayList<Vector3r>();
+        ArrayList<Vector3r> insideTarget = new ArrayList<>();
+        ArrayList<Vector3r> insideOrigin = new ArrayList<>();
 
         Vector3r[] target2D = new Vector3r[3];
         for(int i = 0; i < 3; i++) {
@@ -466,9 +466,9 @@ public class VM08SlicerPro extends VM07PathTruder {
         if (insideTarget.size() == 3) {
             insideOrigin.clear();
             // Project points on the target plane
-            ArrayList<Vector3r> iT = new ArrayList<Vector3r>();
+            ArrayList<Vector3r> iT = new ArrayList<>();
             {
-                ArrayList<Vector3r> insideTarget2 = new ArrayList<Vector3r>();
+                ArrayList<Vector3r> insideTarget2 = new ArrayList<>();
                 insideTarget2.addAll(insideTarget);
                 insideTarget.clear();
                 for (Vector3r v : insideTarget2) {
@@ -485,9 +485,9 @@ public class VM08SlicerPro extends VM07PathTruder {
         if (insideOrigin.size() == 3) {
             insideTarget.clear();
             // Project points on the target plane
-            ArrayList<Vector3r> iT = new ArrayList<Vector3r>();
+            ArrayList<Vector3r> iT = new ArrayList<>();
             {
-                ArrayList<Vector3r> insideOrigin2 = new ArrayList<Vector3r>();
+                ArrayList<Vector3r> insideOrigin2 = new ArrayList<>();
                 insideOrigin2.addAll(insideOrigin);
                 insideOrigin.clear();
                 for (Vector3r v : insideOrigin2) {
@@ -500,7 +500,7 @@ public class VM08SlicerPro extends VM07PathTruder {
             return new IntersectionInfo(target, origin, iT);
         }
 
-        ArrayList<Vector3r> sideIntersections = new ArrayList<Vector3r>();
+        ArrayList<Vector3r> sideIntersections = new ArrayList<>();
 
         // Calculate line intersections
         {
@@ -610,7 +610,7 @@ public class VM08SlicerPro extends VM07PathTruder {
             // Check for identical vertices and remove them
             {
 
-                ArrayList<Vector3r> allVertices = new ArrayList<Vector3r>();
+                ArrayList<Vector3r> allVertices = new ArrayList<>();
 
                 for (Iterator<Vector3r> it = sideIntersections.iterator(); it.hasNext();) {
                     Vector3r v = it.next();
@@ -671,7 +671,7 @@ public class VM08SlicerPro extends VM07PathTruder {
                 case 6:
                 case 7:
                 {
-                    ArrayList<Vector3r> rv = new ArrayList<Vector3r>();
+                    ArrayList<Vector3r> rv = new ArrayList<>();
                     rv.addAll(convexHull(allVertices));
                     allVertices.clear();
                     allVertices.addAll(rv);
@@ -683,7 +683,7 @@ public class VM08SlicerPro extends VM07PathTruder {
 
                 // Project points on the target plane
                 {
-                    ArrayList<Vector3r> allVertices2 = new ArrayList<Vector3r>();
+                    ArrayList<Vector3r> allVertices2 = new ArrayList<>();
                     allVertices2.addAll(allVertices);
                     allVertices.clear();
                     for (Vector3r v : allVertices2) {
@@ -703,7 +703,7 @@ public class VM08SlicerPro extends VM07PathTruder {
         final int ot = origin.type();
         final int tt = target.type();
 
-        final ArrayList<IntersectionInfo> result = new ArrayList<IntersectionInfo>();
+        final ArrayList<IntersectionInfo> result = new ArrayList<>();
 
         if (ot == 3 && tt == 3) {
 
@@ -821,7 +821,7 @@ public class VM08SlicerPro extends VM07PathTruder {
 
         for (ArrayList<Vector3r> permutation : perms) {
 
-            ArrayList<Vector3r[]> lines = new ArrayList<Vector3r[]>();
+            ArrayList<Vector3r[]> lines = new ArrayList<>();
 
             int sm1 = permutation.size() - 1;
             for (int i = 0; i < sm1; i++) {
@@ -863,10 +863,10 @@ public class VM08SlicerPro extends VM07PathTruder {
     }
 
     private <T> ArrayList<ArrayList<T>> permute(List<T> num) {
-        ArrayList<ArrayList<T>> result = new ArrayList<ArrayList<T>>();
+        ArrayList<ArrayList<T>> result = new ArrayList<>();
 
         for (int i = 0; i < num.size(); i++) {
-            ArrayList<T> first = new ArrayList<T>();
+            ArrayList<T> first = new ArrayList<>();
             T item = num.get(i);
             first.add(item);
             permuteHelper(i, result, first, item, num);
@@ -876,7 +876,7 @@ public class VM08SlicerPro extends VM07PathTruder {
     }
 
     private <T> void permuteHelper(int removeAt, ArrayList<ArrayList<T>> result, ArrayList<T> first, T item, List<T> num) {
-        ArrayList<T> nextRemaining = new ArrayList<T>();
+        ArrayList<T> nextRemaining = new ArrayList<>();
         nextRemaining.addAll(num);
         nextRemaining.remove(removeAt);
         if (nextRemaining.isEmpty()) {
@@ -884,7 +884,7 @@ public class VM08SlicerPro extends VM07PathTruder {
         } else {
             for (int i = 0; i < nextRemaining.size(); i++) {
                 T item2 = nextRemaining.get(i);
-                ArrayList<T> nextHead = new ArrayList<T>();
+                ArrayList<T> nextHead = new ArrayList<>();
                 nextHead.addAll(first);
                 nextHead.add(item2);
                 permuteHelper(i, result, nextHead, item2, nextRemaining);

@@ -46,7 +46,7 @@ public class DatHeaderManager {
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
     private Thread worker = null;
 
-    private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
+    private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<>();
 
     private volatile HeaderState state = new HeaderState();
 
@@ -54,7 +54,7 @@ public class DatHeaderManager {
         this.df = df;
     }
 
-    volatile ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> CACHE_headerHints = new ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>>(); // Cleared
+    volatile ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> CACHE_headerHints = new ThreadsafeTreeMap<>(); // Cleared
 
     public void pushDatHeaderCheck(GData data, StyledText compositeText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount) {
         if (df.isReadOnly()) return;
@@ -70,7 +70,7 @@ public class DatHeaderManager {
                             if (newEntry != null) {
                                 NLogger.debug(getClass(), "Started DATHeader check..."); //$NON-NLS-1$
 
-                                final ArrayList<ParsingResult> allHints = new ArrayList<ParsingResult>();
+                                final ArrayList<ParsingResult> allHints = new ArrayList<>();
                                 int headerState = HeaderState._00_TITLE;
                                 final HeaderState h = new HeaderState();
 
@@ -747,7 +747,7 @@ public class DatHeaderManager {
 
 public void parseForHints(StyledText compositeText, TreeItem hints) {
 
-        Set<String> alreadyParsed = new HashSet<String>();
+        Set<String> alreadyParsed = new HashSet<>();
         alreadyParsed.add(getShortName());
 
         long start = System.currentTimeMillis();
@@ -796,7 +796,7 @@ public void parseForHints(StyledText compositeText, TreeItem hints) {
         }
         {
             h = HeaderState.state();
-            results = new ArrayList<ParsingResult>();
+            results = new ArrayList<>();
             if (!h.hasTITLE())
                 results.add(new ParsingResult(I18n.DATFILE_MissingTitle, "[H00] " + I18n.DATFILE_HeaderHint, ResultType.HINT)); //$NON-NLS-1$
             if (!h.hasNAME())

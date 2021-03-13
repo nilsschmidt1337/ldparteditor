@@ -53,8 +53,8 @@ public class HistoryManager {
     private final Lock lock = new ReentrantLock();
     private volatile int mode = 0;
 
-    private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<Object[]>();
-    private volatile Queue<Object[]> answerQueue = new ConcurrentLinkedQueue<Object[]>();
+    private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<>();
+    private volatile Queue<Object[]> answerQueue = new ConcurrentLinkedQueue<>();
 
     public HistoryManager(DatFile df) {
         this.df = df;
@@ -74,15 +74,15 @@ public class HistoryManager {
                     int pointer = 0;
                     int pointerMax = 0;
 
-                    final ArrayList<Integer> historySelectionStart = new ArrayList<Integer>();
-                    final ArrayList<Integer> historySelectionEnd = new ArrayList<Integer>();
-                    final ArrayList<Integer> historyTopIndex = new ArrayList<Integer>();
-                    final ArrayList<String> historyFullText = new ArrayList<String>();
-                    final ArrayList<String[]> historyText = new ArrayList<String[]>();
-                    final ArrayList<HashMap<String, ArrayList<Boolean>>> historySelectedData = new ArrayList<HashMap<String, ArrayList<Boolean>>>();
-                    final ArrayList<HashMap<String, ArrayList<Boolean>>> historyHiddenData = new ArrayList<HashMap<String, ArrayList<Boolean>>>();
-                    final ArrayList<Vertex[]> historySelectedVertices = new ArrayList<Vertex[]>();
-                    final ArrayList<Vertex[]> historyHiddenVertices = new ArrayList<Vertex[]>();
+                    final ArrayList<Integer> historySelectionStart = new ArrayList<>();
+                    final ArrayList<Integer> historySelectionEnd = new ArrayList<>();
+                    final ArrayList<Integer> historyTopIndex = new ArrayList<>();
+                    final ArrayList<String> historyFullText = new ArrayList<>();
+                    final ArrayList<String[]> historyText = new ArrayList<>();
+                    final ArrayList<HashMap<String, ArrayList<Boolean>>> historySelectedData = new ArrayList<>();
+                    final ArrayList<HashMap<String, ArrayList<Boolean>>> historyHiddenData = new ArrayList<>();
+                    final ArrayList<Vertex[]> historySelectedVertices = new ArrayList<>();
+                    final ArrayList<Vertex[]> historyHiddenVertices = new ArrayList<>();
 
                     while (isRunning.get() && Editor3DWindow.getAlive().get()) {
                         try {

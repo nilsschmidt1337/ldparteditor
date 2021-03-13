@@ -78,13 +78,13 @@ public enum ProtractorHelper {
 
         double targetAngle = angle;
 
-        TreeSet<Vertex> itearatedPositions =  new TreeSet<Vertex>();
+        TreeSet<Vertex> itearatedPositions =  new TreeSet<>();
         int iterations = 0;
 
         final BigDecimal TENTH = new BigDecimal("0.1"); //$NON-NLS-1$
 
         Vertex pMin = new Vertex(oldPos);
-        ArrayList<Object[]> res = new ArrayList<Object[]>();
+        ArrayList<Object[]> res = new ArrayList<>();
 
         int innerIterations = 0;
 

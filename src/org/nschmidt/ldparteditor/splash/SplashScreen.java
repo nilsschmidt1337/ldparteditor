@@ -258,7 +258,7 @@ public class SplashScreen extends ApplicationWindow {
                 try {
                     ArrayList<ToolItemState> states = WorkbenchManager.getUserSettingState().getToolItemConfig3D();
                     if (states == null) {
-                        states = new ArrayList<ToolItemState>();
+                        states = new ArrayList<>();
                         WorkbenchManager.getUserSettingState().setToolItemConfig3D(states);
                     }
                     // "layout_3D_editor.cfg" is not stored in the AppData\LDPartEditor folder on Windows

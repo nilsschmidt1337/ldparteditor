@@ -179,11 +179,11 @@ class VM05Distance extends VM04Rectifier {
             }
         }
 
-        HashSet<GData> commonLinkedGData = new HashSet<GData>();
+        HashSet<GData> commonLinkedGData = new HashSet<>();
         {
             Set<VertexManifestation> linked = vertexLinkedToPositionInFile.get(p1);
             Set<VertexManifestation> linked2 = vertexLinkedToPositionInFile.get(p2);
-            HashSet<GData> l2 = new HashSet<GData>(linked2.size());
+            HashSet<GData> l2 = new HashSet<>(linked2.size());
             for (VertexManifestation vm : linked) {
                 commonLinkedGData.add(vm.getGdata());
             }
@@ -306,14 +306,14 @@ class VM05Distance extends VM04Rectifier {
                     ts = triangles.keySet();
                     qs = quads.keySet();
                 } else {
-                    ts = new HashSet<GData3>();
-                    qs = new HashSet<GData4>();
+                    ts = new HashSet<>();
+                    qs = new HashSet<>();
                 }
             } else {
                 if (autoCompleteSelection) {
                     ts = triangles.keySet();
                 } else {
-                    ts = new HashSet<GData3>();
+                    ts = new HashSet<>();
                 }
                 qs = selectedQuads;
             }
@@ -323,7 +323,7 @@ class VM05Distance extends VM04Rectifier {
                 if (autoCompleteSelection) {
                     qs = quads.keySet();
                 } else {
-                    qs = new HashSet<GData4>();
+                    qs = new HashSet<>();
                 }
             } else {
                 ts = selectedTriangles;
@@ -337,14 +337,14 @@ class VM05Distance extends VM04Rectifier {
                     ls = lines.keySet();
                     cs = condlines.keySet();
                 } else {
-                    ls = new HashSet<GData2>();
-                    cs = new HashSet<GData5>();
+                    ls = new HashSet<>();
+                    cs = new HashSet<>();
                 }
             } else {
                 if (autoCompleteSelection) {
                     ls = lines.keySet();
                 } else {
-                    ls = new HashSet<GData2>();
+                    ls = new HashSet<>();
                 }
                 cs = selectedCondlines;
             }
@@ -354,7 +354,7 @@ class VM05Distance extends VM04Rectifier {
                 if (autoCompleteSelection) {
                     cs = condlines.keySet();
                 } else {
-                    cs = new HashSet<GData5>();
+                    cs = new HashSet<>();
                 }
             } else {
                 ls = selectedLines;

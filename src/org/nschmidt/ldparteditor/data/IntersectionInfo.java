@@ -29,7 +29,7 @@ public class IntersectionInfo {
     private GData target;
     private GData origin;
 
-    private ArrayList<Vector3d> allVertices = new ArrayList<Vector3d>();
+    private ArrayList<Vector3d> allVertices = new ArrayList<>();
 
     public IntersectionInfo(GData target2, GData origin2, ArrayList<Vector3r> allVertices) {
         for (Vector3r v : allVertices) {

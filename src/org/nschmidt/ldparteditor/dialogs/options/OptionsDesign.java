@@ -82,10 +82,10 @@ class OptionsDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spn_coplanarityWarning = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_coplanarityError = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_viewportScale = new BigDecimalSpinner[1];
-    final HashMap<String, Locale> localeMap = new HashMap<String, Locale>();
+    final HashMap<String, Locale> localeMap = new HashMap<>();
 
-    private HashSet<Task>  s1 = new HashSet<Task>();
-    private HashSet<TextTask> s2 = new HashSet<TextTask>();
+    private HashSet<Task>  s1 = new HashSet<>();
+    private HashSet<TextTask> s2 = new HashSet<>();
 
     private enum ColourType {
         SWT_COLOUR,

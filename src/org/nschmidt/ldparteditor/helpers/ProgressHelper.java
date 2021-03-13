@@ -32,7 +32,7 @@ public enum ProgressHelper {
     /** Counts the number of tasks */
     private static int taskCount = 0;
     /** Contains all task descriptions */
-    private static ArrayList<String> taskList = new ArrayList<String>();
+    private static ArrayList<String> taskList = new ArrayList<>();
 
     /**
      * Registers a new task to progress on the task queue

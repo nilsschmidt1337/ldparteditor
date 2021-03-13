@@ -53,10 +53,10 @@ class VM02Add extends VM01SelectHelper {
         }
         getManifestationLock().lock();
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
-            vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
+            vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         vertexLinkedToPositionInFile.get(vertex).add(new VertexManifestation(0, vertexTag));
         getManifestationLock().unlock();
-        lineLinkedToVertices.put(vertexTag, Collections.newSetFromMap(new ThreadsafeHashMap<VertexInfo, Boolean>()));
+        lineLinkedToVertices.put(vertexTag, Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         lineLinkedToVertices.get(vertexTag).add(new VertexInfo(vertex, 0, vertexTag));
         declaredVertices.put(vertexTag, new Vertex[] { vertex });
         return vertexTag;
@@ -70,16 +70,16 @@ class VM02Add extends VM01SelectHelper {
         vertexCount--;
         getManifestationLock().lock();
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
-            vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
+            vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         vertexLinkedToPositionInFile.get(vertex).add(new VertexManifestation(0, vertexTag));
         getManifestationLock().unlock();
         if (!lineLinkedToVertices.containsKey(subfile))
-            lineLinkedToVertices.put(subfile, Collections.newSetFromMap(new ThreadsafeHashMap<VertexInfo, Boolean>()));
+            lineLinkedToVertices.put(subfile, Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         lineLinkedToVertices.get(subfile).add(new VertexInfo(vertex, vertexCount, vertexTag));
         declaredVertices.put(vertexTag, new Vertex[] { vertex });
         vertexCountInSubfile.put(subfile, vertexCount);
         if (!vertexLinkedToSubfile.containsKey(vertex)) {
-            vertexLinkedToSubfile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<GData1, Boolean>()));
+            vertexLinkedToSubfile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<>()));
         }
         vertexLinkedToSubfile.get(vertex).add(subfile);
         return vertexTag;
@@ -278,19 +278,19 @@ class VM02Add extends VM01SelectHelper {
                 vertexCount--;
 
                 if (!vertexLinkedToPositionInFile.containsKey(vArray[i])) {
-                    vertexLinkedToPositionInFile.put(vArray[i], Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
+                    vertexLinkedToPositionInFile.put(vArray[i], Collections.newSetFromMap(new ThreadsafeHashMap<>()));
                 }
 
                 vertexLinkedToPositionInFile.get(vArray[i]).add(vdArray[i]);
 
                 if (!vertexLinkedToSubfile.containsKey(vArray[i])) {
-                    vertexLinkedToSubfile.put(vArray[i], Collections.newSetFromMap(new ThreadsafeHashMap<GData1, Boolean>()));
+                    vertexLinkedToSubfile.put(vArray[i], Collections.newSetFromMap(new ThreadsafeHashMap<>()));
                 }
 
                 vertexLinkedToSubfile.get(vArray[i]).add((GData1) gdata);
 
                 if (!lineLinkedToVertices.containsKey(gdata)) {
-                    lineLinkedToVertices.put(gdata, new HashSet<VertexInfo>());
+                    lineLinkedToVertices.put(gdata, new HashSet<>());
                 }
 
                 lineLinkedToVertices.get(gdata).add(new VertexInfo(vArray[i], vertexCount, originalData));
@@ -299,13 +299,13 @@ class VM02Add extends VM01SelectHelper {
         } else {
             for (int i = 0; i < max; i++) {
                 if (!vertexLinkedToPositionInFile.containsKey(vArray[i])) {
-                    vertexLinkedToPositionInFile.put(vArray[i], Collections.newSetFromMap(new ThreadsafeHashMap<VertexManifestation, Boolean>()));
+                    vertexLinkedToPositionInFile.put(vArray[i], Collections.newSetFromMap(new ThreadsafeHashMap<>()));
                 }
 
                 vertexLinkedToPositionInFile.get(vArray[i]).add(vdArray[i]);
 
                 if (!lineLinkedToVertices.containsKey(gdata)) {
-                    lineLinkedToVertices.put(gdata, Collections.newSetFromMap(new ThreadsafeHashMap<VertexInfo, Boolean>()));
+                    lineLinkedToVertices.put(gdata, Collections.newSetFromMap(new ThreadsafeHashMap<>()));
                 }
 
                 lineLinkedToVertices.get(gdata).add(new VertexInfo(vArray[i], vdArray[i].getPosition(), gdata));
@@ -341,8 +341,8 @@ class VM02Add extends VM01SelectHelper {
         Set<VertexManifestation> refs1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> refs2 = vertexLinkedToPositionInFile.get(v2);
         if (refs1 != null && refs2 != null) {
-            Set<GData> grefs1 = new HashSet<GData>();
-            Set<GData> grefs2 = new HashSet<GData>();
+            Set<GData> grefs1 = new HashSet<>();
+            Set<GData> grefs2 = new HashSet<>();
             for (VertexManifestation vm : refs1) {
                 grefs1.add(vm.getGdata());
             }
@@ -386,15 +386,15 @@ class VM02Add extends VM01SelectHelper {
         Set<VertexManifestation> refs1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> refs2 = vertexLinkedToPositionInFile.get(v2);
         Set<VertexManifestation> refs3 = vertexLinkedToPositionInFile.get(v3);
-        Set<GData> grefs1 = new HashSet<GData>();
-        Set<GData> grefs2 = new HashSet<GData>();
-        Set<GData> grefs3 = new HashSet<GData>();
+        Set<GData> grefs1 = new HashSet<>();
+        Set<GData> grefs2 = new HashSet<>();
+        Set<GData> grefs3 = new HashSet<>();
         if (refs1 == null)
-            refs1 = new HashSet<VertexManifestation>();
+            refs1 = new HashSet<>();
         if (refs2 == null)
-            refs2 = new HashSet<VertexManifestation>();
+            refs2 = new HashSet<>();
         if (refs3 == null)
-            refs3 = new HashSet<VertexManifestation>();
+            refs3 = new HashSet<>();
         for (VertexManifestation vm : refs1) {
             grefs1.add(vm.getGdata());
         }
@@ -474,7 +474,7 @@ class VM02Add extends VM01SelectHelper {
         if (v1 == null || v2 == null || v3 == null || v4 == null) return;
         final boolean allowInvalidShapes = WorkbenchManager.getUserSettingState().isAllowInvalidShapes();
         {
-            Set<Vertex> dupl = new TreeSet<Vertex>();
+            Set<Vertex> dupl = new TreeSet<>();
             dupl.add(v1);
             dupl.add(v2);
             dupl.add(v3);
@@ -486,18 +486,18 @@ class VM02Add extends VM01SelectHelper {
         Set<VertexManifestation> refs2 = vertexLinkedToPositionInFile.get(v2);
         Set<VertexManifestation> refs3 = vertexLinkedToPositionInFile.get(v3);
         Set<VertexManifestation> refs4 = vertexLinkedToPositionInFile.get(v4);
-        Set<GData> grefs1 = new HashSet<GData>();
-        Set<GData> grefs2 = new HashSet<GData>();
-        Set<GData> grefs3 = new HashSet<GData>();
-        Set<GData> grefs4 = new HashSet<GData>();
+        Set<GData> grefs1 = new HashSet<>();
+        Set<GData> grefs2 = new HashSet<>();
+        Set<GData> grefs3 = new HashSet<>();
+        Set<GData> grefs4 = new HashSet<>();
         if (refs1 == null)
-            refs1 = new HashSet<VertexManifestation>();
+            refs1 = new HashSet<>();
         if (refs2 == null)
-            refs2 = new HashSet<VertexManifestation>();
+            refs2 = new HashSet<>();
         if (refs3 == null)
-            refs3 = new HashSet<VertexManifestation>();
+            refs3 = new HashSet<>();
         if (refs4 == null)
-            refs4 = new HashSet<VertexManifestation>();
+            refs4 = new HashSet<>();
         for (VertexManifestation vm : refs1) {
             grefs1.add(vm.getGdata());
         }
@@ -718,7 +718,7 @@ class VM02Add extends VM01SelectHelper {
     public void addCondline(Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
         if (v1 == null || v2 == null || v3 == null || v4 == null) return;
         {
-            Set<Vertex> dupl = new TreeSet<Vertex>();
+            Set<Vertex> dupl = new TreeSet<>();
             dupl.add(v1);
             dupl.add(v2);
             dupl.add(v3);
@@ -728,12 +728,12 @@ class VM02Add extends VM01SelectHelper {
         }
         Set<VertexManifestation> refs1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> refs2 = vertexLinkedToPositionInFile.get(v2);
-        Set<GData> grefs1 = new HashSet<GData>();
-        Set<GData> grefs2 = new HashSet<GData>();
+        Set<GData> grefs1 = new HashSet<>();
+        Set<GData> grefs2 = new HashSet<>();
         if (refs1 == null)
-            refs1 = new HashSet<VertexManifestation>();
+            refs1 = new HashSet<>();
         if (refs2 == null)
-            refs2 = new HashSet<VertexManifestation>();
+            refs2 = new HashSet<>();
         for (VertexManifestation vm : refs1) {
             grefs1.add(vm.getGdata());
         }
@@ -771,7 +771,7 @@ class VM02Add extends VM01SelectHelper {
         clearSelection();
 
         final GColour col16 = View.getLDConfigColour(16);
-        Set<String> alreadyParsed = new HashSet<String>();
+        Set<String> alreadyParsed = new HashSet<>();
         alreadyParsed.add(linkedDatFile.getShortName());
         ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
         GData pasted = result.get(0).getGraphicalData();

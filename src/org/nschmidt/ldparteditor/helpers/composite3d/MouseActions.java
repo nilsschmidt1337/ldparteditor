@@ -202,7 +202,7 @@ public class MouseActions {
                                 ref = "8\\" + ref; //$NON-NLS-1$
                             final BigDecimal[] cur = c3d.getCursorSnapped3Dprecise();
 
-                            Set<String> alreadyParsed = new HashSet<String>();
+                            Set<String> alreadyParsed = new HashSet<>();
                             alreadyParsed.add(datfile.getShortName());
                             final GColour col16 = View.getLDConfigColour(16);
                             ArrayList<ParsingResult> subfileLine = DatParser
@@ -476,7 +476,7 @@ public class MouseActions {
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
                                 Vertex[] tv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToTriangleEdges(v3d, v1, v2, v3, c3d);
                                 Vertex[] tv2 = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToTriangleEdges(v3d, v3, v4, v1, c3d);
-                                Set<Vertex> qverts = new TreeSet<Vertex>();
+                                Set<Vertex> qverts = new TreeSet<>();
                                 qverts.add(tv[0]);
                                 qverts.add(tv[1]);
                                 qverts.add(tv2[0]);

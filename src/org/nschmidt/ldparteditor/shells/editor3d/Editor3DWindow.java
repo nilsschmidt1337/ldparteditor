@@ -241,8 +241,8 @@ public class Editor3DWindow extends Editor3DDesign {
     /** The vertex window */
     private final VertexWindow vertexWindow = new VertexWindow();
 
-    public static final ArrayList<GLCanvas> canvasList = new ArrayList<GLCanvas>();
-    public static final ArrayList<OpenGLRenderer> renders = new ArrayList<OpenGLRenderer>();
+    public static final ArrayList<GLCanvas> canvasList = new ArrayList<>();
+    public static final ArrayList<OpenGLRenderer> renders = new ArrayList<>();
 
     public static int sashWeight1 = 50;
     public static int sashWeight2 = 50;
@@ -296,7 +296,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private final EditorMetaWindow metaWindow = new EditorMetaWindow();
     private boolean updatingSelectionTab = true;
 
-    private ArrayList<String> recentItems = new ArrayList<String>();
+    private ArrayList<String> recentItems = new ArrayList<>();
 
     private HashMap<DatFile, HashMap<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState>> c3dStates = new HashMap<>();
 
@@ -367,7 +367,7 @@ public class Editor3DWindow extends Editor3DDesign {
         View.overrideColour16();
         // Load recent files
         recentItems = WorkbenchManager.getUserSettingState().getRecentItems();
-        if (recentItems == null) recentItems = new ArrayList<String>();
+        if (recentItems == null) recentItems = new ArrayList<>();
         // Adjust the last visited path according to what was last opened (and exists on the harddrive)
         {
             final int rc = recentItems.size() - 1;
@@ -580,7 +580,7 @@ public class Editor3DWindow extends Editor3DDesign {
             txt_Search[0].setText(" "); //$NON-NLS-1$
             txt_Search[0].setText(""); //$NON-NLS-1$
 
-            Set<DatFile> dfs = new HashSet<DatFile>();
+            Set<DatFile> dfs = new HashSet<>();
             for (OpenGLRenderer renderer : renders) {
                 dfs.add(renderer.getC3D().getLockableDatFileReference());
             }
@@ -824,7 +824,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
         WidgetUtil(btn_SaveAll[0]).addSelectionListener(e -> {
-            HashSet<DatFile> dfs = new HashSet<DatFile>(Project.getUnsavedFiles());
+            HashSet<DatFile> dfs = new HashSet<>(Project.getUnsavedFiles());
             for (DatFile df : dfs) {
                 if (!df.isReadOnly()) {
                     if (df.save()) {
@@ -1117,7 +1117,7 @@ public class Editor3DWindow extends Editor3DDesign {
             setWorkingType(ObjectMode.SUBFILES);
             if ((e.stateMask & SWT.ALT) == SWT.ALT && !Cocoa.checkCtrlOrCmdPressed(e.stateMask) && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedSubfiles().isEmpty()) {
                 final VertexManager vm = Project.getFileToEdit().getVertexManager();
-                final ArrayList<GData1> subfiles = new ArrayList<GData1>();
+                final ArrayList<GData1> subfiles = new ArrayList<>();
                 subfiles.addAll(vm.getSelectedSubfiles());
                 for (GData1 g1 : subfiles) {
                     vm.removeSubfileFromSelection(g1);
@@ -1324,7 +1324,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                         if (cutTheSelection) {
                                             // Insert a reference to the subfile in the old file
-                                            Set<String> alreadyParsed = new HashSet<String>();
+                                            Set<String> alreadyParsed = new HashSet<>();
                                             alreadyParsed.add(Project.getFileToEdit().getShortName());
                                             final GColour col16 = View.getLDConfigColour(16);
                                             ArrayList<ParsingResult> subfileLine = DatParser
@@ -2669,7 +2669,7 @@ public class Editor3DWindow extends Editor3DDesign {
             ArrayList<Primitive> prims = getCompositePrimitive().getPrimitives();
             final String crit = txt_primitiveSearch[0].getText();
             if (crit.trim().isEmpty()) {
-                getCompositePrimitive().setSearchResults(new ArrayList<Primitive>());
+                getCompositePrimitive().setSearchResults(new ArrayList<>());
                 Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
                 getCompositePrimitive().getOpenGL().drawScene(-1, -1);
                 return;
@@ -2678,13 +2678,13 @@ public class Editor3DWindow extends Editor3DDesign {
             try {
                 "DUMMY".matches(criteria); //$NON-NLS-1$
             } catch (PatternSyntaxException pe) {
-                getCompositePrimitive().setSearchResults(new ArrayList<Primitive>());
+                getCompositePrimitive().setSearchResults(new ArrayList<>());
                 Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
                 getCompositePrimitive().getOpenGL().drawScene(-1, -1);
                 return;
             }
             final Pattern pattern = Pattern.compile(criteria);
-            ArrayList<Primitive> results = new ArrayList<Primitive>();
+            ArrayList<Primitive> results = new ArrayList<>();
             for (Primitive p : prims) {
                 p.search(pattern, results);
             }
@@ -3466,7 +3466,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         coordCount += CoordinatesDialog.isY() ? 1 : 0;
                         coordCount += CoordinatesDialog.isZ() ? 1 : 0;
                         if (coordCount == 1 && CoordinatesDialog.getStart() != null) {
-                            TreeSet<Vertex> verts1 = new TreeSet<Vertex>();
+                            TreeSet<Vertex> verts1 = new TreeSet<>();
                             verts1.addAll(vm.getSelectedVertices());
                             vm.clearSelection();
                             for (Vertex v21 : verts1) {
@@ -3501,7 +3501,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 CoordinatesDialog.setZ(c1);
                             }
                         } else if (coordCount == 2 && CoordinatesDialog.getStart() != null) {
-                            TreeSet<Vertex> verts2 = new TreeSet<Vertex>();
+                            TreeSet<Vertex> verts2 = new TreeSet<>();
                             verts2.addAll(vm.getSelectedVertices());
                             vm.clearSelection();
                             for (Vertex v22 : verts2) {
@@ -3604,7 +3604,7 @@ public class Editor3DWindow extends Editor3DDesign {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                    TreeSet<Vertex> clipboard = new TreeSet<Vertex>();
+                    TreeSet<Vertex> clipboard = new TreeSet<>();
                     if (VertexManager.getClipboard().size() == 1) {
                         GData vertex = VertexManager.getClipboard().get(0);
                         if (vertex.type() == 0) {
@@ -3668,7 +3668,7 @@ public class Editor3DWindow extends Editor3DDesign {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                    TreeSet<Vertex> clipboard = new TreeSet<Vertex>();
+                    TreeSet<Vertex> clipboard = new TreeSet<>();
                     if (VertexManager.getClipboard().size() == 1) {
                         GData vertex = VertexManager.getClipboard().get(0);
                         if (vertex.type() == 0) {
@@ -3781,9 +3781,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     return;
                                 }
 
-                                HashSet<String> files = new HashSet<String>();
+                                HashSet<String> files = new HashSet<>();
                                 files.add(fileName);
-                                ArrayList<String> list = buildFileList(source, new ArrayList<String>(), files, monitor);
+                                ArrayList<String> list = buildFileList(source, new ArrayList<>(), files, monitor);
 
                                 final String fileName2 = fileName;
                                 final String source2 = source;
@@ -3821,8 +3821,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                         DatFile main = View.DUMMY_DATFILE;
 
-                                        HashSet<DatFile> dfsToOpen = new HashSet<DatFile>();
-                                        ArrayList<DatFile> tempFileList = new ArrayList<DatFile>();
+                                        HashSet<DatFile> dfsToOpen = new HashSet<>();
+                                        ArrayList<DatFile> tempFileList = new ArrayList<>();
                                         tempFileList.addAll(Project.getOpenedFiles());
 
                                         for (int i =  list.size() - 2; i >= 0; i -= 2) {
@@ -4582,7 +4582,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
                 ArrayList<GColour> pal = WorkbenchManager.getUserSettingState().getUserPalette();
-                ArrayList<GColour> newPal = new ArrayList<GColour>();
+                ArrayList<GColour> newPal = new ArrayList<>();
 
 
                 UTF8BufferedReader reader = null;
@@ -5808,7 +5808,7 @@ public class Editor3DWindow extends Editor3DDesign {
      */
     @Override
     protected void handleShellCloseEvent() {
-        Set<DatFile> unsavedFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
+        Set<DatFile> unsavedFiles = new HashSet<>(Project.getUnsavedFiles());
         for (DatFile df : unsavedFiles) {
             final String text = df.getText();
             if ((!text.equals(df.getOriginalText()) || df.isVirtual() && !text.trim().isEmpty()) && !text.equals(WorkbenchManager.getDefaultFileHeader())) {
@@ -5845,7 +5845,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         }
-        Set<EditorTextWindow> ow = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
+        Set<EditorTextWindow> ow = new HashSet<>(Project.getOpenTextWindows());
         for (EditorTextWindow w : ow) {
             if (w.isSeperateWindow()) {
                 w.getShell().close();
@@ -5961,7 +5961,7 @@ public class Editor3DWindow extends Editor3DDesign {
      * Updates the tree for new unsaved entries
      */
     public void updateTree_unsavedEntries() {
-        ArrayList<TreeItem> categories = new ArrayList<TreeItem>();
+        ArrayList<TreeItem> categories = new ArrayList<>();
         categories.add(this.treeItem_ProjectParts[0]);
         categories.add(this.treeItem_ProjectSubparts[0]);
         categories.add(this.treeItem_ProjectPrimitives[0]);
@@ -6028,7 +6028,7 @@ public class Editor3DWindow extends Editor3DDesign {
      * Updates the tree for new unsaved entries
      */
     public void updateTree_selectedDatFile(DatFile sdf) {
-        ArrayList<TreeItem> categories = new ArrayList<TreeItem>();
+        ArrayList<TreeItem> categories = new ArrayList<>();
         categories.add(this.treeItem_ProjectParts[0]);
         categories.add(this.treeItem_ProjectSubparts[0]);
         categories.add(this.treeItem_ProjectPrimitives[0]);
@@ -6068,10 +6068,10 @@ public class Editor3DWindow extends Editor3DDesign {
      */
     @SuppressWarnings("unchecked")
     public void updateTree_renamedEntries() {
-        HashMap<String, TreeItem> categories = new HashMap<String, TreeItem>();
-        HashMap<String, DatType> types = new HashMap<String, DatType>();
+        HashMap<String, TreeItem> categories = new HashMap<>();
+        HashMap<String, DatType> types = new HashMap<>();
 
-        ArrayList<String> validPrefixes = new ArrayList<String>();
+        ArrayList<String> validPrefixes = new ArrayList<>();
 
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS" + File.separator + "S" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
@@ -6200,7 +6200,7 @@ public class Editor3DWindow extends Editor3DDesign {
             TreeItem item = categories.get(prefix);
             ArrayList<DatFile> dats = (ArrayList<DatFile>) item.getData();
             ArrayList<TreeItem> datFileTreeItems = item.getItems();
-            Set<TreeItem> itemsToRemove = new HashSet<TreeItem>();
+            Set<TreeItem> itemsToRemove = new HashSet<>();
             for (TreeItem df : datFileTreeItems) {
                 DatFile d = (DatFile) df.getData();
                 String newName = d.getNewName();
@@ -6255,7 +6255,7 @@ public class Editor3DWindow extends Editor3DDesign {
      *
      */
     public void updateTree_removeEntry(DatFile e) {
-        ArrayList<TreeItem> categories = new ArrayList<TreeItem>();
+        ArrayList<TreeItem> categories = new ArrayList<>();
         categories.add(this.treeItem_ProjectParts[0]);
         categories.add(this.treeItem_ProjectSubparts[0]);
         categories.add(this.treeItem_ProjectPrimitives[0]);
@@ -6269,7 +6269,7 @@ public class Editor3DWindow extends Editor3DDesign {
         int counter = 0;
         for (TreeItem item : categories) {
             counter++;
-            ArrayList<TreeItem> datFileTreeItems = new ArrayList<TreeItem>(item.getItems());
+            ArrayList<TreeItem> datFileTreeItems = new ArrayList<>(item.getItems());
             for (TreeItem df : datFileTreeItems) {
                 DatFile d = (DatFile) df.getData();
                 if (e.equals(d)) {
@@ -6298,7 +6298,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 c3d.unlinkData();
             }
         }
-        HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
+        HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
         for (EditorTextWindow win : windows) {
             win.closeTabWithDatfile(e);
         }
@@ -6769,7 +6769,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void cleanupClosedData() {
-        Set<DatFile> openFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
+        Set<DatFile> openFiles = new HashSet<>(Project.getUnsavedFiles());
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             openFiles.add(c3d.getLockableDatFileReference());
@@ -6779,7 +6779,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 openFiles.add(((CompositeTab) t).getState().getFileNameObj());
             }
         }
-        Set<DatFile> deadFiles = new HashSet<DatFile>(Project.getParsedFiles());
+        Set<DatFile> deadFiles = new HashSet<>(Project.getParsedFiles());
         deadFiles.removeAll(openFiles);
         if (!deadFiles.isEmpty()) {
             GData.CACHE_viewByProjection.clear();
@@ -6832,7 +6832,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 if (folders[0].getData() == null) {
                     for (TreeItem folder : folders) {
-                        folder.setData(new ArrayList<DatFile>());
+                        folder.setData(new ArrayList<>());
                         for (TreeItem part : folder.getItems()) {
                             ((ArrayList<DatFile>) folder.getData()).add((DatFile) part.getData());
                         }
@@ -6881,7 +6881,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void closeAllComposite3D() {
         canvasList.clear();
-        ArrayList<OpenGLRenderer> renders2 = new ArrayList<OpenGLRenderer>(renders);
+        ArrayList<OpenGLRenderer> renders2 = new ArrayList<>(renders);
         for (OpenGLRenderer renderer : renders2) {
             Composite3D c3d = renderer.getC3D();
             c3d.getModifier().closeView();
@@ -6891,7 +6891,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public TreeData getDatFileTreeData(DatFile df) {
         TreeData result = new TreeData();
-        ArrayList<TreeItem> categories = new ArrayList<TreeItem>();
+        ArrayList<TreeItem> categories = new ArrayList<>();
         categories.add(this.treeItem_ProjectParts[0]);
         categories.add(this.treeItem_ProjectSubparts[0]);
         categories.add(this.treeItem_ProjectPrimitives[0]);
@@ -7725,7 +7725,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void compileAll(boolean forceParsing) {
-        Set<DatFile> dfs = new HashSet<DatFile>();
+        Set<DatFile> dfs = new HashSet<>();
         for (OpenGLRenderer renderer : renders) {
             dfs.add(renderer.getC3D().getLockableDatFileReference());
         }
@@ -8579,12 +8579,12 @@ public class Editor3DWindow extends Editor3DDesign {
 
         // Cleanup old states
         {
-            HashSet<DatFile> allFiles = new HashSet<DatFile>();
+            HashSet<DatFile> allFiles = new HashSet<>();
             for (CTabItem ci : tabFolder_OpenDatFiles[0].getItems()) {
                 allFiles.add((DatFile) ci.getData());
             }
 
-            HashSet<DatFile> cachedStates = new HashSet<DatFile>();
+            HashSet<DatFile> cachedStates = new HashSet<>();
             cachedStates.addAll(c3dStates.keySet());
             for (DatFile d : cachedStates) {
                 if (!allFiles.contains(d)) {
@@ -8763,7 +8763,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                 }
 
-                HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
+                HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
                 for (EditorTextWindow win : windows) {
                     win.updateTabWithDatfile(df);
                 }
@@ -8803,7 +8803,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         String defaultPrefix = new File(Project.getProjectPath()).getAbsolutePath() + File.separator;
                         String projectPrefix = new File(Project.getTempProjectPath()).getAbsolutePath() + File.separator;
                         Editor3DWindow.getWindow().getProjectParts().getParentItem().setData(Project.getTempProjectPath());
-                        HashSet<DatFile> projectFiles = new HashSet<DatFile>();
+                        HashSet<DatFile> projectFiles = new HashSet<>();
                         projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData());
                         projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData());
                         projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData());
@@ -9218,7 +9218,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public ArrayList<Composite3DState> getC3DStates() {
         // Traverse the sash forms to store the 3D configuration
-        final ArrayList<Composite3DState> c3dStates = new ArrayList<Composite3DState>();
+        final ArrayList<Composite3DState> c3dStates = new ArrayList<>();
         Control c = Editor3DDesign.getSashForm().getChildren()[1];
         if (c != null) {
             if (c instanceof SashForm|| c instanceof CompositeContainer) {

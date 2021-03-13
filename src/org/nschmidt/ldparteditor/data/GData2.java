@@ -773,7 +773,7 @@ public final class GData2 extends GData {
         final int length =  number.length();
         float ox2 = 0f;
         for (int i = 0; i < length; i++) {
-            Set<PGData3> tris = new HashSet<PGData3>();
+            Set<PGData3> tris = new HashSet<>();
             final char c = number.charAt(i);
             switch (c) {
             case '0':
@@ -829,7 +829,7 @@ public final class GData2 extends GData {
         final int length =  number.length();
         float ox2 = 0f;
         for (int i = 0; i < length; i++) {
-            Set<PGData3> tris = new HashSet<PGData3>();
+            Set<PGData3> tris = new HashSet<>();
             final char c = number.charAt(i);
             switch (c) {
             case '0':

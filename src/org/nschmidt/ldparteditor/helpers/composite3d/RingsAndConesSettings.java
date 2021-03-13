@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class RingsAndConesSettings {
 
-    private ArrayList<String> angles = new ArrayList<String>();
+    private ArrayList<String> angles = new ArrayList<>();
     private boolean usingCones = false;
     private boolean usingHiRes = false;
     private boolean creatingNothingOnNoSolution = false;

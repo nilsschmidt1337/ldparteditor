@@ -139,7 +139,7 @@ public final class Polygon {
      *
      */
     public Polygon(DatFile df, VectorCSGd... vertices) {
-        this(df, new ArrayList<VectorCSGd>(Arrays.asList(vertices)));
+        this(df, new ArrayList<>(Arrays.asList(vertices)));
     }
 
     public Polygon(DatFile df, List<VectorCSGd> vertices, Polygon o) {
@@ -160,7 +160,7 @@ public final class Polygon {
 
     @Override
     public Polygon clone() {
-        List<VectorCSGd> newVertices = new ArrayList<VectorCSGd>(vertices.size());
+        List<VectorCSGd> newVertices = new ArrayList<>(vertices.size());
         for (VectorCSGd vertex : vertices) {
             newVertices.add(vertex.clone());
         }

@@ -60,9 +60,9 @@ public class VM26LineIntersector extends VM25Smooth {
 
         clearSelection();
 
-        final ArrayList<ArrayList<Vector3dd>> linesToParse = new ArrayList<ArrayList<Vector3dd>>();
-        TreeSet<Vertex> m1 = new TreeSet<Vertex>();
-        TreeSet<Vertex> m2 = new TreeSet<Vertex>();
+        final ArrayList<ArrayList<Vector3dd>> linesToParse = new ArrayList<>();
+        TreeSet<Vertex> m1 = new TreeSet<>();
+        TreeSet<Vertex> m2 = new TreeSet<>();
 
         for (GData2 g2 : linesToIntersect) {
             Vertex[] verts = lines.get(g2);
@@ -73,13 +73,13 @@ public class VM26LineIntersector extends VM25Smooth {
                     m1.add(v);
                 }
             }
-            ArrayList<Vector3dd> l = new ArrayList<Vector3dd>();
+            ArrayList<Vector3dd> l = new ArrayList<>();
             l.add(new Vector3dd(verts[0]));
             l.add(new Vector3dd(verts[1]));
             linesToParse.add(l);
         }
 
-        Set<Vertex> intersectionPoints = new TreeSet<Vertex>();
+        Set<Vertex> intersectionPoints = new TreeSet<>();
 
         // Calculate intersection points
 
@@ -106,7 +106,7 @@ public class VM26LineIntersector extends VM25Smooth {
                                     j++;
                                     if (j > i) {
                                         if (monitor.isCanceled()) break;
-                                        TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
+                                        TreeSet<Vector3dd> allVertices = new TreeSet<>();
                                         for(int l = 0; l < 2; l++) {
                                             allVertices.add(line.get(l));
                                             allVertices.add(line2.get(l));
@@ -142,7 +142,7 @@ public class VM26LineIntersector extends VM25Smooth {
                 for (ArrayList<Vector3dd> line2 : linesToParse) {
                     j++;
                     if (j > i) {
-                        TreeSet<Vector3dd> allVertices = new TreeSet<Vector3dd>();
+                        TreeSet<Vector3dd> allVertices = new TreeSet<>();
                         for(int l = 0; l < 2; l++) {
                             allVertices.add(line.get(l));
                             allVertices.add(line2.get(l));

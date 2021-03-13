@@ -33,8 +33,8 @@ public class PrimitiveCache implements Serializable {
     /** V1.00 */
     private static final long serialVersionUID = 1L;
 
-    private HashMap<String, PGData> primitiveCache = new HashMap<String, PGData>();
-    private HashMap<PGTimestamp, ArrayList<String>> primitiveFileCache = new HashMap<PGTimestamp, ArrayList<String>>();
+    private HashMap<String, PGData> primitiveCache = new HashMap<>();
+    private HashMap<PGTimestamp, ArrayList<String>> primitiveFileCache = new HashMap<>();
 
     public HashMap<String, PGData> getPrimitiveCache() {
         return primitiveCache;

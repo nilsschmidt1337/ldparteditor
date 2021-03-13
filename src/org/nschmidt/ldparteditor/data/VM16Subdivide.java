@@ -58,14 +58,14 @@ class VM16Subdivide extends VM15Flipper {
         }
 
         // Backup selected surfaces
-        HashSet<GData> surfsToParse = new HashSet<GData>();
+        HashSet<GData> surfsToParse = new HashSet<>();
 
-        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
-        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
-        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
+        final Set<GData2> linesToDelete2 = new HashSet<>();
+        final Set<GData3> trisToDelete2 = new HashSet<>();
+        final Set<GData4> quadsToDelete2 = new HashSet<>();
 
-        final Set<GData2> newLines = new HashSet<GData2>();
-        final Set<GData4> newQuads = new HashSet<GData4>();
+        final Set<GData2> newLines = new HashSet<>();
+        final Set<GData4> newQuads = new HashSet<>();
 
         {
             for (GData3 g3 : selectedTriangles) {
@@ -88,12 +88,12 @@ class VM16Subdivide extends VM15Flipper {
         selectedData.addAll(selectedCondlines);
         delete(false, false);
 
-        TreeMap<Vertex, Vertex> newPoints = new TreeMap<Vertex, Vertex>();
+        TreeMap<Vertex, Vertex> newPoints = new TreeMap<>();
 
         // Calculate new points
         for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
             Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
-            HashSet<Vector3d> midEdge = new HashSet<Vector3d>();
+            HashSet<Vector3d> midEdge = new HashSet<>();
             boolean keepIt = false;
             for (VertexManifestation m : manis) {
                 GData gd = m.getGdata();
@@ -242,13 +242,13 @@ class VM16Subdivide extends VM15Flipper {
 
 
         // Backup selected surfaces
-        HashSet<GData3> surfsToParse = new HashSet<GData3>();
+        HashSet<GData3> surfsToParse = new HashSet<>();
 
-        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
-        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
+        final Set<GData2> linesToDelete2 = new HashSet<>();
+        final Set<GData3> trisToDelete2 = new HashSet<>();
 
-        final Set<GData2> newLines = new HashSet<GData2>();
-        final Set<GData3> newTris = new HashSet<GData3>();
+        final Set<GData2> newLines = new HashSet<>();
+        final Set<GData3> newTris = new HashSet<>();
 
         for (GData3 g3 : selectedTriangles) {
             if (!lineLinkedToVertices.containsKey(g3)) continue;
@@ -273,7 +273,7 @@ class VM16Subdivide extends VM15Flipper {
         selectedData.addAll(selectedCondlines);
         delete(false, false);
 
-        TreeMap<Vertex, Vertex> newPoints = new TreeMap<Vertex, Vertex>();
+        TreeMap<Vertex, Vertex> newPoints = new TreeMap<>();
 
         for (GData3 g3 : surfsToParse) {
             Vertex[] originalVerts;
@@ -324,7 +324,7 @@ class VM16Subdivide extends VM15Flipper {
         selectedData.addAll(newTris);
         roundSelection(6, 10, true, false, true, true, true);
 
-        TreeSet<Vertex> verticesToMove = new TreeSet<Vertex>();
+        TreeSet<Vertex> verticesToMove = new TreeSet<>();
 
         for (GData3 tri : selectedTriangles) {
             Vertex[] verts = triangles.get(tri);
@@ -340,7 +340,7 @@ class VM16Subdivide extends VM15Flipper {
         // Calculate new points, based on Loop's Algorithm
         for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
             Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
-            HashSet<Vector3d> midEdge = new HashSet<Vector3d>();
+            HashSet<Vector3d> midEdge = new HashSet<>();
             boolean keepIt = false;
             for (VertexManifestation m : manis) {
                 GData gd = m.getGdata();

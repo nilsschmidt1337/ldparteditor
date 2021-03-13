@@ -36,15 +36,15 @@ public class VM09WindingChange extends VM08SlicerPro {
         if (linkedDatFile.isReadOnly())
             return;
 
-        final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
-        final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
-        final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
-        final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
+        final HashSet<GData2> effSelectedLines = new HashSet<>();
+        final HashSet<GData3> effSelectedTriangles = new HashSet<>();
+        final HashSet<GData4> effSelectedQuads = new HashSet<>();
+        final HashSet<GData5> effSelectedCondlines = new HashSet<>();
 
-        final HashSet<GData2> subSelectedLines = new HashSet<GData2>();
-        final HashSet<GData3> subSelectedTriangles = new HashSet<GData3>();
-        final HashSet<GData4> subSelectedQuads = new HashSet<GData4>();
-        final HashSet<GData5> subSelectedCondlines = new HashSet<GData5>();
+        final HashSet<GData2> subSelectedLines = new HashSet<>();
+        final HashSet<GData3> subSelectedTriangles = new HashSet<>();
+        final HashSet<GData4> subSelectedQuads = new HashSet<>();
+        final HashSet<GData5> subSelectedCondlines = new HashSet<>();
 
         final GColour col16 = View.getLDConfigColour(16);
 
@@ -106,7 +106,7 @@ public class VM09WindingChange extends VM08SlicerPro {
         // 3. Winding change of the selected data (no whole subfiles!!)
         // + selectedData update!
 
-        ArrayList<GData> modData = new ArrayList<GData>();
+        ArrayList<GData> modData = new ArrayList<>();
 
         for (GData3 gd : effSelectedTriangles)
             modData.add(changeWinding(gd));
@@ -148,7 +148,7 @@ public class VM09WindingChange extends VM08SlicerPro {
 
 
             final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
-            HashSet<GData1> newSubfiles = new HashSet<GData1>();
+            HashSet<GData1> newSubfiles = new HashSet<>();
             for (GData1 subf : selectedSubfiles) {
                 GData1 untransformedSubfile;
                 StringBuilder colourBuilder = new StringBuilder();
@@ -162,7 +162,7 @@ public class VM09WindingChange extends VM08SlicerPro {
                 }
                 untransformedSubfile = (GData1) DatParser
                         .parseLine("1 " + colourBuilder.toString() + " 0 0 0 1 0 0 0 1 0 0 0 1 " + subf.shortName , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$ //$NON-NLS-2$
-                                new HashSet<String>()).get(0).getGraphicalData();
+                                new HashSet<>()).get(0).getGraphicalData();
                 if (untransformedSubfile == null) {
                     continue;
                 }
@@ -211,7 +211,7 @@ public class VM09WindingChange extends VM08SlicerPro {
                     }
                     newSubfile = (GData1) DatParser
                             .parseLine(untransformedSubfile.getTransformedString(m, null, linkedDatFile, false) , dpl.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                    new HashSet<String>()).get(0).getGraphicalData();
+                                    new HashSet<>()).get(0).getGraphicalData();
 
                     if (newSubfile == null) {
                         continue;
@@ -231,7 +231,7 @@ public class VM09WindingChange extends VM08SlicerPro {
                     // Add Invert Next
                     GData before = subf.getBefore();
                     int lineToInsert = dpl.getKey(before);
-                    TreeSet<Integer> ts = new TreeSet<Integer>();
+                    TreeSet<Integer> ts = new TreeSet<>();
                     ts.addAll(dpl.keySet());
                     for (Iterator<Integer> dsi = ts.descendingIterator(); dsi.hasNext();) {
                         Integer k = dsi.next();
@@ -251,7 +251,7 @@ public class VM09WindingChange extends VM08SlicerPro {
 
                     // Update Draw per line
 
-                    TreeSet<Integer> ts = new TreeSet<Integer>();
+                    TreeSet<Integer> ts = new TreeSet<>();
                     ts.addAll(dpl.keySet());
 
                     int counter = 1;

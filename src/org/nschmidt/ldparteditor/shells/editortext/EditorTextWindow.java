@@ -185,7 +185,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
         // Unsaved changes dialog only for files which are out of the scope of the current project..
 
-        Set<DatFile> unsavedFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
+        Set<DatFile> unsavedFiles = new HashSet<>(Project.getUnsavedFiles());
         {
             @SuppressWarnings("unchecked")
             ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData();
@@ -292,7 +292,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         }
 
-        HashSet<DatFile> myFiles = new HashSet<DatFile>();
+        HashSet<DatFile> myFiles = new HashSet<>();
         for (CTabItem tab : tabFolder[0].getItems()) {
             CompositeTab cTab = (CompositeTab) tab;
             myFiles.add(cTab.getState().getFileNameObj());

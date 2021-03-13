@@ -36,10 +36,10 @@ import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
  */
 public class Tree {
 
-    private final HashMap<TreeItem, org.eclipse.swt.widgets.TreeItem> SWTFromTi = new HashMap<TreeItem, org.eclipse.swt.widgets.TreeItem>();
+    private final HashMap<TreeItem, org.eclipse.swt.widgets.TreeItem> SWTFromTi = new HashMap<>();
     private final org.eclipse.swt.widgets.Tree tree;
-    private final ArrayList<TreeItem> items = new ArrayList<TreeItem>();
-    private final HashMap<org.eclipse.swt.widgets.TreeItem, TreeItem> tiFromSWT = new HashMap<org.eclipse.swt.widgets.TreeItem, TreeItem>();
+    private final ArrayList<TreeItem> items = new ArrayList<>();
+    private final HashMap<org.eclipse.swt.widgets.TreeItem, TreeItem> tiFromSWT = new HashMap<>();
     private org.eclipse.swt.widgets.TreeItem[] itemsSWT;
 
     int counter;

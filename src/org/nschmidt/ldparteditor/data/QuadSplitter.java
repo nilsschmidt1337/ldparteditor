@@ -37,7 +37,7 @@ public enum QuadSplitter {
         VertexManager vm = fileNameObj.getVertexManager();
         vm.clearSelection();
 
-        HashSet<GData4> selectedQuads = new HashSet<GData4>();
+        HashSet<GData4> selectedQuads = new HashSet<>();
 
         GData data2draw = fileNameObj.getDrawChainStart();
         int lineCount = 0;

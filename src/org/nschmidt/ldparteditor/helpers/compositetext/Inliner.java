@@ -128,7 +128,7 @@ public enum Inliner {
             }
         }
 
-        ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
+        ArrayList<Integer> lineNumbers = new ArrayList<>();
         lineEnd += 1;
         for (int line = lineStart; line < lineEnd; line++) {
             lineNumbers.add(line);
@@ -211,7 +211,7 @@ public enum Inliner {
 
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
 
-        HashMap<Integer, Byte> bfcStatusToLine = new HashMap<Integer, Byte>();
+        HashMap<Integer, Byte> bfcStatusToLine = new HashMap<>();
 
         Set<Integer> keys = dpl.keySet();
 

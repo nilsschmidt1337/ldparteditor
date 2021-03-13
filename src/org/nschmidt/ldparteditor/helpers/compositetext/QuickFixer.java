@@ -52,11 +52,11 @@ public enum QuickFixer {
         if (datFile.isReadOnly() || issues.isEmpty())
             return;
 
-        ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
-        HashMap<Integer, HashSet<TreeItem>> issuesInLine = new HashMap<Integer, HashSet<TreeItem>>();
+        ArrayList<Integer> lineNumbers = new ArrayList<>();
+        HashMap<Integer, HashSet<TreeItem>> issuesInLine = new HashMap<>();
 
         {
-            HashSet<Integer> numbers = new HashSet<Integer>();
+            HashSet<Integer> numbers = new HashSet<>();
             for (TreeItem t : issues) {
                 if (t == null || t.getText(0).isEmpty())
                     continue;
@@ -65,7 +65,7 @@ public enum QuickFixer {
                 if (!numbers.contains(i)) {
                     numbers.add(i);
                     lineNumbers.add(i);
-                    issuesInLine.put(i, new HashSet<TreeItem>());
+                    issuesInLine.put(i, new HashSet<>());
                 }
                 issuesInLine.get(i).add(t);
             }

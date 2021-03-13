@@ -87,7 +87,7 @@ public class TextTriangulator {
             final double deltaAngle) {
         final GlyphVector vector = font.createGlyphVector(new FontRenderContext(null, false, false), text);
 
-        final Set<GData> finalTriangleSet = Collections.synchronizedSet(new HashSet<GData>());
+        final Set<GData> finalTriangleSet = Collections.synchronizedSet(new HashSet<>());
 
         if (vector.getNumGlyphs() == 0)
             return finalTriangleSet;
@@ -186,7 +186,7 @@ public class TextTriangulator {
         double maxX = -Double.MAX_VALUE;
         double maxY = -Double.MAX_VALUE;
 
-        ArrayList<Pnt> places = new ArrayList<Pnt>();
+        ArrayList<Pnt> places = new ArrayList<>();
 
         while (!shapePathIterator.isDone() && !monitor.isCanceled()) {
             px = x;
@@ -287,7 +287,7 @@ public class TextTriangulator {
         Triangle tri = new Triangle(new Pnt(-TRISIZE / 2.0, TRISIZE), new Pnt(+TRISIZE / 2.0, TRISIZE), new Pnt(0, -TRISIZE));
 
         // now add all triangles which are in the shape to the set
-        Set<GData> finalTriangleSet = new HashSet<GData>();
+        Set<GData> finalTriangleSet = new HashSet<>();
 
         if (!places.isEmpty()) {
 
@@ -415,7 +415,7 @@ public class TextTriangulator {
         Font myFont = new Font(fontName, Font.BOLD | Font.HANGING_BASELINE, 8);
         final GlyphVector vector = myFont.createGlyphVector(new FontRenderContext(null, false, false), text);
 
-        final Set<PGData3> finalTriangleSet = new HashSet<PGData3>();
+        final Set<PGData3> finalTriangleSet = new HashSet<>();
 
         if (vector.getNumGlyphs() == 0)
             return finalTriangleSet;
@@ -435,7 +435,7 @@ public class TextTriangulator {
         }
         float minX = Float.MAX_VALUE;
         float minY = Float.MAX_VALUE;
-        final Set<PGData3> finalTriangleSet2 = new HashSet<PGData3>();
+        final Set<PGData3> finalTriangleSet2 = new HashSet<>();
         for (PGData3 tri : finalTriangleSet) {
             minX = Math.min(minX, tri.x1);
             minX = Math.min(minX, tri.x2);
@@ -464,7 +464,7 @@ public class TextTriangulator {
         Font myFont = new Font(fontName, Font.BOLD | Font.HANGING_BASELINE, 8);
         final GlyphVector vector = myFont.createGlyphVector(new FontRenderContext(null, false, false), text);
 
-        final Set<PGData3> finalTriangleSet = new HashSet<PGData3>();
+        final Set<PGData3> finalTriangleSet = new HashSet<>();
 
         if (vector.getNumGlyphs() == 0)
             return finalTriangleSet;
@@ -490,7 +490,7 @@ public class TextTriangulator {
         double maxX = -Double.MAX_VALUE;
         double maxY = -Double.MAX_VALUE;
 
-        ArrayList<Pnt> places = new ArrayList<Pnt>();
+        ArrayList<Pnt> places = new ArrayList<>();
 
         while (!shapePathIterator.isDone()) {
             px = x;
@@ -587,7 +587,7 @@ public class TextTriangulator {
         Triangle tri = new Triangle(new Pnt(-TRISIZE / 2.0, TRISIZE), new Pnt(+TRISIZE / 2.0, TRISIZE), new Pnt(0, -TRISIZE));
 
         // now add all triangles which are in the shape to the set
-        Set<PGData3> finalTriangleSet = new HashSet<PGData3>();
+        Set<PGData3> finalTriangleSet = new HashSet<>();
 
         if (!places.isEmpty()) {
 

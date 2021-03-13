@@ -45,21 +45,21 @@ class VM07PathTruder extends VM06Edger2 {
     public void pathTruder(final PathTruderSettings ps, boolean syncWithEditor, Set<GData> sl) {
         if (linkedDatFile.isReadOnly() && syncWithEditor) return;
 
-        final Set<GData2> originalSelection = new HashSet<GData2>();
-        final Set<GData2> newLines = new HashSet<GData2>();
-        final Set<GData3> newTriangles = new HashSet<GData3>();
-        final Set<GData4> newQuads = new HashSet<GData4>();
+        final Set<GData2> originalSelection = new HashSet<>();
+        final Set<GData2> newLines = new HashSet<>();
+        final Set<GData3> newTriangles = new HashSet<>();
+        final Set<GData4> newQuads = new HashSet<>();
 
-        final ArrayList<GData2> shape1 = new ArrayList<GData2>();
-        final ArrayList<GData2> shape2 = new ArrayList<GData2>();
+        final ArrayList<GData2> shape1 = new ArrayList<>();
+        final ArrayList<GData2> shape2 = new ArrayList<>();
 
-        final ArrayList<GData2> path1 = new ArrayList<GData2>();
-        final ArrayList<GData2> path2 = new ArrayList<GData2>();
+        final ArrayList<GData2> path1 = new ArrayList<>();
+        final ArrayList<GData2> path2 = new ArrayList<>();
 
-        final ArrayList<GData2> path1endSegments = new ArrayList<GData2>();
-        final ArrayList<GData2> path2endSegments = new ArrayList<GData2>();
+        final ArrayList<GData2> path1endSegments = new ArrayList<>();
+        final ArrayList<GData2> path2endSegments = new ArrayList<>();
 
-        final ArrayList<GData2> lineIndicators = new ArrayList<GData2>();
+        final ArrayList<GData2> lineIndicators = new ArrayList<>();
 
         if (syncWithEditor) {
             originalSelection.addAll(selectedLines);
@@ -142,7 +142,7 @@ class VM07PathTruder extends VM06Edger2 {
 
             // Insert zero length lines as line indicators
             {
-                Set<Vertex> liVerts = new TreeSet<Vertex>();
+                Set<Vertex> liVerts = new TreeSet<>();
                 for (GData2 ind : lineIndicators) {
                     Vertex[] verts = lines.get(ind);
                     if (verts == null) {
@@ -154,12 +154,12 @@ class VM07PathTruder extends VM06Edger2 {
                     liVerts.add(verts[1]);
                 }
 
-                Set<Integer> indices = new HashSet<Integer>();
+                Set<Integer> indices = new HashSet<>();
 
                 // Shape 1
                 {
                     int ss = shape1.size();
-                    final ArrayList<GData2> shapeTmp = new ArrayList<GData2>(ss);
+                    final ArrayList<GData2> shapeTmp = new ArrayList<>(ss);
                     int ssm = ss - 1;
                     for (int i = 0; i < ss; i++) {
                         Vertex[] verts = lines.get(shape1.get(i));
@@ -203,7 +203,7 @@ class VM07PathTruder extends VM06Edger2 {
                 // Shape 2
                 {
                     int ss = shape2.size();
-                    final ArrayList<GData2> shapeTmp = new ArrayList<GData2>(ss);
+                    final ArrayList<GData2> shapeTmp = new ArrayList<>(ss);
                     int ssm = ss - 1;
                     for (int i = 0; i < ss; i++) {
                         Vertex[] verts = lines.get(shape2.get(i));
@@ -1416,13 +1416,13 @@ class VM07PathTruder extends VM06Edger2 {
         }
 
         NLogger.debug(getClass(), "Check for identical vertices and collinearity."); //$NON-NLS-1$
-        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
-        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
-        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
+        final Set<GData2> linesToDelete2 = new HashSet<>();
+        final Set<GData3> trisToDelete2 = new HashSet<>();
+        final Set<GData4> quadsToDelete2 = new HashSet<>();
         {
             for (GData2 g2 : newLines) {
                 Vertex[] verts = lines.get(g2);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -1432,7 +1432,7 @@ class VM07PathTruder extends VM06Edger2 {
             }
             for (GData3 g3 : newTriangles) {
                 Vertex[] verts = triangles.get(g3);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -1442,7 +1442,7 @@ class VM07PathTruder extends VM06Edger2 {
             }
             for (GData4 g4 : newQuads) {
                 Vertex[] verts = quads.get(g4);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }

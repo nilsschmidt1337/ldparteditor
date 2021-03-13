@@ -57,8 +57,8 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
  */
 public class GL33ModelRenderer {
 
-    private static Set<String> filesWithLogo1 = new HashSet<String>();
-    private static Set<String> filesWithLogo2 = new HashSet<String>();
+    private static Set<String> filesWithLogo1 = new HashSet<>();
+    private static Set<String> filesWithLogo2 = new HashSet<>();
 
     static {
         filesWithLogo1.add("STUD.DAT"); //$NON-NLS-1$
@@ -307,13 +307,13 @@ public class GL33ModelRenderer {
                 Matrix4f.setIdentity(Mm);
 
                 final Set<GDataCSG> oldCsgData = new HashSet<>();
-                final Set<GData> selectionSet = new HashSet<GData>();
-                final Set<GData> hiddenSet = new HashSet<GData>();
+                final Set<GData> selectionSet = new HashSet<>();
+                final Set<GData> hiddenSet = new HashSet<>();
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, Vertex[]> vertexMap2 = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
-                final ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection = new ThreadsafeHashMap<GData1, Matrix4f>(1000);
+                final ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection = new ThreadsafeHashMap<>(1000);
                 final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
                 final Integer myID = idGen.getAndIncrement();
                 matrixMap.put(View.DUMMY_REFERENCE, View.ID);
@@ -660,7 +660,7 @@ public class GL33ModelRenderer {
 
                         final boolean smoothVertices = OpenGLRenderer.getSmoothing().get();
                         if (smoothVertices) {
-                            tmpSelectedVertices = new TreeSet<Vertex>();
+                            tmpSelectedVertices = new TreeSet<>();
                             for (Vertex vertex : vertices) {
                                 if (selectedVertices.contains(vertex)) {
                                     tmpSelectedVertices.add(vertex);

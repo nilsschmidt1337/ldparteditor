@@ -84,7 +84,7 @@ public enum ProjectActions {
     private static boolean askForUnsavedChanges(Editor3DWindow win, boolean createOnlyDefault, boolean ignoreNonProjectFiles) {
         boolean unsavedProjectFiles = false;
         if (!createOnlyDefault) {
-            Set<DatFile> unsavedFiles = new HashSet<DatFile>(Project.getUnsavedFiles());
+            Set<DatFile> unsavedFiles = new HashSet<>(Project.getUnsavedFiles());
             for (DatFile df : unsavedFiles) {
                 if (ignoreNonProjectFiles && !df.isProjectFile()) continue;
                 final String text = df.getText();
@@ -126,7 +126,7 @@ public enum ProjectActions {
                 int result = messageBoxOpenFiles.open();
 
                 if (result == SWT.NO) {
-                    Set<EditorTextWindow> ow = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
+                    Set<EditorTextWindow> ow = new HashSet<>(Project.getOpenTextWindows());
                     for (EditorTextWindow w : ow) {
                         if (w.isSeperateWindow()) {
                             w.getShell().close();

@@ -26,7 +26,7 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
 public class TreeData {
 
     private TreeItem location;
-    private final HashSet<TreeItem> locationsWithSameShortFilenames = new HashSet<TreeItem>();
+    private final HashSet<TreeItem> locationsWithSameShortFilenames = new HashSet<>();
     public TreeItem getLocation() {
         return location;
     }

@@ -63,7 +63,7 @@ public class SmoothDialog extends SmoothDesign {
 
         {
             final VertexManager vm = Project.getFileToEdit().getVertexManager();
-            ArrayList<Vertex> selectedVerts = new ArrayList<Vertex>();
+            ArrayList<Vertex> selectedVerts = new ArrayList<>();
             selectedVerts.addAll(vm.getSelectedVertices());
             Project.getFileToEdit().getVertexManager().clearSelection();
             if (selectedVerts.isEmpty()) {

@@ -50,7 +50,7 @@ public class SWTResourceManager {
     // Color
     //
     // //////////////////////////////////////////////////////////////////////////
-    private static Map<RGB, Color> m_colorMap = new HashMap<RGB, Color>();
+    private static Map<RGB, Color> m_colorMap = new HashMap<>();
 
     /**
      * Returns the system {@link Color} matching the specific ID.
@@ -123,7 +123,7 @@ public class SWTResourceManager {
     /**
      * Maps image paths to images.
      */
-    private static Map<String, Image> m_imageMap = new HashMap<String, Image>();
+    private static Map<String, Image> m_imageMap = new HashMap<>();
 
     /**
      * Returns an {@link Image} encoded by the specified {@link InputStream}.
@@ -270,12 +270,12 @@ public class SWTResourceManager {
         }
         Map<Image, Map<Image, Image>> cornerDecoratedImageMap = m_decoratedImageMap[corner];
         if (cornerDecoratedImageMap == null) {
-            cornerDecoratedImageMap = new HashMap<Image, Map<Image, Image>>();
+            cornerDecoratedImageMap = new HashMap<>();
             m_decoratedImageMap[corner] = cornerDecoratedImageMap;
         }
         Map<Image, Image> decoratedMap = cornerDecoratedImageMap.get(baseImage);
         if (decoratedMap == null) {
-            decoratedMap = new HashMap<Image, Image>();
+            decoratedMap = new HashMap<>();
             cornerDecoratedImageMap.put(baseImage, decoratedMap);
         }
         //
@@ -338,11 +338,11 @@ public class SWTResourceManager {
     /**
      * Maps font names to fonts.
      */
-    private static Map<String, Font> m_fontMap = new HashMap<String, Font>();
+    private static Map<String, Font> m_fontMap = new HashMap<>();
     /**
      * Maps fonts to their bold versions.
      */
-    private static Map<Font, Font> m_fontToBoldFontMap = new HashMap<Font, Font>();
+    private static Map<Font, Font> m_fontToBoldFontMap = new HashMap<>();
 
     /**
      * Returns a {@link Font} based on its name, height and style.
@@ -445,7 +445,7 @@ public class SWTResourceManager {
     /**
      * Maps IDs to cursors.
      */
-    private static Map<Integer, Cursor> m_idToCursorMap = new HashMap<Integer, Cursor>();
+    private static Map<Integer, Cursor> m_idToCursorMap = new HashMap<>();
 
     /**
      * Returns the system cursor matching the specific ID.

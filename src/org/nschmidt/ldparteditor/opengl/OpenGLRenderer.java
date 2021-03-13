@@ -31,18 +31,18 @@ public abstract class OpenGLRenderer implements IRenderer {
     private static final AtomicBoolean smoothing = new AtomicBoolean(false);
     /** The 3D Composite */
     protected final Composite3D c3d;
-    
+
     protected OpenGLRenderer(Composite3D c3d) {
         this.c3d = c3d;
     }
-    
+
     /** The set, which stores already loaded textures in-memory. */
-    protected Set<GTexture> textureSet = new HashSet<GTexture>();
-    
+    protected Set<GTexture> textureSet = new HashSet<>();
+
     public static AtomicBoolean getSmoothing() {
         return smoothing;
     }
-    
+
     /**
      * Registers a texture with a given ID
      *
@@ -52,10 +52,11 @@ public abstract class OpenGLRenderer implements IRenderer {
     public void registerTexture(GTexture tex) {
         textureSet.add(tex);
     }
-    
+
     /**
      * Disposes all textures
      */
+    @Override
     public void disposeAllTextures() {
         final GLCanvas canvas = c3d.getCanvas();
         if (!canvas.isCurrent()) {
@@ -73,6 +74,7 @@ public abstract class OpenGLRenderer implements IRenderer {
     /**
      * Disposes old textures
      */
+    @Override
     public synchronized void disposeOldTextures() {
         final GLCanvas canvas = c3d.getCanvas();
         if (!canvas.isCurrent()) {
@@ -88,7 +90,7 @@ public abstract class OpenGLRenderer implements IRenderer {
             }
         }
     }
-    
+
     public boolean containsOnlyCubeMaps() {
         int counter = 0;
         for (GTexture tex : textureSet) {

@@ -94,7 +94,7 @@ public class CSGCone extends CSGPrimitive implements Primitive {
         final VectorCSGd axisX = new VectorCSGd(isY ? 1 : 0, !isY ? 1 : 0, 0).cross(axisZ).unit();
         final VectorCSGd axisY = axisX.cross(axisZ).unit();
         VectorCSGd endV = e.clone();
-        List<Polygon> polygons = new ArrayList<Polygon>();
+        List<Polygon> polygons = new ArrayList<>();
 
         for (int i = 0; i < numSlices; i++) {
             double t0 = i / (double) numSlices, t1 = (i + 1) / (double) numSlices;

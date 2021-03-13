@@ -699,7 +699,7 @@ public enum MathHelper {
             float dzup = p.z - pz;
             dist7 = dxup * dxup + dyup * dyup + dzup * dzup;
         }
-        TreeSet<Float> ts = new TreeSet<Float>();
+        TreeSet<Float> ts = new TreeSet<>();
         ts.add(dist2);
         ts.add(dist3);
         ts.add(dist4);
@@ -837,7 +837,7 @@ public enum MathHelper {
     }
 
     public static Matrix4f matrixFromStrings(String s30, String s31, String s32, String s00, String s05, String s06, String s07, String s08, String s09, String s10, String s11, String s12) {
-        ArrayList<String> as = new ArrayList<String>();
+        ArrayList<String> as = new ArrayList<>();
         as.add(s30);
         as.add(s31);
         as.add(s32);
@@ -850,7 +850,7 @@ public enum MathHelper {
         as.add(s10);
         as.add(s11);
         as.add(s12);
-        ArrayList<Float> af = new ArrayList<Float>();
+        ArrayList<Float> af = new ArrayList<>();
         try {
             for (String s : as) {
                 af.add(Float.parseFloat(s));
@@ -994,7 +994,7 @@ public enum MathHelper {
 
         final BigDecimal[][] Mn = new BigDecimal[4][4];
 
-        ArrayList<String> as = new ArrayList<String>();
+        ArrayList<String> as = new ArrayList<>();
         as.add(s30);
         as.add(s31);
         as.add(s32);
@@ -1007,7 +1007,7 @@ public enum MathHelper {
         as.add(s10);
         as.add(s11);
         as.add(s12);
-        ArrayList<BigDecimal> ab = new ArrayList<BigDecimal>();
+        ArrayList<BigDecimal> ab = new ArrayList<>();
         try {
             for (String s : as) {
                 ab.add(new BigDecimal(s));
@@ -1595,7 +1595,7 @@ public enum MathHelper {
     }
 
     static public ArrayList<GData3> triangulateFourPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, GData1 dummyReference, DatFile df) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+        ArrayList<GData3> result = new ArrayList<>();
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex2,
@@ -1610,7 +1610,7 @@ public enum MathHelper {
     }
 
     static public ArrayList<GData3> triangulateFivePoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, GData1 dummyReference, DatFile df) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+        ArrayList<GData3> result = new ArrayList<>();
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex2,
@@ -1630,7 +1630,7 @@ public enum MathHelper {
     }
 
     static public ArrayList<GData3> triangulateSixPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, GData1 dummyReference, DatFile df) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+        ArrayList<GData3> result = new ArrayList<>();
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
                 vertex2,
@@ -1655,7 +1655,7 @@ public enum MathHelper {
     }
 
     static public ArrayList<GData3> triangulateSevenPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, Vertex vertex7, GData1 dummyReference, DatFile df) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+        ArrayList<GData3> result = new ArrayList<>();
 
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
@@ -1682,7 +1682,7 @@ public enum MathHelper {
 
     public static ArrayList<GData3> triangulatePointGroups(ArrayList<GColour> cols, ArrayList<Vector3dd> av, ArrayList<Integer> types, GData1 dummyReference,
             DatFile df) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+        ArrayList<GData3> result = new ArrayList<>();
         int counter = 0;
         int counter2 = 0;
         for (GColour c : cols) {
@@ -1721,7 +1721,7 @@ public enum MathHelper {
 
     public static ArrayList<GData2> triangulatePointGroups2(ArrayList<GColour> cols, ArrayList<Vector3dd> av, ArrayList<Integer> types, GData1 dummyReference,
             DatFile df) {
-        ArrayList<GData2> result = new ArrayList<GData2>();
+        ArrayList<GData2> result = new ArrayList<>();
         int counter = 0;
         int counter2 = 0;
         for (GColour c : cols) {
@@ -1755,7 +1755,7 @@ public enum MathHelper {
 
     public static ArrayList<GData5> triangulatePointGroups5(ArrayList<GColour> cols, ArrayList<Vector3dd> av, ArrayList<Integer> types, GData1 dummyReference,
             DatFile df) {
-        ArrayList<GData5> result = new ArrayList<GData5>();
+        ArrayList<GData5> result = new ArrayList<>();
         int counter = 0;
         int counter2 = 0;
         for (GColour c : cols) {
@@ -1797,7 +1797,7 @@ public enum MathHelper {
 
     public static ArrayList<GData3> triangulateNPoints(int colourNumber, float r, float g, float b, float a, int pointsToTriangulate, ArrayList<Vector3d> av, GData1 dummyReference,
             DatFile df) {
-        ArrayList<GData3> result = new ArrayList<GData3>(pointsToTriangulate);
+        ArrayList<GData3> result = new ArrayList<>(pointsToTriangulate);
         final Vector3d origin = av.get(0);
         final BigDecimal originX = origin.X;
         final BigDecimal originY = origin.Y;

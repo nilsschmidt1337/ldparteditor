@@ -39,7 +39,7 @@ public class DuplicateManager {
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
     private Thread worker = null;
 
-    private volatile Queue<GData> workQueue = new ConcurrentLinkedQueue<GData>();
+    private volatile Queue<GData> workQueue = new ConcurrentLinkedQueue<>();
 
     public DuplicateManager(DatFile df) {
         this.df = df;
@@ -59,9 +59,9 @@ public class DuplicateManager {
                             if (newEntry != null) {
                                 NLogger.debug(getClass(), "Started duplicate check..."); //$NON-NLS-1$
 
-                                final HashSet<GData> allKeys = new HashSet<GData>();
+                                final HashSet<GData> allKeys = new HashSet<>();
                                 String lastCommentLine = null;
-                                final HashMap<String, Integer> lines = new HashMap<String, Integer>();
+                                final HashMap<String, Integer> lines = new HashMap<>();
 
                                 allKeys.addAll(GData.CACHE_duplicates.threadsafeKeySet());
                                 GData gd = newEntry;

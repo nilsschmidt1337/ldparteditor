@@ -1318,7 +1318,7 @@ public final class I18n {
     private static Field[] getSortedFields() {
         Field[] fieldsToSort = I18n.class.getFields();
 
-        TreeMap<String, Field> map = new TreeMap<String, Field>();
+        TreeMap<String, Field> map = new TreeMap<>();
 
         for (Field f : fieldsToSort) {
             map.put(f.getName(), f);

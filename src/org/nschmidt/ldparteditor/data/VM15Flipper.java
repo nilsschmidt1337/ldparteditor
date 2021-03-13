@@ -38,20 +38,20 @@ class VM15Flipper extends VM14Splitter {
         Editor3DWindow.getWindow().setMovingAdjacentData(false);
         GuiStatusManager.updateStatus();
 
-        final Set<GData2> newLines = new HashSet<GData2>();
-        final Set<GData3> newTriangles = new HashSet<GData3>();
-        final Set<GData4> newQuads = new HashSet<GData4>();
-        final Set<GData5> newCondlines = new HashSet<GData5>();
+        final Set<GData2> newLines = new HashSet<>();
+        final Set<GData3> newTriangles = new HashSet<>();
+        final Set<GData4> newQuads = new HashSet<>();
+        final Set<GData5> newCondlines = new HashSet<>();
 
-        final Set<GData2> effSelectedLines = new HashSet<GData2>();
-        final Set<GData3> effSelectedTriangles = new HashSet<GData3>();
-        final Set<GData4> effSelectedQuads = new HashSet<GData4>();
-        final Set<GData5> effSelectedCondlines = new HashSet<GData5>();
+        final Set<GData2> effSelectedLines = new HashSet<>();
+        final Set<GData3> effSelectedTriangles = new HashSet<>();
+        final Set<GData4> effSelectedQuads = new HashSet<>();
+        final Set<GData5> effSelectedCondlines = new HashSet<>();
 
-        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
-        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
-        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
-        final Set<GData5> clinesToDelete2 = new HashSet<GData5>();
+        final Set<GData2> linesToDelete2 = new HashSet<>();
+        final Set<GData3> trisToDelete2 = new HashSet<>();
+        final Set<GData4> quadsToDelete2 = new HashSet<>();
+        final Set<GData5> clinesToDelete2 = new HashSet<>();
 
         {
             for (GData2 g2 : selectedLines) {
@@ -76,8 +76,8 @@ class VM15Flipper extends VM14Splitter {
 
         // Special case for coloured triangle pairs (Flipper behaviour)
         {
-            HashSet<GData3> surfsToIgnore = new HashSet<GData3>();
-            HashMap<GData3, GData3> trianglePair = new HashMap<GData3, GData3>();
+            HashSet<GData3> surfsToIgnore = new HashSet<>();
+            HashMap<GData3, GData3> trianglePair = new HashMap<>();
             int i = 0;
             int j = 0;
             // Special case for only two triangles
@@ -115,8 +115,8 @@ class VM15Flipper extends VM14Splitter {
             for (GData3 s1 : trianglePair.keySet()) {
                 GData3 s2 = trianglePair.get(s1);
                 {
-                    TreeSet<Vertex> v1 = new TreeSet<Vertex>();
-                    TreeSet<Vertex> v2 = new TreeSet<Vertex>();
+                    TreeSet<Vertex> v1 = new TreeSet<>();
+                    TreeSet<Vertex> v2 = new TreeSet<>();
                     for (Vertex v : triangles.get(s1)) {
                         v1.add(v);
                     }
@@ -124,7 +124,7 @@ class VM15Flipper extends VM14Splitter {
                         v2.add(v);
                     }
                     {
-                        TreeSet<Vertex> sum = new TreeSet<Vertex>();
+                        TreeSet<Vertex> sum = new TreeSet<>();
                         sum.addAll(v1);
                         sum.addAll(v2);
                         if (sum.size() != 4) continue;

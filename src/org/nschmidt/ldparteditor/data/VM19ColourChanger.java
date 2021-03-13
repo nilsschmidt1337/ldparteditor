@@ -39,15 +39,15 @@ class VM19ColourChanger extends VM18LineConverter {
 
         backupHideShowState();
 
-        final HashSet<GData2> effSelectedLines = new HashSet<GData2>();
-        final HashSet<GData3> effSelectedTriangles = new HashSet<GData3>();
-        final HashSet<GData4> effSelectedQuads = new HashSet<GData4>();
-        final HashSet<GData5> effSelectedCondlines = new HashSet<GData5>();
+        final HashSet<GData2> effSelectedLines = new HashSet<>();
+        final HashSet<GData3> effSelectedTriangles = new HashSet<>();
+        final HashSet<GData4> effSelectedQuads = new HashSet<>();
+        final HashSet<GData5> effSelectedCondlines = new HashSet<>();
 
-        final HashSet<GData2> subSelectedLines = new HashSet<GData2>();
-        final HashSet<GData3> subSelectedTriangles = new HashSet<GData3>();
-        final HashSet<GData4> subSelectedQuads = new HashSet<GData4>();
-        final HashSet<GData5> subSelectedCondlines = new HashSet<GData5>();
+        final HashSet<GData2> subSelectedLines = new HashSet<>();
+        final HashSet<GData3> subSelectedTriangles = new HashSet<>();
+        final HashSet<GData4> subSelectedQuads = new HashSet<>();
+        final HashSet<GData5> subSelectedCondlines = new HashSet<>();
 
         final GColour col16 = View.getLDConfigColour(16);
 
@@ -109,7 +109,7 @@ class VM19ColourChanger extends VM18LineConverter {
         // 3. Transformation of the selected data (no whole subfiles!!)
         // + selectedData update!
 
-        ArrayList<GData> modData = new ArrayList<GData>();
+        ArrayList<GData> modData = new ArrayList<>();
         for (GData2 gd : effSelectedLines)
             modData.add(changeColour(index, r, g, b, a, gd));
         for (GData3 gd : effSelectedTriangles)
@@ -178,7 +178,7 @@ class VM19ColourChanger extends VM18LineConverter {
             String col = colourBuilder.toString();
             final boolean isRandomColour = a == 0f;
             HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
-            HashSet<GData1> newSubfiles = new HashSet<GData1>();
+            HashSet<GData1> newSubfiles = new HashSet<>();
             for (GData1 subf : selectedSubfiles) {
                 if (!drawPerLine.containsValue(subf)) {
                     continue;
@@ -199,11 +199,11 @@ class VM19ColourChanger extends VM18LineConverter {
                 if ("16".equals(col)) { //$NON-NLS-1$
                     colouredSubfile = DatParser
                             .parseLine(colouredString, drawPerLine.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                    new HashSet<String>()).get(0).getGraphicalData();
+                                    new HashSet<>()).get(0).getGraphicalData();
                 } else {
                     colouredSubfile = DatParser
                             .parseLine(colouredString, drawPerLine.getKey(subf).intValue(), 0, subf.r, subf.g, subf.b, subf.a, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
-                                    new HashSet<String>()).get(0).getGraphicalData();
+                                    new HashSet<>()).get(0).getGraphicalData();
                 }
                 if (colouredSubfile != null) {
                     if (subf.equals(linkedDatFile.getDrawChainTail()))
@@ -266,7 +266,7 @@ class VM19ColourChanger extends VM18LineConverter {
     }
 
     private final synchronized GData changeColour(int index, float r, float g, float b, float a, GData dataToModify) {
-        HashSet<GData> newSet = new HashSet<GData>();
+        HashSet<GData> newSet = new HashSet<>();
         newSet.add(dataToModify);
         changeColour(index, r, g, b, a, newSet);
         if (newSet.iterator().hasNext()) {
@@ -277,7 +277,7 @@ class VM19ColourChanger extends VM18LineConverter {
     }
 
     private final synchronized void changeColour(int index, float r, float g, float b, float a, Set<GData> dataToModify) {
-        HashSet<GData> newData = new HashSet<GData>();
+        HashSet<GData> newData = new HashSet<>();
         GColour colour = View.getLDConfigColour(index);
         final float cr = colour.getR();
         final float cg = colour.getG();

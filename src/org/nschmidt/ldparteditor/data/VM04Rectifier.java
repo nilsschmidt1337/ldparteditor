@@ -53,13 +53,13 @@ class VM04Rectifier extends VM03Adjacency {
 
         final BigDecimal TWO = new BigDecimal(2);
 
-        final Set<GData3> trisToIgnore = new HashSet<GData3>();
+        final Set<GData3> trisToIgnore = new HashSet<>();
 
-        final Set<GData2> linesToDelete = new HashSet<GData2>();
-        final Set<GData4> quadsToDelete = new HashSet<GData4>();
-        final Set<GData5> clinesToDelete = new HashSet<GData5>();
+        final Set<GData2> linesToDelete = new HashSet<>();
+        final Set<GData4> quadsToDelete = new HashSet<>();
+        final Set<GData5> clinesToDelete = new HashSet<>();
 
-        final Set<GData> surfsToParse = new HashSet<GData>();
+        final Set<GData> surfsToParse = new HashSet<>();
 
         if (rs.getScope() == 0) {
             surfsToParse.addAll(triangles.keySet());
@@ -118,9 +118,9 @@ class VM04Rectifier extends VM03Adjacency {
                                             GData3 tri2 = (GData3) cf[i].get(1);
                                             if (tri1.parent.equals(View.DUMMY_REFERENCE) && tri2.parent.equals(View.DUMMY_REFERENCE) && tri1.colourNumber == tri2.colourNumber && (tri1.colourNumber != -1 || tri1.r == tri2.r && tri1.g == tri2.g && tri1.b == tri2.b && tri1.a == tri2.a)) {
 
-                                                TreeSet<Vertex> tri1V = new TreeSet<Vertex>();
-                                                TreeSet<Vertex> tri2V = new TreeSet<Vertex>();
-                                                TreeSet<Vertex> triC = new TreeSet<Vertex>();
+                                                TreeSet<Vertex> tri1V = new TreeSet<>();
+                                                TreeSet<Vertex> tri2V = new TreeSet<>();
+                                                TreeSet<Vertex> triC = new TreeSet<>();
 
                                                 Vertex[] v1 = triangles.get(tri1);
                                                 Vertex[] v2 = triangles.get(tri2);
@@ -264,9 +264,9 @@ class VM04Rectifier extends VM03Adjacency {
                                         GData3 tri1 = (GData3) cf[bestIndex].get(0);
                                         GData3 tri2 = (GData3) cf[bestIndex].get(1);
 
-                                        TreeSet<Vertex> tri1V = new TreeSet<Vertex>();
-                                        TreeSet<Vertex> tri2V = new TreeSet<Vertex>();
-                                        TreeSet<Vertex> triC = new TreeSet<Vertex>();
+                                        TreeSet<Vertex> tri1V = new TreeSet<>();
+                                        TreeSet<Vertex> tri2V = new TreeSet<>();
+                                        TreeSet<Vertex> triC = new TreeSet<>();
 
                                         Vertex[] v1 = triangles.get(tri1);
                                         Vertex[] v2 = triangles.get(tri2);
@@ -314,10 +314,10 @@ class VM04Rectifier extends VM03Adjacency {
                                                 }
                                             }
 
-                                            Set<GData> lines1 = new HashSet<GData>();
-                                            Set<GData> lines2 = new HashSet<GData>();
-                                            Set<GData> lines3 = new HashSet<GData>();
-                                            Set<GData> lines4 = new HashSet<GData>();
+                                            Set<GData> lines1 = new HashSet<>();
+                                            Set<GData> lines2 = new HashSet<>();
+                                            Set<GData> lines3 = new HashSet<>();
+                                            Set<GData> lines4 = new HashSet<>();
 
 
                                             {
@@ -566,7 +566,7 @@ class VM04Rectifier extends VM03Adjacency {
                                                 lineBuilder.append(" "); //$NON-NLS-1$
                                                 lineBuilder.append(shortName);
 
-                                                Set<String> alreadyParsed = new HashSet<String>();
+                                                Set<String> alreadyParsed = new HashSet<>();
                                                 alreadyParsed.add(linkedDatFile.getShortName());
                                                 ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                                                 GData rect = result.get(0).getGraphicalData();
@@ -621,9 +621,9 @@ class VM04Rectifier extends VM03Adjacency {
                             GData3 tri2 = (GData3) cf[i].get(1);
                             if (tri1.parent.equals(View.DUMMY_REFERENCE) && tri2.parent.equals(View.DUMMY_REFERENCE) && tri1.colourNumber == tri2.colourNumber && (tri1.colourNumber != -1 || tri1.r == tri2.r && tri1.g == tri2.g && tri1.b == tri2.b && tri1.a == tri2.a)) {
 
-                                TreeSet<Vertex> tri1V = new TreeSet<Vertex>();
-                                TreeSet<Vertex> tri2V = new TreeSet<Vertex>();
-                                TreeSet<Vertex> triC = new TreeSet<Vertex>();
+                                TreeSet<Vertex> tri1V = new TreeSet<>();
+                                TreeSet<Vertex> tri2V = new TreeSet<>();
+                                TreeSet<Vertex> triC = new TreeSet<>();
 
                                 Vertex[] v1 = triangles.get(tri1);
                                 Vertex[] v2 = triangles.get(tri2);
@@ -767,9 +767,9 @@ class VM04Rectifier extends VM03Adjacency {
                         GData3 tri1 = (GData3) cf[bestIndex].get(0);
                         GData3 tri2 = (GData3) cf[bestIndex].get(1);
 
-                        TreeSet<Vertex> tri1V = new TreeSet<Vertex>();
-                        TreeSet<Vertex> tri2V = new TreeSet<Vertex>();
-                        TreeSet<Vertex> triC = new TreeSet<Vertex>();
+                        TreeSet<Vertex> tri1V = new TreeSet<>();
+                        TreeSet<Vertex> tri2V = new TreeSet<>();
+                        TreeSet<Vertex> triC = new TreeSet<>();
 
                         Vertex[] v1 = triangles.get(tri1);
                         Vertex[] v2 = triangles.get(tri2);
@@ -817,10 +817,10 @@ class VM04Rectifier extends VM03Adjacency {
                                 }
                             }
 
-                            Set<GData> lines1 = new HashSet<GData>();
-                            Set<GData> lines2 = new HashSet<GData>();
-                            Set<GData> lines3 = new HashSet<GData>();
-                            Set<GData> lines4 = new HashSet<GData>();
+                            Set<GData> lines1 = new HashSet<>();
+                            Set<GData> lines2 = new HashSet<>();
+                            Set<GData> lines3 = new HashSet<>();
+                            Set<GData> lines4 = new HashSet<>();
 
 
                             {
@@ -1070,7 +1070,7 @@ class VM04Rectifier extends VM03Adjacency {
                                 lineBuilder.append(" "); //$NON-NLS-1$
                                 lineBuilder.append(shortName);
 
-                                Set<String> alreadyParsed = new HashSet<String>();
+                                Set<String> alreadyParsed = new HashSet<>();
                                 alreadyParsed.add(linkedDatFile.getShortName());
                                 ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                                 GData rect = result.get(0).getGraphicalData();

@@ -37,16 +37,16 @@ class VM14Splitter extends VM13SymSplitter {
 
         if (linkedDatFile.isReadOnly()) return;
 
-        final Set<GData2> newLines = new HashSet<GData2>();
-        final Set<GData3> newTriangles = new HashSet<GData3>();
-        final Set<GData5> newCondlines = new HashSet<GData5>();
+        final Set<GData2> newLines = new HashSet<>();
+        final Set<GData3> newTriangles = new HashSet<>();
+        final Set<GData5> newCondlines = new HashSet<>();
 
-        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
-        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
-        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
-        final Set<GData5> clinesToDelete2 = new HashSet<GData5>();
+        final Set<GData2> linesToDelete2 = new HashSet<>();
+        final Set<GData3> trisToDelete2 = new HashSet<>();
+        final Set<GData4> quadsToDelete2 = new HashSet<>();
+        final Set<GData5> clinesToDelete2 = new HashSet<>();
 
-        final Set<AccurateEdge> edgesToSplit = new HashSet<AccurateEdge>();
+        final Set<AccurateEdge> edgesToSplit = new HashSet<>();
 
         {
             int i = 0;
@@ -95,7 +95,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         clearSelection();
 
-        for (GData2 g : new HashSet<GData2>(lines.keySet())) {
+        for (GData2 g : new HashSet<>(lines.keySet())) {
             if (!lineLinkedToVertices.containsKey(g)) continue;
             List<GData2> result = split(g, fractions, edgesToSplit);
             if (result.isEmpty()) continue;
@@ -106,7 +106,7 @@ class VM14Splitter extends VM13SymSplitter {
             linesToDelete2.add(g);
         }
 
-        for (GData3 g : new HashSet<GData3>(triangles.keySet())) {
+        for (GData3 g : new HashSet<>(triangles.keySet())) {
             if (!lineLinkedToVertices.containsKey(g)) continue;
             List<GData3> result = split(g, fractions, edgesToSplit);
             if (result.isEmpty()) continue;
@@ -117,7 +117,7 @@ class VM14Splitter extends VM13SymSplitter {
             trisToDelete2.add(g);
         }
 
-        for (GData4 g : new HashSet<GData4>(quads.keySet())) {
+        for (GData4 g : new HashSet<>(quads.keySet())) {
             if (!lineLinkedToVertices.containsKey(g)) continue;
             List<GData3> result = split(g, fractions, edgesToSplit);
             if (result.isEmpty()) continue;
@@ -128,7 +128,7 @@ class VM14Splitter extends VM13SymSplitter {
             quadsToDelete2.add(g);
         }
 
-        for (GData5 g : new HashSet<GData5>(condlines.keySet())) {
+        for (GData5 g : new HashSet<>(condlines.keySet())) {
             List<GData5> result = split(g, fractions, edgesToSplit);
             if (result.isEmpty()) continue;
             newCondlines.addAll(result);
@@ -168,7 +168,7 @@ class VM14Splitter extends VM13SymSplitter {
 
     private List<GData5> split(GData5 g, int fractions, Set<AccurateEdge> edgesToSplit) {
 
-        ArrayList<GData5> result = new ArrayList<GData5>(fractions);
+        ArrayList<GData5> result = new ArrayList<>(fractions);
 
         // Detect how many edges are affected
         Vertex[] verts = condlines.get(g);
@@ -226,7 +226,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         switch (ec) {
         case 0:
-            return new ArrayList<GData3>();
+            return new ArrayList<>();
         case 1:
             if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
                 return splitQuad1(verts[0], verts[1], verts[2], verts[3], fractions, g);
@@ -286,11 +286,11 @@ class VM14Splitter extends VM13SymSplitter {
             break;
         }
 
-        return new ArrayList<GData3>();
+        return new ArrayList<>();
     }
 
     private List<GData3> splitQuad1(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions);
+        ArrayList<GData3> result = new ArrayList<>(fractions);
 
         Vector3d A = new Vector3d(v1);
         Vector3d B = new Vector3d(v2);
@@ -386,7 +386,7 @@ class VM14Splitter extends VM13SymSplitter {
 
     private List<GData3> splitQuad21(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
 
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions * 8);
+        ArrayList<GData3> result = new ArrayList<>(fractions * 8);
 
         // Split between v1-v2 & v2-v3
         Vector3d A = new Vector3d(v1);
@@ -396,7 +396,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
 
-        ArrayList<Vector3d> newPoints = new ArrayList<Vector3d>(fractions * 4);
+        ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 4);
 
         {
             BigDecimal cur = BigDecimal.ZERO;
@@ -485,7 +485,7 @@ class VM14Splitter extends VM13SymSplitter {
 
     private List<GData3> splitQuad22(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
 
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions * 8);
+        ArrayList<GData3> result = new ArrayList<>(fractions * 8);
 
         // Split between v1-v2 & v3-v4
         Vector3d A = new Vector3d(v1);
@@ -495,7 +495,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
 
-        ArrayList<Vector3d> newPoints = new ArrayList<Vector3d>(fractions * 4);
+        ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 4);
 
         {
             BigDecimal cur = BigDecimal.ZERO;
@@ -580,7 +580,7 @@ class VM14Splitter extends VM13SymSplitter {
     }
 
     private List<GData3> splitQuad3(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions * 8);
+        ArrayList<GData3> result = new ArrayList<>(fractions * 8);
 
         Vector3d A = new Vector3d(v1);
         Vector3d B = new Vector3d(v2);
@@ -594,7 +594,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
 
-        ArrayList<Vector3d> newPoints = new ArrayList<Vector3d>(fractions * 3);
+        ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 3);
 
         {
             BigDecimal next = BigDecimal.ZERO;
@@ -674,7 +674,7 @@ class VM14Splitter extends VM13SymSplitter {
 
     private List<GData3> splitQuad4(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
 
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions * 8);
+        ArrayList<GData3> result = new ArrayList<>(fractions * 8);
 
         Vector3d A = new Vector3d(v1);
         Vector3d B = new Vector3d(v2);
@@ -688,7 +688,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
 
-        ArrayList<Vector3d> newPoints = new ArrayList<Vector3d>(fractions * 4);
+        ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 4);
 
         {
             BigDecimal next = BigDecimal.ZERO;
@@ -800,7 +800,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         switch (ec) {
         case 0:
-            return new ArrayList<GData3>();
+            return new ArrayList<>();
         case 1:
             if (edgesToSplit.contains(new AccurateEdge(verts[0], verts[1]))) {
                 return splitTri1(verts[0], verts[1], verts[2], fractions, g);
@@ -835,11 +835,11 @@ class VM14Splitter extends VM13SymSplitter {
             break;
         }
 
-        return new ArrayList<GData3>();
+        return new ArrayList<>();
     }
 
     private List<GData3> splitTri1(Vertex v1, Vertex v2, Vertex v3, int fractions, GData3 g) {
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions);
+        ArrayList<GData3> result = new ArrayList<>(fractions);
 
         Vector3d A = new Vector3d(v1);
         Vector3d B = new Vector3d(v2);
@@ -880,7 +880,7 @@ class VM14Splitter extends VM13SymSplitter {
 
     private List<GData3> splitTri2(Vertex v1, Vertex v2, Vertex v3, int fractions, GData3 g) {
 
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions);
+        ArrayList<GData3> result = new ArrayList<>(fractions);
 
         Vector3d A = new Vector3d(v1);
         Vector3d B = new Vector3d(v2);
@@ -956,7 +956,7 @@ class VM14Splitter extends VM13SymSplitter {
 
     private List<GData3> splitTri3(Vertex v1, Vertex v2, Vertex v3, int fractions, GData3 g) {
 
-        ArrayList<GData3> result = new ArrayList<GData3>(fractions * 3);
+        ArrayList<GData3> result = new ArrayList<>(fractions * 3);
 
         Vector3d A = new Vector3d(v1);
         Vector3d B = new Vector3d(v2);
@@ -969,7 +969,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
 
-        ArrayList<Vector3d> newPoints = new ArrayList<Vector3d>(fractions * 3);
+        ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 3);
 
         {
             BigDecimal next = BigDecimal.ZERO;
@@ -1055,7 +1055,7 @@ class VM14Splitter extends VM13SymSplitter {
 
     private List<GData2> split(GData2 g, int fractions, Set<AccurateEdge> edgesToSplit) {
 
-        ArrayList<GData2> result = new ArrayList<GData2>(fractions);
+        ArrayList<GData2> result = new ArrayList<>(fractions);
 
         // Detect how many edges are affected
         Vertex[] verts = lines.get(g);
@@ -1103,7 +1103,7 @@ class VM14Splitter extends VM13SymSplitter {
     }
 
     private List<GData3> split(GData3 g, Vertex start, Vertex end, Vertex target) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+        ArrayList<GData3> result = new ArrayList<>();
         if (!start.equals(end)) {
             Vertex[] verts = triangles.get(g);
             if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
@@ -1118,14 +1118,14 @@ class VM14Splitter extends VM13SymSplitter {
     }
 
     private List<GData3> splitTri(Vertex v1, Vertex v2, Vertex v3, Vertex target, GData3 g) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+        ArrayList<GData3> result = new ArrayList<>();
         result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, v3.X, v3.Y, v3.Z, v1.X, v1.Y, v1.Z, target.X, target.Y, target.Z, View.DUMMY_REFERENCE, linkedDatFile, true));
         result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, target.X, target.Y, target.Z, v2.X, v2.Y, v2.Z, v3.X, v3.Y, v3.Z, View.DUMMY_REFERENCE, linkedDatFile, true));
         return result;
     }
 
     private List<GData2> split(GData2 g, Vertex start, Vertex end, Vertex target) {
-        ArrayList<GData2> result = new ArrayList<GData2>();
+        ArrayList<GData2> result = new ArrayList<>();
         if (!start.equals(end)) {
             Vertex[] verts = lines.get(g);
             if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
@@ -1140,28 +1140,28 @@ class VM14Splitter extends VM13SymSplitter {
 
         if (linkedDatFile.isReadOnly()) return false;
 
-        final Set<GData2> newLines = new HashSet<GData2>();
-        final Set<GData3> newTriangles = new HashSet<GData3>();
-        final Set<GData5> newCondlines = new HashSet<GData5>();
+        final Set<GData2> newLines = new HashSet<>();
+        final Set<GData3> newTriangles = new HashSet<>();
+        final Set<GData5> newCondlines = new HashSet<>();
 
-        final Set<GData2> effSelectedLines = new HashSet<GData2>();
-        final Set<GData3> effSelectedTriangles = new HashSet<GData3>();
-        final Set<GData4> effSelectedQuads = new HashSet<GData4>();
-        final Set<GData5> effSelectedCondlines = new HashSet<GData5>();
+        final Set<GData2> effSelectedLines = new HashSet<>();
+        final Set<GData3> effSelectedTriangles = new HashSet<>();
+        final Set<GData4> effSelectedQuads = new HashSet<>();
+        final Set<GData5> effSelectedCondlines = new HashSet<>();
 
 
-        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
-        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
-        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
-        final Set<GData5> clinesToDelete2 = new HashSet<GData5>();
+        final Set<GData2> linesToDelete2 = new HashSet<>();
+        final Set<GData3> trisToDelete2 = new HashSet<>();
+        final Set<GData4> quadsToDelete2 = new HashSet<>();
+        final Set<GData5> clinesToDelete2 = new HashSet<>();
 
         Set<VertexManifestation> manis1 = vertexLinkedToPositionInFile.get(start);
         Set<VertexManifestation> manis2 = vertexLinkedToPositionInFile.get(end);
 
         if (manis1 == null || manis2 == null || manis1.isEmpty() || manis2.isEmpty()) return false;
 
-        Set<GData> setA = new HashSet<GData>();
-        Set<GData> setB = new HashSet<GData>();
+        Set<GData> setA = new HashSet<>();
+        Set<GData> setB = new HashSet<>();
 
         for (VertexManifestation m : manis1) {
             setA.add(m.getGdata());
@@ -1265,7 +1265,7 @@ class VM14Splitter extends VM13SymSplitter {
     }
 
     private List<GData3> split(GData4 g, Vertex start, Vertex end, Vertex target) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+        ArrayList<GData3> result = new ArrayList<>();
         if (!start.equals(end)) {
             Vertex[] verts = quads.get(g);
             if ((verts[0].equals(start) || verts[0].equals(end)) && (verts[1].equals(start) || verts[1].equals(end))) {
@@ -1282,7 +1282,7 @@ class VM14Splitter extends VM13SymSplitter {
     }
 
     private List<GData3> splitQuad(Vertex v1, Vertex v2, Vertex v3, Vertex v4, Vertex target, GData4 g) {
-        ArrayList<GData3> result = new ArrayList<GData3>();
+        ArrayList<GData3> result = new ArrayList<>();
         result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, v4.X, v4.Y, v4.Z, v1.X, v1.Y, v1.Z, target.X, target.Y, target.Z, View.DUMMY_REFERENCE, linkedDatFile, true));
         result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, target.X, target.Y, target.Z, v2.X, v2.Y, v2.Z, v4.X, v4.Y, v4.Z, View.DUMMY_REFERENCE, linkedDatFile, true));
         result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a, v2.X, v2.Y, v2.Z, v3.X, v3.Y, v3.Z, v4.X, v4.Y, v4.Z, View.DUMMY_REFERENCE, linkedDatFile, true));
@@ -1290,7 +1290,7 @@ class VM14Splitter extends VM13SymSplitter {
     }
 
     private List<GData5> split(GData5 g, Vertex start, Vertex end, Vertex target) {
-        ArrayList<GData5> result = new ArrayList<GData5>();
+        ArrayList<GData5> result = new ArrayList<>();
 
         if (!start.equals(end)) {
             Vertex[] verts = condlines.get(g);
@@ -1304,10 +1304,10 @@ class VM14Splitter extends VM13SymSplitter {
 
     public void splitQuads(boolean isModified) {
 
-        final Set<GData4> quadsToDelete = new HashSet<GData4>();
-        final Set<GData3> newTriangles = new HashSet<GData3>();
+        final Set<GData4> quadsToDelete = new HashSet<>();
+        final Set<GData3> newTriangles = new HashSet<>();
 
-        final Set<GData4> quadsToParse = new HashSet<GData4>();
+        final Set<GData4> quadsToParse = new HashSet<>();
 
         quadsToParse.addAll(selectedQuads);
 

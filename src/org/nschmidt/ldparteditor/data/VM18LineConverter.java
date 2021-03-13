@@ -31,10 +31,10 @@ class VM18LineConverter extends VM17Unificator {
 
     public final void condlineToLine() {
 
-        final Set<GData5> condlinesToDelete = new HashSet<GData5>();
-        final Set<GData2> newLines = new HashSet<GData2>();
+        final Set<GData5> condlinesToDelete = new HashSet<>();
+        final Set<GData2> newLines = new HashSet<>();
 
-        final Set<GData5> condlinesToParse = new HashSet<GData5>();
+        final Set<GData5> condlinesToParse = new HashSet<>();
 
         condlinesToParse.addAll(selectedCondlines);
 
@@ -76,10 +76,10 @@ class VM18LineConverter extends VM17Unificator {
 
     public final void lineToCondline() {
 
-        final Set<GData2> linesToDelete = new HashSet<GData2>();
-        final Set<GData5> newCondlines = new HashSet<GData5>();
+        final Set<GData2> linesToDelete = new HashSet<>();
+        final Set<GData5> newCondlines = new HashSet<>();
 
-        final Set<GData2> linesToParse = new HashSet<GData2>();
+        final Set<GData2> linesToParse = new HashSet<>();
 
         linesToParse.addAll(selectedLines);
 
@@ -105,8 +105,8 @@ class VM18LineConverter extends VM17Unificator {
 
             if (faces.size() == 2) {
 
-                TreeSet<Vertex> fv1 = new TreeSet<Vertex>();
-                TreeSet<Vertex> fv2 = new TreeSet<Vertex>();
+                TreeSet<Vertex> fv1 = new TreeSet<>();
+                TreeSet<Vertex> fv2 = new TreeSet<>();
 
                 switch (faces.get(0).type()) {
                 case 3:

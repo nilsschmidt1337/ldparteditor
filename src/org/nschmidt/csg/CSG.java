@@ -172,7 +172,7 @@ public class CSG {
     public CSG clone() {
         CSG csg = new CSG();
 
-        csg.polygons = new ArrayList<Polygon>();
+        csg.polygons = new ArrayList<>();
         for (Polygon polygon : polygons) {
             csg.polygons.add(polygon.clone());
         }
@@ -448,8 +448,8 @@ public class CSG {
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
         GColour col = View.getLDConfigColour(16);
-        GData1 g1 = new GData1(-1, col.getR(), col.getG(), col.getB(), 1f, id, View.ACCURATE_ID, new ArrayList<String>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
-                new HashSet<String>(), View.DUMMY_REFERENCE);
+        GData1 g1 = new GData1(-1, col.getR(), col.getG(), col.getB(), 1f, id, View.ACCURATE_ID, new ArrayList<>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
+                new HashSet<>(), View.DUMMY_REFERENCE);
         this.result = toLDrawTriangles(g1);
         return g1;
     }
@@ -601,7 +601,7 @@ public class CSG {
      * @return a transformed copy of this CSG
      */
     public CSG transformed(Transform transform) {
-        List<Polygon> newpolygons = new ArrayList<Polygon>();
+        List<Polygon> newpolygons = new ArrayList<>();
         for (Polygon p : polygons) {
             newpolygons.add(p.transformed(transform));
         }
@@ -619,7 +619,7 @@ public class CSG {
      * @return a transformed copy of this CSG
      */
     public CSG transformed(Transform transform, GColour c, int ID) {
-        List<Polygon> newpolygons = new ArrayList<Polygon>();
+        List<Polygon> newpolygons = new ArrayList<>();
         for (Polygon p : polygons) {
             newpolygons.add(p.transformed(transform, c, ID));
         }

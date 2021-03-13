@@ -107,10 +107,10 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
 
     @Override
     public List<Polygon> toPolygons(DatFile df, GColour colour) {
-        List<Polygon> polygons = new ArrayList<Polygon>();
+        List<Polygon> polygons = new ArrayList<>();
         for (int i = 0; i < numSlices; i++) {
             for (int j = 0; j < numStacks; j++) {
-                final List<VectorCSGd> vertices = new ArrayList<VectorCSGd>();
+                final List<VectorCSGd> vertices = new ArrayList<>();
 
                 vertices.add(sphereVertex(center, radius, i / (double) numSlices, j / (double) numStacks));
                 if (j > 0) {

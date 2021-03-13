@@ -419,7 +419,7 @@ public class VM01SelectHelper extends VM01Select {
 
         } else if (Editor3DWindow.getWindow().isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) {
             {
-                HashMap<GData, Integer> occurMap = new HashMap<GData, Integer>();
+                HashMap<GData, Integer> occurMap = new HashMap<>();
                 for (Vertex vertex : selectedVertices) {
                     Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
                     if (occurences == null)
@@ -892,7 +892,7 @@ public class VM01SelectHelper extends VM01Select {
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
-        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
         selectedVerticesTemp.addAll(selectedVertices);
         selectedVertices.clear();
         Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
@@ -1149,7 +1149,7 @@ public class VM01SelectHelper extends VM01Select {
      */
     private synchronized void selectLines2(Composite3D c3d, Vector4f selectionWidth, Vector4f selectionHeight) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
-        Set<Vertex> tmpVerts = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        Set<Vertex> tmpVerts = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
         tmpVerts.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
         selectVertices2(c3d);
@@ -1354,7 +1354,7 @@ public class VM01SelectHelper extends VM01Select {
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
-        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
         selectedVerticesTemp.addAll(selectedVertices);
         selectedVertices.clear();
         boolean allVertsFromLine = false;
@@ -1485,7 +1485,7 @@ public class VM01SelectHelper extends VM01Select {
      * @param selectionWidth
      */
     private synchronized void selectFaces2(Composite3D c3d, Event event, Vector4f selectionWidth, Vector4f selectionHeight) {
-        Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
         selVert4sTemp.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
         selectVertices2(c3d);
@@ -1622,7 +1622,7 @@ public class VM01SelectHelper extends VM01Select {
     }
 
     public synchronized void selectWholeSubfiles() {
-        HashSet<GData1> subfilesToAdd = new HashSet<GData1>();
+        HashSet<GData1> subfilesToAdd = new HashSet<>();
         for (GData g : selectedData) {
             subfilesToAdd.add(g.parent.firstRef);
         }
@@ -1699,7 +1699,7 @@ public class VM01SelectHelper extends VM01Select {
         selectedQuadsForSubfile.clear();
         selectedCondlinesForSubfile.clear();
 
-        HashSet<GData1> backupSubfiles = new HashSet<GData1>(selectedSubfiles);
+        HashSet<GData1> backupSubfiles = new HashSet<>(selectedSubfiles);
 
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
@@ -1736,7 +1736,7 @@ public class VM01SelectHelper extends VM01Select {
         }
 
         NLogger.debug(getClass(), "Subfiles in selection:"); //$NON-NLS-1$
-        HashSet<GData1> subs = new HashSet<GData1>();
+        HashSet<GData1> subs = new HashSet<>();
         for (GData g : selectedData) {
             GData1 s = g.parent.firstRef;
             if (!View.DUMMY_REFERENCE.equals(s)) {
@@ -1750,8 +1750,8 @@ public class VM01SelectHelper extends VM01Select {
         selectedData.clear();
 
         NLogger.debug(getClass(), "Subfiles in selection, to add/remove:"); //$NON-NLS-1$
-        HashSet<GData1> subsToAdd = new HashSet<GData1>();
-        HashSet<GData1> subsToRemove = new HashSet<GData1>();
+        HashSet<GData1> subsToAdd = new HashSet<>();
+        HashSet<GData1> subsToRemove = new HashSet<>();
         if (c3d.getKeys().isCtrlPressed()) {
             for (GData1 subf : backupSubfiles) {
                 if (subs.contains(subf)) {
@@ -1786,7 +1786,7 @@ public class VM01SelectHelper extends VM01Select {
 
     public Vector4f getSelectionCenter() {
 
-        final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
         objectVertices.addAll(selectedVertices);
 
         // 1. Object Based Selection
@@ -1896,7 +1896,7 @@ public class VM01SelectHelper extends VM01Select {
             if (remove(g)) {
                 linkedDatFile.setDrawChainTail(b);
             }
-            Set<String> alreadyParsed = new HashSet<String>();
+            Set<String> alreadyParsed = new HashSet<>();
             alreadyParsed.add(linkedDatFile.getShortName());
             GData pasted;
             if (StringHelper.isNotBlank(lineToParse)) {

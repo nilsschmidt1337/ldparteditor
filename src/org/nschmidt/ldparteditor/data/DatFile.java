@@ -82,8 +82,8 @@ public final class DatFile {
 
     private final GData drawChainAnchor = new GDataInit(View.DUMMY_REFERENCE);
 
-    private final HashBiMap<Integer, GData> drawPerLine = new HashBiMap<Integer, GData>();
-    private final HashMap<Integer, GData> copy_drawPerLine = new HashMap<Integer, GData>();
+    private final HashBiMap<Integer, GData> drawPerLine = new HashBiMap<>();
+    private final HashMap<Integer, GData> copy_drawPerLine = new HashMap<>();
 
     private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE, View.DUMMY_REFERENCE); //$NON-NLS-1$
@@ -411,7 +411,7 @@ public final class DatFile {
      * <br> The list will be empty if the file can't be read or can't be found
      */
     public ArrayList<String> getSource() {
-        ArrayList<String> result = new ArrayList<String>();
+        ArrayList<String> result = new ArrayList<>();
         if (originalText.isEmpty() && new File(this.getOldName()).exists()) {
             UTF8BufferedReader reader = null;
             try {
@@ -454,7 +454,7 @@ public final class DatFile {
     public void parseForErrorAndData(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings,
             TreeItem errors, TreeItem duplicates, Label problemCount) {
 
-        Set<String> alreadyParsed = new HashSet<String>();
+        Set<String> alreadyParsed = new HashSet<>();
         alreadyParsed.add(getShortName());
 
         GData anchorData = drawChainAnchor;
@@ -770,7 +770,7 @@ public final class DatFile {
             return;
         }
 
-        Set<String> alreadyParsed = new HashSet<String>();
+        Set<String> alreadyParsed = new HashSet<>();
         alreadyParsed.add(getShortName());
 
         long start = System.currentTimeMillis();
@@ -947,7 +947,7 @@ public final class DatFile {
         if (duplicates.getItems().size() > 0 || !GData.CACHE_duplicates.isEmpty()) {
             int position;
             duplicates.getItems().clear();
-            HashSet<GData> entriesToRemove = new HashSet<GData>();
+            HashSet<GData> entriesToRemove = new HashSet<>();
             TreeMap<Integer, ParsingResult> results = new TreeMap<>();
 
             for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
@@ -1008,7 +1008,7 @@ public final class DatFile {
             TreeMap<Integer, ArrayList<ParsingResult>> results = new TreeMap<>();
             for (ParsingResult entry : allParsingResults) {
                 Integer lineNumber = entry.getTypeNumber();
-                ArrayList<ParsingResult> results2 = new ArrayList<ParsingResult>();
+                ArrayList<ParsingResult> results2 = new ArrayList<>();
                 results.putIfAbsent(lineNumber, results2);
                 results2 = results.get(lineNumber);
                 results2.add(entry);
@@ -1077,7 +1077,7 @@ public final class DatFile {
         Project.getParsedFiles().add(this);
         Project.addOpenedFile(this);
 
-        Set<String> alreadyParsed = new HashSet<String>();
+        Set<String> alreadyParsed = new HashSet<>();
         alreadyParsed.add(getShortName());
 
         final GColour col16 = View.getLDConfigColour(16);
@@ -1094,7 +1094,7 @@ public final class DatFile {
         int oldLineCount = drawPerLine.size();
         drawChainTail = drawChainAnchor;
 
-        HashMap<String, GData> candidateForRemoval = new HashMap<String, GData>();
+        HashMap<String, GData> candidateForRemoval = new HashMap<>();
         for (String line : lines) {
             if (oldG == null) {
                 if (isNotBlank(line)) {
@@ -1168,7 +1168,7 @@ public final class DatFile {
         Project.getParsedFiles().add(this);
         Project.addOpenedFile(this);
 
-        Set<String> alreadyParsed = new HashSet<String>();
+        Set<String> alreadyParsed = new HashSet<>();
         alreadyParsed.add(getShortName());
 
         String[] lines;
@@ -1179,7 +1179,7 @@ public final class DatFile {
             }
         } else {
             StringBuilder sb = new StringBuilder();
-            ArrayList<String> lines2 = new ArrayList<String>(4096);
+            ArrayList<String> lines2 = new ArrayList<>(4096);
             UTF8BufferedReader reader = null;
             try {
                 reader = new UTF8BufferedReader(this.getOldName());
@@ -1626,7 +1626,7 @@ public final class DatFile {
                 newFile.getParentFile().mkdirs();
             }
             r = new UTF8PrintWriter(newName);
-            ArrayList<String> lines = new ArrayList<String>();
+            ArrayList<String> lines = new ArrayList<>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
                 final int index = lines.size() - 1;
@@ -1654,7 +1654,7 @@ public final class DatFile {
             setLastSavedOpened(new Date());
             lastModified = new File(getNewName()).lastModified();
             Project.removeUnsavedFile(this);
-            HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
+            HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
             for (EditorTextWindow win : windows) {
                 win.updateTabWithDatfile(this);
             }
@@ -1681,7 +1681,7 @@ public final class DatFile {
                 newFile.getParentFile().mkdirs();
             }
             r = new UTF8PrintWriter(newName);
-            ArrayList<String> lines = new ArrayList<String>();
+            ArrayList<String> lines = new ArrayList<>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
                 final int index = lines.size() - 1;
@@ -1705,7 +1705,7 @@ public final class DatFile {
             setLastSavedOpened(new Date());
             lastModified = new File(getNewName()).lastModified();
             Project.removeUnsavedFile(this);
-            HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
+            HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
             for (EditorTextWindow win : windows) {
                 win.updateTabWithDatfile(this);
             }
@@ -1731,7 +1731,7 @@ public final class DatFile {
                 newFile.getParentFile().mkdirs();
             }
             r = new UTF8PrintWriter(newName);
-            ArrayList<String> lines = new ArrayList<String>();
+            ArrayList<String> lines = new ArrayList<>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
                 final int index = lines.size() - 1;
@@ -1821,7 +1821,7 @@ public final class DatFile {
                 Project.removeUnsavedFile(this);
                 parseForData(true);
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
-                HashSet<EditorTextWindow> windows = new HashSet<EditorTextWindow>(Project.getOpenTextWindows());
+                HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
                 for (EditorTextWindow win : windows) {
                     win.updateTabWithDatfile(this);
                 }
@@ -1996,19 +1996,19 @@ public final class DatFile {
         final boolean isBackupHiddenData = vertices.hiddenData.size() > 0;
         final boolean isBackupSelectedData = vertices.selectedData.size() > 0;
         if (isBackupHiddenData && isBackupSelectedData) {
-            backupHiddenData = new HashMap<String, ArrayList<Boolean>>();
-            backupSelectedData = new HashMap<String, ArrayList<Boolean>>();
+            backupHiddenData = new HashMap<>();
+            backupSelectedData = new HashMap<>();
             vertices.backupHideShowAndSelectedState(backupHiddenData, backupSelectedData);
         } else {
             if (isBackupHiddenData) {
-                backupHiddenData = vertices.backupHideShowState(new HashMap<String, ArrayList<Boolean>>());
+                backupHiddenData = vertices.backupHideShowState(new HashMap<>());
             } else {
-                backupHiddenData = new HashMap<String, ArrayList<Boolean>>();
+                backupHiddenData = new HashMap<>();
             }
             if (isBackupSelectedData) {
-                backupSelectedData = vertices.backupSelectedDataState(new HashMap<String, ArrayList<Boolean>>());
+                backupSelectedData = vertices.backupSelectedDataState(new HashMap<>());
             } else {
-                backupSelectedData = new HashMap<String, ArrayList<Boolean>>();
+                backupSelectedData = new HashMap<>();
             }
         }
         while (count < objCount) {

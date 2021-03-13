@@ -58,7 +58,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         linkedDatFile.setDrawSelection(false);
 
         {
-            final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+            final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
 
             verticesToProcess.addAll(vertexLinkedToPositionInFile.keySet());
 

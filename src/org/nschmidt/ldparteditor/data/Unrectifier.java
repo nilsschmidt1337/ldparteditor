@@ -36,9 +36,9 @@ public enum Unrectifier {
         final int x = st.getSelectionRange().x;
         final int y = st.getSelectionRange().y;
 
-        ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
+        ArrayList<Integer> lineNumbers = new ArrayList<>();
 
-        HashSet<String> rectPrimitives = new HashSet<String>();
+        HashSet<String> rectPrimitives = new HashSet<>();
         rectPrimitives.add("rect.dat"); //$NON-NLS-1$
         rectPrimitives.add("rect1.dat"); //$NON-NLS-1$
         rectPrimitives.add("rect2a.dat"); //$NON-NLS-1$
@@ -70,7 +70,7 @@ public enum Unrectifier {
         vm.clearSelection();
 
         if (splitQuads) {
-            HashSet<GData4> selectedQuads = new HashSet<GData4>();
+            HashSet<GData4> selectedQuads = new HashSet<>();
 
             data2draw = fileNameObj.getDrawChainStart();
             while ((data2draw = data2draw.getNext()) != null) {

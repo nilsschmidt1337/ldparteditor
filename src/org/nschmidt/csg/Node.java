@@ -81,7 +81,7 @@ final class Node {
      *            polygons
      */
     public Node(List<Polygon> polygons) {
-        this.polygons = new ArrayList<Polygon>();
+        this.polygons = new ArrayList<>();
         if (polygons != null) {
             Stack<NodePolygon> st = new Stack<>();
             st.push(new NodePolygon(this, polygons));
@@ -101,7 +101,7 @@ final class Node {
      * Constructor. Creates a node without polygons.
      */
     public Node() {
-        this.polygons = new ArrayList<Polygon>();
+        this.polygons = new ArrayList<>();
     }
 
     /**
@@ -152,7 +152,7 @@ final class Node {
     private List<Polygon> clipPolygons(List<Polygon> polygonsToClip) {
 
         if (this.plane == null) {
-            return new ArrayList<Polygon>(polygonsToClip);
+            return new ArrayList<>(polygonsToClip);
         }
 
         final Stack<NodeArgs> st = new Stack<>();
@@ -198,7 +198,7 @@ final class Node {
                 if (n.back != null) {
                     st.push(new NodeArgs(n.back, a.backP, Side.BACK, a)); // returns a.backP
                 } else {
-                    a.backP = new ArrayList<Polygon>(0);
+                    a.backP = new ArrayList<>(0);
                 }
                 if (n.front != null) {
                     st.push(new NodeArgs(n.front, a.frontP, Side.FRONT, a)); // returns a.frontP
@@ -209,7 +209,7 @@ final class Node {
         if (lastArgs != null) {
             return lastArgs.frontP;
         } else {
-            return new ArrayList<Polygon>(polygonsToClip);
+            return new ArrayList<>(polygonsToClip);
         }
     }
 
@@ -221,8 +221,8 @@ final class Node {
         Side side;
         NodeArgs parent;
         List<Polygon> polygons;
-        List<Polygon> frontP = new ArrayList<Polygon>();
-        List<Polygon> backP = new ArrayList<Polygon>();
+        List<Polygon> frontP = new ArrayList<>();
+        List<Polygon> backP = new ArrayList<>();
         Node node;
         boolean returning = false;
         NodeArgs(Node n, List<Polygon> polys, Side s, NodeArgs p) {
@@ -358,7 +358,7 @@ final class Node {
      */
     public final List<NodePolygon> build(List<Polygon> polygons) {
 
-        final ArrayList<NodePolygon> result = new ArrayList<NodePolygon>(2);
+        final ArrayList<NodePolygon> result = new ArrayList<>(2);
 
         if (this.plane == null && !polygons.isEmpty()) {
             this.plane = polygons.get(0).plane.clone();
@@ -366,8 +366,8 @@ final class Node {
             return result;
         }
 
-        List<Polygon> frontP = new ArrayList<Polygon>();
-        List<Polygon> backP = new ArrayList<Polygon>();
+        List<Polygon> frontP = new ArrayList<>();
+        List<Polygon> backP = new ArrayList<>();
 
         // Speed up with parallelism
         List<int[]> types = polygons
@@ -405,7 +405,7 @@ final class Node {
 
     public final List<NodePolygon> buildForResult(List<Polygon> polygons) {
 
-        final ArrayList<NodePolygon> result = new ArrayList<NodePolygon>(2);
+        final ArrayList<NodePolygon> result = new ArrayList<>(2);
 
         if (this.plane == null && !polygons.isEmpty()) {
             this.plane = polygons.get(0).plane.clone();
@@ -413,8 +413,8 @@ final class Node {
             return result;
         }
 
-        List<Polygon> frontP = new ArrayList<Polygon>();
-        List<Polygon> backP = new ArrayList<Polygon>();
+        List<Polygon> frontP = new ArrayList<>();
+        List<Polygon> backP = new ArrayList<>();
 
         // Speed up with parallelism
         List<int[]> types = polygons

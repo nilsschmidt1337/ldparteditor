@@ -56,10 +56,10 @@ public enum Sorter {
         vm.backupHideShowState();
         vm.backupSelection();
         vm.clearSelection();
-        
+
         // Basic Data Structure
-        List<ArrayList<GData>> subLists = new ArrayList<ArrayList<GData>>();
-        List<Boolean> shouldListBeSorted = new ArrayList<Boolean>();
+        List<ArrayList<GData>> subLists = new ArrayList<>();
+        List<Boolean> shouldListBeSorted = new ArrayList<>();
 
         {
             if (scope == 1 && fromLine < toLine) {
@@ -70,7 +70,7 @@ public enum Sorter {
             }
             GData data2draw = datFile.getDrawChainStart();
             int state = 0;
-            ArrayList<GData> currentList = new ArrayList<GData>();
+            ArrayList<GData> currentList = new ArrayList<>();
             int lineCount = 0;
             while ((data2draw = data2draw.getNext()) != null) {
                 boolean validType = false;
@@ -107,7 +107,7 @@ public enum Sorter {
                         }
                     }
                     if (state != 1) {
-                        currentList = new ArrayList<GData>();
+                        currentList = new ArrayList<>();
                         state = 1;
                         shouldListBeSorted.add(true);
                         subLists.add(currentList);
@@ -116,7 +116,7 @@ public enum Sorter {
                     continue;
                 }
                 if (state != 2) {
-                    currentList = new ArrayList<GData>();
+                    currentList = new ArrayList<>();
                     state = 2;
                     shouldListBeSorted.add(false);
                     subLists.add(currentList);
@@ -526,7 +526,7 @@ public enum Sorter {
 
         StringBuilder newDatText = new StringBuilder();
         final String ld = StringHelper.getLineDelimiter();
-        final ArrayList<GData> sortedData = new ArrayList<GData>();
+        final ArrayList<GData> sortedData = new ArrayList<>();
         for (int i = 0; i < listCount; i++) {
             List<GData> listToSort = subLists.get(i);
             int listCount2 = listToSort.size();
@@ -539,14 +539,14 @@ public enum Sorter {
                 }
             }
         }
-        
+
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
 
         final int size = sortedData.size() + 1;
-        
+
         datFile.getDrawChainStart().setNext(sortedData.get(0));
         datFile.setDrawChainTail(sortedData.get(size - 2));
-        
+
         for (int line = 1; line < size; line++) {
             GData g1 = (line < 2) ? datFile.getDrawChainStart() : sortedData.get(line - 2);
             GData g2 = sortedData.get(line - 1);
@@ -554,7 +554,7 @@ public enum Sorter {
             g2.setNext(null);
             dpl.put(line, g2);
         }
-            
+
         vm.restoreSelection();
         vm.restoreHideShowState();
         vm.setModified_NoSync();

@@ -58,12 +58,12 @@ public class GTexture {
 
     private long accessTime = System.currentTimeMillis();
 
-    private HashMap<OpenGLRenderer, Integer> OpenGlID = new HashMap<OpenGLRenderer, Integer>();
-    private HashMap<OpenGLRenderer, Integer> OpenGlID_glossmap = new HashMap<OpenGLRenderer, Integer>();
-    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemap = new HashMap<OpenGLRenderer, Integer>();
-    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemapMatte = new HashMap<OpenGLRenderer, Integer>();
-    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemapMetal = new HashMap<OpenGLRenderer, Integer>();
-    private HashMap<OpenGLRenderer, Boolean> OpenGlDisposed = new HashMap<OpenGLRenderer, Boolean>();
+    private HashMap<OpenGLRenderer, Integer> OpenGlID = new HashMap<>();
+    private HashMap<OpenGLRenderer, Integer> OpenGlID_glossmap = new HashMap<>();
+    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemap = new HashMap<>();
+    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemapMatte = new HashMap<>();
+    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemapMetal = new HashMap<>();
+    private HashMap<OpenGLRenderer, Boolean> OpenGlDisposed = new HashMap<>();
 
     private String texture = ""; //$NON-NLS-1$
     private String glossmap = ""; //$NON-NLS-1$
@@ -84,8 +84,8 @@ public class GTexture {
 
     final float EPSILON = 1f;
 
-    private Map<GData, UV> uvCache = new HashMap<GData, UV>();
-    private Set<GData> cacheUsage = new HashSet<GData>();
+    private Map<GData, UV> uvCache = new HashMap<>();
+    private Set<GData> cacheUsage = new HashSet<>();
 
     private GTexture() {
         this.type = TexType.NONE;
@@ -477,7 +477,7 @@ public class GTexture {
 
     public void refreshCache() {
         if (!cacheUsage.isEmpty()) {
-            Set<GData> isolatedIDs = new HashSet<GData>(uvCache.keySet());
+            Set<GData> isolatedIDs = new HashSet<>(uvCache.keySet());
             isolatedIDs.removeAll(cacheUsage);
             for (GData ID : isolatedIDs) {
                 uvCache.remove(ID);
@@ -780,7 +780,7 @@ public class GTexture {
                     final byte[] tbytes = new byte[buf.remaining()];
                     buf.get(tbytes);
                     buf = ByteBuffer.allocateDirect(1);
-                    bytes = new ArrayList<Byte>(tbytes.length);
+                    bytes = new ArrayList<>(tbytes.length);
                     for (final byte b : tbytes) {
                         bytes.add(b);
                     }
@@ -793,7 +793,7 @@ public class GTexture {
                     if (tWidth + delta > max || delta / a > max)
                         throw new OutOfMemoryError();
 
-                    List<Byte> stride = new ArrayList<Byte>(tWidth);
+                    List<Byte> stride = new ArrayList<>(tWidth);
                     final int strideLength = tWidth * 4;
                     for (int j = 0; j < delta; j++) {
                         stride.add((byte) 0x00);

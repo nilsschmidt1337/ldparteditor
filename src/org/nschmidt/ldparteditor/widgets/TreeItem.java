@@ -36,7 +36,7 @@ public class TreeItem {
 
     private String[] text;
     private Object data;
-    private ArrayList<TreeItem> items = new ArrayList<TreeItem>();
+    private ArrayList<TreeItem> items = new ArrayList<>();
     private Tree parent;
     private TreeItem parentItem;
     private Image image;
@@ -127,7 +127,7 @@ public class TreeItem {
      */
     public void removeWithinPosition(StyledText compositeText, int startOffset, int endOffset, int length) {
 
-        ArrayList<TreeItem> nl = new ArrayList<TreeItem>(items.size() + 100);
+        ArrayList<TreeItem> nl = new ArrayList<>(items.size() + 100);
 
         for (TreeItem t : items) {
             try {
@@ -175,13 +175,13 @@ public class TreeItem {
      */
     public void sortItems() {
         if (items.size() > 0) {
-            ArrayList<TreeItem> nl = new ArrayList<TreeItem>(items.size() + 100);
-            HashMap<Integer, ArrayList<TreeItem>> itemsPerLine = new HashMap<Integer, ArrayList<TreeItem>>();
-            SortedSet<Integer> lines = new TreeSet<Integer>();
+            ArrayList<TreeItem> nl = new ArrayList<>(items.size() + 100);
+            HashMap<Integer, ArrayList<TreeItem>> itemsPerLine = new HashMap<>();
+            SortedSet<Integer> lines = new TreeSet<>();
             for (TreeItem t : items) {
                 Integer litem = (Integer) t.getData();
                 if (!lines.contains(litem)) {
-                    itemsPerLine.put(litem, new ArrayList<TreeItem>());
+                    itemsPerLine.put(litem, new ArrayList<>());
                     lines.add(litem);
                 }
                 itemsPerLine.get(litem).add(t);

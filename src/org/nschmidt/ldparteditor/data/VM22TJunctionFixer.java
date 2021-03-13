@@ -52,8 +52,8 @@ class VM22TJunctionFixer extends VM21Merger {
 
         linkedDatFile.setDrawSelection(false);
 
-        final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
-        final Set<Vertex> verticesToSelect = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+        final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        final Set<Vertex> verticesToSelect = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
 
         if (selectedVertices.isEmpty()) {
             verticesToProcess.addAll(vertexLinkedToPositionInFile.keySet());
@@ -139,8 +139,8 @@ class VM22TJunctionFixer extends VM21Merger {
             return false;
         }
 
-        TreeSet<Vertex> verts = new TreeSet<Vertex>();
-        TreeSet<Vertex> verts2 = new TreeSet<Vertex>();
+        TreeSet<Vertex> verts = new TreeSet<>();
+        TreeSet<Vertex> verts2 = new TreeSet<>();
 
         for (GData g : surfs) {
             switch (g.type()) {

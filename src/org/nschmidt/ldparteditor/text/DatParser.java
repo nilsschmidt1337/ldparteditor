@@ -87,7 +87,7 @@ public enum DatParser {
 
     public static ArrayList<ParsingResult> parseLine(String line, int lineNumber, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed) {
-        ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
+        ArrayList<ParsingResult> result = new ArrayList<>();
         // Get the linetype
         int linetype = 0;
         final String[] data_segments = WHITESPACE.split(line.trim());
@@ -95,7 +95,7 @@ public enum DatParser {
         char c;
         if (data_segments.length < 1 || data_segments[0].length() >  1 || !Character.isDigit(c = data_segments[0].charAt(0))) {
             result.add(new ParsingResult(I18n.DATPARSER_InvalidType, "[E0D] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
-            return new ArrayList<ParsingResult>(result);
+            return new ArrayList<>(result);
         }
         linetype = Character.getNumericValue(c);
         // Parse the line according to its type
@@ -246,7 +246,7 @@ public enum DatParser {
     private static ArrayList<ParsingResult> parse_Comment(String line, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, DatFile datFile,
             boolean errorCheckOnly, Set<String> alreadyParsed) {
 
-        ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
+        ArrayList<ParsingResult> result = new ArrayList<>();
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
 
         if (line.startsWith(I18n.DATFILE_InlinePrefix)) {
@@ -515,7 +515,7 @@ public enum DatParser {
      */
     private static ArrayList<ParsingResult> parse_Reference(String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed, int lineNumber) {
-        ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
+        ArrayList<ParsingResult> result = new ArrayList<>();
         boolean parseError = false;
         boolean hasDitheredColour = false;
         // [ERROR] Check less argument count
@@ -676,7 +676,7 @@ public enum DatParser {
                         for (int a3 = 0; a3 < suffix.length; a3++) {
                             String s3 = suffix[a3];
                             if (fn.equals(s1 + s2 + s3)) {
-                                lines = new ArrayList<String>(4096);
+                                lines = new ArrayList<>(4096);
                                 lines.addAll(Arrays.asList(df.getText().split(StringHelper.getLineDelimiter())));
                                 absoluteFilename = fn;
                                 isVirtual = true;
@@ -730,7 +730,7 @@ public enum DatParser {
                 absoluteFilename = fileToOpen.getAbsolutePath();
                 UTF8BufferedReader reader = null;
                 String line = null;
-                lines = new ArrayList<String>(4096);
+                lines = new ArrayList<>(4096);
                 try {
                     reader = new UTF8BufferedReader(absoluteFilename);
                     while (true) {
@@ -832,7 +832,7 @@ public enum DatParser {
      * @return an empty list if there was no error
      */
     private static ArrayList<ParsingResult> parse_Line(String[] data_segments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly) {
-        ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
+        ArrayList<ParsingResult> result = new ArrayList<>();
         boolean parseError = false;
         // [ERROR] Check argument count
         if (data_segments.length != 8) {
@@ -899,7 +899,7 @@ public enum DatParser {
      * @return an empty list if there was no error
      */
     private static ArrayList<ParsingResult> parse_Triangle(String[] data_segments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
-        ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
+        ArrayList<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
         if (data_segments.length != 11) {
             Object[] messageArguments = {data_segments.length, 11};
@@ -1001,7 +1001,7 @@ public enum DatParser {
      * @return an empty list if there was no error
      */
     private static ArrayList<ParsingResult> parse_Quad(String[] data_segments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
-        ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
+        ArrayList<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
         if (data_segments.length != 14) {
             Object[] messageArguments = {data_segments.length, 14};
@@ -1205,7 +1205,7 @@ public enum DatParser {
      * @return an empty list if there was no error
      */
     private static ArrayList<ParsingResult> parse_Condline(String[] data_segments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
-        ArrayList<ParsingResult> result = new ArrayList<ParsingResult>();
+        ArrayList<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
         if (data_segments.length != 14) {
             Object[] messageArguments = {data_segments.length, 14};

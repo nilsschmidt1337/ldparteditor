@@ -30,37 +30,37 @@ public class VM25Smooth extends VM24MeshReducer {
 
     protected VM25Smooth(DatFile linkedDatFile) {
         super(linkedDatFile);
-    }    
-    
+    }
+
     public void smooth(boolean x, boolean y, boolean z, BigDecimal factor, int iterations) {
-        
+
         SmoothDialog.setX(x);
         SmoothDialog.setY(y);
         SmoothDialog.setZ(z);
-        
+
         SmoothDialog.setFactor(factor);
         SmoothDialog.setIterations(iterations);
-        
+
         Object[] obj = getSmoothedVertices(selectedVertices);
         clearSelection();
-        
+
         @SuppressWarnings("unchecked")
         ArrayList<Vertex> newVerts = (ArrayList<Vertex>) obj[0];
-        
+
         @SuppressWarnings("unchecked")
         ArrayList<Vertex> oldVerts = (ArrayList<Vertex>) obj[3];
-        
+
         int size = newVerts.size();
         for (int i = 0; i < size; i++) {
             Vertex v1 = oldVerts.get(i);
             Vertex v2 = newVerts.get(i);
-            
+
             if (!v1.equals(v2)) {
                 changeVertexDirectFast(v1, v2, true);
                 selectedVertices.add(v2);
             }
         }
-        
+
         if (!selectedVertices.isEmpty()) {
             setModified_NoSync();
             linkedDatFile.getVertexManager().restoreHideShowState();
@@ -68,12 +68,12 @@ public class VM25Smooth extends VM24MeshReducer {
             updateUnsavedStatus();
         }
     }
-    
-    
+
+
     public Vertex[] getNeighbourVertices(Vertex old) {
-        
-        TreeSet<Vertex> tverts1 = new TreeSet<Vertex>();
-        TreeSet<Vertex> tverts2 = new TreeSet<Vertex>();
+
+        TreeSet<Vertex> tverts1 = new TreeSet<>();
+        TreeSet<Vertex> tverts2 = new TreeSet<>();
         HashSet<GData> surfs = getLinkedSurfaces(old);
 
         for (GData g : surfs) {
@@ -93,34 +93,34 @@ public class VM25Smooth extends VM24MeshReducer {
             }
         }
         tverts2.remove(old);
-        
+
         if (tverts2.size() != surfs.size()) {
             return new Vertex[0];
         }
-        
+
         Vertex[] result = new Vertex[tverts2.size()];
         Iterator<Vertex> it = tverts2.iterator();
         for (int i = 0; i < result.length; i++) {
             result[i] = it.next();
-        }        
+        }
         return result;
     }
-    
-    public Object[] getSmoothedVertices(Set<Vertex> verts) {  
-        
+
+    public Object[] getSmoothedVertices(Set<Vertex> verts) {
+
         final boolean isX = SmoothDialog.isX();
         final boolean isY = SmoothDialog.isY();
         final boolean isZ = SmoothDialog.isZ();
-        
-        ArrayList<Vertex> vertsToProcess = new ArrayList<Vertex>();        
-        ArrayList<Vertex> originalVerts = new ArrayList<Vertex>();
-        ArrayList<Vertex> newPos = new ArrayList<Vertex>();
-        
-        TreeSet<Vertex> origVerts = new TreeSet<Vertex>();
+
+        ArrayList<Vertex> vertsToProcess = new ArrayList<>();
+        ArrayList<Vertex> originalVerts = new ArrayList<>();
+        ArrayList<Vertex> newPos = new ArrayList<>();
+
+        TreeSet<Vertex> origVerts = new TreeSet<>();
         origVerts.addAll(verts);
-        
+
         {
-            TreeSet<Vertex> allVerts = new TreeSet<Vertex>();
+            TreeSet<Vertex> allVerts = new TreeSet<>();
             for (Vertex vertex : verts) {
                 allVerts.add(vertex);
                 for (Vertex vertex2 : getNeighbourVertices(vertex)) {
@@ -130,31 +130,31 @@ public class VM25Smooth extends VM24MeshReducer {
             vertsToProcess.addAll(allVerts);
             originalVerts.addAll(vertsToProcess);
         }
-                
-        
-        TreeMap<Integer, ArrayList<Integer>> adjacency = new TreeMap<Integer, ArrayList<Integer>>();
-        TreeMap<Vertex, Integer> indmap = new TreeMap<Vertex, Integer>();
-        
+
+
+        TreeMap<Integer, ArrayList<Integer>> adjacency = new TreeMap<>();
+        TreeMap<Vertex, Integer> indmap = new TreeMap<>();
+
         int i = 0;
         for (Vertex vertex : vertsToProcess) {
             indmap.put(vertex, i);
             i++;
         }
-        
+
         for (Vertex vertex : origVerts) {
             Integer key = indmap.get(vertex);
             ArrayList<Integer> ad;
             if (adjacency.containsKey(key)) {
                 ad = adjacency.get(key);
             } else {
-                ad = new ArrayList<Integer>();
+                ad = new ArrayList<>();
                 adjacency.put(key, ad);
             }
             for (Vertex vertex2 : getNeighbourVertices(vertex)) {
                 ad.add(indmap.get(vertex2));
             }
         }
-        
+
         final BigDecimal FACTOR = SmoothDialog.getFactor();
         final BigDecimal ONE_MINUS_FACTOR = BigDecimal.ONE.subtract(FACTOR);
         final int iterations = SmoothDialog.getIterations();
@@ -162,24 +162,24 @@ public class VM25Smooth extends VM24MeshReducer {
         for (int j = 0; j < iterations; j++) {
             i = 0;
             newPos.clear();
-            for (Vertex vertex : vertsToProcess) {                
+            for (Vertex vertex : vertsToProcess) {
                 if (origVerts.contains(vertex)) {
-                    
-                    ArrayList<Integer> il = adjacency.get(indmap.get(vertex));                    
-                    
-                    if (il.size() > 0) {                        
+
+                    ArrayList<Integer> il = adjacency.get(indmap.get(vertex));
+
+                    if (il.size() > 0) {
                         final BigDecimal ad = new BigDecimal(il.size());
-                        
+
                         BigDecimal vx = BigDecimal.ZERO;
                         BigDecimal vy = BigDecimal.ZERO;
                         BigDecimal vz = BigDecimal.ZERO;
-                        
+
                         for (Integer k : il) {
                             if (isX) vx = vx.add(vertsToProcess.get(k).X);
                             if (isY) vy = vy.add(vertsToProcess.get(k).Y);
                             if (isZ) vz = vz.add(vertsToProcess.get(k).Z);
                         }
-                        
+
                         if (isX) {
                             vx = vx.divide(ad, Threshold.mc).multiply(FACTOR).add(vertex.X.multiply(ONE_MINUS_FACTOR));
                         } else {
@@ -194,14 +194,14 @@ public class VM25Smooth extends VM24MeshReducer {
                             vz = vz.divide(ad, Threshold.mc).multiply(FACTOR).add(vertex.Z.multiply(ONE_MINUS_FACTOR));
                         } else {
                             vz = vertex.Z;
-                        }                                                 
-                            
+                        }
+
                         newPos.add(new Vertex(vx, vy, vz));
-                        
+
                     } else {
                         newPos.add(vertex);
                     }
-                    
+
                 } else {
                     newPos.add(null);
                 }
@@ -210,9 +210,9 @@ public class VM25Smooth extends VM24MeshReducer {
             origVerts.clear();
             indmap.clear();
             i = 0;
-            
+
             while (i < size) {
-                Vertex nv = newPos.get(i);                
+                Vertex nv = newPos.get(i);
                 if (nv != null) {
                     origVerts.add(nv);
                     vertsToProcess.set(i, nv);
@@ -222,9 +222,9 @@ public class VM25Smooth extends VM24MeshReducer {
                 }
                 i++;
             }
-            
-        }                               
-        
+
+        }
+
         return new Object[]{vertsToProcess, indmap, adjacency, originalVerts};
     }
 }

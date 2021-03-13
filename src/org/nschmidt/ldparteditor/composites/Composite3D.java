@@ -167,7 +167,7 @@ public class Composite3D extends ScalableComposite {
 
     private final Vector4f screenXY = new Vector4f(0, 0, 0, 1);
 
-    private final Set<Vertex> tmpHiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<Vertex, Boolean>());
+    private final Set<Vertex> tmpHiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
 
     public Vector4f getScreenXY() {
         return screenXY;
@@ -1261,7 +1261,7 @@ public class Composite3D extends ScalableComposite {
                 String ref = p.getName();
                 final BigDecimal[] cur = getCursorSnapped3Dprecise();
                 final GColour col16 = View.getLDConfigColour(16);
-                Set<String> alreadyParsed = new HashSet<String>();
+                Set<String> alreadyParsed = new HashSet<>();
                 alreadyParsed.add(datfile.getShortName());
                 ArrayList<ParsingResult> subfileLine = DatParser
                         .parseLine(
@@ -2105,8 +2105,8 @@ public class Composite3D extends ScalableComposite {
 
                                     final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
                                     final int lastSetIndex = ((CompositeTab) t).getState().getOldLineIndex();
-                                    final ArrayList<Integer> indices = new ArrayList<Integer>();
-                                    final HashSet<GData> selection = new HashSet<GData>();
+                                    final ArrayList<Integer> indices = new ArrayList<>();
+                                    final HashSet<GData> selection = new HashSet<>();
                                     Integer index;
 
                                     selection.addAll(vm.getSelectedData());
@@ -2175,8 +2175,8 @@ public class Composite3D extends ScalableComposite {
                 return;
             }
 
-            final HashSet<Integer> selectedIndicies = new HashSet<Integer>();
-            final TreeSet<Vertex> selectedVertices = new TreeSet<Vertex>();
+            final HashSet<Integer> selectedIndicies = new HashSet<>();
+            final TreeSet<Vertex> selectedVertices = new TreeSet<>();
             selectedVertices.addAll(vm.getSelectedVertices());
             for (GData gd : vm.getSelectedData()) {
                 final Integer i = df.getDrawPerLine_NOCLONE().getKey(gd);
@@ -2249,7 +2249,7 @@ public class Composite3D extends ScalableComposite {
         Composite3DViewState state = new Composite3DViewState();
 
         state.getHideShowState().putAll(lockableDatFileReference.getVertexManager().backupHideShowState());
-        state.getSelection().putAll(lockableDatFileReference.getVertexManager().backupSelectedDataState(new HashMap<String, ArrayList<Boolean>>()));
+        state.getSelection().putAll(lockableDatFileReference.getVertexManager().backupSelectedDataState(new HashMap<>()));
         state.getHiddenVertices().addAll(lockableDatFileReference.getVertexManager().getHiddenVertices());
         state.getSelectedVertices().addAll(lockableDatFileReference.getVertexManager().getSelectedVertices());
 

@@ -68,7 +68,7 @@ class StartupDesign extends Dialog {
     final NButton[] btn_browseUnofficialPath = new NButton[1];
     final NButton[] btn_browseAuthoringPath = new NButton[1];
 
-    final HashMap<String, Locale> localeMap = new HashMap<String, Locale>();
+    final HashMap<String, Locale> localeMap = new HashMap<>();
 
     StartupDesign(Shell parentShell) {
         super(parentShell);
@@ -200,18 +200,18 @@ class StartupDesign extends Dialog {
         NButton btn_browseUnofficialPath = new NButton(cmp_pathChooser3, SWT.NONE);
         this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
         btn_browseUnofficialPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
-        
+
         Composite cmp_formStatus = new Composite(cmp_container, SWT.NONE);
         cmp_formStatus.setLayout(new RowLayout(SWT.HORIZONTAL));
-        
+
         Label lbl_formStatusIcon = new Label(cmp_formStatus, SWT.NONE);
         this.lbl_formStatusIcon[0] = lbl_formStatusIcon;
         lbl_formStatusIcon.setImage(ResourceManager.getImage("icon16_info.png", 16)); //$NON-NLS-1$
-        
+
         Label lbl_formStatus = new Label(cmp_formStatus, SWT.NONE);
         this.lbl_formStatus[0] = lbl_formStatus;
         lbl_formStatus.setText("Please complete the form."); //$NON-NLS-1$ NO_I18N!!
-        
+
         return cmp_container;
     }
 

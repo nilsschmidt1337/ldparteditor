@@ -76,7 +76,7 @@ class VM17Unificator extends VM16Subdivide {
             }
         }
 
-        final TreeSet<Vertex> selectedVerts = new TreeSet<Vertex>();
+        final TreeSet<Vertex> selectedVerts = new TreeSet<>();
         selectedVerts.addAll(selectedVertices);
 
         clearSelection();
@@ -92,8 +92,8 @@ class VM17Unificator extends VM16Subdivide {
 
                     monitor.subTask(I18n.VM_SortOut);
 
-                    TreeSet<Vertex> subfileVertices = new TreeSet<Vertex>();
-                    TreeSet<Vertex> fileVertices = new TreeSet<Vertex>();
+                    TreeSet<Vertex> subfileVertices = new TreeSet<>();
+                    TreeSet<Vertex> fileVertices = new TreeSet<>();
 
                     for (Vertex v : selectedVerts) {
 
@@ -138,17 +138,17 @@ class VM17Unificator extends VM16Subdivide {
                         int i = 0;
                         int j = 0;
 
-                        TreeMap<Vertex, Vertex> mergeTargets = new TreeMap<Vertex, Vertex>();
+                        TreeMap<Vertex, Vertex> mergeTargets = new TreeMap<>();
                         {
-                            TreeMap<Vertex, TreeSet<Vertex>> unifyGroups = new TreeMap<Vertex, TreeSet<Vertex>>();
-                            TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
+                            TreeMap<Vertex, TreeSet<Vertex>> unifyGroups = new TreeMap<>();
+                            TreeSet<Vertex> inGroup = new TreeSet<>();
 
                             for (Vertex v1 : fileVertices) {
                                 if (us.getSnapOn() == VERTICES_AND_SUBPART_VERTICES && subfileVertices.contains(v1)) {
                                     i++;
                                     continue;
                                 }
-                                TreeSet<Vertex> group = new TreeSet<Vertex>();
+                                TreeSet<Vertex> group = new TreeSet<>();
                                 group.add(v1);
                                 j = 0;
                                 for (Vertex v2 : fileVertices) {
@@ -209,13 +209,13 @@ class VM17Unificator extends VM16Subdivide {
                     if (us.getSnapOn() == SUBPART_VERTICES || us.getSnapOn() == VERTICES_AND_SUBPART_VERTICES) {
                         monitor.subTask(I18n.VM_Snap);
 
-                        TreeMap<Vertex, Vertex> mergeTargets = new TreeMap<Vertex, Vertex>();
+                        TreeMap<Vertex, Vertex> mergeTargets = new TreeMap<>();
                         {
-                            TreeMap<Vertex, TreeSet<Vertex>> unifyGroups = new TreeMap<Vertex, TreeSet<Vertex>>();
-                            TreeSet<Vertex> inGroup = new TreeSet<Vertex>();
+                            TreeMap<Vertex, TreeSet<Vertex>> unifyGroups = new TreeMap<>();
+                            TreeSet<Vertex> inGroup = new TreeSet<>();
 
                             for (Vertex v1 : subfileVertices) {
-                                TreeSet<Vertex> group = new TreeSet<Vertex>();
+                                TreeSet<Vertex> group = new TreeSet<>();
                                 for (Vertex v2 : fileVertices) {
                                     if (!inGroup.contains(v2)) {
                                         Vector3d v3d1 = new Vector3d(v1);
@@ -266,15 +266,15 @@ class VM17Unificator extends VM16Subdivide {
 
         NLogger.debug(getClass(), "Check for identical vertices and collinearity."); //$NON-NLS-1$
 
-        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
-        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
-        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
-        final Set<GData5> clinesToDelete2 = new HashSet<GData5>();
+        final Set<GData2> linesToDelete2 = new HashSet<>();
+        final Set<GData3> trisToDelete2 = new HashSet<>();
+        final Set<GData4> quadsToDelete2 = new HashSet<>();
+        final Set<GData5> clinesToDelete2 = new HashSet<>();
         {
             for (GData2 g2 : lines.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g2)) continue;
                 Vertex[] verts = lines.get(g2);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -285,7 +285,7 @@ class VM17Unificator extends VM16Subdivide {
             for (GData3 g3 : triangles.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g3)) continue;
                 Vertex[] verts = triangles.get(g3);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -296,7 +296,7 @@ class VM17Unificator extends VM16Subdivide {
             for (GData4 g4 : quads.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
                 Vertex[] verts = quads.get(g4);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -307,7 +307,7 @@ class VM17Unificator extends VM16Subdivide {
             for (GData5 g5 : condlines.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g5)) continue;
                 Vertex[] verts = condlines.get(g5);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }

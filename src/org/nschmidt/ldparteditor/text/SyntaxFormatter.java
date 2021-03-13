@@ -83,7 +83,7 @@ public class SyntaxFormatter {
             float replaceEpsilon, boolean replaceVertex, boolean isSelected, boolean isDuplicate, boolean isVisible,
             DatFile df) {
 
-        ArrayList<StyleRange> styles = new ArrayList<StyleRange>();
+        ArrayList<StyleRange> styles = new ArrayList<>();
 
         if (isDuplicate) {
             StyleRange errStyleRange = new StyleRange();

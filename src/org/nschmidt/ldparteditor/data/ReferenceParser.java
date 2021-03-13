@@ -75,9 +75,9 @@ public enum ReferenceParser {
 
      */
     public static ArrayList<ArrayList<DatFile>> checkForReferences(DatFile df, References refMode, TreeItem origin, TreeItem target, TreeItem secondSource) {
-        ArrayList<ArrayList<DatFile>> result = new ArrayList<ArrayList<DatFile>>();
+        ArrayList<ArrayList<DatFile>> result = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            result.add(new ArrayList<DatFile>());
+            result.add(new ArrayList<>());
         }
 
         skipOverwriteQuestion = false;
@@ -85,8 +85,8 @@ public enum ReferenceParser {
 
         final Editor3DWindow win = Editor3DWindow.getWindow();
 
-        Set<String> alreadyParsed = new HashSet<String>();
-        Set<DatFile> alreadyParsed2 = new HashSet<DatFile>();
+        Set<String> alreadyParsed = new HashSet<>();
+        Set<DatFile> alreadyParsed2 = new HashSet<>();
 
         alreadyParsed.add(df.getShortName());
         alreadyParsed2.add(df);

@@ -29,7 +29,7 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
 public enum DescriptionManager {
     INSTANCE;
 
-    private static Queue<TreeItem> workQueue = new ConcurrentLinkedQueue<TreeItem>();
+    private static Queue<TreeItem> workQueue = new ConcurrentLinkedQueue<>();
     private static boolean hasNoThread = true;
 
     public static synchronized void registerDescription(TreeItem ti) {

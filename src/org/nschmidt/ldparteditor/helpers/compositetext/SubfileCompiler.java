@@ -71,12 +71,12 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
 public enum SubfileCompiler {
     INSTANCE;
 
-    private static final Deque<Matrix> matrixInvStack = new ArrayDeque<Matrix>();
-    private static final Deque<Matrix> matrixProdStack = new ArrayDeque<Matrix>();
-    private static final Deque<String> nameStack = new ArrayDeque<String>();
-    private static final Deque<String> colourStack = new ArrayDeque<String>();
-    private static final Deque<StringBuilder> builderStack = new ArrayDeque<StringBuilder>();
-    private static final Deque<Boolean> toFolderStack = new ArrayDeque<Boolean>();
+    private static final Deque<Matrix> matrixInvStack = new ArrayDeque<>();
+    private static final Deque<Matrix> matrixProdStack = new ArrayDeque<>();
+    private static final Deque<String> nameStack = new ArrayDeque<>();
+    private static final Deque<String> colourStack = new ArrayDeque<>();
+    private static final Deque<StringBuilder> builderStack = new ArrayDeque<>();
+    private static final Deque<Boolean> toFolderStack = new ArrayDeque<>();
     private static boolean skipCompile = true;
 
     private static String colour = "16"; //$NON-NLS-1$
@@ -127,13 +127,13 @@ public enum SubfileCompiler {
                 }
             }
         }
-        HashSet<Integer> selectedDataIndices = new HashSet<Integer>();
-        HashSet<Vertex> selectedVertices = new HashSet<Vertex>();
+        HashSet<Integer> selectedDataIndices = new HashSet<>();
+        HashSet<Vertex> selectedVertices = new HashSet<>();
         if (preserveSelection) {
             selectedVertices.addAll(vm.getSelectedVertices());
             HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
             Set<Integer> keys = dpl.keySet();
-            ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
+            ArrayList<Integer> lineNumbers = new ArrayList<>();
             lineNumbers.addAll(keys);
             for (Integer l : dpl.keySet()) {
                 GData gd = datFile.getDrawPerLine_NOCLONE().getValue(l);
@@ -158,7 +158,7 @@ public enum SubfileCompiler {
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
 
         Set<Integer> keys = dpl.keySet();
-        ArrayList<Integer> lineNumbers = new ArrayList<Integer>();
+        ArrayList<Integer> lineNumbers = new ArrayList<>();
         lineNumbers.addAll(keys);
         Collections.sort(lineNumbers);
 

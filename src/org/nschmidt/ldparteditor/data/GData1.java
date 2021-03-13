@@ -52,8 +52,8 @@ import org.nschmidt.ldparteditor.text.TexMapParser;
  */
 public final class GData1 extends GData {
 
-    private static Set<String> filesWithLogo1 = new HashSet<String>();
-    private static Set<String> filesWithLogo2 = new HashSet<String>();
+    private static Set<String> filesWithLogo1 = new HashSet<>();
+    private static Set<String> filesWithLogo2 = new HashSet<>();
 
     static {
         filesWithLogo1.add("STUD.DAT"); //$NON-NLS-1$
@@ -152,7 +152,7 @@ public final class GData1 extends GData {
             matrix.position(0);
 
             if (lines == null) {
-                lines = new ArrayList<String>();
+                lines = new ArrayList<>();
                 NLogger.debug(GData1.class, "Subfile has no lines to parse: {0}", name); //$NON-NLS-1$
             }
 
@@ -1545,7 +1545,7 @@ public final class GData1 extends GData {
         GData.CACHE_parsedFilesSource.clear();
         untransformedSubfile = (GData1) DatParser
                 .parseLine("1 " + colourBuilder.toString() + " 0 0 0 1 0 0 0 1 0 0 0 1 " + this.shortName , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, df, false, //$NON-NLS-1$ //$NON-NLS-2$
-                        new HashSet<String>()).get(0).getGraphicalData();
+                        new HashSet<>()).get(0).getGraphicalData();
         if (untransformedSubfile == null) {
             return getNiceString();
         }
@@ -1825,7 +1825,7 @@ public final class GData1 extends GData {
             }
         }
 
-        ArrayList<GData> dataToInline = new ArrayList<GData>();
+        ArrayList<GData> dataToInline = new ArrayList<>();
         GData data2draw = myGData;
         while ((data2draw = data2draw.next) != null) {
             dataToInline.add(data2draw);

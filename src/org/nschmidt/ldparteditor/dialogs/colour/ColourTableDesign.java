@@ -69,7 +69,7 @@ class ColourTableDesign extends ApplicationWindow {
         gridLayout.horizontalSpacing = 10;
         cmp_container.setLayout(gridLayout);
 
-        final Set<String> names = new TreeSet<String>(View.getNameMap().values());
+        final Set<String> names = new TreeSet<>(View.getNameMap().values());
         final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, names.size());
         tree_Colours[0] = tree;
         tree.setLinesVisible(true);
@@ -88,7 +88,7 @@ class ColourTableDesign extends ApplicationWindow {
         trclmn_Colour.setText(I18n.COLOUR_Colour);
 
         Set<Integer> ldConfIndices = View.getColourMap().keySet();
-        Map<String, Integer> nameToIndex = new HashMap<String, Integer>();
+        Map<String, Integer> nameToIndex = new HashMap<>();
         for (Integer index : ldConfIndices) {
             nameToIndex.put(View.getLDConfigColourName(index), index);
         }

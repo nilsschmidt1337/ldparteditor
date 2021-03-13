@@ -109,7 +109,7 @@ public enum LDConfigUtils {
             View.overrideColour16();
             GData.CACHE_warningsAndErrors.clear();
             WorkbenchManager.getUserSettingState().setLdConfigPath(path);
-            Set<DatFile> dfs = new HashSet<DatFile>();
+            Set<DatFile> dfs = new HashSet<>();
             for (OpenGLRenderer renderer : Editor3DWindow.renders) {
                 dfs.add(renderer.getC3D().getLockableDatFileReference());
             }

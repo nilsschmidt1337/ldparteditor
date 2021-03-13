@@ -48,7 +48,7 @@ public enum Merger {
         Map<GData4, Vertex[]> q = vm.getQuads();
         Map<GData5, Vertex[]> c = vm.getCondlines();
 
-        Set<Vertex> originVerts = new TreeSet<Vertex>();
+        Set<Vertex> originVerts = new TreeSet<>();
         originVerts.addAll(vm.getSelectedVertices());
 
         for (GData2 g : lines) {

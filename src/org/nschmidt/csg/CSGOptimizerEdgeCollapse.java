@@ -81,7 +81,7 @@ public enum CSGOptimizerEdgeCollapse {
                 }
 
                 // 2. Ermittle alle angrenzenden Punkte
-                final TreeSet<VectorCSGd> verts = new TreeSet<VectorCSGd>();
+                final TreeSet<VectorCSGd> verts = new TreeSet<>();
                 for (final GData3 g : surfs) {
                     verts.addAll(Arrays.asList(trimap.get(g)));
                 }
@@ -179,7 +179,7 @@ public enum CSGOptimizerEdgeCollapse {
                             oldNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
                             s++;
                         }
-                        HashSet<Integer> ignoreSet = new HashSet<Integer>();
+                        HashSet<Integer> ignoreSet = new HashSet<>();
                         for (s = 0; s < surfcount; s++) {
                             for (int i = 0; i < 3; i++) {
                                 if (surfsv[s][i].compareTo(t) == 0) {

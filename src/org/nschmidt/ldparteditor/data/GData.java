@@ -56,22 +56,22 @@ public abstract class GData implements IGData, Comparable<GData> {
     static boolean globalFoundTEXMAPNEXT = false;
 
     static boolean globalFoundTEXMAPDEF = false;
-    static Deque<GTexture> globalTextureStack = new ArrayDeque<GTexture>();
-    static Deque<Boolean> globalFoundTEXMAPStack = new ArrayDeque<Boolean>();
+    static Deque<GTexture> globalTextureStack = new ArrayDeque<>();
+    static Deque<Boolean> globalFoundTEXMAPStack = new ArrayDeque<>();
 
     static TexMeta globalLastTextureType = null;
 
     protected static final StringBuilder sb = new StringBuilder();
 
     // Cleared before viewport change
-    public static final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<GData1, Matrix4f>(1000);
+    public static final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<>(1000);
 
     // Cleared before parse
-    public static final HashMap<String, ArrayList<String>> CACHE_parsedFilesSource = new HashMap<String, ArrayList<String>>(1000);
-    public static final HashMap<String, GData> parsedLines = new HashMap<String, GData>(1000);
+    public static final HashMap<String, ArrayList<String>> CACHE_parsedFilesSource = new HashMap<>(1000);
+    public static final HashMap<String, GData> parsedLines = new HashMap<>(1000);
 
-    public static final HashMap<GData, ArrayList<ParsingResult>> CACHE_warningsAndErrors = new HashMap<GData, ArrayList<ParsingResult>>(1000); // Cleared
-    public static final ThreadsafeHashMap<GData, ParsingResult> CACHE_duplicates = new ThreadsafeHashMap<GData, ParsingResult>(1000); // Cleared
+    public static final HashMap<GData, ArrayList<ParsingResult>> CACHE_warningsAndErrors = new HashMap<>(1000); // Cleared
+    public static final ThreadsafeHashMap<GData, ParsingResult> CACHE_duplicates = new ThreadsafeHashMap<>(1000); // Cleared
 
     public GData getNext() {
         return next;

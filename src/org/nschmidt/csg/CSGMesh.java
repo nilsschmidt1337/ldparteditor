@@ -43,7 +43,7 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
 
     @Override
     public List<Polygon> toPolygons(DatFile df, GColour colour) {
-        List<Polygon> polygons = new ArrayList<Polygon>();
+        List<Polygon> polygons = new ArrayList<>();
 
         if (!needCacheRefresh(cachedData, start, df) && !polygonCache.isEmpty()) {
             for (Polygon p : polygonCache) {
@@ -133,7 +133,7 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
     }
 
     public static boolean needCacheRefresh(ArrayList<GData> cachedData2, GData start, DatFile df) {
-        ArrayList<GData> cachedData = new ArrayList<GData>();
+        ArrayList<GData> cachedData = new ArrayList<>();
         GData next = start;
         while ((next = next.getNext()) != null && next.type() == 8) {
 

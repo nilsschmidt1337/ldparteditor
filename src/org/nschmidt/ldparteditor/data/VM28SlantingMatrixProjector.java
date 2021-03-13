@@ -284,7 +284,7 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
         transformation = getSlantingMatrix(originToAxisCenter);
 
         if (moveSubfilesToOrigin) {
-            Set<GData1> newSubfileSelection = new HashSet<GData1>();
+            Set<GData1> newSubfileSelection = new HashSet<>();
             for (GData1 s : selectedSubfiles) {
                 StringBuilder lineBuilder = new StringBuilder();
                 lineBuilder.append(1);
@@ -300,7 +300,7 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
                 lineBuilder.append(" 0 0 0 1 0 0 0 1 0 0 0 1 "); //$NON-NLS-1$
                 lineBuilder.append(s.shortName);
                 final GColour col16 = View.getLDConfigColour(16);
-                Set<String> alreadyParsed = new HashSet<String>();
+                Set<String> alreadyParsed = new HashSet<>();
                 alreadyParsed.add(linkedDatFile.getShortName());
                 ArrayList<ParsingResult> subfileLine = DatParser
                         .parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);

@@ -65,7 +65,7 @@ public class VM21Merger extends VM20Manipulator {
         }
 
         Vector3d newVertex = new Vector3d();
-        Set<Vertex> originVerts = new TreeSet<Vertex>();
+        Set<Vertex> originVerts = new TreeSet<>();
 
         if (mode != MergeTo.LAST_SELECTED) {
             originVerts.addAll(selectedVertices);
@@ -251,7 +251,7 @@ public class VM21Merger extends VM20Manipulator {
             if (originVerts.size() == 0) return;
             {
                 float minDist = Float.MAX_VALUE;
-                Set<Vertex> allVerticesMinusSelection = new TreeSet<Vertex>();
+                Set<Vertex> allVerticesMinusSelection = new TreeSet<>();
                 allVerticesMinusSelection.addAll(getVertices());
                 allVerticesMinusSelection.removeAll(originVerts);
                 clearSelection();

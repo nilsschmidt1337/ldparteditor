@@ -499,7 +499,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 NLogger.debug(getClass(), "Initialised raytracer."); //$NON-NLS-1$
                                 final boolean lights = c3d.isLightOn();
                                 // Read triangles and quads
-                                final ArrayList<float[]> tris = new ArrayList<float[]>();
+                                final ArrayList<float[]> tris = new ArrayList<>();
                                 {
                                     HashMap<GData4, Vertex[]> quads = c3d.getLockableDatFileReference().getVertexManager().getQuads();
                                     HashMap<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
@@ -668,13 +668,13 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
                                 NLogger.debug(getClass(), "Started raytracer."); //$NON-NLS-1$
 
-                                final ArrayList<float[]> points = new ArrayList<float[]>(10000);
+                                final ArrayList<float[]> points = new ArrayList<>(10000);
 
 
-                                final LinkedList<float[]> speckles = new LinkedList<float[]>();
-                                final LinkedList<float[]> glitters = new LinkedList<float[]>();
-                                final HashMap<float[], Long> specklesCreation = new HashMap<float[], Long>();
-                                final HashMap<float[], Long> glittersCreation = new HashMap<float[], Long>();
+                                final LinkedList<float[]> speckles = new LinkedList<>();
+                                final LinkedList<float[]> glitters = new LinkedList<>();
+                                final HashMap<float[], Long> specklesCreation = new HashMap<>();
+                                final HashMap<float[], Long> glittersCreation = new HashMap<>();
 
                                 // Light positions
                                 final Vector3f lp1 = new Vector3f(-2.0f, -2.0f, 2.0f);
@@ -694,10 +694,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                         threads[j] = new Thread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                final TreeMap<Float, float[]>  zSort = new TreeMap<Float, float[]>();
-                                                final TreeMap<Float, Vector4f>  hitSort = new TreeMap<Float, Vector4f>();
+                                                final TreeMap<Float, float[]>  zSort = new TreeMap<>();
+                                                final TreeMap<Float, Vector4f>  hitSort = new TreeMap<>();
                                                 final Random tRnd = new Random(12348729642643L * start[0]);
-                                                ArrayList<float[]> points2 = new ArrayList<float[]>(10000 / chunks);
+                                                ArrayList<float[]> points2 = new ArrayList<>(10000 / chunks);
                                                 final PowerRay pr = new PowerRay();
                                                 final int s = start[0];
                                                 int i = ti[0];

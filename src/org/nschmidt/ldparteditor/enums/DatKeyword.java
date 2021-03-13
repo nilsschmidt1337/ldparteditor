@@ -26,7 +26,7 @@ import java.util.HashSet;
 public enum DatKeyword {
     INSTANCE;
 
-    private static final HashSet<String> keywords = new HashSet<String>();
+    private static final HashSet<String> keywords = new HashSet<>();
 
     static {
         keywords.add("!:"); //$NON-NLS-1$

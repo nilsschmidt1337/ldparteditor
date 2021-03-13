@@ -38,7 +38,7 @@ public class ThreadsafeTreeMap<K, V> implements Map<K, V> {
     public ThreadsafeTreeMap() {
         try {
             wl.lock();
-            map = new TreeMap<K, V>();
+            map = new TreeMap<>();
         } finally {
             wl.unlock();
         }
@@ -47,7 +47,7 @@ public class ThreadsafeTreeMap<K, V> implements Map<K, V> {
     public ThreadsafeTreeMap(Map<? extends K, ? extends V> m) {
         try {
             wl.lock();
-            map = new TreeMap<K, V>(m);
+            map = new TreeMap<>(m);
         } finally {
             wl.unlock();
         }

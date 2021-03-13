@@ -120,9 +120,9 @@ public class CSGCube extends CSGPrimitive implements Primitive {
                 // position // normal
                 { { 0, 4, 6, 2 }, { -1, 0, 0 } }, { { 1, 3, 7, 5 }, { +1, 0, 0 } }, { { 0, 1, 5, 4 }, { 0, -1, 0 } }, { { 2, 6, 7, 3 }, { 0, +1, 0 } }, { { 0, 2, 3, 1 }, { 0, 0, -1 } },
                 { { 4, 5, 7, 6 }, { 0, 0, +1 } } };
-        List<Polygon> polygons = new ArrayList<Polygon>();
+        List<Polygon> polygons = new ArrayList<>();
         for (int[][] info : a) {
-            List<VectorCSGd> vertices = new ArrayList<VectorCSGd>();
+            List<VectorCSGd> vertices = new ArrayList<>();
             for (int i : info[0]) {
                 VectorCSGd pos = new VectorCSGd(center.x + dimensions.x * (1 * Math.min(1, i & 1) - 0.5), center.y + dimensions.y * (1 * Math.min(1, i & 2) - 0.5), center.z + dimensions.z
                         * (1 * Math.min(1, i & 4) - 0.5));

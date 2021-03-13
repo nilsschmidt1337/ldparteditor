@@ -52,15 +52,15 @@ public enum IdenticalVertexRemover {
         Map<GData4, Vertex[]> q = vm.getQuads();
         Map<GData5, Vertex[]> c = vm.getCondlines();
 
-        final Set<GData2> linesToDelete2 = new HashSet<GData2>();
-        final Set<GData3> trisToDelete2 = new HashSet<GData3>();
-        final Set<GData4> quadsToDelete2 = new HashSet<GData4>();
-        final Set<GData5> clinesToDelete2 = new HashSet<GData5>();
+        final Set<GData2> linesToDelete2 = new HashSet<>();
+        final Set<GData3> trisToDelete2 = new HashSet<>();
+        final Set<GData4> quadsToDelete2 = new HashSet<>();
+        final Set<GData5> clinesToDelete2 = new HashSet<>();
         {
             for (GData2 g2 : l.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g2)) continue;
                 Vertex[] verts = l.get(g2);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -71,7 +71,7 @@ public enum IdenticalVertexRemover {
             for (GData3 g3 : t.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g3)) continue;
                 Vertex[] verts = t.get(g3);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -82,7 +82,7 @@ public enum IdenticalVertexRemover {
             for (GData4 g4 : q.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
                 Vertex[] verts = q.get(g4);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -124,7 +124,7 @@ public enum IdenticalVertexRemover {
             for (GData5 g5 : c.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g5)) continue;
                 Vertex[] verts = c.get(g5);
-                Set<Vertex> verts2 = new TreeSet<Vertex>();
+                Set<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }

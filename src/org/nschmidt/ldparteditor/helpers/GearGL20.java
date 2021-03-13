@@ -37,8 +37,8 @@ public class GearGL20 {
         final float radius2 = radius1 + width;
         final float radius3 = radius2 + toothHeight;
 
-        final ArrayList<Float> vertices = new ArrayList<Float>();
-        final ArrayList<Short> indices = new ArrayList<Short>();
+        final ArrayList<Float> vertices = new ArrayList<>();
+        final ArrayList<Short> indices = new ArrayList<>();
 
         final double R = 2 * Math.PI / segments;
         double r;

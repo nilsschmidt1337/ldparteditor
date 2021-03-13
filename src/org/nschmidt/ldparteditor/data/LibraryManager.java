@@ -593,9 +593,9 @@ public class LibraryManager {
         boolean canSearch = true;
         final File baseFolder = new File(basePath);
         if (prefix1.isEmpty()) {
-            HashMap<DatFileName, TreeItem> parentMap = new HashMap<DatFileName, TreeItem>();
-            HashMap<DatFileName, DatType> typeMap = new HashMap<DatFileName, DatType>();
-            ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
+            HashMap<DatFileName, TreeItem> parentMap = new HashMap<>();
+            HashMap<DatFileName, DatType> typeMap = new HashMap<>();
+            ArrayList<DatFileName> datFiles = new ArrayList<>();
             File libFolder = new File(folderPath);
             StringBuilder titleSb = new StringBuilder();
             File[] files = libFolder.listFiles();
@@ -737,7 +737,7 @@ public class LibraryManager {
                     }
                     if (canSearch) {
                         // Do the search for DAT files
-                        ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
+                        ArrayList<DatFileName> datFiles = new ArrayList<>();
                         File libFolder = new File(folderPath);
                         final File[] libFolderFiles = libFolder.listFiles();
                         if (libFolderFiles != null) {
@@ -794,27 +794,27 @@ public class LibraryManager {
 
         int[] result = new int[3];
 
-        HashMap<String, TreeItem> parentMap = new HashMap<String, TreeItem>();
-        HashMap<String, DatType> typeMap = new HashMap<String, DatType>();
-        HashMap<String, DatFileName> dfnMap = new HashMap<String, DatFileName>();
-        HashSet<String> locked = new HashSet<String>();
-        HashSet<String> loaded = new HashSet<String>();
-        HashMap<String, DatFile> existingMap = new HashMap<String, DatFile>();
+        HashMap<String, TreeItem> parentMap = new HashMap<>();
+        HashMap<String, DatType> typeMap = new HashMap<>();
+        HashMap<String, DatFileName> dfnMap = new HashMap<>();
+        HashSet<String> locked = new HashSet<>();
+        HashSet<String> loaded = new HashSet<>();
+        HashMap<String, DatFile> existingMap = new HashMap<>();
 
-        HashMap<String, Boolean> readOnly = new HashMap<String, Boolean>();
+        HashMap<String, Boolean> readOnly = new HashMap<>();
 
-        HashMap<String, HashSet<Composite3D>> openIn3DMap = new HashMap<String, HashSet<Composite3D>>();
-        HashMap<String, CompositeTab> openInTextMap = new HashMap<String, CompositeTab>();
+        HashMap<String, HashSet<Composite3D>> openIn3DMap = new HashMap<>();
+        HashMap<String, CompositeTab> openInTextMap = new HashMap<>();
 
-        HashMap<String, HashSet<Composite3D>> unsavedIn3DMap = new HashMap<String, HashSet<Composite3D>>();
-        HashMap<String, CompositeTab> unsavedInTextMap = new HashMap<String, CompositeTab>();
+        HashMap<String, HashSet<Composite3D>> unsavedIn3DMap = new HashMap<>();
+        HashMap<String, CompositeTab> unsavedInTextMap = new HashMap<>();
 
-        HashMap<String, TreeItem> newParentMap = new HashMap<String, TreeItem>();
-        HashMap<String, DatType> newTypeMap = new HashMap<String, DatType>();
-        HashMap<String, DatFileName> newDfnMap = new HashMap<String, DatFileName>();
+        HashMap<String, TreeItem> newParentMap = new HashMap<>();
+        HashMap<String, DatType> newTypeMap = new HashMap<>();
+        HashMap<String, DatFileName> newDfnMap = new HashMap<>();
 
-        HashMap<String, HistoryManager> historyMap = new HashMap<String, HistoryManager>();
-        HashMap<String, DuplicateManager> duplicateMap = new HashMap<String, DuplicateManager>();
+        HashMap<String, HistoryManager> historyMap = new HashMap<>();
+        HashMap<String, DuplicateManager> duplicateMap = new HashMap<>();
 
         if (prefix1.isEmpty()) {
 
@@ -871,8 +871,8 @@ public class LibraryManager {
 
         // 4. Rebuilt the tree arrays
 
-        ArrayList<DatFileName> datFiles = new ArrayList<DatFileName>();
-        HashMap<TreeItem, ArrayList<DatFile>> lists = new HashMap<TreeItem, ArrayList<DatFile>>();
+        ArrayList<DatFileName> datFiles = new ArrayList<>();
+        HashMap<TreeItem, ArrayList<DatFile>> lists = new HashMap<>();
         for (String key : dfnMap.keySet()) {
             datFiles.add(dfnMap.get(key));
         }
@@ -900,7 +900,7 @@ public class LibraryManager {
                 if (lists.containsKey(ti)) {
                     fileList = lists.get(ti);
                 } else {
-                    fileList = new ArrayList<DatFile>();
+                    fileList = new ArrayList<>();
                     lists.put(ti, fileList);
                 }
                 if (existingMap.containsKey(path)) {
@@ -957,7 +957,7 @@ public class LibraryManager {
         // Add unsaved files wich are not anymore on the file system, but were opened in the text editor or in the 3D view
 
         {
-            HashSet<DatFile> newUnsavedFiles = new HashSet<DatFile>();
+            HashSet<DatFile> newUnsavedFiles = new HashSet<>();
             for (String key : unsavedInTextMap.keySet()) {
                 DatFile df = unsavedInTextMap.get(key).getState().getFileNameObj();
                 if (!newUnsavedFiles.contains(df)) {
@@ -1037,7 +1037,7 @@ public class LibraryManager {
                     result[1] = result[1] + 1;
 
                     // 3. Displayed, but deleted files will become unsaved files
-                    HashSet<Composite3D> c3ds = new HashSet<Composite3D>();
+                    HashSet<Composite3D> c3ds = new HashSet<>();
                     for (OpenGLRenderer r : Editor3DWindow.getRenders()) {
                         Composite3D c3d = r.getC3D();
                         if (df.equals(c3d.getLockableDatFileReference())) {
@@ -1060,7 +1060,7 @@ public class LibraryManager {
                     loaded.add(old);
 
                     // 3.5 Displayed, but unmodified files (Text+3D) need a remapping
-                    HashSet<Composite3D> c3ds = new HashSet<Composite3D>();
+                    HashSet<Composite3D> c3ds = new HashSet<>();
                     for (OpenGLRenderer r : Editor3DWindow.getRenders()) {
                         Composite3D c3d = r.getC3D();
                         if (df.equals(c3d.getLockableDatFileReference())) {
