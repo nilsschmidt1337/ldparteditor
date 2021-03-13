@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.text.Collator;
 import java.text.DateFormat;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
@@ -258,11 +257,8 @@ class OptionsDesign extends ApplicationWindow {
                 String[] locales = new String[DateFormat.getAvailableLocales().length];
                 Locale[] locs = DateFormat.getAvailableLocales();
                 final Locale l = userSettings.getLocale();
-                Arrays.sort(locs, new Comparator<Locale>() {
-                    @Override
-                    public int compare(Locale o1, Locale o2) {
-                        return Collator.getInstance(Locale.ENGLISH).compare(o1.getDisplayName(l), o2.getDisplayName(l));
-                    }
+                Arrays.sort(locs, (o1, o2) -> {
+                    return Collator.getInstance(Locale.ENGLISH).compare(o1.getDisplayName(l), o2.getDisplayName(l));
                 });
                 localeMap.clear();
                 int englishIndex = 0;

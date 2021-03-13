@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -352,68 +351,65 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
             // Sort the clipboard content by linenumber (or ID if the linenumber is the same)
             {
                 final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
-                Collections.sort(CLIPBOARD, new Comparator<GData>(){
-                    @Override
-                    public int compare(GData o1, GData o2) {
-                        try {
-                            if (dpl.containsValue(o1)) {
-                                if (dpl.containsValue(o2)) {
-                                    return dpl.getKey(o1).compareTo(dpl.getKey(o2));
+                Collections.sort(CLIPBOARD, (o1, o2) -> {
+                    try {
+                        if (dpl.containsValue(o1)) {
+                            if (dpl.containsValue(o2)) {
+                                return dpl.getKey(o1).compareTo(dpl.getKey(o2));
+                            } else {
+                                if (o2.type() == 1) {
+                                    return dpl.getKey(o1).compareTo(dpl.getKey(((GData1) o2).firstRef));
                                 } else {
-                                    if (o2.type() == 1) {
-                                        return dpl.getKey(o1).compareTo(dpl.getKey(((GData1) o2).firstRef));
-                                    } else {
-                                        return dpl.getKey(o1).compareTo(dpl.getKey(o2.parent.firstRef));
-                                    }
+                                    return dpl.getKey(o1).compareTo(dpl.getKey(o2.parent.firstRef));
+                                }
+                            }
+                        } else {
+                            if (dpl.containsValue(o2)) {
+                                if (o1.type() == 1) {
+                                    return dpl.getKey(((GData1) o1).firstRef).compareTo(dpl.getKey(o2));
+                                } else {
+                                    return dpl.getKey(o1.parent.firstRef).compareTo(dpl.getKey(o2));
                                 }
                             } else {
-                                if (dpl.containsValue(o2)) {
-                                    if (o1.type() == 1) {
-                                        return dpl.getKey(((GData1) o1).firstRef).compareTo(dpl.getKey(o2));
-                                    } else {
-                                        return dpl.getKey(o1.parent.firstRef).compareTo(dpl.getKey(o2));
-                                    }
+                                final Integer co1;
+                                final Integer co2;
+                                if (o1.type() == 1) {
+                                    co1 = dpl.getKey(((GData1) o1).firstRef);
                                 } else {
-                                    final Integer co1;
-                                    final Integer co2;
-                                    if (o1.type() == 1) {
-                                        co1 = dpl.getKey(((GData1) o1).firstRef);
-                                    } else {
-                                        co1 = dpl.getKey(o1.parent.firstRef);
-                                    }
-                                    if (o2.type() == 1) {
-                                        co2 = dpl.getKey(((GData1) o2).firstRef);
-                                    } else {
-                                        co2 = dpl.getKey(o2.parent.firstRef);
-                                    }
-                                    if (co1 == null && co2 == null) {
-                                        return 0;
-                                    } else if (co1 == null) {
-                                        return -1;
-                                    } else if (co2 == null) {
+                                    co1 = dpl.getKey(o1.parent.firstRef);
+                                }
+                                if (o2.type() == 1) {
+                                    co2 = dpl.getKey(((GData1) o2).firstRef);
+                                } else {
+                                    co2 = dpl.getKey(o2.parent.firstRef);
+                                }
+                                if (co1 == null && co2 == null) {
+                                    return 0;
+                                } else if (co1 == null) {
+                                    return -1;
+                                } else if (co2 == null) {
+                                    return 1;
+                                }
+                                int comparism = co1.compareTo(co2);
+                                if (comparism == 0) {
+                                    if (o1.ID > o2.ID) { // The id can "never" be equal!
                                         return 1;
-                                    }
-                                    int comparism = co1.compareTo(co2);
-                                    if (comparism == 0) {
-                                        if (o1.ID > o2.ID) { // The id can "never" be equal!
-                                            return 1;
-                                        } else {
-                                            return -1;
-                                        }
                                     } else {
-                                        return comparism;
+                                        return -1;
                                     }
+                                } else {
+                                    return comparism;
                                 }
                             }
-                        } catch (NullPointerException npe) {
-                            NLogger.error(getClass(), "NullPointerException within CLIPBOARD!"); //$NON-NLS-1$
-                            NLogger.error(getClass(), "Object 1:" + o1.toString()); //$NON-NLS-1$
-                            NLogger.error(getClass(), "Object 2:" + o2.toString()); //$NON-NLS-1$
-                            if (o1.ID > o2.ID) { // The id can "never" be equal!
-                                return 1;
-                            } else {
-                                return -1;
-                            }
+                        }
+                    } catch (NullPointerException npe) {
+                        NLogger.error(getClass(), "NullPointerException within CLIPBOARD!"); //$NON-NLS-1$
+                        NLogger.error(getClass(), "Object 1:" + o1.toString()); //$NON-NLS-1$
+                        NLogger.error(getClass(), "Object 2:" + o2.toString()); //$NON-NLS-1$
+                        if (o1.ID > o2.ID) { // The id can "never" be equal!
+                            return 1;
+                        } else {
+                            return -1;
                         }
                     }
                 });

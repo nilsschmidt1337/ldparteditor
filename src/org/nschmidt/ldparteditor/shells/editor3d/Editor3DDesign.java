@@ -24,7 +24,6 @@ import java.math.RoundingMode;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -3684,16 +3683,12 @@ class Editor3DDesign extends ApplicationWindow {
         // TODO Needs implementation!
 
         if (!threeDconfig.isEmpty()) {
-            Collections.sort(threeDconfig, new Comparator<Composite3DState>(
-                    ) {
-                @Override
-                public int compare(Composite3DState o1, Composite3DState o2) {
-                    final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());
-                    if (cmp == 0) {
-                        return o1.getPath().compareTo(o2.getPath());
-                    }
-                    return cmp;
+            Collections.sort(threeDconfig, (o1, o2) -> {
+                final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());
+                if (cmp == 0) {
+                    return o1.getPath().compareTo(o2.getPath());
                 }
+                return cmp;
             });
 
             Editor3DWindow.getWindow().openDatFile(View.DUMMY_DATFILE, OpenInWhat.EDITOR_3D, null);
@@ -3768,16 +3763,12 @@ class Editor3DDesign extends ApplicationWindow {
 
     private void applyC3DStatesOnStartup(ArrayList<Composite3DState> threeDconfig) {
 
-        Collections.sort(threeDconfig, new Comparator<Composite3DState>(
-                ) {
-            @Override
-            public int compare(Composite3DState o1, Composite3DState o2) {
-                final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());
-                if (cmp == 0) {
-                    return o1.getPath().compareTo(o2.getPath());
-                }
-                return cmp;
+        Collections.sort(threeDconfig, (o1, o2) -> {
+            final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());
+            if (cmp == 0) {
+                return o1.getPath().compareTo(o2.getPath());
             }
+            return cmp;
         });
         CompositeContainer cmp_Container = new CompositeContainer(sashForm, false);
         cmp_Container.moveBelow(sashForm.getChildren()[0]);

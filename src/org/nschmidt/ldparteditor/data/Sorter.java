@@ -17,7 +17,6 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.swt.custom.CTabItem;
@@ -132,11 +131,203 @@ public enum Sorter {
                 List<GData> listToSort = subLists.get(i);
                 switch (sortCriteria) {
                 case 0:
-                    Collections.sort(listToSort, new Comparator<GData>() {
-                        @Override
-                        public int compare(GData g1, GData g2) {
-                            float c1 = -2f;
-                            float c2 = -2f;
+                    Collections.sort(listToSort, (g1, g2) -> {
+                        float c1 = -2f;
+                        float c2 = -2f;
+                        switch (g1.type()) {
+                        case 1:
+                        {GData1 g = (GData1) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 2:
+                        {GData2 g = (GData2) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 3:
+                        {GData3 g = (GData3) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 4:
+                        {GData4 g = (GData4) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 5:
+                        {GData5 g = (GData5) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        }
+                        switch (g2.type()) {
+                        case 1:
+                        {GData1 g = (GData1) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 2:
+                        {GData2 g = (GData2) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 3:
+                        {GData3 g = (GData3) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 4:
+                        {GData4 g = (GData4) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 5:
+                        {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        }
+                        if (g1.type() == 6 && g1.getNext() != null) {
+                            switch (g1.getNext().type()) {
+                            case 1:
+                            {GData1 g = (GData1) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 2:
+                            {GData2 g = (GData2) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 3:
+                            {GData3 g = (GData3) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 4:
+                            {GData4 g = (GData4) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 5:
+                            {GData5 g = (GData5) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            }
+                        }
+                        if (g2.type() == 6 && g2.getNext() != null) {
+                            switch (g2.getNext().type()) {
+                            case 1:
+                            {GData1 g = (GData1) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 2:
+                            {GData2 g = (GData2) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 3:
+                            {GData3 g = (GData3) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 4:
+                            {GData4 g = (GData4) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 5:
+                            {GData5 g = (GData5) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            }
+                        }
+                        return Float.compare(c1, c2);
+                    });
+                    break;
+                case 1:
+                    Collections.sort(listToSort, (g1, g2) -> {
+                        float c1 = -2f;
+                        float c2 = -2f;
+                        switch (g1.type()) {
+                        case 1:
+                        {GData1 g = (GData1) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 2:
+                        {GData2 g = (GData2) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 3:
+                        {GData3 g = (GData3) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 4:
+                        {GData4 g = (GData4) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 5:
+                        {GData5 g = (GData5) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        }
+                        switch (g2.type()) {
+                        case 1:
+                        {GData1 g = (GData1) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 2:
+                        {GData2 g = (GData2) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 3:
+                        {GData3 g = (GData3) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 4:
+                        {GData4 g = (GData4) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        case 5:
+                        {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        }
+                        if (g1.type() == 6 && g1.getNext() != null) {
+                            switch (g1.getNext().type()) {
+                            case 1:
+                            {GData1 g = (GData1) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 2:
+                            {GData2 g = (GData2) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 3:
+                            {GData3 g = (GData3) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 4:
+                            {GData4 g = (GData4) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 5:
+                            {GData5 g = (GData5) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            }
+                        }
+                        if (g2.type() == 6 && g2.getNext() != null) {
+                            switch (g2.getNext().type()) {
+                            case 1:
+                            {GData1 g = (GData1) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 2:
+                            {GData2 g = (GData2) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 3:
+                            {GData3 g = (GData3) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 4:
+                            {GData4 g = (GData4) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            case 5:
+                            {GData5 g = (GData5) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            }
+                        }
+                        return Float.compare(c2, c1);
+                    });
+                    break;
+                case 2:
+                    Collections.sort(listToSort, (g1, g2) -> {
+                        int t1 = g1.type();
+                        int t2 = g2.type();
+                        if (t1 == 6 && g1.getNext() != null) {
+                            t1 = g1.getNext().type();
+                        }
+                        if (t2 == 6 && g2.getNext() != null) {
+                            t2 = g2.getNext().type();
+                        }
+                        return Integer.compare(t1, t2);
+                    });
+                    break;
+                case 3:
+                    Collections.sort(listToSort, (g1, g2) -> {
+                        int t1 = g1.type();
+                        int t2 = g2.type();
+                        if (t1 == 6 && g1.getNext() != null) {
+                            t1 = g1.getNext().type();
+                        }
+                        if (t2 == 6 && g2.getNext() != null) {
+                            t2 = g2.getNext().type();
+                        }
+                        return Integer.compare(t2, t1);
+                    });
+                    break;
+                case 4:
+                    Collections.sort(listToSort, (g1, g2) -> {
+                        int t1 = g1.type();
+                        int t2 = g2.type();
+                        if (t1 == 6 && g1.getNext() != null) {
+                            t1 = g1.getNext().type();
+                        }
+                        if (t2 == 6 && g2.getNext() != null) {
+                            t2 = g2.getNext().type();
+                        }
+                        int cmp1 = Integer.compare(t1, t2);
+                        if (cmp1 == 0) {
+                            float c1 = 0f;
+                            float c2 = 0f;
                             switch (g1.type()) {
                             case 1:
                             {GData1 g = (GData1) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
@@ -210,15 +401,25 @@ public enum Sorter {
                                 }
                             }
                             return Float.compare(c1, c2);
+                        } else {
+                            return cmp1;
                         }
                     });
                     break;
-                case 1:
-                    Collections.sort(listToSort, new Comparator<GData>() {
-                        @Override
-                        public int compare(GData g1, GData g2) {
-                            float c1 = -2f;
-                            float c2 = -2f;
+                case 5:
+                    Collections.sort(listToSort, (g1, g2) -> {
+                        int t1 = g1.type();
+                        int t2 = g2.type();
+                        if (t1 == 6) {
+                            t1 = g1.getNext().type();
+                        }
+                        if (t2 == 6) {
+                            t2 = g2.getNext().type();
+                        }
+                        int cmp1 = Integer.compare(t2, t1);
+                        if (cmp1 == 0) {
+                            float c1 = 0f;
+                            float c2 = 0f;
                             switch (g1.type()) {
                             case 1:
                             {GData1 g = (GData1) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
@@ -292,228 +493,8 @@ public enum Sorter {
                                 }
                             }
                             return Float.compare(c2, c1);
-                        }
-                    });
-                    break;
-                case 2:
-                    Collections.sort(listToSort, new Comparator<GData>() {
-                        @Override
-                        public int compare(GData g1, GData g2) {
-                            int t1 = g1.type();
-                            int t2 = g2.type();
-                            if (t1 == 6 && g1.getNext() != null) {
-                                t1 = g1.getNext().type();
-                            }
-                            if (t2 == 6 && g2.getNext() != null) {
-                                t2 = g2.getNext().type();
-                            }
-                            return Integer.compare(t1, t2);
-                        }
-                    });
-                    break;
-                case 3:
-                    Collections.sort(listToSort, new Comparator<GData>() {
-                        @Override
-                        public int compare(GData g1, GData g2) {
-                            int t1 = g1.type();
-                            int t2 = g2.type();
-                            if (t1 == 6 && g1.getNext() != null) {
-                                t1 = g1.getNext().type();
-                            }
-                            if (t2 == 6 && g2.getNext() != null) {
-                                t2 = g2.getNext().type();
-                            }
-                            return Integer.compare(t2, t1);
-                        }
-                    });
-                    break;
-                case 4:
-                    Collections.sort(listToSort, new Comparator<GData>() {
-                        @Override
-                        public int compare(GData g1, GData g2) {
-                            int t1 = g1.type();
-                            int t2 = g2.type();
-                            if (t1 == 6 && g1.getNext() != null) {
-                                t1 = g1.getNext().type();
-                            }
-                            if (t2 == 6 && g2.getNext() != null) {
-                                t2 = g2.getNext().type();
-                            }
-                            int cmp1 = Integer.compare(t1, t2);
-                            if (cmp1 == 0) {
-                                float c1 = 0f;
-                                float c2 = 0f;
-                                switch (g1.type()) {
-                                case 1:
-                                {GData1 g = (GData1) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 2:
-                                {GData2 g = (GData2) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 3:
-                                {GData3 g = (GData3) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 4:
-                                {GData4 g = (GData4) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 5:
-                                {GData5 g = (GData5) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                }
-                                switch (g2.type()) {
-                                case 1:
-                                {GData1 g = (GData1) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 2:
-                                {GData2 g = (GData2) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 3:
-                                {GData3 g = (GData3) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 4:
-                                {GData4 g = (GData4) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 5:
-                                {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                }
-                                if (g1.type() == 6 && g1.getNext() != null) {
-                                    switch (g1.getNext().type()) {
-                                    case 1:
-                                    {GData1 g = (GData1) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 2:
-                                    {GData2 g = (GData2) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 3:
-                                    {GData3 g = (GData3) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 4:
-                                    {GData4 g = (GData4) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 5:
-                                    {GData5 g = (GData5) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    }
-                                }
-                                if (g2.type() == 6 && g2.getNext() != null) {
-                                    switch (g2.getNext().type()) {
-                                    case 1:
-                                    {GData1 g = (GData1) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 2:
-                                    {GData2 g = (GData2) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 3:
-                                    {GData3 g = (GData3) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 4:
-                                    {GData4 g = (GData4) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 5:
-                                    {GData5 g = (GData5) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    }
-                                }
-                                return Float.compare(c1, c2);
-                            } else {
-                                return cmp1;
-                            }
-                        }
-                    });
-                    break;
-                case 5:
-                    Collections.sort(listToSort, new Comparator<GData>() {
-                        @Override
-                        public int compare(GData g1, GData g2) {
-                            int t1 = g1.type();
-                            int t2 = g2.type();
-                            if (t1 == 6) {
-                                t1 = g1.getNext().type();
-                            }
-                            if (t2 == 6) {
-                                t2 = g2.getNext().type();
-                            }
-                            int cmp1 = Integer.compare(t2, t1);
-                            if (cmp1 == 0) {
-                                float c1 = 0f;
-                                float c2 = 0f;
-                                switch (g1.type()) {
-                                case 1:
-                                {GData1 g = (GData1) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 2:
-                                {GData2 g = (GData2) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 3:
-                                {GData3 g = (GData3) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 4:
-                                {GData4 g = (GData4) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 5:
-                                {GData5 g = (GData5) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                }
-                                switch (g2.type()) {
-                                case 1:
-                                {GData1 g = (GData1) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 2:
-                                {GData2 g = (GData2) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 3:
-                                {GData3 g = (GData3) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 4:
-                                {GData4 g = (GData4) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                case 5:
-                                {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                break;
-                                }
-                                if (g1.type() == 6 && g1.getNext() != null) {
-                                    switch (g1.getNext().type()) {
-                                    case 1:
-                                    {GData1 g = (GData1) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 2:
-                                    {GData2 g = (GData2) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 3:
-                                    {GData3 g = (GData3) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 4:
-                                    {GData4 g = (GData4) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 5:
-                                    {GData5 g = (GData5) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    }
-                                }
-                                if (g2.type() == 6 && g2.getNext() != null) {
-                                    switch (g2.getNext().type()) {
-                                    case 1:
-                                    {GData1 g = (GData1) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 2:
-                                    {GData2 g = (GData2) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 3:
-                                    {GData3 g = (GData3) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 4:
-                                    {GData4 g = (GData4) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    case 5:
-                                    {GData5 g = (GData5) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
-                                    break;
-                                    }
-                                }
-                                return Float.compare(c2, c1);
-                            } else {
-                                return cmp1;
-                            }
+                        } else {
+                            return cmp1;
                         }
                     });
                     break;
