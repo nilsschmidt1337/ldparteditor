@@ -23,9 +23,9 @@ import java.math.BigDecimal;
  */
 public class SelectorSettings {
 
-    public final static int EVERYTHING = 0;
-    public final static int CONNECTED = 1;
-    public final static int TOUCHING = 2;
+    public static final int EVERYTHING = 0;
+    public static final int CONNECTED = 1;
+    public static final int TOUCHING = 2;
     private int scope = 0;
     private boolean edgeStop = false;
     private boolean colour = false;

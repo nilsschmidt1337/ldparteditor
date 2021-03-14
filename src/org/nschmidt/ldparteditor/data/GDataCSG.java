@@ -79,21 +79,21 @@ public final class GDataCSG extends GData {
 
     static volatile Lock static_lock = new ReentrantLock();
 
-    private final static ThreadsafeHashMap<DatFile, HashMap<String, CSG>> linkedCSG = new ThreadsafeHashMap<>();
-    private final static ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>> idToGDataCSG = new ThreadsafeHashMap<>();
-    private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new ThreadsafeHashMap<>();
-    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> selectedBodyMap = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, HashMap<String, CSG>> linkedCSG = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>> idToGDataCSG = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> selectedBodyMap = new ThreadsafeHashMap<>();
 
-    private final static ThreadsafeHashMap<DatFile, HashSet<GData3>> backupSelectedTrianglesMap = new ThreadsafeHashMap<>();
-    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> backupSelectedBodyMap = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, HashSet<GData3>> backupSelectedTrianglesMap = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> backupSelectedBodyMap = new ThreadsafeHashMap<>();
 
     private static volatile boolean deleteAndRecompile = true;
 
-    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<>();
-    private final static ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<>();
-    private final static ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<>();
-    private final static ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<>();
-    private final static ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<>();
 
     private final ArrayList<GData> cachedData = new ArrayList<>();
     private final List<Polygon> polygonCache = new ArrayList<>();

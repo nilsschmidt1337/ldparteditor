@@ -26,9 +26,9 @@ public enum MouseButton {
     INSTANCE;
 
     /** The left mouse button. */
-    public final static int LEFT = 1;
+    public static final int LEFT = 1;
     /** The middle mouse button. */
-    public final static int MIDDLE = 2;
+    public static final int MIDDLE = 2;
     /** The right mouse button. */
-    public final static int RIGHT = 3;
+    public static final int RIGHT = 3;
 }

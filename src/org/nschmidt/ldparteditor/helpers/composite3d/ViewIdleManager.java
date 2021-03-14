@@ -30,12 +30,12 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 public enum ViewIdleManager {
     INSTANCE;
 
-    public final static GLCanvas[] firstCanvas = new GLCanvas[1];
-    public final static OpenGLRenderer[] firstRender = new OpenGLRenderer[1];
+    public static final GLCanvas[] firstCanvas = new GLCanvas[1];
+    public static final OpenGLRenderer[] firstRender = new OpenGLRenderer[1];
 
-    public final static boolean[] running = new boolean[] { true };
-    public final static AtomicBoolean[] pause = new AtomicBoolean[] { new AtomicBoolean(false) };
-    public final static AtomicBoolean[] renderLDrawStandard = new AtomicBoolean[] { new AtomicBoolean(false) };
+    public static final boolean[] running = new boolean[] { true };
+    public static final AtomicBoolean[] pause = new AtomicBoolean[] { new AtomicBoolean(false) };
+    public static final AtomicBoolean[] renderLDrawStandard = new AtomicBoolean[] { new AtomicBoolean(false) };
 
     /**
      * Refreshes the {@linkplain Composite3D}
