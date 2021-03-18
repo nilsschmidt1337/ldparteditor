@@ -537,7 +537,7 @@ public class CSG {
                         tjunctionPause--;
                         action = 2;
                     } else {
-                        foundOptimization = CSGOptimizerTJunction.optimize(rnd, trianglesPerPlane, optimization);
+                        foundOptimization = CSGOptimizerTJunction.optimize(trianglesPerPlane, optimization);
                         if (!foundOptimization) {
                             tjunctionPause = 1000;
                         }

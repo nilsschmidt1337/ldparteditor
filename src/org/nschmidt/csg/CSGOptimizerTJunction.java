@@ -18,7 +18,6 @@ package org.nschmidt.csg;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -33,7 +32,7 @@ public enum CSGOptimizerTJunction {
 
     public static volatile double epsilon = .1;
 
-    static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization) {
+    static boolean optimize(Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization) {
         boolean result = false;
 
         for (List<GData3> triangles : trianglesPerPlane.values()) {

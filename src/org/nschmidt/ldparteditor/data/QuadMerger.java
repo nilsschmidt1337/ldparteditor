@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.data;
 import java.util.Set;
 
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
@@ -36,7 +35,7 @@ import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 public enum QuadMerger {
     INSTANCE;
 
-    public static void mergeTrianglesIntoQuad(StyledText st, int lineStart, int lineEnd, DatFile datFile) {
+    public static void mergeTrianglesIntoQuad(int lineStart, int lineEnd, DatFile datFile) {
 
         if (datFile.isReadOnly())
             return;

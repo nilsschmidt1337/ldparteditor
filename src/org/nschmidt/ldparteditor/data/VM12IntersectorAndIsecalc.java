@@ -1050,7 +1050,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                     Vertex[] tv = triangles.get(targetSurf);
 
-                    getTriangleTriangleIntersection(intersections, targetSurf, ov, tv, ins, false, false);
+                    getTriangleTriangleIntersection(intersections, targetSurf, ov, tv, false, false);
 
                 } else if (ot == 4 && tt == 4) {
 
@@ -1061,10 +1061,10 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                     Vertex[] tv1 = new Vertex[]{tv[0], tv[1], tv[2]};
                     Vertex[] tv2 = new Vertex[]{tv[2], tv[3], tv[0]};
 
-                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv1, ins, true, true);
-                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv2, ins, true, true);
-                    getTriangleTriangleIntersection(intersections, targetSurf, ov2, tv1, ins, true, true);
-                    getTriangleTriangleIntersection(intersections, targetSurf, ov2, tv2, ins, true, true);
+                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv1, true, true);
+                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv2, true, true);
+                    getTriangleTriangleIntersection(intersections, targetSurf, ov2, tv1, true, true);
+                    getTriangleTriangleIntersection(intersections, targetSurf, ov2, tv2, true, true);
 
                 } else if (ot == 4 && tt == 3) {
                     Vertex[] tv = triangles.get(targetSurf);
@@ -1073,8 +1073,8 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                     Vertex[] ov1 = new Vertex[]{ov[0], ov[1], ov[2]};
                     Vertex[] ov2 = new Vertex[]{ov[2], ov[3], ov[0]};
 
-                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv1, ins, true, false);
-                    getTriangleTriangleIntersection(intersections, targetSurf, ov2, tv1, ins, true, false);
+                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv1, true, false);
+                    getTriangleTriangleIntersection(intersections, targetSurf, ov2, tv1, true, false);
 
                 } else if (ot == 3 && tt == 4) {
 
@@ -1084,8 +1084,8 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                     Vertex[] tv1 = new Vertex[]{tv[0], tv[1], tv[2]};
                     Vertex[] tv2 = new Vertex[]{tv[2], tv[3], tv[0]};
 
-                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv1, ins, false, true);
-                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv2, ins, false, true);
+                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv1, false, true);
+                    getTriangleTriangleIntersection(intersections, targetSurf, ov1, tv2, false, true);
 
                 }
             }
@@ -1452,7 +1452,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
 
     }
 
-    private void getTriangleTriangleIntersection(HashMap<GData, ArrayList<Vector3dd>> intersections, GData target, Vertex[] ov, Vertex[] tv, IntersectorSettings ins, boolean originIsQuad, boolean targetIsQuad) {
+    private void getTriangleTriangleIntersection(HashMap<GData, ArrayList<Vector3dd>> intersections, GData target, Vertex[] ov, Vertex[] tv, boolean originIsQuad, boolean targetIsQuad) {
         ArrayList<Vector3dd> result2 = null;
         if (intersections.containsKey(target)) {
             result2 = intersections.get(target);
@@ -2603,7 +2603,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
         Vector3d c = Vector3d.add(cross, q);
         Vector3d d = Vector3d.sub(q, cross);
 
-        return intersectLineTriangleSuperFast(p, q2, d, q2, c, dir, len);
+        return intersectLineTriangleSuperFast(p, d, q2, c, dir, len);
 
     }
 
@@ -2628,7 +2628,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
         return true;
     }
 
-    private boolean intersectLineTriangleSuperFast(Vector3dd q, Vector3dd q2, Vector3d d, Vector3dd p2, Vector3d c, Vector3d dir, BigDecimal len) {
+    private boolean intersectLineTriangleSuperFast(Vector3dd q, Vector3d d, Vector3dd p2, Vector3d c, Vector3d dir, BigDecimal len) {
         BigDecimal diskr = BigDecimal.ZERO;
         BigDecimal inv_diskr = BigDecimal.ZERO;
         Vector3d vert0 = d;

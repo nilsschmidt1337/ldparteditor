@@ -444,14 +444,9 @@ public final class DatFile {
     /**
      * Parses the opened dat file for errors and correct data (in realtime, only
      * when opened in text editor)
-     *
-     * @param compositeText
-     * @param hints
-     * @param warnings
-     * @param errors
      */
-    public void parseForErrorAndData(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings,
-            TreeItem errors, TreeItem duplicates, Label problemCount) {
+    public void parseForErrorAndData(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors,
+            TreeItem duplicates, Label problemCount) {
 
         Set<String> alreadyParsed = new HashSet<>();
         alreadyParsed.add(getShortName());

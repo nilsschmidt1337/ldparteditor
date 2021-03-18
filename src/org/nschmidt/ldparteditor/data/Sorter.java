@@ -20,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
@@ -46,7 +45,7 @@ public enum Sorter {
      * 4 = "By type and then colour, ascending.",
      * 5 = "By type and then colour, descending."
      */
-    public static void sort(StyledText st, int fromLine, int toLine, DatFile datFile, int scope, int sortCriteria, boolean destructiveSort) {
+    public static void sort(int fromLine, int toLine, DatFile datFile, int scope, int sortCriteria, boolean destructiveSort) {
 
         if (datFile.isReadOnly())
             return;

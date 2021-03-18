@@ -1181,7 +1181,7 @@ public enum MathHelper {
                 break;
             }
         }
-        return s.round(new MathContext(err2prec(eps)));
+        return s.round(new MathContext(err2prec()));
     } /* BigDecimalMath.root */
 
     /**
@@ -1201,10 +1201,9 @@ public enum MathHelper {
              * reduce modulo 2pi
              */
             BigDecimal res = mod2pi(x);
-            double errpi = 0.5 * Math.abs(x.ulp().doubleValue());
-            MathContext mc = new MathContext(2 + err2prec(3.1415926535897932, errpi));
+            MathContext mc = new MathContext(2 + err2prec());
             BigDecimal p = pi(mc);
-            mc = Threshold.mc; // new MathContext(x.precision());
+            mc = Threshold.mc;
             if (res.compareTo(p) > 0) {
                 /*
                  * pi<x<=2pi: sin(x)= - sin(x-pi)
@@ -1240,15 +1239,7 @@ public enum MathHelper {
                      * The error in the result is set by the error in x itself.
                      */
                     double xUlpDbl = res.ulp().doubleValue();
-                    /*
-                     * The error in the result is set by the error in x itself.
-                     * We need at most k terms to squeeze x^(2k+1)/(2k+1)! below
-                     * this value. x^(2k+1) < x.ulp; (2k+1)*log10(x) <
-                     * -x.precision; 2k*log10(x)< -x.precision; 2k*(-log10(x)) >
-                     * x.precision; 2k*log10(1/x) > x.precision
-                     */
-                    int k = (int) (res.precision() / Math.log10(1.0 / res.doubleValue())) / 2;
-                    MathContext mcTay = new MathContext(err2prec(res.doubleValue(), xUlpDbl / k));
+                    MathContext mcTay = new MathContext(err2prec());
                     for (int i = 1;; i++) {
                         /*
                          * TBD: at which precision will 2*i or 2*i+1 overflow?
@@ -1290,7 +1281,7 @@ public enum MathHelper {
              */
             BigDecimal res = mod2pi(x);
             double errpi = 0.5 * Math.abs(x.ulp().doubleValue());
-            MathContext mc = new MathContext(2 + err2prec(3.1415926535897932, errpi));
+            MathContext mc = new MathContext(2 + err2prec());
             BigDecimal p = pi(mc);
             mc = new MathContext(x.precision());
             if (res.compareTo(p) > 0) {
@@ -1337,7 +1328,7 @@ public enum MathHelper {
                      * (2k)*log(x) < log(xUlpDbl);
                      */
                     int k = (int) (Math.log(xUlpDbl) / Math.log(res.doubleValue())) / 2;
-                    MathContext mcTay = new MathContext(err2prec(1., xUlpDbl / k));
+                    MathContext mcTay = new MathContext(err2prec());
                     for (int i = 1;; i++) {
                         /*
                          * TBD: at which precision will 2*i-1 or 2*i overflow?
@@ -1355,7 +1346,7 @@ public enum MathHelper {
                      * The error in the result is governed by the error in x
                      * itself.
                      */
-                    mc = new MathContext(err2prec(resul.doubleValue(), xUlpDbl));
+                    mc = new MathContext(err2prec());
                     return resul.round(mc);
                 }
             }
@@ -1389,7 +1380,7 @@ public enum MathHelper {
         } else {
             err2pi = 0.5 * Math.abs(x.ulp().doubleValue());
         }
-        MathContext mc = new MathContext(2 + err2prec(6.283, err2pi));
+        MathContext mc = new MathContext(2 + err2prec());
         BigDecimal twopi = pi(mc).multiply(new BigDecimal(2));
         /*
          * Delegate the actual operation to the BigDecimal class, which may
@@ -1404,7 +1395,7 @@ public enum MathHelper {
          * The actual precision is set by the input value, its absolute value of
          * x.ulp()/2.
          */
-        mc = new MathContext(err2prec(res.doubleValue(), x.ulp().doubleValue() / 2.));
+        mc = new MathContext(err2prec());
 
         return res.round(mc);
 
@@ -1468,7 +1459,7 @@ public enum MathHelper {
             if (Math.abs(r.doubleValue()) < eps) {
                 break;
             }
-            MathContext mcloc = new MathContext(1 + err2prec(r.doubleValue(), eps));
+            MathContext mcloc = new MathContext(1 + err2prec());
             res = res.add(r.BigDecimalValue(mcloc));
 
         }
@@ -1493,7 +1484,7 @@ public enum MathHelper {
          */
 
         double errR = Math.abs(y.ulp().doubleValue() / 2.) + Math.abs(x.ulp().doubleValue() / 2.);
-        MathContext mc = new MathContext(err2prec(resul.doubleValue(), errR));
+        MathContext mc = new MathContext(err2prec());
 
         return resul.round(mc);
 
@@ -1537,38 +1528,11 @@ public enum MathHelper {
     }
 
     /**
-     * Convert an absolute error to a precision.
-     *
-     * @param x
-     *            The value of the variable The value returned depends only on
-     *            the absolute value, not on the sign.
-     * @param xerr
-     *            The absolute error in the variable The value returned depends
-     *            only on the absolute value, not on the sign.
-     * @return The number of valid digits in x. Derived from the representation
-     *         x+- xerr, as if the error was represented 38 in a "half width"
-     *         (half of the error bar) form. The value is rounded down, and on
-     *         the pessimistic side for that reason.
-     */
-    private static int err2prec(double x, double xerr) {
-        /*
-         * Example: an error of xerr=+-0.5 at x=100 represents 100+-0.5 with a
-         * precision = 3 (digits).
-         */
-        return 32; // 10 + (int) Math.log10(Math.abs(0.5 * x / xerr));
-
-    }
-
-    /**
      * Convert a relative error to a precision.
      *
-     * @param xerr
-     *            The relative error in the variable. The value returned depends
-     *            only on the absolute value, not on the sign.
-     * @return The number of valid digits in x. The value is rounded down, and
-     *         on the pessimistic side for that reason.
+     * @return The number of valid digits in x.
      */
-    private static int err2prec(double xerr) {
+    private static int err2prec() {
         /*
          * Example: an error of xerr=+-0.5 a precision of 1 (digit), an error of
          * +-0.05 a precision of 2 (digits)

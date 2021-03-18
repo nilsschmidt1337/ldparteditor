@@ -842,7 +842,7 @@ public final class VertexManager extends VM99Clipboard {
                     GL11.glDisable(GL11.GL_DEPTH_TEST);
                 GL11.glDisable(GL11.GL_LIGHTING);
                 GDataCSG.rebuildSelection(linkedDatFile);
-                GDataCSG.drawSelectionCSG(c3d, modifiedManipulator);
+                GDataCSG.drawSelectionCSG(c3d);
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
                 if (c3d.isLightOn())
                     GL11.glEnable(GL11.GL_LIGHTING);

@@ -824,8 +824,8 @@ public class CompositeTab extends CompositeTabDesign {
                         Display.getCurrent().syncExec(new Runnable() {
                             @Override
                             public void run() {
-                                state.getFileNameObj().parseForErrorAndData(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                                        treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0]);
+                                state.getFileNameObj().parseForErrorAndData(compositeText[0], event.start, off, event.length, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0],
+                                        treeItem_Duplicates[0], lbl_ProblemCount[0]);
                             }
                         });
                     } else {

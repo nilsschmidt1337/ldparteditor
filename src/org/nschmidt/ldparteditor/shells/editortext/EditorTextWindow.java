@@ -894,7 +894,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                QuadMerger.mergeTrianglesIntoQuad(st, fromLine, toLine, selection.getState().getFileNameObj());
+                QuadMerger.mergeTrianglesIntoQuad(fromLine, toLine, selection.getState().getFileNameObj());
                 st.forceFocus();
             }
         });
