@@ -994,7 +994,7 @@ public class Editor3DWindow extends Editor3DDesign {
         WidgetUtil(btn_Undo[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().undo(null, false);
+                Project.getFileToEdit().undo(false);
             }
             regainFocus();
         });
@@ -1002,7 +1002,7 @@ public class Editor3DWindow extends Editor3DDesign {
         WidgetUtil(btn_Redo[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
-                Project.getFileToEdit().redo(null, false);
+                Project.getFileToEdit().redo(false);
             }
             regainFocus();
         });

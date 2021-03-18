@@ -30,7 +30,6 @@ import java.util.regex.Pattern;
 
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
@@ -348,10 +347,10 @@ public class HistoryManager {
         isRunning.set(false);
     }
 
-    public void undo(final Shell sh, boolean focusTextEditor) {
+    public void undo(boolean focusTextEditor) {
         if (lock.tryLock()) {
             try {
-                action(1, sh, focusTextEditor);
+                action(1, focusTextEditor);
             } finally {
                 lock.unlock();
             }
@@ -360,10 +359,10 @@ public class HistoryManager {
         }
     }
 
-    public void redo(final Shell sh, boolean focusTextEditor) {
+    public void redo(boolean focusTextEditor) {
         if (lock.tryLock()) {
             try {
-                action(2, sh, focusTextEditor);
+                action(2, focusTextEditor);
             } finally {
                 lock.unlock();
             }
@@ -373,7 +372,7 @@ public class HistoryManager {
     }
 
     @SuppressWarnings("unchecked")
-    private void action(final int action_mode, final Shell sh, final boolean focusTextEditor) {
+    private void action(final int action_mode, final boolean focusTextEditor) {
         if (action.get() != 0 || df.isReadOnly() || !df.getVertexManager().isUpdated() && WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) return;
 
         mode = action_mode;

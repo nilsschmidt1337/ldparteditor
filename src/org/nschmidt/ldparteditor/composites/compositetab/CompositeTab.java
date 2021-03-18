@@ -979,14 +979,12 @@ public class CompositeTab extends CompositeTabDesign {
                 }
                 case EDITORTEXT_REDO:
                 {
-                    final Shell sh1 = compositeText[0].getDisplay().getActiveShell();
-                    if (vm.isUpdated() && sh1 != null) df.redo(sh1, true);
+                    if (vm.isUpdated()) df.redo(true);
                 }
                 break;
                 case EDITORTEXT_UNDO:
                 {
-                    final Shell sh2 = compositeText[0].getDisplay().getActiveShell();
-                    if (vm.isUpdated() && sh2 != null) df.undo(sh2, true);
+                    if (vm.isUpdated()) df.undo(true);
                 }
                 break;
                 case EDITORTEXT_SAVE:

@@ -36,7 +36,6 @@ import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL13;
 import org.lwjgl.util.vector.Vector3f;
@@ -2054,12 +2053,12 @@ public final class DatFile {
         NLogger.debug(getClass(), "Total time to backup history: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
     }
 
-    public void undo(final Shell sh, boolean focusTextEditor) {
-        history.undo(sh, focusTextEditor);
+    public void undo(boolean focusTextEditor) {
+        history.undo(focusTextEditor);
     }
 
-    public void redo(final Shell sh, boolean focusTextEditor) {
-        history.redo(sh, focusTextEditor);
+    public void redo(boolean focusTextEditor) {
+        history.redo(focusTextEditor);
     }
 
     public static Composite3D getLastHoveredComposite() {
