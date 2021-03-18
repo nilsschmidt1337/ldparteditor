@@ -754,13 +754,8 @@ public final class DatFile {
     /**
      * Parses the opened dat file for errors and correct data (in realtime, only
      * when opened in text editor)
-     *
-     * @param compositeText
-     * @param hints
-     * @param warnings
-     * @param errors
      */
-    public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String insertedText, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount, boolean unselectBgPicture) {
+    public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount, boolean unselectBgPicture) {
 
         if (compositeText.getText().isEmpty()) {
             duplicate.pushDuplicateCheck(drawChainAnchor);

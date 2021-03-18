@@ -7126,7 +7126,7 @@ public class Editor3DWindow extends Editor3DDesign {
             DatType type = DatType.PART;
 
             DatFile df = new DatFile(filePath);
-            DatFile original = isFileNameAllocated2(filePath, df);
+            DatFile original = isFileNameAllocated2(filePath);
 
             if (original == null) {
 
@@ -7648,7 +7648,7 @@ public class Editor3DWindow extends Editor3DDesign {
     /**
      * @return null if the file is not allocated
      */
-    private DatFile isFileNameAllocated2(String dir, DatFile df) {
+    private DatFile isFileNameAllocated2(String dir) {
 
         TreeItem[] folders = new TreeItem[15];
         folders[0] = treeItem_OfficialParts[0];

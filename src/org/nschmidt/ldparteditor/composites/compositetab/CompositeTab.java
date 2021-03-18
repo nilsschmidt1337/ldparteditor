@@ -816,8 +816,8 @@ public class CompositeTab extends CompositeTabDesign {
                 }
 
                 if (state.isSync()) {
-                    state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                            treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0], false);
+                    state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0],
+                            treeItem_Duplicates[0], lbl_ProblemCount[0], false);
                     vm.setModified(false, true);
                 } else {
                     if (!vm.isModified()) {
@@ -831,8 +831,8 @@ public class CompositeTab extends CompositeTabDesign {
                     } else {
                         vm.setModified(false, true);
                         GData.CACHE_warningsAndErrors.clear();
-                        state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, insertedText, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0],
-                                treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0], true);
+                        state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0],
+                                treeItem_Duplicates[0], lbl_ProblemCount[0], true);
                     }
                     vm.setUpdated(true);
                 }
@@ -2034,7 +2034,7 @@ public class CompositeTab extends CompositeTabDesign {
     }
 
     public void parseForErrorAndHints() {
-        this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), getTextComposite().getText(), treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0], true);
+        this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0], true);
         int errorCount = treeItem_Errors[0].getItems().size();
         int warningCount = treeItem_Warnings[0].getItems().size();
         int hintCount = treeItem_Hints[0].getItems().size();

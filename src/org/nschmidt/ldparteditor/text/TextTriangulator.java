@@ -430,7 +430,7 @@ public class TextTriangulator {
         final double scale = fontHeight / maxHeight;
         for (int j = 0; j < vector.getNumGlyphs(); j++) {
             Shape characterShape = vector.getGlyphOutline(j);
-            Set<PGData3> characterTriangleSet = triangulateGLShape(characterShape, flatness, interpolateFlatness, scale, deltaAngle);
+            Set<PGData3> characterTriangleSet = triangulateGLShape(characterShape, flatness, interpolateFlatness, scale);
             finalTriangleSet.addAll(characterTriangleSet);
         }
         float minX = Float.MAX_VALUE;
@@ -471,13 +471,13 @@ public class TextTriangulator {
 
         for (int j = 0; j < vector.getNumGlyphs(); j++) {
             Shape characterShape = vector.getGlyphOutline(j);
-            Set<PGData3> characterTriangleSet = triangulateGLShape(characterShape, flatness, interpolateFlatness, .002f, deltaAngle);
+            Set<PGData3> characterTriangleSet = triangulateGLShape(characterShape, flatness, interpolateFlatness, .002f);
             finalTriangleSet.addAll(characterTriangleSet);
         }
         return finalTriangleSet;
     }
 
-    private static Set<PGData3> triangulateGLShape(Shape shape, double flatness, double interpolateFlatness, double scale, double deltaAngle) {
+    private static Set<PGData3> triangulateGLShape(Shape shape, double flatness, double interpolateFlatness, double scale) {
         PathIterator shapePathIterator = shape.getPathIterator(null, flatness);
         /*
          * Add all points of the shape to the triangulation

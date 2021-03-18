@@ -869,13 +869,13 @@ public class VM08SlicerPro extends VM07PathTruder {
             ArrayList<T> first = new ArrayList<>();
             T item = num.get(i);
             first.add(item);
-            permuteHelper(i, result, first, item, num);
+            permuteHelper(i, result, first, num);
         }
 
         return result;
     }
 
-    private <T> void permuteHelper(int removeAt, ArrayList<ArrayList<T>> result, ArrayList<T> first, T item, List<T> num) {
+    private <T> void permuteHelper(int removeAt, ArrayList<ArrayList<T>> result, ArrayList<T> first, List<T> num) {
         ArrayList<T> nextRemaining = new ArrayList<>();
         nextRemaining.addAll(num);
         nextRemaining.remove(removeAt);
@@ -883,11 +883,11 @@ public class VM08SlicerPro extends VM07PathTruder {
             result.add(first);
         } else {
             for (int i = 0; i < nextRemaining.size(); i++) {
-                T item2 = nextRemaining.get(i);
+                T item = nextRemaining.get(i);
                 ArrayList<T> nextHead = new ArrayList<>();
                 nextHead.addAll(first);
-                nextHead.add(item2);
-                permuteHelper(i, result, nextHead, item2, nextRemaining);
+                nextHead.add(item);
+                permuteHelper(i, result, nextHead, nextRemaining);
             }
         }
     }

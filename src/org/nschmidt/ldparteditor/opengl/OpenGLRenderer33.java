@@ -343,7 +343,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (ldrawStandardMode) {
                 modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true, c3d.getLockableDatFileReference());
             } else {
-                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true, c3d.getLockableDatFileReference());
+                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, true);
             }
 
             if (window.getCompositePrimitive().isDoingDND()) {
@@ -367,7 +367,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (ldrawStandardMode) {
                 modelRendererLDrawStandard.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false, c3d.getLockableDatFileReference());
             } else {
-                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false, c3d.getLockableDatFileReference());
+                modelRenderer.draw(stack, shaderProgram, shaderProgramCondline, shaderProgram2D, false);
             }
 
             stack.setShader(shaderProgram2);
