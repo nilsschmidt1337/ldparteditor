@@ -1256,7 +1256,6 @@ public enum MathHelper {
                     /*
                      * The error in the result is set by the error in x itself.
                      */
-                    // mc = new MathContext(res.precision());
                     return resul.round(mc);
                 }
             }
@@ -1280,10 +1279,8 @@ public enum MathHelper {
              * reduce modulo 2pi
              */
             BigDecimal res = mod2pi(x);
-            double errpi = 0.5 * Math.abs(x.ulp().doubleValue());
             MathContext mc = new MathContext(2 + err2prec());
             BigDecimal p = pi(mc);
-            mc = new MathContext(x.precision());
             if (res.compareTo(p) > 0) {
                 /*
                  * pi<x<=2pi: cos(x)= - cos(x-pi)
@@ -1327,7 +1324,6 @@ public enum MathHelper {
                      * x^(2k+1)/(2k+1)! below this value. x^(2k) < xUlpDbl;
                      * (2k)*log(x) < log(xUlpDbl);
                      */
-                    int k = (int) (Math.log(xUlpDbl) / Math.log(res.doubleValue())) / 2;
                     MathContext mcTay = new MathContext(err2prec());
                     for (int i = 1;; i++) {
                         /*
@@ -1361,25 +1357,6 @@ public enum MathHelper {
      * @return the value modulo 2*pi in the interval from 0 to 2*pi.
      */
     private static BigDecimal mod2pi(BigDecimal x) {
-        /*
-         * write x= 2*pi*k+r with the precision in r defined by the precision of
-         * x and not compromised by the precision of 2*pi, so the ulp of 2*pi*k
-         * should match the ulp of x. First get a guess of k to figure out how
-         * many digits of 2*pi are needed.
-         */
-        int k = (int) (0.5 * x.doubleValue() / Math.PI);
-        /*
-         * want to have err(2*pi*k)< err(x)=0.5*x.ulp, so err(pi) = err(x)/(4k)
-         * with two safety digits
-         */
-
-        double err2pi;
-
-        if (k != 0) {
-            err2pi = 0.25 * Math.abs(x.ulp().doubleValue() / k);
-        } else {
-            err2pi = 0.5 * Math.abs(x.ulp().doubleValue());
-        }
         MathContext mc = new MathContext(2 + err2prec());
         BigDecimal twopi = pi(mc).multiply(new BigDecimal(2));
         /*
@@ -1478,14 +1455,7 @@ public enum MathHelper {
      */
     private static BigDecimal subtractRound(final BigDecimal x, final BigDecimal y) {
         BigDecimal resul = x.subtract(y);
-        /*
-         * The estimation of the absolute error in the result is
-         * |err(y)|+|err(x)|
-         */
-
-        double errR = Math.abs(y.ulp().doubleValue() / 2.) + Math.abs(x.ulp().doubleValue() / 2.);
         MathContext mc = new MathContext(err2prec());
-
         return resul.round(mc);
 
     } /* subtractRound */
@@ -1618,7 +1588,7 @@ public enum MathHelper {
         return result;
     }
 
-    public static ArrayList<GData3> triangulateSevenPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, Vertex vertex7, GData1 dummyReference, DatFile df) {
+    public static ArrayList<GData3> triangulateSevenPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, Vertex vertex7, GData1 dummyReference, DatFile df) {
         ArrayList<GData3> result = new ArrayList<>();
 
         result.add(new GData3(colourNumber, r, g, b, a,

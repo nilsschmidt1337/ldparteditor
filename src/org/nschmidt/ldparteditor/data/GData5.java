@@ -141,9 +141,9 @@ public final class GData5 extends GData {
 
     }
 
-    public GData5(boolean superFast, final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2,
-            BigDecimal x3, BigDecimal y3, BigDecimal z3, BigDecimal x4, BigDecimal y4, BigDecimal z4, float x12, float y12, float z12, float x22, float y22, float z22, float x32, float y32,
-            float z32, float x42, float y42, float z42, GData1 parentFileRef, DatFile datFile) {
+    public GData5(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3,
+            BigDecimal y3, BigDecimal z3, BigDecimal x4, BigDecimal y4, BigDecimal z4, float x12, float y12, float z12, float x22, float y22, float z22, float x32, float y32, float z32,
+            float x42, float y42, float z42, GData1 parentFileRef, DatFile datFile) {
 
         super(parentFileRef);
         this.colourNumber = colourNumber;

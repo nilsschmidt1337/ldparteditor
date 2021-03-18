@@ -258,7 +258,6 @@ public class GL33ModelRendererLDrawStandard {
                         final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
                         final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
                         final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
-                        final ArrayList<GDataCSG> csgData = new ArrayList<>();
                         final boolean drawStudLogo = c3d.isShowingLogo();
                         final HashSet<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
                         final Matrix4f viewport = new Matrix4f();

@@ -229,8 +229,8 @@ public final class GData1 extends GData {
                             break;
                         case 5:
                             GData5 gd5 = (GData5) gdata;
-                            GData5 newGdata5 = new GData5(true, gd5.colourNumber, gd5.r, gd5.g, gd5.b, gd5.a, gd5.X1, gd5.Y1, gd5.Z1, gd5.X2, gd5.Y2, gd5.Z2, gd5.X3, gd5.Y3, gd5.Z3, gd5.X4, gd5.Y4,
-                                    gd5.Z4, gd5.x1, gd5.y1, gd5.z1, gd5.x2, gd5.y2, gd5.z2, gd5.x3, gd5.y3, gd5.z3, gd5.x4, gd5.y4, gd5.z4, this, datFile);
+                            GData5 newGdata5 = new GData5(gd5.colourNumber, gd5.r, gd5.g, gd5.b, gd5.a, gd5.X1, gd5.Y1, gd5.Z1, gd5.X2, gd5.Y2, gd5.Z2, gd5.X3, gd5.Y3, gd5.Z3, gd5.X4, gd5.Y4, gd5.Z4,
+                                    gd5.x1, gd5.y1, gd5.z1, gd5.x2, gd5.y2, gd5.z2, gd5.x3, gd5.y3, gd5.z3, gd5.x4, gd5.y4, gd5.z4, this, datFile);
                             res_gdata = newGdata5;
                             break;
                         case 6:

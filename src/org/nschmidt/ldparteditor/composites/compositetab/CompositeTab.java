@@ -775,7 +775,6 @@ public class CompositeTab extends CompositeTabDesign {
                 }
                 dat.setText(text);
                 final int off = event.start + event.length;
-                final String insertedText = event.length == 0 ? "" : compositeText[0].getText(event.start, off - 1); //$NON-NLS-1$
 
                 if (!state.isSync()) {
                     boolean doRedraw = !vm.getSelectedData().isEmpty();
