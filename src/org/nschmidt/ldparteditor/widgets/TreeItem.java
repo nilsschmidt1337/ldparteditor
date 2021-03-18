@@ -43,22 +43,14 @@ public class TreeItem {
     private boolean visible;
     private boolean shown;
 
-    /**
-     * @param parent
-     * @param style
-     */
-    public TreeItem(Tree parent, int style) {
+    public TreeItem(Tree parent) {
         this.parent = parent;
         this.parent.getItems().add(this);
         this.visible = true;
         this.shown = true;
     }
 
-    /**
-     * @param parentItem
-     * @param style
-     */
-    public TreeItem(TreeItem parentItem, int style) {
+    public TreeItem(TreeItem parentItem) {
         this.parent = parentItem.getParent();
         this.parentItem = parentItem;
         this.parentItem.getItems().add(this);

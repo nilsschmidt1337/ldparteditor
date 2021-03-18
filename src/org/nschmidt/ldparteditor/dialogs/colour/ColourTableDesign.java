@@ -93,7 +93,7 @@ class ColourTableDesign extends ApplicationWindow {
             nameToIndex.put(View.getLDConfigColourName(index), index);
         }
         for (String name : names) {
-            TreeItem trtm_Colour = new TreeItem(tree, SWT.PUSH);
+            TreeItem trtm_Colour = new TreeItem(tree);
             Integer id = nameToIndex.get(name);
             trtm_Colour.setText(new String[] { name, id + "", ""  }); //$NON-NLS-1$ //$NON-NLS-2$
             trtm_Colour.setVisible(true);

@@ -395,12 +395,12 @@ class OptionsDesign extends ApplicationWindow {
                 trclmn_Location.setWidth(100);
                 trclmn_Location.setText(I18n.KEYBOARD_Shortkey);
 
-                TreeItem trtm_Editor3D = new TreeItem(tree, SWT.NONE);
+                TreeItem trtm_Editor3D = new TreeItem(tree);
                 trtm_Editor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
                 trtm_Editor3D.setText(new String[] { I18n.KEYBOARD_Editor3D, "" }); //$NON-NLS-1$
                 trtm_Editor3D.setVisible(true);
 
-                TreeItem trtm_EditorText = new TreeItem(tree, SWT.NONE);
+                TreeItem trtm_EditorText = new TreeItem(tree);
                 trtm_EditorText.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
                 trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
@@ -560,12 +560,12 @@ class OptionsDesign extends ApplicationWindow {
                 trclmn_Colour.setWidth(100);
                 trclmn_Colour.setText(I18n.COLOUR_Colour);
 
-                TreeItem trtm_Editor3D = new TreeItem(tree, SWT.NONE);
+                TreeItem trtm_Editor3D = new TreeItem(tree);
                 trtm_Editor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
                 trtm_Editor3D.setText(new String[] { I18n.KEYBOARD_Editor3D, "" }); //$NON-NLS-1$
                 trtm_Editor3D.setVisible(true);
 
-                TreeItem trtm_EditorText = new TreeItem(tree, SWT.NONE);
+                TreeItem trtm_EditorText = new TreeItem(tree);
                 trtm_EditorText.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
                 trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
@@ -809,7 +809,7 @@ class OptionsDesign extends ApplicationWindow {
             keyCombination = m.get(t2);
         }
         if (visibility) {
-            TreeItem trtm_newKey = new TreeItem(parent, SWT.PUSH);
+            TreeItem trtm_newKey = new TreeItem(parent);
             trtm_newKey.setText(new String[] { description, keyCombination });
             trtm_newKey.setVisible(true);
             trtm_newKey.setData(new Object[]{t1, t2});
@@ -817,7 +817,7 @@ class OptionsDesign extends ApplicationWindow {
     }
 
     private void registerColour(TreeItem parent, String description, ColourType type, Object[] colourObj) {
-        TreeItem trtm_newKey = new TreeItem(parent, SWT.PUSH);
+        TreeItem trtm_newKey = new TreeItem(parent);
         trtm_newKey.setText(new String[] { description, "" }); //$NON-NLS-1$
         trtm_newKey.setVisible(true);
         trtm_newKey.setData(new Object[]{type, colourObj});

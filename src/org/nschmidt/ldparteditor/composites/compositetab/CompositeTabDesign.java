@@ -199,22 +199,22 @@ class CompositeTabDesign extends CTabItem {
                 trclmn_Type.setWidth(100);
                 trclmn_Type.setText(I18n.COMPOSITETAB_Type);
 
-                TreeItem trtm_Hints = new TreeItem(tree, SWT.NONE);
+                TreeItem trtm_Hints = new TreeItem(tree);
                 treeItem_Hints[0] = trtm_Hints;
                 trtm_Hints.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                 trtm_Hints.setText(new String[] { I18n.COMPOSITETAB_Hints, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
-                TreeItem trtm_Warnings = new TreeItem(tree, SWT.NONE);
+                TreeItem trtm_Warnings = new TreeItem(tree);
                 treeItem_Warnings[0] = trtm_Warnings;
                 trtm_Warnings.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
                 trtm_Warnings.setText(new String[] { I18n.COMPOSITETAB_Warnings, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
-                TreeItem trtm_Errors = new TreeItem(tree, SWT.NONE);
+                TreeItem trtm_Errors = new TreeItem(tree);
                 treeItem_Errors[0] = trtm_Errors;
                 trtm_Errors.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                 trtm_Errors.setText(new String[] { I18n.COMPOSITETAB_Errors, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
-                TreeItem trtm_Duplicates = new TreeItem(tree, SWT.NONE);
+                TreeItem trtm_Duplicates = new TreeItem(tree);
                 treeItem_Duplicates[0] = trtm_Duplicates;
                 trtm_Duplicates.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
                 trtm_Duplicates.setText(new String[] { I18n.COMPOSITETAB_Duplicates, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$

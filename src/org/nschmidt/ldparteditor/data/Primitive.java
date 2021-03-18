@@ -42,13 +42,20 @@ public class Primitive implements Comparable<Primitive> {
 
     private static Pattern numberAndMinus = Pattern.compile("[\\d|\\-\\\\]+"); //$NON-NLS-1$
 
-    public Primitive() {
-        primitives.add(this);
+    public static Primitive createPrimitiveCategory() {
+        final Primitive category = createPrimitive();
+        category.setCategory(true);
+        return category;
     }
 
-    public Primitive(boolean category) {
+    public static Primitive createPrimitive() {
+        final Primitive primitive = new Primitive();
+        primitive.primitives.add(primitive);
+        return primitive;
+    }
+
+    private Primitive() {
         primitives.add(this);
-        setCategory(true);
     }
 
     public void toggle() {

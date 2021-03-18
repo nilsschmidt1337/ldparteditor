@@ -620,7 +620,7 @@ public final class DatFile {
                         formatter.setLocale(MyLanguage.LOCALE);
                         formatter.applyPattern(I18n.DATFILE_Line);
 
-                        TreeItem trtmNewTreeitem = new TreeItem(warnings, SWT.NONE);
+                        TreeItem trtmNewTreeitem = new TreeItem(warnings);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
@@ -635,7 +635,7 @@ public final class DatFile {
                         formatter.setLocale(MyLanguage.LOCALE);
                         formatter.applyPattern(I18n.DATFILE_Line);
 
-                        TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                        TreeItem trtmNewTreeitem = new TreeItem(errors);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
@@ -690,7 +690,7 @@ public final class DatFile {
                         formatter.setLocale(MyLanguage.LOCALE);
                         formatter.applyPattern(I18n.DATFILE_Line);
 
-                        TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                        TreeItem trtmNewTreeitem = new TreeItem(errors);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         switch (flatAxis) {
@@ -719,7 +719,7 @@ public final class DatFile {
                     formatter.setLocale(MyLanguage.LOCALE);
                     formatter.applyPattern(I18n.DATFILE_Line);
 
-                    TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                    TreeItem trtmNewTreeitem = new TreeItem(errors);
                     trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                     trtmNewTreeitem.setVisible(false);
                     trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNext, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
@@ -823,7 +823,7 @@ public final class DatFile {
                         formatter.setLocale(MyLanguage.LOCALE);
                         formatter.applyPattern(I18n.DATFILE_Line);
 
-                        TreeItem trtmNewTreeitem = new TreeItem(warnings, SWT.NONE);
+                        TreeItem trtmNewTreeitem = new TreeItem(warnings);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
@@ -838,7 +838,7 @@ public final class DatFile {
                         formatter.setLocale(MyLanguage.LOCALE);
                         formatter.applyPattern(I18n.DATFILE_Line);
 
-                        TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                        TreeItem trtmNewTreeitem = new TreeItem(errors);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
@@ -886,7 +886,7 @@ public final class DatFile {
                         formatter.setLocale(MyLanguage.LOCALE);
                         formatter.applyPattern(I18n.DATFILE_Line);
 
-                        TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                        TreeItem trtmNewTreeitem = new TreeItem(errors);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         switch (flatAxis) {
@@ -914,7 +914,7 @@ public final class DatFile {
                     formatter.setLocale(MyLanguage.LOCALE);
                     formatter.applyPattern(I18n.DATFILE_Line);
 
-                    TreeItem trtmNewTreeitem = new TreeItem(errors, SWT.NONE);
+                    TreeItem trtmNewTreeitem = new TreeItem(errors);
                     trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                     trtmNewTreeitem.setVisible(false);
                     trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNext, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
@@ -972,7 +972,7 @@ public final class DatFile {
                 formatter.setLocale(MyLanguage.LOCALE);
                 formatter.applyPattern(I18n.DATFILE_Line);
 
-                TreeItem trtmNewTreeitem = new TreeItem(duplicates, SWT.NONE);
+                TreeItem trtmNewTreeitem = new TreeItem(duplicates);
                 trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
                 trtmNewTreeitem.setVisible(false);
                 trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
@@ -1033,7 +1033,7 @@ public final class DatFile {
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
                         formatter.applyPattern(I18n.DATFILE_Line);
-                        TreeItem trtmNewTreeitem = new TreeItem(headerHints, SWT.NONE);
+                        TreeItem trtmNewTreeitem = new TreeItem(headerHints);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         trtmNewTreeitem.setText(new String[] { result.getMessage(), formatter.format(messageArguments), result.getType() });
@@ -1041,7 +1041,7 @@ public final class DatFile {
                     }
                 } else {
                     for (ParsingResult result : parsingResults) {
-                        TreeItem trtmNewTreeitem = new TreeItem(headerHints, SWT.NONE);
+                        TreeItem trtmNewTreeitem = new TreeItem(headerHints);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         trtmNewTreeitem.setText(new String[] { result.getMessage(), "---", result.getType() }); //$NON-NLS-1$

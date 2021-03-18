@@ -272,8 +272,8 @@ public class GL33ModelRendererLDrawStandard {
 
                         {
                             usesTEXMAP = load_BFC_and_TEXMAP_info(
-                                    dataInOrder, texmapDataInOrder, csgData, vertexMap, matrixMap, df,
-                                    lines, triangles, quads, condlines, drawStudLogo);
+                                    dataInOrder, texmapDataInOrder, vertexMap, matrixMap, df, lines,
+                                    triangles, quads, condlines, drawStudLogo);
                             HashSet<GData> allData = new HashSet<>();
                             if (usesTEXMAP) {
 
@@ -1317,10 +1317,9 @@ public class GL33ModelRendererLDrawStandard {
     private boolean load_BFC_and_TEXMAP_info(
             final ArrayList<GDataAndWinding> dataInOrder,
             final ArrayList<GDataAndTexture> texmapDataInOrder,
-            final ArrayList<GDataCSG> csgData,
             final HashMap<GData, Vertex[]> vertexMap,
-            final HashMap<GData1, Matrix4f> matrixMap, final DatFile df,
-            final ThreadsafeHashMap<GData2, Vertex[]> lines,
+            final HashMap<GData1, Matrix4f> matrixMap,
+            final DatFile df, final ThreadsafeHashMap<GData2, Vertex[]> lines,
             final ThreadsafeHashMap<GData3, Vertex[]> triangles,
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
             final ThreadsafeHashMap<GData5, Vertex[]> condlines,

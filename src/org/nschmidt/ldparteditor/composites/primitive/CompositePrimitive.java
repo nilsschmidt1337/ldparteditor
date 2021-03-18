@@ -778,7 +778,7 @@ public class CompositePrimitive extends Composite {
                                                 }
                                             }
                                             leavesRulesMap.put(catID, rules);
-                                            Primitive firstParent = new Primitive(true);
+                                            Primitive firstParent = Primitive.createPrimitiveCategory();
                                             firstParent.setName(s.trim());
                                             categoryMap.put(catID, firstParent);
                                             leavesMap.put(catID, firstParent);
@@ -787,7 +787,7 @@ public class CompositePrimitive extends Composite {
                                             if (!categoryMap.containsKey(catID)) {
                                                 if (categoryMap.containsKey(before)) {
                                                     Primitive parent = categoryMap.get(before);
-                                                    Primitive child = new Primitive(true);
+                                                    Primitive child = Primitive.createPrimitiveCategory();
                                                     child.setName(s.trim());
                                                     parent.getCategories().add(child);
                                                     categoryMap.put(catID, child);
@@ -877,7 +877,7 @@ public class CompositePrimitive extends Composite {
                                                         leavesRulesMap.put(catID, rules);
                                                     }
                                                 } else {
-                                                    Primitive firstParent = new Primitive(true);
+                                                    Primitive firstParent = Primitive.createPrimitiveCategory();
                                                     firstParent.setName(s.trim());
                                                     categoryMap.put(catID, firstParent);
                                                     primitives.add(firstParent);
@@ -937,7 +937,7 @@ public class CompositePrimitive extends Composite {
                                     filedata = fileCache.get(ts);
                                     fileCacheHits.add(ts);
                                     final int s = filedata.size();
-                                    Primitive newPrimitive = new Primitive();
+                                    Primitive newPrimitive = Primitive.createPrimitive();
                                     ArrayList<PGData> data = new ArrayList<>();
                                     String description = ""; //$NON-NLS-1$
                                     PGData gd = null;
@@ -981,7 +981,7 @@ public class CompositePrimitive extends Composite {
                                         fileCache.remove(ts);
                                     }
                                     try {
-                                        Primitive newPrimitive = new Primitive();
+                                        Primitive newPrimitive = Primitive.createPrimitive();
                                         ArrayList<PGData> data = new ArrayList<>();
                                         String description = ""; //$NON-NLS-1$
                                         reader = new UTF8BufferedReader(path);

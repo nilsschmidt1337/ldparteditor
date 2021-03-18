@@ -3845,35 +3845,35 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "parts" + File.separator + "s" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectSubparts[0], SWT.NONE);
+                                                n = new TreeItem(treeItem_ProjectSubparts[0]);
                                                 df.setType(DatType.SUBPART);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator);
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "p" + File.separator).toString();  //$NON-NLS-1$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectPrimitives[0], SWT.NONE);
+                                                n = new TreeItem(treeItem_ProjectPrimitives[0]);
                                                 df.setType(DatType.PRIMITIVE);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_48_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator + "48" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 2, File.separator + "p" + File.separator  + "48" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectPrimitives48[0], SWT.NONE);
+                                                n = new TreeItem(treeItem_ProjectPrimitives48[0]);
                                                 df.setType(DatType.PRIMITIVE48);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_8_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator + "8" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "p" + File.separator  + "8" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectPrimitives8[0], SWT.NONE);
+                                                n = new TreeItem(treeItem_ProjectPrimitives8[0]);
                                                 df.setType(DatType.PRIMITIVE8);
                                             } else {
                                                 int ind = fileName.lastIndexOf(File.separator);
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "parts" + File.separator).toString();  //$NON-NLS-1$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectParts[0], SWT.NONE);
+                                                n = new TreeItem(treeItem_ProjectParts[0]);
                                                 df.setType(DatType.PART);
                                             }
 
@@ -6010,7 +6010,7 @@ public class Editor3DWindow extends Editor3DDesign {
         this.treeItem_Unsaved[0].removeAll();
         Set<DatFile> unsaved = Project.getUnsavedFiles();
         for (DatFile df : unsaved) {
-            TreeItem ti = new TreeItem(this.treeItem_Unsaved[0], SWT.NONE);
+            TreeItem ti = new TreeItem(this.treeItem_Unsaved[0]);
             StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
             final String d = df.getDescription();
             if (d != null)
@@ -6218,7 +6218,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         itemsToRemove.add(df);
                         dats.remove(d);
                         ((ArrayList<DatFile>) item2.getData()).add(d);
-                        TreeItem nt = new TreeItem(item2, SWT.NONE);
+                        TreeItem nt = new TreeItem(item2);
                         nt.setText(df.getText());
                         d.setType(types.get(validPrefix));
                         nt.setData(d);
@@ -6305,7 +6305,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         Set<DatFile> unsaved = Project.getUnsavedFiles();
         for (DatFile df : unsaved) {
-            TreeItem ti = new TreeItem(this.treeItem_Unsaved[0], SWT.NONE);
+            TreeItem ti = new TreeItem(this.treeItem_Unsaved[0]);
             StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
             final String d = df.getDescription();
             if (d != null)
@@ -6858,7 +6858,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (d != null)
                             nameSb.append(d);
                         String name = nameSb.toString();
-                        TreeItem finding = new TreeItem(folder, SWT.NONE);
+                        TreeItem finding = new TreeItem(folder);
                         // Save the path
                         finding.setData(part);
                         // Set the filename
@@ -7091,7 +7091,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     df.getVertexManager().setModified(true, true);
 
-                    TreeItem ti = new TreeItem(parent, SWT.NONE);
+                    TreeItem ti = new TreeItem(parent);
                     StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
                     nameSb.append(I18n.E3D_NewFile);
                     ti.setText(nameSb.toString());
@@ -7283,7 +7283,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
+            ti = new TreeItem(this.treeItem_ProjectParts[0]);
             break;
             case SUBPART:
             {
@@ -7291,7 +7291,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectSubparts[0], SWT.NONE);
+            ti = new TreeItem(this.treeItem_ProjectSubparts[0]);
             break;
             case PRIMITIVE:
             {
@@ -7299,7 +7299,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectPrimitives[0], SWT.NONE);
+            ti = new TreeItem(this.treeItem_ProjectPrimitives[0]);
             break;
             case PRIMITIVE48:
             {
@@ -7307,7 +7307,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectPrimitives48[0], SWT.NONE);
+            ti = new TreeItem(this.treeItem_ProjectPrimitives48[0]);
             break;
             case PRIMITIVE8:
             {
@@ -7315,7 +7315,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives8[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectPrimitives8[0], SWT.NONE);
+            ti = new TreeItem(this.treeItem_ProjectPrimitives8[0]);
             break;
             default:
             {
@@ -7323,7 +7323,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectParts[0], SWT.NONE);
+            ti = new TreeItem(this.treeItem_ProjectParts[0]);
             break;
             }
 
@@ -8991,7 +8991,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     newDatFile.saveForced();
                     newDatFile.setType(df.getType());
                     ((ArrayList<DatFile>) targetTreeItem.getData()).add(newDatFile);
-                    TreeItem ti = new TreeItem(targetTreeItem, SWT.NONE);
+                    TreeItem ti = new TreeItem(targetTreeItem);
                     ti.setText(new File(df.getNewName()).getName());
                     ti.setData(newDatFile);
                 } else if (targetFile.equals(df)) { // This can only happen if the user opens the unofficial parts folder as a project
@@ -9035,7 +9035,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     newDatFile.setText(df.getText());
                     newDatFile.saveForced();
                     ((ArrayList<DatFile>) targetTreeItem.getData()).add(newDatFile);
-                    TreeItem ti = new TreeItem(targetTreeItem, SWT.NONE);
+                    TreeItem ti = new TreeItem(targetTreeItem);
                     ti.setText(new File(df.getNewName()).getName());
                     ti.setData(newDatFile);
                 }
@@ -9061,7 +9061,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             newDatFile.saveForced();
                             newDatFile.setType(datToCreate.getType());
                             ((ArrayList<DatFile>) targetTrees[i - 5].getData()).add(newDatFile);
-                            TreeItem ti = new TreeItem(targetTrees[i - 5], SWT.NONE);
+                            TreeItem ti = new TreeItem(targetTrees[i - 5]);
                             ti.setText(new File(datToCreate.getOldName()).getName());
                             ti.setData(newDatFile);
                         }

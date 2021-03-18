@@ -24,7 +24,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.regex.Pattern;
 
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CTabItem;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
@@ -697,7 +696,7 @@ public class LibraryManager {
             Collections.sort(datFiles);
             // Create the file entries
             for (DatFileName dat : datFiles) {
-                TreeItem finding = new TreeItem(parentMap.get(dat), SWT.NONE);
+                TreeItem finding = new TreeItem(parentMap.get(dat));
                 // Save the path
                 DatFile path = new DatFile(folderPath + File.separator + dat.getName(), dat.getDescription(), isReadOnlyFolder, typeMap.get(dat));
                 finding.setData(path);
@@ -752,7 +751,7 @@ public class LibraryManager {
                         Collections.sort(datFiles);
                         // Create the file entries
                         for (DatFileName dat : datFiles) {
-                            TreeItem finding = new TreeItem(treeItem, SWT.NONE);
+                            TreeItem finding = new TreeItem(treeItem);
                             // Save the path
                             DatFile path = new DatFile(folderPath + File.separator + dat.getName(), "", isReadOnlyFolder, type); //$NON-NLS-1$
                             finding.setData(path);

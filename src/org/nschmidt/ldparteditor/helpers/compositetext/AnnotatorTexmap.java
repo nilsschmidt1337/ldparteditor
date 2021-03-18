@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.helpers.compositetext;
 import java.util.Set;
 
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -41,16 +40,13 @@ public enum AnnotatorTexmap {
 
     /**
      * Annotates selected lines with the TEXMAP meta command (clears the selection)
-     *
-     * @param cText
-     *            the selected CompositeText
      * @param lineStart
      *            start line number to annotate
      * @param lineEnd
      *            end line number to annotate
      * @param datFile
      */
-    public static void annotate(StyledText cText, int lineStart, int lineEnd, DatFile datFile) {
+    public static void annotate(int lineStart, int lineEnd, DatFile datFile) {
 
         if (datFile.isReadOnly())
             return;

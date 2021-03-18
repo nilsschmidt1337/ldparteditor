@@ -61,7 +61,7 @@ public class SearchWindow extends SearchDesign {
         WidgetUtil(btn_find[0]).addSelectionListener(e -> find());
 
         txt_find[0].addModifyListener(e -> {
-            setDisabledButtonStatus(textComposite);
+            setDisabledButtonStatus();
 
             if (btn_find[0].isEnabled() && cb_incremental[0].getSelection()) {
 
@@ -104,11 +104,11 @@ public class SearchWindow extends SearchDesign {
         txt_find[0].addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent e) {
-                setDisabledButtonStatus(textComposite);
+                setDisabledButtonStatus();
             }
             @Override
             public void focusGained(FocusEvent consumed) {
-                setDisabledButtonStatus(textComposite);
+                setDisabledButtonStatus();
             }
         });
 
@@ -123,11 +123,11 @@ public class SearchWindow extends SearchDesign {
         txt_replace[0].addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent e) {
-                setDisabledButtonStatus(textComposite);
+                setDisabledButtonStatus();
             }
             @Override
             public void focusGained(FocusEvent consumed) {
-                setDisabledButtonStatus(textComposite);
+                setDisabledButtonStatus();
             }
         });
 
@@ -180,7 +180,7 @@ public class SearchWindow extends SearchDesign {
         }
     }
 
-    private void setDisabledButtonStatus(StyledText txt) {
+    private void setDisabledButtonStatus() {
         boolean b = textComposite == null || textComposite.isDisposed();
         btn_find[0].setEnabled(!b);
         btn_findAndReplace[0].setEnabled(!b);
@@ -190,7 +190,7 @@ public class SearchWindow extends SearchDesign {
     }
 
     private void find() {
-        setDisabledButtonStatus(textComposite);
+        setDisabledButtonStatus();
 
         if (btn_find[0].isEnabled()) {
 
@@ -258,7 +258,7 @@ public class SearchWindow extends SearchDesign {
 
     private void replace() {
         if (textComposite == null || tab != null && !tab.getState().getFileNameObj().getVertexManager().isUpdated()) return;
-        setDisabledButtonStatus(textComposite);
+        setDisabledButtonStatus();
 
         if (btn_find[0].isEnabled()) {
 
@@ -304,7 +304,7 @@ public class SearchWindow extends SearchDesign {
 
     private void replaceAll() {
         if (textComposite == null || tab != null && !tab.getState().getFileNameObj().getVertexManager().isUpdated()) return;
-        setDisabledButtonStatus(textComposite);
+        setDisabledButtonStatus();
 
         if (btn_find[0].isEnabled()) {
 

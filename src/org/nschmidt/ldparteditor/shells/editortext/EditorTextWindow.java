@@ -756,7 +756,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                Annotator.annotate(st, fromLine, toLine, selection.getState().getFileNameObj());
+                Annotator.annotate(fromLine, toLine, selection.getState().getFileNameObj());
                 st.forceFocus();
             }
         });
@@ -782,7 +782,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                AnnotatorTexmap.annotate(st, fromLine, toLine, selection.getState().getFileNameObj());
+                AnnotatorTexmap.annotate(fromLine, toLine, selection.getState().getFileNameObj());
                 st.forceFocus();
             }
         });
