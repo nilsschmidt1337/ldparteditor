@@ -595,102 +595,102 @@ class Editor3DDesign extends ApplicationWindow {
         for (ToolItemState s : userSettings.getToolItemConfig3D()) {
             String obj = s.getKey();
             if (obj.equals("SYNC_AND_RECENT_FILES")) { //$NON-NLS-1$
-                lastToolItem = createToolItemSync(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // SYNC_AND_RECENT_FILES
+                lastToolItem = createToolItemSync(s.getDrawLocation(), s.getDrawMode()); // SYNC_AND_RECENT_FILES
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("PROJECT_MANAGEMENT")) { //$NON-NLS-1$
-                lastToolItem = createToolItemNewOpenSave(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // PROJECT_MANAGEMENT
+                lastToolItem = createToolItemNewOpenSave(s.getDrawLocation(), s.getDrawMode()); // PROJECT_MANAGEMENT
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("OPEN_SAVE_DATFILE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemNewOpenDat(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // OPEN_SAVE_DATFILE
+                lastToolItem = createToolItemNewOpenDat(s.getDrawLocation(), s.getDrawMode()); // OPEN_SAVE_DATFILE
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("SHOW_AND_HIDE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemHideUnhide(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // SHOW_AND_HIDE
+                lastToolItem = createToolItemHideUnhide(s.getDrawLocation(), s.getDrawMode()); // SHOW_AND_HIDE
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("MISC_TOGGLE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemMiscToggle(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // MISC_TOGGLE
+                lastToolItem = createToolItemMiscToggle(s.getDrawLocation(), s.getDrawMode()); // MISC_TOGGLE
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("UNDO_REDO")) { //$NON-NLS-1$
-                lastToolItem = createToolItemUndoRedo(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // UNDO_REDO
+                lastToolItem = createToolItemUndoRedo(s.getDrawLocation(), s.getDrawMode()); // UNDO_REDO
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("TRANSFORMATION_MODE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemTransformationMode(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // TRANSFORMATION_MODE
+                lastToolItem = createToolItemTransformationMode(s.getDrawLocation(), s.getDrawMode()); // TRANSFORMATION_MODE
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("MANIPULATOR_MODE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemManipulatorMode(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // MANIPULATOR_MODE
+                lastToolItem = createToolItemManipulatorMode(s.getDrawLocation(), s.getDrawMode()); // MANIPULATOR_MODE
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("MANIPULATOR_ACTIONS")) { //$NON-NLS-1$
-                lastToolItem = createToolItemManipulatorActions(s.getDrawLocation(), s.getDrawMode(), s.getLabel(), lastToolItem); // MANIPULATOR_ACTIONS
+                lastToolItem = createToolItemManipulatorActions(s.getDrawLocation(), s.getDrawMode(), lastToolItem); // MANIPULATOR_ACTIONS
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("MISC_CLICK")) { //$NON-NLS-1$
-                lastToolItem = createToolItemMiscClick(s.getLabel()); // MISC_CLICK
+                lastToolItem = createToolItemMiscClick(); // MISC_CLICK
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("CUT_COPY_PASTE_DELETE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemCCPD(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // CUT_COPY_PASTE_DELETE
+                lastToolItem = createToolItemCCPD(s.getDrawLocation(), s.getDrawMode()); // CUT_COPY_PASTE_DELETE
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("OBJECT_MODE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemMode(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // OBJECT_MODE
+                lastToolItem = createToolItemMode(s.getDrawLocation(), s.getDrawMode()); // OBJECT_MODE
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("INSERT_AT_CURSOR")) { //$NON-NLS-1$
-                lastToolItem = createToolItemInsertAtCursorPosition(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // INSERT_AT_CURSOR
+                lastToolItem = createToolItemInsertAtCursorPosition(s.getDrawLocation(), s.getDrawMode()); // INSERT_AT_CURSOR
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("ADD_SOMETHING")) { //$NON-NLS-1$
-                lastToolItem = createToolItemAdd(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // ADD_SOMETHING
+                lastToolItem = createToolItemAdd(s.getDrawLocation(), s.getDrawMode()); // ADD_SOMETHING
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("COLOUR_BAR")) { //$NON-NLS-1$
-                lastToolItem = createToolItemColours(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // COLOUR_BAR
+                lastToolItem = createToolItemColours(s.getDrawLocation(), s.getDrawMode()); // COLOUR_BAR
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("LINE_THICKNESS")) { //$NON-NLS-1$
-                lastToolItem = createToolItemLineThickness(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // LINE_THICKNESS
+                lastToolItem = createToolItemLineThickness(s.getDrawLocation(), s.getDrawMode()); // LINE_THICKNESS
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("CLOSE_VIEW")) { //$NON-NLS-1$
-                lastToolItem = createToolItemCloseView(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // LINE_THICKNESS
+                lastToolItem = createToolItemCloseView(s.getDrawLocation(), s.getDrawMode()); // LINE_THICKNESS
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("CHANGE_PERSPECTIVE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemPerspective(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // LINE_THICKNESS
+                lastToolItem = createToolItemPerspective(s.getDrawLocation(), s.getDrawMode()); // LINE_THICKNESS
                 missingItemsToCreate.remove(obj);
             }
             if (obj.equals("RENDER_MODE")) { //$NON-NLS-1$
-                lastToolItem = createToolItemRenderMode(s.getDrawLocation(), s.getDrawMode(), s.getLabel()); // LINE_THICKNESS
+                lastToolItem = createToolItemRenderMode(s.getDrawLocation(), s.getDrawMode()); // LINE_THICKNESS
                 missingItemsToCreate.remove(obj);
             }
         }
 
-        if (missingItemsToCreate.contains("SYNC_AND_RECENT_FILES")) lastToolItem = createToolItemSync(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // SYNC_AND_RECENT_FILES //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("PROJECT_MANAGEMENT")) lastToolItem = createToolItemNewOpenSave(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // PROJECT_MANAGEMENT //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("CHANGE_PERSPECTIVE")) lastToolItem = createToolItemPerspective(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // CHANGE_PERSPECTIVE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("RENDER_MODE")) lastToolItem = createToolItemRenderMode(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // RENDER_MODE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("MANIPULATOR_ACTIONS")) lastToolItem = createToolItemManipulatorActions(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, "", lastToolItem); // MANIPULATOR_ACTIONS //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("MANIPULATOR_MODE")) lastToolItem = createToolItemManipulatorMode(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, ""); // MANIPULATOR_MODE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("MISC_TOGGLE")) lastToolItem = createToolItemMiscToggle(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // MISC_TOGGLE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("OPEN_SAVE_DATFILE")) lastToolItem = createToolItemNewOpenDat(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // OPEN_SAVE_DATFILE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("SHOW_AND_HIDE")) lastToolItem = createToolItemHideUnhide(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // SHOW_AND_HIDE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("UNDO_REDO")) lastToolItem = createToolItemUndoRedo(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // UNDO_REDO //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("TRANSFORMATION_MODE")) lastToolItem = createToolItemTransformationMode(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // TRANSFORMATION_MODE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("OBJECT_MODE")) lastToolItem = createToolItemMode(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // OBJECT_MODE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("CUT_COPY_PASTE_DELETE")) lastToolItem = createToolItemCCPD(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // CUT_COPY_PASTE_DELETE //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("MISC_CLICK")) lastToolItem = createToolItemMiscClick(""); // MISC_CLICK //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("INSERT_AT_CURSOR")) lastToolItem = createToolItemInsertAtCursorPosition(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // INSERT_AT_CURSOR //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("ADD_SOMETHING")) lastToolItem = createToolItemAdd(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL, ""); // ADD_SOMETHING //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("CLOSE_VIEW")) lastToolItem = createToolItemCloseView(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // CLOSE_VIEW //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("COLOUR_BAR")) lastToolItem = createToolItemColours(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // COLOUR_BAR //$NON-NLS-1$ //$NON-NLS-2$
-        if (missingItemsToCreate.contains("LINE_THICKNESS")) lastToolItem = createToolItemLineThickness(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL, ""); // LINE_THICKNESS //$NON-NLS-1$ //$NON-NLS-2$
+        if (missingItemsToCreate.contains("SYNC_AND_RECENT_FILES")) lastToolItem = createToolItemSync(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL); // SYNC_AND_RECENT_FILES //$NON-NLS-1$
+        if (missingItemsToCreate.contains("PROJECT_MANAGEMENT")) lastToolItem = createToolItemNewOpenSave(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL); // PROJECT_MANAGEMENT //$NON-NLS-1$
+        if (missingItemsToCreate.contains("CHANGE_PERSPECTIVE")) lastToolItem = createToolItemPerspective(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL); // CHANGE_PERSPECTIVE //$NON-NLS-1$
+        if (missingItemsToCreate.contains("RENDER_MODE")) lastToolItem = createToolItemRenderMode(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL); // RENDER_MODE //$NON-NLS-1$
+        if (missingItemsToCreate.contains("MANIPULATOR_ACTIONS")) lastToolItem = createToolItemManipulatorActions(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL, lastToolItem); // MANIPULATOR_ACTIONS //$NON-NLS-1$
+        if (missingItemsToCreate.contains("MANIPULATOR_MODE")) lastToolItem = createToolItemManipulatorMode(ToolItemDrawLocation.WEST, ToolItemDrawMode.VERTICAL); // MANIPULATOR_MODE //$NON-NLS-1$
+        if (missingItemsToCreate.contains("MISC_TOGGLE")) lastToolItem = createToolItemMiscToggle(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL); // MISC_TOGGLE //$NON-NLS-1$
+        if (missingItemsToCreate.contains("OPEN_SAVE_DATFILE")) lastToolItem = createToolItemNewOpenDat(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL); // OPEN_SAVE_DATFILE //$NON-NLS-1$
+        if (missingItemsToCreate.contains("SHOW_AND_HIDE")) lastToolItem = createToolItemHideUnhide(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL); // SHOW_AND_HIDE //$NON-NLS-1$
+        if (missingItemsToCreate.contains("UNDO_REDO")) lastToolItem = createToolItemUndoRedo(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL); // UNDO_REDO //$NON-NLS-1$
+        if (missingItemsToCreate.contains("TRANSFORMATION_MODE")) lastToolItem = createToolItemTransformationMode(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL); // TRANSFORMATION_MODE //$NON-NLS-1$
+        if (missingItemsToCreate.contains("OBJECT_MODE")) lastToolItem = createToolItemMode(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL); // OBJECT_MODE //$NON-NLS-1$
+        if (missingItemsToCreate.contains("CUT_COPY_PASTE_DELETE")) lastToolItem = createToolItemCCPD(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL); // CUT_COPY_PASTE_DELETE //$NON-NLS-1$
+        if (missingItemsToCreate.contains("MISC_CLICK")) lastToolItem = createToolItemMiscClick(); // MISC_CLICK //$NON-NLS-1$
+        if (missingItemsToCreate.contains("INSERT_AT_CURSOR")) lastToolItem = createToolItemInsertAtCursorPosition(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL); // INSERT_AT_CURSOR //$NON-NLS-1$
+        if (missingItemsToCreate.contains("ADD_SOMETHING")) lastToolItem = createToolItemAdd(ToolItemDrawLocation.NORTH, ToolItemDrawMode.HORIZONTAL); // ADD_SOMETHING //$NON-NLS-1$
+        if (missingItemsToCreate.contains("CLOSE_VIEW")) lastToolItem = createToolItemCloseView(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL); // CLOSE_VIEW //$NON-NLS-1$
+        if (missingItemsToCreate.contains("COLOUR_BAR")) lastToolItem = createToolItemColours(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL); // COLOUR_BAR //$NON-NLS-1$
+        if (missingItemsToCreate.contains("LINE_THICKNESS")) lastToolItem = createToolItemLineThickness(ToolItemDrawLocation.EAST, ToolItemDrawMode.VERTICAL); // LINE_THICKNESS //$NON-NLS-1$
 
         {
             Composite cmp_main_editor = new Composite(container, SWT.BORDER);
@@ -1782,7 +1782,7 @@ class Editor3DDesign extends ApplicationWindow {
         return container;
     }
 
-    private ToolItem createToolItemCloseView(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemCloseView(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -1806,7 +1806,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_CloseView;
     }
 
-    private ToolItem createToolItemPerspective(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemPerspective(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -1866,7 +1866,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_ViewPerspective;
     }
 
-    private ToolItem createToolItemRenderMode(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemRenderMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -1938,7 +1938,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_RenderMode;
     }
 
-    private ToolItem createToolItemLineThickness(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemLineThickness(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -1993,7 +1993,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_LineThickness;
     }
 
-    private ToolItem createToolItemColours(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemColours(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -2069,7 +2069,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_ColourFunctions;
     }
 
-    private ToolItem createToolItemAdd(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemAdd(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -2133,7 +2133,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_Add;
     }
 
-    private ToolItem createToolItemInsertAtCursorPosition(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemInsertAtCursorPosition(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -2155,7 +2155,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_InsertAtCursorPosition;
     }
 
-    private ToolItem createToolItemMode(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -2198,7 +2198,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_Mode;
     }
 
-    private ToolItem createToolItemCCPD(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemCCPD(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -2240,7 +2240,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_CCPD;
     }
 
-    private ToolItem createToolItemMiscClick(String label) {
+    private ToolItem createToolItemMiscClick() {
         ToolItem toolItem_MiscClick = new ToolItem(cmpNorth, Cocoa.getStyle(), true);
         {
             NButton btn_ShowSelectionInTextEditor = new NButton(toolItem_MiscClick, Cocoa.getStyle());
@@ -2859,7 +2859,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_MiscClick;
     }
 
-    private ToolItem createToolItemManipulatorActions(ToolItemDrawLocation location, ToolItemDrawMode mode, String label, ToolItem toolItem) {
+    private ToolItem createToolItemManipulatorActions(ToolItemDrawLocation location, ToolItemDrawMode mode, ToolItem toolItem) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -3153,7 +3153,7 @@ class Editor3DDesign extends ApplicationWindow {
         }
     }
 
-    private ToolItem createToolItemManipulatorMode(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemManipulatorMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -3184,7 +3184,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_TransformationModes;
     }
 
-    private ToolItem createToolItemTransformationMode(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemTransformationMode(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -3233,7 +3233,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_TransformationMode;
     }
 
-    private ToolItem createToolItemUndoRedo(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemUndoRedo(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -3269,7 +3269,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_UndoRedo;
     }
 
-    private ToolItem createToolItemMiscToggle(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemMiscToggle(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -3306,7 +3306,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_MiscToggle;
     }
 
-    private ToolItem createToolItemHideUnhide(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemHideUnhide(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -3336,7 +3336,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_HideUnhide;
     }
 
-    private ToolItem createToolItemNewOpenDat(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemNewOpenDat(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -3385,7 +3385,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_NewOpenDAT;
     }
 
-    private ToolItem createToolItemNewOpenSave(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemNewOpenSave(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:
@@ -3427,7 +3427,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_NewOpenSave;
     }
 
-    private ToolItem createToolItemSync(ToolItemDrawLocation location, ToolItemDrawMode mode, String label) {
+    private ToolItem createToolItemSync(ToolItemDrawLocation location, ToolItemDrawMode mode) {
         final Composite target;
         switch (location) {
         case NORTH:

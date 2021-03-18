@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.data;
 import java.math.RoundingMode;
 
 import org.eclipse.swt.custom.CTabItem;
-import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.helpers.compositetext.Text2SelectionConverter;
@@ -39,16 +38,13 @@ public enum Rounder {
 
     /**
      * Rounds selected lines (clears the selection)
-     *
-     * @param cText
-     *            the selected CompositeText
      * @param lineStart
      *            start line number to round
      * @param lineEnd
      *            end line number to round
      * @param datFile
      */
-    public static void round(CompositeTabState st, StyledText cText, int lineStart, int lineEnd, DatFile datFile) {
+    public static void round(CompositeTabState st, int lineStart, int lineEnd, DatFile datFile) {
 
         if (datFile.isReadOnly())
             return;

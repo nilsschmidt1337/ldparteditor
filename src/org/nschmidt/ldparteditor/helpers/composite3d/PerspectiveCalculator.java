@@ -178,7 +178,7 @@ public class PerspectiveCalculator {
     public void calculateOriginData() {
         Matrix4f realViewport = getRealViewport();
         calculateOrigin(realViewport);
-        calculateGrid(realViewport);
+        calculateGrid();
         c3d.setNegDeterminant(realViewport.determinant() < 0f);
         calculateViewGenerator();
     }
@@ -203,7 +203,7 @@ public class PerspectiveCalculator {
     /**
      * Calculates the grid data for the actual viewport perspective
      */
-    private void calculateGrid(Matrix4f realViewport) {
+    private void calculateGrid() {
 
         float grid_size = c3d.getZoom() * View.PIXEL_PER_LDU;
         while (grid_size > 10f) {

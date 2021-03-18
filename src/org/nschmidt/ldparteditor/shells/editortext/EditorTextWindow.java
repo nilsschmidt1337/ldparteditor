@@ -1025,7 +1025,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                Rounder.round(selection.getState(), st, fromLine, toLine, selection.getState().getFileNameObj());
+                Rounder.round(selection.getState(), fromLine, toLine, selection.getState().getFileNameObj());
                 st.forceFocus();
             }
         });

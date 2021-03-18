@@ -973,7 +973,7 @@ public class CompositeTab extends CompositeTabDesign {
                     toLine2++;
                     NLogger.debug(getClass(), "From line {0}", fromLine2); //$NON-NLS-1$
                     NLogger.debug(getClass(), "To   line {0}", toLine2); //$NON-NLS-1$
-                    Rounder.round(state, st2, fromLine2, toLine2, df);
+                    Rounder.round(state, fromLine2, toLine2, df);
                     st2.forceFocus();
                     break;
                 }
