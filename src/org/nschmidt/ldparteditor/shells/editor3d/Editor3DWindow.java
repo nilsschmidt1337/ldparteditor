@@ -247,8 +247,8 @@ public class Editor3DWindow extends Editor3DDesign {
     public static int sashWeight1 = 50;
     public static int sashWeight2 = 50;
 
-    final private static AtomicBoolean alive = new AtomicBoolean(true);
-    final private static AtomicBoolean no_sync_deadlock = new AtomicBoolean(false);
+    private static final AtomicBoolean alive = new AtomicBoolean(true);
+    private static final AtomicBoolean no_sync_deadlock = new AtomicBoolean(false);
 
     private boolean addingSomething = false;
     private boolean addingVertices = false;

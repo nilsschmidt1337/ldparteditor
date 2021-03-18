@@ -27,7 +27,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 public class GLShader {
 
     private final int program;
-    final private HashMap<String, Integer> uniformMap = new HashMap<>();
+    private final HashMap<String, Integer> uniformMap = new HashMap<>();
 
     public GLShader() {
         program = 0;

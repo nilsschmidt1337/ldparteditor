@@ -113,13 +113,13 @@ public final class GDataCSG extends GData {
     private final GColour colour;
     final Matrix4f matrix;
 
-    public synchronized static void forceRecompile(DatFile df) {
+    public static synchronized void forceRecompile(DatFile df) {
         registeredData.putIfAbsent(df, new HashSet<>()).add(null);
         clearPolygonCache.putIfAbsent(df, true);
         Plane.EPSILON = 1e-3;
     }
 
-    public synchronized static void fullReset(DatFile df) {
+    public static synchronized void fullReset(DatFile df) {
         quality = 16;
         registeredData.putIfAbsent(df, new HashSet<>()).clear();
         linkedCSG.putIfAbsent(df, new HashMap<>()).clear();
@@ -135,7 +135,7 @@ public final class GDataCSG extends GData {
         return colour;
     }
 
-    public synchronized static void resetCSG(DatFile df, boolean useLowQuality) {
+    public static synchronized void resetCSG(DatFile df, boolean useLowQuality) {
         df.setOptimizingCSG(true);
         if (useLowQuality) {
             quality = 12;
@@ -1021,7 +1021,7 @@ public final class GDataCSG extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
-    public synchronized static boolean hasSelectionCSG(DatFile df) {
+    public static synchronized boolean hasSelectionCSG(DatFile df) {
         return !selectedBodyMap.putIfAbsent(df, new HashSet<>()).isEmpty();
     }
 
@@ -1029,7 +1029,7 @@ public final class GDataCSG extends GData {
         return selectedBodyMap.putIfAbsent(df, new HashSet<>()).contains(this);
     }
 
-    public synchronized static void drawSelectionCSG(Composite3D c3d, final boolean modifiedManipulator) {
+    public static synchronized void drawSelectionCSG(Composite3D c3d, final boolean modifiedManipulator) {
         final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<>());
         if (!selectedTriangles.isEmpty()) {
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
@@ -1134,7 +1134,7 @@ public final class GDataCSG extends GData {
         return result;
     }
 
-    public synchronized static HashSet<GDataCSG> getSelection(DatFile df) {
+    public static synchronized HashSet<GDataCSG> getSelection(DatFile df) {
         HashSet<GDataCSG> result = selectedBodyMap.putIfAbsent(df, new HashSet<>());
         for (Iterator<GDataCSG> it = result.iterator(); it.hasNext();) {
             if (it.next() == null) it.remove();
@@ -1142,7 +1142,7 @@ public final class GDataCSG extends GData {
         return result;
     }
 
-    public synchronized static void selectAll(DatFile df) {
+    public static synchronized void selectAll(DatFile df) {
         clearSelection(df);
         HashSet<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
@@ -1164,7 +1164,7 @@ public final class GDataCSG extends GData {
         return false;
     }
 
-    public synchronized static HashSet<GColour> getSelectedColours(DatFile df) {
+    public static synchronized HashSet<GColour> getSelectedColours(DatFile df) {
         final HashSet<GColour> colours = new HashSet<>();
         final HashSet<GDataCSG> selection = getSelection(df);
         for (GDataCSG g : selection) {
@@ -1173,7 +1173,7 @@ public final class GDataCSG extends GData {
         return colours;
     }
 
-    public synchronized static void selectAllWithSameColours(DatFile df, Set<GColour> allColours) {
+    public static synchronized void selectAllWithSameColours(DatFile df, Set<GColour> allColours) {
         HashSet<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
             final GDataCSG g = it.next();
@@ -1185,7 +1185,7 @@ public final class GDataCSG extends GData {
         selectedBodyMap.get(df).addAll(newSelection);
     }
 
-    public synchronized static void clearSelection(DatFile df) {
+    public static synchronized void clearSelection(DatFile df) {
         selectedBodyMap.putIfAbsent(df, new HashSet<>()).clear();
     }
 

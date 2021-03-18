@@ -41,7 +41,7 @@ public abstract class PGData implements IPGData, Serializable {
     }
 
     private static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
-    private transient final int ID;
+    private final transient int ID;
 
     PGData() {
         // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!

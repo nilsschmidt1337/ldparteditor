@@ -1114,7 +1114,7 @@ public enum MathHelper {
      *            The required precision of the result.
      * @return 3.14159...
      */
-    static public BigDecimal pi(final MathContext mc) {
+    public static BigDecimal pi(final MathContext mc) {
         /* look it up if possible */
         if (mc.getPrecision() < PI.precision()) {
             return PI.round(mc);
@@ -1140,7 +1140,7 @@ public enum MathHelper {
      * @return The n-th root of the BigDecimal rounded to the precision implied
      *         by x, x^(1/n).
      */
-    static public BigDecimal root(final int n, final BigDecimal x) {
+    public static BigDecimal root(final int n, final BigDecimal x) {
         if (x.compareTo(BigDecimal.ZERO) < 0) {
             throw new ArithmeticException("negative argument " + x.toString() + " of root"); //$NON-NLS-1$ //$NON-NLS-2$
         }
@@ -1191,7 +1191,7 @@ public enum MathHelper {
      *            The argument in radians.
      * @return sin(x) in the range -1 to 1.
      */
-    static public BigDecimal sin(final BigDecimal x) {
+    public static BigDecimal sin(final BigDecimal x) {
         if (x.compareTo(BigDecimal.ZERO) < 0) {
             return sin(x.negate()).negate();
         } else if (x.compareTo(BigDecimal.ZERO) == 0) {
@@ -1279,7 +1279,7 @@ public enum MathHelper {
      *            The argument in radians.
      * @return cos(x) in the range -1 to 1.
      */
-    static public BigDecimal cos(final BigDecimal x) {
+    public static BigDecimal cos(final BigDecimal x) {
         if (x.compareTo(BigDecimal.ZERO) < 0) {
             return cos(x.negate());
         } else if (x.compareTo(BigDecimal.ZERO) == 0) {
@@ -1369,7 +1369,7 @@ public enum MathHelper {
      *            the original value
      * @return the value modulo 2*pi in the interval from 0 to 2*pi.
      */
-    static private BigDecimal mod2pi(BigDecimal x) {
+    private static BigDecimal mod2pi(BigDecimal x) {
         /*
          * write x= 2*pi*k+r with the precision in r defined by the precision of
          * x and not compromised by the precision of 2*pi, so the ulp of 2*pi*k
@@ -1422,7 +1422,7 @@ public enum MathHelper {
      *      width0pt\protect\href{http://arxiv.org/abs/math/9803067
      *      }{arXiv:math/9803067}
      */
-    static private BigDecimal broadhurstBBP(final int n, final int p, final int a[], MathContext mc) {
+    private static BigDecimal broadhurstBBP(final int n, final int p, final int a[], MathContext mc) {
         /*
          * Explore the actual magnitude of the result first with a quick
          * estimate.
@@ -1485,7 +1485,7 @@ public enum MathHelper {
      *            The right term.
      * @return The difference x-y.
      */
-    static private BigDecimal subtractRound(final BigDecimal x, final BigDecimal y) {
+    private static BigDecimal subtractRound(final BigDecimal x, final BigDecimal y) {
         BigDecimal resul = x.subtract(y);
         /*
          * The estimation of the absolute error in the result is
@@ -1508,7 +1508,7 @@ public enum MathHelper {
      *            The right factor.
      * @return The product x*n.
      */
-    static private BigDecimal multiplyRound(final BigDecimal x, final int n) {
+    private static BigDecimal multiplyRound(final BigDecimal x, final int n) {
         BigDecimal resul = x.multiply(new BigDecimal(n));
         /*
          * The estimation of the absolute error in the result is |n*err(x)|
@@ -1531,7 +1531,7 @@ public enum MathHelper {
      * @return The same value as the input but with increased (pseudo)
      *         precision.
      */
-    static private BigDecimal scalePrec(final BigDecimal x, int d) {
+    private static BigDecimal scalePrec(final BigDecimal x, int d) {
         return x.setScale(d + x.scale());
 
     }
@@ -1550,7 +1550,7 @@ public enum MathHelper {
      *         (half of the error bar) form. The value is rounded down, and on
      *         the pessimistic side for that reason.
      */
-    static private int err2prec(double x, double xerr) {
+    private static int err2prec(double x, double xerr) {
         /*
          * Example: an error of xerr=+-0.5 at x=100 represents 100+-0.5 with a
          * precision = 3 (digits).
@@ -1568,7 +1568,7 @@ public enum MathHelper {
      * @return The number of valid digits in x. The value is rounded down, and
      *         on the pessimistic side for that reason.
      */
-    static private int err2prec(double xerr) {
+    private static int err2prec(double xerr) {
         /*
          * Example: an error of xerr=+-0.5 a precision of 1 (digit), an error of
          * +-0.05 a precision of 2 (digits)
@@ -1589,12 +1589,12 @@ public enum MathHelper {
      * @return the absolute error in x. Derived from the an accuracy of one half
      *         of the ulp.
      */
-    static private double prec2err(final double x, final int prec) {
+    private static double prec2err(final double x, final int prec) {
         return 5. * Math.abs(x) * Math.pow(10., -prec);
 
     }
 
-    static public ArrayList<GData3> triangulateFourPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, GData1 dummyReference, DatFile df) {
+    public static ArrayList<GData3> triangulateFourPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, GData1 dummyReference, DatFile df) {
         ArrayList<GData3> result = new ArrayList<>();
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
@@ -1609,7 +1609,7 @@ public enum MathHelper {
         return result;
     }
 
-    static public ArrayList<GData3> triangulateFivePoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, GData1 dummyReference, DatFile df) {
+    public static ArrayList<GData3> triangulateFivePoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, GData1 dummyReference, DatFile df) {
         ArrayList<GData3> result = new ArrayList<>();
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
@@ -1629,7 +1629,7 @@ public enum MathHelper {
         return result;
     }
 
-    static public ArrayList<GData3> triangulateSixPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, GData1 dummyReference, DatFile df) {
+    public static ArrayList<GData3> triangulateSixPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, GData1 dummyReference, DatFile df) {
         ArrayList<GData3> result = new ArrayList<>();
         result.add(new GData3(colourNumber, r, g, b, a,
                 vertex,
@@ -1654,7 +1654,7 @@ public enum MathHelper {
         return result;
     }
 
-    static public ArrayList<GData3> triangulateSevenPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, Vertex vertex7, GData1 dummyReference, DatFile df) {
+    public static ArrayList<GData3> triangulateSevenPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, Vertex vertex7, GData1 dummyReference, DatFile df) {
         ArrayList<GData3> result = new ArrayList<>();
 
         result.add(new GData3(colourNumber, r, g, b, a,

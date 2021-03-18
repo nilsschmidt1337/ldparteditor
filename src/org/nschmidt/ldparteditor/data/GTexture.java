@@ -71,7 +71,7 @@ public class GTexture {
     private boolean glossy = false;
     private int cubeMapIndex = 0;
 
-    final private TexType type;
+    private final TexType type;
     private Vector3f point1 = new Vector3f();
     private Vector3f point2 = new Vector3f();
     private Vector3f point3 = new Vector3f();
