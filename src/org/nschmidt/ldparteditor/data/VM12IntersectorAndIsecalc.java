@@ -1898,7 +1898,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                             ArrayList<Vector3dd> l = fixedLinesToParse.get(k);
                                                             Vector3dd v3 = l.get(0);
                                                             Vector3dd v4 = l.get(1);
-                                                            if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4) && intersectLineLineSegmentUnidirectionalFast(v1, v2, sp, dir, len, v3, v4)) {
+                                                            if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4) && intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, v3, v4)) {
                                                                 intersect = true;
                                                                 break;
                                                             }
@@ -2048,7 +2048,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                 Vector3dh v3 = l.get(0);
                                                 Vector3dh v4 = l.get(1);
                                                 if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4)) {
-                                                    if (intersectLineLineSegmentUnidirectionalFast(v1, v2, sp, dir, len,  v3, v4)) {
+                                                    if (intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, v3,  v4)) {
                                                         intersect = true;
                                                         break;
                                                     }
@@ -2365,7 +2365,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                                                 allVertices1.add(line2.get(l1));
                                                                             }
                                                                             if (allVertices1.size() == 4) {
-                                                                                if (intersectLineLineSegmentUnidirectionalFast(v1, v2, sp, dir, len, line2.get(0), line2.get(1))) {
+                                                                                if (intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, line2.get(0), line2.get(1))) {
                                                                                     intersected = line2;
                                                                                     break;
                                                                                 }
@@ -2595,7 +2595,7 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
         }
     }
 
-    private boolean intersectLineLineSegmentUnidirectionalFast(Vector3dd p, Vector3dd p2, Vector3d sp, Vector3d dir, BigDecimal len, Vector3dd q, Vector3dd q2) {
+    private boolean intersectLineLineSegmentUnidirectionalFast(Vector3dd p, Vector3d sp, Vector3d dir, BigDecimal len, Vector3dd q, Vector3dd q2) {
 
         Vector3d sq = Vector3d.sub(q2, q);
 

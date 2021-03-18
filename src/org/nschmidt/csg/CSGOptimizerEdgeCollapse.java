@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -37,7 +36,7 @@ public enum CSGOptimizerEdgeCollapse {
 
     public static volatile double epsilon = 0.9999;
 
-    static boolean optimize(Random rnd, Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization) {
+    static boolean optimize(Map<Plane, List<GData3>> trianglesPerPlane, Map<GData3, IdAndPlane> optimization) {
         boolean result = false;
 
         for (List<GData3> triangles : trianglesPerPlane.values()) {

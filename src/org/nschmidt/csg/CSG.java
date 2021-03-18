@@ -557,7 +557,7 @@ public class CSG {
                 }
 
                 if (action == 2 && tjunctionPause > 0) {
-                    foundOptimization = CSGOptimizerEdgeCollapse.optimize(rnd, trianglesPerPlane, optimization);
+                    foundOptimization = CSGOptimizerEdgeCollapse.optimize(trianglesPerPlane, optimization);
                     if (!foundOptimization) {
                         flipPause = 0;
                     }

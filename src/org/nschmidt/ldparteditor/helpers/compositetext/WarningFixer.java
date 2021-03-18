@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.util.Locale;
 
 import org.lwjgl.util.vector.Matrix4f;
-import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
@@ -32,7 +31,7 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
  */
 final class WarningFixer {
 
-    public static String fix(int lineNumber, String sort, String line, String text, DatFile datFile) {
+    public static String fix(int lineNumber, String sort, String line, String text) {
         // TODO Needs implementation!
         int s = Integer.parseInt(sort, 16);
         switch (s) {

@@ -487,7 +487,7 @@ public class DuplicateManager {
 
 
                                         if (a > Threshold.condline_angle_maximum) {
-                                            registerInvisibleCondline(gd, lineNumber, registered);
+                                            registerInvisibleCondline(gd, registered);
                                         } else {
                                             StringBuilder normalized3 = new StringBuilder();
 
@@ -593,7 +593,7 @@ public class DuplicateManager {
                     GData.CACHE_duplicates.put(gd, new ParsingResult(formatter.format(messageArguments), "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                 }
 
-                private void registerInvisibleCondline(GData gd, int lineNumber, boolean[] registered) {
+                private void registerInvisibleCondline(GData gd, boolean[] registered) {
                     registered[0] = true;
                     GData.CACHE_duplicates.put(gd, new ParsingResult(I18n.DATPARSER_InvisibleLine, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
                 }

@@ -126,7 +126,7 @@ public enum QuickFixer {
                 if ("H".equals(type)) { //$NON-NLS-1$
                     text2 = HintFixer.fix(l, sort, text2, datFile, h);
                 } else if ("W".equals(type)) { //$NON-NLS-1$
-                    text2 = WarningFixer.fix(l, sort, line, text2, datFile);
+                    text2 = WarningFixer.fix(l, sort, line, text2);
                 } else if ("E".equals(type)) { //$NON-NLS-1$
                     text2 = ErrorFixer.fix(l, sort, line, text2, datFile, cText.getShell());
                 }

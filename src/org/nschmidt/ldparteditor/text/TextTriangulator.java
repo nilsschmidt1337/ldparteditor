@@ -404,7 +404,7 @@ public class TextTriangulator {
         return finalTriangleSet;
     }
 
-    public static Set<PGData3> triangulateGLText(org.eclipse.swt.graphics.Font font, final String text, final double flatness, final double interpolateFlatness, float fontHeight, final double deltaAngle) {
+    public static Set<PGData3> triangulateGLText(org.eclipse.swt.graphics.Font font, final String text, final double flatness, final double interpolateFlatness, float fontHeight) {
         String[] ff = font.getFontData()[0].getName().split(Pattern.quote("-")); //$NON-NLS-1$
         String fontName;
         if (ff.length > 1) {
@@ -453,7 +453,7 @@ public class TextTriangulator {
         return finalTriangleSet2;
     }
 
-    public static Set<PGData3> triangulateGLText(org.eclipse.swt.graphics.Font font, final String text, final double flatness, final double interpolateFlatness, final double deltaAngle) {
+    public static Set<PGData3> triangulateGLText(org.eclipse.swt.graphics.Font font, final String text, final double flatness, final double interpolateFlatness) {
         String[] ff = font.getFontData()[0].getName().split(Pattern.quote("-")); //$NON-NLS-1$
         String fontName;
         if (ff.length > 1) {
