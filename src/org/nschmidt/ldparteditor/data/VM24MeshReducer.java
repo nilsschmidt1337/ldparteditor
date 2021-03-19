@@ -227,12 +227,8 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                                     }
                                                 }
                                                 // Als letzten Schritt => Kante zusammenfallen lassen
-
-                                                // merge(MergeTo.LAST_SELECTED, false);
                                                 changeVertexDirectFast(v, t, true);
-                                                // IdenticalVertexRemover.removeIdenticalVertices(vm, df, false, true);
 
-                                                // addLine(v, t);
                                                 reduceCount[0]++;
 
                                                 break;

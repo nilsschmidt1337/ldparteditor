@@ -313,7 +313,7 @@ class VM07PathTruder extends VM06Edger2 {
                                     double rotation = ps.getRotation().doubleValue();
 
                                     {
-                                        // printf("Read path file 1\n"); //$NON-NLS-1$
+                                        // Read path file 1
                                         if (endings) {
                                             path1.add(0, path1endSegments.get(0));
                                             path1.add(path1endSegments.get(1));
@@ -328,7 +328,7 @@ class VM07PathTruder extends VM06Edger2 {
                                             next[Path1Len][0][0] = next[Path1Len][1][0] = -1;
                                             Path1Len++;
                                         }
-                                        // printf("Sort path file 1\n"); //$NON-NLS-1$
+                                        // Sort path file 1
                                         circular = true;
                                         for (int i = 0; i < Path1Len; i++) {
                                             for (int j = 0; j < 2; j++) {
@@ -389,11 +389,11 @@ class VM07PathTruder extends VM06Edger2 {
                                         Path1Len = InLineIdx;
 
                                         if (NumPath > 1) {
-                                            //   printf("%d distinct paths found in Path file 1. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
+                                            // NumPath distinct paths found in Path file 1. Unexpected results may happen!
                                         }
                                     }
                                     {
-                                        // printf("Read path file 2\n"); //$NON-NLS-1$
+                                        // Read path file 2
                                         if (endings) {
                                             path2.add(0, path2endSegments.get(0));
                                             path2.add(path2endSegments.get(1));
@@ -408,7 +408,7 @@ class VM07PathTruder extends VM06Edger2 {
                                             next[Path2Len][0][0] = next[Path2Len][1][0] = -1;
                                             Path2Len++;
                                         }
-                                        // printf("Sort path file 2\n"); //$NON-NLS-1$
+                                        // Sort path file 2
                                         circular = true;
                                         for (int i = 0; i < Path2Len; i++) {
                                             for (int j = 0; j < 2; j++) {
@@ -468,10 +468,8 @@ class VM07PathTruder extends VM06Edger2 {
 
                                         Path2Len = InLineIdx;
 
-                                        // if (NumPath > 1)
-                                        //    printf("%d distinct paths found in Path file 2. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
                                     }
-                                    // printf("Read shape file 1\n"); //$NON-NLS-1$
+
                                     for (GData2 p : shape1) {
                                         Shape1[Shape1Len][0][0] = p.X1.doubleValue();
                                         Shape1[Shape1Len][0][1] = p.Y1.doubleValue();
@@ -481,7 +479,7 @@ class VM07PathTruder extends VM06Edger2 {
                                         Shape1[Shape1Len][1][2] = p.Z2.doubleValue();
                                         Shape1Len++;
                                     }
-                                    // printf("Read shape file 2\n"); //$NON-NLS-1$
+
                                     for (GData2 p : shape2) {
                                         Shape2[Shape2Len][0][0] = p.X1.doubleValue();
                                         Shape2[Shape2Len][0][1] = p.Y1.doubleValue();
@@ -493,18 +491,17 @@ class VM07PathTruder extends VM06Edger2 {
                                     }
 
                                     if (Path1Len != Path2Len) {
-                                        // printf("The two path files do not have the same number of elements!\n"); //$NON-NLS-1$
+                                        // The two path files do not have the same number of elements!
                                         return;
                                     }
 
                                     if (endings && Path1Len < 3 && !circular) {
-                                        // printf("Path files must have at least 3 elements to use -e option!\n"); //$NON-NLS-1$
+                                        // Path files must have at least 3 elements to use -e option!
                                         return;
                                     }
 
                                     if (Shape1Len != Shape2Len) {
-                                        // printf("The two shape files do not have the same number of elements!\n"); //$NON-NLS-1$
-                                        // printf("Press <Enter> to quit"); //$NON-NLS-1$
+                                        // The two shape files do not have the same number of elements!
                                         return;
                                     }
 
@@ -905,7 +902,7 @@ class VM07PathTruder extends VM06Edger2 {
                     double rotation = ps.getRotation().doubleValue();
 
                     {
-                        // printf("Read path file 1\n"); //$NON-NLS-1$
+                        // Read path file 1
                         if (endings) {
                             path1.add(0, path1endSegments.get(0));
                             path1.add(path1endSegments.get(1));
@@ -920,7 +917,7 @@ class VM07PathTruder extends VM06Edger2 {
                             next[Path1Len][0][0] = next[Path1Len][1][0] = -1;
                             Path1Len++;
                         }
-                        // printf("Sort path file 1\n"); //$NON-NLS-1$
+                        // Sort path file 1
                         circular = true;
                         for (int i = 0; i < Path1Len; i++) {
                             for (int j = 0; j < 2; j++) {
@@ -981,11 +978,11 @@ class VM07PathTruder extends VM06Edger2 {
                         Path1Len = InLineIdx;
 
                         if (NumPath > 1) {
-                            //   printf("%d distinct paths found in Path file 1. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
+                            // NumPath distinct paths found in Path file 1. Unexpected results may happen!
                         }
                     }
                     {
-                        // printf("Read path file 2\n"); //$NON-NLS-1$
+                        // Read path file 2
                         if (endings) {
                             path2.add(0, path2endSegments.get(0));
                             path2.add(path2endSegments.get(1));
@@ -1000,7 +997,7 @@ class VM07PathTruder extends VM06Edger2 {
                             next[Path2Len][0][0] = next[Path2Len][1][0] = -1;
                             Path2Len++;
                         }
-                        // printf("Sort path file 2\n"); //$NON-NLS-1$
+                        // Sort path file 2
                         circular = true;
                         for (int i = 0; i < Path2Len; i++) {
                             for (int j = 0; j < 2; j++) {
@@ -1060,10 +1057,8 @@ class VM07PathTruder extends VM06Edger2 {
 
                         Path2Len = InLineIdx;
 
-                        // if (NumPath > 1)
-                        //    printf("%d distinct paths found in Path file 2. Unexpected results may happen!\n" + NumPath); //$NON-NLS-1$
                     }
-                    // printf("Read shape file 1\n"); //$NON-NLS-1$
+
                     for (GData2 p : shape1) {
                         Shape1[Shape1Len][0][0] = p.X1.doubleValue();
                         Shape1[Shape1Len][0][1] = p.Y1.doubleValue();
@@ -1073,7 +1068,7 @@ class VM07PathTruder extends VM06Edger2 {
                         Shape1[Shape1Len][1][2] = p.Z2.doubleValue();
                         Shape1Len++;
                     }
-                    // printf("Read shape file 2\n"); //$NON-NLS-1$
+
                     for (GData2 p : shape2) {
                         Shape2[Shape2Len][0][0] = p.X1.doubleValue();
                         Shape2[Shape2Len][0][1] = p.Y1.doubleValue();
@@ -1085,18 +1080,17 @@ class VM07PathTruder extends VM06Edger2 {
                     }
 
                     if (Path1Len != Path2Len) {
-                        // printf("The two path files do not have the same number of elements!\n"); //$NON-NLS-1$
+                        // The two path files do not have the same number of elements!
                         return;
                     }
 
                     if (endings && Path1Len < 3 && !circular) {
-                        // printf("Path files must have at least 3 elements to use -e option!\n"); //$NON-NLS-1$
+                        // Path files must have at least 3 elements to use -e option!
                         return;
                     }
 
                     if (Shape1Len != Shape2Len) {
-                        // printf("The two shape files do not have the same number of elements!\n"); //$NON-NLS-1$
-                        // printf("Press <Enter> to quit"); //$NON-NLS-1$
+                        // The two shape files do not have the same number of elements!
                         return;
                     }
 
@@ -1401,10 +1395,6 @@ class VM07PathTruder extends VM06Edger2 {
         }
 
         if (!syncWithEditor) {
-            /*selectedTriangles.addAll(newTriangles);
-            selectedQuads.addAll(newQuads);
-            selectedData.addAll(newTriangles);
-            selectedData.addAll(newQuads);*/
             sl.clear();
             sl.addAll(newTriangles);
             sl.addAll(newQuads);

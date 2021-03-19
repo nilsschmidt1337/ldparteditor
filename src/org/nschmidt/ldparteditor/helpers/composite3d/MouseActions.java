@@ -715,7 +715,7 @@ public class MouseActions {
             c3d.setDoingSelection(false);
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if (window.isAddingSomething() && !datfile.isReadOnly()) {
-                final boolean createVertex = vm.selectVertices(c3d, true, Math.max(Math.abs(oldPos.x - event.x), Math.abs(oldPos.y - event.y)) < 10); // vm.selectVertices(c3d, window.isAddingSomething());
+                final boolean createVertex = vm.selectVertices(c3d, true, Math.max(Math.abs(oldPos.x - event.x), Math.abs(oldPos.y - event.y)) < 10);
                 if (window.isAddingLines() || window.isAddingDistance()) {
                     Vertex vl1 = datfile.getObjVertex1();
                     if (vm.getSelectedVertices().size() == 1) {

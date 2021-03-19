@@ -36,9 +36,9 @@ public final class PGData5 extends PGData implements Serializable {
     final float x2;
     final float y2;
     final float z2;
-    
+
     final transient float[] edgeData;
-    
+
     public PGData5(float x1, float y1, float z1, float x2, float y2, float z2) {
         this.x1 = x1;
         this.y1 = y1;
@@ -46,7 +46,7 @@ public final class PGData5 extends PGData implements Serializable {
         this.x2 = x2;
         this.y2 = y2;
         this.z2 = z2;
-        
+
         edgeData = new float[]{
                 x1, y1, z1,
                 0f, 0f, 0f,
@@ -56,7 +56,6 @@ public final class PGData5 extends PGData implements Serializable {
     @Override
     public void drawBFCprimitive_GL20(int drawOnlyMode) {
         if (drawOnlyMode == 1) return;
-        // GL11.glLineWidth(View.lineWidthGL[0]);
         GL11.glLineWidth(1f);
         GL11.glColor4f(View.primitive_condline_Colour_r[0], View.primitive_condline_Colour_g[0], View.primitive_condline_Colour_b[0], 1f);
         GL11.glBegin(GL11.GL_LINES);
@@ -69,10 +68,10 @@ public final class PGData5 extends PGData implements Serializable {
         if (drawOnlyMode == 1) return;
         GL11.glLineWidth(1f);
         edgeData[3] = View.primitive_condline_Colour_r[0];
-        edgeData[4] = View.primitive_condline_Colour_g[0]; 
+        edgeData[4] = View.primitive_condline_Colour_g[0];
         edgeData[5] = View.primitive_condline_Colour_b[0];
         edgeData[9] = edgeData[3];
-        edgeData[10] = edgeData[4]; 
+        edgeData[10] = edgeData[4];
         edgeData[11] = edgeData[5];
         GL33HelperPrimitives.drawLinesRGB_Line(edgeData);
     }

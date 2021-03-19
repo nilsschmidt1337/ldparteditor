@@ -166,14 +166,12 @@ public class SplashScreen extends ApplicationWindow {
             int major = Integer.parseInt(glVersion.substring(0, 1));
             int minor = Integer.parseInt(glVersion.substring(2, 3));
             // Don't check legacy OpenGL compatibility from the stone age
-            // openGLerror[0] = major < 2;
             openGLerror[0] = false;
             if (WorkbenchManager.getUserSettingState().isOpenGL33Engine() && (major > 3 || major == 3 && minor > 2)) {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(33);
             } else if (WorkbenchManager.getUserSettingState().isVulkanEngine() && NLogger.DEBUG) {
                 // FIXME I have to implement a SWT VKCanvas first!
                 // see https://github.com/httpdigest/lwjgl3-swt
-                // WorkbenchManager.getUserSettingState().setOpenGLVersion(100);
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
             } else {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
@@ -318,11 +316,8 @@ public class SplashScreen extends ApplicationWindow {
         }.start();
         // Wait until the splash screen worker thread has done the job..
         while (threadReturn[0] == null) {
+            // Don't call display.sleep() because the display never wakes up.. :(
             display.readAndDispatch();
-            /*
-             * if (!display.readAndDispatch()) { // display.sleep(); <- The
-             * display never wakes up.. :( }
-             */
         }
         // Close the splash..
         try {

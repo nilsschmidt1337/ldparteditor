@@ -531,7 +531,6 @@ class EditorMetaDesign extends ApplicationWindow {
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
-                // gdm.grabExcessVerticalSpace = true;
                 cmp_scroll.setLayoutData(gdm);
 
                 cmp_metaArea.setLayout(new GridLayout(1, false));
@@ -571,7 +570,6 @@ class EditorMetaDesign extends ApplicationWindow {
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
-                // gdm.grabExcessVerticalSpace = true;
                 cmp_scroll.setLayoutData(gdm);
 
                 cmp_metaArea.setLayout(new GridLayout(1, false));
@@ -869,7 +867,6 @@ class EditorMetaDesign extends ApplicationWindow {
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
-                // gdm.grabExcessVerticalSpace = true;
                 cmp_scroll.setLayoutData(gdm);
 
                 cmp_metaArea.setLayout(new GridLayout(1, false));

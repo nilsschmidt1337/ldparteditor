@@ -47,7 +47,7 @@ public class GLShader {
         // int baseImageLoc = GL20.glGetUniformLocation(program, "colorMap"); //$NON-NLS-1$
 
         if (GL20.glGetProgrami(program, GL20.GL_LINK_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(GLShader.class, "Could not link shader: " + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$;
+            NLogger.error(GLShader.class, "Could not link shader: " + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$
         }
 
         GL20.glDetachShader(program, fragment);
@@ -63,7 +63,7 @@ public class GLShader {
     private int createAndCompile(final String path, final int type) {
         final StringBuilder shaderSource = new StringBuilder();
 
-        try (BufferedReader shaderReader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream(path), "UTF-8"))) { //$NON-NLS-1$) {
+        try (BufferedReader shaderReader = new BufferedReader(new InputStreamReader(GLShader.class.getResourceAsStream(path), "UTF-8"))) { //$NON-NLS-1$
             String line;
             while ((line = shaderReader.readLine()) != null) {
                 shaderSource.append(line).append("\n"); //$NON-NLS-1$
@@ -78,8 +78,8 @@ public class GLShader {
         GL20.glCompileShader(shaderID);
 
         if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(GLShader.class, "Could not compile shader " + path + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$;
-            NLogger.error(GLShader.class, "msg:  " + path + GL20.glGetShaderInfoLog(shaderID)); //$NON-NLS-1$;
+            NLogger.error(GLShader.class, "Could not compile shader " + path + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$
+            NLogger.error(GLShader.class, "msg:  " + path + GL20.glGetShaderInfoLog(shaderID)); //$NON-NLS-1$
             return -1;
         }
 
@@ -100,7 +100,7 @@ public class GLShader {
         if (location != -1) {
             uniformMap.put(uniformName, location);
         } else {
-            NLogger.error(GLShader.class, "Could not find uniform variable: " + uniformName + "\n" + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$ //$NON-NLS-2$;
+            NLogger.error(GLShader.class, "Could not find uniform variable: " + uniformName + "\n" + GL20.glGetProgramInfoLog(program, 1024)); //$NON-NLS-1$ //$NON-NLS-2$
         }
         return location;
     }

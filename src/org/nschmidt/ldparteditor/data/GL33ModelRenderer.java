@@ -340,7 +340,6 @@ public class GL33ModelRenderer {
                     // Skip render mode 5
                     if (renderMode != 5) try {
                         static_lock.lock();
-                        // final long start = System.currentTimeMillis();
 
                         // First we have to get links to the sets from the model
                         final DatFile df = c3d.getLockableDatFileReference();
@@ -2173,9 +2172,6 @@ public class GL33ModelRenderer {
                         selectionCSGsize = csgSelectionVertexSize;
                         lock.unlock();
 
-                        /* if (NLogger.DEBUG) {
-                            System.out.println("Processing time: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
-                        } */
                     } catch (Exception ex) {
                         if (NLogger.DEBUG) {
                             System.out.println("Exception: " + ex.getMessage()); //$NON-NLS-1$

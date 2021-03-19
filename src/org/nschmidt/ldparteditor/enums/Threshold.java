@@ -35,7 +35,7 @@ public enum Threshold implements Serializable {
     /** The count of the significant numbers for BigDecimal */
     public static int significant_places = 32;
     /** The math context for precision */
-    public static MathContext mc = new MathContext(32, RoundingMode.HALF_UP);// MathContext.DECIMAL128;
+    public static MathContext mc = new MathContext(32, RoundingMode.HALF_UP);
     /** The threshold for determinats of near singular matrices */
     public static double singularity_determinant = 0.000001d;
     /** The threshold for identical vertices and invisible condlines */

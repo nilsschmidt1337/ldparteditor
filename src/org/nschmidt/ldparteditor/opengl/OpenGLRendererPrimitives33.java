@@ -57,8 +57,6 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
     @Override
     public void drawScene(float mouseX, float mouseY) {
 
-        // final long start = System.currentTimeMillis();
-
         final GLCanvas canvas = cp.getCanvas();
 
         if (canvas.isDisposed()) {

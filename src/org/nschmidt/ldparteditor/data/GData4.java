@@ -1453,14 +1453,14 @@ public final class GData4 extends GData {
             }
             break;
         case BFC.NOCERTIFY:
-            // map.put(this, BFC.NOCERTIFY);
+            // Don't get it for NOCERTIFY.
             break;
         }
     }
 
     @Override
     public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map) {
-        // map.put(this, BFC.NOCERTIFY);
+        // Don't get it for NOCERTIFY.
     }
 
     @Override

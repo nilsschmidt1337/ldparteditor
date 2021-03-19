@@ -132,8 +132,6 @@ public class DuplicateManager {
 
                                             normalized1.append(data_segments[0]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            // normalized1.append(data_segments[1]);
-                                            // normalized1.append(" "); //$NON-NLS-1$
 
                                             normalized1.append(data_segments[2]);
                                             normalized1.append(" "); //$NON-NLS-1$
@@ -159,8 +157,6 @@ public class DuplicateManager {
                                                 StringBuilder normalized2 = new StringBuilder();
                                                 normalized2.append(data_segments[0]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                // normalized2.append(data_segments[1]);
-                                                // normalized2.append(" "); //$NON-NLS-1$
 
                                                 normalized2.append(data_segments[5]);
                                                 normalized2.append(" "); //$NON-NLS-1$
@@ -200,8 +196,6 @@ public class DuplicateManager {
 
                                             normalized1.append(data_segments[0]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            // normalized1.append(data_segments[1]);
-                                            // normalized1.append(" "); //$NON-NLS-1$
 
                                             normalized1.append(data_segments[2]);
                                             normalized1.append(" "); //$NON-NLS-1$
@@ -233,8 +227,6 @@ public class DuplicateManager {
 
                                                 normalized2.append(data_segments[0]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                // normalized2.append(data_segments[1]);
-                                                // normalized2.append(" "); //$NON-NLS-1$
 
                                                 normalized2.append(data_segments[8]);
                                                 normalized2.append(" "); //$NON-NLS-1$
@@ -266,8 +258,6 @@ public class DuplicateManager {
 
                                                     normalized3.append(data_segments[0]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    // normalized3.append(data_segments[1]);
-                                                    // normalized3.append(" "); //$NON-NLS-1$
 
                                                     normalized3.append(data_segments[5]);
                                                     normalized3.append(" "); //$NON-NLS-1$
@@ -311,8 +301,6 @@ public class DuplicateManager {
 
                                             normalized1.append(data_segments[0]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            // normalized1.append(data_segments[1]);
-                                            // normalized1.append(" "); //$NON-NLS-1$
 
                                             normalized1.append(data_segments[2]);
                                             normalized1.append(" "); //$NON-NLS-1$
@@ -351,8 +339,6 @@ public class DuplicateManager {
 
                                                 normalized2.append(data_segments[0]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                // normalized2.append(data_segments[1]);
-                                                // normalized2.append(" "); //$NON-NLS-1$
 
                                                 normalized2.append(data_segments[11]);
                                                 normalized2.append(" "); //$NON-NLS-1$
@@ -391,8 +377,6 @@ public class DuplicateManager {
 
                                                     normalized3.append(data_segments[0]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    // normalized3.append(data_segments[1]);
-                                                    // normalized3.append(" "); //$NON-NLS-1$
 
                                                     normalized3.append(data_segments[8]);
                                                     normalized3.append(" "); //$NON-NLS-1$
@@ -430,8 +414,6 @@ public class DuplicateManager {
 
                                                         normalized4.append(data_segments[0]);
                                                         normalized4.append(" "); //$NON-NLS-1$
-                                                        // normalized4.append(data_segments[1]);
-                                                        // normalized4.append(" "); //$NON-NLS-1$
 
                                                         normalized4.append(data_segments[5]);
                                                         normalized4.append(" "); //$NON-NLS-1$
@@ -493,8 +475,6 @@ public class DuplicateManager {
 
                                             normalized3.append(data_segments[0]);
                                             normalized3.append(" "); //$NON-NLS-1$
-                                            // normalized3.append(data_segments[1]);
-                                            // normalized3.append(" "); //$NON-NLS-1$
 
                                             normalized3.append(data_segments[2]);
                                             normalized3.append(" "); //$NON-NLS-1$
@@ -520,8 +500,6 @@ public class DuplicateManager {
 
                                                 normalized2.append(data_segments[0]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                // normalized2.append(data_segments[1]);
-                                                // normalized2.append(" "); //$NON-NLS-1$
 
                                                 normalized2.append(data_segments[5]);
                                                 normalized2.append(" "); //$NON-NLS-1$

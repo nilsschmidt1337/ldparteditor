@@ -315,7 +315,6 @@ public enum MathHelper {
         uy = uy / lu;
         uz = uz / lu;
         float dotAu = Ax * ux + Ay * uy + Az * uz;
-        // pt1 + (A.dotProduct(u)) * u;
         return new Vector4f(line_x1 + dotAu * ux, line_y1 + dotAu * uy, line_z1 + dotAu * uz, 1f);
     }
 
@@ -372,15 +371,14 @@ public enum MathHelper {
 
         double t = w.dot(v) / v.dot(v);
         if (t < 0.0) {
-            return 2.0 * epsilon; // p.minus(p1).magnitude();
+            return 2.0 * epsilon;
         }
         if (t > 1.0) {
-            return 2.0 * epsilon; // p.minus(p2).magnitude();
+            return 2.0 * epsilon;
         }
 
         VectorCSGd pb = p1.plus(v.times(t));
         double dist = p.minus(pb).magnitude();
-
         return dist;
     }
 
@@ -899,15 +897,11 @@ public enum MathHelper {
      * @return 3.14159...
      */
     public static BigDecimal pi(final MathContext mc) {
-        /* look it up if possible */
+        // look it up if possible
         if (mc.getPrecision() < PI.precision()) {
             return PI.round(mc);
         } else {
-            /*
-             * Broadhurst \protect\vrule
-             * width0pt\protect\href{http://arxiv.org/abs
-             * /math/9803067}{arXiv:math/9803067}
-             */
+            // Broadhurst
             int[] a = { 1, 0, 0, -1, -1, -1, 0, 0 };
             BigDecimal S = broadhurstBBP(1, 1, a, mc);
             return multiplyRound(S, 8);
@@ -956,10 +950,7 @@ public enum MathHelper {
                      */
                     return cos(subtractRound(p.divide(new BigDecimal("2")), res)); //$NON-NLS-1$
                 } else {
-                    /*
-                     * Simple Taylor expansion, sum_{i=1..infinity}
-                     * (-1)^(..)res^(2i+1)/(2i+1)!
-                     */
+                    // Simple Taylor expansion
                     BigDecimal resul = res;
                     /* x^i */
                     BigDecimal xpowi = res;
@@ -1025,8 +1016,7 @@ public enum MathHelper {
                 /*
                  * for the range 0<=x<Pi/2 one could use cos(2x)= 1-2*sin^2(x)
                  * to split this further, or use the cos up to pi/4 and the sine
-                 * higher up. throw new
-                 * ProviderException("Unimplemented cosine ") ;
+                 * higher up.
                  */
                 if (res.multiply(new BigDecimal("4")).compareTo(p) > 0) { //$NON-NLS-1$
                     /*
@@ -1034,10 +1024,7 @@ public enum MathHelper {
                      */
                     return sin(subtractRound(p.divide(new BigDecimal("2")), res)); //$NON-NLS-1$
                 } else {
-                    /*
-                     * Simple Taylor expansion, sum_{i=0..infinity}
-                     * (-1)^(..)res^(2i)/(2i)!
-                     */
+                    // Simple Taylor expansion
                     BigDecimal resul = BigDecimal.ONE;
                     /* x^i */
                     BigDecimal xpowi = BigDecimal.ONE;
@@ -1048,12 +1035,6 @@ public enum MathHelper {
                      * which is x times the error in x.
                      */
                     double xUlpDbl = 0.5 * res.ulp().doubleValue() * res.doubleValue();
-                    /*
-                     * The error in the result is set by the error in x^2/2
-                     * itself, xUlpDbl. We need at most k terms to push
-                     * x^(2k+1)/(2k+1)! below this value. x^(2k) < xUlpDbl;
-                     * (2k)*log(x) < log(xUlpDbl);
-                     */
                     MathContext mcTay = new MathContext(err2prec());
                     for (int i = 1;; i++) {
                         /*

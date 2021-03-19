@@ -56,11 +56,11 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 public class VM12IntersectorAndIsecalc extends VM11HideShow {
 
-    private final BigDecimal TOLERANCE = BigDecimal.ZERO; // new BigDecimal("0.00001"); //.00001
-    private final BigDecimal ZEROT = BigDecimal.ZERO; //  = new BigDecimal("-0.00001");
-    private final BigDecimal ONET = BigDecimal.ONE; //  = new BigDecimal("1.00001");
+    private final BigDecimal TOLERANCE = BigDecimal.ZERO;
+    private final BigDecimal ZEROT = BigDecimal.ZERO;
+    private final BigDecimal ONET = BigDecimal.ONE;
 
-    private final BigDecimal TOLERANCER = new BigDecimal("0.00001"); //$NON-NLS-1$ .00001
+    private final BigDecimal TOLERANCER = new BigDecimal("0.00001"); //$NON-NLS-1$
     private final BigDecimal ZEROTR = new BigDecimal("-0.00001"); //$NON-NLS-1$
     private final BigDecimal ONETR = new BigDecimal("1.00001"); //$NON-NLS-1$
 
@@ -176,7 +176,6 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                     if((flag = 1) == 1) distline++;
                 }
             }
-            // printf("%d distinct direction(s)\n", distline-1);
 
             for (int i=0; i<lineCount-1; i++)
             {
@@ -220,7 +219,6 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     GData2 l2 = newLines.get(j);
                                     GColour c = new GColour(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f);
                                     GData2 nl;
-                                    // SET(OutLine[i][a], OutLine[j][b]);
                                     if (a == 1) {
                                         if (b == 1) {
                                             nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l1.X1, l1.Y1, l1.Z1, l2.X2, l2.Y2, l2.Z2, View.DUMMY_REFERENCE, linkedDatFile, true);
@@ -1180,10 +1178,6 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                 for (ArrayList<Vector3dd> l : fixedIntersectionLines) {
                     allVertices.add(l.get(0).round());
                     allVertices.add(l.get(1).round());
-                    //                    resultVertices.add(l.get(0).round());
-                    //                    resultVertices.add(l.get(1).round());
-                    //                    resultColours.add(new GColour(-1, 0f, 1f, 0f, 1f));
-                    //                    resultIsLine.add(1);
                 }
                 allVertices.removeAll(fixedVertices);
                 fixedVertices.addAll(allVertices);

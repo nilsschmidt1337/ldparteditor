@@ -172,7 +172,6 @@ public enum GuiStatusManager {
 
             Editor3DWindow.getStatusLabel().setText(sb.toString());
             Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
-            // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
 
             VertexWindow.placeVertexWindow();
 
@@ -257,7 +256,6 @@ public enum GuiStatusManager {
         sb.append(df.getShortName());
         Editor3DWindow.getStatusLabel().setText(sb.toString());
         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
-        // TODO Linux only??? Editor3DWindow.getStatusLabel().update();
     }
 
     public static void updateStatus() {

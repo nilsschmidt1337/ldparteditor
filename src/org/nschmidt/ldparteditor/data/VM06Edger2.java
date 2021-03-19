@@ -106,7 +106,7 @@ class VM06Edger2 extends VM05Distance {
                 } else if (qvs.contains(vq[2]) && qvs.contains(vq[3])) {
                     v3 = vq[2];
                     n1 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[2]));
-                } else { // if (qvs.contains(vq[3]) && qvs.contains(vq[0])) {
+                } else {
                     v3 = vq[3];
                     n1 = Vector3d.getNormal(new Vector3d(vq[1]), new Vector3d(vq[2]), new Vector3d(vq[3]));
                 }
@@ -143,7 +143,7 @@ class VM06Edger2 extends VM05Distance {
                 } else if (qvs.contains(vq[2]) && qvs.contains(vq[3])) {
                     v4 = vq[2];
                     n2 = Vector3d.getNormal(new Vector3d(vq[0]), new Vector3d(vq[1]), new Vector3d(vq[2]));
-                } else { // if (qvs.contains(vq[3]) && qvs.contains(vq[0])) {
+                } else {
                     v4 = vq[3];
                     n2 = Vector3d.getNormal(new Vector3d(vq[1]), new Vector3d(vq[2]), new Vector3d(vq[3]));
                 }

@@ -83,9 +83,7 @@ public class SphereGL20 {
         }
 
         bvertices.flip();
-        // bnormals.flip();
         bindices.flip();
-
     }
 
     public SphereGL20() {

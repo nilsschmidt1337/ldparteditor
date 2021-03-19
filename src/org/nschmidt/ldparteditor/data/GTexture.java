@@ -436,8 +436,6 @@ public class GTexture {
                 result[r] = u;
                 result[r + 1] = v;
             }
-            // u = .5f + tU[i] / a / 2f;
-            // v = .5f - tV[i] / b / 2;
         }
         if (ID != null && !uvCache.containsKey(ID)) {
             uvCache.put(ID, new UV(tU, tV));
@@ -876,7 +874,6 @@ public class GTexture {
                 final byte[] bytes = new byte[] { 0, 0, 0, -1 };
                 buf.put(bytes);
                 buf.flip();
-                // TODO Debug only System.gc();
                 try {
                     in.close();
                 } catch (Exception ex) {
@@ -888,7 +885,6 @@ public class GTexture {
                 final byte[] bytes = new byte[] { 0, 0, 0, -1 };
                 buf.put(bytes);
                 buf.flip();
-                // TODO Debug only System.gc();
                 try {
                     in.close();
                 } catch (Exception ex) {

@@ -157,7 +157,6 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
         GL11.glPointSize(5);
-        // GL11.glLineWidth(2);
 
         GL11.glEnable(GL11.GL_LIGHTING);
         GL11.glShadeModel(GL11.GL_SMOOTH);
@@ -1797,7 +1796,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     }
                     GL11.glEnd();
                 }
-                z_offset = 2f; // z_offset + 5 + 1f * c3d.getZoom();
+                z_offset = 2f;
             }
 
             if (c3d.isOriginShown()) {
@@ -2112,7 +2111,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         GL20.glCompileShader(shaderID);
 
         if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(OpenGLRenderer20.class, new Exception("Could not compile fragment shader.")); //$NON-NLS-1$;
+            NLogger.error(OpenGLRenderer20.class, new Exception("Could not compile fragment shader.")); //$NON-NLS-1$
             return -1;
         }
 
@@ -2140,7 +2139,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
         GL20.glCompileShader(shaderID);
 
         if (GL20.glGetShaderi(shaderID, GL20.GL_COMPILE_STATUS) == GL11.GL_FALSE) {
-            NLogger.error(OpenGLRenderer20.class, new Exception("Could not compile vertex shader.")); //$NON-NLS-1$;
+            NLogger.error(OpenGLRenderer20.class, new Exception("Could not compile vertex shader.")); //$NON-NLS-1$
             return -1;
         }
 

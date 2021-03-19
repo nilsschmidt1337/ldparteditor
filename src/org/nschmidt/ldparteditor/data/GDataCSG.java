@@ -570,10 +570,8 @@ public final class GDataCSG extends GData {
                         break;
                     }
                 }
-            /* Is not possible anymore...
-            } catch (StackOverflowError e) {
-            */
             } catch (Exception e) {
+                // StackOverflowError is not possible anymore...
                 NLogger.error(getClass(), e);
             }
         }

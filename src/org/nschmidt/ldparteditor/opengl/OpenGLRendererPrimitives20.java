@@ -223,7 +223,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
                 }
             }
         }
-        // GL11.glEnable(GL11.GL_DEPTH_TEST);
+
         GL11.glLoadIdentity();
         GL11.glPushMatrix();
         GL11.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);

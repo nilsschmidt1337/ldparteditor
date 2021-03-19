@@ -1021,9 +1021,6 @@ public class VM01SelectHelper extends VM01Select {
                                 if (distanceSquared < discr) {
                                     if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
                                         continue;
-                                    // Vertex[] v = lines.get(line);
-                                    // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
-                                    //    continue;
                                     if (selectedLines.contains(line)) {
                                         if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
                                         if (needRayTest || c3d.getKeys().isAltPressed()) selectedLines.remove(line);
@@ -1076,9 +1073,6 @@ public class VM01SelectHelper extends VM01Select {
                                 if (distanceSquared < discr) {
                                     if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
                                         continue;
-                                    // Vertex[] v = condlines.get(line);
-                                    // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
-                                    //     continue;
                                     if (selectedCondlines.contains(line)) {
                                         if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
                                         if (needRayTest || c3d.getKeys().isAltPressed()) selectedCondlines.remove(line);
@@ -1222,7 +1216,6 @@ public class VM01SelectHelper extends VM01Select {
 
                 float[][] M = new float[2][2];
                 float[] b = new float[] { 0f, 0f };
-                // NLogger.debug(getClass(), discr);
                 for (GData2 line : lines.keySet()) {
                     if (hiddenData.contains(line))
                         continue;
@@ -1261,9 +1254,6 @@ public class VM01SelectHelper extends VM01Select {
                             if (distanceSquared < discr) {
                                 if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
                                     continue;
-                                // Vertex[] v = lines.get(line);
-                                // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
-                                //    continue;
                                 selectedLinesForSubfile.add(line);
                             }
                         }
@@ -1308,9 +1298,6 @@ public class VM01SelectHelper extends VM01Select {
                             if (distanceSquared < discr) {
                                 if (!isVertexVisible(c3d, new Vertex(MathHelper.getNearestPointToLineSegment(a[0], a[1], a[2], g[0], g[1], g[2], a[0] - f[0] * solution[1], a[1] - f[1] * solution[1], a[2] - f[2] * solution[1])), selectionDepth, noTrans))
                                     continue;
-                                // Vertex[] v = condlines.get(line);
-                                // if (!(isVertexVisible(c3d, v[0], selectionDepth, noTrans) && isVertexVisible(c3d, v[1], selectionDepth, noTrans)))
-                                //    continue;
                                 selectedCondlinesForSubfile.add(line);
                             }
                         }

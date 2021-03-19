@@ -85,9 +85,6 @@ public final class GData1 extends GData {
     final Vector4f boundingBoxMin = new Vector4f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE, 1f);
     final Vector4f boundingBoxMax = new Vector4f(-Float.MAX_VALUE, -Float.MAX_VALUE, -Float.MAX_VALUE, 1f);
 
-    // final Vector4f boundingBoxMinReal = new Vector4f(0f, 0f, 0f, 1f);
-    // final Vector4f boundingBoxMaxReal = new Vector4f(0f, 0f, 0f, 1f);
-
     final boolean negativeDeterminant;
 
     boolean recursive = false;
@@ -293,9 +290,6 @@ public final class GData1 extends GData {
                     this.firstRef.setMovedTo(true);
                 }
             }
-
-            // Matrix4f.transform(productMatrix, boundingBoxMin, boundingBoxMinReal);
-            // Matrix4f.transform(productMatrix, boundingBoxMax, boundingBoxMaxReal);
 
         } else {
             this.firstRef = firstRef;
@@ -657,39 +651,6 @@ public final class GData1 extends GData {
             if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
                     || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
                     || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
-
-
-                //                // Bounding Boxes:
-                //                GL11.glPushMatrix();
-                //                GL11.glLoadIdentity();
-                //                GL11.glMultMatrix(c3d.getRenderer().getViewport());
-                //
-                //                GL11.glLineWidth(3f); GL11.glBegin(GL11.GL_LINES);
-                //                GL11.glColor3f(1f, 1f, 0f);
-                //
-                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
-                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMaxReal.z);
-                //
-                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
-                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMaxReal.y, boundingBoxMinReal.z);
-                //
-                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
-                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMinReal.y, boundingBoxMinReal.z);
-                //
-                //                GL11.glVertex3f(boundingBoxMinReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
-                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
-                //
-                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMinReal.y, boundingBoxMaxReal.z);
-                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
-                //
-                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMinReal.z);
-                //                GL11.glVertex3f(boundingBoxMaxReal.x, boundingBoxMaxReal.y, boundingBoxMaxReal.z);
-                //
-                //
-                //                GL11.glEnd();
-                //
-                //                GL11.glPopMatrix();
-
 
                 GL11.glPushMatrix();
                 GL11.glMultMatrixf(matrix);

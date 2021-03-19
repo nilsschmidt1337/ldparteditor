@@ -1803,7 +1803,7 @@ public class CompositeTab extends CompositeTabDesign {
             int start_line = compositeText[0].getVerticalBar().getSelection() / caretHeight + 1;
             int end_line = compositeText[0].getLineCount() - 1;
 
-            for (int y = y_offset; y < height; y += caretHeight) { // Font.MONOSPACE_HEIGHT) {
+            for (int y = y_offset; y < height; y += caretHeight) {
 
                 if (NLogger.DEBUG && Project.getFileToEdit() != null) {
 

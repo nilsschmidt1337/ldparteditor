@@ -15,10 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.text;
 
-/**
- * @author nils
- *
- */
+
 
 import java.awt.Font;
 import java.awt.Shape;
@@ -52,35 +49,10 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
-/*
-
- Example use:
-
- * Tested fonts
+/**
+ * @author nils
  *
- * [x] Purisa
- * [x] Monospace
- * [x] URW Chancery L
-
-
- anchorData = drawChainTail;
-
- String text = "URW Chancery L 123456%& Test"; //$NON-NLS-1$ URW Chancery L 123456%& Test
-
- Font myFont = new Font("URW Chancery L", Font.PLAIN, 32); //$NON-NLS-1$
-
- Set<GData> triangleSet = TextTriangulator.triangulateText(myFont, text, 0.1, 0.5, View.DUMMY_REFERENCE, this, 100, 29.9);
- for (GData gda3 : triangleSet) {
- gdata = gda3;
- anchorData.setNext(gda3);
- anchorData = gdata;
- }
- // txt2dat Test end
-
- anchorData.setNext(targetData);
- drawChainTail = anchorData;
  */
-
 public class TextTriangulator {
 
     public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final double interpolateFlatness, final GData1 parent, final DatFile datFile, int fontHeight,
@@ -209,7 +181,6 @@ public class TextTriangulator {
                 Pnt p1 = new Pnt(px, py);
                 Pnt p2 = new Pnt(x, y);
 
-                // triangulation.delaunayPlace(p1);
                 places.add(p1);
                 if (px > maxX)
                     maxX = px;
@@ -237,7 +208,6 @@ public class TextTriangulator {
                     double ll = length;
                     ll = ll - start;
                     while (ll > interpolateFlatness) {
-                        // triangulation.delaunayPlace(new Pnt(cx,cy));
                         places.add(new Pnt(cx, cy));
                         if (cx > maxX)
                             maxX = cx;
@@ -255,7 +225,6 @@ public class TextTriangulator {
                     }
                 }
 
-                // triangulation.delaunayPlace(p2);
                 places.add(p2);
                 if (x > maxX)
                     maxX = x;

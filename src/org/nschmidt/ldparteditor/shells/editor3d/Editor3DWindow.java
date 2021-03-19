@@ -5984,19 +5984,20 @@ public class Editor3DWindow extends Editor3DDesign {
                     nameSb.insert(0, "(!) "); //$NON-NLS-1$
                 }
 
-                // MARK For Debug Only!
-                //                DatType t = d.getType();
-                //                if (t == DatType.PART) {
-                //                    nameSb.append(" PART"); //$NON-NLS-1$
-                //                } else if (t == DatType.SUBPART) {
-                //                    nameSb.append(" SUBPART"); //$NON-NLS-1$
-                //                } else if (t == DatType.PRIMITIVE) {
-                //                    nameSb.append(" PRIMITIVE"); //$NON-NLS-1$
-                //                } else if (t == DatType.PRIMITIVE48) {
-                //                    nameSb.append(" PRIMITIVE48"); //$NON-NLS-1$
-                //                } else if (t == DatType.PRIMITIVE8) {
-                //                    nameSb.append(" PRIMITIVE8"); //$NON-NLS-1$
-                //                }
+                if (NLogger.DEBUG) {
+                    DatType t = d.getType();
+                    if (t == DatType.PART) {
+                        nameSb.append(" PART"); //$NON-NLS-1$
+                    } else if (t == DatType.SUBPART) {
+                        nameSb.append(" SUBPART"); //$NON-NLS-1$
+                    } else if (t == DatType.PRIMITIVE) {
+                        nameSb.append(" PRIMITIVE"); //$NON-NLS-1$
+                    } else if (t == DatType.PRIMITIVE48) {
+                        nameSb.append(" PRIMITIVE48"); //$NON-NLS-1$
+                    } else if (t == DatType.PRIMITIVE8) {
+                        nameSb.append(" PRIMITIVE8"); //$NON-NLS-1$
+                    }
+                }
 
                 if (d2 != null)
                     nameSb.append(d2);
@@ -6788,9 +6789,6 @@ public class Editor3DWindow extends Editor3DDesign {
         }
         for (DatFile datFile : deadFiles) {
             datFile.disposeData();
-        }
-        if (!deadFiles.isEmpty()) {
-            // TODO Debug only System.gc();
         }
     }
 

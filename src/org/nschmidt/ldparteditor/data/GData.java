@@ -98,7 +98,7 @@ public abstract class GData implements IGData, Comparable<GData> {
         this.text = text;
     }
 
-    private static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
+    private static final AtomicInteger id_counter = new AtomicInteger(0);
     protected final int ID;
 
     GData(GData1 parent) {
@@ -157,13 +157,4 @@ public abstract class GData implements IGData, Comparable<GData> {
     public boolean isVisible() {
         return visible;
     }
-
-    /*
-     * MARK Only for GC debugging!
-     *
-     * @Override protected void finalize() throws Throwable {
-     * NLogger.debug(getClass(), "Disposing: " + this.toString()); //$NON-NLS-1$
-     * super.finalize(); }
-     */
-
 }

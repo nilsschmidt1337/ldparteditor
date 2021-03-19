@@ -171,10 +171,6 @@ public class VM08SlicerPro extends VM07PathTruder {
                                                 }
                                                 counter2.incrementAndGet();
                                                 for (GData t : targetSurfs) {
-                                                    // Customise IDs for debugging
-                                                    //                    if (o.ID == 9736 && t.ID == 9763) {
-                                                    //                        NLogger.debug(getClass(), "Comparing target pair..."); //$NON-NLS-1$
-                                                    //                    }
                                                     ArrayList<IntersectionInfo> ii = getIntersectionInfo(o, t, dir, dirN, m, minv, pc, ss);
                                                     if (ii != null) {
                                                         intersectionSet.add(ii);
@@ -420,8 +416,6 @@ public class VM08SlicerPro extends VM07PathTruder {
         if (v.compareTo(Rational.ZERO) < 0 || u.add(v).compareTo(Rational.ONE) > 0)
             return false;
         Rational t = Vector3r.dot(corner2, qvec).multiply(inv_diskr);
-        //        if (t.compareTo(Rational.ZERO) < 0)
-        //            return false;
         ip.setX(orig.X.add(dir2.X.multiply(t)));
         ip.setY(orig.Y.add(dir2.Y.multiply(t)));
         ip.setZ(orig.Z.add(dir2.Z.multiply(t)));
@@ -926,30 +920,10 @@ public class VM08SlicerPro extends VM07PathTruder {
             Rational du = u.X.multiply(u.X).add(u.Y.multiply(u.Y));
             Rational dv = v.X.multiply(v.X).add(v.Y.multiply(v.Y));
 
-            if (du.isZero() || dv.isZero()) { // ||
-                //                if (!p.equals(q))
-                //                    return 0;
-                //                ip.setX(p.X);
-                //                ip.setY(p.Y);
-                //                ip.setZ(p.Z);
+            if (du.isZero() || dv.isZero()) {
                 return 0;
             }
-            //            if (du.isZero()) {
-            //                if  (inSegment(p, q, q2))
-            //                    return 0;
-            //                ip.setX(p.X);
-            //                ip.setY(p.Y);
-            //                ip.setZ(p.Z);
-            //                return 0;
-            //            }
-            //            if (dv.isZero()) {
-            //                if  (inSegment(q, p, p2))
-            //                    return 0;
-            //                ip.setX(q.X);
-            //                ip.setY(q.Y);
-            //                ip.setZ(q.Z);
-            //                return 0;
-            //            }
+
             Rational t0, t1;
             Vector3r w2 = Vector3r.sub(p2, q);
             if (!v.X.isZero()) {
@@ -969,9 +943,6 @@ public class VM08SlicerPro extends VM07PathTruder {
             t0 = t0.compareTo(Rational.ZERO) < 0 ? Rational.ZERO : t0;
             t1 = t1.compareTo(Rational.ONE) > 0 ? Rational.ONE : t1;
             if (t0.compareTo(t1) == 0) {
-                //                ip.setX(q.X.add(t0.multiply(v.X)));
-                //                ip.setY(q.Y.add(t0.multiply(v.Y)));
-                //                ip.setZ(q.Z.add(t0.multiply(v.Z)));
                 return 0;
             }
 

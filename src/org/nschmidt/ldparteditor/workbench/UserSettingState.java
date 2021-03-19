@@ -671,7 +671,6 @@ public class UserSettingState implements Serializable {
     }
 
     public AtomicBoolean getSyncWithTextEditor() {
-        // return syncWithTextEditor;
         return new AtomicBoolean(true);
     }
 

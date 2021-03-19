@@ -925,14 +925,12 @@ class VM00Base {
                 Vertex[] v0 = declaredVertices.get(gd0);
 
                 updateTail = remove(gData) | updateTail;
-                // modifiedData.remove(gData);
 
                 if (v0[0].equals(oldVertex))
                     v0[0] = newVertex;
 
                 GData0 newGdata0 = addVertex(newVertex);
 
-                // modifiedData.add(newGdata0);
                 drawPerLine.put(oldNumber, newGdata0);
                 break;
             case 2:
@@ -941,7 +939,6 @@ class VM00Base {
                 Vertex[] v2 = lines.get(gd2);
 
                 updateTail = remove(gData) | updateTail;
-                // modifiedData.remove(gData);
 
                 if (v2[0].equals(oldVertex))
                     v2[0] = newVertex;
@@ -950,7 +947,6 @@ class VM00Base {
 
                 GData2 newGdata2 = new GData2(gd2.colourNumber, gd2.r, gd2.g, gd2.b, gd2.a, v2[0], v2[1], View.DUMMY_REFERENCE, linkedDatFile, gd2.isLine);
 
-                // modifiedData.add(newGdata2);
                 drawPerLine.put(oldNumber, newGdata2);
                 break;
             case 3:
@@ -959,7 +955,6 @@ class VM00Base {
                 Vertex[] v3 = triangles.get(gd3);
 
                 updateTail = remove(gData) | updateTail;
-                // modifiedData.remove(gData);
 
                 if (v3[0].equals(oldVertex))
                     v3[0] = newVertex;
@@ -970,7 +965,6 @@ class VM00Base {
 
                 GData3 newGdata3 = new GData3(gd3.colourNumber, gd3.r, gd3.g, gd3.b, gd3.a, v3[0], v3[1], v3[2], View.DUMMY_REFERENCE, linkedDatFile, gd3.isTriangle);
 
-                // modifiedData.add(newGdata3);
                 drawPerLine.put(oldNumber, newGdata3);
                 break;
             case 4:
@@ -979,7 +973,6 @@ class VM00Base {
                 Vertex[] v4 = quads.get(gd4);
 
                 updateTail = remove(gData) | updateTail;
-                // modifiedData.remove(gData);
 
                 if (v4[0].equals(oldVertex))
                     v4[0] = newVertex;
@@ -992,7 +985,6 @@ class VM00Base {
 
                 GData4 newGdata4 = new GData4(gd4.colourNumber, gd4.r, gd4.g, gd4.b, gd4.a, v4[0], v4[1], v4[2], v4[3], View.DUMMY_REFERENCE, linkedDatFile);
 
-                // modifiedData.add(newGdata4);
                 drawPerLine.put(oldNumber, newGdata4);
                 break;
             case 5:
@@ -1001,7 +993,6 @@ class VM00Base {
                 Vertex[] v5 = condlines.get(gd5);
 
                 updateTail = remove(gData) | updateTail;
-                // modifiedData.remove(gData);
 
                 if (v5[0].equals(oldVertex))
                     v5[0] = newVertex;
@@ -1014,7 +1005,6 @@ class VM00Base {
 
                 GData5 newGdata5 = new GData5(gd5.colourNumber, gd5.r, gd5.g, gd5.b, gd5.a, v5[0], v5[1], v5[2], v5[3], View.DUMMY_REFERENCE, linkedDatFile);
 
-                // modifiedData.add(newGdata5);
                 drawPerLine.put(oldNumber, newGdata5);
                 break;
             }

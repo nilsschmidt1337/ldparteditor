@@ -374,9 +374,6 @@ class VM04Rectifier extends VM03Adjacency {
                                             for (GData gData : lines1) {
                                                 int t = gData.type();
                                                 switch (t) {
-                                                // case 2:
-                                                //  linesToDelete.add((GData2) gData);
-                                                //  break;
                                                 case 5:
                                                     clinesToDelete.add((GData5) gData);
                                                     result2[1] += 1;
@@ -879,9 +876,6 @@ class VM04Rectifier extends VM03Adjacency {
                             for (GData gData : lines1) {
                                 int t = gData.type();
                                 switch (t) {
-                                // case 2:
-                                //  linesToDelete.add((GData2) gData);
-                                //  break;
                                 case 5:
                                     clinesToDelete.add((GData5) gData);
                                     break;

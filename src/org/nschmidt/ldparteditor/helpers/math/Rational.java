@@ -72,7 +72,6 @@ public class Rational implements Comparable<Rational> {
     private static BigInteger SD = new BigInteger("1000000000000000"); //$NON-NLS-1$
     private static BigDecimal SD2 = new BigDecimal("1000000000000000"); //$NON-NLS-1$
     public BigDecimal BigDecimalValue() {
-        // old, slow version: return new BigDecimal(upper).divide(new BigDecimal(lower), Threshold.mc);
         return new BigDecimal(upper.multiply(SD).divide(lower)).divide(SD2);
     }
 

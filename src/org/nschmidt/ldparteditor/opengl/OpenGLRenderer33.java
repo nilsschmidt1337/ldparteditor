@@ -1009,7 +1009,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     }
                     helper.drawLinesRGB_General(vertices);
                 }
-                z_offset = 2f; // z_offset + 5 + 1f * c3d.getZoom();
+                z_offset = 2f;
             }
 
             if (c3d.isOriginShown()) {

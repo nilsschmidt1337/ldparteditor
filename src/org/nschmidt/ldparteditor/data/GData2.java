@@ -649,14 +649,14 @@ public final class GData2 extends GData {
             }
             break;
         case BFC.NOCERTIFY:
-            // map.put(this, BFC.NOCERTIFY);
+            // Don't get it for NOCERTIFY.
             break;
         }
     }
 
     @Override
     public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map) {
-        // map.put(this, BFC.NOCERTIFY);
+        // Don't get it for NOCERTIFY.
     }
 
     @Override
@@ -953,11 +953,4 @@ public final class GData2 extends GData {
         drawNumberGL33(dy_s, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
         drawNumberGL33(dz_s, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
     }
-
-    /*
-     * LOW QUALITY LINES: GL11.glDisable(GL11.GL_LIGHTING); GL11.glColor4f(r, g,
-     * b, a); GL11.glBegin(GL11.GL_LINES); GL11.glVertex3f(x1, y1, z1);
-     * GL11.glVertex3f(x2, y2, z2); GL11.glEnd();
-     * GL11.glEnable(GL11.GL_LIGHTING);
-     */
 }

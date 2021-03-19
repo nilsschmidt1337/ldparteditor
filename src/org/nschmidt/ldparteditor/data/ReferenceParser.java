@@ -190,7 +190,6 @@ public enum ReferenceParser {
                     ArrayList<String> source = df2.getSource();
                     for (String line : source) {
                         DatFile ref = parseLine(line, alreadyParsed, false);
-                        // if (ref != null) NLogger.debug(ReferenceParser.class, ref.getShortName());
                         if (ref != null && ref.getShortName().equals(df.getShortName()) && !alreadyParsed2.contains(df2)) {
                             alreadyParsed.add(df2.getShortName());
                             alreadyParsed2.add(df2);

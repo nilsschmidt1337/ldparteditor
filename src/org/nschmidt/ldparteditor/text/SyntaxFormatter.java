@@ -1238,11 +1238,8 @@ public class SyntaxFormatter {
                         cnc++;
                 }
                 parseError = cnc > 0 && cnc < 4;
-                // if (cnc == 2) {
-                // // Hourglass
-                // } else if (cnc == 1 || cnc == 3) {
-                // // Concave
-                // }
+                // cnc = 2 => Hourglass
+                // cnc = 1 OR cnc = 3 => Concave
                 double angle;
                 angle = Vector3d.angle(normals[0], normals[2]);
                 // Coplanarity

@@ -40,7 +40,7 @@ public abstract class PGData implements IPGData, Serializable {
         return next;
     }
 
-    private static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
+    private static final AtomicInteger id_counter = new AtomicInteger(0);
     private final transient int ID;
 
     PGData() {

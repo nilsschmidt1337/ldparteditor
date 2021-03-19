@@ -189,8 +189,6 @@ public final class PowerRay {
         if (v < 0 || u + v > 1)
             return null;
         t = (corner2[0] * qvec[0] + corner2[1] * qvec[1] + corner2[2] * qvec[2]) * inv_diskr;
-        //        if (t < 0)
-        //            return null;
         return new float[]{(float) (orig.x + dir[0] * t), (float) (orig.y + dir[1] * t), (float) (orig.z + dir[2] * t), (float) u, (float) v};
     }
 }

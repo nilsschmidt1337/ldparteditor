@@ -1442,7 +1442,7 @@ class Editor3DDesign extends ApplicationWindow {
                     GridLayout gridLayout3 = new GridLayout(2, false);
                     cmp_Container2.setLayout(gridLayout3);
                     {
-                        Tree treeAllParts = new Tree(cmp_Container2, SWT.BORDER, 1); // 4096);
+                        Tree treeAllParts = new Tree(cmp_Container2, SWT.BORDER, 1);
                         this.treeParts[0] = treeAllParts;
                         TreeItem treeItemProjectName = new TreeItem(treeAllParts);
                         this.treeItem_Project[0] = treeItemProjectName;
@@ -2841,16 +2841,9 @@ class Editor3DDesign extends ApplicationWindow {
                 }
                 @SuppressWarnings("unused")
                 final MenuItem mntmSeparator4 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
-                // {
-                //     MenuItem mntm_SyncWithTextEditor = new MenuItem(mnu_Tools, SWT.CHECK);
-                //     mntm_SyncWithTextEditor.setSelection(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
-                //     this.mntm_SyncWithTextEditor[0] = mntm_SyncWithTextEditor;
-                //     mntm_SyncWithTextEditor.setText(I18n.E3D_Sync3DEditor);
-                // }
                 {
                     MenuItem mntm_SyncLpeInline = new MenuItem(mnu_Tools, SWT.CHECK);
                     mntm_SyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
-                    // mntm_SyncLpeInline.setEnabled(WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get());
                     this.mntm_SyncLpeInline[0] = mntm_SyncLpeInline;
                     mntm_SyncLpeInline.setText(I18n.E3D_ParseInline);
                 }

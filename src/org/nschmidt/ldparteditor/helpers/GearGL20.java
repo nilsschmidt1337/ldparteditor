@@ -130,7 +130,6 @@ public class GearGL20 {
         }
 
         bvertices.flip();
-        // bnormals.flip();
         bindices.flip();
 
     }
