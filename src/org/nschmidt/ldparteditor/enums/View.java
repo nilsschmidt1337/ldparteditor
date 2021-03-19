@@ -633,8 +633,7 @@ public enum View {
         float g;
         float b;
         GColour col16 = getLDConfigColour(16);
-        if (Color16_override_r != null && Color16_override_g != null && Color16_override_b != null &&
-                Color16_override_r[0] > 0f && Color16_override_g[0] > 0f && Color16_override_b[0] > 0f) {
+        if (Color16_override_r[0] > 0f && Color16_override_g[0] > 0f && Color16_override_b[0] > 0f) {
             r = Color16_override_r[0];
             g = Color16_override_g[0];
             b = Color16_override_b[0];

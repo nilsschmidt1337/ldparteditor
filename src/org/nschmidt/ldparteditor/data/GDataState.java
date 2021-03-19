@@ -26,8 +26,6 @@ public class GDataState {
     public boolean globalNegativeDeterminant = false;
     public boolean globalDrawObjects = true;
     public boolean globalFoundTEXMAPNEXT = false;
-    public boolean globalFoundTEXMAPDEF = false;
     public Deque<GTexture> globalTextureStack = new ArrayDeque<>();
     public Deque<Boolean> globalFoundTEXMAPStack = new ArrayDeque<>();
-    public TexMeta globalLastTextureType = null;
 }

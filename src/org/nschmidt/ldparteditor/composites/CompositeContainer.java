@@ -57,17 +57,6 @@ public class CompositeContainer extends ScalableComposite {
         }
     }
 
-    /**
-     *
-     * @param parentSashForm
-     */
-    public CompositeContainer(Composite parentSashForm) {
-        super(parentSashForm, org.eclipse.swt.SWT.NONE);
-        this.setLayout(new FillLayout());
-        Composite3D composite3D = new Composite3D(this);
-        composite3D.setParent(this);
-    }
-
     public CompositeContainer(Composite parentSashForm, DatFile df) {
         super(parentSashForm, org.eclipse.swt.SWT.NONE);
         this.setLayout(new FillLayout());

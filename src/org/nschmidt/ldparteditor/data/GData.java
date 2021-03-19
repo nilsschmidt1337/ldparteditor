@@ -55,13 +55,8 @@ public abstract class GData implements IGData, Comparable<GData> {
     static boolean globalDrawObjects = true;
     static boolean globalFoundTEXMAPNEXT = false;
 
-    static boolean globalFoundTEXMAPDEF = false;
     static Deque<GTexture> globalTextureStack = new ArrayDeque<>();
     static Deque<Boolean> globalFoundTEXMAPStack = new ArrayDeque<>();
-
-    static TexMeta globalLastTextureType = null;
-
-    protected static final StringBuilder sb = new StringBuilder();
 
     // Cleared before viewport change
     public static final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<>(1000);

@@ -45,10 +45,6 @@ public class Rational implements Comparable<Rational> {
         this(new BigDecimal(x));
     }
 
-    public Rational(float x) {
-        this(new BigDecimal(x));
-    }
-
     public Rational(BigDecimal x) {
         final int scale = x.scale();
         if (scale > 0) {

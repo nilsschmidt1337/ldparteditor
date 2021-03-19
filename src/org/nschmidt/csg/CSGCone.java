@@ -64,26 +64,6 @@ public class CSGCone extends CSGPrimitive implements Primitive {
         this.numSlices = numSlices;
     }
 
-    /**
-     * Constructor. Creates a cone ranging from {@code [0,0,0]} to
-     * {@code [0,0,height]} with the specified {@code radius} and {@code height}
-     * . The resolution of the tessellation can be controlled with
-     * {@code numSlices}.
-     *
-     * @param radius
-     *            cylinder radius
-     * @param height
-     *            cylinder height
-     * @param numSlices
-     *            number of slices (used for tessellation)
-     */
-    public CSGCone(double radius, double height, int numSlices) {
-        this.start = VectorCSGd.ZERO;
-        this.end = VectorCSGd.Z_ONE.times(height);
-        this.radius = radius;
-        this.numSlices = numSlices;
-    }
-
     @Override
     public List<Polygon> toPolygons(DatFile df, GColour colour) {
         final VectorCSGd s = getStart();

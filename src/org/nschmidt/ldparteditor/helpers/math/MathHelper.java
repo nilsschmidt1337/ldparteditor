@@ -34,7 +34,6 @@ import org.nschmidt.ldparteditor.data.GData2;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.GData5;
 import org.nschmidt.ldparteditor.data.Matrix;
-import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 
@@ -49,9 +48,6 @@ public enum MathHelper {
 
     private static Random randomizer = new Random(183630263548l);
 
-    public static final BigDecimal THREE = new BigDecimal(3);
-    public static final BigDecimal FOUR = new BigDecimal(4);
-
     public static final BigDecimal R1 = new BigDecimal(".432"); //$NON-NLS-1$
     public static final BigDecimal R2 = new BigDecimal(".256"); //$NON-NLS-1$
     public static final BigDecimal R3 = new BigDecimal(".312"); //$NON-NLS-1$
@@ -62,17 +58,6 @@ public enum MathHelper {
     public static float randomFloat(int ID, int argNum) {
         randomizer.setSeed(18363 * Math.abs(ID) + argNum * 192732);
         return randomizer.nextFloat();
-    }
-
-    /**
-     * Performs an UNCHECKED cast
-     *
-     * @param x
-     * @return
-     */
-    @SuppressWarnings("unchecked")
-    public static <T> T cast(Object x) {
-        return (T) x;
     }
 
     /**
@@ -366,90 +351,6 @@ public enum MathHelper {
         return result;
     }
 
-    public static float[][] getLineVerticesFast(
-            final float x1, final float y1, final float z1,
-            final float x2, final float y2, final float z2) {
-
-
-        float[][] result = new float[18][3];
-
-        Vector4f n = new Vector4f();
-        Vector4f p = new Vector4f();
-        Vector4f q = new Vector4f();
-        Vector4f perp = new Vector4f();
-
-        int j = 0;
-        float theta;
-
-        /* Normal pointing from p1 to p2 */
-        n.x = x1 - x2;
-        n.y = y1 - y2;
-        n.z = z1 - z2;
-
-        /*
-         * Create two perpendicular vectors perp and q on the plane of the disk
-         */
-
-        perp.x = n.x;
-        perp.y = n.y;
-        perp.z = n.z;
-        if (n.x == 0 && n.z == 0)
-            perp.x += 1;
-        else
-            perp.y += 1;
-        crossProduct(perp, n, q);
-        crossProduct(n, q, perp);
-        try {
-            perp.normalise();
-            q.normalise();
-        } catch (IllegalStateException ise) {
-            perp.x = 0f;
-            perp.y = 0f;
-            perp.z = 0f;
-            q.x = 0f;
-            q.y = 0f;
-            q.z = 0f;
-        }
-
-        float r1 = View.lineWidth1000[0];
-        float r2 = r1;
-
-        float twoPI = (float) Math.PI / 4f;
-        for (int i = 0; i <= 8; i++) {
-            theta = i * twoPI;
-
-            n.x = (float) (Math.cos(theta) * perp.x + Math.sin(theta) * q.x);
-            n.y = (float) (Math.cos(theta) * perp.y + Math.sin(theta) * q.y);
-            n.z = (float) (Math.cos(theta) * perp.z + Math.sin(theta) * q.z);
-            try {
-                n.normalise();
-            } catch (IllegalStateException ise) {
-                n.x = 0f;
-                n.y = 0f;
-                n.z = 0f;
-            }
-
-
-            p.x = x1 + r1 * n.x;
-            p.y = y1 + r1 * n.y;
-            p.z = z1 + r1 * n.z;
-            result[j][0] = p.x;
-            result[j][1] = p.y;
-            result[j][2] = p.z;
-            j++;
-
-            p.x = x2 + r2 * n.x;
-            p.y = y2 + r2 * n.y;
-            p.z = z2 + r2 * n.z;
-            result[j][0] = p.x;
-            result[j][1] = p.y;
-            result[j][2] = p.z;
-            j++;
-
-        }
-        return result;
-    }
-
     /**
      * Calculates the square root of a BigDecimal
      *
@@ -464,41 +365,6 @@ public enum MathHelper {
             result = result.add(value.divide(result, Threshold.mc), Threshold.mc).divide(TWO, Threshold.mc);
         }
         return result;
-    }
-
-    /**
-     * @param cartesian
-     *            coordinates
-     * @return polar coordinates with x=r y=theta z=phi
-     */
-    public static Vector4f getPolarCoordinates(Vector4f cartesian) {
-        Vector4f result = new Vector4f();
-        result.setX((float) Math.sqrt(cartesian.x * cartesian.x + cartesian.y * cartesian.y + cartesian.z * cartesian.z));
-        if (result.getX() > 0.0001f) {
-            result.setY((float) Math.acos(cartesian.z / result.getX()));
-            result.setZ((float) Math.atan2(cartesian.y, cartesian.x));
-            return result;
-        } else {
-            result.setX(0f);
-            return result;
-        }
-    }
-
-    /**
-     * @param polar
-     *            coordinates
-     * @return cartesian coordinates
-     */
-    public static Vector4f getCartesianCoordinates(Vector4f polar) {
-        return new Vector4f((float) (polar.x * Math.sin(polar.y) * Math.cos(polar.z)), (float) (polar.x * Math.sin(polar.y) * Math.sin(polar.z)), (float) (polar.x * Math.cos(polar.y)), 1f);
-    }
-
-    public static Vector4f getNearestPointToLine(Vertex line1, Vertex line2, Vertex point) {
-        return getNearestPointToLine(line1.x, line1.y, line1.z, line2.x, line2.y, line2.z, point.x, point.y, point.z);
-    }
-
-    public static Vector4f getNearestPointToLine(float line_x1, float line_y1, float line_z1, float line_x2, float line_y2, float line_z2, Vertex point) {
-        return getNearestPointToLine(line_x1, line_y1, line_z1, line_x2, line_y2, line_z2, point.x, point.y, point.z);
     }
 
     public static Vector4f getNearestPointToLine(float line_x1, float line_y1, float line_z1, float line_x2, float line_y2, float line_z2, float point_x, float point_y, float point_z) {
@@ -1526,92 +1392,6 @@ public enum MathHelper {
     private static double prec2err(final double x, final int prec) {
         return 5. * Math.abs(x) * Math.pow(10., -prec);
 
-    }
-
-    public static ArrayList<GData3> triangulateFourPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, GData1 dummyReference, DatFile df) {
-        ArrayList<GData3> result = new ArrayList<>();
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex2,
-                vertex3,
-                dummyReference, df, true));
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex3,
-                vertex4,
-                dummyReference, df, true));
-        return result;
-    }
-
-    public static ArrayList<GData3> triangulateFivePoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, GData1 dummyReference, DatFile df) {
-        ArrayList<GData3> result = new ArrayList<>();
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex2,
-                vertex3,
-                dummyReference, df, true));
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex3,
-                vertex4,
-                dummyReference, df, true));
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex4,
-                vertex5,
-                dummyReference, df, true));
-        return result;
-    }
-
-    public static ArrayList<GData3> triangulateSixPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex2, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, GData1 dummyReference, DatFile df) {
-        ArrayList<GData3> result = new ArrayList<>();
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex2,
-                vertex3,
-                dummyReference, df, true));
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex3,
-                vertex4,
-                dummyReference, df, true));
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex4,
-                vertex5,
-                dummyReference, df, true));
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex5,
-                vertex6,
-                dummyReference, df, true));
-        return result;
-    }
-
-    public static ArrayList<GData3> triangulateSevenPoints(int colourNumber, float r, float g, float b, float a, Vertex vertex, Vertex vertex3, Vertex vertex4, Vertex vertex5, Vertex vertex6, Vertex vertex7, GData1 dummyReference, DatFile df) {
-        ArrayList<GData3> result = new ArrayList<>();
-
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex3,
-                vertex4,
-                dummyReference, df, true));
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex4,
-                vertex5,
-                dummyReference, df, true));
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex5,
-                vertex6,
-                dummyReference, df, true));
-        result.add(new GData3(colourNumber, r, g, b, a,
-                vertex,
-                vertex6,
-                vertex7,
-                dummyReference, df, true));
-        return result;
     }
 
     public static ArrayList<GData3> triangulatePointGroups(ArrayList<GColour> cols, ArrayList<Vector3dd> av, ArrayList<Integer> types, GData1 dummyReference,

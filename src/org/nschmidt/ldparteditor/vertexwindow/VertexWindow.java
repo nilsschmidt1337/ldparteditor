@@ -115,9 +115,9 @@ public class VertexWindow extends ApplicationWindow {
                 changeVertex();
             }
         });
-        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> {
-            VertexManager.copySingleVertexIntoClipboard(selectedVertex);
-        });
+        WidgetUtil(btn_Copy[0]).addSelectionListener(e ->
+            VertexManager.copySingleVertexIntoClipboard(selectedVertex)
+        );
         WidgetUtil(btn_Merge[0]).addSelectionListener(e -> {
             final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
             if (lastHoveredC3d == null) return;

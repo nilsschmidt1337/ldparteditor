@@ -260,7 +260,7 @@ public class Manipulator {
     private Vector4f z_Rotate_start = new Vector4f(1f, 0f, 0f, 1f);
     private Vector4f v_Rotate_start = new Vector4f(1f, 0f, 0f, 1f);
 
-    private static float activationTreshold = 200f;
+    private static final float ACTIVATION_TRESHOLD = 200f;
 
     private Vector4f position = new Vector4f(0f, 0f, 0f, 1f);
     private BigDecimal[] accuratePosition = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO };
@@ -704,7 +704,7 @@ public class Manipulator {
             }
 
             float sumangle = 0f;
-            float angle = (float) (2d * Math.asin(activationTreshold / (20d * rotate_size)));
+            float angle = (float) (2d * Math.asin(ACTIVATION_TRESHOLD / (20d * rotate_size)));
 
             float twoPI = (float) (Math.PI * 2f);
 
@@ -726,7 +726,7 @@ public class Manipulator {
                 Vector4f screenpos2 = p.getScreenCoordinatesFrom3DonlyZ(vector.x - tx, vector.y - ty, vector.z - tz);
                 if (screenpos2.z > 0f || type == V_ROTATE) {
                     float dists = (float) (Math.pow(mp.x - screenpos.x, 2) + Math.pow(mp.y - screenpos.y, 2));
-                    if (dists < activationTreshold) {
+                    if (dists < ACTIVATION_TRESHOLD) {
                         switch (type) {
                         case X_ROTATE:
                             x_Rotate_start.set(vector);
@@ -952,7 +952,7 @@ public class Manipulator {
                         position2 = 1;
                     }
                 }
-                if (dists < activationTreshold || position2 != 0) {
+                if (dists < ACTIVATION_TRESHOLD || position2 != 0) {
                     switch (type) {
                     case X_ROTATE_ARROW:
                         if (position2 < 0) {
@@ -1039,7 +1039,7 @@ public class Manipulator {
                 Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
                 Vector4f screenpos = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(virtpos.x, virtpos.y, virtpos.z);
                 float dists = (float) (Math.pow(c3d.getMousePosition().x - screenpos.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos.y, 2));
-                if (dists < activationTreshold) {
+                if (dists < ACTIVATION_TRESHOLD) {
                     switch (type) {
                     case X_TRANSLATE:
                         x_Translate = true;
@@ -1985,22 +1985,6 @@ public class Manipulator {
         position = new Vector4f(0f, 0f, 0f, 1f);
     }
 
-    public void loadIntoMatrix(Matrix4f transformation) {
-        transformation.setIdentity();
-        transformation.m30 = position.x;
-        transformation.m31 = position.y;
-        transformation.m32 = position.z;
-        transformation.m00 = xAxis.x;
-        transformation.m01 = xAxis.y;
-        transformation.m02 = xAxis.z;
-        transformation.m10 = yAxis.x;
-        transformation.m11 = yAxis.y;
-        transformation.m12 = yAxis.z;
-        transformation.m20 = zAxis.x;
-        transformation.m21 = zAxis.y;
-        transformation.m22 = zAxis.z;
-    }
-
     public void setAccuratePosition(BigDecimal x, BigDecimal y, BigDecimal z) {
         accuratePosition[0] = x;
         accuratePosition[1] = y;
@@ -2101,14 +2085,6 @@ public class Manipulator {
 
     public static void setScale_size(float scale_size) {
         Manipulator.scale_size = scale_size;
-    }
-
-    public static float getActivationTreshold() {
-        return activationTreshold;
-    }
-
-    public static void setActivationTreshold(float activationTreshold) {
-        Manipulator.activationTreshold = activationTreshold;
     }
 
     public double getAccurateRotationX() {

@@ -473,12 +473,12 @@ public class Editor3DWindow extends Editor3DDesign {
                 VertexWindow.placeVertexWindow();
             }
         });
-        sh.addListener(SWT.Move, event -> {
-            VertexWindow.placeVertexWindow();
-        });
-        sh.addListener(SWT.Resize, event -> {
-            VertexWindow.placeVertexWindow();
-        });
+        sh.addListener(SWT.Move, event ->
+            VertexWindow.placeVertexWindow()
+        );
+        sh.addListener(SWT.Resize, event ->
+            VertexWindow.placeVertexWindow()
+        );
         WidgetUtil(tabFolder_Settings[0]).addSelectionListener(e ->  regainFocus());
 
         WidgetSelectionListener sa = e -> {
@@ -503,9 +503,9 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        WidgetUtil(btn_sameHeight[0]).addSelectionListener(e -> {
-            leftSash[0].setWeights(new int[]{33, 33, 33});
-        });
+        WidgetUtil(btn_sameHeight[0]).addSelectionListener(e ->
+            leftSash[0].setWeights(new int[]{33, 33, 33})
+        );
 
         WidgetUtil(btn_showLower[0]).addSelectionListener(e -> {
             int[] w = leftSash[0].getWeights();

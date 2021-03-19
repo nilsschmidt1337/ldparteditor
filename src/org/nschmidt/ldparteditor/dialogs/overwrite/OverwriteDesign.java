@@ -22,12 +22,10 @@ import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
 
@@ -37,11 +35,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
  */
 class OverwriteDesign extends Dialog {
 
-    Text[] txt_projectPath = new Text[1];
-    Text[] txt_projectName = new Text[1];
-    NButton[] btn_browseProjectPath = new NButton[1];
-    NButton[] btn_ok = new NButton[1];
-    final String whichFile;
+    private final String whichFile;
 
     OverwriteDesign(Shell parentShell, String file) {
         super(parentShell);

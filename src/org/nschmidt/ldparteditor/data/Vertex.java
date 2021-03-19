@@ -19,7 +19,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 import org.lwjgl.util.vector.Vector4f;
-import org.nschmidt.ldparteditor.helpers.math.Rational;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3r;
 
@@ -166,10 +165,6 @@ public class Vertex implements Comparable<Vertex> {
 
     public Vertex(Vector3r vector3r) {
         this(vector3r.X.BigDecimalValue(), vector3r.Y.BigDecimalValue(), vector3r.Z.BigDecimalValue());
-    }
-
-    public Vertex(Rational x2, Rational y2, Rational z2) {
-        this(x2.BigDecimalValue(), y2.BigDecimalValue(), z2.BigDecimalValue());
     }
 
     public final Vector4f toVector4f() {

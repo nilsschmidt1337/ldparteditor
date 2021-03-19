@@ -59,15 +59,6 @@ public class Composite3DState implements Serializable {
 
     private boolean smooth = false;
 
-    public Composite3DState() {
-
-    }
-
-    public Composite3DState(boolean vertical) {
-        this.sash = true;
-        this.vertical = vertical;
-    }
-
     public boolean hasScales() {
         return scales;
     }

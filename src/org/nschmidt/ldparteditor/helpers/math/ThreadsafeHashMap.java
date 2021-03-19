@@ -44,28 +44,10 @@ public class ThreadsafeHashMap<K, V> implements Map<K, V> {
         }
     }
 
-    public ThreadsafeHashMap(int initialCapacity, float loadFactor) {
-        try {
-            wl.lock();
-            map = new HashMap<>(initialCapacity, loadFactor);
-        } finally {
-            wl.unlock();
-        }
-    }
-
     public ThreadsafeHashMap(int initialCapacity) {
         try {
             wl.lock();
             map = new HashMap<>(initialCapacity);
-        } finally {
-            wl.unlock();
-        }
-    }
-
-    public ThreadsafeHashMap(Map<? extends K, ? extends V> m) {
-        try {
-            wl.lock();
-            map = new HashMap<>(m);
         } finally {
             wl.unlock();
         }

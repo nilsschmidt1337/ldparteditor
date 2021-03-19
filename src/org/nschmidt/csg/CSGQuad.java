@@ -53,18 +53,6 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
         dimensions = new VectorCSGd(2000d, 1d, 2000d);
     }
 
-    /**
-     * Constructor. Creates a new quad with center {@code [0,0,0]} and
-     * dimensions {@code [size,0,size]}.
-     *
-     * @param size
-     *            size
-     */
-    public CSGQuad(double size) {
-        center = new VectorCSGd(0d, 0d, 0d);
-        dimensions = new VectorCSGd(size, 1d, size);
-    }
-
     @Override
     public List<Polygon> toPolygons(DatFile df, GColour colour) {
 
@@ -124,11 +112,6 @@ public class CSGQuad extends CSGPrimitive implements Primitive {
      */
     public void setDimensions(VectorCSGd dimensions) {
         this.dimensions = dimensions;
-    }
-
-    public CSGQuad noCenter() {
-        centered = false;
-        return this;
     }
 
     @Override

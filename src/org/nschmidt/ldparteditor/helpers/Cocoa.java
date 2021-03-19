@@ -27,7 +27,7 @@ public enum Cocoa {
 
     public static int getStyle() {
         // TODO Inline after more testing on Mac OS X
-        return SWT.NONE;// isCocoa ? SWT.FLAT : SWT.NONE;
+        return SWT.NONE;
     }
 
     public static String replaceCtrlByCmd(String source) {

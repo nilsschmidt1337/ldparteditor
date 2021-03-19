@@ -33,7 +33,6 @@ public enum ViewIdleManager {
     public static final GLCanvas[] firstCanvas = new GLCanvas[1];
     public static final OpenGLRenderer[] firstRender = new OpenGLRenderer[1];
 
-    public static final boolean[] running = new boolean[] { true };
     public static final AtomicBoolean[] pause = new AtomicBoolean[] { new AtomicBoolean(false) };
     public static final AtomicBoolean[] renderLDrawStandard = new AtomicBoolean[] { new AtomicBoolean(false) };
 

@@ -336,7 +336,7 @@ public enum DatParser {
                         result.add(0, new ParsingResult(new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, false)));
                     }
                 }
-            } else if (line.startsWith("PROTRACTOR ", 7)) { //$NON-NLS-1$) {
+            } else if (line.startsWith("PROTRACTOR ", 7)) { //$NON-NLS-1$
                 boolean numberError = false;
                 final GColour colour;
                 if (data_segments.length == 13) {

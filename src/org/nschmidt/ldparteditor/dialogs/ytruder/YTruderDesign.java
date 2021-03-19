@@ -23,7 +23,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -32,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.YTruderSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The YTruder dialog
@@ -51,7 +51,6 @@ class YTruderDesign extends Dialog {
     final BigDecimalSpinner[] spn_value = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_condlineAngleThreshold = new BigDecimalSpinner[1];
     final Combo[] cmb_axis = new Combo[1];
-    final Combo[] cmb_scope = new Combo[1];
     final NButton[] btn_TranslateByDistance = new NButton[1];
     final NButton[] btn_SymmetryAcrossPlane = new NButton[1];
     final NButton[] btn_ProjectionOnPlane = new NButton[1];

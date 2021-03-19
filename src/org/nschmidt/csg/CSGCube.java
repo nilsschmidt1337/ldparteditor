@@ -73,18 +73,6 @@ public class CSGCube extends CSGPrimitive implements Primitive {
     }
 
     /**
-     * Constructor. Creates a new cube with center {@code [0,0,0]} and
-     * dimensions {@code [size,size,size]}.
-     *
-     * @param size
-     *            size
-     */
-    public CSGCube(double size) {
-        center = new VectorCSGd(0, 0, 0);
-        dimensions = new VectorCSGd(size, size, size);
-    }
-
-    /**
      * Constructor. Creates a new cuboid with the specified center and
      * dimensions.
      *
@@ -96,21 +84,6 @@ public class CSGCube extends CSGPrimitive implements Primitive {
     public CSGCube(VectorCSGd center, VectorCSGd dimensions) {
         this.center = center;
         this.dimensions = dimensions;
-    }
-
-    /**
-     * Constructor. Creates a new cuboid with center {@code [0,0,0]} and with
-     * the specified dimensions.
-     *
-     * @param w
-     *            width
-     * @param h
-     *            height
-     * @param d
-     *            depth
-     */
-    public CSGCube(double w, double h, double d) {
-        this(VectorCSGd.ZERO, new VectorCSGd(w, h, d));
     }
 
     @Override
@@ -172,11 +145,6 @@ public class CSGCube extends CSGPrimitive implements Primitive {
      */
     public void setDimensions(VectorCSGd dimensions) {
         this.dimensions = dimensions;
-    }
-
-    public CSGCube noCenter() {
-        centered = false;
-        return this;
     }
 
     @Override

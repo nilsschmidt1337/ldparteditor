@@ -214,7 +214,7 @@ class VM03Adjacency extends VM02Add {
         ArrayList<GData> result = new ArrayList<>();
         Set<VertexManifestation> m1 = new HashSet<>();
         Set<VertexManifestation> m2 = new HashSet<>();
-        if (m1 == null || m2 == null) {
+        if (h1 == null || h2 == null) {
             return result;
         }
         for (Vertex v1 : h1) {

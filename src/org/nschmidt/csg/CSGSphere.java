@@ -64,18 +64,6 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
     }
 
     /**
-     * Constructor. Creates a sphere with the specified radius, 16 slices and 8
-     * stacks and center [0,0,0].
-     *
-     * @param radius
-     *            sphare radius
-     */
-    public CSGSphere(double radius) {
-        init();
-        this.radius = radius;
-    }
-
-    /**
      * Constructor. Creates a sphere with the specified number of slices and
      * stacks.
      *

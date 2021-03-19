@@ -47,9 +47,6 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
     public double z;
 
     public static final VectorCSGd ZERO = new VectorCSGd(0, 0, 0);
-    public static final VectorCSGd UNITY = new VectorCSGd(1, 1, 1);
-    public static final VectorCSGd X_ONE = new VectorCSGd(1, 0, 0);
-    public static final VectorCSGd Y_ONE = new VectorCSGd(0, 1, 0);
     public static final VectorCSGd Z_ONE = new VectorCSGd(0, 0, 1);
 
     /**
@@ -124,20 +121,6 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
      */
     public VectorCSGd times(double a) {
         return new VectorCSGd(x * a, y * a, z * a);
-    }
-
-    /**
-     * Returns the product of this vector and the specified vector.
-     *
-     * @param a
-     *            the vector
-     *
-     *            <b>Note:</b> this vector is not modified.
-     *
-     * @return the product of this vector and the specified vector
-     */
-    public VectorCSGd times(VectorCSGd a) {
-        return new VectorCSGd(x * a.x, y * a.y, z * a.z);
     }
 
     /**

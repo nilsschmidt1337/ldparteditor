@@ -29,11 +29,6 @@ public class IntersectionInfoWithColour {
     private ArrayList<GColour> colours = new ArrayList<>();
     private ArrayList<Integer> isLine = new ArrayList<>();
 
-    public IntersectionInfoWithColour(ArrayList<GColour> colours, ArrayList<Vector3dd> allVertices) {
-        this.allVertices.addAll(allVertices);
-        this.colours.addAll(colours);
-    }
-
     public IntersectionInfoWithColour(ArrayList<GColour> colours, ArrayList<Vector3dd> allVertices, ArrayList<Integer> resultIsLine) {
         this.isLine.addAll(resultIsLine);
         this.allVertices.addAll(allVertices);

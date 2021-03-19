@@ -19,6 +19,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public abstract class CSGPrimitive {
 
-    static final AtomicInteger id_counter = new AtomicInteger(0); // Integer.MIN_VALUE);
+    static final AtomicInteger id_counter = new AtomicInteger(0);
 
 }

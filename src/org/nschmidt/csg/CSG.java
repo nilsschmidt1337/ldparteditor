@@ -34,7 +34,6 @@
 package org.nschmidt.csg;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -155,17 +154,6 @@ public class CSG {
         CSG csg = new CSG();
         csg.polygons = polygons;
         return csg;
-    }
-
-    /**
-     * Constructs a CSG from the specified {@link Polygon} instances.
-     *
-     * @param polygons
-     *            polygons
-     * @return a CSG instance
-     */
-    public static CSG fromPolygons(Polygon... polygons) {
-        return fromPolygons(Arrays.asList(polygons));
     }
 
     @Override
@@ -314,7 +302,7 @@ public class CSG {
 
         final List<Polygon> nonIntersectingPolys = new ArrayList<>();
 
-        thisPolys.removeIf((poly) -> {
+        thisPolys.removeIf(poly -> {
             final boolean result;
             if (result = !otherBounds.intersects(poly.getBounds())) {
                 nonIntersectingPolys.add(poly);
@@ -322,9 +310,9 @@ public class CSG {
             return result;
         });
 
-        otherPolys.removeIf((poly) -> {
-            return !thisBounds.intersects(poly.getBounds());
-        });
+        otherPolys.removeIf(poly ->
+            !thisBounds.intersects(poly.getBounds())
+        );
 
         CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(thisPolys));
         CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
@@ -493,7 +481,7 @@ public class CSG {
         if (shouldOptimize && df != null && df.isOptimizingCSG()) {
             final Composite3D lastC3d = DatFile.getLastHoveredComposite();
             if (lastC3d != null) {
-                Display.getDefault().asyncExec(() -> {GuiStatusManager.updateStatus(lastC3d);});
+                Display.getDefault().asyncExec(() -> GuiStatusManager.updateStatus(lastC3d));
             }
 
             shouldOptimize = false;

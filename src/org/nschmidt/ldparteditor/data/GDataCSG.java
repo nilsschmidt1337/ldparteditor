@@ -768,10 +768,8 @@ public final class GDataCSG extends GData {
         String t = null;
         switch (type) {
         case CSG.QUAD:
-            if (notChoosen) {
-                t = " CSG_QUAD "; //$NON-NLS-1$
-                notChoosen = false;
-            }
+            t = " CSG_QUAD "; //$NON-NLS-1$
+            notChoosen = false;
         case CSG.CIRCLE:
             if (notChoosen) {
                 t = " CSG_CIRCLE "; //$NON-NLS-1$
@@ -848,10 +846,8 @@ public final class GDataCSG extends GData {
         String t = null;
         switch (type) {
         case CSG.QUAD:
-            if (notChoosen) {
-                t = " CSG_QUAD "; //$NON-NLS-1$
-                notChoosen = false;
-            }
+            t = " CSG_QUAD "; //$NON-NLS-1$
+            notChoosen = false;
         case CSG.CIRCLE:
             if (notChoosen) {
                 t = " CSG_CIRCLE "; //$NON-NLS-1$
@@ -1241,10 +1237,8 @@ public final class GDataCSG extends GData {
         String t = null;
         switch (type) {
         case CSG.QUAD:
-            if (notChoosen) {
-                t = " CSG_QUAD "; //$NON-NLS-1$
-                notChoosen = false;
-            }
+            t = " CSG_QUAD "; //$NON-NLS-1$
+            notChoosen = false;
         case CSG.CIRCLE:
             if (notChoosen) {
                 t = " CSG_CIRCLE "; //$NON-NLS-1$

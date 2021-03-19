@@ -292,43 +292,6 @@ public final class GData5 extends GData {
         this.Z4 = null;
     }
 
-    /**
-     * FOR PRIMITIVES ONLY
-     */
-    public GData5(GColour c, GData1 parent, Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
-        super(parent);
-        this.colourNumber = c.getColourNumber();
-        this.r = c.getR();
-        this.g = c.getG();
-        this.b = c.getB();
-        this.a = c.getA();
-        this.x1 = v1.x;
-        this.y1 = v1.y;
-        this.z1 = v1.z;
-        this.x2 = v2.x;
-        this.y2 = v2.y;
-        this.z2 = v2.z;
-        this.x3 = v3.x;
-        this.y3 = v3.y;
-        this.z3 = v3.z;
-        this.x4 = v4.x;
-        this.y4 = v4.y;
-        this.z4 = v4.z;
-        this.lGeom = null; // MathHelper.getLineVertices1000(new Vector4f(x1, y1, z1, 1f), new Vector4f(x2, y2, z2, 1f), parent.productMatrix);
-        this.X1 = null;
-        this.Y1 = null;
-        this.Z1 = null;
-        this.X2 = null;
-        this.Y2 = null;
-        this.Z2 = null;
-        this.X3 = null;
-        this.Y3 = null;
-        this.Z3 = null;
-        this.X4 = null;
-        this.Y4 = null;
-        this.Z4 = null;
-    }
-
     public GData5(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, Vertex v3, Vertex v4, GData1 parent, DatFile datFile) {
         super(parent);
         this.colourNumber = colourNumber;

@@ -187,17 +187,6 @@ public class Pnt {
     }
 
     /**
-     * Angle (in radians) between two Pnts (treated as vectors).
-     *
-     * @param p
-     *            the other Pnt
-     * @return the angle (in radians) between the two Pnts
-     */
-    public double angle(Pnt p) {
-        return Math.acos(this.dot(p) / (this.magnitude() * p.magnitude()));
-    }
-
-    /**
      * Perpendicular bisector of two Pnts. Works in any dimension. The
      * coefficients are returned as a Pnt of one higher dimension (e.g.,
      * (A,B,C,D) for an equation of the form Ax + By + Cz + D = 0).
@@ -215,21 +204,6 @@ public class Pnt {
     }
 
     /* Pnts as matrices */
-
-    /**
-     * Create a String for a matrix.
-     *
-     * @param matrix
-     *            the matrix (an array of Pnts)
-     * @return a String represenation of the matrix
-     */
-    public static String toString(Pnt[] matrix) {
-        StringBuilder buf = new StringBuilder("{"); //$NON-NLS-1$
-        for (Pnt row : matrix)
-            buf.append(" " + row); //$NON-NLS-1$
-        buf.append(" }"); //$NON-NLS-1$
-        return buf.toString();
-    }
 
     /**
      * Compute the determinant of a matrix (array of Pnts). This is not an
@@ -421,40 +395,6 @@ public class Pnt {
                 return simplex[i];
         }
         return null;
-    }
-
-    /**
-     * Test if this Pnt is on a simplex.
-     *
-     * @param simplex
-     *            the simplex (an array of Pnts)
-     * @return the simplex Pnt that "witnesses" on-ness (or null if not on)
-     */
-    public Pnt isOn(Pnt[] simplex) {
-        int[] result = this.relation(simplex);
-        Pnt witness = null;
-        for (int i = 0; i < result.length; i++) {
-            if (result[i] == 0)
-                witness = simplex[i];
-            else if (result[i] > 0)
-                return null;
-        }
-        return witness;
-    }
-
-    /**
-     * Test if this Pnt is inside a simplex.
-     *
-     * @param simplex
-     *            the simplex (an arary of Pnts)
-     * @return true iff this Pnt is inside simplex.
-     */
-    public boolean isInside(Pnt[] simplex) {
-        int[] result = this.relation(simplex);
-        for (int r : result)
-            if (r >= 0)
-                return false;
-        return true;
     }
 
     /**

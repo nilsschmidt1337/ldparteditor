@@ -73,8 +73,6 @@ public class HeaderState {
     private int state = 0;
     private String lastHistoryEntry = null;
 
-    public static final int _99_DONE = 99;
-
     public boolean hasTITLE() {
         return hasTITLE;
     }

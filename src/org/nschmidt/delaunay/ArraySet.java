@@ -81,20 +81,6 @@ public class ArraySet<E> extends AbstractSet<E> {
         return items.get(index);
     }
 
-    /**
-     * True iff any member of the collection is also in the ArraySet.
-     *
-     * @param collection
-     *            the Collection to check
-     * @return true iff any member of collection appears in this ArraySet
-     */
-    public boolean containsAny(Collection<?> collection) {
-        for (Object item : collection)
-            if (this.contains(item))
-                return true;
-        return false;
-    }
-
     @Override
     public boolean add(E item) {
         if (items.contains(item))

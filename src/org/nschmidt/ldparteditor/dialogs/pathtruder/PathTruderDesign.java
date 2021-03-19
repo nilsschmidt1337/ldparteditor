@@ -56,7 +56,6 @@ class PathTruderDesign extends Dialog {
     final BigDecimalSpinner[] spn_transCurve = new BigDecimalSpinner[1];
     final Combo[] cmb_shapeCompensation = new Combo[1];
     final Combo[] cmb_bfcInvert = new Combo[1];
-    final Combo[] cmb_scope = new Combo[1];
 
     PathTruderDesign(Shell parentShell, PathTruderSettings ps) {
         super(parentShell);

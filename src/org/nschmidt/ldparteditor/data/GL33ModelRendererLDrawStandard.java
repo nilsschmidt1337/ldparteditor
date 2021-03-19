@@ -66,8 +66,6 @@ public class GL33ModelRendererLDrawStandard {
         filesWithLogo2.add("stud2.dat"); //$NON-NLS-1$
     }
 
-    boolean isPaused = false;
-
     private final Composite3D c3d;
     private final OpenGLRenderer33 renderer;
 

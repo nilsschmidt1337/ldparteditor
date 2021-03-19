@@ -50,26 +50,4 @@ public enum Threshold implements Serializable {
     public static double coplanarity_angle_error = 3d;
     /** The threshold for the maximum condline angle */
     public static float condline_angle_maximum = 179.9f;
-
-    /**
-     * Saves the editor thresholds
-     */
-    public static void saveThreshold() {
-
-    }
-
-    /**
-     * Loads the editor thresholds
-     */
-    public static void loadThreshold() {
-
-    }
-
-    /**
-     * Saves the default editor thresholds
-     */
-    public static void saveDefaultThreshold() {
-
-    }
-
 }

@@ -34,7 +34,6 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
-import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 
 /**
  * The rings and cones dialog
@@ -51,7 +50,6 @@ class RingsAndConesDesign extends Dialog {
 
     final Combo[] cmb_createWhat = new Combo[1];;
     final Combo[] cmb_existingOnly = new Combo[1];
-    final IntegerSpinner[] spn_amount = new IntegerSpinner[1];
     final Combo[] cmb_angle = new Combo[1];
     final BigDecimalSpinner[] spn_height = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spn_radi1 = new BigDecimalSpinner[1];

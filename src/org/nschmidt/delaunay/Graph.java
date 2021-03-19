@@ -83,21 +83,6 @@ class Graph<N> {
     }
 
     /**
-     * Remove the specified link. If link not in graph, nothing happens.
-     *
-     * @param nodeA
-     *            one end of the link
-     * @param nodeB
-     *            the other end of the link
-     * @throws NullPointerException
-     *             if either endpoint is not in graph
-     */
-    public void remove(N nodeA, N nodeB) throws NullPointerException {
-        theNeighbors.get(nodeA).remove(nodeB);
-        theNeighbors.get(nodeB).remove(nodeA);
-    }
-
-    /**
      * Report all the neighbors of node.
      *
      * @param node

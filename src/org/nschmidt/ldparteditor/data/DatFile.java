@@ -253,7 +253,7 @@ public final class DatFile {
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 data2draw.drawGL20_BFC_Textured(c3d);
             }
-            // vertices.clearVertexNormalCache();
+
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
             GL11.glBindTexture(GL11.GL_TEXTURE_2D, 0);
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 2);

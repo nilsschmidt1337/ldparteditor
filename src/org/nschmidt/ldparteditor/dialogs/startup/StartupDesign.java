@@ -102,9 +102,9 @@ class StartupDesign extends Dialog {
 
         String[] locales = new String[DateFormat.getAvailableLocales().length];
         Locale[] locs = DateFormat.getAvailableLocales();
-        Arrays.sort(locs, (o1, o2) -> {
-            return Collator.getInstance(Locale.ENGLISH).compare(o1.getDisplayName(Locale.ENGLISH), o2.getDisplayName(Locale.ENGLISH));
-        });
+        Arrays.sort(locs, (o1, o2) ->
+            Collator.getInstance(Locale.ENGLISH).compare(o1.getDisplayName(Locale.ENGLISH), o2.getDisplayName(Locale.ENGLISH))
+        );
         localeMap.clear();
         int englishIndex = 0;
         for (int i = 0; i < locales.length; i++) {

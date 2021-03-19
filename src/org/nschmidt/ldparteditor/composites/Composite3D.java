@@ -1450,26 +1450,10 @@ public class Composite3D extends ScalableComposite {
     }
 
     /**
-     * @param zNear
-     *            the viewport z-Near value to set
-     */
-    public void setzNear(double zNear) {
-        this.zNear = zNear;
-    }
-
-    /**
      * @return the viewport z-Far value
      */
     public double getzFar() {
         return zFar;
-    }
-
-    /**
-     * @param zFar
-     *            the viewport z-Far value to set
-     */
-    public void setzFar(double zFar) {
-        this.zFar = zFar;
     }
 
     /**

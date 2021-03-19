@@ -138,34 +138,6 @@ public enum FileHelper {
         return null;
     }
 
-    public static String downloadPartFile(String name) {
-
-        final StringBuilder sb = new StringBuilder();
-
-        InputStreamReader in = null;
-        try {
-            in = new InputStreamReader(new URL("https://www.ldraw.org/library/unofficial/" + name).openStream(), "UTF-8"); //$NON-NLS-1$ //$NON-NLS-2$
-            int c;
-            while ((c = in.read()) != -1) {
-                sb.append((char) c);
-            }
-
-        } catch (MalformedURLException e) {
-            return null;
-        } catch (IOException e) {
-            return null;
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException e) {
-                    return null;
-                }
-            }
-        }
-        return sb.toString();
-    }
-
     public static String downloadPartFile(String name, IProgressMonitor monitor) {
 
         final StringBuilder sb = new StringBuilder();

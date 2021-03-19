@@ -32,16 +32,4 @@ public enum BufferFactory {
         fb.flip();
         return fb;
     }
-
-    /*
-     * No need for this at the moment public static ShortBuffer
-     * shortBuffer(short[] array) { ShortBuffer sb =
-     * BufferUtils.createShortBuffer(array.length); sb.put(array); sb.flip();
-     * return sb; }
-     *
-     * public static IntBuffer intBuffer(int[] array) { IntBuffer ib =
-     * BufferUtils.createIntBuffer(array.length); ib.put(array); ib.flip();
-     * return ib; }
-     */
-
 }

@@ -150,14 +150,6 @@ public final class Polygon {
         this.colour = o.colour;
     }
 
-    public Polygon(DatFile df, List<VectorCSGd> vertices, Plane p, GColourIndex colour) {
-        PSEUDO_ID = pseudo_id_counter++;
-        this.df = df;
-        this.plane = p;
-        this.vertices = vertices;
-        this.colour = colour;
-    }
-
     @Override
     public Polygon clone() {
         List<VectorCSGd> newVertices = new ArrayList<>(vertices.size());

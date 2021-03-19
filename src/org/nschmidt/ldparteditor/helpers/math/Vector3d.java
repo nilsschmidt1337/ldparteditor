@@ -72,13 +72,6 @@ public class Vector3d {
         this.X = vertex.X;
         this.Y = vertex.Y;
         this.Z = vertex.Z;
-        // this.X = new BigDecimal(vertex.x / 1000f, mc);
-        // this.Y = new BigDecimal(vertex.y / 1000f, mc);
-        // this.Z = new BigDecimal(vertex.z / 1000f, mc);
-    }
-
-    public Vector3d(Vector3r vertex) {
-        this(vertex.X.BigDecimalValue(), vertex.Y.BigDecimalValue(), vertex.Z.BigDecimalValue());
     }
 
     public Vector3d(VectorCSGd v) {
@@ -164,11 +157,6 @@ public class Vector3d {
         return dx.multiply(dx).add(dy.multiply(dy)).add(dz.multiply(dz));
     }
 
-    public static Vector3d absSub(Vector3d left, Vector3d right) {
-        Vector3d s = sub(left, right);
-        return new Vector3d(s.X.compareTo(BigDecimal.ZERO) < 0 ? s.X.negate() : s.X, s.Y.compareTo(BigDecimal.ZERO) < 0 ? s.Y.negate() : s.Y, s.Z.compareTo(BigDecimal.ZERO) < 0 ? s.Z.negate() : s.Z);
-    }
-
     /**
      * Calculates the cross product between two vectors.
      *
@@ -190,13 +178,6 @@ public class Vector3d {
      */
     public BigDecimal length() {
         return MathHelper.sqrt(X.pow(2, mc).add(Y.pow(2, mc), mc).add(Z.pow(2, mc)));
-    }
-
-    /**
-     * @return calculates the 2-Norm from the vector.
-     */
-    public BigDecimal norm2() {
-        return X.pow(2, mc).add(Y.pow(2, mc), mc).add(Z.pow(2, mc));
     }
 
     /**

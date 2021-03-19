@@ -22,7 +22,6 @@ package org.nschmidt.ldparteditor.enums;
  *
  */
 public enum OpenInWhat {
-    NOTHING,
     EDITOR_3D,
     EDITOR_TEXT,
     EDITOR_TEXT_AND_3D
