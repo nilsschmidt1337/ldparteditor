@@ -123,31 +123,19 @@ public class TranslateDialog extends TranslateDesign {
         return z;
     }
 
-    public static void setZ(boolean z) {
-        TranslateDialog.z = z;
-    }
-
     public static boolean isY() {
         return y;
-    }
-
-    public static void setY(boolean y) {
-        TranslateDialog.y = y;
     }
 
     public static boolean isX() {
         return x;
     }
 
-    public static void setX(boolean x) {
-        TranslateDialog.x = x;
-    }
-
     public static Vertex getOffset() {
         return offset;
     }
 
-    public static void setOffset(Vertex offset) {
+    private static void setOffset(Vertex offset) {
         TranslateDialog.offset = offset;
     }
 

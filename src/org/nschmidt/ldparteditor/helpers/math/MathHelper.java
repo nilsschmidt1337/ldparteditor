@@ -60,70 +60,6 @@ public enum MathHelper {
         return randomizer.nextFloat();
     }
 
-    /**
-     * Snaps a value to a grid
-     *
-     * @param value
-     *            the value
-     * @param gridWidth
-     *            the width of the grid
-     * @return the rounded value
-     */
-    public static float snapToGrid(float value, float gridWidth) {
-        return Math.round((double) value / gridWidth) * gridWidth;
-    }
-
-    /**
-     * Rounds a vectors coordinates to
-     *
-     * @param vector
-     *            the vector
-     * @param digits
-     *            the number of digits
-     * @return the rounded value
-     */
-    public static Vector4f round(Vector4f value, float digits) {
-        float factor = (float) Math.pow(10.0, digits);
-        value.set(Math.round(value.x * factor) / factor, Math.round(value.y * factor) / factor, Math.round(value.z * factor) / factor, 1f);
-        return value;
-    }
-
-    /**
-     * Return the three component vectors v1, v2, v3 of the {@code target}, with
-     * v1 + v2 + v3 = target.
-     *
-     * @param basis_1
-     * @param basis_2
-     * @param basis_3
-     * @param target
-     * @return array of component vectors
-     */
-    public static Vector4f[] linearComponents4f(Vector4f basis_1, Vector4f basis_2, Vector4f basis_3, Vector4f target) {
-        float[][] A = new float[][] { { basis_1.x, basis_2.x, basis_3.x }, { basis_1.y, basis_2.y, basis_3.y }, { basis_1.z, basis_2.z, basis_3.z } };
-        float[] b = new float[] { target.x, target.y, target.z };
-        float[] factors = gaussianElimination(A, b);
-        Vector4f[] result = new Vector4f[] { new Vector4f(basis_1.x * factors[0], basis_1.y * factors[0], basis_1.z * factors[0], 1f),
-                new Vector4f(basis_2.x * factors[1], basis_2.y * factors[1], basis_2.z * factors[1], 1f), new Vector4f(basis_3.x * factors[2], basis_3.y * factors[2], basis_3.z * factors[2], 1f) };
-        return result;
-    }
-
-    public static float[][] getScaleFactorArray(Matrix4f pMatrix) {
-
-        Vector3f col1 = new Vector3f(pMatrix.m00, pMatrix.m01, pMatrix.m02);
-        Vector3f col2 = new Vector3f(pMatrix.m10, pMatrix.m11, pMatrix.m12);
-        Vector3f col3 = new Vector3f(pMatrix.m20, pMatrix.m21, pMatrix.m22);
-
-        float[][] result = new float[2][3];
-        result[0][0] = col1.length();
-        result[0][1] = col2.length();
-        result[0][2] = col3.length();
-
-        result[1][0] = 1f / result[0][0];
-        result[1][1] = 1f / result[0][1];
-        result[1][2] = 1f / result[0][2];
-        return result;
-    }
-
     public static float[][] getLineVertices(Vector3f p1, Vector3f p2, Matrix4f pMatrix) {
 
         Vector3f col1 = new Vector3f(pMatrix.m00, pMatrix.m01, pMatrix.m02);
@@ -616,16 +552,6 @@ public enum MathHelper {
      * @param value
      * @param target
      */
-    public static void multiply(float value, Vector4f target) {
-        target.set(target.x * value, target.y * value, target.z * value, 1f);
-    }
-
-    /**
-     * Multiplies the target vector with a scalar
-     *
-     * @param value
-     * @param target
-     */
     public static void crossProduct(Vector4f left, Vector4f right, Vector4f target) {
         target.set(left.y * right.z - left.z * right.y, left.z * right.x - left.x * right.z, left.x * right.y - left.y * right.x, 1f);
     }
@@ -943,14 +869,6 @@ public enum MathHelper {
         }
     }
 
-    public static BigDecimal min(BigDecimal a, BigDecimal b) {
-        if (a.compareTo(b) < 0) {
-            return a;
-        } else {
-            return b;
-        }
-    }
-
     static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937510582097494459230781640628620" //$NON-NLS-1$
             + "899862803482534211706798214808651328230664709384460955058223172535940812848111" //$NON-NLS-1$
             + "745028410270193852110555964462294895493038196442881097566593344612847564823378" //$NON-NLS-1$
@@ -995,60 +913,6 @@ public enum MathHelper {
             return multiplyRound(S, 8);
         }
     } /* BigDecimalMath.pi */
-
-    /**
-     * The integer root.
-     *
-     * @param n
-     *            the positive argument.
-     * @param x
-     *            the non-negative argument.
-     * @return The n-th root of the BigDecimal rounded to the precision implied
-     *         by x, x^(1/n).
-     */
-    public static BigDecimal root(final int n, final BigDecimal x) {
-        if (x.compareTo(BigDecimal.ZERO) < 0) {
-            throw new ArithmeticException("negative argument " + x.toString() + " of root"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (n <= 0) {
-            throw new ArithmeticException("negative power " + n + " of root"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
-        if (n == 1) {
-            return x;
-        }
-        /* start the computation from a double precision estimate */
-        BigDecimal s = new BigDecimal(Math.pow(x.doubleValue(), 1.0 / n));
-        /*
-         * this creates nth with nominal precision of 1 digit
-         */
-        final BigDecimal nth = new BigDecimal(n);
-        /*
-         * Specify an internal accuracy within the loop which is slightly larger
-         * than what is demanded by ’eps’ below.
-         */
-        final BigDecimal xhighpr = scalePrec(x, 2);
-        MathContext mc = new MathContext(2 + x.precision());
-        /*
-         * Relative accuracy of the result is eps.
-         */
-        final double eps = x.ulp().doubleValue() / (2 * n * x.doubleValue());
-        for (;;) {
-            /*
-             * s = s -(s/n-x/n/s^(n-1)) = s-(s-x/s^(n-1))/n; test correction
-             * s/n-x/s for being smaller than the precision requested. The
-             * relative correction is (1-x/s^n)/n,
-             */
-            BigDecimal c = xhighpr.divide(s.pow(n - 1), mc);
-            c = s.subtract(c);
-            MathContext locmc = new MathContext(c.precision());
-            c = c.divide(nth, locmc);
-            s = s.subtract(c);
-            if (Math.abs(c.doubleValue() / s.doubleValue()) < eps) {
-                break;
-            }
-        }
-        return s.round(new MathContext(err2prec()));
-    } /* BigDecimalMath.root */
 
     /**
      * Trigonometric sine.
@@ -1347,23 +1211,6 @@ public enum MathHelper {
     }
 
     /**
-     * Append decimal zeros to the value. This returns a value which appears to
-     * have a higher precision than the input.
-     *
-     * @param x
-     *            The input value
-     * @param d
-     *            The (positive) value of zeros to be added as least significant
-     *            digits.
-     * @return The same value as the input but with increased (pseudo)
-     *         precision.
-     */
-    private static BigDecimal scalePrec(final BigDecimal x, int d) {
-        return x.setScale(d + x.scale());
-
-    }
-
-    /**
      * Convert a relative error to a precision.
      *
      * @return The number of valid digits in x.
@@ -1373,8 +1220,7 @@ public enum MathHelper {
          * Example: an error of xerr=+-0.5 a precision of 1 (digit), an error of
          * +-0.05 a precision of 2 (digits)
          */
-        return 32; // 10 + (int) Math.log10(Math.abs(0.5 / xerr));
-
+        return Threshold.significant_places;
     }
 
     /**

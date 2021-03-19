@@ -154,15 +154,6 @@ public enum NLogger {
         }
     }
 
-    public static void debugPressAnyKey() {
-        if (DEBUG) {
-            try {
-                System.in.read();
-            } catch (IOException e) {
-            }
-        }
-    }
-
     /**
      * Synchronized debug method call to write the stacktrace
      *
@@ -361,10 +352,6 @@ public enum NLogger {
             System.err.flush();
             System.err.close();
         }
-    }
-
-    public static boolean isDEBUG() {
-        return DEBUG;
     }
 
     public static void setDEBUG(boolean debug) {

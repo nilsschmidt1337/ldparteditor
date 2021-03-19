@@ -851,7 +851,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                final SortDialog sd = new SortDialog(btn_Sort[0].getShell(), st, fromLine, toLine, selection.getState().getFileNameObj());
+                final SortDialog sd = new SortDialog(btn_Sort[0].getShell(), fromLine, toLine, selection.getState().getFileNameObj());
                 sd.open();
                 st.forceFocus();
             }

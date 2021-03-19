@@ -225,14 +225,6 @@ public enum WorkbenchManager {
     }
 
     /**
-     * @param editorTextWindowState
-     *            The serializable window state of the EditorTextWindow
-     */
-    public static void setEditorTextWindowState(EditorTextWindowState editorTextWindowState) {
-        WorkbenchManager.editorTextWindowState = editorTextWindowState;
-    }
-
-    /**
      * @return The serializable state of the UserSettingState
      */
     public static UserSettingState getUserSettingState() {

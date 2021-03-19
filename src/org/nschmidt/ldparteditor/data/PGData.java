@@ -67,8 +67,4 @@ public abstract class PGData implements IPGData, Serializable {
             return false;
         return this == obj;
     }
-
-    public static int getLastID() {
-        return id_counter.get();
-    }
 }

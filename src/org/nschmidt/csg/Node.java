@@ -36,7 +36,6 @@ package org.nschmidt.csg;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
-import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -51,9 +50,6 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  * no distinction between internal and leaf nodes.
  */
 final class Node {
-
-    private static final int TJUNCTION_ELIMINATION = 0;
-    private static final int LINEAR_MERGE = 1;
 
     /**
      * Polygons.
@@ -460,98 +456,5 @@ final class Node {
         }
 
         return result;
-    }
-
-    public List<Polygon> allPolygonsOptimized(List<Polygon> ps) {
-
-        int phase = TJUNCTION_ELIMINATION;
-
-        final List<Polygon> allPolys = allPolygons(ps);
-        final List<Polygon> resultPolys = new ArrayList<>();
-
-        final TreeMap<Plane, ArrayList<Polygon>> polyMap = new TreeMap<>();
-
-        for (Polygon p : allPolys) {
-            ArrayList<Polygon> polysToOptimize = polyMap.get(p.plane);
-            if (polysToOptimize == null) {
-                polysToOptimize = new ArrayList<>();
-                polyMap.put(p.plane, polysToOptimize);
-            }
-            polysToOptimize.add(p);
-        }
-
-        boolean foundOptimization = true;
-
-        // Find and eliminate all T-Juntions (in one plane)
-        while (foundOptimization) {
-            foundOptimization = false;
-            resultPolys.clear();
-            if (phase == TJUNCTION_ELIMINATION) {
-                for (ArrayList<Polygon> polys : polyMap.values()) {
-                    final int s = polys.size();
-                    final boolean[] skip = new boolean[s];
-                    for (int i = 0; i < s; i++) {
-                        for (int j = 0; j < s; j++) {
-                            if (i != j && !skip[i] && !skip[j]) {
-                                Polygon ra = polys.get(i).findAndFixTJunction(polys.get(j));
-                                if (ra != null) {
-                                    skip[i] = true;
-                                    resultPolys.add(ra);
-                                    polys.add(ra);
-                                    foundOptimization = true;
-                                }
-                            }
-                        }
-                        if (skip[i]) continue;
-                        resultPolys.add(polys.get(i));
-                    }
-                    for (int i = s - 1; i > -1; i--) {
-                        if (skip[i]) {
-                            polys.remove(i);
-                        }
-                    }
-                }
-                if (!foundOptimization) {
-                    phase = LINEAR_MERGE;
-                    foundOptimization = true;
-                }
-            } else if (phase == LINEAR_MERGE) {
-                for (ArrayList<Polygon> polys : polyMap.values()) {
-                    boolean localOpt = false;
-                    final int s = polys.size();
-                    final boolean[] skip = new boolean[s];
-                    for (int i = 0; i < s; i++) {
-                        for (int j = i + 1; j < s; j++) {
-                            if (skip[j]) continue;
-                            Polygon ra = polys.get(i).unify(polys.get(j));
-                            if (ra != null) {
-                                skip[i] = true;
-                                skip[j] = true;
-                                resultPolys.add(ra);
-                                polys.add(ra);
-                                foundOptimization = true;
-                                localOpt = true;
-                                break;
-                            }
-                        }
-                        if (localOpt) break;
-                        if (skip[i]) continue;
-                        resultPolys.add(polys.get(i));
-                    }
-                    for (int i = s - 1; i > -1; i--) {
-                        if (skip[i]) {
-                            polys.remove(i);
-                        }
-                    }
-                }
-                if (foundOptimization) {
-                    phase = TJUNCTION_ELIMINATION;
-                }
-                resultPolys.parallelStream().forEach(Polygon::removeInterpolatedPoints);
-            }
-        }
-
-        resultPolys.parallelStream().forEach(Polygon::removeInterpolatedPoints);
-        return resultPolys;
     }
 }

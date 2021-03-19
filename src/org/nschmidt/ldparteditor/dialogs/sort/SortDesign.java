@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.dialogs.sort;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -51,7 +50,6 @@ class SortDesign extends Dialog {
     final Combo[] cmb_scope = new Combo[1];
     final Combo[] cmb_sortCriteria = new Combo[1];
 
-    final StyledText st;
     final int fromLine;
     final int toLine;
     final DatFile fileNameObj;
@@ -63,9 +61,8 @@ class SortDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    public SortDesign(Shell parentShell, StyledText st, int fromLine, int toLine, DatFile fileNameObj) {
+    public SortDesign(Shell parentShell, int fromLine, int toLine, DatFile fileNameObj) {
         super(parentShell);
-        this.st = st;
         this.fromLine = fromLine;
         this.toLine = toLine;
         this.fileNameObj = fileNameObj;

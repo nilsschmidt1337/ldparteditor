@@ -4134,7 +4134,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                    if (new SlicerProDialog(getShell(), ss).open() == IDialogConstants.OK_ID) {
+                    if (new SlicerProDialog(getShell()).open() == IDialogConstants.OK_ID) {
                         vm.addSnapshot();
                         vm.slicerpro(ss);
                     }

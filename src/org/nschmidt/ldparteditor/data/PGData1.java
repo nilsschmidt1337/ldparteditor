@@ -45,8 +45,6 @@ public final class PGData1 extends PGData implements Serializable {
 
     final transient PGData myGData = new PGDataInit();
 
-    final transient int depth;
-
     /**
      * SLOWER, FOR PRIMITIVE CHOOSER ONLY, uses no cache, uses no bounding box!
      *
@@ -65,7 +63,6 @@ public final class PGData1 extends PGData implements Serializable {
 
         depth++;
         if (depth < 16) {
-            this.depth = depth;
             negativeDeterminant = det;
             this.productMatrix = new Matrix4f(pMatrix);
             this.localMatrix = new Matrix4f(tMatrix);
@@ -91,7 +88,6 @@ public final class PGData1 extends PGData implements Serializable {
                 }
             }
         } else {
-            this.depth = depth;
             this.matrix = null;
             this.matrix2 = null;
             this.productMatrix = null;

@@ -2059,32 +2059,16 @@ public class Manipulator {
         return translate_size;
     }
 
-    public static void setTranslate_size(float translate_size) {
-        Manipulator.translate_size = translate_size;
-    }
-
     public static float getRotate_size() {
         return rotate_size;
-    }
-
-    public static void setRotate_size(float rotate_size) {
-        Manipulator.rotate_size = rotate_size;
     }
 
     public static float getRotate_outer_size() {
         return rotate_outer_size;
     }
 
-    public static void setRotate_outer_size(float rotate_outer_size) {
-        Manipulator.rotate_outer_size = rotate_outer_size;
-    }
-
     public static float getScale_size() {
         return scale_size;
-    }
-
-    public static void setScale_size(float scale_size) {
-        Manipulator.scale_size = scale_size;
     }
 
     public double getAccurateRotationX() {

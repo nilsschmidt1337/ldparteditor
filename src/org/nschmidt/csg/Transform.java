@@ -39,24 +39,24 @@ import org.lwjgl.util.vector.Matrix4f;
  * Transform. Transformations (translation, rotation, scale) can be applied to
  * geometrical objects like {@link CSG}, {@link Polygon}, {@link Vertex2} and
  * {@link VectorCSGd}.
- * 
+ *
  * This transform class uses the builder pattern to define combined
  * transformations.<br>
  * <br>
- * 
+ *
  * <b>Example:</b>
- * 
+ *
  * <blockquote>
- * 
+ *
  * <pre>
  * // t applies rotation and translation
  * Transform t = Transform.unity().rotX(45).translate(2, 1, 0);
  * </pre>
- * 
+ *
  * </blockquote>
- * 
+ *
  * <b>TODO:</b> use quaternions for rotations.
- * 
+ *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 public class Transform {
@@ -68,7 +68,7 @@ public class Transform {
 
     /**
      * Constructor.
-     * 
+     *
      * Creates a unit transform.
      */
     public Transform() {
@@ -81,7 +81,7 @@ public class Transform {
 
     /**
      * Returns a new unity transform.
-     * 
+     *
      * @return unity transform
      */
     public static Transform unity() {
@@ -90,10 +90,10 @@ public class Transform {
 
     /**
      * Applies this transform to the specified vector.
-     * 
+     *
      * @param vec
      *            vector to transform
-     * 
+     *
      * @return the specified vector
      */
     public VectorCSGd transform(VectorCSGd vec) {
@@ -109,25 +109,12 @@ public class Transform {
 
     /**
      * Indicates whether this transform performs a mirror operation.
-     * 
+     *
      * @return <code>true</code> if this transform performs a mirror operation;
      *         <code>false</code> otherwise
      */
     public boolean isMirror() {
         return m.determinant() < 0;
-    }
-
-    /**
-     * Applies the specified transform to this transform.
-     * 
-     * @param t
-     *            transform to apply
-     * 
-     * @return this transform
-     */
-    public Transform apply(Transform t) {
-        Matrix4f.mul(m, t.m, m);
-        return this;
     }
 
     @Override

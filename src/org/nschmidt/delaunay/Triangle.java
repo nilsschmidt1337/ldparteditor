@@ -22,7 +22,6 @@ package org.nschmidt.delaunay;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * A Triangle is an immutable Set of exactly three Pnts.
@@ -73,23 +72,6 @@ public class Triangle extends ArraySet<Pnt> {
     @Override
     public String toString() {
         return "Triangle" + idNumber + super.toString(); //$NON-NLS-1$
-    }
-
-    /**
-     * Get arbitrary vertex of this triangle, but not any of the bad vertices.
-     *
-     * @param badVertices
-     *            one or more bad vertices
-     * @return a vertex of this triangle, but not one of the bad vertices
-     * @throws NoSuchElementException
-     *             if no vertex found
-     */
-    public Pnt getVertexButNot(Pnt... badVertices) {
-        Collection<Pnt> bad = Arrays.asList(badVertices);
-        for (Pnt v : this)
-            if (!bad.contains(v))
-                return v;
-        throw new NoSuchElementException("No vertex found"); //$NON-NLS-1$
     }
 
     /**

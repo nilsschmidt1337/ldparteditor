@@ -69,32 +69,4 @@ public enum StringHelper {
     public static String getLineDelimiter() {
         return ld;
     }
-
-    /**
-     * Compression for UNICODE Strings
-     * @param uncompressed
-     * @return
-     */
-    // FIXME IMPORTANT: Needs a complete rewrite, due to algrithm errors!!!
-    public static int[] compress(String uncompressed) {
-        int[] result2 = new int[uncompressed.length()];
-        int i = 0;
-        for (char c : uncompressed.toCharArray()) {
-            result2[i] = c;
-            i++;
-        }
-        return result2;
-    }
-
-    /** Decompress a list of output ks to a string. */
-    // FIXME IMPORTANT: Needs a complete rewrite, due to algrithm errors!!!
-    public static String decompress(int[] compressed) {
-        StringBuilder result = new StringBuilder();
-        for (int c : compressed) {
-            for (char ch : Character.toChars(c)) {
-                result.append(ch);
-            }
-        }
-        return result.toString();
-    }
 }

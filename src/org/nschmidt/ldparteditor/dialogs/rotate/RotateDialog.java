@@ -171,31 +171,19 @@ public class RotateDialog extends RotateDesign {
         return z;
     }
 
-    public static void setZ(boolean z) {
-        RotateDialog.z = z;
-    }
-
     public static boolean isY() {
         return y;
-    }
-
-    public static void setY(boolean y) {
-        RotateDialog.y = y;
     }
 
     public static boolean isX() {
         return x;
     }
 
-    public static void setX(boolean x) {
-        RotateDialog.x = x;
-    }
-
     public static Vertex getAngles() {
         return angles;
     }
 
-    public static void setAngles(Vertex angles) {
+    private static void setAngles(Vertex angles) {
         RotateDialog.angles = angles;
     }
 
@@ -203,7 +191,7 @@ public class RotateDialog extends RotateDesign {
         return pivot;
     }
 
-    public static void setPivot(Vertex pivot) {
+    private static void setPivot(Vertex pivot) {
         RotateDialog.pivot = pivot;
     }
 

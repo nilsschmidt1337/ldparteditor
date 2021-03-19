@@ -205,10 +205,6 @@ public class TreeItem {
         return text[i];
     }
 
-    public void dispose() {
-
-    }
-
     public void build(int step) {
         org.eclipse.swt.widgets.TreeItem[] itemsSWT = parent.getItemsSWT();
         if (parent.counter > itemsSWT.length - 1) {

@@ -182,17 +182,6 @@ public class GL33Helper {
         GL15.glDeleteBuffers(VBO_general);
     }
 
-    public static void colourise(int offset, int times, float r, float g, float b,
-            float a, float[] vertexData, int i) {
-        for (int j = 0; j < times; j++) {
-            int pos = (offset + i + j) * 10;
-            vertexData[pos + 6] = r;
-            vertexData[pos + 7] = g;
-            vertexData[pos + 8] = b;
-            vertexData[pos + 9] = a;
-        }
-    }
-
     public static void colourise7(int offset, int times, float r, float g, float b,
             float a, float[] vertexData, int i) {
         for (int j = 0; j < times; j++) {
@@ -202,14 +191,6 @@ public class GL33Helper {
             vertexData[pos + 5] = b;
             vertexData[pos + 6] = a;
         }
-    }
-
-    public static void pointAt(int offset, float x, float y, float z,
-            float[] vertexData, int i) {
-        int pos = (offset + i) * 10;
-        vertexData[pos] = x;
-        vertexData[pos + 1] = y;
-        vertexData[pos + 2] = z;
     }
 
     public static void pointAt7(int offset, float x, float y, float z,

@@ -20,11 +20,9 @@
 package org.nschmidt.delaunay;
 
 import java.util.AbstractSet;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -124,34 +122,6 @@ public class Triangulation extends AbstractSet<Triangle> {
      */
     public Set<Triangle> neighbors(Triangle triangle) {
         return triGraph.neighbors(triangle);
-    }
-
-    /**
-     * Report triangles surrounding site in order (cw or ccw).
-     *
-     * @param site
-     *            we want the surrounding triangles for this site
-     * @param triangle
-     *            a "starting" triangle that has site as a vertex
-     * @return all triangles surrounding site in order (cw or ccw)
-     * @throws IllegalArgumentException
-     *             if site is not in triangle
-     */
-    public List<Triangle> surroundingTriangles(Pnt site, Triangle triangle) {
-        if (!triangle.contains(site))
-            throw new IllegalArgumentException("Site not in triangle"); //$NON-NLS-1$
-        List<Triangle> list = new ArrayList<>();
-        Triangle start = triangle;
-        Pnt guide = triangle.getVertexButNot(site); // Affects cw or ccw
-        while (true) {
-            list.add(triangle);
-            Triangle previous = triangle;
-            triangle = this.neighborOpposite(guide, triangle); // Next triangle
-            guide = previous.getVertexButNot(site, guide); // Update guide
-            if (triangle == start)
-                break;
-        }
-        return list;
     }
 
     /**

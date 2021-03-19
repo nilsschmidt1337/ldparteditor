@@ -121,31 +121,19 @@ public class ScaleDialog extends ScaleDesign {
         return z;
     }
 
-    public static void setZ(boolean z) {
-        ScaleDialog.z = z;
-    }
-
     public static boolean isY() {
         return y;
-    }
-
-    public static void setY(boolean y) {
-        ScaleDialog.y = y;
     }
 
     public static boolean isX() {
         return x;
     }
 
-    public static void setX(boolean x) {
-        ScaleDialog.x = x;
-    }
-
     public static Vertex getScaleFactors() {
         return scaleFactors;
     }
 
-    public static void setScaleFactors(Vertex scaleFactors) {
+    private static void setScaleFactors(Vertex scaleFactors) {
         ScaleDialog.scaleFactors = scaleFactors;
     }
 
@@ -153,7 +141,7 @@ public class ScaleDialog extends ScaleDesign {
         return pivot;
     }
 
-    public static void setPivot(Vertex pivot) {
+    private static void setPivot(Vertex pivot) {
         ScaleDialog.pivot = pivot;
     }
 

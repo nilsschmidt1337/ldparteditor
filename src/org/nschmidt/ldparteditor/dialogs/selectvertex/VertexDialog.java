@@ -54,9 +54,4 @@ public class VertexDialog extends VertexDesign {
     public static Vertex getVertex() {
         return vertex;
     }
-
-    public static void setVertex(Vertex vertex) {
-        VertexDialog.vertex = vertex;
-    }
-
 }

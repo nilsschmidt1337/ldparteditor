@@ -16,7 +16,6 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.dialogs.slicerpro;
 
 import org.eclipse.swt.widgets.Shell;
-import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
 
 /**
  *
@@ -35,8 +34,8 @@ public class SlicerProDialog extends SlicerProDesign {
      *
      * @param parentShell
      */
-    public SlicerProDialog(Shell parentShell, SlicerProSettings ss) {
-        super(parentShell, ss);
+    public SlicerProDialog(Shell parentShell) {
+        super(parentShell);
     }
 
     @Override

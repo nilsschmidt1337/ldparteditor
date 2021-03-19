@@ -652,18 +652,6 @@ class VM03Adjacency extends VM02Add {
         return false;
     }
 
-    public HashSet<GData3> getLinkedTriangles(Vertex vertex) {
-        HashSet<GData3> rval = new HashSet<>();
-        Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
-        if (vm != null) {
-            for (VertexManifestation m : vm) {
-                if (m.getGdata().type() == 3)
-                    rval.add((GData3) m.getGdata());
-            }
-        }
-        return rval;
-    }
-
     public synchronized void roundSelection(int coordsDecimalPlaces, int matrixDecimalPlaces, boolean moveAdjacentData, boolean syncWithTextEditors
             , final boolean onX,  final boolean onY,  final boolean onZ) {
 

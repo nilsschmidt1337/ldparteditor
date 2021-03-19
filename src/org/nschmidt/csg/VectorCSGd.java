@@ -46,9 +46,6 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
     public double y;
     public double z;
 
-    public static final VectorCSGd ZERO = new VectorCSGd(0, 0, 0);
-    public static final VectorCSGd Z_ONE = new VectorCSGd(0, 0, 1);
-
     /**
      * Creates a new vector.
      *

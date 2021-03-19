@@ -102,15 +102,6 @@ public class Vector3r {
         this.Z = new Rational(v.Z);
     }
 
-    public static Vector3r add(Vector3r a, Vector3r b) {
-        return new Vector3r(a.X.add(b.X), a.Y.add(b.Y), a.Z.add(b.Z));
-    }
-
-    public boolean equals3d(Object obj) {
-        Vector3r other = (Vector3r) obj;
-        return this.X.compareTo(other.X) == 0 && this.Y.compareTo(other.Y) == 0 && this.Z.compareTo(other.Z) == 0;
-    }
-
     @Override
     public String toString() {
         return this.X.toString() + " | " + this.Y.toString() + " | " + this.Z.toString(); //$NON-NLS-1$ //$NON-NLS-2$
@@ -119,6 +110,4 @@ public class Vector3r {
     public boolean equals2d(Vector3r other) {
         return this.X.compareTo(other.X) == 0 && this.Y.compareTo(other.Y) == 0;
     }
-
-
 }

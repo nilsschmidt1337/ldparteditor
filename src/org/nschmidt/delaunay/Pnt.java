@@ -148,15 +148,6 @@ public class Pnt {
     }
 
     /**
-     * Magnitude (as a vector).
-     *
-     * @return the Euclidean length of this vector
-     */
-    public double magnitude() {
-        return Math.sqrt(this.dot(this));
-    }
-
-    /**
      * Subtract.
      *
      * @param p

@@ -18,7 +18,6 @@ package org.nschmidt.ldparteditor.dialogs.sort;
 import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.Sorter;
@@ -40,8 +39,8 @@ public class SortDialog extends SortDesign {
      *
      * @param parentShell
      */
-    public SortDialog(Shell parentShell, StyledText st, int fromLine, int toLine, DatFile fileNameObj) {
-        super(parentShell, st, fromLine, toLine, fileNameObj);
+    public SortDialog(Shell parentShell, int fromLine, int toLine, DatFile fileNameObj) {
+        super(parentShell, fromLine, toLine, fileNameObj);
     }
 
     @Override

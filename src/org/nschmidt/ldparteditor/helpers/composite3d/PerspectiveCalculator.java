@@ -360,29 +360,6 @@ public class PerspectiveCalculator {
     }
 
     /**
-     * Transforms screen coordinates to 3D space coordinates
-     *
-     * @param x
-     *            x-screen coordinate
-     * @param y
-     *            y-screen coordinate
-     * @param z
-     *            z-screen coordinate
-     * @return vector position in 3D space
-     */
-    public Vector4f get3DCoordinatesFromScreen(int x, int y, int z) {
-        Point cSize = c3d.getSize();
-        Vector4f relPos = new Vector4f();
-        relPos.x = (0.5f * cSize.x - x) / View.PIXEL_PER_LDU;
-        relPos.y = (y - 0.5f * cSize.y) / View.PIXEL_PER_LDU;
-        relPos.z = z;
-        relPos.w = 1.0f;
-        Matrix4f v_inverse = c3d.getViewport_Inverse();
-        Matrix4f.transform(v_inverse, relPos, relPos);
-        return relPos;
-    }
-
-    /**
      * Initializes the viewport and perspective
      */
     public void initializeViewportPerspective() {

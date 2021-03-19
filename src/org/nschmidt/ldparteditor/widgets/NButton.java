@@ -156,10 +156,6 @@ public class NButton extends Canvas {
         });
     }
 
-    public void addSelectionListener(SelectionListener listener) {
-        selectors.add(listener);
-    }
-
     private void paint(PaintEvent event) {
         final GC gc = event.gc;
         final Image img = this.img;

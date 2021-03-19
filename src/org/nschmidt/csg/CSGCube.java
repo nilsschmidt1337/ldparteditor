@@ -72,20 +72,6 @@ public class CSGCube extends CSGPrimitive implements Primitive {
         dimensions = new VectorCSGd(2000d, 2000d, 2000d);
     }
 
-    /**
-     * Constructor. Creates a new cuboid with the specified center and
-     * dimensions.
-     *
-     * @param center
-     *            center of the cuboid
-     * @param dimensions
-     *            cube dimensions
-     */
-    public CSGCube(VectorCSGd center, VectorCSGd dimensions) {
-        this.center = center;
-        this.dimensions = dimensions;
-    }
-
     @Override
     public List<Polygon> toPolygons(DatFile df, GColour colour) {
 

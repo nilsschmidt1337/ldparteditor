@@ -112,14 +112,6 @@ public final class PowerRay {
         return TRIANGLE_INTERSECT(orig_arr, dir_arr, vert0_arr, vert1_arr, vert2_arr);
     }
 
-    boolean TRIANGLE_INTERSECT(Vector4f orig, Vertex dir, Vertex vert0, Vertex vert1, Vertex vert2) {
-        return TRIANGLE_INTERSECT(orig, new Vector4f(dir.x, dir.y, dir.z, 1f), vert0, vert1, vert2);
-    }
-
-    boolean TRIANGLE_INTERSECT(Vector4f orig, Vertex dir, Vertex vert0, Vertex vert1, Vertex vert2, Vector4f intersection_point, double[] dist) {
-        return TRIANGLE_INTERSECT(orig, new Vector4f(dir.x, dir.y, dir.z, 1f), vert0, vert1, vert2, intersection_point, dist);
-    }
-
     public boolean TRIANGLE_INTERSECT(Vector4f orig, Vector4f dir, Vertex vert0, Vertex vert1, Vertex vert2, Vector4f intersection_point, double[] dist) {
         double[] orig_arr = new double[] { orig.x, orig.y, orig.z };
         double[] dir_arr = new double[] { dir.x, dir.y, dir.z };

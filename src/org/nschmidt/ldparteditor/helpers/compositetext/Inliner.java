@@ -305,10 +305,6 @@ public enum Inliner {
 
     }
 
-    static String insertBeforeLine(int line, String textToInsert, String text) {
-        return text.replaceFirst("<L" + line + ">", textToInsert + "<L" + line + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-    }
-
     static String setLine(int line, String textToSet, String text) {
         return text.replaceFirst("<L" + line + ">.*</L" + line + ">", "<L" + line + ">" + textToSet.replace("\\", "\\\\") + "</L" + line + ">"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$
     }
@@ -325,10 +321,6 @@ public enum Inliner {
             }
         }
         return ""; //$NON-NLS-1$
-    }
-
-    static String insertAfterLine(int line, String textToInsert, String text) {
-        return text.replaceFirst("</L" + line + ">", "</L" + line + ">" + textToInsert); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
     }
 
     static String restoreLineTermination(String text) {
