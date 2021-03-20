@@ -6598,23 +6598,18 @@ public class Editor3DWindow extends Editor3DDesign {
         switch (workingAction) {
         case COMBINED:
             clickBtnTest(btn_Combined[0]);
-            workingAction = WorkingMode.COMBINED;
             break;
         case MOVE:
             clickBtnTest(btn_Move[0]);
-            workingAction = WorkingMode.MOVE;
             break;
         case ROTATE:
             clickBtnTest(btn_Rotate[0]);
-            workingAction = WorkingMode.ROTATE;
             break;
         case SCALE:
             clickBtnTest(btn_Scale[0]);
-            workingAction = WorkingMode.SCALE;
             break;
         case SELECT:
             clickBtnTest(btn_Select[0]);
-            workingAction = WorkingMode.SELECT;
             break;
         default:
             break;
@@ -8002,11 +7997,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             tx = 0f;
                             ty = 0f;
                         } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(tx, 0f, 0f), null).length()) > .00001f) {
-                            // ty = 0f;
-                            // tz = 0f;
-                        } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(0f, 0f, tx), null).length()) > .00001f) {
-                            ty = tx;
-                            tx = 0f;
+                            ty = 0f;
                             tz = 0f;
                         } else {
                             regainFocus();
@@ -8086,11 +8077,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     tx = 0f;
                     ty = 0f;
                 } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(tx, 0f, 0f), null).length()) > .00001f) {
-                    // ty = 0f;
-                    // tz = 0f;
-                } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(0f, 0f, tx), null).length()) > .00001f) {
-                    ty = tx;
-                    tx = 0f;
+                    ty = 0f;
                     tz = 0f;
                 } else {
                     regainFocus();
@@ -8136,11 +8123,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     tx = 0f;
                     ty = 0f;
                 } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(tx, 0f, 0f), null).length()) > .00001f) {
-                    // ty = 0f;
-                    // tz = 0f;
-                } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(0f, 0f, tx), null).length()) > .00001f) {
-                    ty = tx;
-                    tx = 0f;
+                    ty = 0f;
                     tz = 0f;
                 } else {
                     regainFocus();
@@ -8186,11 +8169,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     tx = 0f;
                     ty = 0f;
                 } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(tx, 0f, 0f), null).length()) > .00001f) {
-                    // ty = 0f;
-                    // tz = 0f;
-                } else if (Math.abs(Vector3f.cross(new Vector3f(n.x, n.y, n.z), new Vector3f(0f, 0f, tx), null).length()) > .00001f) {
-                    ty = tx;
-                    tx = 0f;
+                    ty = 0f;
                     tz = 0f;
                 } else {
                     regainFocus();
