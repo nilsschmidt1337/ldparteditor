@@ -39,7 +39,8 @@ public class SphereGL20 {
 
         final double R = 1d / (segments - 1);
         final double S = 1d / (segments - 1);
-        double r, s;
+        double r;
+        double s;
 
         for (r = 0; r < segments; ++r) {
             for (s = 0; s < segments; ++s) {

@@ -27,7 +27,9 @@ import org.nschmidt.ldparteditor.data.Vertex;
  */
 public final class PowerRay {
 
-    public double t, u, v;
+    public double t;
+    public double u;
+    public double v;
 
     private double[] corner1 = new double[3];
     private double[] corner2 = new double[3];

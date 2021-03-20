@@ -69,11 +69,14 @@ public class VM27YTruder extends VM26LineIntersector {
         int NumSurf;
         int NumCond;
 
-        int x = 0, y = 1, z = 2;
+        int x = 0;
+        int y = 1;
+        int z = 2;
 
         double AngleLineThr = ys.getCondlineAngleThreshold();
 
-        int end, current;
+        int end;
+        int current;
         int surfstart;
 
         boolean flag = false;
@@ -110,8 +113,10 @@ public class VM27YTruder extends VM26LineIntersector {
         NumCond = 0;
         CondFlag[NumCond] = 0;
         for (int i = 0; i < originalLineCount; i++) {
-            double[] p0 = new double[3], p1 = new double[3];
-            double d0, d1;
+            double[] p0 = new double[3];
+            double[] p1 = new double[3];
+            double d0;
+            double d1;
             if (LineUsed[i] == 0) {
                 LineUsed[i] = 1;
                 current = i;
@@ -497,10 +502,13 @@ public class VM27YTruder extends VM26LineIntersector {
     // triangles.
     // They are assumed to be non-degenerated
     private double Tri_Angle(double[] U0, double[] U1, double[] U2, double[] V0, double[] V1, double[] V2) {
-        double[] Unorm = new double[3], Vnorm = new double[3];
+        double[] Unorm = new double[3];
+        double[] Vnorm = new double[3];
         double[] Temp = new double[3];
-        double[] U10 = new double[3], U20 = new double[3];
-        double[] V10 = new double[3], V20 = new double[3];
+        double[] U10 = new double[3];
+        double[] U20 = new double[3];
+        double[] V10 = new double[3];
+        double[] V20 = new double[3];
         double len;
         SUB(U10, U1, U0);
         SUB(U20, U2, U0);

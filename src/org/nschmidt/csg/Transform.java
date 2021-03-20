@@ -97,7 +97,8 @@ public class Transform {
      * @return the specified vector
      */
     public VectorCSGd transform(VectorCSGd vec) {
-        double x, y;
+        double x;
+        double y;
         x = m.m00 * vec.x + m.m01 * vec.y + m.m02 * vec.z + m.m30;
         y = m.m10 * vec.x + m.m11 * vec.y + m.m12 * vec.z + m.m31;
         vec.z = m.m20 * vec.x + m.m21 * vec.y + m.m22 * vec.z + m.m32;

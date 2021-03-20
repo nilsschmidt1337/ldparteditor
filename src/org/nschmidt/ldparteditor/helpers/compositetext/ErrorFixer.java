@@ -357,7 +357,10 @@ final class ErrorFixer {
             Vector3d.sub(vertexD, new Vector3d(A), vertexD);
 
 
-            boolean pointA, pointC, pointB, pointD;
+            boolean pointA;
+            boolean pointB;
+            boolean pointC;
+            boolean pointD;
             double angle = Vector3d.angle(vertexA, vertexD);
             double sumAngle = angle;
             pointA = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;

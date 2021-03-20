@@ -150,7 +150,10 @@ public class TextTriangulator {
         /*
          * Add all points of the shape to the triangulation
          */
-        double x = 0, y = 0, px, py;
+        double x = 0;
+        double y = 0;
+        double px;
+        double py;
 
         double minX = Double.MAX_VALUE;
         double minY = Double.MAX_VALUE;
@@ -451,7 +454,10 @@ public class TextTriangulator {
         /*
          * Add all points of the shape to the triangulation
          */
-        double x = 0, y = 0, px, py;
+        double x = 0;
+        double y = 0;
+        double px;
+        double py;
 
         double minX = Double.MAX_VALUE;
         double minY = Double.MAX_VALUE;

@@ -242,7 +242,10 @@ public class VM08SlicerPro extends VM07PathTruder {
                                                     final int pointsToTriangulate = info.getAllVertices().size();
                                                     final ArrayList<Vector3d> av = info.getAllVertices();
 
-                                                    final float R, G, B, A;
+                                                    final float R;
+                                                    final float G;
+                                                    final float B;
+                                                    final float A;
                                                     final int CN;
                                                     GData origin2 = info.getOrigin();
                                                     if (origin2.type() == 3) {
@@ -924,7 +927,8 @@ public class VM08SlicerPro extends VM07PathTruder {
                 return 0;
             }
 
-            Rational t0, t1;
+            Rational t0;
+            Rational t1;
             Vector3r w2 = Vector3r.sub(p2, q);
             if (!v.X.isZero()) {
                 t0 = w.X.divide(v.X);
@@ -994,7 +998,8 @@ public class VM08SlicerPro extends VM07PathTruder {
             if (dv.isZero()) {
                 return !inSegment(q, p, p2);
             }
-            Rational t0, t1;
+            Rational t0;
+            Rational t1;
             Vector3r w2 = Vector3r.sub(p2, q);
             if (!v.X.isZero()) {
                 t0 = w.X.divide(v.X);

@@ -75,7 +75,6 @@ public enum Teapot {
         float q[][][] = new float[4][4][3];
         float r[][][] = new float[4][4][3];
         float s[][][] = new float[4][4][3];
-        int i, j, k, l;
         final FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4 * 3);
 
         GL11.glEnable(GL11.GL_AUTO_NORMAL);
@@ -84,10 +83,10 @@ public enum Teapot {
         GL11.glScalef(0.5f * scale, 0.5f * scale, 0.5f * scale);
         GL11.glTranslatef(0.0f, 0.0f, -1.5f);
 
-        for (i = 0; i < 10; i++) {
-            for (j = 0; j < 4; j++) {
-                for (k = 0; k < 4; k++) {
-                    for (l = 0; l < 3; l++) {
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 4; j++) {
+                for (int k = 0; k < 4; k++) {
+                    for (int l = 0; l < 3; l++) {
                         p[j][k][l] = cpdata[patchdata[i][j * 4 + k]][l];
                         q[j][k][l] = cpdata[patchdata[i][j * 4 + 3 - k]][l];
 

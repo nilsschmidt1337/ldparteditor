@@ -198,8 +198,10 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                         Vector3d.manhattan(p12, p22).compareTo(SMALL) < 0 ||
                                         Vector3d.manhattan(p12, p21).compareTo(SMALL) < 0)
                                 {
-                                    int a=1,b=0;
-                                    BigDecimal max, cur;
+                                    int a = 1;
+                                    int b = 0;
+                                    BigDecimal max;
+                                    BigDecimal cur;
                                     max = Vector3d.manhattan(p11, p21);
                                     if ((cur = Vector3d.manhattan(p11, p22)).compareTo(max) > 0)
                                     {
@@ -1006,7 +1008,10 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                         }
 
                     } else {
-                        final float R, G, B, A;
+                        final float R;
+                        final float G;
+                        final float B;
+                        final float A;
                         final int CN;
                         resultVertices.add(start);
                         resultVertices.add(end);
@@ -1361,7 +1366,10 @@ public class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     }
 
                                 } else {
-                                    final float R, G, B, A;
+                                    final float R;
+                                    final float G;
+                                    final float B;
+                                    final float A;
                                     final int CN;
                                     if (ot == 3) {
                                         GData3 origin2 = (GData3) origin;

@@ -164,7 +164,8 @@ public enum RingsAndCones {
                                             }
                                             long start = System.currentTimeMillis();
                                             while (!m.isCanceled()) {
-                                                long s, r;
+                                                long s;
+                                                long r;
                                                 // MARK Solver 1
                                                 if (rs.isUsingExistingPrimitives()) {
                                                     r = rndSet[(int) (rnd.nextFloat() * size)];

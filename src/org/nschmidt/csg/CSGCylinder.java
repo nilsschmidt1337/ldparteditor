@@ -97,7 +97,8 @@ public class CSGCylinder extends CSGPrimitive implements Primitive {
         List<Polygon> polygons = new ArrayList<>();
 
         for (int i = 0; i < numSlices; i++) {
-            double t0 = i / (double) numSlices, t1 = (i + 1) / (double) numSlices;
+            double t0 = i / (double) numSlices;
+            double t1 = (i + 1) / (double) numSlices;
             {
                 polygons.add(new Polygon(df, Arrays.asList(startV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t0, -1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 0, t1, -1)), new GColourIndex(colour, ID)));
             }

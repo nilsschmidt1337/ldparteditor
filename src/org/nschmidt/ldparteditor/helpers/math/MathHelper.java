@@ -527,14 +527,18 @@ public enum MathHelper {
         if (v11.x == v22.x && v11.y == v22.y || v12.x == v21.x && v12.y == v21.y)
             return null;
 
-        float s1_x, s1_y, s2_x, s2_y;
+        float s1_x;
+        float s1_y;
+        float s2_x;
+        float s2_y;
         s1_x = v12.x - v11.x;
         s1_y = v12.y - v11.y;
 
         s2_x = v22.x - v21.x;
         s2_y = v22.y - v21.y;
 
-        float s, t;
+        float s;
+        float t;
         s = (-s1_y * (v11.x - v21.x) + s1_x * (v11.y - v21.y)) / (-s2_x * s1_y + s1_x * s2_y);
         t = (s2_x * (v11.y - v21.y) - s2_y * (v11.x - v21.x)) / (-s2_x * s1_y + s1_x * s2_y);
 

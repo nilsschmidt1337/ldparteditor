@@ -281,12 +281,19 @@ class VM07PathTruder extends VM06Edger2 {
                                     double[][][] Shape2 = new double[MAX_LINE][2][3];
                                     double[][][] CurShape = new double[MAX_LINE][2][3];
                                     double[][][] NxtShape = new double[MAX_LINE][2][3];
-                                    double[] Shape1Vect = new double[3], Shape2Vect = new double[3];
+                                    double[] Shape1Vect = new double[3];
+                                    double[] Shape2Vect = new double[3];
 
-                                    double[] temp1 = new double[3], temp2 = new double[3], temp3 = new double[3];
-                                    double[] XVect = new double[3], YVect = new double[3], ZVect = new double[3];
+                                    double[] temp1 = new double[3];
+                                    double[] temp2 = new double[3];
+                                    double[] temp3 = new double[3];
+                                    double[] XVect = new double[3];
+                                    double[] YVect = new double[3];
+                                    double[] ZVect = new double[3];
 
-                                    double Angle, ca, sa;
+                                    double Angle;
+                                    double ca;
+                                    double sa;
                                     double ratio;
                                     double[][][] SortBuf = new double[MAX_LINE][2][3];
                                     int[][][] next = new int[MAX_LINE][2][2];
@@ -298,7 +305,8 @@ class VM07PathTruder extends VM06Edger2 {
 
                                     boolean circular = false;
                                     double maxlength = ps.getMaxPathSegmentLength().doubleValue();
-                                    double dmax, d = 0.0;
+                                    double dmax;
+                                    double d = 0.0;
                                     double len;
                                     int InLineIdx;
                                     int NumPath;
@@ -365,7 +373,10 @@ class VM07PathTruder extends VM06Edger2 {
                                         NumPath = 0;
                                         for (int i = 0; i < Path1Len; i++) {
                                             for (int j = 0; j < 2; j++) {
-                                                int a, b, c, d2;
+                                                int a;
+                                                int b;
+                                                int c;
+                                                int d2;
                                                 if (next[i][j][0] == -1) {
                                                     NumPath++;
                                                     a = i;
@@ -445,7 +456,10 @@ class VM07PathTruder extends VM06Edger2 {
                                         NumPath = 0;
                                         for (int i = 0; i < Path2Len; i++) {
                                             for (int j = 0; j < 2; j++) {
-                                                int a, b, c, d2;
+                                                int a;
+                                                int b;
+                                                int c;
+                                                int d2;
                                                 if (next[i][j][0] == -1) {
                                                     NumPath++;
                                                     a = i;
@@ -508,8 +522,15 @@ class VM07PathTruder extends VM06Edger2 {
                                     // Split long lines
                                     InLineIdx = 0;
                                     for (int i = 0; i < Path1Len; i++) {
-                                        double[] p1 = new double[3], p2 = new double[3], q1 = new double[3], q2 = new double[3], delta1 = new double[3], delta2 = new double[3], temp = new double[3];
-                                        int nsplit1, nsplit2;
+                                        double[] p1 = new double[3];
+                                        double[] p2 = new double[3];
+                                        double[] q1 = new double[3];
+                                        double[] q2 = new double[3];
+                                        double[] delta1 = new double[3];
+                                        double[] delta2 = new double[3];
+                                        double[] temp = new double[3];
+                                        int nsplit1;
+                                        int nsplit2;
 
                                         SET(p1, Path1a[i][0]);
                                         SET(p2, Path1a[i][1]);
@@ -657,7 +678,8 @@ class VM07PathTruder extends VM06Edger2 {
                                         }
                                     }
 
-                                    int start, end;
+                                    int start;
+                                    int end;
                                     start = 0;
                                     end = Path1Len;
                                     if (endings) {
@@ -871,12 +893,19 @@ class VM07PathTruder extends VM06Edger2 {
                     double[][][] Shape2 = new double[MAX_LINE][2][3];
                     double[][][] CurShape = new double[MAX_LINE][2][3];
                     double[][][] NxtShape = new double[MAX_LINE][2][3];
-                    double[] Shape1Vect = new double[3], Shape2Vect = new double[3];
+                    double[] Shape1Vect = new double[3];
+                    double[] Shape2Vect = new double[3];
 
-                    double[] temp1 = new double[3], temp2 = new double[3], temp3 = new double[3];
-                    double[] XVect = new double[3], YVect = new double[3], ZVect = new double[3];
+                    double[] temp1 = new double[3];
+                    double[] temp2 = new double[3];
+                    double[] temp3 = new double[3];
+                    double[] XVect = new double[3];
+                    double[] YVect = new double[3];
+                    double[] ZVect = new double[3];
 
-                    double Angle, ca, sa;
+                    double Angle;
+                    double ca;
+                    double sa;
                     double ratio;
                     double[][][] SortBuf = new double[MAX_LINE][2][3];
                     int[][][] next = new int[MAX_LINE][2][2];
@@ -888,7 +917,8 @@ class VM07PathTruder extends VM06Edger2 {
 
                     boolean circular = false;
                     double maxlength = ps.getMaxPathSegmentLength().doubleValue();
-                    double dmax, d = 0.0;
+                    double dmax;
+                    double d = 0.0;
                     double len;
                     int InLineIdx;
                     int NumPath;
@@ -954,7 +984,10 @@ class VM07PathTruder extends VM06Edger2 {
                         NumPath = 0;
                         for (int i = 0; i < Path1Len; i++) {
                             for (int j = 0; j < 2; j++) {
-                                int a, b, c, d2;
+                                int a;
+                                int b;
+                                int c;
+                                int d2;
                                 if (next[i][j][0] == -1) {
                                     NumPath++;
                                     a = i;
@@ -1034,7 +1067,10 @@ class VM07PathTruder extends VM06Edger2 {
                         NumPath = 0;
                         for (int i = 0; i < Path2Len; i++) {
                             for (int j = 0; j < 2; j++) {
-                                int a, b, c, d2;
+                                int a;
+                                int b;
+                                int c;
+                                int d2;
                                 if (next[i][j][0] == -1) {
                                     NumPath++;
                                     a = i;
@@ -1097,8 +1133,15 @@ class VM07PathTruder extends VM06Edger2 {
                     // Split long lines
                     InLineIdx = 0;
                     for (int i = 0; i < Path1Len; i++) {
-                        double[] p1 = new double[3], p2 = new double[3], q1 = new double[3], q2 = new double[3], delta1 = new double[3], delta2 = new double[3], temp = new double[3];
-                        int nsplit1, nsplit2;
+                        double[] p1 = new double[3];
+                        double[] p2 = new double[3];
+                        double[] q1 = new double[3];
+                        double[] q2 = new double[3];
+                        double[] delta1 = new double[3];
+                        double[] delta2 = new double[3];
+                        double[] temp = new double[3];
+                        int nsplit1;
+                        int nsplit2;
 
                         SET(p1, Path1a[i][0]);
                         SET(p2, Path1a[i][1]);
@@ -1238,7 +1281,8 @@ class VM07PathTruder extends VM06Edger2 {
 
                     }
 
-                    int start, end;
+                    int start;
+                    int end;
                     start = 0;
                     end = Path1Len;
                     if (endings) {
@@ -1492,7 +1536,9 @@ class VM07PathTruder extends VM06Edger2 {
     // if b=1. returns a true x (linear relationship)
     private double sigmoid(double x,double b,double m)
     {
-        double s0, s1, y;
+        double s0;
+        double s1;
+        double y;
         if(b == 1.0) return x;
         s0 = 1.0 / (1.0 + Math.exp(b * m));
         s1 = 1.0 / (1.0 + Math.exp(-b * (1.0 - m)));
@@ -1541,8 +1587,12 @@ class VM07PathTruder extends VM06Edger2 {
     // Returns angle between these planes.
     private double PathLocalBasis (int n, int i,  double[] xv,double[] yv,double[] zv, double[][][] path1, double[][][] path2)
     {
-        double a, scale;
-        double[] temp1 = new double[3], temp2 = new double[3], temp3 = new double[3], temp4 = new double[3];
+        double a;
+        double scale;
+        double[] temp1 = new double[3];
+        double[] temp2 = new double[3];
+        double[] temp3 = new double[3];
+        double[] temp4 = new double[3];
 
         // Calculate local coordinate basis
         scale = DIST(path2[i][0], path1[i][0]);
@@ -1637,10 +1687,13 @@ class VM07PathTruder extends VM06Edger2 {
     // They are assumed to be non-degenerated
     private double Tri_Angle(double[] U0,double[] U1,double[] U2, double[] U3)
     {
-        double[] Unorm = new double[3], Vnorm = new double[3];
+        double[] Unorm = new double[3];
+        double[] Vnorm = new double[3];
         double[] Temp = new double[3];
-        double[] U10 = new double[3], U20 = new double[3];
-        double[] V10 = new double[3], V20 = new double[3];
+        double[] U10 = new double[3];
+        double[] U20 = new double[3];
+        double[] V10 = new double[3];
+        double[] V20 = new double[3];
         double len;
         SUB(U10, U1, U0);
         SUB(U20, U2, U0);

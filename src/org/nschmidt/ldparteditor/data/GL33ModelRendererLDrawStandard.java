@@ -613,11 +613,21 @@ public class GL33ModelRendererLDrawStandard {
                         int lineIndex = 0;
                         int condlineIndex = 0;
 
-                        float xn = 0f, yn = 0f, zn = 0f;
-                        float xn1 = 0f, yn1 = 0f, zn1 = 0f;
-                        float xn2 = 0f, yn2 = 0f, zn2 = 0f;
-                        float xn3 = 0f, yn3 = 0f, zn3 = 0f;
-                        float xn4 = 0f, yn4 = 0f, zn4 = 0f;
+                        float xn = 0f;
+                        float yn = 0f;
+                        float zn = 0f;
+                        float xn1 = 0f;
+                        float yn1 = 0f;
+                        float zn1 = 0f;
+                        float xn2 = 0f;
+                        float yn2 = 0f;
+                        float zn2 = 0f;
+                        float xn3 = 0f;
+                        float yn3 = 0f;
+                        float zn3 = 0f;
+                        float xn4 = 0f;
+                        float yn4 = 0f;
+                        float zn4 = 0f;
 
                         // Iterate the objects and generate the buffer data
                         // TEXMAP and Real Backface Culling are quite "the same", but they need different vertex normals / materials
@@ -1134,7 +1144,12 @@ public class GL33ModelRendererLDrawStandard {
         GL15.glDeleteBuffers(vboStudLogo2);
     }
 
-    private int ts, ss, to, ls, cls;
+    private int ts;
+    private int ss;
+    private int to;
+    private int ls;
+    private int cls;
+
     public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader glyphShader, boolean drawSolidMaterials, DatFile df) {
 
         Matrix4f vm = c3d.getViewport();

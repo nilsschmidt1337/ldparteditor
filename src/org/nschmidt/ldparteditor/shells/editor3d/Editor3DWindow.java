@@ -1959,7 +1959,9 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         spn_Move[0].addValueChangeListener(spn -> {
-            BigDecimal m, r, s;
+            BigDecimal m;
+            BigDecimal r;
+            BigDecimal s;
             m = spn.getValue();
             switch (snapSize) {
             case FINE:
@@ -1983,7 +1985,9 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         spn_Rotate[0].addValueChangeListener(spn -> {
-            BigDecimal m, r, s;
+            BigDecimal m;
+            BigDecimal r;
+            BigDecimal s;
             r = spn.getValue();
             switch (snapSize) {
             case FINE:
@@ -2007,7 +2011,9 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         spn_Scale[0].addValueChangeListener(spn -> {
-            BigDecimal m, r, s;
+            BigDecimal m;
+            BigDecimal r;
+            BigDecimal s;
             s = spn.getValue();
             switch (snapSize) {
             case FINE:
@@ -4688,7 +4694,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
             String source = ""; //$NON-NLS-1$
             {
-                UTF8BufferedReader b11 = null, b21 = null;
+                UTF8BufferedReader b11 = null;
+                UTF8BufferedReader b21 = null;
 
                 StringBuilder code1 = new StringBuilder();
 
@@ -4759,7 +4766,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
             if (dialog.open() == IDialogConstants.OK_ID) {
 
-                UTF8BufferedReader b12 = null, b22 = null;
+                UTF8BufferedReader b12 = null;
+                UTF8BufferedReader b22 = null;
 
                 if (mntm_UploadLogs[0].getData() == null) {
                     mntm_UploadLogs[0].setData(0);
