@@ -212,7 +212,7 @@ public final class GDataPNG extends GData {
         GL11.glPopMatrix();
     }
 
-    public void drawGL33(Composite3D c3d, GLMatrixStack stack) {
+    void drawGL33(Composite3D c3d, GLMatrixStack stack) {
 
         final boolean selected = this.equals(c3d.getLockableDatFileReference().getVertexManager().getSelectedBgPicture());
 

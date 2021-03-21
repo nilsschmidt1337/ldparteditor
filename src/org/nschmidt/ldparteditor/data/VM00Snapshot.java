@@ -21,7 +21,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
-public class VM00Snapshot extends VM00Base {
+class VM00Snapshot extends VM00Base {
 
     protected VM00Snapshot(DatFile linkedDatFile) {
         super(linkedDatFile);

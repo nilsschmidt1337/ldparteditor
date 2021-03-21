@@ -47,7 +47,7 @@ public enum GraphicalDataTools {
         }
     }
 
-    public static void setVertex(float x, float y, float z, GData gd, boolean useCache) {
+    static void setVertex(float x, float y, float z, GData gd, boolean useCache) {
         // TODO Needs better caching since the connectivity information of TEXMAP data is unknown and the orientation of the normals can vary.
         if (useCache) {
             Vector4f v;

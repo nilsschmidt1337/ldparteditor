@@ -54,7 +54,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
-public class VM12IntersectorAndIsecalc extends VM11HideShow {
+class VM12IntersectorAndIsecalc extends VM11HideShow {
 
     private final BigDecimal TOLERANCE = BigDecimal.ZERO;
     private final BigDecimal ZEROT = BigDecimal.ZERO;

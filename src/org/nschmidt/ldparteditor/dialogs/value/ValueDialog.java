@@ -29,7 +29,7 @@ public abstract class ValueDialog extends ValueDesign {
      * Create the dialog.
      *
      */
-    public ValueDialog(Shell shell, String shellText, String unitText) {
+    protected ValueDialog(Shell shell, String shellText, String unitText) {
         super(shell, shellText, unitText);
     }
 

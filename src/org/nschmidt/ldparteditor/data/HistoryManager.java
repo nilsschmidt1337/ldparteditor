@@ -40,7 +40,7 @@ import org.nschmidt.ldparteditor.shells.editortext.EditorTextWindow;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-public class HistoryManager {
+class HistoryManager {
 
     private static final Pattern pattern = Pattern.compile("\r?\n|\r"); //$NON-NLS-1$
 
@@ -55,11 +55,11 @@ public class HistoryManager {
     private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<>();
     private volatile Queue<Object[]> answerQueue = new ConcurrentLinkedQueue<>();
 
-    public HistoryManager(DatFile df) {
+    HistoryManager(DatFile df) {
         this.df = df;
     }
 
-    public void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, HashMap<String, ArrayList<Boolean>> selectedData, HashMap<String, ArrayList<Boolean>> hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
+    void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, HashMap<String, ArrayList<Boolean>> selectedData, HashMap<String, ArrayList<Boolean>> hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
         if (df.isReadOnly()) return;
         if (hasNoThread) {
             hasNoThread = false;
@@ -343,11 +343,11 @@ public class HistoryManager {
 
     }
 
-    public void deleteHistory() {
+    void deleteHistory() {
         isRunning.set(false);
     }
 
-    public void undo(boolean focusTextEditor) {
+    void undo(boolean focusTextEditor) {
         if (lock.tryLock()) {
             try {
                 action(1, focusTextEditor);
@@ -359,7 +359,7 @@ public class HistoryManager {
         }
     }
 
-    public void redo(boolean focusTextEditor) {
+    void redo(boolean focusTextEditor) {
         if (lock.tryLock()) {
             try {
                 action(2, focusTextEditor);

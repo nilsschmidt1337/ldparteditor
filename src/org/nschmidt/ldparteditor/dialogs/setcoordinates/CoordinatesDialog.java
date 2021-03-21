@@ -41,7 +41,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
  */
 public class CoordinatesDialog extends CoordinatesDesign {
 
-    static ManipulatorScope transformationMode = ManipulatorScope.GLOBAL;
+    private static ManipulatorScope transformationMode = ManipulatorScope.GLOBAL;
 
     private static Vector3d start = null;
     private static Vector3d end = null;

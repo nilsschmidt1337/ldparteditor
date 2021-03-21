@@ -129,7 +129,7 @@ public class Vertex implements Comparable<Vertex> {
     }
 
     // High accuracy version (better performance)
-    public Vertex(BigDecimal bx, BigDecimal by, BigDecimal bz, Vector4f vertex) {
+    Vertex(BigDecimal bx, BigDecimal by, BigDecimal bz, Vector4f vertex) {
 
         this.x = vertex.x;
         this.y = vertex.y;
@@ -163,7 +163,7 @@ public class Vertex implements Comparable<Vertex> {
         this(bdArray[0], bdArray[1], bdArray[2]);
     }
 
-    public Vertex(Vector3r vector3r) {
+    Vertex(Vector3r vector3r) {
         this(vector3r.X.BigDecimalValue(), vector3r.Y.BigDecimalValue(), vector3r.Z.BigDecimalValue());
     }
 

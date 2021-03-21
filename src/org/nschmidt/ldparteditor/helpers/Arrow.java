@@ -30,21 +30,21 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
  */
 public class Arrow {
 
-    final FloatBuffer matrix_buf;
-    final Matrix4f rotation;
+    private final FloatBuffer matrix_buf;
+    private final Matrix4f rotation;
 
-    final float EPSILON = 0.0000001f;
+    private final float EPSILON = 0.0000001f;
 
-    final float r;
-    final float g;
-    final float b;
+    private final float r;
+    private final float g;
+    private final float b;
 
-    final float length;
-    final float cone_start;
-    final float line_end;
-    final float line_width;
+    private final float length;
+    private final float cone_start;
+    private final float line_end;
+    private final float line_width;
 
-    final float[] cone = new float[34];
+    private final float[] cone = new float[34];
 
     public Arrow(float r, float g, float b, float dir_x, float dir_y, float dir_z, float cone_height, float cone_width, float line_width) {
         dir_x = dir_x / 1000f;
@@ -206,17 +206,17 @@ public class Arrow {
 
         GL11.glPopMatrix();
     }
-    
+
     public void drawGL33_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
         final float zoom_inv = 1f / zoom;
         stack.glPushMatrix();
-        
+
         stack.glTranslatef(x, y, z);
         stack.glMultMatrixf(rotation);
         stack.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
         GL11.glLineWidth(line_width);
-        
+
         {
             float[] vertexData = new float[]{
                     0f, 0f, 0f,
@@ -226,76 +226,76 @@ public class Arrow {
             };
             GL33Helper.drawLinesRGB_GeneralSlow(vertexData);
         }
-        
-        int[] indices = new int[16 * 3];            
+
+        int[] indices = new int[16 * 3];
         for (int i = 0; i < 16; i++) {
             indices[i * 3] = 0;
             indices[i * 3 + 1] = i + 1;
             indices[i * 3 + 2] = i + 2;
         }
-        
+
         {
             float[] vertexData = new float[]{
-                    
+
                     0f, length, 0f, r, g, b,
-            
+
                     cone[0], cone_start, cone[1], r, g, b,
                     cone[2], cone_start, cone[3], r, g, b,
                     cone[4], cone_start, cone[5], r, g, b,
                     cone[6], cone_start, cone[7], r, g, b,
-            
+
                     cone[8], cone_start, cone[9], r, g, b,
                     cone[10], cone_start, cone[11], r, g, b,
                     cone[12], cone_start, cone[13], r, g, b,
                     cone[14], cone_start, cone[15], r, g, b,
-            
+
                     cone[16], cone_start, cone[17], r, g, b,
                     cone[18], cone_start, cone[19], r, g, b,
                     cone[20], cone_start, cone[21], r, g, b,
                     cone[22], cone_start, cone[23], r, g, b,
-            
+
                     cone[24], cone_start, cone[25], r, g, b,
                     cone[26], cone_start, cone[27], r, g, b,
                     cone[28], cone_start, cone[29], r, g, b,
                     cone[30], cone_start, cone[31], r, g, b,
-            
+
                     cone[32], cone_start, cone[33], r, g, b
             };
-            
+
             GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
         }
 
         {
             float[] vertexData = new float[]{
-                    
+
                 0f, cone_start, 0f, r, g, b,
-        
+
                 cone[32], cone_start, cone[33], r, g, b,
-        
+
                 cone[30], cone_start, cone[31], r, g, b,
                 cone[28], cone_start, cone[29], r, g, b,
                 cone[26], cone_start, cone[27], r, g, b,
                 cone[24], cone_start, cone[25], r, g, b,
-        
+
                 cone[22], cone_start, cone[23], r, g, b,
                 cone[20], cone_start, cone[21], r, g, b,
                 cone[18], cone_start, cone[19], r, g, b,
                 cone[16], cone_start, cone[17], r, g, b,
-        
+
                 cone[14], cone_start, cone[15], r, g, b,
                 cone[12], cone_start, cone[13], r, g, b,
                 cone[10], cone_start, cone[11], r, g, b,
                 cone[8], cone_start, cone[9], r, g, b,
-        
+
                 cone[6], cone_start, cone[7], r, g, b,
                 cone[4], cone_start, cone[5], r, g, b,
                 cone[2], cone_start, cone[3], r, g, b,
                 cone[0], cone_start, cone[1], r, g, b
             };
-            
+
             GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
         }
-        
+
         stack.glPopMatrix();
     }
 }

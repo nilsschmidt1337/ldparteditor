@@ -33,7 +33,7 @@ public class GLMatrixStack {
 
     }
 
-    public static Matrix4f glOrtho(double l, double r, double b, double t, double n, double f) {
+    static Matrix4f glOrtho(double l, double r, double b, double t, double n, double f) {
         Matrix4f result = new Matrix4f();
         result.m00 = (float) (2 / (r - l));
         result.m30 = (float) (- (r + l) / (r - l));
@@ -53,7 +53,7 @@ public class GLMatrixStack {
         this.shader = shader;
     }
 
-    public void clear() {
+    void clear() {
         stack.clear();
         final Matrix4f ID = new Matrix4f();
         Matrix4f.setIdentity(ID);

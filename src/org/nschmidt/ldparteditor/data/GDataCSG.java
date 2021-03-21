@@ -119,7 +119,7 @@ public final class GDataCSG extends GData {
         Plane.EPSILON = 1e-3;
     }
 
-    public static synchronized void fullReset(DatFile df) {
+    static synchronized void fullReset(DatFile df) {
         quality = 16;
         registeredData.putIfAbsent(df, new HashSet<>()).clear();
         linkedCSG.putIfAbsent(df, new HashMap<>()).clear();
@@ -161,11 +161,11 @@ public final class GDataCSG extends GData {
         return type;
     }
 
-    public GDataCSG(DatFile df, final int colourNumber, float r, float g, float b, float a, GDataCSG c) {
+    GDataCSG(DatFile df, final int colourNumber, float r, float g, float b, float a, GDataCSG c) {
         this(df, c.type, c.colourReplace(new GColour(colourNumber, r, g, b, a).toString()), c.parent);
     }
 
-    public GDataCSG(DatFile df, Matrix4f m, GDataCSG c) {
+    GDataCSG(DatFile df, Matrix4f m, GDataCSG c) {
         this(df, c.type, c.transform(m), c.parent);
     }
 
@@ -367,7 +367,7 @@ public final class GDataCSG extends GData {
         drawAndParse(c3d, df, true);
     }
 
-    public void drawAndParse(Composite3D c3d, DatFile df, boolean doDraw) {
+    void drawAndParse(Composite3D c3d, DatFile df, boolean doDraw) {
 
         if (type == CSG.DONTOPTIMIZE) {
             df.setOptimizingCSG(false);
@@ -648,7 +648,7 @@ public final class GDataCSG extends GData {
         return text;
     }
 
-    public boolean wasNotCompiled() {
+    boolean wasNotCompiled() {
         return (CSG.COMPILE == type && compiledCSG == null);
     }
 
@@ -839,7 +839,7 @@ public final class GDataCSG extends GData {
         }
     }
 
-    public synchronized String transform(Matrix4f m) {
+    private synchronized String transform(Matrix4f m) {
         boolean notChoosen = true;
         String t = null;
         switch (type) {
@@ -934,7 +934,7 @@ public final class GDataCSG extends GData {
         }
     }
 
-    public synchronized String colourReplace(String colour2) {
+    private synchronized String colourReplace(String colour2) {
         boolean notChoosen = true;
         String t = null;
         switch (type) {
@@ -1015,15 +1015,15 @@ public final class GDataCSG extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
-    public static synchronized boolean hasSelectionCSG(DatFile df) {
+    static synchronized boolean hasSelectionCSG(DatFile df) {
         return !selectedBodyMap.putIfAbsent(df, new HashSet<>()).isEmpty();
     }
 
-    public synchronized boolean isSelected(DatFile df) {
+    private synchronized boolean isSelected(DatFile df) {
         return selectedBodyMap.putIfAbsent(df, new HashSet<>()).contains(this);
     }
 
-    public static synchronized void drawSelectionCSG(Composite3D c3d) {
+    static synchronized void drawSelectionCSG(Composite3D c3d) {
         final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<>());
         if (!selectedTriangles.isEmpty()) {
             GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
@@ -1136,7 +1136,7 @@ public final class GDataCSG extends GData {
         return result;
     }
 
-    public static synchronized void selectAll(DatFile df) {
+    static synchronized void selectAll(DatFile df) {
         clearSelection(df);
         HashSet<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
@@ -1149,7 +1149,7 @@ public final class GDataCSG extends GData {
         selectedBodyMap.get(df).addAll(newSelection);
     }
 
-    public synchronized boolean canSelect() {
+    synchronized boolean canSelect() {
         if (ref1 != null && ref2 == null && ref3 == null && type != CSG.COMPILE) {
             if (ref1.endsWith("#>null") && type != CSG.QUALITY && type != CSG.EPSILON && type != CSG.TJUNCTION && type != CSG.COLLAPSE && type != CSG.DONTOPTIMIZE) { //$NON-NLS-1$
                 return true;
@@ -1158,7 +1158,7 @@ public final class GDataCSG extends GData {
         return false;
     }
 
-    public static synchronized HashSet<GColour> getSelectedColours(DatFile df) {
+    static synchronized HashSet<GColour> getSelectedColours(DatFile df) {
         final HashSet<GColour> colours = new HashSet<>();
         final HashSet<GDataCSG> selection = getSelection(df);
         for (GDataCSG g : selection) {
@@ -1167,7 +1167,7 @@ public final class GDataCSG extends GData {
         return colours;
     }
 
-    public static synchronized void selectAllWithSameColours(DatFile df, Set<GColour> allColours) {
+    static synchronized void selectAllWithSameColours(DatFile df, Set<GColour> allColours) {
         HashSet<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
             final GDataCSG g = it.next();
@@ -1183,7 +1183,7 @@ public final class GDataCSG extends GData {
         selectedBodyMap.putIfAbsent(df, new HashSet<>()).clear();
     }
 
-    public static void rebuildSelection(DatFile df) {
+    static void rebuildSelection(DatFile df) {
         final Composite3D c3d = df.getLastSelectedComposite();
         if (c3d == null || df.getLastSelectedComposite().isDisposed()) return;
         final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
@@ -1230,7 +1230,7 @@ public final class GDataCSG extends GData {
         return oldMatrix;
     }
 
-    public synchronized String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
+    synchronized String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         boolean notChoosen = true;
         String t = null;
         switch (type) {
@@ -1306,7 +1306,7 @@ public final class GDataCSG extends GData {
         return null;
     }
 
-    public static synchronized void backupSelection(DatFile linkedDatFile) {
+    static synchronized void backupSelection(DatFile linkedDatFile) {
         while (true) {
             try {
                 backupSelectedBodyMap.put(linkedDatFile, new HashSet<>(selectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<>())));
@@ -1316,7 +1316,7 @@ public final class GDataCSG extends GData {
         }
     }
 
-    public static synchronized void backupSelectionClear(DatFile linkedDatFile) {
+    static synchronized void backupSelectionClear(DatFile linkedDatFile) {
         while (true) {
             try {
                 backupSelectedBodyMap.put(linkedDatFile, new HashSet<>());
@@ -1326,7 +1326,7 @@ public final class GDataCSG extends GData {
         }
     }
 
-    public static synchronized void restoreSelection(DatFile linkedDatFile) {
+    static synchronized void restoreSelection(DatFile linkedDatFile) {
         while (true) {
             try {
                 selectedBodyMap.put(linkedDatFile, backupSelectedBodyMap.putIfAbsent(linkedDatFile, new HashSet<>()));
@@ -1336,11 +1336,11 @@ public final class GDataCSG extends GData {
         }
     }
 
-    public static Collection<CSG> getCSGs(final DatFile df) {
+    static Collection<CSG> getCSGs(final DatFile df) {
         return linkedCSG.putIfAbsent(df, new HashMap<>()).values();
     }
 
-    public static void finishCacheCleanup(DatFile df) {
+    static void finishCacheCleanup(DatFile df) {
         if (clearPolygonCache.get(df) == true) {
             if (fullClearPolygonCache.get(df) != true) {
                 fullClearPolygonCache.put(df, true);
@@ -1366,13 +1366,13 @@ public final class GDataCSG extends GData {
         }
     }
 
-    public static HashSet<GData3> getSelectionData(DatFile df) {
+    static HashSet<GData3> getSelectionData(DatFile df) {
         return selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
     }
 
-    Set<GData3> surfaces = null;
-    int[] datasize = null;
-    public void cacheResult(DatFile df) {
+    private Set<GData3> surfaces = null;
+    private int[] datasize = null;
+    void cacheResult(DatFile df) {
         final int[] result = new int[]{0, 0, 0};
         if (compiledCSG != null) {
             surfaces = new HashSet<>(compiledCSG.getResult(df).keySet());

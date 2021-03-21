@@ -35,12 +35,12 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
  */
 class ValueDesign extends Dialog {
 
-    Label[] lbl_Unit = new Label[1];
+    private Label[] lbl_Unit = new Label[1];
     Button[] btn_ok = new Button[1];
     protected BigDecimalSpinner[] spn_Value = new BigDecimalSpinner[1];
 
 
-    final String unitText;
+    private final String unitText;
     final String shellText;
 
     ValueDesign(Shell parentShell, String shellText, String unitText) {
@@ -95,5 +95,4 @@ class ValueDesign extends Dialog {
     protected Point getInitialSize() {
         return super.getInitialSize();
     }
-
 }

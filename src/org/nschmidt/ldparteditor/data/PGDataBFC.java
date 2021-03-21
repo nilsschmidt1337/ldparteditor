@@ -27,7 +27,7 @@ public final class PGDataBFC extends PGData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    final byte type;
+    private final byte type;
 
     public byte getType() {
         return type;
@@ -41,7 +41,7 @@ public final class PGDataBFC extends PGData implements Serializable {
     public int type() {
         return 6;
     }
-    
+
     @Override
     public void drawBFCprimitive_GL20(int drawOnlyMode) {
         drawBFCprimitive_GL33(null, drawOnlyMode);
@@ -77,7 +77,8 @@ public final class PGDataBFC extends PGData implements Serializable {
             break;
         }
     }
-    public static PGDataBFC clone(PGDataBFC o) {
+
+    static PGDataBFC clone(PGDataBFC o) {
         return new PGDataBFC(o.type);
     }
 

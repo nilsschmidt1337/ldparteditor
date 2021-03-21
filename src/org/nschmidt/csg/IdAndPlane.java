@@ -16,9 +16,9 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.csg;
 
 public class IdAndPlane {
-    public final Plane plane;
+    final Plane plane;
     public final Integer id;
-    public IdAndPlane(Plane plane, Integer id) {
+    IdAndPlane(Plane plane, Integer id) {
         super();
         this.plane = plane;
         this.id = id;

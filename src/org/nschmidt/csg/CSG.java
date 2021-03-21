@@ -113,7 +113,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  */
 public class CSG {
 
-    TreeMap<GData3, IdAndPlane> result = new TreeMap<>();
+    private TreeMap<GData3, IdAndPlane> result = new TreeMap<>();
 
     private List<Polygon> polygons;
     private Bounds bounds = null;
@@ -149,7 +149,7 @@ public class CSG {
      *            polygons
      * @return a CSG instance
      */
-    public static CSG fromPolygons(List<Polygon> polygons) {
+    static CSG fromPolygons(List<Polygon> polygons) {
 
         CSG csg = new CSG();
         csg.polygons = polygons;
@@ -424,7 +424,7 @@ public class CSG {
      *
      * @return this csg as list of LDraw triangles
      */
-    public TreeMap<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
+    private TreeMap<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
         TreeMap<GData3, IdAndPlane> result = new TreeMap<>();
         for (Polygon p : this.polygons) {
             result.putAll(p.toLDrawTriangles(parent));
@@ -463,9 +463,9 @@ public class CSG {
     public static volatile long timeOfLastOptimization = -1;
     public static volatile double globalOptimizationRate = 100.0;
 
-    public volatile double optimizationTries = 1.0;
-    public volatile double optimizationSuccess = 1.0;
-    public volatile double failureStrike = 0;
+    private volatile double optimizationTries = 1.0;
+    private volatile double optimizationSuccess = 1.0;
+    private volatile double failureStrike = 0;
     private volatile int tjunctionPause = 0;
     private volatile int flipPause = 0;
 
@@ -588,7 +588,7 @@ public class CSG {
      *
      * @return a transformed copy of this CSG
      */
-    public CSG transformed(Transform transform) {
+    private CSG transformed(Transform transform) {
         List<Polygon> newpolygons = new ArrayList<>();
         for (Polygon p : polygons) {
             newpolygons.add(p.transformed(transform));
@@ -606,7 +606,7 @@ public class CSG {
      *
      * @return a transformed copy of this CSG
      */
-    public CSG transformed(Transform transform, GColour c, int ID) {
+    private CSG transformed(Transform transform, GColour c, int ID) {
         List<Polygon> newpolygons = new ArrayList<>();
         for (Polygon p : polygons) {
             newpolygons.add(p.transformed(transform, c, ID));

@@ -42,10 +42,10 @@ public final class PGData4 extends PGData implements Serializable {
     final float x4;
     final float y4;
     final float z4;
-    
+
     private final transient int[] indices = new int[12];
-    private final transient float[] vertices = new float[48]; 
-    
+    private final transient float[] vertices = new float[48];
+
     public PGData4(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
         this.x1 = x1;
         this.y1 = y1;
@@ -59,7 +59,7 @@ public final class PGData4 extends PGData implements Serializable {
         this.x4 = x4;
         this.y4 = y4;
         this.z4 = z4;
-        
+
         vertices[0] = x1;
         vertices[1] = y1;
         vertices[2] = z1;
@@ -85,10 +85,12 @@ public final class PGData4 extends PGData implements Serializable {
         vertices[43] = y4;
         vertices[44] = z4;
     }
+
     @Override
     public int type() {
         return 4;
     }
+
     @Override
     public void drawBFCprimitive_GL20(int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
@@ -247,14 +249,14 @@ public final class PGData4 extends PGData implements Serializable {
             break;
         }
     }
-    
+
     @Override
     public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case BFC.CCW:
             if (PGData.globalNegativeDeterminant) {
-                if (PGData.globalInvertNext) {                    
+                if (PGData.globalInvertNext) {
                     indices[0] = 0;
                     indices[1] = 3;
                     indices[2] = 2;
@@ -341,7 +343,7 @@ public final class PGData4 extends PGData implements Serializable {
                         indices[11] = 4;
                     }
                 } else {
-                    if (PGData.globalInvertNext) {                    
+                    if (PGData.globalInvertNext) {
                         indices[0] = 0;
                         indices[1] = 3;
                         indices[2] = 2;
@@ -378,13 +380,13 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[11] = vertices[5];
             vertices[15] = vertices[3];
             vertices[16] = vertices[4];
-            vertices[17] = vertices[5];                                        
+            vertices[17] = vertices[5];
             vertices[21] = vertices[3];
             vertices[22] = vertices[4];
-            vertices[23] = vertices[5];     
+            vertices[23] = vertices[5];
             vertices[27] = View.BFC_back__Colour_r[0];
             vertices[28] = View.BFC_back__Colour_g[0];
-            vertices[29] = View.BFC_back__Colour_b[0];               
+            vertices[29] = View.BFC_back__Colour_b[0];
             vertices[33] = vertices[27];
             vertices[34] = vertices[28];
             vertices[35] = vertices[29];
@@ -417,13 +419,13 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[11] = vertices[5];
             vertices[15] = vertices[3];
             vertices[16] = vertices[4];
-            vertices[17] = vertices[5];                                        
+            vertices[17] = vertices[5];
             vertices[21] = vertices[3];
             vertices[22] = vertices[4];
-            vertices[23] = vertices[5];                    
+            vertices[23] = vertices[5];
             vertices[27] = vertices[3];
             vertices[28] = vertices[4];
-            vertices[29] = vertices[5];                    
+            vertices[29] = vertices[5];
             vertices[33] = vertices[3];
             vertices[34] = vertices[4];
             vertices[35] = vertices[5];
@@ -456,14 +458,14 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[11] = vertices[5];
             vertices[15] = vertices[3];
             vertices[16] = vertices[4];
-            vertices[17] = vertices[5];                                        
+            vertices[17] = vertices[5];
             vertices[21] = vertices[3];
             vertices[22] = vertices[4];
-            vertices[23] = vertices[5];                    
+            vertices[23] = vertices[5];
             vertices[27] = vertices[3];
             vertices[28] = vertices[4];
-            vertices[29] = vertices[5];                    
-            vertices[33] = vertices[3];            
+            vertices[29] = vertices[5];
+            vertices[33] = vertices[3];
             vertices[34] = vertices[4];
             vertices[35] = vertices[5];
             vertices[39] = vertices[3];
@@ -476,7 +478,8 @@ public final class PGData4 extends PGData implements Serializable {
         }
 
     }
-    public static PGData4 clone(PGData4 o) {
+
+    static PGData4 clone(PGData4 o) {
         return new PGData4(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2, o.x3, o.y3, o.z3, o.x4, o.y4, o.z4);
     }
 

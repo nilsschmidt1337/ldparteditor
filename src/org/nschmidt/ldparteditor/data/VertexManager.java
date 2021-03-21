@@ -60,11 +60,11 @@ public final class VertexManager extends VM99Clipboard {
 
     private volatile AtomicBoolean calculateCondlineControlPoints = new AtomicBoolean(true);
 
-    public VertexManager(DatFile linkedDatFile) {
+    VertexManager(DatFile linkedDatFile) {
         super(linkedDatFile);
     }
 
-    public final synchronized void drawGL20(final Composite3D c3d) {
+    final synchronized void drawGL20(final Composite3D c3d) {
         if (!linkedDatFile.isDrawSelection()) return;
 
         Matrix4f vm = c3d.getViewport();

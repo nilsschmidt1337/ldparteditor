@@ -89,7 +89,7 @@ public class MyDummyTransfer extends ByteArrayTransfer {
         return new int[] { MYTYPEID };
     }
 
-    boolean checkMyType(Object object) {
+    private boolean checkMyType(Object object) {
         if (object == null || !(object instanceof MyDummyType)) {
             return false;
         }

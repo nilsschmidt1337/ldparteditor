@@ -55,26 +55,26 @@ import org.nschmidt.ldparteditor.widgets.NButton;
  */
 class SlantingMatrixProjectorDesign extends Dialog {
 
-    final Text[] M00 = new Text[1];
-    final Text[] M01 = new Text[1];
-    final Text[] M02 = new Text[1];
-    final Text[] M03 = new Text[1];
-    final Text[] M10 = new Text[1];
-    final Text[] M11 = new Text[1];
-    final Text[] M12 = new Text[1];
-    final Text[] M13 = new Text[1];
-    final Text[] M20 = new Text[1];
-    final Text[] M21 = new Text[1];
-    final Text[] M22 = new Text[1];
-    final Text[] M23 = new Text[1];
-    final Text[] M30 = new Text[1];
-    final Text[] M31 = new Text[1];
-    final Text[] M32 = new Text[1];
-    final Text[] M33 = new Text[1];
+    private final Text[] M00 = new Text[1];
+    private final Text[] M01 = new Text[1];
+    private final Text[] M02 = new Text[1];
+    private final Text[] M03 = new Text[1];
+    private final Text[] M10 = new Text[1];
+    private final Text[] M11 = new Text[1];
+    private final Text[] M12 = new Text[1];
+    private final Text[] M13 = new Text[1];
+    private final Text[] M20 = new Text[1];
+    private final Text[] M21 = new Text[1];
+    private final Text[] M22 = new Text[1];
+    private final Text[] M23 = new Text[1];
+    private final Text[] M30 = new Text[1];
+    private final Text[] M31 = new Text[1];
+    private final Text[] M32 = new Text[1];
+    private final Text[] M33 = new Text[1];
 
     // Use final only for subclass/listener references!
-    final VertexManager vm;
-    final SlantingMatrixProjectorSettings mps;
+    private final VertexManager vm;
+    private final SlantingMatrixProjectorSettings mps;
     private java.text.DecimalFormat numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMATL4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
 
     SlantingMatrixProjectorDesign(Shell parentShell, VertexManager vm, SlantingMatrixProjectorSettings mps) {
@@ -208,7 +208,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
         txt_Cell.setEditable(false);
     }
 
-    void updateMatrix() {
+    private void updateMatrix() {
         final Matrix M = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
         updateMatrixCell(M00, M.M00);
         updateMatrixCell(M01, M.M01);

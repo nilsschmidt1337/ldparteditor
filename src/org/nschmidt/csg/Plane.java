@@ -56,19 +56,19 @@ public class Plane implements Comparable<Plane> {
 
     private static final double epsilon = 0.001;
 
-    public static final int COPLANAR = 0;
-    public static final int FRONT = 1;
-    public static final int BACK = 2;
-    public static final int SPANNING = 3;
+    static final int COPLANAR = 0;
+    static final int FRONT = 1;
+    static final int BACK = 2;
+    static final int SPANNING = 3;
 
     /**
      * Normal vector.
      */
-    public VectorCSGd normal;
+    private VectorCSGd normal;
     /**
      * Distance to origin.
      */
-    public double dist;
+    private double dist;
 
     /**
      * Constructor. Creates a new plane defined by its normal vector and the
@@ -79,7 +79,7 @@ public class Plane implements Comparable<Plane> {
      * @param dist
      *            distance from origin
      */
-    public Plane(VectorCSGd normal, double dist) {
+    private Plane(VectorCSGd normal, double dist) {
         this.normal = normal;
         this.dist = dist;
     }
@@ -95,7 +95,7 @@ public class Plane implements Comparable<Plane> {
      *            third point
      * @return a nedist plane
      */
-    public static Plane createFromPoints(VectorCSGd a, VectorCSGd b, VectorCSGd c) {
+    static Plane createFromPoints(VectorCSGd a, VectorCSGd b, VectorCSGd c) {
         VectorCSGd n = b.minus(a).cross(c.minus(a)).unit();
         return new Plane(n, n.dot(a));
     }
@@ -108,12 +108,12 @@ public class Plane implements Comparable<Plane> {
     /**
      * Flips this plane.
      */
-    public void flip() {
+    void flip() {
         normal = normal.negated();
         dist = -dist;
     }
 
-    public int[] getTypes(final Polygon polygon) {
+    int[] getTypes(final Polygon polygon) {
         final int size = polygon.vertices.size();
         final int[] types = new int[size + 1];
         int polygonType = 0;
@@ -146,7 +146,7 @@ public class Plane implements Comparable<Plane> {
      * @param back
      *            back polgons
      */
-    public void splitPolygonForClip(final Polygon polygon, final int[] types, List<Polygon> front, List<Polygon> back) {
+    void splitPolygonForClip(final Polygon polygon, final int[] types, List<Polygon> front, List<Polygon> back) {
 
         // Classify each point as well as the entire polygon into one of the
         // above
@@ -223,7 +223,7 @@ public class Plane implements Comparable<Plane> {
      * @param back
      *            back polgons
      */
-    public void splitPolygonForBuild(final Polygon polygon, final int[] types, List<Polygon> coplanarPolys, List<Polygon> front, List<Polygon> back) {
+    void splitPolygonForBuild(final Polygon polygon, final int[] types, List<Polygon> coplanarPolys, List<Polygon> front, List<Polygon> back) {
 
         // Classify each point as well as the entire polygon into one of the
         // above

@@ -29,7 +29,7 @@ public class MemorySnapshot {
     private final String creation;
     private final String[] backup;
 
-    public MemorySnapshot(DatFile df) {
+    MemorySnapshot(DatFile df) {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a"); //$NON-NLS-1$
         String formattedDate = sdf.format(date);

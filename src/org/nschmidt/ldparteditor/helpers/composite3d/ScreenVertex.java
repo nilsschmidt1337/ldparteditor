@@ -18,12 +18,12 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 
-public class ScreenVertex implements Comparable<ScreenVertex> {
+class ScreenVertex implements Comparable<ScreenVertex> {
 
     private final Vertex vertex3d;
     private final Vector3d projection;
 
-    public ScreenVertex(Vertex vertex3d, Vector3d projection) {
+    ScreenVertex(Vertex vertex3d, Vector3d projection) {
         this.vertex3d = vertex3d;
         this.projection = projection;
     }

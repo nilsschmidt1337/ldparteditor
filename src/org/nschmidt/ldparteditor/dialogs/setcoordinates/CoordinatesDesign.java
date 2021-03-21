@@ -50,7 +50,7 @@ import org.nschmidt.ldparteditor.widgets.NButton;
  */
 class CoordinatesDesign extends Dialog {
 
-    static ManipulatorScope transformationMode = ManipulatorScope.GLOBAL;
+    private static ManipulatorScope transformationMode = ManipulatorScope.GLOBAL;
 
     final NButton[] btn_Local = new NButton[1];
     final NButton[] btn_Global = new NButton[1];
@@ -72,7 +72,8 @@ class CoordinatesDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    private Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+
     CoordinatesDesign(Shell parentShell, Vertex v, Vertex manipulatorPosition) {
         super(parentShell);
         if (manipulatorPosition != null) {

@@ -98,7 +98,7 @@ public class Pnt {
     /**
      * @return this Pnt's dimension.
      */
-    public int dimension() {
+    private int dimension() {
         return coordinates.length;
     }
 
@@ -111,7 +111,7 @@ public class Pnt {
      * @throws IllegalArgumentException
      *             if dimension fail to match
      */
-    public int dimCheck(Pnt p) {
+    private int dimCheck(Pnt p) {
         int len = this.coordinates.length;
         if (len != p.coordinates.length)
             throw new IllegalArgumentException("Dimension mismatch"); //$NON-NLS-1$
@@ -125,7 +125,7 @@ public class Pnt {
      *            the new coordinates (added on the right end)
      * @return a new Pnt with the additional coordinates
      */
-    public Pnt extend(double... coords) {
+    private Pnt extend(double... coords) {
         double[] result = new double[coordinates.length + coords.length];
         System.arraycopy(coordinates, 0, result, 0, coordinates.length);
         System.arraycopy(coords, 0, result, coordinates.length, coords.length);
@@ -139,7 +139,7 @@ public class Pnt {
      *            the other Pnt
      * @return dot product of this Pnt and p
      */
-    public double dot(Pnt p) {
+    private double dot(Pnt p) {
         int len = dimCheck(p);
         double sum = 0;
         for (int i = 0; i < len; i++)
@@ -154,7 +154,7 @@ public class Pnt {
      *            the other Pnt
      * @return a new Pnt = this - p
      */
-    public Pnt subtract(Pnt p) {
+    private Pnt subtract(Pnt p) {
         int len = dimCheck(p);
         double[] coords = new double[len];
         for (int i = 0; i < len; i++)
@@ -169,7 +169,7 @@ public class Pnt {
      *            the other Pnt
      * @return a new Pnt = this + p
      */
-    public Pnt add(Pnt p) {
+    private Pnt add(Pnt p) {
         int len = dimCheck(p);
         double[] coords = new double[len];
         for (int i = 0; i < len; i++)
@@ -186,7 +186,7 @@ public class Pnt {
      *            the other point
      * @return the coefficients of the perpendicular bisector
      */
-    public Pnt bisector(Pnt point) {
+    private Pnt bisector(Pnt point) {
         dimCheck(point);
         Pnt diff = this.subtract(point);
         Pnt sum = this.add(point);
@@ -206,7 +206,7 @@ public class Pnt {
      * @throws IllegalArgumentException
      *             if dimensions are wrong
      */
-    public static double determinant(Pnt[] matrix) {
+    private static double determinant(Pnt[] matrix) {
         if (matrix.length != matrix[0].dimension())
             throw new IllegalArgumentException("Matrix is not square"); //$NON-NLS-1$
         boolean[] columns = new boolean[matrix.length];
@@ -260,7 +260,7 @@ public class Pnt {
      * @throws IllegalArgumentException
      *             if matrix is wrong shape
      */
-    public static Pnt cross(Pnt[] matrix) {
+    private static Pnt cross(Pnt[] matrix) {
         int len = matrix.length + 1;
         if (len != matrix[0].dimension())
             throw new IllegalArgumentException("Dimension mismatch"); //$NON-NLS-1$
@@ -291,7 +291,7 @@ public class Pnt {
      *            the simplex (as an array of Pnts)
      * @return the signed content of the simplex
      */
-    public static double content(Pnt[] simplex) {
+    private static double content(Pnt[] simplex) {
         Pnt[] matrix = new Pnt[simplex.length];
         for (int i = 0; i < matrix.length; i++)
             matrix[i] = simplex[i].extend(1);
@@ -319,7 +319,7 @@ public class Pnt {
      * @throws IllegalArgumentExcpetion
      *             if the simplex is degenerate
      */
-    public int[] relation(Pnt[] simplex) {
+    private int[] relation(Pnt[] simplex) {
         /*
          * In 2D, we compute the cross of this matrix: 1 1 1 1 p0 a0 b0 c0 p1 a1
          * b1 c1 where (a, b, c) is the simplex and p is this Pnt. The result is
@@ -379,7 +379,7 @@ public class Pnt {
      *            the simplex (an array of Pnts)
      * @return simplex Pnt that "witnesses" outsideness (or null if not outside)
      */
-    public Pnt isOutside(Pnt[] simplex) {
+    Pnt isOutside(Pnt[] simplex) {
         int[] result = this.relation(simplex);
         for (int i = 0; i < result.length; i++) {
             if (result[i] > 0)
@@ -395,7 +395,7 @@ public class Pnt {
      *            the simplex (as an array of Pnts)
      * @return -1, 0, or +1 for inside, on, or outside of circumcircle
      */
-    public int vsCircumcircle(Pnt[] simplex) {
+    int vsCircumcircle(Pnt[] simplex) {
         Pnt[] matrix = new Pnt[simplex.length + 1];
         for (int i = 0; i < simplex.length; i++)
             matrix[i] = simplex[i].extend(1, simplex[i].dot(simplex[i]));
@@ -414,7 +414,7 @@ public class Pnt {
      *            the simplex (as an array of Pnts)
      * @return the circumcenter (a Pnt) of simplex
      */
-    public static Pnt circumcenter(Pnt[] simplex) {
+    static Pnt circumcenter(Pnt[] simplex) {
         int dim = simplex[0].dimension();
         if (simplex.length - 1 != dim)
             throw new IllegalArgumentException("Dimension mismatch"); //$NON-NLS-1$

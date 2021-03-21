@@ -21,7 +21,7 @@ package org.nschmidt.ldparteditor.widgets;
  */
 public class TreeColumn {
 
-    final org.eclipse.swt.widgets.TreeColumn c;
+    private final org.eclipse.swt.widgets.TreeColumn c;
 
     public TreeColumn(Tree tree, int style) {
         c = new org.eclipse.swt.widgets.TreeColumn(tree.getTree(), style);
@@ -34,5 +34,4 @@ public class TreeColumn {
     public void setText(String text) {
         c.setText(text);
     }
-
 }

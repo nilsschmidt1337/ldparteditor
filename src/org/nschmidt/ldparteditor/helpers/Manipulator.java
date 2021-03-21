@@ -99,9 +99,9 @@ public class Manipulator {
     private static BigDecimal snap_y_Translate = new BigDecimal("100"); //$NON-NLS-1$
     private static BigDecimal snap_z_Translate = new BigDecimal("100"); //$NON-NLS-1$
 
-    final float snap_x_Scale = 400f;
-    final float snap_y_Scale = 400f;
-    final float snap_z_Scale = 400f;
+    private final float snap_x_Scale = 400f;
+    private final float snap_y_Scale = 400f;
+    private final float snap_z_Scale = 400f;
 
     private static BigDecimal factor_Scale = new BigDecimal("1.1"); //$NON-NLS-1$
 

@@ -236,7 +236,7 @@ class Editor3DDesign extends ApplicationWindow {
     final NButton[] btn_Close = new NButton[1];
     final NButton[] btn_CopyToUnofficial = new NButton[1];
 
-    final NButton[] btn_Select2 = new NButton[1];
+    private final NButton[] btn_Select2 = new NButton[1];
 
     final MenuItem[] mntm_SelectAll = new MenuItem[1];
     final MenuItem[] mntm_SelectAllWithColours = new MenuItem[1];
@@ -484,8 +484,8 @@ class Editor3DDesign extends ApplicationWindow {
     final SashForm[] splitSash = new SashForm[1];
 
     static final int TEXT_3D_SEPARATE = 0;
-    static final int TEXT_LEFT_3D_RIGHT = 1;
-    static final int TEXT_RIGHT_3D_LEFT = 2;
+    private static final int TEXT_LEFT_3D_RIGHT = 1;
+    private static final int TEXT_RIGHT_3D_LEFT = 2;
 
     /**
      * Create the application window.
@@ -3444,7 +3444,7 @@ class Editor3DDesign extends ApplicationWindow {
         return toolItem_Sync;
     }
 
-    void createComposite3D(SashForm sashForm, CompositeContainer c, Composite3DState state) {
+    private void createComposite3D(SashForm sashForm, CompositeContainer c, Composite3DState state) {
         // Load the configuration of one 3D window
         final Composite3D c3d;
         if (c == null) {
@@ -3454,6 +3454,7 @@ class Editor3DDesign extends ApplicationWindow {
             state.setScales(false);
             c3d = c.getComposite3D();
         }
+
         c3d.loadState(state);
     }
 
@@ -3659,7 +3660,7 @@ class Editor3DDesign extends ApplicationWindow {
         return splitSash[0];
     }
 
-    public static void setSashForm(SashForm sashForm) {
+    private static void setSashForm(SashForm sashForm) {
         Editor3DDesign.sashForm = sashForm;
     }
 

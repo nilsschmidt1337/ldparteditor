@@ -25,7 +25,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.YTruderSettings;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.DatParser;
 
-public class VM27YTruder extends VM26LineIntersector {
+class VM27YTruder extends VM26LineIntersector {
 
     private final double EPSILON = 0.000001;
     private final double SMALL = 0.01;

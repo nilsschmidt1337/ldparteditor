@@ -19,12 +19,12 @@ package org.nschmidt.ldparteditor.data;
  * @author nils
  *
  */
-public class AccurateEdge {
+class AccurateEdge {
 
-    public final Vertex v1;
-    public final Vertex v2;
+    final Vertex v1;
+    final Vertex v2;
 
-    public AccurateEdge(Vertex v1, Vertex v2) {
+    AccurateEdge(Vertex v1, Vertex v2) {
         this.v1 = v1;
         this.v2 = v2;
     }
@@ -57,5 +57,4 @@ public class AccurateEdge {
     public String toString() {
         return v1.toString() + " to " + v2.toString(); //$NON-NLS-1$
     }
-
 }

@@ -58,13 +58,13 @@ public enum TexMapParser {
 
     private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
 
-    public static GDataTEX parseGeometry(String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f pMatrix, Set<String> alreadyParsed, DatFile datFile) {
+    static GDataTEX parseGeometry(String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f pMatrix, Set<String> alreadyParsed, DatFile datFile) {
         String tline = line.replaceAll("0\\s+\\Q!:\\E\\s+", ""); //$NON-NLS-1$ //$NON-NLS-2$
         GData data = parseLine(tline, depth, r, g, b, a, parent, pMatrix, alreadyParsed, datFile);
         return new GDataTEX(data, line, TexMeta.GEOMETRY, null, parent);
     }
 
-    public static GDataTEX parseTEXMAP(String[] data_segments, String line, GData1 parent) {
+    static GDataTEX parseTEXMAP(String[] data_segments, String line, GData1 parent) {
         int segs = data_segments.length;
         if (segs == 3) {
             if (data_segments[2].equals("END")) { //$NON-NLS-1$

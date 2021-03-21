@@ -40,7 +40,7 @@ import org.nschmidt.ldparteditor.data.GColour;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public interface Primitive {
+interface Primitive {
 
     /**
      * Returns the polygons that define this primitive.

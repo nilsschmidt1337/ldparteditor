@@ -209,19 +209,19 @@ final class Node {
         }
     }
 
-    enum Side {
+    private enum Side {
         FRONT, BACK, NONE
     }
 
-    class NodeArgs {
-        Side side;
-        NodeArgs parent;
-        List<Polygon> polygons;
-        List<Polygon> frontP = new ArrayList<>();
-        List<Polygon> backP = new ArrayList<>();
-        Node node;
-        boolean returning = false;
-        NodeArgs(Node n, List<Polygon> polys, Side s, NodeArgs p) {
+    private class NodeArgs {
+        private Side side;
+        private NodeArgs parent;
+        private List<Polygon> polygons;
+        private List<Polygon> frontP = new ArrayList<>();
+        private List<Polygon> backP = new ArrayList<>();
+        private Node node;
+        private boolean returning = false;
+        private NodeArgs(Node n, List<Polygon> polys, Side s, NodeArgs p) {
             parent = p;
             side = s;
             node = n;
@@ -352,7 +352,7 @@ final class Node {
      * @param polygons
      *            polygons used to build the BSP
      */
-    public final List<NodePolygon> build(List<Polygon> polygons) {
+    private final List<NodePolygon> build(List<Polygon> polygons) {
 
         final ArrayList<NodePolygon> result = new ArrayList<>(2);
 

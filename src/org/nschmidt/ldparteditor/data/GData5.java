@@ -141,7 +141,7 @@ public final class GData5 extends GData {
 
     }
 
-    public GData5(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3,
+    GData5(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3,
             BigDecimal y3, BigDecimal z3, BigDecimal x4, BigDecimal y4, BigDecimal z4, float x12, float y12, float z12, float x22, float y22, float z22, float x32, float y32, float z32,
             float x42, float y42, float z42, GData1 parentFileRef, DatFile datFile) {
 
@@ -292,7 +292,7 @@ public final class GData5 extends GData {
         this.Z4 = null;
     }
 
-    public GData5(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, Vertex v3, Vertex v4, GData1 parent, DatFile datFile) {
+    GData5(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, Vertex v3, Vertex v4, GData1 parent, DatFile datFile) {
         super(parent);
         this.colourNumber = colourNumber;
         this.r = r;
@@ -1010,7 +1010,7 @@ public final class GData5 extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
-    public String colourReplace(String col) {
+    String colourReplace(String col) {
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(5);
         lineBuilder.append(" "); //$NON-NLS-1$
@@ -1042,7 +1042,7 @@ public final class GData5 extends GData {
         return lineBuilder.toString();
     }
 
-    public void isShown(Matrix4f viewport, ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection, float zoom) {
+    void isShown(Matrix4f viewport, ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection, float zoom) {
 
         if (wasShown) {
             return;
@@ -1069,7 +1069,7 @@ public final class GData5 extends GData {
         wasShown = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null)) > -1e-20f;
     }
 
-    public boolean wasShown() {
+    boolean wasShown() {
         return wasShown;
     }
 }

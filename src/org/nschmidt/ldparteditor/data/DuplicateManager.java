@@ -41,7 +41,7 @@ public class DuplicateManager {
 
     private volatile Queue<GData> workQueue = new ConcurrentLinkedQueue<>();
 
-    public DuplicateManager(DatFile df) {
+    DuplicateManager(DatFile df) {
         this.df = df;
     }
 
@@ -586,7 +586,7 @@ public class DuplicateManager {
         }
     }
 
-    public void deleteDuplicateInfo() {
+    void deleteDuplicateInfo() {
         isRunning.set(false);
     }
 

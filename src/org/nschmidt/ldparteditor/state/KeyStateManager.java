@@ -1159,7 +1159,7 @@ public class KeyStateManager {
         }
     }
 
-    public void synchronise(KeyStateManager ksm) {
+    private void synchronise(KeyStateManager ksm) {
         this.altPressed = ksm.altPressed;
         this.shiftPressed = ksm.shiftPressed;
         this.ctrlPressed = ksm.ctrlPressed;
@@ -1186,21 +1186,21 @@ public class KeyStateManager {
         return textTaskKeyMap;
     }
 
-    public static void addTask(Task t, int keyCode) {
+    private static void addTask(Task t, int keyCode) {
         addTask(t, SWT.NONE, keyCode);
     }
 
-    public static void addTask(TextTask t, int keyCode) {
+    private static void addTask(TextTask t, int keyCode) {
         addTask(t, SWT.NONE, keyCode);
     }
 
-    public static void addTask(Task t, int stateMask, int keyCode) {
+    private static void addTask(Task t, int stateMask, int keyCode) {
         String[] s = getStrings(keyCode, stateMask);
         taskMap.put(s[0], t);
         taskKeyMap.put(t, s[1]);
     }
 
-    public static void addTask(TextTask t, int stateMask, int keyCode) {
+    private static void addTask(TextTask t, int stateMask, int keyCode) {
         String[] s = getStrings(keyCode, stateMask);
         textTaskMap.put(s[0], t);
         textTaskKeyMap.put(t, s[1]);

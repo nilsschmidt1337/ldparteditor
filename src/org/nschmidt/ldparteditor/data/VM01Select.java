@@ -522,7 +522,7 @@ class VM01Select extends VM00Snapshot {
 
     }
 
-    protected void selectSubfile(GData data) {
+    private void selectSubfile(GData data) {
         if (data.type() == 1) {
             GData1 g1 = (GData1) data;
             if (View.DUMMY_REFERENCE.equals(g1.parent)) {

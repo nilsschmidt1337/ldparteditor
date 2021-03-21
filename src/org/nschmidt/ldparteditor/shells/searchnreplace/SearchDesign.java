@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.NButton;
 
-public class SearchDesign extends ApplicationWindow {
+class SearchDesign extends ApplicationWindow {
 
     final Point loc = new Point(0, 0);
     final NButton[] btn_find = new NButton[1];
@@ -42,7 +42,6 @@ public class SearchDesign extends ApplicationWindow {
 
     final NButton[] cb_caseSensitive = new NButton[1];
     final NButton[] rb_forward = new NButton[1];
-    final NButton[] rb_backward = new NButton[1];
     final NButton[] rb_all = new NButton[1];
     final NButton[] rb_selectedLines = new NButton[1];
     final NButton[] cb_incremental = new NButton[1];
@@ -94,7 +93,6 @@ public class SearchDesign extends ApplicationWindow {
         rb_part.setSelection(true);
 
         NButton rb_subpart = new NButton(grp_dir, SWT.RADIO);
-        this.rb_backward[0] = rb_subpart;
         rb_subpart.setText(I18n.SEARCH_Backward);
 
         grp_dir.layout();

@@ -378,7 +378,7 @@ class VM02Add extends VM01SelectHelper {
         addTriangle(v1, v2, v3, c3d, false);
     }
 
-    public void addTriangle(Vertex v1, Vertex v2, Vertex v3, Composite3D c3d, boolean isTriangle) {
+    private void addTriangle(Vertex v1, Vertex v2, Vertex v3, Composite3D c3d, boolean isTriangle) {
         if (v1 == null || v2 == null || v3 == null) return;
         final boolean allowInvalidShapes = WorkbenchManager.getUserSettingState().isAllowInvalidShapes();
         if (v1.equals(v2) || v1.equals(v3) || v2.equals(v3))

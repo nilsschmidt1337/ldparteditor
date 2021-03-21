@@ -24,14 +24,14 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3r;
  * @author nils
  *
  */
-public class IntersectionInfo {
+class IntersectionInfo {
 
     private GData target;
     private GData origin;
 
     private ArrayList<Vector3d> allVertices = new ArrayList<>();
 
-    public IntersectionInfo(GData target2, GData origin2, ArrayList<Vector3r> allVertices) {
+    IntersectionInfo(GData target2, GData origin2, ArrayList<Vector3r> allVertices) {
         for (Vector3r v : allVertices) {
             this.allVertices.add(new Vector3d(v.X.BigDecimalValue(), v.Y.BigDecimalValue(), v.Z.BigDecimalValue()));
         }

@@ -33,16 +33,16 @@ class PartReviewDesign extends Dialog {
 
     static String fileName = ""; //$NON-NLS-1$
 
-    final boolean alreadyReviewing;
+    private final boolean alreadyReviewing;
 
     protected PartReviewDesign(Shell parentShell, boolean alreadyReviewing) {
         super(parentShell);
         this.alreadyReviewing = alreadyReviewing;
     }
 
-    Button[] btn_ok = new Button[1];
-    Button[] btn_cancel = new Button[1];
-    final Text[] txt_file = new Text[1];
+    private Button[] btn_ok = new Button[1];
+    private Button[] btn_cancel = new Button[1];
+    private final Text[] txt_file = new Text[1];
 
     /**
      * Create contents of the dialog.

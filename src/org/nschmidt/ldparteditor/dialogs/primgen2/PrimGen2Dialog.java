@@ -94,7 +94,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
     }
 
     private SyntaxFormatter syntaxFormatter;
-    protected String resPrefix = ""; //$NON-NLS-1$
+    private String resPrefix = ""; //$NON-NLS-1$
 
     /**
      * Create the dialog.
@@ -1628,7 +1628,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return str;
     }
 
-    public boolean isOfficialRules(int Typ, double Size, double Divisions, double Segments, double Minor, boolean ccw) {
+    private boolean isOfficialRules(int Typ, double Size, double Divisions, double Segments, double Minor, boolean ccw) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)

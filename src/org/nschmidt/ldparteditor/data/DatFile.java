@@ -288,7 +288,7 @@ public final class DatFile {
             vertices.showHidden();
     }
 
-    public synchronized void getBFCorientationMap(HashMap<GData, Byte> bfcMap) {
+    synchronized void getBFCorientationMap(HashMap<GData, Byte> bfcMap) {
         GDataCSG.resetCSG(this, false);
         GData data2draw = drawChainAnchor;
         data2draw.getBFCorientationMap(bfcMap);
@@ -977,7 +977,7 @@ public final class DatFile {
         return false;
     }
 
-    public synchronized boolean updateDatHeaderHints(StyledText compositeText, TreeItem headerHints) {
+    synchronized boolean updateDatHeaderHints(StyledText compositeText, TreeItem headerHints) {
         ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> CACHE_headerHints = datHeader.CACHE_headerHints;
         if (!CACHE_headerHints.isEmpty()) {
             int position = 0;
@@ -1059,7 +1059,7 @@ public final class DatFile {
     }
 
 
-    public void parseForChanges(String[] lines) {
+    void parseForChanges(String[] lines) {
         final boolean drawSelection = isDrawSelection();
         setDrawSelection(false);
 
@@ -1463,7 +1463,7 @@ public final class DatFile {
         }
     }
 
-    public void replaceComment(GData target, GData gdata) {
+    private void replaceComment(GData target, GData gdata) {
         if (target.type() != 0) return;
         GData tail = drawPerLine.getValue(drawPerLine.keySet().size());
         if (tail == null) {

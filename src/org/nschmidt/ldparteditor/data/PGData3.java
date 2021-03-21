@@ -360,21 +360,23 @@ public final class PGData3 extends PGData implements Serializable {
         }
     }
 
-
     public static void beginDrawText() {
         GL11.glColor4f(View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0], 1f);
         GL11.glBegin(GL11.GL_TRIANGLES);
     }
+
     public void drawText(float x, float y, float z) {
         GL11.glVertex3f(-x1 + x, y1 + y, z1 + z);
         GL11.glVertex3f(-x3 + x, y3 + y, z3 + z);
         GL11.glVertex3f(-x2 + x, y2 + y, z2 + z);
     }
-    public void drawText(float x, float y, float z, float scale) {
+
+    void drawText(float x, float y, float z, float scale) {
         GL11.glVertex3f(-x1 * scale + x, y1 * scale + y, z1 * scale + z);
         GL11.glVertex3f(-x3 * scale + x, y3 * scale + y, z3 * scale + z);
         GL11.glVertex3f(-x2 * scale + x, y2 * scale + y, z2 * scale + z);
     }
+
     public static void endDrawText() {
         GL11.glEnd();
     }
@@ -384,6 +386,7 @@ public final class PGData3 extends PGData implements Serializable {
         final int colour = shader.getUniformLocation("color"); //$NON-NLS-1$
         GL20.glUniform3f(colour, View.text_Colour_r[0], View.text_Colour_g[0], View.text_Colour_b[0]);
     }
+
     public void drawTextGL33(float x, float y, float z) {
         GL33Helper.drawTriangle_GeneralSlow(new float[]{
             -x1 + x, y1 + y, z1 + z,
@@ -391,19 +394,23 @@ public final class PGData3 extends PGData implements Serializable {
             -x2 + x, y2 + y, z2 + z
         });
     }
-    public void drawTextGL33_VAO(float x, float y, float z, float scale) {
+
+    void drawTextGL33_VAO(float x, float y, float z, float scale) {
         GL33Helper.drawTriangleVAO_GeneralSlow(new float[] {
             -x1 * scale + x, y1 * scale + y, z1 * scale + z,
             -x3 * scale + x, y3 * scale + y, z3 * scale + z,
             -x2 * scale + x, y2 * scale + y, z2 * scale + z
         });
     }
+
     public static void endDrawTextGL33(GLShader shader) {
         shader.use();
     }
-    public static PGData3 clone(PGData3 o) {
+
+    static PGData3 clone(PGData3 o) {
         return new PGData3(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2, o.x3, o.y3, o.z3);
     }
+
     @Override
     public PGData data() {
         return this;

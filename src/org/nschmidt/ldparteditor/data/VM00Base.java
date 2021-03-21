@@ -79,7 +79,7 @@ class VM00Base {
         return lineLinkedToVertices;
     }
 
-    protected final ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE = new ThreadsafeTreeMap<>();
+    private final ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE = new ThreadsafeTreeMap<>();
     protected final ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE = new ThreadsafeHashMap<>();
 
     protected final ThreadsafeHashMap<GData1, Integer> vertexCountInSubfile = new ThreadsafeHashMap<>();
@@ -128,12 +128,12 @@ class VM00Base {
 
     protected final DatFile linkedDatFile;
 
-    protected Vertex vertexToReplace = null;
+    private Vertex vertexToReplace = null;
 
-    protected boolean modified = false;
-    protected boolean updated = true;
+    private boolean modified = false;
+    private boolean updated = true;
 
-    protected final AtomicBoolean skipSyncWithTextEditor = new AtomicBoolean(false);
+    private final AtomicBoolean skipSyncWithTextEditor = new AtomicBoolean(false);
 
     protected int selectedItemIndex = -1;
     protected GData selectedLine = null;
@@ -145,11 +145,11 @@ class VM00Base {
 
     protected final HashMap<GData, Byte> bfcMap = new HashMap<>();
 
-    protected volatile AtomicBoolean resetTimer = new AtomicBoolean(false);
-    protected volatile AtomicBoolean skipTimer = new AtomicBoolean(false);
-    protected volatile AtomicInteger tid = new AtomicInteger(0);
-    protected volatile AtomicInteger openThreads = new AtomicInteger(0);
-    protected volatile Lock lock = new ReentrantLock();
+    private volatile AtomicBoolean resetTimer = new AtomicBoolean(false);
+    private volatile AtomicBoolean skipTimer = new AtomicBoolean(false);
+    private volatile AtomicInteger tid = new AtomicInteger(0);
+    private volatile AtomicInteger openThreads = new AtomicInteger(0);
+    private volatile Lock lock = new ReentrantLock();
     private volatile Lock manifestationLock = new ReentrantLock();
 
     protected VM00Base(DatFile linkedDatFile) {
@@ -533,7 +533,7 @@ class VM00Base {
         }
     }
 
-    final void cleanupHiddenData() {
+    private final void cleanupHiddenData() {
         if (hiddenData.size() > 0) {
             HashMap<String, ArrayList<GData>> dict = null;
             Set<GData1> s1 = vertexCountInSubfile.keySet();

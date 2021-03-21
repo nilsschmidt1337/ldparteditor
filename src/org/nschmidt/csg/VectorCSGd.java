@@ -74,7 +74,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
      *
      * @return a negated copy of this vector
      */
-    public VectorCSGd negated() {
+    VectorCSGd negated() {
         return new VectorCSGd(-x, -y, -z);
     }
 
@@ -130,7 +130,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
      *
      * @return this vector devided by the specified value
      */
-    public VectorCSGd dividedBy(double a) {
+    VectorCSGd dividedBy(double a) {
         return new VectorCSGd(x / a, y / a, z / a);
     }
 
@@ -166,7 +166,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
      *
      * @return a normalized copy of this vector with {@code length}
      */
-    public VectorCSGd unit() {
+    VectorCSGd unit() {
         return this.dividedBy(this.magnitude());
     }
 
@@ -180,7 +180,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
      *
      * @return the cross product of this vector and the specified vector.
      */
-    public VectorCSGd cross(VectorCSGd a) {
+    VectorCSGd cross(VectorCSGd a) {
         return new VectorCSGd(y * a.z - z * a.y, z * a.x - x * a.z, x * a.y - y * a.x);
     }
 
@@ -211,7 +211,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
      *            interpolation parameter
      * @return a new vertex between this and the specified vertex
      */
-    public VectorCSGd interpolate(VectorCSGd other, double t) {
+    VectorCSGd interpolate(VectorCSGd other, double t) {
         return plus(other.minus(this).times(t));
     }
 

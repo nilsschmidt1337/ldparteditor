@@ -53,7 +53,7 @@ public class DirectionDialog extends DirectionDesign {
 
     private final Manipulator mani;
 
-    static Vector3d direction = null;
+    private static Vector3d direction = null;
 
     /**
      * Create the dialog.

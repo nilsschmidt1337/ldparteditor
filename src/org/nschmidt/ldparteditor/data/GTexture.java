@@ -54,7 +54,7 @@ import de.matthiasmann.twl.utils.PNGDecoder.Format;
  */
 public class GTexture {
 
-    public static final GTexture NO_TEXTURE = new GTexture();
+    static final GTexture NO_TEXTURE = new GTexture();
 
     private long accessTime = System.currentTimeMillis();
 
@@ -82,7 +82,7 @@ public class GTexture {
     private float width;
     private float height;
 
-    final float EPSILON = 1f;
+    private final float EPSILON = 1f;
 
     private Map<GData, UV> uvCache = new HashMap<>();
     private Set<GData> cacheUsage = new HashSet<>();
@@ -123,22 +123,22 @@ public class GTexture {
         }
     }
 
-    public void calcUVcoords1(float x, float y, float z, GData1 parent, GData ID) {
+    void calcUVcoords1(float x, float y, float z, GData1 parent, GData ID) {
         if (type == TexType.SPHERICAL) tripoints[0].set(x, y, z);
         calcUVcoords(x, y, z, parent, 0, ID);
     }
 
-    public void calcUVcoords2(float x, float y, float z, GData1 parent) {
+    void calcUVcoords2(float x, float y, float z, GData1 parent) {
         if (type == TexType.SPHERICAL) tripoints[1].set(x, y, z);
         calcUVcoords(x, y, z, parent, 1, null);
     }
 
-    public void calcUVcoords3(float x, float y, float z, GData1 parent) {
+    void calcUVcoords3(float x, float y, float z, GData1 parent) {
         if (type == TexType.SPHERICAL) tripoints[2].set(x, y, z);
         calcUVcoords(x, y, z, parent, 2, null);
     }
 
-    public void calcUVcoords4(float x, float y, float z, GData1 parent) {
+    void calcUVcoords4(float x, float y, float z, GData1 parent) {
         calcUVcoords(x, y, z, parent, 3, null);
     }
 
@@ -291,7 +291,7 @@ public class GTexture {
         return;
     }
 
-    public float[] getUVcoords(boolean isTriangle, GData ID) {
+    float[] getUVcoords(boolean isTriangle, GData ID) {
         float[] result = new float[8];
         final int size = isTriangle ? 3 : 4;
         if (cacheTriggered) {
@@ -473,7 +473,7 @@ public class GTexture {
         }
     }
 
-    public void refreshCache() {
+    void refreshCache() {
         if (!cacheUsage.isEmpty()) {
             Set<GData> isolatedIDs = new HashSet<>(uvCache.keySet());
             isolatedIDs.removeAll(cacheUsage);
@@ -484,7 +484,7 @@ public class GTexture {
         }
     }
 
-    public void bind(boolean drawSolidMaterials, boolean normalSwitch, boolean lightOn, OpenGLRenderer20 renderer, int useCubeMap) {
+    void bind(boolean drawSolidMaterials, boolean normalSwitch, boolean lightOn, OpenGLRenderer20 renderer, int useCubeMap) {
 
         int ID = -1;
         int ID_glossmap = -1;
@@ -572,7 +572,7 @@ public class GTexture {
         }
     }
 
-    public void bindGL33(OpenGLRenderer renderer, GLShader shader) {
+    void bindGL33(OpenGLRenderer renderer, GLShader shader) {
 
         int ID = -1;
         int ID_glossmap = -1;

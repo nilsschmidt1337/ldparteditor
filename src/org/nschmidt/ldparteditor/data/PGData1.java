@@ -36,12 +36,12 @@ public final class PGData1 extends PGData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    final transient FloatBuffer matrix;
-    final transient FloatBuffer matrix2;
+    private final transient FloatBuffer matrix;
+    private final transient FloatBuffer matrix2;
     final transient Matrix4f productMatrix;
-    final transient Matrix4f localMatrix;
+    private final transient Matrix4f localMatrix;
 
-    final transient boolean negativeDeterminant;
+    private final transient boolean negativeDeterminant;
 
     final transient PGData myGData = new PGDataInit();
 

@@ -5659,7 +5659,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return c3d;
     }
 
-    protected void addRecentFile(String projectPath) {
+    private void addRecentFile(String projectPath) {
         // PrimGen2 uses a temporary "..." projectPath
         if (!"...".equals(projectPath)) { //$NON-NLS-1$
             final int index = recentItems.indexOf(projectPath);
@@ -6076,7 +6076,7 @@ public class Editor3DWindow extends Editor3DDesign {
      * Updates the tree for renamed entries
      */
     @SuppressWarnings("unchecked")
-    public void updateTree_renamedEntries() {
+    private void updateTree_renamedEntries() {
         HashMap<String, TreeItem> categories = new HashMap<>();
         HashMap<String, DatType> types = new HashMap<>();
 
@@ -6657,7 +6657,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     @SuppressWarnings("unchecked")
-    public void setReviewingAPart(boolean reviewingAPart, Set<DatFile> partsForReview) {
+    private void setReviewingAPart(boolean reviewingAPart, Set<DatFile> partsForReview) {
         if (reviewingAPart) {
             NButton btn_EndPartReview = new NButton(cmp_SyncAndReview[0], SWT.NONE);
             btn_EndPartReview.setText(I18n.E3D_EndPartReview);
@@ -6799,7 +6799,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return txt_Search[0].getText();
     }
 
-    public void resetSearch() {
+    private void resetSearch() {
         search(""); //$NON-NLS-1$
     }
 
@@ -8476,7 +8476,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return no_sync_deadlock;
     }
 
-    public boolean revert(DatFile df) {
+    private boolean revert(DatFile df) {
         if (df.isReadOnly() || !Project.getUnsavedFiles().contains(df) || df.isVirtual() && df.getText().trim().isEmpty()) {
             regainFocus();
             return false;
@@ -9060,7 +9060,7 @@ public class Editor3DWindow extends Editor3DDesign {
         regainFocus();
     }
 
-    void reloadColours() {
+    private void reloadColours() {
         for (Control ctrl : toolItem_ColourBar.getChildren()) {
             if (!(ctrl instanceof ToolSeparator)) ctrl.dispose();
         }
@@ -9092,7 +9092,7 @@ public class Editor3DWindow extends Editor3DDesign {
         Editor3DWindow.getWindow().reloadColours();
     }
 
-    void initPaletteEvent() {
+    private void initPaletteEvent() {
         WidgetUtil(btn_Palette[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 final GColour[] gColour2 = new GColour[1];

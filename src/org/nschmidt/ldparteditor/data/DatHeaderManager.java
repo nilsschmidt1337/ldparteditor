@@ -50,13 +50,13 @@ public class DatHeaderManager {
 
     private volatile HeaderState state = new HeaderState();
 
-    public DatHeaderManager(DatFile df) {
+    DatHeaderManager(DatFile df) {
         this.df = df;
     }
 
     volatile ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> CACHE_headerHints = new ThreadsafeTreeMap<>(); // Cleared
 
-    public void pushDatHeaderCheck(GData data, StyledText compositeText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount) {
+    void pushDatHeaderCheck(GData data, StyledText compositeText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount) {
         if (df.isReadOnly()) return;
         if (hasNoThread || !worker.isAlive()) {
             hasNoThread = false;
@@ -725,7 +725,7 @@ public class DatHeaderManager {
         }
     }
 
-    public void deleteHeaderHints() {
+    void deleteHeaderHints() {
         isRunning.set(false);
     }
 

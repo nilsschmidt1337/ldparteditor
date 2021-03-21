@@ -34,7 +34,7 @@ public class Composite3DViewState {
     private float zoom_exponent = 0f;
     private float viewport_pixel_per_ldu;
     private Vector4f offset = new Vector4f(0, 0, 0, 1f);
-    public final Composite3DState STATE = new Composite3DState();
+    final Composite3DState STATE = new Composite3DState();
     private boolean negDeterminant = false;
 
     private final Matrix4f viewport_translation = new Matrix4f();
@@ -90,7 +90,7 @@ public class Composite3DViewState {
         this.offset = offset;
     }
 
-    public boolean hasNegDeterminant() {
+    boolean hasNegDeterminant() {
         return negDeterminant;
     }
 
@@ -122,19 +122,19 @@ public class Composite3DViewState {
         return viewport_origin_axis;
     }
 
-    public double getzNear() {
+    double getzNear() {
         return zNear;
     }
 
-    public void setzNear(double zNear) {
+    void setzNear(double zNear) {
         this.zNear = zNear;
     }
 
-    public double getzFar() {
+    double getzFar() {
         return zFar;
     }
 
-    public void setzFar(double zFar) {
+    void setzFar(double zFar) {
         this.zFar = zFar;
     }
 

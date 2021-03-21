@@ -30,7 +30,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.DatParser;
 
-public class VM28SlantingMatrixProjector extends VM27YTruder {
+class VM28SlantingMatrixProjector extends VM27YTruder {
 
     protected VM28SlantingMatrixProjector(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -52,7 +52,7 @@ public class VM28SlantingMatrixProjector extends VM27YTruder {
         axisSelectionMode = -1;
     }
 
-    public void storeAxisForSlantingMatrixProjector() {
+    void storeAxisForSlantingMatrixProjector() {
         final int selectedLinesSize = selectedLines.size();
         if (selectedLinesSize > 1 && selectedLinesSize < 4 && axis1 == null && axis2 == null) {
 

@@ -18,14 +18,14 @@ package org.nschmidt.ldparteditor.data;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-public class GDataState {
-    public byte localWinding = BFC.NOCERTIFY;
-    public int accumClip = 0;
-    public boolean globalInvertNext = false;
-    public boolean globalInvertNextFound = false;
-    public boolean globalNegativeDeterminant = false;
-    public boolean globalDrawObjects = true;
-    public boolean globalFoundTEXMAPNEXT = false;
-    public Deque<GTexture> globalTextureStack = new ArrayDeque<>();
-    public Deque<Boolean> globalFoundTEXMAPStack = new ArrayDeque<>();
+class GDataState {
+    byte localWinding = BFC.NOCERTIFY;
+    int accumClip = 0;
+    boolean globalInvertNext = false;
+    boolean globalInvertNextFound = false;
+    boolean globalNegativeDeterminant = false;
+    boolean globalDrawObjects = true;
+    boolean globalFoundTEXMAPNEXT = false;
+    Deque<GTexture> globalTextureStack = new ArrayDeque<>();
+    Deque<Boolean> globalFoundTEXMAPStack = new ArrayDeque<>();
 }

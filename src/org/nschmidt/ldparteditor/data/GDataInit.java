@@ -25,9 +25,9 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
  * @author nils
  *
  */
-public final class GDataInit extends GData {
+final class GDataInit extends GData {
 
-    public GDataInit(GData1 parent) {
+    GDataInit(GData1 parent) {
         super(parent);
     }
 
@@ -148,7 +148,7 @@ public final class GDataInit extends GData {
         getVertexNormalMap(state, null, null, null);
     }
 
-    public static void resetBfcState() {
+    static void resetBfcState() {
         GData.localWinding = BFC.NOCERTIFY;
         GData.accumClip = 0;
         GData.globalInvertNext = false;

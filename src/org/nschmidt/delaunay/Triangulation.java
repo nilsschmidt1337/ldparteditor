@@ -103,7 +103,7 @@ public class Triangulation extends AbstractSet<Triangle> {
      * @throws IllegalArgumentException
      *             if site is not in this triangle
      */
-    public Triangle neighborOpposite(Pnt site, Triangle triangle) {
+    private Triangle neighborOpposite(Pnt site, Triangle triangle) {
         if (!triangle.contains(site))
             throw new IllegalArgumentException("Bad vertex; not in triangle"); //$NON-NLS-1$
         for (Triangle neighbor : triGraph.neighbors(triangle)) {
@@ -120,7 +120,7 @@ public class Triangulation extends AbstractSet<Triangle> {
      *            the triangle to check
      * @return the neighbors of triangle
      */
-    public Set<Triangle> neighbors(Triangle triangle) {
+    private Set<Triangle> neighbors(Triangle triangle) {
         return triGraph.neighbors(triangle);
     }
 
@@ -131,7 +131,7 @@ public class Triangulation extends AbstractSet<Triangle> {
      *            the point to locate
      * @return the triangle that holds point; null if no such triangle
      */
-    public Triangle locate(Pnt point) {
+    private Triangle locate(Pnt point) {
         Triangle triangle = mostRecent;
         if (!this.contains(triangle))
             triangle = null;

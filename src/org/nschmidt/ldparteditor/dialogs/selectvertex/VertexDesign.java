@@ -49,7 +49,8 @@ class VertexDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+    private Vertex v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+
     VertexDesign(Shell parentShell) {
         super(parentShell);
     }

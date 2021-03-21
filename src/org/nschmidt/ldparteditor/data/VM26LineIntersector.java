@@ -33,7 +33,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
-public class VM26LineIntersector extends VM25Smooth {
+class VM26LineIntersector extends VM25Smooth {
 
     protected VM26LineIntersector(DatFile linkedDatFile) {
         super(linkedDatFile);

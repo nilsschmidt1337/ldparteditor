@@ -165,7 +165,7 @@ public final class Matrix {
         this.M33 = this.M[3][3];
     }
 
-    public Matrix set(BigDecimal value, int col, int row) {
+    Matrix set(BigDecimal value, int col, int row) {
         BigDecimal[][] N = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -199,7 +199,7 @@ public final class Matrix {
 
     }
 
-    public Matrix transpose() {
+    Matrix transpose() {
         final BigDecimal[][] Mn = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -209,7 +209,7 @@ public final class Matrix {
         return new Matrix(Mn);
     }
 
-    public Matrix transposeXYZ() {
+    Matrix transposeXYZ() {
         final BigDecimal[][] Mn = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
@@ -597,7 +597,7 @@ public final class Matrix {
         return new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, m30, m31, m32, BigDecimal.ONE);
     }
 
-    public Matrix reduceAccuracy() {
+    Matrix reduceAccuracy() {
         final BigDecimal[][] rounded = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {

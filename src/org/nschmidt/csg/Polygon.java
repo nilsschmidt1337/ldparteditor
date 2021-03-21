@@ -57,7 +57,6 @@ import org.nschmidt.ldparteditor.enums.View;
  */
 public final class Polygon {
 
-
     // FIXME Remove this ID after the implementation is done
     private static int pseudo_id_counter = 0;
     private final int PSEUDO_ID;
@@ -65,7 +64,7 @@ public final class Polygon {
     /**
      * Polygon vertices
      */
-    public List<VectorCSGd> vertices;
+    List<VectorCSGd> vertices;
     /**
      * The linked DatFile
      */
@@ -78,7 +77,7 @@ public final class Polygon {
      *
      * <b>Note:</b> uses first three vertices to define the plane.
      */
-    public final Plane plane;
+    final Plane plane;
 
     /**
      * Constructor. Creates a new polygon that consists of the specified
@@ -121,7 +120,7 @@ public final class Polygon {
      * @param vertices
      *            polygon vertices
      */
-    public Polygon(DatFile df, List<VectorCSGd> vertices, GColourIndex colour) {
+    Polygon(DatFile df, List<VectorCSGd> vertices, GColourIndex colour) {
         this(df, vertices);
         this.colour = colour;
     }
@@ -136,11 +135,11 @@ public final class Polygon {
      *            polygon vertices
      *
      */
-    public Polygon(DatFile df, VectorCSGd... vertices) {
+    Polygon(DatFile df, VectorCSGd... vertices) {
         this(df, new ArrayList<>(Arrays.asList(vertices)));
     }
 
-    public Polygon(DatFile df, List<VectorCSGd> vertices, Polygon o) {
+    Polygon(DatFile df, List<VectorCSGd> vertices, Polygon o) {
         PSEUDO_ID = pseudo_id_counter++;
         this.df = df;
         this.plane = o.plane.clone();
@@ -162,7 +161,7 @@ public final class Polygon {
      *
      * @return this polygon
      */
-    public Polygon flip() {
+    Polygon flip() {
 
         Collections.reverse(vertices);
         plane.flip();
@@ -205,7 +204,7 @@ public final class Polygon {
      *
      * @return this polygon
      */
-    public Polygon transform(Transform transform) {
+    Polygon transform(Transform transform) {
 
         for (VectorCSGd v : vertices) {
             transform.transform(v);
@@ -230,11 +229,11 @@ public final class Polygon {
      *            the transformation to apply
      * @return a transformed copy of this polygon
      */
-    public Polygon transformed(Transform transform) {
+    Polygon transformed(Transform transform) {
         return clone().transform(transform);
     }
 
-    public Polygon transformed(Transform transform, GColour c, int ID) {
+    Polygon transformed(Transform transform, GColour c, int ID) {
         Polygon result = clone().transform(transform);
         GColourIndex colour = null;
         if ((colour = this.getColour()) != null) {

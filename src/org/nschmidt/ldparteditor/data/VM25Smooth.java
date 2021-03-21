@@ -26,7 +26,7 @@ import java.util.TreeSet;
 import org.nschmidt.ldparteditor.dialogs.smooth.SmoothDialog;
 import org.nschmidt.ldparteditor.enums.Threshold;
 
-public class VM25Smooth extends VM24MeshReducer {
+class VM25Smooth extends VM24MeshReducer {
 
     protected VM25Smooth(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -70,7 +70,7 @@ public class VM25Smooth extends VM24MeshReducer {
     }
 
 
-    public Vertex[] getNeighbourVertices(Vertex old) {
+    private Vertex[] getNeighbourVertices(Vertex old) {
 
         TreeSet<Vertex> tverts1 = new TreeSet<>();
         TreeSet<Vertex> tverts2 = new TreeSet<>();
@@ -106,7 +106,7 @@ public class VM25Smooth extends VM24MeshReducer {
         return result;
     }
 
-    public Object[] getSmoothedVertices(Set<Vertex> verts) {
+    Object[] getSmoothedVertices(Set<Vertex> verts) {
 
         final boolean isX = SmoothDialog.isX();
         final boolean isY = SmoothDialog.isY();

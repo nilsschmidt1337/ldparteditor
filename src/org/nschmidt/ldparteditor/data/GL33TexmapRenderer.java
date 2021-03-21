@@ -26,10 +26,10 @@ import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLShader;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 
-public enum GL33TexmapRenderer {
+enum GL33TexmapRenderer {
     INSTANCE;
 
-    public static void render(ArrayList<GDataAndTexture> texmapData, GLShader mainShader, OpenGLRenderer renderer,
+    static void render(ArrayList<GDataAndTexture> texmapData, GLShader mainShader, OpenGLRenderer renderer,
             HashMap<GData, Vector3f[]> normalMap, HashMap<GData, Vertex[]> vertexMap, boolean smoothShading, boolean drawSolidMaterials) {
         GTexture lastTexture = null;
         float[] uv;

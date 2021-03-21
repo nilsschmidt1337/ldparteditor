@@ -31,7 +31,7 @@ public class Rational implements Comparable<Rational> {
     private final BigInteger upper;
     private final BigInteger lower;
 
-    public Rational(BigInteger upper, BigInteger lower) {
+    Rational(BigInteger upper, BigInteger lower) {
         this.upper = upper;
         this.lower = lower;
     }
@@ -57,20 +57,21 @@ public class Rational implements Comparable<Rational> {
 
     }
 
-    public Rational divide(BigInteger divisor) {
+    Rational divide(BigInteger divisor) {
         return new Rational(upper, lower.multiply(divisor));
     }
 
-    public double doubleValue() {
+    double doubleValue() {
         return new BigDecimal(upper).divide(new BigDecimal(lower), MathContext.DECIMAL128).doubleValue();
     }
 
-    public BigDecimal BigDecimalValue(MathContext mcloc) {
+    BigDecimal BigDecimalValue(MathContext mcloc) {
         return new BigDecimal(upper).divide(new BigDecimal(lower), mcloc);
     }
 
     private static BigInteger SD = new BigInteger("1000000000000000"); //$NON-NLS-1$
     private static BigDecimal SD2 = new BigDecimal("1000000000000000"); //$NON-NLS-1$
+
     public BigDecimal BigDecimalValue() {
         return new BigDecimal(upper.multiply(SD).divide(lower)).divide(SD2);
     }
@@ -114,7 +115,7 @@ public class Rational implements Comparable<Rational> {
         return new Rational(upper.multiply(x.lower).subtract(x.upper.multiply(lower)), lower.multiply(x.lower));
     }
 
-    public Rational negate() {
+    Rational negate() {
         return new Rational(upper.negate(), lower);
     }
 

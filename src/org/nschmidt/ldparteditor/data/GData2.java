@@ -69,7 +69,7 @@ public final class GData2 extends GData {
     final BigDecimal Y2;
     final BigDecimal Z2;
 
-    final float[][] lGeom;
+    private final float[][] lGeom;
 
     private BigDecimal length = null;
     private int state = 0;
@@ -99,7 +99,7 @@ public final class GData2 extends GData {
         datFile.getVertexManager().add(this);
     }
 
-    public GData2(GData1 parent, int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, float x12, float y12,
+    GData2(GData1 parent, int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, float x12, float y12,
             float z12, float x22, float y22, float z22, DatFile datFile, boolean isLine) {
         super(parent);
         this.colourNumber = colourNumber;
@@ -124,7 +124,7 @@ public final class GData2 extends GData {
         datFile.getVertexManager().add(this);
     }
 
-    public GData2(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, GData1 parent, DatFile datFile, boolean isLine) {
+    GData2(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, GData1 parent, DatFile datFile, boolean isLine) {
         super(parent);
         this.colourNumber = colourNumber;
         this.r = r;
@@ -673,7 +673,7 @@ public final class GData2 extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
 
-    public String colourReplace(String col) {
+    String colourReplace(String col) {
         StringBuilder lineBuilder = new StringBuilder();
         if (isLine) {
             lineBuilder.append(2);
@@ -697,7 +697,7 @@ public final class GData2 extends GData {
         return lineBuilder.toString();
     }
 
-    public void drawDistanceGL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
+    void drawDistanceGL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
         final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
@@ -881,7 +881,7 @@ public final class GData2 extends GData {
         }
     }
 
-    public int insertDistanceMeter(Vertex[] v, float[] lineData, int lineIndex) {
+    int insertDistanceMeter(Vertex[] v, float[] lineData, int lineIndex) {
         GL33Helper.pointAt7(0, x1, y1, z1, lineData, lineIndex);
         GL33Helper.pointAt7(1, x2, y2, z2, lineData, lineIndex);
         GL33Helper.colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
@@ -895,7 +895,7 @@ public final class GData2 extends GData {
         return 4;
     }
 
-    public void drawDistanceGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, boolean forceLengthCalculation) {
+    void drawDistanceGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, boolean forceLengthCalculation) {
         GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
 
         final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));

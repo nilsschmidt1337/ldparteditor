@@ -18,7 +18,7 @@ package org.nschmidt.ldparteditor.opengl;
 
 import org.nschmidt.ldparteditor.composites.Composite3D;
 
-public interface IRenderer {
+interface IRenderer {
 
     public Composite3D getC3D();
     public void disposeAllTextures();

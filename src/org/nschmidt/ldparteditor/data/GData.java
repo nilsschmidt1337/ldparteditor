@@ -76,7 +76,7 @@ public abstract class GData implements IGData, Comparable<GData> {
         return before;
     }
 
-    public void derefer() {
+    void derefer() {
         CACHE_warningsAndErrors.remove(this);
         next = null;
         before = null;
@@ -86,11 +86,11 @@ public abstract class GData implements IGData, Comparable<GData> {
         return text;
     }
 
-    public void show() {
+    void show() {
         visible = true;
     }
 
-    public void hide() {
+    void hide() {
         visible = false;
     }
 
@@ -139,7 +139,7 @@ public abstract class GData implements IGData, Comparable<GData> {
         return Integer.compare(ID, o.ID);
     }
 
-    public static int getLastID() {
+    static int getLastID() {
         return id_counter.get();
     }
 

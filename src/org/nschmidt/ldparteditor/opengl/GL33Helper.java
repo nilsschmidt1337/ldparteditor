@@ -33,17 +33,17 @@ public class GL33Helper {
     private int VBO_general = -1;
     private int EBO_general = -1;
 
-    public void createVBO() {
+    void createVBO() {
         VBO_general = GL15.glGenBuffers();
         EBO_general = GL15.glGenBuffers();
     }
 
-    public void destroyVBO() {
+    void destroyVBO() {
         GL15.glDeleteBuffers(VBO_general);
         GL15.glDeleteBuffers(EBO_general);
     }
 
-    public void drawTrianglesIndexedRGB_General(float[] vertices, int[] indices) {
+    void drawTrianglesIndexedRGB_General(float[] vertices, int[] indices) {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 
@@ -61,7 +61,7 @@ public class GL33Helper {
         GL11.glDrawElements(GL11.GL_TRIANGLES, indices.length, GL11.GL_UNSIGNED_INT, 0);
     }
 
-    public void drawLinesRGB_General(float[] vertices) {
+    void drawLinesRGB_General(float[] vertices) {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 

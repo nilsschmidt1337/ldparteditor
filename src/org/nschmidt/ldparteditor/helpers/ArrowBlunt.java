@@ -30,21 +30,21 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
  */
 public class ArrowBlunt {
 
-    final FloatBuffer matrix;
-    final Matrix4f rotation;
+    private final FloatBuffer matrix;
+    private final Matrix4f rotation;
 
-    final float EPSILON = 0.0000001f;
+    private final float EPSILON = 0.0000001f;
 
-    final float r;
-    final float g;
-    final float b;
+    private final float r;
+    private final float g;
+    private final float b;
 
-    final float line_end;
-    final float line_width;
+    private final float line_end;
+    private final float line_width;
 
-    final float[] cube_x = new float[8];
-    final float[] cube_y = new float[8];
-    final float[] cube_z = new float[8];
+    private final float[] cube_x = new float[8];
+    private final float[] cube_y = new float[8];
+    private final float[] cube_z = new float[8];
 
     public ArrowBlunt(float r, float g, float b, float dir_x, float dir_y, float dir_z, float edge_length, float line_width) {
         dir_x = dir_x / 1000f;

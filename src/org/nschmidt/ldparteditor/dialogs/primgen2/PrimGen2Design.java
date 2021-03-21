@@ -62,7 +62,7 @@ class PrimGen2Design extends Dialog {
     // Use final only for subclass/listener references!
 
     /** The menu of this composite */
-    final Menu[] menu = new Menu[1];
+    private final Menu[] menu = new Menu[1];
 
     final MenuItem[] mntm_Copy = new MenuItem[1];
     final MenuItem[] mntm_Cut = new MenuItem[1];

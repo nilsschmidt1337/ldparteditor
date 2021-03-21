@@ -27,23 +27,6 @@ import org.lwjgl.util.vector.Matrix4f;
  */
 public class RationalMatrix {
 
-    public final Rational M00;
-    public final Rational M01;
-    public final Rational M02;
-    public final Rational M03;
-    public final Rational M10;
-    public final Rational M11;
-    public final Rational M12;
-    public final Rational M13;
-    public final Rational M20;
-    public final Rational M21;
-    public final Rational M22;
-    public final Rational M23;
-    public final Rational M30;
-    public final Rational M31;
-    public final Rational M32;
-    public final Rational M33;
-
     private final Rational[][] M = new Rational[4][4];
 
     public RationalMatrix(Matrix4f m) {
@@ -63,22 +46,6 @@ public class RationalMatrix {
         Rational M31 = new Rational(new BigDecimal(Float.toString(m.m31)));
         Rational M32 = new Rational(new BigDecimal(Float.toString(m.m32)));
         Rational M33 = new Rational(new BigDecimal(Float.toString(m.m33)));
-        this.M00 = M00;
-        this.M01 = M01;
-        this.M02 = M02;
-        this.M03 = M03;
-        this.M10 = M10;
-        this.M11 = M11;
-        this.M12 = M12;
-        this.M13 = M13;
-        this.M20 = M20;
-        this.M21 = M21;
-        this.M22 = M22;
-        this.M23 = M23;
-        this.M30 = M30;
-        this.M31 = M31;
-        this.M32 = M32;
-        this.M33 = M33;
         this.M[0][0] = M00;
         this.M[1][0] = M10;
         this.M[2][0] = M20;
@@ -103,22 +70,6 @@ public class RationalMatrix {
                 this.M[j][i] = M[j][i];
             }
         }
-        this.M00 = this.M[0][0];
-        this.M01 = this.M[0][1];
-        this.M02 = this.M[0][2];
-        this.M03 = this.M[0][3];
-        this.M10 = this.M[1][0];
-        this.M11 = this.M[1][1];
-        this.M12 = this.M[1][2];
-        this.M13 = this.M[1][3];
-        this.M20 = this.M[2][0];
-        this.M21 = this.M[2][1];
-        this.M22 = this.M[2][2];
-        this.M23 = this.M[2][3];
-        this.M30 = this.M[3][0];
-        this.M31 = this.M[3][1];
-        this.M32 = this.M[3][2];
-        this.M33 = this.M[3][3];
     }
 
     public RationalMatrix invert() {

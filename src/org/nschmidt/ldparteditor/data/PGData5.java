@@ -37,7 +37,7 @@ public final class PGData5 extends PGData implements Serializable {
     final float y2;
     final float z2;
 
-    final transient float[] edgeData;
+    private final transient float[] edgeData;
 
     public PGData5(float x1, float y1, float z1, float x2, float y2, float z2) {
         this.x1 = x1;
@@ -75,11 +75,13 @@ public final class PGData5 extends PGData implements Serializable {
         edgeData[11] = edgeData[5];
         GL33HelperPrimitives.drawLinesRGB_Line(edgeData);
     }
+
     @Override
     public int type() {
         return 5;
     }
-    public static PGData5 clone(PGData5 o) {
+
+    static PGData5 clone(PGData5 o) {
         return new PGData5(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2);
     }
 

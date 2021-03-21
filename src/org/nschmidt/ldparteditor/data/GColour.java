@@ -24,6 +24,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
  *
  */
 public class GColour implements Serializable {
+    // Do not rename fields. It will break backwards compatibility!
 
     private static final long serialVersionUID = 1L;
 

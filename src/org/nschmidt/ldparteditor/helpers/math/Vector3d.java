@@ -202,7 +202,7 @@ public class Vector3d {
      *            a {@linkplain Vector3d}.
      * @return the angle between the two vectors [rad].
      */
-    public static double angleRad(Vector3d vectorA1, Vector3d vectorB1) {
+    static double angleRad(Vector3d vectorA1, Vector3d vectorB1) {
         Vector3d vectorA = new Vector3d();
         Vector3d vectorB = new Vector3d();
         vectorA1.normalise(vectorA);
@@ -212,7 +212,7 @@ public class Vector3d {
         return Math.acos(cosinus);
     }
 
-    public static double fastAngle(Vector3d vectorA1, Vector3d vectorB1) {
+    static double fastAngle(Vector3d vectorA1, Vector3d vectorB1) {
         Vector3d vectorA = new Vector3d();
         Vector3d vectorB = new Vector3d();
         vectorA1.normalise(vectorA);
@@ -245,7 +245,7 @@ public class Vector3d {
      *            a {@linkplain Vector3d}.
      * @return the dot product of {@code vectorA} and {@code vectorB}.
      */
-    public static double dot(Vector3d vectorA, Vector3d vectorB) {
+    static double dot(Vector3d vectorA, Vector3d vectorB) {
         return vectorA.X.multiply(vectorB.X, mc).add(vectorA.Y.multiply(vectorB.Y, mc), mc).add(vectorA.Z.multiply(vectorB.Z, mc), mc).doubleValue();
     }
 

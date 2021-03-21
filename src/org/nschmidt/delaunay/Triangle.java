@@ -62,7 +62,7 @@ public class Triangle extends ArraySet<Pnt> {
      * @throws IllegalArgumentException
      *             if there are not three distinct vertices
      */
-    public Triangle(Collection<? extends Pnt> collection) {
+    Triangle(Collection<? extends Pnt> collection) {
         super(collection);
         idNumber = idGenerator++;
         if (this.size() != 3)
@@ -82,7 +82,7 @@ public class Triangle extends ArraySet<Pnt> {
      *            the other Triangle
      * @return true iff this Triangle is a neighbor of triangle
      */
-    public boolean isNeighbor(Triangle triangle) {
+    boolean isNeighbor(Triangle triangle) {
         int count = 0;
         for (Pnt vertex : this)
             if (!triangle.contains(vertex))
@@ -99,7 +99,7 @@ public class Triangle extends ArraySet<Pnt> {
      * @throws IllegalArgumentException
      *             if the vertex is not in triangle
      */
-    public ArraySet<Pnt> facetOpposite(Pnt vertex) {
+    ArraySet<Pnt> facetOpposite(Pnt vertex) {
         ArraySet<Pnt> facet = new ArraySet<>(this);
         if (!facet.remove(vertex))
             throw new IllegalArgumentException("Vertex not in triangle"); //$NON-NLS-1$

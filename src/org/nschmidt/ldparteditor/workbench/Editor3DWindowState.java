@@ -25,7 +25,8 @@ import org.lwjgl.util.vector.Matrix4f;
  *
  */
 public class Editor3DWindowState implements Serializable {
-    // TODO New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())
+    // Do not rename fields. It will break backwards compatibility! New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())
+
     /** V1.00 */
     private static final long serialVersionUID = 1L;
     /** The state of the application window */

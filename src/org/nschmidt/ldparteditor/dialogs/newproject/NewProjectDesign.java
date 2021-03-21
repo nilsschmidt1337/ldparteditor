@@ -46,7 +46,7 @@ class NewProjectDesign extends Dialog {
     Text[] txt_projectName = new Text[1];
     NButton[] btn_browseProjectPath = new NButton[1];
     Button[] btn_ok = new Button[1];
-    boolean saveAs = false;
+    private boolean saveAs = false;
 
     NewProjectDesign(Shell parentShell, boolean saveAs) {
         super(parentShell);

@@ -23,13 +23,13 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
  * @author nils
  *
  */
-public class IntersectionInfoWithColour {
+class IntersectionInfoWithColour {
 
     private ArrayList<Vector3dd> allVertices = new ArrayList<>();
     private ArrayList<GColour> colours = new ArrayList<>();
     private ArrayList<Integer> isLine = new ArrayList<>();
 
-    public IntersectionInfoWithColour(ArrayList<GColour> colours, ArrayList<Vector3dd> allVertices, ArrayList<Integer> resultIsLine) {
+    IntersectionInfoWithColour(ArrayList<GColour> colours, ArrayList<Vector3dd> allVertices, ArrayList<Integer> resultIsLine) {
         this.isLine.addAll(resultIsLine);
         this.allVertices.addAll(allVertices);
         this.colours.addAll(colours);

@@ -48,8 +48,7 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
  */
 class ColourTableDesign extends ApplicationWindow {
 
-    final Tree[] tree_Colours = new Tree[1];
-    final GColour[] refCol;
+    private final GColour[] refCol;
 
     protected ColourTableDesign(Shell parentShell, final GColour[] refCol) {
         super(parentShell);
@@ -71,7 +70,6 @@ class ColourTableDesign extends ApplicationWindow {
 
         final Set<String> names = new TreeSet<>(View.getNameMap().values());
         final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, names.size());
-        tree_Colours[0] = tree;
         tree.setLinesVisible(true);
         tree.setHeaderVisible(true);
         tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));

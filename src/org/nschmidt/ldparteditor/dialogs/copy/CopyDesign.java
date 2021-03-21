@@ -23,12 +23,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  *
@@ -47,7 +47,7 @@ class CopyDesign extends Dialog {
     final NButton[] btn_2 = new NButton[1];
     final NButton[] btn_3 = new NButton[1];
 
-    final String fileName;
+    private final String fileName;
 
     CopyDesign(Shell parentShell, String fileName) {
         super(parentShell);

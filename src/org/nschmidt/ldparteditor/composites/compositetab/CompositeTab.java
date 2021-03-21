@@ -112,8 +112,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class CompositeTab extends CompositeTabDesign {
 
-    final SyntaxFormatter syntaxFormatter = new SyntaxFormatter(compositeText[0]);
-    final int caretHeight = compositeText[0].getCaret().getSize().y;
+    private final SyntaxFormatter syntaxFormatter = new SyntaxFormatter(compositeText[0]);
+    private final int caretHeight = compositeText[0].getCaret().getSize().y;
 
     /** The state of this tab */
     private CompositeTabState state = new CompositeTabState();
@@ -138,7 +138,7 @@ public class CompositeTab extends CompositeTabDesign {
      * @param style
      * @param index
      */
-    public CompositeTab(CTabFolder parentFolder, int style, int index) {
+    private CompositeTab(CTabFolder parentFolder, int style, int index) {
         super(parentFolder, style, index);
         initListeners();
     }
@@ -1959,7 +1959,7 @@ public class CompositeTab extends CompositeTabDesign {
      *
      * @param state
      */
-    public void restoreState(CompositeTabState state) {
+    private void restoreState(CompositeTabState state) {
         this.state = state;
         this.state.setTab(this);
     }

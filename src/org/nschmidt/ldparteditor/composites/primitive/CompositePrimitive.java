@@ -103,8 +103,8 @@ public class CompositePrimitive extends Composite {
     private final OpenGLRendererPrimitives openGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20 ? new OpenGLRendererPrimitives20(this) : new OpenGLRendererPrimitives33(this);
 
     /** the {@linkplain GLCanvas} */
-    final GLCanvas canvas;
-    final GLCapabilities capabilities;
+    private final GLCanvas canvas;
+    private final GLCapabilities capabilities;
 
     /** The view zoom level */
     private float zoom = WorkbenchManager.getEditor3DWindowState().getPrimitiveZoom();
@@ -594,7 +594,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    public void load(boolean waitForRenderer) {
+    private void load(boolean waitForRenderer) {
         // Pause primitive renderer
         if (!stopDraw.get() && !dontRefresh.get() && waitForRenderer) {
             stopDraw.set(true);

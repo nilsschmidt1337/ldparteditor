@@ -26,13 +26,13 @@ import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 
-public enum DescriptionManager {
+enum DescriptionManager {
     INSTANCE;
 
     private static Queue<TreeItem> workQueue = new ConcurrentLinkedQueue<>();
     private static boolean hasNoThread = true;
 
-    public static synchronized void registerDescription(TreeItem ti) {
+    static synchronized void registerDescription(TreeItem ti) {
 
         if (hasNoThread) {
             hasNoThread = false;

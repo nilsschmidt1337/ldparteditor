@@ -296,7 +296,7 @@ public class PerspectiveCalculator {
         return relPos;
     }
 
-    public Vector3d getScreenCoordinatesFrom3D(BigDecimal X, BigDecimal Y, BigDecimal Z) {
+    Vector3d getScreenCoordinatesFrom3D(BigDecimal X, BigDecimal Y, BigDecimal Z) {
         BigDecimal THOUSAND = new BigDecimal(1000);
         BigDecimal ZERO = new BigDecimal(0);
         Matrix vm = new Matrix(c3d.getViewport());
@@ -435,7 +435,7 @@ public class PerspectiveCalculator {
      *            the perspective value from {@linkplain Perspective}.
      * @return (e.g. Perspective.FRONT returns Front)
      */
-    public String getPerspectiveString(Perspective perspective) {
+    String getPerspectiveString(Perspective perspective) {
         switch (perspective) {
         case FRONT:
             return I18n.PERSPECTIVE_FRONT;

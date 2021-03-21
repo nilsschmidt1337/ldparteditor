@@ -71,24 +71,24 @@ public final class GData1 extends GData {
     public final float b;
     public final float a;
 
-    final FloatBuffer matrix;
+    private final FloatBuffer matrix;
     final Matrix4f productMatrix;
-    final Matrix4f localMatrix;
+    private final Matrix4f localMatrix;
     final Matrix accurateProductMatrix;
     final Matrix accurateLocalMatrix;
 
-    final String name;
+    private final String name;
     final String shortName;
 
-    final boolean readOnly;
+    private final boolean readOnly;
 
     final Vector4f boundingBoxMin = new Vector4f(Float.MAX_VALUE, Float.MAX_VALUE, Float.MAX_VALUE, 1f);
     final Vector4f boundingBoxMax = new Vector4f(-Float.MAX_VALUE, -Float.MAX_VALUE, -Float.MAX_VALUE, 1f);
 
     final boolean negativeDeterminant;
 
-    boolean recursive = false;
-    boolean movedTo = false;
+    private boolean recursive = false;
+    private boolean movedTo = false;
 
     final GData myGData = new GDataInit(this);
 
@@ -1385,7 +1385,7 @@ public final class GData1 extends GData {
         }
     }
 
-    public static void updateBoundingBox(int count, Vector4f v1, Vector4f v2, Vector4f v3, Vector4f v4, GData1 instance) {
+    static void updateBoundingBox(int count, Vector4f v1, Vector4f v2, Vector4f v3, Vector4f v4, GData1 instance) {
         switch (count) {
         case 4:
             instance.boundingBoxMin.x = Math.min(instance.boundingBoxMin.x, v4.x);
@@ -1675,7 +1675,7 @@ public final class GData1 extends GData {
         }
     }
 
-    public String getColouredString(String colour) {
+    String getColouredString(String colour) {
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append("1 "); //$NON-NLS-1$
         lineBuilder.append(colour);
@@ -1708,7 +1708,7 @@ public final class GData1 extends GData {
         return lineBuilder.toString();
     }
 
-    public String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
+    String getRoundedString(int coordsDecimalPlaces, int matrixDecimalPlaces, final boolean onX,  final boolean onY,  final boolean onZ) {
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append("1 "); //$NON-NLS-1$
         if (colourNumber == -1) {
@@ -2931,7 +2931,7 @@ public final class GData1 extends GData {
         return getSolvedMoveTo(new GColour(colourNumber, r, g, b, a), 0);
     }
 
-    public String colourReplace(String col) {
+    String colourReplace(String col) {
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append("1 "); //$NON-NLS-1$
         lineBuilder.append(col);

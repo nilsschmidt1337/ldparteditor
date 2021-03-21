@@ -45,7 +45,7 @@ public class Vector3r {
         this(tmp.X, tmp.Y, tmp.Z);
     }
 
-    public Vector3r(BigDecimal x, BigDecimal y, BigDecimal z) {
+    private Vector3r(BigDecimal x, BigDecimal y, BigDecimal z) {
         this.X = new Rational(x);
         this.Y = new Rational(y);
         this.Z = new Rational(z);

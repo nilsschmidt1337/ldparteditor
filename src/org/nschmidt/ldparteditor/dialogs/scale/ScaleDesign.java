@@ -75,10 +75,11 @@ class ScaleDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    Vertex v = new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
+    private Vertex v = new Vertex(BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE);
     Vertex p = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
+
     ScaleDesign(Shell parentShell, Vertex v, Set<Vertex> clipboardVertices, Vertex manipulatorPosition, ManipulatorScope scope) {
         super(parentShell);
         transformationMode = scope;

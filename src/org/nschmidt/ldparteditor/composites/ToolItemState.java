@@ -22,6 +22,7 @@ import java.io.Serializable;
  *
  */
 public class ToolItemState implements Serializable {
+    // Do not rename fields. It will break backwards compatibility!
 
     private static final long serialVersionUID = -8858673578608054459L;
 

@@ -25,7 +25,7 @@ import org.eclipse.swt.custom.SashForm;
  * @author nils
  *
  */
-public interface IScalable {
+interface IScalable {
 
     /**
      * Hierarchy-Note: SashForm <- CompositeContainer <- [CompositeScale] <-
@@ -51,5 +51,4 @@ public interface IScalable {
      *         or a {@link CompositeScale}.
      */
     public CompositeContainer getCompositeContainer();
-
 }

@@ -21,8 +21,7 @@ import java.util.regex.PatternSyntaxException;
 import org.nschmidt.ldparteditor.data.Primitive;
 import org.nschmidt.ldparteditor.enums.Rule;
 
-public class PrimitiveRule {
-
+class PrimitiveRule {
 
     private final Pattern pattern;
     private boolean not = false;
@@ -30,13 +29,14 @@ public class PrimitiveRule {
     private boolean function = false;
     private String criteria = ""; //$NON-NLS-1$
     private Rule rule;
-    public PrimitiveRule(Rule rule) {
+
+    PrimitiveRule(Rule rule) {
         this.rule = rule;
         this.function = true;
         this.pattern = Pattern.compile("[^.*]"); //$NON-NLS-1$
     }
 
-    public PrimitiveRule(Rule rule, String criteria, boolean hasAnd, boolean hasNot) {
+    PrimitiveRule(Rule rule, String criteria, boolean hasAnd, boolean hasNot) {
         this.rule = rule;
         this.criteria = criteria;
         this.not = hasNot;
@@ -52,7 +52,7 @@ public class PrimitiveRule {
     }
 
 
-    public boolean matches(Primitive p) {
+    boolean matches(Primitive p) {
         switch (rule) {
         case CONTAINS:
             return p.getDescription().contains(criteria);

@@ -50,7 +50,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
-public class VM01SelectHelper extends VM01Select {
+class VM01SelectHelper extends VM01Select {
 
     protected VM01SelectHelper(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -1608,7 +1608,7 @@ public class VM01SelectHelper extends VM01Select {
         return result;
     }
 
-    public synchronized void selectWholeSubfiles() {
+    synchronized void selectWholeSubfiles() {
         HashSet<GData1> subfilesToAdd = new HashSet<>();
         for (GData g : selectedData) {
             subfilesToAdd.add(g.parent.firstRef);

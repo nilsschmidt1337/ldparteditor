@@ -26,6 +26,7 @@ import org.eclipse.swt.graphics.Rectangle;
  *
  */
 public class WindowState implements Serializable {
+    // Do not rename fields. It will break backwards compatibility!
 
     /** V1.00 */
     private static final long serialVersionUID = 1L;

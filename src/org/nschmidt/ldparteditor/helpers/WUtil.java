@@ -36,7 +36,7 @@ public class WUtil {
 
     private final Widget w;
 
-    public WUtil(Widget w) {
+    WUtil(Widget w) {
         this.w = w;
     }
 

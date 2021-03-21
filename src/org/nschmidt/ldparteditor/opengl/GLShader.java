@@ -33,7 +33,7 @@ public class GLShader {
         program = 0;
     }
 
-    public GLShader(final String vertexPath, final String fragmentPath) {
+    GLShader(final String vertexPath, final String fragmentPath) {
         final int vertex = createAndCompile(vertexPath, GL20.GL_VERTEX_SHADER);
         final int fragment = createAndCompile(fragmentPath, GL20.GL_FRAGMENT_SHADER);
 
@@ -105,11 +105,11 @@ public class GLShader {
         return location;
     }
 
-    public void lightsOn() {
+    void lightsOn() {
         GL20.glUniform1f(getUniformLocation("lightswitch"), 1f); //$NON-NLS-1$
     }
 
-    public void lightsOff() {
+    void lightsOff() {
         GL20.glUniform1f(getUniformLocation("lightswitch"), 0f); //$NON-NLS-1$
     }
 

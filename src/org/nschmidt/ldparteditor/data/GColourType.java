@@ -38,7 +38,7 @@ public abstract class GColourType implements Serializable {
 
     public abstract GCType type();
 
-    public static GColourType clone(GColourType type) {
+    static GColourType clone(GColourType type) {
         if (type != null) {
             switch (type.type()) {
             case CHROME:
@@ -63,5 +63,4 @@ public abstract class GColourType implements Serializable {
         }
         return null;
     }
-
 }

@@ -42,7 +42,7 @@ class LogUploadDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    final String source;
+    private final String source;
 
     LogUploadDesign(Shell parentShell, String source) {
         super(parentShell);

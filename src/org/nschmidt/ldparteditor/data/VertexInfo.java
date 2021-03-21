@@ -25,7 +25,7 @@ public class VertexInfo {
     final int position;
     final GData linkedData;
 
-    public VertexInfo(Vertex vertex, int position, GData linkedData) {
+    VertexInfo(Vertex vertex, int position, GData linkedData) {
         this.vertex = vertex;
         this.position = position;
         this.linkedData = linkedData;
@@ -76,5 +76,4 @@ public class VertexInfo {
             return false;
         return true;
     }
-
 }

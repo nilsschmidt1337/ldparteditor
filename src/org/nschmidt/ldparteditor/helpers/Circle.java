@@ -30,17 +30,17 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
  */
 public class Circle {
 
-    final FloatBuffer matrix;
-    final Matrix4f rotation;
+    private final FloatBuffer matrix;
+    private final Matrix4f rotation;
 
-    final float EPSILON = 0.0000001f;
+    private final float EPSILON = 0.0000001f;
 
-    final float r;
-    final float g;
-    final float b;
+    private final float r;
+    private final float g;
+    private final float b;
 
-    final float[] circle = new float[66];
-    final float[] circle2 = new float[66];
+    private final float[] circle = new float[66];
+    private final float[] circle2 = new float[66];
 
     public Circle(float r, float g, float b, float dir_x, float dir_y, float dir_z, float radius, float line_width) {
         dir_x = dir_x / 1000f;
@@ -221,7 +221,7 @@ public class Circle {
 
         GL11.glPopMatrix();
     }
-    
+
     public void drawGL33(GLMatrixStack stack, float x, float y, float z, float zoom) {
         final float zoom_inv = 1f / zoom;
         stack.glPushMatrix();
@@ -306,7 +306,7 @@ public class Circle {
                 circle[64], 0f, circle[65], r, g, b,
                 circle2[64], 0f, circle2[65], r, g, b
         };
-        
+
         int[] indices = new int[192];
         int j = 0;
         for(int i = 0; i < 192; i += 6) {
@@ -318,9 +318,9 @@ public class Circle {
             indices[i + 5] = j;
             j += 2;
         }
-        
+
         GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
-                
+
         stack.glPopMatrix();
     }
 

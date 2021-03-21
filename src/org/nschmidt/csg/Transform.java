@@ -59,7 +59,7 @@ import org.lwjgl.util.vector.Matrix4f;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class Transform {
+class Transform {
 
     /**
      * Internal 4x4 matrix.
@@ -84,7 +84,7 @@ public class Transform {
      *
      * @return unity transform
      */
-    public static Transform unity() {
+    static Transform unity() {
         return new Transform();
     }
 
@@ -96,7 +96,7 @@ public class Transform {
      *
      * @return the specified vector
      */
-    public VectorCSGd transform(VectorCSGd vec) {
+    VectorCSGd transform(VectorCSGd vec) {
         double x;
         double y;
         x = m.m00 * vec.x + m.m01 * vec.y + m.m02 * vec.z + m.m30;
@@ -123,7 +123,7 @@ public class Transform {
         return m.toString();
     }
 
-    public Transform apply(Matrix4f matrix) {
+    Transform apply(Matrix4f matrix) {
         Matrix4f.mul(m, matrix, m);
         return this;
     }

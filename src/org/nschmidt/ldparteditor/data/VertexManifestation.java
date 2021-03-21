@@ -19,12 +19,12 @@ package org.nschmidt.ldparteditor.data;
  * @author nils
  *
  */
-public class VertexManifestation {
+class VertexManifestation {
 
     private final int position;
     private final GData gdata;
 
-    public VertexManifestation(int position, GData gdata) {
+    VertexManifestation(int position, GData gdata) {
         this.position = position;
         this.gdata = gdata;
     }

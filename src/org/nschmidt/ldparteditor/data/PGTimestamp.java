@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.Serializable;
 
 public class PGTimestamp implements Serializable {
+    // Do not rename fields. It will break backwards compatibility!
 
     private static final long serialVersionUID = 1L;
 

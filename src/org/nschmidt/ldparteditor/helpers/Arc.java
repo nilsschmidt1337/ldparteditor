@@ -30,20 +30,20 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
  */
 public class Arc {
 
-    final FloatBuffer matrix;
-    final Matrix4f rotation;
-    
-    final float EPSILON = 0.0000001f;
+    private final FloatBuffer matrix;
+    private final Matrix4f rotation;
 
-    final float r;
-    final float g;
-    final float b;
+    private final float EPSILON = 0.0000001f;
 
-    final float arc_width;
-    final float arc_width_neg;
+    private final float r;
+    private final float g;
+    private final float b;
 
-    final float[] circle = new float[66];
-    final float[] circle2 = new float[66];
+    private final float arc_width;
+    private final float arc_width_neg;
+
+    private final float[] circle = new float[66];
+    private final float[] circle2 = new float[66];
 
     public Arc(float r, float g, float b, float dir_x, float dir_y, float dir_z, float radius, float arc_width) {
         dir_x = dir_x / 1000f;
@@ -306,7 +306,7 @@ public class Arc {
 
         GL11.glPopMatrix();
     }
-    
+
     public void drawGL33(GLMatrixStack stack, float x, float y, float z, float zoom) {
         final float zoom_inv = 1f / zoom;
         stack.glPushMatrix();
@@ -316,7 +316,7 @@ public class Arc {
         stack.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
         float[] vertexData = new float[396];
-        
+
         int[] indices = new int[192];
         int j = 0;
         for(int i = 0; i < 192; i += 6) {
@@ -327,8 +327,8 @@ public class Arc {
             indices[i + 4] = 2 + j;
             indices[i + 5] = j;
             j += 2;
-        }       
-        
+        }
+
         j = 0;
         for(int i = 0; i < 396; i += 12) {
             vertexData[i]      = circle[j];
@@ -337,7 +337,7 @@ public class Arc {
             vertexData[i + 3]  = r;
             vertexData[i + 4]  = g;
             vertexData[i + 5]  = b;
-            vertexData[i + 6]  = circle2[j];            
+            vertexData[i + 6]  = circle2[j];
             vertexData[i + 7]  = arc_width;
             vertexData[i + 8]  = circle2[j + 1];
             vertexData[i + 9]  = r;
@@ -346,8 +346,8 @@ public class Arc {
             j += 2;
         }
         GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
-        
-        
+
+
         j = 0;
         for(int i = 0; i < 396; i += 12) {
             vertexData[i]      = circle2[j];
@@ -356,7 +356,7 @@ public class Arc {
             vertexData[i + 3]  = r;
             vertexData[i + 4]  = g;
             vertexData[i + 5]  = b;
-            vertexData[i + 6]  = circle[j];            
+            vertexData[i + 6]  = circle[j];
             vertexData[i + 7]  = 0f;
             vertexData[i + 8]  = circle[j + 1];
             vertexData[i + 9]  = r;

@@ -35,12 +35,12 @@ import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
  */
 class ValueDesignInt extends Dialog {
 
-    Label[] lbl_Unit = new Label[1];
+    private Label[] lbl_Unit = new Label[1];
     Button[] btn_ok = new Button[1];
     protected IntegerSpinner[] spn_Value = new IntegerSpinner[1];
 
 
-    final String unitText;
+    private final String unitText;
     final String shellText;
 
     ValueDesignInt(Shell parentShell, String shellText, String unitText) {

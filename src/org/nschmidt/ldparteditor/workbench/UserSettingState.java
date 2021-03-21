@@ -40,7 +40,8 @@ import org.nschmidt.ldparteditor.state.KeyStateManager;
  *
  */
 public class UserSettingState implements Serializable {
-    // TODO New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())
+    // Do not rename fields. It will break backwards compatibility! New values, which were not included in the state before, have to be initialized! (@ WorkbenchManager.loadWorkbench())
+
     /** V1.00 */
     private static final long serialVersionUID = 1L;
     /** Where your part authoring folder is located. */
@@ -734,7 +735,7 @@ public class UserSettingState implements Serializable {
         this.toolItemConfig3D = toolItemConfig3D;
     }
 
-    public void loadShortkeys() {
+    void loadShortkeys() {
         if (key3DStrings != null && key3DKeys != null && key3DTasks != null) {
             final int size = key3DStrings.length;
             for (int i = 0; i < size; i++) {
@@ -750,7 +751,7 @@ public class UserSettingState implements Serializable {
         }
     }
 
-    public void saveShortkeys() {
+    void saveShortkeys() {
         HashMap<String, Task> m1 = KeyStateManager.getTaskmap();
         HashMap<Task, String> m2 = KeyStateManager.getTaskKeymap();
         HashMap<String, TextTask> m3 = KeyStateManager.getTextTaskmap();
@@ -816,7 +817,7 @@ public class UserSettingState implements Serializable {
         this.vulkanEngine = vulkanEngine;
     }
 
-    public void saveColours() {
+    void saveColours() {
 
         Color16_override_r = View.Color16_override_r;
         Color16_override_g = View.Color16_override_g;

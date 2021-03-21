@@ -54,7 +54,7 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
 class CompositeTabDesign extends CTabItem {
 
     /** The menu of this composite */
-    final Menu[] menu = new Menu[1];
+    private final Menu[] menu = new Menu[1];
 
     final MenuItem[] mntm_HideSelection = new MenuItem[1];
     final MenuItem[] mntm_ShowSelection = new MenuItem[1];

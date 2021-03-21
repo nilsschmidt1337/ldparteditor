@@ -27,9 +27,9 @@ import org.nschmidt.ldparteditor.data.Vertex;
  */
 public final class PowerRay {
 
-    public double t;
-    public double u;
-    public double v;
+    private double t;
+    private double u;
+    private double v;
 
     private double[] corner1 = new double[3];
     private double[] corner2 = new double[3];
@@ -39,7 +39,7 @@ public final class PowerRay {
 
     private final double TOLERANCE = 0.00001d;
 
-    public boolean TRIANGLE_INTERSECT(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
+    private boolean TRIANGLE_INTERSECT(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
         double diskr = 0;
         double inv_diskr = 0;
         corner1[0] = vert1[0] - vert0[0];
@@ -73,7 +73,7 @@ public final class PowerRay {
         return true;
     }
 
-    public boolean TRIANGLE_INTERSECT2(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
+    private boolean TRIANGLE_INTERSECT2(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
         double diskr = 0;
         double inv_diskr = 0;
         corner1[0] = vert1[0] - vert0[0];
@@ -128,7 +128,7 @@ public final class PowerRay {
         return false;
     }
 
-    public double[] BARYCENTRIC(double[] point, double[] normal, double[] vert0, double[] vert1, double[] vert2, Vector4f intersection_point) {
+    double[] BARYCENTRIC(double[] point, double[] normal, double[] vert0, double[] vert1, double[] vert2, Vector4f intersection_point) {
         double[] orig = new double[] { 100.0 * normal[0] + point[0], 100.0 * normal[1] + point[1], 100.0 * normal[2] + point[2] };
         double diskr = 0;
         double inv_diskr = 0;

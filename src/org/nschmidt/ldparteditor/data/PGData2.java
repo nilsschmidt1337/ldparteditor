@@ -37,7 +37,7 @@ public final class PGData2 extends PGData implements Serializable {
     final float y2;
     final float z2;
 
-    final transient float[] edgeData;
+    private final transient float[] edgeData;
 
     public PGData2(float x1, float y1, float z1, float x2, float y2, float z2) {
         this.x1 = x1;
@@ -79,9 +79,11 @@ public final class PGData2 extends PGData implements Serializable {
     public int type() {
         return 2;
     }
-    public static PGData2 clone(PGData2 o) {
+
+    static PGData2 clone(PGData2 o) {
         return new PGData2(o.x1, o.y1, o.z1, o.x2, o.y2, o.z2);
     }
+
     @Override
     public PGData data() {
         return this;

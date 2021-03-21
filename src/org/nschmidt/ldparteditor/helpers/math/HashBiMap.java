@@ -26,8 +26,8 @@ import java.util.Set;
  */
 public class HashBiMap<K, V> implements Map<K, V> {
 
-    final HashMap<K, V> keyToValue = new HashMap<>();
-    final HashMap<V, K> valueToKey = new HashMap<>();
+    private final HashMap<K, V> keyToValue = new HashMap<>();
+    private final HashMap<V, K> valueToKey = new HashMap<>();
 
     public HashBiMap() {
         super();

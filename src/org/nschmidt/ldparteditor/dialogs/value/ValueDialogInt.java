@@ -29,7 +29,7 @@ public abstract class ValueDialogInt extends ValueDesignInt {
      * Create the dialog.
      *
      */
-    public ValueDialogInt(Shell shell, String shellText, String unitText) {
+    protected ValueDialogInt(Shell shell, String shellText, String unitText) {
         super(shell, shellText, unitText);
     }
 

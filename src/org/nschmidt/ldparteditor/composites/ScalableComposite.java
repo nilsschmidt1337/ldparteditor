@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
 // Nothing more to do here..
 public abstract class ScalableComposite extends Composite implements IScalable {
 
-    public ScalableComposite(Composite parent, int style) {
+    protected ScalableComposite(Composite parent, int style) {
         super(parent, style);
     }
 
@@ -43,5 +43,4 @@ public abstract class ScalableComposite extends Composite implements IScalable {
     public void redrawScales() {
 
     }
-
 }

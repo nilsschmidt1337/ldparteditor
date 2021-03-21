@@ -26,7 +26,7 @@ import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.text.DatParser;
 
-public class VM09WindingChange extends VM08SlicerPro {
+class VM09WindingChange extends VM08SlicerPro {
 
     protected VM09WindingChange(DatFile linkedDatFile) {
         super(linkedDatFile);

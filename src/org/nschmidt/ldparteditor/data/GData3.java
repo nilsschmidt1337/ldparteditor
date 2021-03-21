@@ -74,9 +74,9 @@ public final class GData3 extends GData {
     final BigDecimal Y3;
     final BigDecimal Z3;
 
-    public final float xn;
-    public final float yn;
-    public final float zn;
+    final float xn;
+    final float yn;
+    final float zn;
 
     public GData3(final int colourNumber, float r, float g, float b, float a, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, GData1 parent, DatFile datFile, boolean isTriangle) {
         super(parent);
@@ -226,7 +226,7 @@ public final class GData3 extends GData {
         this.zn = (x3 - x1) * (y2 - y1) - (y3 - y1) * (x2 - x1);
     }
 
-    public GData3(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
+    GData3(final int colourNumber, float r, float g, float b, float a, BigDecimal x1, BigDecimal y1, BigDecimal z1, BigDecimal x2, BigDecimal y2, BigDecimal z2, BigDecimal x3, BigDecimal y3,
             BigDecimal z3, float x12, float y12, float z12, float x22, float y22, float z22, float x32, float y32, float z32, float xn, float yn, float zn, GData1 parent, DatFile datFile, boolean isTriangle) {
         super(parent);
         this.isTriangle = isTriangle;
@@ -1547,7 +1547,7 @@ public final class GData3 extends GData {
         return false;
     }
 
-    public String colourReplace(String col) {
+    String colourReplace(String col) {
         StringBuilder lineBuilder = new StringBuilder();
         if (isTriangle) {
             lineBuilder.append(3);
@@ -1577,7 +1577,7 @@ public final class GData3 extends GData {
         return lineBuilder.toString();
     }
 
-    public void drawProtractorGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
+    void drawProtractorGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
 
         final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
@@ -1598,7 +1598,7 @@ public final class GData3 extends GData {
         drawNumberGL33(angle_s, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
     }
 
-    public void drawProtractor_GL20(boolean selected, Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
+    void drawProtractor_GL20(boolean selected, Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
@@ -1827,7 +1827,7 @@ public final class GData3 extends GData {
         return vc.length();
     }
 
-    public int insertProtractor(Vertex[] v, float[] lineData, int lineIndex) {
+    int insertProtractor(Vertex[] v, float[] lineData, int lineIndex) {
 
         final float s = ((r + g + b) / 3 + .5f) % 1f;
 

@@ -131,7 +131,7 @@ public class Composite3D extends ScalableComposite {
     /** The "Line Mode"-Menu */
     private final Menu mnu_lineMode;
     /** The "Synchronise..."-Menu */
-    public final Menu mnu_syncronise;
+    private final Menu mnu_syncronise;
     /** The "Manipulator"-Menu */
     private final Menu mnu_Manipulator;
 
@@ -208,8 +208,8 @@ public class Composite3D extends ScalableComposite {
     private final Vector4f[] grid_data = new Vector4f[] { new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f() };
 
     /** the {@linkplain GLCanvas} */
-    final GLCanvas canvas;
-    final GLCapabilities capabilities;
+    private final GLCanvas canvas;
+    private final GLCapabilities capabilities;
 
     // Several helper classes
     /** The {@linkplain PerspectiveCalculator} instance */
@@ -259,45 +259,45 @@ public class Composite3D extends ScalableComposite {
 
     public final MenuItem[] mntmNoBFC = new MenuItem[1];
     public final MenuItem[] mntmRandomColours = new MenuItem[1];
-    final MenuItem[] mntmBFCFrontBack = new MenuItem[1];
-    final MenuItem[] mntmBFCBack = new MenuItem[1];
-    final MenuItem[] mntmBFCReal = new MenuItem[1];
-    final MenuItem[] mntmBFCTextured = new MenuItem[1];
+    private final MenuItem[] mntmBFCFrontBack = new MenuItem[1];
+    private final MenuItem[] mntmBFCBack = new MenuItem[1];
+    private final MenuItem[] mntmBFCReal = new MenuItem[1];
+    private final MenuItem[] mntmBFCTextured = new MenuItem[1];
     public final MenuItem[] mntmCondlineMode = new MenuItem[1];
-    public final MenuItem[] mntmCoplanarityHeatmapMode = new MenuItem[1];
+    private final MenuItem[] mntmCoplanarityHeatmapMode = new MenuItem[1];
     public final MenuItem[] mntmWireframeMode = new MenuItem[1];
-    final MenuItem[] mntmAnaglyph = new MenuItem[1];
-    final MenuItem[] mntmAxis = new MenuItem[1];
-    final MenuItem[] mntmAlwaysBlack = new MenuItem[1];
-    final MenuItem[] mntmHideAll = new MenuItem[1];
-    final MenuItem[] mntmStdLines = new MenuItem[1];
-    final MenuItem[] mntmShowAll = new MenuItem[1];
-    final MenuItem[] mntmStudLogo = new MenuItem[1];
-    final MenuItem[] mntmSmoothShading = new MenuItem[1];
-    final MenuItem[] mntmControlPointVertices = new MenuItem[1];
-    final MenuItem[] mntmHiddenVertices = new MenuItem[1];
-    final MenuItem[] mntmVertices = new MenuItem[1];
-    final MenuItem[] mntmSubMeshLines = new MenuItem[1];
-    final MenuItem[] mntmMeshLines = new MenuItem[1];
-    final MenuItem[] mntmSwitchLights = new MenuItem[1];
-    final MenuItem[] mntmShowOrigin = new MenuItem[1];
-    final MenuItem[] mntmTwoThirds = new MenuItem[1];
-    final MenuItem[] mntmBottom = new MenuItem[1];
-    final MenuItem[] mntmTop = new MenuItem[1];
-    final MenuItem[] mntmRight = new MenuItem[1];
-    final MenuItem[] mntmLeft = new MenuItem[1];
-    final MenuItem[] mntmBack = new MenuItem[1];
-    final MenuItem[] mntmFront = new MenuItem[1];
-    final MenuItem[] mntmShowGrid = new MenuItem[1];
-    final MenuItem[] mntmShowScale = new MenuItem[1];
-    final MenuItem[] mntmLabel = new MenuItem[1];
-    final MenuItem[] mntmRealPreview = new MenuItem[1];
+    private final MenuItem[] mntmAnaglyph = new MenuItem[1];
+    private final MenuItem[] mntmAxis = new MenuItem[1];
+    private final MenuItem[] mntmAlwaysBlack = new MenuItem[1];
+    private final MenuItem[] mntmHideAll = new MenuItem[1];
+    private final MenuItem[] mntmStdLines = new MenuItem[1];
+    private final MenuItem[] mntmShowAll = new MenuItem[1];
+    private final MenuItem[] mntmStudLogo = new MenuItem[1];
+    private final MenuItem[] mntmSmoothShading = new MenuItem[1];
+    private final MenuItem[] mntmControlPointVertices = new MenuItem[1];
+    private final MenuItem[] mntmHiddenVertices = new MenuItem[1];
+    private final MenuItem[] mntmVertices = new MenuItem[1];
+    private final MenuItem[] mntmSubMeshLines = new MenuItem[1];
+    private final MenuItem[] mntmMeshLines = new MenuItem[1];
+    private final MenuItem[] mntmSwitchLights = new MenuItem[1];
+    private final MenuItem[] mntmShowOrigin = new MenuItem[1];
+    private final MenuItem[] mntmTwoThirds = new MenuItem[1];
+    private final MenuItem[] mntmBottom = new MenuItem[1];
+    private final MenuItem[] mntmTop = new MenuItem[1];
+    private final MenuItem[] mntmRight = new MenuItem[1];
+    private final MenuItem[] mntmLeft = new MenuItem[1];
+    private final MenuItem[] mntmBack = new MenuItem[1];
+    private final MenuItem[] mntmFront = new MenuItem[1];
+    private final MenuItem[] mntmShowGrid = new MenuItem[1];
+    private final MenuItem[] mntmShowScale = new MenuItem[1];
+    private final MenuItem[] mntmLabel = new MenuItem[1];
+    private final MenuItem[] mntmRealPreview = new MenuItem[1];
 
-    final MenuItem[] mntmSyncTranslate = new MenuItem[1];
-    final MenuItem[] mntmSyncManipulator = new MenuItem[1];
-    final MenuItem[] mntmSyncZoom = new MenuItem[1];
+    private final MenuItem[] mntmSyncTranslate = new MenuItem[1];
+    private final MenuItem[] mntmSyncManipulator = new MenuItem[1];
+    private final MenuItem[] mntmSyncZoom = new MenuItem[1];
 
-    public Composite3D(Composite parentCompositeContainer, boolean syncManipulator, boolean syncTranslation, boolean syncZoom) {
+    Composite3D(Composite parentCompositeContainer, boolean syncManipulator, boolean syncTranslation, boolean syncZoom) {
         this(parentCompositeContainer);
         setSyncManipulator(syncManipulator);
         setSyncTranslation(syncTranslation);
@@ -307,7 +307,7 @@ public class Composite3D extends ScalableComposite {
         mntmSyncZoom[0].setSelection(syncZoom);
     }
 
-    public Composite3D(Composite parentCompositeContainer, DatFile df) {
+    Composite3D(Composite parentCompositeContainer, DatFile df) {
         this(parentCompositeContainer);
         setSyncManipulator(false);
         setSyncTranslation(false);
@@ -324,7 +324,7 @@ public class Composite3D extends ScalableComposite {
      *
      * @param parentCompositeContainer
      */
-    public Composite3D(Composite parentCompositeContainer) {
+    Composite3D(Composite parentCompositeContainer) {
         super(parentCompositeContainer, I18n.I18N_NON_BIDIRECT() | SWT.H_SCROLL | SWT.V_SCROLL);
         final ScrollBar sb1 = super.getVerticalBar();
         sb1.setMinimum(-1);
@@ -1988,7 +1988,7 @@ public class Composite3D extends ScalableComposite {
         return tmpHiddenVertices;
     }
 
-    public void joinSelectionInTextEditor(final DatFile df) {
+    private void joinSelectionInTextEditor(final DatFile df) {
         if (df.equals(View.DUMMY_DATFILE) || df.isReadOnly()) return;
         final VertexManager vm = df.getVertexManager();
         if (!vm.getSelectedData().isEmpty()) {
