@@ -55,6 +55,7 @@ import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.project.Project;
+import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 /**
@@ -66,7 +67,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum DatParser {
     INSTANCE;
 
-    private static boolean upatePngImages = false;
+    private static boolean updatePngImages = false;
 
     private static GColour cValue = new GColour();
     private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
@@ -447,7 +448,7 @@ public enum DatParser {
                     final GDataPNG gpng = new GDataPNG(line, offset, a1, a2, a3, scale, sb.toString(), parent);
                     if (!errorCheckOnly) datFile.getVertexManager().setSelectedBgPicture(gpng);
                     result.add(0, new ParsingResult(gpng));
-                    if (!errorCheckOnly) upatePngImages = true;
+                    if (!errorCheckOnly) updatePngImages = true;
                 } catch (Exception ex) {}
             }
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
@@ -1262,12 +1263,10 @@ public enum DatParser {
         return result;
     }
 
-    public static boolean isUpatePngImages() {
-        return upatePngImages;
+    public static void triggerPngImageUpdate() {
+        if (updatePngImages) {
+            updatePngImages = false;
+            Editor3DWindow.getWindow().updateBgPictureTab();
+        }
     }
-
-    public static void setUpatePngImages(boolean upatePngImages) {
-        DatParser.upatePngImages = upatePngImages;
-    }
-
 }

@@ -736,10 +736,8 @@ public final class DatFile {
         warnings.sortItems();
         errors.sortItems();
         hints.getParent().build();
-        if (DatParser.isUpatePngImages()) {
-            Editor3DWindow.getWindow().updateBgPictureTab();
-            DatParser.setUpatePngImages(false);
-        }
+        DatParser.triggerPngImageUpdate();
+
         NLogger.debug(getClass(), "Total time to parse: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
         vertices.validateState();
         NLogger.debug(getClass(), "Total time to parse + validate: {0} ms", System.currentTimeMillis() - start); //$NON-NLS-1$
