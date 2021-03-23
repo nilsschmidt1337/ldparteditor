@@ -20,11 +20,11 @@ package org.nschmidt.ldparteditor.data;
  */
 class GDataAndWinding {
     final GData data;
-    final byte winding;
+    final BFC winding;
     final boolean negativeDeterminant;
     final boolean invertNext;
     final boolean noclip;
-    public GDataAndWinding(GData gd, byte bfc, boolean negDet, boolean iNext, int accumClip) {
+    public GDataAndWinding(GData gd, BFC bfc, boolean negDet, boolean iNext, int accumClip) {
         data = gd;
         winding = bfc;
         negativeDeterminant = negDet;

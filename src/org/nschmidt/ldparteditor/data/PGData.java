@@ -31,7 +31,7 @@ public abstract class PGData implements IPGData, Serializable {
 
     private transient PGData next;
 
-    static byte localWinding = BFC.NOCERTIFY;
+    static BFC localWinding = BFC.NOCERTIFY;
     static int accumClip = 0;
     static boolean globalInvertNext = false;
     static boolean globalInvertNextFound = false;

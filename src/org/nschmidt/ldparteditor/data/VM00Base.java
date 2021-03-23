@@ -143,7 +143,7 @@ class VM00Base {
     protected final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
     protected final Set<GData> hiddenData = Collections.newSetFromMap(new ThreadsafeHashMap<>());
 
-    protected final HashMap<GData, Byte> bfcMap = new HashMap<>();
+    protected final HashMap<GData, BFC> bfcMap = new HashMap<>();
 
     private volatile AtomicBoolean resetTimer = new AtomicBoolean(false);
     private volatile AtomicBoolean skipTimer = new AtomicBoolean(false);

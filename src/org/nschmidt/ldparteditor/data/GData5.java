@@ -888,7 +888,7 @@ public final class GData5 extends GData {
     }
 
     @Override
-    public String inlinedString(byte bfc, GColour colour) {
+    public String inlinedString(BFC bfc, GColour colour) {
         return getNiceString();
     }
 
@@ -953,9 +953,9 @@ public final class GData5 extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, Byte> map) {
+    public void getBFCorientationMap(HashMap<GData, BFC> map) {
         switch (GData.localWinding) {
-        case BFC.CCW:
+        case CCW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     map.put(this, BFC.CCW);
@@ -970,7 +970,7 @@ public final class GData5 extends GData {
                 }
             }
             break;
-        case BFC.CW:
+        case CW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     map.put(this, BFC.CW);
@@ -985,19 +985,19 @@ public final class GData5 extends GData {
                 }
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             // Don't get it for NOCERTIFY.
             break;
         }
     }
 
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
         // Don't get it for NOCERTIFY.
     }
 
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
         map.put(this, BFC.NOCLIP);
     }
 

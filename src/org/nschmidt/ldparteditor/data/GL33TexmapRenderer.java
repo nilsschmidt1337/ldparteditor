@@ -121,7 +121,7 @@ enum GL33TexmapRenderer {
                         colourise(3, gd3.r, gd3.g, gd3.b, gd3.a, triVertices);
                     }
                     switch (gw.winding) {
-                    case BFC.CW:
+                    case CW:
                         if (smoothShading) {
                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                 normal(0, n[0].x, n[0].y, n[0].z, triVertices);
@@ -159,7 +159,7 @@ enum GL33TexmapRenderer {
                             uv(2, uv[4], uv[5], triVertices);
                         }
                         break;
-                    case BFC.CCW:
+                    case CCW:
                         if (smoothShading) {
                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                 normal(0, n[0].x, n[0].y, n[0].z, triVertices);
@@ -197,7 +197,7 @@ enum GL33TexmapRenderer {
                             uv(2, uv[2], uv[3], triVertices);
                         }
                         break;
-                    case BFC.NOCERTIFY:
+                    case NOCERTIFY:
                     default:
                         colourise(3, 0f, 0f, 0f, 0f, triVertices);
                         continue;
@@ -268,7 +268,7 @@ enum GL33TexmapRenderer {
                         colourise(4, gd4.r, gd4.g, gd4.b, gd4.a, quadVertices);
                     }
                     switch (gw.winding) {
-                    case BFC.CW:
+                    case CW:
                         if (smoothShading) {
                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                 normal(0, n[0].x, n[0].y, n[0].z, quadVertices);
@@ -314,7 +314,7 @@ enum GL33TexmapRenderer {
                             uv(3, uv[6], uv[7], quadVertices);
                         }
                         break;
-                    case BFC.CCW:
+                    case CCW:
                         if (smoothShading) {
                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                 normal(0, n[0].x, n[0].y, n[0].z, quadVertices);
@@ -360,7 +360,7 @@ enum GL33TexmapRenderer {
                             uv(3, uv[2], uv[3], quadVertices);
                         }
                         break;
-                    case BFC.NOCERTIFY:
+                    case NOCERTIFY:
                     default:
                         colourise(4, 0f, 0f, 0f, 0f, quadVertices);
                         continue;

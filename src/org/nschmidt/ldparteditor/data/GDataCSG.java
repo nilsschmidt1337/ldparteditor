@@ -653,7 +653,7 @@ public final class GDataCSG extends GData {
     }
 
     @Override
-    public synchronized String inlinedString(final byte bfc, final GColour colour) {
+    public synchronized String inlinedString(final BFC bfc, final GColour colour) {
         try {
             static_lock.lock();
             switch (type) {
@@ -1003,11 +1003,11 @@ public final class GDataCSG extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, Byte> map) {}
+    public void getBFCorientationMap(HashMap<GData, BFC> map) {}
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map) {}
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {}
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {}
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {}
     @Override
     public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
     @Override

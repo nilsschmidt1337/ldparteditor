@@ -27,13 +27,13 @@ public final class PGDataBFC extends PGData implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private final byte type;
+    private final BFC type;
 
-    public byte getType() {
+    public BFC getType() {
         return type;
     }
 
-    public PGDataBFC(byte type) {
+    public PGDataBFC(BFC type) {
         this.type = type;
     }
 
@@ -50,26 +50,26 @@ public final class PGDataBFC extends PGData implements Serializable {
     @Override
     public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
         switch (type) {
-        case BFC.CCW:
+        case CCW:
             PGData.localWinding = BFC.CCW;
             break;
-        case BFC.CCW_CLIP:
+        case CCW_CLIP:
             PGData.localWinding = BFC.CCW;
             break;
-        case BFC.CW:
+        case CW:
             PGData.localWinding = BFC.CW;
             break;
-        case BFC.CW_CLIP:
+        case CW_CLIP:
             PGData.localWinding = BFC.CW;
             break;
-        case BFC.INVERTNEXT:
+        case INVERTNEXT:
             PGData.globalInvertNext = !PGData.globalInvertNext;
             PGData.globalInvertNextFound = true;
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             PGData.localWinding = BFC.NOCERTIFY;
             break;
-        case BFC.NOCLIP:
+        case NOCLIP:
             if (PGData.accumClip == 0)
                 PGData.accumClip = 1;
             break;

@@ -766,7 +766,7 @@ public class GL33ModelRendererLDrawStandard {
                                         }
 
                                         switch (gw.winding) {
-                                        case BFC.CW:
+                                        case CW:
                                             if (smoothShading) {
                                                 if (gw.negativeDeterminant ^ gw.invertNext) {
                                                     normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
@@ -794,7 +794,7 @@ public class GL33ModelRendererLDrawStandard {
                                                 pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
                                             }
                                             break;
-                                        case BFC.CCW:
+                                        case CCW:
                                             if (smoothShading) {
                                                 if (gw.negativeDeterminant ^ gw.invertNext) {
                                                     normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
@@ -822,7 +822,7 @@ public class GL33ModelRendererLDrawStandard {
                                                 pointAt(2, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                             }
                                             break;
-                                        case BFC.NOCERTIFY:
+                                        case NOCERTIFY:
                                             pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                             pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                             pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
@@ -969,7 +969,7 @@ public class GL33ModelRendererLDrawStandard {
                                         colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
                                     }
                                     switch (gw.winding) {
-                                    case BFC.CW:
+                                    case CW:
                                         if (smoothShading) {
                                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                                 normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
@@ -1007,7 +1007,7 @@ public class GL33ModelRendererLDrawStandard {
                                             pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         }
                                         break;
-                                    case BFC.CCW:
+                                    case CCW:
                                         if (smoothShading) {
                                             if (gw.invertNext ^ gw.negativeDeterminant) {
                                                 normal(0, 1, xn1, yn1, zn1, triangleData, tempIndex);
@@ -1045,7 +1045,7 @@ public class GL33ModelRendererLDrawStandard {
                                             pointAt(5, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         }
                                         break;
-                                    case BFC.NOCERTIFY:
+                                    case NOCERTIFY:
                                         colourise(0, 6, 0f, 0f, 0f, 0f, triangleData, tempIndex);
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
@@ -1337,7 +1337,7 @@ public class GL33ModelRendererLDrawStandard {
 
         boolean hasTEXMAP = false;
         Stack<GData> stack = new Stack<>();
-        Stack<Byte> tempWinding = new Stack<>();
+        Stack<BFC> tempWinding = new Stack<>();
         Stack<Boolean> tempInvertNext = new Stack<>();
         Stack<Boolean> tempInvertNextFound = new Stack<>();
         Stack<Boolean> tempNegativeDeterminant = new Stack<>();
@@ -1345,7 +1345,7 @@ public class GL33ModelRendererLDrawStandard {
         GData gd = df.getDrawChainStart();
         GData backup = gd;
 
-        byte localWinding = BFC.NOCERTIFY;
+        BFC localWinding = BFC.NOCERTIFY;
         int accumClip = 0;
         boolean globalInvertNext = false;
         boolean globalInvertNextFound = false;
@@ -1428,16 +1428,16 @@ public class GL33ModelRendererLDrawStandard {
                 }
                 if (accumClip > 0) {
                     switch (((GDataBFC) gd).type) {
-                    case BFC.CCW_CLIP:
+                    case CCW_CLIP:
                         if (accumClip == 1)
                             accumClip = 0;
                         localWinding = BFC.CCW;
                         continue;
-                    case BFC.CLIP:
+                    case CLIP:
                         if (accumClip == 1)
                             accumClip = 0;
                         continue;
-                    case BFC.CW_CLIP:
+                    case CW_CLIP:
                         if (accumClip == 1)
                             accumClip = 0;
                         localWinding = BFC.CW;
@@ -1447,19 +1447,19 @@ public class GL33ModelRendererLDrawStandard {
                     }
                 } else {
                     switch (((GDataBFC) gd).type) {
-                    case BFC.CCW:
+                    case CCW:
                         localWinding = BFC.CCW;
                         continue;
-                    case BFC.CCW_CLIP:
+                    case CCW_CLIP:
                         localWinding = BFC.CCW;
                         continue;
-                    case BFC.CW:
+                    case CW:
                         localWinding = BFC.CW;
                         continue;
-                    case BFC.CW_CLIP:
+                    case CW_CLIP:
                         localWinding = BFC.CW;
                         continue;
-                    case BFC.INVERTNEXT:
+                    case INVERTNEXT:
                         boolean validState = false;
                         GData g = gd.next;
                         while (g != null && g.type() < 2) {
@@ -1476,10 +1476,10 @@ public class GL33ModelRendererLDrawStandard {
                             globalInvertNextFound = true;
                         }
                         continue;
-                    case BFC.NOCERTIFY:
+                    case NOCERTIFY:
                         localWinding = BFC.NOCERTIFY;
                         continue;
-                    case BFC.NOCLIP:
+                    case NOCLIP:
                         if (accumClip == 0)
                             accumClip = 1;
                         continue;

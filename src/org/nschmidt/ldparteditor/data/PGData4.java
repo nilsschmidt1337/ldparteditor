@@ -95,7 +95,7 @@ public final class PGData4 extends PGData implements Serializable {
     public void drawBFCprimitive_GL20(int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
-        case BFC.CCW:
+        case CCW:
             if (PGData.globalNegativeDeterminant) {
                 if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 111
@@ -158,7 +158,7 @@ public final class PGData4 extends PGData implements Serializable {
                 }
             }
             break;
-        case BFC.CW:
+        case CW:
             if (PGData.globalNegativeDeterminant) {
                 if (PGData.globalInvertNext) {
                     GL11.glColor4f( // 011
@@ -221,7 +221,7 @@ public final class PGData4 extends PGData implements Serializable {
                 }
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], 1f);
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glVertex3f(x1, y1, z1);
@@ -234,7 +234,7 @@ public final class PGData4 extends PGData implements Serializable {
             GL11.glVertex3f(x4, y4, z4);
             GL11.glEnd();
             break;
-        case BFC.NOCLIP:
+        case NOCLIP:
             GL11.glColor4f(View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], 1f);
             GL11.glBegin(GL11.GL_QUADS);
             GL11.glVertex3f(x1, y1, z1);
@@ -254,7 +254,7 @@ public final class PGData4 extends PGData implements Serializable {
     public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
-        case BFC.CCW:
+        case CCW:
             if (PGData.globalNegativeDeterminant) {
                 if (PGData.globalInvertNext) {
                     indices[0] = 0;
@@ -312,7 +312,7 @@ public final class PGData4 extends PGData implements Serializable {
                     indices[11] = 4;
                 }
             }
-        case BFC.CW:
+        case CW:
             if (indices[1] == 0) {
                 if (PGData.globalNegativeDeterminant) {
                     if (PGData.globalInvertNext) {
@@ -398,7 +398,7 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[47] = vertices[29];
             GL33HelperPrimitives.drawTrianglesIndexedRGB_Quad(vertices, indices);
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             indices[0] = 0;
             indices[1] = 2;
             indices[2] = 1;
@@ -437,7 +437,7 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[47] = vertices[5];
             GL33HelperPrimitives.drawTrianglesIndexedRGB_Quad(vertices, indices);
             break;
-        case BFC.NOCLIP:
+        case NOCLIP:
             indices[0] = 0;
             indices[1] = 2;
             indices[2] = 1;

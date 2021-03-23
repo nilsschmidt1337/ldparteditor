@@ -112,7 +112,7 @@ public final class PGData1 extends PGData implements Serializable {
     @Override
     public void drawBFCprimitive_GL20(int drawOnlyMode) {
         if (matrix != null) {
-            byte tempWinding = PGData.localWinding;
+            BFC tempWinding = PGData.localWinding;
             boolean tempInvertNext = PGData.globalInvertNext;
             boolean tempInvertNextFound = PGData.globalInvertNextFound;
             boolean tempNegativeDeterminant = PGData.globalNegativeDeterminant;
@@ -144,7 +144,7 @@ public final class PGData1 extends PGData implements Serializable {
     @Override
     public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
         if (matrix != null) {
-            byte tempWinding = PGData.localWinding;
+            BFC tempWinding = PGData.localWinding;
             boolean tempInvertNext = PGData.globalInvertNext;
             boolean tempInvertNextFound = PGData.globalInvertNextFound;
             boolean tempNegativeDeterminant = PGData.globalNegativeDeterminant;

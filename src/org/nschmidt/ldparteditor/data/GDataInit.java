@@ -101,7 +101,7 @@ final class GDataInit extends GData {
     }
 
     @Override
-    public String inlinedString(byte bfc, GColour colour) {
+    public String inlinedString(BFC bfc, GColour colour) {
         return ""; //$NON-NLS-1$
     }
 
@@ -111,21 +111,24 @@ final class GDataInit extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, Byte> map) {
+    public void getBFCorientationMap(HashMap<GData, BFC> map) {
         GData.localWinding = BFC.NOCERTIFY;
         GData.accumClip = 0;
         GData.globalInvertNext = false;
         GData.globalInvertNextFound = false;
         GData.globalNegativeDeterminant = false;
     }
+
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
         getBFCorientationMap(map);
     }
+
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
         getBFCorientationMap(map);
     }
+
     @Override
     public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         state.localWinding = BFC.NOCERTIFY;
@@ -139,10 +142,12 @@ final class GDataInit extends GData {
         state.globalFoundTEXMAPStack.push(false);
         state.globalTextureStack.clear();
     }
+
     @Override
     public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         getVertexNormalMap(state, null, null, null);
     }
+
     @Override
     public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         getVertexNormalMap(state, null, null, null);

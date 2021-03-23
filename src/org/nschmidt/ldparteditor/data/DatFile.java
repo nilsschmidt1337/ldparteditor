@@ -288,7 +288,7 @@ public final class DatFile {
             vertices.showHidden();
     }
 
-    synchronized void getBFCorientationMap(HashMap<GData, Byte> bfcMap) {
+    synchronized void getBFCorientationMap(HashMap<GData, BFC> bfcMap) {
         GDataCSG.resetCSG(this, false);
         GData data2draw = drawChainAnchor;
         data2draw.getBFCorientationMap(bfcMap);

@@ -27,13 +27,13 @@ import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
  */
 public final class GDataBFC extends GData {
 
-    final byte type;
+    final BFC type;
 
-    public byte getType() {
+    public BFC getType() {
         return type;
     }
 
-    public GDataBFC(byte type, GData1 parent) {
+    public GDataBFC(BFC type, GData1 parent) {
         super(parent);
         this.type = type;
     }
@@ -43,16 +43,16 @@ public final class GDataBFC extends GData {
         // Nothing to do, since BFC is turned off
         // Except clipping check
         switch (type) {
-        case BFC.CCW_CLIP:
+        case CCW_CLIP:
             if (GData.accumClip == 1)
                 GData.accumClip = 0;
             GData.localWinding = BFC.CCW;
             break;
-        case BFC.CLIP:
+        case CLIP:
             if (GData.accumClip == 1)
                 GData.accumClip = 0;
             break;
-        case BFC.CW_CLIP:
+        case CW_CLIP:
             if (GData.accumClip == 1)
                 GData.accumClip = 0;
             GData.localWinding = BFC.CW;
@@ -67,16 +67,16 @@ public final class GDataBFC extends GData {
         // Nothing to do, since BFC is turned off
         // Except clipping check
         switch (type) {
-        case BFC.CCW_CLIP:
+        case CCW_CLIP:
             if (GData.accumClip == 1)
                 GData.accumClip = 0;
             GData.localWinding = BFC.CCW;
             break;
-        case BFC.CLIP:
+        case CLIP:
             if (GData.accumClip == 1)
                 GData.accumClip = 0;
             break;
-        case BFC.CW_CLIP:
+        case CW_CLIP:
             if (GData.accumClip == 1)
                 GData.accumClip = 0;
             GData.localWinding = BFC.CW;
@@ -89,19 +89,19 @@ public final class GDataBFC extends GData {
     @Override
     public void drawGL20_BFC(Composite3D c3d) {
         switch (type) {
-        case BFC.CCW:
+        case CCW:
             GData.localWinding = BFC.CCW;
             break;
-        case BFC.CCW_CLIP:
+        case CCW_CLIP:
             GData.localWinding = BFC.CCW;
             break;
-        case BFC.CW:
+        case CW:
             GData.localWinding = BFC.CW;
             break;
-        case BFC.CW_CLIP:
+        case CW_CLIP:
             GData.localWinding = BFC.CW;
             break;
-        case BFC.INVERTNEXT:
+        case INVERTNEXT:
             boolean validState = false;
             GData g = next;
             while (g != null && g.type() < 2) {
@@ -118,10 +118,10 @@ public final class GDataBFC extends GData {
                 GData.globalInvertNextFound = true;
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             GData.localWinding = BFC.NOCERTIFY;
             break;
-        case BFC.NOCLIP:
+        case NOCLIP:
             if (GData.accumClip == 0)
                 GData.accumClip = 1;
             break;
@@ -173,21 +173,21 @@ public final class GDataBFC extends GData {
     @Override
     String getNiceString() {
         switch (type) {
-        case BFC.CLIP:
+        case CLIP:
             return "0 BFC CLIP"; //$NON-NLS-1$
-        case BFC.CCW_CLIP:
+        case CCW_CLIP:
             return "0 BFC CERTIFY CCW"; //$NON-NLS-1$
-        case BFC.CCW:
+        case CCW:
             return "0 BFC CLIP CCW"; //$NON-NLS-1$
-        case BFC.CW_CLIP:
+        case CW_CLIP:
             return "0 BFC CERTIFY CW"; //$NON-NLS-1$
-        case BFC.CW:
+        case CW:
             return "0 BFC CLIP CW"; //$NON-NLS-1$
-        case BFC.INVERTNEXT:
+        case INVERTNEXT:
             return "0 BFC INVERTNEXT"; //$NON-NLS-1$
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             return "0 BFC NOCERTIFY"; //$NON-NLS-1$
-        case BFC.NOCLIP:
+        case NOCLIP:
             return "0 BFC NOCLIP"; //$NON-NLS-1$
         default:
             break;
@@ -196,7 +196,7 @@ public final class GDataBFC extends GData {
     }
 
     @Override
-    public String inlinedString(byte bfc, GColour colour) {
+    public String inlinedString(BFC bfc, GColour colour) {
         return getNiceString();
     }
 
@@ -206,21 +206,21 @@ public final class GDataBFC extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, Byte> map) {
+    public void getBFCorientationMap(HashMap<GData, BFC> map) {
         switch (type) {
-        case BFC.CCW:
+        case CCW:
             GData.localWinding = BFC.CCW;
             break;
-        case BFC.CCW_CLIP:
+        case CCW_CLIP:
             GData.localWinding = BFC.CCW;
             break;
-        case BFC.CW:
+        case CW:
             GData.localWinding = BFC.CW;
             break;
-        case BFC.CW_CLIP:
+        case CW_CLIP:
             GData.localWinding = BFC.CW;
             break;
-        case BFC.INVERTNEXT:
+        case INVERTNEXT:
             boolean validState = false;
             GData g = next;
             while (g != null && g.type() < 2) {
@@ -237,10 +237,10 @@ public final class GDataBFC extends GData {
                 GData.globalInvertNextFound = true;
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             GData.localWinding = BFC.NOCERTIFY;
             break;
-        case BFC.NOCLIP:
+        case NOCLIP:
             if (GData.accumClip == 0)
                 GData.accumClip = 1;
             break;
@@ -250,23 +250,23 @@ public final class GDataBFC extends GData {
     }
 
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
         getBFCorientationMap(map);
     }
 
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
         switch (type) {
-        case BFC.CCW_CLIP:
+        case CCW_CLIP:
             if (GData.accumClip == 1)
                 GData.accumClip = 0;
             GData.localWinding = BFC.CCW;
             break;
-        case BFC.CLIP:
+        case CLIP:
             if (GData.accumClip == 1)
                 GData.accumClip = 0;
             break;
-        case BFC.CW_CLIP:
+        case CW_CLIP:
             if (GData.accumClip == 1)
                 GData.accumClip = 0;
             GData.localWinding = BFC.CW;
@@ -279,19 +279,19 @@ public final class GDataBFC extends GData {
     @Override
     public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         switch (type) {
-        case BFC.CCW:
+        case CCW:
             state.localWinding = BFC.CCW;
             break;
-        case BFC.CCW_CLIP:
+        case CCW_CLIP:
             state.localWinding = BFC.CCW;
             break;
-        case BFC.CW:
+        case CW:
             state.localWinding = BFC.CW;
             break;
-        case BFC.CW_CLIP:
+        case CW_CLIP:
             state.localWinding = BFC.CW;
             break;
-        case BFC.INVERTNEXT:
+        case INVERTNEXT:
             boolean validState = false;
             GData g = next;
             while (g != null && g.type() < 2) {
@@ -308,10 +308,10 @@ public final class GDataBFC extends GData {
                 state.globalInvertNextFound = true;
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             state.localWinding = BFC.NOCERTIFY;
             break;
-        case BFC.NOCLIP:
+        case NOCLIP:
             if (state.accumClip == 0)
                 state.accumClip = 1;
             break;
@@ -328,16 +328,16 @@ public final class GDataBFC extends GData {
     @Override
     public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         switch (type) {
-        case BFC.CCW_CLIP:
+        case CCW_CLIP:
             if (state.accumClip == 1)
                 state.accumClip = 0;
             state.localWinding = BFC.CCW;
             break;
-        case BFC.CLIP:
+        case CLIP:
             if (state.accumClip == 1)
                 state.accumClip = 0;
             break;
-        case BFC.CW_CLIP:
+        case CW_CLIP:
             if (state.accumClip == 1)
                 state.accumClip = 0;
             state.localWinding = BFC.CW;

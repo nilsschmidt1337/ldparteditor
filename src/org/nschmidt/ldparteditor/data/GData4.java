@@ -363,7 +363,7 @@ public final class GData4 extends GData {
             return;
         GL11.glBegin(GL11.GL_QUADS);
         switch (GData.localWinding) {
-        case BFC.CCW:
+        case CCW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f( // 111
@@ -426,7 +426,7 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.CW:
+        case CW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f( // 011
@@ -489,7 +489,7 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             if (GData.globalNegativeDeterminant) {
                 GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a);
                 GL11.glNormal3f(xn, yn, zn);
@@ -563,7 +563,7 @@ public final class GData4 extends GData {
             return;
         GL11.glBegin(GL11.GL_QUADS);
         switch (GData.localWinding) {
-        case BFC.CCW:
+        case CCW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
@@ -622,7 +622,7 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.CW:
+        case CW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
@@ -681,7 +681,7 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             if (GData.globalNegativeDeterminant) {
                 GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a);
                 GL11.glNormal3f(xn, yn, zn);
@@ -720,7 +720,7 @@ public final class GData4 extends GData {
             return;
         GL11.glBegin(GL11.GL_QUADS);
         switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
-        case BFC.CCW:
+        case CCW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
@@ -755,7 +755,7 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.CW:
+        case CW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
@@ -790,7 +790,7 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             if (GData.globalNegativeDeterminant) {
                 GL11.glColor4f(r, g, b, a);
                 GL11.glNormal3f(xn, yn, zn);
@@ -827,7 +827,7 @@ public final class GData4 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
-        case BFC.CCW:
+        case CCW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
@@ -866,7 +866,7 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.CW:
+        case CW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
@@ -905,7 +905,7 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f(r, g, b, a);
@@ -1009,7 +1009,7 @@ public final class GData4 extends GData {
                     drawBFC_Colour2(c3d, r, g, b, a, useCubeMap);
                     break;
                 default:
-                    byte tmp = GData.localWinding;
+                    BFC tmp = GData.localWinding;
                     GData.localWinding = BFC.NOCERTIFY;
                     drawBFC_Colour2(c3d, r, g, b, a, useCubeMap);
                     GData.localWinding = tmp;
@@ -1022,7 +1022,7 @@ public final class GData4 extends GData {
                 tex.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, c3d.isLightOn() && matLight, ren, useCubeMap);
                 float[] uv;
                 switch (a < 1f || GData.accumClip > 0 ? BFC.NOCERTIFY : GData.localWinding) {
-                case BFC.CCW:
+                case CCW:
                     if (GData.globalNegativeDeterminant) {
                         if (GData.globalInvertNext) {
                             GL11.glColor4f(r, g, b, a);
@@ -1097,7 +1097,7 @@ public final class GData4 extends GData {
                         }
                     }
                     break;
-                case BFC.CW:
+                case CW:
                     if (GData.globalNegativeDeterminant) {
                         if (GData.globalInvertNext) {
                             GL11.glColor4f(r, g, b, a);
@@ -1172,7 +1172,7 @@ public final class GData4 extends GData {
                         }
                     }
                     break;
-                case BFC.NOCERTIFY:
+                case NOCERTIFY:
                     if (GData.globalNegativeDeterminant) {
                         GL11.glColor4f(r, g, b, a);
                         GL11.glBegin(GL11.GL_QUADS);
@@ -1355,7 +1355,7 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public String inlinedString(byte bfc, GColour colour) {
+    public String inlinedString(BFC bfc, GColour colour) {
         return getNiceString();
     }
 
@@ -1420,9 +1420,9 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, Byte> map) {
+    public void getBFCorientationMap(HashMap<GData, BFC> map) {
         switch (GData.localWinding) {
-        case BFC.CCW:
+        case CCW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     map.put(this, BFC.CCW);
@@ -1437,7 +1437,7 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.CW:
+        case CW:
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     map.put(this, BFC.CW);
@@ -1452,19 +1452,19 @@ public final class GData4 extends GData {
                 }
             }
             break;
-        case BFC.NOCERTIFY:
+        case NOCERTIFY:
             // Don't get it for NOCERTIFY.
             break;
         }
     }
 
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
         // Don't get it for NOCERTIFY.
     }
 
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
         map.put(this, BFC.NOCLIP);
     }
 
@@ -1518,12 +1518,12 @@ public final class GData4 extends GData {
             for (Vertex vertex : verts) {
                 float[] result = new float[3];
                 switch (state.localWinding) {
-                case BFC.NOCLIP:
+                case NOCLIP:
                     result[0] = xn;
                     result[1] = yn;
                     result[2] = zn;
                     break;
-                case BFC.CCW:
+                case CCW:
                     if (state.globalInvertNext) {
                         if (state.globalNegativeDeterminant) {
                             result[0] = -xn;
@@ -1546,7 +1546,7 @@ public final class GData4 extends GData {
                         }
                     }
                     break;
-                case BFC.CW:
+                case CW:
                     if (state.globalInvertNext) {
                         if (state.globalNegativeDeterminant) {
                             result[0] = xn;
@@ -1569,7 +1569,7 @@ public final class GData4 extends GData {
                         }
                     }
                     break;
-                case BFC.NOCERTIFY:
+                case NOCERTIFY:
                     break;
                 }
                 if (state.globalInvertNext) {

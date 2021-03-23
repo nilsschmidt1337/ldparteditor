@@ -639,7 +639,7 @@ public final class GData1 extends GData {
 
             Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
 
-            byte tempWinding = GData.localWinding;
+            BFC tempWinding = GData.localWinding;
             boolean tempInvertNext = GData.globalInvertNext;
             boolean tempInvertNextFound = GData.globalInvertNextFound;
             boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
@@ -672,7 +672,7 @@ public final class GData1 extends GData {
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
-                        case BFC.NOCERTIFY:
+                        case NOCERTIFY:
                             data2draw.drawGL20_BFCuncertified(c3d);
                             break;
                         default:
@@ -743,7 +743,7 @@ public final class GData1 extends GData {
             Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
 
 
-            byte tempWinding = GData.localWinding;
+            BFC tempWinding = GData.localWinding;
             boolean tempInvertNext = GData.globalInvertNext;
             boolean tempInvertNextFound = GData.globalInvertNextFound;
             boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
@@ -835,7 +835,7 @@ public final class GData1 extends GData {
 
             Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
 
-            byte tempWinding = GData.localWinding;
+            BFC tempWinding = GData.localWinding;
             boolean tempInvertNext = GData.globalInvertNext;
             boolean tempInvertNextFound = GData.globalInvertNextFound;
             boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
@@ -868,7 +868,7 @@ public final class GData1 extends GData {
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
-                        case BFC.NOCERTIFY:
+                        case NOCERTIFY:
                             data2draw.drawGL20_BFCuncertified(c3d);
                             break;
                         default:
@@ -938,7 +938,7 @@ public final class GData1 extends GData {
 
             Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
 
-            byte tempWinding = GData.localWinding;
+            BFC tempWinding = GData.localWinding;
             boolean tempInvertNext = GData.globalInvertNext;
             boolean tempInvertNextFound = GData.globalInvertNextFound;
             boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
@@ -971,7 +971,7 @@ public final class GData1 extends GData {
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
-                        case BFC.NOCERTIFY:
+                        case NOCERTIFY:
                             data2draw.drawGL20_BFCuncertified(c3d);
                             break;
                         default:
@@ -1043,7 +1043,7 @@ public final class GData1 extends GData {
 
             Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
 
-            byte tempWinding = GData.localWinding;
+            BFC tempWinding = GData.localWinding;
             boolean tempInvertNext = GData.globalInvertNext;
             boolean tempInvertNextFound = GData.globalInvertNextFound;
             boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
@@ -1143,7 +1143,7 @@ public final class GData1 extends GData {
 
             Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
 
-            byte tempWinding = GData.localWinding;
+            BFC tempWinding = GData.localWinding;
             boolean tempInvertNext = GData.globalInvertNext;
             boolean tempInvertNextFound = GData.globalInvertNextFound;
             boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
@@ -1184,7 +1184,7 @@ public final class GData1 extends GData {
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
-                        case BFC.NOCERTIFY:
+                        case NOCERTIFY:
                             switch (data2draw.type()) {
                             case 1:
                             case 5:
@@ -1749,7 +1749,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public String inlinedString(byte bfc, GColour colour) {
+    public String inlinedString(BFC bfc, GColour colour) {
         boolean flipSurfaces = false;
         StringBuilder sb = new StringBuilder();
         float r = this.r;
@@ -1792,7 +1792,7 @@ public final class GData1 extends GData {
             dataToInline.add(data2draw);
         }
 
-        byte lastBFC = BFC.NOCERTIFY;
+        BFC lastBFC = BFC.NOCERTIFY;
 
         boolean foundInvertNext = false;
         for (GData gs : dataToInline) {
@@ -2680,9 +2680,9 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, Byte> map) {
+    public void getBFCorientationMap(HashMap<GData, BFC> map) {
         if (matrix != null) {
-            byte tempWinding = GData.localWinding;
+            BFC tempWinding = GData.localWinding;
             boolean tempInvertNext = GData.globalInvertNext;
             boolean tempInvertNextFound = GData.globalInvertNextFound;
             boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
@@ -2699,7 +2699,7 @@ public final class GData1 extends GData {
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (GData.localWinding) {
-                        case BFC.NOCERTIFY:
+                        case NOCERTIFY:
                             data2draw.getBFCorientationMapNOCERTIFY(map);
                             break;
                         default:
@@ -2719,7 +2719,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
         boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
         GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;
@@ -2738,7 +2738,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map) {
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
         boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
         GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;
@@ -2762,7 +2762,7 @@ public final class GData1 extends GData {
             boolean tNext = state.globalFoundTEXMAPNEXT;
             state.globalFoundTEXMAPNEXT = false;
 
-            byte tempWinding = state.localWinding;
+            BFC tempWinding = state.localWinding;
             boolean tempInvertNext = state.globalInvertNext;
             boolean tempInvertNextFound = state.globalInvertNextFound;
             boolean tempNegativeDeterminant = state.globalNegativeDeterminant;
@@ -2782,7 +2782,7 @@ public final class GData1 extends GData {
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (state.localWinding) {
-                        case BFC.NOCERTIFY:
+                        case NOCERTIFY:
                             data2draw.getVertexNormalMapNOCERTIFY(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
                             break;
                         default:

@@ -20,7 +20,7 @@ package org.nschmidt.ldparteditor.data;
  */
 class GDataAndTexture extends GDataAndWinding {
     GTexture texture;
-    public GDataAndTexture(GData gd, byte bfc, boolean negDet, boolean iNext, int accumClip) {
+    public GDataAndTexture(GData gd, BFC bfc, boolean negDet, boolean iNext, int accumClip) {
         super(gd, bfc, negDet, iNext, accumClip);
     }
 

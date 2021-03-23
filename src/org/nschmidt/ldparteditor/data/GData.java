@@ -47,7 +47,7 @@ public abstract class GData implements IGData, Comparable<GData> {
     protected boolean visible = true;
 
     protected String text = null;
-    static byte localWinding = BFC.NOCERTIFY;
+    static BFC localWinding = BFC.NOCERTIFY;
     static int accumClip = 0;
     static boolean globalInvertNext = false;
     static boolean globalInvertNextFound = false;

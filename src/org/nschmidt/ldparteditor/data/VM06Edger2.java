@@ -42,7 +42,7 @@ class VM06Edger2 extends VM05Distance {
      * @param g the data to analyse
      * @return {@code BFC.CW|BFC.CCW|BFC.NOCERTIFY|BFC.NOCLIP}
      */
-    private byte getBFCorientation(GData g) {
+    private BFC getBFCorientation(GData g) {
         if (bfcMap.containsKey(g)) {
             return bfcMap.get(g);
         }

@@ -20,14 +20,12 @@ package org.nschmidt.ldparteditor.data;
  *
  */
 public enum BFC {
-    INSTANCE;
-
-    public static final byte INVERTNEXT = 0;
-    public static final byte CCW = 1;
-    public static final byte CW = 2;
-    public static final byte CLIP = 3;
-    public static final byte NOCLIP = 4;
-    public static final byte CCW_CLIP = 5;
-    public static final byte CW_CLIP = 6;
-    public static final byte NOCERTIFY = 7;
+    INVERTNEXT,
+    CCW,
+    CW,
+    CLIP,
+    NOCLIP,
+    CCW_CLIP,
+    CW_CLIP,
+    NOCERTIFY
 }

@@ -41,7 +41,7 @@ import org.nschmidt.ldparteditor.text.StringHelper;
 public enum Inliner {
     INSTANCE;
 
-    private static byte bfcStatusTarget = BFC.NOCERTIFY;
+    private static BFC bfcStatusTarget = BFC.NOCERTIFY;
     private static boolean hasINVERTNEXT = false;
 
     public static boolean withSubfileReference = false;
@@ -79,7 +79,7 @@ public enum Inliner {
             switch (gd.type()) {
             case 6:
                 GDataBFC gbfc = (GDataBFC) gd;
-                byte t = gbfc.getType();
+                BFC t = gbfc.getType();
                 if (t == BFC.CCW_CLIP || t == BFC.CCW) {
                     bfcStatusTarget = BFC.CCW_CLIP;
                 } else if (t == BFC.CW_CLIP || t == BFC.CW) {
@@ -113,7 +113,7 @@ public enum Inliner {
                     GData gd2 = dpl.getValue(key - 1);
                     if (gd2.type() == 6) {
                         GDataBFC gbfc2 = (GDataBFC) gd2;
-                        byte t2 = gbfc2.getType();
+                        BFC t2 = gbfc2.getType();
                         if (t2 == BFC.INVERTNEXT) {
                             hasINVERTNEXT = true;
                             if (bfcStatusTarget == BFC.CCW_CLIP) {
@@ -211,7 +211,7 @@ public enum Inliner {
 
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
 
-        HashMap<Integer, Byte> bfcStatusToLine = new HashMap<>();
+        HashMap<Integer, BFC> bfcStatusToLine = new HashMap<>();
 
         Set<Integer> keys = dpl.keySet();
 
@@ -220,7 +220,7 @@ public enum Inliner {
             switch (gd.type()) {
             case 6:
                 GDataBFC gbfc = (GDataBFC) gd;
-                byte t = gbfc.getType();
+                BFC t = gbfc.getType();
                 if (t == BFC.CCW_CLIP || t == BFC.CCW) {
                     bfcStatusTarget = BFC.CCW_CLIP;
                 } else if (t == BFC.CW_CLIP || t == BFC.CW) {
@@ -338,7 +338,7 @@ public enum Inliner {
         switch (gd.type()) {
         case 6:
             GDataBFC gbfc = (GDataBFC) gd;
-            byte t = gbfc.getType();
+            BFC t = gbfc.getType();
             if (t == BFC.CCW_CLIP || t == BFC.CCW) {
                 bfcStatusTarget = BFC.CCW_CLIP;
             } else if (t == BFC.CW_CLIP || t == BFC.CW) {

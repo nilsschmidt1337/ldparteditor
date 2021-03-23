@@ -47,15 +47,15 @@ interface IGData {
 
     public void drawGL20_Wireframe(Composite3D c3d);
 
-    public void getBFCorientationMap(HashMap<GData, Byte> map);
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, Byte> map);
-    public void getBFCorientationMapNOCLIP(HashMap<GData, Byte> map);
+    public void getBFCorientationMap(HashMap<GData, BFC> map);
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map);
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map);
 
     public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
     public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
     public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
 
-    public String inlinedString(byte bfcStatusTarget, GColour colour);
+    public String inlinedString(BFC bfcStatusTarget, GColour colour);
 
     public String transformAndColourReplace(String colour, Matrix matrix);
 

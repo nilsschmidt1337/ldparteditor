@@ -1281,17 +1281,17 @@ public class Editor3DWindow extends Editor3DDesign {
                                         r.println(""); //$NON-NLS-1$
 
                                         {
-                                            byte bfc_type = BFC.NOCERTIFY;
+                                            BFC bfc_type = BFC.NOCERTIFY;
                                             GData g1 = Project.getFileToEdit().getDrawChainStart();
                                             while ((g1 = g1.getNext()) != null) {
                                                 if (g1.type() == 6) {
-                                                    byte bfc = ((GDataBFC) g1).getType();
+                                                    BFC bfc = ((GDataBFC) g1).getType();
                                                     switch (bfc) {
-                                                    case BFC.CCW_CLIP:
+                                                    case CCW_CLIP:
                                                         bfc_type = bfc;
                                                         r.println("0 BFC CERTIFY CCW"); //$NON-NLS-1$
                                                         break;
-                                                    case BFC.CW_CLIP:
+                                                    case CW_CLIP:
                                                         bfc_type = bfc;
                                                         r.println("0 BFC CERTIFY CW"); //$NON-NLS-1$
                                                         break;

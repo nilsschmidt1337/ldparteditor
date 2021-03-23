@@ -19,7 +19,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 class GDataState {
-    byte localWinding = BFC.NOCERTIFY;
+    BFC localWinding = BFC.NOCERTIFY;
     int accumClip = 0;
     boolean globalInvertNext = false;
     boolean globalInvertNextFound = false;
