@@ -49,9 +49,7 @@ public class Primitive implements Comparable<Primitive> {
     }
 
     public static Primitive createPrimitive() {
-        final Primitive primitive = new Primitive();
-        primitive.primitives.add(primitive);
-        return primitive;
+        return new Primitive();
     }
 
     private Primitive() {
