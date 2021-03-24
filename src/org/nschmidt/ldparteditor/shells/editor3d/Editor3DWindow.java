@@ -2566,9 +2566,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 } catch (Exception ex) {}
 
-                final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null ? treeParts[0].getSelection()[0].getData() instanceof DatFile : false;
-                final boolean writable = enabled ? !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly() : false;
-                final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null ? !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItem_Unofficial[0]) : false;
+                final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile;
+                final boolean writable = enabled && !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly();
+                final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null && !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItem_Unofficial[0]);
 
                 Menu treeMenu = new Menu(treeParts[0].getTree());
                 treeParts[0].getTree().setMenu(treeMenu);
@@ -2632,9 +2632,9 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         treeParts[0].addSelectionListener(e -> {
-            final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null ? treeParts[0].getSelection()[0].getData() instanceof DatFile : false;
-            final boolean writable = enabled ? !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly() : false;
-            final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null ? !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItem_Unofficial[0]) : false;
+            final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile;
+            final boolean writable = enabled && !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly();
+            final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null && !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItem_Unofficial[0]);
             btn_OpenIn3DEditor[0].setEnabled(enabled);
             btn_OpenInTextEditor[0].setEnabled(enabled);
             btn_Close[0].setEnabled(enabled);

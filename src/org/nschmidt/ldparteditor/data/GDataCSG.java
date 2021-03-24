@@ -1341,8 +1341,8 @@ public final class GDataCSG extends GData {
     }
 
     static void finishCacheCleanup(DatFile df) {
-        if (clearPolygonCache.get(df) == true) {
-            if (fullClearPolygonCache.get(df) != true) {
+        if (Boolean.TRUE.equals(clearPolygonCache.getOrDefault(df, false))) {
+            if (Boolean.FALSE.equals(fullClearPolygonCache.getOrDefault(df, false))) {
                 fullClearPolygonCache.put(df, true);
                 clearPolygonCache.put(df, true);
             } else {

@@ -1517,8 +1517,8 @@ public class Manipulator {
         if (newScaleFactor) {
             initialScaleOld = initialScaleNew;
         }
-        boolean scaleThreshold = newScaleFactor ? snap_x_Translate.add(snap_x_Translate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0 : false;
 
+        boolean scaleThreshold = newScaleFactor && snap_x_Translate.add(snap_x_Translate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0;
 
         if (x_Scale) {
             if (l < snap_x_Scale)
@@ -2135,7 +2135,7 @@ public class Manipulator {
         }
 
         boolean newScaleFactor = initialScaleOld.compareTo(BigDecimal.ZERO) > 0;
-        boolean scaleThreshold = newScaleFactor ? snap_x_Translate.add(snap_x_Translate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0 : false;
+        boolean scaleThreshold = newScaleFactor && snap_x_Translate.add(snap_x_Translate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0;
         float fdir = ddir.floatValue();
         modified = true;
 
