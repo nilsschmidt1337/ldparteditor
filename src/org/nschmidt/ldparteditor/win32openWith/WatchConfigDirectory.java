@@ -43,6 +43,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -114,8 +115,8 @@ class WatchConfigDirectory {
                 NLogger.error(getClass(), cwse);
                 return;
             } catch (InterruptedException ie) {
-                NLogger.error(getClass(), ie);
-                return;
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
 
             if (key != null) {
@@ -277,8 +278,8 @@ class WatchConfigDirectory {
                 NLogger.error(getClass(), cwse);
                 return WILL_OPEN_FILE;
             } catch (InterruptedException ie) {
-                NLogger.error(getClass(), ie);
-                return WILL_OPEN_FILE;
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
 
             if (key != null) {

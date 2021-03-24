@@ -65,6 +65,7 @@ import org.nschmidt.ldparteditor.helpers.Arrow;
 import org.nschmidt.ldparteditor.helpers.ArrowBlunt;
 import org.nschmidt.ldparteditor.helpers.BufferFactory;
 import org.nschmidt.ldparteditor.helpers.Circle;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
@@ -465,7 +466,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                     }
                                     try {
                                         Thread.sleep(100);
-                                    } catch (InterruptedException e) {}
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new LDPartEditorException(ie);
+                                    }
                                 }
                                 counter++;
 
@@ -1285,7 +1289,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                     while (isRunning) {
                                         try {
                                             Thread.sleep(100);
-                                        } catch (InterruptedException e) {
+                                        } catch (InterruptedException ie) {
+                                            Thread.currentThread().interrupt();
+                                            throw new LDPartEditorException(ie);
                                         }
                                         isRunning = false;
                                         for (Thread thread : threads) {
@@ -1319,7 +1325,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                     }
                                     try {
                                         Thread.sleep(100);
-                                    } catch (InterruptedException e) {}
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new LDPartEditorException(ie);
+                                    }
                                 }
                             }
                         }
@@ -1361,7 +1370,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                         while(needData.get() > 0) {
                             try {
                                 Thread.sleep(10);
-                            } catch (InterruptedException e) {}
+                            } catch (InterruptedException ie) {
+                                Thread.currentThread().interrupt();
+                                throw new LDPartEditorException(ie);
+                            }
                         }
                     }
                 }

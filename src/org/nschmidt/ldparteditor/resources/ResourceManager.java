@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Display;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.IconSize;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 
 /**
  * The resource manager, which returns pictures, sounds and so on..
@@ -183,7 +184,9 @@ public enum ResourceManager {
         while (!imageMap.get(name).isDisposed()) {
             try {
                 Thread.sleep(10);
-            } catch (InterruptedException e) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
         }
         imageMap.remove(name);

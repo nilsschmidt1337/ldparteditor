@@ -41,6 +41,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.RingsAndConesSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -272,7 +273,9 @@ public enum RingsAndCones {
                             while (isRunning) {
                                 try {
                                     Thread.sleep(100);
-                                } catch (InterruptedException e) {
+                                } catch (InterruptedException ie) {
+                                    Thread.currentThread().interrupt();
+                                    throw new LDPartEditorException(ie);
                                 }
                                 isRunning = false;
                                 for (Thread thread : threads) {
@@ -303,7 +306,9 @@ public enum RingsAndCones {
                     }
                 });
             } catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             } catch (Exception ex) {
             }
 

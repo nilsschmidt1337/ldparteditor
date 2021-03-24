@@ -32,6 +32,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 
@@ -140,7 +141,10 @@ public class IntegerSpinner extends Composite {
                     while (focus && !txt_val[0].isDisposed()) {
                         try {
                             Thread.sleep(100);
-                        } catch (InterruptedException ie) {}
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new LDPartEditorException(ie);
+                        }
                         Display.getDefault().asyncExec(() -> {
                             try {
                                 focus = txt_val[0].isFocusControl();
@@ -204,7 +208,10 @@ public class IntegerSpinner extends Composite {
                     });
                     try {
                         Thread.sleep(10);
-                    } catch (InterruptedException ie) {}
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
+                    }
                 }
                 if (!counter.compareAndSet(id, id) || result == null || txt_val[0].isDisposed()) {
                     return;

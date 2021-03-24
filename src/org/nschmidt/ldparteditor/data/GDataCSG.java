@@ -56,6 +56,7 @@ import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
@@ -732,8 +733,9 @@ public final class GDataCSG extends GData {
                         });
                     } catch (InvocationTargetException consumed) {
                         consumed.printStackTrace();
-                    } catch (InterruptedException consumed) {
-                        consumed.printStackTrace();
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                     return sb.toString();
                 } else {

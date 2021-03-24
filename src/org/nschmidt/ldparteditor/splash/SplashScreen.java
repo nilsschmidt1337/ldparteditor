@@ -52,6 +52,7 @@ import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.dialogs.startup.StartupDialog;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.ProgressHelper;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.Version;
@@ -322,7 +323,9 @@ public class SplashScreen extends ApplicationWindow {
         // Close the splash..
         try {
             Thread.sleep(800);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
         close();
         while (!bar.isDisposed()) {

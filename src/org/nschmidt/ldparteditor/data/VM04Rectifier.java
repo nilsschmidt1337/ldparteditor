@@ -29,6 +29,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.lwjgl.util.vector.Matrix4f;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
@@ -592,7 +593,9 @@ class VM04Rectifier extends VM03Adjacency {
                 });
             }
             catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
         } else {
             for (GData g : surfsToParse) {

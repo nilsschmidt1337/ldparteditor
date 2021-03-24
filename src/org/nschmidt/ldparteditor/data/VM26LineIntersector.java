@@ -27,6 +27,7 @@ import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -130,7 +131,9 @@ class VM26LineIntersector extends VM25Smooth {
                 });
             }
             catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
         } else {
             int i = 0;

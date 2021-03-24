@@ -50,6 +50,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -110,8 +111,9 @@ public enum SubfileCompiler {
                                 if (monitor.isCanceled()) break;
                                 try {
                                     Thread.sleep(100);
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
+                                } catch (InterruptedException ie) {
+                                    Thread.currentThread().interrupt();
+                                    throw new LDPartEditorException(ie);
                                 }
                             }
                             doNotWait[0] = monitor.isCanceled();
@@ -119,8 +121,9 @@ public enum SubfileCompiler {
                     });
                 } catch (InvocationTargetException consumed) {
                     return;
-                } catch (InterruptedException consumed) {
-                    return;
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new LDPartEditorException(ie);
                 }
                 if (doNotWait[0]) {
                     return;

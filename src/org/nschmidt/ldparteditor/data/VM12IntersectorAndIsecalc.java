@@ -42,6 +42,7 @@ import org.nschmidt.ldparteditor.data.tools.FlipTriangleOptimizer;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.IsecalcSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
@@ -123,7 +124,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             });
         }
         catch (InvocationTargetException consumed) {
-        } catch (InterruptedException consumed) {
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
 
         if (!newLines.isEmpty()) {
@@ -468,7 +471,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 while (isRunning) {
                                     try {
                                         Thread.sleep(100);
-                                    } catch (InterruptedException e) {
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new LDPartEditorException(ie);
                                     }
                                     isRunning = false;
                                     for (Thread thread : threads) {
@@ -541,7 +546,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 while (isRunning) {
                                     try {
                                         Thread.sleep(100);
-                                    } catch (InterruptedException e) {
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new LDPartEditorException(ie);
                                     }
                                     isRunning = false;
                                     for (Thread thread : threads) {
@@ -560,7 +567,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 });
             }
             catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
 
 
@@ -1758,7 +1767,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             });
         }
         catch (InvocationTargetException consumed) {
-        } catch (InterruptedException consumed) {
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
 
         if (originalSelectionLines.isEmpty()) return;
@@ -1941,7 +1952,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 });
             }
             catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
         }
 
@@ -2074,7 +2087,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                             while (isRunning) {
                                 try {
                                     Thread.sleep(100);
-                                } catch (InterruptedException e) {
+                                } catch (InterruptedException ie) {
+                                    Thread.currentThread().interrupt();
+                                    throw new LDPartEditorException(ie);
                                 }
                                 isRunning = false;
                                 if (threads[0].isAlive())
@@ -2085,7 +2100,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 while (isRunning) {
                                     try {
                                         Thread.sleep(100);
-                                    } catch (InterruptedException e) {
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new LDPartEditorException(ie);
                                     }
                                     isRunning = false;
                                     for (Thread thread : colourThreads) {
@@ -2123,7 +2140,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 });
             }
             catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
 
             if (originalSelectionLines.isEmpty()) return;
@@ -2414,7 +2433,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                             while (isRunning) {
                                 try {
                                     Thread.sleep(100);
-                                } catch (InterruptedException e) {
+                                } catch (InterruptedException ie) {
+                                    Thread.currentThread().interrupt();
+                                    throw new LDPartEditorException(ie);
                                 }
                                 isRunning = false;
                                 for (Thread thread : threads) {
@@ -2439,7 +2460,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 });
             }
             catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
 
             if (originalSelectionLines.isEmpty()) return;
@@ -2571,7 +2594,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 });
             }
             catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
 
             // Restore selection

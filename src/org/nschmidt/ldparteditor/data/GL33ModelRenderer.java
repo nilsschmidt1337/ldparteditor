@@ -41,6 +41,7 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.StudLogo;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -324,14 +325,20 @@ public class GL33ModelRenderer {
                     } catch (IndexOutOfBoundsException iob) {
                         try {
                             Thread.sleep(10);
-                        } catch (InterruptedException e) {}
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new LDPartEditorException(ie);
+                        }
                         continue;
                     }
 
                     if (!myTurn) {
                         try {
                             Thread.sleep(10);
-                        } catch (InterruptedException e) {}
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new LDPartEditorException(ie);
+                        }
                         continue;
                     }
 

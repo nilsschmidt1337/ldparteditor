@@ -40,6 +40,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
@@ -259,8 +260,9 @@ final class Node {
                         n3.polygons = f3.get();
                     } catch (ExecutionException e) {
                         NLogger.error(getClass(), e);
-                    } catch (InterruptedException e) {
-                        NLogger.error(getClass(), e);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
 
                     if (n3.back != null) {
@@ -293,8 +295,9 @@ final class Node {
                         n2.polygons = f2.get();
                     } catch (ExecutionException e) {
                         NLogger.error(getClass(), e);
-                    } catch (InterruptedException e) {
-                        NLogger.error(getClass(), e);
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
 
                     if (n2.back != null) {

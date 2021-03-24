@@ -55,6 +55,7 @@ import org.nschmidt.ldparteditor.data.GColour;
 import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.logger.NLogger;
 
@@ -261,8 +262,8 @@ public class CSG {
             return CSG.fromPolygons(resultPolys);
         } catch (ExecutionException | InterruptedException e) {
             // Exceptions sollten (tm) schon im "join" geworfen worden sein.
-            NLogger.error(getClass(), e);
-            throw new RuntimeException(e);
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(e);
         }
     }
 
@@ -326,8 +327,9 @@ public class CSG {
             b = f2.get();
         } catch (ExecutionException e) {
             NLogger.error(getClass(), e);
-        } catch (InterruptedException e) {
-            NLogger.error(getClass(), e);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
 
         a.invert();
@@ -395,8 +397,9 @@ public class CSG {
             b = f2.get();
         } catch (ExecutionException e) {
             NLogger.error(getClass(), e);
-        } catch (InterruptedException e) {
-            NLogger.error(getClass(), e);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
 
         a.invert();

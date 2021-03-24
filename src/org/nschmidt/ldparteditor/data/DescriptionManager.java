@@ -20,6 +20,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.text.LDParsingException;
@@ -73,7 +74,9 @@ enum DescriptionManager {
                             } else {
                                 Thread.sleep(100);
                             }
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new LDPartEditorException(ie);
                         } catch (Exception e) {
                             NLogger.debug(getClass(), e);
                         }

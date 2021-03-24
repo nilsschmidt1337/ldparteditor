@@ -39,6 +39,7 @@ import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTabState;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
@@ -239,7 +240,9 @@ class VM00Base {
                         for(int i = 0; i < 4; i++) {
                             try {
                                 Thread.sleep(450);
-                            } catch (InterruptedException e) {
+                            } catch (InterruptedException ie) {
+                                Thread.currentThread().interrupt();
+                                throw new LDPartEditorException(ie);
                             }
                             if (tid2.get() != tid.get()) break;
                         }
@@ -319,7 +322,9 @@ class VM00Base {
                                 while (!isUpdated() && Editor3DWindow.getAlive().get()) {
                                     try {
                                         Thread.sleep(100);
-                                    } catch (InterruptedException e) {
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new LDPartEditorException(ie);
                                     }
                                 }
                                 Display.getDefault().asyncExec(new Runnable() {

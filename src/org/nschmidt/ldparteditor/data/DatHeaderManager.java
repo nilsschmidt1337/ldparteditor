@@ -25,6 +25,7 @@ import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -637,7 +638,9 @@ public class DatHeaderManager {
                                 if (doWait) {
                                     try {
                                         Thread.sleep(1000);
-                                    } catch (InterruptedException e) {
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new LDPartEditorException(ie);
                                     }
                                 }
 
@@ -674,13 +677,12 @@ public class DatHeaderManager {
                                 });
                             }
                             if (workQueue.isEmpty()) Thread.sleep(200);
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new LDPartEditorException(ie);
+                        } catch (Exception e) {
                             // We want to know what can go wrong here
                             // because it SHOULD be avoided!!
-
-                            NLogger.error(getClass(), "The DatHeaderManager cycle was interruped [InterruptedException]! :("); //$NON-NLS-1$
-                            NLogger.error(getClass(), e);
-                        } catch (Exception e) {
                             NLogger.error(getClass(), "The DatHeaderManager cycle was throwing an exception :("); //$NON-NLS-1$
                             NLogger.error(getClass(), e);
                         }
@@ -721,7 +723,10 @@ public class DatHeaderManager {
         while (!workQueue.offer(new Object[]{data, hints, warnings, errors, duplicates, compositeText, problemCount})) {
             try {
                 Thread.sleep(10);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
+            }
         }
     }
 

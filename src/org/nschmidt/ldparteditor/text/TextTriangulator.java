@@ -45,6 +45,7 @@ import org.nschmidt.ldparteditor.data.GData1;
 import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.data.PGData3;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -113,7 +114,9 @@ public class TextTriangulator {
                         while (isRunning) {
                             try {
                                 Thread.sleep(100);
-                            } catch (InterruptedException e) {
+                            } catch (InterruptedException ie) {
+                                Thread.currentThread().interrupt();
+                                throw new LDPartEditorException(ie);
                             }
                             isRunning = false;
                             for (Thread thread : threads) {
@@ -130,7 +133,9 @@ public class TextTriangulator {
             });
         }
         catch (InvocationTargetException consumed) {
-        } catch (InterruptedException consumed) {
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
 
         datFile.getVertexManager().clearSelection2();

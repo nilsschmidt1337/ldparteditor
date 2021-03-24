@@ -26,6 +26,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Threshold;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -549,13 +550,12 @@ public class DuplicateManager {
 
                             }
                             if (workQueue.isEmpty()) Thread.sleep(100);
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new LDPartEditorException(ie);
+                        } catch (Exception e) {
                             // We want to know what can go wrong here
                             // because it SHOULD be avoided!!
-
-                            NLogger.error(getClass(), "The DuplicateManager cycle was interruped [InterruptedException]! :("); //$NON-NLS-1$
-                            NLogger.error(getClass(), e);
-                        } catch (Exception e) {
                             NLogger.error(getClass(), "The DuplicateManager cycle was throwing an exception :("); //$NON-NLS-1$
                             NLogger.error(getClass(), e);
                         }
@@ -582,7 +582,10 @@ public class DuplicateManager {
         while (!workQueue.offer(data)) {
             try {
                 Thread.sleep(10);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
+            }
         }
     }
 

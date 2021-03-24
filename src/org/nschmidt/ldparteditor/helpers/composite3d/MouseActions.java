@@ -52,6 +52,7 @@ import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.WidgetSelectionHelper;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
@@ -1287,8 +1288,9 @@ public class MouseActions {
 
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException e) {
-
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new LDPartEditorException(ie);
                 }
 
                 java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();

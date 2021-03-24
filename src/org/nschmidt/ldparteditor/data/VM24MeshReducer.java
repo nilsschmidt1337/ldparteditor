@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.data.tools.IdenticalVertexRemover;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.MeshReducerSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -259,7 +260,9 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                 });
             }
             catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
 
             clearSelection2();

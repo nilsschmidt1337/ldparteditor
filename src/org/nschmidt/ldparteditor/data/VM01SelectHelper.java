@@ -36,6 +36,7 @@ import org.nschmidt.ldparteditor.enums.ObjectMode;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
@@ -144,7 +145,9 @@ class VM01SelectHelper extends VM01Select {
                         Thread.sleep(100);
                         counter++;
                         if (counter == 50) break;
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                     isRunning = false;
                     for (Thread thread : threads) {
@@ -168,7 +171,9 @@ class VM01SelectHelper extends VM01Select {
                                     while (isRunning) {
                                         try {
                                             Thread.sleep(100);
-                                        } catch (InterruptedException e) {
+                                        } catch (InterruptedException ie) {
+                                            Thread.currentThread().interrupt();
+                                            throw new LDPartEditorException(ie);
                                         }
                                         isRunning = false;
                                         for (Thread thread : threads) {
@@ -192,8 +197,10 @@ class VM01SelectHelper extends VM01Select {
                                 }
                             }
                         });
-                    }catch (InvocationTargetException consumed) {
-                    } catch (InterruptedException consumed) {
+                    } catch (InvocationTargetException consumed) {
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                     linkedDatFile.setDrawSelection(true);
                 }
@@ -296,7 +303,9 @@ class VM01SelectHelper extends VM01Select {
                         Thread.sleep(100);
                         counter++;
                         if (counter == 50) break;
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                     isRunning = false;
                     for (Thread thread : threads) {
@@ -320,7 +329,9 @@ class VM01SelectHelper extends VM01Select {
                                     while (isRunning) {
                                         try {
                                             Thread.sleep(100);
-                                        } catch (InterruptedException e) {
+                                        } catch (InterruptedException ie) {
+                                            Thread.currentThread().interrupt();
+                                            throw new LDPartEditorException(ie);
                                         }
                                         isRunning = false;
                                         for (Thread thread : threads) {
@@ -344,7 +355,9 @@ class VM01SelectHelper extends VM01Select {
                             }
                         });
                     }catch (InvocationTargetException consumed) {
-                    } catch (InterruptedException consumed) {
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                     linkedDatFile.setDrawSelection(true);
                 }
@@ -551,7 +564,9 @@ class VM01SelectHelper extends VM01Select {
                         Thread.sleep(100);
                         counter++;
                         if (counter == 50) break;
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                     isRunning = false;
                     for (Thread thread : threads) {
@@ -575,7 +590,9 @@ class VM01SelectHelper extends VM01Select {
                                     while (isRunning) {
                                         try {
                                             Thread.sleep(100);
-                                        } catch (InterruptedException e) {
+                                        } catch (InterruptedException ie) {
+                                            Thread.currentThread().interrupt();
+                                            throw new LDPartEditorException(ie);
                                         }
                                         isRunning = false;
                                         for (Thread thread : threads) {
@@ -596,8 +613,10 @@ class VM01SelectHelper extends VM01Select {
                                 }
                             }
                         });
-                    }catch (InvocationTargetException consumed) {
-                    } catch (InterruptedException consumed) {
+                    } catch (InvocationTargetException consumed) {
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                     linkedDatFile.setDrawSelection(true);
                 }
@@ -700,7 +719,9 @@ class VM01SelectHelper extends VM01Select {
                         Thread.sleep(100);
                         counter++;
                         if (counter == 50) break;
-                    } catch (InterruptedException e) {
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                     isRunning = false;
                     for (Thread thread : threads) {
@@ -724,7 +745,9 @@ class VM01SelectHelper extends VM01Select {
                                     while (isRunning) {
                                         try {
                                             Thread.sleep(100);
-                                        } catch (InterruptedException e) {
+                                        } catch (InterruptedException ie) {
+                                            Thread.currentThread().interrupt();
+                                            throw new LDPartEditorException(ie);
                                         }
                                         isRunning = false;
                                         for (Thread thread : threads) {
@@ -748,7 +771,9 @@ class VM01SelectHelper extends VM01Select {
                             }
                         });
                     }catch (InvocationTargetException consumed) {
-                    } catch (InterruptedException consumed) {
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                     linkedDatFile.setDrawSelection(true);
                 }

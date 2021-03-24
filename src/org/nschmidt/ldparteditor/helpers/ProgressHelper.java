@@ -59,7 +59,9 @@ public enum ProgressHelper {
         taskList.remove(0);
         try {
             Thread.sleep(40);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
     }
 
@@ -72,7 +74,9 @@ public enum ProgressHelper {
         resetQueue();
         try {
             Thread.sleep(500);
-        } catch (InterruptedException e) {
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
     }
 

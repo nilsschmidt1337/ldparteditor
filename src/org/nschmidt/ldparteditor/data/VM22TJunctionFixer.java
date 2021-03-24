@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.MessageBox;
 import org.nschmidt.ldparteditor.enums.MergeTo;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.TJunctionSettings;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
@@ -108,7 +109,9 @@ class VM22TJunctionFixer extends VM21Merger {
             });
         }
         catch (InvocationTargetException consumed) {
-        } catch (InterruptedException consumed) {
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
 
         clearSelection2();

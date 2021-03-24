@@ -165,6 +165,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
 import org.nschmidt.ldparteditor.helpers.FileHelper;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.ShellHelper;
 import org.nschmidt.ldparteditor.helpers.SphereGL20;
@@ -3969,7 +3970,9 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         });
                     } catch (InvocationTargetException consumed) {
-                    } catch (InterruptedException consumed) {
+                    } catch (InterruptedException ie) {
+                        Thread.currentThread().interrupt();
+                        throw new LDPartEditorException(ie);
                     }
                 }
             }
@@ -5511,7 +5514,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             });
         } catch (InvocationTargetException consumed) {
-        } catch (InterruptedException consumed) {
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
 
         tabFolder_OpenDatFiles[0].getItem(0).setData(View.DUMMY_DATFILE);

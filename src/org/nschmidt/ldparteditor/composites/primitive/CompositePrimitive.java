@@ -83,6 +83,7 @@ import org.nschmidt.ldparteditor.enums.Rule;
 import org.nschmidt.ldparteditor.enums.Task;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Cocoa;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.MouseActions;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -589,8 +590,9 @@ public class CompositePrimitive extends Composite {
             });
         } catch (InvocationTargetException consumed) {
             load(false);
-        } catch (InterruptedException consumed) {
-            load(false);
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new LDPartEditorException(ie);
         }
     }
 
@@ -602,16 +604,18 @@ public class CompositePrimitive extends Composite {
             while (!hasDrawn.get()) {
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new LDPartEditorException(ie);
                 }
             }
             hasDrawn.set(false);
             while (!hasDrawn.get()) {
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new LDPartEditorException(ie);
                 }
             }
         }

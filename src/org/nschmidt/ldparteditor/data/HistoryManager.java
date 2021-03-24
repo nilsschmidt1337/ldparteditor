@@ -31,6 +31,7 @@ import java.util.regex.Pattern;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.graphics.Point;
 import org.nschmidt.ldparteditor.composites.compositetab.CompositeTab;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -292,7 +293,10 @@ class HistoryManager {
                                         })) {
                                             try {
                                                 Thread.sleep(100);
-                                            } catch (InterruptedException e) {}
+                                            } catch (InterruptedException ie) {
+                                                Thread.currentThread().interrupt();
+                                                throw new LDPartEditorException(ie);
+                                            }
                                         }
                                     } else {
                                         while (!answerQueue.offer(new Object[]{
@@ -310,7 +314,10 @@ class HistoryManager {
                                         })) {
                                             try {
                                                 Thread.sleep(100);
-                                            } catch (InterruptedException e) {}
+                                            } catch (InterruptedException ie) {
+                                                Thread.currentThread().interrupt();
+                                                throw new LDPartEditorException(ie);
+                                            }
                                         }
                                     }
                                     action.set(0);
@@ -318,13 +325,12 @@ class HistoryManager {
                                     if (workQueue.isEmpty()) Thread.sleep(100);
                                 }
                             }
-                        } catch (InterruptedException e) {
+                        } catch (InterruptedException ie) {
+                            Thread.currentThread().interrupt();
+                            throw new LDPartEditorException(ie);
+                        } catch (Exception e) {
                             // We want to know what can go wrong here
                             // because it SHOULD be avoided!!
-
-                            NLogger.error(getClass(), "The HistoryManager cycle was interruped [InterruptedException]! :("); //$NON-NLS-1$
-                            NLogger.error(getClass(), e);
-                        } catch (Exception e) {
                             NLogger.error(getClass(), "The HistoryManager cycle was throwing an exception :("); //$NON-NLS-1$
                             NLogger.error(getClass(), e);
                         }
@@ -338,7 +344,10 @@ class HistoryManager {
         while (!workQueue.offer(new Object[]{text, selectionStart, selectionEnd, data, selectedData, selectedVertices, topIndex, hiddenData, hiddenVertices})) {
             try {
                 Thread.sleep(100);
-            } catch (InterruptedException e) {}
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
+            }
         }
 
     }
@@ -417,7 +426,9 @@ class HistoryManager {
             if (answerQueue.isEmpty()) {
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new LDPartEditorException(ie);
                 }
             }
         }

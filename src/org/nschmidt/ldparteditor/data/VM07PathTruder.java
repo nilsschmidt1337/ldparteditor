@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -847,7 +848,9 @@ class VM07PathTruder extends VM06Edger2 {
                             while (isRunning) {
                                 try {
                                     Thread.sleep(100);
-                                } catch (InterruptedException e) {
+                                } catch (InterruptedException ie) {
+                                    Thread.currentThread().interrupt();
+                                    throw new LDPartEditorException(ie);
                                 }
                                 isRunning = false;
                                 if (threads[0].isAlive())
@@ -865,7 +868,9 @@ class VM07PathTruder extends VM06Edger2 {
                     }
                 });
             } catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
         } else {
             final GColour col16 = View.getLDConfigColour(16);
@@ -1430,7 +1435,9 @@ class VM07PathTruder extends VM06Edger2 {
             while (isRunning) {
                 try {
                     Thread.sleep(100);
-                } catch (InterruptedException e) {
+                } catch (InterruptedException ie) {
+                    Thread.currentThread().interrupt();
+                    throw new LDPartEditorException(ie);
                 }
                 isRunning = false;
                 if (threads[0].isAlive())

@@ -33,6 +33,7 @@ import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.enums.View;
+import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SlicerProSettings;
@@ -195,7 +196,9 @@ class VM08SlicerPro extends VM07PathTruder {
                                 while (isRunning) {
                                     try {
                                         Thread.sleep(100);
-                                    } catch (InterruptedException e) {
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new LDPartEditorException(ie);
                                     }
                                     isRunning = false;
                                     for (Thread thread : threads) {
@@ -289,7 +292,9 @@ class VM08SlicerPro extends VM07PathTruder {
                                 while (isRunning) {
                                     try {
                                         Thread.sleep(100);
-                                    } catch (InterruptedException e) {
+                                    } catch (InterruptedException ie) {
+                                        Thread.currentThread().interrupt();
+                                        throw new LDPartEditorException(ie);
                                     }
                                     isRunning = false;
                                     for (Thread thread : threads) {
@@ -308,7 +313,9 @@ class VM08SlicerPro extends VM07PathTruder {
                 });
             }
             catch (InvocationTargetException consumed) {
-            } catch (InterruptedException consumed) {
+            } catch (InterruptedException ie) {
+                Thread.currentThread().interrupt();
+                throw new LDPartEditorException(ie);
             }
 
 
