@@ -931,7 +931,7 @@ public final class DatFile {
     }
 
     public boolean updateDuplicatesErrors(StyledText compositeText, TreeItem duplicates) {
-        if (duplicates.getItems().size() > 0 || !GData.CACHE_duplicates.isEmpty()) {
+        if (!duplicates.getItems().isEmpty() || !GData.CACHE_duplicates.isEmpty()) {
             int position;
             duplicates.getItems().clear();
             HashSet<GData> entriesToRemove = new HashSet<>();
@@ -983,7 +983,7 @@ public final class DatFile {
             final Integer firstKey = CACHE_headerHints.firstKey();
             ArrayList<ParsingResult> allParsingResults = CACHE_headerHints.get(firstKey);
             if (allParsingResults.isEmpty()) {
-                if (headerHints.getItems().size() > 0) {
+                if (!headerHints.getItems().isEmpty()) {
                     headerHints.getItems().clear();
                     return true;
                 }
@@ -1980,8 +1980,8 @@ public final class DatFile {
         HashMap<String, ArrayList<Boolean>> backupSelectedData = null;
         int count = 0;
         GData data2draw = drawChainAnchor;
-        final boolean isBackupHiddenData = vertices.hiddenData.size() > 0;
-        final boolean isBackupSelectedData = vertices.selectedData.size() > 0;
+        final boolean isBackupHiddenData = !vertices.hiddenData.isEmpty();
+        final boolean isBackupSelectedData = !vertices.selectedData.isEmpty();
         if (isBackupHiddenData && isBackupSelectedData) {
             backupHiddenData = new HashMap<>();
             backupSelectedData = new HashMap<>();

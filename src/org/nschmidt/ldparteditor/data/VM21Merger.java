@@ -93,7 +93,7 @@ public class VM21Merger extends VM20Manipulator {
 
         switch (mode) {
         case AVERAGE:
-            if (originVerts.size() == 0) return;
+            if (originVerts.isEmpty()) return;
             for (Vertex v : originVerts) {
                 newVertex = Vector3d.add(newVertex, new Vector3d(v));
             }
@@ -110,7 +110,7 @@ public class VM21Merger extends VM20Manipulator {
         case NEAREST_EDGE:
         case NEAREST_EDGE_SPLIT:
         case NEAREST_FACE:
-            if (originVerts.size() == 0) return;
+            if (originVerts.isEmpty()) return;
             {
                 // This is a little bit more complex.
                 // First, I had to extend the selection to adjacent data,
@@ -248,7 +248,7 @@ public class VM21Merger extends VM20Manipulator {
             }
             return;
         case NEAREST_VERTEX:
-            if (originVerts.size() == 0) return;
+            if (originVerts.isEmpty()) return;
             {
                 float minDist = Float.MAX_VALUE;
                 Set<Vertex> allVerticesMinusSelection = new TreeSet<>();

@@ -148,7 +148,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         float sx = STEP;
         float width = canvas.getBounds().width;
         final Primitive sp = cp.getSelectedPrimitive();
-        final boolean hasSearchResults = cp.getSearchResults().size() > 0;
+        final boolean hasSearchResults = !cp.getSearchResults().isEmpty();
 
         if (hasSearchResults) {
             if (cp.getSearchResults().get(0) != null) {

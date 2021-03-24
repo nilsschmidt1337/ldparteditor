@@ -137,7 +137,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         float width = canvas.getBounds().width;
         final Primitive sp = cp.getSelectedPrimitive();
         final Matrix4f rotation = cp.getRotation();
-        final boolean hasSearchResults = cp.getSearchResults().size() > 0;
+        final boolean hasSearchResults = !cp.getSearchResults().isEmpty();
 
         GL11.glLineWidth(1f);
 

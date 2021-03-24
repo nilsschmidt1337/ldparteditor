@@ -166,7 +166,7 @@ public class TreeItem {
      * ONLY FOR PARSER MECHANICS!
      */
     public void sortItems() {
-        if (items.size() > 0) {
+        if (!items.isEmpty()) {
             ArrayList<TreeItem> nl = new ArrayList<>(items.size() + 100);
             HashMap<Integer, ArrayList<TreeItem>> itemsPerLine = new HashMap<>();
             SortedSet<Integer> lines = new TreeSet<>();
@@ -227,7 +227,7 @@ public class TreeItem {
         parent.getMapInv().put(this, t);
         t.setImage(image);
         StringBuilder offset = new StringBuilder();
-        if (visible && items.size() > 0) {
+        if (visible && !items.isEmpty()) {
             switch (step) {
             case 0:
                 offset.append("⇣ "); //$NON-NLS-1$

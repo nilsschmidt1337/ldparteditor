@@ -2085,7 +2085,7 @@ public class Composite3D extends ScalableComposite {
                             @Override
                             public void run() {
                                 final VertexManager vm = df.getVertexManager();
-                                if (vm.getSelectedData().size() > 0 || vm.getSelectedVertices().size() > 0) {
+                                if (!vm.getSelectedData().isEmpty() || !vm.getSelectedVertices().isEmpty()) {
 
                                     final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
                                     final int lastSetIndex = ((CompositeTab) t).getState().getOldLineIndex();
@@ -2142,10 +2142,10 @@ public class Composite3D extends ScalableComposite {
 
             final Integer index2;
             final VertexManager vm = df.getVertexManager();
-            if (vm.getSelectedData().size() > 0) {
+            if (!vm.getSelectedData().isEmpty()) {
                 Integer index = df.getDrawPerLine_NOCLONE().getKey(vm.getSelectedData().iterator().next());
                 if (index == null) {
-                    if (vm.getSelectedSubfiles().size() > 0) {
+                    if (!vm.getSelectedSubfiles().isEmpty()) {
                         index = df.getDrawPerLine_NOCLONE().getKey(vm.getSelectedSubfiles().iterator().next());
                         if (index == null) {
                             return;

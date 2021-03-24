@@ -382,14 +382,14 @@ final class Node {
 
         // Back before front. Reversed because of the new Stack to avoid recursion stack overflows
 
-        if (backP.size() > 0) {
+        if (!backP.isEmpty()) {
             if (this.back == null) {
                 this.back = new Node();
             }
             result.add(new NodePolygon(back, backP));
         }
 
-        if (frontP.size() > 0) {
+        if (!frontP.isEmpty()) {
             if (this.front == null) {
                 this.front = new Node();
             }
@@ -441,14 +441,14 @@ final class Node {
 
         // Back before front. Reversed because of the new Stack to avoid recursion stack overflows
 
-        if (backP.size() > 0) {
+        if (!backP.isEmpty()) {
             if (this.back == null) {
                 this.back = new Node();
             }
             result.add(new NodePolygon(back, backP));
         }
 
-        if (frontP.size() > 0) {
+        if (!frontP.isEmpty()) {
             if (this.front == null) {
                 this.front = new Node();
             }

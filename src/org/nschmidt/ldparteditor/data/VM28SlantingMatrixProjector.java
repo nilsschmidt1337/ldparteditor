@@ -125,12 +125,12 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
             return SlantingMatrixStatus.INIT;
         } else {
             final boolean hasSelection =
-                    selectedVertices.size() > 0 ||
-                    selectedSubfiles.size() > 0 ||
-                    selectedLines.size() > 0 ||
-                    selectedTriangles.size() > 0 ||
-                    selectedQuads.size() > 0 ||
-                    selectedCondlines.size() > 0;
+                    !selectedVertices.isEmpty() ||
+                    !selectedSubfiles.isEmpty() ||
+                    !selectedLines.isEmpty() ||
+                    !selectedTriangles.isEmpty() ||
+                    !selectedQuads.isEmpty() ||
+                    !selectedCondlines.isEmpty();
 
                     if (hasSelection) {
                         return SlantingMatrixStatus.SELECTION;

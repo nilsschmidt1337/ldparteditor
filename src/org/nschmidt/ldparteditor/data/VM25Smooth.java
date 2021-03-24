@@ -167,7 +167,7 @@ class VM25Smooth extends VM24MeshReducer {
 
                     ArrayList<Integer> il = adjacency.get(indmap.get(vertex));
 
-                    if (il.size() > 0) {
+                    if (!il.isEmpty()) {
                         final BigDecimal ad = new BigDecimal(il.size());
 
                         BigDecimal vx = BigDecimal.ZERO;

@@ -805,7 +805,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         TreeMap<Integer, ArrayList<GData>> dataToInsert = new TreeMap<>();
         HashSet<GData> cset = new HashSet<>(CLIPBOARD);
 
-        if (CLIPBOARD.size() > 0) {
+        if (!CLIPBOARD.isEmpty()) {
             final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
             GData g = CLIPBOARD.get(0);
             ArrayList<GData> l = new ArrayList<>();

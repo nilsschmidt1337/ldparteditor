@@ -102,7 +102,7 @@ public enum FlipTriangleOptimizer {
                             ov.addAll(Arrays.asList(trimap.get(other)));
                             ov.remove(a);
                             ov.remove(b);
-                            if (ov.size() == 0) {
+                            if (ov.isEmpty()) {
                                 optimization.remove(other);
                                 flipCache.remove(other);
                                 continue;

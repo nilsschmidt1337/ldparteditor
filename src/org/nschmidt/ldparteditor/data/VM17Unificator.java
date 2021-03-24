@@ -234,7 +234,7 @@ class VM17Unificator extends VM16Subdivide {
                             Set<Vertex> keySet = unifyGroups.keySet();
                             for (Vertex key : keySet) {
                                 TreeSet<Vertex> group = unifyGroups.get(key);
-                                if (group.size() > 0) {
+                                if (!group.isEmpty()) {
                                     for (Vertex gv : group) {
                                         mergeTargets.put(gv, key);
                                     }

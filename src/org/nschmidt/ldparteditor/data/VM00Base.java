@@ -534,7 +534,7 @@ class VM00Base {
     }
 
     private final void cleanupHiddenData() {
-        if (hiddenData.size() > 0) {
+        if (!hiddenData.isEmpty()) {
             HashMap<String, ArrayList<GData>> dict = null;
             Set<GData1> s1 = vertexCountInSubfile.keySet();
             Set<GData2> s2 = lines.keySet();

@@ -694,7 +694,7 @@ public enum DatParser {
 
             if (isVirtual) {
 
-                if (result.size() < 1) {
+                if (result.isEmpty()) {
                     if (!errorCheckOnly) {
 
                         Matrix TMatrix = new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, M30, M31, M32, M33);
@@ -758,7 +758,7 @@ public enum DatParser {
                     }
                 }
 
-                if (result.size() < 1) {
+                if (result.isEmpty()) {
                     if (!errorCheckOnly) {
 
                         Matrix TMatrix = new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, M30, M31, M32, M33);
@@ -868,7 +868,7 @@ public enum DatParser {
                 if (parseError) {
                     result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                 }
-                if (result.size() < 1 && !errorCheckOnly) {
+                if (result.isEmpty() && !errorCheckOnly) {
                     GData2 data = new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, true);
                     result.add(new ParsingResult(data));
                 }
@@ -1249,7 +1249,7 @@ public enum DatParser {
                 } else if (depth < 1 && Vector3d.sub(controlI, controlII).length().compareTo(Threshold.identical_vertex_distance) < 0) {
                     result.add(new ParsingResult(I18n.DATPARSER_IdenticalControlPoints, "[E05] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
                 }
-                if (result.size() < 1 && !errorCheckOnly) {
+                if (result.isEmpty() && !errorCheckOnly) {
                     GData5 data = new GData5(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, controlI.X,
                             controlI.Y, controlI.Z, controlII.X, controlII.Y, controlII.Z, parent, datFile);
                     result.add(new ParsingResult(data));

@@ -1152,7 +1152,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 final boolean readOnly = Project.getFileToEdit().isReadOnly();
                 final VertexManager vm = Project.getFileToEdit().getVertexManager();
 
-                if (vm.getSelectedData().size() > 0 || vm.getSelectedVertices().size() > 0) {
+                if (!vm.getSelectedData().isEmpty() || !vm.getSelectedVertices().isEmpty()) {
 
                     final boolean insertSubfileFromSelection;
                     final boolean cutTheSelection;
@@ -2434,7 +2434,7 @@ public class Editor3DWindow extends Editor3DDesign {
             vm.addSnapshot();
 
             org.nschmidt.ldparteditor.data.GData3 tri = null;
-            if (vm.getSelectedTriangles().size() == 0) {
+            if (vm.getSelectedTriangles().isEmpty()) {
                 disableSelectionTab();
                 return;
             }
@@ -2470,7 +2470,7 @@ public class Editor3DWindow extends Editor3DDesign {
             VertexManager vm = Project.getFileToEdit().getVertexManager();
             vm.addSnapshot();
 
-            if (vm.getSelectedLines().size() > 0) {
+            if (!vm.getSelectedLines().isEmpty()) {
                 org.nschmidt.ldparteditor.data.GData2 line = null;
                 line = vm.getSelectedLines().iterator().next();
                 if (line.isLine) {
@@ -2501,7 +2501,7 @@ public class Editor3DWindow extends Editor3DDesign {
             } else {
 
                 org.nschmidt.ldparteditor.data.GData3 tri = null;
-                if (vm.getSelectedTriangles().size() == 0) {
+                if (vm.getSelectedTriangles().isEmpty()) {
                     disableSelectionTab();
                     return;
                 }
@@ -2715,7 +2715,7 @@ public class Editor3DWindow extends Editor3DDesign {
         });
         WidgetUtil(btn_Hide[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
-                if (Project.getFileToEdit().getVertexManager().getSelectedData().size() > 0) {
+                if (!Project.getFileToEdit().getVertexManager().getSelectedData().isEmpty()) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().hideSelection();
                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
@@ -3437,7 +3437,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     final Set<Vertex> sv = vm.getSelectedVertices();
                     final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
                     if (clipboardVertex == null) {
-                        if (sv.size() == 1 && vm.getSelectedData().size() == 0) {
+                        if (sv.size() == 1 && vm.getSelectedData().isEmpty()) {
                             v = sv.iterator().next();
                         } else {
                             v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
@@ -3553,7 +3553,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), false, true, CoordinatesDialog.getTransformationMode());
                                 setMovingAdjacentData(moveAdjacentData);
                             } else {
-                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedData().size() == 0 || vm.getSelectedVertices().size() == 1, true, CoordinatesDialog.getTransformationMode());
+                                vm.setXyzOrTranslateOrTransform(CoordinatesDialog.getVertex(), null, TransformationMode.SET, CoordinatesDialog.isX(), CoordinatesDialog.isY(), CoordinatesDialog.isZ(), isMovingAdjacentData() || vm.getSelectedData().isEmpty() || vm.getSelectedVertices().size() == 1, true, CoordinatesDialog.getTransformationMode());
                             }
                         }
 

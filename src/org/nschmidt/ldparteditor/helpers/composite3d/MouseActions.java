@@ -740,7 +740,7 @@ public class MouseActions {
                         }
                         return;
                     }
-                    if (vm.getSelectedVertices().size() == 0 && createVertex) {
+                    if (vm.getSelectedVertices().isEmpty() && createVertex) {
                         if (vl1 == null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
@@ -844,7 +844,7 @@ public class MouseActions {
                             }
                             return;
                         }
-                        if (vm.getSelectedVertices().size() == 0 && createVertex) {
+                        if (vm.getSelectedVertices().isEmpty() && createVertex) {
                             if (vt1 == null) {
                                 final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                                 final Vertex nv = new Vertex(cu3d);
@@ -877,7 +877,7 @@ public class MouseActions {
                             if (vt2 != null) vm.getSelectedVertices().remove(vt2);
                         }
                     } else {
-                        if (vm.getSelectedVertices().size() == 0 && createVertex) {
+                        if (vm.getSelectedVertices().isEmpty() && createVertex) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
                             if (vn1 != null && vn2 != null) {
@@ -931,7 +931,7 @@ public class MouseActions {
                     Vertex vq4 = datfile.getObjVertex4();
                     Vertex vn1 = datfile.getNearestObjVertex1();
                     Vertex vn2 = datfile.getNearestObjVertex2();
-                    if (vm.getSelectedVertices().size() == 0 && createVertex) {
+                    if (vm.getSelectedVertices().isEmpty() && createVertex) {
                         if (vq1 == null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);
@@ -1073,7 +1073,7 @@ public class MouseActions {
                     Vertex vc4 = datfile.getObjVertex4();
                     Vertex vn1 = datfile.getNearestObjVertex1();
                     Vertex vn2 = datfile.getNearestObjVertex2();
-                    if (vm.getSelectedVertices().size() == 0 && createVertex) {
+                    if (vm.getSelectedVertices().isEmpty() && createVertex) {
                         if (vc1 == null) {
                             final BigDecimal[] cu3d = c3d.getCursorSnapped3Dprecise();
                             final Vertex nv = new Vertex(cu3d);

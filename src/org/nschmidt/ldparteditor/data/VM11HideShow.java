@@ -118,7 +118,7 @@ class VM11HideShow extends VM10Selector {
 
     public HashMap<String, ArrayList<Boolean>> backupHideShowState() {
         state.clear();
-        if (hiddenData.size() > 0) {
+        if (!hiddenData.isEmpty()) {
             backup(linkedDatFile.getDrawChainStart(), state, ""); //$NON-NLS-1$
             return state;
         }
@@ -126,7 +126,7 @@ class VM11HideShow extends VM10Selector {
     }
 
     public HashMap<String, ArrayList<Boolean>> backupHideShowState(HashMap<String, ArrayList<Boolean>> s) {
-        if (hiddenData.size() > 0) {
+        if (!hiddenData.isEmpty()) {
             backup(linkedDatFile.getDrawChainStart(), s, ""); //$NON-NLS-1$
             return s;
         }
@@ -151,7 +151,7 @@ class VM11HideShow extends VM10Selector {
     }
 
     public HashMap<String, ArrayList<Boolean>> backupSelectedDataState(HashMap<String, ArrayList<Boolean>> s) {
-        if (selectedData.size() > 0) {
+        if (!selectedData.isEmpty()) {
             backup2(linkedDatFile.getDrawChainStart(), s, ""); //$NON-NLS-1$
             return s;
         }
