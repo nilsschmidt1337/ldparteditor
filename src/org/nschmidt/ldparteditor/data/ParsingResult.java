@@ -23,23 +23,32 @@ public class ParsingResult {
 
     private String message;
     private String type;
-    private final int typeNumber;
+    private final ResultType resultType;
     private final GData graphicalData;
+    private int lineNumber;
 
-    public ParsingResult(String message, String type, int typeNumber) {
+    public ParsingResult(String message, String type, ResultType resultType) {
         this.message = message;
         this.type = type;
-        this.typeNumber = typeNumber;
+        this.resultType = resultType;
+        this.graphicalData = null;
+    }
+
+    public ParsingResult(String message, String type, ResultType resultType, int lineNumber) {
+        this.message = message;
+        this.type = type;
+        this.resultType = resultType;
+        this.lineNumber = lineNumber;
         this.graphicalData = null;
     }
 
     public ParsingResult(GData graphicalData) {
         this.graphicalData = graphicalData;
-        this.typeNumber = ResultType.DATA;
+        this.resultType = ResultType.DATA;
     }
 
-    public int getTypeNumber() {
-        return typeNumber;
+    public ResultType getResultType() {
+        return resultType;
     }
 
     public String getMessage() {
@@ -62,4 +71,7 @@ public class ParsingResult {
         return graphicalData;
     }
 
+    public int getLineNumber() {
+        return lineNumber;
+    }
 }

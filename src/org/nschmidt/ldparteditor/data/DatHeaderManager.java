@@ -698,7 +698,7 @@ public class DatHeaderManager {
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
                     formatter.applyPattern(message);
-                    allHints.add(new ParsingResult(formatter.format(messageArguments), "[H" + errno + "] " + I18n.DATPARSER_HeaderHint, lineNumber)); //$NON-NLS-1$ //$NON-NLS-2$
+                    allHints.add(new ParsingResult(formatter.format(messageArguments), "[H" + errno + "] " + I18n.DATPARSER_HeaderHint, ResultType.HINT, lineNumber)); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
                 private boolean isNotBlank(String str) {

@@ -19,9 +19,9 @@ package org.nschmidt.ldparteditor.data;
  * @author nils
  *
  */
-public class ResultType {
-    public static final int DATA = 0;
-    public static final int ERROR = 1;
-    public static final int WARN = 2;
-    public static final int HINT = 3;
+public enum ResultType {
+    DATA,
+    ERROR,
+    WARN,
+    HINT
 }

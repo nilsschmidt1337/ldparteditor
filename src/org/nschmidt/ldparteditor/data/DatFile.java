@@ -605,8 +605,8 @@ public final class DatFile {
                 drawPerLine.put(lineNumber, gdata);
 
                 for (ParsingResult result : results) {
-                    switch (result.getTypeNumber()) {
-                    case ResultType.WARN: // Warning
+                    switch (result.getResultType()) {
+                    case WARN: // Warning
                     {
 
                         Object[] messageArguments = {lineNumber, position};
@@ -621,7 +621,7 @@ public final class DatFile {
                         trtmNewTreeitem.setData(position);
                     }
                     break;
-                    case ResultType.ERROR: // Error
+                    case ERROR: // Error
                     {
 
                         Object[] messageArguments = {lineNumber, position};
@@ -801,8 +801,8 @@ public final class DatFile {
                 }
 
                 for (ParsingResult result : results) {
-                    switch (result.getTypeNumber()) {
-                    case ResultType.WARN: // Warning
+                    switch (result.getResultType()) {
+                    case WARN: // Warning
                     {
 
                         Object[] messageArguments = {lineNumber, position};
@@ -817,7 +817,7 @@ public final class DatFile {
                         trtmNewTreeitem.setData(position);
                     }
                     break;
-                    case ResultType.ERROR: // Error
+                    case ERROR: // Error
                     {
 
                         Object[] messageArguments = {lineNumber, position};
@@ -994,7 +994,7 @@ public final class DatFile {
 
             TreeMap<Integer, ArrayList<ParsingResult>> results = new TreeMap<>();
             for (ParsingResult entry : allParsingResults) {
-                Integer lineNumber = entry.getTypeNumber();
+                Integer lineNumber = entry.getLineNumber();
                 ArrayList<ParsingResult> results2 = new ArrayList<>();
                 results.putIfAbsent(lineNumber, results2);
                 results2 = results.get(lineNumber);
@@ -1032,7 +1032,7 @@ public final class DatFile {
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         trtmNewTreeitem.setText(new String[] { result.getMessage(), "---", result.getType() }); //$NON-NLS-1$
-                        trtmNewTreeitem.setData(result.getTypeNumber());
+                        trtmNewTreeitem.setData(result.getLineNumber());
                     }
                 }
             }
