@@ -2587,16 +2587,14 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmOpenInTextEditor.setEnabled(enabled);
                 mntmOpenInTextEditor.setText(I18n.E3D_OpenInTextEditor);
 
-                @SuppressWarnings("unused")
-                MenuItem mntm_Separator = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
 
                 MenuItem mntmClose = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                 mntm_Close[0] = mntmClose;
                 mntmClose.setEnabled(enabled);
                 mntmClose.setText(I18n.E3D_Close);
 
-                @SuppressWarnings("unused")
-                MenuItem mntm_Separator2 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
 
                 MenuItem mntmRename = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                 mntm_Rename[0] = mntmRename;
@@ -2608,8 +2606,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 mntmRevert.setEnabled(enabled && writable);
                 mntmRevert.setText(I18n.E3D_RevertAllChanges);
 
-                @SuppressWarnings("unused")
-                MenuItem mntm_Separator3 = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
 
                 MenuItem mntmCopyToUnofficial = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
                 mntm_CopyToUnofficial[0] = mntmCopyToUnofficial;
@@ -7993,7 +7990,7 @@ public class Editor3DWindow extends Editor3DDesign {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                Vector4f min = new Vector4f(c3d.getManipulator().getPosition());
+                Vector4f min;
                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                 final Vertex[] result = vm.getMinimalDistanceVertexToLines(new Vertex(c3d.getManipulator().getPosition()));
                 min = result[0].toVector4f();
@@ -8006,8 +8003,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         Vector4f n = min;
 
                         float tx = 1f;
-                        float ty = 0f;
-                        float tz = 0f;
+                        float ty;
+                        float tz;
 
                         if (n.x <= 0f) {
                             tx = -1;
@@ -8050,7 +8047,7 @@ public class Editor3DWindow extends Editor3DDesign {
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                Vector4f min = new Vector4f(c3d.getManipulator().getPosition());
+                Vector4f min;
                 VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                 min = vm.getMinimalDistanceVertexToSurfaces(new Vertex(c3d.getManipulator().getPosition())).toVector4f();
                 c3d.getManipulator().getPosition().set(min.x, min.y, min.z, 1f);
@@ -8086,8 +8083,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 Vector4f n = vm.getVertexNormal(min);
 
                 float tx = 1f;
-                float ty = 0f;
-                float tz = 0f;
+                float ty;
+                float tz;
 
                 if (n.x <= 0f) {
                     tx = -1;
@@ -8132,8 +8129,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 Vector4f n = vm.getMinimalDistanceEdgeNormal(new Vertex(c3d.getManipulator().getPosition()));
 
                 float tx = 1f;
-                float ty = 0f;
-                float tz = 0f;
+                float ty;
+                float tz;
 
                 if (n.x <= 0f) {
                     tx = -1;
@@ -8178,8 +8175,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 Vector4f n = vm.getMinimalDistanceSurfaceNormal(new Vertex(c3d.getManipulator().getPosition()));
 
                 float tx = 1f;
-                float ty = 0f;
-                float tz = 0f;
+                float ty;
+                float tz;
 
                 if (n.x <= 0f) {
                     tx = -1;

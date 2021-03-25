@@ -430,25 +430,25 @@ public enum MathHelper {
             return new Vector4f(closestPoint.x, closestPoint.y, closestPoint.z, 1f);
         }
 
-        float dist2 = 0f;
-        float dist3 = 0f;
-        float dist4 = 0f;
+        float dist2;
+        float dist3;
+        float dist4;
 
-        float dist5 = 0f;
-        float dist6 = 0f;
-        float dist7 = 0f;
+        float dist5;
+        float dist6;
+        float dist7;
 
-        float ex1 = 0f;
-        float ey1 = 0f;
-        float ez1 = 0f;
+        float ex1;
+        float ey1;
+        float ez1;
 
-        float ex2 = 0f;
-        float ey2 = 0f;
-        float ez2 = 0f;
+        float ex2;
+        float ey2;
+        float ez2;
 
-        float ex3 = 0f;
-        float ey3 = 0f;
-        float ez3 = 0f;
+        float ex3;
+        float ey3;
+        float ez3;
 
         {
             float dxup = x1 - px;

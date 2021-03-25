@@ -1109,7 +1109,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             double objdatLinePoint2X = round4f(Math.cos(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
             double objdatLinePoint2Y = 0.0;
             double objdatLinePoint2Z = round4f(Math.sin(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
-            double objdatLinePoint3X = round4f(Math.cos((num - 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
+            double objdatLinePoint3X;
             double objdatLinePoint3Y;
             double objdatLinePoint3Z;
             double objdatLinePoint4X;

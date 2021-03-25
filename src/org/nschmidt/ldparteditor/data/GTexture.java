@@ -785,7 +785,6 @@ public class GTexture {
                 {
                     final byte[] tbytes = new byte[buf.remaining()];
                     buf.get(tbytes);
-                    buf = ByteBuffer.allocateDirect(1);
                     bytes = new ArrayList<>(tbytes.length);
                     for (final byte b : tbytes) {
                         bytes.add(b);

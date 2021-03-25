@@ -401,8 +401,8 @@ class VM08SlicerPro extends VM07PathTruder {
     }
 
     private boolean intersectRayTriangle(Vector3r origin2d, Vertex dir, Vector3r target2d, Vector3r target2d2, Vector3r target2d3, Vector3r ip) {
-        Rational diskr = Rational.ZERO;
-        Rational inv_diskr = Rational.ZERO;
+        Rational diskr;
+        Rational inv_diskr;
         Vector3r vert0 = new Vector3r(target2d);
         Vector3r vert1 = new Vector3r(target2d2);
         Vector3r vert2 = new Vector3r(target2d3);
@@ -803,7 +803,7 @@ class VM08SlicerPro extends VM07PathTruder {
     }
 
     private void projectRayOnTrianglePlane(Vector3r vector3r, Vector3r dirN, Vector3r tv, Vector3r tv2, Vector3r tv3, Vector3r r) {
-        Rational diskr = Rational.ZERO;
+        Rational diskr;
         Vector3r vert0 = new Vector3r(tv);
         Vector3r vert1 = new Vector3r(tv2);
         Vector3r vert2 = new Vector3r(tv3);

@@ -971,7 +971,7 @@ class VM01SelectHelper extends VM01Select {
                 }
             } else {
                 Vector4f selectionStart = new Vector4f(c3d.getSelectionStart());
-                Vector4f selectionDepth = new Vector4f();
+                Vector4f selectionDepth;
 
                 Vector4f zAxis4f = new Vector4f(0, 0, 1f, 1f);
                 Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
@@ -1204,7 +1204,7 @@ class VM01SelectHelper extends VM01Select {
                 }
             } else {
                 Vector4f selectionStart = new Vector4f(c3d.getSelectionStart());
-                Vector4f selectionDepth = new Vector4f();
+                Vector4f selectionDepth;
 
                 Vector4f zAxis4f = new Vector4f(0, 0, 1f, 1f);
                 Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);

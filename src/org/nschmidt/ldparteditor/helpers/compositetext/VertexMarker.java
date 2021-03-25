@@ -52,7 +52,6 @@ public enum VertexMarker {
             if (type != 1) {
                 int off = compositeText.getOffsetAtLine(startLine);
                 caret_start -= off;
-                caret_end -= off;
                 String line = compositeText.getLine(startLine);
                 String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
                 boolean isDistanceOrProtractor = type == 2 && !((GData2) dataInLine).isLine

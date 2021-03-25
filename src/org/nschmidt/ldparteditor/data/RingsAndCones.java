@@ -135,9 +135,9 @@ public enum RingsAndCones {
                                             final long min_r = 1;
                                             long max_r = 100;
 
-                                            int min_amount = 100;
-                                            long min_delta = Long.MAX_VALUE;
-                                            int min_digits = Integer.MAX_VALUE;
+                                            int min_amount;
+                                            long min_delta;
+                                            int min_digits;
 
                                             long current = radi_min;
 
@@ -180,7 +180,6 @@ public enum RingsAndCones {
 
                                                 s = current / r;
                                                 if (s < 10000000L) {
-                                                    max_r = r;
                                                     continue;
                                                 }
 

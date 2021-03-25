@@ -808,7 +808,6 @@ public final class GDataCSG extends GData {
         case CSG.CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
-                notChoosen = false;
             }
             StringBuilder colourBuilder = new StringBuilder();
             if (colour == null) {
@@ -886,7 +885,6 @@ public final class GDataCSG extends GData {
         case CSG.CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
-                notChoosen = false;
             }
             StringBuilder colourBuilder = new StringBuilder();
             if (colour == null) {
@@ -983,7 +981,6 @@ public final class GDataCSG extends GData {
         case CSG.CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
-                notChoosen = false;
             }
             Matrix4f newMatrix = new Matrix4f(this.matrix);
             Matrix4f.transpose(newMatrix, newMatrix);
@@ -1277,7 +1274,6 @@ public final class GDataCSG extends GData {
         case CSG.CONE:
             if (notChoosen) {
                 t = " CSG_CONE "; //$NON-NLS-1$
-                notChoosen = false;
             }
             StringBuilder colourBuilder = new StringBuilder();
             if (colour == null) {

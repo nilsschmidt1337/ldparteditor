@@ -293,7 +293,7 @@ public class Composite3DModifier {
         NLogger.debug(Composite3DModifier.class, "[Spin view]"); //$NON-NLS-1$
         // Spin only, if it is not the last opened view
         if (isSashFormChild(c3d.getSashForm())) {
-            int newStyle = SWT.NONE;
+            int newStyle;
             if ((c3d.getSashForm().getStyle() & SWT.HORIZONTAL) != 0) {
                 newStyle = SWT.VERTICAL;
             } else {

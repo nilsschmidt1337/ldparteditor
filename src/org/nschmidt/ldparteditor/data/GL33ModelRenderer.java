@@ -530,9 +530,6 @@ public class GL33ModelRenderer {
                                 colourise7(0, 6, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, tmpCsgSelectionData, csgSelectionIndex);
                                 csgSelectionIndex += 6;
                             }
-                            if (csgSelectionIndex > 0) {
-                                csgSelectionIndex -= 6;
-                            }
                         }
 
                         if (calculateCSG.compareAndSet(true, false)) {
@@ -1905,7 +1902,7 @@ public class GL33ModelRenderer {
                                     float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarity_angle_warning) / Threshold.coplanarity_angle_error);
 
                                     float r = 0f;
-                                    float g = 0f;
+                                    float g;
                                     float b = 0f;
 
                                     if (f < .5) {

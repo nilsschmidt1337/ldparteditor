@@ -120,7 +120,7 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        float lastX = Float.MAX_VALUE;
+        float lastX;
 
         float x = 2f;
         float y = 2f;
@@ -240,8 +240,6 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         helper.destroyVBO();
 
         canvas.swapBuffers();
-
-        // NLogger.debug(getClass(), "Frametime: " + (System.currentTimeMillis() - start)); //$NON-NLS-1$
     }
 
     @Override

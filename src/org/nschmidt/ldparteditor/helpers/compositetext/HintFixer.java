@@ -33,6 +33,7 @@ final class HintFixer {
     public static String fix(int lineNumber, String sort, String text, DatFile datFile, HeaderState h) {
         DatType type = datFile.getType();
         int s = Integer.parseInt(sort, 16);
+        int l = 0;
         switch (s) {
         case 0: // The title is missing
             text = QuickFixer.insertAfterLine(0, "0 " + I18n.HINTFIXER_Title + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
@@ -41,7 +42,6 @@ final class HintFixer {
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             break;
         case 16: // The filename is missing
-            int l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (type == DatType.SUBPART)
@@ -54,7 +54,6 @@ final class HintFixer {
                 text = QuickFixer.insertAfterLine(l, "0 Name: " + new File(datFile.getNewName()).getName() + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
             break;
         case 32: // The author name is missing
-            l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (h.hasNAME())
@@ -71,7 +70,6 @@ final class HintFixer {
             EditorTextWindow.openIn3D(datFile);
             break;
         case 48: // The part type information is missing
-            l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (h.hasNAME())
@@ -94,7 +92,6 @@ final class HintFixer {
                 text = QuickFixer.insertAfterLine(l, "0 !LDRAW_ORG Unofficial_Part<br>", text); //$NON-NLS-1$
             break;
         case 49: // The "Unofficial_" prefix is missing from the part type
-            l = 0;
             if (h.hasTYPE() && !h.hasUNOFFICIAL() && h.getLineTYPE() > -1) {
                 l = h.getLineTYPE();
                 final String typeLine = QuickFixer.getLine(l - 1, text);
@@ -102,7 +99,6 @@ final class HintFixer {
             }
             break;
         case 50: // There is an invalid UPDATE in the part type
-            l = 0;
             if (h.hasTYPE() && h.getLineTYPE() > -1) {
                 l = h.getLineTYPE();
                 final String typeLine = QuickFixer.getLine(l - 1, text);
@@ -113,7 +109,6 @@ final class HintFixer {
             }
             break;
         case 64: // The license information is missing
-            l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (h.hasNAME())
@@ -130,7 +125,6 @@ final class HintFixer {
             }
             break;
         case 96: // The BFC information is missing
-            l = 0;
             if (h.hasTITLE())
                 l = h.getLineTITLE();
             if (h.hasNAME())
@@ -146,7 +140,7 @@ final class HintFixer {
         default:
             break;
         }
+
         return text;
     }
-
 }

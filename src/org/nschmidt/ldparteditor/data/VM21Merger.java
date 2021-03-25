@@ -290,7 +290,7 @@ public class VM21Merger extends VM20Manipulator {
             Vector3r vector3r, Vector3r dirN,
             Vector3r tv, Vector3r tv2, Vector3r tv3,
             Vector3r r, Rational[] distance) {
-        Rational diskr = Rational.ZERO;
+        Rational diskr;
         Vector3r vert0 = new Vector3r(tv);
         Vector3r vert1 = new Vector3r(tv2);
         Vector3r vert2 = new Vector3r(tv3);

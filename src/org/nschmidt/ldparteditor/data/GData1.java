@@ -1750,22 +1750,19 @@ public final class GData1 extends GData {
 
     @Override
     public String inlinedString(BFC bfc, GColour colour) {
+        final StringBuilder sb = new StringBuilder();
         boolean flipSurfaces = false;
-        StringBuilder sb = new StringBuilder();
         float r = this.r;
         float g = this.g;
         float b = this.b;
         int colourNumber = this.colourNumber;
         if (Inliner.recursively) {
-            sb = new StringBuilder();
             if (this.colourNumber == 16) {
                 r = colour.getR();
                 g = colour.getG();
                 b = colour.getB();
                 colourNumber = colour.getColourNumber();
             }
-        } else {
-            sb = new StringBuilder();
         }
 
         if (Inliner.withSubfileReference) {

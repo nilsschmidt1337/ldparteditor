@@ -531,7 +531,6 @@ class VM00Base {
         }
 
         vertexUseCount = verticesInUse.size();
-        vertexUseCount = verticesInUse.size();
 
         if (vertexCount != vertexUseCount) {
             throw new AssertionError("The number of vertices displayed is not equal to the number of stored vertices."); //$NON-NLS-1$

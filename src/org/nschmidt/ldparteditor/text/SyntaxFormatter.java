@@ -199,7 +199,6 @@ public class SyntaxFormatter {
     private void setBorderStyle(StyleRange range) {
         range.borderStyle = SWT.BORDER_SOLID;
         range.borderColor = Colour.line_box_font[0];
-        range.length = range.length;
     }
 
     /**
@@ -1258,7 +1257,7 @@ public class SyntaxFormatter {
                 // Collinearity
                 angle = Vector3d.angle(vertexA2, vertexD2);
                 double sumAngle = angle;
-                parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                parseError = parseError || angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
 
                 if (!parseError) {
                     angle = Vector3d.angle(vertexB2, vertexC2);

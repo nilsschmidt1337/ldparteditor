@@ -471,7 +471,6 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                         throw new LDPartEditorException(ie);
                                     }
                                 }
-                                counter++;
 
                                 final int cs = solidColours[0].length;
                                 final float[] sc = Arrays.copyOf(solidColours[0], cs);

@@ -160,7 +160,6 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 {
                     for (int j= i + 1; j < lineCount; j++)
                     {
-                        flag=0;
                         Vector3d p11 = new Vector3d(newLines.get(i).X1, newLines.get(i).Y1, newLines.get(i).Z1);
                         Vector3d p12 = new Vector3d(newLines.get(i).X2, newLines.get(i).Y2, newLines.get(i).Z2);
                         Vector3d p21 = new Vector3d(newLines.get(j).X1, newLines.get(j).Y1, newLines.get(j).Z1);
@@ -173,10 +172,10 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         {
                             colin[i] = distline;
                             colin[j] = distline;
-                            flag=1;
                         }
                     }
-                    if((flag = 1) == 1) distline++;
+
+                    distline++;
                 }
             }
 
@@ -216,7 +215,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                         a=0; b=0;
                                         max = cur;
                                     }
-                                    if ((cur = Vector3d.manhattan(p12, p22)).compareTo(max) > 0)
+                                    if (Vector3d.manhattan(p12, p22).compareTo(max) > 0)
                                     {
                                         a=0; b=1;
                                     }
@@ -1540,8 +1539,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         final BigDecimal TOLERANCE = new BigDecimal("0.00001"); //$NON-NLS-1$ .00001
         final BigDecimal ZEROT = new BigDecimal("-0.00001"); //$NON-NLS-1$
         final BigDecimal ONET = new BigDecimal("1.00001"); //$NON-NLS-1$
-        BigDecimal diskr = BigDecimal.ZERO;
-        BigDecimal inv_diskr = BigDecimal.ZERO;
+        BigDecimal diskr;
+        BigDecimal inv_diskr;
         Vector3d vert0 = new Vector3d(a);
         Vector3d vert1 = new Vector3d(b);
         Vector3d vert2 = new Vector3d(c);
@@ -2635,8 +2634,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
     }
 
     private boolean intersectRayTriangle(Vector3dd orig, Vector3d dir, Vector3dd vert0, Vector3dd vert1, Vector3dd vert2) {
-        BigDecimal diskr = BigDecimal.ZERO;
-        BigDecimal inv_diskr = BigDecimal.ZERO;
+        BigDecimal diskr;
+        BigDecimal inv_diskr;
         Vector3d corner1 = Vector3d.sub(vert1, vert0);
         Vector3d corner2 = Vector3d.sub(vert2, vert0);
         Vector3d pvec = Vector3d.cross(dir, corner2);
@@ -2656,8 +2655,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
     }
 
     private boolean intersectLineTriangleSuperFast(Vector3dd q, Vector3d d, Vector3dd p2, Vector3d c, Vector3d dir, BigDecimal len) {
-        BigDecimal diskr = BigDecimal.ZERO;
-        BigDecimal inv_diskr = BigDecimal.ZERO;
+        BigDecimal diskr;
+        BigDecimal inv_diskr;
         Vector3d vert0 = d;
         Vector3d vert1 = p2;
         Vector3d vert2 = c;

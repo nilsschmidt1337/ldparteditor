@@ -292,8 +292,7 @@ class CompositeTabDesign extends CTabItem {
             mntmShowAll.setText(I18n.E3D_ShowAll);
             mntm_ShowAll[0] = mntmShowAll;
 
-            @SuppressWarnings("unused")
-            final MenuItem mntmSeparator0 = new MenuItem(menu[0], SWT.SEPARATOR);
+            new MenuItem(menu[0], SWT.SEPARATOR);
 
             MenuItem mntmDrawSelection = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmDrawSelection.setText(I18n.EDITORTEXT_DrawSelection);
@@ -303,8 +302,7 @@ class CompositeTabDesign extends CTabItem {
             mntmDrawUntilSelection.setText(I18n.EDITORTEXT_DrawUntilSelection);
             mntm_DrawUntilSelection[0] = mntmDrawUntilSelection;
 
-            @SuppressWarnings("unused")
-            final MenuItem mntmSeparator1 = new MenuItem(menu[0], SWT.SEPARATOR);
+            new MenuItem(menu[0], SWT.SEPARATOR);
 
             MenuItem mntmCut = new MenuItem(menu[0], I18n.I18N_RTL());
             mntmCut.setText(I18n.COPYNPASTE_Cut);

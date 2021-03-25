@@ -129,7 +129,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        float lastX = Float.MAX_VALUE;
+        float lastX;
 
         float x = 2f;
         float y = 2f;

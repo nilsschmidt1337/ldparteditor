@@ -285,8 +285,8 @@ class VM10Selector extends VM09WindingChange {
                     }
                 }
 
-                int c2 = selectedTriangles.size();
-                int c3 = selectedQuads.size();
+                int c2;
+                int c3;
 
                 lastSelectedTriangles.addAll(selectedTriangles);
                 lastSelectedQuads.addAll(selectedQuads);
@@ -500,10 +500,10 @@ class VM10Selector extends VM09WindingChange {
                     }
                 }
 
-                int c1 = selectedLines.size();
-                int c2 = selectedTriangles.size();
-                int c3 = selectedQuads.size();
-                int c4 = selectedCondlines.size();
+                int c1;
+                int c2;
+                int c3;
+                int c4;
 
                 lastSelectedLines.addAll(selectedLines);
                 lastSelectedTriangles.addAll(selectedTriangles);

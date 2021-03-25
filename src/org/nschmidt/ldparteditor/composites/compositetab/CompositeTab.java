@@ -300,13 +300,10 @@ public class CompositeTab extends CompositeTabDesign {
                         final boolean doReplace = event.start != event.end;
                         boolean foundVertexMetacommand = false;
 
-                        final boolean doDelete;
                         if (doReplace) {
                             NLogger.debug(getClass(), "Did a text replace!"); //$NON-NLS-1$
-                            doDelete = false;
                         } else {
-                            doDelete = event.text.isEmpty();
-                            if (doDelete) {
+                            if (event.text.isEmpty()) {
                                 NLogger.debug(getClass(), "Did a text deletion!"); //$NON-NLS-1$
                                 if (isDelPressed[0])
                                     NLogger.debug(getClass(), "with DEL"); //$NON-NLS-1$
@@ -319,13 +316,13 @@ public class CompositeTab extends CompositeTabDesign {
                         state.currentCaretTopIndex = compositeText[0].getTopIndex();
 
                         String oldLine = compositeText[0].getLine(state.currentCaretPositionLine);
-                        String newLine = oldLine;
+                        String newLine;
                         NLogger.debug(getClass(), "Old Line {0}", oldLine); //$NON-NLS-1$
                         NLogger.debug(getClass(), "Key Char {0}", event.character); //$NON-NLS-1$
                         NLogger.debug(getClass(), "State Mask {0}", event.stateMask); //$NON-NLS-1$
                         NLogger.debug(getClass(), "Key Code {0}", event.keyCode); //$NON-NLS-1$
                         NLogger.debug(getClass(), "Key Location {0}", event.keyLocation); //$NON-NLS-1$
-                        NLogger.debug(getClass(), "Text [null]{0}", event.text); //$NON-NLS-1$
+                        NLogger.debug(getClass(), "Text [null] {0}", event.text); //$NON-NLS-1$
                         NLogger.debug(getClass(), "Start {0}", event.start); //$NON-NLS-1$
                         NLogger.debug(getClass(), "End {0}", event.end); //$NON-NLS-1$
 

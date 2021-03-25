@@ -2326,15 +2326,13 @@ class Editor3DDesign extends ApplicationWindow {
                     this.mntm_SelectNone[0] = mntm_SelectNone;
                     KeyStateManager.addKeyText(mntm_SelectNone, I18n.E3D_None, Task.SELECT_NONE);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator0 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                new MenuItem(mnu_Select, SWT.SEPARATOR);
                 {
                     MenuItem mntm_SelectInverse = new MenuItem(mnu_Select, SWT.PUSH);
                     this.mntm_SelectInverse[0] = mntm_SelectInverse;
                     mntm_SelectInverse.setText(I18n.E3D_Inverse);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator1 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                new MenuItem(mnu_Select, SWT.SEPARATOR);
                 {
                     MenuItem mntm_SelectAllVisible = new MenuItem(mnu_Select, SWT.PUSH);
                     this.mntm_SelectAllVisible[0] = mntm_SelectAllVisible;
@@ -2350,8 +2348,7 @@ class Editor3DDesign extends ApplicationWindow {
                     this.mntm_SelectAllVisibleWithColours[0] = mntm_SelectAllVisibleWithColours;
                     mntm_SelectAllVisibleWithColours.setText(I18n.E3D_AllSameColoursShown);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator2 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                new MenuItem(mnu_Select, SWT.SEPARATOR);
                 {
                     MenuItem mntm_SelectEverything = new MenuItem(mnu_Select, SWT.PUSH);
                     this.mntm_SelectEverything[0] = mntm_SelectEverything;
@@ -2414,8 +2411,7 @@ class Editor3DDesign extends ApplicationWindow {
                     this.mntm_StopAtEdges[0] = mntm_StopAtEdges;
                     mntm_StopAtEdges.setText(I18n.E3D_StopSelectionAtEdges);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator3 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                new MenuItem(mnu_Select, SWT.SEPARATOR);
                 {
                     MenuItem mntm_SelectSingleVertex = new MenuItem(mnu_Select, SWT.PUSH);
                     this.mntm_SelectSingleVertex[0] = mntm_SelectSingleVertex;
@@ -2426,8 +2422,7 @@ class Editor3DDesign extends ApplicationWindow {
                     this.mntm_SelectIsolatedVertices[0] = mntm_SelectIsolatedVertices;
                     mntm_SelectIsolatedVertices.setText(I18n.E3D_IsolatedVertices);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator4 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                new MenuItem(mnu_Select, SWT.SEPARATOR);
                 {
                     MenuItem mntm_SVertices = new MenuItem(mnu_Select, SWT.CHECK);
                     this.mntm_SVertices[0] = mntm_SVertices;
@@ -2458,8 +2453,7 @@ class Editor3DDesign extends ApplicationWindow {
                     mntm_SCLines.setText(I18n.E3D_Condlines);
                     mntm_SCLines.setSelection(true);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator5 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                new MenuItem(mnu_Select, SWT.SEPARATOR);
                 {
                     MenuItem mntm_SAllTypes = new MenuItem(mnu_Select, SWT.PUSH);
                     this.mntm_SAllTypes[0] = mntm_SAllTypes;
@@ -2470,8 +2464,7 @@ class Editor3DDesign extends ApplicationWindow {
                     this.mntm_SNothing[0] = mntm_SNothing;
                     mntm_SNothing.setText(I18n.E3D_Nothing);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator6 = new MenuItem(mnu_Select, SWT.SEPARATOR);
+                new MenuItem(mnu_Select, SWT.SEPARATOR);
                 {
                     MenuItem mntm_needsThreshold = new MenuItem(mnu_Select, SWT.PUSH);
                     mntm_needsThreshold.setText(I18n.E3D_NeedsAThreshold);
@@ -2508,8 +2501,7 @@ class Editor3DDesign extends ApplicationWindow {
                 this.mntm_Smooth[0] = mntm_Smooth;
                 mntm_Smooth.setText(I18n.E3D_Smooth);
             }
-            @SuppressWarnings("unused")
-            final MenuItem mntmSeparator2 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+            new MenuItem(mnu_Merge, SWT.SEPARATOR);
             {
                 MenuItem mntm_Split = new MenuItem(mnu_Merge, SWT.PUSH);
                 this.mntm_Split[0] = mntm_Split;
@@ -2520,8 +2512,7 @@ class Editor3DDesign extends ApplicationWindow {
                 this.mntm_SplitNTimes[0] = mntm_SplitNTimes;
                 mntm_SplitNTimes.setText(I18n.E3D_SplitNTimes);
             }
-            @SuppressWarnings("unused")
-            final MenuItem mntmSeparator3 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+            new MenuItem(mnu_Merge, SWT.SEPARATOR);
             {
                 MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                 this.mntm_MergeToAverage[0] = mntm_mergeTo;
@@ -2552,15 +2543,13 @@ class Editor3DDesign extends ApplicationWindow {
                 this.mntm_MergeToNearestFace[0] = mntm_mergeTo;
                 mntm_mergeTo.setText(I18n.E3D_MergeToNearestFace);
             }
-            @SuppressWarnings("unused")
-            final MenuItem mntmSeparator4 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+            new MenuItem(mnu_Merge, SWT.SEPARATOR);
             {
                 MenuItem mntm_mergeTo = new MenuItem(mnu_Merge, SWT.PUSH);
                 this.mntm_MergeToNearestFaceDir[0] = mntm_mergeTo;
                 mntm_mergeTo.setText(I18n.E3D_MergeToNearestFaceDir);
             }
-            @SuppressWarnings("unused")
-            final MenuItem mntmSeparator5 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+            new MenuItem(mnu_Merge, SWT.SEPARATOR);
             {
                 MenuItem mntm_setXYZ = new MenuItem(mnu_Merge, SWT.PUSH);
                 this.mntm_setXYZ[0] = mntm_setXYZ;
@@ -2581,8 +2570,7 @@ class Editor3DDesign extends ApplicationWindow {
                 this.mntm_Scale[0] = mntm_Scale;
                 mntm_Scale.setText(I18n.E3D_ScaleSelection);
             }
-            @SuppressWarnings("unused")
-            final MenuItem mntmSeparator1 = new MenuItem(mnu_Merge, SWT.SEPARATOR);
+            new MenuItem(mnu_Merge, SWT.SEPARATOR);
             {
                 MenuItem mntm_SubdivideCatmullClark = new MenuItem(mnu_Merge, SWT.PUSH);
                 this.mntm_SubdivideCatmullClark[0] = mntm_SubdivideCatmullClark;
@@ -2693,8 +2681,7 @@ class Editor3DDesign extends ApplicationWindow {
                     this.mntm_MeshReducer[0] = mntm_MeshReducer;
                     mntm_MeshReducer.setText(I18n.E3D_MeshReduce);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator1 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                new MenuItem(mnu_Tools, SWT.SEPARATOR);
                 {
                     final MenuItem mntm_LibFeatures = new MenuItem(mnu_Tools, SWT.CASCADE);
                     mntm_LibFeatures.setText(I18n.E3D_LibraryFeatures);
@@ -2804,23 +2791,20 @@ class Editor3DDesign extends ApplicationWindow {
                         mntm_IconSize.setText(I18n.E3D_IconSize6);
                         mntm_IconSize.setSelection(iconSize >= 4);
                     }
-                    @SuppressWarnings("unused")
-                    final MenuItem mntmSeparator2 = new MenuItem(mnu_IconSize, SWT.SEPARATOR);
+                    new MenuItem(mnu_IconSize, SWT.SEPARATOR);
                     {
                         MenuItem mntm_IconSize = new MenuItem(mnu_IconSize, SWT.PUSH);
                         mntm_IconSize.setText(I18n.E3D_RequiresRestart);
                         mntm_IconSize.setEnabled(false);
                     }
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator2 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                new MenuItem(mnu_Tools, SWT.SEPARATOR);
                 {
                     MenuItem mntm_UploadErrorLog = new MenuItem(mnu_Tools, SWT.PUSH);
                     this.mntm_UploadLogs[0] = mntm_UploadErrorLog;
                     mntm_UploadErrorLog.setText(I18n.E3D_UploadErrorLogs);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator3 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                new MenuItem(mnu_Tools, SWT.SEPARATOR);
                 {
                     MenuItem mntm_AntiAliasing = new MenuItem(mnu_Tools, SWT.CHECK);
                     mntm_AntiAliasing.setSelection(WorkbenchManager.getUserSettingState().isAntiAliasing());
@@ -2839,8 +2823,7 @@ class Editor3DDesign extends ApplicationWindow {
                     this.mntm_VulkanEngine[0] = mntm_VulkanEngine;
                     mntm_VulkanEngine.setText(I18n.E3D_VulkanEngine);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator4 = new MenuItem(mnu_Tools, SWT.SEPARATOR);
+                new MenuItem(mnu_Tools, SWT.SEPARATOR);
                 {
                     MenuItem mntm_SyncLpeInline = new MenuItem(mnu_Tools, SWT.CHECK);
                     mntm_SyncLpeInline.setSelection(WorkbenchManager.getUserSettingState().getSyncWithLpeInline().get());
@@ -2900,8 +2883,7 @@ class Editor3DDesign extends ApplicationWindow {
                     btn_Mani.setText(I18n.E3D_AdjustRotationCenter);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator1 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                     this.mntm_Manipulator_X_XReverse[0] = btn_Mani;
@@ -2920,8 +2902,7 @@ class Editor3DDesign extends ApplicationWindow {
                     btn_Mani.setText(I18n.E3D_ReverseZ);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator2 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                     this.mntm_Manipulator_SwitchXY[0] = btn_Mani;
@@ -2940,8 +2921,7 @@ class Editor3DDesign extends ApplicationWindow {
                     btn_Mani.setText(I18n.E3D_SwapYZ);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator3 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                     this.mntm_Manipulator_1_cameraToPos[0] = btn_Mani;
@@ -2955,8 +2935,7 @@ class Editor3DDesign extends ApplicationWindow {
                     btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
                     KeyStateManager.addKeyText(btn_Mani, I18n.E3D_ManipulatorToAvg, Task.MOVE_TO_AVG);
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator31 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                     this.mntm_Manipulator_3_toSubfile[0] = btn_Mani;
@@ -2969,8 +2948,7 @@ class Editor3DDesign extends ApplicationWindow {
                     btn_Mani.setText(Cocoa.replaceCtrlByCmd(I18n.E3D_SubfileToManipulator));
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator32 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                     this.mntm_Manipulator_4_toVertex[0] = btn_Mani;
@@ -2989,8 +2967,7 @@ class Editor3DDesign extends ApplicationWindow {
                     btn_Mani.setText(I18n.E3D_ManipulatorToFace);
                     btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
                 }
-                @SuppressWarnings("unused")
-                final MenuItem mntmSeparator4 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+                new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
                 {
                     MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
                     this.mntm_Manipulator_7_toVertexNormal[0] = btn_Mani;

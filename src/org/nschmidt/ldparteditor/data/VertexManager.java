@@ -562,7 +562,6 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glColor3f(View.meshline_Colour_r[0], View.meshline_Colour_g[0], View.meshline_Colour_b[0]);
 
             if (c3d.isSubMeshLines() || drawWireframe) {
-                Vertex[] quadverts = new Vertex[4];
                 for (GData3 gdata : triangles.keySet()) {
                     if (!(gdata.visible || gdata.isTriangle))
                         continue;
@@ -575,7 +574,7 @@ public final class VertexManager extends VM99Clipboard {
                 for (GData4 gdata : quads.keySet()) {
                     if (!gdata.visible)
                         continue;
-                    quadverts = quads.get(gdata);
+                    final Vertex[] quadverts = quads.get(gdata);
                     GL11.glBegin(GL11.GL_LINES);
                     GL11.glVertex3f(quadverts[0].x + tr2.x, quadverts[0].y + tr2.y, quadverts[0].z + tr2.z);
                     GL11.glVertex3f(quadverts[1].x + tr2.x, quadverts[1].y + tr2.y, quadverts[1].z + tr2.z);

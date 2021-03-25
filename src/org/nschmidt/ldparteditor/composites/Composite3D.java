@@ -1197,7 +1197,6 @@ public class Composite3D extends ScalableComposite {
                 final Event ev = new Event();
                 ev.x = event.x - toDisplay(1, 1).x;
                 ev.y = event.y - toDisplay(1, 1).y;
-                ev.stateMask = ev.stateMask;
                 if (newMouseMove.compareAndSet(true, false)) Display.getCurrent().asyncExec(new Runnable() {
                     @Override
                     public void run() {

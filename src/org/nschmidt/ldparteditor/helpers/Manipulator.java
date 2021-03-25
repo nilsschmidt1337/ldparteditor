@@ -906,7 +906,7 @@ public class Manipulator {
                 Vector4f virtpos3 = new Vector4f(Vector4f.add(vector3, position, null));
                 Vector4f screenpos3 = c3d.getPerspectiveCalculator().getScreenCoordinatesFrom3D(virtpos3.x, virtpos3.y, virtpos3.z);
                 float dists = (float) (Math.pow(c3d.getMousePosition().x - screenpos3.x, 2) + Math.pow(c3d.getMousePosition().y - screenpos3.y, 2));
-                float dists3 = Float.MAX_VALUE;
+                float dists3;
                 int position2 = 0;
                 {
                     Vector4f vector2 = new Vector4f(vector);
@@ -1787,10 +1787,6 @@ public class Manipulator {
                         FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
                     }
                 }
-
-                isScaling = true;
-                oldFactor = factor;
-                oldScaleFactor = FACTOR;
             }
 
             transformation.m30 = -position.x;

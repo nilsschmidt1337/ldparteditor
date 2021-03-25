@@ -632,7 +632,6 @@ class VM07PathTruder extends VM06Edger2 {
                                         }
 
                                     }
-                                    Shape2Len--;
 
                                     // Extrusion
                                     // Initialize current shape
@@ -1247,7 +1246,6 @@ class VM07PathTruder extends VM06Edger2 {
                         }
 
                     }
-                    Shape2Len--;
 
                     // Extrusion
                     // Initialize current shape
