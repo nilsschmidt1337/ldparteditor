@@ -135,7 +135,7 @@ public enum DatParser {
      *
      * Please note that the returned value will be always the same instance due
      * to performance reasons! <br>
-     * Use {@code clone()} to obtain a new instance!
+     * Use {@code createClone()} to obtain a new instance!
      *
      * @param arg
      *            the argument data
@@ -199,7 +199,7 @@ public enum DatParser {
      *
      * Please note that the returned value will be always the same instance due
      * to performance reasons! <br>
-     * Use {@code clone()} to obtain a new instance!
+     * Use {@code createClone()} to obtain a new instance!
      *
      * @param arg
      *            the argument data

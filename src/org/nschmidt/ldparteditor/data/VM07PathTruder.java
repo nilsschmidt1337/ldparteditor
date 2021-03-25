@@ -262,8 +262,8 @@ class VM07PathTruder extends VM06Edger2 {
                                         return;
                                     }
 
-                                    final GColour lineColour = DatParser.validateColour(24, .5f, .5f, .5f, 1f).clone();
-                                    final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).clone();
+                                    final GColour lineColour = DatParser.validateColour(24, .5f, .5f, .5f, 1f).createClone();
+                                    final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).createClone();
 
                                     double VERTMERGE = 0.001;
                                     double PI = 3.14159265358979323846;
@@ -879,7 +879,7 @@ class VM07PathTruder extends VM06Edger2 {
                 @Override
                 public void run() {
 
-                    final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).clone();
+                    final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).createClone();
 
                     double VERTMERGE = 0.001;
                     double PI = 3.14159265358979323846;

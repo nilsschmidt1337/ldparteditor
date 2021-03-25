@@ -4603,7 +4603,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (data_segments.length > 1) {
                             GColour c = DatParser.validateColour(data_segments[1], 0f, 0f, 0f, 1f);
                             if (c != null) {
-                                newPal.add(c.clone());
+                                newPal.add(c.createClone());
                             }
                         }
                     }

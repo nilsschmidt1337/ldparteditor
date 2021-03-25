@@ -111,7 +111,7 @@ final class Node {
             final Node n = st.pop();
             final List<Polygon> polys = n.polygons;
             if (n.plane == null && !polys.isEmpty()) {
-                n.plane = polys.get(0).plane.clone();
+                n.plane = polys.get(0).plane.createClone();
             } else if (n.plane == null && polys.isEmpty()) {
                 continue;
             }
@@ -360,7 +360,7 @@ final class Node {
         final ArrayList<NodePolygon> result = new ArrayList<>(2);
 
         if (this.plane == null && !polygons.isEmpty()) {
-            this.plane = polygons.get(0).plane.clone();
+            this.plane = polygons.get(0).plane.createClone();
         } else if (this.plane == null && polygons.isEmpty()) {
             return result;
         }
@@ -407,7 +407,7 @@ final class Node {
         final ArrayList<NodePolygon> result = new ArrayList<>(2);
 
         if (this.plane == null && !polygons.isEmpty()) {
-            this.plane = polygons.get(0).plane.clone();
+            this.plane = polygons.get(0).plane.createClone();
         } else if (this.plane == null && polygons.isEmpty()) {
             return result;
         }

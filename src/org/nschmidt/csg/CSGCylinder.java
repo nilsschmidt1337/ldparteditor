@@ -92,8 +92,8 @@ public class CSGCylinder extends CSGPrimitive implements Primitive {
         boolean isY = Math.abs(axisZ.y) > 0.5;
         final VectorCSGd axisX = new VectorCSGd(isY ? 1 : 0, !isY ? 1 : 0, 0).cross(axisZ).unit();
         final VectorCSGd axisY = axisX.cross(axisZ).unit();
-        VectorCSGd startV = s.clone();
-        VectorCSGd endV = e.clone();
+        VectorCSGd startV = s.createClone();
+        VectorCSGd endV = e.createClone();
         List<Polygon> polygons = new ArrayList<>();
 
         for (int i = 0; i < numSlices; i++) {

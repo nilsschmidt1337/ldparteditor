@@ -345,8 +345,7 @@ public class HeaderState {
         this.lastHistoryEntry = lastHistoryEntry;
     }
 
-    @Override
-    public HeaderState clone() {
+    public HeaderState createClone() {
         HeaderState h = new HeaderState();
         h.hasTITLE = hasTITLE;
         h.hasNAME = hasNAME;

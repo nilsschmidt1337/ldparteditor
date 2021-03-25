@@ -571,7 +571,7 @@ public enum View {
                             IndexedEntry entry = new IndexedEntry(R, G, B);
                             if (index == 16) {
                                 col16_indexedEntry = entry;
-                                original_col16 = colourFromIndex.get(16).clone();
+                                original_col16 = colourFromIndex.get(16).createClone();
                             }
                             indexFromColour.put(entry, index);
                             edgeColourFromIndex.put(index, new GColour(index, R2, G2, B2, 1f));

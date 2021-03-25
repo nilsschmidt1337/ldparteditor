@@ -55,8 +55,8 @@ class VM27YTruder extends VM26LineIntersector {
         final Set<GData5> newCondlines = new HashSet<>();
 
         final GColour col16 = View.getLDConfigColour(16);
-        final GColour lineColour = DatParser.validateColour(24, .5f, .5f, .5f, 1f).clone();
-        final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).clone();
+        final GColour lineColour = DatParser.validateColour(24, .5f, .5f, .5f, 1f).createClone();
+        final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).createClone();
 
         final int MAX_LINE = originalSelection.size() * 3;
         final int MAX_TRI = originalSelection.size() * 3;

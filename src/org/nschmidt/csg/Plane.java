@@ -100,9 +100,8 @@ public class Plane implements Comparable<Plane> {
         return new Plane(n, n.dot(a));
     }
 
-    @Override
-    public Plane clone() {
-        return new Plane(normal.clone(), dist);
+    public Plane createClone() {
+        return new Plane(normal.createClone(), dist);
     }
 
     /**
@@ -181,7 +180,7 @@ public class Plane implements Comparable<Plane> {
                     f.add(vi);
                 }
                 if (ti != FRONT) {
-                    b.add(ti != BACK ? vi.clone() : vi);
+                    b.add(ti != BACK ? vi.createClone() : vi);
                 }
                 if ((ti | tj) == SPANNING) {
 
@@ -190,7 +189,7 @@ public class Plane implements Comparable<Plane> {
                     final VectorCSGd v = vi.interpolate(vj, t);
 
                     f.add(v);
-                    b.add(v.clone());
+                    b.add(v.createClone());
                 }
             }
 
@@ -258,7 +257,7 @@ public class Plane implements Comparable<Plane> {
                     f.add(vi);
                 }
                 if (ti != FRONT) {
-                    b.add(ti != BACK ? vi.clone() : vi);
+                    b.add(ti != BACK ? vi.createClone() : vi);
                 }
                 if ((ti | tj) == SPANNING) {
 
@@ -267,7 +266,7 @@ public class Plane implements Comparable<Plane> {
                     final VectorCSGd v = vi.interpolate(vj, t);
 
                     f.add(v);
-                    b.add(v.clone());
+                    b.add(v.createClone());
                 }
             }
 

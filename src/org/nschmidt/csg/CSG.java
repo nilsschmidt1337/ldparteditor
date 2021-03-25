@@ -157,13 +157,12 @@ public class CSG {
         return csg;
     }
 
-    @Override
-    public CSG clone() {
+    public CSG createClone() {
         CSG csg = new CSG();
 
         csg.polygons = new ArrayList<>();
         for (Polygon polygon : polygons) {
-            csg.polygons.add(polygon.clone());
+            csg.polygons.add(polygon.createClone());
         }
 
         return csg;
@@ -208,8 +207,8 @@ public class CSG {
      */
     public CSG union(CSG csg) {
 
-        final List<Polygon> thisPolys = this.clone().polygons;
-        final List<Polygon> otherPolys = csg.clone().polygons;
+        final List<Polygon> thisPolys = this.createClone().polygons;
+        final List<Polygon> otherPolys = csg.createClone().polygons;
         final Bounds thisBounds = this.getBounds();
         final Bounds otherBounds = csg.getBounds();
 
@@ -296,8 +295,8 @@ public class CSG {
      */
     public CSG difference(CSG csg) {
 
-        final List<Polygon> thisPolys = this.clone().polygons;
-        final List<Polygon> otherPolys = csg.clone().polygons;
+        final List<Polygon> thisPolys = this.createClone().polygons;
+        final List<Polygon> otherPolys = csg.createClone().polygons;
         final Bounds thisBounds = this.getBounds();
         final Bounds otherBounds = csg.getBounds();
 
@@ -385,8 +384,8 @@ public class CSG {
      */
     public CSG intersect(CSG csg) {
 
-        CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(this.clone().polygons));
-        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(csg.clone().polygons));
+        CompletableFuture<Node> f1 = CompletableFuture.supplyAsync(() -> new Node(this.createClone().polygons));
+        CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(csg.createClone().polygons));
         CompletableFuture.allOf(f1, f2).join();
 
         Node a = null;

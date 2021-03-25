@@ -56,10 +56,9 @@ public class GColour implements Serializable {
         this.type = type;
     }
 
-    @Override
-    public GColour clone() {
-        return new GColour(colourNumber, r, g, b, a, GColourType.clone(type));
-    };
+    public GColour createClone() {
+        return new GColour(colourNumber, r, g, b, a, GColourType.createClone(type));
+    }
 
     public int getColourNumber() {
         return colourNumber;
@@ -107,7 +106,7 @@ public class GColour implements Serializable {
         this.g = colour.g;
         this.b = colour.b;
         this.a = colour.a;
-        this.type = GColourType.clone(colour.type);
+        this.type = GColourType.createClone(colour.type);
     }
 
     public void set(int colourNumber, float r, float g, float b, float a) {

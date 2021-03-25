@@ -142,16 +142,15 @@ public final class Polygon {
     Polygon(DatFile df, List<VectorCSGd> vertices, Polygon o) {
         PSEUDO_ID = pseudo_id_counter++;
         this.df = df;
-        this.plane = o.plane.clone();
+        this.plane = o.plane.createClone();
         this.vertices = vertices;
         this.colour = o.colour;
     }
 
-    @Override
-    public Polygon clone() {
+    public Polygon createClone() {
         List<VectorCSGd> newVertices = new ArrayList<>(vertices.size());
         for (VectorCSGd vertex : vertices) {
-            newVertices.add(vertex.clone());
+            newVertices.add(vertex.createClone());
         }
         return new Polygon(df, newVertices, new GColourIndex(colour.getColour(), colour.getIndex()));
     }
@@ -230,19 +229,19 @@ public final class Polygon {
      * @return a transformed copy of this polygon
      */
     Polygon transformed(Transform transform) {
-        return clone().transform(transform);
+        return createClone().transform(transform);
     }
 
     Polygon transformed(Transform transform, GColour c, int ID) {
-        Polygon result = clone().transform(transform);
+        Polygon result = createClone().transform(transform);
         GColourIndex colour = null;
         if ((colour = this.getColour()) != null) {
             GColour c2;
             if ((c2 = colour.getColour()) != null) {
                 if (c2.getColourNumber() == 16) {
-                    result.setColour(new GColourIndex(c.clone(), ID));
+                    result.setColour(new GColourIndex(c.createClone(), ID));
                 } else {
-                    result.setColour(new GColourIndex(c2.clone(), ID));
+                    result.setColour(new GColourIndex(c2.createClone(), ID));
                 }
             }
         }

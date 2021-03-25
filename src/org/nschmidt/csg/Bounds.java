@@ -52,8 +52,8 @@ class Bounds {
      *            max x,y,z values
      */
     public Bounds(VectorCSGd min, VectorCSGd max) {
-        this.min = min.clone();
-        this.max = max.clone();
+        this.min = min.createClone();
+        this.max = max.createClone();
     }
 
     public Bounds() {

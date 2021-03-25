@@ -111,7 +111,7 @@ public enum QuickFixer {
             text2 = sb.toString();
         }
 
-        HeaderState h = datFile.getDatHeader().getState().clone();
+        HeaderState h = datFile.getDatHeader().getState().createClone();
 
         for (Integer l : lineNumbers) {
 

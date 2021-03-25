@@ -62,8 +62,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
         this.z = z;
     }
 
-    @Override
-    public VectorCSGd clone() {
+    public VectorCSGd createClone() {
         return new VectorCSGd(x, y, z);
     }
 

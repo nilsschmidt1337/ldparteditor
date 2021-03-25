@@ -207,7 +207,7 @@ public final class GDataCSG extends GData {
                 ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
                 GColour c = DatParser.validateColour(data_segments[4], col16.getR(), col16.getG(), col16.getB(), 1f);
                 if (c != null) {
-                    colour = c.clone();
+                    colour = c.createClone();
                 } else {
                     colour = View.getLDConfigColour(16);
                 }
@@ -242,7 +242,7 @@ public final class GDataCSG extends GData {
                 ref2 = data_segments[4] + "#>" + parent.shortName; //$NON-NLS-1$
                 GColour c = DatParser.validateColour(data_segments[5], col16.getR(), col16.getG(), col16.getB(), 1f);
                 if (c != null) {
-                    colour = c.clone();
+                    colour = c.createClone();
                 } else {
                     colour = View.getLDConfigColour(16);
                 }
