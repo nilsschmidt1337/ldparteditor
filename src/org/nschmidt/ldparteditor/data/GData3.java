@@ -500,6 +500,8 @@ public final class GData3 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                 }
             }
+        default:
+            break;
         }
         GL11.glEnd();
     }
@@ -695,6 +697,8 @@ public final class GData3 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                 }
             }
+        default:
+            break;
         }
         GL11.glEnd();
     }
@@ -819,6 +823,8 @@ public final class GData3 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                 }
             }
+        default:
+            break;
         }
         GL11.glEnd();
     }
@@ -950,6 +956,8 @@ public final class GData3 extends GData {
                     GL11.glEnd();
                 }
             }
+        default:
+            break;
         }
     }
 
@@ -1192,6 +1200,8 @@ public final class GData3 extends GData {
                         c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                         GL11.glEnd();
                     }
+                default:
+                    break;
                 }
             }
         }
@@ -1386,6 +1396,8 @@ public final class GData3 extends GData {
         case NOCERTIFY:
             // Don't get it for NOCERTIFY.
             break;
+        default:
+            break;
         }
     }
 
@@ -1482,6 +1494,8 @@ public final class GData3 extends GData {
                     }
                     break;
                 case NOCERTIFY:
+                    break;
+                default:
                     break;
                 }
                 if (state.globalInvertNext) {

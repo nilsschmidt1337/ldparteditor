@@ -504,6 +504,8 @@ class VM04Rectifier extends VM03Adjacency {
                                                 case 15:
                                                     shortName = "rect.dat"; //$NON-NLS-1$
                                                     break;
+                                                default:
+                                                    break;
                                                 }
 
                                                 Vector3d vertexA = new Vector3d(vq[0]);
@@ -1006,6 +1008,8 @@ class VM04Rectifier extends VM03Adjacency {
                                     break;
                                 case 15:
                                     shortName = "rect.dat"; //$NON-NLS-1$
+                                    break;
+                                default:
                                     break;
                                 }
 

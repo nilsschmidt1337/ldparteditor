@@ -135,6 +135,8 @@ class VM09WindingChange extends VM08SlicerPro {
             case 5:
                 selectedCondlines.add((GData5) gData);
                 break;
+            default:
+                break;
             }
         }
 

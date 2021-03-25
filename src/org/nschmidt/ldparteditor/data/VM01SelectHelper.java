@@ -474,6 +474,8 @@ class VM01SelectHelper extends VM01Select {
                                 selectedData.add(g);
                             }
                             break;
+                        default:
+                            break;
                         }
                     }
                 }

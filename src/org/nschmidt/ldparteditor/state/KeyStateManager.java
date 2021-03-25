@@ -1156,6 +1156,8 @@ public class KeyStateManager {
         case SWT.COMMAND:
             cmdPressed = isPressed;
             break;
+        default:
+            break;
         }
     }
 

@@ -212,6 +212,8 @@ class VM05Distance extends VM04Rectifier {
                     result.set(n.x + result.x, n.y + result.y, n.z + result.z);
                 }
                 break;
+            default:
+                break;
             }
         }
         if (result.lengthSquared() == 0)

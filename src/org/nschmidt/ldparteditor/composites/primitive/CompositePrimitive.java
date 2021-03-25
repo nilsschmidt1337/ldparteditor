@@ -1197,6 +1197,8 @@ public class CompositePrimitive extends Composite {
             case 5:
             case 6:
                 return new PGDataProxy(result);
+            default:
+                break;
             }
         }
 
@@ -1227,6 +1229,8 @@ public class CompositePrimitive extends Composite {
             break;
         case 5:
             result = parse_Condline(data_segments);
+            break;
+        default:
             break;
         }
         if (result == null) {

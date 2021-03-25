@@ -122,6 +122,8 @@ public class PNGDecoder {
             case tRNS:
                 readtRNS();
                 break;
+            default:
+                break;
             }
             closeChunk();
         }

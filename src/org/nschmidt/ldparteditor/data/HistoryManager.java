@@ -250,6 +250,8 @@ class HistoryManager {
                                             doRestore = true;
                                         }
                                         break;
+                                    default:
+                                        break;
                                     }
                                     if (doRestore) {
                                         df.getVertexManager().setSkipSyncWithTextEditor(true);

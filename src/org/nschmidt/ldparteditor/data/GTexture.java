@@ -522,6 +522,8 @@ public class GTexture {
                 case 3:
                     ID_cubemap_metal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
                     break;
+                default:
+                    break;
                 }
             }
             OpenGlDisposed.put(renderer, false);
@@ -567,6 +569,8 @@ public class GTexture {
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_metal);
                     GL20.glUniform1i(renderer.getCubeMapMetalLoc(), 16); // Texture unit 16 is for cube maps.
                     break;
+                default:
+                    break;
                 }
             }
         }
@@ -608,6 +612,8 @@ public class GTexture {
                 case 3:
                     ID_cubemap_metal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
                     break;
+                default:
+                    break;
                 }
             }
             OpenGlDisposed.put(renderer, false);
@@ -639,6 +645,8 @@ public class GTexture {
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 16);
                     GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_metal);
                     GL20.glUniform1i(shader.getUniformLocation("cubeMapMetal"), 16); // Texture unit 16 is for cube maps. //$NON-NLS-1$
+                    break;
+                default:
                     break;
                 }
             }

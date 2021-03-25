@@ -176,6 +176,8 @@ public enum TexMapParser {
                                 mode = 1;
                             }
                             break;
+                        default:
+                            break;
                         }
                         switch (mode) {
                         case 3: // Parse texture till whitespace
@@ -234,6 +236,8 @@ public enum TexMapParser {
                                 whitespace2 = true;
                             }
                             break;
+                        default:
+                            break;
                         }
                         switch (mode) {
                         case 15:
@@ -245,6 +249,8 @@ public enum TexMapParser {
                                     mode = 16;
                                 }
                             }
+                            break;
+                        default:
                             break;
                         }
                         switch (mode) {
@@ -261,6 +267,8 @@ public enum TexMapParser {
                             } else {
                                 gloss.append(sub);
                             }
+                            break;
+                        default:
                             break;
                         }
                     }
@@ -317,6 +325,8 @@ public enum TexMapParser {
             return parse_Quad(data_segments, r, g, b, a, parent);
         case 5:
             return parse_Condline(data_segments, r, g, b, a, parent);
+        default:
+            break;
         }
         return null;
     }

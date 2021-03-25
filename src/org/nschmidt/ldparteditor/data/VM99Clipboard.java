@@ -186,6 +186,8 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                                 selectedCondlines.add(condline);
                             }
                             break;
+                        default:
+                            break;
                         }
                     }
                 }

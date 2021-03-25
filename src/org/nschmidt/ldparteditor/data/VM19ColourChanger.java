@@ -151,6 +151,8 @@ class VM19ColourChanger extends VM18LineConverter {
             case 5:
                 selectedCondlines.add((GData5) gData);
                 break;
+            default:
+                break;
             }
         }
 

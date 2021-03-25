@@ -1304,6 +1304,8 @@ public final class GDataCSG extends GData {
                 tag = tag + " " + ref2.substring(0, ref2.lastIndexOf("#>")); //$NON-NLS-1$ //$NON-NLS-2$
             }
             return "0 !LPE" + t + tag + " " + colourBuilder.toString() + " " + MathHelper.matrixToString(newMatrix, coordsDecimalPlaces, matrixDecimalPlaces, onX, onY, onZ); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        default:
+            break;
         }
         return null;
     }

@@ -766,6 +766,8 @@ class VM03Adjacency extends VM02Add {
                                 }
                             }
                             break;
+                        default:
+                            break;
                         }
                     }
                     if (isPureSubfileVertex)

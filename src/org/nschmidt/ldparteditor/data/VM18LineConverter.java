@@ -127,6 +127,8 @@ class VM18LineConverter extends VM17Unificator {
                     }
                 }
                 break;
+                default:
+                break;
                 }
                 switch (faces.get(1).type()) {
                 case 3:
@@ -146,6 +148,8 @@ class VM18LineConverter extends VM17Unificator {
                         fv2.add(tv);
                     }
                 }
+                break;
+                default:
                 break;
                 }
 

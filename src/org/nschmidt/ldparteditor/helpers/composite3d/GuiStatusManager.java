@@ -101,6 +101,8 @@ public enum GuiStatusManager {
                     formatForFourSelectedVertices(sb, orderedScreenVertexIterator);
                     formatForFourSelectedVertices(sb, orderedScreenVertexIterator);
                     break;
+                default:
+                    break;
                 }
             }
 

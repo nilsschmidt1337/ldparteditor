@@ -211,6 +211,9 @@ class VM14Splitter extends VM13SymSplitter {
                         View.DUMMY_REFERENCE, linkedDatFile));
                 cur = next;
             }
+            break;
+        default:
+            break;
         }
         return result;
     }
@@ -1098,6 +1101,9 @@ class VM14Splitter extends VM13SymSplitter {
                         View.DUMMY_REFERENCE, linkedDatFile, g.isLine));
                 cur = next;
             }
+            break;
+        default:
+            break;
         }
         return result;
     }
@@ -1359,6 +1365,9 @@ class VM14Splitter extends VM13SymSplitter {
                 linkedDatFile.insertAfter(g4, tri2);
                 linkedDatFile.insertAfter(g4, tri1);
             }
+            break;
+            default:
+                break;
             }
 
         }

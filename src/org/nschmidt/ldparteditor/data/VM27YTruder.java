@@ -189,7 +189,8 @@ class VM27YTruder extends VM26LineIntersector {
                         NumCond++;
                     }
                     break;
-
+                default:
+                    break;
                 }
                 NumSurf++;
                 LineUsed[current] = 2;
@@ -236,14 +237,17 @@ class VM27YTruder extends VM26LineIntersector {
                                         if (d1 > EPSILON) {
                                             Surf[NumSurf][2][0] = Surf[NumSurf][2][0] * (d1 + distance) / d1;
                                             Surf[NumSurf][2][2] = Surf[NumSurf][2][2] * (d1 + distance) / d1;
-                                        } {
+                                        }
+
                                         SET(CondLine[NumCond][0], Surf[NumSurf][0]);
                                         SET(CondLine[NumCond][1], Surf[NumSurf][2]);
                                         SET(CondLine[NumCond][2], Surf[NumSurf][1]);
                                         SET(CondLine[NumCond][3], Surf[NumSurf][3]);
                                         CondFlag[NumCond] = 5;
                                         NumCond++;
-                                    }
+
+                                        break;
+                                    default:
                                         break;
                                     }
                                     SET(CondLine[NumCond][0], Surf[NumSurf][0]);

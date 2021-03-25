@@ -241,6 +241,8 @@ public class MouseActions {
                 break;
             Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
             break;
+        default:
+            break;
         }
 
         syncManipulator();
@@ -355,6 +357,8 @@ public class MouseActions {
             }
             translateViewport(dx, dy, viewport_translation, viewport_rotation, perspective);
             c3d.getVertexManager().getResetTimer().set(true);
+            break;
+        default:
             break;
         }
         c3d.getCursor3D().set(perspective.get3DCoordinatesFromScreen(event.x, event.y));
@@ -1303,6 +1307,8 @@ public class MouseActions {
                     menu.setVisible(true);
                 }
             }
+            break;
+        default:
             break;
         }
 

@@ -1296,6 +1296,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                                         bfc_type = bfc;
                                                         r.println("0 BFC CERTIFY CW"); //$NON-NLS-1$
                                                         break;
+                                                    default:
+                                                        break;
                                                     }
                                                     if (bfc_type != BFC.NOCERTIFY) break;
                                                 }
@@ -4359,6 +4361,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             case SWT.NORMAL:
                                 style = java.awt.Font.PLAIN;
                                 break;
+                            default:
+                                break;
                             }
                             myFont = new java.awt.Font(fd.getName(), style, fd.getHeight());
                         }
@@ -5776,6 +5780,8 @@ public class Editor3DWindow extends Editor3DDesign {
             setAddingSomething(isAddingProtractor());
             clickSingleBtn(btn_AddProtractor[0]);
             break;
+        default:
+            break;
         }
     }
 
@@ -5812,6 +5818,8 @@ public class Editor3DWindow extends Editor3DDesign {
             btn_Subfiles[0].setSelection(true);
             setWorkingType(ObjectMode.SUBFILES);
             clickSingleBtn(btn_Subfiles[0]);
+            break;
+        default:
             break;
         }
     }

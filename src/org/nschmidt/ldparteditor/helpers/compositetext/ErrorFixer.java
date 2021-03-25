@@ -110,6 +110,8 @@ final class ErrorFixer {
                             t.M20.negate(), t.M21.negate(), t.M22.negate(), t.M23,
                             t.M30, t.M31, t.M32, t.M33);
                     break;
+                default:
+                    break;
                 }
 
                 GData1 newSubfile = (GData1) DatParser

@@ -456,6 +456,8 @@ public class VM20Manipulator extends VM19ColourChanger {
                                 }
                             }
                             break;
+                        default:
+                            break;
                         }
                     }
                     if (isPureSubfileVertex)

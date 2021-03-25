@@ -988,6 +988,8 @@ public final class GData5 extends GData {
         case NOCERTIFY:
             // Don't get it for NOCERTIFY.
             break;
+        default:
+            break;
         }
     }
 

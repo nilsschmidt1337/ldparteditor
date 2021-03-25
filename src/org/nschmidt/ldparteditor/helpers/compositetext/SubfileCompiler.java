@@ -492,6 +492,8 @@ public enum SubfileCompiler {
             builder.append(gd.transformAndColourReplace(colour, matrixInv));
             builder.append(StringHelper.getLineDelimiter());
             break;
+        default:
+            break;
         }
 
     }

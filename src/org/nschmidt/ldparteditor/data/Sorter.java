@@ -149,6 +149,8 @@ public enum Sorter {
                         case 5:
                         {GData5 g = (GData5) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
                         break;
+                        default:
+                        break;
                         }
                         switch (g2.type()) {
                         case 1:
@@ -165,6 +167,8 @@ public enum Sorter {
                         break;
                         case 5:
                         {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        default:
                         break;
                         }
                         if (g1.type() == 6 && g1.getNext() != null) {
@@ -184,6 +188,8 @@ public enum Sorter {
                             case 5:
                             {GData5 g = (GData5) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
                             break;
+                            default:
+                            break;
                             }
                         }
                         if (g2.type() == 6 && g2.getNext() != null) {
@@ -202,6 +208,8 @@ public enum Sorter {
                             break;
                             case 5:
                             {GData5 g = (GData5) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            default:
                             break;
                             }
                         }
@@ -228,6 +236,8 @@ public enum Sorter {
                         case 5:
                         {GData5 g = (GData5) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
                         break;
+                        default:
+                        break;
                         }
                         switch (g2.type()) {
                         case 1:
@@ -244,6 +254,8 @@ public enum Sorter {
                         break;
                         case 5:
                         {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                        break;
+                        default:
                         break;
                         }
                         if (g1.type() == 6 && g1.getNext() != null) {
@@ -263,6 +275,8 @@ public enum Sorter {
                             case 5:
                             {GData5 g = (GData5) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
                             break;
+                            default:
+                            break;
                             }
                         }
                         if (g2.type() == 6 && g2.getNext() != null) {
@@ -281,6 +295,8 @@ public enum Sorter {
                             break;
                             case 5:
                             {GData5 g = (GData5) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            default:
                             break;
                             }
                         }
@@ -343,6 +359,8 @@ public enum Sorter {
                             case 5:
                             {GData5 g = (GData5) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
                             break;
+                            default:
+                            break;
                             }
                             switch (g2.type()) {
                             case 1:
@@ -359,6 +377,8 @@ public enum Sorter {
                             break;
                             case 5:
                             {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            default:
                             break;
                             }
                             if (g1.type() == 6 && g1.getNext() != null) {
@@ -378,6 +398,8 @@ public enum Sorter {
                                 case 5:
                                 {GData5 g = (GData5) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
                                 break;
+                                default:
+                                break;
                                 }
                             }
                             if (g2.type() == 6 && g2.getNext() != null) {
@@ -396,6 +418,8 @@ public enum Sorter {
                                 break;
                                 case 5:
                                 {GData5 g = (GData5) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                                break;
+                                default:
                                 break;
                                 }
                             }
@@ -435,6 +459,8 @@ public enum Sorter {
                             case 5:
                             {GData5 g = (GData5) g1; if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
                             break;
+                            default:
+                            break;
                             }
                             switch (g2.type()) {
                             case 1:
@@ -451,6 +477,8 @@ public enum Sorter {
                             break;
                             case 5:
                             {GData5 g = (GData5) g2; if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                            break;
+                            default:
                             break;
                             }
                             if (g1.type() == 6 && g1.getNext() != null) {
@@ -470,6 +498,8 @@ public enum Sorter {
                                 case 5:
                                 {GData5 g = (GData5) g1.getNext(); if (g.colourNumber != -1) {c1 = g.colourNumber;} else {c1 = g.b + 10f * g.g + 100f * g.r;}}
                                 break;
+                                default:
+                                break;
                                 }
                             }
                             if (g2.type() == 6 && g2.getNext() != null) {
@@ -488,6 +518,8 @@ public enum Sorter {
                                 break;
                                 case 5:
                                 {GData5 g = (GData5) g2.getNext(); if (g.colourNumber != -1) {c2 = g.colourNumber;} else {c2 = g.b + 10f * g.g + 100f * g.r;}}
+                                break;
+                                default:
                                 break;
                                 }
                             }

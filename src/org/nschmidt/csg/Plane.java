@@ -200,6 +200,8 @@ public class Plane implements Comparable<Plane> {
                 back.add(new Polygon(df, b, polygon));
             }
             return;
+        default:
+            break;
         }
     }
 
@@ -277,6 +279,8 @@ public class Plane implements Comparable<Plane> {
                 back.add(new Polygon(df, b, polygon));
             }
             return;
+        default:
+            break;
         }
     }
 

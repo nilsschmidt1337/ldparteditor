@@ -639,6 +639,8 @@ public class Manipulator {
         case V_ROTATE_ARROW:
             axis = new Vector3f(gen[2].x, gen[2].y, gen[2].z);
             break;
+        default:
+            break;
         }
         switch (type) {
         case X_ROTATE:
@@ -696,6 +698,8 @@ public class Manipulator {
                 vector = new Vector4f(gen[1].x, gen[1].y, gen[1].z, 1f);
                 axis = new Vector3f(gen[2].x, gen[2].y, gen[2].z);
                 break;
+            default:
+                break;
             }
             if (type == V_ROTATE) {
                 vector.scale(rotate_outer_size / zoom / 1000f);
@@ -743,6 +747,8 @@ public class Manipulator {
                         case V_ROTATE:
                             v_Rotate_start.set(vector);
                             v_Rotate = true;
+                            break;
+                        default:
                             break;
                         }
                         return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
@@ -831,6 +837,8 @@ public class Manipulator {
             case V_ROTATE_ARROW:
                 size = rotate_outer_size;
                 break;
+            default:
+                break;
             }
             // Take the axis
             vector = null;
@@ -875,6 +883,8 @@ public class Manipulator {
                 vector.setW(1f);
                 v_rotateArrow.set(vector);
                 break;
+            default:
+                break;
             }
             vector.scale(size / zoom / 1000f);
 
@@ -916,6 +926,8 @@ public class Manipulator {
                     case V_ROTATE_ARROW:
                         m.rotate(Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
+                    default:
+                        break;
                     }
                     Matrix4f.transform(m, vector2, vector2);
                     Vector4f virtpos2 = new Vector4f(Vector4f.add(vector2, position, null));
@@ -942,6 +954,8 @@ public class Manipulator {
                         break;
                     case V_ROTATE_ARROW:
                         m.rotate(-Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        break;
+                    default:
                         break;
                     }
                     Matrix4f.transform(m, vector2, vector2);
@@ -1030,6 +1044,8 @@ public class Manipulator {
                             }
                         }
                         break;
+                    default:
+                        break;
                     }
                     return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
                 } else {
@@ -1058,6 +1074,8 @@ public class Manipulator {
                         break;
                     case Z_SCALE:
                         z_Scale = true;
+                        break;
+                    default:
                         break;
                     }
                     return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);

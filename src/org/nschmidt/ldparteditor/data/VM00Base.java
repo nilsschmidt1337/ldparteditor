@@ -1012,6 +1012,8 @@ class VM00Base {
 
                 drawPerLine.put(oldNumber, newGdata5);
                 break;
+            default:
+                break;
             }
         }
 
@@ -1078,6 +1080,8 @@ class VM00Base {
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.X1, oldLin.Y1, oldLin.Z1, newVertex.X, newVertex.Y, newVertex.Z, oldLin.parent,
                             linkedDatFile, oldLin.isLine);
                     break;
+                default:
+                    break;
                 }
                 newData = newLin;
                 if (selectedLines.contains(oldLin))
@@ -1100,6 +1104,8 @@ class VM00Base {
                 case 2:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
                             newVertex, oldTri.parent, linkedDatFile, oldTri.isTriangle);
+                    break;
+                default:
                     break;
                 }
                 newData = newTri;
@@ -1128,6 +1134,8 @@ class VM00Base {
                     newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.X1, oldQuad.Y1, oldQuad.Z1), new Vertex(oldQuad.X2, oldQuad.Y2,
                             oldQuad.Z2), new Vertex(oldQuad.X3, oldQuad.Y3, oldQuad.Z3), newVertex, oldQuad.parent, linkedDatFile);
                     break;
+                default:
+                    break;
                 }
                 newData = newQuad;
                 if (selectedQuads.contains(oldQuad))
@@ -1155,10 +1163,14 @@ class VM00Base {
                     newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.X1, oldCLin.Y1, oldCLin.Z1), new Vertex(oldCLin.X2, oldCLin.Y2,
                             oldCLin.Z2), new Vertex(oldCLin.X3, oldCLin.Y3, oldCLin.Z3), newVertex, oldCLin.parent, linkedDatFile);
                     break;
+                default:
+                    break;
                 }
                 newData = newCLin;
                 if (selectedCondlines.contains(oldCLin))
                     selectedCondlines.add(newCLin);
+                break;
+            default:
                 break;
             }
 
@@ -1231,6 +1243,8 @@ class VM00Base {
                     newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.X1, oldLin.Y1, oldLin.Z1, newVertex.X, newVertex.Y, newVertex.Z, oldLin.parent,
                             linkedDatFile, oldLin.isLine);
                     break;
+                default:
+                    break;
                 }
                 newData = newLin;
                 if (selectedLines.contains(oldLin))
@@ -1253,6 +1267,8 @@ class VM00Base {
                 case 2:
                     newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
                             newVertex, oldTri.parent, linkedDatFile, oldTri.isTriangle);
+                    break;
+                default:
                     break;
                 }
                 newData = newTri;
@@ -1281,6 +1297,8 @@ class VM00Base {
                     newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.X1, oldQuad.Y1, oldQuad.Z1), new Vertex(oldQuad.X2, oldQuad.Y2,
                             oldQuad.Z2), new Vertex(oldQuad.X3, oldQuad.Y3, oldQuad.Z3), newVertex, oldQuad.parent, linkedDatFile);
                     break;
+                default:
+                    break;
                 }
                 newData = newQuad;
                 if (selectedQuads.contains(oldQuad))
@@ -1308,10 +1326,14 @@ class VM00Base {
                     newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.X1, oldCLin.Y1, oldCLin.Z1), new Vertex(oldCLin.X2, oldCLin.Y2,
                             oldCLin.Z2), new Vertex(oldCLin.X3, oldCLin.Y3, oldCLin.Z3), newVertex, oldCLin.parent, linkedDatFile);
                     break;
+                default:
+                    break;
                 }
                 newData = newCLin;
                 if (selectedCondlines.contains(oldCLin))
                     selectedCondlines.add(newCLin);
+                break;
+            default:
                 break;
             }
 
@@ -1382,6 +1404,8 @@ class VM00Base {
             case 4:
                 GData4 g4 = (GData4) g;
                 n = new Vector3f(g4.xn, g4.yn, g4.zn);
+                break;
+            default:
                 break;
             }
             if (n != null) {
@@ -1560,6 +1584,8 @@ class VM00Base {
                                     selectedCondlines.add(condline);
                                 }
                             }
+                            break;
+                        default:
                             break;
                         }
                     }

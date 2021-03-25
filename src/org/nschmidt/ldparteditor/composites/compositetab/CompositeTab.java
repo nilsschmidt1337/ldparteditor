@@ -1345,6 +1345,8 @@ public class CompositeTab extends CompositeTabDesign {
                         event.newOffset = Math.max(len + 1, event.newOffset + 1);
                     }
                     break;
+                default:
+                    break;
                 }
             }
 
@@ -1383,6 +1385,8 @@ public class CompositeTab extends CompositeTabDesign {
                         event.newOffset--;
                         c = compositeText[0].getText().charAt(event.newOffset);
                     }
+                    break;
+                default:
                     break;
                 }
             }

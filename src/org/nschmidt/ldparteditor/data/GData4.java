@@ -516,6 +516,8 @@ public final class GData4 extends GData {
                 GL11.glVertex3f(x4, y4, z4);
             }
             break;
+        default:
+            break;
         }
         GL11.glEnd();
     }
@@ -708,6 +710,8 @@ public final class GData4 extends GData {
                 GL11.glVertex3f(x4, y4, z4);
             }
             break;
+        default:
+            break;
         }
         GL11.glEnd();
     }
@@ -816,6 +820,8 @@ public final class GData4 extends GData {
                 GL11.glVertex3f(x3, y3, z3);
                 GL11.glVertex3f(x4, y4, z4);
             }
+            break;
+        default:
             break;
         }
         GL11.glEnd();
@@ -959,6 +965,8 @@ public final class GData4 extends GData {
                     GL11.glEnd();
                 }
             }
+            break;
+        default:
             break;
         }
     }
@@ -1239,6 +1247,8 @@ public final class GData4 extends GData {
                         GL11.glEnd();
                     }
                     break;
+                default:
+                    break;
                 }
             }
         }
@@ -1455,6 +1465,8 @@ public final class GData4 extends GData {
         case NOCERTIFY:
             // Don't get it for NOCERTIFY.
             break;
+        default:
+            break;
         }
     }
 
@@ -1570,6 +1582,8 @@ public final class GData4 extends GData {
                     }
                     break;
                 case NOCERTIFY:
+                    break;
+                default:
                     break;
                 }
                 if (state.globalInvertNext) {

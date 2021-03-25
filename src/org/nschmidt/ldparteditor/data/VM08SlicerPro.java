@@ -281,6 +281,8 @@ class VM08SlicerPro extends VM07PathTruder {
                                                     case 7:
                                                         newTriangles.addAll(MathHelper.triangulateNPoints(CN, R, G, B, A, pointsToTriangulate, av, View.DUMMY_REFERENCE, linkedDatFile));
                                                         break;
+                                                    default:
+                                                        break;
                                                     }
                                                 }
                                             }
@@ -516,6 +518,7 @@ class VM08SlicerPro extends VM07PathTruder {
             case 1:
                 sideIntersections.add(li);
             default:
+                break;
             }
         }
         {
@@ -592,6 +595,8 @@ class VM08SlicerPro extends VM07PathTruder {
                 sideIntersections.add(li2);
             case 1:
                 sideIntersections.add(li);
+            default:
+                break;
             }
         }
         {

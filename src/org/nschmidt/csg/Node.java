@@ -438,6 +438,8 @@ final class Node {
                 break;
             case Plane.SPANNING:
                 break;
+            default:
+                break;
             }
             i++;
         }

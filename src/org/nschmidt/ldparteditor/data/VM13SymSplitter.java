@@ -152,6 +152,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 pos++;
                             }
                             break;
+                        default:
+                            break;
                         }
                     }
                     currentValue = Math.max(neg, pos);
@@ -258,6 +260,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         wasModified = changeVertexDirectFast(v, new Vertex(o, v.Y, v.Z), true) || wasModified;
                     }
                     break;
+                default:
+                    break;
                 }
             }
         }
@@ -363,6 +367,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         case 1:
                             pos++;
                             break;
+                        default:
+                            break;
                         }
                         break;
                     case SymSplitterSettings.Z_MINUS:
@@ -376,6 +382,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             break;
                         case 1:
                             neg++;
+                            break;
+                        default:
                             break;
                         }
                         break;
@@ -391,6 +399,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         case 1:
                             pos++;
                             break;
+                        default:
+                            break;
                         }
                         break;
                     case SymSplitterSettings.Y_MINUS:
@@ -404,6 +414,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             break;
                         case 1:
                             neg++;
+                            break;
+                        default:
                             break;
                         }
                         break;
@@ -419,6 +431,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         case 1:
                             pos++;
                             break;
+                        default:
+                            break;
                         }
                         break;
                     case SymSplitterSettings.X_MINUS:
@@ -433,7 +447,11 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         case 1:
                             neg++;
                             break;
+                        default:
+                            break;
                         }
+                        break;
+                    default:
                         break;
                     }
                 }
@@ -583,6 +601,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                                 }
                                             }
                                         }
+                                        break;
+                                    default:
                                         break;
                                     }
                                 }
@@ -804,6 +824,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 case 1:
                                     pos++;
                                     break;
+                                default:
+                                    break;
                                 }
                                 break;
                             case SymSplitterSettings.Z_MINUS:
@@ -817,6 +839,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                     break;
                                 case 1:
                                     neg++;
+                                    break;
+                                default:
                                     break;
                                 }
                                 break;
@@ -832,6 +856,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 case 1:
                                     pos++;
                                     break;
+                                default:
+                                    break;
                                 }
                                 break;
                             case SymSplitterSettings.Y_MINUS:
@@ -845,6 +871,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                     break;
                                 case 1:
                                     neg++;
+                                    break;
+                                default:
                                     break;
                                 }
                                 break;
@@ -860,6 +888,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 case 1:
                                     pos++;
                                     break;
+                                default:
+                                    break;
                                 }
                                 break;
                             case SymSplitterSettings.X_MINUS:
@@ -874,7 +904,11 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 case 1:
                                     neg++;
                                     break;
+                                default:
+                                    break;
                                 }
+                                break;
+                            default:
                                 break;
                             }
                         }

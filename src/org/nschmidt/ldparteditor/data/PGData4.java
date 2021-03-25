@@ -247,6 +247,8 @@ public final class PGData4 extends PGData implements Serializable {
             GL11.glVertex3f(x4, y4, z4);
             GL11.glEnd();
             break;
+        default:
+            break;
         }
     }
 
@@ -475,8 +477,9 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[46] = vertices[4];
             vertices[47] = vertices[5];
             GL33HelperPrimitives.drawTrianglesIndexedRGB_Quad(vertices, indices);
+        default:
+            break;
         }
-
     }
 
     static PGData4 clone(PGData4 o) {

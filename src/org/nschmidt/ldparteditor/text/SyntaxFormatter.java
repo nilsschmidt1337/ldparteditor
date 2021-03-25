@@ -345,6 +345,8 @@ public class SyntaxFormatter {
                         case 1:
                             if (segment.equals("VERTEX"))checkForVertexCounter++; //$NON-NLS-1$
                             break;
+                        default:
+                            break;
                         }
                         styles.add(metaStyleRange);
                     } else {
@@ -413,6 +415,8 @@ public class SyntaxFormatter {
                         case 1:
                             if (segment.equals("DISTANCE"))checkForProtractorAndDistanceCounter++; //$NON-NLS-1$
                             if (segment.equals("PROTRACTOR"))checkForProtractorAndDistanceCounter++; //$NON-NLS-1$
+                            break;
+                        default:
                             break;
                         }
                     } else if (checkForProtractorAndDistanceCounter > 1) {
