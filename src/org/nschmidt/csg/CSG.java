@@ -157,7 +157,7 @@ public class CSG {
         return csg;
     }
 
-    public CSG createClone() {
+    private CSG createClone() {
         CSG csg = new CSG();
 
         csg.polygons = new ArrayList<>();

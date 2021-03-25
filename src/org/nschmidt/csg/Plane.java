@@ -100,7 +100,7 @@ public class Plane implements Comparable<Plane> {
         return new Plane(n, n.dot(a));
     }
 
-    public Plane createClone() {
+    Plane createClone() {
         return new Plane(normal.createClone(), dist);
     }
 

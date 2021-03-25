@@ -147,7 +147,7 @@ public final class Polygon {
         this.colour = o.colour;
     }
 
-    public Polygon createClone() {
+    Polygon createClone() {
         List<VectorCSGd> newVertices = new ArrayList<>(vertices.size());
         for (VectorCSGd vertex : vertices) {
             newVertices.add(vertex.createClone());

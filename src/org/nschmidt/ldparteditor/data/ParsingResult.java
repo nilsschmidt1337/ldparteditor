@@ -34,7 +34,7 @@ public class ParsingResult {
         this.graphicalData = null;
     }
 
-    public ParsingResult(String message, String type, ResultType resultType, int lineNumber) {
+    ParsingResult(String message, String type, ResultType resultType, int lineNumber) {
         this.message = message;
         this.type = type;
         this.resultType = resultType;
