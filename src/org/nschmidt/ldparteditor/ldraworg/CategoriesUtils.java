@@ -51,7 +51,7 @@ public enum CategoriesUtils {
                 String inputLine;
                 int[] state = new int[]{0};
                 boolean[] parse = new boolean[]{false};
-                final StringBuffer sb = new StringBuffer();
+                final StringBuilder sb = new StringBuilder();
                 while ((inputLine = in.readLine()) != null) {
                     inputLine.chars().forEach(c -> {
                         if (parse[0] && c != '<') {
