@@ -214,7 +214,7 @@ public class CSG {
 
         final List<Polygon> nonIntersectingPolys = new ArrayList<>();
 
-        thisPolys.removeIf((poly) -> {
+        thisPolys.removeIf(poly -> {
             final boolean result;
             if (result = !otherBounds.intersects(poly.getBounds())) {
                 nonIntersectingPolys.add(poly);
@@ -222,7 +222,7 @@ public class CSG {
             return result;
         });
 
-        otherPolys.removeIf((poly) -> {
+        otherPolys.removeIf(poly -> {
             final boolean result;
             if (result = !thisBounds.intersects(poly.getBounds())) {
                 nonIntersectingPolys.add(poly);

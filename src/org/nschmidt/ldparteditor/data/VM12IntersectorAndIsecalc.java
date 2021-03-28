@@ -2539,7 +2539,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 }
 
                 // Don't want to colour already coloured triangles
-                selectedTriangles.removeIf((g) -> g.colourNumber != 16);
+                selectedTriangles.removeIf(g -> g.colourNumber != 16);
 
                 // Change the colour
                 vm.colourChangeSelection(tri.colourNumber, tri.r, tri.g, tri.b, tri.a, false);
@@ -2548,7 +2548,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
 
             // Cleanup coloured triangle selection, remove subfile/deleted content
-            colouredTriangles.removeIf((g) -> !lineLinkedToVertices.containsKey(g));
+            colouredTriangles.removeIf(g -> !lineLinkedToVertices.containsKey(g));
 
             // Restore selection
             clearSelection();

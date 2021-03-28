@@ -462,7 +462,7 @@ public class GL33ModelRenderer {
                                     surfaceNormals.put(gd, normalv);
                                 }
                             }
-                            surfaceNormals.values().parallelStream().forEach((n) -> {
+                            surfaceNormals.values().parallelStream().forEach(n -> {
                                 if (n.lengthSquared() > 0f) n.normalise();
                             });
                             // Now calculate vertex normals (based on adjacent condlines)...
@@ -505,7 +505,7 @@ public class GL33ModelRenderer {
                                     vertexNormals.put(gd, normals);
                                 }
                             }
-                            vertexNormals.values().parallelStream().forEach((normals) -> {
+                            vertexNormals.values().parallelStream().forEach(normals -> {
                                 for (Vector3f n : normals) if (n.lengthSquared() > 0f) n.normalise();
                             });
                         } else {

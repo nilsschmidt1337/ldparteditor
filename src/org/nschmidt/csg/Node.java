@@ -182,7 +182,7 @@ final class Node {
                 List<int[]> types = a.polygons
                         .stream()
                         .parallel()
-                        .map((poly) ->
+                        .map(poly ->
                         n.plane.getTypes(poly))
                         .collect(Collectors.toList());
 
@@ -372,7 +372,7 @@ final class Node {
         List<int[]> types = polygons
                 .stream()
                 .parallel()
-                .map((poly) ->
+                .map(poly ->
                 this.plane.getTypes(poly))
                 .collect(Collectors.toList());
 
@@ -419,7 +419,7 @@ final class Node {
         List<int[]> types = polygons
                 .stream()
                 .parallel()
-                .map((poly) ->
+                .map(poly ->
                 this.plane.getTypes(poly))
                 .collect(Collectors.toList());
 

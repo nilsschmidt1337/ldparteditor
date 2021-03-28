@@ -53,7 +53,7 @@ public enum CategoriesUtils {
                 boolean[] parse = new boolean[]{false};
                 final StringBuffer sb = new StringBuffer();
                 while ((inputLine = in.readLine()) != null) {
-                    inputLine.chars().forEach((c) -> {
+                    inputLine.chars().forEach(c -> {
                         if (parse[0] && c != '<') {
                             sb.append((char) c);
                         }

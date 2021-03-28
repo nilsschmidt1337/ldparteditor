@@ -132,7 +132,7 @@ public class IntegerSpinner extends Composite {
             }
         });
 
-        txt.addListener(SWT.MouseDown, (e) -> {
+        txt.addListener(SWT.MouseDown, e -> {
             if (selectAll) {
                 txt_val[0].selectAll();
                 selectAll = false;
