@@ -16,7 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.opengl;
 
 import java.nio.FloatBuffer;
-import java.util.Stack;
+import java.util.Deque;
+import java.util.LinkedList;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL20;
@@ -25,13 +26,9 @@ import org.lwjgl.util.vector.Vector3f;
 
 public class GLMatrixStack {
 
-    private Stack<Matrix4f> stack = new Stack<>();
+    private final Deque<Matrix4f> stack = new LinkedList<>();
     private GLShader shader;
     private Matrix4f currentMatrix;
-
-    public GLMatrixStack() {
-
-    }
 
     static Matrix4f glOrtho(double l, double r, double b, double t, double n, double f) {
         Matrix4f result = new Matrix4f();

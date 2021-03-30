@@ -34,8 +34,9 @@
 package org.nschmidt.csg;
 
 import java.util.ArrayList;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Stack;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
@@ -80,7 +81,7 @@ final class Node {
     public Node(List<Polygon> polygons) {
         this.polygons = new ArrayList<>();
         if (polygons != null) {
-            Stack<NodePolygon> st = new Stack<>();
+            Deque<NodePolygon> st = new LinkedList<>();
             st.push(new NodePolygon(this, polygons));
             int it = 0;
             while (!st.isEmpty() && it < 10000) {
@@ -105,7 +106,7 @@ final class Node {
      * Converts solid space to empty space and vice verca.
      */
     public void invert() {
-        final Stack<Node> st = new Stack<>();
+        final Deque<Node> st = new LinkedList<>();
         st.push(this);
         while (!st.isEmpty()) {
             final Node n = st.pop();
@@ -152,7 +153,7 @@ final class Node {
             return new ArrayList<>(polygonsToClip);
         }
 
-        final Stack<NodeArgs> st = new Stack<>();
+        final Deque<NodeArgs> st = new LinkedList<>();
         st.push(new NodeArgs(this, polygonsToClip, Side.NONE, null));
 
         NodeArgs lastArgs = null;
@@ -240,7 +241,7 @@ final class Node {
      *            bsp that shall be used for clipping
      */
     public void clipTo(final Node bsp) {
-        final Stack<Node> st = new Stack<>();
+        final Deque<Node> st = new LinkedList<>();
         st.push(this);
         while (!st.isEmpty()) {
             final Node n = st.pop();
@@ -331,7 +332,7 @@ final class Node {
      * @return a list of all polygons in this BSP tree
      */
     public List<Polygon> allPolygons(List<Polygon> result) {
-        final Stack<Node> st = new Stack<>();
+        final Deque<Node> st = new LinkedList<>();
         st.push(this);
         while (!st.isEmpty()) {
             final Node n = st.pop();

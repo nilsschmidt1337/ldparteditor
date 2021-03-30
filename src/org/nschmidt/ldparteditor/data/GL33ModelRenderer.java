@@ -17,11 +17,12 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.Stack;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
@@ -2638,11 +2639,11 @@ public class GL33ModelRenderer {
             ArrayList<GData3> tmpProtractors) {
 
         boolean hasCSG = false;
-        Stack<GData> stack = new Stack<>();
-        Stack<BFC> tempWinding = new Stack<>();
-        Stack<Boolean> tempInvertNext = new Stack<>();
-        Stack<Boolean> tempInvertNextFound = new Stack<>();
-        Stack<Boolean> tempNegativeDeterminant = new Stack<>();
+        Deque<GData> stack = new LinkedList<>();
+        Deque<BFC> tempWinding = new LinkedList<>();
+        Deque<Boolean> tempInvertNext = new LinkedList<>();
+        Deque<Boolean> tempInvertNextFound = new LinkedList<>();
+        Deque<Boolean> tempNegativeDeterminant = new LinkedList<>();
 
         GData gd = df.getDrawChainStart();
         GData backup = gd;

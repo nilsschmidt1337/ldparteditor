@@ -17,12 +17,13 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.Stack;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1343,11 +1344,11 @@ public class GL33ModelRendererLDrawStandard {
         final boolean parseTexmap = true;
 
         boolean hasTEXMAP = false;
-        Stack<GData> stack = new Stack<>();
-        Stack<BFC> tempWinding = new Stack<>();
-        Stack<Boolean> tempInvertNext = new Stack<>();
-        Stack<Boolean> tempInvertNextFound = new Stack<>();
-        Stack<Boolean> tempNegativeDeterminant = new Stack<>();
+        Deque<GData> stack = new LinkedList<>();
+        Deque<BFC> tempWinding = new LinkedList<>();
+        Deque<Boolean> tempInvertNext = new LinkedList<>();
+        Deque<Boolean> tempInvertNextFound = new LinkedList<>();
+        Deque<Boolean> tempNegativeDeterminant = new LinkedList<>();
 
         GData gd = df.getDrawChainStart();
         GData backup = gd;

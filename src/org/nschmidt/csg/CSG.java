@@ -34,13 +34,14 @@
 package org.nschmidt.csg;
 
 import java.util.ArrayList;
+import java.util.Deque;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
-import java.util.Stack;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -245,7 +246,7 @@ public class CSG {
             b.invert();
 
             final List<Node> nodes = new ArrayList<>();
-            final Stack<NodePolygon> st = new Stack<>();
+            final Deque<NodePolygon> st = new LinkedList<>();
             st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
             while (!st.isEmpty()) {
                 NodePolygon np = st.pop();
@@ -338,7 +339,7 @@ public class CSG {
         b.clipTo(a);
         b.invert();
 
-        Stack<NodePolygon> st = new Stack<>();
+        Deque<NodePolygon> st = new LinkedList<>();
         st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
@@ -407,7 +408,7 @@ public class CSG {
         a.clipTo(b);
         b.clipTo(a);
 
-        Stack<NodePolygon> st = new Stack<>();
+        Deque<NodePolygon> st = new LinkedList<>();
         st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
         while (!st.isEmpty()) {
             NodePolygon np = st.pop();
