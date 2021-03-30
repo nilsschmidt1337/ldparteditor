@@ -65,6 +65,7 @@ class CoordinatesDesign extends Dialog {
     final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
     final NButton[] btn_Clipboard = new NButton[1];
     final NButton[] btn_Manipulator = new NButton[1];
+
     Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
 
@@ -79,12 +80,10 @@ class CoordinatesDesign extends Dialog {
         if (manipulatorPosition != null) {
             m = manipulatorPosition;
         }
-        if (v == null) {
-            this.v = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
-        } else {
+        if (v != null) {
             this.v = v;
+            c = new Vertex(v.X, v.Y, v.Z);
         }
-        c = new Vertex(v.X, v.Y, v.Z);
     }
 
     /**
@@ -227,5 +226,4 @@ class CoordinatesDesign extends Dialog {
     protected Point getInitialSize() {
         return super.getInitialSize();
     }
-
 }
