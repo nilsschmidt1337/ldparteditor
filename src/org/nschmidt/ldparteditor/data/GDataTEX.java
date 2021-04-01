@@ -154,7 +154,7 @@ public final class GDataTEX extends GData {
                     String[] data_segments = text.trim().split("\\s+"); //$NON-NLS-1$
                     if (texType == TexType.CYLINDRICAL) prefix = prefix + "CYLINDRICAL "; //$NON-NLS-1$
                     else if (texType == TexType.PLANAR) prefix = prefix + "PLANAR "; //$NON-NLS-1$
-                    else if (texType == TexType.SPHERICAL) prefix = prefix + "SPHERICAL "; //$NON-NLS-1$
+                    else prefix = prefix + "SPHERICAL "; //$NON-NLS-1$
                     if (data_segments.length > 12) {
                         try {
                             BigDecimal X1 = new BigDecimal(data_segments[4]);
