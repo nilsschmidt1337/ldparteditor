@@ -88,7 +88,7 @@ public final class GData0 extends GData {
             GData.globalTextureStack.pop();
             GData.globalFoundTEXMAPStack.push(false);
             GData.globalFoundTEXMAPNEXT = false;
-        } else if (isSTEP && !GData.globalFoundTEXMAPStack.isEmpty() && GData.globalFoundTEXMAPStack.peek()) {
+        } else if (isSTEP && !GData.globalFoundTEXMAPStack.isEmpty() && Boolean.TRUE.equals(GData.globalFoundTEXMAPStack.peek())) {
             GData.globalFoundTEXMAPStack.pop();
             GData.globalTextureStack.pop();
             GData.globalFoundTEXMAPStack.push(false);
@@ -203,7 +203,7 @@ public final class GData0 extends GData {
             state.globalTextureStack.pop();
             state.globalFoundTEXMAPStack.push(false);
             state.globalFoundTEXMAPNEXT = false;
-        } else if (isSTEP && !state.globalFoundTEXMAPStack.isEmpty() && state.globalFoundTEXMAPStack.peek()) {
+        } else if (isSTEP && !state.globalFoundTEXMAPStack.isEmpty() && Boolean.TRUE.equals(state.globalFoundTEXMAPStack.peek())) {
             state.globalFoundTEXMAPStack.pop();
             state.globalTextureStack.pop();
             state.globalFoundTEXMAPStack.push(false);

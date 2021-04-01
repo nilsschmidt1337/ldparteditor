@@ -353,7 +353,7 @@ public enum SubfileCompiler {
                     data_segments[1].equals("!LPE")) && !toFolderStack.isEmpty() && !skipCompile) { //$NON-NLS-1$
 
                 String targetPath;
-                if (toFolderStack.peek()) {
+                if (Boolean.TRUE.equals(toFolderStack.peek())) {
                     String folder = Project.getProjectPath() + File.separator + "PARTS"; //$NON-NLS-1$
                     String folder2 = Project.getProjectPath() + File.separator + "parts"; //$NON-NLS-1$
                     File file = new File(folder);

@@ -1073,7 +1073,7 @@ public final class GData1 extends GData {
                         GData.accumClip = 0;
                 }
 
-                if (GData.globalFoundTEXMAPStack.peek()) {
+                if (Boolean.TRUE.equals(GData.globalFoundTEXMAPStack.peek())) {
                     GData.globalFoundTEXMAPStack.pop();
                     GData.globalTextureStack.pop();
                     GData.globalFoundTEXMAPStack.push(false);
@@ -2791,7 +2791,7 @@ public final class GData1 extends GData {
                         state.accumClip = 0;
                 }
 
-                if (state.globalFoundTEXMAPStack.peek()) {
+                if (Boolean.TRUE.equals(state.globalFoundTEXMAPStack.peek())) {
                     state.globalFoundTEXMAPStack.pop();
                     state.globalTextureStack.pop();
                     state.globalFoundTEXMAPStack.push(false);

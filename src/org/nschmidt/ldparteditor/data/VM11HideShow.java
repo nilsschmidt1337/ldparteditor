@@ -252,7 +252,7 @@ class VM11HideShow extends VM10Selector {
         s.putIfAbsent(key, nl);
         final ArrayList<Boolean> st = s.get(key);
         final int size = st.size();
-        if (st.get(0)) {
+        if (Boolean.TRUE.equals(st.get(0))) {
             selectedData.add(g);
             switch (g.type()) {
             case 1:
@@ -277,28 +277,26 @@ class VM11HideShow extends VM10Selector {
         while ((g = g.getNext()) != null) {
             final int type = g.type();
             if (type > 0 && type < 6) {
-                if (lineNumber < size) {
-                    if (st.get(lineNumber)) {
-                        selectedData.add(g);
-                        switch (type) {
-                        case 1:
-                            selectedSubfiles.add((GData1) g);
-                            break;
-                        case 2:
-                            selectedLines.add((GData2) g);
-                            break;
-                        case 3:
-                            selectedTriangles.add((GData3) g);
-                            break;
-                        case 4:
-                            selectedQuads.add((GData4) g);
-                            break;
-                        case 5:
-                            selectedCondlines.add((GData5) g);
-                            break;
-                        default:
-                            break;
-                        }
+                if (lineNumber < size && Boolean.TRUE.equals(st.get(lineNumber))) {
+                    selectedData.add(g);
+                    switch (type) {
+                    case 1:
+                        selectedSubfiles.add((GData1) g);
+                        break;
+                    case 2:
+                        selectedLines.add((GData2) g);
+                        break;
+                    case 3:
+                        selectedTriangles.add((GData3) g);
+                        break;
+                    case 4:
+                        selectedQuads.add((GData4) g);
+                        break;
+                    case 5:
+                        selectedCondlines.add((GData5) g);
+                        break;
+                    default:
+                        break;
                     }
                 }
                 if (type  == 1) {
