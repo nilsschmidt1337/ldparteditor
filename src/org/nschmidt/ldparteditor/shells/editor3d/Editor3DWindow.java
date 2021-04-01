@@ -216,7 +216,7 @@ import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 import org.nschmidt.ldparteditor.widgets.DecimalValueChangeAdapter;
 import org.nschmidt.ldparteditor.widgets.NButton;
 import org.nschmidt.ldparteditor.widgets.TreeItem;
-import org.nschmidt.ldparteditor.win32openWith.TryToOpen;
+import org.nschmidt.ldparteditor.win32openwith.TryToOpen;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 import org.nschmidt.ldparteditor.workbench.Editor3DWindowState;
 import org.nschmidt.ldparteditor.workbench.UserSettingState;

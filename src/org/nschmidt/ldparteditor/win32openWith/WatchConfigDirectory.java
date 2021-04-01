@@ -13,16 +13,16 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.win32openWith;
+package org.nschmidt.ldparteditor.win32openwith;
 
 import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
 import static java.nio.file.StandardWatchEventKinds.OVERFLOW;
-import static org.nschmidt.ldparteditor.win32openWith.CallState.S0_REQ;
-import static org.nschmidt.ldparteditor.win32openWith.CallState.S1_ACK;
-import static org.nschmidt.ldparteditor.win32openWith.CallState.S2_SEND;
-import static org.nschmidt.ldparteditor.win32openWith.CallState.S3_DONE;
-import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE;
-import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.WILL_OPEN_FILE;
+import static org.nschmidt.ldparteditor.win32openwith.CallState.S0_REQ;
+import static org.nschmidt.ldparteditor.win32openwith.CallState.S1_ACK;
+import static org.nschmidt.ldparteditor.win32openwith.CallState.S2_SEND;
+import static org.nschmidt.ldparteditor.win32openwith.CallState.S3_DONE;
+import static org.nschmidt.ldparteditor.win32openwith.FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE;
+import static org.nschmidt.ldparteditor.win32openwith.FileActionResult.WILL_OPEN_FILE;
 
 import java.io.File;
 import java.io.FileNotFoundException;

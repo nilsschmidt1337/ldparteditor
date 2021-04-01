@@ -15,11 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.main;
 
-import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE;
+import static org.nschmidt.ldparteditor.win32openwith.FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE;
 
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.splash.SplashScreen;
-import org.nschmidt.ldparteditor.win32openWith.TryToOpen;
+import org.nschmidt.ldparteditor.win32openwith.TryToOpen;
 
 /**
  * The main class, which launches the Splash Screen

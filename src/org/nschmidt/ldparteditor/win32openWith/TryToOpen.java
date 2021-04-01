@@ -13,10 +13,10 @@ INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PA
 PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE
 FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
-package org.nschmidt.ldparteditor.win32openWith;
+package org.nschmidt.ldparteditor.win32openwith;
 
-import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE;
-import static org.nschmidt.ldparteditor.win32openWith.FileActionResult.FILE_NOT_FOUND;
+import static org.nschmidt.ldparteditor.win32openwith.FileActionResult.DELEGATED_TO_ANOTHER_INSTANCE;
+import static org.nschmidt.ldparteditor.win32openwith.FileActionResult.FILE_NOT_FOUND;
 
 import java.io.IOException;
 import java.nio.file.Path;
