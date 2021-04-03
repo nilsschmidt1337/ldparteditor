@@ -304,12 +304,12 @@ public class EditorTextWindow extends EditorTextDesign {
             final String text = df.getText();
             if (df != null && !text.equals(df.getOriginalText()) || df.isVirtual() && !text.trim().isEmpty() && !text.equals(WorkbenchManager.getDefaultFileHeader())) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
-                messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
+                messageBox.setText(I18n.DIALOG_UNSAVED_CHANGES_TITLE);
 
                 Object[] messageArguments = {df.getShortName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
+                formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                 messageBox.setMessage(formatter.format(messageArguments));
 
                 int result = messageBox.open();
@@ -323,8 +323,8 @@ public class EditorTextWindow extends EditorTextDesign {
                         ((CompositeTab) tabFolder[0].getSelection()).getTextComposite().setText(df.getText());
                     } else {
                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_Error);
-                        messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                        messageBoxError.setText(I18n.DIALOG_ERROR);
+                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                         messageBoxError.open();
                         return;
                     }
@@ -544,13 +544,13 @@ public class EditorTextWindow extends EditorTextDesign {
         WidgetUtil(btn_Open[0]).addSelectionListener(e -> {
 
             FileDialog fd = new FileDialog(btn_Open[0].getShell(), SWT.MULTI);
-            fd.setText(I18n.E3D_OpenDatFile);
+            fd.setText(I18n.E3D_OPEN_DAT_FILE);
 
             fd.setFilterPath(Project.getLastVisitedPath());
 
             String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
             fd.setFilterExtensions(filterExt);
-            String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+            String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
             fd.setFilterNames(filterNames);
 
             String selected = fd.open();
@@ -603,8 +603,8 @@ public class EditorTextWindow extends EditorTextDesign {
                         ((CompositeTab) tabFolder[0].getSelection()).getTextComposite().setText(state.getFileNameObj().getText());
                     } else {
                         MessageBox messageBoxError = new MessageBox(btn_Save[0].getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_Error);
-                        messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                        messageBoxError.setText(I18n.DIALOG_ERROR);
+                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                     }
                 }
                 ct.getTextComposite().setSelection(x, y);
@@ -665,22 +665,22 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (!state.isReplacingVertex()) {
                     VertexMarker.markTheVertex(state, st, df);
                     if (state.getWindow() == Editor3DWindow.getWindow()) {
-                        Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEdit);
+                        Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SYNC_EDIT);
                         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                         Editor3DWindow.getStatusLabel().update();
                     } else {
-                        state.getWindow().setStatus(I18n.EDITORTEXT_SyncEdit);
+                        state.getWindow().setStatus(I18n.EDITORTEXT_SYNC_EDIT);
                     }
                 } else {
                     state.setReplacingVertex(false);
                     df.getVertexManager().setVertexToReplace(null);
                     st.redraw(0, 0, st.getBounds().width, st.getBounds().height, true);
                     if (state.getWindow() == Editor3DWindow.getWindow()) {
-                        Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEditDeactivated);
+                        Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SYNC_EDIT_DEACTIVATED);
                         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                         Editor3DWindow.getStatusLabel().update();
                     } else {
-                        state.getWindow().setStatus(I18n.EDITORTEXT_SyncEditDeactivated);
+                        state.getWindow().setStatus(I18n.EDITORTEXT_SYNC_EDIT_DEACTIVATED);
                     }
                 }
                 st.forceFocus();
@@ -1220,7 +1220,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
     public boolean saveAs(DatFile dfToSave, String name, String filePath) {
         FileDialog fd = new FileDialog(btn_SaveAs[0].getShell(), SWT.SAVE);
-        fd.setText(I18n.E3D_SaveDatFileAs);
+        fd.setText(I18n.E3D_SAVE_DAT_FILE_AS);
         fd.setOverwrite(true);
 
         {
@@ -1238,7 +1238,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions(filterExt);
-        String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+        String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
         fd.setFilterNames(filterNames);
 
         while (true) {
@@ -1253,8 +1253,8 @@ public class EditorTextWindow extends EditorTextDesign {
 
                     if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
                         MessageBox messageBox = new MessageBox(btn_SaveAs[0].getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                        messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
-                        messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+                        messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
+                        messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
 
                         int result = messageBox.open();
 

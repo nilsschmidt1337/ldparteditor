@@ -67,7 +67,7 @@ class RoundDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.ROUND_Title);
+        lbl_specify.setText(I18n.ROUND_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
@@ -94,7 +94,7 @@ class RoundDesign extends Dialog {
         }
 
         Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText(I18n.ROUND_CoordPrecision);
+        lbl_coordsPrec.setText(I18n.ROUND_COORD_PRECISION);
 
         IntegerSpinner spn_coords = new IntegerSpinner(cmp_container, SWT.NONE);
         this.spn_coords[0] = spn_coords;
@@ -104,7 +104,7 @@ class RoundDesign extends Dialog {
         spn_coords.setValue(WorkbenchManager.getUserSettingState().getCoordsPrecision());
 
         Label lbl_matrixPrec = new Label(cmp_container, SWT.NONE);
-        lbl_matrixPrec.setText(I18n.ROUND_MatrixPrecision);
+        lbl_matrixPrec.setText(I18n.ROUND_MATRIX_PRECISION);
 
         IntegerSpinner spn_matrix = new IntegerSpinner(cmp_container, SWT.NONE);
         this.spn_matrix[0] = spn_matrix;
@@ -114,7 +114,7 @@ class RoundDesign extends Dialog {
         spn_matrix.setValue(WorkbenchManager.getUserSettingState().getTransMatrixPrecision());
 
         Label lbl_unit = new Label(cmp_container, SWT.NONE);
-        lbl_unit.setText(I18n.ROUND_InDecPlaces);
+        lbl_unit.setText(I18n.ROUND_IN_DEC_PLACES);
 
         cmp_container.pack();
         return cmp_container;
@@ -128,7 +128,7 @@ class RoundDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

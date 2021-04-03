@@ -87,7 +87,7 @@ public class TextTriangulator {
                 {
                     try
                     {
-                        monitor.beginTask(I18n.TXT2DAT_Triangulate, IProgressMonitor.UNKNOWN);
+                        monitor.beginTask(I18n.TXT2DAT_TRIANGULATE, IProgressMonitor.UNKNOWN);
                         for (int j = 0; j < vector.getNumGlyphs(); j++) {
                             final int[] i = new int[1];
                             i[0] = j;

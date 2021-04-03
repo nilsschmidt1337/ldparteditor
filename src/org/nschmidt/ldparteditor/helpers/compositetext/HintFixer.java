@@ -36,7 +36,7 @@ final class HintFixer {
         int l = 0;
         switch (s) {
         case 0: // The title is missing
-            text = QuickFixer.insertAfterLine(0, "0 " + I18n.HINTFIXER_Title + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
+            text = QuickFixer.insertAfterLine(0, "0 " + I18n.HINTFIXER_TITLE + "<br>", text); //$NON-NLS-1$ //$NON-NLS-2$
             break;
         case 1: // Invalid header line
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$

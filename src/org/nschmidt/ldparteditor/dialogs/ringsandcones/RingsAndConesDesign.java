@@ -79,29 +79,29 @@ class RingsAndConesDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.RCONES_Title);
+        lbl_specify.setText(I18n.RCONES_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText(I18n.RCONES_Hint);
+            lbl.setText(I18n.RCONES_HINT);
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText(I18n.RCONES_Shape);
+            lbl.setText(I18n.RCONES_SHAPE);
         }
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_shape[0] = cmb;
-            cmb.setItems(new String[] {I18n.RCONES_Ring, I18n.RCONES_Cone, I18n.RCONES_Ring48, I18n.RCONES_Cone48});
+            cmb.setItems(new String[] {I18n.RCONES_RING, I18n.RCONES_CONE, I18n.RCONES_RING_48, I18n.RCONES_CONE_48});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select((rs.isUsingCones() ? 1 : 0) + (rs.isUsingHiRes() ? 2 : 0));
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText(I18n.RCONES_Radius1);
+            lbl.setText(I18n.RCONES_RADIUS_1);
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
@@ -113,7 +113,7 @@ class RingsAndConesDesign extends Dialog {
         }
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText(I18n.RCONES_Radius2);
+            lbl.setText(I18n.RCONES_RADIUS_2);
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
@@ -126,7 +126,7 @@ class RingsAndConesDesign extends Dialog {
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText(I18n.RCONES_Height);
+            lbl.setText(I18n.RCONES_HEIGHT);
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
@@ -139,60 +139,60 @@ class RingsAndConesDesign extends Dialog {
 
         {
             Label lbl = new Label(cmp_container, SWT.NONE);
-            lbl.setText(I18n.RCONES_Angle);
+            lbl.setText(I18n.RCONES_ANGLE);
         }
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_angle[0] = cmb;
             cmb.setItems(new String[] {
-                    I18n.RCONES_Angle01,
-                    I18n.RCONES_Angle02,
-                    I18n.RCONES_Angle03,
-                    I18n.RCONES_Angle04,
-                    I18n.RCONES_Angle05,
-                    I18n.RCONES_Angle06,
-                    I18n.RCONES_Angle07,
-                    I18n.RCONES_Angle08,
-                    I18n.RCONES_Angle09,
-                    I18n.RCONES_Angle10,
-                    I18n.RCONES_Angle11,
-                    I18n.RCONES_Angle12,
-                    I18n.RCONES_Angle13,
-                    I18n.RCONES_Angle14,
-                    I18n.RCONES_Angle15,
-                    I18n.RCONES_Angle16,
-                    I18n.RCONES_Angle17,
-                    I18n.RCONES_Angle18,
-                    I18n.RCONES_Angle19,
-                    I18n.RCONES_Angle20,
-                    I18n.RCONES_Angle21,
-                    I18n.RCONES_Angle22,
-                    I18n.RCONES_Angle23,
-                    I18n.RCONES_Angle24,
-                    I18n.RCONES_Angle25,
-                    I18n.RCONES_Angle26,
-                    I18n.RCONES_Angle27,
-                    I18n.RCONES_Angle28,
-                    I18n.RCONES_Angle29,
-                    I18n.RCONES_Angle30,
-                    I18n.RCONES_Angle31,
-                    I18n.RCONES_Angle32,
-                    I18n.RCONES_Angle33,
-                    I18n.RCONES_Angle34,
-                    I18n.RCONES_Angle35,
-                    I18n.RCONES_Angle36,
-                    I18n.RCONES_Angle37,
-                    I18n.RCONES_Angle38,
-                    I18n.RCONES_Angle39,
-                    I18n.RCONES_Angle40,
-                    I18n.RCONES_Angle41,
-                    I18n.RCONES_Angle42,
-                    I18n.RCONES_Angle43,
-                    I18n.RCONES_Angle44,
-                    I18n.RCONES_Angle45,
-                    I18n.RCONES_Angle46,
-                    I18n.RCONES_Angle47,
-                    I18n.RCONES_Angle48
+                    I18n.RCONES_ANGLE_01,
+                    I18n.RCONES_ANGLE_02,
+                    I18n.RCONES_ANGLE_03,
+                    I18n.RCONES_ANGLE_04,
+                    I18n.RCONES_ANGLE_05,
+                    I18n.RCONES_ANGLE_06,
+                    I18n.RCONES_ANGLE_07,
+                    I18n.RCONES_ANGLE_08,
+                    I18n.RCONES_ANGLE_09,
+                    I18n.RCONES_ANGLE_10,
+                    I18n.RCONES_ANGLE_11,
+                    I18n.RCONES_ANGLE_12,
+                    I18n.RCONES_ANGLE_13,
+                    I18n.RCONES_ANGLE_14,
+                    I18n.RCONES_ANGLE_15,
+                    I18n.RCONES_ANGLE_16,
+                    I18n.RCONES_ANGLE_17,
+                    I18n.RCONES_ANGLE_18,
+                    I18n.RCONES_ANGLE_19,
+                    I18n.RCONES_ANGLE_20,
+                    I18n.RCONES_ANGLE_21,
+                    I18n.RCONES_ANGLE_22,
+                    I18n.RCONES_ANGLE_23,
+                    I18n.RCONES_ANGLE_24,
+                    I18n.RCONES_ANGLE_25,
+                    I18n.RCONES_ANGLE_26,
+                    I18n.RCONES_ANGLE_27,
+                    I18n.RCONES_ANGLE_28,
+                    I18n.RCONES_ANGLE_29,
+                    I18n.RCONES_ANGLE_30,
+                    I18n.RCONES_ANGLE_31,
+                    I18n.RCONES_ANGLE_32,
+                    I18n.RCONES_ANGLE_33,
+                    I18n.RCONES_ANGLE_34,
+                    I18n.RCONES_ANGLE_35,
+                    I18n.RCONES_ANGLE_36,
+                    I18n.RCONES_ANGLE_37,
+                    I18n.RCONES_ANGLE_38,
+                    I18n.RCONES_ANGLE_39,
+                    I18n.RCONES_ANGLE_40,
+                    I18n.RCONES_ANGLE_41,
+                    I18n.RCONES_ANGLE_42,
+                    I18n.RCONES_ANGLE_43,
+                    I18n.RCONES_ANGLE_44,
+                    I18n.RCONES_ANGLE_45,
+                    I18n.RCONES_ANGLE_46,
+                    I18n.RCONES_ANGLE_47,
+                    I18n.RCONES_ANGLE_48
             });
             {
                 rs.getAngles().clear();
@@ -209,14 +209,14 @@ class RingsAndConesDesign extends Dialog {
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_existingOnly[0] = cmb;
-            cmb.setItems(new String[] {I18n.RCONES_Prims1, I18n.RCONES_Prims2});
+            cmb.setItems(new String[] {I18n.RCONES_PRIMS_1, I18n.RCONES_PRIMS_2});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isUsingExistingPrimitives() ? 0 : 1);
         }
         {
             Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_createWhat[0] = cmb;
-            cmb.setItems(new String[] {I18n.RCONES_Create1, I18n.RCONES_Create2});
+            cmb.setItems(new String[] {I18n.RCONES_CREATE_1, I18n.RCONES_CREATE_2});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isCreatingNothingOnNoSolution() ? 0 : 1);
         }
@@ -232,7 +232,7 @@ class RingsAndConesDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

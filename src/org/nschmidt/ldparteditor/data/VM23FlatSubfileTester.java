@@ -114,13 +114,13 @@ class VM23FlatSubfileTester extends VM22TJunctionFixer {
         // Epsilon is 0.000001 / DATHeader default value is 0.0005
         final BigDecimal epsilon = new BigDecimal("0.000001"); //$NON-NLS-1$
         if (plainOnX && epsilon.compareTo(lengthX) < 0) {
-            result.add(new ParsingResult(I18n.VM_FlatScaledX, "[W02] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+            result.add(new ParsingResult(I18n.VM_FLAT_SCALED_X, "[W02] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
         }
         if (plainOnY && epsilon.compareTo(lengthY) < 0) {
-            result.add(new ParsingResult(I18n.VM_FlatScaledY, "[W03] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+            result.add(new ParsingResult(I18n.VM_FLAT_SCALED_Y, "[W03] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
         }
         if (plainOnZ && epsilon.compareTo(lengthZ) < 0) {
-            result.add(new ParsingResult(I18n.VM_FlatScaledZ, "[W04] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+            result.add(new ParsingResult(I18n.VM_FLAT_SCALED_Z, "[W04] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
         }
 
         return result;

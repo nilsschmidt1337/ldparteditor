@@ -47,8 +47,8 @@ class VM26LineIntersector extends VM25Smooth {
         if (selectedLines.isEmpty()) {
             if (showPopup) {
                 MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                messageBox.setText(I18n.E3D_LineIntersection);
-                messageBox.setMessage(I18n.E3D_IntersectionPointsQuestion);
+                messageBox.setText(I18n.E3D_LINE_INTERSECTION);
+                messageBox.setMessage(I18n.E3D_INTERSECTION_POINTS_QUESTION);
                 int result = messageBox.open();
                 if (result != SWT.YES) {
                     return;
@@ -95,7 +95,7 @@ class VM26LineIntersector extends VM25Smooth {
                     {
                         try
                         {
-                            monitor.beginTask(I18n.VM_SearchIntersection, linesToParse.size());
+                            monitor.beginTask(I18n.VM_SEARCH_INTERSECTION, linesToParse.size());
                             int i = 0;
                             int j = 0;
                             for (Iterator<ArrayList<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {

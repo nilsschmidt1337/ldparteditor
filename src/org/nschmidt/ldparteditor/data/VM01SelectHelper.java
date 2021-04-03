@@ -166,7 +166,7 @@ class VM01SelectHelper extends VM01Select {
                             {
                                 try
                                 {
-                                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
+                                    m.beginTask(I18n.VM_SELECTING, IProgressMonitor.UNKNOWN);
                                     boolean isRunning = true;
                                     while (isRunning) {
                                         try {
@@ -324,7 +324,7 @@ class VM01SelectHelper extends VM01Select {
                             {
                                 try
                                 {
-                                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
+                                    m.beginTask(I18n.VM_SELECTING, IProgressMonitor.UNKNOWN);
                                     boolean isRunning = true;
                                     while (isRunning) {
                                         try {
@@ -587,7 +587,7 @@ class VM01SelectHelper extends VM01Select {
                             {
                                 try
                                 {
-                                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
+                                    m.beginTask(I18n.VM_SELECTING, IProgressMonitor.UNKNOWN);
                                     boolean isRunning = true;
                                     while (isRunning) {
                                         try {
@@ -742,7 +742,7 @@ class VM01SelectHelper extends VM01Select {
                             {
                                 try
                                 {
-                                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
+                                    m.beginTask(I18n.VM_SELECTING, IProgressMonitor.UNKNOWN);
                                     boolean isRunning = true;
                                     while (isRunning) {
                                         try {

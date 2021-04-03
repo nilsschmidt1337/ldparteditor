@@ -43,15 +43,15 @@ class VM16Subdivide extends VM15Flipper {
         if (showDialog) {
             if (selectedQuads.isEmpty() && selectedTriangles.isEmpty()) {
                 final MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                messageBox.setText(I18n.DIALOG_Info);
-                messageBox.setMessage(I18n.E3D_SubdivideNoSelection);
+                messageBox.setText(I18n.DIALOG_INFO);
+                messageBox.setMessage(I18n.E3D_SUBDIVIDE_NO_SELECTION);
                 messageBox.open();
                 return;
             }
 
             final MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            messageBox.setText(I18n.DIALOG_Warning);
-            messageBox.setMessage(I18n.E3D_SubdivideWarningCatmullClark);
+            messageBox.setText(I18n.DIALOG_WARNING);
+            messageBox.setMessage(I18n.E3D_SUBDIVIDE_WARNING_CATMULL_CLARK);
             if (messageBox.open() != SWT.YES) {
                 return;
             }
@@ -226,15 +226,15 @@ class VM16Subdivide extends VM15Flipper {
         if (showDialog) {
             if (selectedQuads.isEmpty() && selectedTriangles.isEmpty()) {
                 final MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                messageBox.setText(I18n.DIALOG_Info);
-                messageBox.setMessage(I18n.E3D_SubdivideNoSelection);
+                messageBox.setText(I18n.DIALOG_INFO);
+                messageBox.setMessage(I18n.E3D_SUBDIVIDE_NO_SELECTION);
                 messageBox.open();
                 return;
             }
 
             final MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-            messageBox.setText(I18n.DIALOG_Warning);
-            messageBox.setMessage(I18n.E3D_SubdivideWarningLoop);
+            messageBox.setText(I18n.DIALOG_WARNING);
+            messageBox.setMessage(I18n.E3D_SUBDIVIDE_WARNING_LOOP);
             if (messageBox.open() != SWT.YES) {
                 return;
             }

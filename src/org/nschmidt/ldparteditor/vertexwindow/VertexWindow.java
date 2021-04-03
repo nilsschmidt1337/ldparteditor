@@ -232,14 +232,14 @@ public class VertexWindow extends ApplicationWindow {
                     this.btn_Copy[0] = btn_Copy;
                     btn_Copy.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                     btn_Copy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
-                    KeyStateManager.addTooltipText(btn_Copy, I18n.COPYNPASTE_Copy, Task.COPY);
+                    KeyStateManager.addTooltipText(btn_Copy, I18n.COPYNPASTE_COPY, Task.COPY);
                 }
                 {
                     NButton btn_Paste = new NButton(cmp_txt, Cocoa.getStyle());
                     this.btn_Paste[0] = btn_Paste;
                     btn_Paste.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                     btn_Paste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
-                    KeyStateManager.addTooltipText(btn_Paste, I18n.COPYNPASTE_Paste, Task.PASTE);
+                    KeyStateManager.addTooltipText(btn_Paste, I18n.COPYNPASTE_PASTE, Task.PASTE);
                 }
             }
 
@@ -291,7 +291,7 @@ public class VertexWindow extends ApplicationWindow {
                 this.btn_Merge[0] = btn_Merge;
                 btn_Merge.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
                 btn_Merge.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
-                btn_Merge.setText(I18n.E3D_MergeVertex);
+                btn_Merge.setText(I18n.E3D_MERGE_VERTEX);
                 btn_Merge.setEnabled(false);
             }
         }

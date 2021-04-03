@@ -250,7 +250,7 @@ class VM07PathTruder extends VM06Edger2 {
                     @Override
                     public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                         try {
-                            monitor.beginTask(I18n.VM_PathTruder, IProgressMonitor.UNKNOWN);
+                            monitor.beginTask(I18n.VM_PATH_TRUDER, IProgressMonitor.UNKNOWN);
 
                             final GColour col16 = View.getLDConfigColour(16);
                             final Thread[] threads = new Thread[1];

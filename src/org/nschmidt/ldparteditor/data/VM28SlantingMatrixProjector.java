@@ -107,13 +107,13 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
         } else {
             switch (axisSelectionMode) {
             case 0: // X,Y,Z
-                return I18n.SLANT_MatrixForXYZ;
+                return I18n.SLANT_MATRIX_FOR_XYZ;
             case 1: // X,Y
-                return I18n.SLANT_MatrixForXY;
+                return I18n.SLANT_MATRIX_FOR_XY;
             case 2: // X,Z
-                return I18n.SLANT_MatrixForXZ;
+                return I18n.SLANT_MATRIX_FOR_XZ;
             case 3: // Y,Z
-                return I18n.SLANT_MatrixForYZ;
+                return I18n.SLANT_MATRIX_FOR_YZ;
             default:
                 return ""; //$NON-NLS-1$
             }

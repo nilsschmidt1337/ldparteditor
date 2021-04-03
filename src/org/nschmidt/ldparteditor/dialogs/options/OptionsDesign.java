@@ -130,7 +130,7 @@ class OptionsDesign extends ApplicationWindow {
     protected Control createContents(Composite parent) {
         final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
         final Tree treeColours;
-        setStatus(I18n.E3D_ReadyStatus);
+        setStatus(I18n.E3D_READY_STATUS);
         Composite container = new Composite(parent, SWT.BORDER);
         GridLayout gridLayout = new GridLayout(1, true);
         container.setLayout(gridLayout);
@@ -152,7 +152,7 @@ class OptionsDesign extends ApplicationWindow {
             tabFolder_Settings.setSize(1024, 768);
 
             CTabItem tItem0 = new CTabItem(tabFolder_Settings, SWT.NONE);
-            tItem0.setText(I18n.OPTIONS_MiscOptions);
+            tItem0.setText(I18n.OPTIONS_MISC_OPTIONS);
 
             {
 
@@ -168,22 +168,22 @@ class OptionsDesign extends ApplicationWindow {
 
                 NButton btn_AllowInvalidShapes = new NButton(cmp_container, SWT.CHECK);
                 this.btn_AllowInvalidShapes[0] = btn_AllowInvalidShapes;
-                btn_AllowInvalidShapes.setText(I18n.OPTIONS_AllowInvalidShapes);
+                btn_AllowInvalidShapes.setText(I18n.OPTIONS_ALLOW_INVALID_SHAPES);
                 btn_AllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
 
                 NButton btn_translateViewByCursor = new NButton(cmp_container, SWT.CHECK);
                 this.btn_translateViewByCursor[0] = btn_translateViewByCursor;
-                btn_translateViewByCursor.setText(I18n.OPTIONS_TranslateByCursor);
+                btn_translateViewByCursor.setText(I18n.OPTIONS_TRANSLATE_BY_CURSOR);
                 btn_translateViewByCursor.setSelection(userSettings.isTranslatingViewByCursor());
 
                 NButton btn_disableMAD3D = new NButton(cmp_container, SWT.CHECK);
                 this.btn_disableMAD3D[0] = btn_disableMAD3D;
-                btn_disableMAD3D.setText(I18n.OPTIONS_MAD1);
+                btn_disableMAD3D.setText(I18n.OPTIONS_MAD_1);
                 btn_disableMAD3D.setSelection(userSettings.isDisableMAD3D());
 
                 NButton btn_disableMADtext = new NButton(cmp_container, SWT.CHECK);
                 this.btn_disableMADtext[0] = btn_disableMADtext;
-                btn_disableMADtext.setText(I18n.OPTIONS_MAD2);
+                btn_disableMADtext.setText(I18n.OPTIONS_MAD_2);
                 btn_disableMADtext.setSelection(userSettings.isDisableMADtext());
 
                 {
@@ -192,11 +192,11 @@ class OptionsDesign extends ApplicationWindow {
                 }
 
                 Label lbl_textWinArr = new Label(cmp_container, SWT.NONE);
-                lbl_textWinArr.setText(I18n.OPTIONS_TextWindowArr);
+                lbl_textWinArr.setText(I18n.OPTIONS_TEXT_WINDOW_ARR);
 
                 Combo cmb_textWinArr = new Combo(cmp_container, SWT.READ_ONLY);
                 this.cmb_textWinArr[0] = cmb_textWinArr;
-                cmb_textWinArr.setItems(new String[]{I18n.OPTIONS_TextWindowSeparate, I18n.OPTIONS_TextWindowLeft, I18n.OPTIONS_TextWindowRight});
+                cmb_textWinArr.setItems(new String[]{I18n.OPTIONS_TEXT_WINDOW_SEPARATE, I18n.OPTIONS_TEXT_WINDOW_LEFT, I18n.OPTIONS_TEXT_WINDOW_RIGHT});
                 cmb_textWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmb_textWinArr.select(userSettings.getTextWinArr());
 
@@ -206,7 +206,7 @@ class OptionsDesign extends ApplicationWindow {
                 }
 
                 Label lbl_coplanarityWarning = new Label(cmp_container, SWT.NONE);
-                lbl_coplanarityWarning.setText(I18n.OPTIONS_CoplanarityWarning);
+                lbl_coplanarityWarning.setText(I18n.OPTIONS_COPLANARITY_WARNING);
                 lbl_coplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 BigDecimalSpinner spn_coplanarityWarning = new BigDecimalSpinner(cmp_container, Cocoa.getStyle());
@@ -217,7 +217,7 @@ class OptionsDesign extends ApplicationWindow {
                 spn_coplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 Label lbl_coplanarityError = new Label(cmp_container, SWT.NONE);
-                lbl_coplanarityError.setText(I18n.OPTIONS_CoplanarityError);
+                lbl_coplanarityError.setText(I18n.OPTIONS_COPLANARITY_ERROR);
                 lbl_coplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 BigDecimalSpinner spn_coplanarityError = new BigDecimalSpinner(cmp_container, Cocoa.getStyle());
@@ -233,7 +233,7 @@ class OptionsDesign extends ApplicationWindow {
                 }
 
                 Label lbl_viewportScale = new Label(cmp_container, SWT.NONE);
-                lbl_viewportScale.setText(I18n.OPTIONS_ScaleFactor);
+                lbl_viewportScale.setText(I18n.OPTIONS_SCALE_FACTOR);
                 lbl_viewportScale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 BigDecimalSpinner spn_viewportScale = new BigDecimalSpinner(cmp_container, Cocoa.getStyle());
@@ -249,7 +249,7 @@ class OptionsDesign extends ApplicationWindow {
                 }
 
                 Label lbl_locale = new Label(cmp_container, SWT.NONE);
-                lbl_locale.setText(I18n.OPTIONS_ChooseLocale);
+                lbl_locale.setText(I18n.OPTIONS_CHOOSE_LOCALE);
 
                 Combo cmb_locale = new Combo(cmp_container, SWT.READ_ONLY);
                 this.cmb_locale[0] = cmb_locale;
@@ -275,7 +275,7 @@ class OptionsDesign extends ApplicationWindow {
                 cmb_locale.select(englishIndex);
 
                 Label lbl_ldrawFolderQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_ldrawFolderQuestion.setText(I18n.OPTIONS_LdrawFolder);
+                lbl_ldrawFolderQuestion.setText(I18n.OPTIONS_LDRAW_FOLDER);
 
                 Composite cmp_pathChooser1 = new Composite(cmp_container, SWT.NONE);
                 cmp_pathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -288,10 +288,10 @@ class OptionsDesign extends ApplicationWindow {
 
                 NButton btn_BrowseLdrawPath = new NButton(cmp_pathChooser1, SWT.NONE);
                 this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
-                btn_BrowseLdrawPath.setText(I18n.OPTIONS_Browse);
+                btn_BrowseLdrawPath.setText(I18n.OPTIONS_BROWSE);
 
                 Label lbl_ldrawUserQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_ldrawUserQuestion.setText(I18n.OPTIONS_LdrawName);
+                lbl_ldrawUserQuestion.setText(I18n.OPTIONS_LDRAW_NAME);
 
                 Text txt_ldrawUserName = new Text(cmp_container, SWT.BORDER);
                 this.txt_ldrawUserName[0] = txt_ldrawUserName;
@@ -299,7 +299,7 @@ class OptionsDesign extends ApplicationWindow {
                 txt_ldrawUserName.setText(userSettings.getLdrawUserName());
 
                 Label lbl_realNameQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_realNameQuestion.setText(I18n.OPTIONS_RealName);
+                lbl_realNameQuestion.setText(I18n.OPTIONS_REAL_NAME);
 
                 Text txt_realName = new Text(cmp_container, SWT.BORDER);
                 this.txt_realName[0] = txt_realName;
@@ -307,7 +307,7 @@ class OptionsDesign extends ApplicationWindow {
                 txt_realName.setText(userSettings.getRealUserName());
 
                 Label lbl_licenseQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_licenseQuestion.setText(I18n.OPTIONS_License);
+                lbl_licenseQuestion.setText(I18n.OPTIONS_LICENSE);
 
                 Combo cmb_license = new Combo(cmp_container, SWT.NONE);
                 this.cmb_license[0] = cmb_license;
@@ -316,7 +316,7 @@ class OptionsDesign extends ApplicationWindow {
                 cmb_license.setText(userSettings.getLicense());
 
                 Label lbl_authoringFolderQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_authoringFolderQuestion.setText(I18n.OPTIONS_AuthoringFolder);
+                lbl_authoringFolderQuestion.setText(I18n.OPTIONS_AUTHORING_FOLDER);
 
                 Composite cmp_pathChooser2 = new Composite(cmp_container, SWT.NONE);
                 cmp_pathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -329,10 +329,10 @@ class OptionsDesign extends ApplicationWindow {
 
                 NButton btn_browseAuthoringPath = new NButton(cmp_pathChooser2, SWT.NONE);
                 this.btn_browseAuthoringPath[0] = btn_browseAuthoringPath;
-                btn_browseAuthoringPath.setText(I18n.OPTIONS_Browse);
+                btn_browseAuthoringPath.setText(I18n.OPTIONS_BROWSE);
 
                 Label lbl_unofficialPathQuestion = new Label(cmp_container, SWT.NONE);
-                lbl_unofficialPathQuestion.setText(I18n.OPTIONS_UnofficialFolder);
+                lbl_unofficialPathQuestion.setText(I18n.OPTIONS_UNOFFICIAL_FOLDER);
 
                 Composite cmp_pathChooser3 = new Composite(cmp_container, SWT.NONE);
                 cmp_pathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -345,13 +345,13 @@ class OptionsDesign extends ApplicationWindow {
 
                 NButton btn_browseUnofficialPath = new NButton(cmp_pathChooser3, SWT.NONE);
                 this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
-                btn_browseUnofficialPath.setText(I18n.OPTIONS_Browse);
+                btn_browseUnofficialPath.setText(I18n.OPTIONS_BROWSE);
 
                 cmp_containerX.setMinSize(cmp_container.computeSize(SWT.DEFAULT, SWT.DEFAULT));
             }
 
             final CTabItem tItem1 = new CTabItem(tabFolder_Settings, SWT.NONE);
-            tItem1.setText(I18n.KEYBOARD_CustomiseShortkeys);
+            tItem1.setText(I18n.KEYBOARD_CUSTOMISE_SHORTKEYS);
             {
                 final Composite cmp_container = new Composite(tabFolder_Settings, SWT.NONE);
                 tItem1.setControl(cmp_container);
@@ -360,17 +360,17 @@ class OptionsDesign extends ApplicationWindow {
                 cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
                 Label lbl_mouseButtonLayout = new Label(cmp_container, SWT.NONE);
-                lbl_mouseButtonLayout.setText(I18n.KEYBOARD_MouseButtonLayoutTitle);
+                lbl_mouseButtonLayout.setText(I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_TITLE);
 
                 Combo cmb_mouseButtonLayout = new Combo(cmp_container, SWT.READ_ONLY);
                 this.cmb_mouseButtonLayout[0] = cmb_mouseButtonLayout;
-                cmb_mouseButtonLayout.setItems(new String[]{I18n.KEYBOARD_MouseButtonLayoutA, I18n.KEYBOARD_MouseButtonLayoutB});
+                cmb_mouseButtonLayout.setItems(new String[]{I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_A, I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_B});
                 cmb_mouseButtonLayout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmb_mouseButtonLayout.select(userSettings.getMouseButtonLayout());
 
                 NButton btn_invertInvertWheelZoomDirection = new NButton(cmp_container, SWT.CHECK);
                 this.btn_invertInvertWheelZoomDirection[0] = btn_invertInvertWheelZoomDirection;
-                btn_invertInvertWheelZoomDirection.setText(I18n.KEYBOARD_InvertWheelZoomDirection);
+                btn_invertInvertWheelZoomDirection.setText(I18n.KEYBOARD_INVERT_WHEEL_ZOOM_DIRECTION);
                 btn_invertInvertWheelZoomDirection.setSelection(userSettings.isInvertingWheelZoomDirection());
 
                 {
@@ -378,8 +378,8 @@ class OptionsDesign extends ApplicationWindow {
                     lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 }
 
-                Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
-                lbl_DoubleClick.setText(I18n.KEYBOARD_DoubleClick);
+                Label lbl_DoubleClick = new Label(cmp_container, I18n.rightToLeftStyle());
+                lbl_DoubleClick.setText(I18n.KEYBOARD_DOUBLE_CLICK);
 
                 final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, Task.values().length + TextTask.values().length - 24);
 
@@ -389,110 +389,110 @@ class OptionsDesign extends ApplicationWindow {
 
                 TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
                 trclmn_Description.setWidth(598);
-                trclmn_Description.setText(I18n.KEYBOARD_Description);
+                trclmn_Description.setText(I18n.KEYBOARD_DESCRIPTION);
 
                 TreeColumn trclmn_Location = new TreeColumn(tree, SWT.NONE);
                 trclmn_Location.setWidth(100);
-                trclmn_Location.setText(I18n.KEYBOARD_Shortkey);
+                trclmn_Location.setText(I18n.KEYBOARD_SHORTKEY);
 
                 TreeItem trtm_Editor3D = new TreeItem(tree);
                 trtm_Editor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
-                trtm_Editor3D.setText(new String[] { I18n.KEYBOARD_Editor3D, "" }); //$NON-NLS-1$
+                trtm_Editor3D.setText(new String[] { I18n.KEYBOARD_EDITOR_3D, "" }); //$NON-NLS-1$
                 trtm_Editor3D.setVisible(true);
 
                 TreeItem trtm_EditorText = new TreeItem(tree);
                 trtm_EditorText.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
-                trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
+                trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EDITOR_TEXT, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
 
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_LMB, Task.LMB, true);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_MMB, Task.MMB, !Cocoa.isCocoa);
                 registerTask(trtm_Editor3D, I18n.KEYBOARD_RMB, Task.RMB, !Cocoa.isCocoa);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_CloseView, Task.CLOSE_VIEW, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ToggleInsertAtCursor, Task.INSERT_AT_CURSOR, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddComment, Task.ADD_COMMENTS, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddVertex, Task.ADD_VERTEX, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddLine, Task.ADD_LINE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddTriangle, Task.ADD_TRIANGLE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddQuad, Task.ADD_QUAD, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddCondline, Task.ADD_CONDLINE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddDistance, Task.ADD_DISTANCE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AddProtractor, Task.ADD_PROTRACTOR, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Cut, Task.CUT, false);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Copy, Task.COPY, false);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Paste, Task.PASTE, false);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Delete, Task.DELETE, false);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Esc1, Task.ESC, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_MergeToAvg, Task.MERGE_TO_AVERAGE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_MergeToLast, Task.MERGE_TO_LAST, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Split, Task.SPLIT, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_FlipRotate, Task.FLIP_ROTATE_VERTICES, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeCombined, Task.MODE_COMBINED, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeSelect, Task.MODE_SELECT, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeMove, Task.MODE_MOVE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeRotate, Task.MODE_ROTATE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ModeScale, Task.MODE_SCALE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_MoveToAvg, Task.MOVE_TO_AVG, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_MoveAdjacentData, Task.MOVE_ADJACENT_DATA, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_SwapWinding, Task.SWAP_WINDING, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjVertex, Task.OBJ_VERTEX, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjLine, Task.OBJ_LINE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjFace, Task.OBJ_FACE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ObjPrimitive, Task.OBJ_PRIMITIVE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisX, Task.MODE_X, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisY, Task.MODE_Y, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisZ, Task.MODE_Z, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisXY, Task.MODE_XY, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisXZ, Task.MODE_XZ, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisYZ, Task.MODE_YZ, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_AxisXYZ, Task.MODE_XYZ, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ResetManipulator, Task.RESET_MANIPULATOR, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ResetView, Task.RESET_VIEW, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Save, Task.SAVE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectAll, Task.SELECT_ALL, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectAllWithSameColours, Task.SELECT_ALL_WITH_SAME_COLOURS, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectConnected, Task.SELECT_CONNECTED, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectNone, Task.SELECT_NONE, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectOptionWithSameColours, Task.SELECT_OPTION_WITH_SAME_COLOURS, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_SelectTouching, Task.SELECT_TOUCHING, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ShowGrid, Task.SHOW_GRID, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ShowRuler, Task.SHOW_RULER, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Undo, Task.UNDO, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_Redo, Task.REDO, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ZoomIn, Task.ZOOM_IN, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_ZoomOut, Task.ZOOM_OUT, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeNoBackfaceCulling, Task.RENDERMODE_NoBackfaceCulling, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeRandomColours, Task.RENDERMODE_RandomColours, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeGreenFrontfacesRedBackfaces, Task.RENDERMODE_GreenFrontfacesRedBackfaces, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeRedBackfaces, Task.RENDERMODE_RedBackfaces, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeRealBackfaceCulling, Task.RENDERMODE_RealBackfaceCulling, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeLdrawStandard, Task.RENDERMODE_LDrawStandard, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeCondlineMode, Task.RENDERMODE_SpecialCondline, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeCoplanarityHeatmap, Task.RENDERMODE_CoplanarityHeatmap, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_RendermodeWireframe, Task.RENDERMODE_Wireframe, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveFront, Task.PERSPECTIVE_FRONT, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveBack, Task.PERSPECTIVE_BACK, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveLeft, Task.PERSPECTIVE_LEFT, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveRight, Task.PERSPECTIVE_RIGHT, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveTop, Task.PERSPECTIVE_TOP, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveBottom, Task.PERSPECTIVE_BOTTOM, true);
-                registerTask(trtm_Editor3D, I18n.KEYBOARD_PerspectiveTwoThirds, Task.PERSPECTIVE_TwoThirds, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_CLOSE_VIEW, Task.CLOSE_VIEW, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_TOGGLE_INSERT_AT_CURSOR, Task.INSERT_AT_CURSOR, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ADD_COMMENT, Task.ADD_COMMENTS, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ADD_VERTEX, Task.ADD_VERTEX, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ADD_LINE, Task.ADD_LINE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ADD_TRIANGLE, Task.ADD_TRIANGLE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ADD_QUAD, Task.ADD_QUAD, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ADD_CONDLINE, Task.ADD_CONDLINE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ADD_DISTANCE, Task.ADD_DISTANCE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ADD_PROTRACTOR, Task.ADD_PROTRACTOR, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_CUT, Task.CUT, false);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_COPY, Task.COPY, false);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PASTE, Task.PASTE, false);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_DELETE, Task.DELETE, false);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ESC_1, Task.ESC, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MERGE_TO_AVG, Task.MERGE_TO_AVERAGE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MERGE_TO_LAST, Task.MERGE_TO_LAST, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SPLIT, Task.SPLIT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_FLIP_ROTATE, Task.FLIP_ROTATE_VERTICES, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MODE_COMBINED, Task.MODE_COMBINED, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MODE_SELECT, Task.MODE_SELECT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MODE_MOVE, Task.MODE_MOVE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MODE_ROTATE, Task.MODE_ROTATE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MODE_SCALE, Task.MODE_SCALE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MOVE_TO_AVG, Task.MOVE_TO_AVG, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_MOVE_ADJACENT_DATA, Task.MOVE_ADJACENT_DATA, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SWAP_WINDING, Task.SWAP_WINDING, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_OBJ_VERTEX, Task.OBJ_VERTEX, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_OBJ_LINE, Task.OBJ_LINE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_OBJ_FACE, Task.OBJ_FACE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_OBJ_PRIMITIVE, Task.OBJ_PRIMITIVE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AXIS_X, Task.MODE_X, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AXIS_Y, Task.MODE_Y, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AXIS_Z, Task.MODE_Z, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AXIS_XY, Task.MODE_XY, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AXIS_XZ, Task.MODE_XZ, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AXIS_YZ, Task.MODE_YZ, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_AXIS_XYZ, Task.MODE_XYZ, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RESET_MANIPULATOR, Task.RESET_MANIPULATOR, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RESET_VIEW, Task.RESET_VIEW, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SAVE, Task.SAVE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SELECT_ALL, Task.SELECT_ALL, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SELECT_ALL_WITH_SAME_COLOURS, Task.SELECT_ALL_WITH_SAME_COLOURS, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SELECT_CONNECTED, Task.SELECT_CONNECTED, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SELECT_NONE, Task.SELECT_NONE, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SELECT_OPTION_WITH_SAME_COLOURS, Task.SELECT_OPTION_WITH_SAME_COLOURS, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SELECT_TOUCHING, Task.SELECT_TOUCHING, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SHOW_GRID, Task.SHOW_GRID, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_SHOW_RULER, Task.SHOW_RULER, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_UNDO, Task.UNDO, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_REDO, Task.REDO, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ZOOM_IN, Task.ZOOM_IN, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_ZOOM_OUT, Task.ZOOM_OUT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RENDERMODE_NO_BACKFACE_CULLING, Task.RENDERMODE_NoBackfaceCulling, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RENDERMODE_RANDOM_COLOURS, Task.RENDERMODE_RandomColours, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RENDERMODE_GREEN_FRONTFACES_RED_BACKFACES, Task.RENDERMODE_GreenFrontfacesRedBackfaces, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RENDERMODE_RED_BACKFACES, Task.RENDERMODE_RedBackfaces, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RENDERMODE_REAL_BACKFACE_CULLING, Task.RENDERMODE_RealBackfaceCulling, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RENDERMODE_LDRAW_STANDARD, Task.RENDERMODE_LDrawStandard, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RENDERMODE_CONDLINE_MODE, Task.RENDERMODE_SpecialCondline, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RENDERMODE_COPLANARITY_HEATMAP, Task.RENDERMODE_CoplanarityHeatmap, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_RENDERMODE_WIREFRAME, Task.RENDERMODE_Wireframe, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PERSPECTIVE_FRONT, Task.PERSPECTIVE_FRONT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PERSPECTIVE_BACK, Task.PERSPECTIVE_BACK, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PERSPECTIVE_LEFT, Task.PERSPECTIVE_LEFT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PERSPECTIVE_RIGHT, Task.PERSPECTIVE_RIGHT, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PERSPECTIVE_TOP, Task.PERSPECTIVE_TOP, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PERSPECTIVE_BOTTOM, Task.PERSPECTIVE_BOTTOM, true);
+                registerTask(trtm_Editor3D, I18n.KEYBOARD_PERSPECTIVE_TWO_THIRDS, Task.PERSPECTIVE_TwoThirds, true);
 
-                registerTask(trtm_EditorText, I18n.KEYBOARD_Esc2, TextTask.EDITORTEXT_ESC, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_Inline, TextTask.EDITORTEXT_INLINE, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_QuickFix, TextTask.EDITORTEXT_QUICKFIX, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_Redo, TextTask.EDITORTEXT_REDO, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_ReplaceVertex, TextTask.EDITORTEXT_REPLACE_VERTEX, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_Round, TextTask.EDITORTEXT_ROUND, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_Save, TextTask.EDITORTEXT_SAVE, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_SelectAll, TextTask.EDITORTEXT_SELECTALL, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_Undo, TextTask.EDITORTEXT_UNDO, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_FindReplace, TextTask.EDITORTEXT_FIND, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_InsertHistory, TextTask.EDITORTEXT_INSERT_HISTORY, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_InsertKeyword, TextTask.EDITORTEXT_INSERT_KEYWORD, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_InsertReference, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_MoveLineUp, TextTask.EDITORTEXT_LINE_UP, true);
-                registerTask(trtm_EditorText, I18n.KEYBOARD_MoveLineDown, TextTask.EDITORTEXT_LINE_DOWN, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_ESC_2, TextTask.EDITORTEXT_ESC, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_INLINE, TextTask.EDITORTEXT_INLINE, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_QUICK_FIX, TextTask.EDITORTEXT_QUICKFIX, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_REDO, TextTask.EDITORTEXT_REDO, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_REPLACE_VERTEX, TextTask.EDITORTEXT_REPLACE_VERTEX, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_ROUND, TextTask.EDITORTEXT_ROUND, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_SAVE, TextTask.EDITORTEXT_SAVE, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_SELECT_ALL, TextTask.EDITORTEXT_SELECTALL, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_UNDO, TextTask.EDITORTEXT_UNDO, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_FIND_REPLACE, TextTask.EDITORTEXT_FIND, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_INSERT_HISTORY, TextTask.EDITORTEXT_INSERT_HISTORY, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_INSERT_KEYWORD, TextTask.EDITORTEXT_INSERT_KEYWORD, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_INSERT_REFERENCE, TextTask.EDITORTEXT_INSERT_REFERENCE, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_MOVE_LINE_UP, TextTask.EDITORTEXT_LINE_UP, true);
+                registerTask(trtm_EditorText, I18n.KEYBOARD_MOVE_LINE_DOWN, TextTask.EDITORTEXT_LINE_DOWN, true);
 
                 if (s1.size() != Task.values().length || s2.size() != TextTask.values().length) {
                     throw new AssertionError("Not all shortkey items are covered by this dialog! Please fix it"); //$NON-NLS-1$
@@ -533,7 +533,7 @@ class OptionsDesign extends ApplicationWindow {
             }
 
             CTabItem tItem2 = new CTabItem(tabFolder_Settings, SWT.NONE);
-            tItem2.setText(I18n.COLOUR_CustomiseColours);
+            tItem2.setText(I18n.COLOUR_CUSTOMISE_COLOURS);
 
             {
                 final Composite cmp_container = new Composite(tabFolder_Settings, SWT.NONE);
@@ -542,8 +542,8 @@ class OptionsDesign extends ApplicationWindow {
                 cmp_container.setLayout(new GridLayout());
                 cmp_container.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-                Label lbl_DoubleClick = new Label(cmp_container, I18n.I18N_RTL());
-                lbl_DoubleClick.setText(I18n.COLOUR_DoubleClick);
+                Label lbl_DoubleClick = new Label(cmp_container, I18n.rightToLeftStyle());
+                lbl_DoubleClick.setText(I18n.COLOUR_DOUBLE_CLICK);
 
                 final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, 67);
                 treeColours = tree;
@@ -554,95 +554,95 @@ class OptionsDesign extends ApplicationWindow {
 
                 TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
                 trclmn_Description.setWidth(598);
-                trclmn_Description.setText(I18n.COLOUR_Description);
+                trclmn_Description.setText(I18n.COLOUR_DESCRIPTION);
 
                 TreeColumn trclmn_Colour = new TreeColumn(tree, SWT.NONE);
                 trclmn_Colour.setWidth(100);
-                trclmn_Colour.setText(I18n.COLOUR_Colour);
+                trclmn_Colour.setText(I18n.COLOUR_COLOUR);
 
                 TreeItem trtm_Editor3D = new TreeItem(tree);
                 trtm_Editor3D.setImage(ResourceManager.getImage("icon16_primitives.png")); //$NON-NLS-1$
-                trtm_Editor3D.setText(new String[] { I18n.KEYBOARD_Editor3D, "" }); //$NON-NLS-1$
+                trtm_Editor3D.setText(new String[] { I18n.KEYBOARD_EDITOR_3D, "" }); //$NON-NLS-1$
                 trtm_Editor3D.setVisible(true);
 
                 TreeItem trtm_EditorText = new TreeItem(tree);
                 trtm_EditorText.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
-                trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EditorText, "" }); //$NON-NLS-1$
+                trtm_EditorText.setText(new String[] { I18n.KEYBOARD_EDITOR_TEXT, "" }); //$NON-NLS-1$
                 trtm_EditorText.setVisible(true);
 
-                registerColour(trtm_Editor3D, I18n.COLOUR_OverrideColour16, ColourType.OPENGL_COLOUR, new Object[]{View.Color16_override_r, View.Color16_override_g, View.Color16_override_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_OVERRIDE_COLOUR_16, ColourType.OPENGL_COLOUR, new Object[]{View.Color16_override_r, View.Color16_override_g, View.Color16_override_b});
 
-                registerColour(trtm_Editor3D, I18n.COLOUR_Background3DColour, ColourType.OPENGL_COLOUR, new Object[]{View.background_Colour_r, View.background_Colour_g, View.background_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_BfcBackColour, ColourType.OPENGL_COLOUR, new Object[]{View.BFC_back__Colour_r, View.BFC_back__Colour_g, View.BFC_back__Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_BfcFrontColour, ColourType.OPENGL_COLOUR, new Object[]{View.BFC_front_Colour_r, View.BFC_front_Colour_g, View.BFC_front_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_BfcUncertified, ColourType.OPENGL_COLOUR, new Object[]{View.BFC_uncertified_Colour_r, View.BFC_uncertified_Colour_g, View.BFC_uncertified_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_BACKGROUND_3D_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.background_Colour_r, View.background_Colour_g, View.background_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_BFC_BACK_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.BFC_back__Colour_r, View.BFC_back__Colour_g, View.BFC_back__Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_BFC_FRONT_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.BFC_front_Colour_r, View.BFC_front_Colour_g, View.BFC_front_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_BFC_UNCERTIFIED, ColourType.OPENGL_COLOUR, new Object[]{View.BFC_uncertified_Colour_r, View.BFC_uncertified_Colour_g, View.BFC_uncertified_Colour_b});
 
-                registerColour(trtm_Editor3D, I18n.COLOUR_OriginColour, ColourType.OPENGL_COLOUR, new Object[]{View.origin_Colour_r, View.origin_Colour_g, View.origin_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_GridColour, ColourType.OPENGL_COLOUR, new Object[]{View.grid_Colour_r, View.grid_Colour_g, View.grid_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Grid10Colour, ColourType.OPENGL_COLOUR, new Object[]{View.grid10_Colour_r, View.grid10_Colour_g, View.grid10_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_ORIGIN_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.origin_Colour_r, View.origin_Colour_g, View.origin_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_GRID_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.grid_Colour_r, View.grid_Colour_g, View.grid_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_GRID_10_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.grid10_Colour_r, View.grid10_Colour_g, View.grid10_Colour_b});
 
-                registerColour(trtm_Editor3D, I18n.COLOUR_Cursor1Colour, ColourType.OPENGL_COLOUR, new Object[]{View.cursor1_Colour_r, View.cursor1_Colour_g, View.cursor1_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Cursor2Colour, ColourType.OPENGL_COLOUR, new Object[]{View.cursor2_Colour_r, View.cursor2_Colour_g, View.cursor2_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_CURSOR_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.cursor1_Colour_r, View.cursor1_Colour_g, View.cursor1_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_CURSOR_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.cursor2_Colour_r, View.cursor2_Colour_g, View.cursor2_Colour_b});
 
-                registerColour(trtm_Editor3D, I18n.COLOUR_MeshLineColour, ColourType.OPENGL_COLOUR, new Object[]{View.meshline_Colour_r, View.meshline_Colour_g, View.meshline_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_MESH_LINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.meshline_Colour_r, View.meshline_Colour_g, View.meshline_Colour_b});
 
-                registerColour(trtm_Editor3D, I18n.COLOUR_AddObjectColour, ColourType.OPENGL_COLOUR, new Object[]{View.add_Object_Colour_r, View.add_Object_Colour_g, View.add_Object_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_CondlineColour, ColourType.OPENGL_COLOUR, new Object[]{View.condline_Colour_r, View.condline_Colour_g, View.condline_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_ShownCondlineColour, ColourType.OPENGL_COLOUR, new Object[]{View.condline_shown_Colour_r, View.condline_shown_Colour_g, View.condline_shown_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_HiddenCondlineColour, ColourType.OPENGL_COLOUR, new Object[]{View.condline_hidden_Colour_r, View.condline_hidden_Colour_g, View.condline_hidden_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Light1Colour, ColourType.OPENGL_COLOUR, new Object[]{View.light1_Colour_r, View.light1_Colour_g, View.light1_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Light1SpecularColour, ColourType.OPENGL_COLOUR, new Object[]{View.light1_specular_Colour_r, View.light1_specular_Colour_g, View.light1_specular_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Light2Colour, ColourType.OPENGL_COLOUR, new Object[]{View.light2_Colour_r, View.light2_Colour_g, View.light2_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Light2SpecularColour, ColourType.OPENGL_COLOUR, new Object[]{View.light2_specular_Colour_r, View.light2_specular_Colour_g, View.light2_specular_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Light3Colour, ColourType.OPENGL_COLOUR, new Object[]{View.light3_Colour_r, View.light3_Colour_g, View.light3_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Light3SpecularColour, ColourType.OPENGL_COLOUR, new Object[]{View.light3_specular_Colour_r, View.light3_specular_Colour_g, View.light3_specular_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Light4Colour, ColourType.OPENGL_COLOUR, new Object[]{View.light4_Colour_r, View.light4_Colour_g, View.light4_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_Light4SpecularColour, ColourType.OPENGL_COLOUR, new Object[]{View.light4_specular_Colour_r, View.light4_specular_Colour_g, View.light4_specular_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_LineColour, ColourType.OPENGL_COLOUR, new Object[]{View.line_Colour_r, View.line_Colour_g, View.line_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_ManipulatorInnerCircleColour, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_innerCircle_Colour_r, View.manipulator_innerCircle_Colour_g, View.manipulator_innerCircle_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_ManipulatorOuterCircleColour, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_outerCircle_Colour_r, View.manipulator_outerCircle_Colour_g, View.manipulator_outerCircle_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_ManipulatorXaxisColour, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_x_axis_Colour_r, View.manipulator_x_axis_Colour_g, View.manipulator_x_axis_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_ManipulatorYaxisColour, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_y_axis_Colour_r, View.manipulator_y_axis_Colour_g, View.manipulator_y_axis_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_ManipulatorZaxisColour, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_z_axis_Colour_r, View.manipulator_z_axis_Colour_g, View.manipulator_z_axis_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_ADD_OBJECT_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.add_Object_Colour_r, View.add_Object_Colour_g, View.add_Object_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.condline_Colour_r, View.condline_Colour_g, View.condline_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_SHOWN_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.condline_shown_Colour_r, View.condline_shown_Colour_g, View.condline_shown_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_HIDDEN_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.condline_hidden_Colour_r, View.condline_hidden_Colour_g, View.condline_hidden_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_LIGHT_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.light1_Colour_r, View.light1_Colour_g, View.light1_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_LIGHT_1_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.light1_specular_Colour_r, View.light1_specular_Colour_g, View.light1_specular_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_LIGHT_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.light2_Colour_r, View.light2_Colour_g, View.light2_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_LIGHT_2_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.light2_specular_Colour_r, View.light2_specular_Colour_g, View.light2_specular_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_LIGHT_3_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.light3_Colour_r, View.light3_Colour_g, View.light3_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_LIGHT_3_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.light3_specular_Colour_r, View.light3_specular_Colour_g, View.light3_specular_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_LIGHT_4_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.light4_Colour_r, View.light4_Colour_g, View.light4_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_LIGHT_4_SPECULAR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.light4_specular_Colour_r, View.light4_specular_Colour_g, View.light4_specular_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_LINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.line_Colour_r, View.line_Colour_g, View.line_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_MANIPULATOR_INNER_CIRCLE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_innerCircle_Colour_r, View.manipulator_innerCircle_Colour_g, View.manipulator_innerCircle_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_MANIPULATOR_OUTER_CIRCLE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_outerCircle_Colour_r, View.manipulator_outerCircle_Colour_g, View.manipulator_outerCircle_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_MANIPULATOR_X_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_x_axis_Colour_r, View.manipulator_x_axis_Colour_g, View.manipulator_x_axis_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_MANIPULATOR_Y_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_y_axis_Colour_r, View.manipulator_y_axis_Colour_g, View.manipulator_y_axis_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_MANIPULATOR_Z_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_z_axis_Colour_r, View.manipulator_z_axis_Colour_g, View.manipulator_z_axis_Colour_b});
 
-                registerColour(trtm_Editor3D, I18n.COLOUR_VertexColour, ColourType.OPENGL_COLOUR, new Object[]{View.vertex_Colour_r, View.vertex_Colour_g, View.vertex_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_SelectedVertexColour, ColourType.OPENGL_COLOUR, new Object[]{View.vertex_selected_Colour_r, View.vertex_selected_Colour_g, View.vertex_selected_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_SelectedCondlineColour, ColourType.OPENGL_COLOUR, new Object[]{View.condline_selected_Colour_r, View.condline_selected_Colour_g, View.condline_selected_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_SelectedManipulatorColour, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_selected_Colour_r, View.manipulator_selected_Colour_g, View.manipulator_selected_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_RubberBandColour, ColourType.OPENGL_COLOUR, new Object[]{View.rubberBand_Colour_r, View.rubberBand_Colour_g, View.rubberBand_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_TextColour, ColourType.OPENGL_COLOUR, new Object[]{View.text_Colour_r, View.text_Colour_g, View.text_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_XAxisColour, ColourType.OPENGL_COLOUR, new Object[]{View.x_axis_Colour_r, View.x_axis_Colour_g, View.x_axis_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_YAxisColour, ColourType.OPENGL_COLOUR, new Object[]{View.y_axis_Colour_r, View.y_axis_Colour_g, View.y_axis_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_ZAxisColour, ColourType.OPENGL_COLOUR, new Object[]{View.z_axis_Colour_r, View.z_axis_Colour_g, View.z_axis_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_VERTEX_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.vertex_Colour_r, View.vertex_Colour_g, View.vertex_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_SELECTED_VERTEX_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.vertex_selected_Colour_r, View.vertex_selected_Colour_g, View.vertex_selected_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_SELECTED_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.condline_selected_Colour_r, View.condline_selected_Colour_g, View.condline_selected_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_SELECTED_MANIPULATOR_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.manipulator_selected_Colour_r, View.manipulator_selected_Colour_g, View.manipulator_selected_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_RUBBERBAND_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.rubberBand_Colour_r, View.rubberBand_Colour_g, View.rubberBand_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_TEXT_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.text_Colour_r, View.text_Colour_g, View.text_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_X_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.x_axis_Colour_r, View.x_axis_Colour_g, View.x_axis_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_Y_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.y_axis_Colour_r, View.y_axis_Colour_g, View.y_axis_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_Z_AXIS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.z_axis_Colour_r, View.z_axis_Colour_g, View.z_axis_Colour_b});
 
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveBGColour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_background_Colour_r, View.primitive_background_Colour_g, View.primitive_background_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveSignFGColour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_signFG_Colour_r, View.primitive_signFG_Colour_g, View.primitive_signFG_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveSignBGColour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_signBG_Colour_r, View.primitive_signBG_Colour_g, View.primitive_signBG_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitvePlusMinusColour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_plusNminus_Colour_r, View.primitive_plusNminus_Colour_g, View.primitive_plusNminus_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveSelectedCellColour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_selectedCell_Colour_r, View.primitive_selectedCell_Colour_g, View.primitive_selectedCell_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveFocusedCellColour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_focusedCell_Colour_r, View.primitive_focusedCell_Colour_g, View.primitive_focusedCell_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveNormalCellColour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_normalCell_Colour_r, View.primitive_normalCell_Colour_g, View.primitive_normalCell_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveCell1Colour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_cell_1_Colour_r, View.primitive_cell_1_Colour_g, View.primitive_cell_1_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveCell2Colour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_cell_2_Colour_r, View.primitive_cell_2_Colour_g, View.primitive_cell_2_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveCategoryCell1Colour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_categoryCell_1_Colour_r, View.primitive_categoryCell_1_Colour_g, View.primitive_categoryCell_1_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveCategoryCell2Colour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_categoryCell_2_Colour_r, View.primitive_categoryCell_2_Colour_g, View.primitive_categoryCell_2_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveEdgeColour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_edge_Colour_r, View.primitive_edge_Colour_g, View.primitive_edge_Colour_b});
-                registerColour(trtm_Editor3D, I18n.COLOUR_PrimitveCondlineColour, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_condline_Colour_r, View.primitive_condline_Colour_g, View.primitive_condline_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_BG_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_background_Colour_r, View.primitive_background_Colour_g, View.primitive_background_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_SIGN_FG_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_signFG_Colour_r, View.primitive_signFG_Colour_g, View.primitive_signFG_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_SIGN_BG_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_signBG_Colour_r, View.primitive_signBG_Colour_g, View.primitive_signBG_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_PLUS_MINUS_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_plusNminus_Colour_r, View.primitive_plusNminus_Colour_g, View.primitive_plusNminus_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_SELECTED_CELL_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_selectedCell_Colour_r, View.primitive_selectedCell_Colour_g, View.primitive_selectedCell_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_FOCUSED_CELL_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_focusedCell_Colour_r, View.primitive_focusedCell_Colour_g, View.primitive_focusedCell_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_NORMAL_CELL_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_normalCell_Colour_r, View.primitive_normalCell_Colour_g, View.primitive_normalCell_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_CELL_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_cell_1_Colour_r, View.primitive_cell_1_Colour_g, View.primitive_cell_1_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_CELL_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_cell_2_Colour_r, View.primitive_cell_2_Colour_g, View.primitive_cell_2_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_CATEGORY_CELL_1_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_categoryCell_1_Colour_r, View.primitive_categoryCell_1_Colour_g, View.primitive_categoryCell_1_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_CATEGORY_CELL_2_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_categoryCell_2_Colour_r, View.primitive_categoryCell_2_Colour_g, View.primitive_categoryCell_2_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_EDGE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_edge_Colour_r, View.primitive_edge_Colour_g, View.primitive_edge_Colour_b});
+                registerColour(trtm_Editor3D, I18n.COLOUR_PRIMITVE_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.primitive_condline_Colour_r, View.primitive_condline_Colour_g, View.primitive_condline_Colour_b});
 
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorBGColour, ColourType.SWT_COLOUR, Colour.text_background);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorFGColour, ColourType.SWT_COLOUR, Colour.text_foreground);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorFGColourHidden, ColourType.SWT_COLOUR, Colour.text_foreground_hidden);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorSelectedBGColour, ColourType.SWT_COLOUR, Colour.line_highlight_selected_background);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorHighlightBGColour, ColourType.SWT_COLOUR, Colour.line_highlight_background);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorCommentColour, ColourType.SWT_COLOUR, Colour.line_comment_font);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorHintUnderlineColour, ColourType.SWT_COLOUR, Colour.line_hint_underline);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorWarningUnderlineColour, ColourType.SWT_COLOUR, Colour.line_warning_underline);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorErrorUnderlineColour, ColourType.SWT_COLOUR, Colour.line_error_underline);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorPrimaryColour, ColourType.SWT_COLOUR, Colour.line_primary_font);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorSecondaryColour, ColourType.SWT_COLOUR, Colour.line_secondary_font);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorQuadColour, ColourType.SWT_COLOUR, Colour.line_quad_font);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorColourAttrColour, ColourType.SWT_COLOUR, Colour.line_colourAttr_font);
-                registerColour(trtm_EditorText, I18n.COLOUR_TextEditorBoxColour, ColourType.SWT_COLOUR, Colour.line_box_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_BG_COLOUR, ColourType.SWT_COLOUR, Colour.text_background);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR, ColourType.SWT_COLOUR, Colour.text_foreground);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR_HIDDEN, ColourType.SWT_COLOUR, Colour.text_foreground_hidden);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_SELECTED_BG_COLOUR, ColourType.SWT_COLOUR, Colour.line_highlight_selected_background);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_HIGHLIGHT_BG_COLOUR, ColourType.SWT_COLOUR, Colour.line_highlight_background);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_COMMENT_COLOUR, ColourType.SWT_COLOUR, Colour.line_comment_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_HINT_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, Colour.line_hint_underline);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_WARNING_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, Colour.line_warning_underline);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_ERROR_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, Colour.line_error_underline);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_PRIMARY_COLOUR, ColourType.SWT_COLOUR, Colour.line_primary_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_SECONDARY_COLOUR, ColourType.SWT_COLOUR, Colour.line_secondary_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_QUAD_COLOUR, ColourType.SWT_COLOUR, Colour.line_quad_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_COLOUR_ATTR_COLOUR, ColourType.SWT_COLOUR, Colour.line_colourAttr_font);
+                registerColour(trtm_EditorText, I18n.COLOUR_TEXT_EDITOR_BOX_COLOUR, ColourType.SWT_COLOUR, Colour.line_box_font);
 
                 tree.build();
 
@@ -752,7 +752,7 @@ class OptionsDesign extends ApplicationWindow {
             }
         }
 
-        messageBoxInfo.setText(I18n.DIALOG_Info);
+        messageBoxInfo.setText(I18n.DIALOG_INFO);
         messageBoxInfo.setMessage("The key combination " + keyString + " is already in use for '" + actionString + "'."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
         messageBoxInfo.open();
     }

@@ -58,13 +58,13 @@ class Lines2PatternDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.LINES_Title);
+        lbl_specify.setText(I18n.LINES_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        cmb_scope.setItems(new String[] {I18n.LINES_ScopeSelection});
+        cmb_scope.setItems(new String[] {I18n.LINES_SCOPE_SELECTION});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(0));
         cmb_scope.select(0);
@@ -72,7 +72,7 @@ class Lines2PatternDesign extends Dialog {
 
         Label lbl_info = new Label(cmp_container, SWT.NONE);
         lbl_info.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        lbl_info.setText(I18n.LINES_Hint);
+        lbl_info.setText(I18n.LINES_HINT);
 
         cmp_container.pack();
         return cmp_container;
@@ -86,7 +86,7 @@ class Lines2PatternDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

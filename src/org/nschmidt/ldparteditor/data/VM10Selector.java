@@ -92,7 +92,7 @@ class VM10Selector extends VM09WindingChange {
                 @Override
                 public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                 {
-                    m.beginTask(I18n.VM_Selecting, IProgressMonitor.UNKNOWN);
+                    m.beginTask(I18n.VM_SELECTING, IProgressMonitor.UNKNOWN);
                     selectorHelper(ss);
                 }
             });

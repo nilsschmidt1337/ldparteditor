@@ -85,7 +85,7 @@ class ValueDesignInt extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

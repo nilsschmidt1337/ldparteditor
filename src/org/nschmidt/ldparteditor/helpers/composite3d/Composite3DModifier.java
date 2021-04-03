@@ -397,7 +397,7 @@ public class Composite3DModifier {
                 gd.grabExcessVerticalSpace = true;
                 NButton btn_OpenIn3DEditor = new NButton(nc, Cocoa.getStyle());
                 btn_OpenIn3DEditor.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
-                btn_OpenIn3DEditor.setText(I18n.E3D_Reopen3DView);
+                btn_OpenIn3DEditor.setText(I18n.E3D_REOPEN_3D_VIEW);
                 btn_OpenIn3DEditor.setLayoutData(gd);
                 btn_OpenIn3DEditor.setData(Project.getFileToEdit());
 

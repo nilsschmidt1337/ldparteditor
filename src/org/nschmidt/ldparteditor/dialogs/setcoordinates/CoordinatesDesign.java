@@ -99,15 +99,15 @@ class CoordinatesDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.COORDINATESDIALOG_SetXYZ);
+        lbl_specify.setText(I18n.COORDINATESDIALOG_SET_XYZ);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
             Label lbl_adjacencyWarning = new Label(cmp_container, SWT.NONE);
-            lbl_adjacencyWarning.setText(I18n.E3D_AdjacentWarningStatus);
-            lbl_adjacencyWarning.setToolTipText(I18n.E3D_AdjacentWarningDialog);
+            lbl_adjacencyWarning.setText(I18n.E3D_ADJACENT_WARNING_STATUS);
+            lbl_adjacencyWarning.setToolTipText(I18n.E3D_ADJACENT_WARNING_DIALOG);
             lbl_adjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
             lbl_adjacencyWarning.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
         }
@@ -116,14 +116,14 @@ class CoordinatesDesign extends Dialog {
         {
             NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Local[0] = btn_Local;
-            btn_Local.setToolTipText(I18n.E3D_Local);
+            btn_Local.setToolTipText(I18n.E3D_LOCAL);
             if (transformationMode == ManipulatorScope.LOCAL) btn_Local.setSelection(true);
             btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
             NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Global[0] = btn_Global;
-            btn_Global.setToolTipText(I18n.E3D_Global);
+            btn_Global.setToolTipText(I18n.E3D_GLOBAL);
             if (transformationMode == ManipulatorScope.GLOBAL) btn_Global.setSelection(true);
             btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
         }
@@ -136,7 +136,7 @@ class CoordinatesDesign extends Dialog {
             this.btn_Manipulator[0] = btn_Manipulator;
             btn_Manipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_Manipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
-            btn_Manipulator.setText(I18n.COORDINATESDIALOG_Manipulator);
+            btn_Manipulator.setText(I18n.COORDINATESDIALOG_MANIPULATOR);
         }
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
@@ -146,7 +146,7 @@ class CoordinatesDesign extends Dialog {
             this.btn_Clipboard[0] = btn_Clipboard;
             btn_Clipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_Clipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
-            btn_Clipboard.setText(I18n.COORDINATESDIALOG_Clipboard);
+            btn_Clipboard.setText(I18n.COORDINATESDIALOG_CLIPBOARD);
         }
 
         {
@@ -214,9 +214,9 @@ class CoordinatesDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_Copy[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CreateTransformedCopy, false);
+        btn_Copy[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CREATE_TRANSFORMED_COPY, false);
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

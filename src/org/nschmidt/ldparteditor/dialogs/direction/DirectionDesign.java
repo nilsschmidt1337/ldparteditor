@@ -98,7 +98,7 @@ class DirectionDesign extends Dialog {
         {
             NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Local[0] = btn_Local;
-            btn_Local.setToolTipText(I18n.E3D_Local);
+            btn_Local.setToolTipText(I18n.E3D_LOCAL);
             if (transformationMode == ManipulatorScope.LOCAL) {
                 btn_Local.setSelection(true);
             }
@@ -107,14 +107,14 @@ class DirectionDesign extends Dialog {
         {
             NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Global[0] = btn_Global;
-            btn_Global.setToolTipText(I18n.E3D_Global);
+            btn_Global.setToolTipText(I18n.E3D_GLOBAL);
             if (transformationMode == ManipulatorScope.GLOBAL) {
                 btn_Global.setSelection(true);
             }
             btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
         }
 
-        Label lbl_CartesianCoords = new Label(cmp_container, I18n.I18N_RTL());
+        Label lbl_CartesianCoords = new Label(cmp_container, I18n.rightToLeftStyle());
         lbl_CartesianCoords.setText("Cartesian coordinates:"); //$NON-NLS-1$ FIXME !i18n!
 
         {
@@ -122,7 +122,7 @@ class DirectionDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Xaxis = new Label(cmp_txt, I18n.I18N_RTL());
+            Label lbl_Xaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
             lbl_Xaxis.setText("X:"); //$NON-NLS-1$ FIXME !i18n!
 
             BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
@@ -138,7 +138,7 @@ class DirectionDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Yaxis = new Label(cmp_txt, I18n.I18N_RTL());
+            Label lbl_Yaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
             lbl_Yaxis.setText("Y:"); //$NON-NLS-1$ FIXME !i18n!
 
             BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
@@ -154,7 +154,7 @@ class DirectionDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Zaxis = new Label(cmp_txt, I18n.I18N_RTL());
+            Label lbl_Zaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
             lbl_Zaxis.setText("Z:"); //$NON-NLS-1$ FIXME !i18n!
 
             BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
@@ -165,7 +165,7 @@ class DirectionDesign extends Dialog {
             spn_Z.setValue(new BigDecimal(cart[2]));
         }
 
-        Label lbl_SphericalCoords = new Label(cmp_container, I18n.I18N_RTL());
+        Label lbl_SphericalCoords = new Label(cmp_container, I18n.rightToLeftStyle());
         lbl_SphericalCoords.setText("Spherical coordinates (as defined by ISO 80000-2:2009):"); //$NON-NLS-1$ FIXME !i18n!
 
         {
@@ -173,7 +173,7 @@ class DirectionDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Xaxis = new Label(cmp_txt, I18n.I18N_RTL());
+            Label lbl_Xaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
             lbl_Xaxis.setText("r:"); //$NON-NLS-1$ FIXME !i18n!
 
             BigDecimalSpinner spn_Rho = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
@@ -189,7 +189,7 @@ class DirectionDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Yaxis = new Label(cmp_txt, I18n.I18N_RTL());
+            Label lbl_Yaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
             lbl_Yaxis.setText("θ:"); //$NON-NLS-1$ FIXME !i18n!
 
             BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
@@ -205,7 +205,7 @@ class DirectionDesign extends Dialog {
             cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmp_txt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Zaxis = new Label(cmp_txt, I18n.I18N_RTL());
+            Label lbl_Zaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
             lbl_Zaxis.setText("φ:"); //$NON-NLS-1$ FIXME !i18n!
 
             BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
@@ -261,7 +261,7 @@ class DirectionDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

@@ -41,13 +41,13 @@ class KeyDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(final Composite parent) {
-        this.getShell().setText(I18n.KEYBOARD_CustomiseShortkeys);
+        this.getShell().setText(I18n.KEYBOARD_CUSTOMISE_SHORTKEYS);
         Composite cmp_container = parent;
         cmp_container.setLayout(new GridLayout());
 
-        Label lbl_PressKey = new Label(cmp_container, I18n.I18N_RTL());
+        Label lbl_PressKey = new Label(cmp_container, I18n.rightToLeftStyle());
         this.lbl_PressKey[0] = lbl_PressKey;
-        lbl_PressKey.setText(I18n.KEYBOARD_PressAKey);
+        lbl_PressKey.setText(I18n.KEYBOARD_PRESS_A_KEY);
 
         return cmp_container;
     }
@@ -60,7 +60,7 @@ class KeyDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

@@ -76,14 +76,14 @@ class ColourTableDesign extends ApplicationWindow {
 
         TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
         trclmn_Description.setWidth(300);
-        trclmn_Description.setText(I18n.COLOUR_Description);
+        trclmn_Description.setText(I18n.COLOUR_DESCRIPTION);
 
         TreeColumn trclmn_Number = new TreeColumn(tree, SWT.NONE);
         trclmn_Number.setWidth(60);
 
         TreeColumn trclmn_Colour = new TreeColumn(tree, SWT.NONE);
         trclmn_Colour.setWidth(100);
-        trclmn_Colour.setText(I18n.COLOUR_Colour);
+        trclmn_Colour.setText(I18n.COLOUR_COLOUR);
 
         Set<Integer> ldConfIndices = View.getColourMap().keySet();
         Map<String, Integer> nameToIndex = new HashMap<>();

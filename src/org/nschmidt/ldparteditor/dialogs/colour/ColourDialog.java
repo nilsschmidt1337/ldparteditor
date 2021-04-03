@@ -55,7 +55,7 @@ public class ColourDialog extends ColourDesign {
         WidgetUtil(btn_colourChoose[0]).addSelectionListener(e -> {
             ColorDialog dlg = new ColorDialog(getShell());
             // Change the title bar text
-            dlg.setText(I18n.COLOURDIALOG_ChooseDirectColour);
+            dlg.setText(I18n.COLOURDIALOG_CHOOSE_DIRECT_COLOUR);
             // Open the dialog and retrieve the selected color
             RGB rgb = dlg.open();
             if (rgb != null) {

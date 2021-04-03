@@ -41,7 +41,7 @@ public class OverwriteDialog extends OverwriteDesign {
     @Override
     public int open() {
         super.create();
-        getShell().setText(I18n.DIALOG_ReplaceTitle);
+        getShell().setText(I18n.DIALOG_REPLACE_TITLE);
         // MARK All final listeners will be configured here..
         WidgetUtil(getButton(IDialogConstants.YES_ID)).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.YES_ID);

@@ -45,12 +45,12 @@ public class CompositeTabState {
     /** The DatFile object */
     private DatFile datFileObj = View.DUMMY_DATFILE;
     /** The filename of the file, which is displayed by this tab */
-    String filename = I18n.EDITORTEXT_NewFile;
+    String filename = I18n.EDITORTEXT_NEW_FILE;
     /**
      * The filename of the file, which is displayed by this tab when the content
      * is modified
      */
-    private String filenameWithStar = I18n.EDITORTEXT_NewFile + "*"; //$NON-NLS-1$
+    private String filenameWithStar = I18n.EDITORTEXT_NEW_FILE + "*"; //$NON-NLS-1$
     /** The line index of the caret [NOT PUBLIC YET] */
     int currentLineIndex = 0;
     /** The caret position (needed for vertex replacement and so on) */
@@ -78,8 +78,8 @@ public class CompositeTabState {
         filename = new File(fileNameObj.getNewName()).getName();
         setFilenameWithStar(filename + "*"); //$NON-NLS-1$
         if (fileNameObj.isReadOnly()) {
-            filename = filename + " " + I18n.EDITORTEXT_ReadOnly; //$NON-NLS-1$
-            setFilenameWithStar(getFilenameWithStar() + " " + I18n.EDITORTEXT_ReadOnly); //$NON-NLS-1$
+            filename = filename + " " + I18n.EDITORTEXT_READ_ONLY; //$NON-NLS-1$
+            setFilenameWithStar(getFilenameWithStar() + " " + I18n.EDITORTEXT_READ_ONLY); //$NON-NLS-1$
             getTab().getTextComposite().setEditable(false);
         } else {
             getTab().getTextComposite().setEditable(true);
@@ -124,7 +124,7 @@ public class CompositeTabState {
                 Object[] messageArguments = {fileNameObj.getOldName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.COMPOSITETAB_FileNotFound);
+                formatter.applyPattern(I18n.COMPOSITETAB_FILE_NOT_FOUND);
                 getTab().getTextComposite().setText(formatter.format(messageArguments));
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
@@ -134,7 +134,7 @@ public class CompositeTabState {
                 Object[] messageArguments = {fileNameObj.getOldName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.COMPOSITETAB_FileReadError);
+                formatter.applyPattern(I18n.COMPOSITETAB_FILE_READ_ERROR);
                 getTab().getTextComposite().setText(formatter.format(messageArguments));
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
@@ -144,7 +144,7 @@ public class CompositeTabState {
                 Object[] messageArguments = {fileNameObj.getOldName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.COMPOSITETAB_FileEncodingError);
+                formatter.applyPattern(I18n.COMPOSITETAB_FILE_ENCODING_ERROR);
                 getTab().getTextComposite().setText(formatter.format(messageArguments));
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$

@@ -612,12 +612,12 @@ public class Editor3DWindow extends Editor3DDesign {
             treeParts[0].getTree().showItem(treeParts[0].getTree().getItem(0));
 
             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-            messageBox.setText(I18n.DIALOG_SyncTitle);
+            messageBox.setText(I18n.DIALOG_SYNC_TITLE);
 
             Object[] messageArguments = {additions, deletions, conflicts};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DIALOG_Sync);
+            formatter.applyPattern(I18n.DIALOG_SYNC);
             messageBox.setMessage(formatter.format(messageArguments));
 
             messageBox.open();
@@ -635,7 +635,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 File f = new File(path);
                 if (f.exists() && f.canRead()) {
                     if (f.isFile()) {
-                        MenuItem mntmItem1 = new MenuItem(lastOpenedMenu, I18n.I18N_NON_BIDIRECT());
+                        MenuItem mntmItem1 = new MenuItem(lastOpenedMenu, I18n.noBiDirectionalTextStyle());
                         mntmItem1.setEnabled(true);
                         mntmItem1.setText(path);
                         WidgetUtil(mntmItem1).addSelectionListener(e11 -> {
@@ -664,13 +664,13 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         });
                     } else if (f.isDirectory()) {
-                        MenuItem mntmItem2 = new MenuItem(lastOpenedMenu, I18n.I18N_NON_BIDIRECT());
+                        MenuItem mntmItem2 = new MenuItem(lastOpenedMenu, I18n.noBiDirectionalTextStyle());
                         mntmItem2.setEnabled(true);
 
                         Object[] messageArguments = {path};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.E3D_LastProject);
+                        formatter.applyPattern(I18n.E3D_LAST_PROJECT);
 
                         mntmItem2.setText(formatter.format(messageArguments));
                         WidgetUtil(mntmItem2).addSelectionListener(e12 -> {
@@ -742,8 +742,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             } else {
                                 MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_Error);
-                                messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                                messageBoxError.setText(I18n.DIALOG_ERROR);
+                                messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                                 messageBoxError.open();
                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             }
@@ -761,8 +761,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                         Editor3DWindow.getWindow().updateTree_unsavedEntries();
                                     } else {
                                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                        messageBoxError.setText(I18n.DIALOG_Error);
-                                        messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                                        messageBoxError.setText(I18n.DIALOG_ERROR);
+                                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                                         messageBoxError.open();
                                         Editor3DWindow.getWindow().updateTree_unsavedEntries();
                                     }
@@ -814,8 +814,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             } else {
                                 MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_Error);
-                                messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                                messageBoxError.setText(I18n.DIALOG_ERROR);
+                                messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                                 messageBoxError.open();
                                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             }
@@ -833,8 +833,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         Project.removeUnsavedFile(df);
                     } else {
                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_Error);
-                        messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                        messageBoxError.setText(I18n.DIALOG_ERROR);
+                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                         messageBoxError.open();
                     }
                 }
@@ -865,13 +865,13 @@ public class Editor3DWindow extends Editor3DDesign {
             WorkbenchManager.getUserSettingState().setSyncingTabs(false);
 
             FileDialog fd = new FileDialog(btn_Open[0].getShell(), SWT.MULTI);
-            fd.setText(I18n.E3D_OpenDatFile);
+            fd.setText(I18n.E3D_OPEN_DAT_FILE);
 
             fd.setFilterPath(Project.getLastVisitedPath());
 
             String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
             fd.setFilterExtensions(filterExt);
-            String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+            String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
             fd.setFilterNames(filterNames);
 
             String selected = fd.open();
@@ -922,8 +922,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         Editor3DWindow.getWindow().updateTree_unsavedEntries();
                     } else {
                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_Error);
-                        messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                        messageBoxError.setText(I18n.DIALOG_ERROR);
+                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                     }
                 }
             }
@@ -935,7 +935,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 final DatFile df2 = Project.getFileToEdit();
 
                 FileDialog fd = new FileDialog(sh, SWT.SAVE);
-                fd.setText(I18n.E3D_SaveDatFileAs);
+                fd.setText(I18n.E3D_SAVE_DAT_FILE_AS);
                 fd.setOverwrite(true);
 
                 {
@@ -949,7 +949,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                 fd.setFilterExtensions(filterExt);
-                String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+                String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
                 fd.setFilterNames(filterNames);
 
                 while (true) {
@@ -959,8 +959,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                             if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
                                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                                messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
-                                messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+                                messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
+                                messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
 
                                 int result = messageBox.open();
 
@@ -1160,8 +1160,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     {
                         MessageBox messageBox1 = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                        messageBox1.setText(I18n.E3D_SubfileFromSelection);
-                        messageBox1.setMessage(I18n.E3D_SubfileFromSelectionQuestion);
+                        messageBox1.setText(I18n.E3D_SUBFILE_FROM_SELECTION);
+                        messageBox1.setMessage(I18n.E3D_SUBFILE_FROM_SELECTION_QUESTION);
                         int result1 = messageBox1.open();
                         insertSubfileFromSelection = result1 == SWT.YES;
                         if (result1 != SWT.NO && result1 != SWT.YES) {
@@ -1177,8 +1177,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (insertSubfileFromSelection) {
                         if (!readOnly) {
                             MessageBox messageBox2 = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-                            messageBox2.setText(I18n.E3D_SubfileFromSelection);
-                            messageBox2.setMessage(I18n.E3D_SubfileFromSelectionQuestionCut);
+                            messageBox2.setText(I18n.E3D_SUBFILE_FROM_SELECTION);
+                            messageBox2.setMessage(I18n.E3D_SUBFILE_FROM_SELECTION_QUESTION_CUT);
                             int result2 = messageBox2.open();
                             cutTheSelection = result2 == SWT.YES;
                             if (result2 != SWT.NO && result2 != SWT.YES) {
@@ -1198,7 +1198,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         vm.extendClipboardContent(cutTheSelection);
 
                         FileDialog fd = new FileDialog(sh, SWT.SAVE);
-                        fd.setText(I18n.E3D_SaveDatFileAs);
+                        fd.setText(I18n.E3D_SAVE_DAT_FILE_AS);
 
                         {
                             File f1 = new File(Project.getFileToEdit().getNewName()).getParentFile();
@@ -1211,7 +1211,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                         fd.setFilterExtensions(filterExt);
-                        String[] filterNames = {I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles};
+                        String[] filterNames = {I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES};
                         fd.setFilterNames(filterNames);
 
                         while (true) {
@@ -1221,8 +1221,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                     if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
                                         MessageBox messageBox3 = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                                        messageBox3.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
-                                        messageBox3.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+                                        messageBox3.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
+                                        messageBox3.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
 
                                         int result3 = messageBox3.open();
 
@@ -1320,8 +1320,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                     if (hasIOerror) {
                                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                        messageBoxError.setText(I18n.DIALOG_Error);
-                                        messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                                        messageBoxError.setText(I18n.DIALOG_ERROR);
+                                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                                         messageBoxError.open();
                                     } else {
 
@@ -1683,7 +1683,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Object[] messageArguments1 = {num, View.getLDConfigColourName(num)};
                     MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
                     formatter1.setLocale(MyLanguage.LOCALE);
-                    formatter1.applyPattern(I18n.EDITORTEXT_Colour1);
+                    formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
                     btn_LastUsedColour[0].setToolTipText(formatter1.format(messageArguments1));
                 } else {
@@ -1696,7 +1696,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Object[] messageArguments2 = {colourBuilder.toString()};
                     MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
                     formatter2.setLocale(MyLanguage.LOCALE);
-                    formatter2.applyPattern(I18n.EDITORTEXT_Colour2);
+                    formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
                     btn_LastUsedColour[0].setToolTipText(formatter2.format(messageArguments2));
                 }
@@ -1775,10 +1775,10 @@ public class Editor3DWindow extends Editor3DDesign {
                 btn_Coarse[0].setMenu(gridMenu);
                 mnu_coarseMenu[0] = gridMenu;
 
-                MenuItem mntmGridCoarseDefault = new MenuItem(gridMenu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmGridCoarseDefault = new MenuItem(gridMenu, I18n.noBiDirectionalTextStyle());
                 mntm_gridCoarseDefault[0] = mntmGridCoarseDefault;
                 mntmGridCoarseDefault.setEnabled(true);
-                mntmGridCoarseDefault.setText(I18n.E3D_GridCoarseDefault);
+                mntmGridCoarseDefault.setText(I18n.E3D_GRID_COARSE_DEFAULT);
 
                 WidgetUtil(mntm_gridCoarseDefault[0]).addSelectionListener(e -> {
                     WorkbenchManager.getUserSettingState().setCoarse_move_snap(new BigDecimal("1")); //$NON-NLS-1$
@@ -1822,10 +1822,10 @@ public class Editor3DWindow extends Editor3DDesign {
                 btn_Medium[0].setMenu(gridMenu);
                 mnu_mediumMenu[0] = gridMenu;
 
-                MenuItem mntmGridMediumDefault = new MenuItem(gridMenu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmGridMediumDefault = new MenuItem(gridMenu, I18n.noBiDirectionalTextStyle());
                 mntm_gridMediumDefault[0] = mntmGridMediumDefault;
                 mntmGridMediumDefault.setEnabled(true);
-                mntmGridMediumDefault.setText(I18n.E3D_GridMediumDefault);
+                mntmGridMediumDefault.setText(I18n.E3D_GRID_MEDIUM_DEFAULT);
 
                 WidgetUtil(mntm_gridMediumDefault[0]).addSelectionListener(e -> {
                     WorkbenchManager.getUserSettingState().setMedium_move_snap(new BigDecimal("0.01")); //$NON-NLS-1$
@@ -1869,10 +1869,10 @@ public class Editor3DWindow extends Editor3DDesign {
                 btn_Fine[0].setMenu(gridMenu);
                 mnu_fineMenu[0] = gridMenu;
 
-                MenuItem mntmGridFineDefault = new MenuItem(gridMenu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmGridFineDefault = new MenuItem(gridMenu, I18n.noBiDirectionalTextStyle());
                 mntm_gridFineDefault[0] = mntmGridFineDefault;
                 mntmGridFineDefault.setEnabled(true);
-                mntmGridFineDefault.setText(I18n.E3D_GridFineDefault);
+                mntmGridFineDefault.setText(I18n.E3D_GRID_FINE_DEFAULT);
 
                 WidgetUtil(mntm_gridFineDefault[0]).addSelectionListener(e -> {
                     WorkbenchManager.getUserSettingState().setFine_move_snap(new BigDecimal("0.0001")); //$NON-NLS-1$
@@ -2185,20 +2185,20 @@ public class Editor3DWindow extends Editor3DDesign {
                                     break;
                                 }
 
-                                lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorAngle : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionLength[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorLength : "") + " {" + spn_SelectionLength[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX1 : "") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY1 : "") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ1 : "") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX2 : "") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY2 : "") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ2 : "") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX3 : "") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY3 : "") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ3 : "") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX4 : "") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY4 : "") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ4 : "") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_ANGLE : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionLength[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH : "") + " {" + spn_SelectionLength[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X1 : "") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y1 : "") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z1 : "") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X2 : "") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y2 : "") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z2 : "") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X3 : "") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y3 : "") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z3 : "") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X4 : "") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y4 : "") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z4 : "") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                                 lbl_SelectionX1[0].getParent().layout();
                                 updatingSelectionTab = false;
@@ -2365,20 +2365,20 @@ public class Editor3DWindow extends Editor3DDesign {
                                     break;
                                 }
 
-                                lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorAngle : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionLength[0].setText((gdata.type() != 1 ? I18n.E3D_ProtractorLength : "") + " {" + spn_SelectionLength[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX1 : "X  :") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY1 : "Y  :") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ1 : "Z  :") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX2 : "M00:") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY2 : "M01:") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ2 : "M02:") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX3 : "M10:") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY3 : "M11:") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ3 : "M12:") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionX4 : "M20:") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionY4 : "M21:") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.E3D_PositionZ4 : "M22:") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_ANGLE : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionLength[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH : "") + " {" + spn_SelectionLength[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X1 : "X  :") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y1 : "Y  :") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z1 : "Z  :") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X2 : "M00:") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y2 : "M01:") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z2 : "M02:") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X3 : "M10:") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y3 : "M11:") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z3 : "M12:") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X4 : "M20:") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y4 : "M21:") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z4 : "M22:") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                                 lbl_SelectionX1[0].getParent().layout();
                                 break;
@@ -2577,41 +2577,41 @@ public class Editor3DWindow extends Editor3DDesign {
                 treeParts[0].getTree().setMenu(treeMenu);
                 mnu_treeMenu[0] = treeMenu;
 
-                MenuItem mntmOpenIn3DEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmOpenIn3DEditor = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
                 mntm_OpenIn3DEditor[0] = mntmOpenIn3DEditor;
                 mntmOpenIn3DEditor.setEnabled(enabled);
-                mntmOpenIn3DEditor.setText(I18n.E3D_OpenIn3DEditor);
+                mntmOpenIn3DEditor.setText(I18n.E3D_OPEN_IN_3D_EDITOR);
 
-                MenuItem mntmOpenInTextEditor = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmOpenInTextEditor = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
                 mntm_OpenInTextEditor[0] = mntmOpenInTextEditor;
                 mntmOpenInTextEditor.setEnabled(enabled);
-                mntmOpenInTextEditor.setText(I18n.E3D_OpenInTextEditor);
+                mntmOpenInTextEditor.setText(I18n.E3D_OPEN_IN_TEXT_EDITOR);
 
-                new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle() | SWT.SEPARATOR);
 
-                MenuItem mntmClose = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmClose = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
                 mntm_Close[0] = mntmClose;
                 mntmClose.setEnabled(enabled);
-                mntmClose.setText(I18n.E3D_Close);
+                mntmClose.setText(I18n.E3D_CLOSE);
 
-                new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle() | SWT.SEPARATOR);
 
-                MenuItem mntmRename = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmRename = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
                 mntm_Rename[0] = mntmRename;
                 mntmRename.setEnabled(enabled && writable);
-                mntmRename.setText(I18n.E3D_RenameMove);
+                mntmRename.setText(I18n.E3D_RENAME_MOVE);
 
-                MenuItem mntmRevert = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmRevert = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
                 mntm_Revert[0] = mntmRevert;
                 mntmRevert.setEnabled(enabled && writable);
-                mntmRevert.setText(I18n.E3D_RevertAllChanges);
+                mntmRevert.setText(I18n.E3D_REVERT_ALL_CHANGES);
 
-                new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT() | SWT.SEPARATOR);
+                new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle() | SWT.SEPARATOR);
 
-                MenuItem mntmCopyToUnofficial = new MenuItem(treeMenu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmCopyToUnofficial = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
                 mntm_CopyToUnofficial[0] = mntmCopyToUnofficial;
                 mntmCopyToUnofficial.setEnabled(enabled && isNotUnofficial);
-                mntmCopyToUnofficial.setText(I18n.E3D_CopyToUnofficialLibrary);
+                mntmCopyToUnofficial.setText(I18n.E3D_COPY_TO_UNOFFICIAL_LIBRARY);
 
                 WidgetUtil(mntm_OpenInTextEditor[0]).addSelectionListener(e1 -> action_OpenInTextEditor());
                 WidgetUtil(mntm_OpenIn3DEditor[0]).addSelectionListener(e1 -> action_OpenIn3DEditor());
@@ -2973,7 +2973,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (mntm_WithSameOrientation[0].getSelection()) {
 
 
-                        new ValueDialog(getShell(), I18n.E3D_AngleDiff, I18n.E3D_ThreshInDeg) {
+                        new ValueDialog(getShell(), I18n.E3D_ANGLE_DIFF, I18n.E3D_THRESH_IN_DEG) {
 
                             @Override
                             public void initializeSpinner() {
@@ -3007,7 +3007,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             );
                     if (mntm_WithAccuracy[0].getSelection()) {
 
-                        new ValueDialog(getShell(), I18n.E3D_SetAccuracy, I18n.E3D_ThreshInLdu) {
+                        new ValueDialog(getShell(), I18n.E3D_SET_ACCURACY, I18n.E3D_THRESH_IN_LDU) {
 
                             @Override
                             public void initializeSpinner() {
@@ -3256,7 +3256,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
 
                             final int[] frac = new int[]{2};
-                            if (new ValueDialogInt(getShell(), I18n.E3D_SplitEdges, I18n.E3D_NumberOfFractions) {
+                            if (new ValueDialogInt(getShell(), I18n.E3D_SPLIT_EDGES, I18n.E3D_NUMBER_OF_FRACTIONS) {
 
                                 @Override
                                 public void initializeSpinner() {
@@ -3752,7 +3752,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                             @Override
                             public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                                monitor.beginTask(I18n.E3D_PartReview, IProgressMonitor.UNKNOWN);
+                                monitor.beginTask(I18n.E3D_PART_REVIEW, IProgressMonitor.UNKNOWN);
 
                                 String fileName = PartReviewDialog.getFileName().toLowerCase(Locale.ENGLISH);
                                 if (!fileName.endsWith(".dat")) fileName = fileName + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
@@ -3781,8 +3781,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                 if (source == null) source = FileHelper.downloadPartFile("p/48/" + fileName, monitor); //$NON-NLS-1$
                                 if (source == null) {
                                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                                    messageBox.setText(I18n.DIALOG_Error);
-                                    messageBox.setMessage(I18n.E3D_PartReviewError);
+                                    messageBox.setText(I18n.DIALOG_ERROR);
+                                    messageBox.setMessage(I18n.E3D_PART_REVIEW_ERROR);
                                     messageBox.open();
                                     return;
                                 }
@@ -4003,7 +4003,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                             if (files.contains(fileName)) continue;
                             files.add(fileName);
-                            monitor.subTask(I18n.E3D_PartReviewCheck + fileName);
+                            monitor.subTask(I18n.E3D_PART_REVIEW_CHECK + fileName);
                             String source2 = FileHelper.downloadPartFile("parts/" + fileName, monitor); //$NON-NLS-1$
                             if (source2 == null) source2 = FileHelper.downloadPartFile("parts/s/" + fileName, monitor); //$NON-NLS-1$
                             if (source2 == null) source2 = FileHelper.downloadPartFile("p/" + fileName, monitor); //$NON-NLS-1$
@@ -4060,7 +4060,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
 
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                            messageBox.setText(I18n.DIALOG_Info);
+                            messageBox.setText(I18n.DIALOG_INFO);
 
                             Object[] messageArguments = {
                                     vm.getCondlines().size() - oldCondlineCount,
@@ -4068,7 +4068,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     unmatchedLines};
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                             formatter.setLocale(MyLanguage.LOCALE);
-                            formatter.applyPattern(I18n.EDGER_VerboseMsg);
+                            formatter.applyPattern(I18n.EDGER_VERBOSE_MSG);
 
                             messageBox.setMessage(formatter.format(messageArguments));
                             messageBox.open();
@@ -4098,7 +4098,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         if (rs.isVerbose()) {
                             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                            messageBox.setText(I18n.DIALOG_Info);
+                            messageBox.setText(I18n.DIALOG_INFO);
 
                             Object[] messageArguments = {
                                     result[0],
@@ -4108,7 +4108,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             };
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                             formatter.setLocale(MyLanguage.LOCALE);
-                            formatter.applyPattern(I18n.RECTIFIER_VerboseMsg);
+                            formatter.applyPattern(I18n.RECTIFIER_VERBOSE_MSG);
 
                             messageBox.setMessage(formatter.format(messageArguments));
                             messageBox.open();
@@ -4388,11 +4388,11 @@ public class Editor3DWindow extends Editor3DDesign {
 
         WidgetUtil(mntm_UserConfigSave[0]).addSelectionListener(e -> {
             FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
-            fd.setText(I18n.E3D_UserConfigSelectSave);
+            fd.setText(I18n.E3D_USER_CONFIG_SELECT_SAVE);
             fd.setOverwrite(true);
             String[] filterExt = { "*.gz", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
             fd.setFilterExtensions(filterExt);
-            String[] filterNames = {I18n.E3D_UserConfigFile, I18n.E3D_AllFiles};
+            String[] filterNames = {I18n.E3D_USER_CONFIG_FILE, I18n.E3D_ALL_FILES};
             fd.setFilterNames(filterNames);
 
             String selected = fd.open();
@@ -4418,8 +4418,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 if (!WorkbenchManager.saveWorkbench(selected)) {
                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                    messageBox.setText(I18n.DIALOG_Error);
-                    messageBox.setMessage(I18n.E3D_UserConfigFailSave);
+                    messageBox.setText(I18n.DIALOG_ERROR);
+                    messageBox.setMessage(I18n.E3D_USER_CONFIG_FAIL_SAVE);
                     messageBox.open();
                 }
             }
@@ -4428,10 +4428,10 @@ public class Editor3DWindow extends Editor3DDesign {
         WidgetUtil(mntm_UserConfigLoad[0]).addSelectionListener(e -> {
 
             FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
-            fd.setText(I18n.E3D_UserConfigSelectLoad);
+            fd.setText(I18n.E3D_USER_CONFIG_SELECT_LOAD);
             String[] filterExt = { "*.gz", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
             fd.setFilterExtensions(filterExt);
-            String[] filterNames = {I18n.E3D_UserConfigFile, I18n.E3D_AllFiles};
+            String[] filterNames = {I18n.E3D_USER_CONFIG_FILE, I18n.E3D_ALL_FILES};
             fd.setFilterNames(filterNames);
 
             String selected = fd.open();
@@ -4447,8 +4447,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 if (issueDetected) {
                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                    messageBox.setText(I18n.DIALOG_Error);
-                    messageBox.setMessage(I18n.E3D_UserConfigFailLoad);
+                    messageBox.setText(I18n.DIALOG_ERROR);
+                    messageBox.setMessage(I18n.E3D_USER_CONFIG_FAIL_LOAD);
                     messageBox.open();
                     return;
                 }
@@ -4478,8 +4478,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
         WidgetUtil(mntm_ResetSettingsOnRestart[0]).addSelectionListener(e -> {
             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-            messageBox.setText(I18n.DIALOG_Warning);
-            messageBox.setMessage(I18n.E3D_DeleteConfig);
+            messageBox.setText(I18n.DIALOG_WARNING);
+            messageBox.setMessage(I18n.E3D_DELETE_CONFIG);
             int result = messageBox.open();
             if (result == SWT.CANCEL) {
                 regainFocus();
@@ -4497,12 +4497,12 @@ public class Editor3DWindow extends Editor3DDesign {
 
         WidgetUtil(mntm_SelectAnotherLDConfig[0]).addSelectionListener(e -> {
             FileDialog fd = new FileDialog(sh, SWT.OPEN);
-            fd.setText(I18n.E3D_OpenLDConfig);
+            fd.setText(I18n.E3D_OPEN_LDCONFIG);
             fd.setFilterPath(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
 
             String[] filterExt = { "*.ldr", "ldconfig.ldr", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             fd.setFilterExtensions(filterExt);
-            String[] filterNames = { I18n.E3D_LDrawConfigurationFile1, I18n.E3D_LDrawConfigurationFile2, I18n.E3D_AllFiles };
+            String[] filterNames = { I18n.E3D_LDRAW_CONFIGURATION_FILE_1, I18n.E3D_LDRAW_CONFIGURATION_FILE_2, I18n.E3D_ALL_FILES };
             fd.setFilterNames(filterNames);
 
             String selected = fd.open();
@@ -4530,7 +4530,7 @@ public class Editor3DWindow extends Editor3DDesign {
             dlg.setOverwrite(true);
 
             // Change the title bar text
-            dlg.setText(I18n.E3D_PaletteSave);
+            dlg.setText(I18n.E3D_PALETTE_SAVE);
 
             // Calling open() will open and run the dialog.
             // It will return the selected file, or
@@ -4554,8 +4554,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     r.close();
                 } catch (Exception ex) {
                     MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                    messageBoxError.setText(I18n.DIALOG_Error);
-                    messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                    messageBoxError.setText(I18n.DIALOG_ERROR);
+                    messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                     messageBoxError.open();
                 } finally {
                     if (r != null) {
@@ -4578,7 +4578,7 @@ public class Editor3DWindow extends Editor3DDesign {
             dlg.setOverwrite(true);
 
             // Change the title bar text
-            dlg.setText(I18n.E3D_PaletteLoad);
+            dlg.setText(I18n.E3D_PALETTE_LOAD);
 
             // Calling open() will open and run the dialog.
             // It will return the selected file, or
@@ -4633,7 +4633,7 @@ public class Editor3DWindow extends Editor3DDesign {
             final List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
 
             final int[] frac = new int[]{2};
-            if (new ValueDialogInt(getShell(), I18n.E3D_PaletteSetSize, "") { //$NON-NLS-1$
+            if (new ValueDialogInt(getShell(), I18n.E3D_PALETTE_SET_SIZE, "") { //$NON-NLS-1$
 
                 @Override
                 public void initializeSpinner() {
@@ -4739,8 +4739,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             } catch (Exception consumend2) {}
                         }
                         MessageBox messageBox1 = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBox1.setText(I18n.DIALOG_Error);
-                        messageBox1.setMessage(I18n.E3D_LogUploadUnexpectedException);
+                        messageBox1.setText(I18n.DIALOG_ERROR);
+                        messageBox1.setMessage(I18n.E3D_LOG_UPLOAD_UNEXPECTED_EXCEPTION);
                         messageBox1.open();
                         regainFocus();
                         return;
@@ -4758,8 +4758,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 } else {
                     MessageBox messageBox2 = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                    messageBox2.setText(I18n.DIALOG_Info);
-                    messageBox2.setMessage(I18n.E3D_LogUploadNoLogFiles);
+                    messageBox2.setText(I18n.DIALOG_INFO);
+                    messageBox2.setMessage(I18n.E3D_LOG_UPLOAD_NO_LOG_FILES);
                     messageBox2.open();
                     regainFocus();
                     return;
@@ -4780,8 +4780,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     uploadCount++;
                     if (uploadCount > 16) {
                         MessageBox messageBox3 = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                        messageBox3.setText(I18n.DIALOG_Warning);
-                        messageBox3.setMessage(I18n.E3D_LogUploadLimit);
+                        messageBox3.setText(I18n.DIALOG_WARNING);
+                        messageBox3.setMessage(I18n.E3D_LOG_UPLOAD_LIMIT);
                         messageBox3.open();
                         regainFocus();
                         return;
@@ -4793,7 +4793,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Thread.sleep(2000);
                     String url = "http://pastebin.com/api/api_post.php"; //$NON-NLS-1$
                     String charset = StandardCharsets.UTF_8.name();  // Or in Java 7 and later, use the constant: java.nio.charset.StandardCharsets.UTF_8.name()
-                    String title = "[LDPartEditor " + I18n.VERSION_Version + "]"; //$NON-NLS-1$ //$NON-NLS-2$
+                    String title = "[LDPartEditor " + I18n.VERSION_VERSION + "]"; //$NON-NLS-1$ //$NON-NLS-2$
                     String devKey = "79cf77977cd2d798dd02f07d93b01ddb"; //$NON-NLS-1$
 
                     StringBuilder code2 = new StringBuilder();
@@ -4840,23 +4840,23 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         BufferedReader response =new BufferedReader(new InputStreamReader(connection.getInputStream(), "UTF-8")); //$NON-NLS-1$
                         MessageBox messageBox4 = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                        messageBox4.setText(I18n.DIALOG_Info);
+                        messageBox4.setText(I18n.DIALOG_INFO);
                         Object[] messageArguments = {response.readLine()};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.E3D_LogUploadSuccess);
+                        formatter.applyPattern(I18n.E3D_LOG_UPLOAD_SUCCESS);
                         messageBox4.setMessage(formatter.format(messageArguments));
                         messageBox4.open();
                     } else {
                         MessageBox messageBox5 = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                        messageBox5.setText(I18n.DIALOG_Info);
-                        messageBox5.setMessage(I18n.E3D_LogUploadNoLogFiles);
+                        messageBox5.setText(I18n.DIALOG_INFO);
+                        messageBox5.setMessage(I18n.E3D_LOG_UPLOAD_NO_LOG_FILES);
                         messageBox5.open();
                     }
                 } catch (Exception e12) {
                     MessageBox messageBox6 = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                    messageBox6.setText(I18n.DIALOG_Info);
-                    messageBox6.setMessage(I18n.E3D_LogUploadUnexpectedException);
+                    messageBox6.setText(I18n.DIALOG_INFO);
+                    messageBox6.setMessage(I18n.E3D_LOG_UPLOAD_UNEXPECTED_EXCEPTION);
                     messageBox6.open();
                 } finally {
                     if (b12 != null) {
@@ -5045,7 +5045,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
 
                     FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
-                    fd.setText(I18n.E3D_OpenPngImage);
+                    fd.setText(I18n.E3D_OPEN_PNG_IMAGE);
                     try {
                         File f = new File(png.texturePath);
                         fd.setFilterPath(f.getParent());
@@ -5056,7 +5056,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                     fd.setFilterExtensions(filterExt);
-                    String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles};
+                    String[] filterNames = { I18n.E3D_PORTABLE_NETWORK_GRAPHICS, I18n.E3D_ALL_FILES};
                     fd.setFilterNames(filterNames);
                     String texturePath = fd.open();
 
@@ -5496,7 +5496,7 @@ public class Editor3DWindow extends Editor3DDesign {
             new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                    monitor.beginTask(I18n.E3D_LoadingLibrary, IProgressMonitor.UNKNOWN);
+                    monitor.beginTask(I18n.E3D_LOADING_LIBRARY, IProgressMonitor.UNKNOWN);
                     Display.getDefault().asyncExec(new Runnable() {
                         @Override
                         public void run() {
@@ -5831,12 +5831,12 @@ public class Editor3DWindow extends Editor3DDesign {
             final String text = df.getText();
             if ((!text.equals(df.getOriginalText()) || df.isVirtual() && !text.trim().isEmpty()) && !text.equals(WorkbenchManager.getDefaultFileHeader())) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
-                messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
+                messageBox.setText(I18n.DIALOG_UNSAVED_CHANGES_TITLE);
 
                 Object[] messageArguments = {df.getShortName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
+                formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                 messageBox.setMessage(formatter.format(messageArguments));
 
                 int result = messageBox.open();
@@ -5849,8 +5849,8 @@ public class Editor3DWindow extends Editor3DDesign {
                         Editor3DWindow.getWindow().addRecentFile(df);
                     } else {
                         MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_Error);
-                        messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                        messageBoxError.setText(I18n.DIALOG_ERROR);
+                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                         messageBoxError.open();
                         cleanupClosedData();
                         updateTree_unsavedEntries();
@@ -6372,7 +6372,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         {
             CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles[0], SWT.NONE);
-            tItem.setText(I18n.E3D_NoFileSelected);
+            tItem.setText(I18n.E3D_NO_FILE_SELECTED);
             tItem.setData(View.DUMMY_DATFILE);
         }
 
@@ -6670,7 +6670,7 @@ public class Editor3DWindow extends Editor3DDesign {
     private void setReviewingAPart(boolean reviewingAPart, Set<DatFile> partsForReview) {
         if (reviewingAPart) {
             NButton btn_EndPartReview = new NButton(cmp_SyncAndReview[0], SWT.NONE);
-            btn_EndPartReview.setText(I18n.E3D_EndPartReview);
+            btn_EndPartReview.setText(I18n.E3D_END_PART_REVIEW);
             btn_EndPartReview.setData(partsForReview);
             WidgetUtil(btn_EndPartReview).addSelectionListener(e -> setReviewingAPart(false, null));
         } else {
@@ -6687,7 +6687,7 @@ public class Editor3DWindow extends Editor3DDesign {
             Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
             getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             getShell().update();
-            treeItem_Project[0].setText(I18n.PROJECT_NewProject);
+            treeItem_Project[0].setText(I18n.PROJECT_NEW_PROJECT);
             treeItem_Project[0].setData(Project.getProjectPath());
             treeItem_Project[0].getParent().build();
             treeItem_Project[0].getParent().redraw();
@@ -6761,7 +6761,7 @@ public class Editor3DWindow extends Editor3DDesign {
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+            formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
             btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
         } else {
@@ -6774,10 +6774,10 @@ public class Editor3DWindow extends Editor3DDesign {
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+            formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
             btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
-            if (gColour2[0].getA() == 0f) btn_LastUsedColour[0].setToolTipText(I18n.COLOURDIALOG_RandomColours);
+            if (gColour2[0].getA() == 0f) btn_LastUsedColour[0].setToolTipText(I18n.COLOURDIALOG_RANDOM_COLOURS);
         }
         btn_LastUsedColour[0].redraw();
     }
@@ -7025,13 +7025,13 @@ public class Editor3DWindow extends Editor3DDesign {
     public DatFile createNewDatFile(Shell sh, OpenInWhat where) {
 
         FileDialog fd = new FileDialog(sh, SWT.SAVE);
-        fd.setText(I18n.E3D_CreateNewDat);
+        fd.setText(I18n.E3D_CREATE_NEW_DAT);
 
         fd.setFilterPath(Project.getLastVisitedPath());
 
         String[] filterExt = { "*.dat", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
         fd.setFilterExtensions(filterExt);
-        String[] filterNames = { I18n.E3D_LDrawSourceFile, I18n.E3D_AllFiles };
+        String[] filterNames = { I18n.E3D_LDRAW_SOURCE_FILE, I18n.E3D_ALL_FILES };
         fd.setFilterNames(filterNames);
 
         while (true) {
@@ -7046,8 +7046,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 if (isFileNameAllocated(selected, df, true)) {
                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                    messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
-                    messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+                    messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
+                    messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
 
                     int result = messageBox.open();
 
@@ -7104,7 +7104,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     TreeItem ti = new TreeItem(parent);
                     StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
-                    nameSb.append(I18n.E3D_NewFile);
+                    nameSb.append(I18n.E3D_NEW_FILE);
                     ti.setText(nameSb.toString());
                     ti.setData(df);
 
@@ -7340,7 +7340,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
 
-            nameSb.append(I18n.E3D_NewFile);
+            nameSb.append(I18n.E3D_NEW_FILE);
 
             ti.setText(nameSb.toString());
             ti.setData(df);
@@ -7515,20 +7515,20 @@ public class Editor3DWindow extends Editor3DDesign {
             spn_SelectionX4[0].setValue(BigDecimal.ZERO);
             spn_SelectionY4[0].setValue(BigDecimal.ZERO);
             spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
-            lbl_SelectionAngle[0].setText(I18n.E3D_ProtractorAngle);
-            lbl_SelectionLength[0].setText(I18n.E3D_ProtractorLength);
-            lbl_SelectionX1[0].setText(I18n.E3D_PositionX1);
-            lbl_SelectionY1[0].setText(I18n.E3D_PositionY1);
-            lbl_SelectionZ1[0].setText(I18n.E3D_PositionZ1);
-            lbl_SelectionX2[0].setText(I18n.E3D_PositionX2);
-            lbl_SelectionY2[0].setText(I18n.E3D_PositionY2);
-            lbl_SelectionZ2[0].setText(I18n.E3D_PositionZ2);
-            lbl_SelectionX3[0].setText(I18n.E3D_PositionX3);
-            lbl_SelectionY3[0].setText(I18n.E3D_PositionY3);
-            lbl_SelectionZ3[0].setText(I18n.E3D_PositionZ3);
-            lbl_SelectionX4[0].setText(I18n.E3D_PositionX4);
-            lbl_SelectionY4[0].setText(I18n.E3D_PositionY4);
-            lbl_SelectionZ4[0].setText(I18n.E3D_PositionZ4);
+            lbl_SelectionAngle[0].setText(I18n.E3D_PROTRACTOR_ANGLE);
+            lbl_SelectionLength[0].setText(I18n.E3D_PROTRACTOR_LENGTH);
+            lbl_SelectionX1[0].setText(I18n.E3D_POSITION_X1);
+            lbl_SelectionY1[0].setText(I18n.E3D_POSITION_Y1);
+            lbl_SelectionZ1[0].setText(I18n.E3D_POSITION_Z1);
+            lbl_SelectionX2[0].setText(I18n.E3D_POSITION_X2);
+            lbl_SelectionY2[0].setText(I18n.E3D_POSITION_Y2);
+            lbl_SelectionZ2[0].setText(I18n.E3D_POSITION_Z2);
+            lbl_SelectionX3[0].setText(I18n.E3D_POSITION_X3);
+            lbl_SelectionY3[0].setText(I18n.E3D_POSITION_Y3);
+            lbl_SelectionZ3[0].setText(I18n.E3D_POSITION_Z3);
+            lbl_SelectionX4[0].setText(I18n.E3D_POSITION_X4);
+            lbl_SelectionY4[0].setText(I18n.E3D_POSITION_Y4);
+            lbl_SelectionZ4[0].setText(I18n.E3D_POSITION_Z4);
             lbl_SelectionZ4[0].getParent().layout();
             updatingSelectionTab = false;
         } else {
@@ -7566,20 +7566,20 @@ public class Editor3DWindow extends Editor3DDesign {
                         spn_SelectionX4[0].setValue(BigDecimal.ZERO);
                         spn_SelectionY4[0].setValue(BigDecimal.ZERO);
                         spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
-                        lbl_SelectionAngle[0].setText(I18n.E3D_ProtractorAngle);
-                        lbl_SelectionLength[0].setText(I18n.E3D_ProtractorLength);
-                        lbl_SelectionX1[0].setText(I18n.E3D_PositionX1);
-                        lbl_SelectionY1[0].setText(I18n.E3D_PositionY1);
-                        lbl_SelectionZ1[0].setText(I18n.E3D_PositionZ1);
-                        lbl_SelectionX2[0].setText(I18n.E3D_PositionX2);
-                        lbl_SelectionY2[0].setText(I18n.E3D_PositionY2);
-                        lbl_SelectionZ2[0].setText(I18n.E3D_PositionZ2);
-                        lbl_SelectionX3[0].setText(I18n.E3D_PositionX3);
-                        lbl_SelectionY3[0].setText(I18n.E3D_PositionY3);
-                        lbl_SelectionZ3[0].setText(I18n.E3D_PositionZ3);
-                        lbl_SelectionX4[0].setText(I18n.E3D_PositionX4);
-                        lbl_SelectionY4[0].setText(I18n.E3D_PositionY4);
-                        lbl_SelectionZ4[0].setText(I18n.E3D_PositionZ4);
+                        lbl_SelectionAngle[0].setText(I18n.E3D_PROTRACTOR_ANGLE);
+                        lbl_SelectionLength[0].setText(I18n.E3D_PROTRACTOR_LENGTH);
+                        lbl_SelectionX1[0].setText(I18n.E3D_POSITION_X1);
+                        lbl_SelectionY1[0].setText(I18n.E3D_POSITION_Y1);
+                        lbl_SelectionZ1[0].setText(I18n.E3D_POSITION_Z1);
+                        lbl_SelectionX2[0].setText(I18n.E3D_POSITION_X2);
+                        lbl_SelectionY2[0].setText(I18n.E3D_POSITION_Y2);
+                        lbl_SelectionZ2[0].setText(I18n.E3D_POSITION_Z2);
+                        lbl_SelectionX3[0].setText(I18n.E3D_POSITION_X3);
+                        lbl_SelectionY3[0].setText(I18n.E3D_POSITION_Y3);
+                        lbl_SelectionZ3[0].setText(I18n.E3D_POSITION_Z3);
+                        lbl_SelectionX4[0].setText(I18n.E3D_POSITION_X4);
+                        lbl_SelectionY4[0].setText(I18n.E3D_POSITION_Y4);
+                        lbl_SelectionZ4[0].setText(I18n.E3D_POSITION_Z4);
                         lbl_SelectionZ4[0].getParent().layout();
                         updatingSelectionTab = false;
                     } catch (Exception ex) {
@@ -7699,7 +7699,7 @@ public class Editor3DWindow extends Editor3DDesign {
     public void updatePrimitiveLabel(Primitive p) {
         if (lbl_selectedPrimitiveItem[0] == null) return;
         if (p == null) {
-            lbl_selectedPrimitiveItem[0].setText(I18n.E3D_NoPrimitiveSelected);
+            lbl_selectedPrimitiveItem[0].setText(I18n.E3D_NO_PRIMITIVE_SELECTED);
         } else {
             lbl_selectedPrimitiveItem[0].setText(p.toString());
         }
@@ -8346,12 +8346,12 @@ public class Editor3DWindow extends Editor3DDesign {
         boolean result2 = false;
         if (Project.getUnsavedFiles().contains(df) && !df.isReadOnly() && !df.isFromPartReview()) {
             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
-            messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
+            messageBox.setText(I18n.DIALOG_UNSAVED_CHANGES_TITLE);
 
             Object[] messageArguments = {df.getShortName()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
+            formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
             messageBox.setMessage(formatter.format(messageArguments));
 
             int result = messageBox.open();
@@ -8364,8 +8364,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     result2 = true;
                 } else {
                     MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                    messageBoxError.setText(I18n.DIALOG_Error);
-                    messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                    messageBoxError.setText(I18n.DIALOG_ERROR);
+                    messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                     messageBoxError.open();
                     cleanupClosedData();
                     updateTree_unsavedEntries();
@@ -8494,12 +8494,12 @@ public class Editor3DWindow extends Editor3DDesign {
         df.getVertexManager().addSnapshot();
 
         MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-        messageBox.setText(I18n.DIALOG_RevertTitle);
+        messageBox.setText(I18n.DIALOG_REVERT_TITLE);
 
         Object[] messageArguments = {df.getShortName(), df.getLastSavedOpened()};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
-        formatter.applyPattern(I18n.DIALOG_Revert);
+        formatter.applyPattern(I18n.DIALOG_REVERT);
         messageBox.setMessage(formatter.format(messageArguments));
 
         int result = messageBox.open();
@@ -8692,7 +8692,7 @@ public class Editor3DWindow extends Editor3DDesign {
             dlg.setOverwrite(true);
 
             // Change the title bar text
-            dlg.setText(I18n.DIALOG_RenameOrMove);
+            dlg.setText(I18n.DIALOG_RENAME_OR_MOVE);
 
             // Calling open() will open and run the dialog.
             // It will return the selected file, or
@@ -8702,8 +8702,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 while (isFileNameAllocated(newPath, df, false)) {
                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
-                    messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
-                    messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+                    messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
+                    messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
 
                     int result = messageBox.open();
 
@@ -8722,12 +8722,12 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (df.isProjectFile() && !newPath.startsWith(Project.getProjectPath())) {
 
                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.YES | SWT.NO);
-                    messageBox.setText(I18n.DIALOG_NoProjectLocationTitle);
+                    messageBox.setText(I18n.DIALOG_NO_PROJECT_LOCATION_TITLE);
 
                     Object[] messageArguments = {new File(newPath).getName()};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DIALOG_NoProjectLocation);
+                    formatter.applyPattern(I18n.DIALOG_NO_PROJECT_LOCATION);
                     messageBox.setMessage(formatter.format(messageArguments));
 
                     int result = messageBox.open();
@@ -8776,8 +8776,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     try {
                         while (new File(Project.getTempProjectPath()).isDirectory()) {
                             MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.YES | SWT.CANCEL | SWT.NO);
-                            messageBoxError.setText(I18n.PROJECT_ProjectOverwriteTitle);
-                            messageBoxError.setMessage(I18n.PROJECT_ProjectOverwrite);
+                            messageBoxError.setText(I18n.PROJECT_PROJECT_OVERWRITE_TITLE);
+                            messageBoxError.setMessage(I18n.PROJECT_PROJECT_OVERWRITE);
                             int result2 = messageBoxError.open();
                             if (result2 == SWT.CANCEL) {
                                 regainFocus();
@@ -8932,12 +8932,12 @@ public class Editor3DWindow extends Editor3DDesign {
 
             if (new File(targetPath_u).exists() || new File(targetPath_l).exists() || targetFile != null) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
-                messageBox.setText(I18n.DIALOG_ReplaceTitle);
+                messageBox.setText(I18n.DIALOG_REPLACE_TITLE);
 
                 Object[] messageArguments = {newName};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.DIALOG_Replace);
+                formatter.applyPattern(I18n.DIALOG_REPLACE);
                 messageBox.setMessage(formatter.format(messageArguments));
 
                 int result = messageBox.open();
@@ -8991,8 +8991,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     ti.setData(newDatFile);
                 } else if (targetFile.equals(df)) { // This can only happen if the user opens the unofficial parts folder as a project
                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
-                    messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
-                    messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+                    messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
+                    messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
                     messageBox.open();
                     regainFocus();
                     return;
@@ -9085,7 +9085,7 @@ public class Editor3DWindow extends Editor3DDesign {
         {
             NButton btn_Palette = new NButton(toolItem_ColourBar, SWT.NONE);
             this.btn_Palette[0] = btn_Palette;
-            btn_Palette.setToolTipText(I18n.E3D_More);
+            btn_Palette.setToolTipText(I18n.E3D_MORE);
             btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
             initPaletteEvent();
         }
@@ -9152,7 +9152,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         Object[] messageArguments1 = {num, View.getLDConfigColourName(num)};
                         MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
                         formatter1.setLocale(MyLanguage.LOCALE);
-                        formatter1.applyPattern(I18n.EDITORTEXT_Colour1);
+                        formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
                         btn_LastUsedColour[0].setToolTipText(formatter1.format(messageArguments1));
                     } else {
@@ -9165,10 +9165,10 @@ public class Editor3DWindow extends Editor3DDesign {
                         Object[] messageArguments2 = {colourBuilder.toString()};
                         MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
                         formatter2.setLocale(MyLanguage.LOCALE);
-                        formatter2.applyPattern(I18n.EDITORTEXT_Colour2);
+                        formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
                         btn_LastUsedColour[0].setToolTipText(formatter2.format(messageArguments2));
-                        if (gColour2[0].getA() == 0f) btn_LastUsedColour[0].setToolTipText(I18n.COLOURDIALOG_RandomColours);
+                        if (gColour2[0].getA() == 0f) btn_LastUsedColour[0].setToolTipText(I18n.COLOURDIALOG_RANDOM_COLOURS);
                     }
                     btn_LastUsedColour[0].redraw();
                 }

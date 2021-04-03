@@ -1773,7 +1773,7 @@ public final class GData1 extends GData {
                 Object[] messageArguments = {getNiceString()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.DATFILE_Inlined);
+                formatter.applyPattern(I18n.DATFILE_INLINED);
 
                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
             }

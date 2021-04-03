@@ -37,14 +37,14 @@ public enum Version {
      * @return the contributors to LD Part Editor. Separated by comma.
      */
     public static String getContributors() {
-        return I18n.VERSION_Contributors;
+        return I18n.VERSION_CONTRIBUTORS;
     }
 
     /**
      * @return the lead developer of LD Part Editor (e.g. Nils Schmidt)
      */
     public static String getDevelopmentLead() {
-        return I18n.VERSION_DevelopmentLead;
+        return I18n.VERSION_DEVELOPMENT_LEAD;
     }
 
     /**
@@ -52,14 +52,14 @@ public enum Version {
      *         Production)
      */
     public static String getStage() {
-        return I18n.VERSION_Stage;
+        return I18n.VERSION_STAGE;
     }
 
     /**
      * @return the members of the test team. Separated by comma.
      */
     public static String getTestTeam() {
-        return I18n.VERSION_Testers;
+        return I18n.VERSION_TESTERS;
     }
 
     /**
@@ -78,6 +78,6 @@ public enum Version {
      * @return the version number
      */
     public static String getVersion() {
-        return I18n.VERSION_Version;
+        return I18n.VERSION_VERSION;
     }
 }

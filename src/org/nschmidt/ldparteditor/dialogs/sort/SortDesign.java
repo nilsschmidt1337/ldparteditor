@@ -81,14 +81,14 @@ class SortDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.SORT_Title);
+        lbl_specify.setText(I18n.SORT_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.SORT_ScopeFile, I18n.SORT_ScopeSelection});
+        cmb_scope.setItems(new String[] {I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         if (fromLine == toLine) {
             cmb_scope.select(0);
@@ -100,14 +100,14 @@ class SortDesign extends Dialog {
 
         Combo cmb_sortCriteria = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_sortCriteria[0] = cmb_sortCriteria;
-        cmb_sortCriteria.setItems(new String[] {I18n.SORT_ByColourAsc, I18n.SORT_ByColourDesc, I18n.SORT_ByTypeAsc, I18n.SORT_ByTypeDesc, I18n.SORT_ByTypeColourAsc, I18n.SORT_ByTypeColourDesc});
+        cmb_sortCriteria.setItems(new String[] {I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC});
         cmb_sortCriteria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_sortCriteria.select(2);
         criteria = 2;
 
         NButton btn_ignoreStructure = new NButton(cmp_container, SWT.CHECK);
         this.btn_ignoreStructure[0] = btn_ignoreStructure;
-        btn_ignoreStructure.setText(I18n.SORT_IgnoreStructure);
+        btn_ignoreStructure.setText(I18n.SORT_IGNORE_STRUCTURE);
         cmp_container.pack();
         return cmp_container;
     }
@@ -120,7 +120,7 @@ class SortDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         btn_OK[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

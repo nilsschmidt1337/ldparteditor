@@ -325,7 +325,7 @@ public class Composite3D extends ScalableComposite {
      * @param parentCompositeContainer
      */
     Composite3D(Composite parentCompositeContainer) {
-        super(parentCompositeContainer, I18n.I18N_NON_BIDIRECT() | SWT.H_SCROLL | SWT.V_SCROLL);
+        super(parentCompositeContainer, I18n.noBiDirectionalTextStyle() | SWT.H_SCROLL | SWT.V_SCROLL);
         final ScrollBar sb1 = super.getVerticalBar();
         sb1.setMinimum(-1);
         sb1.setMaximum(1);
@@ -386,7 +386,7 @@ public class Composite3D extends ScalableComposite {
             data.sampleBuffers = 1;
             data.samples = 4;
         }
-        canvas = new GLCanvas(this, I18n.I18N_NON_BIDIRECT(), data);
+        canvas = new GLCanvas(this, I18n.noBiDirectionalTextStyle(), data);
         canvas.setCurrent();
         if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
             capabilities = GL.createCapabilities();
@@ -404,19 +404,19 @@ public class Composite3D extends ScalableComposite {
         this.menu = new Menu(this);
 
         MenuItem mntmViewAngles = new MenuItem(menu, SWT.CASCADE);
-        mntmViewAngles.setText(I18n.E3D_ViewingAngles);
+        mntmViewAngles.setText(I18n.E3D_VIEWING_ANGLES);
 
         MenuItem mntmManipulator = new MenuItem(menu, SWT.CASCADE);
-        mntmManipulator.setText(I18n.E3D_ModifyManipulator);
+        mntmManipulator.setText(I18n.E3D_MODIFY_MANIPULATOR);
 
         MenuItem mntmViewActions = new MenuItem(menu, SWT.CASCADE);
-        mntmViewActions.setText(I18n.E3D_ViewActions);
+        mntmViewActions.setText(I18n.E3D_VIEW_ACTIONS);
 
         MenuItem mntmRenderModes = new MenuItem(menu, SWT.CASCADE);
-        mntmRenderModes.setText(I18n.C3D_RenderMode);
+        mntmRenderModes.setText(I18n.C3D_RENDER_MODE);
 
         MenuItem mntmSynchronise = new MenuItem(menu, SWT.CASCADE);
-        mntmSynchronise.setText(I18n.E3D_Sync);
+        mntmSynchronise.setText(I18n.E3D_SYNC);
 
         @SuppressWarnings("unused")
         final MenuItem mntmSeparator3 = new MenuItem(menu, SWT.SEPARATOR);
@@ -430,7 +430,7 @@ public class Composite3D extends ScalableComposite {
                 Editor3DWindow.getWindow().updateTree_unsavedEntries();
             }
         });
-        mntmCloseDat.setText(I18n.E3D_Close);
+        mntmCloseDat.setText(I18n.E3D_CLOSE);
         mntmCloseDat.setSelection(false);
 
         final MenuItem mntmLockedDat = new MenuItem(menu, SWT.CHECK);
@@ -440,22 +440,22 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.switchLockedDat(mntmLockedDat.getSelection());
             }
         });
-        mntmLockedDat.setText(I18n.C3D_LockFile);
+        mntmLockedDat.setText(I18n.C3D_LOCK_FILE);
         mntmLockedDat.setSelection(false);
 
         final MenuItem mntmOpenInTextEditor = new MenuItem(menu, SWT.NONE);
         WidgetUtil(mntmOpenInTextEditor).addSelectionListener(e -> openInTextEditor());
-        mntmOpenInTextEditor.setText(I18n.C3D_OpenInText);
+        mntmOpenInTextEditor.setText(I18n.C3D_OPEN_IN_TEXT);
         mntmOpenInTextEditor.setSelection(false);
 
         final MenuItem mntmSelectionInTextEditor = new MenuItem(menu, SWT.NONE);
         WidgetUtil(mntmSelectionInTextEditor).addSelectionListener(e -> showSelectionInTextEditor(lockableDatFileReference, true));
-        mntmSelectionInTextEditor.setText(I18n.C3D_ShowInText);
+        mntmSelectionInTextEditor.setText(I18n.C3D_SHOW_IN_TEXT);
         mntmSelectionInTextEditor.setSelection(false);
 
         final MenuItem mntmJoinInTextEditor = new MenuItem(menu, SWT.NONE);
         WidgetUtil(mntmJoinInTextEditor).addSelectionListener(e -> joinSelectionInTextEditor(lockableDatFileReference));
-        mntmJoinInTextEditor.setText(I18n.C3D_JoinSelection);
+        mntmJoinInTextEditor.setText(I18n.C3D_JOIN_SELECTION);
         mntmJoinInTextEditor.setSelection(false);
 
         if (NLogger.DEBUG) {
@@ -483,24 +483,24 @@ public class Composite3D extends ScalableComposite {
         @SuppressWarnings("unused")
         final MenuItem mntmSeparatorCP = new MenuItem(menu, SWT.SEPARATOR);
 
-        MenuItem mntmCut = new MenuItem(menu, I18n.I18N_RTL());
+        MenuItem mntmCut = new MenuItem(menu, I18n.rightToLeftStyle());
         WidgetUtil(mntmCut).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
             lockableDatFileReference.getVertexManager().copy();
             lockableDatFileReference.getVertexManager().delete(false, true);
         });
-        mntmCut.setText(I18n.COPYNPASTE_Cut);
+        mntmCut.setText(I18n.COPYNPASTE_CUT);
         mntmCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
-        MenuItem mntmCopy = new MenuItem(menu, I18n.I18N_RTL());
+        MenuItem mntmCopy = new MenuItem(menu, I18n.rightToLeftStyle());
         WidgetUtil(mntmCopy).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
             lockableDatFileReference.getVertexManager().copy();
         });
-        mntmCopy.setText(I18n.COPYNPASTE_Copy);
+        mntmCopy.setText(I18n.COPYNPASTE_COPY);
         mntmCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
-        MenuItem mntmPaste = new MenuItem(menu, I18n.I18N_RTL());
+        MenuItem mntmPaste = new MenuItem(menu, I18n.rightToLeftStyle());
         WidgetUtil(mntmPaste).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
@@ -510,22 +510,22 @@ public class Composite3D extends ScalableComposite {
                 GuiStatusManager.updateStatus();
             }
         });
-        mntmPaste.setText(I18n.COPYNPASTE_Paste);
+        mntmPaste.setText(I18n.COPYNPASTE_PASTE);
         mntmPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
-        MenuItem mntmDelete = new MenuItem(menu, I18n.I18N_RTL());
+        MenuItem mntmDelete = new MenuItem(menu, I18n.rightToLeftStyle());
         WidgetUtil(mntmDelete).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
             lockableDatFileReference.getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
         });
-        mntmDelete.setText(I18n.COPYNPASTE_Delete);
+        mntmDelete.setText(I18n.COPYNPASTE_DELETE);
         mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
 
         @SuppressWarnings("unused")
         final MenuItem mntmSeparator2 = new MenuItem(menu, SWT.SEPARATOR);
 
-        MenuItem mntmGridSize = new MenuItem(menu, I18n.I18N_RTL());
-        WidgetUtil(mntmGridSize).addSelectionListener(e -> new ValueDialog(getShell(), I18n.C3D_SetGridSize, I18n.UNIT_CurrentUnit()) {
+        MenuItem mntmGridSize = new MenuItem(menu, I18n.rightToLeftStyle());
+        WidgetUtil(mntmGridSize).addSelectionListener(e -> new ValueDialog(getShell(), I18n.C3D_SET_GRID_SIZE, I18n.getCurrentUnit()) {
             @Override
             public void initializeSpinner() {
                 this.spn_Value[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
@@ -541,7 +541,7 @@ public class Composite3D extends ScalableComposite {
                 perspective.calculateOriginData();
             }
         }.open());
-        mntmGridSize.setText(I18n.C3D_GridSize);
+        mntmGridSize.setText(I18n.C3D_GRID_SIZE);
 
         {
             // MARK CMenu Viewing Angles
@@ -619,7 +619,7 @@ public class Composite3D extends ScalableComposite {
                 perspective.setPerspective(Perspective.TWO_THIRDS);
             });
             mntmTwoThirds.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
-            mntmTwoThirds.setText(I18n.PERSPECTIVE_TwoThirds);
+            mntmTwoThirds.setText(I18n.PERSPECTIVE_TWO_THIRDS);
         }
 
         {
@@ -628,19 +628,19 @@ public class Composite3D extends ScalableComposite {
             mntmManipulator.setMenu(mnu_Manipulator);
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToOrigin);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_ORIGIN);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_0_toOrigin());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToWorld);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_WORLD);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XIII_toWorld());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_AdjustRotationCenter);
+                btn_Mani.setText(I18n.E3D_ADJUST_ROTATION_CENTER);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XIV_adjustRotationCenter());
             }
@@ -648,19 +648,19 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmSeparator1 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ReverseX);
+                btn_Mani.setText(I18n.E3D_REVERSE_X);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_X_XReverse());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ReverseY);
+                btn_Mani.setText(I18n.E3D_REVERSE_Y);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XI_YReverse());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ReverseZ);
+                btn_Mani.setText(I18n.E3D_REVERSE_Z);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XII_ZReverse());
             }
@@ -668,19 +668,19 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmSeparator20 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_SwapXY);
+                btn_Mani.setText(I18n.E3D_SWAP_XY);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_SwitchXY());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_SwapXZ);
+                btn_Mani.setText(I18n.E3D_SWAP_XZ);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_SwitchXZ());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_SwapYZ);
+                btn_Mani.setText(I18n.E3D_SWAP_YZ);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_SwitchYZ());
             }
@@ -688,28 +688,28 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmSeparator30 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_CamToManipulator);
+                btn_Mani.setText(I18n.E3D_CAM_TO_MANIPULATOR);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_1_cameraToPos());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToAvg);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_AVG);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
-                KeyStateManager.addKeyText(btn_Mani, I18n.E3D_ManipulatorToAvg, Task.MOVE_TO_AVG);
+                KeyStateManager.addKeyText(btn_Mani, I18n.E3D_MANIPULATOR_TO_AVG, Task.MOVE_TO_AVG);
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_2_toAverage());
             }
             @SuppressWarnings("unused")
             final MenuItem mntmSeparator31 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToSubfile);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_SUBFILE);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_3_toSubfile());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(Cocoa.replaceCtrlByCmd(I18n.E3D_SubfileToManipulator));
+                btn_Mani.setText(Cocoa.replaceCtrlByCmd(I18n.E3D_SUBFILE_TO_MANIPULATOR));
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
             }
@@ -717,19 +717,19 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmSeparator32 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToVertex);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_VERTEX);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_4_toVertex());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToEdge);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_EDGE);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_5_toEdge());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToFace);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_FACE);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_6_toSurface());
             }
@@ -737,25 +737,25 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmSeparator4 = new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToVertexN);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_VERTEX_N);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_7_toVertexNormal());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToVertexP);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_VERTEX_P);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XV_toVertexPosition());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToEdgeN);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_EDGE_N);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_8_toEdgeNormal());
             }
             {
                 MenuItem btn_Mani = new MenuItem(mnu_Manipulator, SWT.PUSH);
-                btn_Mani.setText(I18n.E3D_ManipulatorToFaceN);
+                btn_Mani.setText(I18n.E3D_MANIPULATOR_TO_FACE_N);
                 btn_Mani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
                 WidgetUtil(btn_Mani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_9_toSurfaceNormal());
             }
@@ -769,65 +769,65 @@ public class Composite3D extends ScalableComposite {
             final MenuItem mntmShowOrigin = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmShowOrigin[0] = mntmShowOrigin;
             WidgetUtil(mntmShowOrigin).addSelectionListener(e -> c3d_modifier.showOrigin(mntmShowOrigin.getSelection()));
-            mntmShowOrigin.setText(I18n.E3D_Origin);
+            mntmShowOrigin.setText(I18n.E3D_ORIGIN);
             mntmShowOrigin.setSelection(true);
 
             final MenuItem mntmSwitchLights = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmSwitchLights[0] = mntmSwitchLights;
             WidgetUtil(mntmSwitchLights).addSelectionListener(e -> c3d_modifier.switchLigths(mntmSwitchLights.getSelection()));
-            mntmSwitchLights.setText(I18n.C3D_Lights);
+            mntmSwitchLights.setText(I18n.C3D_LIGHTS);
             mntmSwitchLights.setSelection(true);
 
             final MenuItem mntmMeshLines = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmMeshLines[0] = mntmMeshLines;
             WidgetUtil(mntmMeshLines).addSelectionListener(e -> c3d_modifier.switchMeshLines(mntmMeshLines.getSelection()));
-            mntmMeshLines.setText(I18n.C3D_MeshLines);
+            mntmMeshLines.setText(I18n.C3D_MESH_LINES);
             mntmMeshLines.setSelection(true);
 
             final MenuItem mntmSubMeshLines = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmSubMeshLines[0] = mntmSubMeshLines;
             WidgetUtil(mntmSubMeshLines).addSelectionListener(e -> c3d_modifier.switchSubMeshLines(mntmSubMeshLines.getSelection()));
-            mntmSubMeshLines.setText(I18n.C3D_SubfileMeshLines);
+            mntmSubMeshLines.setText(I18n.C3D_SUBFILE_MESH_LINES);
             mntmSubMeshLines.setSelection(false);
 
             final MenuItem mntmVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmVertices[0] = mntmVertices;
             WidgetUtil(mntmVertices).addSelectionListener(e -> c3d_modifier.switchVertices(mntmVertices.getSelection()));
-            mntmVertices.setText(I18n.C3D_Vertices);
+            mntmVertices.setText(I18n.C3D_VERTICES);
             mntmVertices.setSelection(true);
 
             final MenuItem mntmHiddenVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmHiddenVertices[0] = mntmHiddenVertices;
             WidgetUtil(mntmHiddenVertices).addSelectionListener(e -> c3d_modifier.switchHiddenVertices(mntmHiddenVertices.getSelection()));
-            mntmHiddenVertices.setText(I18n.C3D_HiddenVertices);
+            mntmHiddenVertices.setText(I18n.C3D_HIDDEN_VERTICES);
             mntmHiddenVertices.setSelection(false);
 
             final MenuItem mntmControlPointVertices = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmControlPointVertices[0] = mntmControlPointVertices;
             WidgetUtil(mntmControlPointVertices).addSelectionListener(e -> c3d_modifier.switchCondlineControlPoints(mntmControlPointVertices.getSelection()));
-            mntmControlPointVertices.setText(I18n.C3D_CondlineVertices);
+            mntmControlPointVertices.setText(I18n.C3D_CONDLINE_VERTICES);
 
             if (WorkbenchManager.getUserSettingState().getOpenGLVersion() >= 33) {
                 final MenuItem mntmSmoothShading = new MenuItem(mnu_viewActions, SWT.CHECK);
                 this.mntmSmoothShading[0] = mntmSmoothShading;
                 WidgetUtil(mntmSmoothShading).addSelectionListener(e -> c3d_modifier.switchSmoothShading(mntmSmoothShading.getSelection()));
-                mntmSmoothShading.setText(I18n.C3D_SmoothShading);
+                mntmSmoothShading.setText(I18n.C3D_SMOOTH_SHADING);
                 mntmSmoothShading.setSelection(false);
             }
 
             final MenuItem mntmStudLogo = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmStudLogo[0] = mntmStudLogo;
             WidgetUtil(mntmStudLogo).addSelectionListener(e -> c3d_modifier.switchShowingLogo(mntmStudLogo.getSelection()));
-            mntmStudLogo.setText(I18n.C3D_StudLogo);
+            mntmStudLogo.setText(I18n.C3D_STUD_LOGO);
             mntmStudLogo.setSelection(false);
 
             final MenuItem mntmLDrawLines = new MenuItem(mnu_viewActions, SWT.CASCADE);
-            mntmLDrawLines.setText(I18n.C3D_LDrawLines);
+            mntmLDrawLines.setText(I18n.C3D_LDRAW_LINES);
 
             final MenuItem mntmShowGrid = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmShowGrid[0] = mntmShowGrid;
             WidgetUtil(mntmShowGrid).addSelectionListener(e -> c3d_modifier.showGrid(mntmShowGrid.getSelection()));
-            KeyStateManager.addKeyText(mntmShowGrid, I18n.E3D_Grid, Task.SHOW_GRID);
+            KeyStateManager.addKeyText(mntmShowGrid, I18n.E3D_GRID, Task.SHOW_GRID);
             mntmShowGrid.setSelection(true);
 
             final MenuItem mntmShowScale = new MenuItem(mnu_viewActions, SWT.CHECK);
@@ -836,24 +836,24 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.showScale(mntmShowScale.getSelection());
                 getCanvas().forceFocus();
             });
-            KeyStateManager.addKeyText(mntmShowScale, I18n.E3D_Ruler, Task.SHOW_RULER);
+            KeyStateManager.addKeyText(mntmShowScale, I18n.E3D_RULER, Task.SHOW_RULER);
 
             final MenuItem mntmAxis = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmAxis[0] = mntmAxis;
             WidgetUtil(mntmAxis).addSelectionListener(e -> c3d_modifier.switchAxis(mntmAxis.getSelection()));
-            mntmAxis.setText(I18n.C3D_XYZAxis);
+            mntmAxis.setText(I18n.C3D_XYZ_AXIS);
             mntmAxis.setSelection(true);
 
             final MenuItem mntmLabel = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmLabel[0] = mntmLabel;
             WidgetUtil(mntmLabel).addSelectionListener(e -> c3d_modifier.switchLabel(mntmLabel.getSelection()));
-            mntmLabel.setText(I18n.C3D_PerspectiveLabel);
+            mntmLabel.setText(I18n.C3D_PERSPECTIVE_LABEL);
             mntmLabel.setSelection(true);
 
             final MenuItem mntmAnaglyph = new MenuItem(mnu_viewActions, SWT.CHECK);
             this.mntmAnaglyph[0] = mntmAnaglyph;
             WidgetUtil(mntmAnaglyph).addSelectionListener(e -> c3d_modifier.switchAnaglyph3D(mntmAnaglyph.getSelection()));
-            mntmAnaglyph.setText(I18n.C3D_Anaglyph3D);
+            mntmAnaglyph.setText(I18n.C3D_ANAGLYPH_3D);
             mntmAnaglyph.setSelection(false);
 
             @SuppressWarnings("unused")
@@ -861,25 +861,25 @@ public class Composite3D extends ScalableComposite {
 
             MenuItem mntmSplitHorizontally = new MenuItem(mnu_viewActions, SWT.NONE);
             WidgetUtil(mntmSplitHorizontally).addSelectionListener(e -> c3d_modifier.splitViewHorizontally());
-            mntmSplitHorizontally.setText(I18n.E3D_SplitHorizontally);
+            mntmSplitHorizontally.setText(I18n.E3D_SPLIT_HORIZONTALLY);
 
             MenuItem mntmSplitVertically = new MenuItem(mnu_viewActions, SWT.NONE);
             WidgetUtil(mntmSplitVertically).addSelectionListener(e -> c3d_modifier.splitViewVertically());
-            mntmSplitVertically.setText(I18n.E3D_SplitVertically);
+            mntmSplitVertically.setText(I18n.E3D_SPLIT_VERTICALLY);
 
             @SuppressWarnings("unused")
             final MenuItem mntmViewSeparator2 = new MenuItem(mnu_viewActions, SWT.SEPARATOR);
 
             MenuItem mntmRotateView = new MenuItem(mnu_viewActions, SWT.NONE);
             WidgetUtil(mntmRotateView).addSelectionListener(e -> c3d_modifier.spinView());
-            mntmRotateView.setText(I18n.E3D_RotateClockwise);
+            mntmRotateView.setText(I18n.E3D_ROTATE_CLOCKWISE);
 
             @SuppressWarnings("unused")
             final MenuItem mntmViewSeparator3 = new MenuItem(mnu_viewActions, SWT.SEPARATOR);
 
             MenuItem mntmClose = new MenuItem(mnu_viewActions, SWT.NONE);
             WidgetUtil(mntmClose).addSelectionListener(e -> c3d_modifier.closeView());
-            mntmClose.setText(I18n.E3D_CloseView);
+            mntmClose.setText(I18n.E3D_CLOSE_VIEW);
 
             {
                 // MARK CMenu LineMode
@@ -895,7 +895,7 @@ public class Composite3D extends ScalableComposite {
                     mntmAlwaysBlack[0].setSelection(isBlackEdges());
                     c3d_modifier.setLineMode(0);
                 });
-                mntmRealPreview.setText(I18n.C3D_RealPreview);
+                mntmRealPreview.setText(I18n.C3D_REAL_PREVIEW);
                 mntmRealPreview.setSelection(true);
 
                 final MenuItem mntmShowAll = new MenuItem(mnu_lineMode, SWT.CHECK);
@@ -906,7 +906,7 @@ public class Composite3D extends ScalableComposite {
                     mntmAlwaysBlack[0].setSelection(isBlackEdges());
                     c3d_modifier.setLineMode(1);
                 });
-                mntmShowAll.setText(I18n.C3D_ShowAll);
+                mntmShowAll.setText(I18n.C3D_SHOW_ALL);
 
                 final MenuItem mntmStdLines = new MenuItem(mnu_lineMode, SWT.CHECK);
                 this.mntmStdLines[0] = mntmStdLines;
@@ -916,7 +916,7 @@ public class Composite3D extends ScalableComposite {
                     mntmAlwaysBlack[0].setSelection(isBlackEdges());
                     c3d_modifier.setLineMode(2);
                 });
-                mntmStdLines.setText(I18n.C3D_ShowEdges);
+                mntmStdLines.setText(I18n.C3D_SHOW_EDGES);
 
                 final MenuItem mntmHideAll = new MenuItem(mnu_lineMode, SWT.CHECK);
                 this.mntmHideAll[0] = mntmHideAll;
@@ -926,7 +926,7 @@ public class Composite3D extends ScalableComposite {
                     mntmAlwaysBlack[0].setSelection(isBlackEdges());
                     c3d_modifier.setLineMode(4);
                 });
-                mntmHideAll.setText(I18n.C3D_HideAll);
+                mntmHideAll.setText(I18n.C3D_HIDE_ALL);
 
 
                 @SuppressWarnings("unused")
@@ -934,7 +934,7 @@ public class Composite3D extends ScalableComposite {
 
                 mntmAlwaysBlack[0] = new MenuItem(mnu_lineMode, SWT.CHECK);
                 WidgetUtil(mntmAlwaysBlack[0]).addSelectionListener(e -> setBlackEdges(mntmAlwaysBlack[0].getSelection()));
-                mntmAlwaysBlack[0].setText(I18n.C3D_UseAlwaysBlackLines);
+                mntmAlwaysBlack[0].setText(I18n.C3D_USE_ALWAYS_BLACK_LINES);
                 this.mntmAlwaysBlack[0] = mntmAlwaysBlack[0];
             }
 
@@ -953,7 +953,7 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.setRenderMode(0);
                 getRenderer().disposeAllTextures();
             });
-            mntmNoBFC.setText(I18n.C3D_NoBackfaceCulling);
+            mntmNoBFC.setText(I18n.C3D_NO_BACKFACE_CULLING);
             mntmNoBFC.setSelection(true);
 
             final MenuItem mntmRandomColours = new MenuItem(mnu_renderMode, SWT.CHECK);
@@ -964,7 +964,7 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.setRenderMode(1);
                 getRenderer().disposeAllTextures();
             });
-            mntmRandomColours.setText(I18n.C3D_RandomColours);
+            mntmRandomColours.setText(I18n.C3D_RANDOM_COLOURS);
 
             final MenuItem mntmBFCFrontBack = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCFrontBack[0] = mntmBFCFrontBack;
@@ -974,7 +974,7 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.setRenderMode(2);
                 getRenderer().disposeAllTextures();
             });
-            mntmBFCFrontBack.setText(I18n.C3D_GreenRed);
+            mntmBFCFrontBack.setText(I18n.C3D_GREEN_RED);
 
             final MenuItem mntmBFCBack = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCBack[0] = mntmBFCBack;
@@ -984,7 +984,7 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.setRenderMode(3);
                 getRenderer().disposeAllTextures();
             });
-            mntmBFCBack.setText(I18n.C3D_RedBackfaces);
+            mntmBFCBack.setText(I18n.C3D_RED_BACKFACES);
 
             final MenuItem mntmBFCReal = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCReal[0] = mntmBFCReal;
@@ -994,7 +994,7 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.setRenderMode(4);
                 getRenderer().disposeAllTextures();
             });
-            mntmBFCReal.setText(I18n.C3D_RealBackfaceCulling);
+            mntmBFCReal.setText(I18n.C3D_REAL_BACKFACE_CULLING);
 
             final MenuItem mntmBFCTextured = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmBFCTextured[0] = mntmBFCTextured;
@@ -1002,8 +1002,8 @@ public class Composite3D extends ScalableComposite {
 
                 if (!WorkbenchManager.getUserSettingState().isBfcCertificationRequiredForLDrawMode()) {
                     MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-                    messageBox.setText(I18n.DIALOG_Info);
-                    messageBox.setMessage(I18n.C3D_PreviewNote);
+                    messageBox.setText(I18n.DIALOG_INFO);
+                    messageBox.setMessage(I18n.C3D_PREVIEW_NOTE);
                     messageBox.open();
                     WorkbenchManager.getUserSettingState().setBfcCertificationRequiredForLDrawMode(true);
                 }
@@ -1012,7 +1012,7 @@ public class Composite3D extends ScalableComposite {
                 ((MenuItem) e.widget).setSelection(true);
                 c3d_modifier.setRenderMode(5);
             });
-            mntmBFCTextured.setText(I18n.C3D_LDrawStandard);
+            mntmBFCTextured.setText(I18n.C3D_LDRAW_STANDARD);
 
             {
                 @SuppressWarnings("unused")
@@ -1027,7 +1027,7 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.setRenderMode(6);
                 getRenderer().disposeAllTextures();
             });
-            mntmCondlineMode.setText(I18n.C3D_CondlineMode);
+            mntmCondlineMode.setText(I18n.C3D_CONDLINE_MODE);
 
             final MenuItem mntmCoplanarityHeatmapMode = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmCoplanarityHeatmapMode[0] = mntmCoplanarityHeatmapMode;
@@ -1037,7 +1037,7 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.setRenderMode(7);
                 getRenderer().disposeAllTextures();
             });
-            mntmCoplanarityHeatmapMode.setText(I18n.C3D_CoplanarityMode);
+            mntmCoplanarityHeatmapMode.setText(I18n.C3D_COPLANARITY_MODE);
 
             final MenuItem mntmWireframeMode = new MenuItem(mnu_renderMode, SWT.CHECK);
             this.mntmWireframeMode[0] = mntmWireframeMode;
@@ -1047,7 +1047,7 @@ public class Composite3D extends ScalableComposite {
                 c3d_modifier.setRenderMode(-1);
                 getRenderer().disposeAllTextures();
             });
-            mntmWireframeMode.setText(I18n.C3D_Wireframe);
+            mntmWireframeMode.setText(I18n.C3D_WIREFRAME);
         }
 
         {
@@ -1066,7 +1066,7 @@ public class Composite3D extends ScalableComposite {
                     }
                 }
             });
-            mntmSyncroniseManipulator.setText(I18n.E3D_SyncManipulator);
+            mntmSyncroniseManipulator.setText(I18n.E3D_SYNC_MANIPULATOR);
 
             final MenuItem mntmSyncTranslation = new MenuItem(mnu_syncronise, SWT.CHECK);
             this.mntmSyncTranslate[0] = mntmSyncTranslation;
@@ -1079,7 +1079,7 @@ public class Composite3D extends ScalableComposite {
                     }
                 }
             });
-            mntmSyncTranslation.setText(I18n.E3D_SyncTranslation);
+            mntmSyncTranslation.setText(I18n.E3D_SYNC_TRANSLATION);
 
             final MenuItem mntmSyncroniseZoom = new MenuItem(mnu_syncronise, SWT.CHECK);
             this.mntmSyncZoom[0] = mntmSyncroniseZoom;
@@ -1092,7 +1092,7 @@ public class Composite3D extends ScalableComposite {
                     }
                 }
             });
-            mntmSyncroniseZoom.setText(I18n.E3D_SyncZoom);
+            mntmSyncroniseZoom.setText(I18n.E3D_SYNC_ZOOM);
         }
 
         GL.setCapabilities(capabilities);

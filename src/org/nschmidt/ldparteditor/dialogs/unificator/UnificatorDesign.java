@@ -70,13 +70,13 @@ class UnificatorDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.UNIFICATOR_Title);
+        lbl_specify.setText(I18n.UNIFICATOR_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_hint = new Label(cmp_container, SWT.NONE);
-        lbl_hint.setText(I18n.UNIFICATOR_VertexUnifiation);
+        lbl_hint.setText(I18n.UNIFICATOR_VERTEX_UNIFIATION);
 
         BigDecimalSpinner spn_vertexThreshold = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_vertexThreshold [0] = spn_vertexThreshold;
@@ -86,7 +86,7 @@ class UnificatorDesign extends Dialog {
         spn_vertexThreshold.setValue(us.getVertexThreshold());
 
         Label lbl_precision = new Label(cmp_container, SWT.NONE);
-        lbl_precision.setText(I18n.UNIFICATOR_VertexSnap);
+        lbl_precision.setText(I18n.UNIFICATOR_VERTEX_SNAP);
 
         BigDecimalSpinner spn_subfileThreshold = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_subfileThreshold [0] = spn_subfileThreshold;
@@ -96,12 +96,12 @@ class UnificatorDesign extends Dialog {
         spn_subfileThreshold.setValue(us.getSubvertexThreshold());
 
         Label lbl_splitPlane = new Label(cmp_container, SWT.NONE);
-        lbl_splitPlane.setText(I18n.UNIFICATOR_SnapOn);
+        lbl_splitPlane.setText(I18n.UNIFICATOR_SNAP_ON);
 
         {
             Combo cmb_splitPlane = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_whatToUnify[0] = cmb_splitPlane;
-            cmb_splitPlane.setItems(new String[] {I18n.UNIFICATOR_Vertices, I18n.UNIFICATOR_SubpartVertices, I18n.UNIFICATOR_VerticesSubpartVertices});
+            cmb_splitPlane.setItems(new String[] {I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES});
             cmb_splitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_splitPlane.setText(cmb_splitPlane.getItem(us.getSnapOn()));
             cmb_splitPlane.select(us.getSnapOn());
@@ -109,7 +109,7 @@ class UnificatorDesign extends Dialog {
 
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.UNIFICATOR_ScopeFile, I18n.UNIFICATOR_ScopeSelection});
+        cmb_scope.setItems(new String[] {I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(us.getScope()));
         cmb_scope.select(us.getScope());
@@ -126,7 +126,7 @@ class UnificatorDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

@@ -103,7 +103,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 {
                     try
                     {
-                        monitor.beginTask(I18n.VM_SearchIntersection, IProgressMonitor.UNKNOWN);
+                        monitor.beginTask(I18n.VM_SEARCH_INTERSECTION, IProgressMonitor.UNKNOWN);
                         for(int i = 0; i < surfsSize; i++) {
                             /* Check if the monitor has been canceled */
                             if (monitor.isCanceled()) break;
@@ -408,7 +408,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     {
                         try
                         {
-                            monitor.beginTask(I18n.VM_Intersector, IProgressMonitor.UNKNOWN);
+                            monitor.beginTask(I18n.VM_INTERSECTOR, IProgressMonitor.UNKNOWN);
 
                             {
 
@@ -1619,7 +1619,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 {
                     try
                     {
-                        monitor.beginTask(I18n.VM_Lines2Pattern, IProgressMonitor.UNKNOWN);
+                        monitor.beginTask(I18n.VM_LINES_2_PATTERN, IProgressMonitor.UNKNOWN);
 
                         for (GData3 g3 : selectedTriangles) {
                             TreeSet<Vertex> vs = new TreeSet<>();
@@ -1981,7 +1981,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     {
                         try
                         {
-                            monitor.beginTask(I18n.VM_Lines2Pattern, IProgressMonitor.UNKNOWN);
+                            monitor.beginTask(I18n.VM_LINES_2_PATTERN, IProgressMonitor.UNKNOWN);
 
                             final Thread[] threads = new Thread[1];
 
@@ -2040,7 +2040,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                         Object[] messageArguments = {i, vertCount};
                                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                                         formatter.setLocale(MyLanguage.LOCALE);
-                                        formatter.applyPattern(I18n.VM_DetectNewEdges);
+                                        formatter.applyPattern(I18n.VM_DETECT_NEW_EDGES);
 
                                         monitor.subTask(formatter.format(messageArguments));
 
@@ -2259,7 +2259,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     {
                         try
                         {
-                            monitor.beginTask(I18n.VM_Lines2Pattern, IProgressMonitor.UNKNOWN);
+                            monitor.beginTask(I18n.VM_LINES_2_PATTERN, IProgressMonitor.UNKNOWN);
 
                             final int lc = linesToParseHashed.size();
 
@@ -2285,7 +2285,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                 Object[] messageArguments = {counter2.toString(), vertCount};
                                                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                                                 formatter.setLocale(MyLanguage.LOCALE);
-                                                formatter.applyPattern(I18n.VM_Triangulate);
+                                                formatter.applyPattern(I18n.VM_TRIANGULATE);
 
                                                 monitor.subTask(formatter.format(messageArguments));
                                                 counter2.incrementAndGet();
@@ -2580,7 +2580,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     {
                         try
                         {
-                            monitor.beginTask(I18n.VM_Lines2Pattern, IProgressMonitor.UNKNOWN);
+                            monitor.beginTask(I18n.VM_LINES_2_PATTERN, IProgressMonitor.UNKNOWN);
 
                             while (FlipTriangleOptimizer.optimize(rnd, unbindTriangles, optimization, flipCache) && !monitor.isCanceled()) {
                                 unbindTriangles.clear();

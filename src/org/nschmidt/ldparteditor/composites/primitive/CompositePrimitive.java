@@ -151,7 +151,7 @@ public class CompositePrimitive extends Composite {
     private static HashSet<PGTimestamp> fileCacheHits = new HashSet<>();
 
     public CompositePrimitive(Composite parent) {
-        super(parent, I18n.I18N_NON_BIDIRECT() | SWT.BORDER);
+        super(parent, I18n.noBiDirectionalTextStyle() | SWT.BORDER);
         {
             float[] rpf = new float[] {
                     -0.7071f, 0.5f, 0.5f, 0,
@@ -179,7 +179,7 @@ public class CompositePrimitive extends Composite {
             data.sampleBuffers = 1;
             data.samples = 4;
         }
-        canvas = new GLCanvas(this, I18n.I18N_NON_BIDIRECT(), data);
+        canvas = new GLCanvas(this, I18n.noBiDirectionalTextStyle(), data);
         canvas.setCurrent();
         if (WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20) {
             capabilities = GL.createCapabilities();
@@ -273,8 +273,8 @@ public class CompositePrimitive extends Composite {
 
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(Cocoa.isCocoa ? I18n.E3D_RotateViewHintMac :
-                    hasDefaultMouseButtonLayout ? I18n.E3D_RotateViewHintMiddleMouse : I18n.E3D_RotateViewHintRightMouse);
+                formatter.applyPattern(Cocoa.isCocoa ? I18n.E3D_ROTATE_VIEW_HINT_MAC :
+                    hasDefaultMouseButtonLayout ? I18n.E3D_ROTATE_VIEW_HINT_MIDDLE_MOUSE : I18n.E3D_ROTATE_VIEW_HINT_RIGHT_MOUSE);
                 String tooltipText = formatter.format(messageArguments);
                 if (!tooltipText.equals(canvas.getToolTipText())) {
                     canvas.setToolTipText(tooltipText);
@@ -584,7 +584,7 @@ public class CompositePrimitive extends Composite {
             new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
-                    monitor.beginTask(I18n.E3D_LoadingPrimitives, IProgressMonitor.UNKNOWN);
+                    monitor.beginTask(I18n.E3D_LOADING_PRIMITIVES, IProgressMonitor.UNKNOWN);
                     load(true);
                 }
             });

@@ -89,9 +89,9 @@ class VM17Unificator extends VM16Subdivide {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException
                 {
-                    monitor.beginTask(I18n.VM_Unificator, IProgressMonitor.UNKNOWN);
+                    monitor.beginTask(I18n.VM_UNIFICATOR, IProgressMonitor.UNKNOWN);
 
-                    monitor.subTask(I18n.VM_SortOut);
+                    monitor.subTask(I18n.VM_SORT_OUT);
 
                     TreeSet<Vertex> subfileVertices = new TreeSet<>();
                     TreeSet<Vertex> fileVertices = new TreeSet<>();
@@ -135,7 +135,7 @@ class VM17Unificator extends VM16Subdivide {
 
 
                     if (us.getSnapOn() == VERTICES || us.getSnapOn() == VERTICES_AND_SUBPART_VERTICES) {
-                        monitor.subTask(I18n.VM_Unify);
+                        monitor.subTask(I18n.VM_UNIFY);
                         int i = 0;
                         int j = 0;
 
@@ -208,7 +208,7 @@ class VM17Unificator extends VM16Subdivide {
                     }
 
                     if (us.getSnapOn() == SUBPART_VERTICES || us.getSnapOn() == VERTICES_AND_SUBPART_VERTICES) {
-                        monitor.subTask(I18n.VM_Snap);
+                        monitor.subTask(I18n.VM_SNAP);
 
                         TreeMap<Vertex, Vertex> mergeTargets = new TreeMap<>();
                         {

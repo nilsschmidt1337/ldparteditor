@@ -74,45 +74,45 @@ class YTruderDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_title = new Label(cmp_container, SWT.NONE);
-        lbl_title.setText(I18n.YTRUDER_Title);
+        lbl_title.setText(I18n.YTRUDER_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_description = new Label(cmp_container, SWT.NONE);
-        lbl_description.setText(I18n.YTRUDER_Description);
+        lbl_description.setText(I18n.YTRUDER_DESCRIPTION);
 
         {
             NButton btn_TranslateByDistance = new NButton(cmp_container, SWT.RADIO);
             this.btn_TranslateByDistance[0] = btn_TranslateByDistance;
-            btn_TranslateByDistance.setText(I18n.YTRUDER_TranslationByDistance);
+            btn_TranslateByDistance.setText(I18n.YTRUDER_TRANSLATION_BY_DISTANCE);
             btn_TranslateByDistance.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btn_TranslateByDistance.setSelection(ys.getMode() == 1);
         }
         {
             NButton btn_SymmetryAcrossPlane = new NButton(cmp_container, SWT.RADIO);
             this.btn_SymmetryAcrossPlane[0] = btn_SymmetryAcrossPlane;
-            btn_SymmetryAcrossPlane.setText(I18n.YTRUDER_SymmetryAcrossPlane);
+            btn_SymmetryAcrossPlane.setText(I18n.YTRUDER_SYMMETRY_ACROSS_PLANE);
             btn_SymmetryAcrossPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btn_SymmetryAcrossPlane.setSelection(ys.getMode() == 2);
         }
         {
             NButton btn_ProjectionOnPlane = new NButton(cmp_container, SWT.RADIO);
             this.btn_ProjectionOnPlane[0] = btn_ProjectionOnPlane;
-            btn_ProjectionOnPlane.setText(I18n.YTRUDER_ProjectionOnPlane);
+            btn_ProjectionOnPlane.setText(I18n.YTRUDER_PROJECTION_ON_PLANE);
             btn_ProjectionOnPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btn_ProjectionOnPlane.setSelection(ys.getMode() == 3);
         }
         {
             NButton btn_ExtrudeRadially = new NButton(cmp_container, SWT.RADIO);
             this.btn_ExtrudeRadially[0] = btn_ExtrudeRadially;
-            btn_ExtrudeRadially.setText(I18n.YTRUDER_ExtrudeRadially);
+            btn_ExtrudeRadially.setText(I18n.YTRUDER_EXTRUDE_RADIALLY);
             btn_ExtrudeRadially.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btn_ExtrudeRadially.setSelection(ys.getMode() == 4);
         }
 
         Label lbl_lineThreshold = new Label(cmp_container, SWT.NONE);
-        lbl_lineThreshold.setText(I18n.YTRUDER_Value);
+        lbl_lineThreshold.setText(I18n.YTRUDER_VALUE);
 
         BigDecimalSpinner spn_value = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_value[0] = spn_value;
@@ -122,7 +122,7 @@ class YTruderDesign extends Dialog {
         spn_value.setValue(new BigDecimal(ys.getDistance()));
 
         Label lbl_rotationAngle = new Label(cmp_container, SWT.NONE);
-        lbl_rotationAngle.setText(I18n.YTRUDER_CondlineAngle);
+        lbl_rotationAngle.setText(I18n.YTRUDER_CONDLINE_ANGLE);
 
         BigDecimalSpinner spn_rotationAngle = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_condlineAngleThreshold[0] = spn_rotationAngle;
@@ -132,7 +132,7 @@ class YTruderDesign extends Dialog {
         spn_rotationAngle.setValue(new BigDecimal(ys.getCondlineAngleThreshold()));
 
         Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText(I18n.YTRUDER_Axis);
+        lbl_af.setText(I18n.YTRUDER_AXIS);
 
         Combo cmb_axis = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_axis[0] = cmb_axis;
@@ -152,7 +152,7 @@ class YTruderDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

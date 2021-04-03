@@ -108,7 +108,7 @@ public enum RingsAndCones {
                     @Override
                     public void run(final IProgressMonitor m) throws InvocationTargetException, InterruptedException
                     {
-                        m.beginTask(I18n.RCONES_Task, IProgressMonitor.UNKNOWN);
+                        m.beginTask(I18n.RCONES_TASK, IProgressMonitor.UNKNOWN);
 
                         // We need two different solvers here.
 
@@ -388,8 +388,8 @@ public enum RingsAndCones {
                 } else {
 
                     MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_INFORMATION | SWT.OK);
-                    messageBoxError.setText(I18n.DIALOG_Info);
-                    messageBoxError.setMessage(I18n.RCONES_NoSolution);
+                    messageBoxError.setText(I18n.DIALOG_INFO);
+                    messageBoxError.setMessage(I18n.RCONES_NO_SOLUTION);
                     messageBoxError.open();
 
                     return;
@@ -532,8 +532,8 @@ public enum RingsAndCones {
                     df.addToTailOrInsertAfterCursor(new GData0(line, View.DUMMY_REFERENCE));
                 } else {
                     MessageBox messageBoxError = new MessageBox(sh, SWT.ICON_INFORMATION | SWT.OK);
-                    messageBoxError.setText(I18n.DIALOG_Info);
-                    messageBoxError.setMessage(I18n.RCONES_NoSolution);
+                    messageBoxError.setText(I18n.DIALOG_INFO);
+                    messageBoxError.setMessage(I18n.RCONES_NO_SOLUTION);
                     messageBoxError.open();
                     return;
                 }

@@ -95,7 +95,7 @@ public enum DatParser {
 
         char c;
         if (data_segments.length < 1 || data_segments[0].length() >  1 || !Character.isDigit(c = data_segments[0].charAt(0))) {
-            result.add(new ParsingResult(I18n.DATPARSER_InvalidType, "[E0D] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+            result.add(new ParsingResult(I18n.DATPARSER_INVALID_TYPE, "[E0D] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             return new ArrayList<>(result);
         }
         linetype = Character.getNumericValue(c);
@@ -124,8 +124,8 @@ public enum DatParser {
             Object[] messageArguments = {linetype};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DATPARSER_UnknownLineType);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+            formatter.applyPattern(I18n.DATPARSER_UNKNOWN_LINE_TYPE);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         }
         return result;
     }
@@ -250,15 +250,15 @@ public enum DatParser {
         ArrayList<ParsingResult> result = new ArrayList<>();
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
 
-        if (line.startsWith(I18n.DATFILE_InlinePrefix)) {
+        if (line.startsWith(I18n.DATFILE_INLINE_PREFIX)) {
             result.add(new ParsingResult(new GData0(line, parent)));
-            result.add(new ParsingResult(I18n.DATPARSER_InliningRelict, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+            result.add(new ParsingResult(I18n.DATPARSER_INLINING_RELICT, "[W01] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
         } else if (line.startsWith("0 !: ")) { //$NON-NLS-1$
             GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
             if (newLPEmetaTag == null) {
                 newLPEmetaTag = new GData0(line, parent);
                 result.add(new ParsingResult(newLPEmetaTag));
-                result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_TEXMAP, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             } else {
                 result.add(new ParsingResult(newLPEmetaTag));
             }
@@ -267,22 +267,22 @@ public enum DatParser {
             if (newLPEmetaTag == null) {
                 newLPEmetaTag = new GData0(line, parent);
                 result.add(new ParsingResult(newLPEmetaTag));
-                result.add(new ParsingResult(I18n.DATPARSER_InvalidTEXMAP, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_TEXMAP, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             } else {
                 result.add(new ParsingResult(newLPEmetaTag));
             }
         } else if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
             GData0 newLPEmetaTag = new GData0(line, parent);
             result.add(new ParsingResult(newLPEmetaTag));
-            result.add(new ParsingResult(I18n.DATPARSER_UnofficialMetaCommand, "[W0D] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+            result.add(new ParsingResult(I18n.DATPARSER_UNOFFICIAL_META_COMMAND, "[W0D] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
             if (line.startsWith("TODO ", 7)) { //$NON-NLS-1$
                 result.add(new ParsingResult(line.substring(12), "[WFF] " + I18n.DATPARSER_TODO, ResultType.WARN)); //$NON-NLS-1$
             } else if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
                 Object[] messageArguments = {line.substring(14)};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.DATPARSER_VertexAt);
-                result.add(new ParsingResult(formatter.format(messageArguments) , "[WFE] " + I18n.DATPARSER_VertexDeclaration, ResultType.WARN)); //$NON-NLS-1$
+                formatter.applyPattern(I18n.DATPARSER_VERTEX_AT);
+                result.add(new ParsingResult(formatter.format(messageArguments) , "[WFE] " + I18n.DATPARSER_VERTEX_DECLARATION, ResultType.WARN)); //$NON-NLS-1$
                 boolean numberError = false;
                 if (data_segments.length == 6) {
                     try {
@@ -296,7 +296,7 @@ public enum DatParser {
                     numberError = true;
                 }
                 if (numberError) {
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 } else if (!errorCheckOnly) {
                     if (depth == 0) {
                         datFile.getVertexManager().addVertex(new Vertex(start.X, start.Y, start.Z), newLPEmetaTag);
@@ -312,7 +312,7 @@ public enum DatParser {
                 if (data_segments.length == 10) {
                     colour = validateColour(data_segments[3], r, g, b, a);
                     if (colour == null) {
-                        result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                         return result;
                     }
                     try {
@@ -330,7 +330,7 @@ public enum DatParser {
                     colour = null;
                 }
                 if (numberError) {
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 } else if (!errorCheckOnly) {
                     if (depth == 0) {
                         result.remove(0);
@@ -343,7 +343,7 @@ public enum DatParser {
                 if (data_segments.length == 13) {
                     colour = validateColour(data_segments[3], r, g, b, a);
                     if (colour == null) {
-                        result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                         return result;
                     }
                     try {
@@ -364,7 +364,7 @@ public enum DatParser {
                     colour = null;
                 }
                 if (numberError) {
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 } else if (!errorCheckOnly) {
                     if (depth == 0) {
                         result.remove(0);
@@ -456,23 +456,23 @@ public enum DatParser {
                 result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT, parent)));
             } else if (line.startsWith("CERTIFY", 6)) { //$NON-NLS-1$
                 if (line.startsWith("CLIP CCW", 14) || line.startsWith("CCW CLIP", 14)) { //$NON-NLS-1$ //$NON-NLS-2$
-                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_CLIP_CCW, "[W0C] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP, parent)));
                 } else if (line.startsWith("CLIP CW", 14) || line.startsWith("CW CLIP", 14)) { //$NON-NLS-1$ //$NON-NLS-2$
-                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_ClipCW, "[W0C] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_CLIP_CW, "[W0C] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP, parent)));
                 } else if (line.startsWith("CCW", 14)) { //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.CCW_CLIP, parent)));
                 } else if (line.startsWith("CW", 14)) { //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.CW_CLIP, parent)));
                 } else if (line.startsWith("INVERTNEXT", 14)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_InvertNext, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_INVERT_NEXT, "[W0B] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.INVERTNEXT, parent)));
                 } else if (line.startsWith("CLIP", 14)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_Clip, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_CLIP, "[W0B] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.CLIP, parent)));
                 } else if (line.startsWith("NOCLIP", 14)) { //$NON-NLS-1$
-                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_NoClip, "[W0B] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_MLCAD_NO_CLIP, "[W0B] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     result.add(new ParsingResult(new GDataBFC(BFC.NOCLIP, parent)));
                 } else {
                     result.add(new ParsingResult(new GData0(line, parent)));
@@ -524,13 +524,13 @@ public enum DatParser {
             Object[] messageArguments = {data_segments.length, 15};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+            formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             hasDitheredColour = colour.getType() != null && GCType.DITHERED == colour.getType().type();
@@ -587,7 +587,7 @@ public enum DatParser {
                     M00 = null; M01 = null; M02 = null; M10 = null;
                     M11 = null; M12 = null; M20 = null; M21 = null;
                     M22 = null; M30 = null; M31 = null; M32 = null;
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
                 tMatrix.m33 = 1f;
@@ -613,7 +613,7 @@ public enum DatParser {
                 shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             }
             if (alreadyParsed.contains(shortFilename)) {
-                result.add(new ParsingResult(I18n.DATPARSER_Recursive, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_RECURSIVE, "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 if (!View.DUMMY_REFERENCE.equals(parent))
                     parent.firstRef.setRecursive(true);
             } else {
@@ -661,7 +661,7 @@ public enum DatParser {
 
             ArrayList<String> lines = null;
             if (parseError) {
-                result.add(new ParsingResult(I18n.DATPARSER_SingularMatrix, "[E02] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_SINGULAR_MATRIX, "[E02] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             }
 
             String absoluteFilename = null;
@@ -726,7 +726,7 @@ public enum DatParser {
                 }
 
             } else if (!fileExists) {
-                result.add(new ParsingResult(I18n.DATPARSER_FileNotFound, "[E01] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_FILE_NOT_FOUND, "[E01] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             } else {
                 absoluteFilename = fileToOpen.getAbsolutePath();
                 UTF8BufferedReader reader = null;
@@ -794,25 +794,25 @@ public enum DatParser {
                 GData1 g1 = (GData1) result.get(0).getGraphicalData();
                 if (g1 != null) {
                     if (g1.firstRef.isRecursive()) {
-                        result.add(new ParsingResult(I18n.DATPARSER_Recursive, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_RECURSIVE, "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     }
                     if (g1.firstRef.isMovedTo()) {
-                        result.add(new ParsingResult(I18n.DATPARSER_MovedTo, "[E2A] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_MOVED_TO, "[E2A] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     }
                 }
             }
             alreadyParsed.remove(shortFilename);
             // [WARNING] Check spaces in dat file name
             if (data_segments.length > 15) {
-                result.add(new ParsingResult(I18n.DATPARSER_FilenameWhitespace, "[W01] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_FILENAME_WHITESPACE, "[W01] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
             }
             // [WARNING] Dithered colour
             if (hasDitheredColour) {
-                result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_DITHERED_COLOUR, "[WDC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
             }
             // [WARNING] Upper- & Mixed-Case file name
             if (!isLowercase) {
-                result.add(new ParsingResult(I18n.DATPARSER_InvalidCase, "[WCC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_CASE, "[WCC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
             }
         }
         return result;
@@ -840,13 +840,13 @@ public enum DatParser {
             Object[] messageArguments = {data_segments.length, 8};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+            formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             // [ERROR] Check identical vertices
@@ -861,12 +861,12 @@ public enum DatParser {
                     end.setY(new BigDecimal(data_segments[6], Threshold.mc));
                     end.setZ(new BigDecimal(data_segments[7], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
                 parseError = Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0;
                 if (parseError) {
-                    result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
                 if (result.isEmpty() && !errorCheckOnly) {
                     GData2 data = new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, true);
@@ -874,7 +874,7 @@ public enum DatParser {
                 }
                 // [WARNING] Dithered colour
                 if (colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
-                    result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_DITHERED_COLOUR, "[WDC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                 }
                 break;
             }
@@ -906,13 +906,13 @@ public enum DatParser {
             Object[] messageArguments = {data_segments.length, 11};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+            formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             // [ERROR] Check identical vertices
@@ -931,7 +931,7 @@ public enum DatParser {
                     vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
                     vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
                 if (!errorCheckOnly) { // result.size() < 1 &&
@@ -964,18 +964,18 @@ public enum DatParser {
                     }
 
                     if (parseError) {
-                        result.add(new ParsingResult(I18n.DATPARSER_CollinearVertices, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_COLLINEAR_VERTICES, "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     }
 
                     parseError = vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;
                     if (parseError) {
-                        result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     }
                     // [WARNING] Dithered colour
                     if (colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
-                        result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_DITHERED_COLOUR, "[WDC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     }
                 }
                 break;
@@ -1008,13 +1008,13 @@ public enum DatParser {
             Object[] messageArguments = {data_segments.length, 14};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+            formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             // [ERROR] Check hourglass, concave form, coplanarity & identical
@@ -1038,7 +1038,7 @@ public enum DatParser {
                     vertexD.setY(new BigDecimal(data_segments[12], Threshold.mc));
                     vertexD.setZ(new BigDecimal(data_segments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
 
@@ -1098,15 +1098,15 @@ public enum DatParser {
                         // Hourglass
                         switch (fcc) {
                         case 1:
-                            result.add(new ParsingResult(I18n.DATPARSER_HourglassQuadrilateral, "[E41] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                            result.add(new ParsingResult(I18n.DATPARSER_HOURGLASS_QUADRILATERAL, "[E41] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                             break;
                         default: // 2
-                            result.add(new ParsingResult(I18n.DATPARSER_HourglassQuadrilateral, "[E42] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                            result.add(new ParsingResult(I18n.DATPARSER_HOURGLASS_QUADRILATERAL, "[E42] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                             break;
                         }
                     } else if (cnc == 1 || cnc == 3) {
                         // Concave
-                        result.add(new ParsingResult(I18n.DATPARSER_ConcaveQuadrilateral, "[E04] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_CONCAVE_QUADRILATERAL, "[E04] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     }
 
                     double angle;
@@ -1118,7 +1118,7 @@ public enum DatParser {
 
                         parseWarning = angle > Threshold.coplanarity_angle_warning;
                         if (angle > Threshold.coplanarity_angle_error) {
-                            result.add(new ParsingResult(I18n.DATPARSER_Coplanarity, "[E24] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                            result.add(new ParsingResult(I18n.DATPARSER_COPLANARITY, "[E24] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                             parseError = true;
                             parseWarning = false;
                         }
@@ -1156,7 +1156,7 @@ public enum DatParser {
                         }
 
                         if (parseError) {
-                            result.add(new ParsingResult(I18n.DATPARSER_CollinearVertices, "[E34] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                            result.add(new ParsingResult(I18n.DATPARSER_COLLINEAR_VERTICES, "[E34] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                         }
                     }
 
@@ -1172,14 +1172,14 @@ public enum DatParser {
                         } else {
                             result.clear();
                         }
-                        result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E44] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E44] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
 
                     } else if (parseWarning) {
-                        result.add(new ParsingResult(I18n.DATPARSER_NearCoplanarity, "[W24] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_NEAR_COPLANARITY, "[W24] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     }
                     // [WARNING] Dithered colour
                     if (colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
-                        result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                        result.add(new ParsingResult(I18n.DATPARSER_DITHERED_COLOUR, "[WDC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     }
                 }
                 break;
@@ -1212,13 +1212,13 @@ public enum DatParser {
             Object[] messageArguments = {data_segments.length, 14};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DATPARSER_WrongArgumentCount);
-            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+            formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
+            result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
             GColour colour = validateColour(data_segments[1], r, g, b, a);
             if (colour == null) {
-                result.add(new ParsingResult(I18n.DATPARSER_InvalidColour, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
             }
             // [ERROR] Check identical vertices
@@ -1241,13 +1241,13 @@ public enum DatParser {
                     controlII.setY(new BigDecimal(data_segments[12], Threshold.mc));
                     controlII.setZ(new BigDecimal(data_segments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult(I18n.DATPARSER_InvalidNumberFormat, "[E99] " + I18n.DATPARSER_SyntaxError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
                 if (Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0) {
-                    result.add(new ParsingResult(I18n.DATPARSER_IdenticalVertices, "[E0D] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 } else if (depth < 1 && Vector3d.sub(controlI, controlII).length().compareTo(Threshold.identical_vertex_distance) < 0) {
-                    result.add(new ParsingResult(I18n.DATPARSER_IdenticalControlPoints, "[E05] " + I18n.DATPARSER_DataError, ResultType.ERROR)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_CONTROL_POINTS, "[E05] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
                 if (result.isEmpty() && !errorCheckOnly) {
                     GData5 data = new GData5(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, controlI.X,
@@ -1255,7 +1255,7 @@ public enum DatParser {
                     result.add(new ParsingResult(data));
                 }
                 if (depth < 1 && colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
-                    result.add(new ParsingResult(I18n.DATPARSER_DitheredColour, "[WDC] " + I18n.DATPARSER_Warning, ResultType.WARN)); //$NON-NLS-1$
+                    result.add(new ParsingResult(I18n.DATPARSER_DITHERED_COLOUR, "[WDC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                 }
                 break;
             }

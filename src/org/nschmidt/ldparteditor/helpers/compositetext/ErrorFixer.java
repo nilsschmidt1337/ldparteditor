@@ -540,12 +540,12 @@ final class ErrorFixer {
             String newReference = g1.getSolvedMoveTo();
             if (newReference == null) {
                 MessageBox messageBox = new MessageBox(tWinShell, SWT.ICON_INFORMATION);
-                messageBox.setText(I18n.ERRORFIXER_MovedTo);
+                messageBox.setText(I18n.ERRORFIXER_MOVED_TO);
 
                 Object[] messageArguments = {lineNumber + 1, g1.toString()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.ERRORFIXER_MovedToHint);
+                formatter.applyPattern(I18n.ERRORFIXER_MOVED_TO_HINT);
 
                 messageBox.setMessage(formatter.format(messageArguments));
                 messageBox.open();

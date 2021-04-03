@@ -73,10 +73,10 @@ public class NewProjectDialog extends NewProjectDesign {
             }
 
             // Change the title bar text
-            dlg.setText(I18n.PROJECT_DefineProjectLocation);
+            dlg.setText(I18n.PROJECT_DEFINE_PROJECT_LOCATION);
 
             // Customizable message displayed in the dialog
-            dlg.setMessage(I18n.DIALOG_DirectorySelect);
+            dlg.setMessage(I18n.DIALOG_DIRECTORY_SELECT);
 
             // Calling open() will open and run the dialog.
             // It will return the selected directory, or

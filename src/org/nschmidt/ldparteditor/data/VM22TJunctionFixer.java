@@ -74,7 +74,7 @@ class VM22TJunctionFixer extends VM21Merger {
                 {
                     try
                     {
-                        monitor.beginTask(I18n.E3D_Tjunction, verticesToProcess.size());
+                        monitor.beginTask(I18n.E3D_T_JUNCTION, verticesToProcess.size());
 
                         final AtomicBoolean a = new AtomicBoolean();
 
@@ -117,11 +117,11 @@ class VM22TJunctionFixer extends VM21Merger {
         clearSelection2();
 
         MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-        messageBox.setText(I18n.DIALOG_Info);
+        messageBox.setText(I18n.DIALOG_INFO);
         Object[] messageArguments = {TjunctionCount[0]};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
-        formatter.applyPattern(I18n.E3D_TjunctionCount);
+        formatter.applyPattern(I18n.E3D_T_JUNCTION_COUNT);
         messageBox.setMessage(formatter.format(messageArguments));
         messageBox.open();
 

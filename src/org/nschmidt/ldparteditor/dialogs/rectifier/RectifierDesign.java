@@ -74,13 +74,13 @@ class RectifierDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.RECTIFIER_Title);
+        lbl_specify.setText(I18n.RECTIFIER_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_angle = new Label(cmp_container, SWT.NONE);
-        lbl_angle.setText(I18n.RECTIFIER_MaxAngle);
+        lbl_angle.setText(I18n.RECTIFIER_MAX_ANGLE);
 
         BigDecimalSpinner spn_angle = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_angle [0] = spn_angle;
@@ -92,7 +92,7 @@ class RectifierDesign extends Dialog {
         {
             Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {I18n.RECTIFIER_Colour1, I18n.RECTIFIER_Colour2});
+            cmb_colourise.setItems(new String[] {I18n.RECTIFIER_COLOUR_1, I18n.RECTIFIER_COLOUR_2});
             cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_colourise.setText(cmb_colourise.getItem(rs.isColourise() ? 1 : 0));
             cmb_colourise.select(rs.isColourise() ? 1 : 0);
@@ -100,7 +100,7 @@ class RectifierDesign extends Dialog {
         {
             Combo cmb_noQuadConversation = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_noQuadConversation[0] = cmb_noQuadConversation;
-            cmb_noQuadConversation.setItems(new String[] {I18n.RECTIFIER_TriQuads1, I18n.RECTIFIER_TriQuads2});
+            cmb_noQuadConversation.setItems(new String[] {I18n.RECTIFIER_TRI_QUADS_1, I18n.RECTIFIER_TRI_QUADS_2});
             cmb_noQuadConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_noQuadConversation.setText(cmb_noQuadConversation.getItem(rs.isNoQuadConversation() ? 1 : 0));
             cmb_noQuadConversation.select(rs.isNoQuadConversation() ? 1 : 0);
@@ -108,7 +108,7 @@ class RectifierDesign extends Dialog {
         {
             Combo cmb_noBorderedQuadToRectConversation = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_noBorderedQuadToRectConversation[0] = cmb_noBorderedQuadToRectConversation;
-            cmb_noBorderedQuadToRectConversation.setItems(new String[] {I18n.RECTIFIER_Rect1, I18n.RECTIFIER_Rect2});
+            cmb_noBorderedQuadToRectConversation.setItems(new String[] {I18n.RECTIFIER_RECT_1, I18n.RECTIFIER_RECT_2});
             cmb_noBorderedQuadToRectConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_noBorderedQuadToRectConversation.setText(cmb_noBorderedQuadToRectConversation.getItem(rs.isNoBorderedQuadToRectConversation() ? 1 : 0));
             cmb_noBorderedQuadToRectConversation.select(rs.isNoBorderedQuadToRectConversation() ? 1 : 0);
@@ -116,14 +116,14 @@ class RectifierDesign extends Dialog {
         {
             Combo cmb_noRectConversationOnAdjacentCondlines = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_noRectConversationOnAdjacentCondlines[0] = cmb_noRectConversationOnAdjacentCondlines;
-            cmb_noRectConversationOnAdjacentCondlines.setItems(new String[] {I18n.RECTIFIER_Rect3, I18n.RECTIFIER_Rect4});
+            cmb_noRectConversationOnAdjacentCondlines.setItems(new String[] {I18n.RECTIFIER_RECT_3, I18n.RECTIFIER_RECT_4});
             cmb_noRectConversationOnAdjacentCondlines.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_noRectConversationOnAdjacentCondlines.setText(cmb_noRectConversationOnAdjacentCondlines.getItem(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0));
             cmb_noRectConversationOnAdjacentCondlines.select(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0);
         }
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.RECTIFIER_ScopeFile, I18n.RECTIFIER_ScopeSelection});
+        cmb_scope.setItems(new String[] {I18n.RECTIFIER_SCOPE_FILE, I18n.RECTIFIER_SCOPE_SELECTION});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(rs.getScope()));
         cmb_scope.select(rs.getScope());
@@ -131,7 +131,7 @@ class RectifierDesign extends Dialog {
         NButton btn_verbose = new NButton(cmp_container, SWT.CHECK);
         this.btn_verbose[0] = btn_verbose;
         btn_verbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btn_verbose.setText(I18n.RECTIFIER_Verbose);
+        btn_verbose.setText(I18n.RECTIFIER_VERBOSE);
         btn_verbose.setSelection(rs.isVerbose());
 
         cmp_container.pack();
@@ -146,7 +146,7 @@ class RectifierDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

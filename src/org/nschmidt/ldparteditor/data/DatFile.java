@@ -612,7 +612,7 @@ public final class DatFile {
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.DATFILE_Line);
+                        formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(warnings);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
@@ -627,7 +627,7 @@ public final class DatFile {
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.DATFILE_Line);
+                        formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
@@ -655,7 +655,7 @@ public final class DatFile {
         for (Iterator<TreeItem> it = errors.getItems().iterator(); it.hasNext();) {
             TreeItem ti = it.next();
             final String tiText = ti.getText(0);
-            if (tiText.equals( I18n.DATPARSER_InvalidInvertNext) || tiText.equals(I18n.DATPARSER_InvalidInvertNextFlat)) {
+            if (tiText.equals( I18n.DATPARSER_INVALID_INVERT_NEXT) || tiText.equals(I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT)) {
                 it.remove();
             }
         }
@@ -682,24 +682,24 @@ public final class DatFile {
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.DATFILE_Line);
+                        formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         switch (flatAxis) {
                         case X:
-                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0A] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT, formatter.format(messageArguments), "[E0A] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                             break;
                         case Y:
-                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0B] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT, formatter.format(messageArguments), "[E0B] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                             break;
                         case Z:
-                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0C] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT, formatter.format(messageArguments), "[E0C] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                             break;
                         case NONE:
                         default:
-                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                             break;
                         }
                         trtmNewTreeitem.setData(position);
@@ -711,12 +711,12 @@ public final class DatFile {
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DATFILE_Line);
+                    formatter.applyPattern(I18n.DATFILE_LINE);
 
                     TreeItem trtmNewTreeitem = new TreeItem(errors);
                     trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                     trtmNewTreeitem.setVisible(false);
-                    trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNext, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                    trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                     trtmNewTreeitem.setData(position);
                 }
             }
@@ -808,7 +808,7 @@ public final class DatFile {
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.DATFILE_Line);
+                        formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(warnings);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
@@ -823,7 +823,7 @@ public final class DatFile {
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.DATFILE_Line);
+                        formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
@@ -844,7 +844,7 @@ public final class DatFile {
         for (Iterator<TreeItem> it = errors.getItems().iterator(); it.hasNext();) {
             TreeItem ti = it.next();
             final String tiText = ti.getText(0);
-            if (tiText.equals( I18n.DATPARSER_InvalidInvertNext) || tiText.equals(I18n.DATPARSER_InvalidInvertNextFlat)) {
+            if (tiText.equals( I18n.DATPARSER_INVALID_INVERT_NEXT) || tiText.equals(I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT)) {
                 it.remove();
             }
         }
@@ -871,24 +871,24 @@ public final class DatFile {
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.DATFILE_Line);
+                        formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
                         switch (flatAxis) {
                         case X:
-                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0A] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT, formatter.format(messageArguments), "[E0A] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                             break;
                         case Y:
-                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0B] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT, formatter.format(messageArguments), "[E0B] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                             break;
                         case Z:
-                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0C] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT, formatter.format(messageArguments), "[E0C] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                             break;
                         case NONE:
                         default:
-                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNextFlat, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                            trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT_FLAT, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                             break;
                         }trtmNewTreeitem.setData(position);
                     }
@@ -899,12 +899,12 @@ public final class DatFile {
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DATFILE_Line);
+                    formatter.applyPattern(I18n.DATFILE_LINE);
 
                     TreeItem trtmNewTreeitem = new TreeItem(errors);
                     trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                     trtmNewTreeitem.setVisible(false);
-                    trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_InvalidInvertNext, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SyntaxError }); //$NON-NLS-1$
+                    trtmNewTreeitem.setText(new String[] { I18n.DATPARSER_INVALID_INVERT_NEXT, formatter.format(messageArguments), "[E0D] " + I18n.DATPARSER_SYNTAX_ERROR }); //$NON-NLS-1$
                     trtmNewTreeitem.setData(position);
                 }
             }
@@ -957,7 +957,7 @@ public final class DatFile {
                 Object[] messageArguments = {lineNumber2, position};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(I18n.DATFILE_Line);
+                formatter.applyPattern(I18n.DATFILE_LINE);
 
                 TreeItem trtmNewTreeitem = new TreeItem(duplicates);
                 trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
@@ -1019,7 +1019,7 @@ public final class DatFile {
                         Object[] messageArguments = {lineNumber2, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.DATFILE_Line);
+                        formatter.applyPattern(I18n.DATFILE_LINE);
                         TreeItem trtmNewTreeitem = new TreeItem(headerHints);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                         trtmNewTreeitem.setVisible(false);
@@ -1793,12 +1793,12 @@ public final class DatFile {
     private boolean checkFileCollision(File theFile) {
         if (theFile.lastModified() > lastModified) {
             MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
-            messageBox.setText(I18n.DIALOG_ModifiedTitle);
+            messageBox.setText(I18n.DIALOG_MODIFIED_TITLE);
 
             Object[] messageArguments = {getShortName(), getLastSavedOpened()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DIALOG_Modified);
+            formatter.applyPattern(I18n.DIALOG_MODIFIED);
             messageBox.setMessage(formatter.format(messageArguments));
 
             int result2 = messageBox.open();

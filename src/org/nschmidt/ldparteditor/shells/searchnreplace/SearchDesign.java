@@ -68,7 +68,7 @@ class SearchDesign extends ApplicationWindow {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_find = new Label(cmp_container, SWT.NONE);
-        lbl_find.setText(I18n.SEARCH_Find);
+        lbl_find.setText(I18n.SEARCH_FIND);
 
         Text txt_find = new Text(cmp_container, SWT.NONE);
         this.txt_find[0] = txt_find;
@@ -76,56 +76,56 @@ class SearchDesign extends ApplicationWindow {
 
 
         Label lbl_replace = new Label(cmp_container, SWT.NONE);
-        lbl_replace.setText(I18n.SEARCH_ReplaceWith);
+        lbl_replace.setText(I18n.SEARCH_REPLACE_WITH);
 
         Text txt_replace = new Text(cmp_container, SWT.NONE);
         this.txt_replace[0] = txt_replace;
         txt_replace.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
 
         Group grp_dir = new Group(cmp_container, SWT.NONE);
-        grp_dir.setText(I18n.SEARCH_Direction);
+        grp_dir.setText(I18n.SEARCH_DIRECTION);
         grp_dir.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         grp_dir.setLayout(new GridLayout(3, false));
 
         NButton rb_part = new NButton(grp_dir, SWT.RADIO);
         this.rb_forward[0] = rb_part;
-        rb_part.setText(I18n.SEARCH_Forward);
+        rb_part.setText(I18n.SEARCH_FORWARD);
         rb_part.setSelection(true);
 
         NButton rb_subpart = new NButton(grp_dir, SWT.RADIO);
-        rb_subpart.setText(I18n.SEARCH_Backward);
+        rb_subpart.setText(I18n.SEARCH_BACKWARD);
 
         grp_dir.layout();
 
 
         Group grp_scope = new Group(cmp_container, SWT.NONE);
-        grp_scope.setText(I18n.SEARCH_Scope);
+        grp_scope.setText(I18n.SEARCH_SCOPE);
         grp_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         grp_scope.setLayout(new GridLayout(3, false));
 
         NButton rb_all = new NButton(grp_scope, SWT.RADIO);
         this.rb_all[0] = rb_all;
-        rb_all.setText(I18n.SEARCH_All);
+        rb_all.setText(I18n.SEARCH_ALL);
         rb_all.setSelection(true);
 
         NButton rb_selectedLines = new NButton(grp_scope, SWT.RADIO);
         this.rb_selectedLines[0] = rb_selectedLines;
-        rb_selectedLines.setText(I18n.SEARCH_SelectedLines);
+        rb_selectedLines.setText(I18n.SEARCH_SELECTED_LINES);
 
         grp_scope.layout();
 
         Group grp_location = new Group(cmp_container, SWT.NONE);
-        grp_location.setText(I18n.SEARCH_Options);
+        grp_location.setText(I18n.SEARCH_OPTIONS);
         grp_location.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         grp_location.setLayout(new GridLayout());
 
         NButton rb_currentProject = new NButton(grp_location, SWT.CHECK);
         this.cb_caseSensitive[0] = rb_currentProject;
-        rb_currentProject.setText(I18n.SEARCH_CaseSensitive);
+        rb_currentProject.setText(I18n.SEARCH_CASE_SENSITIVE);
 
         NButton rb_unofficialLib = new NButton(grp_location, SWT.CHECK);
         this.cb_incremental[0] = rb_unofficialLib;
-        rb_unofficialLib.setText(I18n.SEARCH_Incremental);
+        rb_unofficialLib.setText(I18n.SEARCH_INCREMENTAL);
 
         grp_location.layout();
 
@@ -137,33 +137,33 @@ class SearchDesign extends ApplicationWindow {
             this.btn_findAndReplace[0] = btn_tmp;
             btn_tmp.setEnabled(false);
             btn_tmp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_tmp.setText(I18n.SEARCH_ReplaceFind);
+            btn_tmp.setText(I18n.SEARCH_REPLACE_FIND);
         }
         {
             NButton btn_tmp = new NButton(cmp_btnGrid, SWT.NONE);
             this.btn_find[0] = btn_tmp;
             btn_tmp.setEnabled(false);
             btn_tmp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_tmp.setText(I18n.SEARCH_Find2);
+            btn_tmp.setText(I18n.SEARCH_FIND_2);
         }
         {
             NButton btn_tmp = new NButton(cmp_btnGrid, SWT.NONE);
             this.btn_replaceAll[0] = btn_tmp;
             btn_tmp.setEnabled(false);
             btn_tmp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_tmp.setText(I18n.SEARCH_ReplaceAll);
+            btn_tmp.setText(I18n.SEARCH_REPLACE_ALL);
         }
         {
             NButton btn_tmp = new NButton(cmp_btnGrid, SWT.NONE);
             this.btn_replace[0] = btn_tmp;
             btn_tmp.setEnabled(false);
             btn_tmp.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_tmp.setText(I18n.SEARCH_Replace);
+            btn_tmp.setText(I18n.SEARCH_REPLACE);
         }
         {
             NButton btn_close = new NButton(cmp_btnGrid, SWT.NONE);
             btn_close.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_close.setText(I18n.SEARCH_Close);
+            btn_close.setText(I18n.SEARCH_CLOSE);
 
             WidgetUtil(btn_close).addSelectionListener(e -> getShell().close());
         }

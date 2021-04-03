@@ -46,18 +46,18 @@ public enum KeyBoardHelper {
         KeySequence sequence = KeySequence.getInstance(keyStroke);
         if (Cocoa.isCocoa) {
             return sequence.toString()
-                    .replace("CTRL+", " " + I18n.KEYBOARD_Ctrl.toLowerCase() + " ") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    .replace("CTRL+", " " + I18n.KEYBOARD_CTRL.toLowerCase() + " ") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     .replace("SHIFT+", "\u21E7") //$NON-NLS-1$ //$NON-NLS-2$
                     .replace("ALT+", "\u2325") //$NON-NLS-1$ //$NON-NLS-2$
-                    .replace("COMMAND+", I18n.KEYBOARD_Command) //$NON-NLS-1$
+                    .replace("COMMAND+", I18n.KEYBOARD_COMMAND) //$NON-NLS-1$
                     .replace("BS", "\u232B"); //$NON-NLS-1$ //$NON-NLS-2$
         } else {
             return sequence.toString()
-                    .replace("CTRL", I18n.KEYBOARD_Ctrl) //$NON-NLS-1$
-                    .replace("SHIFT", I18n.KEYBOARD_Shift) //$NON-NLS-1$
-                    .replace("ALT", I18n.KEYBOARD_Alt) //$NON-NLS-1$
-                    .replace("DEL", I18n.KEYBOARD_Del) //$NON-NLS-1$
-                    .replace("BS", I18n.KEYBOARD_Backspace); //$NON-NLS-1$
+                    .replace("CTRL", I18n.KEYBOARD_CTRL) //$NON-NLS-1$
+                    .replace("SHIFT", I18n.KEYBOARD_SHIFT) //$NON-NLS-1$
+                    .replace("ALT", I18n.KEYBOARD_ALT) //$NON-NLS-1$
+                    .replace("DEL", I18n.KEYBOARD_DEL) //$NON-NLS-1$
+                    .replace("BS", I18n.KEYBOARD_BACKSPACE); //$NON-NLS-1$
         }
     }
 

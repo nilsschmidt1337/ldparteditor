@@ -124,7 +124,7 @@ public class CompositeScale extends ScalableComposite {
                 float step = viewport_pixel_per_ldu;
                 int factor = 1;
                 gc.setFont(Font.SMALL);
-                gc.drawText(I18n.UNIT_CurrentUnit(), 0, 0);
+                gc.drawText(I18n.getCurrentUnit(), 0, 0);
 
                 // Draw the ruler
                 float twostep = step * 2;

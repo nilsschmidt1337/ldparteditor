@@ -67,16 +67,16 @@ class NewProjectDesign extends Dialog {
 
         Label lbl_newProject = new Label(cmp_Container, SWT.NONE);
         if (saveAs) {
-            lbl_newProject.setText(I18n.PROJECT_SaveProject);
+            lbl_newProject.setText(I18n.PROJECT_SAVE_PROJECT);
         } else {
-            lbl_newProject.setText(I18n.PROJECT_CreateNewProject);
+            lbl_newProject.setText(I18n.PROJECT_CREATE_NEW_PROJECT);
         }
 
         Label lbl_separator = new Label(cmp_Container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_projectLocation = new Label(cmp_Container, SWT.NONE);
-        lbl_projectLocation.setText(I18n.PROJECT_ProjectLocation);
+        lbl_projectLocation.setText(I18n.PROJECT_PROJECT_LOCATION);
 
         Composite cmp_pathChooser1 = new Composite(cmp_Container, SWT.NONE);
         cmp_pathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -94,10 +94,10 @@ class NewProjectDesign extends Dialog {
 
         NButton btn_BrowseLdrawPath = new NButton(cmp_pathChooser1, SWT.NONE);
         this.btn_browseProjectPath[0] = btn_BrowseLdrawPath;
-        btn_BrowseLdrawPath.setText(I18n.DIALOG_Browse);
+        btn_BrowseLdrawPath.setText(I18n.DIALOG_BROWSE);
 
         Label lbl_projectName = new Label(cmp_Container, SWT.NONE);
-        lbl_projectName.setText(I18n.PROJECT_ProjectName);
+        lbl_projectName.setText(I18n.PROJECT_PROJECT_NAME);
 
         Composite cmp_projectName = new Composite(cmp_Container, SWT.NONE);
         cmp_projectName.setLayout(new RowLayout(SWT.HORIZONTAL));
@@ -122,7 +122,7 @@ class NewProjectDesign extends Dialog {
     protected void createButtonsForButtonBar(Composite parent) {
         btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         btn_ok[0].setEnabled(false);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

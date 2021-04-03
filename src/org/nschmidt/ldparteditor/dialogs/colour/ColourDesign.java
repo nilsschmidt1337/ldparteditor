@@ -84,7 +84,7 @@ class ColourDesign extends ApplicationWindow {
         cmp_container.setLayout(gridLayout);
 
         Label lbl_colourTitle = new Label(cmp_container, SWT.NONE);
-        lbl_colourTitle.setText(I18n.COLOURDIALOG_ColourTitle);
+        lbl_colourTitle.setText(I18n.COLOURDIALOG_COLOUR_TITLE);
 
         {
             Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -98,7 +98,7 @@ class ColourDesign extends ApplicationWindow {
 
         NButton btn_pickDirectColour = new NButton(cmp_container, SWT.NONE);
         btn_colourChoose[0] = btn_pickDirectColour;
-        btn_pickDirectColour.setText(I18n.COLOURDIALOG_DirectColour);
+        btn_pickDirectColour.setText(I18n.COLOURDIALOG_DIRECT_COLOUR);
 
         {
             Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
@@ -108,7 +108,7 @@ class ColourDesign extends ApplicationWindow {
         if (randomColours) {
             NButton btn_randomColour = new NButton(cmp_container, SWT.NONE);
             btn_randomColours[0] = btn_randomColour;
-            btn_randomColour.setText(I18n.COLOURDIALOG_RandomColours);
+            btn_randomColour.setText(I18n.COLOURDIALOG_RANDOM_COLOURS);
             btn_randomColour.setImage(ResourceManager.getImage("icon16_randomColours.png")); //$NON-NLS-1$
 
             {
@@ -118,7 +118,7 @@ class ColourDesign extends ApplicationWindow {
         }
 
         Label lbl_stdColour = new Label(cmp_container, SWT.NONE);
-        lbl_stdColour.setText(I18n.COLOURDIALOG_StandardColours);
+        lbl_stdColour.setText(I18n.COLOURDIALOG_STANDARD_COLOURS);
 
         {
             Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
@@ -132,7 +132,7 @@ class ColourDesign extends ApplicationWindow {
 
         NButton btn_showTable = new NButton(cmp_container, SWT.NONE);
         btn_colourTable[0] = btn_showTable;
-        btn_showTable.setText(I18n.COLOURDIALOG_ShowColourTable);
+        btn_showTable.setText(I18n.COLOURDIALOG_SHOW_COLOUR_TABLE);
 
         {
             Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
@@ -185,7 +185,7 @@ class ColourDesign extends ApplicationWindow {
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour1);
+            formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
             btn_Col.setToolTipText(formatter.format(messageArguments));
         } else {
@@ -199,7 +199,7 @@ class ColourDesign extends ApplicationWindow {
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.EDITORTEXT_Colour2);
+            formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
             btn_Col.setToolTipText(formatter.format(messageArguments));
         }

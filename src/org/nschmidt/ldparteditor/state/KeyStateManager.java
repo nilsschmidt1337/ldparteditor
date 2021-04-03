@@ -713,8 +713,8 @@ public class KeyStateManager {
                                 pressedKeyCodes.remove(keyCode);
                             } else {
                                 MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
-                                messageBoxError.setText(I18n.DIALOG_Error);
-                                messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                                messageBoxError.setText(I18n.DIALOG_ERROR);
+                                messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                                 messageBoxError.open();
                             }
                         }

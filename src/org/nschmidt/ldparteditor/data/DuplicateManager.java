@@ -567,13 +567,13 @@ public class DuplicateManager {
                     Object[] messageArguments = {lineNumber};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DATPARSER_DuplicatedLines);
-                    GData.CACHE_duplicates.put(gd, new ParsingResult(formatter.format(messageArguments), "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
+                    formatter.applyPattern(I18n.DATPARSER_DUPLICATED_LINES);
+                    GData.CACHE_duplicates.put(gd, new ParsingResult(formatter.format(messageArguments), "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
 
                 private void registerInvisibleCondline(GData gd, boolean[] registered) {
                     registered[0] = true;
-                    GData.CACHE_duplicates.put(gd, new ParsingResult(I18n.DATPARSER_InvisibleLine, "[E01] " + I18n.DATPARSER_LogicError, ResultType.ERROR)); //$NON-NLS-1$
+                    GData.CACHE_duplicates.put(gd, new ParsingResult(I18n.DATPARSER_INVISIBLE_LINE, "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
             });
             worker.start();

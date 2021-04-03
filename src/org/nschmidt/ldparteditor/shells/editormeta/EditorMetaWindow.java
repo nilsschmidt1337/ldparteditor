@@ -298,7 +298,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             WidgetUtil(ev_texmapPlanar_btn[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                fd.setText(I18n.META_ChoosePng);
+                fd.setText(I18n.META_CHOOSE_PNG);
 
                 if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                     try {
@@ -315,7 +315,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                 String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                 fd.setFilterExtensions(filterExt);
-                String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
+                String[] filterNames = { I18n.E3D_PORTABLE_NETWORK_GRAPHICS, I18n.E3D_ALL_FILES };
                 fd.setFilterNames(filterNames);
                 String selected = fd.open();
                 if (selected != null) {
@@ -362,7 +362,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             WidgetUtil(ev_texmapCyli_btn[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                fd.setText(I18n.META_ChoosePng);
+                fd.setText(I18n.META_CHOOSE_PNG);
 
                 if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                     try {
@@ -379,7 +379,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                 String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                 fd.setFilterExtensions(filterExt);
-                String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
+                String[] filterNames = { I18n.E3D_PORTABLE_NETWORK_GRAPHICS, I18n.E3D_ALL_FILES };
                 fd.setFilterNames(filterNames);
                 String selected = fd.open();
                 if (selected != null) {
@@ -428,7 +428,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             WidgetUtil(ev_texmapSphere_btn[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                fd.setText(I18n.META_ChoosePng);
+                fd.setText(I18n.META_CHOOSE_PNG);
 
                 if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                     try {
@@ -445,7 +445,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                 String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                 fd.setFilterExtensions(filterExt);
-                String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
+                String[] filterNames = { I18n.E3D_PORTABLE_NETWORK_GRAPHICS, I18n.E3D_ALL_FILES };
                 fd.setFilterNames(filterNames);
                 String selected = fd.open();
                 if (selected != null) {
@@ -734,7 +734,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             WidgetUtil(ev_png_btn[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
-                fd.setText(I18n.META_ChoosePng);
+                fd.setText(I18n.META_CHOOSE_PNG);
 
                 if (Project.DEFAULT_PROJECT_PATH.equals(Project.getProjectPath()) && Project.DEFAULT_PROJECT_PATH.equals(Project.PROJECT)) {
                     try {
@@ -751,7 +751,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
                 String[] filterExt = { "*.png", "*.*" }; //$NON-NLS-1$ //$NON-NLS-2$
                 fd.setFilterExtensions(filterExt);
-                String[] filterNames = { I18n.E3D_PortableNetworkGraphics, I18n.E3D_AllFiles };
+                String[] filterNames = { I18n.E3D_PORTABLE_NETWORK_GRAPHICS, I18n.E3D_ALL_FILES };
                 fd.setFilterNames(filterNames);
                 String selected = fd.open();
                 if (selected != null) {

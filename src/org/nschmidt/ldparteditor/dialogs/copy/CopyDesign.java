@@ -74,7 +74,7 @@ class CopyDesign extends Dialog {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DIALOG_CopyFileOnly);
+            formatter.applyPattern(I18n.DIALOG_COPY_FILE_ONLY);
             btn_1.setText(formatter.format(messageArguments));
         }
 
@@ -86,7 +86,7 @@ class CopyDesign extends Dialog {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DIALOG_CopyFileAndRequired);
+            formatter.applyPattern(I18n.DIALOG_COPY_FILE_AND_REQUIRED);
             btn_2.setText(formatter.format(messageArguments));
         }
 
@@ -98,7 +98,7 @@ class CopyDesign extends Dialog {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
-            formatter.applyPattern(I18n.DIALOG_CopyFileAndRequiredAndRelated);
+            formatter.applyPattern(I18n.DIALOG_COPY_FILE_AND_REQUIRED_AND_RELATED);
             btn_3.setText(formatter.format(messageArguments));
         }
 
@@ -113,7 +113,7 @@ class CopyDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, true);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, true);
     }
 
     /**

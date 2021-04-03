@@ -836,10 +836,10 @@ public class CompositeTab extends CompositeTabDesign {
                 int warningCount = treeItem_Warnings[0].getItems().size();
                 int hintCount = treeItem_Hints[0].getItems().size();
                 int duplicateCount = treeItem_Duplicates[0].getItems().size();
-                String errors = errorCount == 1 ? I18n.EDITORTEXT_Error : I18n.EDITORTEXT_Errors;
-                String warnings = warningCount == 1 ? I18n.EDITORTEXT_Warning : I18n.EDITORTEXT_Warnings;
-                String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
-                String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
+                String errors = errorCount == 1 ? I18n.EDITORTEXT_ERROR : I18n.EDITORTEXT_ERRORS;
+                String warnings = warningCount == 1 ? I18n.EDITORTEXT_WARNING : I18n.EDITORTEXT_WARNINGS;
+                String hints = hintCount == 1 ? I18n.EDITORTEXT_OTHER : I18n.EDITORTEXT_OTHERS;
+                String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_DUPLICATE : I18n.EDITORTEXT_DUPLICATES;
                 lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
                 lbl_ProblemCount[0].getParent().layout();
             }
@@ -875,11 +875,11 @@ public class CompositeTab extends CompositeTabDesign {
                         VertexMarker.markTheVertex(state, compositeText[0], df);
                         if (state.isReplacingVertex()) {
                             if (state.window[0] == Editor3DWindow.getWindow()) {
-                                Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEdit);
+                                Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SYNC_EDIT);
                                 Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                                 Editor3DWindow.getStatusLabel().update();
                             } else {
-                                state.window[0].setStatus(I18n.EDITORTEXT_SyncEdit);
+                                state.window[0].setStatus(I18n.EDITORTEXT_SYNC_EDIT);
                             }
                         }
                     }
@@ -891,11 +891,11 @@ public class CompositeTab extends CompositeTabDesign {
                         vm.setVertexToReplace(null);
                         compositeText[0].redraw(0, 0, compositeText[0].getBounds().width, compositeText[0].getBounds().height, true);
                         if (state.window[0] == Editor3DWindow.getWindow()) {
-                            Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SyncEditDeactivated);
+                            Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SYNC_EDIT_DEACTIVATED);
                             Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                             Editor3DWindow.getStatusLabel().update();
                         } else {
-                            state.window[0].setStatus(I18n.EDITORTEXT_SyncEditDeactivated);
+                            state.window[0].setStatus(I18n.EDITORTEXT_SYNC_EDIT_DEACTIVATED);
                         }
                     }
                     break;
@@ -992,8 +992,8 @@ public class CompositeTab extends CompositeTabDesign {
                             Editor3DWindow.getWindow().updateTree_unsavedEntries();
                         } else if (sh3 != null) {
                             MessageBox messageBoxError = new MessageBox(sh3, SWT.ICON_ERROR | SWT.OK);
-                            messageBoxError.setText(I18n.DIALOG_Error);
-                            messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                            messageBoxError.setText(I18n.DIALOG_ERROR);
+                            messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                             messageBoxError.open();
                         }
                     }
@@ -1267,10 +1267,10 @@ public class CompositeTab extends CompositeTabDesign {
                         int warningCount = treeItem_Warnings[0].getItems().size();
                         int hintCount = treeItem_Hints[0].getItems().size();
                         int duplicateCount = treeItem_Duplicates[0].getItems().size();
-                        String errors = errorCount == 1 ? I18n.EDITORTEXT_Error : I18n.EDITORTEXT_Errors;
-                        String warnings = warningCount == 1 ? I18n.EDITORTEXT_Warning : I18n.EDITORTEXT_Warnings;
-                        String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
-                        String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
+                        String errors = errorCount == 1 ? I18n.EDITORTEXT_ERROR : I18n.EDITORTEXT_ERRORS;
+                        String warnings = warningCount == 1 ? I18n.EDITORTEXT_WARNING : I18n.EDITORTEXT_WARNINGS;
+                        String hints = hintCount == 1 ? I18n.EDITORTEXT_OTHER : I18n.EDITORTEXT_OTHERS;
+                        String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_DUPLICATE : I18n.EDITORTEXT_DUPLICATES;
                         lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
                         treeItem_Hints[0].getParent().build();
                         lbl_ProblemCount[0].getParent().layout();
@@ -1291,7 +1291,7 @@ public class CompositeTab extends CompositeTabDesign {
                 if (state.window[0] == Editor3DWindow.getWindow()) {
                     try {
                         if (state.isReplacingVertex()) {
-                            Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SyncEdit); //$NON-NLS-1$ //$NON-NLS-2$
+                            Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
                         } else {
                             Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
                         }
@@ -1302,7 +1302,7 @@ public class CompositeTab extends CompositeTabDesign {
                 } else {
                     try {
                         if (state.isReplacingVertex()) {
-                            state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SyncEdit); //$NON-NLS-1$ //$NON-NLS-2$
+                            state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
                         } else {
                             state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caret_offset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
                         }
@@ -2037,10 +2037,10 @@ public class CompositeTab extends CompositeTabDesign {
         int warningCount = treeItem_Warnings[0].getItems().size();
         int hintCount = treeItem_Hints[0].getItems().size();
         int duplicateCount = treeItem_Duplicates[0].getItems().size();
-        String errors = errorCount == 1 ? I18n.EDITORTEXT_Error : I18n.EDITORTEXT_Errors;
-        String warnings = warningCount == 1 ? I18n.EDITORTEXT_Warning : I18n.EDITORTEXT_Warnings;
-        String hints = hintCount == 1 ? I18n.EDITORTEXT_Other : I18n.EDITORTEXT_Others;
-        String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_Duplicate : I18n.EDITORTEXT_Duplicates;
+        String errors = errorCount == 1 ? I18n.EDITORTEXT_ERROR : I18n.EDITORTEXT_ERRORS;
+        String warnings = warningCount == 1 ? I18n.EDITORTEXT_WARNING : I18n.EDITORTEXT_WARNINGS;
+        String hints = hintCount == 1 ? I18n.EDITORTEXT_OTHER : I18n.EDITORTEXT_OTHERS;
+        String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_DUPLICATE : I18n.EDITORTEXT_DUPLICATES;
         lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
         lbl_ProblemCount[0].getParent().layout();
     }

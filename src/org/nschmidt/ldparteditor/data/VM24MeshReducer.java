@@ -81,7 +81,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                     {
                         try
                         {
-                            monitor.beginTask(I18n.E3D_MeshReduce, verticesToProcess.size());
+                            monitor.beginTask(I18n.E3D_MESH_REDUCE, verticesToProcess.size());
 
                             final AtomicBoolean a = new AtomicBoolean();
 
@@ -275,11 +275,11 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         }
 
         MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
-        messageBox.setText(I18n.DIALOG_Info);
+        messageBox.setText(I18n.DIALOG_INFO);
         Object[] messageArguments = {count};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
-        formatter.applyPattern(I18n.E3D_ReduceCount);
+        formatter.applyPattern(I18n.E3D_REDUCE_COUNT);
         messageBox.setMessage(formatter.format(messageArguments));
         messageBox.open();
 

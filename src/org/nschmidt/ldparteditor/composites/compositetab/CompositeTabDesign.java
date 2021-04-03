@@ -102,7 +102,7 @@ class CompositeTabDesign extends CTabItem {
     }
 
     private final void createContents(CTabFolder tabFolder) {
-        this.setText(I18n.COMPOSITETAB_NewFile);
+        this.setText(I18n.COMPOSITETAB_NEW_FILE);
         {
             Composite cmp_textArea = new Composite(tabFolder, SWT.NONE);
             cmp_textArea.setLayout(new FillLayout(SWT.HORIZONTAL));
@@ -169,7 +169,7 @@ class CompositeTabDesign extends CTabItem {
 
                 CTabItem tbtm_partProblems = new CTabItem(tabFolder_partInformation, SWT.CLOSE);
                 tbtm_partProblems.setImage(null);
-                tbtm_partProblems.setText(I18n.COMPOSITETAB_Problems);
+                tbtm_partProblems.setText(I18n.COMPOSITETAB_PROBLEMS);
                 tabFolder_partInformation.setSelection(tbtm_partProblems);
                 Composite cmp_partProblems = new Composite(tabFolder_partInformation, SWT.NONE);
                 tbtm_partProblems.setControl(cmp_partProblems);
@@ -178,7 +178,7 @@ class CompositeTabDesign extends CTabItem {
                 Label lbl_ProblemCount = new Label(cmp_partProblems, SWT.NONE);
                 this.lbl_ProblemCount[0] = lbl_ProblemCount;
                 lbl_ProblemCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 5, 1));
-                lbl_ProblemCount.setText("0 " + I18n.EDITORTEXT_Errors + ", 0 " + I18n.EDITORTEXT_Warnings + ", 0 " + I18n.EDITORTEXT_Others + ", 0 " + I18n.EDITORTEXT_Duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                lbl_ProblemCount.setText("0 " + I18n.EDITORTEXT_ERRORS + ", 0 " + I18n.EDITORTEXT_WARNINGS + ", 0 " + I18n.EDITORTEXT_OTHERS + ", 0 " + I18n.EDITORTEXT_DUPLICATES); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
                 Tree tree = new Tree(cmp_partProblems, SWT.BORDER | SWT.MULTI, 128);
 
@@ -189,58 +189,58 @@ class CompositeTabDesign extends CTabItem {
 
                 TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
                 trclmn_Description.setWidth(598);
-                trclmn_Description.setText(I18n.COMPOSITETAB_Description);
+                trclmn_Description.setText(I18n.COMPOSITETAB_DESCRIPTION);
 
                 TreeColumn trclmn_Location = new TreeColumn(tree, SWT.NONE);
                 trclmn_Location.setWidth(100);
-                trclmn_Location.setText(I18n.COMPOSITETAB_Location);
+                trclmn_Location.setText(I18n.COMPOSITETAB_LOCATION);
 
                 TreeColumn trclmn_Type = new TreeColumn(tree, SWT.NONE);
                 trclmn_Type.setWidth(100);
-                trclmn_Type.setText(I18n.COMPOSITETAB_Type);
+                trclmn_Type.setText(I18n.COMPOSITETAB_TYPE);
 
                 TreeItem trtm_Hints = new TreeItem(tree);
                 treeItem_Hints[0] = trtm_Hints;
                 trtm_Hints.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-                trtm_Hints.setText(new String[] { I18n.COMPOSITETAB_Hints, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
+                trtm_Hints.setText(new String[] { I18n.COMPOSITETAB_HINTS, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 TreeItem trtm_Warnings = new TreeItem(tree);
                 treeItem_Warnings[0] = trtm_Warnings;
                 trtm_Warnings.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
-                trtm_Warnings.setText(new String[] { I18n.COMPOSITETAB_Warnings, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
+                trtm_Warnings.setText(new String[] { I18n.COMPOSITETAB_WARNINGS, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 TreeItem trtm_Errors = new TreeItem(tree);
                 treeItem_Errors[0] = trtm_Errors;
                 trtm_Errors.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
-                trtm_Errors.setText(new String[] { I18n.COMPOSITETAB_Errors, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
+                trtm_Errors.setText(new String[] { I18n.COMPOSITETAB_ERRORS, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 TreeItem trtm_Duplicates = new TreeItem(tree);
                 treeItem_Duplicates[0] = trtm_Duplicates;
                 trtm_Duplicates.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
-                trtm_Duplicates.setText(new String[] { I18n.COMPOSITETAB_Duplicates, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
+                trtm_Duplicates.setText(new String[] { I18n.COMPOSITETAB_DUPLICATES, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 Menu menu = new Menu(tabFolder);
                 tree.setMenu(menu);
 
-                MenuItem mntmQuickFix = new MenuItem(menu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmQuickFix = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
                 mntm_QuickFix[0] = mntmQuickFix;
                 mntmQuickFix.setEnabled(true);
-                mntmQuickFix.setText(I18n.COMPOSITETAB_QuickFix);
+                mntmQuickFix.setText(I18n.COMPOSITETAB_QUICK_FIX);
 
-                MenuItem mntmQuickFixSame = new MenuItem(menu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmQuickFixSame = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
                 mntm_QuickFixSame[0] = mntmQuickFixSame;
                 mntmQuickFixSame.setEnabled(true);
-                mntmQuickFixSame.setText(I18n.COMPOSITETAB_QuickFixSimilar);
+                mntmQuickFixSame.setText(I18n.COMPOSITETAB_QUICK_FIX_SIMILAR);
 
-                MenuItem mntmInspect = new MenuItem(menu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmInspect = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
                 mntm_Inspect[0] = mntmInspect;
                 mntmInspect.setEnabled(true);
-                mntmInspect.setText(I18n.COMPOSITETAB_Inspect);
+                mntmInspect.setText(I18n.COMPOSITETAB_INSPECT);
 
-                MenuItem mntmInspectSame = new MenuItem(menu, I18n.I18N_NON_BIDIRECT());
+                MenuItem mntmInspectSame = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
                 mntm_InspectSame[0] = mntmInspectSame;
                 mntmInspectSame.setEnabled(true);
-                mntmInspectSame.setText(I18n.COMPOSITETAB_InspectSimilar);
+                mntmInspectSame.setText(I18n.COMPOSITETAB_INSPECT_SIMILAR);
 
                 tree.build();
 
@@ -252,25 +252,25 @@ class CompositeTabDesign extends CTabItem {
                 btn_Inspect.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
                 btn_Inspect.setEnabled(false);
                 btn_Inspect.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
-                btn_Inspect.setText(I18n.COMPOSITETAB_Inspect);
+                btn_Inspect.setText(I18n.COMPOSITETAB_INSPECT);
 
                 NButton btn_InspectSame = new NButton(cmp_partProblems, SWT.NONE);
                 this.btn_InspectSame[0] = btn_InspectSame;
                 btn_InspectSame.setEnabled(false);
                 btn_InspectSame.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
-                btn_InspectSame.setText(I18n.COMPOSITETAB_InspectSimilar);
+                btn_InspectSame.setText(I18n.COMPOSITETAB_INSPECT_SIMILAR);
 
                 NButton btn_QuickFix = new NButton(cmp_partProblems, SWT.NONE);
                 this.btn_QuickFix[0] = btn_QuickFix;
                 btn_QuickFix.setEnabled(false);
                 btn_QuickFix.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-                btn_QuickFix.setText(I18n.COMPOSITETAB_QuickFix);
+                btn_QuickFix.setText(I18n.COMPOSITETAB_QUICK_FIX);
 
                 NButton btn_QuickFixSame = new NButton(cmp_partProblems, SWT.NONE);
                 this.btn_QuickFixSame[0] = btn_QuickFixSame;
                 btn_QuickFixSame.setEnabled(false);
                 btn_QuickFixSame.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-                btn_QuickFixSame.setText(I18n.COMPOSITETAB_QuickFixSimilar);
+                btn_QuickFixSame.setText(I18n.COMPOSITETAB_QUICK_FIX_SIMILAR);
             }
             composite.pack();
             sashForm.setWeights(new int[] { 2, 1 } );
@@ -278,46 +278,46 @@ class CompositeTabDesign extends CTabItem {
             this.menu[0] = new Menu(compositeText);
             compositeText.setMenu(this.menu[0]);
 
-            MenuItem mntmHide = new MenuItem(menu[0], I18n.I18N_RTL());
-            mntmHide.setText(I18n.EDITORTEXT_Hide);
+            MenuItem mntmHide = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmHide.setText(I18n.EDITORTEXT_HIDE);
             mntmHide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
             mntm_HideSelection[0] = mntmHide;
 
-            MenuItem mntmShowSelection = new MenuItem(menu[0], I18n.I18N_RTL());
-            mntmShowSelection.setText(I18n.EDITORTEXT_Show);
+            MenuItem mntmShowSelection = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmShowSelection.setText(I18n.EDITORTEXT_SHOW);
             mntmShowSelection.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
             mntm_ShowSelection[0] = mntmShowSelection;
 
-            MenuItem mntmShowAll = new MenuItem(menu[0], I18n.I18N_RTL());
-            mntmShowAll.setText(I18n.E3D_ShowAll);
+            MenuItem mntmShowAll = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmShowAll.setText(I18n.E3D_SHOW_ALL);
             mntm_ShowAll[0] = mntmShowAll;
 
             new MenuItem(menu[0], SWT.SEPARATOR);
 
-            MenuItem mntmDrawSelection = new MenuItem(menu[0], I18n.I18N_RTL());
-            mntmDrawSelection.setText(I18n.EDITORTEXT_DrawSelection);
+            MenuItem mntmDrawSelection = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmDrawSelection.setText(I18n.EDITORTEXT_DRAW_SELECTION);
             mntm_DrawSelection[0] = mntmDrawSelection;
 
-            MenuItem mntmDrawUntilSelection = new MenuItem(menu[0], I18n.I18N_RTL());
-            mntmDrawUntilSelection.setText(I18n.EDITORTEXT_DrawUntilSelection);
+            MenuItem mntmDrawUntilSelection = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmDrawUntilSelection.setText(I18n.EDITORTEXT_DRAW_UNTIL_SELECTION);
             mntm_DrawUntilSelection[0] = mntmDrawUntilSelection;
 
             new MenuItem(menu[0], SWT.SEPARATOR);
 
-            MenuItem mntmCut = new MenuItem(menu[0], I18n.I18N_RTL());
-            mntmCut.setText(I18n.COPYNPASTE_Cut);
+            MenuItem mntmCut = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmCut.setText(I18n.COPYNPASTE_CUT);
             mntmCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
             mntm_Cut[0] = mntmCut;
-            MenuItem mntmCopy = new MenuItem(menu[0], I18n.I18N_RTL());
-            mntmCopy.setText(I18n.COPYNPASTE_Copy);
+            MenuItem mntmCopy = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmCopy.setText(I18n.COPYNPASTE_COPY);
             mntmCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
             mntm_Copy[0] = mntmCopy;
-            MenuItem mntmPaste = new MenuItem(menu[0], I18n.I18N_RTL());
-            mntmPaste.setText(I18n.COPYNPASTE_Paste);
+            MenuItem mntmPaste = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmPaste.setText(I18n.COPYNPASTE_PASTE);
             mntmPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
             mntm_Paste[0] = mntmPaste;
-            MenuItem mntmDelete = new MenuItem(menu[0], I18n.I18N_RTL());
-            mntmDelete.setText(I18n.COPYNPASTE_Delete);
+            MenuItem mntmDelete = new MenuItem(menu[0], I18n.rightToLeftStyle());
+            mntmDelete.setText(I18n.COPYNPASTE_DELETE);
             mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
             mntm_Delete[0] = mntmDelete;
         }

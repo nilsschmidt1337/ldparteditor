@@ -59,7 +59,7 @@ class OverwriteDesign extends Dialog {
         Object[] messageArguments = {whichFile};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
-        formatter.applyPattern(I18n.DIALOG_Replace);
+        formatter.applyPattern(I18n.DIALOG_REPLACE);
         lbl_overwrite.setText(formatter.format(messageArguments));
 
         return cmp_Container;
@@ -72,9 +72,9 @@ class OverwriteDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        createButton(parent, IDialogConstants.YES_ID, I18n.DIALOG_Yes, false);
-        createButton(parent, IDialogConstants.NO_ID, I18n.DIALOG_No, true);
-        createButton(parent, IDialogConstants.SKIP_ID, I18n.DIALOG_SkipAll, false);
+        createButton(parent, IDialogConstants.YES_ID, I18n.DIALOG_YES, false);
+        createButton(parent, IDialogConstants.NO_ID, I18n.DIALOG_NO, true);
+        createButton(parent, IDialogConstants.SKIP_ID, I18n.DIALOG_SKIP_ALL, false);
     }
 
     /**

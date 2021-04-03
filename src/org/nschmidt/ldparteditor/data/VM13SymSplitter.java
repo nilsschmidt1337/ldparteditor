@@ -712,15 +712,15 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
             if (!headerS.endsWith(StringHelper.getLineDelimiter())) {
                 headerS = headerS + StringHelper.getLineDelimiter();
             }
-            headerS = headerS + I18n.VM_SymsplitterFront + StringHelper.getLineDelimiter();
+            headerS = headerS + I18n.VM_SYMSPLITTER_FRONT + StringHelper.getLineDelimiter();
             if (!beforeS.endsWith(StringHelper.getLineDelimiter())) {
                 beforeS = beforeS + StringHelper.getLineDelimiter();
             }
-            beforeS = beforeS + I18n.VM_SymsplitterBetween + StringHelper.getLineDelimiter();
+            beforeS = beforeS + I18n.VM_SYMSPLITTER_BETWEEN + StringHelper.getLineDelimiter();
             if (!betweenS.endsWith(StringHelper.getLineDelimiter())) {
                 betweenS = betweenS + StringHelper.getLineDelimiter();
             }
-            betweenS = betweenS + I18n.VM_SymsplitterBehind + StringHelper.getLineDelimiter();
+            betweenS = betweenS + I18n.VM_SYMSPLITTER_BEHIND + StringHelper.getLineDelimiter();
 
             String symSplitterOutput = headerS + beforeS + betweenS + behindS;
 

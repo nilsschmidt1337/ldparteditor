@@ -100,8 +100,8 @@ public enum CategoriesUtils {
             }
         } catch (IOException ioe) {
             MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
-            messageBoxError.setText(I18n.DIALOG_Error);
-            messageBoxError.setMessage(I18n.E3D_CantConnectToLDrawOrg);
+            messageBoxError.setText(I18n.DIALOG_ERROR);
+            messageBoxError.setMessage(I18n.E3D_CANT_CONNECT_TO_LDRAW_ORG);
             messageBoxError.open();
             return;
         }
@@ -109,10 +109,10 @@ public enum CategoriesUtils {
         Object[] messageArguments = {AppData.getPath() + "categories.txt", categories.size()}; //$NON-NLS-1$
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
-        formatter.applyPattern(I18n.E3D_ReplaceCategories);
+        formatter.applyPattern(I18n.E3D_REPLACE_CATEGORIES);
 
         MessageBox messageBoxReplace = new MessageBox(win.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);
-        messageBoxReplace.setText(I18n.DIALOG_Info);
+        messageBoxReplace.setText(I18n.DIALOG_INFO);
         messageBoxReplace.setMessage(formatter.format(messageArguments));
         if (messageBoxReplace.open() != SWT.YES) {
             return;
@@ -125,15 +125,15 @@ public enum CategoriesUtils {
             out.flush();
         } catch (FileNotFoundException | UnsupportedEncodingException ldpe) {
             MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
-            messageBoxError.setText(I18n.DIALOG_Error);
-            messageBoxError.setMessage(I18n.E3D_FileWasReplacedError);
+            messageBoxError.setText(I18n.DIALOG_ERROR);
+            messageBoxError.setMessage(I18n.E3D_FILE_WAS_REPLACED_ERROR);
             messageBoxError.open();
             return;
         }
 
         MessageBox messageBoxDone = new MessageBox(win.getShell(), SWT.ICON_INFORMATION | SWT.OK);
-        messageBoxDone.setText(I18n.DIALOG_Info);
-        messageBoxDone.setMessage(I18n.E3D_FileWasReplaced);
+        messageBoxDone.setText(I18n.DIALOG_INFO);
+        messageBoxDone.setMessage(I18n.E3D_FILE_WAS_REPLACED);
         messageBoxDone.open();
     }
 }

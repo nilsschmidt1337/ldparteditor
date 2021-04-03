@@ -66,22 +66,22 @@ class IntersectorDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.INTERSECTOR_Title);
+        lbl_specify.setText(I18n.INTERSECTOR_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_description = new Label(cmp_container, SWT.NONE);
-        lbl_description.setText(I18n.INTERSECTOR_Description);
+        lbl_description.setText(I18n.INTERSECTOR_DESCRIPTION);
         
         NButton btn_hideOther = new NButton(cmp_container, SWT.CHECK);
         this.btn_hideOther[0] = btn_hideOther;
-        btn_hideOther.setText(I18n.INTERSECTOR_HideOther);
+        btn_hideOther.setText(I18n.INTERSECTOR_HIDE_OTHER);
         btn_hideOther.setSelection(ins.isHidingOther());
         
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.INTERSECTOR_ScopeFile, I18n.INTERSECTOR_ScopeSelection});
+        cmb_scope.setItems(new String[] {I18n.INTERSECTOR_SCOPE_FILE, I18n.INTERSECTOR_SCOPE_SELECTION});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(ins.getScope()));
         cmb_scope.select(ins.getScope());
@@ -90,7 +90,7 @@ class IntersectorDesign extends Dialog {
         {
             Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {I18n.INTERSECTOR_NoMods, I18n.INTERSECTOR_ColourMods});
+            cmb_colourise.setItems(new String[] {I18n.INTERSECTOR_NO_MODS, I18n.INTERSECTOR_COLOUR_MODS});
             cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_colourise.setText(cmb_colourise.getItem(ins.isColourise() ? 1 : 0));
             cmb_colourise.select(ins.isColourise() ? 1 : 0);
@@ -108,7 +108,7 @@ class IntersectorDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

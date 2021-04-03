@@ -58,10 +58,10 @@ class PartReviewDesign extends Dialog {
 
         if (alreadyReviewing) {
             Label lbl_Info = new Label(cmp_Container, SWT.NONE);
-            lbl_Info.setText(I18n.E3D_PartReviewAlready);
+            lbl_Info.setText(I18n.E3D_PART_REVIEW_ALREADY);
         } else {
             Label lbl_PartName = new Label(cmp_Container, SWT.NONE);
-            lbl_PartName.setText(I18n.E3D_PartReviewEnterPartName);
+            lbl_PartName.setText(I18n.E3D_PART_REVIEW_ENTER_PART_NAME);
 
             Text txt_file2 = new Text(cmp_Container, SWT.NONE);
             this.txt_file[0] = txt_file2;
@@ -73,7 +73,7 @@ class PartReviewDesign extends Dialog {
             this.txt_file[0].addModifyListener(e -> fileName = txt_file[0].getText());
 
             Label lbl_Info = new Label(cmp_Container, SWT.NONE);
-            lbl_Info.setText(I18n.E3D_PartReviewInfo);
+            lbl_Info.setText(I18n.E3D_PART_REVIEW_INFO);
         }
 
         cmp_Container.pack();
@@ -88,11 +88,11 @@ class PartReviewDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         if (alreadyReviewing) {
-            btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_Yes, true);
-            btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_No, false);
+            btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_YES, true);
+            btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_NO, false);
         } else {
             btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-            btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+            btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
         }
     }
 

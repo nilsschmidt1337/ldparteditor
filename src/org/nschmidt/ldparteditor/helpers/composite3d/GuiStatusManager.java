@@ -109,7 +109,7 @@ public enum GuiStatusManager {
             sb.append(" "); //$NON-NLS-1$
             sb.append(c3d.getLockableDatFileReference().getShortName());
             sb.append(", "); //$NON-NLS-1$
-            sb.append(I18n.PERSPECTIVE_Zoom);
+            sb.append(I18n.PERSPECTIVE_ZOOM);
             sb.append(": "); //$NON-NLS-1$
             sb.append(DF2F.format(Math.round(c3d.getZoom() * 10000000) / 100f));
             sb.append("% ["); //$NON-NLS-1$
@@ -147,22 +147,22 @@ public enum GuiStatusManager {
 
             final Editor3DWindow win = Editor3DWindow.getWindow();
             if (win.isMovingAdjacentData()) {
-                sb.append(I18n.E3D_AdjacentWarningStatus);
+                sb.append(I18n.E3D_ADJACENT_WARNING_STATUS);
             }
 
             final SelectorSettings sels = win.loadSelectorSettings();
             final ObjectMode om = win.getWorkingType();
             if (om == ObjectMode.FACES) {
                 if (sels.isTriangles() && !sels.isQuads()) {
-                    sb.append(I18n.E3D_OnlyTriangles);
+                    sb.append(I18n.E3D_ONLY_TRIANGLES);
                 } else if (sels.isQuads() && !sels.isTriangles()) {
-                    sb.append(I18n.E3D_OnlyQuads);
+                    sb.append(I18n.E3D_ONLY_QUADS);
                 }
             } else if (om == ObjectMode.LINES) {
                 if (sels.isLines() && !sels.isCondlines()) {
-                    sb.append(I18n.E3D_OnlyLines);
+                    sb.append(I18n.E3D_ONLY_LINES);
                 } else if (sels.isCondlines() && !sels.isLines()) {
-                    sb.append(I18n.E3D_OnlyCondlines);
+                    sb.append(I18n.E3D_ONLY_CONDLINES);
                 }
             }
 
@@ -261,7 +261,7 @@ public enum GuiStatusManager {
     }
 
     public static void updateStatus() {
-        Editor3DWindow.getStatusLabel().setText(I18n.E3D_NoFileSelected);
+        Editor3DWindow.getStatusLabel().setText(I18n.E3D_NO_FILE_SELECTED);
         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
         Editor3DWindow.getStatusLabel().update();
     }

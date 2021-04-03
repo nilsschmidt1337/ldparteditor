@@ -53,8 +53,8 @@ public enum ProjectActions {
         if (askForUnsavedChanges(win, createOnlyDefault, true) && !createOnlyDefault && new NewProjectDialog(false).open() == IDialogConstants.OK_ID) {
             while (new File(Project.getTempProjectPath()).isDirectory()) {
                 MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.YES | SWT.CANCEL | SWT.NO);
-                messageBoxError.setText(I18n.PROJECT_ProjectOverwriteTitle);
-                messageBoxError.setMessage(I18n.PROJECT_ProjectOverwrite);
+                messageBoxError.setText(I18n.PROJECT_PROJECT_OVERWRITE_TITLE);
+                messageBoxError.setMessage(I18n.PROJECT_PROJECT_OVERWRITE);
                 int result2 = messageBoxError.open();
                 if (result2 == SWT.YES) {
                     break;
@@ -67,8 +67,8 @@ public enum ProjectActions {
             String newProjectPath = Project.getTempProjectPath() + File.separator;
             if (!newProjectPath.startsWith(WorkbenchManager.getUserSettingState().getAuthoringFolderPath() + File.separator) && newProjectPath.startsWith(WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator) || newProjectPath.startsWith(WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator)) {
                 MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_ERROR | SWT.OK);
-                messageBox.setText(I18n.DIALOG_AlreadyAllocatedNameTitle);
-                messageBox.setMessage(I18n.DIALOG_AlreadyAllocatedName);
+                messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
+                messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
                 messageBox.open();
                 return false;
             }
@@ -90,12 +90,12 @@ public enum ProjectActions {
                 final String text = df.getText();
                 if (!text.trim().equals("") && !text.equals(WorkbenchManager.getDefaultFileHeader())) { //$NON-NLS-1$
                     MessageBox messageBox = new MessageBox(win.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
-                    messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
+                    messageBox.setText(I18n.DIALOG_UNSAVED_CHANGES_TITLE);
 
                     Object[] messageArguments = {df.getShortName()};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
+                    formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                     messageBox.setMessage(formatter.format(messageArguments));
 
                     int result = messageBox.open();
@@ -109,8 +109,8 @@ public enum ProjectActions {
                             Editor3DWindow.getWindow().updateTree_unsavedEntries();
                         } else {
                             MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
-                            messageBoxError.setText(I18n.DIALOG_Error);
-                            messageBoxError.setMessage(I18n.DIALOG_CantSaveFile);
+                            messageBoxError.setText(I18n.DIALOG_ERROR);
+                            messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                             messageBoxError.open();
                             Editor3DWindow.getWindow().updateTree_unsavedEntries();
                             return false;
@@ -120,8 +120,8 @@ public enum ProjectActions {
             }
             if (!Project.getOpenTextWindows().isEmpty() || !Editor3DWindow.renders.isEmpty()) {
                 MessageBox messageBoxOpenFiles = new MessageBox(win.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
-                messageBoxOpenFiles.setText(I18n.DIALOG_KeepFilesOpenTitle);
-                messageBoxOpenFiles.setMessage(I18n.DIALOG_KeepFilesOpen);
+                messageBoxOpenFiles.setText(I18n.DIALOG_KEEP_FILES_OPEN_TITLE);
+                messageBoxOpenFiles.setMessage(I18n.DIALOG_KEEP_FILES_OPEN);
 
                 int result = messageBoxOpenFiles.open();
 
@@ -183,8 +183,8 @@ public enum ProjectActions {
                     }
                     while (new File(Project.getTempProjectPath()).isDirectory()) {
                         MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.YES | SWT.CANCEL | SWT.NO);
-                        messageBoxError.setText(I18n.PROJECT_ProjectOverwriteTitle);
-                        messageBoxError.setMessage(I18n.PROJECT_ProjectOverwrite);
+                        messageBoxError.setText(I18n.PROJECT_PROJECT_OVERWRITE_TITLE);
+                        messageBoxError.setMessage(I18n.PROJECT_PROJECT_OVERWRITE);
                         int result2 = messageBoxError.open();
                         if (result2 == SWT.NO) {
                             result = new NewProjectDialog(true).open();
@@ -204,8 +204,8 @@ public enum ProjectActions {
                     Project.setProjectPath(Project.getTempProjectPath());
                     if (!Project.save()) {
                         MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
-                        messageBoxError.setText(I18n.DIALOG_Error);
-                        messageBoxError.setMessage(I18n.DIALOG_CantSaveProject);
+                        messageBoxError.setText(I18n.DIALOG_ERROR);
+                        messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_PROJECT);
                         messageBoxError.open();
                         Project.setProjectName(tmp1);
                         Project.setProjectPath(tmp2);
@@ -222,12 +222,12 @@ public enum ProjectActions {
                     if (!cancelIt) {
                         secondRun = true;
                         MessageBox messageBox = new MessageBox(win.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.CANCEL | SWT.NO);
-                        messageBox.setText(I18n.DIALOG_UnsavedChangesTitle);
+                        messageBox.setText(I18n.DIALOG_UNSAVED_CHANGES_TITLE);
 
-                        Object[] messageArguments = {I18n.DIALOG_TheOldProject};
+                        Object[] messageArguments = {I18n.DIALOG_THE_OLD_PROJECT};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                         formatter.setLocale(MyLanguage.LOCALE);
-                        formatter.applyPattern(I18n.DIALOG_UnsavedChanges);
+                        formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                         messageBox.setMessage(formatter.format(messageArguments));
 
                         if (!(createOnlyDefault && Project.isDefaultProject())) {
@@ -269,10 +269,10 @@ public enum ProjectActions {
             }
 
             // Change the title bar text
-            dlg.setText(I18n.PROJECT_SelectProjectLocation);
+            dlg.setText(I18n.PROJECT_SELECT_PROJECT_LOCATION);
 
             // Customizable message displayed in the dialog
-            dlg.setMessage(I18n.DIALOG_DirectorySelect);
+            dlg.setMessage(I18n.DIALOG_DIRECTORY_SELECT);
 
             // Calling open() will open and run the dialog.
             // It will return the selected directory, or

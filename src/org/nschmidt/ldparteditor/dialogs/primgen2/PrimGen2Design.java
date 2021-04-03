@@ -118,27 +118,27 @@ class PrimGen2Design extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.PRIMGEN_Title);
+        lbl_specify.setText(I18n.PRIMGEN_TITLE);
         lbl_specify.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
 
         Label lbl_type = new Label(cmp_container, SWT.NONE);
-        lbl_type.setText(I18n.PRIMGEN_Type);
+        lbl_type.setText(I18n.PRIMGEN_TYPE);
         lbl_type.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
         Label lbl_divisions = new Label(cmp_container, SWT.NONE);
-        lbl_divisions.setText(I18n.PRIMGEN_Divisions);
+        lbl_divisions.setText(I18n.PRIMGEN_DIVISIONS);
         lbl_divisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_segments = new Label(cmp_container, SWT.NONE);
-        lbl_segments.setText(I18n.PRIMGEN_Segments);
+        lbl_segments.setText(I18n.PRIMGEN_SEGMENTS);
         lbl_segments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_torusType = new Label(cmp_container, SWT.NONE);
         this.lbl_torusType[0] = lbl_torusType;
-        lbl_torusType.setText(I18n.PRIMGEN_TorusType);
+        lbl_torusType.setText(I18n.PRIMGEN_TORUS_TYPE);
         lbl_torusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         lbl_torusType.setEnabled(false);
 
@@ -149,26 +149,26 @@ class PrimGen2Design extends Dialog {
 
         Combo cmb_type = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_type[0] = cmb_type;
-        cmb_type.setItems(new String[]{I18n.PRIMGEN_Circle, I18n.PRIMGEN_Ring, I18n.PRIMGEN_Cone, I18n.PRIMGEN_Torus, I18n.PRIMGEN_Cylinder, I18n.PRIMGEN_Disc, I18n.PRIMGEN_DiscNegative, I18n.PRIMGEN_Chord});
-        cmb_type.setText(I18n.PRIMGEN_Circle);
+        cmb_type.setItems(new String[]{I18n.PRIMGEN_CIRCLE, I18n.PRIMGEN_RING, I18n.PRIMGEN_CONE, I18n.PRIMGEN_TORUS, I18n.PRIMGEN_CYLINDER, I18n.PRIMGEN_DISC, I18n.PRIMGEN_DISC_NEGATIVE, I18n.PRIMGEN_CHORD});
+        cmb_type.setText(I18n.PRIMGEN_CIRCLE);
         cmb_type.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
         Combo cmb_divisions = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_divisions[0] = cmb_divisions;
-        cmb_divisions.setItems(new String[]{I18n.PRIMGEN_Eight, I18n.PRIMGEN_Sixteen, I18n.PRIMGEN_Fourtyeight, I18n.PRIMGEN_Custom});
-        cmb_divisions.setText(I18n.PRIMGEN_Sixteen);
+        cmb_divisions.setItems(new String[]{I18n.PRIMGEN_EIGHT, I18n.PRIMGEN_SIXTEEN, I18n.PRIMGEN_FOURTYEIGHT, I18n.PRIMGEN_CUSTOM});
+        cmb_divisions.setText(I18n.PRIMGEN_SIXTEEN);
         cmb_divisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmb_segments = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_segments[0] = cmb_segments;
-        cmb_segments.setItems(new String[]{I18n.PRIMGEN_Quarter, I18n.PRIMGEN_Half, I18n.PRIMGEN_ThreeQuarter, I18n.PRIMGEN_Whole, I18n.PRIMGEN_Custom});
-        cmb_segments.setText(I18n.PRIMGEN_Quarter);
+        cmb_segments.setItems(new String[]{I18n.PRIMGEN_QUARTER, I18n.PRIMGEN_HALF, I18n.PRIMGEN_THREE_QUARTER, I18n.PRIMGEN_WHOLE, I18n.PRIMGEN_CUSTOM});
+        cmb_segments.setText(I18n.PRIMGEN_QUARTER);
         cmb_segments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmb_torusType = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_torusType[0] = cmb_torusType;
-        cmb_torusType.setItems(new String[]{I18n.PRIMGEN_Inside, I18n.PRIMGEN_Outside, I18n.PRIMGEN_Tube});
-        cmb_torusType.setText(I18n.PRIMGEN_Outside);
+        cmb_torusType.setItems(new String[]{I18n.PRIMGEN_INSIDE, I18n.PRIMGEN_OUTSIDE, I18n.PRIMGEN_TUBE});
+        cmb_torusType.setText(I18n.PRIMGEN_OUTSIDE);
         cmb_torusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         cmb_torusType.setEnabled(false);
 
@@ -179,7 +179,7 @@ class PrimGen2Design extends Dialog {
 
         Label lbl_size = new Label(cmp_container, SWT.NONE);
         this.lbl_size[0] = lbl_size;
-        lbl_size.setText(I18n.PRIMGEN_Size);
+        lbl_size.setText(I18n.PRIMGEN_SIZE);
         lbl_size.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
         lbl_size.setEnabled(false);
 
@@ -199,13 +199,13 @@ class PrimGen2Design extends Dialog {
 
         Label lbl_major = new Label(cmp_container, SWT.NONE);
         this.lbl_major[0] = lbl_major;
-        lbl_major.setText(I18n.PRIMGEN_Major);
+        lbl_major.setText(I18n.PRIMGEN_MAJOR);
         lbl_major.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         lbl_major.setEnabled(false);
 
         Label lbl_minor = new Label(cmp_container, SWT.NONE);
         this.lbl_minor[0] = lbl_minor;
-        lbl_minor.setText(I18n.PRIMGEN_Minor);
+        lbl_minor.setText(I18n.PRIMGEN_MINOR);
         lbl_minor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         lbl_minor.setEnabled(false);
 
@@ -225,13 +225,13 @@ class PrimGen2Design extends Dialog {
         spn_size.setLargeIncrement(BigDecimal.ONE);
 
         Label lbl_winding = new Label(cmp_container, SWT.NONE);
-        lbl_winding.setText(I18n.PRIMGEN_Winding);
+        lbl_winding.setText(I18n.PRIMGEN_WINDING);
         lbl_winding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmb_winding = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_winding[0] = cmb_winding;
-        cmb_winding.setItems(new String[]{I18n.PRIMGEN_Ccw, I18n.PRIMGEN_Cw});
-        cmb_winding.setText(I18n.PRIMGEN_Ccw);
+        cmb_winding.setItems(new String[]{I18n.PRIMGEN_CCW, I18n.PRIMGEN_CW});
+        cmb_winding.setText(I18n.PRIMGEN_CCW);
         cmb_winding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         IntegerSpinner spn_major = new IntegerSpinner(cmp_container, SWT.NONE);
@@ -270,7 +270,7 @@ class PrimGen2Design extends Dialog {
 
         NButton btn_saveAs = new NButton(cmp_container, SWT.NONE);
         this.btn_saveAs[0] = btn_saveAs;
-        btn_saveAs.setText(I18n.PRIMGEN_SaveAs);
+        btn_saveAs.setText(I18n.PRIMGEN_SAVE_AS);
         btn_saveAs.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
         {
@@ -309,26 +309,26 @@ class PrimGen2Design extends Dialog {
 
         Label lbl_standard = new Label(cmp_container, SWT.NONE);
         this.lbl_standard[0] = lbl_standard;
-        lbl_standard.setText(I18n.PRIMGEN_NonStandard);
+        lbl_standard.setText(I18n.PRIMGEN_NON_STANDARD);
         lbl_standard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
 
         this.menu[0] = new Menu(txt_data);
         txt_data.setMenu(this.menu[0]);
 
-        MenuItem mntmCut = new MenuItem(menu[0], I18n.I18N_RTL());
-        mntmCut.setText(I18n.COPYNPASTE_Cut);
+        MenuItem mntmCut = new MenuItem(menu[0], I18n.rightToLeftStyle());
+        mntmCut.setText(I18n.COPYNPASTE_CUT);
         mntmCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
         mntm_Cut[0] = mntmCut;
-        MenuItem mntmCopy = new MenuItem(menu[0], I18n.I18N_RTL());
-        mntmCopy.setText(I18n.COPYNPASTE_Copy);
+        MenuItem mntmCopy = new MenuItem(menu[0], I18n.rightToLeftStyle());
+        mntmCopy.setText(I18n.COPYNPASTE_COPY);
         mntmCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
         mntm_Copy[0] = mntmCopy;
-        MenuItem mntmPaste = new MenuItem(menu[0], I18n.I18N_RTL());
-        mntmPaste.setText(I18n.COPYNPASTE_Paste);
+        MenuItem mntmPaste = new MenuItem(menu[0], I18n.rightToLeftStyle());
+        mntmPaste.setText(I18n.COPYNPASTE_PASTE);
         mntmPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
         mntm_Paste[0] = mntmPaste;
-        MenuItem mntmDelete = new MenuItem(menu[0], I18n.I18N_RTL());
-        mntmDelete.setText(I18n.COPYNPASTE_Delete);
+        MenuItem mntmDelete = new MenuItem(menu[0], I18n.rightToLeftStyle());
+        mntmDelete.setText(I18n.COPYNPASTE_DELETE);
         mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
         mntm_Delete[0] = mntmDelete;
 
@@ -345,7 +345,7 @@ class PrimGen2Design extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         this.btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        this.btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        this.btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

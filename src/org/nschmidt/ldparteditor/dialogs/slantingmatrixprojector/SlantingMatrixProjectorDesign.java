@@ -98,7 +98,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
 
         Label lbl_title = new Label(cmp_container, SWT.NONE);
         lbl_title.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-        lbl_title.setText(I18n.SLANT_Title);
+        lbl_title.setText(I18n.SLANT_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
@@ -108,16 +108,16 @@ class SlantingMatrixProjectorDesign extends Dialog {
 
         switch (vm.getSlantingMatrixStatus()) {
         case NO_SELECTION_THREE_AXIS:
-            lbl_info.setText(I18n.SLANT_NoSelectionThreeAxes);
+            lbl_info.setText(I18n.SLANT_NO_SELECTION_THREE_AXES);
             insertMatrix(cmp_container);
             break;
         case NO_SELECTION_TWO_AXIS:
-            lbl_info.setText(I18n.SLANT_NoSelectionTwoAxes);
+            lbl_info.setText(I18n.SLANT_NO_SELECTION_TWO_AXES);
             insertMatrix(cmp_container);
             {
                 NButton cb_setOrigin = new NButton(cmp_container, SWT.CHECK);
                 cb_setOrigin.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-                cb_setOrigin.setText(I18n.SLANT_SetOrigin);
+                cb_setOrigin.setText(I18n.SLANT_SET_ORIGIN);
                 cb_setOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
                 WidgetUtil(cb_setOrigin).addSelectionListener(e -> {
@@ -127,12 +127,12 @@ class SlantingMatrixProjectorDesign extends Dialog {
             }
             break;
         case SELECTION:
-            lbl_info.setText(I18n.SLANT_MatrixReady);
+            lbl_info.setText(I18n.SLANT_MATRIX_READY);
             insertMatrix(cmp_container);
             {
                 NButton cb_setOrigin = new NButton(cmp_container, SWT.CHECK);
                 cb_setOrigin.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-                cb_setOrigin.setText(I18n.SLANT_SetOrigin);
+                cb_setOrigin.setText(I18n.SLANT_SET_ORIGIN);
                 cb_setOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
                 WidgetUtil(cb_setOrigin).addSelectionListener(e -> {
@@ -143,7 +143,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
             {
                 NButton cb_resetSubfileOrientation = new NButton(cmp_container, SWT.CHECK);
                 cb_resetSubfileOrientation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-                cb_resetSubfileOrientation.setText(I18n.SLANT_ResetSubfileOrientation);
+                cb_resetSubfileOrientation.setText(I18n.SLANT_RESET_SUBFILE_ORIENTATION);
                 cb_resetSubfileOrientation.setSelection(mps.isResettingSubfileTransformation());
 
 
@@ -152,7 +152,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
             break;
         case INIT:
         default:
-            lbl_info.setText(I18n.SLANT_HowTo);
+            lbl_info.setText(I18n.SLANT_HOW_TO);
             break;
         }
 
@@ -183,7 +183,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
 
         NButton btn_CopyMatrixToClipboard = new NButton(cmp_container, SWT.NONE);
         btn_CopyMatrixToClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-        btn_CopyMatrixToClipboard.setText(I18n.SLANT_CopyToClipboard);
+        btn_CopyMatrixToClipboard.setText(I18n.SLANT_COPY_TO_CLIPBOARD);
 
         WidgetUtil(btn_CopyMatrixToClipboard).addSelectionListener(e -> {
             final Matrix M1 = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
@@ -240,7 +240,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

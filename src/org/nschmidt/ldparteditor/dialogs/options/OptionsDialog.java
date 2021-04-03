@@ -51,10 +51,10 @@ public class OptionsDialog extends OptionsDesign {
             dlg.setFilterPath(userSettingState.getLdrawFolderPath());
 
             // Change the title bar text
-            dlg.setText(I18n.OPTIONS_LdrawFolder);
+            dlg.setText(I18n.OPTIONS_LDRAW_FOLDER);
 
             // Customizable message displayed in the dialog
-            dlg.setMessage(I18n.OPTIONS_Directory);
+            dlg.setMessage(I18n.OPTIONS_DIRECTORY);
 
             // Calling open() will open and run the dialog.
             // It will return the selected directory, or
@@ -74,10 +74,10 @@ public class OptionsDialog extends OptionsDesign {
             dlg.setFilterPath(userSettingState.getAuthoringFolderPath());
 
             // Change the title bar text
-            dlg.setText(I18n.OPTIONS_AuthoringWhere);
+            dlg.setText(I18n.OPTIONS_AUTHORING_WHERE);
 
             // Customizable message displayed in the dialog
-            dlg.setMessage(I18n.OPTIONS_Directory);
+            dlg.setMessage(I18n.OPTIONS_DIRECTORY);
 
             // Calling open() will open and run the dialog.
             // It will return the selected directory, or
@@ -97,10 +97,10 @@ public class OptionsDialog extends OptionsDesign {
             dlg.setFilterPath(userSettingState.getUnofficialFolderPath());
 
             // Change the title bar text
-            dlg.setText(I18n.OPTIONS_UnofficialWhere);
+            dlg.setText(I18n.OPTIONS_UNOFFICIAL_WHERE);
 
             // Customizable message displayed in the dialog
-            dlg.setMessage(I18n.OPTIONS_Directory);
+            dlg.setMessage(I18n.OPTIONS_DIRECTORY);
 
             // Calling open() will open and run the dialog.
             // It will return the selected directory, or

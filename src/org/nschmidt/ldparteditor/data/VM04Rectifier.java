@@ -93,7 +93,7 @@ class VM04Rectifier extends VM03Adjacency {
                     {
                         try
                         {
-                            monitor.beginTask(I18n.VM_Rectify, IProgressMonitor.UNKNOWN);
+                            monitor.beginTask(I18n.VM_RECTIFY, IProgressMonitor.UNKNOWN);
                             for (GData g : surfsToParse) {
                                 /* Check if the monitor has been canceled */
                                 if (monitor.isCanceled()) break;

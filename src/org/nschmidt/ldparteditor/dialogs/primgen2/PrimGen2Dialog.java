@@ -123,7 +123,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             @Override
             public void run() {
 
-                lbl_standard[0].setText(I18n.PRIMGEN_Standard);
+                lbl_standard[0].setText(I18n.PRIMGEN_STANDARD);
 
                 final StringBuilder sb = new StringBuilder();
                 sb.append("0 Circle 0.25\n"); //$NON-NLS-1$
@@ -348,7 +348,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             case DISC:
             case DISC_NEGATIVE:
             case CHORD:
-                lbl_minor[0].setText(I18n.PRIMGEN_Minor);
+                lbl_minor[0].setText(I18n.PRIMGEN_MINOR);
                 lbl_major[0].setEnabled(false);
                 lbl_minor[0].setEnabled(false);
                 lbl_size[0].setEnabled(false);
@@ -364,7 +364,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 break;
             case RING:
             case CONE:
-                lbl_minor[0].setText(I18n.PRIMGEN_Width);
+                lbl_minor[0].setText(I18n.PRIMGEN_WIDTH);
                 lbl_major[0].setEnabled(false);
                 lbl_minor[0].setEnabled(true);
                 lbl_size[0].setEnabled(true);
@@ -379,7 +379,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 cmb_torusType[0].select(1);
                 break;
             case TORUS:
-                lbl_minor[0].setText(I18n.PRIMGEN_Minor);
+                lbl_minor[0].setText(I18n.PRIMGEN_MINOR);
                 lbl_major[0].setEnabled(true);
                 lbl_minor[0].setEnabled(true);
                 lbl_size[0].setEnabled(false);
@@ -885,9 +885,9 @@ public class PrimGen2Dialog extends PrimGen2Design {
         sb.append("0 // Build by LDPartEditor (PrimGen 2.X)"); //$NON-NLS-1$
 
         if (isOfficialRules(pType, size, divisions, segments, minor, ccw)) {
-            lbl_standard[0].setText(I18n.PRIMGEN_Standard);
+            lbl_standard[0].setText(I18n.PRIMGEN_STANDARD);
         } else {
-            lbl_standard[0].setText(I18n.PRIMGEN_NonStandard);
+            lbl_standard[0].setText(I18n.PRIMGEN_NON_STANDARD);
         }
         txt_data[0].setText(sb.toString());
     }

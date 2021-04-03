@@ -138,7 +138,7 @@ class VM08SlicerPro extends VM07PathTruder {
                     {
                         try
                         {
-                            monitor.beginTask(I18n.VM_Slicerpro, IProgressMonitor.UNKNOWN);
+                            monitor.beginTask(I18n.VM_SLICERPRO, IProgressMonitor.UNKNOWN);
 
                             {
 

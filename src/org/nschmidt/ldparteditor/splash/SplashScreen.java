@@ -137,7 +137,7 @@ public class SplashScreen extends ApplicationWindow {
         this.create();
 
         final Shell sh = this.getShell();
-        sh.setText(I18n.SPLASH_Title);
+        sh.setText(I18n.SPLASH_TITLE);
         sh.setBounds(0, 0, 390, 240);
         ShellHelper.centerShellOnPrimaryScreen(sh);
         this.open();
@@ -199,8 +199,8 @@ public class SplashScreen extends ApplicationWindow {
                 }
 
                 // Initialize startup tasks
-                ProgressHelper.queueTask(I18n.SPLASH_CheckPlugIn);
-                ProgressHelper.queueTask(I18n.SPLASH_LoadWorkbench);
+                ProgressHelper.queueTask(I18n.SPLASH_CHECK_PLUG_IN);
+                ProgressHelper.queueTask(I18n.SPLASH_LOAD_WORKBENCH);
 
                 // Check if there is the /plugin folder and create it if not
                 dequeueTask();
@@ -344,29 +344,29 @@ public class SplashScreen extends ApplicationWindow {
                 // because the user
                 // has no rights to create a directory in the application folder
                 // or to read from the application folder
-                messageBox.setText(I18n.DIALOG_Error);
-                messageBox.setMessage(I18n.SPLASH_NoMkDirNoRead);
+                messageBox.setText(I18n.DIALOG_ERROR);
+                messageBox.setMessage(I18n.SPLASH_NO_MKDIR_NO_READ);
                 break;
             case WRITE_ERROR:
                 // Show a warning message, that the program cannot be used,
                 // because the configuration
                 // cannot be saved in/loaded from the application folder
-                messageBox.setText(I18n.DIALOG_Error);
-                messageBox.setMessage(I18n.SPLASH_NoWrite);
+                messageBox.setText(I18n.DIALOG_ERROR);
+                messageBox.setMessage(I18n.SPLASH_NO_WRITE);
                 break;
             case READ_ERROR:
                 // Show a warning message, that the program cannot be used,
                 // because the user
                 // has no rights to read from the application folder
-                messageBox.setText(I18n.DIALOG_Error);
-                messageBox.setMessage(I18n.SPLASH_NoRead);
+                messageBox.setText(I18n.DIALOG_ERROR);
+                messageBox.setMessage(I18n.SPLASH_NO_READ);
                 break;
             case OPENGL_ERROR:
                 // Show a warning message, that the program cannot be started,
                 // because the OpenGL version 2.1
                 // is not supported by the graphics card.
-                messageBox.setText(I18n.DIALOG_Error);
-                messageBox.setMessage(I18n.SPLASH_InvalidOpenGLVersion + openGLerrorRootCause);
+                messageBox.setText(I18n.DIALOG_ERROR);
+                messageBox.setMessage(I18n.SPLASH_INVALID_OPEN_GL_VERSION + openGLerrorRootCause);
                 break;
             case NO_ERROR:
                 // No error occurs, all fine :)

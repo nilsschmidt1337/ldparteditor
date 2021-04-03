@@ -112,15 +112,15 @@ class ScaleDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.SCALE_Title);
+        lbl_specify.setText(I18n.SCALE_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
             Label lbl_adjacencyWarning = new Label(cmp_container, SWT.NONE);
-            lbl_adjacencyWarning.setText(I18n.E3D_AdjacentWarningStatus);
-            lbl_adjacencyWarning.setToolTipText(I18n.E3D_AdjacentWarningDialog);
+            lbl_adjacencyWarning.setText(I18n.E3D_ADJACENT_WARNING_STATUS);
+            lbl_adjacencyWarning.setToolTipText(I18n.E3D_ADJACENT_WARNING_DIALOG);
             lbl_adjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
             lbl_adjacencyWarning.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
         }
@@ -129,7 +129,7 @@ class ScaleDesign extends Dialog {
         {
             NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Local[0] = btn_Local;
-            btn_Local.setToolTipText(I18n.E3D_Local);
+            btn_Local.setToolTipText(I18n.E3D_LOCAL);
             btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.LOCAL) {
                 btn_Local.setSelection(true);
@@ -139,7 +139,7 @@ class ScaleDesign extends Dialog {
         {
             NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
             this.btn_Global[0] = btn_Global;
-            btn_Global.setToolTipText(I18n.E3D_Global);
+            btn_Global.setToolTipText(I18n.E3D_GLOBAL);
             btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.GLOBAL) {
                 btn_Global.setSelection(true);
@@ -202,7 +202,7 @@ class ScaleDesign extends Dialog {
         }
 
         Label lbl_Pivot = new Label(cmp_container, SWT.NONE);
-        lbl_Pivot.setText(I18n.SCALE_Pivot);
+        lbl_Pivot.setText(I18n.SCALE_PIVOT);
 
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
@@ -212,7 +212,7 @@ class ScaleDesign extends Dialog {
             this.btn_PivotManipulator[0] = btn_PivotManipulator;
             btn_PivotManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_PivotManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
-            btn_PivotManipulator.setText(I18n.SCALE_PivotManipulator);
+            btn_PivotManipulator.setText(I18n.SCALE_PIVOT_MANIPULATOR);
         }
         {
             Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
@@ -222,7 +222,7 @@ class ScaleDesign extends Dialog {
             this.btn_PivotClipboard[0] = btn_PivotClipboard;
             btn_PivotClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btn_PivotClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
-            btn_PivotClipboard.setText(I18n.SCALE_PivotClipboard);
+            btn_PivotClipboard.setText(I18n.SCALE_PIVOT_CLIPBOARD);
         }
 
         {
@@ -276,9 +276,9 @@ class ScaleDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_Copy[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CreateTransformedCopy, false);
+        btn_Copy[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CREATE_TRANSFORMED_COPY, false);
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

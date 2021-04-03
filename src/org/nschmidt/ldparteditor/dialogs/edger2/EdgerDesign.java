@@ -76,13 +76,13 @@ class EdgerDesign extends TrayDialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.EDGER_Title);
+        lbl_specify.setText(I18n.EDGER_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText(I18n.EDGER_Precision);
+        lbl_coordsPrec.setText(I18n.EDGER_PRECISION);
 
         BigDecimalSpinner spn_vequ = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_vequ[0] = spn_vequ;
@@ -92,24 +92,24 @@ class EdgerDesign extends TrayDialog {
         spn_vequ.setValue(es.getEqualDistance());
 
         Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        lbl_use180deg.setText(I18n.EDGER_Range);
+        lbl_use180deg.setText(I18n.EDGER_RANGE);
 
         Combo cmb_b = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_b[0] = cmb_b;
-        cmb_b.setItems(new String[] { I18n.EDGER_0to90, I18n.EDGER_0to180 });
+        cmb_b.setItems(new String[] { I18n.EDGER_0_TO_90, I18n.EDGER_0_TO_180 });
         cmb_b.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_b.setText(es.isExtendedRange() ? cmb_b.getItem(1) : cmb_b.getItem(0));
         cmb_b.select(es.isExtendedRange() ? 1 : 0);
 
         Combo cmb_c = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_c[0] = cmb_c;
-        cmb_c.setItems(new String[] { I18n.EDGER_CondlineOnQuadOff, I18n.EDGER_CondlineOnQuadOn });
+        cmb_c.setItems(new String[] { I18n.EDGER_CONDLINE_ON_QUAD_OFF, I18n.EDGER_CONDLINE_ON_QUAD_ON });
         cmb_c.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_c.setText(es.isCondlineOnQuads() ? cmb_c.getItem(1) : cmb_c.getItem(0));
         cmb_c.select(es.isCondlineOnQuads() ? 1 : 0);
 
         Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText(I18n.EDGER_FlatMaxAngle);
+        lbl_af.setText(I18n.EDGER_FLAT_MAX_ANGLE);
 
         BigDecimalSpinner spn_af = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_af[0] = spn_af;
@@ -119,7 +119,7 @@ class EdgerDesign extends TrayDialog {
         spn_af.setValue(es.getAf());
 
         Label lbl_ac = new Label(cmp_container, SWT.NONE);
-        lbl_ac.setText(I18n.EDGER_CondlineMaxAngle);
+        lbl_ac.setText(I18n.EDGER_CONDLINE_MAX_ANGLE);
 
         BigDecimalSpinner spn_ac = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_ac[0] = spn_ac;
@@ -129,7 +129,7 @@ class EdgerDesign extends TrayDialog {
         spn_ac.setValue(es.getAc());
 
         Label lbl_ae = new Label(cmp_container, SWT.NONE);
-        lbl_ae.setText(I18n.EDGER_EdgeMaxAngle);
+        lbl_ae.setText(I18n.EDGER_EDGE_MAX_ANGLE);
 
         BigDecimalSpinner spn_ae = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_ae[0] = spn_ae;
@@ -140,14 +140,14 @@ class EdgerDesign extends TrayDialog {
 
         Combo cmb_u = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_u[0] = cmb_u;
-        cmb_u.setItems(new String[] { I18n.EDGER_IncludeUnmatched, I18n.EDGER_ExcludeUnmatched, I18n.EDGER_UnmatchedOnly});
+        cmb_u.setItems(new String[] { I18n.EDGER_INCLUDE_UNMATCHED, I18n.EDGER_EXCLUDE_UNMATCHED, I18n.EDGER_UNMATCHED_ONLY});
         cmb_u.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_u.setText(cmb_u.getItem(es.getUnmatchedMode()));
         cmb_u.select(es.getUnmatchedMode());
 
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.EDGER_ScopeFileSubfiles, I18n.EDGER_ScopeFile, I18n.EDGER_ScopeSelection});
+        cmb_scope.setItems(new String[] {I18n.EDGER_SCOPE_FILE_SUBFILES, I18n.EDGER_SCOPE_FILE, I18n.EDGER_SCOPE_SELECTION});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(es.getScope()));
         cmb_scope.select(es.getScope());
@@ -155,17 +155,17 @@ class EdgerDesign extends TrayDialog {
         NButton btn_verbose = new NButton(cmp_container, SWT.CHECK);
         this.btn_verbose[0] = btn_verbose;
         btn_verbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btn_verbose.setText(I18n.EDGER_Verbose);
+        btn_verbose.setText(I18n.EDGER_VERBOSE);
         btn_verbose.setSelection(es.isVerbose());
 
         Label lbl_1 = new Label(cmp_container, SWT.NONE);
-        lbl_1.setText(I18n.EDGER_Condition1);
+        lbl_1.setText(I18n.EDGER_CONDITION_1);
         Label lbl_2 = new Label(cmp_container, SWT.NONE);
-        lbl_2.setText(I18n.EDGER_Condition2);
+        lbl_2.setText(I18n.EDGER_CONDITION_2);
         Label lbl_3 = new Label(cmp_container, SWT.NONE);
-        lbl_3.setText(I18n.EDGER_Condition3);
+        lbl_3.setText(I18n.EDGER_CONDITION_3);
         Label lbl_4 = new Label(cmp_container, SWT.NONE);
-        lbl_4.setText(I18n.EDGER_Condition4);
+        lbl_4.setText(I18n.EDGER_CONDITION_4);
 
         cmp_container.pack();
         return cmp_container;
@@ -179,7 +179,7 @@ class EdgerDesign extends TrayDialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**

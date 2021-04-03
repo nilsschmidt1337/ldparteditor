@@ -512,11 +512,11 @@ public enum ReferenceParser {
                 }
                 if (!fileExists && showNotFoundWarning) {
                     MessageBox messageBoxError = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_WARNING | SWT.OK);
-                    messageBoxError.setText(I18n.DIALOG_NotFoundRequiredTitle);
+                    messageBoxError.setText(I18n.DIALOG_NOT_FOUND_REQUIRED_TITLE);
                     Object[] messageArguments = {shortFilename, dfToParse.getShortName()};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                     formatter.setLocale(MyLanguage.LOCALE);
-                    formatter.applyPattern(I18n.DIALOG_NotFoundRequired);
+                    formatter.applyPattern(I18n.DIALOG_NOT_FOUND_REQUIRED);
                     messageBoxError.setMessage(formatter.format(messageArguments));
                     messageBoxError.open();
                 }

@@ -74,13 +74,13 @@ class SymSplitterDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.SYMSPLITTER_Title);
+        lbl_specify.setText(I18n.SYMSPLITTER_TITLE);
 
         Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
         lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lbl_hint = new Label(cmp_container, SWT.NONE);
-        lbl_hint.setText(I18n.SYMSPLITTER_Hint);
+        lbl_hint.setText(I18n.SYMSPLITTER_HINT);
 
         BigDecimalSpinner spn_offset = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_offset [0] = spn_offset;
@@ -90,7 +90,7 @@ class SymSplitterDesign extends Dialog {
         spn_offset.setValue(ss.getOffset());
 
         Label lbl_precision = new Label(cmp_container, SWT.NONE);
-        lbl_precision.setText(I18n.SYMSPLITTER_VertexThreshold);
+        lbl_precision.setText(I18n.SYMSPLITTER_VERTEX_THRESHOLD);
 
         BigDecimalSpinner spn_precision = new BigDecimalSpinner(cmp_container, SWT.NONE);
         this.spn_precision [0] = spn_precision;
@@ -100,23 +100,23 @@ class SymSplitterDesign extends Dialog {
         spn_precision.setValue(ss.getPrecision());
 
         Label lbl_splitPlane = new Label(cmp_container, SWT.NONE);
-        lbl_splitPlane.setText(I18n.SYMSPLITTER_SplittingPlane);
+        lbl_splitPlane.setText(I18n.SYMSPLITTER_SPLITTING_PLANE);
 
         {
             Combo cmb_splitPlane = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_splitPlane[0] = cmb_splitPlane;
-            cmb_splitPlane.setItems(new String[] {I18n.SYMSPLITTER_Zp, I18n.SYMSPLITTER_Yp, I18n.SYMSPLITTER_Xp, I18n.SYMSPLITTER_Zm, I18n.SYMSPLITTER_Ym, I18n.SYMSPLITTER_Xm});
+            cmb_splitPlane.setItems(new String[] {I18n.SYMSPLITTER_ZP, I18n.SYMSPLITTER_YP, I18n.SYMSPLITTER_XP, I18n.SYMSPLITTER_ZM, I18n.SYMSPLITTER_YM, I18n.SYMSPLITTER_XM});
             cmb_splitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_splitPlane.setText(cmb_splitPlane.getItem(ss.getSplitPlane()));
             cmb_splitPlane.select(ss.getSplitPlane());
         }
 
         Label lbl_hide = new Label(cmp_container, SWT.NONE);
-        lbl_hide.setText(I18n.SYMSPLITTER_SelectWhat);
+        lbl_hide.setText(I18n.SYMSPLITTER_SELECT_WHAT);
         {
             Combo cmb_hide = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_hide[0] = cmb_hide;
-            cmb_hide.setItems(new String[] {I18n.SYMSPLITTER_ShowAll, I18n.SYMSPLITTER_ShowMiddle, I18n.SYMSPLITTER_ShowFront, I18n.SYMSPLITTER_ShowBehind});
+            cmb_hide.setItems(new String[] {I18n.SYMSPLITTER_SHOW_ALL, I18n.SYMSPLITTER_SHOW_MIDDLE, I18n.SYMSPLITTER_SHOW_FRONT, I18n.SYMSPLITTER_SHOW_BEHIND});
             cmb_hide.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_hide.setText(cmb_hide.getItem(ss.getHideLevel()));
             cmb_hide.select(ss.getHideLevel());
@@ -128,7 +128,7 @@ class SymSplitterDesign extends Dialog {
         {
             Combo cmb_validate = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_validate[0] = cmb_validate;
-            cmb_validate.setItems(new String[] {I18n.SYMSPLITTER_NoValidation, I18n.SYMSPLITTER_Validation});
+            cmb_validate.setItems(new String[] {I18n.SYMSPLITTER_NO_VALIDATION, I18n.SYMSPLITTER_VALIDATION});
             cmb_validate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_validate.setText(cmb_validate.getItem(ss.isValidate() ? 1 : 0));
             cmb_validate.select(ss.isValidate() ? 1 : 0);
@@ -136,7 +136,7 @@ class SymSplitterDesign extends Dialog {
         {
             Combo cmb_cutAcross = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_cutAcross[0] = cmb_cutAcross;
-            cmb_cutAcross.setItems(new String[] {I18n.SYMSPLITTER_DoNotCut, I18n.SYMSPLITTER_Cut});
+            cmb_cutAcross.setItems(new String[] {I18n.SYMSPLITTER_DO_NOT_CUT, I18n.SYMSPLITTER_CUT});
             cmb_cutAcross.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_cutAcross.setText(cmb_cutAcross.getItem(ss.isCutAcross() ? 1 : 0));
             cmb_cutAcross.select(ss.isCutAcross() ? 1 : 0);
@@ -144,14 +144,14 @@ class SymSplitterDesign extends Dialog {
         {
             Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
             this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {I18n.SYMSPLITTER_NotColourise, I18n.SYMSPLITTER_Colourise});
+            cmb_colourise.setItems(new String[] {I18n.SYMSPLITTER_NOT_COLOURISE, I18n.SYMSPLITTER_COLOURISE});
             cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb_colourise.setText(cmb_colourise.getItem(ss.isColourise() ? 1 : 0));
             cmb_colourise.select(ss.isColourise() ? 1 : 0);
         }
         Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
         this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.SYMSPLITTER_ScopeFile, I18n.SYMSPLITTER_ScopeSelection});
+        cmb_scope.setItems(new String[] {I18n.SYMSPLITTER_SCOPE_FILE, I18n.SYMSPLITTER_SCOPE_SELECTION});
         cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmb_scope.setText(cmb_scope.getItem(0));
         cmb_scope.select(0);
@@ -169,7 +169,7 @@ class SymSplitterDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_Cancel, false);
+        createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 
     /**
