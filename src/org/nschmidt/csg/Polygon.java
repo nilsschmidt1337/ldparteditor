@@ -232,16 +232,16 @@ public final class Polygon {
         return createClone().transform(transform);
     }
 
-    Polygon transformed(Transform transform, GColour c, int ID) {
+    Polygon transformed(Transform transform, GColour c, int id) {
         Polygon result = createClone().transform(transform);
         GColourIndex colour = null;
         if ((colour = this.getColour()) != null) {
             GColour c2;
             if ((c2 = colour.getColour()) != null) {
                 if (c2.getColourNumber() == 16) {
-                    result.setColour(new GColourIndex(c.createClone(), ID));
+                    result.setColour(new GColourIndex(c.createClone(), id));
                 } else {
-                    result.setColour(new GColourIndex(c2.createClone(), ID));
+                    result.setColour(new GColourIndex(c2.createClone(), id));
                 }
             }
         }

@@ -350,38 +350,38 @@ public enum ReferenceParser {
     }
 
     private static DatFile parseLine(String line, Set<String> alreadyParsed, boolean showNotFoundWarning) {
-        String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+        String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
         char c;
-        if (!(data_segments.length > 0 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
+        if (!(dataSegments.length > 0 && dataSegments[0].length() == 1 && Character.isDigit(c = dataSegments[0].charAt(0)))) {
             return null;
         }
         int linetype = Character.getNumericValue(c);
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            return parse_Reference(data_segments, alreadyParsed, true, showNotFoundWarning);
+            return parse_Reference(dataSegments, alreadyParsed, true, showNotFoundWarning);
         case 1:
-            return parse_Reference(data_segments, alreadyParsed, false, showNotFoundWarning);
+            return parse_Reference(dataSegments, alreadyParsed, false, showNotFoundWarning);
         default:
             return null;
         }
 
     }
 
-    private static DatFile parse_Reference(String[] data_segments, Set<String> alreadyParsed, boolean couldBeTEXMAP, boolean showNotFoundWarning) {
+    private static DatFile parse_Reference(String[] dataSegments, Set<String> alreadyParsed, boolean couldBeTEXMAP, boolean showNotFoundWarning) {
         final int texmapOffset = couldBeTEXMAP ? 2 : 0;
-        if (data_segments.length >= 15 + texmapOffset) {
-            if (couldBeTEXMAP && !"!:".equals(data_segments[1])) { //$NON-NLS-1$
+        if (dataSegments.length >= 15 + texmapOffset) {
+            if (couldBeTEXMAP && !"!:".equals(dataSegments[1])) { //$NON-NLS-1$
                 return null;
             }
             // Check file existance
             boolean fileExists = true;
             StringBuilder sb = new StringBuilder();
-            for (int s = 14 + texmapOffset; s < data_segments.length - 1; s++) {
-                sb.append(data_segments[s]);
+            for (int s = 14 + texmapOffset; s < dataSegments.length - 1; s++) {
+                sb.append(dataSegments[s]);
                 sb.append(" "); //$NON-NLS-1$
             }
-            sb.append(data_segments[data_segments.length - 1]);
+            sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
             try {

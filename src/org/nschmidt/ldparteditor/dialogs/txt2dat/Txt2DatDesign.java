@@ -66,74 +66,74 @@ class Txt2DatDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.TXT2DAT_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.TXT2DAT_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText(I18n.TXT2DAT_FONT);
+        Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
+        lblCoordsPrec.setText(I18n.TXT2DAT_FONT);
 
-        NButton spn_vequ = new NButton(cmp_container, SWT.NONE);
-        this.btn_chooseFont[0] = spn_vequ;
-        spn_vequ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_vequ.setText(I18n.TXT2DAT_SELECT);
+        NButton spnVequ = new NButton(cmpContainer, SWT.NONE);
+        this.btn_chooseFont[0] = spnVequ;
+        spnVequ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnVequ.setText(I18n.TXT2DAT_SELECT);
 
-        Label lbl_text = new Label(cmp_container, SWT.NONE);
-        lbl_text.setText(I18n.TXT2DAT_TEXT);
+        Label lblText = new Label(cmpContainer, SWT.NONE);
+        lblText.setText(I18n.TXT2DAT_TEXT);
 
-        Text txt_text = new Text(cmp_container, SWT.NONE);
-        this.txt_text[0] = txt_text;
-        txt_text.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        txt_text.setText(ts.getText());
+        Text txtText = new Text(cmpContainer, SWT.NONE);
+        this.txt_text[0] = txtText;
+        txtText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        txtText.setText(ts.getText());
 
-        Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        lbl_use180deg.setText(I18n.TXT2DAT_FLATNESS);
+        Label lblUse180deg = new Label(cmpContainer, SWT.NONE);
+        lblUse180deg.setText(I18n.TXT2DAT_FLATNESS);
 
-        BigDecimalSpinner spn_flatness = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_flatness[0] = spn_flatness;
-        spn_flatness.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_flatness.setMaximum(new BigDecimal(1000));
-        spn_flatness.setMinimum(new BigDecimal(0));
-        spn_flatness.setValue(ts.getFlatness());
+        BigDecimalSpinner spnFlatness = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_flatness[0] = spnFlatness;
+        spnFlatness.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnFlatness.setMaximum(new BigDecimal(1000));
+        spnFlatness.setMinimum(new BigDecimal(0));
+        spnFlatness.setValue(ts.getFlatness());
 
-        Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText(I18n.TXT2DAT_INTERPOLATE_FLATNESS);
+        Label lblAf = new Label(cmpContainer, SWT.NONE);
+        lblAf.setText(I18n.TXT2DAT_INTERPOLATE_FLATNESS);
 
-        BigDecimalSpinner spn_interpolateFlatness = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_interpolateFlatness[0] = spn_interpolateFlatness;
-        spn_interpolateFlatness.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_interpolateFlatness.setMaximum(new BigDecimal(1000));
-        spn_interpolateFlatness.setMinimum(new BigDecimal(0));
-        spn_interpolateFlatness.setValue(ts.getInterpolateFlatness());
+        BigDecimalSpinner spnInterpolateFlatness = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_interpolateFlatness[0] = spnInterpolateFlatness;
+        spnInterpolateFlatness.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnInterpolateFlatness.setMaximum(new BigDecimal(1000));
+        spnInterpolateFlatness.setMinimum(new BigDecimal(0));
+        spnInterpolateFlatness.setValue(ts.getInterpolateFlatness());
 
-        Label lbl_ac = new Label(cmp_container, SWT.NONE);
-        lbl_ac.setText(I18n.TXT2DAT_FONT_HEIGHT);
+        Label lblAc = new Label(cmpContainer, SWT.NONE);
+        lblAc.setText(I18n.TXT2DAT_FONT_HEIGHT);
 
-        BigDecimalSpinner spn_fontHeight = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_fontHeight[0] = spn_fontHeight;
-        spn_fontHeight.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_fontHeight.setMaximum(new BigDecimal(10000));
-        spn_fontHeight.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-        spn_fontHeight.setValue(ts.getFontHeight());
+        BigDecimalSpinner spnFontHeight = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_fontHeight[0] = spnFontHeight;
+        spnFontHeight.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnFontHeight.setMaximum(new BigDecimal(10000));
+        spnFontHeight.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
+        spnFontHeight.setValue(ts.getFontHeight());
 
-        Label lbl_ae = new Label(cmp_container, SWT.NONE);
-        lbl_ae.setText(I18n.TXT2DAT_ANGLE);
-        BigDecimalSpinner spn_deltaAngle = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_deltaAngle[0] = spn_deltaAngle;
-        spn_deltaAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_deltaAngle.setMaximum(new BigDecimal(30));
-        spn_deltaAngle.setMinimum(new BigDecimal(0));
-        spn_deltaAngle.setValue(ts.getDeltaAngle());
+        Label lblAe = new Label(cmpContainer, SWT.NONE);
+        lblAe.setText(I18n.TXT2DAT_ANGLE);
+        BigDecimalSpinner spnDeltaAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_deltaAngle[0] = spnDeltaAngle;
+        spnDeltaAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnDeltaAngle.setMaximum(new BigDecimal(30));
+        spnDeltaAngle.setMinimum(new BigDecimal(0));
+        spnDeltaAngle.setValue(ts.getDeltaAngle());
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

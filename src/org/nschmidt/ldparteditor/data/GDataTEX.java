@@ -151,24 +151,24 @@ public final class GDataTEX extends GData {
                 case CYLINDRICAL:
                 case PLANAR:
                 case SPHERICAL:
-                    String[] data_segments = text.trim().split("\\s+"); //$NON-NLS-1$
+                    String[] dataSegments = text.trim().split("\\s+"); //$NON-NLS-1$
                     if (texType == TexType.CYLINDRICAL) prefix = prefix + "CYLINDRICAL "; //$NON-NLS-1$
                     else if (texType == TexType.PLANAR) prefix = prefix + "PLANAR "; //$NON-NLS-1$
                     else prefix = prefix + "SPHERICAL "; //$NON-NLS-1$
-                    if (data_segments.length > 12) {
+                    if (dataSegments.length > 12) {
                         try {
-                            BigDecimal X1 = new BigDecimal(data_segments[4]);
-                            BigDecimal Y1 = new BigDecimal(data_segments[5]);
-                            BigDecimal Z1 = new BigDecimal(data_segments[6]);
-                            BigDecimal X2 = new BigDecimal(data_segments[7]);
-                            BigDecimal Y2 = new BigDecimal(data_segments[8]);
-                            BigDecimal Z2 = new BigDecimal(data_segments[9]);
-                            BigDecimal X3 = new BigDecimal(data_segments[10]);
-                            BigDecimal Y3 = new BigDecimal(data_segments[11]);
-                            BigDecimal Z3 = new BigDecimal(data_segments[12]);
-                            BigDecimal[] v1 = matrix.transform(X1, Y1, Z1);
-                            BigDecimal[] v2 = matrix.transform(X2, Y2, Z2);
-                            BigDecimal[] v3 = matrix.transform(X3, Y3, Z3);
+                            BigDecimal x1 = new BigDecimal(dataSegments[4]);
+                            BigDecimal y1 = new BigDecimal(dataSegments[5]);
+                            BigDecimal z1 = new BigDecimal(dataSegments[6]);
+                            BigDecimal x2 = new BigDecimal(dataSegments[7]);
+                            BigDecimal y2 = new BigDecimal(dataSegments[8]);
+                            BigDecimal z2 = new BigDecimal(dataSegments[9]);
+                            BigDecimal x3 = new BigDecimal(dataSegments[10]);
+                            BigDecimal y3 = new BigDecimal(dataSegments[11]);
+                            BigDecimal z3 = new BigDecimal(dataSegments[12]);
+                            BigDecimal[] v1 = matrix.transform(x1, y1, z1);
+                            BigDecimal[] v2 = matrix.transform(x2, y2, z2);
+                            BigDecimal[] v3 = matrix.transform(x3, y3, z3);
                             StringBuilder sb = new StringBuilder(prefix);
                             sb.append(bigDecimalToString(v1[0]));
                             sb.append(" "); //$NON-NLS-1$
@@ -191,9 +191,9 @@ public final class GDataTEX extends GData {
                         } catch (NumberFormatException nfe) {
                             return text;
                         }
-                        if (texType == TexType.PLANAR && data_segments.length == 12) return prefix;
-                        else if (texType == TexType.CYLINDRICAL && data_segments.length == 14) return prefix + " " + data_segments[13]; //$NON-NLS-1$
-                        else if (texType == TexType.SPHERICAL && data_segments.length == 15) return prefix + " " + data_segments[13] + " " + data_segments[14]; //$NON-NLS-1$ //$NON-NLS-2$
+                        if (texType == TexType.PLANAR && dataSegments.length == 12) return prefix;
+                        else if (texType == TexType.CYLINDRICAL && dataSegments.length == 14) return prefix + " " + dataSegments[13]; //$NON-NLS-1$
+                        else if (texType == TexType.SPHERICAL && dataSegments.length == 15) return prefix + " " + dataSegments[13] + " " + dataSegments[14]; //$NON-NLS-1$ //$NON-NLS-2$
                         else return text;
                     } else {
                         return text;

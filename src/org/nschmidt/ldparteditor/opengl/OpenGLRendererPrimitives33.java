@@ -83,35 +83,35 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
 
         shaderProgram.use();
 
-        final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
+        final FloatBuffer viewBuf = BufferUtils.createFloatBuffer(16);
 
-        Matrix4f viewport_transform = new Matrix4f();
-        Matrix4f.setIdentity(viewport_transform);
+        Matrix4f viewportTransform = new Matrix4f();
+        Matrix4f.setIdentity(viewportTransform);
 
         float zoom = cp.getZoom();
-        Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
-        Matrix4f viewport_translation = cp.getTranslation();
-        Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
-        viewport_transform.store(view_buf);
-        cp.setViewport(viewport_transform);
-        view_buf.flip();
+        Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewportTransform, viewportTransform);
+        Matrix4f viewportTranslation = cp.getTranslation();
+        Matrix4f.mul(viewportTransform, viewportTranslation, viewportTransform);
+        viewportTransform.store(viewBuf);
+        cp.setViewport(viewportTransform);
+        viewBuf.flip();
 
         // Draw all visible primitives / highlight selection
 
         GL11.glDisable(GL11.GL_LIGHTING);
         GL11.glDisable(GL11.GL_DEPTH_TEST);
 
-        final FloatBuffer projection_buf = BufferUtils.createFloatBuffer(16);
+        final FloatBuffer projectionBuf = BufferUtils.createFloatBuffer(16);
         final float viewport_width = bounds.width / View.PIXEL_PER_LDU;
         final float viewport_height = bounds.height / View.PIXEL_PER_LDU;
-        GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom()).store(projection_buf);
-        projection_buf.position(0);
+        GLMatrixStack.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom()).store(projectionBuf);
+        projectionBuf.position(0);
 
         int view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
-        GL20.glUniformMatrix4fv(view, false, view_buf);
+        GL20.glUniformMatrix4fv(view, false, viewBuf);
 
         int projection = shaderProgram.getUniformLocation("projection" ); //$NON-NLS-1$
-        GL20.glUniformMatrix4fv(projection, false, projection_buf);
+        GL20.glUniformMatrix4fv(projection, false, projectionBuf);
 
         stack.clear();
         GL33HelperPrimitives.createVBO_PrimitiveArea();
@@ -125,13 +125,13 @@ public class OpenGLRendererPrimitives33 extends OpenGLRendererPrimitives {
         float x = 2f;
         float y = 2f;
 
-        float mx = mouseX + (viewport_transform.m30 - 2f) * zoom * View.PIXEL_PER_LDU;
-        float my = mouseY + (viewport_transform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
+        float mx = mouseX + (viewportTransform.m30 - 2f) * zoom * View.PIXEL_PER_LDU;
+        float my = mouseY + (viewportTransform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
 
         final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
         cp.setRotationWidth(STEP);
-        float minY = viewport_transform.m31 - 22f;
-        float maxY = viewport_transform.m31 + canvas.getBounds().height / (zoom * View.PIXEL_PER_LDU);
+        float minY = viewportTransform.m31 - 22f;
+        float maxY = viewportTransform.m31 + canvas.getBounds().height / (zoom * View.PIXEL_PER_LDU);
         boolean wasFocused = false;
         float sx = STEP;
         float width = canvas.getBounds().width;

@@ -79,7 +79,7 @@ public class SyntaxFormatter {
      * @param isSelected
      */
     public void format(LineStyleEvent e,
-            BigDecimal VX, BigDecimal VY, BigDecimal VZ,
+            BigDecimal vxPrecise, BigDecimal vyPrecise, BigDecimal vzPrecise,
             float replaceEpsilon, boolean replaceVertex, boolean isSelected, boolean isDuplicate, boolean isVisible,
             DatFile df) {
 
@@ -97,15 +97,15 @@ public class SyntaxFormatter {
             return;
         }
 
-        float vx = VX.floatValue();
-        float vy = VY.floatValue();
-        float vz = VZ.floatValue();
+        float vx = vxPrecise.floatValue();
+        float vy = vyPrecise.floatValue();
+        float vz = vzPrecise.floatValue();
 
-        String[] text_segments = e.lineText.split(" "); //$NON-NLS-1$
+        String[] textSegments = e.lineText.split(" "); //$NON-NLS-1$
 
         // Get the linetype
         int linetype = 0;
-        for (String segment : text_segments) {
+        for (String segment : textSegments) {
             if (segment.isEmpty()) {
                 continue;
             } else {
@@ -128,22 +128,22 @@ public class SyntaxFormatter {
         // Format the line according to its type
         switch (linetype) {
         case 0:
-            formatComment(styles, e, text_segments, vx, vy, vz, replaceVertex, replaceEpsilon);
+            formatComment(styles, e, textSegments, vx, vy, vz, replaceVertex, replaceEpsilon);
             break;
         case 1:
-            formatReference(styles, e, text_segments, df);
+            formatReference(styles, e, textSegments, df);
             break;
         case 2:
-            formatLine(styles, e, text_segments, vx, vy, vz, replaceVertex, replaceEpsilon);
+            formatLine(styles, e, textSegments, vx, vy, vz, replaceVertex, replaceEpsilon);
             break;
         case 3:
-            formatTriangle(styles, e, text_segments, vx, vy, vz, replaceVertex, replaceEpsilon);
+            formatTriangle(styles, e, textSegments, vx, vy, vz, replaceVertex, replaceEpsilon);
             break;
         case 4:
-            formatQuad(styles, e, text_segments, vx, vy, vz, replaceVertex, replaceEpsilon);
+            formatQuad(styles, e, textSegments, vx, vy, vz, replaceVertex, replaceEpsilon);
             break;
         case 5:
-            formatCondline(styles, e, text_segments, vx, vy, vz, replaceVertex, replaceEpsilon);
+            formatCondline(styles, e, textSegments, vx, vy, vz, replaceVertex, replaceEpsilon);
             break;
         default:
             // Mark unknown linetypes as error
@@ -277,7 +277,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatComment(ArrayList<StyleRange> styles, LineStyleEvent e, String[] text_segments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatComment(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 
@@ -292,7 +292,7 @@ public class SyntaxFormatter {
         if (offset == 0)
             return; // We are on the first line. Do not highlight other KEYWORDS in these line
 
-        for (String segment : text_segments) {
+        for (String segment : textSegments) {
             if (segment.isEmpty() || segment.equals("0")) { //$NON-NLS-1$
                 offset++;
                 continue;
@@ -326,7 +326,7 @@ public class SyntaxFormatter {
             float ty = 0f;
             float tz = 0f;
             offset = e.lineOffset;
-            for (String segment : text_segments) {
+            for (String segment : textSegments) {
                 if (segment.equals("")) { //$NON-NLS-1$
                     offset += 1;
                 } else {
@@ -390,10 +390,10 @@ public class SyntaxFormatter {
             }
         } else {
             int checkForProtractorAndDistanceCounter = 0;
-            String segment_x = "0"; //$NON-NLS-1$
-            String segment_y = "0"; //$NON-NLS-1$
+            String segmentX = "0"; //$NON-NLS-1$
+            String segmentY = "0"; //$NON-NLS-1$
             offset = e.lineOffset;
-            for (String segment : text_segments) {
+            for (String segment : textSegments) {
                 if (segment.equals("")) { //$NON-NLS-1$
                     offset += 1;
                 } else {
@@ -419,8 +419,8 @@ public class SyntaxFormatter {
                             break;
                         }
                     } else if (checkForProtractorAndDistanceCounter > 1) {
-                        segment_x = checkForProtractorAndDistanceCounter == 3 || checkForProtractorAndDistanceCounter == 6 || checkForProtractorAndDistanceCounter == 9 ? segment : segment_x;
-                        segment_y = checkForProtractorAndDistanceCounter == 4 || checkForProtractorAndDistanceCounter == 7 || checkForProtractorAndDistanceCounter == 10 ? segment : segment_y;
+                        segmentX = checkForProtractorAndDistanceCounter == 3 || checkForProtractorAndDistanceCounter == 6 || checkForProtractorAndDistanceCounter == 9 ? segment : segmentX;
+                        segmentY = checkForProtractorAndDistanceCounter == 4 || checkForProtractorAndDistanceCounter == 7 || checkForProtractorAndDistanceCounter == 10 ? segment : segmentY;
                         boolean checkForReplace = false;
                         StyleRange metaStyleRange = new StyleRange();
                         metaStyleRange.start = offset;
@@ -457,14 +457,14 @@ public class SyntaxFormatter {
                         }
                         if (checkForReplace && replaceVertex) {
                             try {
-                                float tx = Float.parseFloat(segment_x);
-                                float ty = Float.parseFloat(segment_y);
+                                float tx = Float.parseFloat(segmentX);
+                                float ty = Float.parseFloat(segmentY);
                                 float tz = Float.parseFloat(segment);
-                                int num_styles = styles.size();
-                                if (num_styles > 2 && Math.abs(vx - tx) < replaceEpsilon && Math.abs(vy - ty) < replaceEpsilon && Math.abs(vz - tz) < replaceEpsilon) {
-                                    setBorderStyle(styles.get(num_styles - 1));
-                                    setBorderStyle(styles.get(num_styles - 2));
-                                    setBorderStyle(styles.get(num_styles - 3));
+                                int numStyles = styles.size();
+                                if (numStyles > 2 && Math.abs(vx - tx) < replaceEpsilon && Math.abs(vy - ty) < replaceEpsilon && Math.abs(vz - tz) < replaceEpsilon) {
+                                    setBorderStyle(styles.get(numStyles - 1));
+                                    setBorderStyle(styles.get(numStyles - 2));
+                                    setBorderStyle(styles.get(numStyles - 3));
                                 }
                             } catch (NumberFormatException nfe) {
                             }
@@ -484,7 +484,7 @@ public class SyntaxFormatter {
      * @param e
      *            the {@linkplain LineStyleEvent}
      */
-    private void formatReference(ArrayList<StyleRange> styles, LineStyleEvent e, String[] text_segments, DatFile datFile) {
+    private void formatReference(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, DatFile datFile) {
         int offset = e.lineOffset;
 
         StyleRange lineStyleRange = new StyleRange();
@@ -494,9 +494,9 @@ public class SyntaxFormatter {
         styles.add(lineStyleRange);
 
         boolean parseError = false;
-        int segment_number = 0;
-        for (int i = 0; i < text_segments.length; i++) {
-            String segment = text_segments[i];
+        int segmentNumber = 0;
+        for (int i = 0; i < textSegments.length; i++) {
+            String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
                 continue;
@@ -505,7 +505,7 @@ public class SyntaxFormatter {
                 StyleRange segmentStyleRange = new StyleRange();
                 segmentStyleRange.start = offset;
                 segmentStyleRange.length = segmentLength;
-                switch (segment_number) {
+                switch (segmentNumber) {
                 case 0: // type
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
@@ -539,92 +539,92 @@ public class SyntaxFormatter {
                 }
                 styles.add(segmentStyleRange);
                 offset += segmentLength + 1;
-                segment_number++;
+                segmentNumber++;
             }
         }
-        String[] data_segments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String[] dataSegments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         // [ERROR] Check less argument count
-        if (data_segments.length < 15) {
+        if (dataSegments.length < 15) {
             parseError = true;
         } else {
             // [ERROR] Check colour
-            validateColour(styles.get(2), data_segments[1]);
+            validateColour(styles.get(2), dataSegments[1]);
             // [ERROR] Check singularity
             Matrix3f tMatrix = new Matrix3f();
             while (true) {
                 boolean numberError = false;
                 // Offset
                 try {
-                    Float.parseFloat(data_segments[2]);
+                    Float.parseFloat(dataSegments[2]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(3));
                     numberError = true;
                 }
                 try {
-                    Float.parseFloat(data_segments[3]);
+                    Float.parseFloat(dataSegments[3]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(4));
                     numberError = true;
                 }
                 try {
-                    Float.parseFloat(data_segments[4]);
+                    Float.parseFloat(dataSegments[4]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(5));
                     numberError = true;
                 }
                 // First row
                 try {
-                    tMatrix.m00 = Float.parseFloat(data_segments[5]);
+                    tMatrix.m00 = Float.parseFloat(dataSegments[5]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(6));
                     numberError = true;
                 }
                 try {
-                    tMatrix.m01 = Float.parseFloat(data_segments[6]);
+                    tMatrix.m01 = Float.parseFloat(dataSegments[6]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(7));
                     numberError = true;
                 }
                 try {
-                    tMatrix.m02 = Float.parseFloat(data_segments[7]);
+                    tMatrix.m02 = Float.parseFloat(dataSegments[7]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(8));
                     numberError = true;
                 }
                 // Second row
                 try {
-                    tMatrix.m10 = Float.parseFloat(data_segments[8]);
+                    tMatrix.m10 = Float.parseFloat(dataSegments[8]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(9));
                     numberError = true;
                 }
                 try {
-                    tMatrix.m11 = Float.parseFloat(data_segments[9]);
+                    tMatrix.m11 = Float.parseFloat(dataSegments[9]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(10));
                     numberError = true;
                 }
                 try {
-                    tMatrix.m12 = Float.parseFloat(data_segments[10]);
+                    tMatrix.m12 = Float.parseFloat(dataSegments[10]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(11));
                     numberError = true;
                 }
                 // Third row
                 try {
-                    tMatrix.m20 = Float.parseFloat(data_segments[11]);
+                    tMatrix.m20 = Float.parseFloat(dataSegments[11]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(12));
                     numberError = true;
                 }
                 try {
-                    tMatrix.m21 = Float.parseFloat(data_segments[12]);
+                    tMatrix.m21 = Float.parseFloat(dataSegments[12]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(13));
                     numberError = true;
                 }
                 try {
-                    tMatrix.m22 = Float.parseFloat(data_segments[13]);
+                    tMatrix.m22 = Float.parseFloat(dataSegments[13]);
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(14));
                     numberError = true;
@@ -638,11 +638,11 @@ public class SyntaxFormatter {
             // [WARNING] Check file existance
             boolean fileExists = true;
             StringBuilder sb = new StringBuilder();
-            for (int s = 14; s < data_segments.length - 1; s++) {
-                sb.append(data_segments[s]);
+            for (int s = 14; s < dataSegments.length - 1; s++) {
+                sb.append(dataSegments[s]);
                 sb.append(" "); //$NON-NLS-1$
             }
-            sb.append(data_segments[data_segments.length - 1]);
+            sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
             boolean isLowercase = shortFilename.equals(shortFilename.toLowerCase(Locale.ENGLISH));
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
@@ -703,7 +703,7 @@ public class SyntaxFormatter {
                 }
             }
             // [WARNING] Check spaces in dat file name
-            if (!fileExists || data_segments.length > 15 || !isLowercase) {
+            if (!fileExists || dataSegments.length > 15 || !isLowercase) {
                 for (int s = 15; s < styles.size(); s++) {
                     setWarningStyle(styles.get(s));
                 }
@@ -731,7 +731,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatLine(ArrayList<StyleRange> styles, LineStyleEvent e, String[] text_segments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatLine(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 
@@ -742,9 +742,9 @@ public class SyntaxFormatter {
         styles.add(lineStyleRange);
 
         boolean parseError = false;
-        int segment_number = 0;
-        for (int i = 0; i < text_segments.length; i++) {
-            String segment = text_segments[i];
+        int segmentNumber = 0;
+        for (int i = 0; i < textSegments.length; i++) {
+            String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
                 continue;
@@ -753,7 +753,7 @@ public class SyntaxFormatter {
                 StyleRange segmentStyleRange = new StyleRange();
                 segmentStyleRange.start = offset;
                 segmentStyleRange.length = segmentLength;
-                switch (segment_number) {
+                switch (segmentNumber) {
                 case 0: // type
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
@@ -775,53 +775,53 @@ public class SyntaxFormatter {
                 }
                 styles.add(segmentStyleRange);
                 offset += segmentLength + 1;
-                segment_number++;
+                segmentNumber++;
             }
         }
-        String[] data_segments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String[] dataSegments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         // [ERROR] Check argument count
-        if (data_segments.length != 8) {
+        if (dataSegments.length != 8) {
             parseError = true;
         } else {
             // [ERROR] Check colour
-            validateColour(styles.get(2), data_segments[1]);
+            validateColour(styles.get(2), dataSegments[1]);
             // [ERROR] Check identical vertices
             while (true) {
                 boolean numberError = false;
                 // Start vertex
                 try {
-                    start.setX(new BigDecimal(data_segments[2], Threshold.mc));
+                    start.setX(new BigDecimal(dataSegments[2], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(3));
                     numberError = true;
                 }
                 try {
-                    start.setY(new BigDecimal(data_segments[3], Threshold.mc));
+                    start.setY(new BigDecimal(dataSegments[3], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(4));
                     numberError = true;
                 }
                 try {
-                    start.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+                    start.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(5));
                     numberError = true;
                 }
                 // End vertex
                 try {
-                    end.setX(new BigDecimal(data_segments[5], Threshold.mc));
+                    end.setX(new BigDecimal(dataSegments[5], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(6));
                     numberError = true;
                 }
                 try {
-                    end.setY(new BigDecimal(data_segments[6], Threshold.mc));
+                    end.setY(new BigDecimal(dataSegments[6], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(7));
                     numberError = true;
                 }
                 try {
-                    end.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+                    end.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(8));
                     numberError = true;
@@ -867,7 +867,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatTriangle(ArrayList<StyleRange> styles, LineStyleEvent e, String[] text_segments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatTriangle(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 
@@ -878,9 +878,9 @@ public class SyntaxFormatter {
         styles.add(lineStyleRange);
 
         boolean parseError = false;
-        int segment_number = 0;
-        for (int i = 0; i < text_segments.length; i++) {
-            String segment = text_segments[i];
+        int segmentNumber = 0;
+        for (int i = 0; i < textSegments.length; i++) {
+            String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
                 continue;
@@ -889,7 +889,7 @@ public class SyntaxFormatter {
                 StyleRange segmentStyleRange = new StyleRange();
                 segmentStyleRange.start = offset;
                 segmentStyleRange.length = segmentLength;
-                switch (segment_number) {
+                switch (segmentNumber) {
                 case 0: // type
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
@@ -916,72 +916,72 @@ public class SyntaxFormatter {
                 }
                 styles.add(segmentStyleRange);
                 offset += segmentLength + 1;
-                segment_number++;
+                segmentNumber++;
             }
         }
-        String[] data_segments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String[] dataSegments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         // [ERROR] Check argument count
-        if (data_segments.length != 11) {
+        if (dataSegments.length != 11) {
             parseError = true;
         } else {
             // [ERROR] Check colour
-            validateColour(styles.get(2), data_segments[1]);
+            validateColour(styles.get(2), dataSegments[1]);
             // [ERROR] Check identical vertices
             while (true) {
                 boolean numberError = false;
                 // 1st vertex
                 try {
-                    vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
+                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(3));
                     numberError = true;
                 }
                 try {
-                    vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
+                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(4));
                     numberError = true;
                 }
                 try {
-                    vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(5));
                     numberError = true;
                 }
                 // 2nd vertex
                 try {
-                    vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
+                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(6));
                     numberError = true;
                 }
                 try {
-                    vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
+                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(7));
                     numberError = true;
                 }
                 try {
-                    vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(8));
                     numberError = true;
                 }
                 // 3rd vertex
                 try {
-                    vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
+                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(9));
                     numberError = true;
                 }
                 try {
-                    vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
+                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(10));
                     numberError = true;
                 }
                 try {
-                    vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(11));
                     numberError = true;
@@ -1054,7 +1054,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatQuad(ArrayList<StyleRange> styles, LineStyleEvent e, String[] text_segments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatQuad(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 
@@ -1066,9 +1066,9 @@ public class SyntaxFormatter {
 
         boolean parseError = false;
         boolean parseWarning = false;
-        int segment_number = 0;
-        for (int i = 0; i < text_segments.length; i++) {
-            String segment = text_segments[i];
+        int segmentNumber = 0;
+        for (int i = 0; i < textSegments.length; i++) {
+            String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
                 continue;
@@ -1077,7 +1077,7 @@ public class SyntaxFormatter {
                 StyleRange segmentStyleRange = new StyleRange();
                 segmentStyleRange.start = offset;
                 segmentStyleRange.length = segmentLength;
-                switch (segment_number) {
+                switch (segmentNumber) {
                 case 0: // type
                     segmentStyleRange.foreground = Colour.line_quad_font[0];
                     break;
@@ -1109,92 +1109,92 @@ public class SyntaxFormatter {
                 }
                 styles.add(segmentStyleRange);
                 offset += segmentLength + 1;
-                segment_number++;
+                segmentNumber++;
             }
         }
-        String[] data_segments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String[] dataSegments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         // [ERROR] Check argument count
-        if (data_segments.length != 14) {
+        if (dataSegments.length != 14) {
             parseError = true;
         } else {
             // [ERROR] Check colour
-            validateColour(styles.get(2), data_segments[1]);
+            validateColour(styles.get(2), dataSegments[1]);
             // [ERROR] Check hourglass, concave form, coplanarity & identical
             // vertices
             while (true) {
                 boolean numberError = false;
                 // 1st vertex
                 try {
-                    vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
+                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(3));
                     numberError = true;
                 }
                 try {
-                    vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
+                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(4));
                     numberError = true;
                 }
                 try {
-                    vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(5));
                     numberError = true;
                 }
                 // 2nd vertex
                 try {
-                    vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
+                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(6));
                     numberError = true;
                 }
                 try {
-                    vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
+                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(7));
                     numberError = true;
                 }
                 try {
-                    vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(8));
                     numberError = true;
                 }
                 // 3rd vertex
                 try {
-                    vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
+                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(9));
                     numberError = true;
                 }
                 try {
-                    vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
+                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(10));
                     numberError = true;
                 }
                 try {
-                    vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(11));
                     numberError = true;
                 }
                 // 4th vertex
                 try {
-                    vertexD.setX(new BigDecimal(data_segments[11], Threshold.mc));
+                    vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(12));
                     numberError = true;
                 }
                 try {
-                    vertexD.setY(new BigDecimal(data_segments[12], Threshold.mc));
+                    vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(13));
                     numberError = true;
                 }
                 try {
-                    vertexD.setZ(new BigDecimal(data_segments[13], Threshold.mc));
+                    vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(14));
                     numberError = true;
@@ -1316,7 +1316,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatCondline(ArrayList<StyleRange> styles, LineStyleEvent e, String[] text_segments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatCondline(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 
@@ -1328,9 +1328,9 @@ public class SyntaxFormatter {
 
         boolean parseError = false;
         boolean parseWarning = false;
-        int segment_number = 0;
-        for (int i = 0; i < text_segments.length; i++) {
-            String segment = text_segments[i];
+        int segmentNumber = 0;
+        for (int i = 0; i < textSegments.length; i++) {
+            String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
                 continue;
@@ -1339,7 +1339,7 @@ public class SyntaxFormatter {
                 StyleRange segmentStyleRange = new StyleRange();
                 segmentStyleRange.start = offset;
                 segmentStyleRange.length = segmentLength;
-                switch (segment_number) {
+                switch (segmentNumber) {
                 case 0: // type
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
@@ -1371,91 +1371,91 @@ public class SyntaxFormatter {
                 }
                 styles.add(segmentStyleRange);
                 offset += segmentLength + 1;
-                segment_number++;
+                segmentNumber++;
             }
         }
-        String[] data_segments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String[] dataSegments = e.lineText.replaceAll("\\s+", " ").trim().split(" "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         // [ERROR] Check argument count
-        if (data_segments.length != 14) {
+        if (dataSegments.length != 14) {
             parseError = true;
         } else {
             // [ERROR] Check colour
-            validateColour(styles.get(2), data_segments[1]);
+            validateColour(styles.get(2), dataSegments[1]);
             // [ERROR] Check identical vertices
             while (true) {
                 boolean numberError = false;
                 // start vertex
                 try {
-                    start.setX(new BigDecimal(data_segments[2], Threshold.mc));
+                    start.setX(new BigDecimal(dataSegments[2], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(3));
                     numberError = true;
                 }
                 try {
-                    start.setY(new BigDecimal(data_segments[3], Threshold.mc));
+                    start.setY(new BigDecimal(dataSegments[3], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(4));
                     numberError = true;
                 }
                 try {
-                    start.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+                    start.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(5));
                     numberError = true;
                 }
                 // end vertex
                 try {
-                    end.setX(new BigDecimal(data_segments[5], Threshold.mc));
+                    end.setX(new BigDecimal(dataSegments[5], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(6));
                     numberError = true;
                 }
                 try {
-                    end.setY(new BigDecimal(data_segments[6], Threshold.mc));
+                    end.setY(new BigDecimal(dataSegments[6], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(7));
                     numberError = true;
                 }
                 try {
-                    end.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+                    end.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(8));
                     numberError = true;
                 }
                 // control vertex I
                 try {
-                    controlI.setX(new BigDecimal(data_segments[8], Threshold.mc));
+                    controlI.setX(new BigDecimal(dataSegments[8], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(9));
                     numberError = true;
                 }
                 try {
-                    controlI.setY(new BigDecimal(data_segments[9], Threshold.mc));
+                    controlI.setY(new BigDecimal(dataSegments[9], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(10));
                     numberError = true;
                 }
                 try {
-                    controlI.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+                    controlI.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(11));
                     numberError = true;
                 }
                 // control vertex II
                 try {
-                    controlII.setX(new BigDecimal(data_segments[11], Threshold.mc));
+                    controlII.setX(new BigDecimal(dataSegments[11], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(12));
                     numberError = true;
                 }
                 try {
-                    controlII.setY(new BigDecimal(data_segments[12], Threshold.mc));
+                    controlII.setY(new BigDecimal(dataSegments[12], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(13));
                     numberError = true;
                 }
                 try {
-                    controlII.setZ(new BigDecimal(data_segments[13], Threshold.mc));
+                    controlII.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(14));
                     numberError = true;

@@ -31,12 +31,10 @@ public class ToolItem extends Composite {
         super(parent, style);
         if (isHorizontal) {
             this.setLayout(new RowLayout(SWT.HORIZONTAL));
-            @SuppressWarnings("unused")
-            ToolSeparator srt_Seperator = new ToolSeparator(this, SWT.NONE, isHorizontal);
+            new ToolSeparator(this, SWT.NONE, isHorizontal);
         } else {
             this.setLayout(new RowLayout(SWT.VERTICAL));
-            @SuppressWarnings("unused")
-            ToolSeparator srt_Seperator = new ToolSeparator(this, SWT.NONE, isHorizontal);
+            new ToolSeparator(this, SWT.NONE, isHorizontal);
         }
     }
 }

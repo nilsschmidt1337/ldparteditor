@@ -86,7 +86,6 @@ public class PrimGen2Dialog extends PrimGen2Design {
     private final DecimalFormat DEC_FORMAT_4F = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(Locale.ENGLISH));
 
     private String name = "1-4edge.dat"; //$NON-NLS-1$
-    private DatFile oldDf = null;
 
     private enum EventType {
         SPN,
@@ -110,7 +109,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
     public int open() {
         super.create();
 
-        oldDf = Project.getFileToEdit();
+        final DatFile oldDf = Project.getFileToEdit();
 
         DEC_FORMAT_4F.setRoundingMode(RoundingMode.HALF_UP);
 
@@ -892,7 +891,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         txt_data[0].setText(sb.toString());
     }
 
-    private Object cylinder(int Divisions, int Segments, boolean ccw) {
+    private Object cylinder(int divisions, int segments, boolean ccw) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -900,24 +899,24 @@ public class PrimGen2Dialog extends PrimGen2Design {
         // DONT TOUCH THIS CODE! It simply works...
 
         final StringBuilder sb2 = new StringBuilder();
-        if (Segments > Divisions)
+        if (segments > divisions)
         {
             return sb2.toString();
         }
-        if (Segments > Divisions)
+        if (segments > divisions)
         {
             return null;
         }
 
-        int num3 = Segments - 1;
+        int num3 = segments - 1;
         for (int num = 0; num <= num3; num++)
         {
-            double objdatLinePoint1X = Math.cos((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint1X = Math.cos((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             double objdatLinePoint1Y = 0.0;
-            double objdatLinePoint1Z = Math.sin((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
-            double objdatLinePoint2X = Math.cos(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint1Z = Math.sin((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2X = Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             double objdatLinePoint2Y = 0.0;
-            double objdatLinePoint2Z = Math.sin(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2Z = Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             double objdatLinePoint3X = objdatLinePoint2X;
             double objdatLinePoint3Y = 1.0;
             double objdatLinePoint3Z = objdatLinePoint2Z;
@@ -962,50 +961,50 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb2.append("\n"); //$NON-NLS-1$
         }
         sb2.append("0 // conditional lines\n"); //$NON-NLS-1$
-        for (int num = 0; num <= Segments; num++)
+        for (int num = 0; num <= segments; num++)
         {
-            if (num == Divisions)
+            if (num == divisions)
             {
                 break;
             }
-            double objdatLinePoint1X = Math.cos(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint1X = Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             double objdatLinePoint1Y = 1.0;
-            double objdatLinePoint1Z = Math.sin(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
-            double objdatLinePoint2X = Math.cos(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint1Z = Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2X = Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             double objdatLinePoint2Y = 0.0;
-            double objdatLinePoint2Z = Math.sin(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
+            double objdatLinePoint2Z = Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             double objdatLinePoint3X;
             double objdatLinePoint3Y;
             double objdatLinePoint3Z;
             double objdatLinePoint4X;
             double objdatLinePoint4Y;
             double objdatLinePoint4Z;
-            if (Divisions == Segments | num != 0 & num != Segments)
+            if (divisions == segments | num != 0 & num != segments)
             {
-                objdatLinePoint3X = Math.cos((num - 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
+                objdatLinePoint3X = Math.cos((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
                 objdatLinePoint3Y = 1.0;
-                objdatLinePoint3Z = Math.sin((num - 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
-                objdatLinePoint4X = Math.cos((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
+                objdatLinePoint3Z = Math.sin((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
+                objdatLinePoint4X = Math.cos((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
                 objdatLinePoint4Y = 1.0;
-                objdatLinePoint4Z = Math.sin((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0);
+                objdatLinePoint4Z = Math.sin((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0);
             }
             else if (num == 0)
             {
-                objdatLinePoint3X = Math.cos((double) num / (double) Divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint3X = Math.cos((double) num / (double) divisions * 2.0 * 3.1415926535897931);
                 objdatLinePoint3Y = 1.0;
-                objdatLinePoint3Z = Math.tan((double) (num - 1) / (double) Divisions * 2.0 * 3.1415926535897931);
-                objdatLinePoint4X = Math.cos((double) (num + 1) / (double) Divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint3Z = Math.tan((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint4X = Math.cos((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931);
                 objdatLinePoint4Y = 1.0;
-                objdatLinePoint4Z = Math.sin((double) (num + 1) / (double) Divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint4Z = Math.sin((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931);
             }
             else
             {
-                objdatLinePoint3X = Math.cos((double) (num - 1) / (double) Divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint3X = Math.cos((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931);
                 objdatLinePoint3Y = 1.0;
-                objdatLinePoint3Z = Math.sin((double) (num - 1) / (double) Divisions * 2.0 * 3.1415926535897931);
-                objdatLinePoint4X = Math.cos((double) (num + 1) / (double) Divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / Divisions);
+                objdatLinePoint3Z = Math.sin((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931);
+                objdatLinePoint4X = Math.cos((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / divisions);
                 objdatLinePoint4Y = 1.0;
-                objdatLinePoint4Z = Math.sin((double) (num + 1) / (double) Divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / Divisions);
+                objdatLinePoint4Z = Math.sin((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / divisions);
             }
             sb2.append("5 24 "); //$NON-NLS-1$
             sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
@@ -1028,7 +1027,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
-    private Object cone(int Divisions, int Segments, double InnerDiameter, boolean ccw, double Width) {
+    private Object cone(int divisions, int segments, double innerDiameter, boolean ccw, double width) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -1036,29 +1035,29 @@ public class PrimGen2Dialog extends PrimGen2Design {
         // DONT TOUCH THIS CODE! It simply works...
 
         final StringBuilder sb2 = new StringBuilder();
-        if (Segments > Divisions)
+        if (segments > divisions)
         {
             return sb2.toString();
         }
-        if (Segments > Divisions)
+        if (segments > divisions)
         {
             return null;
         }
-        int num3 = Segments - 1;
+        int num3 = segments - 1;
         for (int num = 0; num <= num3; num++)
         {
-            double objdatLinePoint1X = round4f(Math.cos(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
+            double objdatLinePoint1X = round4f(Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
             double objdatLinePoint1Y = 1.0;
-            double objdatLinePoint1Z = round4f(Math.sin(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
-            double objdatLinePoint2X = round4f(Math.cos((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
+            double objdatLinePoint1Z = round4f(Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
+            double objdatLinePoint2X = round4f(Math.cos((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
             double objdatLinePoint2Y = 1.0;
-            double objdatLinePoint2Z = round4f(Math.sin((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
-            double objdatLinePoint3X = round4f(Math.cos((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
+            double objdatLinePoint2Z = round4f(Math.sin((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
+            double objdatLinePoint3X = round4f(Math.cos((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
             double objdatLinePoint3Y = 0.0;
-            double objdatLinePoint3Z = round4f(Math.sin((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
-            double objdatLinePoint4X = round4f(Math.cos(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
+            double objdatLinePoint3Z = round4f(Math.sin((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
+            double objdatLinePoint4X = round4f(Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
             double objdatLinePoint4Y = 0.0;
-            double objdatLinePoint4Z = round4f(Math.sin(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
+            double objdatLinePoint4Z = round4f(Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
             sb2.append("4 16 "); //$NON-NLS-1$
             if (ccw) {
                 sb2.append(removeTrailingZeros(formatDec(objdatLinePoint1X)));
@@ -1096,51 +1095,51 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb2.append("\n"); //$NON-NLS-1$
         }
         sb2.append("0 // conditional lines\n"); //$NON-NLS-1$
-        int num4 = Segments;
+        int num4 = segments;
         for (int num = 0; num <= num4; num++)
         {
-            if (num == Divisions)
+            if (num == divisions)
             {
                 break;
             }
-            double objdatLinePoint1X = round4f(Math.cos(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
+            double objdatLinePoint1X = round4f(Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
             double objdatLinePoint1Y = 1.0;
-            double objdatLinePoint1Z = round4f(Math.sin(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
-            double objdatLinePoint2X = round4f(Math.cos(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
+            double objdatLinePoint1Z = round4f(Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
+            double objdatLinePoint2X = round4f(Math.cos(num * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
             double objdatLinePoint2Y = 0.0;
-            double objdatLinePoint2Z = round4f(Math.sin(num * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
+            double objdatLinePoint2Z = round4f(Math.sin(num * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
             double objdatLinePoint3X;
             double objdatLinePoint3Y;
             double objdatLinePoint3Z;
             double objdatLinePoint4X;
             double objdatLinePoint4Y;
             double objdatLinePoint4Z;
-            if (Divisions == Segments | num != 0 & num != Segments)
+            if (divisions == segments | num != 0 & num != segments)
             {
-                objdatLinePoint3X = round4f(Math.cos((num - 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
+                objdatLinePoint3X = round4f(Math.cos((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
                 objdatLinePoint3Y = 1.0;
-                objdatLinePoint3Z = round4f(Math.sin((num - 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
-                objdatLinePoint4X = round4f(Math.cos((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
+                objdatLinePoint3Z = round4f(Math.sin((num - 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
+                objdatLinePoint4X = round4f(Math.cos((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
                 objdatLinePoint4Y = 1.0;
-                objdatLinePoint4Z = round4f(Math.sin((num + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
+                objdatLinePoint4Z = round4f(Math.sin((num + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
             }
             else if (num == 0)
             {
-                objdatLinePoint3X = round4f(Math.cos((double) num / (double) Divisions * 2.0 * 3.1415926535897931)) * InnerDiameter;
+                objdatLinePoint3X = round4f(Math.cos((double) num / (double) divisions * 2.0 * 3.1415926535897931)) * innerDiameter;
                 objdatLinePoint3Y = 1.0;
-                objdatLinePoint3Z = round4f(Math.tan((double) (num - 1) / (double) Divisions * 2.0 * 3.1415926535897931)) * InnerDiameter;
-                objdatLinePoint4X = round4f(Math.cos((double) (num + 1) / (double) Divisions * 2.0 * 3.1415926535897931)) * InnerDiameter;
+                objdatLinePoint3Z = round4f(Math.tan((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931)) * innerDiameter;
+                objdatLinePoint4X = round4f(Math.cos((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931)) * innerDiameter;
                 objdatLinePoint4Y = 1.0;
-                objdatLinePoint4Z = round4f(Math.sin((double) (num + 1) / (double) Divisions * 2.0 * 3.1415926535897931)) * InnerDiameter;
+                objdatLinePoint4Z = round4f(Math.sin((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931)) * innerDiameter;
             }
             else
             {
-                objdatLinePoint3X = round4f(Math.cos((double) (num - 1) / (double) Divisions * 2.0 * 3.1415926535897931)) * InnerDiameter;
+                objdatLinePoint3X = round4f(Math.cos((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931)) * innerDiameter;
                 objdatLinePoint3Y = 1.0;
-                objdatLinePoint3Z = round4f(Math.sin((double) (num - 1) / (double) Divisions * 2.0 * 3.1415926535897931)) * InnerDiameter;
-                objdatLinePoint4X = round4f(Math.cos((double) (num + 1) / (double) Divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / Divisions)) * InnerDiameter;
+                objdatLinePoint3Z = round4f(Math.sin((double) (num - 1) / (double) divisions * 2.0 * 3.1415926535897931)) * innerDiameter;
+                objdatLinePoint4X = round4f(Math.cos((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / divisions)) * innerDiameter;
                 objdatLinePoint4Y = 1.0;
-                objdatLinePoint4Z = round4f(Math.sin((double) (num + 1) / (double) Divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / Divisions)) * InnerDiameter;
+                objdatLinePoint4Z = round4f(Math.sin((double) (num + 1) / (double) divisions * 2.0 * 3.1415926535897931) / Math.cos(6.2831853071795862 / divisions)) * innerDiameter;
             }
 
             sb2.append("5 24 "); //$NON-NLS-1$
@@ -1164,7 +1163,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
-    private String ring(int Divisions, int Segments, double InnerDiameter, boolean ccw, double Width) {
+    private String ring(int divisions, int segments, double innerDiameter, boolean ccw, double width) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -1172,25 +1171,25 @@ public class PrimGen2Dialog extends PrimGen2Design {
         // DONT TOUCH THIS CODE! It simply works...
 
         final StringBuilder sb2 = new StringBuilder();
-        if (Segments > Divisions)
+        if (segments > divisions)
         {
             return sb2.toString();
         }
-        int num3 = Segments - 1;
+        int num3 = segments - 1;
         for (int i = 0; i <= num3; i++)
         {
-            double objdatLinePoint1X = round4f(Math.cos(i * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
+            double objdatLinePoint1X = round4f(Math.cos(i * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
             double objdatLinePoint1Y = 0.0;
-            double objdatLinePoint1Z = round4f(Math.sin(i * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
-            double objdatLinePoint2X = round4f(Math.cos((i + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
+            double objdatLinePoint1Z = round4f(Math.sin(i * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
+            double objdatLinePoint2X = round4f(Math.cos((i + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
             double objdatLinePoint2Y = 0.0;
-            double objdatLinePoint2Z = round4f(Math.sin((i + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * InnerDiameter;
-            double objdatLinePoint3X = round4f(Math.cos((i + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
+            double objdatLinePoint2Z = round4f(Math.sin((i + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * innerDiameter;
+            double objdatLinePoint3X = round4f(Math.cos((i + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
             double objdatLinePoint3Y = 0.0;
-            double objdatLinePoint3Z = round4f(Math.sin((i + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
-            double objdatLinePoint4X = round4f(Math.cos(i * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
+            double objdatLinePoint3Z = round4f(Math.sin((i + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
+            double objdatLinePoint4X = round4f(Math.cos(i * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
             double objdatLinePoint4Y = 0.0;
-            double objdatLinePoint4Z = round4f(Math.sin(i * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Width + InnerDiameter);
+            double objdatLinePoint4Z = round4f(Math.sin(i * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (width + innerDiameter);
 
             sb2.append("4 16 "); //$NON-NLS-1$
             if (!ccw) {
@@ -1231,7 +1230,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return sb2.toString();
     }
 
-    private String torus(int Divisions, int Segments, int Type, int Major, int Minor, boolean ccw) {
+    private String torus(int divisions, int segments, int type, int major, int minor, boolean ccw) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
@@ -1246,26 +1245,26 @@ public class PrimGen2Dialog extends PrimGen2Design {
         int num2;
         int num3;
         int num5;
-        if (Segments > Divisions)
+        if (segments > divisions)
         {
             return sb2.toString();
         }
-        switch (Type)
+        switch (type)
         {
         case INNER:
-            num5 = (int) Math.round(Divisions / 4.0 * 3.0);
-            num = Divisions;
+            num5 = (int) Math.round(divisions / 4.0 * 3.0);
+            num = divisions;
             break;
         case OUTER:
             num5 = 0;
-            num = (int) Math.round(Divisions / 4.0);
+            num = (int) Math.round(divisions / 4.0);
             break;
         default: // case TUBE:
             num5 = 0;
-            num = Divisions;
+            num = divisions;
             break;
         }
-        int num8 = Segments - 1;
+        int num8 = segments - 1;
         double objdatLinePoint1X;
         double objdatLinePoint1Y;
         double objdatLinePoint1Z;
@@ -1284,18 +1283,18 @@ public class PrimGen2Dialog extends PrimGen2Design {
             num3 = num5;
             while (num3 <= num9)
             {
-                objdatLinePoint1X = round4f(Math.cos(num2 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Major + round4f(Math.sin(num3 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor) * 1.0 / Major;
-                objdatLinePoint1Y = round4f(Math.cos(num3 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor * 1.0 / Major;
-                objdatLinePoint1Z = round4f(Math.sin(num2 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Major + round4f(Math.sin(num3 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor) * 1.0 / Major;
-                objdatLinePoint2X = round4f(Math.cos((num2 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Major + round4f(Math.sin(num3 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor) * 1.0 / Major;
-                objdatLinePoint2Y = round4f(Math.cos(num3 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor * 1.0 / Major;
-                objdatLinePoint2Z = round4f(Math.sin((num2 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Major + round4f(Math.sin(num3 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor) * 1.0 / Major;
-                objdatLinePoint3X = round4f(Math.cos((num2 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Major + round4f(Math.sin((num3 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor) * 1.0 / Major;
-                objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor * 1.0 / Major;
-                objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Major + round4f(Math.sin((num3 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor) * 1.0 / Major;
-                objdatLinePoint4X = round4f(Math.cos(num2 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Major + round4f(Math.sin((num3 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor) * 1.0 / Major;
-                objdatLinePoint4Y = round4f(Math.cos((num3 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor * 1.0 / Major;
-                objdatLinePoint4Z = round4f(Math.sin(num2 * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * (Major + round4f(Math.sin((num3 + 1) * (360.0 / Divisions) * 3.1415926535897931 / 180.0)) * Minor) * 1.0 / Major;
+                objdatLinePoint1X = round4f(Math.cos(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint1Y = round4f(Math.cos(num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint1Z = round4f(Math.sin(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint2X = round4f(Math.cos((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint2Y = round4f(Math.cos(num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint2Z = round4f(Math.sin((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin(num3 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint3X = round4f(Math.cos((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin((num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin((num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint4X = round4f(Math.cos(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin((num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
+                objdatLinePoint4Y = round4f(Math.cos((num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor * 1.0 / major;
+                objdatLinePoint4Z = round4f(Math.sin(num2 * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * (major + round4f(Math.sin((num3 + 1) * (360.0 / divisions) * 3.1415926535897931 / 180.0)) * minor) * 1.0 / major;
 
                 sb2.append("4 16 "); //$NON-NLS-1$
                 if (ccw) {
@@ -1337,63 +1336,63 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         }
         sb2.append("0 // conditional lines\n"); //$NON-NLS-1$
-        double d = 6.2831853071795862 / Divisions;
-        for (num2 = 0; num2 <= Segments; num2++)
+        double d = 6.2831853071795862 / divisions;
+        for (num2 = 0; num2 <= segments; num2++)
         {
-            if (num2 == Divisions)
+            if (num2 == divisions)
             {
                 break;
             }
             int num11 = num;
             for (num3 = num5; num3 <= num11; num3++)
             {
-                if (Math.abs(num - num5) == Math.abs(Divisions) && num3 == Divisions)
+                if (Math.abs(num - num5) == Math.abs(divisions) && num3 == divisions)
                 {
                     break;
                 }
-                if (num2 != Segments)
+                if (num2 != segments)
                 {
-                    objdatLinePoint1X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                    objdatLinePoint1Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                    objdatLinePoint1Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                    objdatLinePoint2X = round4f(Math.cos((num2 + 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                    objdatLinePoint2Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                    objdatLinePoint2Z = round4f(Math.sin((num2 + 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                    if (Divisions == Segments & num3 != num5 & num3 != num | Type == TUBE)
+                    objdatLinePoint1X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                    objdatLinePoint1Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                    objdatLinePoint1Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                    objdatLinePoint2X = round4f(Math.cos((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                    objdatLinePoint2Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                    objdatLinePoint2Z = round4f(Math.sin((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                    if (divisions == segments & num3 != num5 & num3 != num | type == TUBE)
                     {
-                        objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint3Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin((num3 - 1) * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint4Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin((num3 - 1) * d)) * Minor) * 1.0 / Major;
+                        objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
+                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
+                        objdatLinePoint3Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * minor * 1.0 / major;
+                        objdatLinePoint4Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
                     }
                     else if (num3 != num5 & num3 != num)
                     {
-                        objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint3Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin((num3 - 1) * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint4Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin((num3 - 1) * d)) * Minor) * 1.0 / Major;
+                        objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
+                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
+                        objdatLinePoint3Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * minor * 1.0 / major;
+                        objdatLinePoint4Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
                     }
                     else if (num3 != num5)
                     {
-                        objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d) / Math.cos(d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d) / Math.cos(d)) * Minor * 1.0 / Major;
-                        objdatLinePoint3Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d) / Math.cos(d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin((num3 - 1) * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint4Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin((num3 - 1) * d)) * Minor) * 1.0 / Major;
+                        objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d) / Math.cos(d)) * minor) * 1.0 / major;
+                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d) / Math.cos(d)) * minor * 1.0 / major;
+                        objdatLinePoint3Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d) / Math.cos(d)) * minor) * 1.0 / major;
+                        objdatLinePoint4X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d)) * minor * 1.0 / major;
+                        objdatLinePoint4Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 - 1) * d)) * minor) * 1.0 / major;
                     }
                     else
                     {
-                        objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint3Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin((num3 - 1) * d) / Math.cos(d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d) / Math.cos(d)) * Minor * 1.0 / Major;
-                        objdatLinePoint4Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin((num3 - 1) * d) / Math.cos(d)) * Minor) * 1.0 / Major;
+                        objdatLinePoint3X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
+                        objdatLinePoint3Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
+                        objdatLinePoint3Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 - 1) * d) / Math.cos(d)) * minor) * 1.0 / major;
+                        objdatLinePoint4Y = round4f(Math.cos((num3 - 1) * d) / Math.cos(d)) * minor * 1.0 / major;
+                        objdatLinePoint4Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 - 1) * d) / Math.cos(d)) * minor) * 1.0 / major;
                     }
 
                     sb2.append("5 24 "); //$NON-NLS-1$
@@ -1416,47 +1415,47 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 }
                 if (num3 != num)
                 {
-                    objdatLinePoint1X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                    objdatLinePoint1Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                    objdatLinePoint1Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                    objdatLinePoint2X = round4f(Math.cos(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d)) * Minor) * 1.0 / Major;
-                    objdatLinePoint2Y = round4f(Math.cos((num3 + 1) * d)) * Minor * 1.0 / Major;
-                    objdatLinePoint2Z = round4f(Math.sin(num2 * d)) * (Major + round4f(Math.sin((num3 + 1) * d)) * Minor) * 1.0 / Major;
-                    if (Divisions == Segments | num2 != 0 & num2 != Segments)
+                    objdatLinePoint1X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                    objdatLinePoint1Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                    objdatLinePoint1Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                    objdatLinePoint2X = round4f(Math.cos(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
+                    objdatLinePoint2Y = round4f(Math.cos((num3 + 1) * d)) * minor * 1.0 / major;
+                    objdatLinePoint2Z = round4f(Math.sin(num2 * d)) * (major + round4f(Math.sin((num3 + 1) * d)) * minor) * 1.0 / major;
+                    if (divisions == segments | num2 != 0 & num2 != segments)
                     {
-                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
+                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
                     }
-                    else if (num2 != 0 & num2 != Segments)
+                    else if (num2 != 0 & num2 != segments)
                     {
-                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
+                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
                     }
                     else if (num2 == 0)
                     {
-                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d) / Math.cos(d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d) / Math.cos(d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
+                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d) / Math.cos(d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d) / Math.cos(d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
                     }
                     else
                     {
-                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d) / Math.cos(d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d) / Math.cos(d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
-                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * Minor * 1.0 / Major;
-                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d)) * (Major + round4f(Math.sin(num3 * d)) * Minor) * 1.0 / Major;
+                        objdatLinePoint3X = round4f(Math.cos((num2 + 1) * d) / Math.cos(d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint3Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                        objdatLinePoint3Z = round4f(Math.sin((num2 + 1) * d) / Math.cos(d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4X = round4f(Math.cos((num2 - 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
+                        objdatLinePoint4Y = round4f(Math.cos(num3 * d)) * minor * 1.0 / major;
+                        objdatLinePoint4Z = round4f(Math.sin((num2 - 1) * d)) * (major + round4f(Math.sin(num3 * d)) * minor) * 1.0 / major;
                     }
 
                     sb2.append("5 24 "); //$NON-NLS-1$
@@ -1628,14 +1627,14 @@ public class PrimGen2Dialog extends PrimGen2Design {
         return str;
     }
 
-    private boolean isOfficialRules(int Typ, double Size, double Divisions, double Segments, double Minor, boolean ccw) {
+    private boolean isOfficialRules(int typ, double size, double divisions, double segments, double minor, boolean ccw) {
 
         // Crazy Reverse Engineering from Mike's PrimGen2
         // Thanks to Mr. Heidemann! :)
 
         // DONT TOUCH THIS CODE! It simply works...
 
-        if (Divisions != 16.0 && Divisions != 48.0)
+        if (divisions != 16.0 && divisions != 48.0)
         {
             return false;
         }
@@ -1643,7 +1642,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         {
             return false;
         }
-        switch (Typ)
+        switch (typ)
         {
         case CIRCLE:
         case CYLINDER:
@@ -1654,15 +1653,15 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
         case RING:
         case CONE:
-            if (Size % 1 != 0)
+            if (size % 1 != 0)
             {
                 return false;
             }
-            return Minor == 1.0;
+            return minor == 1.0;
 
         case TORUS:
         {
-            return Divisions / Segments % 1 == 0;
+            return divisions / segments % 1 == 0;
         }
         default:
             break;

@@ -57,9 +57,6 @@ public class PerspectiveCalculator {
     private Vector4f offset = new Vector4f(0, 0, 0, 1f);
     /** The effective clipping value [NOT PUBLIC YET] */
     private float z_eff;
-    /** The left half width in the viewport [NOT PUBLIC YET] */
-    private float width;
-
 
     /** Magic number for numerical stability [NOT PUBLIC YET] */
     private final Rational TX = new Rational(new BigDecimal("0.146432")); //$NON-NLS-1$
@@ -155,21 +152,21 @@ public class PerspectiveCalculator {
      * Calculates the view generator from the actual rotation matrix
      */
     private void calculateViewGenerator() {
-        Vector4f xAxis4f_viewport_generator = new Vector4f(1.0f, 0, 0, 1.0f);
-        Vector4f yAxis4f_viewport_generator = new Vector4f(0, 1.0f, 0, 1.0f);
-        Vector4f zAxis4f_viewport_generator = new Vector4f(0, 0, 1.0f, 1.0f);
-        Matrix4f viewport_rotation = c3d.getRotation();
-        Matrix4f vr_inverse = Matrix4f.invert(viewport_rotation, null);
-        Matrix4f.transform(vr_inverse, xAxis4f_viewport_generator, xAxis4f_viewport_generator);
-        Matrix4f.transform(vr_inverse, yAxis4f_viewport_generator, yAxis4f_viewport_generator);
-        Matrix4f.transform(vr_inverse, zAxis4f_viewport_generator, zAxis4f_viewport_generator);
+        Vector4f xAxis4fViewportGenerator = new Vector4f(1.0f, 0, 0, 1.0f);
+        Vector4f yAxis4fViewportGenerator = new Vector4f(0, 1.0f, 0, 1.0f);
+        Vector4f zAxis4fViewportGenerator = new Vector4f(0, 0, 1.0f, 1.0f);
+        Matrix4f viewportRotation = c3d.getRotation();
+        Matrix4f vrInverse = Matrix4f.invert(viewportRotation, null);
+        Matrix4f.transform(vrInverse, xAxis4fViewportGenerator, xAxis4fViewportGenerator);
+        Matrix4f.transform(vrInverse, yAxis4fViewportGenerator, yAxis4fViewportGenerator);
+        Matrix4f.transform(vrInverse, zAxis4fViewportGenerator, zAxis4fViewportGenerator);
         if (c3d.hasNegDeterminant()) {
-            zAxis4f_viewport_generator = new Vector4f(-zAxis4f_viewport_generator.x, -zAxis4f_viewport_generator.y, -zAxis4f_viewport_generator.z, 1f);
+            zAxis4fViewportGenerator = new Vector4f(-zAxis4fViewportGenerator.x, -zAxis4fViewportGenerator.y, -zAxis4fViewportGenerator.z, 1f);
         }
-        Vector4f[] viewport_generator = c3d.getGenerator();
-        viewport_generator[0] = xAxis4f_viewport_generator;
-        viewport_generator[1] = yAxis4f_viewport_generator;
-        viewport_generator[2] = zAxis4f_viewport_generator;
+        Vector4f[] viewportGenerator = c3d.getGenerator();
+        viewportGenerator[0] = xAxis4fViewportGenerator;
+        viewportGenerator[1] = yAxis4fViewportGenerator;
+        viewportGenerator[2] = zAxis4fViewportGenerator;
     }
 
     /**
@@ -189,8 +186,8 @@ public class PerspectiveCalculator {
      */
     private void calculateOrigin(Matrix4f realViewport) {
         Rectangle bounds = c3d.getBounds();
+        final float width = (float) bounds.width / (float) bounds.height;
         z_eff = (float) ((c3d.getzFar() + c3d.getzNear()) / -2.0 * c3d.getZoom());
-        width = (float) bounds.width / (float) bounds.height;
         Vector3f[] axes = c3d.getViewportOriginAxis();
         offset.set(0, 0, 0, 1f);
         Matrix4f.transform(realViewport, offset, offset);
@@ -205,37 +202,37 @@ public class PerspectiveCalculator {
      */
     private void calculateGrid() {
 
-        float grid_size = c3d.getZoom() * View.PIXEL_PER_LDU;
-        while (grid_size > 10f) {
-            grid_size = grid_size / 10f;
+        float gridSize = c3d.getZoom() * View.PIXEL_PER_LDU;
+        while (gridSize > 10f) {
+            gridSize = gridSize / 10f;
         }
-        while (grid_size < 10f) {
-            grid_size = grid_size * 10f;
+        while (gridSize < 10f) {
+            gridSize = gridSize * 10f;
         }
-        if (grid_size > 10f) {
-            grid_size = grid_size / 2f;
+        if (gridSize > 10f) {
+            gridSize = gridSize / 2f;
         }
-        grid_size = grid_size * 10f * c3d.getGrid_scale();
-        int mx = (int) (c3d.getBounds().width / grid_size + 4) / 2;
-        int my = (int) (c3d.getBounds().height / grid_size + 4) / 2;
-        grid_size = grid_size / 1000f;
+        gridSize = gridSize * 10f * c3d.getGrid_scale();
+        int mx = (int) (c3d.getBounds().width / gridSize + 4) / 2;
+        int my = (int) (c3d.getBounds().height / gridSize + 4) / 2;
+        gridSize = gridSize / 1000f;
 
-        float rest_x = offset.x % grid_size;
-        float rest_y = offset.y % grid_size;
+        float restX = offset.x % gridSize;
+        float restY = offset.y % gridSize;
         Vector4f[] grid = c3d.getGrid();
-        grid[0].set(rest_x, rest_y, z_eff + 0.1f);
-        grid[1].set(-grid_size, 0f);
-        grid[2].set(0f, -grid_size);
+        grid[0].set(restX, restY, z_eff + 0.1f);
+        grid[1].set(-gridSize, 0f);
+        grid[2].set(0f, -gridSize);
         // Multiplicants
         grid[3].set(mx, my);
-        grid_size = grid_size * 10f;
-        int mx10 = (int) (c3d.getBounds().width / grid_size + 4) / 2;
-        int my10 = (int) (c3d.getBounds().height / grid_size + 4) / 2;
-        float rest_x10 = offset.x % grid_size;
-        float rest_y10 = offset.y % grid_size;
-        grid[4].set(rest_x10, rest_y10, z_eff);
-        grid[5].set(-grid_size, 0f);
-        grid[6].set(0f, -grid_size);
+        gridSize = gridSize * 10f;
+        int mx10 = (int) (c3d.getBounds().width / gridSize + 4) / 2;
+        int my10 = (int) (c3d.getBounds().height / gridSize + 4) / 2;
+        float restX10 = offset.x % gridSize;
+        float restY10 = offset.y % gridSize;
+        grid[4].set(restX10, restY10, z_eff);
+        grid[5].set(-gridSize, 0f);
+        grid[6].set(0f, -gridSize);
         // Multiplicants
         grid[7].set(mx10, my10);
     }
@@ -244,15 +241,15 @@ public class PerspectiveCalculator {
      * @return The real transformation matrix of the viewport
      */
     public Matrix4f getRealViewport() {
-        Matrix4f viewport_transform = new Matrix4f();
-        Matrix4f.setIdentity(viewport_transform);
+        Matrix4f viewportTransform = new Matrix4f();
+        Matrix4f.setIdentity(viewportTransform);
         float zoom = c3d.getZoom();
-        Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
-        Matrix4f viewport_rotation = c3d.getRotation();
-        Matrix4f.mul(viewport_rotation, viewport_transform, viewport_transform);
-        Matrix4f viewport_translation = c3d.getTranslation();
-        Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
-        return viewport_transform;
+        Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewportTransform, viewportTransform);
+        Matrix4f viewportRotation = c3d.getRotation();
+        Matrix4f.mul(viewportRotation, viewportTransform, viewportTransform);
+        Matrix4f viewportTranslation = c3d.getTranslation();
+        Matrix4f.mul(viewportTransform, viewportTranslation, viewportTransform);
+        return viewportTransform;
     }
 
     /**
@@ -270,8 +267,8 @@ public class PerspectiveCalculator {
         relPos.x = (0.5f * cSize.x - x) / View.PIXEL_PER_LDU;
         relPos.y = (y - 0.5f * cSize.y) / View.PIXEL_PER_LDU;
         relPos.w = 1.0f;
-        Matrix4f v_inverse = c3d.getViewport_Inverse();
-        Matrix4f.transform(v_inverse, relPos, relPos);
+        Matrix4f vInverse = c3d.getViewport_Inverse();
+        Matrix4f.transform(vInverse, relPos, relPos);
         return relPos;
     }
 
@@ -290,19 +287,19 @@ public class PerspectiveCalculator {
         Point cSize = c3d.getSize();
         Vector4f relPos = new Vector4f(x, y, z, 1f);
         Matrix4f.transform(c3d.getViewport(), relPos, relPos);
-        float cursor_x = 0.5f * cSize.x - relPos.x * View.PIXEL_PER_LDU;
-        float cursor_y = 0.5f * cSize.y + relPos.y * View.PIXEL_PER_LDU;
-        relPos.set(cursor_x, cursor_y, 0f, 1f);
+        float cursorX = 0.5f * cSize.x - relPos.x * View.PIXEL_PER_LDU;
+        float cursorY = 0.5f * cSize.y + relPos.y * View.PIXEL_PER_LDU;
+        relPos.set(cursorX, cursorY, 0f, 1f);
         return relPos;
     }
 
-    Vector3d getScreenCoordinatesFrom3D(BigDecimal X, BigDecimal Y, BigDecimal Z) {
-        BigDecimal THOUSAND = new BigDecimal(1000);
-        BigDecimal ZERO = new BigDecimal(0);
+    Vector3d getScreenCoordinatesFrom3D(BigDecimal x, BigDecimal y, BigDecimal z) {
+        BigDecimal thousand = new BigDecimal(1000);
+        BigDecimal zero = new BigDecimal(0);
         Matrix vm = new Matrix(c3d.getViewport());
-        Matrix vm2 = new Matrix(THOUSAND, ZERO, ZERO, ZERO, ZERO, THOUSAND, ZERO, ZERO, ZERO, ZERO, THOUSAND, ZERO, ZERO, ZERO, ZERO, THOUSAND);
+        Matrix vm2 = new Matrix(thousand, zero, zero, zero, zero, thousand, zero, zero, zero, zero, thousand, zero, zero, zero, zero, thousand);
         vm = Matrix.mul(vm, vm2);
-        Vector3d result = new Vector3d(X, Y, Z);
+        Vector3d result = new Vector3d(x, y, z);
         result = vm.transform(result);
         return result;
     }
@@ -370,9 +367,9 @@ public class PerspectiveCalculator {
             GL11.glViewport(0, 0, scaledBounds.width, scaledBounds.height);
             GL11.glMatrixMode(GL11.GL_PROJECTION);
             GL11.glLoadIdentity();
-            float viewport_width = bounds.width / View.PIXEL_PER_LDU / 2.0f;
-            float viewport_height = bounds.height / View.PIXEL_PER_LDU / 2.0f;
-            GL11.glOrtho(-viewport_width, viewport_width, -viewport_height, viewport_height, c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom());
+            float viewportWidth = bounds.width / View.PIXEL_PER_LDU / 2.0f;
+            float viewportHeight = bounds.height / View.PIXEL_PER_LDU / 2.0f;
+            GL11.glOrtho(-viewportWidth, viewportWidth, -viewportHeight, viewportHeight, c3d.getzNear() * c3d.getZoom(), c3d.getzFar() * c3d.getZoom());
             GL11.glMatrixMode(GL11.GL_MODELVIEW);
             GL11.glLoadIdentity();
         }
@@ -458,8 +455,8 @@ public class PerspectiveCalculator {
         return zoom_exponent;
     }
 
-    public void setZoom_exponent(float zoom_exponent) {
-        this.zoom_exponent = zoom_exponent;
+    public void setZoom_exponent(float zoomExponent) {
+        this.zoom_exponent = zoomExponent;
     }
 
     public Vector4f getOffset() {

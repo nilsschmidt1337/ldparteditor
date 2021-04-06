@@ -203,9 +203,9 @@ class EditorMetaDesign extends ApplicationWindow {
         GridLayout gridLayout = new GridLayout(1, true);
         container.setLayout(gridLayout);
         {
-            CTabFolder tabFolder_Settings = new CTabFolder(container, SWT.BORDER);
-            tabFolder_Settings.setMRUVisible(true);
-            tabFolder_Settings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
+            CTabFolder tabFolderSettings = new CTabFolder(container, SWT.BORDER);
+            tabFolderSettings.setMRUVisible(true);
+            tabFolderSettings.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
             GridData gridData = new GridData();
             gridData.horizontalAlignment = SWT.FILL;
             gridData.minimumHeight = 200;
@@ -216,169 +216,169 @@ class EditorMetaDesign extends ApplicationWindow {
             gridData.grabExcessVerticalSpace = true;
 
             gridData.grabExcessHorizontalSpace = true;
-            tabFolder_Settings.setLayoutData(gridData);
-            tabFolder_Settings.setSize(1024, 768);
+            tabFolderSettings.setLayoutData(gridData);
+            tabFolderSettings.setSize(1024, 768);
 
-            final CTabItem tItem = new CTabItem(tabFolder_Settings, SWT.NONE);
+            final CTabItem tItem = new CTabItem(tabFolderSettings, SWT.NONE);
             tItem.setText(I18n.META_LDRAW_HEADER);
             {
-                final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.H_SCROLL | SWT.V_SCROLL);
-                tItem.setControl(cmp_scroll);
+                final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.H_SCROLL | SWT.V_SCROLL);
+                tItem.setControl(cmpScroll);
 
-                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.NONE);
-                cmp_scroll.setContent(cmp_metaArea);
-                cmp_scroll.setExpandHorizontal(true);
-                cmp_scroll.setExpandVertical(true);
-                cmp_scroll.setMinSize(600, 800);
+                Composite cmpMetaArea = new Composite(cmpScroll, SWT.NONE);
+                cmpScroll.setContent(cmpMetaArea);
+                cmpScroll.setExpandHorizontal(true);
+                cmpScroll.setExpandVertical(true);
+                cmpScroll.setMinSize(600, 800);
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
                 gdm.grabExcessVerticalSpace = true;
-                cmp_scroll.setLayoutData(gdm);
+                cmpScroll.setLayoutData(gdm);
 
-                cmp_metaArea.setLayout(new GridLayout(1, false));
+                cmpMetaArea.setLayout(new GridLayout(1, false));
 
                 {
-                    Composite grp_meta = cmp_metaArea;
-                    grp_meta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                    grp_meta.setLayout(new GridLayout(1, false));
+                    Composite grpMeta = cmpMetaArea;
+                    grpMeta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                    grpMeta.setLayout(new GridLayout(1, false));
 
                     {
-                        Composite cmp_description = new Composite(grp_meta, SWT.NONE);
-                        cmp_description.setLayout(new GridLayout(3, false));
+                        Composite cmpDescription = new Composite(grpMeta, SWT.NONE);
+                        cmpDescription.setLayout(new GridLayout(3, false));
 
-                        Label lbl_description = new Label(cmp_description, SWT.NONE);
-                        lbl_description.setText("Description:"); //$NON-NLS-1$
+                        Label lblDescription = new Label(cmpDescription, SWT.NONE);
+                        lblDescription.setText("Description:"); //$NON-NLS-1$
 
-                        Text txt_description = new Text(cmp_description, SWT.SEARCH);
-                        txt_description.setMessage(I18n.META_DESCRIPTION);
-                        ev_description_txt[0] = txt_description;
+                        Text txtDescription = new Text(cmpDescription, SWT.SEARCH);
+                        txtDescription.setMessage(I18n.META_DESCRIPTION);
+                        ev_description_txt[0] = txtDescription;
 
-                        NButton btn_needsWork = new NButton(cmp_description, SWT.TOGGLE);
-                        btn_needsWork.setText("(Needs Work)"); //$NON-NLS-1$
-                        ev_description_btn[0] = btn_needsWork;
+                        NButton btnNeedsWork = new NButton(cmpDescription, SWT.TOGGLE);
+                        btnNeedsWork.setText("(Needs Work)"); //$NON-NLS-1$
+                        ev_description_btn[0] = btnNeedsWork;
                     }
 
                     {
-                        Composite cmp_name = new Composite(grp_meta, SWT.NONE);
-                        cmp_name.setLayout(new GridLayout(2, false));
+                        Composite cmpName = new Composite(grpMeta, SWT.NONE);
+                        cmpName.setLayout(new GridLayout(2, false));
 
-                        Label lbl_name = new Label(cmp_name, SWT.NONE);
-                        lbl_name.setText("0 Name: "); //$NON-NLS-1$
+                        Label lblName = new Label(cmpName, SWT.NONE);
+                        lblName.setText("0 Name: "); //$NON-NLS-1$
 
-                        Text txt_name = new Text(cmp_name, SWT.SEARCH);
-                        txt_name.setMessage(I18n.META_FILENAME);
-                        ev_name_txt[0] = txt_name;
+                        Text txtName = new Text(cmpName, SWT.SEARCH);
+                        txtName.setMessage(I18n.META_FILENAME);
+                        ev_name_txt[0] = txtName;
                     }
 
                     {
-                        Composite cmp_author = new Composite(grp_meta, SWT.NONE);
-                        cmp_author.setLayout(new GridLayout(5, false));
+                        Composite cmpAuthor = new Composite(grpMeta, SWT.NONE);
+                        cmpAuthor.setLayout(new GridLayout(5, false));
 
-                        Label lbl_author = new Label(cmp_author, SWT.NONE);
-                        lbl_author.setText("0 Author: "); //$NON-NLS-1$
+                        Label lblAuthor = new Label(cmpAuthor, SWT.NONE);
+                        lblAuthor.setText("0 Author: "); //$NON-NLS-1$
 
-                        Text txt_realName = new Text(cmp_author, SWT.SEARCH);
-                        txt_realName.setMessage(I18n.META_AUTHOR);
-                        ev_author_realName_txt[0] = txt_realName;
+                        Text txtRealName = new Text(cmpAuthor, SWT.SEARCH);
+                        txtRealName.setMessage(I18n.META_AUTHOR);
+                        ev_author_realName_txt[0] = txtRealName;
                         if (userSettings.getRealUserName() != null) {
-                            txt_realName.setText(userSettings.getRealUserName());
+                            txtRealName.setText(userSettings.getRealUserName());
                         }
 
-                        Label lbl_author2 = new Label(cmp_author, SWT.NONE);
-                        lbl_author2.setText("["); //$NON-NLS-1$
+                        Label lblAuthor2 = new Label(cmpAuthor, SWT.NONE);
+                        lblAuthor2.setText("["); //$NON-NLS-1$
 
-                        Text txt_userName = new Text(cmp_author, SWT.SEARCH);
-                        txt_userName.setMessage(I18n.META_USERNAME);
-                        ev_author_userName_txt[0] = txt_userName;
+                        Text txtUserName = new Text(cmpAuthor, SWT.SEARCH);
+                        txtUserName.setMessage(I18n.META_USERNAME);
+                        ev_author_userName_txt[0] = txtUserName;
 
                         if (userSettings.getLdrawUserName() != null) {
-                            txt_userName.setText(userSettings.getLdrawUserName());
+                            txtUserName.setText(userSettings.getLdrawUserName());
                         }
 
-                        Label lbl_author3 = new Label(cmp_author, SWT.NONE);
-                        lbl_author3.setText("]"); //$NON-NLS-1$
+                        Label lblAuthor3 = new Label(cmpAuthor, SWT.NONE);
+                        lblAuthor3.setText("]"); //$NON-NLS-1$
                     }
 
                     {
-                        Composite cmp_type = new Composite(grp_meta, SWT.NONE);
-                        cmp_type.setLayout(new GridLayout(5, false));
+                        Composite cmpType = new Composite(grpMeta, SWT.NONE);
+                        cmpType.setLayout(new GridLayout(5, false));
 
-                        Label lbl_type = new Label(cmp_type, SWT.NONE);
-                        lbl_type.setText("0 !LDRAW_ORG "); //$NON-NLS-1$
+                        Label lblType = new Label(cmpType, SWT.NONE);
+                        lblType.setText("0 !LDRAW_ORG "); //$NON-NLS-1$
 
-                        NButton btn_unofficial = new NButton(cmp_type, SWT.TOGGLE);
-                        btn_unofficial.setText("Unofficial"); //$NON-NLS-1$
-                        ev_type_unofficial_btn[0] = btn_unofficial;
+                        NButton btnUnofficial = new NButton(cmpType, SWT.TOGGLE);
+                        btnUnofficial.setText("Unofficial"); //$NON-NLS-1$
+                        ev_type_unofficial_btn[0] = btnUnofficial;
 
-                        Combo cmb_type = new Combo(cmp_type, SWT.NONE);
-                        cmb_type.setItems(new String[] { "Part", "Subpart", "Primitive", "8_Primitive", "48_Primitive", "Shortcut", "Part Alias", "Part Physical_Colour",  "Part Physical_Colour Alias", "Part Flexible_Section", "Shortcut Alias", "Shortcut Physical_Colour",  "Shortcut Physical_Colour Alias"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
-                        cmb_type.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                        cmb_type.setText("Part"); //$NON-NLS-1$
-                        cmb_type.select(0);
-                        ev_type_type_cmb[0] = cmb_type;
+                        Combo cmbType = new Combo(cmpType, SWT.NONE);
+                        cmbType.setItems(new String[] { "Part", "Subpart", "Primitive", "8_Primitive", "48_Primitive", "Shortcut", "Part Alias", "Part Physical_Colour",  "Part Physical_Colour Alias", "Part Flexible_Section", "Shortcut Alias", "Shortcut Physical_Colour",  "Shortcut Physical_Colour Alias"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
+                        cmbType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                        cmbType.setText("Part"); //$NON-NLS-1$
+                        cmbType.select(0);
+                        ev_type_type_cmb[0] = cmbType;
 
-                        NButton btn_update = new NButton(cmp_type, SWT.TOGGLE);
-                        btn_update.setText("UPDATE"); //$NON-NLS-1$
-                        ev_type_update_btn[0] = btn_update;
+                        NButton btnUpdate = new NButton(cmpType, SWT.TOGGLE);
+                        btnUpdate.setText("UPDATE"); //$NON-NLS-1$
+                        ev_type_update_btn[0] = btnUpdate;
 
-                        Text txt_update = new Text(cmp_type, SWT.SEARCH);
-                        txt_update.setMessage(I18n.META_YEAR_RELEASE);
-                        txt_update.setEnabled(false);
-                        ev_type_update_txt[0] = txt_update;
+                        Text txtUpdate = new Text(cmpType, SWT.SEARCH);
+                        txtUpdate.setMessage(I18n.META_YEAR_RELEASE);
+                        txtUpdate.setEnabled(false);
+                        ev_type_update_txt[0] = txtUpdate;
                     }
 
                     {
-                        Composite cmp_license = new Composite(grp_meta, SWT.NONE);
-                        cmp_license.setLayout(new GridLayout(2, false));
+                        Composite cmpLicense = new Composite(grpMeta, SWT.NONE);
+                        cmpLicense.setLayout(new GridLayout(2, false));
 
-                        Label lbl_license = new Label(cmp_license, SWT.NONE);
-                        lbl_license.setText("0 !LICENSE "); //$NON-NLS-1$
+                        Label lblLicense = new Label(cmpLicense, SWT.NONE);
+                        lblLicense.setText("0 !LICENSE "); //$NON-NLS-1$
 
-                        Combo cmb_license = new Combo(cmp_license, SWT.NONE);
-                        cmb_license.setItems(new String[] { "Redistributable under CCAL version 2.0 : see CAreadme.txt", "Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
-                        cmb_license.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                        cmb_license.setText(userSettings.getLicense() != null ? userSettings.getLicense() : "Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
-                        cmb_license.select(0);
-                        ev_license_cmb[0] = cmb_license;
+                        Combo cmbLicense = new Combo(cmpLicense, SWT.NONE);
+                        cmbLicense.setItems(new String[] { "Redistributable under CCAL version 2.0 : see CAreadme.txt", "Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
+                        cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                        cmbLicense.setText(userSettings.getLicense() != null ? userSettings.getLicense() : "Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
+                        cmbLicense.select(0);
+                        ev_license_cmb[0] = cmbLicense;
                     }
 
                     {
-                        Composite cmp_help = new Composite(grp_meta, SWT.NONE);
-                        cmp_help.setLayout(new GridLayout(2, false));
+                        Composite cmpHelp = new Composite(grpMeta, SWT.NONE);
+                        cmpHelp.setLayout(new GridLayout(2, false));
 
-                        Label lbl_help = new Label(cmp_help, SWT.NONE);
-                        lbl_help.setText("0 !HELP "); //$NON-NLS-1$
+                        Label lblHelp = new Label(cmpHelp, SWT.NONE);
+                        lblHelp.setText("0 !HELP "); //$NON-NLS-1$
 
-                        Text txt_help = new Text(cmp_help, SWT.SEARCH);
-                        txt_help.setMessage(I18n.META_HELP);
-                        ev_help_txt[0] = txt_help;
+                        Text txtHelp = new Text(cmpHelp, SWT.SEARCH);
+                        txtHelp.setMessage(I18n.META_HELP);
+                        ev_help_txt[0] = txtHelp;
                     }
 
                     {
-                        Composite cmp_bfc = new Composite(grp_meta, SWT.NONE);
-                        cmp_bfc.setLayout(new GridLayout(2, false));
+                        Composite cmpBfc = new Composite(grpMeta, SWT.NONE);
+                        cmpBfc.setLayout(new GridLayout(2, false));
 
-                        Label lbl_bfc = new Label(cmp_bfc, SWT.NONE);
-                        lbl_bfc.setText("0 BFC "); //$NON-NLS-1$
+                        Label lblBfc = new Label(cmpBfc, SWT.NONE);
+                        lblBfc.setText("0 BFC "); //$NON-NLS-1$
 
-                        Combo cmb_bfc = new Combo(cmp_bfc, SWT.NONE);
-                        cmb_bfc.setItems(new String[] { "NOCERTIFY", "CERTIFY CW", "CERTIFY CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        cmb_bfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                        cmb_bfc.setText("NOCERTIFY"); //$NON-NLS-1$
-                        cmb_bfc.select(0);
-                        ev_bfcHeader_cmb[0] = cmb_bfc;
+                        Combo cmbBfc = new Combo(cmpBfc, SWT.NONE);
+                        cmbBfc.setItems(new String[] { "NOCERTIFY", "CERTIFY CW", "CERTIFY CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        cmbBfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                        cmbBfc.setText("NOCERTIFY"); //$NON-NLS-1$
+                        cmbBfc.select(0);
+                        ev_bfcHeader_cmb[0] = cmbBfc;
                     }
 
                     {
-                        Composite cmp_category = new Composite(grp_meta, SWT.NONE);
-                        cmp_category.setLayout(new GridLayout(2, false));
+                        Composite cmpCategory = new Composite(grpMeta, SWT.NONE);
+                        cmpCategory.setLayout(new GridLayout(2, false));
 
-                        Label lbl_category = new Label(cmp_category, SWT.NONE);
-                        lbl_category.setText("0 !CATEGORY "); //$NON-NLS-1$
+                        Label lblCategory = new Label(cmpCategory, SWT.NONE);
+                        lblCategory.setText("0 !CATEGORY "); //$NON-NLS-1$
 
-                        Combo cmb_category = new Combo(cmp_category, SWT.NONE);
-                        ev_category_cmb[0] = cmb_category;
+                        Combo cmbCategory = new Combo(cmpCategory, SWT.NONE);
+                        ev_category_cmb[0] = cmbCategory;
                         File categoryFile = new File(AppData.getPath() + "categories.txt"); //$NON-NLS-1$
                         if (!categoryFile.exists() || !categoryFile.isFile()) {
                             categoryFile = new File("categories.txt"); //$NON-NLS-1$
@@ -414,924 +414,923 @@ class EditorMetaDesign extends ApplicationWindow {
                             setDefaultCategories();
                         }
 
-                        cmb_category.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                        cmb_category.setText(""); //$NON-NLS-1$
-                        cmb_category.select(0);
+                        cmbCategory.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                        cmbCategory.setText(""); //$NON-NLS-1$
+                        cmbCategory.select(0);
                     }
 
                     {
-                        Composite cmp_keywords = new Composite(grp_meta, SWT.NONE);
-                        cmp_keywords.setLayout(new GridLayout(3, false));
+                        Composite cmpKeywords = new Composite(grpMeta, SWT.NONE);
+                        cmpKeywords.setLayout(new GridLayout(3, false));
 
-                        Label lbl_keywords = new Label(cmp_keywords, SWT.NONE);
-                        lbl_keywords.setText("0 !KEYWORDS "); //$NON-NLS-1$
+                        Label lblKeywords = new Label(cmpKeywords, SWT.NONE);
+                        lblKeywords.setText("0 !KEYWORDS "); //$NON-NLS-1$
 
-                        Text txt_keywords = new Text(cmp_keywords, SWT.SEARCH);
-                        txt_keywords.setMessage(I18n.META_KEYWORDS_1);
-                        ev_keywords_txt[0] = txt_keywords;
+                        Text txtKeywords = new Text(cmpKeywords, SWT.SEARCH);
+                        txtKeywords.setMessage(I18n.META_KEYWORDS_1);
+                        ev_keywords_txt[0] = txtKeywords;
 
-                        Label lbl_keywords2 = new Label(cmp_keywords, SWT.NONE);
-                        lbl_keywords2.setText(I18n.META_KEYWORDS_2);
+                        Label lblKeywords2 = new Label(cmpKeywords, SWT.NONE);
+                        lblKeywords2.setText(I18n.META_KEYWORDS_2);
                     }
 
                     {
-                        Composite cmp_cmdline = new Composite(grp_meta, SWT.NONE);
-                        cmp_cmdline.setLayout(new GridLayout(3, false));
+                        Composite cmpCmdline = new Composite(grpMeta, SWT.NONE);
+                        cmpCmdline.setLayout(new GridLayout(3, false));
 
-                        Label lbl_cmdline = new Label(cmp_cmdline, SWT.NONE);
-                        lbl_cmdline.setText("0 !CMDLINE "); //$NON-NLS-1$
+                        Label lblCmdline = new Label(cmpCmdline, SWT.NONE);
+                        lblCmdline.setText("0 !CMDLINE "); //$NON-NLS-1$
 
-                        Text txt_cmdline = new Text(cmp_cmdline, SWT.SEARCH);
-                        txt_cmdline.setMessage(I18n.META_COMMAND_LINE);
-                        ev_cmdline_txt[0] = txt_cmdline;
+                        Text txtCmdline = new Text(cmpCmdline, SWT.SEARCH);
+                        txtCmdline.setMessage(I18n.META_COMMAND_LINE);
+                        ev_cmdline_txt[0] = txtCmdline;
                     }
 
                     {
-                        Composite cmp_history1 = new Composite(grp_meta, SWT.NONE);
-                        cmp_history1.setLayout(new GridLayout(6, false));
+                        Composite cmpHistory1 = new Composite(grpMeta, SWT.NONE);
+                        cmpHistory1.setLayout(new GridLayout(6, false));
 
-                        Label lbl_history11 = new Label(cmp_history1, SWT.NONE);
-                        lbl_history11.setText("0 !HISTORY "); //$NON-NLS-1$
+                        Label lblHistory11 = new Label(cmpHistory1, SWT.NONE);
+                        lblHistory11.setText("0 !HISTORY "); //$NON-NLS-1$
 
-                        Text txt_history11 = new Text(cmp_history1, SWT.SEARCH);
-                        txt_history11.setMessage(I18n.META_HISTORY_1);
-                        ev_history11_txt[0] = txt_history11;
+                        Text txtHistory11 = new Text(cmpHistory1, SWT.SEARCH);
+                        txtHistory11.setMessage(I18n.META_HISTORY_1);
+                        ev_history11_txt[0] = txtHistory11;
 
-                        Label lbl_history12 = new Label(cmp_history1, SWT.NONE);
-                        lbl_history12.setText(" ["); //$NON-NLS-1$
+                        Label lblHistory12 = new Label(cmpHistory1, SWT.NONE);
+                        lblHistory12.setText(" ["); //$NON-NLS-1$
 
-                        Text txt_history12 = new Text(cmp_history1, SWT.SEARCH);
-                        txt_history12.setMessage(I18n.META_HISTORY_2);
-                        ev_history12_txt[0] = txt_history12;
+                        Text txtHistory12 = new Text(cmpHistory1, SWT.SEARCH);
+                        txtHistory12.setMessage(I18n.META_HISTORY_2);
+                        ev_history12_txt[0] = txtHistory12;
 
-                        Label lbl_history13 = new Label(cmp_history1, SWT.NONE);
-                        lbl_history13.setText("] "); //$NON-NLS-1$
+                        Label lblHistory13 = new Label(cmpHistory1, SWT.NONE);
+                        lblHistory13.setText("] "); //$NON-NLS-1$
 
-                        Text txt_history13 = new Text(cmp_history1, SWT.SEARCH);
-                        txt_history13.setMessage(I18n.META_HISTORY_4);
-                        ev_history13_txt[0] = txt_history13;
+                        Text txtHistory13 = new Text(cmpHistory1, SWT.SEARCH);
+                        txtHistory13.setMessage(I18n.META_HISTORY_4);
+                        ev_history13_txt[0] = txtHistory13;
                     }
 
                     {
-                        Composite cmp_history2 = new Composite(grp_meta, SWT.NONE);
-                        cmp_history2.setLayout(new GridLayout(6, false));
+                        Composite cmpHistory2 = new Composite(grpMeta, SWT.NONE);
+                        cmpHistory2.setLayout(new GridLayout(6, false));
 
-                        Label lbl_history21 = new Label(cmp_history2, SWT.NONE);
-                        lbl_history21.setText("or 0 !HISTORY "); //$NON-NLS-1$
+                        Label lblHistory21 = new Label(cmpHistory2, SWT.NONE);
+                        lblHistory21.setText("or 0 !HISTORY "); //$NON-NLS-1$
 
-                        Text txt_history21 = new Text(cmp_history2, SWT.SEARCH);
-                        txt_history21.setMessage(I18n.META_HISTORY_1);
-                        ev_history21_txt[0] = txt_history21;
+                        Text txtHistory21 = new Text(cmpHistory2, SWT.SEARCH);
+                        txtHistory21.setMessage(I18n.META_HISTORY_1);
+                        ev_history21_txt[0] = txtHistory21;
 
-                        Label lbl_history22 = new Label(cmp_history2, SWT.NONE);
-                        lbl_history22.setText(" {"); //$NON-NLS-1$
+                        Label lblHistory22 = new Label(cmpHistory2, SWT.NONE);
+                        lblHistory22.setText(" {"); //$NON-NLS-1$
 
-                        Text txt_history22 = new Text(cmp_history2, SWT.SEARCH);
-                        txt_history22.setMessage(I18n.META_HISTORY_3);
-                        ev_history22_txt[0] = txt_history22;
+                        Text txtHistory22 = new Text(cmpHistory2, SWT.SEARCH);
+                        txtHistory22.setMessage(I18n.META_HISTORY_3);
+                        ev_history22_txt[0] = txtHistory22;
 
-                        Label lbl_history23 = new Label(cmp_history2, SWT.NONE);
-                        lbl_history23.setText("} "); //$NON-NLS-1$
+                        Label lblHistory23 = new Label(cmpHistory2, SWT.NONE);
+                        lblHistory23.setText("} "); //$NON-NLS-1$
 
-                        Text txt_history23 = new Text(cmp_history2, SWT.SEARCH);
-                        txt_history23.setMessage(I18n.META_HISTORY_4);
-                        ev_history23_txt[0] = txt_history23;
+                        Text txtHistory23 = new Text(cmpHistory2, SWT.SEARCH);
+                        txtHistory23.setMessage(I18n.META_HISTORY_4);
+                        ev_history23_txt[0] = txtHistory23;
                     }
 
                     {
-                        Composite cmp_comment = new Composite(grp_meta, SWT.NONE);
-                        cmp_comment.setLayout(new GridLayout(5, false));
+                        Composite cmpComment = new Composite(grpMeta, SWT.NONE);
+                        cmpComment.setLayout(new GridLayout(5, false));
 
-                        Label lbl_type = new Label(cmp_comment, SWT.NONE);
-                        lbl_type.setText("0 // "); //$NON-NLS-1$
+                        Label lblType = new Label(cmpComment, SWT.NONE);
+                        lblType.setText("0 // "); //$NON-NLS-1$
 
-                        NButton btn_needsWork2 = new NButton(cmp_comment, SWT.TOGGLE);
-                        btn_needsWork2.setText("Needs work:"); //$NON-NLS-1$
-                        ev_comment_btn[0] = btn_needsWork2;
+                        NButton btnNeedsWork2 = new NButton(cmpComment, SWT.TOGGLE);
+                        btnNeedsWork2.setText("Needs work:"); //$NON-NLS-1$
+                        ev_comment_btn[0] = btnNeedsWork2;
 
-                        Text txt_comment = new Text(cmp_comment, SWT.SEARCH);
-                        txt_comment.setMessage(I18n.META_COMMENT);
-                        ev_comment_txt[0] = txt_comment;
+                        Text txtComment = new Text(cmpComment, SWT.SEARCH);
+                        txtComment.setMessage(I18n.META_COMMENT);
+                        ev_comment_txt[0] = txtComment;
                     }
                 }
             }
 
-            final CTabItem tItem2 = new CTabItem(tabFolder_Settings, SWT.NONE);
+            final CTabItem tItem2 = new CTabItem(tabFolderSettings, SWT.NONE);
             tItem2.setText(I18n.META_BACK_FACE_CULLING);
             {
 
-                final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.H_SCROLL | SWT.V_SCROLL);
-                tItem2.setControl(cmp_scroll);
+                final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.H_SCROLL | SWT.V_SCROLL);
+                tItem2.setControl(cmpScroll);
 
-                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.NONE);
-                cmp_scroll.setContent(cmp_metaArea);
-                cmp_scroll.setExpandHorizontal(true);
-                cmp_scroll.setExpandVertical(true);
-                cmp_scroll.setMinSize(600, 800);
+                Composite cmpMetaArea = new Composite(cmpScroll, SWT.NONE);
+                cmpScroll.setContent(cmpMetaArea);
+                cmpScroll.setExpandHorizontal(true);
+                cmpScroll.setExpandVertical(true);
+                cmpScroll.setMinSize(600, 800);
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
-                cmp_scroll.setLayoutData(gdm);
+                cmpScroll.setLayoutData(gdm);
 
-                cmp_metaArea.setLayout(new GridLayout(1, false));
+                cmpMetaArea.setLayout(new GridLayout(1, false));
 
                 {
-                    Composite grp_meta = cmp_metaArea;
-                    grp_meta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                    grp_meta.setLayout(new GridLayout(1, false));
+                    Composite grpMeta = cmpMetaArea;
+                    grpMeta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                    grpMeta.setLayout(new GridLayout(1, false));
 
-                    Composite cmp_bfc = new Composite(grp_meta, SWT.NONE);
-                    cmp_bfc.setLayout(new GridLayout(2, false));
+                    Composite cmpBfc = new Composite(grpMeta, SWT.NONE);
+                    cmpBfc.setLayout(new GridLayout(2, false));
 
-                    Label lbl_bfc = new Label(cmp_bfc, SWT.NONE);
-                    lbl_bfc.setText("0 BFC "); //$NON-NLS-1$
+                    Label lblBfc = new Label(cmpBfc, SWT.NONE);
+                    lblBfc.setText("0 BFC "); //$NON-NLS-1$
 
-                    Combo cmb_bfc = new Combo(cmp_bfc, SWT.NONE);
-                    cmb_bfc.setItems(new String[] { "INVERTNEXT", "NOCLIP", "CW", "CCW", "CLIP", "CLIP CW", "CLIP CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-                    cmb_bfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                    cmb_bfc.setText("INVERTNEXT"); //$NON-NLS-1$
-                    cmb_bfc.select(0);
-                    ev_bfc_cmb[0] = cmb_bfc;
+                    Combo cmbBfc = new Combo(cmpBfc, SWT.NONE);
+                    cmbBfc.setItems(new String[] { "INVERTNEXT", "NOCLIP", "CW", "CCW", "CLIP", "CLIP CW", "CLIP CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                    cmbBfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                    cmbBfc.setText("INVERTNEXT"); //$NON-NLS-1$
+                    cmbBfc.select(0);
+                    ev_bfc_cmb[0] = cmbBfc;
                 }
             }
 
-            final CTabItem tItem3 = new CTabItem(tabFolder_Settings, SWT.NONE);
+            final CTabItem tItem3 = new CTabItem(tabFolderSettings, SWT.NONE);
             tItem3.setText(I18n.META_TEXTURE_MAPPING);
             {
 
-                final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.H_SCROLL | SWT.V_SCROLL);
-                tItem3.setControl(cmp_scroll);
+                final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.H_SCROLL | SWT.V_SCROLL);
+                tItem3.setControl(cmpScroll);
 
-                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.NONE);
-                cmp_scroll.setContent(cmp_metaArea);
-                cmp_scroll.setExpandHorizontal(true);
-                cmp_scroll.setExpandVertical(true);
-                cmp_scroll.setMinSize(600, 800);
+                Composite cmpMetaArea = new Composite(cmpScroll, SWT.NONE);
+                cmpScroll.setContent(cmpMetaArea);
+                cmpScroll.setExpandHorizontal(true);
+                cmpScroll.setExpandVertical(true);
+                cmpScroll.setMinSize(600, 800);
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
-                cmp_scroll.setLayoutData(gdm);
+                cmpScroll.setLayoutData(gdm);
 
-                cmp_metaArea.setLayout(new GridLayout(1, false));
+                cmpMetaArea.setLayout(new GridLayout(1, false));
 
                 {
-                    Composite grp_meta = cmp_metaArea;
-                    grp_meta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                    grp_meta.setLayout(new GridLayout(1, false));
+                    Composite grpMeta = cmpMetaArea;
+                    grpMeta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                    grpMeta.setLayout(new GridLayout(1, false));
                     {
-                        Composite cmp_texmap = new Composite(grp_meta, SWT.NONE);
-                        cmp_texmap.setLayout(new GridLayout(14, false));
+                        Composite cmpTexmap = new Composite(grpMeta, SWT.NONE);
+                        cmpTexmap.setLayout(new GridLayout(14, false));
 
-                        Label lbl_texmap = new Label(cmp_texmap, SWT.NONE);
-                        lbl_texmap.setText("0 !TEXMAP "); //$NON-NLS-1$
+                        Label lblTexmap = new Label(cmpTexmap, SWT.NONE);
+                        lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
-                        Combo cmb_texmap = new Combo(cmp_texmap, SWT.NONE);
-                        cmb_texmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
-                        cmb_texmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                        cmb_texmap.setText("START"); //$NON-NLS-1$
-                        cmb_texmap.select(0);
-                        ev_texmapPlanar_cmb[0] = cmb_texmap;
+                        Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
+                        cmbTexmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
+                        cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                        cmbTexmap.setText("START"); //$NON-NLS-1$
+                        cmbTexmap.select(0);
+                        ev_texmapPlanar_cmb[0] = cmbTexmap;
 
-                        Label lbl_planar = new Label(cmp_texmap, SWT.NONE);
-                        lbl_planar.setText(" PLANAR "); //$NON-NLS-1$
+                        Label lblPlanar = new Label(cmpTexmap, SWT.NONE);
+                        lblPlanar.setText(" PLANAR "); //$NON-NLS-1$
                         {
-                            Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_planar.setMessage(I18n.META_TEXTURE_X1);
-                            ev_texmapPlanar1_txt[0] = txt_planar;
+                            Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPlanar.setMessage(I18n.META_TEXTURE_X1);
+                            ev_texmapPlanar1_txt[0] = txtPlanar;
                         }
                         {
-                            Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_planar.setMessage(I18n.META_TEXTURE_Y1);
-                            ev_texmapPlanar2_txt[0] = txt_planar;
+                            Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPlanar.setMessage(I18n.META_TEXTURE_Y1);
+                            ev_texmapPlanar2_txt[0] = txtPlanar;
                         }
                         {
-                            Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_planar.setMessage(I18n.META_TEXTURE_Z1);
-                            ev_texmapPlanar3_txt[0] = txt_planar;
+                            Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPlanar.setMessage(I18n.META_TEXTURE_Z1);
+                            ev_texmapPlanar3_txt[0] = txtPlanar;
                         }
                         {
-                            Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_planar.setMessage(I18n.META_TEXTURE_X2);
-                            ev_texmapPlanar4_txt[0] = txt_planar;
+                            Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPlanar.setMessage(I18n.META_TEXTURE_X2);
+                            ev_texmapPlanar4_txt[0] = txtPlanar;
                         }
                         {
-                            Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_planar.setMessage(I18n.META_TEXTURE_Y2);
-                            ev_texmapPlanar5_txt[0] = txt_planar;
+                            Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPlanar.setMessage(I18n.META_TEXTURE_Y2);
+                            ev_texmapPlanar5_txt[0] = txtPlanar;
                         }
                         {
-                            Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_planar.setMessage(I18n.META_TEXTURE_Z2);
-                            ev_texmapPlanar6_txt[0] = txt_planar;
+                            Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPlanar.setMessage(I18n.META_TEXTURE_Z2);
+                            ev_texmapPlanar6_txt[0] = txtPlanar;
                         }
                         {
-                            Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_planar.setMessage(I18n.META_TEXTURE_X3);
-                            ev_texmapPlanar7_txt[0] = txt_planar;
+                            Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPlanar.setMessage(I18n.META_TEXTURE_X3);
+                            ev_texmapPlanar7_txt[0] = txtPlanar;
                         }
                         {
-                            Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_planar.setMessage(I18n.META_TEXTURE_Y3);
-                            ev_texmapPlanar8_txt[0] = txt_planar;
+                            Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPlanar.setMessage(I18n.META_TEXTURE_Y3);
+                            ev_texmapPlanar8_txt[0] = txtPlanar;
                         }
                         {
-                            Text txt_planar = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_planar.setMessage(I18n.META_TEXTURE_Z3);
-                            ev_texmapPlanar9_txt[0] = txt_planar;
+                            Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPlanar.setMessage(I18n.META_TEXTURE_Z3);
+                            ev_texmapPlanar9_txt[0] = txtPlanar;
                         }
                         {
-                            Text txt_png = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_png.setMessage(I18n.META_TEXTURE_PNG);
-                            ev_texmapPlanar10_txt[0] = txt_png;
+                            Text txtPng = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPng.setMessage(I18n.META_TEXTURE_PNG);
+                            ev_texmapPlanar10_txt[0] = txtPng;
                         }
                         {
-                            NButton btn_browse = new NButton(cmp_texmap, SWT.NONE);
-                            btn_browse.setText(I18n.DIALOG_BROWSE);
-                            ev_texmapPlanar_btn[0] = btn_browse;
+                            NButton btnBrowse = new NButton(cmpTexmap, SWT.NONE);
+                            btnBrowse.setText(I18n.DIALOG_BROWSE);
+                            ev_texmapPlanar_btn[0] = btnBrowse;
                         }
                     }
                     {
-                        Composite cmp_texmap = new Composite(grp_meta, SWT.NONE);
-                        cmp_texmap.setLayout(new GridLayout(15, false));
+                        Composite cmpTexmap = new Composite(grpMeta, SWT.NONE);
+                        cmpTexmap.setLayout(new GridLayout(15, false));
 
-                        Label lbl_texmap = new Label(cmp_texmap, SWT.NONE);
-                        lbl_texmap.setText("0 !TEXMAP "); //$NON-NLS-1$
+                        Label lblTexmap = new Label(cmpTexmap, SWT.NONE);
+                        lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
-                        Combo cmb_texmap = new Combo(cmp_texmap, SWT.NONE);
-                        cmb_texmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
-                        cmb_texmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                        cmb_texmap.setText("START"); //$NON-NLS-1$
-                        cmb_texmap.select(0);
-                        ev_texmapCyli_cmb[0] = cmb_texmap;
+                        Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
+                        cmbTexmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
+                        cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                        cmbTexmap.setText("START"); //$NON-NLS-1$
+                        cmbTexmap.select(0);
+                        ev_texmapCyli_cmb[0] = cmbTexmap;
 
-                        Label lbl_cylindrical = new Label(cmp_texmap, SWT.NONE);
-                        lbl_cylindrical.setText(" CYLINDRICAL "); //$NON-NLS-1$
+                        Label lblCylindrical = new Label(cmpTexmap, SWT.NONE);
+                        lblCylindrical.setText(" CYLINDRICAL "); //$NON-NLS-1$
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_X1);
-                            txt_cylindrical.setToolTipText(I18n.META_CYLINDER_BOTTOM_CENTER);
-                            ev_texmapCyli1_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_X1);
+                            txtCylindrical.setToolTipText(I18n.META_CYLINDER_BOTTOM_CENTER);
+                            ev_texmapCyli1_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_Y1);
-                            txt_cylindrical.setToolTipText(I18n.META_CYLINDER_BOTTOM_CENTER);
-                            ev_texmapCyli2_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_Y1);
+                            txtCylindrical.setToolTipText(I18n.META_CYLINDER_BOTTOM_CENTER);
+                            ev_texmapCyli2_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_Z1);
-                            txt_cylindrical.setToolTipText(I18n.META_CYLINDER_BOTTOM_CENTER);
-                            ev_texmapCyli3_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_Z1);
+                            txtCylindrical.setToolTipText(I18n.META_CYLINDER_BOTTOM_CENTER);
+                            ev_texmapCyli3_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_X2);
-                            txt_cylindrical.setToolTipText(I18n.META_CYLINDER_TOP_CENTER);
-                            ev_texmapCyli4_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_X2);
+                            txtCylindrical.setToolTipText(I18n.META_CYLINDER_TOP_CENTER);
+                            ev_texmapCyli4_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_Y2);
-                            txt_cylindrical.setToolTipText(I18n.META_CYLINDER_TOP_CENTER);
-                            ev_texmapCyli5_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_Y2);
+                            txtCylindrical.setToolTipText(I18n.META_CYLINDER_TOP_CENTER);
+                            ev_texmapCyli5_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_Z2);
-                            txt_cylindrical.setToolTipText(I18n.META_CYLINDER_TOP_CENTER);
-                            ev_texmapCyli6_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_Z2);
+                            txtCylindrical.setToolTipText(I18n.META_CYLINDER_TOP_CENTER);
+                            ev_texmapCyli6_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_X3);
-                            txt_cylindrical.setToolTipText(I18n.META_TEXTURE_BOTTOM_CENTER);
-                            ev_texmapCyli7_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_X3);
+                            txtCylindrical.setToolTipText(I18n.META_TEXTURE_BOTTOM_CENTER);
+                            ev_texmapCyli7_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_Y3);
-                            txt_cylindrical.setToolTipText(I18n.META_TEXTURE_BOTTOM_CENTER);
-                            ev_texmapCyli8_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_Y3);
+                            txtCylindrical.setToolTipText(I18n.META_TEXTURE_BOTTOM_CENTER);
+                            ev_texmapCyli8_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_Z3);
-                            txt_cylindrical.setToolTipText(I18n.META_TEXTURE_BOTTOM_CENTER);
-                            ev_texmapCyli9_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_Z3);
+                            txtCylindrical.setToolTipText(I18n.META_TEXTURE_BOTTOM_CENTER);
+                            ev_texmapCyli9_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_cylindrical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_cylindrical.setMessage(I18n.META_TEXTURE_ANGLE_1);
-                            ev_texmapCyli10_txt[0] = txt_cylindrical;
+                            Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtCylindrical.setMessage(I18n.META_TEXTURE_ANGLE_1);
+                            ev_texmapCyli10_txt[0] = txtCylindrical;
                         }
                         {
-                            Text txt_png = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_png.setMessage(I18n.META_TEXTURE_PNG);
-                            ev_texmapCyli11_txt[0] = txt_png;
+                            Text txtPng = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPng.setMessage(I18n.META_TEXTURE_PNG);
+                            ev_texmapCyli11_txt[0] = txtPng;
                         }
                         {
-                            NButton btn_browse = new NButton(cmp_texmap, SWT.NONE);
-                            btn_browse.setText(I18n.DIALOG_BROWSE);
-                            ev_texmapCyli_btn[0] = btn_browse;
+                            NButton btnBrowse = new NButton(cmpTexmap, SWT.NONE);
+                            btnBrowse.setText(I18n.DIALOG_BROWSE);
+                            ev_texmapCyli_btn[0] = btnBrowse;
                         }
                     }
                     {
-                        Composite cmp_texmap = new Composite(grp_meta, SWT.NONE);
-                        cmp_texmap.setLayout(new GridLayout(16, false));
+                        Composite cmpTexmap = new Composite(grpMeta, SWT.NONE);
+                        cmpTexmap.setLayout(new GridLayout(16, false));
 
-                        Label lbl_texmap = new Label(cmp_texmap, SWT.NONE);
-                        lbl_texmap.setText("0 !TEXMAP "); //$NON-NLS-1$
+                        Label lblTexmap = new Label(cmpTexmap, SWT.NONE);
+                        lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
-                        Combo cmb_texmap = new Combo(cmp_texmap, SWT.NONE);
-                        cmb_texmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
-                        cmb_texmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                        cmb_texmap.setText("START"); //$NON-NLS-1$
-                        cmb_texmap.select(0);
-                        ev_texmapSphere_cmb[0] = cmb_texmap;
+                        Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
+                        cmbTexmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
+                        cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                        cmbTexmap.setText("START"); //$NON-NLS-1$
+                        cmbTexmap.select(0);
+                        ev_texmapSphere_cmb[0] = cmbTexmap;
 
-                        Label lbl_spherical = new Label(cmp_texmap, SWT.NONE);
-                        lbl_spherical.setText(" SPHERICAL "); //$NON-NLS-1$
+                        Label lblSpherical = new Label(cmpTexmap, SWT.NONE);
+                        lblSpherical.setText(" SPHERICAL "); //$NON-NLS-1$
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_X1);
-                            txt_spherical.setToolTipText(I18n.META_TEXTURE_SPHERE_CENTER);
-                            ev_texmapSphere1_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_X1);
+                            txtSpherical.setToolTipText(I18n.META_TEXTURE_SPHERE_CENTER);
+                            ev_texmapSphere1_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_Y1);
-                            txt_spherical.setToolTipText(I18n.META_TEXTURE_SPHERE_CENTER);
-                            ev_texmapSphere2_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_Y1);
+                            txtSpherical.setToolTipText(I18n.META_TEXTURE_SPHERE_CENTER);
+                            ev_texmapSphere2_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_Z1);
-                            txt_spherical.setToolTipText(I18n.META_TEXTURE_SPHERE_CENTER);
-                            ev_texmapSphere3_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_Z1);
+                            txtSpherical.setToolTipText(I18n.META_TEXTURE_SPHERE_CENTER);
+                            ev_texmapSphere3_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_X2);
-                            txt_spherical.setToolTipText(I18n.META_TEXTURE_CENTER);
-                            ev_texmapSphere4_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_X2);
+                            txtSpherical.setToolTipText(I18n.META_TEXTURE_CENTER);
+                            ev_texmapSphere4_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_Y2);
-                            txt_spherical.setToolTipText(I18n.META_TEXTURE_CENTER);
-                            ev_texmapSphere5_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_Y2);
+                            txtSpherical.setToolTipText(I18n.META_TEXTURE_CENTER);
+                            ev_texmapSphere5_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_Z2);
-                            txt_spherical.setToolTipText(I18n.META_TEXTURE_CENTER);
-                            ev_texmapSphere6_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_Z2);
+                            txtSpherical.setToolTipText(I18n.META_TEXTURE_CENTER);
+                            ev_texmapSphere6_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_X3);
-                            txt_spherical.setToolTipText(I18n.META_TEXTURE_TOP_CENTER);
-                            ev_texmapSphere7_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_X3);
+                            txtSpherical.setToolTipText(I18n.META_TEXTURE_TOP_CENTER);
+                            ev_texmapSphere7_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_Y3);
-                            txt_spherical.setToolTipText(I18n.META_TEXTURE_TOP_CENTER);
-                            ev_texmapSphere8_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_Y3);
+                            txtSpherical.setToolTipText(I18n.META_TEXTURE_TOP_CENTER);
+                            ev_texmapSphere8_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_Z3);
-                            txt_spherical.setToolTipText(I18n.META_TEXTURE_TOP_CENTER);
-                            ev_texmapSphere9_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_Z3);
+                            txtSpherical.setToolTipText(I18n.META_TEXTURE_TOP_CENTER);
+                            ev_texmapSphere9_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_ANGLE_1);
-                            ev_texmapSphere10_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_ANGLE_1);
+                            ev_texmapSphere10_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_spherical = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_spherical.setMessage(I18n.META_TEXTURE_ANGLE_2);
-                            ev_texmapSphere11_txt[0] = txt_spherical;
+                            Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
+                            txtSpherical.setMessage(I18n.META_TEXTURE_ANGLE_2);
+                            ev_texmapSphere11_txt[0] = txtSpherical;
                         }
                         {
-                            Text txt_png = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_png.setMessage(I18n.META_TEXTURE_PNG);
-                            ev_texmapSphere12_txt[0] = txt_png;
+                            Text txtPng = new Text(cmpTexmap, SWT.SEARCH);
+                            txtPng.setMessage(I18n.META_TEXTURE_PNG);
+                            ev_texmapSphere12_txt[0] = txtPng;
                         }
                         {
-                            NButton btn_browse = new NButton(cmp_texmap, SWT.NONE);
-                            btn_browse.setText(I18n.DIALOG_BROWSE);
-                            ev_texmapSphere_btn[0] = btn_browse;
+                            NButton btnBrowse = new NButton(cmpTexmap, SWT.NONE);
+                            btnBrowse.setText(I18n.DIALOG_BROWSE);
+                            ev_texmapSphere_btn[0] = btnBrowse;
                         }
                     }
                     {
-                        NButton btn_texmap = new NButton(grp_meta, SWT.NONE);
-                        btn_texmap.setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
-                        ev_texmapFallback_btn[0] = btn_texmap;
+                        NButton btnTexmap = new NButton(grpMeta, SWT.NONE);
+                        btnTexmap.setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
+                        ev_texmapFallback_btn[0] = btnTexmap;
                     }
                     {
-                        Composite cmp_texmap = new Composite(grp_meta, SWT.NONE);
-                        cmp_texmap.setLayout(new GridLayout(2, false));
-                        Label lbl_texmap = new Label(cmp_texmap, SWT.NONE);
-                        lbl_texmap.setText("0 !: "); //$NON-NLS-1$
+                        Composite cmpTexmap = new Composite(grpMeta, SWT.NONE);
+                        cmpTexmap.setLayout(new GridLayout(2, false));
+                        Label lblTexmap = new Label(cmpTexmap, SWT.NONE);
+                        lblTexmap.setText("0 !: "); //$NON-NLS-1$
                         {
-                            Text txt_meta = new Text(cmp_texmap, SWT.SEARCH);
-                            txt_meta.setMessage(I18n.META_TEXTURE_GEOM_1);
-                            txt_meta.setToolTipText(I18n.META_TEXTURE_GEOM_2);
-                            ev_texmapMeta_txt[0] = txt_meta;
+                            Text txtMeta = new Text(cmpTexmap, SWT.SEARCH);
+                            txtMeta.setMessage(I18n.META_TEXTURE_GEOM_1);
+                            txtMeta.setToolTipText(I18n.META_TEXTURE_GEOM_2);
+                            ev_texmapMeta_txt[0] = txtMeta;
                         }
                     }
                     {
-                        NButton btn_texmap = new NButton(grp_meta, SWT.NONE);
-                        btn_texmap.setText("0 !TEXMAP END"); //$NON-NLS-1$
-                        ev_texmapEnd_btn[0] = btn_texmap;
+                        NButton btnTexmap = new NButton(grpMeta, SWT.NONE);
+                        btnTexmap.setText("0 !TEXMAP END"); //$NON-NLS-1$
+                        ev_texmapEnd_btn[0] = btnTexmap;
                     }
                 }
             }
 
-            final CTabItem tItem4 = new CTabItem(tabFolder_Settings, SWT.NONE);
+            final CTabItem tItem4 = new CTabItem(tabFolderSettings, SWT.NONE);
             tItem4.setText(I18n.META_LPE);
             {
 
-                final ScrolledComposite cmp_scroll = new ScrolledComposite(tabFolder_Settings, SWT.H_SCROLL | SWT.V_SCROLL);
-                tItem4.setControl(cmp_scroll);
+                final ScrolledComposite cmpScroll = new ScrolledComposite(tabFolderSettings, SWT.H_SCROLL | SWT.V_SCROLL);
+                tItem4.setControl(cmpScroll);
 
-                Composite cmp_metaArea = new Composite(cmp_scroll, SWT.NONE);
-                cmp_scroll.setContent(cmp_metaArea);
-                cmp_scroll.setExpandHorizontal(true);
-                cmp_scroll.setExpandVertical(true);
-                cmp_scroll.setMinSize(600, 800);
+                Composite cmpMetaArea = new Composite(cmpScroll, SWT.NONE);
+                cmpScroll.setContent(cmpMetaArea);
+                cmpScroll.setExpandHorizontal(true);
+                cmpScroll.setExpandVertical(true);
+                cmpScroll.setMinSize(600, 800);
 
                 GridData gdm = new GridData();
                 gdm.grabExcessHorizontalSpace = true;
-                cmp_scroll.setLayoutData(gdm);
+                cmpScroll.setLayoutData(gdm);
 
-                cmp_metaArea.setLayout(new GridLayout(1, false));
+                cmpMetaArea.setLayout(new GridLayout(1, false));
 
                 {
-                    Composite grp_meta = cmp_metaArea;
-                    grp_meta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                    grp_meta.setLayout(new GridLayout(1, false));
+                    Composite grpMeta = cmpMetaArea;
+                    grpMeta.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                    grpMeta.setLayout(new GridLayout(1, false));
 
                     {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(2, false));
-                        Label lbl_todo = new Label(cmp_lpe, SWT.NONE);
-                        lbl_todo.setText("0 !LPE TODO "); //$NON-NLS-1$
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(2, false));
+                        Label lblTodo = new Label(cmpLpe, SWT.NONE);
+                        lblTodo.setText("0 !LPE TODO "); //$NON-NLS-1$
                         {
-                            Text txt_todo = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_todo.setMessage(I18n.META_TODO);
-                            ev_todo_txt[0] = txt_todo;
+                            Text txtTodo = new Text(cmpLpe, SWT.SEARCH);
+                            txtTodo.setMessage(I18n.META_TODO);
+                            ev_todo_txt[0] = txtTodo;
                         }
                     }
 
                     {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(4, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE VERTEX "); //$NON-NLS-1$
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(4, false));
+                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE VERTEX "); //$NON-NLS-1$
                         {
-                            Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_x.setMessage(I18n.META_VERTEX_X);
-                            txt_x.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_vertex1_txt[0] = txt_x;
+                            Text txtX = new Text(cmpLpe, SWT.SEARCH);
+                            txtX.setMessage(I18n.META_VERTEX_X);
+                            txtX.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_vertex1_txt[0] = txtX;
                         }
                         {
-                            Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_y.setMessage(I18n.META_VERTEX_Y);
-                            txt_y.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_vertex2_txt[0] = txt_y;
+                            Text txtY = new Text(cmpLpe, SWT.SEARCH);
+                            txtY.setMessage(I18n.META_VERTEX_Y);
+                            txtY.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_vertex2_txt[0] = txtY;
                         }
                         {
-                            Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_z.setMessage(I18n.META_VERTEX_Z);
-                            txt_z.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_vertex3_txt[0] = txt_z;
-                        }
-                    }
-
-                    {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(5, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
-                        {
-                            Combo cmb_csg = new Combo(cmp_lpe, SWT.NONE);
-                            cmb_csg.setItems(new String[] { "UNION ", "DIFFERENCE ", "INTERSECTION "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            cmb_csg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                            cmb_csg.setText("UNION "); //$NON-NLS-1$
-                            cmb_csg.select(0);
-                            ev_csgAction_cmb[0] = cmb_csg;
-                        }
-                        {
-                            Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid1.setMessage(I18n.META_CSG_SOURCE_1);
-                            ev_csgAction1_txt[0] = txt_csgid1;
-                        }
-                        {
-                            Text txt_csgid2 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid2.setMessage(I18n.META_CSG_SOURCE_2);
-                            ev_csgAction2_txt[0] = txt_csgid2;
-                        }
-                        {
-                            Text txt_csgid3 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid3.setMessage(I18n.META_CSG_TARGET_1);
-                            ev_csgAction3_txt[0] = txt_csgid3;
-                        }
-                    }
-                    {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(16, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
-                        {
-                            Combo cmb_csg = new Combo(cmp_lpe, SWT.NONE);
-                            cmb_csg.setItems(new String[] { "CUBOID ", "ELLIPSOID ", "QUAD ", "CYLINDER ", "CONE ", "CIRCLE ", "MESH ", "EXTRUDE "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
-                            cmb_csg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                            cmb_csg.setText("CUBOID "); //$NON-NLS-1$
-                            cmb_csg.select(0);
-                            ev_csgBody_cmb[0] = cmb_csg;
-                        }
-                        {
-                            Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid1.setMessage(I18n.META_CSG_UNIQUE);
-                            txt_csgid1.setToolTipText(I18n.META_CSG_UNIQUE_HINT);
-                            ev_csgBody1_txt[0] = txt_csgid1;
-                        }
-                        {
-                            Text txt_csgid2 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid2.setMessage(I18n.META_COLOUR);
-                            txt_csgid2.setToolTipText(I18n.META_COLOUR_HINT);
-                            ev_csgBody2_txt[0] = txt_csgid2;
-
-                        }
-                        {
-                            Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_x.setMessage(I18n.META_VERTEX_X);
-                            txt_x.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgBody3_txt[0] = txt_x;
-                        }
-                        {
-                            Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_y.setMessage(I18n.META_VERTEX_Y);
-                            txt_y.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgBody4_txt[0] = txt_y;
-                        }
-                        {
-                            Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_z.setMessage(I18n.META_VERTEX_Z);
-                            txt_z.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgBody5_txt[0] = txt_z;
-                        }
-
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M00);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody6_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M01);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody7_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M02);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody8_txt[0] = txt_m;
-                        }
-
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M10);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody9_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M11);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody10_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M12);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody11_txt[0] = txt_m;
-                        }
-
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M20);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody12_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M21);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody13_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M22);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody14_txt[0] = txt_m;
-                        }
-                    }
-                    {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(16, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE CSG_TRANSFORM "); //$NON-NLS-1$
-                        {
-                            Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid1.setMessage(I18n.META_CSG_SOURCE_1);
-                            txt_csgid1.setToolTipText(I18n.META_CSG_UNIQUE_HINT);
-                            ev_csgTrans1_txt[0] = txt_csgid1;
-                        }
-                        {
-                            Text txt_csgid2 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid2.setMessage(I18n.META_CSG_TARGET_1);
-                            txt_csgid2.setToolTipText(I18n.META_CSG_UNIQUE_HINT);
-                            ev_csgTrans2_txt[0] = txt_csgid2;
-
-                        }
-                        {
-                            Text txt_csgcol = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgcol.setMessage(I18n.META_COLOUR);
-                            txt_csgcol.setToolTipText(I18n.META_COLOUR_HINT);
-                            ev_csgTrans3_txt[0] = txt_csgcol;
-
-                        }
-                        {
-                            Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_x.setMessage(I18n.META_VERTEX_X);
-                            txt_x.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgTrans4_txt[0] = txt_x;
-                        }
-                        {
-                            Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_y.setMessage(I18n.META_VERTEX_Y);
-                            txt_y.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgTrans5_txt[0] = txt_y;
-                        }
-                        {
-                            Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_z.setMessage(I18n.META_VERTEX_Z);
-                            txt_z.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgTrans6_txt[0] = txt_z;
-                        }
-
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M00);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans7_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M01);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans8_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M02);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans9_txt[0] = txt_m;
-                        }
-
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M10);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans10_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M11);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans11_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M12);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans12_txt[0] = txt_m;
-                        }
-
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M20);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans13_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M21);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans14_txt[0] = txt_m;
-                        }
-                        {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_M22);
-                            txt_m.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans15_txt[0] = txt_m;
+                            Text txtZ = new Text(cmpLpe, SWT.SEARCH);
+                            txtZ.setMessage(I18n.META_VERTEX_Z);
+                            txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_vertex3_txt[0] = txtZ;
                         }
                     }
 
                     {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(16, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE CSG_EXT_CFG "); //$NON-NLS-1$
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(5, false));
+                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                         {
-                            Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid1.setMessage(I18n.META_CSG_EXTRUDE_1_A);
-                            txt_csgid1.setToolTipText(I18n.META_CSG_EXTRUDE_1_B);
-                            ev_csgEx1_txt[0] = txt_csgid1;
+                            Combo cmbCsg = new Combo(cmpLpe, SWT.NONE);
+                            cmbCsg.setItems(new String[] { "UNION ", "DIFFERENCE ", "INTERSECTION "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            cmbCsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                            cmbCsg.setText("UNION "); //$NON-NLS-1$
+                            cmbCsg.select(0);
+                            ev_csgAction_cmb[0] = cmbCsg;
                         }
                         {
-                            Text txt_csgid2 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid2.setMessage(I18n.META_CSG_EXTRUDE_2_A);
-                            txt_csgid2.setToolTipText(I18n.META_CSG_EXTRUDE_2_B);
-                            ev_csgEx2_txt[0] = txt_csgid2;
+                            Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid1.setMessage(I18n.META_CSG_SOURCE_1);
+                            ev_csgAction1_txt[0] = txtCsgid1;
+                        }
+                        {
+                            Text txtCsgid2 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid2.setMessage(I18n.META_CSG_SOURCE_2);
+                            ev_csgAction2_txt[0] = txtCsgid2;
+                        }
+                        {
+                            Text txtCsgid3 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid3.setMessage(I18n.META_CSG_TARGET_1);
+                            ev_csgAction3_txt[0] = txtCsgid3;
+                        }
+                    }
+                    {
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(16, false));
+                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
+                        {
+                            Combo cmbCsg = new Combo(cmpLpe, SWT.NONE);
+                            cmbCsg.setItems(new String[] { "CUBOID ", "ELLIPSOID ", "QUAD ", "CYLINDER ", "CONE ", "CIRCLE ", "MESH ", "EXTRUDE "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                            cmbCsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                            cmbCsg.setText("CUBOID "); //$NON-NLS-1$
+                            cmbCsg.select(0);
+                            ev_csgBody_cmb[0] = cmbCsg;
+                        }
+                        {
+                            Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid1.setMessage(I18n.META_CSG_UNIQUE);
+                            txtCsgid1.setToolTipText(I18n.META_CSG_UNIQUE_HINT);
+                            ev_csgBody1_txt[0] = txtCsgid1;
+                        }
+                        {
+                            Text txtCsgid2 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid2.setMessage(I18n.META_COLOUR);
+                            txtCsgid2.setToolTipText(I18n.META_COLOUR_HINT);
+                            ev_csgBody2_txt[0] = txtCsgid2;
 
                         }
                         {
-                            Text txt_csgcol = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgcol.setMessage(I18n.META_CSG_EXTRUDE_3_A);
-                            txt_csgcol.setToolTipText(I18n.META_CSG_EXTRUDE_3_B);
-                            ev_csgEx3_txt[0] = txt_csgcol;
-
+                            Text txtX = new Text(cmpLpe, SWT.SEARCH);
+                            txtX.setMessage(I18n.META_VERTEX_X);
+                            txtX.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_csgBody3_txt[0] = txtX;
                         }
                         {
-                            Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_x.setMessage(I18n.META_CSG_EXTRUDE_4_A);
-                            txt_x.setToolTipText(I18n.META_CSG_EXTRUDE_4_B);
-                            ev_csgEx4_txt[0] = txt_x;
+                            Text txtY = new Text(cmpLpe, SWT.SEARCH);
+                            txtY.setMessage(I18n.META_VERTEX_Y);
+                            txtY.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_csgBody4_txt[0] = txtY;
                         }
                         {
-                            Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_y.setMessage(I18n.META_CSG_EXTRUDE_5_A);
-                            txt_y.setToolTipText(I18n.META_CSG_EXTRUDE_5_B);
-                            ev_csgEx5_txt[0] = txt_y;
-                        }
-                        {
-                            Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_z.setMessage(I18n.META_CSG_EXTRUDE_6_A);
-                            txt_z.setToolTipText(I18n.META_CSG_EXTRUDE_6_B);
-                            ev_csgEx6_txt[0] = txt_z;
+                            Text txtZ = new Text(cmpLpe, SWT.SEARCH);
+                            txtZ.setMessage(I18n.META_VERTEX_Z);
+                            txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_csgBody5_txt[0] = txtZ;
                         }
 
                         {
-                            Text txt_m = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_m.setMessage(I18n.META_CSG_EXTRUDE_7_A);
-                            txt_m.setToolTipText(I18n.META_CSG_EXTRUDE_7_B);
-                            ev_csgEx7_txt[0] = txt_m;
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M00);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgBody6_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M01);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgBody7_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M02);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgBody8_txt[0] = txtM;
+                        }
+
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M10);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgBody9_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M11);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgBody10_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M12);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgBody11_txt[0] = txtM;
+                        }
+
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M20);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgBody12_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M21);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgBody13_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M22);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgBody14_txt[0] = txtM;
+                        }
+                    }
+                    {
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(16, false));
+                        Label lblCsgTransform = new Label(cmpLpe, SWT.NONE);
+                        lblCsgTransform.setText("0 !LPE CSG_TRANSFORM "); //$NON-NLS-1$
+                        {
+                            Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid1.setMessage(I18n.META_CSG_SOURCE_1);
+                            txtCsgid1.setToolTipText(I18n.META_CSG_UNIQUE_HINT);
+                            ev_csgTrans1_txt[0] = txtCsgid1;
+                        }
+                        {
+                            Text txtCsgid2 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid2.setMessage(I18n.META_CSG_TARGET_1);
+                            txtCsgid2.setToolTipText(I18n.META_CSG_UNIQUE_HINT);
+                            ev_csgTrans2_txt[0] = txtCsgid2;
+
+                        }
+                        {
+                            Text txtCsgcol = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgcol.setMessage(I18n.META_COLOUR);
+                            txtCsgcol.setToolTipText(I18n.META_COLOUR_HINT);
+                            ev_csgTrans3_txt[0] = txtCsgcol;
+                        }
+                        {
+                            Text txtX = new Text(cmpLpe, SWT.SEARCH);
+                            txtX.setMessage(I18n.META_VERTEX_X);
+                            txtX.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_csgTrans4_txt[0] = txtX;
+                        }
+                        {
+                            Text txtY = new Text(cmpLpe, SWT.SEARCH);
+                            txtY.setMessage(I18n.META_VERTEX_Y);
+                            txtY.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_csgTrans5_txt[0] = txtY;
+                        }
+                        {
+                            Text txtZ = new Text(cmpLpe, SWT.SEARCH);
+                            txtZ.setMessage(I18n.META_VERTEX_Z);
+                            txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_csgTrans6_txt[0] = txtZ;
+                        }
+
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M00);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgTrans7_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M01);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgTrans8_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M02);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgTrans9_txt[0] = txtM;
+                        }
+
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M10);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgTrans10_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M11);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgTrans11_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M12);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgTrans12_txt[0] = txtM;
+                        }
+
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M20);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgTrans13_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M21);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgTrans14_txt[0] = txtM;
+                        }
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_M22);
+                            txtM.setToolTipText(I18n.META_TRANS_MATRIX);
+                            ev_csgTrans15_txt[0] = txtM;
                         }
                     }
 
                     {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(2, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE CSG_COMPILE"); //$NON-NLS-1$
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(16, false));
+                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE CSG_EXT_CFG "); //$NON-NLS-1$
                         {
-                            Text txt_csgid1 = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgid1.setMessage(I18n.META_CSG_SOURCE_3);
-                            txt_csgid1.setToolTipText(I18n.META_CSG_COMPILE);
-                            ev_csgCompile_txt[0] = txt_csgid1;
+                            Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid1.setMessage(I18n.META_CSG_EXTRUDE_1_A);
+                            txtCsgid1.setToolTipText(I18n.META_CSG_EXTRUDE_1_B);
+                            ev_csgEx1_txt[0] = txtCsgid1;
+                        }
+                        {
+                            Text txtCsgid2 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid2.setMessage(I18n.META_CSG_EXTRUDE_2_A);
+                            txtCsgid2.setToolTipText(I18n.META_CSG_EXTRUDE_2_B);
+                            ev_csgEx2_txt[0] = txtCsgid2;
+
+                        }
+                        {
+                            Text txtCsgcol = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgcol.setMessage(I18n.META_CSG_EXTRUDE_3_A);
+                            txtCsgcol.setToolTipText(I18n.META_CSG_EXTRUDE_3_B);
+                            ev_csgEx3_txt[0] = txtCsgcol;
+
+                        }
+                        {
+                            Text txtX = new Text(cmpLpe, SWT.SEARCH);
+                            txtX.setMessage(I18n.META_CSG_EXTRUDE_4_A);
+                            txtX.setToolTipText(I18n.META_CSG_EXTRUDE_4_B);
+                            ev_csgEx4_txt[0] = txtX;
+                        }
+                        {
+                            Text txtY = new Text(cmpLpe, SWT.SEARCH);
+                            txtY.setMessage(I18n.META_CSG_EXTRUDE_5_A);
+                            txtY.setToolTipText(I18n.META_CSG_EXTRUDE_5_B);
+                            ev_csgEx5_txt[0] = txtY;
+                        }
+                        {
+                            Text txtZ = new Text(cmpLpe, SWT.SEARCH);
+                            txtZ.setMessage(I18n.META_CSG_EXTRUDE_6_A);
+                            txtZ.setToolTipText(I18n.META_CSG_EXTRUDE_6_B);
+                            ev_csgEx6_txt[0] = txtZ;
+                        }
+
+                        {
+                            Text txtM = new Text(cmpLpe, SWT.SEARCH);
+                            txtM.setMessage(I18n.META_CSG_EXTRUDE_7_A);
+                            txtM.setToolTipText(I18n.META_CSG_EXTRUDE_7_B);
+                            ev_csgEx7_txt[0] = txtM;
                         }
                     }
 
                     {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(2, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE CSG_QUALITY"); //$NON-NLS-1$
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(2, false));
+                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE CSG_COMPILE"); //$NON-NLS-1$
                         {
-                            Text txt_csgQuality = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgQuality.setMessage(I18n.META_QUALITY);
-                            ev_csgQuality_txt[0] = txt_csgQuality;
+                            Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgid1.setMessage(I18n.META_CSG_SOURCE_3);
+                            txtCsgid1.setToolTipText(I18n.META_CSG_COMPILE);
+                            ev_csgCompile_txt[0] = txtCsgid1;
                         }
                     }
 
                     {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(2, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE CSG_EPSILON"); //$NON-NLS-1$
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(2, false));
+                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE CSG_QUALITY"); //$NON-NLS-1$
                         {
-                            Text txt_csgEpsilon = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgEpsilon.setMessage(I18n.META_CSG_EPSILON_1);
-                            txt_csgEpsilon.setToolTipText(I18n.META_CSG_EPSILON_2);
-                            ev_csgEpsilon_txt[0] = txt_csgEpsilon;
+                            Text txtCsgQuality = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgQuality.setMessage(I18n.META_QUALITY);
+                            ev_csgQuality_txt[0] = txtCsgQuality;
                         }
                     }
 
                     {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(2, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE CSG_TJUNCTION_EPSILON"); //$NON-NLS-1$
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(2, false));
+                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE CSG_EPSILON"); //$NON-NLS-1$
                         {
-                            Text txt_csgTJunctionEpsilon = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgTJunctionEpsilon.setMessage(I18n.META_CSG_JUNCTION_EPSILON_1);
-                            txt_csgTJunctionEpsilon.setToolTipText(I18n.META_CSG_JUNCTION_EPSILON_2);
-                            ev_csgTJunctionEpsilon_txt[0] = txt_csgTJunctionEpsilon;
+                            Text txtCsgEpsilon = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgEpsilon.setMessage(I18n.META_CSG_EPSILON_1);
+                            txtCsgEpsilon.setToolTipText(I18n.META_CSG_EPSILON_2);
+                            ev_csgEpsilon_txt[0] = txtCsgEpsilon;
                         }
                     }
 
                     {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(2, false));
-                        Label lbl_vertex = new Label(cmp_lpe, SWT.NONE);
-                        lbl_vertex.setText("0 !LPE CSG_EDGE_COLLAPSE_EPSILON"); //$NON-NLS-1$
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(2, false));
+                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE CSG_TJUNCTION_EPSILON"); //$NON-NLS-1$
                         {
-                            Text txt_csgEdgeCollapseEpsilon = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_csgEdgeCollapseEpsilon.setMessage(I18n.META_CSG_COLLAPSE_1);
-                            txt_csgEdgeCollapseEpsilon.setToolTipText(I18n.META_CSG_COLLAPSE_2);
-                            ev_csgEdgeCollapseEpsilon_txt[0] = txt_csgEdgeCollapseEpsilon;
+                            Text txtCsgTJunctionEpsilon = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgTJunctionEpsilon.setMessage(I18n.META_CSG_JUNCTION_EPSILON_1);
+                            txtCsgTJunctionEpsilon.setToolTipText(I18n.META_CSG_JUNCTION_EPSILON_2);
+                            ev_csgTJunctionEpsilon_txt[0] = txtCsgTJunctionEpsilon;
                         }
                     }
 
                     {
-                        NButton btn_dontoptimize = new NButton(grp_meta, SWT.NONE);
-                        btn_dontoptimize.setText("0 !LPE CSG_DONT_OPTIMISE"); //$NON-NLS-1$
-                        ev_csgDontOptimize_btn[0] = btn_dontoptimize;
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(2, false));
+                        Label lblVertex = new Label(cmpLpe, SWT.NONE);
+                        lblVertex.setText("0 !LPE CSG_EDGE_COLLAPSE_EPSILON"); //$NON-NLS-1$
+                        {
+                            Text txtCsgEdgeCollapseEpsilon = new Text(cmpLpe, SWT.SEARCH);
+                            txtCsgEdgeCollapseEpsilon.setMessage(I18n.META_CSG_COLLAPSE_1);
+                            txtCsgEdgeCollapseEpsilon.setToolTipText(I18n.META_CSG_COLLAPSE_2);
+                            ev_csgEdgeCollapseEpsilon_txt[0] = txtCsgEdgeCollapseEpsilon;
+                        }
                     }
 
                     {
-                        Composite cmp_lpe = new Composite(grp_meta, SWT.NONE);
-                        cmp_lpe.setLayout(new GridLayout(11, false));
-                        Label lbl_png = new Label(cmp_lpe, SWT.NONE);
-                        lbl_png.setText("0 !LPE PNG "); //$NON-NLS-1$
+                        NButton btnDontoptimize = new NButton(grpMeta, SWT.NONE);
+                        btnDontoptimize.setText("0 !LPE CSG_DONT_OPTIMISE"); //$NON-NLS-1$
+                        ev_csgDontOptimize_btn[0] = btnDontoptimize;
+                    }
+
+                    {
+                        Composite cmpLpe = new Composite(grpMeta, SWT.NONE);
+                        cmpLpe.setLayout(new GridLayout(11, false));
+                        Label lblPng = new Label(cmpLpe, SWT.NONE);
+                        lblPng.setText("0 !LPE PNG "); //$NON-NLS-1$
                         {
-                            Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_x.setMessage(I18n.META_VERTEX_X);
-                            txt_x.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png1_txt[0] = txt_x;
+                            Text txtX = new Text(cmpLpe, SWT.SEARCH);
+                            txtX.setMessage(I18n.META_VERTEX_X);
+                            txtX.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_png1_txt[0] = txtX;
                         }
                         {
-                            Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_y.setMessage(I18n.META_VERTEX_Y);
-                            txt_y.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png2_txt[0] = txt_y;
+                            Text txtY = new Text(cmpLpe, SWT.SEARCH);
+                            txtY.setMessage(I18n.META_VERTEX_Y);
+                            txtY.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_png2_txt[0] = txtY;
                         }
                         {
-                            Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_z.setMessage(I18n.META_VERTEX_Z);
-                            txt_z.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png3_txt[0] = txt_z;
+                            Text txtZ = new Text(cmpLpe, SWT.SEARCH);
+                            txtZ.setMessage(I18n.META_VERTEX_Z);
+                            txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_png3_txt[0] = txtZ;
                         }
 
                         {
-                            Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_x.setMessage(I18n.META_ROTATION_X);
-                            txt_x.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png4_txt[0] = txt_x;
+                            Text txtX = new Text(cmpLpe, SWT.SEARCH);
+                            txtX.setMessage(I18n.META_ROTATION_X);
+                            txtX.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_png4_txt[0] = txtX;
                         }
                         {
-                            Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_y.setMessage(I18n.META_ROTATION_Y);
-                            txt_y.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png5_txt[0] = txt_y;
+                            Text txtY = new Text(cmpLpe, SWT.SEARCH);
+                            txtY.setMessage(I18n.META_ROTATION_Y);
+                            txtY.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_png5_txt[0] = txtY;
                         }
                         {
-                            Text txt_z = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_z.setMessage(I18n.META_ROTATION_Z);
-                            txt_z.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png6_txt[0] = txt_z;
+                            Text txtZ = new Text(cmpLpe, SWT.SEARCH);
+                            txtZ.setMessage(I18n.META_ROTATION_Z);
+                            txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_png6_txt[0] = txtZ;
                         }
 
                         {
-                            Text txt_x = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_x.setMessage(I18n.META_SCALE_X);
-                            txt_x.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png7_txt[0] = txt_x;
+                            Text txtX = new Text(cmpLpe, SWT.SEARCH);
+                            txtX.setMessage(I18n.META_SCALE_X);
+                            txtX.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_png7_txt[0] = txtX;
                         }
                         {
-                            Text txt_y = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_y.setMessage(I18n.META_SCALE_Y);
-                            txt_y.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png8_txt[0] = txt_y;
+                            Text txtY = new Text(cmpLpe, SWT.SEARCH);
+                            txtY.setMessage(I18n.META_SCALE_Y);
+                            txtY.setToolTipText(I18n.META_DECIMAL_MARK);
+                            ev_png8_txt[0] = txtY;
                         }
                         {
-                            Text txt_png = new Text(cmp_lpe, SWT.SEARCH);
-                            txt_png.setMessage(I18n.META_TEXTURE_PNG);
-                            ev_png9_txt[0] = txt_png;
+                            Text txtPng = new Text(cmpLpe, SWT.SEARCH);
+                            txtPng.setMessage(I18n.META_TEXTURE_PNG);
+                            ev_png9_txt[0] = txtPng;
                         }
                         {
-                            NButton btn_browse = new NButton(cmp_lpe, SWT.NONE);
-                            btn_browse.setText(I18n.DIALOG_BROWSE);
-                            ev_png_btn[0] = btn_browse;
+                            NButton btnBrowse = new NButton(cmpLpe, SWT.NONE);
+                            btnBrowse.setText(I18n.DIALOG_BROWSE);
+                            ev_png_btn[0] = btnBrowse;
                         }
                     }
                 }
@@ -1339,23 +1338,23 @@ class EditorMetaDesign extends ApplicationWindow {
 
         }
 
-        Label lbl_OnlyFor3D = new Label(container, SWT.NONE);
-        lbl_OnlyFor3D.setText(I18n.META_NEW_LINE_NOTE);
+        Label lblOnlyFor3D = new Label(container, SWT.NONE);
+        lblOnlyFor3D.setText(I18n.META_NEW_LINE_NOTE);
 
-        Label lbl_Preview = new Label(container, SWT.BORDER);
-        lbl_Preview.setText("0 BFC CERTIFY CCW"); //$NON-NLS-1$
-        lbl_lineToInsert[0] = lbl_Preview;
+        Label lblPreview = new Label(container, SWT.BORDER);
+        lblPreview.setText("0 BFC CERTIFY CCW"); //$NON-NLS-1$
+        lbl_lineToInsert[0] = lblPreview;
         GridData gdl = new GridData();
         gdl.horizontalAlignment = SWT.CENTER;
-        lbl_Preview.setLayoutData(gdl);
+        lblPreview.setLayoutData(gdl);
 
 
-        NButton btn_Create = new NButton(container, SWT.NONE);
-        btn_Create.setText(I18n.DIALOG_CREATE_META_COMMAND);
+        NButton btnCreate = new NButton(container, SWT.NONE);
+        btnCreate.setText(I18n.DIALOG_CREATE_META_COMMAND);
         GridData gdt = new GridData();
         gdt.horizontalAlignment = SWT.RIGHT;
-        btn_Create.setLayoutData(gdt);
-        this.btn_Create[0] = btn_Create;
+        btnCreate.setLayoutData(gdt);
+        this.btn_Create[0] = btnCreate;
 
         return container;
     }

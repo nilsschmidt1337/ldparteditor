@@ -219,80 +219,80 @@ public class VertexWindow extends ApplicationWindow {
 
         {
             {
-                Composite cmp_txt = new Composite(vertexWindow, SWT.NONE);
-                cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                cmp_txt.setLayout(new GridLayout(5, true));
+                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmpTxt.setLayout(new GridLayout(5, true));
 
-                Label lbl_vertexData = new Label(cmp_txt, SWT.NONE);
-                lbl_vertexData.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
-                lbl_vertexData.setText("Vertex data:"); //$NON-NLS-1$ I18N Needs translation!
+                Label lblVertexData = new Label(cmpTxt, SWT.NONE);
+                lblVertexData.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 3, 1));
+                lblVertexData.setText("Vertex data:"); //$NON-NLS-1$ I18N Needs translation!
 
                 {
-                    NButton btn_Copy = new NButton(cmp_txt, Cocoa.getStyle());
-                    this.btn_Copy[0] = btn_Copy;
-                    btn_Copy.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-                    btn_Copy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
-                    KeyStateManager.addTooltipText(btn_Copy, I18n.COPYNPASTE_COPY, Task.COPY);
+                    NButton btnCopy = new NButton(cmpTxt, Cocoa.getStyle());
+                    this.btn_Copy[0] = btnCopy;
+                    btnCopy.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+                    btnCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
+                    KeyStateManager.addTooltipText(btnCopy, I18n.COPYNPASTE_COPY, Task.COPY);
                 }
                 {
-                    NButton btn_Paste = new NButton(cmp_txt, Cocoa.getStyle());
-                    this.btn_Paste[0] = btn_Paste;
-                    btn_Paste.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
-                    btn_Paste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
-                    KeyStateManager.addTooltipText(btn_Paste, I18n.COPYNPASTE_PASTE, Task.PASTE);
+                    NButton btnPaste = new NButton(cmpTxt, Cocoa.getStyle());
+                    this.btn_Paste[0] = btnPaste;
+                    btnPaste.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
+                    btnPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
+                    KeyStateManager.addTooltipText(btnPaste, I18n.COPYNPASTE_PASTE, Task.PASTE);
                 }
             }
 
             {
-                Composite cmp_txt = new Composite(vertexWindow, SWT.NONE);
-                cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                cmp_txt.setLayout(new GridLayout(1, true));
+                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmpTxt.setLayout(new GridLayout(1, true));
 
-                BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-                this.spn_X[0] = spn_X;
-                spn_X.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-                spn_X.setMaximum(new BigDecimal(1000000));
-                spn_X.setMinimum(new BigDecimal(-1000000));
-                spn_X.setValue(selectedVertex.X);
+                BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+                this.spn_X[0] = spnX;
+                spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+                spnX.setMaximum(new BigDecimal(1000000));
+                spnX.setMinimum(new BigDecimal(-1000000));
+                spnX.setValue(selectedVertex.X);
             }
 
             {
-                Composite cmp_txt = new Composite(vertexWindow, SWT.NONE);
-                cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                cmp_txt.setLayout(new GridLayout(1, true));
+                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmpTxt.setLayout(new GridLayout(1, true));
 
-                BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-                this.spn_Y[0] = spn_Y;
-                spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-                spn_Y.setMaximum(new BigDecimal(1000000));
-                spn_Y.setMinimum(new BigDecimal(-1000000));
-                spn_Y.setValue(selectedVertex.Y);
+                BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+                this.spn_Y[0] = spnY;
+                spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+                spnY.setMaximum(new BigDecimal(1000000));
+                spnY.setMinimum(new BigDecimal(-1000000));
+                spnY.setValue(selectedVertex.Y);
             }
 
             {
-                Composite cmp_txt = new Composite(vertexWindow, SWT.NONE);
-                cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                cmp_txt.setLayout(new GridLayout(1, true));
+                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmpTxt.setLayout(new GridLayout(1, true));
 
-                BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-                this.spn_Z[0] = spn_Z;
-                spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-                spn_Z.setMaximum(new BigDecimal(1000000));
-                spn_Z.setMinimum(new BigDecimal(-1000000));
-                spn_Z.setValue(selectedVertex.Z);
+                BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+                this.spn_Z[0] = spnZ;
+                spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+                spnZ.setMaximum(new BigDecimal(1000000));
+                spnZ.setMinimum(new BigDecimal(-1000000));
+                spnZ.setValue(selectedVertex.Z);
             }
 
             {
-                Composite cmp_txt = new Composite(vertexWindow, SWT.NONE);
-                cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-                cmp_txt.setLayout(new GridLayout(1, true));
+                Composite cmpTxt = new Composite(vertexWindow, SWT.NONE);
+                cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                cmpTxt.setLayout(new GridLayout(1, true));
 
-                NButton btn_Merge = new NButton(cmp_txt, Cocoa.getStyle());
-                this.btn_Merge[0] = btn_Merge;
-                btn_Merge.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-                btn_Merge.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
-                btn_Merge.setText(I18n.E3D_MERGE_VERTEX);
-                btn_Merge.setEnabled(false);
+                NButton btnMerge = new NButton(cmpTxt, Cocoa.getStyle());
+                this.btn_Merge[0] = btnMerge;
+                btnMerge.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+                btnMerge.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
+                btnMerge.setText(I18n.E3D_MERGE_VERTEX);
+                btnMerge.setEnabled(false);
             }
         }
 

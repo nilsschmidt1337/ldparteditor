@@ -402,7 +402,7 @@ class VM08SlicerPro extends VM07PathTruder {
 
     private boolean intersectRayTriangle(Vector3r origin2d, Vertex dir, Vector3r target2d, Vector3r target2d2, Vector3r target2d3, Vector3r ip) {
         Rational diskr;
-        Rational inv_diskr;
+        Rational invDiskr;
         Vector3r vert0 = new Vector3r(target2d);
         Vector3r vert1 = new Vector3r(target2d2);
         Vector3r vert2 = new Vector3r(target2d3);
@@ -418,16 +418,16 @@ class VM08SlicerPro extends VM07PathTruder {
         diskr = Vector3r.dot(corner1, pvec);
         if (diskr.abs().compareTo(Rational.ZERO) == 0)
             return false;
-        inv_diskr = Rational.ONE.divide(diskr);
+        invDiskr = Rational.ONE.divide(diskr);
         Vector3r tvec = Vector3r.sub(orig, vert0);
-        Rational u = Vector3r.dot(tvec, pvec).multiply(inv_diskr);
+        Rational u = Vector3r.dot(tvec, pvec).multiply(invDiskr);
         if (u.compareTo(Rational.ZERO) < 0 || u.compareTo(Rational.ONE) > 0)
             return false;
         Vector3r qvec = Vector3r.cross(tvec, corner1);
-        Rational v = Vector3r.dot(dir2, qvec).multiply(inv_diskr);
+        Rational v = Vector3r.dot(dir2, qvec).multiply(invDiskr);
         if (v.compareTo(Rational.ZERO) < 0 || u.add(v).compareTo(Rational.ONE) > 0)
             return false;
-        Rational t = Vector3r.dot(corner2, qvec).multiply(inv_diskr);
+        Rational t = Vector3r.dot(corner2, qvec).multiply(invDiskr);
         ip.setX(orig.X.add(dir2.X.multiply(t)));
         ip.setY(orig.Y.add(dir2.Y.multiply(t)));
         ip.setZ(orig.Z.add(dir2.Z.multiply(t)));
@@ -815,10 +815,10 @@ class VM08SlicerPro extends VM07PathTruder {
         diskr = Vector3r.dot(corner1, pvec);
         if (diskr.abs().compareTo(Rational.ZERO) == 0)
             return;
-        Rational inv_diskr = Rational.ONE.divide(diskr);
+        Rational invDiskr = Rational.ONE.divide(diskr);
         Vector3r tvec = Vector3r.sub(orig2, vert0);
         Vector3r qvec = Vector3r.cross(tvec, corner1);
-        Rational t = Vector3r.dot(corner2, qvec).multiply(inv_diskr);
+        Rational t = Vector3r.dot(corner2, qvec).multiply(invDiskr);
         r.setX(orig2.X.add(dir2.X.multiply(t)));
         r.setY(orig2.Y.add(dir2.Y.multiply(t)));
         r.setZ(orig2.Z.add(dir2.Z.multiply(t)));
@@ -924,9 +924,9 @@ class VM08SlicerPro extends VM07PathTruder {
         Vector3r u = Vector3r.sub(p2, p);
         Vector3r v = Vector3r.sub(q2, q);
         Vector3r w = Vector3r.sub(p, q);
-        Rational D = u.X.multiply(v.Y).subtract(u.Y.multiply(v.X));
+        Rational d = u.X.multiply(v.Y).subtract(u.Y.multiply(v.X));
 
-        if (D.isZero()) {
+        if (d.isZero()) {
 
             if (!u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).isZero() || !v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).isZero())  {
                 return 0;
@@ -971,11 +971,11 @@ class VM08SlicerPro extends VM07PathTruder {
             return 2;
         }
 
-        Rational sI = v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).divide(D);
+        Rational sI = v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).divide(d);
         if (sI.compareTo(Rational.ZERO) < 0 || sI.compareTo(Rational.ONE) > 0)
             return 0;
 
-        Rational tI = u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).divide(D);
+        Rational tI = u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).divide(d);
         if (tI.compareTo(Rational.ZERO) < 0 || tI.compareTo(Rational.ONE) > 0)
             return 0;
 
@@ -990,9 +990,9 @@ class VM08SlicerPro extends VM07PathTruder {
         Vector3r u = Vector3r.sub(p2, p);
         Vector3r v = Vector3r.sub(q2, q);
         Vector3r w = Vector3r.sub(p, q);
-        Rational D = u.X.multiply(v.Y).subtract(u.Y.multiply(v.X));
+        Rational d = u.X.multiply(v.Y).subtract(u.Y.multiply(v.X));
 
-        if (D.isZero()) {
+        if (d.isZero()) {
 
             if (!u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).isZero() || !v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).isZero())  {
                 return false;
@@ -1030,11 +1030,11 @@ class VM08SlicerPro extends VM07PathTruder {
             return true;
         }
 
-        Rational sI = v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).divide(D);
+        Rational sI = v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).divide(d);
         if (sI.compareTo(Rational.ZERO) < 0 || sI.compareTo(Rational.ONE) > 0)
             return false;
 
-        Rational tI = u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).divide(D);
+        Rational tI = u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).divide(d);
         if (tI.compareTo(Rational.ZERO) < 0 || tI.compareTo(Rational.ONE) > 0)
             return false;
 

@@ -83,174 +83,174 @@ class DirectionDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Direction vector:"); //$NON-NLS-1$ FIXME !i18n!
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText("Direction vector:"); //$NON-NLS-1$ FIXME !i18n!
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        ToolItem toolItem_TransformationModes = new ToolItem(cmp_container, SWT.NONE, true);
+        ToolItem toolItemTransformationModes = new ToolItem(cmpContainer, SWT.NONE, true);
         {
-            NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
-            this.btn_Local[0] = btn_Local;
-            btn_Local.setToolTipText(I18n.E3D_LOCAL);
+            NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
+            this.btn_Local[0] = btnLocal;
+            btnLocal.setToolTipText(I18n.E3D_LOCAL);
             if (transformationMode == ManipulatorScope.LOCAL) {
-                btn_Local.setSelection(true);
+                btnLocal.setSelection(true);
             }
-            btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
-            NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
-            this.btn_Global[0] = btn_Global;
-            btn_Global.setToolTipText(I18n.E3D_GLOBAL);
+            NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
+            this.btn_Global[0] = btnGlobal;
+            btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
             if (transformationMode == ManipulatorScope.GLOBAL) {
-                btn_Global.setSelection(true);
+                btnGlobal.setSelection(true);
             }
-            btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
+            btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
         }
 
-        Label lbl_CartesianCoords = new Label(cmp_container, I18n.rightToLeftStyle());
-        lbl_CartesianCoords.setText("Cartesian coordinates:"); //$NON-NLS-1$ FIXME !i18n!
+        Label lblCartesianCoords = new Label(cmpContainer, I18n.rightToLeftStyle());
+        lblCartesianCoords.setText("Cartesian coordinates:"); //$NON-NLS-1$ FIXME !i18n!
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Xaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
-            lbl_Xaxis.setText("X:"); //$NON-NLS-1$ FIXME !i18n!
+            Label lblXaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            lblXaxis.setText("X:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_X[0] = spn_X;
-            spn_X.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_X.setMaximum(new BigDecimal(1000000));
-            spn_X.setMinimum(new BigDecimal(-1000000));
-            spn_X.setValue(new BigDecimal(cart[0]));
-        }
-
-        {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
-
-            Label lbl_Yaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
-            lbl_Yaxis.setText("Y:"); //$NON-NLS-1$ FIXME !i18n!
-
-            BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Y[0] = spn_Y;
-            spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_Y.setMaximum(new BigDecimal(1000000));
-            spn_Y.setMinimum(new BigDecimal(-1000000));
-            spn_Y.setValue(new BigDecimal(cart[1]));
+            BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_X[0] = spnX;
+            spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnX.setMaximum(new BigDecimal(1000000));
+            spnX.setMinimum(new BigDecimal(-1000000));
+            spnX.setValue(new BigDecimal(cart[0]));
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Zaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
-            lbl_Zaxis.setText("Z:"); //$NON-NLS-1$ FIXME !i18n!
+            Label lblYaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            lblYaxis.setText("Y:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Z[0] = spn_Z;
-            spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_Z.setMaximum(new BigDecimal(1000000));
-            spn_Z.setMinimum(new BigDecimal(-1000000));
-            spn_Z.setValue(new BigDecimal(cart[2]));
-        }
-
-        Label lbl_SphericalCoords = new Label(cmp_container, I18n.rightToLeftStyle());
-        lbl_SphericalCoords.setText("Spherical coordinates (as defined by ISO 80000-2:2009):"); //$NON-NLS-1$ FIXME !i18n!
-
-        {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
-
-            Label lbl_Xaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
-            lbl_Xaxis.setText("r:"); //$NON-NLS-1$ FIXME !i18n!
-
-            BigDecimalSpinner spn_Rho = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Rho[0] = spn_Rho;
-            spn_Rho.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_Rho.setMaximum(new BigDecimal(1000000));
-            spn_Rho.setMinimum(new BigDecimal(-1000000));
-            spn_Rho.setValue(new BigDecimal(sphe[0]));
+            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_Y[0] = spnY;
+            spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnY.setMaximum(new BigDecimal(1000000));
+            spnY.setMinimum(new BigDecimal(-1000000));
+            spnY.setValue(new BigDecimal(cart[1]));
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Yaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
-            lbl_Yaxis.setText("θ:"); //$NON-NLS-1$ FIXME !i18n!
+            Label lblZaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            lblZaxis.setText("Z:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Theta[0] = spn_Y;
-            spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_Y.setMaximum(new BigDecimal(1000000));
-            spn_Y.setMinimum(new BigDecimal(-1000000));
-            spn_Y.setValue(new BigDecimal(sphe[1]));
+            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_Z[0] = spnZ;
+            spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnZ.setMaximum(new BigDecimal(1000000));
+            spnZ.setMinimum(new BigDecimal(-1000000));
+            spnZ.setValue(new BigDecimal(cart[2]));
+        }
+
+        Label lblSphericalCoords = new Label(cmpContainer, I18n.rightToLeftStyle());
+        lblSphericalCoords.setText("Spherical coordinates (as defined by ISO 80000-2:2009):"); //$NON-NLS-1$ FIXME !i18n!
+
+        {
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
+
+            Label lblXaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            lblXaxis.setText("r:"); //$NON-NLS-1$ FIXME !i18n!
+
+            BigDecimalSpinner spnRho = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_Rho[0] = spnRho;
+            spnRho.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnRho.setMaximum(new BigDecimal(1000000));
+            spnRho.setMinimum(new BigDecimal(-1000000));
+            spnRho.setValue(new BigDecimal(sphe[0]));
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
 
-            Label lbl_Zaxis = new Label(cmp_txt, I18n.rightToLeftStyle());
-            lbl_Zaxis.setText("φ:"); //$NON-NLS-1$ FIXME !i18n!
+            Label lblYaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            lblYaxis.setText("θ:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Phi[0] = spn_Z;
-            spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_Z.setMaximum(new BigDecimal(1000000));
-            spn_Z.setMinimum(new BigDecimal(-1000000));
-            spn_Z.setValue(new BigDecimal(sphe[2]));
+            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_Theta[0] = spnY;
+            spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnY.setMaximum(new BigDecimal(1000000));
+            spnY.setMinimum(new BigDecimal(-1000000));
+            spnY.setValue(new BigDecimal(sphe[1]));
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(1, true));
-            NButton btn_Clipboard = new NButton(cmp_txt, SWT.NONE);
-            this.btn_mX[0] = btn_Clipboard;
-            btn_Clipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btn_Clipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
-            btn_Clipboard.setText("Use X axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
+
+            Label lblZaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
+            lblZaxis.setText("φ:"); //$NON-NLS-1$ FIXME !i18n!
+
+            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_Phi[0] = spnZ;
+            spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnZ.setMaximum(new BigDecimal(1000000));
+            spnZ.setMinimum(new BigDecimal(-1000000));
+            spnZ.setValue(new BigDecimal(sphe[2]));
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(1, true));
-            NButton btn_Clipboard = new NButton(cmp_txt, SWT.NONE);
-            this.btn_mY[0] = btn_Clipboard;
-            btn_Clipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btn_Clipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
-            btn_Clipboard.setText("Use Y axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(1, true));
+            NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
+            this.btn_mX[0] = btnClipboard;
+            btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnClipboard.setText("Use X axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(1, true));
-            NButton btn_Clipboard = new NButton(cmp_txt, SWT.NONE);
-            this.btn_mZ[0] = btn_Clipboard;
-            btn_Clipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btn_Clipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
-            btn_Clipboard.setText("Use Z axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(1, true));
+            NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
+            this.btn_mY[0] = btnClipboard;
+            btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnClipboard.setText("Use Y axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
         }
 
-        cmp_container.pack();
-        return cmp_container;
+        {
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(1, true));
+            NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
+            this.btn_mZ[0] = btnClipboard;
+            btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnClipboard.setText("Use Z axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
+        }
+
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

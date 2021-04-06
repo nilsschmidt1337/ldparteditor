@@ -131,7 +131,7 @@ public class CompositePrimitive extends Composite {
     private final Matrix4f old_viewport_rotation = new Matrix4f();
 
     /** Resolution of the viewport at n% zoom */
-    private float viewport_pixel_per_ldu;
+    private float viewportPixelPerLDU;
 
     private float rotationWidth = 300f;
 
@@ -164,7 +164,7 @@ public class CompositePrimitive extends Composite {
             this.viewport_rotation.load(fb);
         }
 
-        this.viewport_pixel_per_ldu = this.zoom * View.PIXEL_PER_LDU;
+        this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
 
         this.setLayout(new FillLayout());
         GLData data = new GLData();
@@ -289,25 +289,25 @@ public class CompositePrimitive extends Composite {
                 float ry = 0;
                 rx = (event.x - old_mouse_position.x) / rotationWidth * (float) Math.PI;
                 ry = (old_mouse_position.y - event.y) / rotationWidth * (float) Math.PI;
-                Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0, 0, 1.0f);
-                Vector4f yAxis4f_rotation = new Vector4f(0, 1.0f, 0, 1.0f);
-                Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
-                Matrix4f.transform(ovr_inverse, xAxis4f_rotation, xAxis4f_rotation);
-                Matrix4f.transform(ovr_inverse, yAxis4f_rotation, yAxis4f_rotation);
-                Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
-                Vector3f yAxis3f_rotation = new Vector3f(yAxis4f_rotation.x, yAxis4f_rotation.y, yAxis4f_rotation.z);
-                Matrix4f.rotate(rx, yAxis3f_rotation, old_viewport_rotation, viewport_rotation);
-                Matrix4f.rotate(ry, xAxis3f_rotation, viewport_rotation, viewport_rotation);
+                Vector4f xAxis4fRotation = new Vector4f(1.0f, 0, 0, 1.0f);
+                Vector4f yAxis4fRotation = new Vector4f(0, 1.0f, 0, 1.0f);
+                Matrix4f ovrInverse = Matrix4f.invert(old_viewport_rotation, null);
+                Matrix4f.transform(ovrInverse, xAxis4fRotation, xAxis4fRotation);
+                Matrix4f.transform(ovrInverse, yAxis4fRotation, yAxis4fRotation);
+                Vector3f xAxis3fRotation = new Vector3f(xAxis4fRotation.x, xAxis4fRotation.y, xAxis4fRotation.z);
+                Vector3f yAxis3fRotation = new Vector3f(yAxis4fRotation.x, yAxis4fRotation.y, yAxis4fRotation.z);
+                Matrix4f.rotate(rx, yAxis3fRotation, old_viewport_rotation, viewport_rotation);
+                Matrix4f.rotate(ry, xAxis3fRotation, viewport_rotation, viewport_rotation);
                 break;
             case MouseButton.RIGHT:
                 float dx = 0;
                 float dy = 0;
-                dx = (event.x - old_mouse_position.x) / viewport_pixel_per_ldu;
-                dy = (event.y - old_mouse_position.y) / viewport_pixel_per_ldu;
-                Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
-                Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-                Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
-                Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+                dx = (event.x - old_mouse_position.x) / viewportPixelPerLDU;
+                dy = (event.y - old_mouse_position.y) / viewportPixelPerLDU;
+                Vector4f xAxis4fTranslation = new Vector4f(dx, 0, 0, 1.0f);
+                Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
+                Vector3f xAxis3 = new Vector3f(xAxis4fTranslation.x, xAxis4fTranslation.y, xAxis4fTranslation.z);
+                Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
                 Matrix4f.load(old_viewport_translation, viewport_translation);
                 Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
                 Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
@@ -336,13 +336,13 @@ public class CompositePrimitive extends Composite {
                 Matrix4f.load(getTranslation(), old_viewport_translation);
 
                 if (event.count < 0) {
-                    dy = -17f /  viewport_pixel_per_ldu;
+                    dy = -17f /  viewportPixelPerLDU;
                 } else {
-                    dy = 17f /  viewport_pixel_per_ldu;
+                    dy = 17f /  viewportPixelPerLDU;
                 }
 
-                Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-                Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+                Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
+                Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
                 Matrix4f.load(old_viewport_translation, viewport_translation);
                 Matrix4f.translate(yAxis3, old_viewport_translation, viewport_translation);
 
@@ -445,8 +445,8 @@ public class CompositePrimitive extends Composite {
         return zoom_exponent;
     }
 
-    public void setZoom_exponent(float zoom_exponent) {
-        this.zoom_exponent = zoom_exponent;
+    public void setZoom_exponent(float zoomExponent) {
+        this.zoom_exponent = zoomExponent;
     }
 
     /**
@@ -507,7 +507,7 @@ public class CompositePrimitive extends Composite {
             zoom_exponent = 20;
         }
         setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
-        this.viewport_pixel_per_ldu = this.zoom * View.PIXEL_PER_LDU;
+        this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
         adjustTranslate(old, getZoom());
     }
 
@@ -521,19 +521,19 @@ public class CompositePrimitive extends Composite {
             zoom_exponent = 3;
         }
         setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
-        this.viewport_pixel_per_ldu = this.zoom * View.PIXEL_PER_LDU;
+        this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
         adjustTranslate(old, getZoom());
     }
 
     private void adjustTranslate(float old, float zoom2) {
         float dx = 0;
         float dy = 0;
-        dx = 0f / viewport_pixel_per_ldu;
-        dy = 0f / viewport_pixel_per_ldu;
-        Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
-        Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-        Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
-        Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+        dx = 0f / viewportPixelPerLDU;
+        dy = 0f / viewportPixelPerLDU;
+        Vector4f xAxis4fTranslation = new Vector4f(dx, 0, 0, 1.0f);
+        Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
+        Vector3f xAxis3 = new Vector3f(xAxis4fTranslation.x, xAxis4fTranslation.y, xAxis4fTranslation.z);
+        Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
 
         Matrix4f.load(old_viewport_translation, viewport_translation);
         Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
@@ -545,11 +545,11 @@ public class CompositePrimitive extends Composite {
     }
 
     public float getViewport_pixel_per_ldu() {
-        return viewport_pixel_per_ldu;
+        return viewportPixelPerLDU;
     }
 
-    public void setViewport_pixel_per_ldu(float viewport_pixel_per_ldu) {
-        this.viewport_pixel_per_ldu = viewport_pixel_per_ldu;
+    public void setViewport_pixel_per_ldu(float viewportPixelPerLDU) {
+        this.viewportPixelPerLDU = viewportPixelPerLDU;
 
     }
 
@@ -683,17 +683,17 @@ public class CompositePrimitive extends Composite {
                                 NLogger.debug(getClass(), "Primitive Rule__{0}", line); //$NON-NLS-1$
                                 line = line.trim();
                                 if (line.startsWith("%")) continue; //$NON-NLS-1$
-                                String[] data_segments = line.trim().split(Pattern.quote(";")); //$NON-NLS-1$
-                                for (int i = 0; i < data_segments.length; i++) {
-                                    data_segments[i] = data_segments[i].trim();
+                                String[] dataSegments = line.trim().split(Pattern.quote(";")); //$NON-NLS-1$
+                                for (int i = 0; i < dataSegments.length; i++) {
+                                    dataSegments[i] = dataSegments[i].trim();
                                 }
-                                if (data_segments.length > 1)
+                                if (dataSegments.length > 1)
                                 {
-                                    String[] tree_segments = data_segments[0].split(Pattern.quote("|")); //$NON-NLS-1$
+                                    String[] treeSegments = dataSegments[0].split(Pattern.quote("|")); //$NON-NLS-1$
                                     String catID = ""; //$NON-NLS-1$
-                                    final int maxDepth = tree_segments.length;
+                                    final int maxDepth = treeSegments.length;
                                     int depth = 0;
-                                    for (String s : tree_segments) {
+                                    for (String s : treeSegments) {
                                         depth++;
                                         String before = catID;
                                         catID = catID + "|" + s; //$NON-NLS-1$
@@ -701,80 +701,80 @@ public class CompositePrimitive extends Composite {
                                         if (maxDepth < 2) {
                                             // MARK Parse rules I
                                             ArrayList<PrimitiveRule> rules = new ArrayList<>();
-                                            for (int i = 1; i < data_segments.length; i++) {
-                                                data_segments[i] = data_segments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                                data_segments[i] = data_segments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                            for (int i = 1; i < dataSegments.length; i++) {
+                                                dataSegments[i] = dataSegments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                                dataSegments[i] = dataSegments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
                                                 int searchIndex = 0;
                                                 boolean hasAnd = false;
                                                 boolean hasNot = false;
-                                                if (data_segments[i].startsWith("AND ")) { //$NON-NLS-1$
+                                                if (dataSegments[i].startsWith("AND ")) { //$NON-NLS-1$
                                                     searchIndex = 4;
                                                     hasAnd = true;
                                                 }
-                                                if (data_segments[i].startsWith("OR ", searchIndex)) { //$NON-NLS-1$
+                                                if (dataSegments[i].startsWith("OR ", searchIndex)) { //$NON-NLS-1$
                                                     searchIndex += 3;
                                                     hasAnd = false;
                                                 }
-                                                if (data_segments[i].startsWith("NOT ", searchIndex)) { //$NON-NLS-1$
+                                                if (dataSegments[i].startsWith("NOT ", searchIndex)) { //$NON-NLS-1$
                                                     searchIndex += 4;
                                                     hasNot = true;
                                                 }
                                                 String criteria = ""; //$NON-NLS-1$
-                                                if (data_segments[i].startsWith("Order by ", searchIndex)) { //$NON-NLS-1$
+                                                if (dataSegments[i].startsWith("Order by ", searchIndex)) { //$NON-NLS-1$
                                                     searchIndex += 9;
-                                                    if (data_segments[i].startsWith("fraction", searchIndex)) { //$NON-NLS-1$
+                                                    if (dataSegments[i].startsWith("fraction", searchIndex)) { //$NON-NLS-1$
                                                         rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_FRACTION));
-                                                    } else if (data_segments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
+                                                    } else if (dataSegments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
                                                         rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_LASTNUMBER));
-                                                    } else if (data_segments[i].startsWith("alphabet", searchIndex)) { //$NON-NLS-1$
+                                                    } else if (dataSegments[i].startsWith("alphabet", searchIndex)) { //$NON-NLS-1$
                                                         rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS));
                                                     }
-                                                } else if (data_segments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
+                                                } else if (dataSegments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
                                                     searchIndex += 9;
-                                                    if (data_segments[i].startsWith("starts with ", searchIndex)) { //$NON-NLS-1$
+                                                    if (dataSegments[i].startsWith("starts with ", searchIndex)) { //$NON-NLS-1$
                                                         try {
-                                                            criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                            criteria = dataSegments[i].substring(searchIndex + 13, dataSegments[i].length() - 1);
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_STARTS_WITH, criteria, hasAnd, hasNot));
                                                         } catch (IndexOutOfBoundsException consumed) {}
-                                                    } else if (data_segments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
+                                                    } else if (dataSegments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
                                                         try {
-                                                            criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                            criteria = dataSegments[i].substring(searchIndex + 11, dataSegments[i].length() - 1);
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_ENDS_WITH, criteria, hasAnd, hasNot));
                                                         } catch (IndexOutOfBoundsException consumed) {}
-                                                    } else if (data_segments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
+                                                    } else if (dataSegments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
                                                         try {
-                                                            criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                            criteria = dataSegments[i].substring(searchIndex + 10, dataSegments[i].length() - 1);
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_CONTAINS, criteria, hasAnd, hasNot));
                                                         } catch (IndexOutOfBoundsException consumed) {}
-                                                    } else if (data_segments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
+                                                    } else if (dataSegments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
                                                         try {
-                                                            criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                            criteria = dataSegments[i].substring(searchIndex + 9, dataSegments[i].length() - 1);
                                                             rules.add(new PrimitiveRule(Rule.FILENAME_MATCHES, criteria, hasAnd, hasNot));
                                                         } catch (IndexOutOfBoundsException consumed) {}
                                                     }
-                                                } else if (data_segments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
+                                                } else if (dataSegments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
                                                     try {
-                                                        criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                        criteria = dataSegments[i].substring(searchIndex + 13, dataSegments[i].length() - 1);
                                                         rules.add(new PrimitiveRule(Rule.STARTS_WITH, criteria, hasAnd, hasNot));
                                                     } catch (IndexOutOfBoundsException consumed) {}
-                                                } else if (data_segments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
+                                                } else if (dataSegments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
                                                     try {
-                                                        criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                        criteria = dataSegments[i].substring(searchIndex + 11, dataSegments[i].length() - 1);
                                                         rules.add(new PrimitiveRule(Rule.ENDS_WITH, criteria, hasAnd, hasNot));
                                                     } catch (IndexOutOfBoundsException consumed) {}
-                                                } else if (data_segments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
+                                                } else if (dataSegments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
                                                     try {
-                                                        criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                        criteria = dataSegments[i].substring(searchIndex + 10, dataSegments[i].length() - 1);
                                                         rules.add(new PrimitiveRule(Rule.CONTAINS, criteria, hasAnd, hasNot));
                                                     } catch (IndexOutOfBoundsException consumed) {}
-                                                } else if (data_segments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
+                                                } else if (dataSegments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
                                                     try {
-                                                        criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                        criteria = dataSegments[i].substring(searchIndex + 9, dataSegments[i].length() - 1);
                                                         rules.add(new PrimitiveRule(Rule.MATCHES, criteria, hasAnd, hasNot));
                                                     } catch (IndexOutOfBoundsException consumed) {}
-                                                } else if (data_segments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
+                                                } else if (dataSegments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
                                                     try {
-                                                        criteria = data_segments[i].substring(searchIndex + 7, data_segments[i].length() - 1);
+                                                        criteria = dataSegments[i].substring(searchIndex + 7, dataSegments[i].length() - 1);
                                                         leavesTitleMap.put(catID, criteria);
                                                     } catch (IndexOutOfBoundsException consumed) {}
                                                 }
@@ -796,81 +796,81 @@ public class CompositePrimitive extends Composite {
                                                     if (depth == maxDepth) {
                                                         // MARK Parse rules II
                                                         ArrayList<PrimitiveRule> rules = new ArrayList<>();
-                                                        for (int i = 1; i < data_segments.length; i++) {
-                                                            data_segments[i] = data_segments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                                            data_segments[i] = data_segments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                                        for (int i = 1; i < dataSegments.length; i++) {
+                                                            dataSegments[i] = dataSegments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                                            dataSegments[i] = dataSegments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
                                                             int searchIndex = 0;
                                                             boolean hasAnd = false;
                                                             boolean hasNot = false;
-                                                            if (data_segments[i].startsWith("AND ")) { //$NON-NLS-1$
+                                                            if (dataSegments[i].startsWith("AND ")) { //$NON-NLS-1$
                                                                 searchIndex = 4;
                                                                 hasAnd = true;
                                                             }
-                                                            if (data_segments[i].startsWith("OR ", searchIndex)) { //$NON-NLS-1$
+                                                            if (dataSegments[i].startsWith("OR ", searchIndex)) { //$NON-NLS-1$
                                                                 searchIndex += 3;
                                                                 hasAnd = false;
                                                             }
-                                                            if (data_segments[i].startsWith("NOT ", searchIndex)) { //$NON-NLS-1$
+                                                            if (dataSegments[i].startsWith("NOT ", searchIndex)) { //$NON-NLS-1$
                                                                 searchIndex += 4;
                                                                 hasNot = true;
                                                             }
 
                                                             String criteria = ""; //$NON-NLS-1$
-                                                            if (data_segments[i].startsWith("Order by ", searchIndex)) { //$NON-NLS-1$
+                                                            if (dataSegments[i].startsWith("Order by ", searchIndex)) { //$NON-NLS-1$
                                                                 searchIndex += 9;
-                                                                if (data_segments[i].startsWith("fraction", searchIndex)) { //$NON-NLS-1$
+                                                                if (dataSegments[i].startsWith("fraction", searchIndex)) { //$NON-NLS-1$
                                                                     rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_FRACTION));
-                                                                } else if (data_segments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
+                                                                } else if (dataSegments[i].startsWith("last number", searchIndex)) { //$NON-NLS-1$
                                                                     rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_LASTNUMBER));
-                                                                } else if (data_segments[i].startsWith("alphabet", searchIndex)) { //$NON-NLS-1$
+                                                                } else if (dataSegments[i].startsWith("alphabet", searchIndex)) { //$NON-NLS-1$
                                                                     rules.add(new PrimitiveRule(Rule.FILENAME_ORDER_BY_ALPHABET_WO_NUMBERS));
                                                                 }
-                                                            } else if (data_segments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
+                                                            } else if (dataSegments[i].startsWith("Filename ", searchIndex)) { //$NON-NLS-1$
                                                                 searchIndex += 9;
-                                                                if (data_segments[i].startsWith("starts with ", searchIndex)) { //$NON-NLS-1$
+                                                                if (dataSegments[i].startsWith("starts with ", searchIndex)) { //$NON-NLS-1$
                                                                     try {
-                                                                        criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                                        criteria = dataSegments[i].substring(searchIndex + 13, dataSegments[i].length() - 1);
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_STARTS_WITH, criteria, hasAnd, hasNot));
                                                                     } catch (IndexOutOfBoundsException consumed) {}
-                                                                } else if (data_segments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
+                                                                } else if (dataSegments[i].startsWith("ends with ", searchIndex)) { //$NON-NLS-1$
                                                                     try {
-                                                                        criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                                        criteria = dataSegments[i].substring(searchIndex + 11, dataSegments[i].length() - 1);
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_ENDS_WITH, criteria, hasAnd, hasNot));
                                                                     } catch (IndexOutOfBoundsException consumed) {}
-                                                                } else if (data_segments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
+                                                                } else if (dataSegments[i].startsWith("contains ", searchIndex)) { //$NON-NLS-1$
                                                                     try {
-                                                                        criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                                        criteria = dataSegments[i].substring(searchIndex + 10, dataSegments[i].length() - 1);
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_CONTAINS, criteria, hasAnd, hasNot));
                                                                     } catch (IndexOutOfBoundsException consumed) {}
-                                                                } else if (data_segments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
+                                                                } else if (dataSegments[i].startsWith("matches ", searchIndex)) { //$NON-NLS-1$
                                                                     try {
-                                                                        criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                                        criteria = dataSegments[i].substring(searchIndex + 9, dataSegments[i].length() - 1);
                                                                         rules.add(new PrimitiveRule(Rule.FILENAME_MATCHES, criteria, hasAnd, hasNot));
                                                                     } catch (IndexOutOfBoundsException consumed) {}
                                                                 }
-                                                            } else if (data_segments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
+                                                            } else if (dataSegments[i].startsWith("Starts with ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
-                                                                    criteria = data_segments[i].substring(searchIndex + 13, data_segments[i].length() - 1);
+                                                                    criteria = dataSegments[i].substring(searchIndex + 13, dataSegments[i].length() - 1);
                                                                     rules.add(new PrimitiveRule(Rule.STARTS_WITH, criteria, hasAnd, hasNot));
                                                                 } catch (IndexOutOfBoundsException consumed) {}
-                                                            } else if (data_segments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
+                                                            } else if (dataSegments[i].startsWith("Ends with ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
-                                                                    criteria = data_segments[i].substring(searchIndex + 11, data_segments[i].length() - 1);
+                                                                    criteria = dataSegments[i].substring(searchIndex + 11, dataSegments[i].length() - 1);
                                                                     rules.add(new PrimitiveRule(Rule.ENDS_WITH, criteria, hasAnd, hasNot));
                                                                 } catch (IndexOutOfBoundsException consumed) {}
-                                                            } else if (data_segments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
+                                                            } else if (dataSegments[i].startsWith("Contains ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
-                                                                    criteria = data_segments[i].substring(searchIndex + 10, data_segments[i].length() - 1);
+                                                                    criteria = dataSegments[i].substring(searchIndex + 10, dataSegments[i].length() - 1);
                                                                     rules.add(new PrimitiveRule(Rule.CONTAINS, criteria, hasAnd, hasNot));
                                                                 } catch (IndexOutOfBoundsException consumed) {}
-                                                            } else if (data_segments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
+                                                            } else if (dataSegments[i].startsWith("Matches ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
-                                                                    criteria = data_segments[i].substring(searchIndex + 9, data_segments[i].length() - 1);
+                                                                    criteria = dataSegments[i].substring(searchIndex + 9, dataSegments[i].length() - 1);
                                                                     rules.add(new PrimitiveRule(Rule.MATCHES, criteria, hasAnd, hasNot));
                                                                 } catch (IndexOutOfBoundsException consumed) {}
-                                                            } else if (data_segments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
+                                                            } else if (dataSegments[i].startsWith("Title ", searchIndex)) { //$NON-NLS-1$
                                                                 try {
-                                                                    criteria = data_segments[i].substring(searchIndex + 7, data_segments[i].length() - 1);
+                                                                    criteria = dataSegments[i].substring(searchIndex + 7, dataSegments[i].length() - 1);
                                                                     leavesTitleMap.put(catID, criteria);
                                                                 } catch (IndexOutOfBoundsException consumed) {}
                                                             }
@@ -932,8 +932,8 @@ public class CompositePrimitive extends Composite {
                             final String fileName = f.getName();
                             if (f.isFile() && fileName.matches(".*.dat")) { //$NON-NLS-1$
                                 final String path = f.getAbsolutePath();
-                                PGTimestamp new_ts = new PGTimestamp(path, f.lastModified());
-                                PGTimestamp ts = hotMap.get(new_ts);
+                                PGTimestamp newTs = new PGTimestamp(path, f.lastModified());
+                                PGTimestamp ts = hotMap.get(newTs);
                                 ArrayList<String> filedata;
                                 if (ts != null && ts.isHot() && fileCache.containsKey(ts)) {
                                     filedata = fileCache.get(ts);
@@ -1035,9 +1035,9 @@ public class CompositePrimitive extends Composite {
                                         } catch (LDParsingException e1) {
                                         }
                                     }
-                                    new_ts = new PGTimestamp(path, f.lastModified());
-                                    fileCache.put(new_ts, filedata);
-                                    fileCacheHits.add(new_ts);
+                                    newTs = new PGTimestamp(path, f.lastModified());
+                                    fileCache.put(newTs, filedata);
+                                    fileCacheHits.add(newTs);
                                 }
                             }
                         }
@@ -1202,11 +1202,11 @@ public class CompositePrimitive extends Composite {
             }
         }
 
-        final String[] data_segments = WHITESPACE.split(line.trim());
+        final String[] dataSegments = WHITESPACE.split(line.trim());
         // Get the linetype
         int linetype = 0;
         char c;
-        if (!(data_segments.length > 2 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
+        if (!(dataSegments.length > 2 && dataSegments[0].length() == 1 && Character.isDigit(c = dataSegments[0].charAt(0)))) {
             return null;
         }
         linetype = Character.getNumericValue(c);
@@ -1214,21 +1214,21 @@ public class CompositePrimitive extends Composite {
 
         switch (linetype) {
         case 0:
-            result = parse_Comment(line, data_segments[1]);
+            result = parse_Comment(line, dataSegments[1]);
             break;
         case 1:
-            return parse_Reference(data_segments, depth, productMatrix, alreadyParsed, hotMap);
+            return parse_Reference(dataSegments, depth, productMatrix, alreadyParsed, hotMap);
         case 2:
-            result = parse_Line(data_segments);
+            result = parse_Line(dataSegments);
             break;
         case 3:
-            result = parse_Triangle(data_segments);
+            result = parse_Triangle(dataSegments);
             break;
         case 4:
-            result = parse_Quad(data_segments);
+            result = parse_Quad(dataSegments);
             break;
         case 5:
-            result = parse_Condline(data_segments);
+            result = parse_Condline(dataSegments);
             break;
         default:
             break;
@@ -1277,25 +1277,25 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Reference(String[] data_segments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
-        if (data_segments.length < 15) {
+    private static PGData parse_Reference(String[] dataSegments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
+        if (dataSegments.length < 15) {
             return null;
         } else {
             Matrix4f tMatrix = new Matrix4f();
             float det = 0;
             try {
-                tMatrix.m30 = Float.parseFloat(data_segments[2]);
-                tMatrix.m31 = Float.parseFloat(data_segments[3]);
-                tMatrix.m32 = Float.parseFloat(data_segments[4]);
-                tMatrix.m00 = Float.parseFloat(data_segments[5]);
-                tMatrix.m10 = Float.parseFloat(data_segments[6]);
-                tMatrix.m20 = Float.parseFloat(data_segments[7]);
-                tMatrix.m01 = Float.parseFloat(data_segments[8]);
-                tMatrix.m11 = Float.parseFloat(data_segments[9]);
-                tMatrix.m21 = Float.parseFloat(data_segments[10]);
-                tMatrix.m02 = Float.parseFloat(data_segments[11]);
-                tMatrix.m12 = Float.parseFloat(data_segments[12]);
-                tMatrix.m22 = Float.parseFloat(data_segments[13]);
+                tMatrix.m30 = Float.parseFloat(dataSegments[2]);
+                tMatrix.m31 = Float.parseFloat(dataSegments[3]);
+                tMatrix.m32 = Float.parseFloat(dataSegments[4]);
+                tMatrix.m00 = Float.parseFloat(dataSegments[5]);
+                tMatrix.m10 = Float.parseFloat(dataSegments[6]);
+                tMatrix.m20 = Float.parseFloat(dataSegments[7]);
+                tMatrix.m01 = Float.parseFloat(dataSegments[8]);
+                tMatrix.m11 = Float.parseFloat(dataSegments[9]);
+                tMatrix.m21 = Float.parseFloat(dataSegments[10]);
+                tMatrix.m02 = Float.parseFloat(dataSegments[11]);
+                tMatrix.m12 = Float.parseFloat(dataSegments[12]);
+                tMatrix.m22 = Float.parseFloat(dataSegments[13]);
             } catch (NumberFormatException nfe) {
                 return null;
             }
@@ -1303,11 +1303,11 @@ public class CompositePrimitive extends Composite {
             // [WARNING] Check file existance
             boolean fileExists = true;
             StringBuilder sb = new StringBuilder();
-            for (int s = 14; s < data_segments.length - 1; s++) {
-                sb.append(data_segments[s]);
+            for (int s = 14; s < dataSegments.length - 1; s++) {
+                sb.append(dataSegments[s]);
                 sb.append(" "); //$NON-NLS-1$
             }
-            sb.append(data_segments[data_segments.length - 1]);
+            sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
             try {
@@ -1382,8 +1382,8 @@ public class CompositePrimitive extends Composite {
                 return null;
             } else {
                 absoluteFilename = fileToOpen.getAbsolutePath();
-                PGTimestamp new_ts = new PGTimestamp(absoluteFilename, fileToOpen.lastModified());
-                PGTimestamp ts = hotMap.get(new_ts);
+                PGTimestamp newTs = new PGTimestamp(absoluteFilename, fileToOpen.lastModified());
+                PGTimestamp ts = hotMap.get(newTs);
                 if (ts != null && ts.isHot() && fileCache.containsKey(ts)) {
                     lines = fileCache.get(ts);
                     fileCacheHits.add(ts);
@@ -1416,8 +1416,8 @@ public class CompositePrimitive extends Composite {
                         } catch (LDParsingException e1) {
                         }
                     }
-                    fileCache.put(new_ts, lines);
-                    fileCacheHits.add(new_ts);
+                    fileCache.put(newTs, lines);
+                    fileCacheHits.add(newTs);
                 }
                 det = tMatrix.determinant();
                 Matrix4f destMatrix = new Matrix4f();
@@ -1430,15 +1430,15 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Line(String[] data_segments) {
-        if (data_segments.length != 8) {
+    private static PGData parse_Line(String[] dataSegments) {
+        if (dataSegments.length != 8) {
             return null;
         } else {
             final PGData result;
             try {
                 result = new PGData2(
-                        Float.parseFloat(data_segments[2]), Float.parseFloat(data_segments[3]), Float.parseFloat(data_segments[4]),
-                        Float.parseFloat(data_segments[5]), Float.parseFloat(data_segments[6]), Float.parseFloat(data_segments[7]));
+                        Float.parseFloat(dataSegments[2]), Float.parseFloat(dataSegments[3]), Float.parseFloat(dataSegments[4]),
+                        Float.parseFloat(dataSegments[5]), Float.parseFloat(dataSegments[6]), Float.parseFloat(dataSegments[7]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
@@ -1446,16 +1446,16 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Triangle(String[] data_segments) {
-        if (data_segments.length != 11) {
+    private static PGData parse_Triangle(String[] dataSegments) {
+        if (dataSegments.length != 11) {
             return null;
         } else {
             final PGData result;
             try {
                 result = new PGData3(
-                        Float.parseFloat(data_segments[2]), Float.parseFloat(data_segments[3]), Float.parseFloat(data_segments[4]),
-                        Float.parseFloat(data_segments[5]), Float.parseFloat(data_segments[6]), Float.parseFloat(data_segments[7]),
-                        Float.parseFloat(data_segments[8]), Float.parseFloat(data_segments[9]), Float.parseFloat(data_segments[10]));
+                        Float.parseFloat(dataSegments[2]), Float.parseFloat(dataSegments[3]), Float.parseFloat(dataSegments[4]),
+                        Float.parseFloat(dataSegments[5]), Float.parseFloat(dataSegments[6]), Float.parseFloat(dataSegments[7]),
+                        Float.parseFloat(dataSegments[8]), Float.parseFloat(dataSegments[9]), Float.parseFloat(dataSegments[10]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
@@ -1463,17 +1463,17 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Quad(String[] data_segments) {
-        if (data_segments.length != 14) {
+    private static PGData parse_Quad(String[] dataSegments) {
+        if (dataSegments.length != 14) {
             return null;
         } else {
             final PGData result;
             try {
                 result = new PGData4(
-                        Float.parseFloat(data_segments[2]), Float.parseFloat(data_segments[3]), Float.parseFloat(data_segments[4]),
-                        Float.parseFloat(data_segments[5]), Float.parseFloat(data_segments[6]), Float.parseFloat(data_segments[7]),
-                        Float.parseFloat(data_segments[8]), Float.parseFloat(data_segments[9]), Float.parseFloat(data_segments[10]),
-                        Float.parseFloat(data_segments[11]), Float.parseFloat(data_segments[12]), Float.parseFloat(data_segments[13]));
+                        Float.parseFloat(dataSegments[2]), Float.parseFloat(dataSegments[3]), Float.parseFloat(dataSegments[4]),
+                        Float.parseFloat(dataSegments[5]), Float.parseFloat(dataSegments[6]), Float.parseFloat(dataSegments[7]),
+                        Float.parseFloat(dataSegments[8]), Float.parseFloat(dataSegments[9]), Float.parseFloat(dataSegments[10]),
+                        Float.parseFloat(dataSegments[11]), Float.parseFloat(dataSegments[12]), Float.parseFloat(dataSegments[13]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
@@ -1481,15 +1481,15 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Condline(String[] data_segments) {
-        if (data_segments.length != 14) {
+    private static PGData parse_Condline(String[] dataSegments) {
+        if (dataSegments.length != 14) {
             return null;
         } else {
             final PGData result;
             try {
                 result = new PGData5(
-                        Float.parseFloat(data_segments[2]), Float.parseFloat(data_segments[3]), Float.parseFloat(data_segments[4]),
-                        Float.parseFloat(data_segments[5]), Float.parseFloat(data_segments[6]), Float.parseFloat(data_segments[7]));
+                        Float.parseFloat(dataSegments[2]), Float.parseFloat(dataSegments[3]), Float.parseFloat(dataSegments[4]),
+                        Float.parseFloat(dataSegments[5]), Float.parseFloat(dataSegments[6]), Float.parseFloat(dataSegments[7]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
@@ -1524,13 +1524,13 @@ public class CompositePrimitive extends Composite {
         Matrix4f.load(getTranslation(), old_viewport_translation);
 
         if (down) {
-            dy = -37f /  viewport_pixel_per_ldu;
+            dy = -37f /  viewportPixelPerLDU;
         } else {
-            dy = 37f /  viewport_pixel_per_ldu;
+            dy = 37f /  viewportPixelPerLDU;
         }
 
-        Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-        Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+        Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
+        Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
         Matrix4f.load(old_viewport_translation, viewport_translation);
         Matrix4f.translate(yAxis3, old_viewport_translation, viewport_translation);
 
@@ -1566,8 +1566,8 @@ public class CompositePrimitive extends Composite {
         return fileCache;
     }
 
-    public static void setFileCache(HashMap<PGTimestamp, ArrayList<String>> file_cache) {
-        CompositePrimitive.fileCache = file_cache;
+    public static void setFileCache(HashMap<PGTimestamp, ArrayList<String>> fileCache) {
+        CompositePrimitive.fileCache = fileCache;
     }
 
     public boolean stopDraw() {

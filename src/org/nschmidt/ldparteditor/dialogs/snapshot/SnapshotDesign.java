@@ -60,32 +60,32 @@ class SnapshotDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText("Choose a snapshot:"); //$NON-NLS-1$
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText("Choose a snapshot:"); //$NON-NLS-1$
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Combo cmb_snapshot = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_snapshot[0] = cmb_snapshot;
+            Combo cmbSnapshot = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_snapshot[0] = cmbSnapshot;
 
             String[] items = new String[snapshots.size()];
             for (int i = 0; i < items.length; i++) {
                 items[items.length - i - 1] = snapshots.get(i).toString();
             }
-            cmb_snapshot.setItems(items);
-            cmb_snapshot.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_snapshot.select(0);
+            cmbSnapshot.setItems(items);
+            cmbSnapshot.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbSnapshot.select(0);
         }
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

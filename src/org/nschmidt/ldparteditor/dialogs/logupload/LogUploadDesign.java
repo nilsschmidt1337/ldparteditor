@@ -56,23 +56,23 @@ class LogUploadDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.E3D_LOG_UPLOAD_DATA);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.E3D_LOG_UPLOAD_DATA);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        final StyledText styledText = new StyledText(cmp_container, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI | SWT.WRAP | SWT.READ_ONLY);
+        final StyledText styledText = new StyledText(cmpContainer, SWT.BORDER | SWT.V_SCROLL | SWT.MULTI | SWT.WRAP | SWT.READ_ONLY);
         styledText.setText(source);
         styledText.setLayoutData(GridDataFactory.fillDefaults().grab(true, true).span(2, 1).create());
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

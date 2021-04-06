@@ -173,19 +173,19 @@ class VM17Unificator extends VM16Subdivide {
                             for (Vertex key : keySet) {
                                 TreeSet<Vertex> group = unifyGroups.get(key);
                                 if (group.size() > 1) {
-                                    BigDecimal X = BigDecimal.ZERO;
-                                    BigDecimal Y = BigDecimal.ZERO;
-                                    BigDecimal Z = BigDecimal.ZERO;
+                                    BigDecimal x = BigDecimal.ZERO;
+                                    BigDecimal y = BigDecimal.ZERO;
+                                    BigDecimal z = BigDecimal.ZERO;
                                     BigDecimal gc = new BigDecimal(group.size());
                                     for (Vertex gv : group) {
-                                        X = X.add(gv.X);
-                                        Y = Y.add(gv.Y);
-                                        Z = Z.add(gv.Z);
+                                        x = x.add(gv.X);
+                                        y = y.add(gv.Y);
+                                        z = z.add(gv.Z);
                                     }
-                                    X = X.divide(gc, Threshold.mc);
-                                    Y = Y.divide(gc, Threshold.mc);
-                                    Z = Z.divide(gc, Threshold.mc);
-                                    Vertex newVertex = new Vertex(X, Y, Z);
+                                    x = x.divide(gc, Threshold.mc);
+                                    y = y.divide(gc, Threshold.mc);
+                                    z = z.divide(gc, Threshold.mc);
+                                    Vertex newVertex = new Vertex(x, y, z);
                                     fileVertices.add(newVertex);
                                     for (Vertex gv : group) {
                                         mergeTargets.put(gv, newVertex);

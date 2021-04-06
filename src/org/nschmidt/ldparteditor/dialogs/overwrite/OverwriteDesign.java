@@ -49,20 +49,20 @@ class OverwriteDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_Container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_Container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_overwrite = new Label(cmp_Container, SWT.NONE);
+        Label lblOverwrite = new Label(cmpContainer, SWT.NONE);
 
         Object[] messageArguments = {whichFile};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
         formatter.applyPattern(I18n.DIALOG_REPLACE);
-        lbl_overwrite.setText(formatter.format(messageArguments));
+        lblOverwrite.setText(formatter.format(messageArguments));
 
-        return cmp_Container;
+        return cmpContainer;
     }
 
     /**

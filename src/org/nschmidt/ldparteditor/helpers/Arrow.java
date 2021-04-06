@@ -46,27 +46,27 @@ public class Arrow {
 
     private final float[] cone = new float[34];
 
-    public Arrow(float r, float g, float b, float dir_x, float dir_y, float dir_z, float cone_height, float cone_width, float line_width) {
-        dir_x = dir_x / 1000f;
-        dir_y = dir_y / 1000f;
-        dir_z = dir_z / 1000f;
+    public Arrow(float r, float g, float b, float dirX, float dirY, float dirZ, float coneHeight, float coneWidth, float lineWidth) {
+        dirX = dirX / 1000f;
+        dirY = dirY / 1000f;
+        dirZ = dirZ / 1000f;
         this.r = r;
         this.g = g;
         this.b = b;
-        this.line_width = line_width;
-        length = (float) Math.sqrt(dir_x * dir_x + dir_y * dir_y + dir_z * dir_z);
-        cone_start = length - cone_height;
-        line_end = length - cone_height / 3f;
-        rotation = makeRotationDir(new Vector3f(dir_x, dir_y, dir_z));
+        this.line_width = lineWidth;
+        length = (float) Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+        cone_start = length - coneHeight;
+        line_end = length - coneHeight / 3f;
+        rotation = makeRotationDir(new Vector3f(dirX, dirY, dirZ));
         matrix_buf = BufferUtils.createFloatBuffer(16);
         rotation.store(matrix_buf);
         matrix_buf.position(0);
-        float cone_radius = cone_width;
+        float coneRadius = coneWidth;
         float step = (float) (Math.PI / 8d);
         float angle = 0f;
         for (int i = 0; i < 34; i += 2) {
-            cone[i] = (float) (cone_radius * Math.cos(angle));
-            cone[i + 1] = (float) (cone_radius * Math.sin(angle));
+            cone[i] = (float) (coneRadius * Math.cos(angle));
+            cone[i + 1] = (float) (coneRadius * Math.sin(angle));
             angle = angle + step;
         }
 

@@ -97,8 +97,7 @@ public class CSGCircle extends CSGPrimitive implements Primitive {
     private VectorCSGd cylPoint(VectorCSGd axisX, VectorCSGd axisY, VectorCSGd axisZ, VectorCSGd ray, VectorCSGd s, double r, double stack, double slice, double normalBlend) {
         double angle = slice * Math.PI * 2;
         VectorCSGd out = axisX.times(Math.cos(angle)).plus(axisY.times(Math.sin(angle)));
-        VectorCSGd pos = s.plus(ray.times(stack)).plus(out.times(r));
-        return pos;
+        return s.plus(ray.times(stack)).plus(out.times(r));
     }
 
     /**

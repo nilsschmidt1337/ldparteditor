@@ -111,209 +111,209 @@ class PrimGen2Design extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        cmp_container.setLayout(new GridLayout(9, true));
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setLayout(new GridLayout(9, true));
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.PRIMGEN_TITLE);
-        lbl_specify.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.PRIMGEN_TITLE);
+        lblSpecify.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
 
-        Label lbl_type = new Label(cmp_container, SWT.NONE);
-        lbl_type.setText(I18n.PRIMGEN_TYPE);
-        lbl_type.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+        Label lblType = new Label(cmpContainer, SWT.NONE);
+        lblType.setText(I18n.PRIMGEN_TYPE);
+        lblType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
-        Label lbl_divisions = new Label(cmp_container, SWT.NONE);
-        lbl_divisions.setText(I18n.PRIMGEN_DIVISIONS);
-        lbl_divisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblDivisions = new Label(cmpContainer, SWT.NONE);
+        lblDivisions.setText(I18n.PRIMGEN_DIVISIONS);
+        lblDivisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_segments = new Label(cmp_container, SWT.NONE);
-        lbl_segments.setText(I18n.PRIMGEN_SEGMENTS);
-        lbl_segments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSegments = new Label(cmpContainer, SWT.NONE);
+        lblSegments.setText(I18n.PRIMGEN_SEGMENTS);
+        lblSegments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_torusType = new Label(cmp_container, SWT.NONE);
-        this.lbl_torusType[0] = lbl_torusType;
-        lbl_torusType.setText(I18n.PRIMGEN_TORUS_TYPE);
-        lbl_torusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-        lbl_torusType.setEnabled(false);
-
-        {
-            Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
-        }
-
-        Combo cmb_type = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_type[0] = cmb_type;
-        cmb_type.setItems(new String[]{I18n.PRIMGEN_CIRCLE, I18n.PRIMGEN_RING, I18n.PRIMGEN_CONE, I18n.PRIMGEN_TORUS, I18n.PRIMGEN_CYLINDER, I18n.PRIMGEN_DISC, I18n.PRIMGEN_DISC_NEGATIVE, I18n.PRIMGEN_CHORD});
-        cmb_type.setText(I18n.PRIMGEN_CIRCLE);
-        cmb_type.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-
-        Combo cmb_divisions = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_divisions[0] = cmb_divisions;
-        cmb_divisions.setItems(new String[]{I18n.PRIMGEN_EIGHT, I18n.PRIMGEN_SIXTEEN, I18n.PRIMGEN_FOURTYEIGHT, I18n.PRIMGEN_CUSTOM});
-        cmb_divisions.setText(I18n.PRIMGEN_SIXTEEN);
-        cmb_divisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-
-        Combo cmb_segments = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_segments[0] = cmb_segments;
-        cmb_segments.setItems(new String[]{I18n.PRIMGEN_QUARTER, I18n.PRIMGEN_HALF, I18n.PRIMGEN_THREE_QUARTER, I18n.PRIMGEN_WHOLE, I18n.PRIMGEN_CUSTOM});
-        cmb_segments.setText(I18n.PRIMGEN_QUARTER);
-        cmb_segments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-
-        Combo cmb_torusType = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_torusType[0] = cmb_torusType;
-        cmb_torusType.setItems(new String[]{I18n.PRIMGEN_INSIDE, I18n.PRIMGEN_OUTSIDE, I18n.PRIMGEN_TUBE});
-        cmb_torusType.setText(I18n.PRIMGEN_OUTSIDE);
-        cmb_torusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-        cmb_torusType.setEnabled(false);
+        Label lblTorusType = new Label(cmpContainer, SWT.NONE);
+        this.lbl_torusType[0] = lblTorusType;
+        lblTorusType.setText(I18n.PRIMGEN_TORUS_TYPE);
+        lblTorusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+        lblTorusType.setEnabled(false);
 
         {
-            Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
+            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
         }
 
-        Label lbl_size = new Label(cmp_container, SWT.NONE);
-        this.lbl_size[0] = lbl_size;
-        lbl_size.setText(I18n.PRIMGEN_SIZE);
-        lbl_size.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-        lbl_size.setEnabled(false);
+        Combo cmbType = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_type[0] = cmbType;
+        cmbType.setItems(new String[]{I18n.PRIMGEN_CIRCLE, I18n.PRIMGEN_RING, I18n.PRIMGEN_CONE, I18n.PRIMGEN_TORUS, I18n.PRIMGEN_CYLINDER, I18n.PRIMGEN_DISC, I18n.PRIMGEN_DISC_NEGATIVE, I18n.PRIMGEN_CHORD});
+        cmbType.setText(I18n.PRIMGEN_CIRCLE);
+        cmbType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
 
-        IntegerSpinner spn_divisions = new IntegerSpinner(cmp_container, SWT.NONE);
-        this.spn_divisions[0] = spn_divisions;
-        spn_divisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_divisions.setMaximum(360);
-        spn_divisions.setMinimum(1);
-        spn_divisions.setValue(16);
+        Combo cmbDivisions = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_divisions[0] = cmbDivisions;
+        cmbDivisions.setItems(new String[]{I18n.PRIMGEN_EIGHT, I18n.PRIMGEN_SIXTEEN, I18n.PRIMGEN_FOURTYEIGHT, I18n.PRIMGEN_CUSTOM});
+        cmbDivisions.setText(I18n.PRIMGEN_SIXTEEN);
+        cmbDivisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        IntegerSpinner spn_segments = new IntegerSpinner(cmp_container, SWT.NONE);
-        this.spn_segments[0] = spn_segments;
-        spn_segments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_segments.setMaximum(360);
-        spn_segments.setMinimum(1);
-        spn_segments.setValue(4);
+        Combo cmbSegments = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_segments[0] = cmbSegments;
+        cmbSegments.setItems(new String[]{I18n.PRIMGEN_QUARTER, I18n.PRIMGEN_HALF, I18n.PRIMGEN_THREE_QUARTER, I18n.PRIMGEN_WHOLE, I18n.PRIMGEN_CUSTOM});
+        cmbSegments.setText(I18n.PRIMGEN_QUARTER);
+        cmbSegments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_major = new Label(cmp_container, SWT.NONE);
-        this.lbl_major[0] = lbl_major;
-        lbl_major.setText(I18n.PRIMGEN_MAJOR);
-        lbl_major.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        lbl_major.setEnabled(false);
-
-        Label lbl_minor = new Label(cmp_container, SWT.NONE);
-        this.lbl_minor[0] = lbl_minor;
-        lbl_minor.setText(I18n.PRIMGEN_MINOR);
-        lbl_minor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        lbl_minor.setEnabled(false);
+        Combo cmbTorusType = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_torusType[0] = cmbTorusType;
+        cmbTorusType.setItems(new String[]{I18n.PRIMGEN_INSIDE, I18n.PRIMGEN_OUTSIDE, I18n.PRIMGEN_TUBE});
+        cmbTorusType.setText(I18n.PRIMGEN_OUTSIDE);
+        cmbTorusType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+        cmbTorusType.setEnabled(false);
 
         {
-            Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
+            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
         }
 
-        BigDecimalSpinner spn_size = new BigDecimalSpinner(cmp_container, SWT.NONE, View.NUMBER_FORMAT0F);
-        this.spn_size[0] = spn_size;
-        spn_size.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
-        spn_size.setMaximum(new BigDecimal(1000));
-        spn_size.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-        spn_size.setValue(BigDecimal.ONE);
-        spn_size.setEnabled(false);
-        spn_size.setSmallIncrement(BigDecimal.ONE);
-        spn_size.setLargeIncrement(BigDecimal.ONE);
+        Label lblSize = new Label(cmpContainer, SWT.NONE);
+        this.lbl_size[0] = lblSize;
+        lblSize.setText(I18n.PRIMGEN_SIZE);
+        lblSize.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+        lblSize.setEnabled(false);
 
-        Label lbl_winding = new Label(cmp_container, SWT.NONE);
-        lbl_winding.setText(I18n.PRIMGEN_WINDING);
-        lbl_winding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        IntegerSpinner spnDivisions = new IntegerSpinner(cmpContainer, SWT.NONE);
+        this.spn_divisions[0] = spnDivisions;
+        spnDivisions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnDivisions.setMaximum(360);
+        spnDivisions.setMinimum(1);
+        spnDivisions.setValue(16);
 
-        Combo cmb_winding = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_winding[0] = cmb_winding;
-        cmb_winding.setItems(new String[]{I18n.PRIMGEN_CCW, I18n.PRIMGEN_CW});
-        cmb_winding.setText(I18n.PRIMGEN_CCW);
-        cmb_winding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        IntegerSpinner spnSegments = new IntegerSpinner(cmpContainer, SWT.NONE);
+        this.spn_segments[0] = spnSegments;
+        spnSegments.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnSegments.setMaximum(360);
+        spnSegments.setMinimum(1);
+        spnSegments.setValue(4);
 
-        IntegerSpinner spn_major = new IntegerSpinner(cmp_container, SWT.NONE);
-        this.spn_major[0] = spn_major;
-        spn_major.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_major.setMaximum(1000);
-        spn_major.setMinimum(1);
-        spn_major.setValue(1000);
-        spn_major.setEnabled(false);
+        Label lblMajor = new Label(cmpContainer, SWT.NONE);
+        this.lbl_major[0] = lblMajor;
+        lblMajor.setText(I18n.PRIMGEN_MAJOR);
+        lblMajor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        lblMajor.setEnabled(false);
 
-        BigDecimalSpinner spn_minor = new BigDecimalSpinner(cmp_container, SWT.NONE, View.NUMBER_FORMAT0F);
-        this.spn_minor[0] = spn_minor;
-        spn_minor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_minor.setMaximum(new BigDecimal(1000));
-        spn_minor.setMinimum(BigDecimal.ONE);
-        spn_minor.setValue(new BigDecimal(1000));
-        spn_minor.setEnabled(false);
-        spn_minor.setSmallIncrement(BigDecimal.ONE);
-        spn_minor.setLargeIncrement(BigDecimal.ONE);
+        Label lblMinor = new Label(cmpContainer, SWT.NONE);
+        this.lbl_minor[0] = lblMinor;
+        lblMinor.setText(I18n.PRIMGEN_MINOR);
+        lblMinor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        lblMinor.setEnabled(false);
 
         {
-            Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
+            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
         }
 
-        NButton btn_top = new NButton(cmp_container, SWT.NONE);
-        this.btn_top[0] = btn_top;
-        btn_top.setText(I18n.PERSPECTIVE_TOP);
-        btn_top.setImage(ResourceManager.getImage("icon16_top.png")); //$NON-NLS-1$
-        btn_top.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        BigDecimalSpinner spnSize = new BigDecimalSpinner(cmpContainer, SWT.NONE, View.NUMBER_FORMAT0F);
+        this.spn_size[0] = spnSize;
+        spnSize.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+        spnSize.setMaximum(new BigDecimal(1000));
+        spnSize.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
+        spnSize.setValue(BigDecimal.ONE);
+        spnSize.setEnabled(false);
+        spnSize.setSmallIncrement(BigDecimal.ONE);
+        spnSize.setLargeIncrement(BigDecimal.ONE);
+
+        Label lblWinding = new Label(cmpContainer, SWT.NONE);
+        lblWinding.setText(I18n.PRIMGEN_WINDING);
+        lblWinding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+        Combo cmbWinding = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_winding[0] = cmbWinding;
+        cmbWinding.setItems(new String[]{I18n.PRIMGEN_CCW, I18n.PRIMGEN_CW});
+        cmbWinding.setText(I18n.PRIMGEN_CCW);
+        cmbWinding.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+
+        IntegerSpinner spnMajor = new IntegerSpinner(cmpContainer, SWT.NONE);
+        this.spn_major[0] = spnMajor;
+        spnMajor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnMajor.setMaximum(1000);
+        spnMajor.setMinimum(1);
+        spnMajor.setValue(1000);
+        spnMajor.setEnabled(false);
+
+        BigDecimalSpinner spnMinor = new BigDecimalSpinner(cmpContainer, SWT.NONE, View.NUMBER_FORMAT0F);
+        this.spn_minor[0] = spnMinor;
+        spnMinor.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnMinor.setMaximum(new BigDecimal(1000));
+        spnMinor.setMinimum(BigDecimal.ONE);
+        spnMinor.setValue(new BigDecimal(1000));
+        spnMinor.setEnabled(false);
+        spnMinor.setSmallIncrement(BigDecimal.ONE);
+        spnMinor.setLargeIncrement(BigDecimal.ONE);
 
         {
-            Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 6, 1));
+            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 3, 1));
         }
 
-        NButton btn_saveAs = new NButton(cmp_container, SWT.NONE);
-        this.btn_saveAs[0] = btn_saveAs;
-        btn_saveAs.setText(I18n.PRIMGEN_SAVE_AS);
-        btn_saveAs.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+        NButton btnTop = new NButton(cmpContainer, SWT.NONE);
+        this.btn_top[0] = btnTop;
+        btnTop.setText(I18n.PERSPECTIVE_TOP);
+        btnTop.setImage(ResourceManager.getImage("icon16_top.png")); //$NON-NLS-1$
+        btnTop.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-            lbl_dummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 6, 1));
         }
 
-        SashForm sashForm = new SashForm(cmp_container, SWT.NONE);
+        NButton btnSaveAs = new NButton(cmpContainer, SWT.NONE);
+        this.btn_saveAs[0] = btnSaveAs;
+        btnSaveAs.setText(I18n.PRIMGEN_SAVE_AS);
+        btnSaveAs.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 2, 1));
+
+        {
+            Label lblDummy = new Label(cmpContainer, SWT.NONE);
+            lblDummy.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        }
+
+        SashForm sashForm = new SashForm(cmpContainer, SWT.NONE);
         sashForm.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 10, 30));
 
         df = new DatFile("...", "Temporary Primitive", true, DatType.PRIMITIVE); //$NON-NLS-1$ //$NON-NLS-2$
         Project.getUnsavedFiles().add(df);
 
-        CompositeContainer cmp_Container = new CompositeContainer(sashForm, df);
-        c3d = cmp_Container.getComposite3D();
+        CompositeContainer compositeContainer = new CompositeContainer(sashForm, df);
+        c3d = compositeContainer.getComposite3D();
 
-        StyledText txt_data = new StyledText(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
-        this.txt_data[0] = txt_data;
-        txt_data.setText(""); //$NON-NLS-1$
-        txt_data.setBackground(Colour.text_background[0]);
-        txt_data.setForeground(Colour.text_foreground[0]);
-        txt_data.setFont(Font.MONOSPACE);
-        txt_data.setLineSpacing(0);
+        StyledText txtData = new StyledText(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
+        this.txt_data[0] = txtData;
+        txtData.setText(""); //$NON-NLS-1$
+        txtData.setBackground(Colour.text_background[0]);
+        txtData.setForeground(Colour.text_foreground[0]);
+        txtData.setFont(Font.MONOSPACE);
+        txtData.setLineSpacing(0);
 
         if (NLogger.DEBUG) {
-            StyledText txt_data2 = new StyledText(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
-            this.txt_data2[0] = txt_data2;
-            txt_data2.setText(""); //$NON-NLS-1$
-            txt_data2.setBackground(Colour.text_background[0]);
-            txt_data2.setForeground(Colour.text_foreground[0]);
-            txt_data2.setFont(Font.MONOSPACE);
-            txt_data2.setLineSpacing(0);
+            StyledText txtData2 = new StyledText(sashForm, SWT.V_SCROLL | SWT.H_SCROLL);
+            this.txt_data2[0] = txtData2;
+            txtData2.setText(""); //$NON-NLS-1$
+            txtData2.setBackground(Colour.text_background[0]);
+            txtData2.setForeground(Colour.text_foreground[0]);
+            txtData2.setFont(Font.MONOSPACE);
+            txtData2.setLineSpacing(0);
         } else {
             sashForm.setWeights(new int[]{33, 66});
         }
 
-        Label lbl_standard = new Label(cmp_container, SWT.NONE);
-        this.lbl_standard[0] = lbl_standard;
-        lbl_standard.setText(I18n.PRIMGEN_NON_STANDARD);
-        lbl_standard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
+        Label lblStandard = new Label(cmpContainer, SWT.NONE);
+        this.lbl_standard[0] = lblStandard;
+        lblStandard.setText(I18n.PRIMGEN_NON_STANDARD);
+        lblStandard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 8, 1));
 
-        this.menu[0] = new Menu(txt_data);
-        txt_data.setMenu(this.menu[0]);
+        this.menu[0] = new Menu(txtData);
+        txtData.setMenu(this.menu[0]);
 
         MenuItem mntmCut = new MenuItem(menu[0], I18n.rightToLeftStyle());
         mntmCut.setText(I18n.COPYNPASTE_CUT);
@@ -332,9 +332,9 @@ class PrimGen2Design extends Dialog {
         mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
         mntm_Delete[0] = mntmDelete;
 
-        cmp_container.layout();
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.layout();
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

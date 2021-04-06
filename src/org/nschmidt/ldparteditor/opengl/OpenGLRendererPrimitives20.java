@@ -105,22 +105,22 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         GL11.glViewport(0, 0, scaledBounds.width, scaledBounds.height);
         GL11.glMatrixMode(GL11.GL_PROJECTION);
         GL11.glLoadIdentity();
-        float viewport_width = bounds.width / View.PIXEL_PER_LDU;
-        float viewport_height = bounds.height / View.PIXEL_PER_LDU;
-        GL11.glOrtho(0f, viewport_width, viewport_height, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
+        float viewportWidth = bounds.width / View.PIXEL_PER_LDU;
+        float viewportHeight = bounds.height / View.PIXEL_PER_LDU;
+        GL11.glOrtho(0f, viewportWidth, viewportHeight, 0f, -1000000f * cp.getZoom(), 1000001f * cp.getZoom());
 
         GL11.glMatrixMode(GL11.GL_MODELVIEW);
         GL11.glLoadIdentity();
 
-        Matrix4f viewport_transform = new Matrix4f();
-        Matrix4f.setIdentity(viewport_transform);
+        Matrix4f viewportTransform = new Matrix4f();
+        Matrix4f.setIdentity(viewportTransform);
 
         float zoom = cp.getZoom();
-        Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewport_transform, viewport_transform);
-        Matrix4f viewport_translation = cp.getTranslation();
-        Matrix4f.mul(viewport_transform, viewport_translation, viewport_transform);
-        viewport_transform.store(viewport);
-        cp.setViewport(viewport_transform);
+        Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewportTransform, viewportTransform);
+        Matrix4f viewportTranslation = cp.getTranslation();
+        Matrix4f.mul(viewportTransform, viewportTranslation, viewportTransform);
+        viewportTransform.store(viewport);
+        cp.setViewport(viewportTransform);
         viewport.flip();
         GL11.glLoadMatrixf(viewport);
 
@@ -134,16 +134,16 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         float x = 2f;
         float y = 2f;
 
-        float mx = mouseX + (viewport_transform.m30 - 2f) * zoom * View.PIXEL_PER_LDU;
-        float my = mouseY + (viewport_transform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
+        float mx = mouseX + (viewportTransform.m30 - 2f) * zoom * View.PIXEL_PER_LDU;
+        float my = mouseY + (viewportTransform.m31 - 2f) * zoom * View.PIXEL_PER_LDU;
 
         final float STEP = 22f * zoom * View.PIXEL_PER_LDU;
         cp.setRotationWidth(STEP);
         final Matrix4f rotation2 = cp.getRotation();
         rotation2.store(rotation);
         rotation.position(0);
-        float minY = viewport_transform.m31 - 22f;
-        float maxY = viewport_transform.m31 + canvas.getBounds().height / (zoom * View.PIXEL_PER_LDU);
+        float minY = viewportTransform.m31 - 22f;
+        float maxY = viewportTransform.m31 + canvas.getBounds().height / (zoom * View.PIXEL_PER_LDU);
         boolean wasFocused = false;
         float sx = STEP;
         float width = canvas.getBounds().width;
@@ -226,7 +226,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
 
         GL11.glLoadIdentity();
         GL11.glPushMatrix();
-        GL11.glTranslatef(viewport_width - .05f, viewport_height - .05f, 0f);
+        GL11.glTranslatef(viewportWidth - .05f, viewportHeight - .05f, 0f);
         GL11.glMultMatrixf(rotation);
         new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], -.5f,0f, 0f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
         new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 0f, .5f,0f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);

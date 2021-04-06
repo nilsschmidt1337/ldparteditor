@@ -62,28 +62,28 @@ class ColourTableDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite parent) {
-        Composite cmp_container = new Composite(parent, SWT.NONE);
+        Composite cmpContainer = new Composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout(1, true);
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
-        cmp_container.setLayout(gridLayout);
+        cmpContainer.setLayout(gridLayout);
 
         final Set<String> names = new TreeSet<>(View.getNameMap().values());
-        final Tree tree = new Tree(cmp_container, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, names.size());
+        final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, names.size());
         tree.setLinesVisible(true);
         tree.setHeaderVisible(true);
         tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
-        TreeColumn trclmn_Description = new TreeColumn(tree, SWT.NONE);
-        trclmn_Description.setWidth(300);
-        trclmn_Description.setText(I18n.COLOUR_DESCRIPTION);
+        TreeColumn trclmnDescription = new TreeColumn(tree, SWT.NONE);
+        trclmnDescription.setWidth(300);
+        trclmnDescription.setText(I18n.COLOUR_DESCRIPTION);
 
-        TreeColumn trclmn_Number = new TreeColumn(tree, SWT.NONE);
-        trclmn_Number.setWidth(60);
+        TreeColumn trclmnNumber = new TreeColumn(tree, SWT.NONE);
+        trclmnNumber.setWidth(60);
 
-        TreeColumn trclmn_Colour = new TreeColumn(tree, SWT.NONE);
-        trclmn_Colour.setWidth(100);
-        trclmn_Colour.setText(I18n.COLOUR_COLOUR);
+        TreeColumn trclmnColour = new TreeColumn(tree, SWT.NONE);
+        trclmnColour.setWidth(100);
+        trclmnColour.setText(I18n.COLOUR_COLOUR);
 
         Set<Integer> ldConfIndices = View.getColourMap().keySet();
         Map<String, Integer> nameToIndex = new HashMap<>();
@@ -91,13 +91,13 @@ class ColourTableDesign extends ApplicationWindow {
             nameToIndex.put(View.getLDConfigColourName(index), index);
         }
         for (String name : names) {
-            TreeItem trtm_Colour = new TreeItem(tree);
+            TreeItem trtmColour = new TreeItem(tree);
             Integer id = nameToIndex.get(name);
-            trtm_Colour.setText(new String[] { name, id + "", ""  }); //$NON-NLS-1$ //$NON-NLS-2$
-            trtm_Colour.setVisible(true);
+            trtmColour.setText(new String[] { name, id + "", ""  }); //$NON-NLS-1$ //$NON-NLS-2$
+            trtmColour.setVisible(true);
             final GColour gColour2 = View.getLDConfigColour(id);
             final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
-            trtm_Colour.setData(new Object[] {gColour2, col});
+            trtmColour.setData(new Object[] {gColour2, col});
         }
 
         tree.build();
@@ -118,7 +118,7 @@ class ColourTableDesign extends ApplicationWindow {
             }
         });
 
-        cmp_container.pack();
+        cmpContainer.pack();
 
         getShell().addShellListener(new ShellAdapter() {
             @Override
@@ -128,7 +128,7 @@ class ColourTableDesign extends ApplicationWindow {
             }
         });
 
-        return cmp_container;
+        return cmpContainer;
     }
 
     private void updateColours(Tree tree) {

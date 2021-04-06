@@ -71,40 +71,40 @@ class RingsAndConesDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
 
-        final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
 
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.RCONES_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.RCONES_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Label lbl = new Label(cmp_container, SWT.NONE);
+            Label lbl = new Label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_HINT);
         }
         {
-            Label lbl = new Label(cmp_container, SWT.NONE);
+            Label lbl = new Label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_SHAPE);
         }
         {
-            Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
+            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmb_shape[0] = cmb;
             cmb.setItems(new String[] {I18n.RCONES_RING, I18n.RCONES_CONE, I18n.RCONES_RING_48, I18n.RCONES_CONE_48});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select((rs.isUsingCones() ? 1 : 0) + (rs.isUsingHiRes() ? 2 : 0));
         }
         {
-            Label lbl = new Label(cmp_container, SWT.NONE);
+            Label lbl = new Label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_RADIUS_1);
         }
         {
-            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
+            BigDecimalSpinner spn = new BigDecimalSpinner(cmpContainer, SWT.NONE);
             this.spn_radi1 [0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(10000));
@@ -112,11 +112,11 @@ class RingsAndConesDesign extends Dialog {
             spn.setValue(rs.getRadius1());
         }
         {
-            Label lbl = new Label(cmp_container, SWT.NONE);
+            Label lbl = new Label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_RADIUS_2);
         }
         {
-            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
+            BigDecimalSpinner spn = new BigDecimalSpinner(cmpContainer, SWT.NONE);
             this.spn_radi2[0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(10000));
@@ -125,11 +125,11 @@ class RingsAndConesDesign extends Dialog {
         }
 
         {
-            Label lbl = new Label(cmp_container, SWT.NONE);
+            Label lbl = new Label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_HEIGHT);
         }
         {
-            BigDecimalSpinner spn = new BigDecimalSpinner(cmp_container, SWT.NONE);
+            BigDecimalSpinner spn = new BigDecimalSpinner(cmpContainer, SWT.NONE);
             this.spn_height[0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(10000));
@@ -138,11 +138,11 @@ class RingsAndConesDesign extends Dialog {
         }
 
         {
-            Label lbl = new Label(cmp_container, SWT.NONE);
+            Label lbl = new Label(cmpContainer, SWT.NONE);
             lbl.setText(I18n.RCONES_ANGLE);
         }
         {
-            Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
+            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmb_angle[0] = cmb;
             cmb.setItems(new String[] {
                     I18n.RCONES_ANGLE_01,
@@ -198,7 +198,7 @@ class RingsAndConesDesign extends Dialog {
                 rs.getAngles().clear();
                 int i = 0;
                 for (String it : cmb.getItems()) {
-                    cmb.setItem(i, it.replace('.', NUMBER_FORMAT4F.getDecimalFormatSymbols().getDecimalSeparator()));
+                    cmb.setItem(i, it.replace('.', numberFormat4f.getDecimalFormatSymbols().getDecimalSeparator()));
                     rs.getAngles().add(it);
                     i++;
                 }
@@ -207,21 +207,21 @@ class RingsAndConesDesign extends Dialog {
             cmb.select(rs.getAngle());
         }
         {
-            Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
+            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmb_existingOnly[0] = cmb;
             cmb.setItems(new String[] {I18n.RCONES_PRIMS_1, I18n.RCONES_PRIMS_2});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isUsingExistingPrimitives() ? 0 : 1);
         }
         {
-            Combo cmb = new Combo(cmp_container, SWT.READ_ONLY);
+            Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmb_createWhat[0] = cmb;
             cmb.setItems(new String[] {I18n.RCONES_CREATE_1, I18n.RCONES_CREATE_2});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isCreatingNothingOnNoSolution() ? 0 : 1);
         }
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

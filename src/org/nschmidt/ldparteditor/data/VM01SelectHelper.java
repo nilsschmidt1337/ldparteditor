@@ -84,8 +84,8 @@ class VM01SelectHelper extends VM01Select {
         if (needRayTest) {
 
             Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() ^ c3d.isWarpedSelection() ? -1f : 1f, 1f);
-            Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
-            Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
+            Matrix4f ovrInverse2 = Matrix4f.invert(c3d.getRotation(), null);
+            Matrix4f.transform(ovrInverse2, zAxis4f, zAxis4f);
             selectionDepth = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
             selectionDepth.w = 1f;
             final float discr = 1f / c3d.getZoom();
@@ -217,27 +217,27 @@ class VM01SelectHelper extends VM01Select {
 
             final long complexity = c3d.isShowingHiddenVertices() ? vertexLinkedToPositionInFile.size() : vertexLinkedToPositionInFile.size() * ((long) triangles.size() + (long) quads.size());
             if (complexity < View.NUM_CORES * 100L) {
-                float[][] A = new float[3][3];
+                float[][] a = new float[3][3];
                 float[] b = new float[3];
                 for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
                     if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                         continue;
-                    A[0][0] = selectionWidth.x;
-                    A[1][0] = selectionWidth.y;
-                    A[2][0] = selectionWidth.z;
+                    a[0][0] = selectionWidth.x;
+                    a[1][0] = selectionWidth.y;
+                    a[2][0] = selectionWidth.z;
 
-                    A[0][1] = selectionHeight.x;
-                    A[1][1] = selectionHeight.y;
-                    A[2][1] = selectionHeight.z;
+                    a[0][1] = selectionHeight.x;
+                    a[1][1] = selectionHeight.y;
+                    a[2][1] = selectionHeight.z;
 
-                    A[0][2] = selectionDepth.x;
-                    A[1][2] = selectionDepth.y;
-                    A[2][2] = selectionDepth.z;
+                    a[0][2] = selectionDepth.x;
+                    a[1][2] = selectionDepth.y;
+                    a[2][2] = selectionDepth.z;
 
                     b[0] = vertex.x - selectionStart.x;
                     b[1] = vertex.y - selectionStart.y;
                     b[2] = vertex.z - selectionStart.z;
-                    b = MathHelper.gaussianElimination(A, b);
+                    b = MathHelper.gaussianElimination(a, b);
                     if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
                         selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                     }
@@ -265,28 +265,28 @@ class VM01SelectHelper extends VM01Select {
                             final PowerRay powerRay = new PowerRay();
                             int s = start[0];
                             int e = end[0];
-                            float[][] A = new float[3][3];
+                            float[][] a = new float[3][3];
                             float[] b = new float[3];
                             for (int k = s; k < e; k++) {
                                 Vertex vertex = verts[k];
                                 if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                                     continue;
-                                A[0][0] = selectionWidth.x;
-                                A[1][0] = selectionWidth.y;
-                                A[2][0] = selectionWidth.z;
+                                a[0][0] = selectionWidth.x;
+                                a[1][0] = selectionWidth.y;
+                                a[2][0] = selectionWidth.z;
 
-                                A[0][1] = selectionHeight.x;
-                                A[1][1] = selectionHeight.y;
-                                A[2][1] = selectionHeight.z;
+                                a[0][1] = selectionHeight.x;
+                                a[1][1] = selectionHeight.y;
+                                a[2][1] = selectionHeight.z;
 
-                                A[0][2] = selectionDepth.x;
-                                A[1][2] = selectionDepth.y;
-                                A[2][2] = selectionDepth.z;
+                                a[0][2] = selectionDepth.x;
+                                a[1][2] = selectionDepth.y;
+                                a[2][2] = selectionDepth.z;
 
                                 b[0] = vertex.x - selectionStart.x;
                                 b[1] = vertex.y - selectionStart.y;
                                 b[2] = vertex.z - selectionStart.z;
-                                b = MathHelper.gaussianElimination(A, b);
+                                b = MathHelper.gaussianElimination(a, b);
                                 if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
                                     if (dialogCanceled.get()) return;
                                     selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
@@ -406,17 +406,17 @@ class VM01SelectHelper extends VM01Select {
             if (BigDecimal.ZERO.compareTo(WorkbenchManager.getUserSettingState().getFuzziness3D()) < 0) {
                 nearVertices.clear();
                 final ArrayList<Vertex> nearVertices2 = new ArrayList<>();
-                BigDecimal EPSILON;
-                EPSILON = WorkbenchManager.getUserSettingState().getFuzziness3D();
-                EPSILON = EPSILON.multiply(EPSILON, Threshold.mc);
-                NLogger.debug(getClass(), "3D EPSILON² around selection is {0}", EPSILON); //$NON-NLS-1$
+                BigDecimal epsilon;
+                epsilon = WorkbenchManager.getUserSettingState().getFuzziness3D();
+                epsilon = epsilon.multiply(epsilon, Threshold.mc);
+                NLogger.debug(getClass(), "3D EPSILON² around selection is {0}", epsilon); //$NON-NLS-1$
                 for (Vertex v : selectedVertices) {
                     Vector3d v1 = new Vector3d(v);
                     boolean isNear = false;
                     for (Vertex key : nearVertices2) {
                         Vector3d v2 = new Vector3d(key);
                         BigDecimal dist = Vector3d.distSquare(v1, v2);
-                        if (dist.compareTo(EPSILON) < 0f) {
+                        if (dist.compareTo(epsilon) < 0f) {
                             isNear = true;
                             break;
                         }
@@ -506,8 +506,8 @@ class VM01SelectHelper extends VM01Select {
         if (needRayTest) {
 
             Vector4f zAxis4f = new Vector4f(0, 0, c3d.hasNegDeterminant() ^ c3d.isWarpedSelection() ? -1f : 1f, 1f);
-            Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
-            Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
+            Matrix4f ovrInverse2 = Matrix4f.invert(c3d.getRotation(), null);
+            Matrix4f.transform(ovrInverse2, zAxis4f, zAxis4f);
             selectionDepth = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
             selectionDepth.w = 1f;
             final float discr = 1f / c3d.getZoom();
@@ -635,27 +635,27 @@ class VM01SelectHelper extends VM01Select {
 
             final long complexity = c3d.isShowingHiddenVertices() ? vertexLinkedToPositionInFile.size() : vertexLinkedToPositionInFile.size() * ((long) triangles.size() + (long) quads.size());
             if (complexity < View.NUM_CORES * 100L) {
-                float[][] A = new float[3][3];
+                float[][] a = new float[3][3];
                 float[] b = new float[3];
                 for (Vertex vertex : vertexLinkedToPositionInFile.keySet()) {
                     if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                         continue;
-                    A[0][0] = selectionWidth.x;
-                    A[1][0] = selectionWidth.y;
-                    A[2][0] = selectionWidth.z;
+                    a[0][0] = selectionWidth.x;
+                    a[1][0] = selectionWidth.y;
+                    a[2][0] = selectionWidth.z;
 
-                    A[0][1] = selectionHeight.x;
-                    A[1][1] = selectionHeight.y;
-                    A[2][1] = selectionHeight.z;
+                    a[0][1] = selectionHeight.x;
+                    a[1][1] = selectionHeight.y;
+                    a[2][1] = selectionHeight.z;
 
-                    A[0][2] = selectionDepth.x;
-                    A[1][2] = selectionDepth.y;
-                    A[2][2] = selectionDepth.z;
+                    a[0][2] = selectionDepth.x;
+                    a[1][2] = selectionDepth.y;
+                    a[2][2] = selectionDepth.z;
 
                     b[0] = vertex.x - selectionStart.x;
                     b[1] = vertex.y - selectionStart.y;
                     b[2] = vertex.z - selectionStart.z;
-                    b = MathHelper.gaussianElimination(A, b);
+                    b = MathHelper.gaussianElimination(a, b);
                     if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
                         selectVertices2_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                     }
@@ -683,28 +683,28 @@ class VM01SelectHelper extends VM01Select {
                             final PowerRay powerRay = new PowerRay();
                             int s = start[0];
                             int e = end[0];
-                            float[][] A = new float[3][3];
+                            float[][] a = new float[3][3];
                             float[] b = new float[3];
                             for (int k = s; k < e; k++) {
                                 Vertex vertex = verts[k];
                                 if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
                                     continue;
-                                A[0][0] = selectionWidth.x;
-                                A[1][0] = selectionWidth.y;
-                                A[2][0] = selectionWidth.z;
+                                a[0][0] = selectionWidth.x;
+                                a[1][0] = selectionWidth.y;
+                                a[2][0] = selectionWidth.z;
 
-                                A[0][1] = selectionHeight.x;
-                                A[1][1] = selectionHeight.y;
-                                A[2][1] = selectionHeight.z;
+                                a[0][1] = selectionHeight.x;
+                                a[1][1] = selectionHeight.y;
+                                a[2][1] = selectionHeight.z;
 
-                                A[0][2] = selectionDepth.x;
-                                A[1][2] = selectionDepth.y;
-                                A[2][2] = selectionDepth.z;
+                                a[0][2] = selectionDepth.x;
+                                a[1][2] = selectionDepth.y;
+                                a[2][2] = selectionDepth.z;
 
                                 b[0] = vertex.x - selectionStart.x;
                                 b[1] = vertex.y - selectionStart.y;
                                 b[2] = vertex.z - selectionStart.z;
-                                b = MathHelper.gaussianElimination(A, b);
+                                b = MathHelper.gaussianElimination(a, b);
                                 if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
                                     if (dialogCanceled.get()) return;
                                     selectVertices2_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
@@ -974,8 +974,8 @@ class VM01SelectHelper extends VM01Select {
                 Vector4f selectionDepth;
 
                 Vector4f zAxis4f = new Vector4f(0, 0, 1f, 1f);
-                Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
-                Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
+                Matrix4f ovrInverse2 = Matrix4f.invert(c3d.getRotation(), null);
+                Matrix4f.transform(ovrInverse2, zAxis4f, zAxis4f);
                 selectionDepth = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
                 selectionDepth.w = 1f;
 
@@ -1008,7 +1008,7 @@ class VM01SelectHelper extends VM01Select {
                 float[] e = new float[3];
                 float[] f = new float[3];
 
-                float[][] M = new float[2][2];
+                float[][] m = new float[2][2];
                 float[] b = new float[] { 0f, 0f };
                 if (sels.isLines() || !sels.isCondlines()) {
                     for (GData2 line : lines.keySet()) {
@@ -1033,15 +1033,15 @@ class VM01SelectHelper extends VM01Select {
                             }
                             allVertsFromLine = true;
                         }
-                        M[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
-                        M[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
+                        m[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
+                        m[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
 
-                        M[1][0] = M[0][1]; // t
-                        M[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
+                        m[1][0] = m[0][1]; // t
+                        m[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
                         b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
                         b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
                         try {
-                            float[] solution = MathHelper.gaussianElimination(M, b);
+                            float[] solution = MathHelper.gaussianElimination(m, b);
 
                             if (solution[1] >= 0f && solution[1] <= 1f) {
                                 float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
@@ -1085,15 +1085,15 @@ class VM01SelectHelper extends VM01Select {
                             }
                             allVertsFromLine = true;
                         }
-                        M[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
-                        M[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
+                        m[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
+                        m[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
 
-                        M[1][0] = M[0][1]; // t
-                        M[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
+                        m[1][0] = m[0][1]; // t
+                        m[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
                         b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
                         b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
                         try {
-                            float[] solution = MathHelper.gaussianElimination(M, b);
+                            float[] solution = MathHelper.gaussianElimination(m, b);
                             if (solution[1] >= 0f && solution[1] <= 1f) {
                                 float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
                                         e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
@@ -1207,8 +1207,8 @@ class VM01SelectHelper extends VM01Select {
                 Vector4f selectionDepth;
 
                 Vector4f zAxis4f = new Vector4f(0, 0, 1f, 1f);
-                Matrix4f ovr_inverse2 = Matrix4f.invert(c3d.getRotation(), null);
-                Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
+                Matrix4f ovrInverse2 = Matrix4f.invert(c3d.getRotation(), null);
+                Matrix4f.transform(ovrInverse2, zAxis4f, zAxis4f);
                 selectionDepth = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
                 selectionDepth.w = 1f;
 
@@ -1241,7 +1241,7 @@ class VM01SelectHelper extends VM01Select {
                 float[] e = new float[3];
                 float[] f = new float[3];
 
-                float[][] M = new float[2][2];
+                float[][] m = new float[2][2];
                 float[] b = new float[] { 0f, 0f };
                 for (GData2 line : lines.keySet()) {
                     if (hiddenData.contains(line))
@@ -1265,15 +1265,15 @@ class VM01SelectHelper extends VM01Select {
                         }
                         allVertsFromLine = true;
                     }
-                    M[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
-                    M[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
+                    m[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
+                    m[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
 
-                    M[1][0] = M[0][1]; // t
-                    M[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
+                    m[1][0] = m[0][1]; // t
+                    m[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
                     b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
                     b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
                     try {
-                        float[] solution = MathHelper.gaussianElimination(M, b);
+                        float[] solution = MathHelper.gaussianElimination(m, b);
 
                         if (solution[1] >= 0f && solution[1] <= 1f) {
                             float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
@@ -1310,15 +1310,15 @@ class VM01SelectHelper extends VM01Select {
                         }
                         allVertsFromLine = true;
                     }
-                    M[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
-                    M[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
+                    m[0][0] = d[0] * d[0] + d[1] * d[1] + d[2] * d[2]; // t
+                    m[0][1] = d[0] * f[0] + d[1] * f[1] + d[2] * f[2]; // u
 
-                    M[1][0] = M[0][1]; // t
-                    M[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
+                    m[1][0] = m[0][1]; // t
+                    m[1][1] = f[0] * f[0] + f[1] * f[1] + f[2] * f[2]; // u
                     b[0] = -(d[0] * e[0] + d[1] * e[1] + d[2] * e[2]); // constant
                     b[1] = -(e[0] * f[0] + e[1] * f[1] + e[2] * f[2]); // constant
                     try {
-                        float[] solution = MathHelper.gaussianElimination(M, b);
+                        float[] solution = MathHelper.gaussianElimination(m, b);
                         if (solution[1] >= 0f && solution[1] <= 1f) {
                             float distanceSquared = (float) (Math.pow(e[0] + d[0] * solution[0] + f[0] * solution[1], 2) + Math.pow(e[1] + d[1] * solution[0] + f[1] * solution[1], 2) + Math.pow(
                                     e[2] + d[2] * solution[0] + f[2] * solution[1], 2));
@@ -1580,10 +1580,10 @@ class VM01SelectHelper extends VM01Select {
     private synchronized GData selectFaces_helper(Composite3D c3d, Event event) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
-        Matrix4f viewport_rotation = c3d.getRotation();
+        Matrix4f viewportRotation = c3d.getRotation();
         Vector4f zAxis4f = new Vector4f(0, 0, -1f, 1f);
-        Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
-        Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
+        Matrix4f ovrInverse2 = Matrix4f.invert(viewportRotation, null);
+        Matrix4f.transform(ovrInverse2, zAxis4f, zAxis4f);
         Vector4f rayDirection = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
         rayDirection.w = 1f;
 

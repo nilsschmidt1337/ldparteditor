@@ -324,10 +324,10 @@ public class Vector3d {
         //      g3.Y3.subtract(g3.Y1).multiply(g3.Z2.subtract(g3.Z1)).subtract(g3.Z3.subtract(g3.Z1).multiply(g3.Y2.subtract(g3.Y1))),
         //      g3.Z3.subtract(g3.Z1).multiply(g3.X2.subtract(g3.X1)).subtract(g3.X3.subtract(g3.X1).multiply(g3.Z2.subtract(g3.Z1))),
         //      g3.X3.subtract(g3.X1).multiply(g3.Y2.subtract(g3.Y1)).subtract(g3.Y3.subtract(g3.Y1).multiply(g3.X2.subtract(g3.X1)))
-        BigDecimal X = v1.Y.subtract(v2.Y).multiply(v3.Z.subtract(v2.Z)).subtract(v1.Z.subtract(v2.Z).multiply(v3.Y.subtract(v2.Y)));
-        BigDecimal Y = v1.Z.subtract(v2.Z).multiply(v3.X.subtract(v2.X)).subtract(v1.X.subtract(v2.X).multiply(v3.Z.subtract(v2.Z)));
-        BigDecimal Z = v1.X.subtract(v2.X).multiply(v3.Y.subtract(v2.Y)).subtract(v1.Y.subtract(v2.Y).multiply(v3.X.subtract(v2.X)));
-        return new Vector3d(X, Y, Z);
+        BigDecimal x = v1.Y.subtract(v2.Y).multiply(v3.Z.subtract(v2.Z)).subtract(v1.Z.subtract(v2.Z).multiply(v3.Y.subtract(v2.Y)));
+        BigDecimal y = v1.Z.subtract(v2.Z).multiply(v3.X.subtract(v2.X)).subtract(v1.X.subtract(v2.X).multiply(v3.Z.subtract(v2.Z)));
+        BigDecimal z = v1.X.subtract(v2.X).multiply(v3.Y.subtract(v2.Y)).subtract(v1.Y.subtract(v2.Y).multiply(v3.X.subtract(v2.X)));
+        return new Vector3d(x, y, z);
     }
 
     private static BigDecimal HALF = new BigDecimal(".5"); //$NON-NLS-1$

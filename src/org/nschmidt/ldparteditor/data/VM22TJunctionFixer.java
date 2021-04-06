@@ -64,7 +64,7 @@ class VM22TJunctionFixer extends VM21Merger {
 
         clearSelection();
 
-        final int[] TjunctionCount = new int[1];
+        final int[] tJunctionCount = new int[1];
         try
         {
             new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, true, new IRunnableWithProgress()
@@ -90,7 +90,7 @@ class VM22TJunctionFixer extends VM21Merger {
                                         selectedVertices.add(v);
                                         verticesToSelect.add(v);
                                         if (doMerge) merge(MergeTo.NEAREST_EDGE_SPLIT, false, false);
-                                        TjunctionCount[0]++;
+                                        tJunctionCount[0]++;
                                     }
                                     monitor.worked(1);
                                     a.set(true);
@@ -118,7 +118,7 @@ class VM22TJunctionFixer extends VM21Merger {
 
         MessageBox messageBox = new MessageBox(Editor3DWindow.getWindow().getShell(), SWT.ICON_INFORMATION | SWT.OK);
         messageBox.setText(I18n.DIALOG_INFO);
-        Object[] messageArguments = {TjunctionCount[0]};
+        Object[] messageArguments = {tJunctionCount[0]};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
         formatter.applyPattern(I18n.E3D_T_JUNCTION_COUNT);

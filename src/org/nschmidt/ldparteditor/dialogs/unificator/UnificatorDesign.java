@@ -64,58 +64,58 @@ class UnificatorDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.UNIFICATOR_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.UNIFICATOR_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_hint = new Label(cmp_container, SWT.NONE);
-        lbl_hint.setText(I18n.UNIFICATOR_VERTEX_UNIFIATION);
+        Label lblHint = new Label(cmpContainer, SWT.NONE);
+        lblHint.setText(I18n.UNIFICATOR_VERTEX_UNIFIATION);
 
-        BigDecimalSpinner spn_vertexThreshold = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_vertexThreshold [0] = spn_vertexThreshold;
-        spn_vertexThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_vertexThreshold.setMaximum(new BigDecimal(1000));
-        spn_vertexThreshold.setMinimum(new BigDecimal(0));
-        spn_vertexThreshold.setValue(us.getVertexThreshold());
+        BigDecimalSpinner spnVertexThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_vertexThreshold [0] = spnVertexThreshold;
+        spnVertexThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnVertexThreshold.setMaximum(new BigDecimal(1000));
+        spnVertexThreshold.setMinimum(new BigDecimal(0));
+        spnVertexThreshold.setValue(us.getVertexThreshold());
 
-        Label lbl_precision = new Label(cmp_container, SWT.NONE);
-        lbl_precision.setText(I18n.UNIFICATOR_VERTEX_SNAP);
+        Label lblPrecision = new Label(cmpContainer, SWT.NONE);
+        lblPrecision.setText(I18n.UNIFICATOR_VERTEX_SNAP);
 
-        BigDecimalSpinner spn_subfileThreshold = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_subfileThreshold [0] = spn_subfileThreshold;
-        spn_subfileThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_subfileThreshold.setMaximum(new BigDecimal(1000));
-        spn_subfileThreshold.setMinimum(new BigDecimal(0));
-        spn_subfileThreshold.setValue(us.getSubvertexThreshold());
+        BigDecimalSpinner spnSubfileThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_subfileThreshold [0] = spnSubfileThreshold;
+        spnSubfileThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnSubfileThreshold.setMaximum(new BigDecimal(1000));
+        spnSubfileThreshold.setMinimum(new BigDecimal(0));
+        spnSubfileThreshold.setValue(us.getSubvertexThreshold());
 
-        Label lbl_splitPlane = new Label(cmp_container, SWT.NONE);
-        lbl_splitPlane.setText(I18n.UNIFICATOR_SNAP_ON);
+        Label lblSplitPlane = new Label(cmpContainer, SWT.NONE);
+        lblSplitPlane.setText(I18n.UNIFICATOR_SNAP_ON);
 
         {
-            Combo cmb_splitPlane = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_whatToUnify[0] = cmb_splitPlane;
-            cmb_splitPlane.setItems(new String[] {I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES});
-            cmb_splitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_splitPlane.setText(cmb_splitPlane.getItem(us.getSnapOn()));
-            cmb_splitPlane.select(us.getSnapOn());
+            Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_whatToUnify[0] = cmbSplitPlane;
+            cmbSplitPlane.setItems(new String[] {I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES});
+            cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbSplitPlane.setText(cmbSplitPlane.getItem(us.getSnapOn()));
+            cmbSplitPlane.select(us.getSnapOn());
         }
 
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION});
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(us.getScope()));
-        cmb_scope.select(us.getScope());
+        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_scope[0] = cmbScope;
+        cmbScope.setItems(new String[] {I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION});
+        cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbScope.setText(cmbScope.getItem(us.getScope()));
+        cmbScope.select(us.getScope());
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

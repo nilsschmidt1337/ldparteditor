@@ -350,7 +350,7 @@ class VM01Select extends VM00Snapshot {
                 if (Math.abs(det) < Threshold.singularity_determinant) {
                     return selectedLine;
                 }
-                Matrix TMatrix = new Matrix(x2, x3, x4, BigDecimal.ZERO, y2, y3, y4, BigDecimal.ZERO, z2, z3, z4, BigDecimal.ZERO, x1, y1, z1, BigDecimal.ONE);
+                Matrix tMatrixPrecise = new Matrix(x2, x3, x4, BigDecimal.ZERO, y2, y3, y4, BigDecimal.ZERO, z2, z3, z4, BigDecimal.ZERO, x1, y1, z1, BigDecimal.ONE);
 
                 final GData before = selectedLine.getBefore();
                 final GData next = selectedLine.getNext();
@@ -372,7 +372,7 @@ class VM01Select extends VM00Snapshot {
                 } else {
                     transformationBuilder.append(g1.colourNumber);
                 }
-                transformationBuilder.append(TMatrix.toLDrawString());
+                transformationBuilder.append(tMatrixPrecise.toLDrawString());
                 transformationBuilder.append(g1.shortName);
 
                 String transformedString = transformationBuilder.toString();

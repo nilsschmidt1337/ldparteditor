@@ -123,9 +123,9 @@ public class GTexture {
         }
     }
 
-    void calcUVcoords1(float x, float y, float z, GData1 parent, GData ID) {
+    void calcUVcoords1(float x, float y, float z, GData1 parent, GData id) {
         if (type == TexType.SPHERICAL) tripoints[0].set(x, y, z);
-        calcUVcoords(x, y, z, parent, 0, ID);
+        calcUVcoords(x, y, z, parent, 0, id);
     }
 
     void calcUVcoords2(float x, float y, float z, GData1 parent) {
@@ -146,14 +146,14 @@ public class GTexture {
     private float[] tV = new float[4];
     private boolean cacheTriggered = false;
 
-    private void calcUVcoords(float x, float y, float z, GData1 parent, int i, GData ID) {
+    private void calcUVcoords(float x, float y, float z, GData1 parent, int i, GData id) {
         if (cacheTriggered)
             return;
         if (i == 0) {
-            if (ID != null && uvCache.containsKey(ID)) {
-                cacheUsage.add(ID);
+            if (id != null && uvCache.containsKey(id)) {
+                cacheUsage.add(id);
                 cacheTriggered = true;
-                float[] cacheUV = uvCache.get(ID).getUV();
+                float[] cacheUV = uvCache.get(id).getUV();
                 tU[0] = cacheUV[0];
                 tU[1] = cacheUV[1];
                 tU[2] = cacheUV[2];
@@ -208,10 +208,10 @@ public class GTexture {
         } else if (type == TexType.CYLINDRICAL) {
             final Vector3f pos = new Vector3f(realPos.x, realPos.y, realPos.z);
             final Vector3f diff1to2 = Vector3f.sub(point2, point1, null);
-            final Vector3f P1n = (Vector3f) Vector3f.sub(point2, point1, null).normalise();
-            final float P1d = Vector3f.dot(Vector3f.sub(point1, pos, null), P1n);
+            final Vector3f p1n = (Vector3f) Vector3f.sub(point2, point1, null).normalise();
+            final float p1d = Vector3f.dot(Vector3f.sub(point1, pos, null), p1n);
             final float length1to2 = diff1to2.length();
-            float v = P1d;
+            float v = p1d;
             if (v > 0f) {
                 v = -v / length1to2;
                 if (v > 1f)
@@ -223,16 +223,16 @@ public class GTexture {
             }
             uv[1] = v;
             tV[i] = v;
-            final Vector3f P1D = new Vector3f(P1d * P1n.x, P1d * P1n.y, P1d * P1n.z);
-            final Vector3f posP1 = Vector3f.add(pos, P1D, null);
+            final Vector3f p1D = new Vector3f(p1d * p1n.x, p1d * p1n.y, p1d * p1n.z);
+            final Vector3f posP1 = Vector3f.add(pos, p1D, null);
             final Vector3f diff1toP1 = Vector3f.sub(posP1, point1, null);
             final Vector3f diff1to3 = Vector3f.sub(point3, point1, null);
             uv[0] = Vector3f.angle(diff1toP1, diff1to3);
             Vector3f cross = Vector3f.cross(diff1toP1, diff1to3, null);
             if (cross.length() == 0f) {
-                cross = Vector3f.cross(diff1toP1, Vector3f.cross(diff1to3, P1n, null), null);
+                cross = Vector3f.cross(diff1toP1, Vector3f.cross(diff1to3, p1n, null), null);
             }
-            if (Vector3f.dot(P1n, cross) < 0f) {
+            if (Vector3f.dot(p1n, cross) < 0f) {
                 uv[0] = -uv[0];
             }
             tU[i] = uv[0];
@@ -291,7 +291,7 @@ public class GTexture {
         return;
     }
 
-    float[] getUVcoords(boolean isTriangle, GData ID) {
+    float[] getUVcoords(boolean isTriangle, GData id) {
         float[] result = new float[8];
         final int size = isTriangle ? 3 : 4;
         if (cacheTriggered) {
@@ -361,7 +361,7 @@ public class GTexture {
                     }
                 }
 
-                if (poleIndex != -1 && ID != null) {
+                if (poleIndex != -1 && id != null) {
 
                     Vector3f pole = tripoints[poleIndex];
 
@@ -378,7 +378,7 @@ public class GTexture {
 
                     Vector3f.add(adjacentMidpoint, deltaPoleMidpoint, pole);
 
-                    calcUVcoords(pole.x, pole.y, pole.z, ID.parent, poleIndex, ID);
+                    calcUVcoords(pole.x, pole.y, pole.z, id.parent, poleIndex, id);
                 }
             }
 
@@ -437,8 +437,8 @@ public class GTexture {
                 result[r + 1] = v;
             }
         }
-        if (ID != null && !uvCache.containsKey(ID)) {
-            uvCache.put(ID, new UV(tU, tV));
+        if (id != null && !uvCache.containsKey(id)) {
+            uvCache.put(id, new UV(tU, tV));
         }
         return result;
     }
@@ -446,22 +446,22 @@ public class GTexture {
     public void dispose(OpenGLRenderer renderer) {
         if (OpenGlDisposed.containsKey(renderer)) {
             boolean disposed = OpenGlDisposed.get(renderer);
-            int ID = OpenGlID.get(renderer);
-            int ID_glossmap = OpenGlID_glossmap.get(renderer);
-            int ID_cubemap = OpenGlID_cubemap.get(renderer);
-            int ID_cubemapMatte = OpenGlID_cubemapMatte.get(renderer);
-            int ID_cubemapMetal = OpenGlID_cubemapMetal.get(renderer);
+            int id = OpenGlID.get(renderer);
+            int idGlossmap = OpenGlID_glossmap.get(renderer);
+            int idCubemap = OpenGlID_cubemap.get(renderer);
+            int idCubemapMatte = OpenGlID_cubemapMatte.get(renderer);
+            int isCubemapMetal = OpenGlID_cubemapMetal.get(renderer);
             if (!disposed) {
                 uvCache.clear();
                 cacheUsage.clear();
-                if (ID != -1)
-                    GL11.glDeleteTextures(ID);
-                if (ID_glossmap != -1)
-                    GL11.glDeleteTextures(ID_glossmap);
+                if (id != -1)
+                    GL11.glDeleteTextures(id);
+                if (idGlossmap != -1)
+                    GL11.glDeleteTextures(idGlossmap);
                 if (renderer.containsOnlyCubeMaps() && renderer.getC3D().getRenderMode() != 5) {
-                    if (ID_cubemap != -1) GL11.glDeleteTextures(ID_cubemap);
-                    if (ID_cubemapMatte != -1) GL11.glDeleteTextures(ID_cubemapMatte);
-                    if (ID_cubemapMetal != -1) GL11.glDeleteTextures(ID_cubemapMetal);
+                    if (idCubemap != -1) GL11.glDeleteTextures(idCubemap);
+                    if (idCubemapMatte != -1) GL11.glDeleteTextures(idCubemapMatte);
+                    if (isCubemapMetal != -1) GL11.glDeleteTextures(isCubemapMetal);
                 }
                 OpenGlDisposed.put(renderer, true);
                 OpenGlID.put(renderer, -1);
@@ -486,20 +486,20 @@ public class GTexture {
 
     void bind(boolean drawSolidMaterials, boolean normalSwitch, boolean lightOn, OpenGLRenderer20 renderer, int useCubeMap) {
 
-        int ID = -1;
-        int ID_glossmap = -1;
-        int ID_cubemap = -1;
-        int ID_cubemap_matte = -1;
-        int ID_cubemap_metal = -1;
+        int id = -1;
+        int idGlossmap = -1;
+        int idCubemap = -1;
+        int idCubemapMatte = -1;
+        int idCubemapMetal = -1;
         boolean disposed = true;
 
         if (OpenGlDisposed.containsKey(renderer)) {
             disposed = OpenGlDisposed.get(renderer);
-            ID = OpenGlID.get(renderer);
-            ID_glossmap = OpenGlID_glossmap.get(renderer);
-            ID_cubemap = OpenGlID_cubemap.get(renderer);
-            ID_cubemap_matte = OpenGlID_cubemapMatte.get(renderer);
-            ID_cubemap_metal = OpenGlID_cubemapMetal.get(renderer);
+            id = OpenGlID.get(renderer);
+            idGlossmap = OpenGlID_glossmap.get(renderer);
+            idCubemap = OpenGlID_cubemap.get(renderer);
+            idCubemapMatte = OpenGlID_cubemapMatte.get(renderer);
+            idCubemapMetal = OpenGlID_cubemapMetal.get(renderer);
         } else {
             OpenGlDisposed.put(renderer, true);
         }
@@ -508,19 +508,19 @@ public class GTexture {
 
             DatFile df = renderer.getC3D().getLockableDatFileReference();
 
-            ID = loadPNGTexture(texture, GL13.GL_TEXTURE0, df);
+            id = loadPNGTexture(texture, GL13.GL_TEXTURE0, df);
             if (glossy)
-                ID_glossmap = loadPNGTexture(glossmap, GL13.GL_TEXTURE1, df);
+                idGlossmap = loadPNGTexture(glossmap, GL13.GL_TEXTURE1, df);
             if (cubeMapIndex > 0) {
                 switch (cubeMapIndex) {
                 case 1:
-                    ID_cubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2, df ); //$NON-NLS-1$
+                    idCubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2, df ); //$NON-NLS-1$
                     break;
                 case 2:
-                    ID_cubemap_matte = loadPNGTexture("matte_metal.png", GL13.GL_TEXTURE3, df); //$NON-NLS-1$
+                    idCubemapMatte = loadPNGTexture("matte_metal.png", GL13.GL_TEXTURE3, df); //$NON-NLS-1$
                     break;
                 case 3:
-                    ID_cubemap_metal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
+                    idCubemapMetal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
                     break;
                 default:
                     break;
@@ -528,15 +528,15 @@ public class GTexture {
             }
             OpenGlDisposed.put(renderer, false);
             renderer.registerTexture(this);
-            OpenGlID.put(renderer, ID);
-            OpenGlID_glossmap.put(renderer, ID_glossmap);
-            OpenGlID_cubemap.put(renderer, ID_cubemap);
-            OpenGlID_cubemapMatte.put(renderer, ID_cubemap_matte);
-            OpenGlID_cubemapMetal.put(renderer, ID_cubemap_metal);
-        } else if (ID != -1) {
+            OpenGlID.put(renderer, id);
+            OpenGlID_glossmap.put(renderer, idGlossmap);
+            OpenGlID_cubemap.put(renderer, idCubemap);
+            OpenGlID_cubemapMatte.put(renderer, idCubemapMatte);
+            OpenGlID_cubemapMetal.put(renderer, idCubemapMetal);
+        } else if (id != -1) {
             accessTime = System.currentTimeMillis();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
             GL20.glUniform1f(renderer.getAlphaSwitchLoc(), drawSolidMaterials ? 1f : 0f); // Draw transparent
             GL20.glUniform1f(renderer.getNormalSwitchLoc(), normalSwitch ? 1f : 0f); // Draw transparent
             GL20.glUniform1i(renderer.getBaseImageLoc(), 0); // Texture unit 0 is for base images.
@@ -546,7 +546,7 @@ public class GTexture {
 
             if (glossy) {
                 GL13.glActiveTexture(GL13.GL_TEXTURE0 + 2);
-                GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_glossmap);
+                GL11.glBindTexture(GL11.GL_TEXTURE_2D, idGlossmap);
                 GL20.glUniform1i(renderer.getGlossMapLoc(), 2); // Texture unit 2 is for gloss maps.
                 GL20.glUniform1f(renderer.getNoGlossMapSwitch(), 0f);
             } else {
@@ -556,17 +556,17 @@ public class GTexture {
                 switch (cubeMapIndex) {
                 case 1:
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 4);
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemap);
                     GL20.glUniform1i(renderer.getCubeMapLoc(), 4); // Texture unit 4 is for cube maps.
                     break;
                 case 2:
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 8);
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_matte);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemapMatte);
                     GL20.glUniform1i(renderer.getCubeMapMatteLoc(), 8); // Texture unit 8 is for cube maps.
                     break;
                 case 3:
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 16);
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_metal);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemapMetal);
                     GL20.glUniform1i(renderer.getCubeMapMetalLoc(), 16); // Texture unit 16 is for cube maps.
                     break;
                 default:
@@ -578,20 +578,20 @@ public class GTexture {
 
     void bindGL33(OpenGLRenderer renderer, GLShader shader) {
 
-        int ID = -1;
-        int ID_glossmap = -1;
-        int ID_cubemap = -1;
-        int ID_cubemap_matte = -1;
-        int ID_cubemap_metal = -1;
+        int id = -1;
+        int idGlossmap = -1;
+        int idCubemap = -1;
+        int idCubemapMatte = -1;
+        int idCubemapMetal = -1;
         boolean disposed = true;
 
         if (OpenGlDisposed.containsKey(renderer)) {
             disposed = OpenGlDisposed.get(renderer);
-            ID = OpenGlID.get(renderer);
-            ID_glossmap = OpenGlID_glossmap.get(renderer);
-            ID_cubemap = OpenGlID_cubemap.get(renderer);
-            ID_cubemap_matte = OpenGlID_cubemapMatte.get(renderer);
-            ID_cubemap_metal = OpenGlID_cubemapMetal.get(renderer);
+            id = OpenGlID.get(renderer);
+            idGlossmap = OpenGlID_glossmap.get(renderer);
+            idCubemap = OpenGlID_cubemap.get(renderer);
+            idCubemapMatte = OpenGlID_cubemapMatte.get(renderer);
+            idCubemapMetal = OpenGlID_cubemapMetal.get(renderer);
         } else {
             OpenGlDisposed.put(renderer, true);
         }
@@ -600,17 +600,17 @@ public class GTexture {
 
             DatFile df = renderer.getC3D().getLockableDatFileReference();
 
-            ID = loadPNGTexture(texture, GL13.GL_TEXTURE0, df);
+            id = loadPNGTexture(texture, GL13.GL_TEXTURE0, df);
             if (cubeMapIndex > 0) {
                 switch (cubeMapIndex) {
                 case 1:
-                    ID_cubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2, df ); //$NON-NLS-1$
+                    idCubemap = loadPNGTexture("cmap.png", GL13.GL_TEXTURE2, df ); //$NON-NLS-1$
                     break;
                 case 2:
-                    ID_cubemap_matte = loadPNGTexture("matte_metal.png", GL13.GL_TEXTURE3, df); //$NON-NLS-1$
+                    idCubemapMatte = loadPNGTexture("matte_metal.png", GL13.GL_TEXTURE3, df); //$NON-NLS-1$
                     break;
                 case 3:
-                    ID_cubemap_metal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
+                    idCubemapMetal = loadPNGTexture("metal.png", GL13.GL_TEXTURE4, df); //$NON-NLS-1$
                     break;
                 default:
                     break;
@@ -618,32 +618,32 @@ public class GTexture {
             }
             OpenGlDisposed.put(renderer, false);
             renderer.registerTexture(this);
-            OpenGlID.put(renderer, ID);
-            OpenGlID_glossmap.put(renderer, ID_glossmap);
-            OpenGlID_cubemap.put(renderer, ID_cubemap);
-            OpenGlID_cubemapMatte.put(renderer, ID_cubemap_matte);
-            OpenGlID_cubemapMetal.put(renderer, ID_cubemap_metal);
-        } else if (ID != -1) {
+            OpenGlID.put(renderer, id);
+            OpenGlID_glossmap.put(renderer, idGlossmap);
+            OpenGlID_cubemap.put(renderer, idCubemap);
+            OpenGlID_cubemapMatte.put(renderer, idCubemapMatte);
+            OpenGlID_cubemapMetal.put(renderer, idCubemapMetal);
+        } else if (id != -1) {
             accessTime = System.currentTimeMillis();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
-            GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID);
+            GL11.glBindTexture(GL11.GL_TEXTURE_2D, id);
             GL20.glUniform1i(shader.getUniformLocation("ldpePngSampler"), 0); // Texture unit 0 is for base images. //$NON-NLS-1$
 
             if (cubeMapIndex > 0) {
                 switch (cubeMapIndex) {
                 case 1:
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 4);
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemap);
                     GL20.glUniform1i(shader.getUniformLocation("cubeMap"), 4); // Texture unit 4 is for cube maps. //$NON-NLS-1$
                     break;
                 case 2:
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 8);
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_matte);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemapMatte);
                     GL20.glUniform1i(shader.getUniformLocation("cubeMapMatte"), 8); // Texture unit 8 is for cube maps. //$NON-NLS-1$
                     break;
                 case 3:
                     GL13.glActiveTexture(GL13.GL_TEXTURE0 + 16);
-                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, ID_cubemap_metal);
+                    GL11.glBindTexture(GL11.GL_TEXTURE_2D, idCubemapMetal);
                     GL20.glUniform1i(shader.getUniformLocation("cubeMapMetal"), 16); // Texture unit 16 is for cube maps. //$NON-NLS-1$
                     break;
                 default:
@@ -680,57 +680,57 @@ public class GTexture {
         } else {
             // Check folders
             File fileToOpen;
-            String o_tex = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + filename;
-            String o_tex_u = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-            String o_tex_l = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
-            String u_tex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
-            String u_tex_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-            String u_tex_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
-            String p_tex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
-            String p_tex_u = Project.getProjectPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-            String p_tex_l = Project.getProjectPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
-            String f_tex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
-            String f_tex_u = Project.getProjectPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-            String f_tex_l = Project.getProjectPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
+            String oTex = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + filename;
+            String oTexU = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
+            String oTexL = WorkbenchManager.getUserSettingState().getLdrawFolderPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
+            String uTex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
+            String uTexU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
+            String uTexL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
+            String pTex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
+            String pTexU = Project.getProjectPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
+            String pTexL = Project.getProjectPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
+            String fTex = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + filename;
+            String fTexU = Project.getProjectPath() + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
+            String fTexL = Project.getProjectPath() + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
             if (datFile != null && !datFile.isProjectFile() && !View.DUMMY_DATFILE.equals(datFile)) {
                 File dff = new File(datFile.getOldName()).getParentFile();
                 if (dff != null && dff.exists() && dff.isDirectory()) {
                     String ap = dff.getAbsolutePath();
-                    f_tex = ap + File.separator + filename;
-                    f_tex_u = ap + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
-                    f_tex_l = ap + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
+                    fTex = ap + File.separator + filename;
+                    fTexU = ap + File.separator + "TEXTURES" + File.separator + filename; //$NON-NLS-1$
+                    fTexL = ap + File.separator + "textures" + File.separator + filename; //$NON-NLS-1$
                 }
             }
 
             String tex = filename;
 
-            File official_texture = new File(o_tex);
-            File official_texture_u = new File(o_tex_u);
-            File official_texture_l = new File(o_tex_l);
-            File unofficial_texture = new File(u_tex);
-            File unofficial_texture_u = new File(u_tex_u);
-            File unofficial_texture_l = new File(u_tex_l);
-            File project_texture = new File(p_tex);
-            File project_texture_u = new File(p_tex_u);
-            File project_texture_l = new File(p_tex_l);
-            File local_texture = new File(f_tex);
-            File local_texture_u = new File(f_tex_u);
-            File local_texture_l = new File(f_tex_l);
+            File officialTexture = new File(oTex);
+            File officialTextureU = new File(oTexU);
+            File officialTextureL = new File(oTexL);
+            File unofficialTexture = new File(uTex);
+            File unofficialTextureU = new File(uTexU);
+            File unofficialTextureL = new File(uTexL);
+            File projectTexture = new File(pTex);
+            File projectTextureU = new File(pTexU);
+            File projectTextureL = new File(pTexL);
+            File localTexture = new File(fTex);
+            File localTextureU = new File(fTexU);
+            File localTextureL = new File(fTexL);
             File texture = new File(tex);
 
             boolean fileExists = (
-                    (fileToOpen = FileHelper.exist(local_texture)) != null
-                    || (fileToOpen = FileHelper.exist(local_texture_u)) != null
-                    || (fileToOpen = FileHelper.exist(local_texture_l)) != null
-                    || (fileToOpen = FileHelper.exist(project_texture)) != null
-                    || (fileToOpen = FileHelper.exist(project_texture_u)) != null
-                    || (fileToOpen = FileHelper.exist(project_texture_l)) != null
-                    || (fileToOpen = FileHelper.exist(unofficial_texture)) != null
-                    || (fileToOpen = FileHelper.exist(unofficial_texture_u)) != null
-                    || (fileToOpen = FileHelper.exist(unofficial_texture_l)) != null
-                    || (fileToOpen = FileHelper.exist(official_texture)) != null
-                    || (fileToOpen = FileHelper.exist(official_texture_u)) != null
-                    || (fileToOpen = FileHelper.exist(official_texture_l)) != null
+                    (fileToOpen = FileHelper.exist(localTexture)) != null
+                    || (fileToOpen = FileHelper.exist(localTextureU)) != null
+                    || (fileToOpen = FileHelper.exist(localTextureL)) != null
+                    || (fileToOpen = FileHelper.exist(projectTexture)) != null
+                    || (fileToOpen = FileHelper.exist(projectTextureU)) != null
+                    || (fileToOpen = FileHelper.exist(projectTextureL)) != null
+                    || (fileToOpen = FileHelper.exist(unofficialTexture)) != null
+                    || (fileToOpen = FileHelper.exist(unofficialTextureU)) != null
+                    || (fileToOpen = FileHelper.exist(unofficialTextureL)) != null
+                    || (fileToOpen = FileHelper.exist(officialTexture)) != null
+                    || (fileToOpen = FileHelper.exist(officialTextureU)) != null
+                    || (fileToOpen = FileHelper.exist(officialTextureL)) != null
                     || (fileToOpen = FileHelper.exist(texture)) != null)
                     && fileToOpen.isFile();
 

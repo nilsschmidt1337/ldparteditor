@@ -113,10 +113,10 @@ class VM02Add extends VM01SelectHelper {
             } else {
                 if (subVertex) {
                     Matrix matrix = parent2.accurateProductMatrix;
-                    BigDecimal[] P1 = matrix.transform(gd2.X1, gd2.Y1, gd2.Z1);
-                    BigDecimal[] P2 = matrix.transform(gd2.X2, gd2.Y2, gd2.Z2);
-                    vArray[0] = new Vertex(P1[0], P1[1], P1[2], lv[0]);
-                    vArray[1] = new Vertex(P2[0], P2[1], P2[2], lv[1]);
+                    BigDecimal[] p1 = matrix.transform(gd2.X1, gd2.Y1, gd2.Z1);
+                    BigDecimal[] p2 = matrix.transform(gd2.X2, gd2.Y2, gd2.Z2);
+                    vArray[0] = new Vertex(p1[0], p1[1], p1[2], lv[0]);
+                    vArray[1] = new Vertex(p2[0], p2[1], p2[2], lv[1]);
                 } else {
                     vArray[0] = new Vertex(gd2.X1, gd2.Y1, gd2.Z1, lv[0]);
                     vArray[1] = new Vertex(gd2.X2, gd2.Y2, gd2.Z2, lv[1]);
@@ -151,12 +151,12 @@ class VM02Add extends VM01SelectHelper {
             } else {
                 if (subVertex) {
                     Matrix matrix = parent3.accurateProductMatrix;
-                    BigDecimal[] P1 = matrix.transform(gd3.X1, gd3.Y1, gd3.Z1);
-                    BigDecimal[] P2 = matrix.transform(gd3.X2, gd3.Y2, gd3.Z2);
-                    BigDecimal[] P3 = matrix.transform(gd3.X3, gd3.Y3, gd3.Z3);
-                    vArray[0] = new Vertex(P1[0], P1[1], P1[2], tv[0]);
-                    vArray[1] = new Vertex(P2[0], P2[1], P2[2], tv[1]);
-                    vArray[2] = new Vertex(P3[0], P3[1], P3[2], tv[2]);
+                    BigDecimal[] p1 = matrix.transform(gd3.X1, gd3.Y1, gd3.Z1);
+                    BigDecimal[] p2 = matrix.transform(gd3.X2, gd3.Y2, gd3.Z2);
+                    BigDecimal[] p3 = matrix.transform(gd3.X3, gd3.Y3, gd3.Z3);
+                    vArray[0] = new Vertex(p1[0], p1[1], p1[2], tv[0]);
+                    vArray[1] = new Vertex(p2[0], p2[1], p2[2], tv[1]);
+                    vArray[2] = new Vertex(p3[0], p3[1], p3[2], tv[2]);
                 } else {
                     vArray[0] = new Vertex(gd3.X1, gd3.Y1, gd3.Z1, tv[0]);
                     vArray[1] = new Vertex(gd3.X2, gd3.Y2, gd3.Z2, tv[1]);
@@ -196,14 +196,14 @@ class VM02Add extends VM01SelectHelper {
             } else {
                 if (subVertex) {
                     Matrix matrix = parent4.accurateProductMatrix;
-                    BigDecimal[] P1 = matrix.transform(gd4.X1, gd4.Y1, gd4.Z1);
-                    BigDecimal[] P2 = matrix.transform(gd4.X2, gd4.Y2, gd4.Z2);
-                    BigDecimal[] P3 = matrix.transform(gd4.X3, gd4.Y3, gd4.Z3);
-                    BigDecimal[] P4 = matrix.transform(gd4.X4, gd4.Y4, gd4.Z4);
-                    vArray[0] = new Vertex(P1[0], P1[1], P1[2], qv[0]);
-                    vArray[1] = new Vertex(P2[0], P2[1], P2[2], qv[1]);
-                    vArray[2] = new Vertex(P3[0], P3[1], P3[2], qv[2]);
-                    vArray[3] = new Vertex(P4[0], P4[1], P4[2], qv[3]);
+                    BigDecimal[] p1 = matrix.transform(gd4.X1, gd4.Y1, gd4.Z1);
+                    BigDecimal[] p2 = matrix.transform(gd4.X2, gd4.Y2, gd4.Z2);
+                    BigDecimal[] p3 = matrix.transform(gd4.X3, gd4.Y3, gd4.Z3);
+                    BigDecimal[] p4 = matrix.transform(gd4.X4, gd4.Y4, gd4.Z4);
+                    vArray[0] = new Vertex(p1[0], p1[1], p1[2], qv[0]);
+                    vArray[1] = new Vertex(p2[0], p2[1], p2[2], qv[1]);
+                    vArray[2] = new Vertex(p3[0], p3[1], p3[2], qv[2]);
+                    vArray[3] = new Vertex(p4[0], p4[1], p4[2], qv[3]);
                 } else {
                     vArray[0] = new Vertex(gd4.X1, gd4.Y1, gd4.Z1, qv[0]);
                     vArray[1] = new Vertex(gd4.X2, gd4.Y2, gd4.Z2, qv[1]);
@@ -244,14 +244,14 @@ class VM02Add extends VM01SelectHelper {
             } else {
                 if (subVertex) {
                     Matrix matrix = parent5.accurateProductMatrix;
-                    BigDecimal[] P1 = matrix.transform(gd5.X1, gd5.Y1, gd5.Z1);
-                    BigDecimal[] P2 = matrix.transform(gd5.X2, gd5.Y2, gd5.Z2);
-                    BigDecimal[] P3 = matrix.transform(gd5.X3, gd5.Y3, gd5.Z3);
-                    BigDecimal[] P4 = matrix.transform(gd5.X4, gd5.Y4, gd5.Z4);
-                    vArray[0] = new Vertex(P1[0], P1[1], P1[2], ov[0]);
-                    vArray[1] = new Vertex(P2[0], P2[1], P2[2], ov[1]);
-                    vArray[2] = new Vertex(P3[0], P3[1], P3[2], ov[2]);
-                    vArray[3] = new Vertex(P4[0], P4[1], P4[2], ov[3]);
+                    BigDecimal[] p1 = matrix.transform(gd5.X1, gd5.Y1, gd5.Z1);
+                    BigDecimal[] p2 = matrix.transform(gd5.X2, gd5.Y2, gd5.Z2);
+                    BigDecimal[] p3 = matrix.transform(gd5.X3, gd5.Y3, gd5.Z3);
+                    BigDecimal[] p4 = matrix.transform(gd5.X4, gd5.Y4, gd5.Z4);
+                    vArray[0] = new Vertex(p1[0], p1[1], p1[2], ov[0]);
+                    vArray[1] = new Vertex(p2[0], p2[1], p2[2], ov[1]);
+                    vArray[2] = new Vertex(p3[0], p3[1], p3[2], ov[2]);
+                    vArray[3] = new Vertex(p4[0], p4[1], p4[2], ov[3]);
                 } else {
                     vArray[0] = new Vertex(gd5.X1, gd5.Y1, gd5.Z1, ov[0]);
                     vArray[1] = new Vertex(gd5.X2, gd5.Y2, gd5.Z2, ov[1]);

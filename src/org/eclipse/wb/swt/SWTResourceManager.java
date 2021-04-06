@@ -69,14 +69,14 @@ public class SWTResourceManager {
      */
     public static Color getColor(int r, int g, int b) {
         // Validation for RGB argument range
-        int clamp_r = Math.max(0, Math.min(255, r));
-        int clamp_g = Math.max(0, Math.min(255, g));
-        int clamp_b = Math.max(0, Math.min(255, b));
-        if (clamp_r != r || clamp_g != g || clamp_b != b) {
+        int clampR = Math.max(0, Math.min(255, r));
+        int clampG = Math.max(0, Math.min(255, g));
+        int clampB = Math.max(0, Math.min(255, b));
+        if (clampR != r || clampG != g || clampB != b) {
             NLogger.error(SWTResourceManager.class, new IllegalArgumentException("Illegal argument on getColor (R:" + r + " G:" + g + " B:" + b + ")")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
         }
 
-        return getColor(new RGB(clamp_r, clamp_g, clamp_b));
+        return getColor(new RGB(clampR, clampG, clampB));
     }
 
     /**

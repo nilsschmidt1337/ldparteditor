@@ -302,16 +302,16 @@ public class VM21Merger extends VM20Manipulator {
         diskr = Vector3r.dot(corner1, pvec);
         if (diskr.abs().compareTo(Rational.ZERO) == 0)
             return;
-        Rational inv_diskr = Rational.ONE.divide(diskr);
+        Rational invDiskr = Rational.ONE.divide(diskr);
         Vector3r tvec = Vector3r.sub(orig2, vert0);
-        Rational u = Vector3r.dot(tvec, pvec).multiply(inv_diskr);
+        Rational u = Vector3r.dot(tvec, pvec).multiply(invDiskr);
         if (u.compareTo(Rational.ZERO) < 0 || u.compareTo(Rational.ONE) > 0)
             return;
         Vector3r qvec = Vector3r.cross(tvec, corner1);
-        Rational v = Vector3r.dot(dir2, qvec).multiply(inv_diskr);
+        Rational v = Vector3r.dot(dir2, qvec).multiply(invDiskr);
         if (v.compareTo(Rational.ZERO) < 0 || u.add(v).compareTo(Rational.ONE) > 0)
             return;
-        Rational t = Vector3r.dot(corner2, qvec).multiply(inv_diskr);
+        Rational t = Vector3r.dot(corner2, qvec).multiply(invDiskr);
         if (t.compareTo(Rational.ZERO) < 0)
             return;
         if (distance[0] == null || t.compareTo(distance[0]) < 0) {

@@ -61,63 +61,63 @@ class RoundDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.ROUND_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.ROUND_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Composite cmp_coords = new Composite(cmp_container, SWT.NONE);
-            cmp_coords.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_coords.setLayout(new GridLayout(3, true));
+            Composite cmpCoords = new Composite(cmpContainer, SWT.NONE);
+            cmpCoords.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpCoords.setLayout(new GridLayout(3, true));
 
-            NButton cb_Xaxis = new NButton(cmp_coords, SWT.CHECK);
-            this.cb_Xaxis[0] = cb_Xaxis;
-            cb_Xaxis.setText(I18n.ROUND_X);
-            cb_Xaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundX());
+            NButton cbXaxis = new NButton(cmpCoords, SWT.CHECK);
+            this.cb_Xaxis[0] = cbXaxis;
+            cbXaxis.setText(I18n.ROUND_X);
+            cbXaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundX());
 
-            NButton cb_Yaxis = new NButton(cmp_coords, SWT.CHECK);
-            this.cb_Yaxis[0] = cb_Yaxis;
-            cb_Yaxis.setText(I18n.ROUND_Y);
-            cb_Yaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundY());
+            NButton cbYaxis = new NButton(cmpCoords, SWT.CHECK);
+            this.cb_Yaxis[0] = cbYaxis;
+            cbYaxis.setText(I18n.ROUND_Y);
+            cbYaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundY());
 
-            NButton cb_Zaxis = new NButton(cmp_coords, SWT.CHECK);
-            this.cb_Zaxis[0] = cb_Zaxis;
-            cb_Zaxis.setText(I18n.ROUND_Z);
-            cb_Zaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundZ());
+            NButton cbZaxis = new NButton(cmpCoords, SWT.CHECK);
+            this.cb_Zaxis[0] = cbZaxis;
+            cbZaxis.setText(I18n.ROUND_Z);
+            cbZaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundZ());
         }
 
-        Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText(I18n.ROUND_COORD_PRECISION);
+        Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
+        lblCoordsPrec.setText(I18n.ROUND_COORD_PRECISION);
 
-        IntegerSpinner spn_coords = new IntegerSpinner(cmp_container, SWT.NONE);
-        this.spn_coords[0] = spn_coords;
-        spn_coords.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_coords.setMaximum(9);
-        spn_coords.setMinimum(0);
-        spn_coords.setValue(WorkbenchManager.getUserSettingState().getCoordsPrecision());
+        IntegerSpinner spnCoords = new IntegerSpinner(cmpContainer, SWT.NONE);
+        this.spn_coords[0] = spnCoords;
+        spnCoords.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnCoords.setMaximum(9);
+        spnCoords.setMinimum(0);
+        spnCoords.setValue(WorkbenchManager.getUserSettingState().getCoordsPrecision());
 
-        Label lbl_matrixPrec = new Label(cmp_container, SWT.NONE);
-        lbl_matrixPrec.setText(I18n.ROUND_MATRIX_PRECISION);
+        Label lblMatrixPrec = new Label(cmpContainer, SWT.NONE);
+        lblMatrixPrec.setText(I18n.ROUND_MATRIX_PRECISION);
 
-        IntegerSpinner spn_matrix = new IntegerSpinner(cmp_container, SWT.NONE);
-        this.spn_matrix[0] = spn_matrix;
-        spn_matrix.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_matrix.setMaximum(9);
-        spn_matrix.setMinimum(0);
-        spn_matrix.setValue(WorkbenchManager.getUserSettingState().getTransMatrixPrecision());
+        IntegerSpinner spnMatrix = new IntegerSpinner(cmpContainer, SWT.NONE);
+        this.spn_matrix[0] = spnMatrix;
+        spnMatrix.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnMatrix.setMaximum(9);
+        spnMatrix.setMinimum(0);
+        spnMatrix.setValue(WorkbenchManager.getUserSettingState().getTransMatrixPrecision());
 
-        Label lbl_unit = new Label(cmp_container, SWT.NONE);
-        lbl_unit.setText(I18n.ROUND_IN_DEC_PLACES);
+        Label lblUnit = new Label(cmpContainer, SWT.NONE);
+        lblUnit.setText(I18n.ROUND_IN_DEC_PLACES);
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

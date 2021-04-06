@@ -737,8 +737,8 @@ class VM06Edger2 extends VM05Distance {
             dx = dx * dx;
             dy = dy * dy;
             dz = dz * dz;
-            double total_dist = dx + dy+ dz;
-            if (total_dist < edsquare) {
+            double totalDist = dx + dy+ dz;
+            if (totalDist < edsquare) {
                 return v;
             }
         }

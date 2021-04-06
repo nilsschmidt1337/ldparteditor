@@ -763,13 +763,13 @@ public class VM20Manipulator extends VM19ColourChanger {
             Composite3D c3d = linkedDatFile.getLastSelectedComposite();
             if (scope == ManipulatorScope.LOCAL && c3d != null) {
                 Manipulator mani = c3d.getManipulator();
-                BigDecimal[] X = mani.getAccurateXaxis();
-                BigDecimal[] Y = mani.getAccurateYaxis();
-                BigDecimal[] Z = mani.getAccurateZaxis();
+                BigDecimal[] aX = mani.getAccurateXaxis();
+                BigDecimal[] aY = mani.getAccurateYaxis();
+                BigDecimal[] aZ = mani.getAccurateZaxis();
                 final Matrix m = new Matrix(
-                        X[0], X[1], X[2], BigDecimal.ZERO,
-                        Y[0], Y[1], Y[2], BigDecimal.ZERO,
-                        Z[0], Z[1], Z[2], BigDecimal.ZERO,
+                        aX[0], aX[1], aX[2], BigDecimal.ZERO,
+                        aY[0], aY[1], aY[2], BigDecimal.ZERO,
+                        aZ[0], aZ[1], aZ[2], BigDecimal.ZERO,
                         BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
                 final Matrix mi = m.invert();
                 transformation = Matrix.mul(m, transformation);
@@ -805,7 +805,7 @@ public class VM20Manipulator extends VM19ColourChanger {
 
     }
 
-    public void transformSubfile(GData1 g, Matrix M, boolean clearSelection, boolean syncWithTextEditor) {
+    public void transformSubfile(GData1 g, Matrix m, boolean clearSelection, boolean syncWithTextEditor) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
         StringBuilder colourBuilder = new StringBuilder();
         final GColour col16 = View.getLDConfigColour(16);
@@ -821,7 +821,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         GData.parsedLines.clear();
         GData.CACHE_parsedFilesSource.clear();
         GData1 reloadedSubfile = (GData1) DatParser
-                .parseLine("1 " + colourBuilder.toString() + M.toLDrawString() + g.shortName , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$
+                .parseLine("1 " + colourBuilder.toString() + m.toLDrawString() + g.shortName , 0, 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, //$NON-NLS-1$
                         new HashSet<>()).get(0).getGraphicalData();
         // Clear the cache..
         GData.parsedLines.clear();

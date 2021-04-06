@@ -808,10 +808,10 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         HashSet<GData> cset = new HashSet<>(CLIPBOARD);
 
         if (!CLIPBOARD.isEmpty()) {
-            final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+            final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
             GData g = CLIPBOARD.get(0);
             ArrayList<GData> l = new ArrayList<>();
-            while ((g = g.before) != null && g.type() == 0 && (g.toString().trim().isEmpty() || WHITESPACE.matcher(g.toString()).replaceAll(" ").trim().startsWith("0 //"))) { //$NON-NLS-1$ //$NON-NLS-2$
+            while ((g = g.before) != null && g.type() == 0 && (g.toString().trim().isEmpty() || whitespace.matcher(g.toString()).replaceAll(" ").trim().startsWith("0 //"))) { //$NON-NLS-1$ //$NON-NLS-2$
                 l.add(g);
             }
             if (!l.isEmpty()) {
@@ -935,25 +935,25 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
             if (vertex.type() == 0) {
                 String line = vertex.toString();
                 line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                String[] data_segments = line.split("\\s+"); //$NON-NLS-1$
+                String[] dataSegments = line.split("\\s+"); //$NON-NLS-1$
                 if (line.startsWith("0 !LPE VERTEX ")) { //$NON-NLS-1$
                     Vector3d start = new Vector3d();
                     boolean numberError = false;
-                    if (data_segments.length == 6) {
+                    if (dataSegments.length == 6) {
                         try {
-                            start.setX(new BigDecimal(data_segments[3], Threshold.mc));
+                            start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
                         } catch (NumberFormatException nfe) {
                             numberError = true;
                         }
 
                         try {
-                            start.setY(new BigDecimal(data_segments[4], Threshold.mc));
+                            start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
                         } catch (NumberFormatException nfe) {
                             numberError = true;
                         }
 
                         try {
-                            start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                            start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
                         } catch (NumberFormatException nfe) {
                             numberError = true;
                         }

@@ -73,7 +73,7 @@ public final class VertexManager extends VM99Clipboard {
 
         Manipulator manipulator = c3d.getManipulator();
         FloatBuffer matrix = manipulator.getTempTransformation();
-        FloatBuffer matrix_inv = manipulator.getTempTransformationInv();
+        FloatBuffer matrixInv = manipulator.getTempTransformationInv();
         final boolean modifiedManipulator = manipulator.isModified();
 
         if (calculateCondlineControlPoints.compareAndSet(true, false)) {
@@ -257,7 +257,7 @@ public final class VertexManager extends VM99Clipboard {
                                         triverts[i] = new Vertex(res.x, res.y, res.z);
                                     }
                                 }
-                                GL11.glMultMatrixf(matrix_inv);
+                                GL11.glMultMatrixf(matrixInv);
                                 new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, gd3.r, gd3.g, gd3.b, 0f), false).drawProtractor_GL20(true, c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
                                 GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
@@ -343,7 +343,7 @@ public final class VertexManager extends VM99Clipboard {
                                 }
                             }
                             if (!gd2.isLine) {
-                                GL11.glMultMatrixf(matrix_inv);
+                                GL11.glMultMatrixf(matrixInv);
                                 new GData2(lineverts2[0], lineverts2[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistanceGL20(c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
@@ -379,7 +379,7 @@ public final class VertexManager extends VM99Clipboard {
                             ny = (triverts[2].z - triverts[0].z) * (triverts[1].x - triverts[0].x) - (triverts[2].x - triverts[0].x) * (triverts[1].z - triverts[0].z);
                             nz = (triverts[2].x - triverts[0].x) * (triverts[1].y - triverts[0].y) - (triverts[2].y - triverts[0].y) * (triverts[1].x - triverts[0].x);
                             if (!gd3.isTriangle) {
-                                GL11.glMultMatrixf(matrix_inv);
+                                GL11.glMultMatrixf(matrixInv);
                                 new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, gd3.r, gd3.g, gd3.b, 0f), false).drawProtractor_GL20(true, c3d, triverts[0].X, triverts[0].Y, triverts[0].Z, triverts[1].X, triverts[1].Y, triverts[1].Z, triverts[2].X, triverts[2].Y, triverts[2].Z);
                                 GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
@@ -674,7 +674,7 @@ public final class VertexManager extends VM99Clipboard {
                                     Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
                                     lineverts[i1] = new Vertex(res.x, res.y, res.z);
                                 }
-                                GL11.glMultMatrixf(matrix_inv);
+                                GL11.glMultMatrixf(matrixInv);
                                 new GData2(dataVerts[0], dataVerts[1], null, new GColour(16, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 0f), false).drawDistanceGL20(c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z);
                                 GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
                                 GL11.glMultMatrixf(matrix);
@@ -762,7 +762,7 @@ public final class VertexManager extends VM99Clipboard {
                                     Vector4f res = manipulator.getUntransformed(v2.x, v2.y, v2.z);
                                     lineverts[i1] = new Vertex(res.x, res.y, res.z);
                                 }
-                                GL11.glMultMatrixf(matrix_inv);
+                                GL11.glMultMatrixf(matrixInv);
                                 new GData3(dataVerts[0], dataVerts[1], dataVerts[2], null, new GColour(16, tri.r, tri.g, tri.b, 0f), false).drawProtractor_GL20(true, c3d, lineverts[0].X, lineverts[0].Y, lineverts[0].Z, lineverts[1].X, lineverts[1].Y, lineverts[1].Z, lineverts[2].X, lineverts[2].Y, lineverts[2].Z);
                                 GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
@@ -852,16 +852,16 @@ public final class VertexManager extends VM99Clipboard {
     public synchronized void adjustRotationCenter(Composite3D c3d, Event event) {
         Point cSize = c3d.getSize();
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
-        Matrix4f viewport_translation = c3d.getTranslation();
-        Matrix4f viewport_rotation = c3d.getRotation();
-        float viewport_pixel_per_ldu = c3d.getViewportPixelPerLDU();
+        Matrix4f viewportTranslation = c3d.getTranslation();
+        Matrix4f viewportRotation = c3d.getRotation();
+        float viewportPixelPerLDU = c3d.getViewportPixelPerLDU();
 
         float dx = 0;
         float dy = 0;
 
         Vector4f zAxis4f = new Vector4f(0, 0, -1f, 1f);
-        Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
-        Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
+        Matrix4f ovrInverse2 = Matrix4f.invert(viewportRotation, null);
+        Matrix4f.transform(ovrInverse2, zAxis4f, zAxis4f);
         Vector4f rayDirection = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
         rayDirection.w = 1f;
 
@@ -1035,28 +1035,28 @@ public final class VertexManager extends VM99Clipboard {
                     c3d.getManipulator().getYaxis().set(cross.x, cross.y, cross.z, 1f);
                 }
             }
-            Vector4f zAxis4f_translation = new Vector4f(-minPoint.x, -minPoint.y, -minPoint.z, 1.0f);
-            Vector3f zAxis3 = new Vector3f(zAxis4f_translation.x, zAxis4f_translation.y, zAxis4f_translation.z);
-            viewport_translation.load(Matrix4f.translate(zAxis3, View.ID, null));
+            Vector4f zAxis4fTranslation = new Vector4f(-minPoint.x, -minPoint.y, -minPoint.z, 1.0f);
+            Vector3f zAxis3 = new Vector3f(zAxis4fTranslation.x, zAxis4fTranslation.y, zAxis4fTranslation.z);
+            viewportTranslation.load(Matrix4f.translate(zAxis3, View.ID, null));
         } else {
             if (event == null)
                 return;
-            dx = (event.x - cSize.x / 2) / viewport_pixel_per_ldu;
-            dy = (cSize.y / 2 - event.y) / viewport_pixel_per_ldu;
+            dx = (event.x - cSize.x / 2) / viewportPixelPerLDU;
+            dy = (cSize.y / 2 - event.y) / viewportPixelPerLDU;
 
-            Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
-            Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
+            Vector4f xAxis4fTranslation = new Vector4f(dx, 0, 0, 1.0f);
+            Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
 
-            Matrix4f.transform(ovr_inverse2, xAxis4f_translation, xAxis4f_translation);
-            Matrix4f.transform(ovr_inverse2, yAxis4f_translation, yAxis4f_translation);
-            Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
-            Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
+            Matrix4f.transform(ovrInverse2, xAxis4fTranslation, xAxis4fTranslation);
+            Matrix4f.transform(ovrInverse2, yAxis4fTranslation, yAxis4fTranslation);
+            Vector3f xAxis3 = new Vector3f(xAxis4fTranslation.x, xAxis4fTranslation.y, xAxis4fTranslation.z);
+            Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
 
-            Matrix4f.translate(xAxis3, viewport_translation, viewport_translation);
-            Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+            Matrix4f.translate(xAxis3, viewportTranslation, viewportTranslation);
+            Matrix4f.translate(yAxis3, viewportTranslation, viewportTranslation);
         }
 
-        c3d.getTranslation().load(viewport_translation);
+        c3d.getTranslation().load(viewportTranslation);
 
         perspective.calculateOriginData();
 

@@ -1282,27 +1282,27 @@ public class Editor3DWindow extends Editor3DDesign {
                                         r.println(""); //$NON-NLS-1$
 
                                         {
-                                            BFC bfc_type = BFC.NOCERTIFY;
+                                            BFC bfcType = BFC.NOCERTIFY;
                                             GData g1 = Project.getFileToEdit().getDrawChainStart();
                                             while ((g1 = g1.getNext()) != null) {
                                                 if (g1.type() == 6) {
                                                     BFC bfc = ((GDataBFC) g1).getType();
                                                     switch (bfc) {
                                                     case CCW_CLIP:
-                                                        bfc_type = bfc;
+                                                        bfcType = bfc;
                                                         r.println("0 BFC CERTIFY CCW"); //$NON-NLS-1$
                                                         break;
                                                     case CW_CLIP:
-                                                        bfc_type = bfc;
+                                                        bfcType = bfc;
                                                         r.println("0 BFC CERTIFY CW"); //$NON-NLS-1$
                                                         break;
                                                     default:
                                                         break;
                                                     }
-                                                    if (bfc_type != BFC.NOCERTIFY) break;
+                                                    if (bfcType != BFC.NOCERTIFY) break;
                                                 }
                                             }
-                                            if (bfc_type == BFC.NOCERTIFY) {
+                                            if (bfcType == BFC.NOCERTIFY) {
                                                 r.println("0 BFC NOCERTIFY"); //$NON-NLS-1$
                                             }
                                         }
@@ -3529,11 +3529,11 @@ public class Editor3DWindow extends Editor3DDesign {
                                     doMoveOnLine2 = true;
                                     s2 = v22.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta2.Z, Threshold.mc);
                                 }
-                                BigDecimal X = !CoordinatesDialog.isX() ? v12.X.add(delta2.X.multiply(s2)) : v22.X;
-                                BigDecimal Y = !CoordinatesDialog.isY() ? v12.Y.add(delta2.Y.multiply(s2)) : v22.Y;
-                                BigDecimal Z = !CoordinatesDialog.isZ() ? v12.Z.add(delta2.Z.multiply(s2)) : v22.Z;
+                                BigDecimal xP = !CoordinatesDialog.isX() ? v12.X.add(delta2.X.multiply(s2)) : v22.X;
+                                BigDecimal yP = !CoordinatesDialog.isY() ? v12.Y.add(delta2.Y.multiply(s2)) : v22.Y;
+                                BigDecimal zP = !CoordinatesDialog.isZ() ? v12.Z.add(delta2.Z.multiply(s2)) : v22.Z;
                                 if (doMoveOnLine2) {
-                                    CoordinatesDialog.setVertex(new Vertex(X, Y, Z));
+                                    CoordinatesDialog.setVertex(new Vertex(xP, yP, zP));
                                     CoordinatesDialog.setX(true);
                                     CoordinatesDialog.setY(true);
                                     CoordinatesDialog.setZ(true);
@@ -3616,16 +3616,16 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (vertex.type() == 0) {
                             String line = vertex.toString();
                             line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                            String[] data_segments = line.split("\\s+"); //$NON-NLS-1$
+                            String[] dataSegments = line.split("\\s+"); //$NON-NLS-1$
                             if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
                                 if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
                                     Vector3d start = new Vector3d();
                                     boolean numberError = false;
-                                    if (data_segments.length == 6) {
+                                    if (dataSegments.length == 6) {
                                         try {
-                                            start.setX(new BigDecimal(data_segments[3], Threshold.mc));
-                                            start.setY(new BigDecimal(data_segments[4], Threshold.mc));
-                                            start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                                            start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
+                                            start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
+                                            start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
                                         } catch (NumberFormatException nfe) {
                                             numberError = true;
                                         }
@@ -3680,16 +3680,16 @@ public class Editor3DWindow extends Editor3DDesign {
                         if (vertex.type() == 0) {
                             String line = vertex.toString();
                             line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                            String[] data_segments = line.split("\\s+"); //$NON-NLS-1$
+                            String[] dataSegments = line.split("\\s+"); //$NON-NLS-1$
                             if (line.startsWith("0 !LPE")) { //$NON-NLS-1$
                                 if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
                                     Vector3d start = new Vector3d();
                                     boolean numberError = false;
-                                    if (data_segments.length == 6) {
+                                    if (dataSegments.length == 6) {
                                         try {
-                                            start.setX(new BigDecimal(data_segments[3], Threshold.mc));
-                                            start.setY(new BigDecimal(data_segments[4], Threshold.mc));
-                                            start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                                            start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
+                                            start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
+                                            start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
                                         } catch (NumberFormatException nfe) {
                                             numberError = true;
                                         }
@@ -3984,14 +3984,14 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (String line : lines) {
                     line = line.trim();
                     if (line.startsWith("1 ")) { //$NON-NLS-1$
-                        final String[] data_segments = WHITESPACE.split(line.trim());
-                        if (data_segments.length > 14) {
+                        final String[] dataSegments = WHITESPACE.split(line.trim());
+                        if (dataSegments.length > 14) {
                             StringBuilder sb = new StringBuilder();
-                            for (int s = 14; s < data_segments.length - 1; s++) {
-                                sb.append(data_segments[s]);
+                            for (int s = 14; s < dataSegments.length - 1; s++) {
+                                sb.append(dataSegments[s]);
                                 sb.append(" "); //$NON-NLS-1$
                             }
-                            sb.append(data_segments[data_segments.length - 1]);
+                            sb.append(dataSegments[dataSegments.length - 1]);
                             String fileName = sb.toString();
                             fileName = fileName.toLowerCase(Locale.ENGLISH);
                             try {
@@ -4590,7 +4590,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                 }
 
-                final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+                final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
                 ArrayList<GColour> pal = WorkbenchManager.getUserSettingState().getUserPalette();
                 ArrayList<GColour> newPal = new ArrayList<>();
 
@@ -4600,9 +4600,9 @@ public class Editor3DWindow extends Editor3DDesign {
                     reader = new UTF8BufferedReader(newPath);
                     String line;
                     while ((line = reader.readLine()) != null) {
-                        final String[] data_segments = WHITESPACE.split(line.trim());
-                        if (data_segments.length > 1) {
-                            GColour c = DatParser.validateColour(data_segments[1], 0f, 0f, 0f, 1f);
+                        final String[] dataSegments = whitespace.split(line.trim());
+                        if (dataSegments.length > 1) {
+                            GColour c = DatParser.validateColour(dataSegments[1], 0f, 0f, 0f, 1f);
                             if (c != null) {
                                 newPal.add(c.createClone());
                             }
@@ -6669,10 +6669,10 @@ public class Editor3DWindow extends Editor3DDesign {
     @SuppressWarnings("unchecked")
     private void setReviewingAPart(boolean reviewingAPart, Set<DatFile> partsForReview) {
         if (reviewingAPart) {
-            NButton btn_EndPartReview = new NButton(cmp_SyncAndReview[0], SWT.NONE);
-            btn_EndPartReview.setText(I18n.E3D_END_PART_REVIEW);
-            btn_EndPartReview.setData(partsForReview);
-            WidgetUtil(btn_EndPartReview).addSelectionListener(e -> setReviewingAPart(false, null));
+            NButton btnEndPartReview = new NButton(cmp_SyncAndReview[0], SWT.NONE);
+            btnEndPartReview.setText(I18n.E3D_END_PART_REVIEW);
+            btnEndPartReview.setData(partsForReview);
+            WidgetUtil(btnEndPartReview).addSelectionListener(e -> setReviewingAPart(false, null));
         } else {
             // Close all review files
             partsForReview = (Set<DatFile>) cmp_SyncAndReview[0].getChildren()[1].getData();
@@ -7384,13 +7384,13 @@ public class Editor3DWindow extends Editor3DDesign {
                 if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
                     int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
                     Editor3DWindow.getSashForm().getChildren()[1].dispose();
-                    CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
-                    cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
+                    CompositeContainer cmpContainer = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                    cmpContainer.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
                     df.parseForData(true);
                     Project.setFileToEdit(df);
-                    boolean hasState = hasState(df, cmp_Container.getComposite3D());
-                    cmp_Container.getComposite3D().setLockableDatFileReference(df);
-                    if (!hasState) cmp_Container.getComposite3D().getModifier().zoomToFit();
+                    boolean hasState = hasState(df, cmpContainer.getComposite3D());
+                    cmpContainer.getComposite3D().setLockableDatFileReference(df);
+                    if (!hasState) cmpContainer.getComposite3D().getModifier().zoomToFit();
                     Editor3DWindow.getSashForm().getParent().layout();
                     Editor3DWindow.getSashForm().setWeights(mainSashWeights);
                 }
@@ -7722,14 +7722,14 @@ public class Editor3DWindow extends Editor3DDesign {
         return recentItems;
     }
 
-    private void setLineSize(SphereGL20 sp, SphereGL20 sp_inv, float line_width1000, float line_width, float line_width_gl, NButton btn) {
+    private void setLineSize(SphereGL20 sp, SphereGL20 spInv, float lineWidth1000, float lineWidth, float lineWidthGL, NButton btn) {
         final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;
-        View.lineWidth1000[0] = line_width1000;
-        View.lineWidth[0] = line_width;
-        View.lineWidthGL[0] = line_width_gl;
+        View.lineWidth1000[0] = lineWidth1000;
+        View.lineWidth[0] = lineWidth;
+        View.lineWidthGL[0] = lineWidthGL;
         if (useLegacyGL) {
             GL20Primitives.SPHERE = sp;
-            GL20Primitives.SPHERE_INV = sp_inv;
+            GL20Primitives.SPHERE_INV = spInv;
             compileAll(false);
         }
         clickSingleBtn(btn);
@@ -7801,10 +7801,10 @@ public class Editor3DWindow extends Editor3DDesign {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                     Vector4f t = new Vector4f(c3d.getManipulator().getPosition());
-                    BigDecimal[] T = c3d.getManipulator().getAccuratePosition();
+                    BigDecimal[] tP = c3d.getManipulator().getAccuratePosition();
                     c3d.getManipulator().reset();
                     c3d.getManipulator().getPosition().set(t);
-                    c3d.getManipulator().setAccuratePosition(T[0], T[1], T[2]);
+                    c3d.getManipulator().setAccuratePosition(tP[0], tP[1], tP[2]);
                 }
             }
         }
@@ -7903,8 +7903,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     final Composite3D c3d = renderer.getC3D();
                     if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                         Matrix4f m = subfile.getProductMatrix();
-                        Matrix M = subfile.getAccurateProductMatrix();
-                        MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, M, m);
+                        Matrix mP = subfile.getAccurateProductMatrix();
+                        MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, mP, m);
                         origin = c3d.getManipulator();
                         break;
                     }
@@ -8393,12 +8393,12 @@ public class Editor3DWindow extends Editor3DDesign {
             if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
                 int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
                 Editor3DWindow.getSashForm().getChildren()[1].dispose();
-                CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
-                cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
+                CompositeContainer cmpContainer = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                cmpContainer.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
                 addRecentFile(df);
                 df.parseForData(true);
                 Project.setFileToEdit(df);
-                cmp_Container.getComposite3D().setLockableDatFileReference(df);
+                cmpContainer.getComposite3D().setLockableDatFileReference(df);
                 df.getVertexManager().addSnapshot();
                 Editor3DWindow.getSashForm().getParent().layout();
                 Editor3DWindow.getSashForm().setWeights(mainSashWeights);
@@ -8845,71 +8845,71 @@ public class Editor3DWindow extends Editor3DDesign {
         if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile) {
             DatFile df = (DatFile) treeParts[0].getSelection()[0].getData();
             TreeItem p = treeParts[0].getSelection()[0].getParentItem();
-            String targetPath_u;
-            String targetPath_l;
-            String targetPathDir_u;
-            String targetPathDir_l;
+            String targetPathU;
+            String targetPathL;
+            String targetPathDirU;
+            String targetPathDirL;
             TreeItem targetTreeItem;
             boolean projectIsFileOrigin = false;
             if (treeItem_ProjectParts[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
                 targetTreeItem = treeItem_UnofficialParts[0];
                 projectIsFileOrigin = true;
             } else if (treeItem_ProjectPrimitives[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
                 targetTreeItem = treeItem_UnofficialPrimitives[0];
                 projectIsFileOrigin = true;
             } else if (treeItem_ProjectPrimitives48[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetTreeItem = treeItem_UnofficialPrimitives48[0];
                 projectIsFileOrigin = true;
             } else if (treeItem_ProjectPrimitives8[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetTreeItem = treeItem_UnofficialPrimitives8[0];
                 projectIsFileOrigin = true;
             } else if (treeItem_ProjectSubparts[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetTreeItem = treeItem_UnofficialSubparts[0];
                 projectIsFileOrigin = true;
             } else if (treeItem_OfficialParts[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
                 targetTreeItem = treeItem_UnofficialParts[0];
             } else if (treeItem_OfficialPrimitives[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
                 targetTreeItem = treeItem_UnofficialPrimitives[0];
             } else if (treeItem_OfficialPrimitives48[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetTreeItem = treeItem_UnofficialPrimitives48[0];
             } else if (treeItem_OfficialPrimitives8[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetTreeItem = treeItem_UnofficialPrimitives8[0];
             } else if (treeItem_OfficialSubparts[0].equals(p)) {
-                targetPath_u = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetPath_l = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
+                targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetTreeItem = treeItem_UnofficialSubparts[0];
             } else {
                 regainFocus();
                 return;
             }
 
-            targetPathDir_l = targetPath_l;
-            targetPathDir_u = targetPath_u;
+            targetPathDirL = targetPathL;
+            targetPathDirU = targetPathU;
 
             final String newName = new File(df.getNewName()).getName();
-            targetPath_u = targetPath_u + File.separator + newName;
-            targetPath_l = targetPath_l + File.separator + newName;
+            targetPathU = targetPathU + File.separator + newName;
+            targetPathL = targetPathL + File.separator + newName;
 
-            DatFile fileToOverwrite_u = new DatFile(targetPath_u);
-            DatFile fileToOverwrite_l = new DatFile(targetPath_l);
+            DatFile fileToOverwriteU = new DatFile(targetPathU);
+            DatFile fileToOverwriteL = new DatFile(targetPathL);
 
             DatFile targetFile = null;
 
@@ -8923,14 +8923,14 @@ public class Editor3DWindow extends Editor3DDesign {
             for (TreeItem folder : folders) {
                 ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
                 for (DatFile d : cachedReferences) {
-                    if (fileToOverwrite_u.equals(d) || fileToOverwrite_l.equals(d)) {
+                    if (fileToOverwriteU.equals(d) || fileToOverwriteL.equals(d)) {
                         targetFile = d;
                         break;
                     }
                 }
             }
 
-            if (new File(targetPath_u).exists() || new File(targetPath_l).exists() || targetFile != null) {
+            if (new File(targetPathU).exists() || new File(targetPathL).exists() || targetFile != null) {
                 MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
                 messageBox.setText(I18n.DIALOG_REPLACE_TITLE);
 
@@ -8950,7 +8950,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             ArrayList<ArrayList<DatFile>> refResult = null;
 
-            if (new File(targetPathDir_l).exists() || new File(targetPathDir_u).exists()) {
+            if (new File(targetPathDirL).exists() || new File(targetPathDirU).exists()) {
                 if (targetFile == null) {
 
                     int result = new CopyDialog(getShell(), new File(df.getNewName()).getName()).open();
@@ -8980,7 +8980,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         regainFocus();
                         return;
                     }
-                    DatFile newDatFile = new DatFile(new File(targetPathDir_l).exists() ? targetPath_l : targetPath_u);
+                    DatFile newDatFile = new DatFile(new File(targetPathDirL).exists() ? targetPathL : targetPathU);
                     // Text exchange includes description exchange
                     newDatFile.setText(df.getText());
                     newDatFile.saveForced();
@@ -9026,7 +9026,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     targetFile.disposeData();
                     updateTree_removeEntry(targetFile);
-                    DatFile newDatFile = new DatFile(new File(targetPathDir_l).exists() ? targetPath_l : targetPath_u);
+                    DatFile newDatFile = new DatFile(new File(targetPathDirL).exists() ? targetPathL : targetPathU);
                     newDatFile.setText(df.getText());
                     newDatFile.saveForced();
                     ((ArrayList<DatFile>) targetTreeItem.getData()).add(newDatFile);
@@ -9083,10 +9083,10 @@ public class Editor3DWindow extends Editor3DDesign {
         }
 
         {
-            NButton btn_Palette = new NButton(toolItem_ColourBar, SWT.NONE);
-            this.btn_Palette[0] = btn_Palette;
-            btn_Palette.setToolTipText(I18n.E3D_MORE);
-            btn_Palette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
+            NButton btnPalette = new NButton(toolItem_ColourBar, SWT.NONE);
+            this.btn_Palette[0] = btnPalette;
+            btnPalette.setToolTipText(I18n.E3D_MORE);
+            btnPalette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
             initPaletteEvent();
         }
 

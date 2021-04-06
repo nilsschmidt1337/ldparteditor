@@ -60,44 +60,44 @@ class IntersectorDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.INTERSECTOR_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.INTERSECTOR_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_description = new Label(cmp_container, SWT.NONE);
-        lbl_description.setText(I18n.INTERSECTOR_DESCRIPTION);
+        Label lblDescription = new Label(cmpContainer, SWT.NONE);
+        lblDescription.setText(I18n.INTERSECTOR_DESCRIPTION);
         
-        NButton btn_hideOther = new NButton(cmp_container, SWT.CHECK);
-        this.btn_hideOther[0] = btn_hideOther;
-        btn_hideOther.setText(I18n.INTERSECTOR_HIDE_OTHER);
-        btn_hideOther.setSelection(ins.isHidingOther());
+        NButton btnHideOther = new NButton(cmpContainer, SWT.CHECK);
+        this.btn_hideOther[0] = btnHideOther;
+        btnHideOther.setText(I18n.INTERSECTOR_HIDE_OTHER);
+        btnHideOther.setSelection(ins.isHidingOther());
         
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.INTERSECTOR_SCOPE_FILE, I18n.INTERSECTOR_SCOPE_SELECTION});
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(ins.getScope()));
-        cmb_scope.select(ins.getScope());
-        cmb_scope.setEnabled(false);
+        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_scope[0] = cmbScope;
+        cmbScope.setItems(new String[] {I18n.INTERSECTOR_SCOPE_FILE, I18n.INTERSECTOR_SCOPE_SELECTION});
+        cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbScope.setText(cmbScope.getItem(ins.getScope()));
+        cmbScope.select(ins.getScope());
+        cmbScope.setEnabled(false);
 
         {
-            Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {I18n.INTERSECTOR_NO_MODS, I18n.INTERSECTOR_COLOUR_MODS});
-            cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(ins.isColourise() ? 1 : 0));
-            cmb_colourise.select(ins.isColourise() ? 1 : 0);
+            Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_colourise[0] = cmbColourise;
+            cmbColourise.setItems(new String[] {I18n.INTERSECTOR_NO_MODS, I18n.INTERSECTOR_COLOUR_MODS});
+            cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbColourise.setText(cmbColourise.getItem(ins.isColourise() ? 1 : 0));
+            cmbColourise.select(ins.isColourise() ? 1 : 0);
         }
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

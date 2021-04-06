@@ -29,12 +29,12 @@ public enum ProtractorHelper {
         BigDecimal factor = newLength.divide(tri.getProtractorLength(), Threshold.mc);
 
         Vector3d center = new Vector3d(tri.X1, tri.Y1, tri.Z1);
-        Vector3d AtoC = Vector3d.sub(new Vector3d(tri.X3, tri.Y3, tri.Z3), center);
+        Vector3d aToC = Vector3d.sub(new Vector3d(tri.X3, tri.Y3, tri.Z3), center);
 
         BigDecimal[] result = new BigDecimal[3];
-        result[0] = tri.X1.add(AtoC.X.multiply(factor, Threshold.mc));
-        result[1] = tri.Y1.add(AtoC.Y.multiply(factor, Threshold.mc));
-        result[2] = tri.Z1.add(AtoC.Z.multiply(factor, Threshold.mc));
+        result[0] = tri.X1.add(aToC.X.multiply(factor, Threshold.mc));
+        result[1] = tri.Y1.add(aToC.Y.multiply(factor, Threshold.mc));
+        result[2] = tri.Z1.add(aToC.Z.multiply(factor, Threshold.mc));
         return result;
     }
 
@@ -42,12 +42,12 @@ public enum ProtractorHelper {
         BigDecimal factor = newLength.divide(line.getLength(), Threshold.mc);
 
         Vector3d center = new Vector3d(line.X1, line.Y1, line.Z1);
-        Vector3d AtoB = Vector3d.sub(new Vector3d(line.X2, line.Y2, line.Z2), center);
+        Vector3d aToB = Vector3d.sub(new Vector3d(line.X2, line.Y2, line.Z2), center);
 
         BigDecimal[] result = new BigDecimal[3];
-        result[0] = line.X1.add(AtoB.X.multiply(factor, Threshold.mc));
-        result[1] = line.Y1.add(AtoB.Y.multiply(factor, Threshold.mc));
-        result[2] = line.Z1.add(AtoB.Z.multiply(factor, Threshold.mc));
+        result[0] = line.X1.add(aToB.X.multiply(factor, Threshold.mc));
+        result[1] = line.Y1.add(aToB.Y.multiply(factor, Threshold.mc));
+        result[2] = line.Z1.add(aToB.Z.multiply(factor, Threshold.mc));
         return result;
     }
 
@@ -65,23 +65,23 @@ public enum ProtractorHelper {
         Vector3d oldPos = new Vector3d(c.X, c.Y, c.Z);
         Vector3d center = new Vector3d(a.X, a.Y, a.Z);
 
-        Vector3d AtoB = Vector3d.sub(new Vector3d(b.X, b.Y, b.Z), center);
-        Vector3d AtoC = Vector3d.sub(new Vector3d(c.X, c.Y, c.Z), center);
+        Vector3d aToB = Vector3d.sub(new Vector3d(b.X, b.Y, b.Z), center);
+        Vector3d aToC = Vector3d.sub(new Vector3d(c.X, c.Y, c.Z), center);
         BigDecimal targetDistSq = Vector3d.distSquare(new Vector3d(c.X, c.Y, c.Z), center);
-        if (angle == 0.0 || angle == 180.0 || BigDecimal.ZERO.compareTo(AtoB.length()) == 0 || BigDecimal.ZERO.compareTo(AtoC.length()) == 0) {
+        if (angle == 0.0 || angle == 180.0 || BigDecimal.ZERO.compareTo(aToB.length()) == 0 || BigDecimal.ZERO.compareTo(aToC.length()) == 0) {
             return result;
         }
         Vector3d u = new Vector3d();
-        AtoB.normalise(u);
+        aToB.normalise(u);
         Vector3d v = new Vector3d();
-        AtoC.normalise(v);
+        aToC.normalise(v);
 
         double targetAngle = angle;
 
         TreeSet<Vertex> itearatedPositions =  new TreeSet<>();
         int iterations = 0;
 
-        final BigDecimal TENTH = new BigDecimal("0.1"); //$NON-NLS-1$
+        final BigDecimal tenth = new BigDecimal("0.1"); //$NON-NLS-1$
 
         Vertex pMin = new Vertex(oldPos);
         ArrayList<Object[]> res = new ArrayList<>();
@@ -95,15 +95,15 @@ public enum ProtractorHelper {
                 itearatedPositions.add(pMin);
                 innerIterations++;
                 Vector3d min = new Vector3d(pMin);
-                res.add(eval1(targetAngle, AtoB, center, min));
-                res.add(eval1(targetAngle, AtoB, center, Vector3d.add(min, u)));
-                res.add(eval1(targetAngle, AtoB, center, Vector3d.add(min, v)));
-                res.add(eval1(targetAngle, AtoB, center, Vector3d.add(Vector3d.add(min, u), v)));
-                res.add(eval1(targetAngle, AtoB, center, Vector3d.add(Vector3d.sub(min, u), v)));
-                res.add(eval1(targetAngle, AtoB, center, Vector3d.sub(min, u)));
-                res.add(eval1(targetAngle, AtoB, center, Vector3d.sub(min, v)));
-                res.add(eval1(targetAngle, AtoB, center, Vector3d.sub(Vector3d.add(min, u), v)));
-                res.add(eval1(targetAngle, AtoB, center, Vector3d.sub(Vector3d.sub(min, u), v)));
+                res.add(eval1(targetAngle, aToB, center, min));
+                res.add(eval1(targetAngle, aToB, center, Vector3d.add(min, u)));
+                res.add(eval1(targetAngle, aToB, center, Vector3d.add(min, v)));
+                res.add(eval1(targetAngle, aToB, center, Vector3d.add(Vector3d.add(min, u), v)));
+                res.add(eval1(targetAngle, aToB, center, Vector3d.add(Vector3d.sub(min, u), v)));
+                res.add(eval1(targetAngle, aToB, center, Vector3d.sub(min, u)));
+                res.add(eval1(targetAngle, aToB, center, Vector3d.sub(min, v)));
+                res.add(eval1(targetAngle, aToB, center, Vector3d.sub(Vector3d.add(min, u), v)));
+                res.add(eval1(targetAngle, aToB, center, Vector3d.sub(Vector3d.sub(min, u), v)));
 
                 int minI = -1;
                 double minCorr = 1E100;
@@ -123,8 +123,8 @@ public enum ProtractorHelper {
                 pMin = new Vertex((Vector3d) res.get(minI)[1]);
                 res.clear();
             }
-            u = u.scale(TENTH);
-            v = v.scale(TENTH);
+            u = u.scale(tenth);
+            v = v.scale(tenth);
             iterations++;
         }
 
@@ -161,7 +161,7 @@ public enum ProtractorHelper {
                 pMin = new Vertex((Vector3d) res.get(minI)[1]);
                 res.clear();
             }
-            u = u.scale(TENTH);
+            u = u.scale(tenth);
             iterations++;
         }
 
@@ -171,9 +171,9 @@ public enum ProtractorHelper {
         return result;
     }
 
-    private static Object[] eval1(double targetAngle, Vector3d AtoB, Vector3d center, Vector3d newPos) {
+    private static Object[] eval1(double targetAngle, Vector3d aToB, Vector3d center, Vector3d newPos) {
         Object[] result = new Object[2];
-        double f1 = Vector3d.angle(AtoB, Vector3d.sub(newPos, center)) / targetAngle;
+        double f1 = Vector3d.angle(aToB, Vector3d.sub(newPos, center)) / targetAngle;
         result[0] = Math.abs(f1 - 1);
         result[1] = newPos;
         return result;

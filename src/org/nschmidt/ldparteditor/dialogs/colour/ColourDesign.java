@@ -77,83 +77,83 @@ class ColourDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite parent) {
-        Composite cmp_container = new Composite(parent, SWT.NONE);
+        Composite cmpContainer = new Composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout(1, true);
         gridLayout.verticalSpacing = 0;
         gridLayout.horizontalSpacing = 0;
-        cmp_container.setLayout(gridLayout);
+        cmpContainer.setLayout(gridLayout);
 
-        Label lbl_colourTitle = new Label(cmp_container, SWT.NONE);
-        lbl_colourTitle.setText(I18n.COLOURDIALOG_COLOUR_TITLE);
+        Label lblColourTitle = new Label(cmpContainer, SWT.NONE);
+        lblColourTitle.setText(I18n.COLOURDIALOG_COLOUR_TITLE);
 
         {
-            Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-            lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+            lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
         {
-            Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
-            lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+            lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
-        NButton btn_pickDirectColour = new NButton(cmp_container, SWT.NONE);
-        btn_colourChoose[0] = btn_pickDirectColour;
-        btn_pickDirectColour.setText(I18n.COLOURDIALOG_DIRECT_COLOUR);
+        NButton btnPickDirectColour = new NButton(cmpContainer, SWT.NONE);
+        btn_colourChoose[0] = btnPickDirectColour;
+        btnPickDirectColour.setText(I18n.COLOURDIALOG_DIRECT_COLOUR);
 
         {
-            Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
-            lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+            lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
         if (randomColours) {
-            NButton btn_randomColour = new NButton(cmp_container, SWT.NONE);
-            btn_randomColours[0] = btn_randomColour;
-            btn_randomColour.setText(I18n.COLOURDIALOG_RANDOM_COLOURS);
-            btn_randomColour.setImage(ResourceManager.getImage("icon16_randomColours.png")); //$NON-NLS-1$
+            NButton btnRandomColour = new NButton(cmpContainer, SWT.NONE);
+            btn_randomColours[0] = btnRandomColour;
+            btnRandomColour.setText(I18n.COLOURDIALOG_RANDOM_COLOURS);
+            btnRandomColour.setImage(ResourceManager.getImage("icon16_randomColours.png")); //$NON-NLS-1$
 
             {
-                Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
-                lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+                Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+                lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             }
         }
 
-        Label lbl_stdColour = new Label(cmp_container, SWT.NONE);
-        lbl_stdColour.setText(I18n.COLOURDIALOG_STANDARD_COLOURS);
+        Label lblStdColour = new Label(cmpContainer, SWT.NONE);
+        lblStdColour.setText(I18n.COLOURDIALOG_STANDARD_COLOURS);
 
         {
-            Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-            lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+            lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
         {
-            Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
-            lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+            lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
-        NButton btn_showTable = new NButton(cmp_container, SWT.NONE);
-        btn_colourTable[0] = btn_showTable;
-        btn_showTable.setText(I18n.COLOURDIALOG_SHOW_COLOUR_TABLE);
+        NButton btnShowTable = new NButton(cmpContainer, SWT.NONE);
+        btn_colourTable[0] = btnShowTable;
+        btnShowTable.setText(I18n.COLOURDIALOG_SHOW_COLOUR_TABLE);
 
         {
-            Label lbl_emptyLine = new Label(cmp_container, SWT.NONE);
-            lbl_emptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            Label lblEmptyLine = new Label(cmpContainer, SWT.NONE);
+            lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
         TreeSet<Integer> ldConfIndices = new TreeSet<>(View.getColourMap().keySet());
 
         int counter = 0;
-        ToolItem toolItem_Colours = new ToolItem(cmp_container, Cocoa.getStyle(), true);
+        ToolItem toolItemColours = new ToolItem(cmpContainer, Cocoa.getStyle(), true);
         for (Integer index : ldConfIndices) {
             if (counter == 17) {
-                toolItem_Colours = new ToolItem(cmp_container, Cocoa.getStyle(), true);
+                toolItemColours = new ToolItem(cmpContainer, Cocoa.getStyle(), true);
                 counter = 0;
             }
             final GColour gColour2 = View.getLDConfigColour(index);
-            addColorButton(toolItem_Colours, gColour2);
+            addColorButton(toolItemColours, gColour2);
             counter++;
         }
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**
@@ -164,7 +164,7 @@ class ColourDesign extends ApplicationWindow {
         return super.getInitialSize();
     }
 
-    private void addColorButton(ToolItem toolItem_Colours, GColour gColour) {
+    private void addColorButton(ToolItem toolItemColours, GColour gColour) {
         int cn = gColour.getColourNumber();
         if (cn != -1 && View.hasLDConfigColour(cn)) {
             gColour = View.getLDConfigColour(cn);
@@ -174,8 +174,8 @@ class ColourDesign extends ApplicationWindow {
         final Color[] col = new Color[1];
         col[0] = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
 
-        final NButton btn_Col = new NButton(toolItem_Colours, Cocoa.getStyle());
-        btn_Col.setData(gColour);
+        final NButton btnCol = new NButton(toolItemColours, Cocoa.getStyle());
+        btnCol.setData(gColour);
         int num = gColour2[0].getColourNumber();
         if (!View.hasLDConfigColour(num)) {
             num = -1;
@@ -187,7 +187,7 @@ class ColourDesign extends ApplicationWindow {
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
-            btn_Col.setToolTipText(formatter.format(messageArguments));
+            btnCol.setToolTipText(formatter.format(messageArguments));
         } else {
 
             StringBuilder colourBuilder = new StringBuilder();
@@ -201,21 +201,21 @@ class ColourDesign extends ApplicationWindow {
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
-            btn_Col.setToolTipText(formatter.format(messageArguments));
+            btnCol.setToolTipText(formatter.format(messageArguments));
         }
 
-        btn_Col.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
+        btnCol.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-        WidgetUtil(btn_Col).addSelectionListener(e -> {
-            refCol[0] = (GColour) btn_Col.getData();
+        WidgetUtil(btnCol).addSelectionListener(e -> {
+            refCol[0] = (GColour) btnCol.getData();
             me.close();
         });
-        final Point size = btn_Col.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+        final Point size = btnCol.computeSize(SWT.DEFAULT, SWT.DEFAULT);
         final int x = Math.round(size.x / 5f);
         final int y = Math.round(size.y / 5f);
         final int w = Math.round(size.x * (3f / 5f));
         final int h = Math.round(size.y * (3f / 5f));
-        btn_Col.addPaintListener(e -> {
+        btnCol.addPaintListener(e -> {
             e.gc.setBackground(col[0]);
             e.gc.fillRectangle(x, y, w, h);
             if (gColour2[0].getA() == 1f) {

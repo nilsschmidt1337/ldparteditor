@@ -42,23 +42,23 @@ public class Circle {
     private final float[] circle = new float[66];
     private final float[] circle2 = new float[66];
 
-    public Circle(float r, float g, float b, float dir_x, float dir_y, float dir_z, float radius, float line_width) {
-        dir_x = dir_x / 1000f;
-        dir_y = dir_y / 1000f;
-        dir_z = dir_z / 1000f;
+    public Circle(float r, float g, float b, float dirX, float dirY, float dirZ, float radius, float lineWidth) {
+        dirX = dirX / 1000f;
+        dirY = dirY / 1000f;
+        dirZ = dirZ / 1000f;
         radius = radius / 1000f;
         this.r = r;
         this.g = g;
         this.b = b;
 
-        rotation = makeRotationDir(new Vector3f(dir_x, dir_y, dir_z));
+        rotation = makeRotationDir(new Vector3f(dirX, dirY, dirZ));
         matrix = BufferUtils.createFloatBuffer(16);
         rotation.store(matrix);
         matrix.position(0);
 
         final float step = (float) (Math.PI / 16d);
         float angle = 0f;
-        final float radius2 = radius - line_width / 6f;
+        final float radius2 = radius - lineWidth / 6f;
         for (int i = 0; i < 66; i += 2) {
             circle[i] = (float) (radius * Math.cos(angle));
             circle[i + 1] = (float) (radius * Math.sin(angle));

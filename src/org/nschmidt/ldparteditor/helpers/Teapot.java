@@ -29,7 +29,7 @@ import org.lwjgl.opengl.GL11;
 public enum Teapot {
     INSTANCE;
 
-    static final int patchdata[][] = {
+    static final int[][] patchdata = {
         /* rim */
         { 102, 103, 104, 105, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
         /* body */
@@ -44,7 +44,7 @@ public enum Teapot {
         { 68, 69, 70, 71, 72, 73, 74, 75, 76, 77, 78, 79, 80, 81, 82, 83 }, { 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90, 91, 92, 93, 94, 95 } };
 
     /** Used to make the teapot. **/
-    static final float cpdata[][] = { { 0.2f, 0, 2.7f }, { 0.2f, -0.112f, 2.7f }, { 0.112f, -0.2f, 2.7f }, { 0, -0.2f, 2.7f }, { 1.3375f, 0, 2.53125f }, { 1.3375f, -0.749f, 2.53125f },
+    static final float[][] cpdata = { { 0.2f, 0, 2.7f }, { 0.2f, -0.112f, 2.7f }, { 0.112f, -0.2f, 2.7f }, { 0, -0.2f, 2.7f }, { 1.3375f, 0, 2.53125f }, { 1.3375f, -0.749f, 2.53125f },
         { 0.749f, -1.3375f, 2.53125f }, { 0, -1.3375f, 2.53125f }, { 1.4375f, 0, 2.53125f }, { 1.4375f, -0.805f, 2.53125f }, { 0.805f, -1.4375f, 2.53125f }, { 0, -1.4375f, 2.53125f },
         { 1.5f, 0, 2.4f }, { 1.5f, -0.84f, 2.4f }, { 0.84f, -1.5f, 2.4f }, { 0, -1.5f, 2.4f }, { 1.75f, 0, 1.875f }, { 1.75f, -0.98f, 1.875f }, { 0.98f, -1.75f, 1.875f }, { 0, -1.75f, 1.875f },
         { 2f, 0, 1.35f }, { 2f, -1.12f, 1.35f }, { 1.12f, -2f, 1.35f }, { 0, -2f, 1.35f }, { 2f, 0, 0.9f }, { 2f, -1.12f, 0.9f }, { 1.12f, -2f, 0.9f }, { 0, -2f, 0.9f }, { -2f, 0, 0.9f },
@@ -71,10 +71,10 @@ public enum Teapot {
      *            Scale (e.g. 1.0f).
      */
     public static void fastSolidTeapot(int grid, float scale) {
-        float p[][][] = new float[4][4][3];
-        float q[][][] = new float[4][4][3];
-        float r[][][] = new float[4][4][3];
-        float s[][][] = new float[4][4][3];
+        float[][][] p = new float[4][4][3];
+        float[][][] q = new float[4][4][3];
+        float[][][] r = new float[4][4][3];
+        float[][][] s = new float[4][4][3];
         final FloatBuffer buffer = BufferUtils.createFloatBuffer(4 * 4 * 3);
 
         GL11.glEnable(GL11.GL_AUTO_NORMAL);
@@ -130,7 +130,7 @@ public enum Teapot {
         }
     }
 
-    private static void putIntoBuffer(FloatBuffer buffer, float array[][][]) {
+    private static void putIntoBuffer(FloatBuffer buffer, float[][][] array) {
         buffer.clear();
 
         for (int i = 0; i < 4; i++)

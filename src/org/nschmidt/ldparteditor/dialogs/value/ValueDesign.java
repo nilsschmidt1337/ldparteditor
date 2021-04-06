@@ -56,25 +56,25 @@ class ValueDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_Container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_Container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        BigDecimalSpinner spn_Value = new BigDecimalSpinner(cmp_Container, SWT.NONE);
-        this.spn_Value[0] = spn_Value;
+        BigDecimalSpinner spnValue = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_Value[0] = spnValue;
         GridData gd = new GridData();
         gd.grabExcessHorizontalSpace = true;
         gd.horizontalAlignment = SWT.FILL;
-        spn_Value.setLayoutData(gd);
+        spnValue.setLayoutData(gd);
 
 
-        Label lbl_Unit = new Label(cmp_Container, SWT.NONE);
-        this.lbl_Unit[0] = lbl_Unit;
-        lbl_Unit.setText(unitText);
+        Label lblUnit = new Label(cmpContainer, SWT.NONE);
+        this.lbl_Unit[0] = lblUnit;
+        lblUnit.setText(unitText);
 
-        cmp_Container.pack();
-        return cmp_Container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

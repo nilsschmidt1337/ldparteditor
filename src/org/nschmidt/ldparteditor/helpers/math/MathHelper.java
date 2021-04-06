@@ -55,8 +55,8 @@ public enum MathHelper {
     /**
      * @return a random float between 0f and 1f
      */
-    public static float randomFloat(int ID, int argNum) {
-        randomizer.setSeed(18363 * Math.abs(ID) + argNum * 192732);
+    public static float randomFloat(int id, int argNum) {
+        randomizer.setSeed(18363 * Math.abs(id) + argNum * 192732);
         return randomizer.nextFloat();
     }
 
@@ -295,27 +295,27 @@ public enum MathHelper {
      * @return the value's square root
      */
     public static BigDecimal sqrt(BigDecimal value) {
-        final BigDecimal TWO = new BigDecimal(2, Threshold.mc);
-        BigDecimal result = value.add(BigDecimal.ONE, Threshold.mc).divide(TWO, Threshold.mc);
+        final BigDecimal two = new BigDecimal(2, Threshold.mc);
+        BigDecimal result = value.add(BigDecimal.ONE, Threshold.mc).divide(two, Threshold.mc);
         for (int i = 0; i < 20; i++) { // Ten iterations should be sufficent
-            result = result.add(value.divide(result, Threshold.mc), Threshold.mc).divide(TWO, Threshold.mc);
+            result = result.add(value.divide(result, Threshold.mc), Threshold.mc).divide(two, Threshold.mc);
         }
         return result;
     }
 
-    public static Vector4f getNearestPointToLine(float line_x1, float line_y1, float line_z1, float line_x2, float line_y2, float line_z2, float point_x, float point_y, float point_z) {
-        float Ax = point_x - line_x1;
-        float Ay = point_y - line_y1;
-        float Az = point_z - line_z1;
-        float ux = line_x2 - line_x1;
-        float uy = line_y2 - line_y1;
-        float uz = line_z2 - line_z1;
+    public static Vector4f getNearestPointToLine(float lineX1, float lineY1, float lineZ1, float lineX2, float lineY2, float lineZ2, float pointX, float pointY, float pointZ) {
+        float aX = pointX - lineX1;
+        float aY = pointY - lineY1;
+        float aZ = pointZ - lineZ1;
+        float ux = lineX2 - lineX1;
+        float uy = lineY2 - lineY1;
+        float uz = lineZ2 - lineZ1;
         float lu = (float) Math.sqrt(ux * ux + uy * uy + uz * uz);
         ux = ux / lu;
         uy = uy / lu;
         uz = uz / lu;
-        float dotAu = Ax * ux + Ay * uy + Az * uz;
-        return new Vector4f(line_x1 + dotAu * ux, line_y1 + dotAu * uy, line_z1 + dotAu * uz, 1f);
+        float dotAu = aX * ux + aY * uy + aZ * uz;
+        return new Vector4f(lineX1 + dotAu * ux, lineY1 + dotAu * uy, lineZ1 + dotAu * uz, 1f);
     }
 
     public static Vector4f getNearestPointToLineSegment(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
@@ -378,8 +378,7 @@ public enum MathHelper {
         }
 
         VectorCSGd pb = p1.plus(v.times(t));
-        double dist = p.minus(pb).magnitude();
-        return dist;
+        return p.minus(pb).magnitude();
     }
 
     public static Vector4f getNearestPointToLinePoints(float lx1, float ly1, float lz1, float lx2, float ly2, float lz2, float px, float py, float pz) {
@@ -527,23 +526,23 @@ public enum MathHelper {
         if (v11.x == v22.x && v11.y == v22.y || v12.x == v21.x && v12.y == v21.y)
             return null;
 
-        float s1_x;
-        float s1_y;
-        float s2_x;
-        float s2_y;
-        s1_x = v12.x - v11.x;
-        s1_y = v12.y - v11.y;
+        float s1X;
+        float s1Y;
+        float s2X;
+        float s2Y;
+        s1X = v12.x - v11.x;
+        s1Y = v12.y - v11.y;
 
-        s2_x = v22.x - v21.x;
-        s2_y = v22.y - v21.y;
+        s2X = v22.x - v21.x;
+        s2Y = v22.y - v21.y;
 
         float s;
         float t;
-        s = (-s1_y * (v11.x - v21.x) + s1_x * (v11.y - v21.y)) / (-s2_x * s1_y + s1_x * s2_y);
-        t = (s2_x * (v11.y - v21.y) - s2_y * (v11.x - v21.x)) / (-s2_x * s1_y + s1_x * s2_y);
+        s = (-s1Y * (v11.x - v21.x) + s1X * (v11.y - v21.y)) / (-s2X * s1Y + s1X * s2Y);
+        t = (s2X * (v11.y - v21.y) - s2Y * (v11.x - v21.x)) / (-s2X * s1Y + s1X * s2Y);
 
         if (s >= 0 && s <= 1 && t >= 0 && t <= 1) {
-            return new Vector4f(v11.x + t * s1_x, v11.y + t * s1_y, 0f, 1f);
+            return new Vector4f(v11.x + t * s1X, v11.y + t * s1Y, 0f, 1f);
         }
         return null;
     }
@@ -592,40 +591,40 @@ public enum MathHelper {
     /**
      * Does the gaussian elimination
      *
-     * @param A
+     * @param a
      *            coefficient matrix
      * @param b
      *            value vector
      * @return solution
      */
-    public static float[] gaussianElimination(float[][] A, float[] b) throws RuntimeException {
-        int N = b.length; // Very compact gaussian elimination
-        for (int p = 0; p < N; p++) {
+    public static float[] gaussianElimination(float[][] a, float[] b) throws RuntimeException {
+        int n = b.length; // Very compact gaussian elimination
+        for (int p = 0; p < n; p++) {
             int max = p;
-            for (int i = p + 1; i < N; i++)
-                if (Math.abs(A[i][p]) > Math.abs(A[max][p]))
+            for (int i = p + 1; i < n; i++)
+                if (Math.abs(a[i][p]) > Math.abs(a[max][p]))
                     max = i;
-            float[] temp = A[p];
-            A[p] = A[max];
-            A[max] = temp;
+            float[] temp = a[p];
+            a[p] = a[max];
+            a[max] = temp;
             float t = b[p];
             b[p] = b[max];
             b[max] = t;
-            if (Math.abs(A[p][p]) < 0.000001f)
+            if (Math.abs(a[p][p]) < 0.000001f)
                 throw new RuntimeException("Matrix is singular or nearly singular"); //$NON-NLS-1$
-            for (int i = p + 1; i < N; i++) {
-                float alpha = A[i][p] / A[p][p];
+            for (int i = p + 1; i < n; i++) {
+                float alpha = a[i][p] / a[p][p];
                 b[i] -= alpha * b[p];
-                for (int j = p; j < N; j++)
-                    A[i][j] -= alpha * A[p][j];
+                for (int j = p; j < n; j++)
+                    a[i][j] -= alpha * a[p][j];
             }
         }
-        float[] x = new float[N];
-        for (int i = N - 1; i >= 0; i--) {
+        float[] x = new float[n];
+        for (int i = n - 1; i >= 0; i--) {
             float sum = 0f;
-            for (int j = i + 1; j < N; j++)
-                sum += A[i][j] * x[j];
-            x[i] = (b[i] - sum) / A[i][i];
+            for (int j = i + 1; j < n; j++)
+                sum += a[i][j] * x[j];
+            x[i] = (b[i] - sum) / a[i][i];
         }
         return x;
     }
@@ -786,7 +785,7 @@ public enum MathHelper {
 
     public static Matrix matrixFromStringsPrecise(String s30, String s31, String s32, String s00, String s05, String s06, String s07, String s08, String s09, String s10, String s11, String s12) {
 
-        final BigDecimal[][] Mn = new BigDecimal[4][4];
+        final BigDecimal[][] mn = new BigDecimal[4][4];
 
         ArrayList<String> as = new ArrayList<>();
         as.add(s30);
@@ -809,24 +808,24 @@ public enum MathHelper {
         } catch (NumberFormatException e) {
             return null;
         }
-        Mn[3][0] = ab.get(0);
-        Mn[3][1] = ab.get(1);
-        Mn[3][2] = ab.get(2);
-        Mn[0][0] = ab.get(3);
-        Mn[1][0] = ab.get(4);
-        Mn[2][0] = ab.get(5);
-        Mn[0][1] = ab.get(6);
-        Mn[1][1] = ab.get(7);
-        Mn[2][1] = ab.get(8);
-        Mn[0][2] = ab.get(9);
-        Mn[1][2] = ab.get(10);
-        Mn[2][2] = ab.get(11);
-        Mn[0][3] = BigDecimal.ZERO;
-        Mn[1][3] = BigDecimal.ZERO;
-        Mn[2][3] = BigDecimal.ZERO;
-        Mn[3][3] = BigDecimal.ONE;
+        mn[3][0] = ab.get(0);
+        mn[3][1] = ab.get(1);
+        mn[3][2] = ab.get(2);
+        mn[0][0] = ab.get(3);
+        mn[1][0] = ab.get(4);
+        mn[2][0] = ab.get(5);
+        mn[0][1] = ab.get(6);
+        mn[1][1] = ab.get(7);
+        mn[2][1] = ab.get(8);
+        mn[0][2] = ab.get(9);
+        mn[1][2] = ab.get(10);
+        mn[2][2] = ab.get(11);
+        mn[0][3] = BigDecimal.ZERO;
+        mn[1][3] = BigDecimal.ZERO;
+        mn[2][3] = BigDecimal.ZERO;
+        mn[3][3] = BigDecimal.ONE;
 
-        final Matrix result = new Matrix(Mn);
+        final Matrix result = new Matrix(mn);
         double det = result.determinant().doubleValue();
         if (Math.abs(det) < Threshold.singularity_determinant) {
             return null;
@@ -907,8 +906,8 @@ public enum MathHelper {
         } else {
             // Broadhurst
             int[] a = { 1, 0, 0, -1, -1, -1, 0, 0 };
-            BigDecimal S = broadhurstBBP(1, 1, a, mc);
-            return multiplyRound(S, 8);
+            BigDecimal s = broadhurstBBP(1, 1, a, mc);
+            return multiplyRound(s, 8);
         }
     } /* BigDecimalMath.pi */
 
@@ -1105,7 +1104,7 @@ public enum MathHelper {
      *      width0pt\protect\href{http://arxiv.org/abs/math/9803067
      *      }{arXiv:math/9803067}
      */
-    private static BigDecimal broadhurstBBP(final int n, final int p, final int a[], MathContext mc) {
+    private static BigDecimal broadhurstBBP(final int n, final int p, final int[] a, MathContext mc) {
         /*
          * Explore the actual magnitude of the result first with a quick
          * estimate.

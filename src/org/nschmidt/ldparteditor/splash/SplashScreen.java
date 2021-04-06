@@ -269,27 +269,27 @@ public class SplashScreen extends ApplicationWindow {
                         if (line == null) {
                             break;
                         }
-                        final String[] data_segments = Pattern.compile(";").split(line.trim()); //$NON-NLS-1$
-                        if (data_segments.length > 3) {
+                        final String[] dataSegments = Pattern.compile(";").split(line.trim()); //$NON-NLS-1$
+                        if (dataSegments.length > 3) {
                             for (int i = 0; i < 4; i++) {
-                                data_segments[i] = data_segments[i].trim();
+                                dataSegments[i] = dataSegments[i].trim();
                             }
                             ToolItemDrawMode mode = ToolItemDrawMode.HORIZONTAL;
                             ToolItemDrawLocation location = ToolItemDrawLocation.NORTH;
-                            if ("EAST".equals(data_segments[1])) { //$NON-NLS-1$
+                            if ("EAST".equals(dataSegments[1])) { //$NON-NLS-1$
                                 location = ToolItemDrawLocation.EAST;
-                            } else if ("WEST".equals(data_segments[1])) { //$NON-NLS-1$
+                            } else if ("WEST".equals(dataSegments[1])) { //$NON-NLS-1$
                                 location = ToolItemDrawLocation.WEST;
                             }
-                            if ("VERTICAL".equals(data_segments[2])) { //$NON-NLS-1$
+                            if ("VERTICAL".equals(dataSegments[2])) { //$NON-NLS-1$
                                 mode = ToolItemDrawMode.VERTICAL;
-                            } else if ("DROPDWNMNU".equals(data_segments[2])) { //$NON-NLS-1$
+                            } else if ("DROPDWNMNU".equals(dataSegments[2])) { //$NON-NLS-1$
                                 mode = ToolItemDrawMode.DROP_DOWN;
                             }
-                            if ("NO_LABEL".equals(data_segments[3])) { //$NON-NLS-1$
-                                data_segments[3] = ""; //$NON-NLS-1$
+                            if ("NO_LABEL".equals(dataSegments[3])) { //$NON-NLS-1$
+                                dataSegments[3] = ""; //$NON-NLS-1$
                             }
-                            states.add(new ToolItemState(data_segments[0], location, mode, data_segments[3]));
+                            states.add(new ToolItemState(dataSegments[0], location, mode, dataSegments[3]));
                         }
                     }
                 } catch (FileNotFoundException consumed) {

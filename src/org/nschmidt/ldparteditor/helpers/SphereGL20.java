@@ -77,10 +77,10 @@ public class SphereGL20 {
         for (Float f : vertices) {
             bvertices.put(f);
         }
-        int vertex_count = vertices.size() / 3;
+        int vertexCount = vertices.size() / 3;
 
         for (Short sh : indices) {
-            bindices.put((short) (sh % vertex_count));
+            bindices.put((short) (sh % vertexCount));
         }
 
         bvertices.flip();

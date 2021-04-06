@@ -64,12 +64,12 @@ public enum TexMapParser {
         return new GDataTEX(data, line, TexMeta.GEOMETRY, null, parent);
     }
 
-    static GDataTEX parseTEXMAP(String[] data_segments, String line, GData1 parent) {
-        int segs = data_segments.length;
+    static GDataTEX parseTEXMAP(String[] dataSegments, String line, GData1 parent) {
+        int segs = dataSegments.length;
         if (segs == 3) {
-            if (data_segments[2].equals("END")) { //$NON-NLS-1$
+            if (dataSegments[2].equals("END")) { //$NON-NLS-1$
                 return new GDataTEX(null, line, TexMeta.END, null, parent);
-            } else if (data_segments[2].equals("FALLBACK")) { //$NON-NLS-1$
+            } else if (dataSegments[2].equals("FALLBACK")) { //$NON-NLS-1$
                 return new GDataTEX(null, line, TexMeta.FALLBACK, null, parent);
             }
         } else if (segs > 3) {
@@ -78,24 +78,24 @@ public enum TexMapParser {
             Vector4f v3 = new Vector4f();
             float a = 0f;
             float b = 0f;
-            TexMeta meta = data_segments[2].equals("START") ? TexMeta.START : data_segments[2].equals("NEXT") ? TexMeta.NEXT : null; //$NON-NLS-1$ //$NON-NLS-2$
-            if (meta != null && data_segments[3].equals("PLANAR") || data_segments[3].equals("CYLINDRICAL") || data_segments[3].equals("SPHERICAL")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            TexMeta meta = dataSegments[2].equals("START") ? TexMeta.START : dataSegments[2].equals("NEXT") ? TexMeta.NEXT : null; //$NON-NLS-1$ //$NON-NLS-2$
+            if (meta != null && dataSegments[3].equals("PLANAR") || dataSegments[3].equals("CYLINDRICAL") || dataSegments[3].equals("SPHERICAL")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                 if (segs > 13) {
                     String texture = ""; //$NON-NLS-1$
                     String glossmap = null;
                     TexType type;
                     try {
-                        v1.setX(Float.parseFloat(data_segments[4]) * 1000f);
-                        v1.setY(Float.parseFloat(data_segments[5]) * 1000f);
-                        v1.setZ(Float.parseFloat(data_segments[6]) * 1000f);
+                        v1.setX(Float.parseFloat(dataSegments[4]) * 1000f);
+                        v1.setY(Float.parseFloat(dataSegments[5]) * 1000f);
+                        v1.setZ(Float.parseFloat(dataSegments[6]) * 1000f);
                         v1.setW(1f);
-                        v2.setX(Float.parseFloat(data_segments[7]) * 1000f);
-                        v2.setY(Float.parseFloat(data_segments[8]) * 1000f);
-                        v2.setZ(Float.parseFloat(data_segments[9]) * 1000f);
+                        v2.setX(Float.parseFloat(dataSegments[7]) * 1000f);
+                        v2.setY(Float.parseFloat(dataSegments[8]) * 1000f);
+                        v2.setZ(Float.parseFloat(dataSegments[9]) * 1000f);
                         v2.setW(1f);
-                        v3.setX(Float.parseFloat(data_segments[10]) * 1000f);
-                        v3.setY(Float.parseFloat(data_segments[11]) * 1000f);
-                        v3.setZ(Float.parseFloat(data_segments[12]) * 1000f);
+                        v3.setX(Float.parseFloat(dataSegments[10]) * 1000f);
+                        v3.setY(Float.parseFloat(dataSegments[11]) * 1000f);
+                        v3.setZ(Float.parseFloat(dataSegments[12]) * 1000f);
                         v3.setW(1f);
                     } catch (Exception e) {
                         return null;
@@ -111,13 +111,13 @@ public enum TexMapParser {
                     final int target;
                     boolean whitespace1 = false;
                     boolean whitespace2 = false;
-                    if (data_segments[3].equals("PLANAR")) { //$NON-NLS-1$
+                    if (dataSegments[3].equals("PLANAR")) { //$NON-NLS-1$
                         type = TexType.PLANAR;
                         target = 14;
-                    } else if (data_segments[3].equals("CYLINDRICAL")) { //$NON-NLS-1$
+                    } else if (dataSegments[3].equals("CYLINDRICAL")) { //$NON-NLS-1$
                         if (segs > 14) {
                             try {
-                                a = (float) (Float.parseFloat(data_segments[13]) / 360f * Math.PI);
+                                a = (float) (Float.parseFloat(dataSegments[13]) / 360f * Math.PI);
                                 if (a <= 0f || a > Math.PI * 2f)
                                     return null;
                             } catch (Exception e) {
@@ -131,10 +131,10 @@ public enum TexMapParser {
                     } else {
                         if (segs > 15) {
                             try {
-                                a = (float) (Float.parseFloat(data_segments[13]) / 360f * Math.PI);
+                                a = (float) (Float.parseFloat(dataSegments[13]) / 360f * Math.PI);
                                 if (a <= 0f || a > Math.PI * 2f)
                                     return null;
-                                b = (float) (Float.parseFloat(data_segments[14]) / 360f * Math.PI);
+                                b = (float) (Float.parseFloat(dataSegments[14]) / 360f * Math.PI);
                                 if (b <= 0f || b > Math.PI * 2f)
                                     return null;
                             } catch (Exception e) {
@@ -287,8 +287,8 @@ public enum TexMapParser {
     }
 
     public static GData parseLine(String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f pMatrix, Set<String> alreadyParsed, DatFile df) {
-        final String[] data_segments = WHITESPACE.split(line.trim());
-        return parseLine(data_segments, line, depth, r, g, b, a, parent, pMatrix, alreadyParsed, df);
+        final String[] dataSegments = WHITESPACE.split(line.trim());
+        return parseLine(dataSegments, line, depth, r, g, b, a, parent, pMatrix, alreadyParsed, df);
     }
 
     // What follows now is a very minimalistic DAT file parser (<500LOC)
@@ -303,28 +303,28 @@ public enum TexMapParser {
     private static final Vector3f controlI = new Vector3f();
     private static final Vector3f controlII = new Vector3f();
 
-    public static GData parseLine(String[] data_segments, String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
+    public static GData parseLine(String[] dataSegments, String line, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
         // Get the linetype
         int linetype = 0;
         char c;
-        if (!(data_segments.length > 0 && data_segments[0].length() == 1 && Character.isDigit(c = data_segments[0].charAt(0)))) {
+        if (!(dataSegments.length > 0 && dataSegments[0].length() == 1 && Character.isDigit(c = dataSegments[0].charAt(0)))) {
             return null;
         }
         linetype = Character.getNumericValue(c);
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            return parse_Comment(line, data_segments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
+            return parse_Comment(line, dataSegments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
         case 1:
-            return parse_Reference(data_segments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
+            return parse_Reference(dataSegments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
         case 2:
-            return parse_Line(data_segments, r, g, b, a, parent);
+            return parse_Line(dataSegments, r, g, b, a, parent);
         case 3:
-            return parse_Triangle(data_segments, r, g, b, a, parent);
+            return parse_Triangle(dataSegments, r, g, b, a, parent);
         case 4:
-            return parse_Quad(data_segments, r, g, b, a, parent);
+            return parse_Quad(dataSegments, r, g, b, a, parent);
         case 5:
-            return parse_Condline(data_segments, r, g, b, a, parent);
+            return parse_Condline(dataSegments, r, g, b, a, parent);
         default:
             break;
         }
@@ -347,11 +347,11 @@ public enum TexMapParser {
                     GColour colour = View.getLDConfigColour(colourValue);
                     cValue.set(colour);
                 } else {
-                    int A = colourValue - 256 >> 4;
-                    int B = colourValue - 256 & 0x0F;
-                    if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
-                        GColour colourA = View.getLDConfigColour(A);
-                        GColour colourB = View.getLDConfigColour(B);
+                    int indexA = colourValue - 256 >> 4;
+                    int indexB = colourValue - 256 & 0x0F;
+                    if (View.hasLDConfigColour(indexA) && View.hasLDConfigColour(indexB)) {
+                        GColour colourA = View.getLDConfigColour(indexA);
+                        GColour colourB = View.getLDConfigColour(indexB);
                         GColour ditheredColour = new GColour(
                                 colourValue,
                                 (colourA.getR() + colourB.getR()) / 2f,
@@ -384,14 +384,12 @@ public enum TexMapParser {
         return cValue;
     }
 
-    private static GData parse_Comment(String line, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
+    private static GData parse_Comment(String line, String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
         if (line.startsWith("0 !: ")) { //$NON-NLS-1$
-            GData newLPEmetaTag = TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
-            return newLPEmetaTag;
+            return TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
-            GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent);
-            return newLPEmetaTag;
+            return TexMapParser.parseTEXMAP(dataSegments, line, parent);
         } else if (line.startsWith("0 BFC ")) { //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
                 return new GDataBFC(BFC.INVERTNEXT, parent);
@@ -427,28 +425,28 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Reference(String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
-        if (data_segments.length < 15) {
+    private static GData parse_Reference(String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
+        if (dataSegments.length < 15) {
             return null;
         } else {
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null)
                 return null;
             Matrix4f tMatrix = new Matrix4f();
             float det = 0;
             try {
-                tMatrix.m30 = Float.parseFloat(data_segments[2]) * 1000f;
-                tMatrix.m31 = Float.parseFloat(data_segments[3]) * 1000f;
-                tMatrix.m32 = Float.parseFloat(data_segments[4]) * 1000f;
-                tMatrix.m00 = Float.parseFloat(data_segments[5]);
-                tMatrix.m10 = Float.parseFloat(data_segments[6]);
-                tMatrix.m20 = Float.parseFloat(data_segments[7]);
-                tMatrix.m01 = Float.parseFloat(data_segments[8]);
-                tMatrix.m11 = Float.parseFloat(data_segments[9]);
-                tMatrix.m21 = Float.parseFloat(data_segments[10]);
-                tMatrix.m02 = Float.parseFloat(data_segments[11]);
-                tMatrix.m12 = Float.parseFloat(data_segments[12]);
-                tMatrix.m22 = Float.parseFloat(data_segments[13]);
+                tMatrix.m30 = Float.parseFloat(dataSegments[2]) * 1000f;
+                tMatrix.m31 = Float.parseFloat(dataSegments[3]) * 1000f;
+                tMatrix.m32 = Float.parseFloat(dataSegments[4]) * 1000f;
+                tMatrix.m00 = Float.parseFloat(dataSegments[5]);
+                tMatrix.m10 = Float.parseFloat(dataSegments[6]);
+                tMatrix.m20 = Float.parseFloat(dataSegments[7]);
+                tMatrix.m01 = Float.parseFloat(dataSegments[8]);
+                tMatrix.m11 = Float.parseFloat(dataSegments[9]);
+                tMatrix.m21 = Float.parseFloat(dataSegments[10]);
+                tMatrix.m02 = Float.parseFloat(dataSegments[11]);
+                tMatrix.m12 = Float.parseFloat(dataSegments[12]);
+                tMatrix.m22 = Float.parseFloat(dataSegments[13]);
             } catch (NumberFormatException nfe) {
                 return null;
             }
@@ -459,11 +457,11 @@ public enum TexMapParser {
             // [WARNING] Check file existance
             boolean fileExists = true;
             StringBuilder sb = new StringBuilder();
-            for (int s = 14; s < data_segments.length - 1; s++) {
-                sb.append(data_segments[s]);
+            for (int s = 14; s < dataSegments.length - 1; s++) {
+                sb.append(dataSegments[s]);
                 sb.append(" "); //$NON-NLS-1$
             }
-            sb.append(data_segments[data_segments.length - 1]);
+            sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
             try {
@@ -598,20 +596,20 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Line(String[] data_segments, float r, float g, float b, float a, GData1 parent) {
-        if (data_segments.length != 8) {
+    private static GData parse_Line(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
+        if (dataSegments.length != 8) {
             return null;
         } else {
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null)
                 return null;
             try {
-                start.setX(Float.parseFloat(data_segments[2]));
-                start.setY(Float.parseFloat(data_segments[3]));
-                start.setZ(Float.parseFloat(data_segments[4]));
-                end.setX(Float.parseFloat(data_segments[5]));
-                end.setY(Float.parseFloat(data_segments[6]));
-                end.setZ(Float.parseFloat(data_segments[7]));
+                start.setX(Float.parseFloat(dataSegments[2]));
+                start.setY(Float.parseFloat(dataSegments[3]));
+                start.setZ(Float.parseFloat(dataSegments[4]));
+                end.setX(Float.parseFloat(dataSegments[5]));
+                end.setY(Float.parseFloat(dataSegments[6]));
+                end.setZ(Float.parseFloat(dataSegments[7]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
@@ -622,27 +620,27 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Triangle(String[] data_segments, float r, float g, float b, float a, GData1 parent) {
-        if (data_segments.length != 11) {
+    private static GData parse_Triangle(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
+        if (dataSegments.length != 11) {
             return null;
         } else {
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null)
                 return null;
             try {
-                vertexA.setX(Float.parseFloat(data_segments[2]));
-                vertexA.setY(Float.parseFloat(data_segments[3]));
-                vertexA.setZ(Float.parseFloat(data_segments[4]));
-                vertexB.setX(Float.parseFloat(data_segments[5]));
-                vertexB.setY(Float.parseFloat(data_segments[6]));
-                vertexB.setZ(Float.parseFloat(data_segments[7]));
-                vertexC.setX(Float.parseFloat(data_segments[8]));
-                vertexC.setY(Float.parseFloat(data_segments[9]));
+                vertexA.setX(Float.parseFloat(dataSegments[2]));
+                vertexA.setY(Float.parseFloat(dataSegments[3]));
+                vertexA.setZ(Float.parseFloat(dataSegments[4]));
+                vertexB.setX(Float.parseFloat(dataSegments[5]));
+                vertexB.setY(Float.parseFloat(dataSegments[6]));
+                vertexB.setZ(Float.parseFloat(dataSegments[7]));
+                vertexC.setX(Float.parseFloat(dataSegments[8]));
+                vertexC.setY(Float.parseFloat(dataSegments[9]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
             try {
-                vertexC.setZ(Float.parseFloat(data_segments[10]));
+                vertexC.setZ(Float.parseFloat(dataSegments[10]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
@@ -651,26 +649,26 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Quad(String[] data_segments, float r, float g, float b, float a, GData1 parent) {
-        if (data_segments.length != 14) {
+    private static GData parse_Quad(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
+        if (dataSegments.length != 14) {
             return null;
         } else {
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null)
                 return null;
             try {
-                vertexA.setX(Float.parseFloat(data_segments[2]));
-                vertexA.setY(Float.parseFloat(data_segments[3]));
-                vertexA.setZ(Float.parseFloat(data_segments[4]));
-                vertexB.setX(Float.parseFloat(data_segments[5]));
-                vertexB.setY(Float.parseFloat(data_segments[6]));
-                vertexB.setZ(Float.parseFloat(data_segments[7]));
-                vertexC.setX(Float.parseFloat(data_segments[8]));
-                vertexC.setY(Float.parseFloat(data_segments[9]));
-                vertexC.setZ(Float.parseFloat(data_segments[10]));
-                vertexD.setX(Float.parseFloat(data_segments[11]));
-                vertexD.setY(Float.parseFloat(data_segments[12]));
-                vertexD.setZ(Float.parseFloat(data_segments[13]));
+                vertexA.setX(Float.parseFloat(dataSegments[2]));
+                vertexA.setY(Float.parseFloat(dataSegments[3]));
+                vertexA.setZ(Float.parseFloat(dataSegments[4]));
+                vertexB.setX(Float.parseFloat(dataSegments[5]));
+                vertexB.setY(Float.parseFloat(dataSegments[6]));
+                vertexB.setZ(Float.parseFloat(dataSegments[7]));
+                vertexC.setX(Float.parseFloat(dataSegments[8]));
+                vertexC.setY(Float.parseFloat(dataSegments[9]));
+                vertexC.setZ(Float.parseFloat(dataSegments[10]));
+                vertexD.setX(Float.parseFloat(dataSegments[11]));
+                vertexD.setY(Float.parseFloat(dataSegments[12]));
+                vertexD.setZ(Float.parseFloat(dataSegments[13]));
             } catch (NumberFormatException nfe) {
                 return null;
             }
@@ -679,26 +677,26 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Condline(String[] data_segments, float r, float g, float b, float a, GData1 parent) {
-        if (data_segments.length != 14) {
+    private static GData parse_Condline(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
+        if (dataSegments.length != 14) {
             return null;
         } else {
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null)
                 return null;
             try {
-                start.setX(Float.parseFloat(data_segments[2]));
-                start.setY(Float.parseFloat(data_segments[3]));
-                start.setZ(Float.parseFloat(data_segments[4]));
-                end.setX(Float.parseFloat(data_segments[5]));
-                end.setY(Float.parseFloat(data_segments[6]));
-                end.setZ(Float.parseFloat(data_segments[7]));
-                controlI.setX(Float.parseFloat(data_segments[8]));
-                controlI.setY(Float.parseFloat(data_segments[9]));
-                controlI.setZ(Float.parseFloat(data_segments[10]));
-                controlII.setX(Float.parseFloat(data_segments[11]));
-                controlII.setY(Float.parseFloat(data_segments[12]));
-                controlII.setZ(Float.parseFloat(data_segments[13]));
+                start.setX(Float.parseFloat(dataSegments[2]));
+                start.setY(Float.parseFloat(dataSegments[3]));
+                start.setZ(Float.parseFloat(dataSegments[4]));
+                end.setX(Float.parseFloat(dataSegments[5]));
+                end.setY(Float.parseFloat(dataSegments[6]));
+                end.setZ(Float.parseFloat(dataSegments[7]));
+                controlI.setX(Float.parseFloat(dataSegments[8]));
+                controlI.setY(Float.parseFloat(dataSegments[9]));
+                controlI.setZ(Float.parseFloat(dataSegments[10]));
+                controlII.setX(Float.parseFloat(dataSegments[11]));
+                controlII.setY(Float.parseFloat(dataSegments[12]));
+                controlII.setZ(Float.parseFloat(dataSegments[13]));
             } catch (NumberFormatException nfe) {
                 return null;
             }

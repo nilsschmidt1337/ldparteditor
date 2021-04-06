@@ -57,29 +57,29 @@ class TJunctionDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.TJUNCTION_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.TJUNCTION_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText(I18n.TJUNCTION_MODE);
+        Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
+        lblCoordsPrec.setText(I18n.TJUNCTION_MODE);
 
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.TJUNCTION_FIND, I18n.TJUNCTION_NORMAL, I18n.TJUNCTION_AGGRESSIVE});
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(ts.getMode()));
-        cmb_scope.select(ts.getMode());
+        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_scope[0] = cmbScope;
+        cmbScope.setItems(new String[] {I18n.TJUNCTION_FIND, I18n.TJUNCTION_NORMAL, I18n.TJUNCTION_AGGRESSIVE});
+        cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbScope.setText(cmbScope.getItem(ts.getMode()));
+        cmbScope.select(ts.getMode());
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

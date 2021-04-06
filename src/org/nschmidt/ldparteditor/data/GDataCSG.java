@@ -179,14 +179,14 @@ public final class GDataCSG extends GData {
         clearPolygonCache.put(df, true);
         fullClearPolygonCache.put(df, false);
         registeredData.putIfAbsent(df, new HashSet<>()).add(this);
-        String[] data_segments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
+        String[] dataSegments = csgLine.trim().split("\\s+"); //$NON-NLS-1$
         final GColour col16 = View.getLDConfigColour(16);
         this.type = type;
         this.text = csgLine;
         switch (type) {
         case CSG.COMPILE:
-            if (data_segments.length == 4) {
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+            if (dataSegments.length == 4) {
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
                 ref1 = null;
             }
@@ -203,16 +203,16 @@ public final class GDataCSG extends GData {
         case CSG.MESH:
         case CSG.EXTRUDE:
         case CSG.CONE:
-            if (data_segments.length == 17) {
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
-                GColour c = DatParser.validateColour(data_segments[4], col16.getR(), col16.getG(), col16.getB(), 1f);
+            if (dataSegments.length == 17) {
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                GColour c = DatParser.validateColour(dataSegments[4], col16.getR(), col16.getG(), col16.getB(), 1f);
                 if (c != null) {
                     colour = c.createClone();
                 } else {
                     colour = View.getLDConfigColour(16);
                 }
-                matrix = MathHelper.matrixFromStrings(data_segments[5], data_segments[6], data_segments[7], data_segments[8], data_segments[11], data_segments[14], data_segments[9],
-                        data_segments[12], data_segments[15], data_segments[10], data_segments[13], data_segments[16]);
+                matrix = MathHelper.matrixFromStrings(dataSegments[5], dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[11], dataSegments[14], dataSegments[9],
+                        dataSegments[12], dataSegments[15], dataSegments[10], dataSegments[13], dataSegments[16]);
             } else {
                 colour = null;
                 matrix = null;
@@ -224,10 +224,10 @@ public final class GDataCSG extends GData {
         case CSG.DIFFERENCE:
         case CSG.INTERSECTION:
         case CSG.UNION:
-            if (data_segments.length == 6) {
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
-                ref2 = data_segments[4] + "#>" + parent.shortName; //$NON-NLS-1$
-                ref3 = data_segments[5] + "#>" + parent.shortName; //$NON-NLS-1$
+            if (dataSegments.length == 6) {
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                ref2 = dataSegments[4] + "#>" + parent.shortName; //$NON-NLS-1$
+                ref3 = dataSegments[5] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
                 ref1 = null;
                 ref2 = null;
@@ -237,17 +237,17 @@ public final class GDataCSG extends GData {
             matrix = null;
             break;
         case CSG.TRANSFORM:
-            if (data_segments.length == 18) {
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
-                ref2 = data_segments[4] + "#>" + parent.shortName; //$NON-NLS-1$
-                GColour c = DatParser.validateColour(data_segments[5], col16.getR(), col16.getG(), col16.getB(), 1f);
+            if (dataSegments.length == 18) {
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                ref2 = dataSegments[4] + "#>" + parent.shortName; //$NON-NLS-1$
+                GColour c = DatParser.validateColour(dataSegments[5], col16.getR(), col16.getG(), col16.getB(), 1f);
                 if (c != null) {
                     colour = c.createClone();
                 } else {
                     colour = View.getLDConfigColour(16);
                 }
-                matrix = MathHelper.matrixFromStrings(data_segments[6], data_segments[7], data_segments[8], data_segments[9], data_segments[10], data_segments[11], data_segments[12],
-                        data_segments[13], data_segments[14], data_segments[15], data_segments[16], data_segments[17]);
+                matrix = MathHelper.matrixFromStrings(dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[9], dataSegments[10], dataSegments[11], dataSegments[12],
+                        dataSegments[13], dataSegments[14], dataSegments[15], dataSegments[16], dataSegments[17]);
             } else {
                 colour = null;
                 ref1 = null;
@@ -257,15 +257,15 @@ public final class GDataCSG extends GData {
             ref3 = null;
             break;
         case CSG.QUALITY:
-            if (data_segments.length == 4) {
+            if (dataSegments.length == 4) {
                 try {
-                    int q = Integer.parseInt(data_segments[3]);
+                    int q = Integer.parseInt(dataSegments[3]);
                     if (q > 0 && q < 49) {
                         global_quality = q;
                     }
                 } catch (NumberFormatException e) {
                 }
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
                 ref1 = null;
             }
@@ -275,15 +275,15 @@ public final class GDataCSG extends GData {
             matrix = null;
             break;
         case CSG.EPSILON:
-            if (data_segments.length == 4) {
+            if (dataSegments.length == 4) {
                 try {
-                    double q = Double.parseDouble(data_segments[3]);
+                    double q = Double.parseDouble(dataSegments[3]);
                     if (q > 0d) {
                         global_epsilon = q;
                     }
                 } catch (NumberFormatException e) {
                 }
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
                 ref1 = null;
             }
@@ -293,15 +293,15 @@ public final class GDataCSG extends GData {
             matrix = null;
             break;
         case CSG.TJUNCTION:
-            if (data_segments.length == 4) {
+            if (dataSegments.length == 4) {
                 try {
-                    double q = Double.parseDouble(data_segments[3]);
+                    double q = Double.parseDouble(dataSegments[3]);
                     if (q > 0d) {
                         CSGOptimizerTJunction.epsilon = q;
                     }
                 } catch (NumberFormatException e) {
                 }
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
                 ref1 = null;
             }
@@ -311,15 +311,15 @@ public final class GDataCSG extends GData {
             matrix = null;
             break;
         case CSG.COLLAPSE:
-            if (data_segments.length == 4) {
+            if (dataSegments.length == 4) {
                 try {
-                    double q = Double.parseDouble(data_segments[3]);
+                    double q = Double.parseDouble(dataSegments[3]);
                     if (q > 0d && q <= 1d) {
                         CSGOptimizerEdgeCollapse.epsilon = q;
                     }
                 } catch (NumberFormatException e) {
                 }
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
                 ref1 = null;
             }
@@ -329,22 +329,22 @@ public final class GDataCSG extends GData {
             matrix = null;
             break;
         case CSG.EXTRUDE_CFG:
-            if (data_segments.length == 4 && "DEFAULT".equals(data_segments[3])) { //$NON-NLS-1$
+            if (dataSegments.length == 4 && "DEFAULT".equals(dataSegments[3])) { //$NON-NLS-1$
                 extruderConfig = new PathTruderSettings();
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
-            } else if (data_segments.length == 17) {
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+            } else if (dataSegments.length == 17) {
                 try {
-                    extruderConfig.setMaxPathSegmentLength(new BigDecimal(data_segments[4]));
-                    extruderConfig.setTransitionCount(Integer.parseInt(data_segments[6]));
-                    extruderConfig.setTransitionCurveControl(new BigDecimal(data_segments[8]));
-                    extruderConfig.setTransitionCurveCenter(new BigDecimal(data_segments[10]));
-                    extruderConfig.setRotation(new BigDecimal(data_segments[12]));
-                    extruderConfig.setCompensation(Boolean.parseBoolean(data_segments[14]));
-                    extruderConfig.setInverted(Boolean.parseBoolean(data_segments[16]));
+                    extruderConfig.setMaxPathSegmentLength(new BigDecimal(dataSegments[4]));
+                    extruderConfig.setTransitionCount(Integer.parseInt(dataSegments[6]));
+                    extruderConfig.setTransitionCurveControl(new BigDecimal(dataSegments[8]));
+                    extruderConfig.setTransitionCurveCenter(new BigDecimal(dataSegments[10]));
+                    extruderConfig.setRotation(new BigDecimal(dataSegments[12]));
+                    extruderConfig.setCompensation(Boolean.parseBoolean(dataSegments[14]));
+                    extruderConfig.setInverted(Boolean.parseBoolean(dataSegments[16]));
                 } catch (Exception ex) {
                     extruderConfig = new PathTruderSettings();
                 }
-                ref1 = data_segments[3] + "#>" + parent.shortName; //$NON-NLS-1$
+                ref1 = dataSegments[3] + "#>" + parent.shortName; //$NON-NLS-1$
             } else {
                 ref1 = null;
             }
@@ -706,27 +706,27 @@ public final class GDataCSG extends GData {
                                     } else {
                                         lineBuilder3.append(g3.colourNumber);
                                     }
-                                    Vector4f g3_v1 = new Vector4f(g3.x1, g3.y1, g3.z1, 1f);
-                                    Vector4f g3_v2 = new Vector4f(g3.x2, g3.y2, g3.z2, 1f);
-                                    Vector4f g3_v3 = new Vector4f(g3.x3, g3.y3, g3.z3, 1f);
+                                    Vector4f g3V1 = new Vector4f(g3.x1, g3.y1, g3.z1, 1f);
+                                    Vector4f g3V2 = new Vector4f(g3.x2, g3.y2, g3.z2, 1f);
+                                    Vector4f g3V3 = new Vector4f(g3.x3, g3.y3, g3.z3, 1f);
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(floatToString(g3_v1.x / 1000f));
+                                    lineBuilder3.append(floatToString(g3V1.x / 1000f));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(floatToString(g3_v1.y / 1000f));
+                                    lineBuilder3.append(floatToString(g3V1.y / 1000f));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(floatToString(g3_v1.z / 1000f));
+                                    lineBuilder3.append(floatToString(g3V1.z / 1000f));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(floatToString(g3_v2.x / 1000f));
+                                    lineBuilder3.append(floatToString(g3V2.x / 1000f));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(floatToString(g3_v2.y / 1000f));
+                                    lineBuilder3.append(floatToString(g3V2.y / 1000f));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(floatToString(g3_v2.z / 1000f));
+                                    lineBuilder3.append(floatToString(g3V2.z / 1000f));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(floatToString(g3_v3.x / 1000f));
+                                    lineBuilder3.append(floatToString(g3V3.x / 1000f));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(floatToString(g3_v3.y / 1000f));
+                                    lineBuilder3.append(floatToString(g3V3.y / 1000f));
                                     lineBuilder3.append(" "); //$NON-NLS-1$
-                                    lineBuilder3.append(floatToString(g3_v3.z / 1000f));
+                                    lineBuilder3.append(floatToString(g3V3.z / 1000f));
                                     sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
                                 }
                             }
@@ -1072,10 +1072,10 @@ public final class GDataCSG extends GData {
         registeredData.putIfAbsent(df, new HashSet<>());
 
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
-        Matrix4f viewport_rotation = c3d.getRotation();
+        Matrix4f viewportRotation = c3d.getRotation();
         Vector4f zAxis4f = new Vector4f(0, 0, -1f, 1f);
-        Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
-        Matrix4f.transform(ovr_inverse2, zAxis4f, zAxis4f);
+        Matrix4f ovrInverse2 = Matrix4f.invert(viewportRotation, null);
+        Matrix4f.transform(ovrInverse2, zAxis4f, zAxis4f);
         Vector4f rayDirection = (Vector4f) new Vector4f(zAxis4f.x, zAxis4f.y, zAxis4f.z, 0f).normalise();
         rayDirection.w = 1f;
 

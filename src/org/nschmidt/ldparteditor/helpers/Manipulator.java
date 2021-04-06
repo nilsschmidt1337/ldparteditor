@@ -378,144 +378,144 @@ public class Manipulator {
         return x_Translate;
     }
 
-    public void setX_Translate(boolean x_Translate) {
-        this.x_Translate = x_Translate;
+    public void setX_Translate(boolean xTranslate) {
+        this.x_Translate = xTranslate;
     }
 
     public boolean isY_Translate() {
         return y_Translate;
     }
 
-    public void setY_Translate(boolean y_Translate) {
-        this.y_Translate = y_Translate;
+    public void setY_Translate(boolean yTranslate) {
+        this.y_Translate = yTranslate;
     }
 
     public boolean isZ_Translate() {
         return z_Translate;
     }
 
-    public void setZ_Translate(boolean z_Translate) {
-        this.z_Translate = z_Translate;
+    public void setZ_Translate(boolean zTranslate) {
+        this.z_Translate = zTranslate;
     }
 
     public boolean isX_Rotate() {
         return x_Rotate;
     }
 
-    public void setX_Rotate(boolean x_Rotate) {
-        this.x_Rotate = x_Rotate;
+    public void setX_Rotate(boolean xRotate) {
+        this.x_Rotate = xRotate;
     }
 
     public boolean isY_Rotate() {
         return y_Rotate;
     }
 
-    public void setY_Rotate(boolean y_Rotate) {
-        this.y_Rotate = y_Rotate;
+    public void setY_Rotate(boolean yRotate) {
+        this.y_Rotate = yRotate;
     }
 
     public boolean isZ_Rotate() {
         return z_Rotate;
     }
 
-    public void setZ_Rotate(boolean z_Rotate) {
-        this.z_Rotate = z_Rotate;
+    public void setZ_Rotate(boolean zRotate) {
+        this.z_Rotate = zRotate;
     }
 
     public boolean isV_Rotate() {
         return v_Rotate;
     }
 
-    public void setV_Rotate(boolean v_Rotate) {
-        this.v_Rotate = v_Rotate;
+    public void setV_Rotate(boolean vRotate) {
+        this.v_Rotate = vRotate;
     }
 
     public boolean isX_Scale() {
         return x_Scale;
     }
 
-    public void setX_Scale(boolean x_Scale) {
-        this.x_Scale = x_Scale;
+    public void setX_Scale(boolean xScale) {
+        this.x_Scale = xScale;
     }
 
     public boolean isY_Scale() {
         return y_Scale;
     }
 
-    public void setY_Scale(boolean y_Scale) {
-        this.y_Scale = y_Scale;
+    public void setY_Scale(boolean yScale) {
+        this.y_Scale = yScale;
     }
 
     public boolean isZ_Scale() {
         return z_Scale;
     }
 
-    public void setZ_Scale(boolean z_Scale) {
-        this.z_Scale = z_Scale;
+    public void setZ_Scale(boolean zScale) {
+        this.z_Scale = zScale;
     }
 
     public boolean isX_rotatingForwards() {
         return x_rotatingForwards;
     }
 
-    public void setX_rotatingForwards(boolean x_rotatingForwards) {
-        this.x_rotatingForwards = x_rotatingForwards;
+    public void setX_rotatingForwards(boolean xRotatingForwards) {
+        this.x_rotatingForwards = xRotatingForwards;
     }
 
     public boolean isX_rotatingBackwards() {
         return x_rotatingBackwards;
     }
 
-    public void setX_rotatingBackwards(boolean x_rotatingBackwards) {
-        this.x_rotatingBackwards = x_rotatingBackwards;
+    public void setX_rotatingBackwards(boolean xRotatingBackwards) {
+        this.x_rotatingBackwards = xRotatingBackwards;
     }
 
     public boolean isY_rotatingForwards() {
         return y_rotatingForwards;
     }
 
-    public void setY_rotatingForwards(boolean y_rotatingForwards) {
-        this.y_rotatingForwards = y_rotatingForwards;
+    public void setY_rotatingForwards(boolean yRotatingForwards) {
+        this.y_rotatingForwards = yRotatingForwards;
     }
 
     public boolean isY_rotatingBackwards() {
         return y_rotatingBackwards;
     }
 
-    public void setY_rotatingBackwards(boolean y_rotatingBackwards) {
-        this.y_rotatingBackwards = y_rotatingBackwards;
+    public void setY_rotatingBackwards(boolean yRotatingBackwards) {
+        this.y_rotatingBackwards = yRotatingBackwards;
     }
 
     public boolean isZ_rotatingForwards() {
         return z_rotatingForwards;
     }
 
-    public void setZ_rotatingForwards(boolean z_rotatingForwards) {
-        this.z_rotatingForwards = z_rotatingForwards;
+    public void setZ_rotatingForwards(boolean zRotatingForwards) {
+        this.z_rotatingForwards = zRotatingForwards;
     }
 
     public boolean isZ_rotatingBackwards() {
         return z_rotatingBackwards;
     }
 
-    public void setZ_rotatingBackwards(boolean z_rotatingBackwards) {
-        this.z_rotatingBackwards = z_rotatingBackwards;
+    public void setZ_rotatingBackwards(boolean zRotatingBackwards) {
+        this.z_rotatingBackwards = zRotatingBackwards;
     }
 
     public boolean isV_rotatingForwards() {
         return v_rotatingForwards;
     }
 
-    public void setV_rotatingForwards(boolean v_rotatingForwards) {
-        this.v_rotatingForwards = v_rotatingForwards;
+    public void setV_rotatingForwards(boolean vRotatingForwards) {
+        this.v_rotatingForwards = vRotatingForwards;
     }
 
     public boolean isV_rotatingBackwards() {
         return v_rotatingBackwards;
     }
 
-    public void setV_rotatingBackwards(boolean v_rotatingBackwards) {
-        this.v_rotatingBackwards = v_rotatingBackwards;
+    public void setV_rotatingBackwards(boolean vRotatingBackwards) {
+        this.v_rotatingBackwards = vRotatingBackwards;
     }
 
     public GColour checkManipulatorStatus(float r, float g, float b, int type, Composite3D c3d, float zoom) {
@@ -1165,7 +1165,7 @@ public class Manipulator {
         modified = false;
     }
 
-    public Vector4f transform(Vector2f old_mouse_position, int new_x, int new_y, Composite3D c3d) {
+    public Vector4f transform(Vector2f oldMousePosition, int newX, int newY, Composite3D c3d) {
 
         Vector4f temp = new Vector4f(this.position);
         boolean isGlobal = Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL;
@@ -1174,18 +1174,18 @@ public class Manipulator {
             accuratePosition = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO };
         }
 
-        Vector2f d = new Vector2f(new_x - old_mouse_position.x, new_y - old_mouse_position.y);
+        Vector2f d = new Vector2f(newX - oldMousePosition.x, newY - oldMousePosition.y);
 
         if (d.lengthSquared() == 0f)
             return temp;
 
         d.normalise();
 
-        Vector4f pos3d1 = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen(new_x, new_y);
-        Vector4f pos3d2 = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen((int) old_mouse_position.x, (int) old_mouse_position.y);
+        Vector4f pos3d1 = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen(newX, newY);
+        Vector4f pos3d2 = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen((int) oldMousePosition.x, (int) oldMousePosition.y);
         Vector4f d3d = Vector4f.sub(pos3d1, pos3d2, null);
         float l = d3d.length();
-        BigDecimal L = new BigDecimal(l / 1000f);
+        BigDecimal lPrecise = new BigDecimal(l / 1000f);
 
         //        NLogger.debug(getClass(), "Transforming... dx= " + d.x + " dy= " + d.y + " length= " + l); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -1206,22 +1206,22 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_x_Translate.floatValue() * 1000f), snap_x_Translate.floatValue() * 1000f);
-            BigDecimal FACTOR = MathHelper.max(L.subtract(L.remainder(snap_x_Translate, Threshold.mc)), snap_x_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_x_Translate, Threshold.mc)), snap_x_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = xAxis.x * factor;
                 transformation.m31 = xAxis.y * factor;
                 transformation.m32 = xAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(FACTOR), accurateXaxis[1].multiply(FACTOR), accurateXaxis[2].multiply(FACTOR),
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(factorPrecise), accurateXaxis[1].multiply(factorPrecise), accurateXaxis[2].multiply(factorPrecise),
                         BigDecimal.ONE);
             } else {
                 transformation.m30 = -xAxis.x * factor;
                 transformation.m31 = -xAxis.y * factor;
                 transformation.m32 = -xAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(FACTOR).negate(), accurateXaxis[1].multiply(FACTOR).negate(), accurateXaxis[2]
-                                .multiply(FACTOR).negate(), BigDecimal.ONE);
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(factorPrecise).negate(), accurateXaxis[1].multiply(factorPrecise).negate(), accurateXaxis[2]
+                                .multiply(factorPrecise).negate(), BigDecimal.ONE);
             }
             accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
             Matrix4f.transform(transformation, position, position);
@@ -1245,22 +1245,22 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_y_Translate.floatValue() * 1000f), snap_y_Translate.floatValue() * 1000f);
-            BigDecimal FACTOR = MathHelper.max(L.subtract(L.remainder(snap_y_Translate, Threshold.mc)), snap_y_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_y_Translate, Threshold.mc)), snap_y_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = yAxis.x * factor;
                 transformation.m31 = yAxis.y * factor;
                 transformation.m32 = yAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(FACTOR), accurateYaxis[1].multiply(FACTOR), accurateYaxis[2].multiply(FACTOR),
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(factorPrecise), accurateYaxis[1].multiply(factorPrecise), accurateYaxis[2].multiply(factorPrecise),
                         BigDecimal.ONE);
             } else {
                 transformation.m30 = -yAxis.x * factor;
                 transformation.m31 = -yAxis.y * factor;
                 transformation.m32 = -yAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(FACTOR).negate(), accurateYaxis[1].multiply(FACTOR).negate(), accurateYaxis[2]
-                                .multiply(FACTOR).negate(), BigDecimal.ONE);
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(factorPrecise).negate(), accurateYaxis[1].multiply(factorPrecise).negate(), accurateYaxis[2]
+                                .multiply(factorPrecise).negate(), BigDecimal.ONE);
             }
             accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
             Matrix4f.transform(transformation, position, position);
@@ -1284,22 +1284,22 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_z_Translate.floatValue() * 1000f), snap_z_Translate.floatValue() * 1000f);
-            BigDecimal FACTOR = MathHelper.max(L.subtract(L.remainder(snap_z_Translate, Threshold.mc)), snap_z_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_z_Translate, Threshold.mc)), snap_z_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = zAxis.x * factor;
                 transformation.m31 = zAxis.y * factor;
                 transformation.m32 = zAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateZaxis[0].multiply(FACTOR), accurateZaxis[1].multiply(FACTOR), accurateZaxis[2].multiply(FACTOR),
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateZaxis[0].multiply(factorPrecise), accurateZaxis[1].multiply(factorPrecise), accurateZaxis[2].multiply(factorPrecise),
                         BigDecimal.ONE);
             } else {
                 transformation.m30 = -zAxis.x * factor;
                 transformation.m31 = -zAxis.y * factor;
                 transformation.m32 = -zAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateZaxis[0].multiply(FACTOR).negate(), accurateZaxis[1].multiply(FACTOR).negate(), accurateZaxis[2]
-                                .multiply(FACTOR).negate(), BigDecimal.ONE);
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateZaxis[0].multiply(factorPrecise).negate(), accurateZaxis[1].multiply(factorPrecise).negate(), accurateZaxis[2]
+                                .multiply(factorPrecise).negate(), BigDecimal.ONE);
             }
             accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
             Matrix4f.transform(transformation, position, position);
@@ -1551,7 +1551,7 @@ public class Manipulator {
                 dA.normalise();
 
             float factor;
-            BigDecimal FACTOR;
+            BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                     initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
@@ -1564,19 +1564,19 @@ public class Manipulator {
                     factor_Scale = BigDecimal.ONE;
                 }
                 factor = factor_Scale.floatValue();
-                FACTOR = factor_Scale;
+                factorPrecise = factor_Scale;
             } else {
                 if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                     factor = factor_Scale.floatValue();
-                    FACTOR = factor_Scale;
+                    factorPrecise = factor_Scale;
                 } else {
                     factor = 1f / factor_Scale.floatValue();
-                    FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
                 }
             }
             isScaling = true;
             oldFactor = factor;
-            oldScaleFactor = FACTOR;
+            oldScaleFactor = factorPrecise;
 
             transformation.m30 = -position.x;
             transformation.m31 = -position.y;
@@ -1617,7 +1617,7 @@ public class Manipulator {
             transformation.m20 = zAxis.x;
             transformation.m21 = zAxis.y;
             transformation.m22 = zAxis.z;
-            accurateTransformation = new Matrix(accurateXaxis[0].multiply(FACTOR), accurateXaxis[1].multiply(FACTOR), accurateXaxis[2].multiply(FACTOR), BigDecimal.ZERO, accurateYaxis[0],
+            accurateTransformation = new Matrix(accurateXaxis[0].multiply(factorPrecise), accurateXaxis[1].multiply(factorPrecise), accurateXaxis[2].multiply(factorPrecise), BigDecimal.ZERO, accurateYaxis[0],
                     accurateYaxis[1], accurateYaxis[2], BigDecimal.ZERO, accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ONE);
 
@@ -1652,10 +1652,10 @@ public class Manipulator {
                 dA.normalise();
 
             float factor;
-            BigDecimal FACTOR;
+            BigDecimal factorPrecise;
             if (isScaling) {
                 factor = oldFactor;
-                FACTOR = oldScaleFactor;
+                factorPrecise = oldScaleFactor;
             } else {
                 if (newScaleFactor) {
                     initialScaleOld = initialScaleNew;
@@ -1670,19 +1670,19 @@ public class Manipulator {
                         factor_Scale = BigDecimal.ONE;
                     }
                     factor = factor_Scale.floatValue();
-                    FACTOR = factor_Scale;
+                    factorPrecise = factor_Scale;
                 } else {
                     if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                         factor = factor_Scale.floatValue();
-                        FACTOR = factor_Scale;
+                        factorPrecise = factor_Scale;
                     } else {
                         factor = 1f / factor_Scale.floatValue();
-                        FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                        factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
                     }
                 }
                 isScaling = true;
                 oldFactor = factor;
-                oldScaleFactor = FACTOR;
+                oldScaleFactor = factorPrecise;
             }
 
             transformation.m30 = -position.x;
@@ -1724,8 +1724,8 @@ public class Manipulator {
             transformation.m20 = zAxis.x;
             transformation.m21 = zAxis.y;
             transformation.m22 = zAxis.z;
-            accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0].multiply(FACTOR), accurateYaxis[1].multiply(FACTOR),
-                    accurateYaxis[2].multiply(FACTOR), BigDecimal.ZERO, accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+            accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0].multiply(factorPrecise), accurateYaxis[1].multiply(factorPrecise),
+                    accurateYaxis[2].multiply(factorPrecise), BigDecimal.ZERO, accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ONE);
 
             accurateScale = Matrix.mul(accurateTransformation, accurateScale);
@@ -1759,10 +1759,10 @@ public class Manipulator {
                 dA.normalise();
 
             float factor;
-            BigDecimal FACTOR;
+            BigDecimal factorPrecise;
             if (isScaling) {
                 factor = oldFactor;
-                FACTOR = oldScaleFactor;
+                factorPrecise = oldScaleFactor;
             } else {
                 if (newScaleFactor) {
                     initialScaleOld = initialScaleNew;
@@ -1777,14 +1777,14 @@ public class Manipulator {
                         factor_Scale = BigDecimal.ONE;
                     }
                     factor = factor_Scale.floatValue();
-                    FACTOR = factor_Scale;
+                    factorPrecise = factor_Scale;
                 } else {
                     if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                         factor = factor_Scale.floatValue();
-                        FACTOR = factor_Scale;
+                        factorPrecise = factor_Scale;
                     } else {
                         factor = 1f / factor_Scale.floatValue();
-                        FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                        factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
                     }
                 }
             }
@@ -1829,7 +1829,7 @@ public class Manipulator {
             transformation.m21 = factor * zAxis.y;
             transformation.m22 = factor * zAxis.z;
             accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0], accurateYaxis[1], accurateYaxis[2], BigDecimal.ZERO,
-                    accurateZaxis[0].multiply(FACTOR), accurateZaxis[1].multiply(FACTOR), accurateZaxis[2].multiply(FACTOR), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    accurateZaxis[0].multiply(factorPrecise), accurateZaxis[1].multiply(factorPrecise), accurateZaxis[2].multiply(factorPrecise), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ONE);
 
             accurateScale = Matrix.mul(accurateTransformation, accurateScale);
@@ -1855,7 +1855,7 @@ public class Manipulator {
             accurateResult = Matrix.mul(accurateScale, accurateResult);
         }
 
-        old_mouse_position.set(new_x, new_y);
+        oldMousePosition.set(newX, newY);
 
         xAxis.x = accurateXaxis[0].floatValue();
         xAxis.y = accurateXaxis[1].floatValue();
@@ -1878,7 +1878,7 @@ public class Manipulator {
         return temp;
     }
 
-    public Vector4f transformAtSelect(Vector2f old_mouse_position, int new_x, int new_y, Composite3D c3d) {
+    public Vector4f transformAtSelect(Vector2f oldMousePosition, int newX, int newY, Composite3D c3d) {
 
         Vector4f temp = new Vector4f(this.position);
         boolean isGlobal = Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL;
@@ -1887,18 +1887,18 @@ public class Manipulator {
             accuratePosition = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO };
         }
 
-        Vector2f d = new Vector2f(new_x - old_mouse_position.x, new_y - old_mouse_position.y);
+        Vector2f d = new Vector2f(newX - oldMousePosition.x, newY - oldMousePosition.y);
 
         if (d.lengthSquared() == 0f)
             return temp;
 
         d.normalise();
 
-        Vector4f pos3d1 = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen(new_x, new_y);
-        Vector4f pos3d2 = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen((int) old_mouse_position.x, (int) old_mouse_position.y);
+        Vector4f pos3d1 = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen(newX, newY);
+        Vector4f pos3d2 = c3d.getPerspectiveCalculator().get3DCoordinatesFromScreen((int) oldMousePosition.x, (int) oldMousePosition.y);
         Vector4f d3d = Vector4f.sub(pos3d1, pos3d2, null);
         float l = d3d.length();
-        BigDecimal L = new BigDecimal(l / 1000f);
+        BigDecimal lPrecise = new BigDecimal(l / 1000f);
 
         Matrix4f transformation = new Matrix4f();
         Matrix accurateTransformation;
@@ -1915,22 +1915,22 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_x_Translate.floatValue() * 1000f), snap_x_Translate.floatValue() * 1000f);
-            BigDecimal FACTOR = MathHelper.max(L.subtract(L.remainder(snap_x_Translate, Threshold.mc)), snap_x_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_x_Translate, Threshold.mc)), snap_x_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = xAxis.x * factor;
                 transformation.m31 = xAxis.y * factor;
                 transformation.m32 = xAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(FACTOR), accurateXaxis[1].multiply(FACTOR), accurateXaxis[2].multiply(FACTOR),
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(factorPrecise), accurateXaxis[1].multiply(factorPrecise), accurateXaxis[2].multiply(factorPrecise),
                         BigDecimal.ONE);
             } else {
                 transformation.m30 = -xAxis.x * factor;
                 transformation.m31 = -xAxis.y * factor;
                 transformation.m32 = -xAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(FACTOR).negate(), accurateXaxis[1].multiply(FACTOR).negate(), accurateXaxis[2]
-                                .multiply(FACTOR).negate(), BigDecimal.ONE);
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(factorPrecise).negate(), accurateXaxis[1].multiply(factorPrecise).negate(), accurateXaxis[2]
+                                .multiply(factorPrecise).negate(), BigDecimal.ONE);
             }
             accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
             Matrix4f.transform(transformation, position, position);
@@ -1952,22 +1952,22 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_y_Translate.floatValue() * 1000f), snap_y_Translate.floatValue() * 1000f);
-            BigDecimal FACTOR = MathHelper.max(L.subtract(L.remainder(snap_y_Translate, Threshold.mc)), snap_y_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_y_Translate, Threshold.mc)), snap_y_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = yAxis.x * factor;
                 transformation.m31 = yAxis.y * factor;
                 transformation.m32 = yAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(FACTOR), accurateYaxis[1].multiply(FACTOR), accurateYaxis[2].multiply(FACTOR),
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(factorPrecise), accurateYaxis[1].multiply(factorPrecise), accurateYaxis[2].multiply(factorPrecise),
                         BigDecimal.ONE);
             } else {
                 transformation.m30 = -yAxis.x * factor;
                 transformation.m31 = -yAxis.y * factor;
                 transformation.m32 = -yAxis.z * factor;
                 accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(FACTOR).negate(), accurateYaxis[1].multiply(FACTOR).negate(), accurateYaxis[2]
-                                .multiply(FACTOR).negate(), BigDecimal.ONE);
+                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(factorPrecise).negate(), accurateYaxis[1].multiply(factorPrecise).negate(), accurateYaxis[2]
+                                .multiply(factorPrecise).negate(), BigDecimal.ONE);
             }
             accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
             Matrix4f.transform(transformation, position, position);
@@ -1978,7 +1978,7 @@ public class Manipulator {
             modified = true;
         }
 
-        old_mouse_position.set(new_x, new_y);
+        oldMousePosition.set(newX, newY);
 
         return temp;
     }
@@ -2040,26 +2040,26 @@ public class Manipulator {
     }
 
     public Matrix getAccurateMatrix() {
-        Vector3d X = new Vector3d(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
-        Vector3d Y = new Vector3d(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
-        Vector3d Z = new Vector3d(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
-        X.normalise(X);
-        Y.normalise(Y);
-        Z.normalise(Z);
-        return new Matrix(X.X, X.Y, X.Z, BigDecimal.ZERO, Y.X, Y.Y, Y.Z, BigDecimal.ZERO, Z.X, Z.Y, Z.Z, BigDecimal.ZERO, accuratePosition[0], accuratePosition[1], accuratePosition[2], BigDecimal.ONE);
+        Vector3d x = new Vector3d(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+        Vector3d y = new Vector3d(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+        Vector3d z = new Vector3d(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+        x.normalise(x);
+        y.normalise(y);
+        z.normalise(z);
+        return new Matrix(x.X, x.Y, x.Z, BigDecimal.ZERO, y.X, y.Y, y.Z, BigDecimal.ZERO, z.X, z.Y, z.Z, BigDecimal.ZERO, accuratePosition[0], accuratePosition[1], accuratePosition[2], BigDecimal.ONE);
     }
 
     public Matrix getAccurateRotation() {
-        Vector3d X = new Vector3d(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
-        Vector3d Y = new Vector3d(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
-        Vector3d Z = new Vector3d(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
-        X.normalise(X);
-        Y.normalise(Y);
-        Z.normalise(Z);
+        Vector3d x = new Vector3d(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+        Vector3d y = new Vector3d(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+        Vector3d z = new Vector3d(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+        x.normalise(x);
+        y.normalise(y);
+        z.normalise(z);
         return new Matrix(
-                X.X, Y.X, Z.X, BigDecimal.ZERO,
-                X.Y, Y.Y, Z.Y, BigDecimal.ZERO,
-                X.Z, Y.Z, Z.Z, BigDecimal.ZERO,
+                x.X, y.X, z.X, BigDecimal.ZERO,
+                x.Y, y.Y, z.Y, BigDecimal.ZERO,
+                x.Z, y.Z, z.Z, BigDecimal.ZERO,
                 BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
     }
 
@@ -2155,10 +2155,10 @@ public class Manipulator {
 
         if (scope == ManipulatorScope.GLOBAL) {
             Vector4f t = new Vector4f(getPosition());
-            BigDecimal[] T = getAccuratePosition();
+            BigDecimal[] tPrecise = getAccuratePosition();
             c3d.getManipulator().reset();
             c3d.getManipulator().getPosition().set(t);
-            c3d.getManipulator().setAccuratePosition(T[0], T[1], T[2]);
+            c3d.getManipulator().setAccuratePosition(tPrecise[0], tPrecise[1], tPrecise[2]);
         }
 
         Matrix4f transformation = new Matrix4f();
@@ -2167,12 +2167,12 @@ public class Manipulator {
 
         if (x_Translate) {
             float factor = snap_x_Translate.floatValue() * 1000f * fdir;
-            BigDecimal FACTOR = snap_x_Translate.multiply(ddir);
+            BigDecimal factorPrecise = snap_x_Translate.multiply(ddir);
             transformation.m30 = xAxis.x * factor;
             transformation.m31 = xAxis.y * factor;
             transformation.m32 = xAxis.z * factor;
             accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(FACTOR), accurateXaxis[1].multiply(FACTOR), accurateXaxis[2].multiply(FACTOR),
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateXaxis[0].multiply(factorPrecise), accurateXaxis[1].multiply(factorPrecise), accurateXaxis[2].multiply(factorPrecise),
                     BigDecimal.ONE);
             accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
             Matrix4f.transform(transformation, position, position);
@@ -2183,12 +2183,12 @@ public class Manipulator {
 
         if (y_Translate) {
             float factor = snap_y_Translate.floatValue() * 1000f * fdir;
-            BigDecimal FACTOR = snap_y_Translate.multiply(ddir);
+            BigDecimal factorPrecise = snap_y_Translate.multiply(ddir);
             transformation.m30 = yAxis.x * factor;
             transformation.m31 = yAxis.y * factor;
             transformation.m32 = yAxis.z * factor;
             accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(FACTOR), accurateYaxis[1].multiply(FACTOR), accurateYaxis[2].multiply(FACTOR),
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateYaxis[0].multiply(factorPrecise), accurateYaxis[1].multiply(factorPrecise), accurateYaxis[2].multiply(factorPrecise),
                     BigDecimal.ONE);
             accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
             Matrix4f.transform(transformation, position, position);
@@ -2199,12 +2199,12 @@ public class Manipulator {
 
         if (z_Translate) {
             float factor = snap_z_Translate.floatValue() * 1000f * fdir;
-            BigDecimal FACTOR = snap_z_Translate.multiply(ddir);
+            BigDecimal factorPrecise = snap_z_Translate.multiply(ddir);
             transformation.m30 = zAxis.x * factor;
             transformation.m31 = zAxis.y * factor;
             transformation.m32 = zAxis.z * factor;
             accurateTransformation = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
-                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateZaxis[0].multiply(FACTOR), accurateZaxis[1].multiply(FACTOR), accurateZaxis[2].multiply(FACTOR),
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, accurateZaxis[0].multiply(factorPrecise), accurateZaxis[1].multiply(factorPrecise), accurateZaxis[2].multiply(factorPrecise),
                     BigDecimal.ONE);
             accuratePosition = accurateTransformation.transform(accuratePosition[0], accuratePosition[1], accuratePosition[2]);
             Matrix4f.transform(transformation, position, position);
@@ -2222,14 +2222,14 @@ public class Manipulator {
         }
 
         if (x_Rotate) {
-            BigDecimal FACTOR = snap_x_Rotate.multiply(ddir);
-            transformation.rotate(FACTOR.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-            accurateTransformation = View.ACCURATE_ID.rotate(FACTOR, snap_x_RotateFlag, accurateXaxis);
-            accurateRotationX = accurateRotationX + FACTOR.doubleValue();
+            BigDecimal factorPrecise = snap_x_Rotate.multiply(ddir);
+            transformation.rotate(factorPrecise.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snap_x_RotateFlag, accurateXaxis);
+            accurateRotationX = accurateRotationX + factorPrecise.doubleValue();
             Vector4f vector = new Vector4f(x_rotateArrow);
             Matrix4f m = new Matrix4f();
             Matrix4f.setIdentity(m);
-            m.rotate(Math.max(FACTOR.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+            m.rotate(Math.max(factorPrecise.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
             Matrix4f.transform(m, vector, vector);
             vector.setW(0f);
             vector.normalise();
@@ -2246,14 +2246,14 @@ public class Manipulator {
         }
 
         if (y_Rotate) {
-            BigDecimal FACTOR = snap_y_Rotate.multiply(ddir);
-            transformation.rotate(FACTOR.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-            accurateTransformation = View.ACCURATE_ID.rotate(FACTOR, snap_y_RotateFlag, accurateYaxis);
-            accurateRotationY = accurateRotationY + FACTOR.doubleValue();
+            BigDecimal factorPrecise = snap_y_Rotate.multiply(ddir);
+            transformation.rotate(factorPrecise.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snap_y_RotateFlag, accurateYaxis);
+            accurateRotationY = accurateRotationY + factorPrecise.doubleValue();
             Vector4f vector = new Vector4f(y_rotateArrow);
             Matrix4f m = new Matrix4f();
             Matrix4f.setIdentity(m);
-            m.rotate(Math.max(FACTOR.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+            m.rotate(Math.max(factorPrecise.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
             Matrix4f.transform(m, vector, vector);
             vector.setW(0f);
             vector.normalise();
@@ -2270,14 +2270,14 @@ public class Manipulator {
         }
 
         if (z_Rotate) {
-            BigDecimal FACTOR = snap_z_Rotate.multiply(ddir);
-            transformation.rotate(FACTOR.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-            accurateTransformation = View.ACCURATE_ID.rotate(FACTOR, snap_z_RotateFlag, accurateZaxis);
-            accurateRotationZ = accurateRotationZ + FACTOR.doubleValue();
+            BigDecimal factorPrecise = snap_z_Rotate.multiply(ddir);
+            transformation.rotate(factorPrecise.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snap_z_RotateFlag, accurateZaxis);
+            accurateRotationZ = accurateRotationZ + factorPrecise.doubleValue();
             Vector4f vector = new Vector4f(z_rotateArrow);
             Matrix4f m = new Matrix4f();
             Matrix4f.setIdentity(m);
-            m.rotate(Math.max(FACTOR.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+            m.rotate(Math.max(factorPrecise.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
             Matrix4f.transform(m, vector, vector);
             vector.setW(0f);
             vector.normalise();
@@ -2295,13 +2295,13 @@ public class Manipulator {
 
         if (v_Rotate) {
             Vector4f[] gen = c3d.getGenerator();
-            BigDecimal FACTOR = snap_v_Rotate.multiply(ddir);
-            transformation.rotate(FACTOR.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-            accurateTransformation = View.ACCURATE_ID.rotate(FACTOR, snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+            BigDecimal factorPrecise = snap_v_Rotate.multiply(ddir);
+            transformation.rotate(factorPrecise.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
             Vector4f vector = new Vector4f(v_rotateArrow);
             Matrix4f m = new Matrix4f();
             Matrix4f.setIdentity(m);
-            m.rotate(Math.max(FACTOR.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+            m.rotate(Math.max(factorPrecise.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
             Matrix4f.transform(m, vector, vector);
             vector.setW(0f);
             vector.normalise();
@@ -2334,7 +2334,7 @@ public class Manipulator {
 
         if (x_Scale) {
             float factor;
-            BigDecimal FACTOR;
+            BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
                     initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
@@ -2347,14 +2347,14 @@ public class Manipulator {
                     factor_Scale = BigDecimal.ONE;
                 }
                 factor = factor_Scale.floatValue();
-                FACTOR = factor_Scale;
+                factorPrecise = factor_Scale;
             } else {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
                     factor = factor_Scale.floatValue();
-                    FACTOR = factor_Scale;
+                    factorPrecise = factor_Scale;
                 } else {
                     factor = 1f / factor_Scale.floatValue();
-                    FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
                 }
             }
             transformation.m30 = -position.x;
@@ -2390,7 +2390,7 @@ public class Manipulator {
             transformation.m20 = zAxis.x;
             transformation.m21 = zAxis.y;
             transformation.m22 = zAxis.z;
-            accurateTransformation = new Matrix(accurateXaxis[0].multiply(FACTOR), accurateXaxis[1].multiply(FACTOR), accurateXaxis[2].multiply(FACTOR), BigDecimal.ZERO, accurateYaxis[0],
+            accurateTransformation = new Matrix(accurateXaxis[0].multiply(factorPrecise), accurateXaxis[1].multiply(factorPrecise), accurateXaxis[2].multiply(factorPrecise), BigDecimal.ZERO, accurateYaxis[0],
                     accurateYaxis[1], accurateYaxis[2], BigDecimal.ZERO, accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ONE);
             accurateScale = Matrix.mul(accurateTransformation, accurateScale);
@@ -2408,7 +2408,7 @@ public class Manipulator {
 
         if (y_Scale) {
             float factor;
-            BigDecimal FACTOR;
+            BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
                     initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
@@ -2421,14 +2421,14 @@ public class Manipulator {
                     factor_Scale = BigDecimal.ONE;
                 }
                 factor = factor_Scale.floatValue();
-                FACTOR = factor_Scale;
+                factorPrecise = factor_Scale;
             } else {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
                     factor = factor_Scale.floatValue();
-                    FACTOR = factor_Scale;
+                    factorPrecise = factor_Scale;
                 } else {
                     factor = 1f / factor_Scale.floatValue();
-                    FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
                 }
             }
             transformation.m30 = -position.x;
@@ -2464,8 +2464,8 @@ public class Manipulator {
             transformation.m20 = zAxis.x;
             transformation.m21 = zAxis.y;
             transformation.m22 = zAxis.z;
-            accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0].multiply(FACTOR), accurateYaxis[1].multiply(FACTOR),
-                    accurateYaxis[2].multiply(FACTOR), BigDecimal.ZERO, accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+            accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0].multiply(factorPrecise), accurateYaxis[1].multiply(factorPrecise),
+                    accurateYaxis[2].multiply(factorPrecise), BigDecimal.ZERO, accurateZaxis[0], accurateZaxis[1], accurateZaxis[2], BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ONE);
             accurateScale = Matrix.mul(accurateTransformation, accurateScale);
             Matrix4f.mul(transformation, scale, scale);
@@ -2482,7 +2482,7 @@ public class Manipulator {
 
         if (z_Scale) {
             float factor;
-            BigDecimal FACTOR;
+            BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
                     initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
@@ -2495,14 +2495,14 @@ public class Manipulator {
                     factor_Scale = BigDecimal.ONE;
                 }
                 factor = factor_Scale.floatValue();
-                FACTOR = factor_Scale;
+                factorPrecise = factor_Scale;
             } else {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
                     factor = factor_Scale.floatValue();
-                    FACTOR = factor_Scale;
+                    factorPrecise = factor_Scale;
                 } else {
                     factor = 1f / factor_Scale.floatValue();
-                    FACTOR = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
                 }
             }
             transformation.m30 = -position.x;
@@ -2539,7 +2539,7 @@ public class Manipulator {
             transformation.m21 = factor * zAxis.y;
             transformation.m22 = factor * zAxis.z;
             accurateTransformation = new Matrix(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2], BigDecimal.ZERO, accurateYaxis[0], accurateYaxis[1], accurateYaxis[2], BigDecimal.ZERO,
-                    accurateZaxis[0].multiply(FACTOR), accurateZaxis[1].multiply(FACTOR), accurateZaxis[2].multiply(FACTOR), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    accurateZaxis[0].multiply(factorPrecise), accurateZaxis[1].multiply(factorPrecise), accurateZaxis[2].multiply(factorPrecise), BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ONE);
             accurateScale = Matrix.mul(accurateTransformation, accurateScale);
             Matrix4f.mul(transformation, scale, scale);

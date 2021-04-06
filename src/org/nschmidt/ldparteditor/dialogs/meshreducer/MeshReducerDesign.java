@@ -57,29 +57,29 @@ class MeshReducerDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.MESHREDUCE_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.MESHREDUCE_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText(I18n.MESHREDUCE_MODE);
+        Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
+        lblCoordsPrec.setText(I18n.MESHREDUCE_MODE);
 
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.MESHREDUCE_DESTROY_COLOURS, I18n.MESHREDUCE_KEEP_COLOURS});
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(ms.getMode()));
-        cmb_scope.select(ms.getMode());
+        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_scope[0] = cmbScope;
+        cmbScope.setItems(new String[] {I18n.MESHREDUCE_DESTROY_COLOURS, I18n.MESHREDUCE_KEEP_COLOURS});
+        cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbScope.setText(cmbScope.getItem(ms.getMode()));
+        cmbScope.select(ms.getMode());
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

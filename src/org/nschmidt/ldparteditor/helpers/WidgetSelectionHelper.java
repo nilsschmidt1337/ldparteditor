@@ -38,8 +38,8 @@ public enum WidgetSelectionHelper {
      */
     public static void unselectAllChildButtons(ToolItem toolItem) {
         Control[] childs = toolItem.getChildren();
-        int number_Of_Childs = childs.length;
-        for (int i = 1; i < number_Of_Childs; i++) {
+        int numberOfChilds = childs.length;
+        for (int i = 1; i < numberOfChilds; i++) {
             NButton b = (NButton) childs[i];
             b.setSelection(false);
         }
@@ -53,8 +53,8 @@ public enum WidgetSelectionHelper {
      */
     public static void unselectAllChildButtons(Menu menu) {
         MenuItem[] childs = menu.getItems();
-        int number_Of_Childs = childs.length;
-        for (int i = 0; i < number_Of_Childs; i++) {
+        int numberOfChilds = childs.length;
+        for (int i = 0; i < numberOfChilds; i++) {
             MenuItem it = childs[i];
             it.setSelection(false);
         }

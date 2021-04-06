@@ -91,10 +91,10 @@ public enum DatParser {
         ArrayList<ParsingResult> result = new ArrayList<>();
         // Get the linetype
         int linetype = 0;
-        final String[] data_segments = WHITESPACE.split(line.trim());
+        final String[] dataSegments = WHITESPACE.split(line.trim());
 
         char c;
-        if (data_segments.length < 1 || data_segments[0].length() >  1 || !Character.isDigit(c = data_segments[0].charAt(0))) {
+        if (dataSegments.length < 1 || dataSegments[0].length() >  1 || !Character.isDigit(c = dataSegments[0].charAt(0))) {
             result.add(new ParsingResult(I18n.DATPARSER_INVALID_TYPE, "[E0D] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             return new ArrayList<>(result);
         }
@@ -102,22 +102,22 @@ public enum DatParser {
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            result.addAll(parse_Comment(line, data_segments, depth, r, g, b, a, parent, productMatrix, datFile, errorCheckOnly, alreadyParsed));
+            result.addAll(parse_Comment(line, dataSegments, depth, r, g, b, a, parent, productMatrix, datFile, errorCheckOnly, alreadyParsed));
             break;
         case 1:
-            result.addAll(parse_Reference(data_segments, depth, r, g, b, a, parent, productMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed, lineNumber));
+            result.addAll(parse_Reference(dataSegments, depth, r, g, b, a, parent, productMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed, lineNumber));
             break;
         case 2:
-            result.addAll(parse_Line(data_segments, r, g, b, a, parent, datFile, errorCheckOnly));
+            result.addAll(parse_Line(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly));
             break;
         case 3:
-            result.addAll(parse_Triangle(data_segments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
+            result.addAll(parse_Triangle(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
             break;
         case 4:
-            result.addAll(parse_Quad(data_segments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
+            result.addAll(parse_Quad(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
             break;
         case 5:
-            result.addAll(parse_Condline(data_segments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
+            result.addAll(parse_Condline(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
             break;
         default:
             // Mark unknown linetypes as error
@@ -157,11 +157,11 @@ public enum DatParser {
                     GColour colour = View.getLDConfigColour(colourValue);
                     cValue.set(colour);
                 } else {
-                    int A = colourValue - 256 >> 4;
-                    int B = colourValue - 256 & 0x0F;
-                    if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
-                        GColour colourA = View.getLDConfigColour(A);
-                        GColour colourB = View.getLDConfigColour(B);
+                    int colourIndexA = colourValue - 256 >> 4;
+                    int colourIndexB = colourValue - 256 & 0x0F;
+                    if (View.hasLDConfigColour(colourIndexA) && View.hasLDConfigColour(colourIndexB)) {
+                        GColour colourA = View.getLDConfigColour(colourIndexA);
+                        GColour colourB = View.getLDConfigColour(colourIndexB);
                         GColour ditheredColour = new GColour(
                                 colourValue,
                                 (colourA.getR() + colourB.getR()) / 2f,
@@ -218,11 +218,11 @@ public enum DatParser {
                 GColour colour = View.getLDConfigColour(arg);
                 cValue.set(colour);
             } else {
-                int A = arg - 256 >> 4;
-                int B = arg - 256 & 0x0F;
-                if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
-                    GColour colourA = View.getLDConfigColour(A);
-                    GColour colourB = View.getLDConfigColour(B);
+                int colourIndexA = arg - 256 >> 4;
+                int colourIndexB = arg - 256 & 0x0F;
+                if (View.hasLDConfigColour(colourIndexA) && View.hasLDConfigColour(colourIndexB)) {
+                    GColour colourA = View.getLDConfigColour(colourIndexA);
+                    GColour colourB = View.getLDConfigColour(colourIndexB);
                     GColour ditheredColour = new GColour(
                             arg,
                             (colourA.getR() + colourB.getR()) / 2f,
@@ -244,7 +244,7 @@ public enum DatParser {
      *
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Comment(String line, String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, DatFile datFile,
+    private static ArrayList<ParsingResult> parse_Comment(String line, String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, DatFile datFile,
             boolean errorCheckOnly, Set<String> alreadyParsed) {
 
         ArrayList<ParsingResult> result = new ArrayList<>();
@@ -263,7 +263,7 @@ public enum DatParser {
                 result.add(new ParsingResult(newLPEmetaTag));
             }
         } else if (line.startsWith("0 !TEXMAP ")) { //$NON-NLS-1$
-            GData newLPEmetaTag = TexMapParser.parseTEXMAP(data_segments, line, parent);
+            GData newLPEmetaTag = TexMapParser.parseTEXMAP(dataSegments, line, parent);
             if (newLPEmetaTag == null) {
                 newLPEmetaTag = new GData0(line, parent);
                 result.add(new ParsingResult(newLPEmetaTag));
@@ -284,11 +284,11 @@ public enum DatParser {
                 formatter.applyPattern(I18n.DATPARSER_VERTEX_AT);
                 result.add(new ParsingResult(formatter.format(messageArguments) , "[WFE] " + I18n.DATPARSER_VERTEX_DECLARATION, ResultType.WARN)); //$NON-NLS-1$
                 boolean numberError = false;
-                if (data_segments.length == 6) {
+                if (dataSegments.length == 6) {
                     try {
-                        start.setX(new BigDecimal(data_segments[3], Threshold.mc));
-                        start.setY(new BigDecimal(data_segments[4], Threshold.mc));
-                        start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                        start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
+                        start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
+                        start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -309,19 +309,19 @@ public enum DatParser {
             } else if (line.startsWith("DISTANCE ", 7)) { //$NON-NLS-1$
                 boolean numberError = false;
                 final GColour colour;
-                if (data_segments.length == 10) {
-                    colour = validateColour(data_segments[3], r, g, b, a);
+                if (dataSegments.length == 10) {
+                    colour = validateColour(dataSegments[3], r, g, b, a);
                     if (colour == null) {
                         result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                         return result;
                     }
                     try {
-                        start.setX(new BigDecimal(data_segments[4], Threshold.mc));
-                        start.setY(new BigDecimal(data_segments[5], Threshold.mc));
-                        start.setZ(new BigDecimal(data_segments[6], Threshold.mc));
-                        end.setX(new BigDecimal(data_segments[7], Threshold.mc));
-                        end.setY(new BigDecimal(data_segments[8], Threshold.mc));
-                        end.setZ(new BigDecimal(data_segments[9], Threshold.mc));
+                        start.setX(new BigDecimal(dataSegments[4], Threshold.mc));
+                        start.setY(new BigDecimal(dataSegments[5], Threshold.mc));
+                        start.setZ(new BigDecimal(dataSegments[6], Threshold.mc));
+                        end.setX(new BigDecimal(dataSegments[7], Threshold.mc));
+                        end.setY(new BigDecimal(dataSegments[8], Threshold.mc));
+                        end.setZ(new BigDecimal(dataSegments[9], Threshold.mc));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -340,22 +340,22 @@ public enum DatParser {
             } else if (line.startsWith("PROTRACTOR ", 7)) { //$NON-NLS-1$
                 boolean numberError = false;
                 final GColour colour;
-                if (data_segments.length == 13) {
-                    colour = validateColour(data_segments[3], r, g, b, a);
+                if (dataSegments.length == 13) {
+                    colour = validateColour(dataSegments[3], r, g, b, a);
                     if (colour == null) {
                         result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                         return result;
                     }
                     try {
-                        vertexA.setX(new BigDecimal(data_segments[4], Threshold.mc));
-                        vertexA.setY(new BigDecimal(data_segments[5], Threshold.mc));
-                        vertexA.setZ(new BigDecimal(data_segments[6], Threshold.mc));
-                        vertexB.setX(new BigDecimal(data_segments[7], Threshold.mc));
-                        vertexB.setY(new BigDecimal(data_segments[8], Threshold.mc));
-                        vertexB.setZ(new BigDecimal(data_segments[9], Threshold.mc));
-                        vertexC.setX(new BigDecimal(data_segments[10], Threshold.mc));
-                        vertexC.setY(new BigDecimal(data_segments[11], Threshold.mc));
-                        vertexC.setZ(new BigDecimal(data_segments[12], Threshold.mc));
+                        vertexA.setX(new BigDecimal(dataSegments[4], Threshold.mc));
+                        vertexA.setY(new BigDecimal(dataSegments[5], Threshold.mc));
+                        vertexA.setZ(new BigDecimal(dataSegments[6], Threshold.mc));
+                        vertexB.setX(new BigDecimal(dataSegments[7], Threshold.mc));
+                        vertexB.setY(new BigDecimal(dataSegments[8], Threshold.mc));
+                        vertexB.setZ(new BigDecimal(dataSegments[9], Threshold.mc));
+                        vertexC.setX(new BigDecimal(dataSegments[10], Threshold.mc));
+                        vertexC.setY(new BigDecimal(dataSegments[11], Threshold.mc));
+                        vertexC.setZ(new BigDecimal(dataSegments[12], Threshold.mc));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -431,19 +431,19 @@ public enum DatParser {
                     result.add(0, new ParsingResult(new GDataCSG(datFile, CSG.EXTRUDE_CFG, line, parent)));
                     GDataCSG.forceRecompile(datFile);
                 }
-            } else if (line.startsWith("PNG", 7) && depth == 0 && data_segments.length >= 12) { //$NON-NLS-1$
+            } else if (line.startsWith("PNG", 7) && depth == 0 && dataSegments.length >= 12) { //$NON-NLS-1$
                 try {
-                    Vertex offset = new Vertex(new BigDecimal(data_segments[3]), new BigDecimal(data_segments[4]), new BigDecimal(data_segments[5]));
-                    BigDecimal a1 = new BigDecimal(data_segments[6]);
-                    BigDecimal a2 = new BigDecimal(data_segments[7]);
-                    BigDecimal a3 = new BigDecimal(data_segments[8]);
-                    Vertex scale = new Vertex(new BigDecimal(data_segments[9]), new BigDecimal(data_segments[10]), BigDecimal.ONE);
+                    Vertex offset = new Vertex(new BigDecimal(dataSegments[3]), new BigDecimal(dataSegments[4]), new BigDecimal(dataSegments[5]));
+                    BigDecimal a1 = new BigDecimal(dataSegments[6]);
+                    BigDecimal a2 = new BigDecimal(dataSegments[7]);
+                    BigDecimal a3 = new BigDecimal(dataSegments[8]);
+                    Vertex scale = new Vertex(new BigDecimal(dataSegments[9]), new BigDecimal(dataSegments[10]), BigDecimal.ONE);
                     StringBuilder sb = new StringBuilder();
-                    for (int s = 11; s < data_segments.length - 1; s++) {
-                        sb.append(data_segments[s]);
+                    for (int s = 11; s < dataSegments.length - 1; s++) {
+                        sb.append(dataSegments[s]);
                         sb.append(" "); //$NON-NLS-1$
                     }
-                    sb.append(data_segments[data_segments.length - 1]);
+                    sb.append(dataSegments[dataSegments.length - 1]);
                     result.remove(0);
                     final GDataPNG gpng = new GDataPNG(line, offset, a1, a2, a3, scale, sb.toString(), parent);
                     if (!errorCheckOnly) datFile.getVertexManager().setSelectedBgPicture(gpng);
@@ -514,21 +514,21 @@ public enum DatParser {
      *
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Reference(String[] data_segments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
+    private static ArrayList<ParsingResult> parse_Reference(String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed, int lineNumber) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         boolean parseError = false;
         boolean hasDitheredColour = false;
         // [ERROR] Check less argument count
-        if (data_segments.length < 15) {
-            Object[] messageArguments = {data_segments.length, 15};
+        if (dataSegments.length < 15) {
+            Object[] messageArguments = {dataSegments.length, 15};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null) {
                 result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
@@ -536,57 +536,57 @@ public enum DatParser {
             hasDitheredColour = colour.getType() != null && GCType.DITHERED == colour.getType().type();
             // [ERROR] Check singularity
             Matrix4f tMatrix = new Matrix4f();
-            BigDecimal M00;
-            BigDecimal M01;
-            BigDecimal M02;
-            final BigDecimal M03 = BigDecimal.ZERO;
-            BigDecimal M10;
-            BigDecimal M11;
-            BigDecimal M12;
-            final BigDecimal M13 = BigDecimal.ZERO;
-            BigDecimal M20;
-            BigDecimal M21;
-            BigDecimal M22;
-            final BigDecimal M23 = BigDecimal.ZERO;
-            BigDecimal M30;
-            BigDecimal M31;
-            BigDecimal M32;
-            final BigDecimal M33 = BigDecimal.ONE;
+            BigDecimal m00;
+            BigDecimal m01;
+            BigDecimal m02;
+            final BigDecimal m03 = BigDecimal.ZERO;
+            BigDecimal m10;
+            BigDecimal m11;
+            BigDecimal m12;
+            final BigDecimal m13 = BigDecimal.ZERO;
+            BigDecimal m20;
+            BigDecimal m21;
+            BigDecimal m22;
+            final BigDecimal m23 = BigDecimal.ZERO;
+            BigDecimal m30;
+            BigDecimal m31;
+            BigDecimal m32;
+            final BigDecimal m33 = BigDecimal.ONE;
             float det = 0;
             while (true) {
                 try {
                     // Offset
-                    M30 = new BigDecimal(data_segments[2]);
-                    tMatrix.m30 = M30.floatValue() * 1000f;
-                    M31 = new BigDecimal(data_segments[3]);
-                    tMatrix.m31 = M31.floatValue() * 1000f;
-                    M32 = new BigDecimal(data_segments[4]);
-                    tMatrix.m32 = M32.floatValue() * 1000f;
+                    m30 = new BigDecimal(dataSegments[2]);
+                    tMatrix.m30 = m30.floatValue() * 1000f;
+                    m31 = new BigDecimal(dataSegments[3]);
+                    tMatrix.m31 = m31.floatValue() * 1000f;
+                    m32 = new BigDecimal(dataSegments[4]);
+                    tMatrix.m32 = m32.floatValue() * 1000f;
                     // First row
-                    M00 = new BigDecimal(data_segments[5]);
-                    tMatrix.m00 = M00.floatValue();
-                    M10 = new BigDecimal(data_segments[6]);
-                    tMatrix.m10 = M10.floatValue();
-                    M20 = new BigDecimal(data_segments[7]);
-                    tMatrix.m20 = M20.floatValue();
+                    m00 = new BigDecimal(dataSegments[5]);
+                    tMatrix.m00 = m00.floatValue();
+                    m10 = new BigDecimal(dataSegments[6]);
+                    tMatrix.m10 = m10.floatValue();
+                    m20 = new BigDecimal(dataSegments[7]);
+                    tMatrix.m20 = m20.floatValue();
                     // Second row
-                    M01 = new BigDecimal(data_segments[8]);
-                    tMatrix.m01 = M01.floatValue();
-                    M11 = new BigDecimal(data_segments[9]);
-                    tMatrix.m11 = M11.floatValue();
-                    M21 = new BigDecimal(data_segments[10]);
-                    tMatrix.m21 = M21.floatValue();
+                    m01 = new BigDecimal(dataSegments[8]);
+                    tMatrix.m01 = m01.floatValue();
+                    m11 = new BigDecimal(dataSegments[9]);
+                    tMatrix.m11 = m11.floatValue();
+                    m21 = new BigDecimal(dataSegments[10]);
+                    tMatrix.m21 = m21.floatValue();
                     // Third row
-                    M02 = new BigDecimal(data_segments[11]);
-                    tMatrix.m02 = M02.floatValue();
-                    M12 = new BigDecimal(data_segments[12]);
-                    tMatrix.m12 = M12.floatValue();
-                    M22 = new BigDecimal(data_segments[13]);
-                    tMatrix.m22 = M22.floatValue();
+                    m02 = new BigDecimal(dataSegments[11]);
+                    tMatrix.m02 = m02.floatValue();
+                    m12 = new BigDecimal(dataSegments[12]);
+                    tMatrix.m12 = m12.floatValue();
+                    m22 = new BigDecimal(dataSegments[13]);
+                    tMatrix.m22 = m22.floatValue();
                 } catch (NumberFormatException nfe) {
-                    M00 = null; M01 = null; M02 = null; M10 = null;
-                    M11 = null; M12 = null; M20 = null; M21 = null;
-                    M22 = null; M30 = null; M31 = null; M32 = null;
+                    m00 = null; m01 = null; m02 = null; m10 = null;
+                    m11 = null; m12 = null; m20 = null; m21 = null;
+                    m22 = null; m30 = null; m31 = null; m32 = null;
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
@@ -598,11 +598,11 @@ public enum DatParser {
             // [WARNING] Check file existance
             boolean fileExists = true;
             StringBuilder sb = new StringBuilder();
-            for (int s = 14; s < data_segments.length - 1; s++) {
-                sb.append(data_segments[s]);
+            for (int s = 14; s < dataSegments.length - 1; s++) {
+                sb.append(dataSegments[s]);
                 sb.append(" "); //$NON-NLS-1$
             }
-            sb.append(data_segments[data_segments.length - 1]);
+            sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
             boolean isLowercase = shortFilename.equals(shortFilename.toLowerCase(Locale.ENGLISH));
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
@@ -697,14 +697,14 @@ public enum DatParser {
                 if (result.isEmpty()) {
                     if (!errorCheckOnly) {
 
-                        Matrix TMatrix = new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, M30, M31, M32, M33);
-                        Matrix DESTMatrix = Matrix.mul(accurateProductMatrix, TMatrix);
+                        Matrix tMatrixP = new Matrix(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
+                        Matrix destMatrixP = Matrix.mul(accurateProductMatrix, tMatrixP);
 
                         Matrix4f destMatrix = new Matrix4f();
                         Matrix4f.mul(productMatrix, tMatrix, destMatrix);
 
-                        result.add(new ParsingResult(new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, TMatrix, lines, absoluteFilename, sb
-                                .toString(), depth, det < 0, destMatrix, DESTMatrix, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent)));
+                        result.add(new ParsingResult(new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, tMatrixP, lines, absoluteFilename, sb
+                                .toString(), depth, det < 0, destMatrix, destMatrixP, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent)));
                         GDataCSG.forceRecompile(datFile);
                     }
 
@@ -761,14 +761,14 @@ public enum DatParser {
                 if (result.isEmpty()) {
                     if (!errorCheckOnly) {
 
-                        Matrix TMatrix = new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, M30, M31, M32, M33);
-                        Matrix DESTMatrix = Matrix.mul(accurateProductMatrix, TMatrix);
+                        Matrix tMatrixP = new Matrix(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, m30, m31, m32, m33);
+                        Matrix destMatrixP = Matrix.mul(accurateProductMatrix, tMatrixP);
 
                         Matrix4f destMatrix = new Matrix4f();
                         Matrix4f.mul(productMatrix, tMatrix, destMatrix);
 
-                        result.add(new ParsingResult(new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, TMatrix, lines, absoluteFilename, sb
-                                .toString(), depth, det < 0, destMatrix, DESTMatrix, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent)));
+                        result.add(new ParsingResult(new GData1(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), tMatrix, tMatrixP, lines, absoluteFilename, sb
+                                .toString(), depth, det < 0, destMatrix, destMatrixP, datFile, parent.firstRef, readOnly, errorCheckOnly, alreadyParsed, parent)));
                     }
 
                     // Avoid scaling of flat files
@@ -803,7 +803,7 @@ public enum DatParser {
             }
             alreadyParsed.remove(shortFilename);
             // [WARNING] Check spaces in dat file name
-            if (data_segments.length > 15) {
+            if (dataSegments.length > 15) {
                 result.add(new ParsingResult(I18n.DATPARSER_FILENAME_WHITESPACE, "[W01] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
             }
             // [WARNING] Dithered colour
@@ -823,7 +823,7 @@ public enum DatParser {
      *
      * @param line
      *            the line to check
-     * @param data_segments
+     * @param dataSegments
      * @param b
      * @param g
      * @param r
@@ -832,19 +832,19 @@ public enum DatParser {
      * @param errorCheckOnly
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Line(String[] data_segments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly) {
+    private static ArrayList<ParsingResult> parse_Line(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         boolean parseError = false;
         // [ERROR] Check argument count
-        if (data_segments.length != 8) {
-            Object[] messageArguments = {data_segments.length, 8};
+        if (dataSegments.length != 8) {
+            Object[] messageArguments = {dataSegments.length, 8};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null) {
                 result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
@@ -853,13 +853,13 @@ public enum DatParser {
             while (true) {
                 try {
                     // Start vertex
-                    start.setX(new BigDecimal(data_segments[2], Threshold.mc));
-                    start.setY(new BigDecimal(data_segments[3], Threshold.mc));
-                    start.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+                    start.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+                    start.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+                    start.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
                     // End vertex
-                    end.setX(new BigDecimal(data_segments[5], Threshold.mc));
-                    end.setY(new BigDecimal(data_segments[6], Threshold.mc));
-                    end.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+                    end.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+                    end.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+                    end.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
@@ -887,7 +887,7 @@ public enum DatParser {
      *
      * @param line
      *            the line to check
-     * @param data_segments
+     * @param dataSegments
      * @param b
      * @param g
      * @param r
@@ -899,18 +899,18 @@ public enum DatParser {
      * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Triangle(String[] data_segments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
+    private static ArrayList<ParsingResult> parse_Triangle(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
-        if (data_segments.length != 11) {
-            Object[] messageArguments = {data_segments.length, 11};
+        if (dataSegments.length != 11) {
+            Object[] messageArguments = {dataSegments.length, 11};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null) {
                 result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
@@ -919,17 +919,17 @@ public enum DatParser {
             while (true) {
                 try {
                     // 1st vertex
-                    vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
-                    vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
-                    vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
                     // 2nd vertex
-                    vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
-                    vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
-                    vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
                     // 3rd vertex
-                    vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
-                    vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
-                    vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
@@ -989,7 +989,7 @@ public enum DatParser {
      *
      * @param line
      *            the line to check
-     * @param data_segments
+     * @param dataSegments
      * @param b
      * @param g
      * @param r
@@ -1001,18 +1001,18 @@ public enum DatParser {
      * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Quad(String[] data_segments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
+    private static ArrayList<ParsingResult> parse_Quad(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
-        if (data_segments.length != 14) {
-            Object[] messageArguments = {data_segments.length, 14};
+        if (dataSegments.length != 14) {
+            Object[] messageArguments = {dataSegments.length, 14};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null) {
                 result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
@@ -1022,21 +1022,21 @@ public enum DatParser {
             while (true) {
                 try {
                     // 1st vertex
-                    vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
-                    vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
-                    vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
                     // 2nd vertex
-                    vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
-                    vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
-                    vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
                     // 3rd vertex
-                    vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
-                    vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
-                    vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
                     // 4th vertex
-                    vertexD.setX(new BigDecimal(data_segments[11], Threshold.mc));
-                    vertexD.setY(new BigDecimal(data_segments[12], Threshold.mc));
-                    vertexD.setZ(new BigDecimal(data_segments[13], Threshold.mc));
+                    vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
+                    vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
+                    vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
@@ -1193,7 +1193,7 @@ public enum DatParser {
      *
      * @param line
      *            the line to check
-     * @param data_segments
+     * @param dataSegments
      * @param b
      * @param g
      * @param r
@@ -1205,18 +1205,18 @@ public enum DatParser {
      * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Condline(String[] data_segments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
+    private static ArrayList<ParsingResult> parse_Condline(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
-        if (data_segments.length != 14) {
-            Object[] messageArguments = {data_segments.length, 14};
+        if (dataSegments.length != 14) {
+            Object[] messageArguments = {dataSegments.length, 14};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
             // [ERROR] Check colour
-            GColour colour = validateColour(data_segments[1], r, g, b, a);
+            GColour colour = validateColour(dataSegments[1], r, g, b, a);
             if (colour == null) {
                 result.add(new ParsingResult(I18n.DATPARSER_INVALID_COLOUR, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 return result;
@@ -1225,21 +1225,21 @@ public enum DatParser {
             while (true) {
                 try {
                     // start vertex
-                    start.setX(new BigDecimal(data_segments[2], Threshold.mc));
-                    start.setY(new BigDecimal(data_segments[3], Threshold.mc));
-                    start.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+                    start.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+                    start.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+                    start.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
                     // end vertex
-                    end.setX(new BigDecimal(data_segments[5], Threshold.mc));
-                    end.setY(new BigDecimal(data_segments[6], Threshold.mc));
-                    end.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+                    end.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+                    end.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+                    end.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
                     // control vertex I
-                    controlI.setX(new BigDecimal(data_segments[8], Threshold.mc));
-                    controlI.setY(new BigDecimal(data_segments[9], Threshold.mc));
-                    controlI.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+                    controlI.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+                    controlI.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+                    controlI.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
                     // control vertex II
-                    controlII.setX(new BigDecimal(data_segments[11], Threshold.mc));
-                    controlII.setY(new BigDecimal(data_segments[12], Threshold.mc));
-                    controlII.setZ(new BigDecimal(data_segments[13], Threshold.mc));
+                    controlII.setX(new BigDecimal(dataSegments[11], Threshold.mc));
+                    controlII.setY(new BigDecimal(dataSegments[12], Threshold.mc));
+                    controlII.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
                 } catch (NumberFormatException nfe) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;

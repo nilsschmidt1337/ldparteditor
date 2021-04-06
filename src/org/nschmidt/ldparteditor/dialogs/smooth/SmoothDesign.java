@@ -66,75 +66,75 @@ class SmoothDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.SMOOTH_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.SMOOTH_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_preview = new Label(cmp_container, SWT.NONE);
-        lbl_preview.setText("This dialog supports a realtime preview of the new mesh."); //$NON-NLS-1$ FIXME !i18n!
+        Label lblPreview = new Label(cmpContainer, SWT.NONE);
+        lblPreview.setText("This dialog supports a realtime preview of the new mesh."); //$NON-NLS-1$ FIXME !i18n!
         
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(3, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(3, true));
 
-            NButton cb_Xaxis = new NButton(cmp_txt, SWT.CHECK);
-            this.cb_Xaxis[0] = cb_Xaxis;
-            cb_Xaxis.setText(I18n.COORDINATESDIALOG_X);
-            cb_Xaxis.setSelection(true);
+            NButton cbXaxis = new NButton(cmpTxt, SWT.CHECK);
+            this.cb_Xaxis[0] = cbXaxis;
+            cbXaxis.setText(I18n.COORDINATESDIALOG_X);
+            cbXaxis.setSelection(true);
             
-            NButton cb_Yaxis = new NButton(cmp_txt, SWT.CHECK);
-            this.cb_Yaxis[0] = cb_Yaxis;
-            cb_Yaxis.setText(I18n.COORDINATESDIALOG_Y);
-            cb_Yaxis.setSelection(true);
+            NButton cbYaxis = new NButton(cmpTxt, SWT.CHECK);
+            this.cb_Yaxis[0] = cbYaxis;
+            cbYaxis.setText(I18n.COORDINATESDIALOG_Y);
+            cbYaxis.setSelection(true);
             
-            NButton cb_Zaxis = new NButton(cmp_txt, SWT.CHECK);
-            this.cb_Zaxis[0] = cb_Zaxis;
-            cb_Zaxis.setText(I18n.COORDINATESDIALOG_Z);
-            cb_Zaxis.setSelection(true);
+            NButton cbZaxis = new NButton(cmpTxt, SWT.CHECK);
+            this.cb_Zaxis[0] = cbZaxis;
+            cbZaxis.setText(I18n.COORDINATESDIALOG_Z);
+            cbZaxis.setSelection(true);
         }
         
-        Label lbl_iter = new Label(cmp_container, SWT.NONE);
-        lbl_iter.setText("Iterations:"); //$NON-NLS-1$ FIXME !i18n!      
+        Label lblIter = new Label(cmpContainer, SWT.NONE);
+        lblIter.setText("Iterations:"); //$NON-NLS-1$ FIXME !i18n!      
         
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(1, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(1, true));
 
-            IntegerSpinner spn_pX = new IntegerSpinner(cmp_txt, SWT.NONE);
-            this.spn_pX[0] = spn_pX;
-            spn_pX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            spn_pX.setMaximum(9999);
-            spn_pX.setMinimum(1);
-            spn_pX.setValue(1);
+            IntegerSpinner spnPX = new IntegerSpinner(cmpTxt, SWT.NONE);
+            this.spn_pX[0] = spnPX;
+            spnPX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            spnPX.setMaximum(9999);
+            spnPX.setMinimum(1);
+            spnPX.setValue(1);
         }
 
-        Label lbl_factor = new Label(cmp_container, SWT.NONE);
-        lbl_factor.setText("Factor:"); //$NON-NLS-1$ FIXME !i18n!
+        Label lblFactor = new Label(cmpContainer, SWT.NONE);
+        lblFactor.setText("Factor:"); //$NON-NLS-1$ FIXME !i18n!
       
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(1, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(1, true));
 
-            BigDecimalSpinner spn_pY = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_pY[0] = spn_pY;
-            spn_pY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            spn_pY.setMaximum(new BigDecimal(1));
-            spn_pY.setMinimum(new BigDecimal(-1));
-            spn_pY.setValue(new BigDecimal(1));
+            BigDecimalSpinner spnPY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_pY[0] = spnPY;
+            spnPY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            spnPY.setMaximum(new BigDecimal(1));
+            spnPY.setMinimum(new BigDecimal(-1));
+            spnPY.setValue(new BigDecimal(1));
         }
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

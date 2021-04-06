@@ -423,7 +423,7 @@ public class EditorTextWindow extends EditorTextDesign {
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {
-                    String fileList[] = null;
+                    String[] fileList = null;
                     FileTransfer ft = FileTransfer.getInstance();
                     if (ft.isSupportedType(event.currentDataType)) {
                         fileList = (String[]) event.data;
@@ -1130,7 +1130,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
             @Override
             public void drop(DropTargetEvent event) {
-                String fileList[] = null;
+                String[] fileList = null;
                 FileTransfer ft = FileTransfer.getInstance();
                 if (ft.isSupportedType(event.currentDataType)) {
                     fileList = (String[]) event.data;
@@ -1329,11 +1329,11 @@ public class EditorTextWindow extends EditorTextDesign {
             if ("%EMPTY%".equals(Editor3DWindow.getSashForm().getChildren()[1].getData())) { //$NON-NLS-1$
                 int[] mainSashWeights = Editor3DWindow.getSashForm().getWeights();
                 Editor3DWindow.getSashForm().getChildren()[1].dispose();
-                CompositeContainer cmp_Container = new CompositeContainer(Editor3DWindow.getSashForm(), false);
-                cmp_Container.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
+                CompositeContainer cmpContainer = new CompositeContainer(Editor3DWindow.getSashForm(), false);
+                cmpContainer.moveBelow(Editor3DWindow.getSashForm().getChildren()[0]);
                 df.parseForData(true);
                 Project.setFileToEdit(df);
-                cmp_Container.getComposite3D().setLockableDatFileReference(df);
+                cmpContainer.getComposite3D().setLockableDatFileReference(df);
                 df.getVertexManager().addSnapshot();
                 Editor3DWindow.getSashForm().getParent().layout();
                 Editor3DWindow.getSashForm().setWeights(mainSashWeights);

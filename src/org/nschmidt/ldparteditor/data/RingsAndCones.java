@@ -70,24 +70,24 @@ public enum RingsAndCones {
 
         final BigDecimal factor = new BigDecimal(100000000L);
 
-        long rad_min = rs.getRadius1().multiply(factor).longValue();
-        long rad_max = rs.getRadius2().multiply(factor).longValue();
+        long radMin = rs.getRadius1().multiply(factor).longValue();
+        long radMax = rs.getRadius2().multiply(factor).longValue();
 
         // Throw an arithmetic exception in case the radii were to big.
-        if (new BigDecimal(rad_min).compareTo(rs.getRadius1()) < 0 || new BigDecimal(rad_max).compareTo(rs.getRadius2()) < 0) {
+        if (new BigDecimal(radMin).compareTo(rs.getRadius1()) < 0 || new BigDecimal(radMax).compareTo(rs.getRadius2()) < 0) {
             throw new ArithmeticException("The given radius was too big."); //$NON-NLS-1$
         }
         {
-            long rad_tmp = rad_min;
-            rad_min = Math.min(rad_min, rad_max);
-            rad_max = Math.max(rad_tmp, rad_max);
-            if (rad_min == rad_max) return;
+            long radTmp = radMin;
+            radMin = Math.min(radMin, radMax);
+            radMax = Math.max(radTmp, radMax);
+            if (radMin == radMax) return;
         }
 
-        if (rad_min != 0) {
+        if (radMin != 0) {
 
-            final long radi_min = rad_min;
-            final long radi_max = rad_max;
+            final long radi_min = radMin;
+            final long radi_max = radMax;
 
             final int angle = rs.getAngle();
 
@@ -116,9 +116,9 @@ public enum RingsAndCones {
                         // Solver 2: A general solver, which is not bound to use only existing primitives
 
                         {
-                            final AtomicInteger min_amountA = new AtomicInteger(Integer.MAX_VALUE);
-                            final AtomicLong min_deltaA = new AtomicLong(Long.MAX_VALUE);
-                            final AtomicInteger min_digitsA = new AtomicInteger(Integer.MAX_VALUE);
+                            final AtomicInteger minAmountA = new AtomicInteger(Integer.MAX_VALUE);
+                            final AtomicLong minDeltaA = new AtomicLong(Long.MAX_VALUE);
+                            final AtomicInteger minDigitsA = new AtomicInteger(Integer.MAX_VALUE);
 
                             final Lock tlock = new ReentrantLock();
 
@@ -130,14 +130,14 @@ public enum RingsAndCones {
                                     @Override
                                     public void run() {
                                         {
-                                            final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+                                            final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
                                             int amount = 0;
                                             final long min_r = 1;
-                                            long max_r = 100;
+                                            long maxR = 100;
 
-                                            int min_amount;
-                                            long min_delta;
-                                            int min_digits;
+                                            int minAmount;
+                                            long minDelta;
+                                            int minDigits;
 
                                             long current = radi_min;
 
@@ -147,7 +147,7 @@ public enum RingsAndCones {
                                             final long[] tsolutionR = new long[50];
                                             final long[] tsolutionR2 = new long[50];
 
-                                            final long width = max_r - min_r;
+                                            final long width = maxR - min_r;
 
                                             final long[] rndSet;
                                             final int size = existanceMap.keySet().size();
@@ -195,20 +195,20 @@ public enum RingsAndCones {
                                                 }
                                                 long sum = s + current;
 
-                                                min_amount = min_amountA.get();
-                                                min_delta = min_deltaA.get();
-                                                min_digits = min_digitsA.get();
+                                                minAmount = minAmountA.get();
+                                                minDelta = minDeltaA.get();
+                                                minDigits = minDigitsA.get();
 
-                                                if (sum >= radi_max || amount > min_amount) {
-                                                    if (amount <= min_amount && amount < 47) {
+                                                if (sum >= radi_max || amount > minAmount) {
+                                                    if (amount <= minAmount && amount < 47) {
                                                         long delta = Math.abs(sum - radi_max);
                                                         if (100000L >= delta) {
-                                                            if (amount != min_amount) {
-                                                                min_delta = Long.MAX_VALUE;
-                                                            } else if (delta < min_delta) {
-                                                                min_delta = delta;
-                                                                min_digits = Integer.MAX_VALUE;
-                                                            } else if (delta > min_delta) {
+                                                            if (amount != minAmount) {
+                                                                minDelta = Long.MAX_VALUE;
+                                                            } else if (delta < minDelta) {
+                                                                minDelta = delta;
+                                                                minDigits = Integer.MAX_VALUE;
+                                                            } else if (delta > minDelta) {
                                                                 current = radi_min;
                                                                 amount = 0;
                                                                 continue;
@@ -217,22 +217,22 @@ public enum RingsAndCones {
                                                                 for(int i = 1; i < amount; i++) {
                                                                     digits += getDigits(tsolution[i]);
                                                                 }
-                                                                if (digits < min_digits) {
-                                                                    min_digits = digits;
+                                                                if (digits < minDigits) {
+                                                                    minDigits = digits;
                                                                 } else {
                                                                     current = radi_min;
                                                                     amount = 0;
                                                                     continue;
                                                                 }
                                                             }
-                                                            min_amount = amount;
-                                                            if (min_digits == Integer.MAX_VALUE) {
-                                                                m.subTask("Best Solution - " + min_amount + " Primitives, with " + NUMBER_FORMAT4F.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                                            minAmount = amount;
+                                                            if (minDigits == Integer.MAX_VALUE) {
+                                                                m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                                             } else {
-                                                                m.subTask("Best Solution - " + min_amount + " Primitives, with " + NUMBER_FORMAT4F.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation and " + min_digits + " digits."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                                                                m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation and " + minDigits + " digits."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                                                             }
                                                             tlock.lock();
-                                                            if (min_amount < min_amountA.get()  || min_amount == min_amountA.get() && min_delta <= min_deltaA.get()) {
+                                                            if (minAmount < minAmountA.get()  || minAmount == minAmountA.get() && minDelta <= minDeltaA.get()) {
                                                                 for(int i = 1; i < amount; i++) {
                                                                     solution[i] = tsolution[i];
                                                                     solutionR[i] = tsolutionR[i];
@@ -243,20 +243,20 @@ public enum RingsAndCones {
                                                                 solutionR2[amount] = tsolutionR2[amount];
                                                                 solutionR2[amount + 1] = sum;
                                                                 solutionAmount[0] = amount;
-                                                                min_amountA.set(min_amount);
-                                                                min_deltaA.set(min_delta);
-                                                                min_digitsA.set(min_digits);
+                                                                minAmountA.set(minAmount);
+                                                                minDeltaA.set(minDelta);
+                                                                minDigitsA.set(minDigits);
                                                             }
                                                             tlock.unlock();
                                                             start = System.currentTimeMillis();
                                                         }
                                                     }
                                                     if (num == 0 && System.currentTimeMillis() - start > Math.max(40000 / chunks, 6000)) {
-                                                        min_amount--;
-                                                        min_amountA.set(min_amount);
+                                                        minAmount--;
+                                                        minAmountA.set(minAmount);
                                                         start = System.currentTimeMillis();
                                                     }
-                                                    if (min_amount < 1) break;
+                                                    if (minAmount < 1) break;
                                                     current = radi_min;
                                                     amount = 0;
                                                 } else {
@@ -603,8 +603,8 @@ public enum RingsAndCones {
                             lower.setLength(0);
 
                             boolean readUpper = true;
-                            char[] chars_this = name.toCharArray();
-                            for (char c : chars_this) {
+                            char[] charsThis = name.toCharArray();
+                            for (char c : charsThis) {
                                 if (Character.isDigit(c)) {
                                     if (readUpper) {
                                         upper.append(c);
@@ -622,14 +622,14 @@ public enum RingsAndCones {
                             if (upper.length() > 0 && lower.length() > 0) {
                                 number.setLength(0);
                                 boolean readDigit = false;
-                                for (int i = chars_this.length - 1; i > 0 ; i--) {
-                                    char c = chars_this[i];
+                                for (int i = charsThis.length - 1; i > 0 ; i--) {
+                                    char c = charsThis[i];
                                     if (Character.isDigit(c)) {
                                         number = number.insert(0, c);
                                         readDigit = true;
                                     } else if (readDigit) {
                                         break;
-                                    } else if (i < chars_this.length - 5) {
+                                    } else if (i < charsThis.length - 5) {
                                         break;
                                     }
                                 }

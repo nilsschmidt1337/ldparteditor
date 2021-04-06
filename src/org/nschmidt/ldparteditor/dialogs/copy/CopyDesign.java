@@ -61,49 +61,49 @@ class CopyDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        NButton btn_1 = new NButton(cmp_container, SWT.NONE);
-        this.btn_1[0] = btn_1;
-        btn_1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        NButton btn1 = new NButton(cmpContainer, SWT.NONE);
+        this.btn_1[0] = btn1;
+        btn1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DIALOG_COPY_FILE_ONLY);
-            btn_1.setText(formatter.format(messageArguments));
+            btn1.setText(formatter.format(messageArguments));
         }
 
-        NButton btn_2 = new NButton(cmp_container, SWT.NONE);
-        this.btn_2[0] = btn_2;
-        btn_2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        NButton btn2 = new NButton(cmpContainer, SWT.NONE);
+        this.btn_2[0] = btn2;
+        btn2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DIALOG_COPY_FILE_AND_REQUIRED);
-            btn_2.setText(formatter.format(messageArguments));
+            btn2.setText(formatter.format(messageArguments));
         }
 
-        NButton btn_3 = new NButton(cmp_container, SWT.NONE);
-        this.btn_3[0] = btn_3;
-        btn_3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        NButton btn3 = new NButton(cmpContainer, SWT.NONE);
+        this.btn_3[0] = btn3;
+        btn3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
             formatter.setLocale(MyLanguage.LOCALE);
             formatter.applyPattern(I18n.DIALOG_COPY_FILE_AND_REQUIRED_AND_RELATED);
-            btn_3.setText(formatter.format(messageArguments));
+            btn3.setText(formatter.format(messageArguments));
         }
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

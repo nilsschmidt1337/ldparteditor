@@ -101,20 +101,20 @@ class Bounds {
     }
 
     public void union(Bounds other) {
-        VectorCSGd o_max = other.max;
-        VectorCSGd o_min = other.min;
-        if (o_min.x > max.x) max.x = o_min.x;
-        if (o_min.y > max.y) max.y = o_min.y;
-        if (o_min.z > max.z) max.z = o_min.z;
-        if (o_min.x < min.x) min.x = o_min.x;
-        if (o_min.y < min.y) min.y = o_min.y;
-        if (o_min.z < min.z) min.z = o_min.z;
-        if (o_max.x > max.x) max.x = o_max.x;
-        if (o_max.y > max.y) max.y = o_max.y;
-        if (o_max.z > max.z) max.z = o_max.z;
-        if (o_max.x < min.x) min.x = o_max.x;
-        if (o_max.y < min.y) min.y = o_max.y;
-        if (o_max.z < min.z) min.z = o_max.z;
+        VectorCSGd oMax = other.max;
+        VectorCSGd oMin = other.min;
+        if (oMin.x > max.x) max.x = oMin.x;
+        if (oMin.y > max.y) max.y = oMin.y;
+        if (oMin.z > max.z) max.z = oMin.z;
+        if (oMin.x < min.x) min.x = oMin.x;
+        if (oMin.y < min.y) min.y = oMin.y;
+        if (oMin.z < min.z) min.z = oMin.z;
+        if (oMax.x > max.x) max.x = oMax.x;
+        if (oMax.y > max.y) max.y = oMax.y;
+        if (oMax.z > max.z) max.z = oMax.z;
+        if (oMax.x < min.x) min.x = oMax.x;
+        if (oMax.y < min.y) min.y = oMax.y;
+        if (oMax.z < min.z) min.z = oMax.z;
     }
 
     @Override

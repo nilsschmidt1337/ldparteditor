@@ -75,41 +75,41 @@ class SortDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.SORT_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.SORT_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION});
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_scope[0] = cmbScope;
+        cmbScope.setItems(new String[] {I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION});
+        cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         if (fromLine == toLine) {
-            cmb_scope.select(0);
+            cmbScope.select(0);
             scope = 0;
         } else {
-            cmb_scope.select(1);
+            cmbScope.select(1);
             scope = 1;
         }
 
-        Combo cmb_sortCriteria = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_sortCriteria[0] = cmb_sortCriteria;
-        cmb_sortCriteria.setItems(new String[] {I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC});
-        cmb_sortCriteria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_sortCriteria.select(2);
+        Combo cmbSortCriteria = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_sortCriteria[0] = cmbSortCriteria;
+        cmbSortCriteria.setItems(new String[] {I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC});
+        cmbSortCriteria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbSortCriteria.select(2);
         criteria = 2;
 
-        NButton btn_ignoreStructure = new NButton(cmp_container, SWT.CHECK);
-        this.btn_ignoreStructure[0] = btn_ignoreStructure;
-        btn_ignoreStructure.setText(I18n.SORT_IGNORE_STRUCTURE);
-        cmp_container.pack();
-        return cmp_container;
+        NButton btnIgnoreStructure = new NButton(cmpContainer, SWT.CHECK);
+        this.btn_ignoreStructure[0] = btnIgnoreStructure;
+        btnIgnoreStructure.setText(I18n.SORT_IGNORE_STRUCTURE);
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

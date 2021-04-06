@@ -68,74 +68,74 @@ class RectifierDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.RECTIFIER_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.RECTIFIER_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_angle = new Label(cmp_container, SWT.NONE);
-        lbl_angle.setText(I18n.RECTIFIER_MAX_ANGLE);
+        Label lblAngle = new Label(cmpContainer, SWT.NONE);
+        lblAngle.setText(I18n.RECTIFIER_MAX_ANGLE);
 
-        BigDecimalSpinner spn_angle = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_angle [0] = spn_angle;
-        spn_angle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_angle.setMaximum(new BigDecimal(90));
-        spn_angle.setMinimum(new BigDecimal(0));
-        spn_angle.setValue(rs.getMaximumAngle());
+        BigDecimalSpinner spnAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_angle [0] = spnAngle;
+        spnAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnAngle.setMaximum(new BigDecimal(90));
+        spnAngle.setMinimum(new BigDecimal(0));
+        spnAngle.setValue(rs.getMaximumAngle());
 
         {
-            Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {I18n.RECTIFIER_COLOUR_1, I18n.RECTIFIER_COLOUR_2});
-            cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(rs.isColourise() ? 1 : 0));
-            cmb_colourise.select(rs.isColourise() ? 1 : 0);
+            Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_colourise[0] = cmbColourise;
+            cmbColourise.setItems(new String[] {I18n.RECTIFIER_COLOUR_1, I18n.RECTIFIER_COLOUR_2});
+            cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbColourise.setText(cmbColourise.getItem(rs.isColourise() ? 1 : 0));
+            cmbColourise.select(rs.isColourise() ? 1 : 0);
         }
         {
-            Combo cmb_noQuadConversation = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_noQuadConversation[0] = cmb_noQuadConversation;
-            cmb_noQuadConversation.setItems(new String[] {I18n.RECTIFIER_TRI_QUADS_1, I18n.RECTIFIER_TRI_QUADS_2});
-            cmb_noQuadConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_noQuadConversation.setText(cmb_noQuadConversation.getItem(rs.isNoQuadConversation() ? 1 : 0));
-            cmb_noQuadConversation.select(rs.isNoQuadConversation() ? 1 : 0);
+            Combo cmbNoQuadConversation = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_noQuadConversation[0] = cmbNoQuadConversation;
+            cmbNoQuadConversation.setItems(new String[] {I18n.RECTIFIER_TRI_QUADS_1, I18n.RECTIFIER_TRI_QUADS_2});
+            cmbNoQuadConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbNoQuadConversation.setText(cmbNoQuadConversation.getItem(rs.isNoQuadConversation() ? 1 : 0));
+            cmbNoQuadConversation.select(rs.isNoQuadConversation() ? 1 : 0);
         }
         {
-            Combo cmb_noBorderedQuadToRectConversation = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_noBorderedQuadToRectConversation[0] = cmb_noBorderedQuadToRectConversation;
-            cmb_noBorderedQuadToRectConversation.setItems(new String[] {I18n.RECTIFIER_RECT_1, I18n.RECTIFIER_RECT_2});
-            cmb_noBorderedQuadToRectConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_noBorderedQuadToRectConversation.setText(cmb_noBorderedQuadToRectConversation.getItem(rs.isNoBorderedQuadToRectConversation() ? 1 : 0));
-            cmb_noBorderedQuadToRectConversation.select(rs.isNoBorderedQuadToRectConversation() ? 1 : 0);
+            Combo cmbNoBorderedQuadToRectConversation = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_noBorderedQuadToRectConversation[0] = cmbNoBorderedQuadToRectConversation;
+            cmbNoBorderedQuadToRectConversation.setItems(new String[] {I18n.RECTIFIER_RECT_1, I18n.RECTIFIER_RECT_2});
+            cmbNoBorderedQuadToRectConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbNoBorderedQuadToRectConversation.setText(cmbNoBorderedQuadToRectConversation.getItem(rs.isNoBorderedQuadToRectConversation() ? 1 : 0));
+            cmbNoBorderedQuadToRectConversation.select(rs.isNoBorderedQuadToRectConversation() ? 1 : 0);
         }
         {
-            Combo cmb_noRectConversationOnAdjacentCondlines = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_noRectConversationOnAdjacentCondlines[0] = cmb_noRectConversationOnAdjacentCondlines;
-            cmb_noRectConversationOnAdjacentCondlines.setItems(new String[] {I18n.RECTIFIER_RECT_3, I18n.RECTIFIER_RECT_4});
-            cmb_noRectConversationOnAdjacentCondlines.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_noRectConversationOnAdjacentCondlines.setText(cmb_noRectConversationOnAdjacentCondlines.getItem(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0));
-            cmb_noRectConversationOnAdjacentCondlines.select(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0);
+            Combo cmbNoRectConversationOnAdjacentCondlines = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_noRectConversationOnAdjacentCondlines[0] = cmbNoRectConversationOnAdjacentCondlines;
+            cmbNoRectConversationOnAdjacentCondlines.setItems(new String[] {I18n.RECTIFIER_RECT_3, I18n.RECTIFIER_RECT_4});
+            cmbNoRectConversationOnAdjacentCondlines.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbNoRectConversationOnAdjacentCondlines.setText(cmbNoRectConversationOnAdjacentCondlines.getItem(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0));
+            cmbNoRectConversationOnAdjacentCondlines.select(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0);
         }
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.RECTIFIER_SCOPE_FILE, I18n.RECTIFIER_SCOPE_SELECTION});
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(rs.getScope()));
-        cmb_scope.select(rs.getScope());
+        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_scope[0] = cmbScope;
+        cmbScope.setItems(new String[] {I18n.RECTIFIER_SCOPE_FILE, I18n.RECTIFIER_SCOPE_SELECTION});
+        cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbScope.setText(cmbScope.getItem(rs.getScope()));
+        cmbScope.select(rs.getScope());
 
-        NButton btn_verbose = new NButton(cmp_container, SWT.CHECK);
-        this.btn_verbose[0] = btn_verbose;
-        btn_verbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btn_verbose.setText(I18n.RECTIFIER_VERBOSE);
-        btn_verbose.setSelection(rs.isVerbose());
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btn_verbose[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.RECTIFIER_VERBOSE);
+        btnVerbose.setSelection(rs.isVerbose());
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

@@ -70,105 +70,105 @@ class EdgerDesign extends TrayDialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.EDGER_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.EDGER_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_coordsPrec = new Label(cmp_container, SWT.NONE);
-        lbl_coordsPrec.setText(I18n.EDGER_PRECISION);
+        Label lblCoordsPrec = new Label(cmpContainer, SWT.NONE);
+        lblCoordsPrec.setText(I18n.EDGER_PRECISION);
 
-        BigDecimalSpinner spn_vequ = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_vequ[0] = spn_vequ;
-        spn_vequ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_vequ.setMaximum(BigDecimal.ONE);
-        spn_vequ.setMinimum(new BigDecimal(0));
-        spn_vequ.setValue(es.getEqualDistance());
+        BigDecimalSpinner spnVequ = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_vequ[0] = spnVequ;
+        spnVequ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnVequ.setMaximum(BigDecimal.ONE);
+        spnVequ.setMinimum(new BigDecimal(0));
+        spnVequ.setValue(es.getEqualDistance());
 
-        Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        lbl_use180deg.setText(I18n.EDGER_RANGE);
+        Label lblUse180deg = new Label(cmpContainer, SWT.NONE);
+        lblUse180deg.setText(I18n.EDGER_RANGE);
 
-        Combo cmb_b = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_b[0] = cmb_b;
-        cmb_b.setItems(new String[] { I18n.EDGER_0_TO_90, I18n.EDGER_0_TO_180 });
-        cmb_b.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_b.setText(es.isExtendedRange() ? cmb_b.getItem(1) : cmb_b.getItem(0));
-        cmb_b.select(es.isExtendedRange() ? 1 : 0);
+        Combo cmbB = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_b[0] = cmbB;
+        cmbB.setItems(new String[] { I18n.EDGER_0_TO_90, I18n.EDGER_0_TO_180 });
+        cmbB.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbB.setText(es.isExtendedRange() ? cmbB.getItem(1) : cmbB.getItem(0));
+        cmbB.select(es.isExtendedRange() ? 1 : 0);
 
-        Combo cmb_c = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_c[0] = cmb_c;
-        cmb_c.setItems(new String[] { I18n.EDGER_CONDLINE_ON_QUAD_OFF, I18n.EDGER_CONDLINE_ON_QUAD_ON });
-        cmb_c.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_c.setText(es.isCondlineOnQuads() ? cmb_c.getItem(1) : cmb_c.getItem(0));
-        cmb_c.select(es.isCondlineOnQuads() ? 1 : 0);
+        Combo cmbC = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_c[0] = cmbC;
+        cmbC.setItems(new String[] { I18n.EDGER_CONDLINE_ON_QUAD_OFF, I18n.EDGER_CONDLINE_ON_QUAD_ON });
+        cmbC.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbC.setText(es.isCondlineOnQuads() ? cmbC.getItem(1) : cmbC.getItem(0));
+        cmbC.select(es.isCondlineOnQuads() ? 1 : 0);
 
-        Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText(I18n.EDGER_FLAT_MAX_ANGLE);
+        Label lblAf = new Label(cmpContainer, SWT.NONE);
+        lblAf.setText(I18n.EDGER_FLAT_MAX_ANGLE);
 
-        BigDecimalSpinner spn_af = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_af[0] = spn_af;
-        spn_af.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_af.setMaximum(new BigDecimal(180));
-        spn_af.setMinimum(new BigDecimal(0));
-        spn_af.setValue(es.getAf());
+        BigDecimalSpinner spnAf = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_af[0] = spnAf;
+        spnAf.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnAf.setMaximum(new BigDecimal(180));
+        spnAf.setMinimum(new BigDecimal(0));
+        spnAf.setValue(es.getAf());
 
-        Label lbl_ac = new Label(cmp_container, SWT.NONE);
-        lbl_ac.setText(I18n.EDGER_CONDLINE_MAX_ANGLE);
+        Label lblAc = new Label(cmpContainer, SWT.NONE);
+        lblAc.setText(I18n.EDGER_CONDLINE_MAX_ANGLE);
 
-        BigDecimalSpinner spn_ac = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_ac[0] = spn_ac;
-        spn_ac.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_ac.setMaximum(new BigDecimal(180));
-        spn_ac.setMinimum(new BigDecimal(0));
-        spn_ac.setValue(es.getAc());
+        BigDecimalSpinner spnAc = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_ac[0] = spnAc;
+        spnAc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnAc.setMaximum(new BigDecimal(180));
+        spnAc.setMinimum(new BigDecimal(0));
+        spnAc.setValue(es.getAc());
 
-        Label lbl_ae = new Label(cmp_container, SWT.NONE);
-        lbl_ae.setText(I18n.EDGER_EDGE_MAX_ANGLE);
+        Label lblAe = new Label(cmpContainer, SWT.NONE);
+        lblAe.setText(I18n.EDGER_EDGE_MAX_ANGLE);
 
-        BigDecimalSpinner spn_ae = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_ae[0] = spn_ae;
-        spn_ae.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_ae.setMaximum(new BigDecimal(180));
-        spn_ae.setMinimum(new BigDecimal(0));
-        spn_ae.setValue(es.getAe());
+        BigDecimalSpinner spnAe = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_ae[0] = spnAe;
+        spnAe.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnAe.setMaximum(new BigDecimal(180));
+        spnAe.setMinimum(new BigDecimal(0));
+        spnAe.setValue(es.getAe());
 
-        Combo cmb_u = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_u[0] = cmb_u;
-        cmb_u.setItems(new String[] { I18n.EDGER_INCLUDE_UNMATCHED, I18n.EDGER_EXCLUDE_UNMATCHED, I18n.EDGER_UNMATCHED_ONLY});
-        cmb_u.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_u.setText(cmb_u.getItem(es.getUnmatchedMode()));
-        cmb_u.select(es.getUnmatchedMode());
+        Combo cmbU = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_u[0] = cmbU;
+        cmbU.setItems(new String[] { I18n.EDGER_INCLUDE_UNMATCHED, I18n.EDGER_EXCLUDE_UNMATCHED, I18n.EDGER_UNMATCHED_ONLY});
+        cmbU.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbU.setText(cmbU.getItem(es.getUnmatchedMode()));
+        cmbU.select(es.getUnmatchedMode());
 
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.EDGER_SCOPE_FILE_SUBFILES, I18n.EDGER_SCOPE_FILE, I18n.EDGER_SCOPE_SELECTION});
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(es.getScope()));
-        cmb_scope.select(es.getScope());
+        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_scope[0] = cmbScope;
+        cmbScope.setItems(new String[] {I18n.EDGER_SCOPE_FILE_SUBFILES, I18n.EDGER_SCOPE_FILE, I18n.EDGER_SCOPE_SELECTION});
+        cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbScope.setText(cmbScope.getItem(es.getScope()));
+        cmbScope.select(es.getScope());
 
-        NButton btn_verbose = new NButton(cmp_container, SWT.CHECK);
-        this.btn_verbose[0] = btn_verbose;
-        btn_verbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        btn_verbose.setText(I18n.EDGER_VERBOSE);
-        btn_verbose.setSelection(es.isVerbose());
+        NButton btnVerbose = new NButton(cmpContainer, SWT.CHECK);
+        this.btn_verbose[0] = btnVerbose;
+        btnVerbose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        btnVerbose.setText(I18n.EDGER_VERBOSE);
+        btnVerbose.setSelection(es.isVerbose());
 
-        Label lbl_1 = new Label(cmp_container, SWT.NONE);
-        lbl_1.setText(I18n.EDGER_CONDITION_1);
-        Label lbl_2 = new Label(cmp_container, SWT.NONE);
-        lbl_2.setText(I18n.EDGER_CONDITION_2);
-        Label lbl_3 = new Label(cmp_container, SWT.NONE);
-        lbl_3.setText(I18n.EDGER_CONDITION_3);
-        Label lbl_4 = new Label(cmp_container, SWT.NONE);
-        lbl_4.setText(I18n.EDGER_CONDITION_4);
+        Label lbl1 = new Label(cmpContainer, SWT.NONE);
+        lbl1.setText(I18n.EDGER_CONDITION_1);
+        Label lbl2 = new Label(cmpContainer, SWT.NONE);
+        lbl2.setText(I18n.EDGER_CONDITION_2);
+        Label lbl3 = new Label(cmpContainer, SWT.NONE);
+        lbl3.setText(I18n.EDGER_CONDITION_3);
+        Label lbl4 = new Label(cmpContainer, SWT.NONE);
+        lbl4.setText(I18n.EDGER_CONDITION_4);
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

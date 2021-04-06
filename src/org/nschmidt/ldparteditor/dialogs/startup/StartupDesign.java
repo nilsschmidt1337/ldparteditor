@@ -80,25 +80,25 @@ class StartupDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_welcome = new Label(cmp_container, SWT.NONE);
-        lbl_welcome.setText("Welcome to LD Part Editor!"); //$NON-NLS-1$ NO_I18N!!
+        Label lblWelcome = new Label(cmpContainer, SWT.NONE);
+        lblWelcome.setText("Welcome to LD Part Editor!"); //$NON-NLS-1$ NO_I18N!!
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_firstPrompt = new Label(cmp_container, SWT.NONE);
-        lbl_firstPrompt.setText("Please answer the following questions on the first start of this program:"); //$NON-NLS-1$ NO_I18N!!
+        Label lblFirstPrompt = new Label(cmpContainer, SWT.NONE);
+        lblFirstPrompt.setText("Please answer the following questions on the first start of this program:"); //$NON-NLS-1$ NO_I18N!!
 
-        Label lbl_locale = new Label(cmp_container, SWT.NONE);
-        lbl_locale.setText("Choose your locale:"); //$NON-NLS-1$ NO_I18N!!
+        Label lblLocale = new Label(cmpContainer, SWT.NONE);
+        lblLocale.setText("Choose your locale:"); //$NON-NLS-1$ NO_I18N!!
 
-        Combo cmb_locale = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_locale[0] = cmb_locale;
+        Combo cmbLocale = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_locale[0] = cmbLocale;
 
         String[] locales = new String[DateFormat.getAvailableLocales().length];
         Locale[] locs = DateFormat.getAvailableLocales();
@@ -115,100 +115,100 @@ class StartupDesign extends Dialog {
             }
         }
 
-        cmb_locale.setItems(locales);
-        cmb_locale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_locale.select(englishIndex);
+        cmbLocale.setItems(locales);
+        cmbLocale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbLocale.select(englishIndex);
 
-        Label lbl_ldrawFolderQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_ldrawFolderQuestion.setText("Where is your LDraw folder located?"); //$NON-NLS-1$ NO_I18N!!
+        Label lblLdrawFolderQuestion = new Label(cmpContainer, SWT.NONE);
+        lblLdrawFolderQuestion.setText("Where is your LDraw folder located?"); //$NON-NLS-1$ NO_I18N!!
 
-        Composite cmp_pathChooser1 = new Composite(cmp_container, SWT.NONE);
-        cmp_pathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
+        Composite cmpPathChooser1 = new Composite(cmpContainer, SWT.NONE);
+        cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txt_ldrawPath = new Text(cmp_pathChooser1, SWT.BORDER);
-        this.txt_ldrawPath[0] = txt_ldrawPath;
-        txt_ldrawPath.setEditable(false);
-        txt_ldrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+        Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
+        this.txt_ldrawPath[0] = txtLdrawPath;
+        txtLdrawPath.setEditable(false);
+        txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
 
         String ldrawDir = System.getenv("LDRAWDIR"); //$NON-NLS-1$
         if (ldrawDir != null) {
-            txt_ldrawPath.setText(ldrawDir);
+            txtLdrawPath.setText(ldrawDir);
         }
 
-        NButton btn_BrowseLdrawPath = new NButton(cmp_pathChooser1, SWT.NONE);
-        this.btn_browseLdrawPath[0] = btn_BrowseLdrawPath;
-        btn_BrowseLdrawPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
+        NButton btnBrowseLdrawPath = new NButton(cmpPathChooser1, SWT.NONE);
+        this.btn_browseLdrawPath[0] = btnBrowseLdrawPath;
+        btnBrowseLdrawPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
-        Label lbl_ldrawUserQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_ldrawUserQuestion.setText("What is your LDraw user name?"); //$NON-NLS-1$ NO_I18N!!
+        Label lblLdrawUserQuestion = new Label(cmpContainer, SWT.NONE);
+        lblLdrawUserQuestion.setText("What is your LDraw user name?"); //$NON-NLS-1$ NO_I18N!!
 
-        Text txt_ldrawUserName = new Text(cmp_container, SWT.BORDER);
-        this.txt_ldrawUserName[0] = txt_ldrawUserName;
-        txt_ldrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Text txtLdrawUserName = new Text(cmpContainer, SWT.BORDER);
+        this.txt_ldrawUserName[0] = txtLdrawUserName;
+        txtLdrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_realNameQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_realNameQuestion.setText("What is your real name?"); //$NON-NLS-1$ NO_I18N!!
+        Label lblRealNameQuestion = new Label(cmpContainer, SWT.NONE);
+        lblRealNameQuestion.setText("What is your real name?"); //$NON-NLS-1$ NO_I18N!!
 
-        Text txt_realName = new Text(cmp_container, SWT.BORDER);
-        this.txt_realName[0] = txt_realName;
-        txt_realName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Text txtRealName = new Text(cmpContainer, SWT.BORDER);
+        this.txt_realName[0] = txtRealName;
+        txtRealName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_licenseQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_licenseQuestion.setText("Under which license do you want to publish your work?"); //$NON-NLS-1$ NO_I18N!!
+        Label lblLicenseQuestion = new Label(cmpContainer, SWT.NONE);
+        lblLicenseQuestion.setText("Under which license do you want to publish your work?"); //$NON-NLS-1$ NO_I18N!!
 
-        Combo cmb_license = new Combo(cmp_container, SWT.NONE);
-        this.cmb_license[0] = cmb_license;
-        cmb_license.setItems(new String[] { "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
-        cmb_license.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_license.setText("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
-        cmb_license.select(0);
+        Combo cmbLicense = new Combo(cmpContainer, SWT.NONE);
+        this.cmb_license[0] = cmbLicense;
+        cmbLicense.setItems(new String[] { "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
+        cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbLicense.setText("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
+        cmbLicense.select(0);
 
-        Label lbl_authoringFolderQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_authoringFolderQuestion.setText("Define the Part Authoring Folder Path:"); //$NON-NLS-1$ NO_I18N!!
+        Label lblAuthoringFolderQuestion = new Label(cmpContainer, SWT.NONE);
+        lblAuthoringFolderQuestion.setText("Define the Part Authoring Folder Path:"); //$NON-NLS-1$ NO_I18N!!
 
-        Composite cmp_pathChooser2 = new Composite(cmp_container, SWT.NONE);
-        cmp_pathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
+        Composite cmpPathChooser2 = new Composite(cmpContainer, SWT.NONE);
+        cmpPathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txt_partAuthoringPath = new Text(cmp_pathChooser2, SWT.BORDER);
-        this.txt_partAuthoringPath[0] = txt_partAuthoringPath;
-        txt_partAuthoringPath.setEditable(false);
-        txt_partAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+        Text txtPartAuthoringPath = new Text(cmpPathChooser2, SWT.BORDER);
+        this.txt_partAuthoringPath[0] = txtPartAuthoringPath;
+        txtPartAuthoringPath.setEditable(false);
+        txtPartAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
 
-        NButton btn_browseAuthoringPath = new NButton(cmp_pathChooser2, SWT.NONE);
-        this.btn_browseAuthoringPath[0] = btn_browseAuthoringPath;
-        btn_browseAuthoringPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
+        NButton btnBrowseAuthoringPath = new NButton(cmpPathChooser2, SWT.NONE);
+        this.btn_browseAuthoringPath[0] = btnBrowseAuthoringPath;
+        btnBrowseAuthoringPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
-        Label lbl_unofficialPathQuestion = new Label(cmp_container, SWT.NONE);
-        lbl_unofficialPathQuestion.setText("Define the Folder Path for Unofficial Parts:"); //$NON-NLS-1$ NO_I18N!!
+        Label lblUnofficialPathQuestion = new Label(cmpContainer, SWT.NONE);
+        lblUnofficialPathQuestion.setText("Define the Folder Path for Unofficial Parts:"); //$NON-NLS-1$ NO_I18N!!
 
-        Composite cmp_pathChooser3 = new Composite(cmp_container, SWT.NONE);
-        cmp_pathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
+        Composite cmpPathChooser3 = new Composite(cmpContainer, SWT.NONE);
+        cmpPathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txt_unofficialPath = new Text(cmp_pathChooser3, SWT.BORDER);
-        this.txt_unofficialPath[0] = txt_unofficialPath;
-        txt_unofficialPath.setEditable(false);
-        txt_unofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+        Text txtUnofficialPath = new Text(cmpPathChooser3, SWT.BORDER);
+        this.txt_unofficialPath[0] = txtUnofficialPath;
+        txtUnofficialPath.setEditable(false);
+        txtUnofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
 
         if (ldrawDir != null) {
-            txt_unofficialPath.setText(ldrawDir + File.separator + "Unofficial"); //$NON-NLS-1$
+            txtUnofficialPath.setText(ldrawDir + File.separator + "Unofficial"); //$NON-NLS-1$
         }
 
-        NButton btn_browseUnofficialPath = new NButton(cmp_pathChooser3, SWT.NONE);
-        this.btn_browseUnofficialPath[0] = btn_browseUnofficialPath;
-        btn_browseUnofficialPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
+        NButton btnBrowseUnofficialPath = new NButton(cmpPathChooser3, SWT.NONE);
+        this.btn_browseUnofficialPath[0] = btnBrowseUnofficialPath;
+        btnBrowseUnofficialPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
-        Composite cmp_formStatus = new Composite(cmp_container, SWT.NONE);
-        cmp_formStatus.setLayout(new RowLayout(SWT.HORIZONTAL));
+        Composite cmpFormStatus = new Composite(cmpContainer, SWT.NONE);
+        cmpFormStatus.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Label lbl_formStatusIcon = new Label(cmp_formStatus, SWT.NONE);
-        this.lbl_formStatusIcon[0] = lbl_formStatusIcon;
-        lbl_formStatusIcon.setImage(ResourceManager.getImage("icon16_info.png", 16)); //$NON-NLS-1$
+        Label lblFormStatusIcon = new Label(cmpFormStatus, SWT.NONE);
+        this.lbl_formStatusIcon[0] = lblFormStatusIcon;
+        lblFormStatusIcon.setImage(ResourceManager.getImage("icon16_info.png", 16)); //$NON-NLS-1$
 
-        Label lbl_formStatus = new Label(cmp_formStatus, SWT.NONE);
-        this.lbl_formStatus[0] = lbl_formStatus;
-        lbl_formStatus.setText("Please complete the form."); //$NON-NLS-1$ NO_I18N!!
+        Label lblFormStatus = new Label(cmpFormStatus, SWT.NONE);
+        this.lbl_formStatus[0] = lblFormStatus;
+        lblFormStatus.setText("Please complete the form."); //$NON-NLS-1$ NO_I18N!!
 
-        return cmp_container;
+        return cmpContainer;
     }
 
     /**

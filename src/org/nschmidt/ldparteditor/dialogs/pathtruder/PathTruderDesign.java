@@ -69,102 +69,102 @@ class PathTruderDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.PATHTRUDER_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.PATHTRUDER_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_colourCodes = new Label(cmp_container, SWT.NONE);
-        lbl_colourCodes.setText(I18n.PATHTRUDER_COLOUR_CODES);
+        Label lblColourCodes = new Label(cmpContainer, SWT.NONE);
+        lblColourCodes.setText(I18n.PATHTRUDER_COLOUR_CODES);
 
-        Label lbl_use180deg = new Label(cmp_container, SWT.NONE);
-        lbl_use180deg.setText(I18n.PATHTRUDER_MAX_PATH_LENGTH);
+        Label lblUse180deg = new Label(cmpContainer, SWT.NONE);
+        lblUse180deg.setText(I18n.PATHTRUDER_MAX_PATH_LENGTH);
 
-        BigDecimalSpinner spn_maxPathSegmentLength = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_maxPathSegmentLength[0] = spn_maxPathSegmentLength;
-        spn_maxPathSegmentLength.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_maxPathSegmentLength.setMaximum(new BigDecimal(100000));
-        spn_maxPathSegmentLength.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-        spn_maxPathSegmentLength.setValue(ps.getMaxPathSegmentLength());
+        BigDecimalSpinner spnMaxPathSegmentLength = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_maxPathSegmentLength[0] = spnMaxPathSegmentLength;
+        spnMaxPathSegmentLength.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnMaxPathSegmentLength.setMaximum(new BigDecimal(100000));
+        spnMaxPathSegmentLength.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
+        spnMaxPathSegmentLength.setValue(ps.getMaxPathSegmentLength());
 
-        Label lbl_transitions = new Label(cmp_container, SWT.NONE);
-        lbl_transitions.setText(I18n.PATHTRUDER_NUM_TRANSITIONS);
+        Label lblTransitions = new Label(cmpContainer, SWT.NONE);
+        lblTransitions.setText(I18n.PATHTRUDER_NUM_TRANSITIONS);
 
-        IntegerSpinner spn_transitions = new IntegerSpinner(cmp_container, SWT.NONE);
-        this.spn_transitions[0] = spn_transitions;
-        spn_transitions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_transitions.setMaximum(1000000);
-        spn_transitions.setMinimum(1);
-        spn_transitions.setValue(ps.getTransitionCount());
+        IntegerSpinner spnTransitions = new IntegerSpinner(cmpContainer, SWT.NONE);
+        this.spn_transitions[0] = spnTransitions;
+        spnTransitions.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnTransitions.setMaximum(1000000);
+        spnTransitions.setMinimum(1);
+        spnTransitions.setValue(ps.getTransitionCount());
 
-        Label lbl_transCurve = new Label(cmp_container, SWT.NONE);
-        lbl_transCurve.setText(I18n.PATHTRUDER_CONTROL_CURVE);
+        Label lblTransCurve = new Label(cmpContainer, SWT.NONE);
+        lblTransCurve.setText(I18n.PATHTRUDER_CONTROL_CURVE);
 
-        BigDecimalSpinner spn_transCurve = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_transCurve[0] = spn_transCurve;
-        spn_transCurve.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_transCurve.setMaximum(new BigDecimal(100));
-        spn_transCurve.setMinimum(BigDecimal.ONE);
-        spn_transCurve.setValue(ps.getTransitionCurveControl());
+        BigDecimalSpinner spnTransCurve = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_transCurve[0] = spnTransCurve;
+        spnTransCurve.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnTransCurve.setMaximum(new BigDecimal(100));
+        spnTransCurve.setMinimum(BigDecimal.ONE);
+        spnTransCurve.setValue(ps.getTransitionCurveControl());
 
-        Label lbl_centerCurve = new Label(cmp_container, SWT.NONE);
-        lbl_centerCurve.setText(I18n.PATHTRUDER_CONTROL_CURVE_CENTER);
+        Label lblCenterCurve = new Label(cmpContainer, SWT.NONE);
+        lblCenterCurve.setText(I18n.PATHTRUDER_CONTROL_CURVE_CENTER);
 
-        BigDecimalSpinner spn_centerCurve = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_centerCurve[0] = spn_centerCurve;
-        spn_centerCurve.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_centerCurve.setMaximum(BigDecimal.ONE);
-        spn_centerCurve.setMinimum(new BigDecimal(0));
-        spn_centerCurve.setValue(ps.getTransitionCurveCenter());
+        BigDecimalSpinner spnCenterCurve = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_centerCurve[0] = spnCenterCurve;
+        spnCenterCurve.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnCenterCurve.setMaximum(BigDecimal.ONE);
+        spnCenterCurve.setMinimum(new BigDecimal(0));
+        spnCenterCurve.setValue(ps.getTransitionCurveCenter());
 
-        Label lbl_lineThreshold = new Label(cmp_container, SWT.NONE);
-        lbl_lineThreshold.setText(I18n.PATHTRUDER_LINE_THRESH);
+        Label lblLineThreshold = new Label(cmpContainer, SWT.NONE);
+        lblLineThreshold.setText(I18n.PATHTRUDER_LINE_THRESH);
 
-        BigDecimalSpinner spn_lineThreshold = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_lineThreshold[0] = spn_lineThreshold;
-        spn_lineThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_lineThreshold.setMaximum(new BigDecimal(180));
-        spn_lineThreshold.setMinimum(new BigDecimal(-1));
-        spn_lineThreshold.setValue(ps.getPathAngleForLine());
+        BigDecimalSpinner spnLineThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_lineThreshold[0] = spnLineThreshold;
+        spnLineThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnLineThreshold.setMaximum(new BigDecimal(180));
+        spnLineThreshold.setMinimum(new BigDecimal(-1));
+        spnLineThreshold.setValue(ps.getPathAngleForLine());
 
-        Label lbl_rotationAngle = new Label(cmp_container, SWT.NONE);
-        lbl_rotationAngle.setText(I18n.PATHTRUDER_ROT_ANGLE);
+        Label lblRotationAngle = new Label(cmpContainer, SWT.NONE);
+        lblRotationAngle.setText(I18n.PATHTRUDER_ROT_ANGLE);
 
-        BigDecimalSpinner spn_rotationAngle = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_rotationAngle[0] = spn_rotationAngle;
-        spn_rotationAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_rotationAngle.setMaximum(new BigDecimal(1000000));
-        spn_rotationAngle.setMinimum(new BigDecimal(0));
-        spn_rotationAngle.setValue(ps.getRotation());
+        BigDecimalSpinner spnRotationAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_rotationAngle[0] = spnRotationAngle;
+        spnRotationAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnRotationAngle.setMaximum(new BigDecimal(1000000));
+        spnRotationAngle.setMinimum(new BigDecimal(0));
+        spnRotationAngle.setValue(ps.getRotation());
 
-        Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText(I18n.PATHTRUDER_SHAPE_COMP);
+        Label lblAf = new Label(cmpContainer, SWT.NONE);
+        lblAf.setText(I18n.PATHTRUDER_SHAPE_COMP);
 
-        Combo cmb_shapeCompensation = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_shapeCompensation[0] = cmb_shapeCompensation;
-        cmb_shapeCompensation.setItems(new String[] {I18n.PATHTRUDER_SHAPE_COMP_1, I18n.PATHTRUDER_SHAPE_COMP_2});
-        cmb_shapeCompensation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_shapeCompensation.setText(ps.isCompensation() ? cmb_shapeCompensation.getItem(1) : cmb_shapeCompensation.getItem(0));
-        cmb_shapeCompensation.select(ps.isCompensation() ? 1 : 0);
+        Combo cmbShapeCompensation = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_shapeCompensation[0] = cmbShapeCompensation;
+        cmbShapeCompensation.setItems(new String[] {I18n.PATHTRUDER_SHAPE_COMP_1, I18n.PATHTRUDER_SHAPE_COMP_2});
+        cmbShapeCompensation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbShapeCompensation.setText(ps.isCompensation() ? cmbShapeCompensation.getItem(1) : cmbShapeCompensation.getItem(0));
+        cmbShapeCompensation.select(ps.isCompensation() ? 1 : 0);
 
-        Label lbl_bfcinvert = new Label(cmp_container, SWT.NONE);
-        lbl_bfcinvert.setText(I18n.PATHTRUDER_INVERT_SHAPE);
+        Label lblBfcinvert = new Label(cmpContainer, SWT.NONE);
+        lblBfcinvert.setText(I18n.PATHTRUDER_INVERT_SHAPE);
 
-        Combo cmb_bfcInvert = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_bfcInvert[0] = cmb_bfcInvert;
-        cmb_bfcInvert.setItems(new String[] {I18n.PATHTRUDER_INVERT_SHAPE_1, I18n.PATHTRUDER_INVERT_SHAPE_2});
-        cmb_bfcInvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_bfcInvert.setText(ps.isInverted() ? cmb_bfcInvert.getItem(1) : cmb_bfcInvert.getItem(0));
-        cmb_bfcInvert.select(ps.isInverted() ? 1 : 0);
+        Combo cmbBfcInvert = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_bfcInvert[0] = cmbBfcInvert;
+        cmbBfcInvert.setItems(new String[] {I18n.PATHTRUDER_INVERT_SHAPE_1, I18n.PATHTRUDER_INVERT_SHAPE_2});
+        cmbBfcInvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbBfcInvert.setText(ps.isInverted() ? cmbBfcInvert.getItem(1) : cmbBfcInvert.getItem(0));
+        cmbBfcInvert.select(ps.isInverted() ? 1 : 0);
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

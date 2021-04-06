@@ -179,8 +179,8 @@ class VM14Splitter extends VM13SymSplitter {
             return result;
         case 1:
 
-            Vector3d A = new Vector3d(condlines.get(g)[0]);
-            Vector3d B = new Vector3d(condlines.get(g)[1]);
+            Vector3d a = new Vector3d(condlines.get(g)[0]);
+            Vector3d b = new Vector3d(condlines.get(g)[1]);
 
             BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
             BigDecimal cur = BigDecimal.ZERO;
@@ -197,13 +197,13 @@ class VM14Splitter extends VM13SymSplitter {
 
                 result.add(new GData5(g.colourNumber, g.r, g.g, g.b, g.a,
 
-                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+                        a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                        a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                        a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur)),
 
-                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+                        a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(b.Z.multiply(next)),
 
                         g.X3, g.Y3, g.Z3,
                         g.X4, g.Y4, g.Z4,
@@ -295,8 +295,8 @@ class VM14Splitter extends VM13SymSplitter {
     private List<GData3> splitQuad1(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
         ArrayList<GData3> result = new ArrayList<>(fractions);
 
-        Vector3d A = new Vector3d(v1);
-        Vector3d B = new Vector3d(v2);
+        Vector3d a = new Vector3d(v1);
+        Vector3d b = new Vector3d(v2);
 
 
         int fracA = fractions / 2;
@@ -315,13 +315,13 @@ class VM14Splitter extends VM13SymSplitter {
 
             result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
 
-                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+                    a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                    a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                    a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur)),
 
-                    A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                    A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                    A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+                    a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                    a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                    a.Z.multiply(oneMinusNext).add(b.Z.multiply(next)),
 
                     v4.X,
                     v4.Y,
@@ -345,13 +345,13 @@ class VM14Splitter extends VM13SymSplitter {
 
             result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
 
-                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+                    a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                    a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                    a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur)),
 
-                    A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                    A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                    A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+                    a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                    a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                    a.Z.multiply(oneMinusNext).add(b.Z.multiply(next)),
 
                     v3.X,
                     v3.Y,
@@ -369,9 +369,9 @@ class VM14Splitter extends VM13SymSplitter {
 
             result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
 
-                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+                    a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                    a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                    a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur)),
 
                     v3.X,
                     v3.Y,
@@ -392,10 +392,10 @@ class VM14Splitter extends VM13SymSplitter {
         ArrayList<GData3> result = new ArrayList<>(fractions * 8);
 
         // Split between v1-v2 & v2-v3
-        Vector3d A = new Vector3d(v1);
-        Vector3d B = new Vector3d(v2);
-        Vector3d C = new Vector3d(v3);
-        Vector3d D = new Vector3d(v4);
+        Vector3d a = new Vector3d(v1);
+        Vector3d b = new Vector3d(v2);
+        Vector3d c = new Vector3d(v3);
+        Vector3d d = new Vector3d(v4);
 
         BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
 
@@ -415,17 +415,17 @@ class VM14Splitter extends VM13SymSplitter {
                 BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
 
                 newPoints.add(new Vector3d(
-                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur))
+                        a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                        a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                        a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur))
                         ));
                 newPoints.add(new Vector3d(
-                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next))
+                        a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(b.Z.multiply(next))
                         ));
 
-                newPoints.add(D);
+                newPoints.add(d);
 
                 cur = next;
             }
@@ -444,17 +444,17 @@ class VM14Splitter extends VM13SymSplitter {
                 BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
 
                 newPoints.add(new Vector3d(
-                        B.X.multiply(oneMinusCur).add(C.X.multiply(cur)),
-                        B.Y.multiply(oneMinusCur).add(C.Y.multiply(cur)),
-                        B.Z.multiply(oneMinusCur).add(C.Z.multiply(cur))
+                        b.X.multiply(oneMinusCur).add(c.X.multiply(cur)),
+                        b.Y.multiply(oneMinusCur).add(c.Y.multiply(cur)),
+                        b.Z.multiply(oneMinusCur).add(c.Z.multiply(cur))
                         ));
                 newPoints.add(new Vector3d(
-                        B.X.multiply(oneMinusNext).add(C.X.multiply(next)),
-                        B.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
-                        B.Z.multiply(oneMinusNext).add(C.Z.multiply(next))
+                        b.X.multiply(oneMinusNext).add(c.X.multiply(next)),
+                        b.Y.multiply(oneMinusNext).add(c.Y.multiply(next)),
+                        b.Z.multiply(oneMinusNext).add(c.Z.multiply(next))
                         ));
 
-                newPoints.add(D);
+                newPoints.add(d);
 
                 cur = next;
             }
@@ -491,10 +491,10 @@ class VM14Splitter extends VM13SymSplitter {
         ArrayList<GData3> result = new ArrayList<>(fractions * 8);
 
         // Split between v1-v2 & v3-v4
-        Vector3d A = new Vector3d(v1);
-        Vector3d B = new Vector3d(v2);
-        Vector3d C = new Vector3d(v3);
-        Vector3d D = new Vector3d(v4);
+        Vector3d a = new Vector3d(v1);
+        Vector3d b = new Vector3d(v2);
+        Vector3d c = new Vector3d(v3);
+        Vector3d d = new Vector3d(v4);
 
         BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
 
@@ -514,24 +514,24 @@ class VM14Splitter extends VM13SymSplitter {
                 BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
 
                 newPoints.add(new Vector3d(
-                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur))
+                        a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                        a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                        a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur))
                         ));
                 newPoints.add(new Vector3d(
-                        D.X.multiply(oneMinusCur).add(C.X.multiply(cur)),
-                        D.Y.multiply(oneMinusCur).add(C.Y.multiply(cur)),
-                        D.Z.multiply(oneMinusCur).add(C.Z.multiply(cur))
+                        d.X.multiply(oneMinusCur).add(c.X.multiply(cur)),
+                        d.Y.multiply(oneMinusCur).add(c.Y.multiply(cur)),
+                        d.Z.multiply(oneMinusCur).add(c.Z.multiply(cur))
                         ));
                 newPoints.add(new Vector3d(
-                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next))
+                        a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(b.Z.multiply(next))
                         ));
                 newPoints.add(new Vector3d(
-                        D.X.multiply(oneMinusNext).add(C.X.multiply(next)),
-                        D.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
-                        D.Z.multiply(oneMinusNext).add(C.Z.multiply(next))
+                        d.X.multiply(oneMinusNext).add(c.X.multiply(next)),
+                        d.Y.multiply(oneMinusNext).add(c.Y.multiply(next)),
+                        d.Z.multiply(oneMinusNext).add(c.Z.multiply(next))
                         ));
 
                 cur = next;
@@ -585,12 +585,12 @@ class VM14Splitter extends VM13SymSplitter {
     private List<GData3> splitQuad3(Vertex v1, Vertex v2, Vertex v3, Vertex v4, int fractions, GData4 g) {
         ArrayList<GData3> result = new ArrayList<>(fractions * 8);
 
-        Vector3d A = new Vector3d(v1);
-        Vector3d B = new Vector3d(v2);
-        Vector3d C = new Vector3d(v3);
-        Vector3d D = new Vector3d(v4);
+        Vector3d a = new Vector3d(v1);
+        Vector3d b = new Vector3d(v2);
+        Vector3d c = new Vector3d(v3);
+        Vector3d d = new Vector3d(v4);
 
-        Vector3d vc = Vector3d.add(Vector3d.add(Vector3d.add(A, B), C), D);
+        Vector3d vc = Vector3d.add(Vector3d.add(Vector3d.add(a, b), c), d);
         vc.setX(vc.X.divide(new BigDecimal(4), Threshold.mc));
         vc.setY(vc.Y.divide(new BigDecimal(4), Threshold.mc));
         vc.setZ(vc.Z.divide(new BigDecimal(4), Threshold.mc));
@@ -607,9 +607,9 @@ class VM14Splitter extends VM13SymSplitter {
 
 
                 newPoints.add(new Vector3d(
-                        B.X.multiply(oneMinusNext).add(C.X.multiply(next)),
-                        B.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
-                        B.Z.multiply(oneMinusNext).add(C.Z.multiply(next))
+                        b.X.multiply(oneMinusNext).add(c.X.multiply(next)),
+                        b.Y.multiply(oneMinusNext).add(c.Y.multiply(next)),
+                        b.Z.multiply(oneMinusNext).add(c.Z.multiply(next))
                         ));
 
                 next = next.add(step);
@@ -622,9 +622,9 @@ class VM14Splitter extends VM13SymSplitter {
                 BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
 
                 newPoints.add(new Vector3d(
-                        C.X.multiply(oneMinusNext).add(D.X.multiply(next)),
-                        C.Y.multiply(oneMinusNext).add(D.Y.multiply(next)),
-                        C.Z.multiply(oneMinusNext).add(D.Z.multiply(next))
+                        c.X.multiply(oneMinusNext).add(d.X.multiply(next)),
+                        c.Y.multiply(oneMinusNext).add(d.Y.multiply(next)),
+                        c.Z.multiply(oneMinusNext).add(d.Z.multiply(next))
                         ));
 
                 next = next.add(step);
@@ -637,9 +637,9 @@ class VM14Splitter extends VM13SymSplitter {
                 BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
 
                 newPoints.add(new Vector3d(
-                        D.X.multiply(oneMinusNext).add(A.X.multiply(next)),
-                        D.Y.multiply(oneMinusNext).add(A.Y.multiply(next)),
-                        D.Z.multiply(oneMinusNext).add(A.Z.multiply(next))
+                        d.X.multiply(oneMinusNext).add(a.X.multiply(next)),
+                        d.Y.multiply(oneMinusNext).add(a.Y.multiply(next)),
+                        d.Z.multiply(oneMinusNext).add(a.Z.multiply(next))
                         ));
 
                 if (i == fractions - 1) {
@@ -679,12 +679,12 @@ class VM14Splitter extends VM13SymSplitter {
 
         ArrayList<GData3> result = new ArrayList<>(fractions * 8);
 
-        Vector3d A = new Vector3d(v1);
-        Vector3d B = new Vector3d(v2);
-        Vector3d C = new Vector3d(v3);
-        Vector3d D = new Vector3d(v4);
+        Vector3d a = new Vector3d(v1);
+        Vector3d b = new Vector3d(v2);
+        Vector3d c = new Vector3d(v3);
+        Vector3d d = new Vector3d(v4);
 
-        Vector3d vc = Vector3d.add(Vector3d.add(Vector3d.add(A, B), C), D);
+        Vector3d vc = Vector3d.add(Vector3d.add(Vector3d.add(a, b), c), d);
         vc.setX(vc.X.divide(new BigDecimal(4), Threshold.mc));
         vc.setY(vc.Y.divide(new BigDecimal(4), Threshold.mc));
         vc.setZ(vc.Z.divide(new BigDecimal(4), Threshold.mc));
@@ -706,9 +706,9 @@ class VM14Splitter extends VM13SymSplitter {
 
 
                 newPoints.add(new Vector3d(
-                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next))
+                        a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(b.Z.multiply(next))
                         ));
             }
         }
@@ -725,9 +725,9 @@ class VM14Splitter extends VM13SymSplitter {
 
 
                 newPoints.add(new Vector3d(
-                        B.X.multiply(oneMinusNext).add(C.X.multiply(next)),
-                        B.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
-                        B.Z.multiply(oneMinusNext).add(C.Z.multiply(next))
+                        b.X.multiply(oneMinusNext).add(c.X.multiply(next)),
+                        b.Y.multiply(oneMinusNext).add(c.Y.multiply(next)),
+                        b.Z.multiply(oneMinusNext).add(c.Z.multiply(next))
                         ));
             }
         }
@@ -743,9 +743,9 @@ class VM14Splitter extends VM13SymSplitter {
                 BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
 
                 newPoints.add(new Vector3d(
-                        C.X.multiply(oneMinusNext).add(D.X.multiply(next)),
-                        C.Y.multiply(oneMinusNext).add(D.Y.multiply(next)),
-                        C.Z.multiply(oneMinusNext).add(D.Z.multiply(next))
+                        c.X.multiply(oneMinusNext).add(d.X.multiply(next)),
+                        c.Y.multiply(oneMinusNext).add(d.Y.multiply(next)),
+                        c.Z.multiply(oneMinusNext).add(d.Z.multiply(next))
                         ));
             }
         }
@@ -761,9 +761,9 @@ class VM14Splitter extends VM13SymSplitter {
                 BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
 
                 newPoints.add(new Vector3d(
-                        D.X.multiply(oneMinusNext).add(A.X.multiply(next)),
-                        D.Y.multiply(oneMinusNext).add(A.Y.multiply(next)),
-                        D.Z.multiply(oneMinusNext).add(A.Z.multiply(next))
+                        d.X.multiply(oneMinusNext).add(a.X.multiply(next)),
+                        d.Y.multiply(oneMinusNext).add(a.Y.multiply(next)),
+                        d.Z.multiply(oneMinusNext).add(a.Z.multiply(next))
                         ));
             }
         }
@@ -844,8 +844,8 @@ class VM14Splitter extends VM13SymSplitter {
     private List<GData3> splitTri1(Vertex v1, Vertex v2, Vertex v3, int fractions, GData3 g) {
         ArrayList<GData3> result = new ArrayList<>(fractions);
 
-        Vector3d A = new Vector3d(v1);
-        Vector3d B = new Vector3d(v2);
+        Vector3d a = new Vector3d(v1);
+        Vector3d b = new Vector3d(v2);
 
         BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
         BigDecimal cur = BigDecimal.ZERO;
@@ -862,13 +862,13 @@ class VM14Splitter extends VM13SymSplitter {
 
             result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
 
-                    A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                    A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                    A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+                    a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                    a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                    a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur)),
 
-                    A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                    A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                    A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+                    a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                    a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                    a.Z.multiply(oneMinusNext).add(b.Z.multiply(next)),
 
                     v3.X,
                     v3.Y,
@@ -885,9 +885,9 @@ class VM14Splitter extends VM13SymSplitter {
 
         ArrayList<GData3> result = new ArrayList<>(fractions);
 
-        Vector3d A = new Vector3d(v1);
-        Vector3d B = new Vector3d(v2);
-        Vector3d C = new Vector3d(v3);
+        Vector3d a = new Vector3d(v1);
+        Vector3d b = new Vector3d(v2);
+        Vector3d c = new Vector3d(v3);
 
         BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
         BigDecimal cur = BigDecimal.ZERO;
@@ -909,44 +909,44 @@ class VM14Splitter extends VM13SymSplitter {
                         v1.Y,
                         v1.Z,
 
-                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+                        a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(b.Z.multiply(next)),
 
-                        A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(C.Z.multiply(next)),
+                        a.X.multiply(oneMinusNext).add(c.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(c.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(c.Z.multiply(next)),
 
                         View.DUMMY_REFERENCE, linkedDatFile, true));
             } else {
                 result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
 
-                        A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(C.Z.multiply(next)),
+                        a.X.multiply(oneMinusNext).add(c.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(c.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(c.Z.multiply(next)),
 
-                        A.X.multiply(oneMinusCur).add(C.X.multiply(cur)),
-                        A.Y.multiply(oneMinusCur).add(C.Y.multiply(cur)),
-                        A.Z.multiply(oneMinusCur).add(C.Z.multiply(cur)),
+                        a.X.multiply(oneMinusCur).add(c.X.multiply(cur)),
+                        a.Y.multiply(oneMinusCur).add(c.Y.multiply(cur)),
+                        a.Z.multiply(oneMinusCur).add(c.Z.multiply(cur)),
 
-                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+                        a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                        a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                        a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur)),
 
                         View.DUMMY_REFERENCE, linkedDatFile, true));
                 result.add(new GData3(g.colourNumber, g.r, g.g, g.b, g.a,
 
-                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+                        a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                        a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                        a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur)),
 
-                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+                        a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(b.Z.multiply(next)),
 
-                        A.X.multiply(oneMinusNext).add(C.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(C.Z.multiply(next)),
+                        a.X.multiply(oneMinusNext).add(c.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(c.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(c.Z.multiply(next)),
 
                         View.DUMMY_REFERENCE, linkedDatFile, true));
             }
@@ -961,11 +961,11 @@ class VM14Splitter extends VM13SymSplitter {
 
         ArrayList<GData3> result = new ArrayList<>(fractions * 3);
 
-        Vector3d A = new Vector3d(v1);
-        Vector3d B = new Vector3d(v2);
-        Vector3d C = new Vector3d(v3);
+        Vector3d a = new Vector3d(v1);
+        Vector3d b = new Vector3d(v2);
+        Vector3d c = new Vector3d(v3);
 
-        Vector3d vc = Vector3d.add(Vector3d.add(A, B), C);
+        Vector3d vc = Vector3d.add(Vector3d.add(a, b), c);
         vc.setX(vc.X.divide(new BigDecimal(3), Threshold.mc));
         vc.setY(vc.Y.divide(new BigDecimal(3), Threshold.mc));
         vc.setZ(vc.Z.divide(new BigDecimal(3), Threshold.mc));
@@ -987,9 +987,9 @@ class VM14Splitter extends VM13SymSplitter {
 
 
                 newPoints.add(new Vector3d(
-                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next))
+                        a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(b.Z.multiply(next))
                         ));
             }
         }
@@ -1006,9 +1006,9 @@ class VM14Splitter extends VM13SymSplitter {
 
 
                 newPoints.add(new Vector3d(
-                        B.X.multiply(oneMinusNext).add(C.X.multiply(next)),
-                        B.Y.multiply(oneMinusNext).add(C.Y.multiply(next)),
-                        B.Z.multiply(oneMinusNext).add(C.Z.multiply(next))
+                        b.X.multiply(oneMinusNext).add(c.X.multiply(next)),
+                        b.Y.multiply(oneMinusNext).add(c.Y.multiply(next)),
+                        b.Z.multiply(oneMinusNext).add(c.Z.multiply(next))
                         ));
             }
         }
@@ -1024,9 +1024,9 @@ class VM14Splitter extends VM13SymSplitter {
                 BigDecimal oneMinusNext = BigDecimal.ONE.subtract(next);
 
                 newPoints.add(new Vector3d(
-                        C.X.multiply(oneMinusNext).add(A.X.multiply(next)),
-                        C.Y.multiply(oneMinusNext).add(A.Y.multiply(next)),
-                        C.Z.multiply(oneMinusNext).add(A.Z.multiply(next))
+                        c.X.multiply(oneMinusNext).add(a.X.multiply(next)),
+                        c.Y.multiply(oneMinusNext).add(a.Y.multiply(next)),
+                        c.Z.multiply(oneMinusNext).add(a.Z.multiply(next))
                         ));
             }
         }
@@ -1069,8 +1069,8 @@ class VM14Splitter extends VM13SymSplitter {
             return result;
         case 1:
 
-            Vector3d A = new Vector3d(lines.get(g)[0]);
-            Vector3d B = new Vector3d(lines.get(g)[1]);
+            Vector3d a = new Vector3d(lines.get(g)[0]);
+            Vector3d b = new Vector3d(lines.get(g)[1]);
 
             BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
             BigDecimal cur = BigDecimal.ZERO;
@@ -1090,13 +1090,13 @@ class VM14Splitter extends VM13SymSplitter {
 
                 result.add(new GData2(g.colourNumber, g.r, g.g, g.b, g.a,
 
-                        A.X.multiply(oneMinusCur).add(B.X.multiply(cur)),
-                        A.Y.multiply(oneMinusCur).add(B.Y.multiply(cur)),
-                        A.Z.multiply(oneMinusCur).add(B.Z.multiply(cur)),
+                        a.X.multiply(oneMinusCur).add(b.X.multiply(cur)),
+                        a.Y.multiply(oneMinusCur).add(b.Y.multiply(cur)),
+                        a.Z.multiply(oneMinusCur).add(b.Z.multiply(cur)),
 
-                        A.X.multiply(oneMinusNext).add(B.X.multiply(next)),
-                        A.Y.multiply(oneMinusNext).add(B.Y.multiply(next)),
-                        A.Z.multiply(oneMinusNext).add(B.Z.multiply(next)),
+                        a.X.multiply(oneMinusNext).add(b.X.multiply(next)),
+                        a.Y.multiply(oneMinusNext).add(b.Y.multiply(next)),
+                        a.Z.multiply(oneMinusNext).add(b.Z.multiply(next)),
 
                         View.DUMMY_REFERENCE, linkedDatFile, g.isLine));
                 cur = next;

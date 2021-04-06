@@ -205,16 +205,16 @@ public class GL33ModelRendererLDrawStandard {
 
                 float[] normal;
 
-                final Vector4f Nv = new Vector4f(0, 0, 0, 1f);
-                final Matrix4f Mm = new Matrix4f();
-                Matrix4f.setIdentity(Mm);
+                final Vector4f nv = new Vector4f(0, 0, 0, 1f);
+                final Matrix4f mm = new Matrix4f();
+                Matrix4f.setIdentity(mm);
 
                 final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
                 final ArrayList<GDataAndTexture> texmapDataInOrder = new ArrayList<>();
                 final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
                 final HashMap<GData, Vertex[]> vertexMap2 = new HashMap<>();
                 final HashMap<GData, float[]> normalMap = new HashMap<>();
-                final ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection = new ThreadsafeHashMap<>(1000);
+                final ThreadsafeHashMap<GData1, Matrix4f> cacheViewByProjection = new ThreadsafeHashMap<>(1000);
                 final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
                 final Integer myID = idGen.getAndIncrement();
                 matrixMap.put(View.DUMMY_REFERENCE, View.ID);
@@ -272,7 +272,7 @@ public class GL33ModelRendererLDrawStandard {
                         dataInOrder.clear();
                         texmapDataInOrder.clear();
                         normalMap.clear();
-                        CACHE_viewByProjection.clear();
+                        cacheViewByProjection.clear();
 
                         {
                             usesTEXMAP = load_BFC_and_TEXMAP_info(
@@ -310,9 +310,9 @@ public class GL33ModelRendererLDrawStandard {
                                             || gb instanceof GData4 && ((GData4) gb).a < 1f;
 
                                     if (aIsTransparentSurface && bIsTransparentSurface) {
-                                        final Vertex[] sa_verts =  vertexMap.containsKey(ga) ? vertexMap.get(ga) : ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
-                                        final Vertex[] sb_verts =  vertexMap.containsKey(gb) ? vertexMap.get(gb) : gb.type() == 3 ? triangles.get(gb) : quads.get(gb);
-                                        if (sa_verts == null || sb_verts == null) {
+                                        final Vertex[] saVerts =  vertexMap.containsKey(ga) ? vertexMap.get(ga) : ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
+                                        final Vertex[] sbVerts =  vertexMap.containsKey(gb) ? vertexMap.get(gb) : gb.type() == 3 ? triangles.get(gb) : quads.get(gb);
+                                        if (saVerts == null || sbVerts == null) {
                                             return 0;
                                         }
 
@@ -320,14 +320,14 @@ public class GL33ModelRendererLDrawStandard {
                                         final Vector4f vt = new Vector4f();
 
                                         float aTopmostZ = -Float.MAX_VALUE;
-                                        for (Vertex v : sa_verts) {
+                                        for (Vertex v : saVerts) {
                                             vf.set(v.x, v.y, v.z, 1f);
                                             Matrix4f.transform(viewport, vf, vt);
                                             aTopmostZ = Math.max(aTopmostZ, vt.z);
                                         }
 
                                         float bTopmostZ = -Float.MAX_VALUE;
-                                        for (Vertex v : sb_verts) {
+                                        for (Vertex v : sbVerts) {
                                             vf.set(v.x, v.y, v.z, 1f);
                                             Matrix4f.transform(viewport, vf, vt);
                                             bTopmostZ = Math.max(bTopmostZ, vt.z);
@@ -355,9 +355,9 @@ public class GL33ModelRendererLDrawStandard {
                                             || gb instanceof GData4 && ((GData4) gb).a < 1f;
 
                                     if (aIsTransparentSurface && bIsTransparentSurface) {
-                                        final Vertex[] sa_verts =  ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
-                                        final Vertex[] sb_verts =  gb.type() == 3 ? triangles.get(gb) : quads.get(gb);
-                                        if (sa_verts == null || sb_verts == null) {
+                                        final Vertex[] saVerts =  ga.type() == 3 ? triangles.get(ga) : quads.get(ga);
+                                        final Vertex[] sbVerts =  gb.type() == 3 ? triangles.get(gb) : quads.get(gb);
+                                        if (saVerts == null || sbVerts == null) {
                                             return 0;
                                         }
 
@@ -365,14 +365,14 @@ public class GL33ModelRendererLDrawStandard {
                                         final Vector4f vt = new Vector4f();
 
                                         float aTopmostZ = -Float.MAX_VALUE;
-                                        for (Vertex v : sa_verts) {
+                                        for (Vertex v : saVerts) {
                                             vf.set(v.x, v.y, v.z, 1f);
                                             Matrix4f.transform(viewport, vf, vt);
                                             aTopmostZ = Math.max(aTopmostZ, vt.z);
                                         }
 
                                         float bTopmostZ = -Float.MAX_VALUE;
-                                        for (Vertex v : sb_verts) {
+                                        for (Vertex v : sbVerts) {
                                             vf.set(v.x, v.y, v.z, 1f);
                                             Matrix4f.transform(viewport, vf, vt);
                                             bTopmostZ = Math.max(bTopmostZ, vt.z);
@@ -415,22 +415,22 @@ public class GL33ModelRendererLDrawStandard {
                                 Vector3f normalv = null;
                                 if (gd.type() == 3) {
                                     GData3 gd3 = (GData3) gd;
-                                    Nv.x = gd3.xn;
-                                    Nv.y = gd3.yn;
-                                    Nv.z = gd3.zn;
-                                    Nv.w = 1f;
+                                    nv.x = gd3.xn;
+                                    nv.y = gd3.yn;
+                                    nv.z = gd3.zn;
+                                    nv.w = 1f;
                                     Matrix4f loc = matrixMap.get(gd3.parent);
-                                    Matrix4f.transform(loc, Nv, Nv);
-                                    normalv = new Vector3f(Nv.x, Nv.y, Nv.z);
+                                    Matrix4f.transform(loc, nv, nv);
+                                    normalv = new Vector3f(nv.x, nv.y, nv.z);
                                 } else if (gd.type() == 4) {
                                     GData4 gd4 = (GData4) gd;
-                                    Nv.x = gd4.xn;
-                                    Nv.y = gd4.yn;
-                                    Nv.z = gd4.zn;
-                                    Nv.w = 1f;
+                                    nv.x = gd4.xn;
+                                    nv.y = gd4.yn;
+                                    nv.z = gd4.zn;
+                                    nv.w = 1f;
                                     Matrix4f loc = matrixMap.get(gd4.parent);
-                                    Matrix4f.transform(loc, Nv, Nv);
-                                    normalv = new Vector3f(Nv.x, Nv.y, Nv.z);
+                                    Matrix4f.transform(loc, nv, nv);
+                                    normalv = new Vector3f(nv.x, nv.y, nv.z);
                                 }
                                 if (normalv != null) {
                                     // Flip the normal in case of determinant or INVERTNEXT
@@ -512,9 +512,9 @@ public class GL33ModelRendererLDrawStandard {
                             stud2Matrices = null;
                         }
 
-                        int local_triangleSize = 0;
-                        int local_lineSize = 0;
-                        int local_condlineSize = 0;
+                        int localTriangleSize = 0;
+                        int localLineSize = 0;
+                        int localCondlineSize = 0;
 
                         int triangleVertexCount = 0;
                         int transparentTriangleVertexCount = 0;
@@ -554,7 +554,7 @@ public class GL33ModelRendererLDrawStandard {
                                 }
                                 final GData2 gd2 = (GData2) gd;
                                 if (gd2.isLine) {
-                                    local_lineSize += 14;
+                                    localLineSize += 14;
                                     lineVertexCount += 2;
                                 }
                                 continue;
@@ -562,14 +562,14 @@ public class GL33ModelRendererLDrawStandard {
                                 final GData3 gd3 = (GData3) gd;
                                 if (gd3.isTriangle) {
                                     if (gw.noclip) {
-                                        local_triangleSize += 60;
+                                        localTriangleSize += 60;
                                         if (gd3.a < 1f) {
                                             transparentTriangleVertexCount += 6;
                                         } else {
                                             triangleVertexCount += 6;
                                         }
                                     } else {
-                                        local_triangleSize += 30;
+                                        localTriangleSize += 30;
                                         if (gd3.a < 1f) {
                                             transparentTriangleVertexCount += 3;
                                         } else {
@@ -581,14 +581,14 @@ public class GL33ModelRendererLDrawStandard {
                             case 4:
                                 final GData4 gd4 = (GData4) gd;
                                 if (gw.noclip) {
-                                    local_triangleSize += 120;
+                                    localTriangleSize += 120;
                                     if (gd4.a < 1f) {
                                         transparentTriangleVertexCount += 12;
                                     } else {
                                         triangleVertexCount += 12;
                                     }
                                 } else {
-                                    local_triangleSize += 60;
+                                    localTriangleSize += 60;
                                     if (gd4.a < 1f) {
                                         transparentTriangleVertexCount += 6;
                                     } else {
@@ -601,7 +601,7 @@ public class GL33ModelRendererLDrawStandard {
                                     continue;
                                 }
                                 // Condlines are tricky, since I have to calculate their visibility
-                                local_condlineSize += 30;
+                                localCondlineSize += 30;
                                 condlineVertexCount += 2;
                                 continue;
                             default:
@@ -610,10 +610,10 @@ public class GL33ModelRendererLDrawStandard {
                         }
 
                         // for GL_TRIANGLES
-                        float[] triangleData = new float[local_triangleSize];
+                        float[] triangleData = new float[localTriangleSize];
                         // for GL_LINES
-                        float[] lineData = new float[local_lineSize];
-                        float[] condlineData = new float[local_condlineSize];
+                        float[] lineData = new float[localLineSize];
+                        float[] condlineData = new float[localCondlineSize];
 
                         Vertex[] v;
                         int triangleIndex = 0;
@@ -706,15 +706,15 @@ public class GL33ModelRendererLDrawStandard {
                                             yn = normal[1];
                                             zn = normal[2];
                                         } else {
-                                            Nv.x = gd3.xn;
-                                            Nv.y = gd3.yn;
-                                            Nv.z = gd3.zn;
-                                            Nv.w = 1f;
+                                            nv.x = gd3.xn;
+                                            nv.y = gd3.yn;
+                                            nv.z = gd3.zn;
+                                            nv.w = 1f;
                                             Matrix4f loc = matrixMap.get(gd3.parent);
-                                            Matrix4f.transform(loc, Nv, Nv);
-                                            xn = Nv.x;
-                                            yn = Nv.y;
-                                            zn = Nv.z;
+                                            Matrix4f.transform(loc, nv, nv);
+                                            xn = nv.x;
+                                            yn = nv.y;
+                                            zn = nv.z;
                                         }
                                     }
                                     if (gw.noclip) {
@@ -897,15 +897,15 @@ public class GL33ModelRendererLDrawStandard {
                                         yn = normal[1];
                                         zn = normal[2];
                                     } else {
-                                        Nv.x = gd4.xn;
-                                        Nv.y = gd4.yn;
-                                        Nv.z = gd4.zn;
-                                        Nv.w = 1f;
+                                        nv.x = gd4.xn;
+                                        nv.y = gd4.yn;
+                                        nv.z = gd4.zn;
+                                        nv.w = 1f;
                                         Matrix4f loc = matrixMap.get(gd4.parent);
-                                        Matrix4f.transform(loc, Nv, Nv);
-                                        xn = Nv.x;
-                                        yn = Nv.y;
-                                        zn = Nv.z;
+                                        Matrix4f.transform(loc, nv, nv);
+                                        xn = nv.x;
+                                        yn = nv.y;
+                                        zn = nv.z;
                                     }
                                 }
 
@@ -1156,7 +1156,6 @@ public class GL33ModelRendererLDrawStandard {
     private int ss;
     private int to;
     private int ls;
-    private int cls;
 
     public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader glyphShader, boolean drawSolidMaterials, DatFile df) {
 
@@ -1299,7 +1298,7 @@ public class GL33ModelRendererLDrawStandard {
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboCondlines);
                 lock.lock();
                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER, dataCondlines, GL15.GL_STATIC_DRAW);
-                cls = condlineSize;
+                final int cls = condlineSize;
                 lock.unlock();
 
                 GL20.glEnableVertexAttribArray(0);

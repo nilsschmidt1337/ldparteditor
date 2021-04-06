@@ -364,12 +364,12 @@ public final class GData5 extends GData {
                 GL11.glEnable(GL11.GL_LIGHTING);
             return;
         default:
-            final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
-            if (M2 == null) {
+            final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
+            if (m2 == null) {
                 Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
                 GData.CACHE_viewByProjection.put(parent, M);
             } else {
-                M = M2;
+                M = m2;
             }
             // Calculate the real coordinates
             Matrix4f.transform(M, A2, A);
@@ -481,12 +481,12 @@ public final class GData5 extends GData {
             return;
         }
 
-        final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
-        if (M2 == null) {
+        final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
+        if (m2 == null) {
             Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
             GData.CACHE_viewByProjection.put(parent, M);
         } else {
-            M = M2;
+            M = m2;
         }
 
         float result;
@@ -618,12 +618,12 @@ public final class GData5 extends GData {
 
         final float zoom = c3d.getZoom();
 
-        final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
-        if (M2 == null) {
+        final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
+        if (m2 == null) {
             Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
             GData.CACHE_viewByProjection.put(parent, M);
         } else {
-            M = M2;
+            M = m2;
         }
         // Calculate the real coordinates
         Matrix4f.transform(M, A2, A);
@@ -779,12 +779,12 @@ public final class GData5 extends GData {
             case 4:
                 return;
             default:
-                final Matrix4f M2 = GData.CACHE_viewByProjection.get(parent);
-                if (M2 == null) {
+                final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
+                if (m2 == null) {
                     Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
                     GData.CACHE_viewByProjection.put(parent, M);
                 } else {
-                    M = M2;
+                    M = m2;
                 }
                 // Calculate the real coordinates
                 Matrix4f.transform(M, A2, A);
@@ -1044,18 +1044,18 @@ public final class GData5 extends GData {
         return lineBuilder.toString();
     }
 
-    void isShown(Matrix4f viewport, ThreadsafeHashMap<GData1, Matrix4f> CACHE_viewByProjection, float zoom) {
+    void isShown(Matrix4f viewport, ThreadsafeHashMap<GData1, Matrix4f> cacheViewByProjection, float zoom) {
 
         if (wasShown) {
             return;
         }
 
-        final Matrix4f M2 = CACHE_viewByProjection.get(parent);
-        if (M2 == null) {
+        final Matrix4f m2 = cacheViewByProjection.get(parent);
+        if (m2 == null) {
             Matrix4f.mul(viewport, parent.productMatrix, M);
-            CACHE_viewByProjection.put(parent, M);
+            cacheViewByProjection.put(parent, M);
         } else {
-            M = M2;
+            M = m2;
         }
 
         // Calculate the real coordinates

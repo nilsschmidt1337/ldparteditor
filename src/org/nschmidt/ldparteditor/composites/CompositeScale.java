@@ -61,22 +61,22 @@ public class CompositeScale extends ScalableComposite {
         super(parentCompositeContainer, style);
         final CompositeScale me = this;
         this.setParent(parentCompositeContainer);
-        GridLayout gl_compositeScale = new GridLayout(2, false);
-        gl_compositeScale.marginHeight = 0;
-        gl_compositeScale.marginWidth = 0;
-        gl_compositeScale.verticalSpacing = 0;
-        gl_compositeScale.horizontalSpacing = 0;
-        this.setLayout(gl_compositeScale);
+        GridLayout glCompositeScale = new GridLayout(2, false);
+        glCompositeScale.marginHeight = 0;
+        glCompositeScale.marginWidth = 0;
+        glCompositeScale.verticalSpacing = 0;
+        glCompositeScale.horizontalSpacing = 0;
+        this.setLayout(glCompositeScale);
 
-        NButton btn_openContextMenu = new NButton(this, Cocoa.getStyle());
-        GridData gd_btn_openContextMenu = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
-        gd_btn_openContextMenu.heightHint = 20;
-        gd_btn_openContextMenu.widthHint = 20;
-        btn_openContextMenu.setLayoutData(gd_btn_openContextMenu);
-        btn_openContextMenu.setImage(ResourceManager.getImage("icon16_contextMenu.png")); //$NON-NLS-1$
-        btn_openContextMenu.setBounds(0, 0, 20, 20);
+        NButton btnOpenContextMenu = new NButton(this, Cocoa.getStyle());
+        GridData gdBtnOpenContextMenu = new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1);
+        gdBtnOpenContextMenu.heightHint = 20;
+        gdBtnOpenContextMenu.widthHint = 20;
+        btnOpenContextMenu.setLayoutData(gdBtnOpenContextMenu);
+        btnOpenContextMenu.setImage(ResourceManager.getImage("icon16_contextMenu.png")); //$NON-NLS-1$
+        btnOpenContextMenu.setBounds(0, 0, 20, 20);
 
-        WidgetUtil(btn_openContextMenu).addSelectionListener(e -> {
+        WidgetUtil(btnOpenContextMenu).addSelectionListener(e -> {
             PointerInfo a = MouseInfo.getPointerInfo();
             java.awt.Point b = a.getLocation();
             int x = (int) b.getX();
@@ -111,17 +111,17 @@ public class CompositeScale extends ScalableComposite {
                 float width = rect.width;
                 float halfwidth = width / 2f;
                 float offset = 0;
-                float viewport_pixel_per_ldu = c3d.getZoom() * View.PIXEL_PER_LDU;
-                while (viewport_pixel_per_ldu > 10) {
-                    viewport_pixel_per_ldu = viewport_pixel_per_ldu / 10f;
+                float viewportPixelPerLDU = c3d.getZoom() * View.PIXEL_PER_LDU;
+                while (viewportPixelPerLDU > 10) {
+                    viewportPixelPerLDU = viewportPixelPerLDU / 10f;
                 }
-                while (viewport_pixel_per_ldu < 10) {
-                    viewport_pixel_per_ldu = viewport_pixel_per_ldu * 10f;
+                while (viewportPixelPerLDU < 10) {
+                    viewportPixelPerLDU = viewportPixelPerLDU * 10f;
                 }
-                if (viewport_pixel_per_ldu > 10) {
-                    viewport_pixel_per_ldu = viewport_pixel_per_ldu / 2f;
+                if (viewportPixelPerLDU > 10) {
+                    viewportPixelPerLDU = viewportPixelPerLDU / 2f;
                 }
-                float step = viewport_pixel_per_ldu;
+                float step = viewportPixelPerLDU;
                 int factor = 1;
                 gc.setFont(Font.SMALL);
                 gc.drawText(I18n.getCurrentUnit(), 0, 0);
@@ -155,7 +155,7 @@ public class CompositeScale extends ScalableComposite {
                     throw new AssertionError();
                 }
 
-                float scale_factor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unit_factor.floatValue();
+                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unit_factor.floatValue();
 
                 if (offset < -halfwidth) {
                     // "Positive"
@@ -165,7 +165,7 @@ public class CompositeScale extends ScalableComposite {
                     // Big lines
                     for (float x1 = origin1 + tenstep; x1 < width; x1 = x1 + tenstep) {
                         if (x1 > 20) {
-                            gc.drawText(NUMBER_FORMAT2F.format((x1 - origin21) * scale_factor), (int) x1 + 2, -2);
+                            gc.drawText(NUMBER_FORMAT2F.format((x1 - origin21) * scaleFactor), (int) x1 + 2, -2);
                             gc.drawLine((int) x1, 5, (int) x1, 10);
                         }
                     }
@@ -188,7 +188,7 @@ public class CompositeScale extends ScalableComposite {
                     float origin22 = offset + halfwidth;
                     // Big lines
                     for (float x4 = origin3 - tenstep; x4 > 20; x4 = x4 - tenstep) {
-                        gc.drawText(NUMBER_FORMAT2F.format((x4 - origin22) * scale_factor), (int) x4 + 2, -2);
+                        gc.drawText(NUMBER_FORMAT2F.format((x4 - origin22) * scaleFactor), (int) x4 + 2, -2);
                         gc.drawLine((int) x4, 5, (int) x4, 10);
                     }
                     // Small lines
@@ -204,18 +204,18 @@ public class CompositeScale extends ScalableComposite {
                     // Origin
                     float origin4 = offset + halfwidth;
                     if (origin4 > 22) {
-                        int origin_int = (int) origin4;
-                        gc.drawLine(origin_int - 1, 0, origin_int - 1, 16);
-                        gc.drawLine(origin_int, 0, origin_int, 16);
-                        gc.drawLine(origin_int + 1, 0, origin_int + 1, 16);
+                        int originInt = (int) origin4;
+                        gc.drawLine(originInt - 1, 0, originInt - 1, 16);
+                        gc.drawLine(originInt, 0, originInt, 16);
+                        gc.drawLine(originInt + 1, 0, originInt + 1, 16);
                     }
                     // Big lines
                     for (float x7 = origin4 - tenstep; x7 > 20; x7 = x7 - tenstep) {
-                        gc.drawText(NUMBER_FORMAT2F.format((x7 - origin4) * scale_factor), (int) x7 + 2, -2);
+                        gc.drawText(NUMBER_FORMAT2F.format((x7 - origin4) * scaleFactor), (int) x7 + 2, -2);
                         gc.drawLine((int) x7, 5, (int) x7, 10);
                     }
                     for (float x8 = origin4 + tenstep; x8 < width; x8 = x8 + tenstep) {
-                        gc.drawText(NUMBER_FORMAT2F.format((x8 - origin4) * scale_factor), (int) x8 + 2, -2);
+                        gc.drawText(NUMBER_FORMAT2F.format((x8 - origin4) * scaleFactor), (int) x8 + 2, -2);
                         gc.drawLine((int) x8, 5, (int) x8, 10);
                     }
                     // Small lines
@@ -270,17 +270,17 @@ public class CompositeScale extends ScalableComposite {
                 float height = rect.height;
                 float halfheight = height / 2f;
                 float offset = 0;
-                float viewport_pixel_per_ldu = c3d.getZoom() * View.PIXEL_PER_LDU;
-                while (viewport_pixel_per_ldu > 10) {
-                    viewport_pixel_per_ldu = viewport_pixel_per_ldu / 10f;
+                float viewportPixelPerLDU = c3d.getZoom() * View.PIXEL_PER_LDU;
+                while (viewportPixelPerLDU > 10) {
+                    viewportPixelPerLDU = viewportPixelPerLDU / 10f;
                 }
-                while (viewport_pixel_per_ldu < 10) {
-                    viewport_pixel_per_ldu = viewport_pixel_per_ldu * 10f;
+                while (viewportPixelPerLDU < 10) {
+                    viewportPixelPerLDU = viewportPixelPerLDU * 10f;
                 }
-                if (viewport_pixel_per_ldu > 10) {
-                    viewport_pixel_per_ldu = viewport_pixel_per_ldu / 2f;
+                if (viewportPixelPerLDU > 10) {
+                    viewportPixelPerLDU = viewportPixelPerLDU / 2f;
                 }
-                float step = viewport_pixel_per_ldu;
+                float step = viewportPixelPerLDU;
                 int factor = 1;
                 gc.setFont(Font.SMALL);
 
@@ -312,7 +312,7 @@ public class CompositeScale extends ScalableComposite {
                     throw new AssertionError();
                 }
 
-                float scale_factor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unit_factor.floatValue();
+                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unit_factor.floatValue();
 
                 if (offset < -halfheight) {
                     // "Positive"
@@ -325,7 +325,7 @@ public class CompositeScale extends ScalableComposite {
                         tr1.translate(0, (int) y1);
                         tr1.rotate(-90);
                         gc.setTransform(tr1);
-                        gc.drawText(NUMBER_FORMAT2F.format((y1 - origin21) * scale_factor), 0, 0);
+                        gc.drawText(NUMBER_FORMAT2F.format((y1 - origin21) * scaleFactor), 0, 0);
                         gc.setTransform(null);
                         gc.drawLine(5, (int) y1, 10, (int) y1);
                     }
@@ -348,7 +348,7 @@ public class CompositeScale extends ScalableComposite {
                         tr2.translate(0, (int) y4);
                         tr2.rotate(-90);
                         gc.setTransform(tr2);
-                        gc.drawText(NUMBER_FORMAT2F.format((y4 - origin22) * scale_factor), 0, 0);
+                        gc.drawText(NUMBER_FORMAT2F.format((y4 - origin22) * scaleFactor), 0, 0);
                         gc.setTransform(null);
                         gc.drawLine(5, (int) y4, 10, (int) y4);
                     }
@@ -364,17 +364,17 @@ public class CompositeScale extends ScalableComposite {
                     // Both
                     // Origin
                     float origin4 = offset + halfheight;
-                    int origin_int = (int) origin4;
-                    gc.drawLine(0, origin_int - 1, 16, origin_int - 1);
-                    gc.drawLine(0, origin_int, 16, origin_int);
-                    gc.drawLine(0, origin_int + 1, 16, origin_int + 1);
+                    int originInt = (int) origin4;
+                    gc.drawLine(0, originInt - 1, 16, originInt - 1);
+                    gc.drawLine(0, originInt, 16, originInt);
+                    gc.drawLine(0, originInt + 1, 16, originInt + 1);
                     // Big lines
                     for (float y7 = origin4 - tenstep; y7 > 0; y7 = y7 - tenstep) {
                         Transform tr3 = new Transform(Display.getCurrent());
                         tr3.translate(0, (int) y7);
                         tr3.rotate(-90);
                         gc.setTransform(tr3);
-                        gc.drawText(NUMBER_FORMAT2F.format((y7 - origin4) * scale_factor), 0, 0);
+                        gc.drawText(NUMBER_FORMAT2F.format((y7 - origin4) * scaleFactor), 0, 0);
                         gc.setTransform(null);
                         gc.drawLine(5, (int) y7, 10, (int) y7);
                     }
@@ -383,7 +383,7 @@ public class CompositeScale extends ScalableComposite {
                         tr4.translate(0, (int) y8);
                         tr4.rotate(-90);
                         gc.setTransform(tr4);
-                        gc.drawText(NUMBER_FORMAT2F.format((y8 - origin4) * scale_factor), 0, 0);
+                        gc.drawText(NUMBER_FORMAT2F.format((y8 - origin4) * scaleFactor), 0, 0);
                         gc.setTransform(null);
                         gc.drawLine(5, (int) y8, 10, (int) y8);
                     }

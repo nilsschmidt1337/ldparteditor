@@ -93,118 +93,118 @@ class CoordinatesDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.COORDINATESDIALOG_SET_XYZ);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.COORDINATESDIALOG_SET_XYZ);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         if (Editor3DWindow.getWindow().isMovingAdjacentData()) {
-            Label lbl_adjacencyWarning = new Label(cmp_container, SWT.NONE);
-            lbl_adjacencyWarning.setText(I18n.E3D_ADJACENT_WARNING_STATUS);
-            lbl_adjacencyWarning.setToolTipText(I18n.E3D_ADJACENT_WARNING_DIALOG);
-            lbl_adjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
-            lbl_adjacencyWarning.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
+            Label lblAdjacencyWarning = new Label(cmpContainer, SWT.NONE);
+            lblAdjacencyWarning.setText(I18n.E3D_ADJACENT_WARNING_STATUS);
+            lblAdjacencyWarning.setToolTipText(I18n.E3D_ADJACENT_WARNING_DIALOG);
+            lblAdjacencyWarning.setForeground(SWTResourceManager.getColor(SWT.COLOR_INFO_FOREGROUND));
+            lblAdjacencyWarning.setBackground(SWTResourceManager.getColor(SWT.COLOR_INFO_BACKGROUND));
         }
 
-        ToolItem toolItem_TransformationModes = new ToolItem(cmp_container, SWT.NONE, true);
+        ToolItem toolItemTransformationModes = new ToolItem(cmpContainer, SWT.NONE, true);
         {
-            NButton btn_Local = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
-            this.btn_Local[0] = btn_Local;
-            btn_Local.setToolTipText(I18n.E3D_LOCAL);
-            if (transformationMode == ManipulatorScope.LOCAL) btn_Local.setSelection(true);
-            btn_Local.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
+            NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
+            this.btn_Local[0] = btnLocal;
+            btnLocal.setToolTipText(I18n.E3D_LOCAL);
+            if (transformationMode == ManipulatorScope.LOCAL) btnLocal.setSelection(true);
+            btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
-            NButton btn_Global = new NButton(toolItem_TransformationModes, SWT.TOGGLE);
-            this.btn_Global[0] = btn_Global;
-            btn_Global.setToolTipText(I18n.E3D_GLOBAL);
-            if (transformationMode == ManipulatorScope.GLOBAL) btn_Global.setSelection(true);
-            btn_Global.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
-        }
-
-        {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(1, true));
-            NButton btn_Manipulator = new NButton(cmp_txt, SWT.NONE);
-            this.btn_Manipulator[0] = btn_Manipulator;
-            btn_Manipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btn_Manipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
-            btn_Manipulator.setText(I18n.COORDINATESDIALOG_MANIPULATOR);
-        }
-        {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(1, true));
-            NButton btn_Clipboard = new NButton(cmp_txt, SWT.NONE);
-            this.btn_Clipboard[0] = btn_Clipboard;
-            btn_Clipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-            btn_Clipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
-            btn_Clipboard.setText(I18n.COORDINATESDIALOG_CLIPBOARD);
+            NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
+            this.btn_Global[0] = btnGlobal;
+            btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
+            if (transformationMode == ManipulatorScope.GLOBAL) btnGlobal.setSelection(true);
+            btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
-
-            NButton cb_Xaxis = new NButton(cmp_txt, SWT.CHECK);
-            this.cb_Xaxis[0] = cb_Xaxis;
-            cb_Xaxis.setText(I18n.COORDINATESDIALOG_X);
-            cb_Xaxis.setSelection(false);
-
-            BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_X[0] = spn_X;
-            spn_X.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_X.setMaximum(new BigDecimal(1000000));
-            spn_X.setMinimum(new BigDecimal(-1000000));
-            spn_X.setValue(v.X);
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(1, true));
+            NButton btnManipulator = new NButton(cmpTxt, SWT.NONE);
+            this.btn_Manipulator[0] = btnManipulator;
+            btnManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btnManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
+            btnManipulator.setText(I18n.COORDINATESDIALOG_MANIPULATOR);
+        }
+        {
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(1, true));
+            NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
+            this.btn_Clipboard[0] = btnClipboard;
+            btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
+            btnClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
+            btnClipboard.setText(I18n.COORDINATESDIALOG_CLIPBOARD);
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
 
-            NButton cb_Yaxis = new NButton(cmp_txt, SWT.CHECK);
-            this.cb_Yaxis[0] = cb_Yaxis;
-            cb_Yaxis.setText(I18n.COORDINATESDIALOG_Y);
-            cb_Yaxis.setSelection(false);
+            NButton cbXaxis = new NButton(cmpTxt, SWT.CHECK);
+            this.cb_Xaxis[0] = cbXaxis;
+            cbXaxis.setText(I18n.COORDINATESDIALOG_X);
+            cbXaxis.setSelection(false);
 
-            BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Y[0] = spn_Y;
-            spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_Y.setMaximum(new BigDecimal(1000000));
-            spn_Y.setMinimum(new BigDecimal(-1000000));
-            spn_Y.setValue(v.Y);
+            BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_X[0] = spnX;
+            spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnX.setMaximum(new BigDecimal(1000000));
+            spnX.setMinimum(new BigDecimal(-1000000));
+            spnX.setValue(v.X);
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
 
-            NButton cb_Zaxis = new NButton(cmp_txt, SWT.CHECK);
-            this.cb_Zaxis[0] = cb_Zaxis;
-            cb_Zaxis.setText(I18n.COORDINATESDIALOG_Z);
-            cb_Zaxis.setSelection(false);
+            NButton cbYaxis = new NButton(cmpTxt, SWT.CHECK);
+            this.cb_Yaxis[0] = cbYaxis;
+            cbYaxis.setText(I18n.COORDINATESDIALOG_Y);
+            cbYaxis.setSelection(false);
 
-            BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Z[0] = spn_Z;
-            spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_Z.setMaximum(new BigDecimal(1000000));
-            spn_Z.setMinimum(new BigDecimal(-1000000));
-            spn_Z.setValue(v.Z);
+            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_Y[0] = spnY;
+            spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnY.setMaximum(new BigDecimal(1000000));
+            spnY.setMinimum(new BigDecimal(-1000000));
+            spnY.setValue(v.Y);
         }
 
-        cmp_container.pack();
-        return cmp_container;
+        {
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
+
+            NButton cbZaxis = new NButton(cmpTxt, SWT.CHECK);
+            this.cb_Zaxis[0] = cbZaxis;
+            cbZaxis.setText(I18n.COORDINATESDIALOG_Z);
+            cbZaxis.setSelection(false);
+
+            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
+            this.spn_Z[0] = spnZ;
+            spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnZ.setMaximum(new BigDecimal(1000000));
+            spnZ.setMinimum(new BigDecimal(-1000000));
+            spnZ.setValue(v.Z);
+        }
+
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

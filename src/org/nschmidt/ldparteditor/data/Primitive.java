@@ -272,9 +272,9 @@ public class Primitive implements Comparable<Primitive> {
                     if (o1 == me) return 1;
                     if (o2 == me) return -1;
                     if (o1 == o2) return 0;
-                    String name_o1 = o1.name;
-                    String name_o2 = o2.name;
-                    return numberAndMinus.matcher(name_o1).replaceAll("").compareToIgnoreCase(numberAndMinus.matcher(name_o2).replaceAll("")); //$NON-NLS-1$ //$NON-NLS-2$
+                    String nameO1 = o1.name;
+                    String nameO2 = o2.name;
+                    return numberAndMinus.matcher(nameO1).replaceAll("").compareToIgnoreCase(numberAndMinus.matcher(nameO2).replaceAll("")); //$NON-NLS-1$ //$NON-NLS-2$
                 });
                 break;
             case FILENAME_ORDER_BY_FRACTION:
@@ -283,38 +283,38 @@ public class Primitive implements Comparable<Primitive> {
                     if (o2 == me) return -1;
                     if (o1 == o2) return 0;
 
-                    float fraction_this = 0f;
-                    float fraction_other = 0f;
-                    String suffix_this = ""; //$NON-NLS-1$
-                    String suffix_other = ""; //$NON-NLS-1$
+                    float fractionThis = 0f;
+                    float fractionOther = 0f;
+                    String suffixThis = ""; //$NON-NLS-1$
+                    String suffixOther = ""; //$NON-NLS-1$
 
                     try {
-                        String name_o1 = o1.name;
-                        if (name_o1.startsWith("48\\")) name_o1 = name_o1.substring(3); //$NON-NLS-1$
-                        String upper_this = ""; //$NON-NLS-1$
-                        String lower_this = ""; //$NON-NLS-1$
-                        if (name_o1.charAt(1) == '-' || name_o1.charAt(2) == '-') {
+                        String nameO1 = o1.name;
+                        if (nameO1.startsWith("48\\")) nameO1 = nameO1.substring(3); //$NON-NLS-1$
+                        String upperThis = ""; //$NON-NLS-1$
+                        String lowerThis = ""; //$NON-NLS-1$
+                        if (nameO1.charAt(1) == '-' || nameO1.charAt(2) == '-') {
                             boolean readUpper = true;
                             int charCount = 0;
-                            char[] chars_this = name_o1.toCharArray();
-                            for (char c : chars_this) {
+                            char[] charsThis = nameO1.toCharArray();
+                            for (char c : charsThis) {
                                 if (Character.isDigit(c)) {
                                     if (readUpper) {
-                                        upper_this = upper_this + c;
+                                        upperThis = upperThis + c;
                                     } else {
-                                        lower_this = lower_this + c;
+                                        lowerThis = lowerThis + c;
                                     }
                                 } else {
                                     if (readUpper) {
                                         readUpper = false;
                                     } else {
-                                        suffix_this = name_o1.substring(charCount, name_o1.length());
+                                        suffixThis = nameO1.substring(charCount, nameO1.length());
                                         break;
                                     }
                                 }
                                 charCount++;
                             }
-                            fraction_this = Float.parseFloat(upper_this) / Float.parseFloat(lower_this);
+                            fractionThis = Float.parseFloat(upperThis) / Float.parseFloat(lowerThis);
                         } else {
                             return 1;
                         }
@@ -323,32 +323,32 @@ public class Primitive implements Comparable<Primitive> {
                     }
 
                     try {
-                        String name_o2 = o2.name;
-                        if (name_o2.startsWith("48\\")) name_o2 = name_o2.substring(3); //$NON-NLS-1$
-                        String upper_other = ""; //$NON-NLS-1$
-                        String lower_other = ""; //$NON-NLS-1$
-                        if (name_o2.charAt(1) == '-' || name_o2.charAt(2) == '-') {
+                        String nameO2 = o2.name;
+                        if (nameO2.startsWith("48\\")) nameO2 = nameO2.substring(3); //$NON-NLS-1$
+                        String upperOther = ""; //$NON-NLS-1$
+                        String lowerOther = ""; //$NON-NLS-1$
+                        if (nameO2.charAt(1) == '-' || nameO2.charAt(2) == '-') {
                             boolean readUpper = true;
                             int charCount = 0;
-                            char[] chars_other = name_o2.toCharArray();
-                            for (char c : chars_other) {
+                            char[] charsOther = nameO2.toCharArray();
+                            for (char c : charsOther) {
                                 if (Character.isDigit(c)) {
                                     if (readUpper) {
-                                        upper_other = upper_other + c;
+                                        upperOther = upperOther + c;
                                     } else {
-                                        lower_other = lower_other + c;
+                                        lowerOther = lowerOther + c;
                                     }
                                 } else {
                                     if (readUpper) {
                                         readUpper = false;
                                     } else {
-                                        suffix_other = name_o2.substring(charCount, name_o2.length());
+                                        suffixOther = nameO2.substring(charCount, nameO2.length());
                                         break;
                                     }
                                 }
                                 charCount++;
                             }
-                            fraction_other = Float.parseFloat(upper_other) / Float.parseFloat(lower_other);
+                            fractionOther = Float.parseFloat(upperOther) / Float.parseFloat(lowerOther);
                         } else {
                             return -1;
                         }
@@ -356,12 +356,12 @@ public class Primitive implements Comparable<Primitive> {
                         return -1;
                     }
 
-                    if (!suffix_this.equals(suffix_other)) {
-                        return suffix_this.compareTo(suffix_other);
+                    if (!suffixThis.equals(suffixOther)) {
+                        return suffixThis.compareTo(suffixOther);
                     } else {
-                        if (fraction_this < fraction_other) {
+                        if (fractionThis < fractionOther) {
                             return 1;
-                        } else if (fraction_this > fraction_other) {
+                        } else if (fractionThis > fractionOther) {
                             return -1;
                         }
                     }
@@ -373,59 +373,59 @@ public class Primitive implements Comparable<Primitive> {
                     if (o1 == me) return 1;
                     if (o2 == me) return -1;
                     if (o1 == o2) return 0;
-                    String name_o1 = o1.name;
-                    String name_o2 = o2.name;
-                    char[] chars_this = name_o1.toCharArray();
-                    char[] chars_other = name_o2.toCharArray();
-                    String number_this = ""; //$NON-NLS-1$
-                    String number_other = ""; //$NON-NLS-1$
-                    String prefix_this = ""; //$NON-NLS-1$
-                    String prefix_other = ""; //$NON-NLS-1$
+                    String nameO1 = o1.name;
+                    String nameO2 = o2.name;
+                    char[] charsThis = nameO1.toCharArray();
+                    char[] charsOther = nameO2.toCharArray();
+                    String numberThis = ""; //$NON-NLS-1$
+                    String numberOther = ""; //$NON-NLS-1$
+                    String prefixThis = ""; //$NON-NLS-1$
+                    String prefixOther = ""; //$NON-NLS-1$
                     try {
                         boolean readDigit = false;
-                        for (int i = chars_this.length - 1; i > 0 ; i--) {
-                            char c = chars_this[i];
+                        for (int i = charsThis.length - 1; i > 0 ; i--) {
+                            char c = charsThis[i];
                             if (Character.isDigit(c)) {
-                                number_this = c + number_this;
+                                numberThis = c + numberThis;
                                 readDigit = true;
                             } else if (readDigit) {
                                 for (int j = 0; j < i + 1; j++) {
-                                    if (!Character.isDigit(chars_this[j])) prefix_this = prefix_this + chars_this[j];
+                                    if (!Character.isDigit(charsThis[j])) prefixThis = prefixThis + charsThis[j];
                                 }
                                 break;
-                            } else if (i < chars_this.length - 5) {
+                            } else if (i < charsThis.length - 5) {
                                 break;
                             }
                         }
                         if (!readDigit) {
-                            number_this = "0"; //$NON-NLS-1$
+                            numberThis = "0"; //$NON-NLS-1$
                         }
                     } catch (Exception ex) {
-                        number_this = "0"; //$NON-NLS-1$
+                        numberThis = "0"; //$NON-NLS-1$
                     }
                     try {
                         boolean readDigit = false;
-                        for (int i = chars_other.length - 1; i > 0 ; i--) {
-                            char c = chars_other[i];
+                        for (int i = charsOther.length - 1; i > 0 ; i--) {
+                            char c = charsOther[i];
                             if (Character.isDigit(c)) {
-                                number_other = c + number_other;
+                                numberOther = c + numberOther;
                                 readDigit = true;
                             } else if (readDigit) {
                                 for (int j = 0; j < i + 1; j++) {
-                                    if (!Character.isDigit(chars_other[j])) prefix_other = prefix_other + chars_other[j];
+                                    if (!Character.isDigit(charsOther[j])) prefixOther = prefixOther + charsOther[j];
                                 }
                                 break;
-                            } else if (i < chars_other.length - 5) {
+                            } else if (i < charsOther.length - 5) {
                                 break;
                             }
                         }
                         if (!readDigit) {
-                            number_other = "0"; //$NON-NLS-1$
+                            numberOther = "0"; //$NON-NLS-1$
                         }
                     } catch (Exception ex) {
-                        number_other = "0"; //$NON-NLS-1$
+                        numberOther = "0"; //$NON-NLS-1$
                     }
-                    return Integer.compare(Integer.parseInt(number_this), Integer.parseInt(number_other));
+                    return Integer.compare(Integer.parseInt(numberThis), Integer.parseInt(numberOther));
                 });
                 break;
             default:

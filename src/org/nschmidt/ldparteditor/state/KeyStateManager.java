@@ -1339,20 +1339,20 @@ public class KeyStateManager {
 
     private static void translateView(Composite3D c3d, float dx, float dy) {
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
-        Matrix4f viewport_rotation = c3d.getRotation();
-        Matrix4f viewport_translation = c3d.getTranslation();
-        Matrix4f old_viewport_translation = new Matrix4f();
-        Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
-        Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
-        Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-        Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
-        Matrix4f.transform(ovr_inverse2, xAxis4f_translation, xAxis4f_translation);
-        Matrix4f.transform(ovr_inverse2, yAxis4f_translation, yAxis4f_translation);
-        Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
-        Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
-        Matrix4f.load(old_viewport_translation, viewport_translation);
-        Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
-        Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+        Matrix4f viewportRotation = c3d.getRotation();
+        Matrix4f viewportTranslation = c3d.getTranslation();
+        Matrix4f oldViewportTranslation = new Matrix4f();
+        Matrix4f.load(c3d.getTranslation(), oldViewportTranslation);
+        Vector4f xAxis4fTranslation = new Vector4f(dx, 0, 0, 1.0f);
+        Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
+        Matrix4f ovrInverse2 = Matrix4f.invert(viewportRotation, null);
+        Matrix4f.transform(ovrInverse2, xAxis4fTranslation, xAxis4fTranslation);
+        Matrix4f.transform(ovrInverse2, yAxis4fTranslation, yAxis4fTranslation);
+        Vector3f xAxis3 = new Vector3f(xAxis4fTranslation.x, xAxis4fTranslation.y, xAxis4fTranslation.z);
+        Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
+        Matrix4f.load(oldViewportTranslation, viewportTranslation);
+        Matrix4f.translate(xAxis3, oldViewportTranslation, viewportTranslation);
+        Matrix4f.translate(yAxis3, viewportTranslation, viewportTranslation);
         perspective.calculateOriginData();
         c3d.getVertexManager().getResetTimer().set(true);
         if (c3d.isSyncTranslation()) {

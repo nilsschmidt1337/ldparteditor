@@ -395,14 +395,14 @@ public class Composite3DModifier {
                 gd.verticalAlignment = SWT.CENTER;
                 gd.grabExcessHorizontalSpace = true;
                 gd.grabExcessVerticalSpace = true;
-                NButton btn_OpenIn3DEditor = new NButton(nc, Cocoa.getStyle());
-                btn_OpenIn3DEditor.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
-                btn_OpenIn3DEditor.setText(I18n.E3D_REOPEN_3D_VIEW);
-                btn_OpenIn3DEditor.setLayoutData(gd);
-                btn_OpenIn3DEditor.setData(Project.getFileToEdit());
+                NButton btnOpenIn3DEditor = new NButton(nc, Cocoa.getStyle());
+                btnOpenIn3DEditor.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
+                btnOpenIn3DEditor.setText(I18n.E3D_REOPEN_3D_VIEW);
+                btnOpenIn3DEditor.setLayoutData(gd);
+                btnOpenIn3DEditor.setData(Project.getFileToEdit());
 
-                WidgetUtil(btn_OpenIn3DEditor).addSelectionListener(e -> {
-                    DatFile df = (DatFile) btn_OpenIn3DEditor.getData();
+                WidgetUtil(btnOpenIn3DEditor).addSelectionListener(e -> {
+                    DatFile df = (DatFile) btnOpenIn3DEditor.getData();
                     if (df == null) {
                         df = View.DUMMY_DATFILE;
                     }
@@ -418,7 +418,7 @@ public class Composite3DModifier {
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {
-                    String fileList[] = null;
+                    String[] fileList = null;
                     FileTransfer ft = FileTransfer.getInstance();
                     if (ft.isSupportedType(event.currentDataType)) {
                         fileList = (String[]) event.data;
@@ -502,22 +502,22 @@ public class Composite3DModifier {
 
     public void zoomToFit() {
         final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
-        float max_x = 0f;
-        float max_y = 0f;
+        float maxX = 0f;
+        float maxY = 0f;
         for (Vertex v : c3d.getLockableDatFileReference().getVertexManager().getVertices()) {
             float ax = Math.abs(v.x);
             float ay = Math.abs(v.y);
-            if (ax > max_x) max_x = ax;
-            if (ay > max_y) max_y = ay;
+            if (ax > maxX) maxX = ax;
+            if (ay > maxY) maxY = ay;
         }
         Matrix4f id = new Matrix4f();
         Matrix4f.setIdentity(id);
         c3d.getTranslation().load(id);
         Rectangle b = c3d.getBounds();
-        if (max_x > max_y) {
-            c3d.setZoom(b.width / (max_x * 4f * View.PIXEL_PER_LDU));
+        if (maxX > maxY) {
+            c3d.setZoom(b.width / (maxX * 4f * View.PIXEL_PER_LDU));
         } else {
-            c3d.setZoom(b.height / (max_y * 4f * View.PIXEL_PER_LDU));
+            c3d.setZoom(b.height / (maxY * 4f * View.PIXEL_PER_LDU));
         }
         pc.setZoom_exponent((float) (Math.log10(c3d.getZoom()) + 3f) * 10f);
 

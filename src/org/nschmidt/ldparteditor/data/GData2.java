@@ -700,7 +700,7 @@ public final class GData2 extends GData {
     }
 
     void drawDistanceGL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
-        final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
         GL11.glLineWidth(View.lineWidthGL[0]);
@@ -739,10 +739,10 @@ public final class GData2 extends GData {
         }
         BigDecimal dA = length;
 
-        String dx_s = NUMBER_FORMAT4F.format(dx);
-        String dy_s = NUMBER_FORMAT4F.format(dy);
-        String dz_s = NUMBER_FORMAT4F.format(dz);
-        String dA_s = NUMBER_FORMAT4F.format(dA);
+        String dxS = numberFormat4f.format(dx);
+        String dyS = numberFormat4f.format(dy);
+        String dzS = numberFormat4f.format(dz);
+        String dAS = numberFormat4f.format(dA);
         final float oy1 = .015f * zoom;
         final float oy2 = .03f * zoom;
         final float oy3 = .045f * zoom;
@@ -762,10 +762,10 @@ public final class GData2 extends GData {
         for (PGData3 tri : View.DZ) {
             tri.drawText(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
         }
-        drawNumber(dA_s, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
-        drawNumber(dx_s, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
-        drawNumber(dy_s, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
-        drawNumber(dz_s, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
+        drawNumber(dAS, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
+        drawNumber(dxS, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
+        drawNumber(dyS, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
+        drawNumber(dzS, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
         PGData3.endDrawText();
         GL11.glEnable(GL11.GL_CULL_FACE);
         GL11.glPopMatrix();
@@ -900,7 +900,7 @@ public final class GData2 extends GData {
     void drawDistanceGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, boolean forceLengthCalculation) {
         GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
 
-        final java.text.DecimalFormat NUMBER_FORMAT4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final float zoom = 1f / c3d.getZoom();
         final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);
         final Vector4f lineOrigin = new Vector4f(x1, y1, z1, 1f);
@@ -927,10 +927,10 @@ public final class GData2 extends GData {
         }
         BigDecimal dA = length;
 
-        String dx_s = NUMBER_FORMAT4F.format(dx);
-        String dy_s = NUMBER_FORMAT4F.format(dy);
-        String dz_s = NUMBER_FORMAT4F.format(dz);
-        String dA_s = NUMBER_FORMAT4F.format(dA);
+        String dxS = numberFormat4f.format(dx);
+        String dyS = numberFormat4f.format(dy);
+        String dzS = numberFormat4f.format(dz);
+        String dAS = numberFormat4f.format(dA);
         final float oy1 = .015f * zoom;
         final float oy2 = .03f * zoom;
         final float oy3 = .045f * zoom;
@@ -950,9 +950,9 @@ public final class GData2 extends GData {
         for (PGData3 tri : View.DZ) {
             tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
         }
-        drawNumberGL33(dA_s, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
-        drawNumberGL33(dx_s, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
-        drawNumberGL33(dy_s, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
-        drawNumberGL33(dz_s, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
+        drawNumberGL33(dAS, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
+        drawNumberGL33(dxS, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);
+        drawNumberGL33(dyS, textOrigin.x + ox1, textOrigin.y + oy2, textOrigin.z, zoom);
+        drawNumberGL33(dzS, textOrigin.x + ox1, textOrigin.y + oy3, textOrigin.z, zoom);
     }
 }

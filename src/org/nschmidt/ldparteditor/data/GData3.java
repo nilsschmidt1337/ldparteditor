@@ -1534,21 +1534,21 @@ public final class GData3 extends GData {
         Vector3d vertexA = new Vector3d(X1, Y1, Z1);
         Vector3d vertexB = new Vector3d(X2, Y2, Z2);
         Vector3d vertexC = new Vector3d(X3, Y3, Z3);
-        Vector3d A = new Vector3d();
-        Vector3d B = new Vector3d();
-        Vector3d C = new Vector3d();
-        Vector3d.sub(vertexB, vertexA, A);
-        Vector3d.sub(vertexC, vertexB, B);
-        Vector3d.sub(vertexC, vertexA, C);
+        Vector3d sA = new Vector3d();
+        Vector3d sB = new Vector3d();
+        Vector3d sC = new Vector3d();
+        Vector3d.sub(vertexB, vertexA, sA);
+        Vector3d.sub(vertexC, vertexB, sB);
+        Vector3d.sub(vertexC, vertexA, sC);
 
-        angle = Vector3d.angle(A, C);
+        angle = Vector3d.angle(sA, sC);
         double sumAngle = angle;
         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
             return true;
         }
 
-        A.negate();
-        angle = Vector3d.angle(A, B);
+        sA.negate();
+        angle = Vector3d.angle(sA, sB);
         sumAngle = sumAngle + angle;
         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
             return true;
@@ -1594,7 +1594,7 @@ public final class GData3 extends GData {
     void drawProtractorGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
 
-        final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final float zoom = 1f / c3d.getZoom();
 
         final Vector4f textOrigin = new Vector4f(x1, y1, z1, 1f);
@@ -1607,13 +1607,13 @@ public final class GData3 extends GData {
         vc = Vector3d.sub(va, vc);
         double angle = Vector3d.angle(vb, vc);
         BigDecimal ang = new BigDecimal(angle);
-        String angle_s = NUMBER_FORMAT2F.format(ang) + "°"; //$NON-NLS-1$
+        String angleS = numberFormat2f.format(ang) + "°"; //$NON-NLS-1$
 
-        drawNumberGL33(angle_s, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
+        drawNumberGL33(angleS, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
     }
 
     void drawProtractor_GL20(boolean selected, Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
-        final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
 
@@ -1650,7 +1650,7 @@ public final class GData3 extends GData {
         vc = Vector3d.sub(va, vc);
         double angle = Vector3d.angle(vb, vc);
         BigDecimal ang = new BigDecimal(angle);
-        String angle_s = NUMBER_FORMAT2F.format(ang) + "°"; //$NON-NLS-1$
+        String angleS = numberFormat2f.format(ang) + "°"; //$NON-NLS-1$
 
         float sx1 = x1 + (x2 - x1) * .2f;
         float sy1 = y1 + (y2 - y1) * .2f;
@@ -1698,7 +1698,7 @@ public final class GData3 extends GData {
         GL11.glDisable(GL11.GL_DEPTH_TEST);
         PGData3.beginDrawText();
         GL11.glColor4f(r, g, b, 1f);
-        drawNumber(angle_s, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
+        drawNumber(angleS, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
         PGData3.endDrawText();
         GL11.glEnable(GL11.GL_DEPTH_TEST);
         GL11.glEnable(GL11.GL_CULL_FACE);

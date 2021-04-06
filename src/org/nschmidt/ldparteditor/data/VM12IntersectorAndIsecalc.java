@@ -132,22 +132,22 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         if (!newLines.isEmpty()) {
 
             // Remove zero length lines
-            BigDecimal EPSILON = new BigDecimal(".0001"); //$NON-NLS-1$
+            BigDecimal epsilon = new BigDecimal(".0001"); //$NON-NLS-1$
             for (Iterator<GData2> li = newLines.iterator(); li.hasNext();) {
                 GData2 l = li.next();
                 BigDecimal dx = l.X1.subtract(l.X2);
                 BigDecimal dy = l.Y1.subtract(l.Y2);
                 BigDecimal dz = l.Z1.subtract(l.Z2);
                 BigDecimal len = dx.multiply(dx).add(dy.multiply(dy)).add(dz.multiply(dz));
-                if (len.compareTo(EPSILON) <= 0) {
+                if (len.compareTo(epsilon) <= 0) {
                     remove(l);
                     li.remove();
                 }
             }
 
             final int lineCount = newLines.size();
-            final BigDecimal SMALL = new BigDecimal("0.001"); //$NON-NLS-1$
-            final BigDecimal SMALLANGLE = new BigDecimal("0.00001"); //$NON-NLS-1$
+            final BigDecimal small = new BigDecimal("0.001"); //$NON-NLS-1$
+            final BigDecimal smallangle = new BigDecimal("0.00001"); //$NON-NLS-1$
             final Vector3d zero = new Vector3d();
 
             // Merge lines with same directions
@@ -168,7 +168,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         Vector3d line2 = Vector3d.sub(p22, p21);
                         Vector3d temp = Vector3d.cross(line1, line2);
                         BigDecimal angle = Vector3d.manhattan(temp, zero).divide(Vector3d.manhattan(p12, p11), Threshold.mc).divide(Vector3d.manhattan(p22, p21), Threshold.mc);
-                        if (angle.compareTo(SMALLANGLE) < 0)
+                        if (angle.compareTo(smallangle) < 0)
                         {
                             colin[i] = distline;
                             colin[j] = distline;
@@ -195,10 +195,10 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 Vector3d p12 = new Vector3d(newLines.get(i).X2, newLines.get(i).Y2, newLines.get(i).Z2);
                                 Vector3d p21 = new Vector3d(newLines.get(j).X1, newLines.get(j).Y1, newLines.get(j).Z1);
                                 Vector3d p22 = new Vector3d(newLines.get(j).X2, newLines.get(j).Y2, newLines.get(j).Z2);
-                                if(Vector3d.manhattan(p11, p21).compareTo(SMALL) < 0 ||
-                                        Vector3d.manhattan(p11, p22).compareTo(SMALL) < 0 ||
-                                        Vector3d.manhattan(p12, p22).compareTo(SMALL) < 0 ||
-                                        Vector3d.manhattan(p12, p21).compareTo(SMALL) < 0)
+                                if(Vector3d.manhattan(p11, p21).compareTo(small) < 0 ||
+                                        Vector3d.manhattan(p11, p22).compareTo(small) < 0 ||
+                                        Vector3d.manhattan(p12, p22).compareTo(small) < 0 ||
+                                        Vector3d.manhattan(p12, p21).compareTo(small) < 0)
                                 {
                                     int a = 1;
                                     int b = 0;
@@ -891,14 +891,14 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
         }
 
-        final BigDecimal EPSILON = new BigDecimal(".0001"); //$NON-NLS-1$
+        final BigDecimal epsilon = new BigDecimal(".0001"); //$NON-NLS-1$
         for(Iterator<Vector3d> i = points.iterator(); i.hasNext(); ) {
             Vector3d p1 = i.next();
             for (Vector3d p2 : points) {
                 if (!p1.equals(p2)) {
                     Vector3d p3 = Vector3d.sub(p1, p2);
                     BigDecimal md = p3.X.multiply(p3.X).add(p3.Y.multiply(p3.Y)).add(p3.Z.multiply(p3.Z));
-                    if (md.compareTo(EPSILON) <= 0) {
+                    if (md.compareTo(epsilon) <= 0) {
                         i.remove();
                         break;
                     }
@@ -929,7 +929,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
     private IntersectionInfoWithColour getIntersectionInfo(GData origin, HashSet<GData> targetSurfs, IntersectorSettings ins) {
 
-        final BigDecimal MIN_DIST = new BigDecimal(".0001"); //$NON-NLS-1$
+        final BigDecimal minDist = new BigDecimal(".0001"); //$NON-NLS-1$
 
         final int ot = origin.type();
 
@@ -1214,8 +1214,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 intersect = true;
                                 break;
                             }
-                            if (Vector3dd.manhattan(v1, v3).compareTo(MIN_DIST) < 0 && Vector3dd.manhattan(v2, v4).compareTo(MIN_DIST) < 0 ||
-                                    Vector3dd.manhattan(v2, v3).compareTo(MIN_DIST) < 0 && Vector3dd.manhattan(v1, v4).compareTo(MIN_DIST) < 0) {
+                            if (Vector3dd.manhattan(v1, v3).compareTo(minDist) < 0 && Vector3dd.manhattan(v2, v4).compareTo(minDist) < 0 ||
+                                    Vector3dd.manhattan(v2, v3).compareTo(minDist) < 0 && Vector3dd.manhattan(v1, v4).compareTo(minDist) < 0) {
                                 intersect = true;
                                 break;
                             }
@@ -1224,7 +1224,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                             continue;
                         } else {
                             BigDecimal dist = Vector3dd.manhattan(v1, v2);
-                            if (dist.compareTo(MIN_DIST) > 0) {
+                            if (dist.compareTo(minDist) > 0) {
                                 ArrayList<Vector3dd> nl = new ArrayList<>();
                                 nl.add(v1);
                                 nl.add(v2);
@@ -1303,21 +1303,21 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     Vector3d vertexA = new Vector3d(triVerts[0]);
                                     Vector3d vertexB = new Vector3d(triVerts[1]);
                                     Vector3d vertexC = new Vector3d(triVerts[2]);
-                                    Vector3d A = new Vector3d();
-                                    Vector3d B = new Vector3d();
-                                    Vector3d C = new Vector3d();
-                                    Vector3d.sub(vertexB, vertexA, A);
-                                    Vector3d.sub(vertexC, vertexB, B);
-                                    Vector3d.sub(vertexC, vertexA, C);
+                                    Vector3d a = new Vector3d();
+                                    Vector3d b = new Vector3d();
+                                    Vector3d c = new Vector3d();
+                                    Vector3d.sub(vertexB, vertexA, a);
+                                    Vector3d.sub(vertexC, vertexB, b);
+                                    Vector3d.sub(vertexC, vertexA, c);
 
-                                    angle = Vector3d.angle(A, C);
+                                    angle = Vector3d.angle(a, c);
                                     double sumAngle = angle;
                                     if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                         continue;
                                     }
 
-                                    A.negate();
-                                    angle = Vector3d.angle(A, B);
+                                    a.negate();
+                                    angle = Vector3d.angle(a, b);
                                     sumAngle = sumAngle + angle;
                                     if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                         continue;
@@ -1536,11 +1536,11 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
      * @return
      */
     private boolean intersectLineTriangle(Vertex p, Vertex q, Vertex a, Vertex b, Vertex c, Vector3d r) {
-        final BigDecimal TOLERANCE = new BigDecimal("0.00001"); //$NON-NLS-1$ .00001
-        final BigDecimal ZEROT = new BigDecimal("-0.00001"); //$NON-NLS-1$
-        final BigDecimal ONET = new BigDecimal("1.00001"); //$NON-NLS-1$
+        final BigDecimal tolerance = new BigDecimal("0.00001"); //$NON-NLS-1$ .00001
+        final BigDecimal zerot = new BigDecimal("-0.00001"); //$NON-NLS-1$
+        final BigDecimal onet = new BigDecimal("1.00001"); //$NON-NLS-1$
         BigDecimal diskr;
-        BigDecimal inv_diskr;
+        BigDecimal invDiskr;
         Vector3d vert0 = new Vector3d(a);
         Vector3d vert1 = new Vector3d(b);
         Vector3d vert2 = new Vector3d(c);
@@ -1551,19 +1551,19 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         BigDecimal len = dir.normalise(dir);
         Vector3d pvec = Vector3d.cross(dir, corner2);
         diskr = Vector3d.dotP(corner1, pvec);
-        if (diskr.abs().compareTo(TOLERANCE) < 0)
+        if (diskr.abs().compareTo(tolerance) < 0)
             return false;
-        inv_diskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
+        invDiskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
         Vector3d tvec = Vector3d.sub(orig, vert0);
-        BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(inv_diskr);
-        if (u.compareTo(ZEROT) < 0 || u.compareTo(ONET) > 0)
+        BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(invDiskr);
+        if (u.compareTo(zerot) < 0 || u.compareTo(onet) > 0)
             return false;
         Vector3d qvec = Vector3d.cross(tvec, corner1);
-        BigDecimal v = Vector3d.dotP(dir, qvec).multiply(inv_diskr);
-        if (v.compareTo(ZEROT) < 0 || u.add(v).compareTo(ONET) > 0)
+        BigDecimal v = Vector3d.dotP(dir, qvec).multiply(invDiskr);
+        if (v.compareTo(zerot) < 0 || u.add(v).compareTo(onet) > 0)
             return false;
-        BigDecimal t = Vector3d.dotP(corner2, qvec).multiply(inv_diskr);
-        if (t.compareTo(ZEROT) < 0 || t.compareTo(len.add(TOLERANCE)) > 0)
+        BigDecimal t = Vector3d.dotP(corner2, qvec).multiply(invDiskr);
+        if (t.compareTo(zerot) < 0 || t.compareTo(len.add(tolerance)) > 0)
             return false;
         r.setX(orig.X.add(dir.X.multiply(t)));
         r.setY(orig.Y.add(dir.Y.multiply(t)));
@@ -1587,7 +1587,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
         if (linkedDatFile.isReadOnly()) return;
 
-        final BigDecimal MIN_DIST = new BigDecimal(".0001"); //$NON-NLS-1$
+        final BigDecimal minDist = new BigDecimal(".0001"); //$NON-NLS-1$
 
         final Set<GData2> originalSelectionLines = new HashSet<>();
         final Set<GData3> originalSelectionTriangles = new HashSet<>();
@@ -1748,10 +1748,10 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         originalNormal.setX(n.X);
                         originalNormal.setY(n.Y);
                         originalNormal.setZ(n.Z);
-                        BigDecimal EPSILON = new BigDecimal("0.001"); //$NON-NLS-1$
+                        BigDecimal epsilon = new BigDecimal("0.001"); //$NON-NLS-1$
                         for (Vertex vertex : m2) {
                             Vector3d vp = new Vector3d(vertex);
-                            if (Vector3d.dotP(Vector3d.sub(pOrigin, vp), n).abs().compareTo(EPSILON) > 0) return;
+                            if (Vector3d.dotP(Vector3d.sub(pOrigin, vp), n).abs().compareTo(epsilon) > 0) return;
                         }
 
                         if (monitor.isCanceled()) {
@@ -1919,7 +1919,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                             continue;
                                                         } else {
                                                             BigDecimal dist = Vector3dd.manhattan(v1, v2);
-                                                            if (dist.compareTo(MIN_DIST) > 0) {
+                                                            if (dist.compareTo(minDist) > 0) {
                                                                 if (vertexColour.containsKey(v1) && vertexColour.get(v1) != null) {
                                                                     ArrayList<Vector3dd> nl = new ArrayList<>();
                                                                     nl.add(v1);
@@ -2070,7 +2070,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                             }
                                             if (!intersect) {
                                                 BigDecimal dist = Vector3dd.manhattan(v1, v2);
-                                                if (dist.compareTo(MIN_DIST) > 0) {
+                                                if (dist.compareTo(minDist) > 0) {
                                                     ArrayList<Vector3dh> nl = new ArrayList<>();
                                                     nl.add(v1);
                                                     nl.add(v2);
@@ -2338,21 +2338,21 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                                 Vector3d vertexA = new Vector3d(triVerts[0]);
                                                                 Vector3d vertexB = new Vector3d(triVerts[1]);
                                                                 Vector3d vertexC = new Vector3d(triVerts[2]);
-                                                                Vector3d A = new Vector3d();
-                                                                Vector3d B = new Vector3d();
-                                                                Vector3d C = new Vector3d();
-                                                                Vector3d.sub(vertexB, vertexA, A);
-                                                                Vector3d.sub(vertexC, vertexB, B);
-                                                                Vector3d.sub(vertexC, vertexA, C);
+                                                                Vector3d a = new Vector3d();
+                                                                Vector3d b = new Vector3d();
+                                                                Vector3d c = new Vector3d();
+                                                                Vector3d.sub(vertexB, vertexA, a);
+                                                                Vector3d.sub(vertexC, vertexB, b);
+                                                                Vector3d.sub(vertexC, vertexA, c);
 
-                                                                angle = Vector3d.angle(A, C);
+                                                                angle = Vector3d.angle(a, c);
                                                                 double sumAngle = angle;
                                                                 if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                                     continue;
                                                                 }
 
-                                                                A.negate();
-                                                                angle = Vector3d.angle(A, B);
+                                                                a.negate();
+                                                                angle = Vector3d.angle(a, b);
                                                                 sumAngle = sumAngle + angle;
                                                                 if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                                     continue;
@@ -2635,20 +2635,20 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
     private boolean intersectRayTriangle(Vector3dd orig, Vector3d dir, Vector3dd vert0, Vector3dd vert1, Vector3dd vert2) {
         BigDecimal diskr;
-        BigDecimal inv_diskr;
+        BigDecimal invDiskr;
         Vector3d corner1 = Vector3d.sub(vert1, vert0);
         Vector3d corner2 = Vector3d.sub(vert2, vert0);
         Vector3d pvec = Vector3d.cross(dir, corner2);
         diskr = Vector3d.dotP(corner1, pvec);
         if (diskr.abs().compareTo(TOLERANCER) < 0)
             return false;
-        inv_diskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
+        invDiskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
         Vector3d tvec = Vector3d.sub(orig, vert0);
-        BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(inv_diskr);
+        BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(invDiskr);
         if (u.compareTo(ZEROTR) < 0 || u.compareTo(ONETR) > 0)
             return false;
         Vector3d qvec = Vector3d.cross(tvec, corner1);
-        BigDecimal v = Vector3d.dotP(dir, qvec).multiply(inv_diskr);
+        BigDecimal v = Vector3d.dotP(dir, qvec).multiply(invDiskr);
         if (v.compareTo(ZEROTR) < 0 || u.add(v).compareTo(ONETR) > 0)
             return false;
         return true;
@@ -2656,7 +2656,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
     private boolean intersectLineTriangleSuperFast(Vector3dd q, Vector3d d, Vector3dd p2, Vector3d c, Vector3d dir, BigDecimal len) {
         BigDecimal diskr;
-        BigDecimal inv_diskr;
+        BigDecimal invDiskr;
         Vector3d vert0 = d;
         Vector3d vert1 = p2;
         Vector3d vert2 = c;
@@ -2667,16 +2667,16 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         diskr = Vector3d.dotP(corner1, pvec);
         if (diskr.abs().compareTo(TOLERANCE) <= 0)
             return false;
-        inv_diskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
+        invDiskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
         Vector3d tvec = Vector3d.sub(orig, vert0);
-        BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(inv_diskr);
+        BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(invDiskr);
         if (u.compareTo(ZEROT) < 0 || u.compareTo(ONET) > 0)
             return false;
         Vector3d qvec = Vector3d.cross(tvec, corner1);
-        BigDecimal v = Vector3d.dotP(dir, qvec).multiply(inv_diskr);
+        BigDecimal v = Vector3d.dotP(dir, qvec).multiply(invDiskr);
         if (v.compareTo(ZEROT) < 0 || u.add(v).compareTo(ONET) > 0)
             return false;
-        BigDecimal t = Vector3d.dotP(corner2, qvec).multiply(inv_diskr);
+        BigDecimal t = Vector3d.dotP(corner2, qvec).multiply(invDiskr);
         if (t.compareTo(ZEROT) < 0 || t.compareTo(len.add(TOLERANCE)) > 0)
             return false;
         return true;

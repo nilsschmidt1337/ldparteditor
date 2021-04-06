@@ -51,33 +51,33 @@ class PartReviewDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_Container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_Container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
         if (alreadyReviewing) {
-            Label lbl_Info = new Label(cmp_Container, SWT.NONE);
-            lbl_Info.setText(I18n.E3D_PART_REVIEW_ALREADY);
+            Label lblInfo = new Label(cmpContainer, SWT.NONE);
+            lblInfo.setText(I18n.E3D_PART_REVIEW_ALREADY);
         } else {
-            Label lbl_PartName = new Label(cmp_Container, SWT.NONE);
-            lbl_PartName.setText(I18n.E3D_PART_REVIEW_ENTER_PART_NAME);
+            Label lblPartName = new Label(cmpContainer, SWT.NONE);
+            lblPartName.setText(I18n.E3D_PART_REVIEW_ENTER_PART_NAME);
 
-            Text txt_file2 = new Text(cmp_Container, SWT.NONE);
-            this.txt_file[0] = txt_file2;
+            Text txtFile2 = new Text(cmpContainer, SWT.NONE);
+            this.txt_file[0] = txtFile2;
             GridData gd = new GridData();
             gd.grabExcessHorizontalSpace = true;
             gd.horizontalAlignment = SWT.FILL;
-            txt_file2.setLayoutData(gd);
+            txtFile2.setLayoutData(gd);
 
             this.txt_file[0].addModifyListener(e -> fileName = txt_file[0].getText());
 
-            Label lbl_Info = new Label(cmp_Container, SWT.NONE);
-            lbl_Info.setText(I18n.E3D_PART_REVIEW_INFO);
+            Label lblInfo = new Label(cmpContainer, SWT.NONE);
+            lblInfo.setText(I18n.E3D_PART_REVIEW_INFO);
         }
 
-        cmp_Container.pack();
-        return cmp_Container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

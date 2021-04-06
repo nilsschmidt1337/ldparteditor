@@ -51,7 +51,6 @@ class HistoryManager {
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
     private volatile AtomicInteger action = new AtomicInteger(0);
     private final Lock lock = new ReentrantLock();
-    private volatile int mode = 0;
 
     private volatile Queue<Object[]> workQueue = new ConcurrentLinkedQueue<>();
     private volatile Queue<Object[]> answerQueue = new ConcurrentLinkedQueue<>();
@@ -386,9 +385,8 @@ class HistoryManager {
     private void action(final int action_mode, final boolean focusTextEditor) {
         if (action.get() != 0 || df.isReadOnly() || !df.getVertexManager().isUpdated() && WorkbenchManager.getUserSettingState().getSyncWithTextEditor().get()) return;
 
-        mode = action_mode;
+        action.set(action_mode);
 
-        action.set(mode);
         if (!isRunning.get()) {
             hasNoThread = true;
             isRunning.set(true);

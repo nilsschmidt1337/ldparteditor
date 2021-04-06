@@ -68,80 +68,80 @@ class YTruderDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_title = new Label(cmp_container, SWT.NONE);
-        lbl_title.setText(I18n.YTRUDER_TITLE);
+        Label lblTitle = new Label(cmpContainer, SWT.NONE);
+        lblTitle.setText(I18n.YTRUDER_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_description = new Label(cmp_container, SWT.NONE);
-        lbl_description.setText(I18n.YTRUDER_DESCRIPTION);
+        Label lblDescription = new Label(cmpContainer, SWT.NONE);
+        lblDescription.setText(I18n.YTRUDER_DESCRIPTION);
 
         {
-            NButton btn_TranslateByDistance = new NButton(cmp_container, SWT.RADIO);
-            this.btn_TranslateByDistance[0] = btn_TranslateByDistance;
-            btn_TranslateByDistance.setText(I18n.YTRUDER_TRANSLATION_BY_DISTANCE);
-            btn_TranslateByDistance.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_TranslateByDistance.setSelection(ys.getMode() == 1);
+            NButton btnTranslateByDistance = new NButton(cmpContainer, SWT.RADIO);
+            this.btn_TranslateByDistance[0] = btnTranslateByDistance;
+            btnTranslateByDistance.setText(I18n.YTRUDER_TRANSLATION_BY_DISTANCE);
+            btnTranslateByDistance.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            btnTranslateByDistance.setSelection(ys.getMode() == 1);
         }
         {
-            NButton btn_SymmetryAcrossPlane = new NButton(cmp_container, SWT.RADIO);
-            this.btn_SymmetryAcrossPlane[0] = btn_SymmetryAcrossPlane;
-            btn_SymmetryAcrossPlane.setText(I18n.YTRUDER_SYMMETRY_ACROSS_PLANE);
-            btn_SymmetryAcrossPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_SymmetryAcrossPlane.setSelection(ys.getMode() == 2);
+            NButton btnSymmetryAcrossPlane = new NButton(cmpContainer, SWT.RADIO);
+            this.btn_SymmetryAcrossPlane[0] = btnSymmetryAcrossPlane;
+            btnSymmetryAcrossPlane.setText(I18n.YTRUDER_SYMMETRY_ACROSS_PLANE);
+            btnSymmetryAcrossPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            btnSymmetryAcrossPlane.setSelection(ys.getMode() == 2);
         }
         {
-            NButton btn_ProjectionOnPlane = new NButton(cmp_container, SWT.RADIO);
-            this.btn_ProjectionOnPlane[0] = btn_ProjectionOnPlane;
-            btn_ProjectionOnPlane.setText(I18n.YTRUDER_PROJECTION_ON_PLANE);
-            btn_ProjectionOnPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_ProjectionOnPlane.setSelection(ys.getMode() == 3);
+            NButton btnProjectionOnPlane = new NButton(cmpContainer, SWT.RADIO);
+            this.btn_ProjectionOnPlane[0] = btnProjectionOnPlane;
+            btnProjectionOnPlane.setText(I18n.YTRUDER_PROJECTION_ON_PLANE);
+            btnProjectionOnPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            btnProjectionOnPlane.setSelection(ys.getMode() == 3);
         }
         {
-            NButton btn_ExtrudeRadially = new NButton(cmp_container, SWT.RADIO);
-            this.btn_ExtrudeRadially[0] = btn_ExtrudeRadially;
-            btn_ExtrudeRadially.setText(I18n.YTRUDER_EXTRUDE_RADIALLY);
-            btn_ExtrudeRadially.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            btn_ExtrudeRadially.setSelection(ys.getMode() == 4);
+            NButton btnExtrudeRadially = new NButton(cmpContainer, SWT.RADIO);
+            this.btn_ExtrudeRadially[0] = btnExtrudeRadially;
+            btnExtrudeRadially.setText(I18n.YTRUDER_EXTRUDE_RADIALLY);
+            btnExtrudeRadially.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            btnExtrudeRadially.setSelection(ys.getMode() == 4);
         }
 
-        Label lbl_lineThreshold = new Label(cmp_container, SWT.NONE);
-        lbl_lineThreshold.setText(I18n.YTRUDER_VALUE);
+        Label lblLineThreshold = new Label(cmpContainer, SWT.NONE);
+        lblLineThreshold.setText(I18n.YTRUDER_VALUE);
 
-        BigDecimalSpinner spn_value = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_value[0] = spn_value;
-        spn_value.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_value.setMaximum(new BigDecimal(999999));
-        spn_value.setMinimum(new BigDecimal(-999999));
-        spn_value.setValue(new BigDecimal(ys.getDistance()));
+        BigDecimalSpinner spnValue = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_value[0] = spnValue;
+        spnValue.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnValue.setMaximum(new BigDecimal(999999));
+        spnValue.setMinimum(new BigDecimal(-999999));
+        spnValue.setValue(new BigDecimal(ys.getDistance()));
 
-        Label lbl_rotationAngle = new Label(cmp_container, SWT.NONE);
-        lbl_rotationAngle.setText(I18n.YTRUDER_CONDLINE_ANGLE);
+        Label lblRotationAngle = new Label(cmpContainer, SWT.NONE);
+        lblRotationAngle.setText(I18n.YTRUDER_CONDLINE_ANGLE);
 
-        BigDecimalSpinner spn_rotationAngle = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_condlineAngleThreshold[0] = spn_rotationAngle;
-        spn_rotationAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_rotationAngle.setMaximum(new BigDecimal(180));
-        spn_rotationAngle.setMinimum(new BigDecimal(0));
-        spn_rotationAngle.setValue(new BigDecimal(ys.getCondlineAngleThreshold()));
+        BigDecimalSpinner spnRotationAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_condlineAngleThreshold[0] = spnRotationAngle;
+        spnRotationAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnRotationAngle.setMaximum(new BigDecimal(180));
+        spnRotationAngle.setMinimum(new BigDecimal(0));
+        spnRotationAngle.setValue(new BigDecimal(ys.getCondlineAngleThreshold()));
 
-        Label lbl_af = new Label(cmp_container, SWT.NONE);
-        lbl_af.setText(I18n.YTRUDER_AXIS);
+        Label lblAf = new Label(cmpContainer, SWT.NONE);
+        lblAf.setText(I18n.YTRUDER_AXIS);
 
-        Combo cmb_axis = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_axis[0] = cmb_axis;
-        cmb_axis.setItems(new String[] {I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z});
-        cmb_axis.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_axis.select(ys.getAxis());
+        Combo cmbAxis = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_axis[0] = cmbAxis;
+        cmbAxis.setItems(new String[] {I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z});
+        cmbAxis.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbAxis.select(ys.getAxis());
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

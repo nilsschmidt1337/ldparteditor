@@ -62,58 +62,58 @@ class VertexDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 5;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.E3D_SELECT_VERTEX);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.E3D_SELECT_VERTEX);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
 
-            BigDecimalSpinner spn_X = new BigDecimalSpinner(cmp_txt, SWT.NONE);
-            this.spn_X[0] = spn_X;
-            spn_X.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_X.setMaximum(new BigDecimal(1000000));
-            spn_X.setMinimum(new BigDecimal(-1000000));
-            spn_X.setValue(v.X);
+            BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE);
+            this.spn_X[0] = spnX;
+            spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnX.setMaximum(new BigDecimal(1000000));
+            spnX.setMinimum(new BigDecimal(-1000000));
+            spnX.setValue(v.X);
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
 
-            BigDecimalSpinner spn_Y = new BigDecimalSpinner(cmp_txt, SWT.NONE);
-            this.spn_Y[0] = spn_Y;
-            spn_Y.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_Y.setMaximum(new BigDecimal(1000000));
-            spn_Y.setMinimum(new BigDecimal(-1000000));
-            spn_Y.setValue(v.Y);
+            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE);
+            this.spn_Y[0] = spnY;
+            spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnY.setMaximum(new BigDecimal(1000000));
+            spnY.setMinimum(new BigDecimal(-1000000));
+            spnY.setValue(v.Y);
         }
 
         {
-            Composite cmp_txt = new Composite(cmp_container, SWT.NONE);
-            cmp_txt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmp_txt.setLayout(new GridLayout(6, true));
+            Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
+            cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmpTxt.setLayout(new GridLayout(6, true));
 
-            BigDecimalSpinner spn_Z = new BigDecimalSpinner(cmp_txt, SWT.NONE);
-            this.spn_Z[0] = spn_Z;
-            spn_Z.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
-            spn_Z.setMaximum(new BigDecimal(1000000));
-            spn_Z.setMinimum(new BigDecimal(-1000000));
-            spn_Z.setValue(v.Z);
+            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE);
+            this.spn_Z[0] = spnZ;
+            spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
+            spnZ.setMaximum(new BigDecimal(1000000));
+            spnZ.setMinimum(new BigDecimal(-1000000));
+            spnZ.setValue(v.Z);
         }
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

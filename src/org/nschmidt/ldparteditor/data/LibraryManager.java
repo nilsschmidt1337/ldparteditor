@@ -425,41 +425,41 @@ public class LibraryManager {
         @Override
         public int compareTo(DatFileName other) {
 
-            String[] segs_this = this.name.split(Pattern.quote(".")); //$NON-NLS-1$
-            String[] segs_other = other.name.split(Pattern.quote(".")); //$NON-NLS-1$
+            String[] segsThis = this.name.split(Pattern.quote(".")); //$NON-NLS-1$
+            String[] segsOther = other.name.split(Pattern.quote(".")); //$NON-NLS-1$
 
             // Special cases: unknown parts numbers "u[Number]" and unknown
             // stickers "s[Number]"
-            if (segs_this[0].charAt(0) == 'u' && segs_other[0].charAt(0) == 'u' || segs_this[0].charAt(0) == 's' && segs_other[0].charAt(0) == 's') {
-                segs_this[0] = segs_this[0].substring(1, segs_this[0].length());
-                segs_other[0] = segs_other[0].substring(1, segs_other[0].length());
+            if (segsThis[0].charAt(0) == 'u' && segsOther[0].charAt(0) == 'u' || segsThis[0].charAt(0) == 's' && segsOther[0].charAt(0) == 's') {
+                segsThis[0] = segsThis[0].substring(1, segsThis[0].length());
+                segsOther[0] = segsOther[0].substring(1, segsOther[0].length());
             }
 
             // Special cases: Primitive fractions
             if (this.comparePrimitives && other.comparePrimitives) {
-                if (segs_this[0].length() > 2 && segs_other[0].length() > 2 && (segs_this[0].charAt(1) == '-' || segs_this[0].charAt(2) == '-')
-                        && (segs_other[0].charAt(1) == '-' || segs_other[0].charAt(2) == '-')) {
-                    String upper_this = ""; //$NON-NLS-1$
-                    String upper_other = ""; //$NON-NLS-1$
-                    String lower_this = ""; //$NON-NLS-1$
-                    String lower_other = ""; //$NON-NLS-1$
-                    String suffix_this = ""; //$NON-NLS-1$
-                    String suffix_other = ""; //$NON-NLS-1$
+                if (segsThis[0].length() > 2 && segsOther[0].length() > 2 && (segsThis[0].charAt(1) == '-' || segsThis[0].charAt(2) == '-')
+                        && (segsOther[0].charAt(1) == '-' || segsOther[0].charAt(2) == '-')) {
+                    String upperThis = ""; //$NON-NLS-1$
+                    String upperOther = ""; //$NON-NLS-1$
+                    String lowerThis = ""; //$NON-NLS-1$
+                    String lowerOther = ""; //$NON-NLS-1$
+                    String suffixThis = ""; //$NON-NLS-1$
+                    String suffixOther = ""; //$NON-NLS-1$
                     boolean readUpper = true;
                     int charCount = 0;
-                    char[] chars_this = segs_this[0].toCharArray();
-                    for (char c : chars_this) {
+                    char[] charsThis = segsThis[0].toCharArray();
+                    for (char c : charsThis) {
                         if (Character.isDigit(c)) {
                             if (readUpper) {
-                                upper_this = upper_this + c;
+                                upperThis = upperThis + c;
                             } else {
-                                lower_this = lower_this + c;
+                                lowerThis = lowerThis + c;
                             }
                         } else {
                             if (readUpper) {
                                 readUpper = false;
                             } else {
-                                suffix_this = segs_this[0].substring(charCount, segs_this[0].length());
+                                suffixThis = segsThis[0].substring(charCount, segsThis[0].length());
                                 break;
                             }
                         }
@@ -467,19 +467,19 @@ public class LibraryManager {
                     }
                     readUpper = true;
                     charCount = 0;
-                    char[] chars_other = segs_other[0].toCharArray();
-                    for (char c : chars_other) {
+                    char[] charsOther = segsOther[0].toCharArray();
+                    for (char c : charsOther) {
                         if (Character.isDigit(c)) {
                             if (readUpper) {
-                                upper_other = upper_other + c;
+                                upperOther = upperOther + c;
                             } else {
-                                lower_other = lower_other + c;
+                                lowerOther = lowerOther + c;
                             }
                         } else {
                             if (readUpper) {
                                 readUpper = false;
                             } else {
-                                suffix_other = segs_other[0].substring(charCount, segs_other[0].length());
+                                suffixOther = segsOther[0].substring(charCount, segsOther[0].length());
                                 break;
                             }
                         }
@@ -487,13 +487,13 @@ public class LibraryManager {
                     }
                     try {
 
-                        float fraction_this = Float.parseFloat(upper_this) / Float.parseFloat(lower_this);
-                        float fraction_other = Float.parseFloat(upper_other) / Float.parseFloat(lower_other);
+                        float fractionThis = Float.parseFloat(upperThis) / Float.parseFloat(lowerThis);
+                        float fractionOther = Float.parseFloat(upperOther) / Float.parseFloat(lowerOther);
 
-                        if (!suffix_this.equals(suffix_other)) {
-                            return suffix_this.compareTo(suffix_other);
+                        if (!suffixThis.equals(suffixOther)) {
+                            return suffixThis.compareTo(suffixOther);
                         } else {
-                            if (fraction_this > fraction_other) {
+                            if (fractionThis > fractionOther) {
                                 return 1;
                             } else {
                                 return -1;
@@ -504,33 +504,33 @@ public class LibraryManager {
                 }
             }
 
-            String num_this = ""; //$NON-NLS-1$
-            String num_other = ""; //$NON-NLS-1$
-            char[] chars_this = segs_this[0].toCharArray();
-            for (char c : chars_this) {
+            String numThis = ""; //$NON-NLS-1$
+            String numOther = ""; //$NON-NLS-1$
+            char[] charsThis = segsThis[0].toCharArray();
+            for (char c : charsThis) {
                 if (Character.isDigit(c)) {
-                    num_this = num_this + c;
+                    numThis = numThis + c;
                 } else {
                     break;
                 }
             }
-            char[] chars_other = segs_other[0].toCharArray();
-            for (char c : chars_other) {
+            char[] charsOther = segsOther[0].toCharArray();
+            for (char c : charsOther) {
                 if (Character.isDigit(c)) {
-                    num_other = num_other + c;
+                    numOther = numOther + c;
                 } else {
                     break;
                 }
             }
-            if (num_this.isEmpty() || num_other.isEmpty() || num_this.equals(num_other)) {
+            if (numThis.isEmpty() || numOther.isEmpty() || numThis.equals(numOther)) {
                 return this.name.compareTo(other.name);
             } else {
-                int int_this = Integer.parseInt(num_this, 10);
-                int int_other = Integer.parseInt(num_other, 10);
-                if (int_this == int_other) {
+                int intThis = Integer.parseInt(numThis, 10);
+                int intOther = Integer.parseInt(numOther, 10);
+                if (intThis == intOther) {
                     return 0;
                 } else {
-                    if (int_this > int_other) {
+                    if (intThis > intOther) {
                         return 1;
                     } else {
                         return -1;
@@ -821,37 +821,37 @@ public class LibraryManager {
 
             // 1. Read and store all unsaved project files, since we want to keep them in the project
 
-            final TreeItem treeItem_ProjectParts = treeItem.getItems().get(0);
-            final TreeItem treeItem_ProjectSubparts = treeItem.getItems().get(1);
-            final TreeItem treeItem_ProjectPrimitives = treeItem.getItems().get(2);
-            final TreeItem treeItem_ProjectPrimitives48 = treeItem.getItems().get(3);
-            final TreeItem treeItem_ProjectPrimitives8 = treeItem.getItems().get(4);
+            final TreeItem treeItemProjectParts = treeItem.getItems().get(0);
+            final TreeItem treeItemProjectSubparts = treeItem.getItems().get(1);
+            final TreeItem treeItemProjectPrimitives = treeItem.getItems().get(2);
+            final TreeItem treeItemProjectPrimitives48 = treeItem.getItems().get(3);
+            final TreeItem treeItemProjectPrimitives8 = treeItem.getItems().get(4);
 
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectParts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectSubparts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives48, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
-            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItem_ProjectPrimitives8, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItemProjectParts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItemProjectSubparts, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItemProjectPrimitives, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItemProjectPrimitives48, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
+            readVirtualDataFromFolder(result, parentMap, typeMap, locked, loaded, existingMap, dfnMap, treeItemProjectPrimitives8, openIn3DMap, openInTextMap, unsavedIn3DMap, unsavedInTextMap, historyMap, duplicateMap, readOnly, true);
 
             readAllUnsavedFiles(parentMap, typeMap, dfnMap, locked, existingMap);
 
 
             // 2. Clear all project trees
-            treeItem_ProjectParts.getItems().clear();
-            treeItem_ProjectSubparts.getItems().clear();
-            treeItem_ProjectPrimitives.getItems().clear();
-            treeItem_ProjectPrimitives48.getItems().clear();
-            treeItem_ProjectPrimitives8.getItems().clear();
+            treeItemProjectParts.getItems().clear();
+            treeItemProjectSubparts.getItems().clear();
+            treeItemProjectPrimitives.getItems().clear();
+            treeItemProjectPrimitives48.getItems().clear();
+            treeItemProjectPrimitives8.getItems().clear();
 
             // 3. Scan for new files
 
             readActualDataFromFolder(result, basePath, null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, null, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
 
-            readActualDataFromFolder(result, basePath, DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectParts, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectSubparts, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives48, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
-            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE8, "P", "8", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItem_ProjectPrimitives8, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItemProjectParts, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItemProjectSubparts, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE, "P", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItemProjectPrimitives, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE48, "P", "48", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItemProjectPrimitives48, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PRIMITIVE8, "P", "8", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItemProjectPrimitives8, true, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
 
         } else {
 

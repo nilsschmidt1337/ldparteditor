@@ -571,72 +571,72 @@ public class UserSettingState implements Serializable {
         return coarse_move_snap;
     }
 
-    public void setCoarse_move_snap(BigDecimal coarse_move_snap) {
-        this.coarse_move_snap = coarse_move_snap;
+    public void setCoarse_move_snap(BigDecimal coarseMoveSnap) {
+        this.coarse_move_snap = coarseMoveSnap;
     }
 
     public BigDecimal getCoarse_rotate_snap() {
         return coarse_rotate_snap;
     }
 
-    public void setCoarse_rotate_snap(BigDecimal coarse_rotate_snap) {
-        this.coarse_rotate_snap = coarse_rotate_snap;
+    public void setCoarse_rotate_snap(BigDecimal coarseRotateSnap) {
+        this.coarse_rotate_snap = coarseRotateSnap;
     }
 
     public BigDecimal getCoarse_scale_snap() {
         return coarse_scale_snap;
     }
 
-    public void setCoarse_scale_snap(BigDecimal coarse_scale_snap) {
-        this.coarse_scale_snap = coarse_scale_snap;
+    public void setCoarse_scale_snap(BigDecimal coarseScaleSnap) {
+        this.coarse_scale_snap = coarseScaleSnap;
     }
 
     public BigDecimal getMedium_move_snap() {
         return medium_move_snap;
     }
 
-    public void setMedium_move_snap(BigDecimal medium_move_snap) {
-        this.medium_move_snap = medium_move_snap;
+    public void setMedium_move_snap(BigDecimal mediumMoveSnap) {
+        this.medium_move_snap = mediumMoveSnap;
     }
 
     public BigDecimal getMedium_rotate_snap() {
         return medium_rotate_snap;
     }
 
-    public void setMedium_rotate_snap(BigDecimal medium_rotate_snap) {
-        this.medium_rotate_snap = medium_rotate_snap;
+    public void setMedium_rotate_snap(BigDecimal mediumRotateSnap) {
+        this.medium_rotate_snap = mediumRotateSnap;
     }
 
     public BigDecimal getMedium_scale_snap() {
         return medium_scale_snap;
     }
 
-    public void setMedium_scale_snap(BigDecimal medium_scale_snap) {
-        this.medium_scale_snap = medium_scale_snap;
+    public void setMedium_scale_snap(BigDecimal mediumScaleSnap) {
+        this.medium_scale_snap = mediumScaleSnap;
     }
 
     public BigDecimal getFine_move_snap() {
         return fine_move_snap;
     }
 
-    public void setFine_move_snap(BigDecimal fine_move_snap) {
-        this.fine_move_snap = fine_move_snap;
+    public void setFine_move_snap(BigDecimal fineMoveSnap) {
+        this.fine_move_snap = fineMoveSnap;
     }
 
     public BigDecimal getFine_rotate_snap() {
         return fine_rotate_snap;
     }
 
-    public void setFine_rotate_snap(BigDecimal fine_rotate_snap) {
-        this.fine_rotate_snap = fine_rotate_snap;
+    public void setFine_rotate_snap(BigDecimal fineRotateSnap) {
+        this.fine_rotate_snap = fineRotateSnap;
     }
 
     public BigDecimal getFine_scale_snap() {
         return fine_scale_snap;
     }
 
-    public void setFine_scale_snap(BigDecimal fine_scale_snap) {
-        this.fine_scale_snap = fine_scale_snap;
+    public void setFine_scale_snap(BigDecimal fineScaleSnap) {
+        this.fine_scale_snap = fineScaleSnap;
     }
 
     public int getTransMatrixPrecision() {
@@ -1465,16 +1465,16 @@ public class UserSettingState implements Serializable {
         return coplanarity_angle_warning;
     }
 
-    public void setCoplanarity_angle_warning(double coplanarity_angle_warning) {
-        this.coplanarity_angle_warning = coplanarity_angle_warning;
+    public void setCoplanarity_angle_warning(double coplanarityAngleWarning) {
+        this.coplanarity_angle_warning = coplanarityAngleWarning;
     }
 
     public double getCoplanarity_angle_error() {
         return coplanarity_angle_error;
     }
 
-    public void setCoplanarity_angle_error(double coplanarity_angle_error) {
-        this.coplanarity_angle_error = coplanarity_angle_error;
+    public void setCoplanarity_angle_error(double coplanarityAngleError) {
+        this.coplanarity_angle_error = coplanarityAngleError;
     }
 
     public double getViewportScaleFactor() {

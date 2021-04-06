@@ -432,30 +432,30 @@ public enum View {
                     if (line == null) {
                         break;
                     }
-                    String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
-                    if (data_segments.length > 6) {
-                        if ("!COLOUR".equals(data_segments[1])) { //$NON-NLS-1$
-                            int index = Integer.parseInt(data_segments[4]);
+                    String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
+                    if (dataSegments.length > 6) {
+                        if ("!COLOUR".equals(dataSegments[1])) { //$NON-NLS-1$
+                            int index = Integer.parseInt(dataSegments[4]);
 
                             float magicIndexNumber = index;
                             while (magicIndexNumber > 512f) {
                                 magicIndexNumber = magicIndexNumber / 13.37f;
                             }
 
-                            float R = Integer.parseInt(data_segments[6].substring(1, 3), 16) / 255f + .000001f * magicIndexNumber;
-                            float G = Integer.parseInt(data_segments[6].substring(3, 5), 16) / 255f + .000001f * magicIndexNumber;
-                            float B = Integer.parseInt(data_segments[6].substring(5, 7), 16) / 255f + .000001f * magicIndexNumber;
+                            float r = Integer.parseInt(dataSegments[6].substring(1, 3), 16) / 255f + .000001f * magicIndexNumber;
+                            float g = Integer.parseInt(dataSegments[6].substring(3, 5), 16) / 255f + .000001f * magicIndexNumber;
+                            float b = Integer.parseInt(dataSegments[6].substring(5, 7), 16) / 255f + .000001f * magicIndexNumber;
 
-                            float R2 = Integer.parseInt(data_segments[8].substring(1, 3), 16) / 255f;
-                            float G2 = Integer.parseInt(data_segments[8].substring(3, 5), 16) / 255f;
-                            float B2 = Integer.parseInt(data_segments[8].substring(5, 7), 16) / 255f;
+                            float r2 = Integer.parseInt(dataSegments[8].substring(1, 3), 16) / 255f;
+                            float g2 = Integer.parseInt(dataSegments[8].substring(3, 5), 16) / 255f;
+                            float b2 = Integer.parseInt(dataSegments[8].substring(5, 7), 16) / 255f;
 
                             Matcher m = pAlpha.matcher(line);
 
                             if (m.find()) {
                                 String alphaStr = m.group().replaceAll("ALPHA", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                                 float alpha = Float.parseFloat(alphaStr) / 255f;
-                                GColour colour = new GColour(index, R, G, B, alpha);
+                                GColour colour = new GColour(index, r, g, b, alpha);
                                 if (line.contains(" MATERIAL")) { //$NON-NLS-1$
                                     try {
 
@@ -486,7 +486,7 @@ public enum View {
                                             float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
                                             float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
                                             float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                            colour = new GColour(index, R, G, B, Math.min(alpha, .99f), new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
+                                            colour = new GColour(index, r, g, b, Math.min(alpha, .99f), new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
                                         } else if (line.contains(" SPECKLE")) { //$NON-NLS-1$
                                             Matcher m6 = pSpeckle.matcher(line);
                                             m6.find();
@@ -494,7 +494,7 @@ public enum View {
                                             float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
                                             float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
                                             float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                            colour = new GColour(index, R, G, B, Math.min(alpha, .99f), new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
+                                            colour = new GColour(index, r, g, b, Math.min(alpha, .99f), new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
                                         }
                                     } catch (Exception e) {
                                         NLogger.error(View.class, "Line: " + line); //$NON-NLS-1$
@@ -503,22 +503,22 @@ public enum View {
                                 }
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" CHROME")) { //$NON-NLS-1$
-                                GColour colour = new GColour(index, R, G, B, 1f, new GCChrome());
+                                GColour colour = new GColour(index, r, g, b, 1f, new GCChrome());
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" RUBBER")) { //$NON-NLS-1$
-                                GColour colour = new GColour(index, R, G, B, 1f, new GCRubber());
+                                GColour colour = new GColour(index, r, g, b, 1f, new GCRubber());
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" MATTE_METALLIC")) { //$NON-NLS-1$
-                                GColour colour = new GColour(index, R, G, B, 1f, new GCMatteMetal());
+                                GColour colour = new GColour(index, r, g, b, 1f, new GCMatteMetal());
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" METAL")) { //$NON-NLS-1$
-                                GColour colour = new GColour(index, R, G, B, 1f, new GCMetal());
+                                GColour colour = new GColour(index, r, g, b, 1f, new GCMetal());
                                 colourFromIndex.put(index, colour);
                             } else if (line.contains(" PEARLESCENT")) { //$NON-NLS-1$
-                                GColour colour = new GColour(index, R, G, B, .99f, new GCPearl());
+                                GColour colour = new GColour(index, r, g, b, .99f, new GCPearl());
                                 colourFromIndex.put(index, colour);
                             } else {
-                                GColour colour = new GColour(index, R, G, B, 1f);
+                                GColour colour = new GColour(index, r, g, b, 1f);
                                 if (line.contains(" MATERIAL")) { //$NON-NLS-1$
                                     try {
 
@@ -549,7 +549,7 @@ public enum View {
                                             float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
                                             float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
                                             float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                            colour = new GColour(index, R, G, B, 99f, new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
+                                            colour = new GColour(index, r, g, b, 99f, new GCGlitter(vR, vG, vB, fraction, minSize, maxSize));
                                         } else if (line.contains(" SPECKLE")) { //$NON-NLS-1$
                                             Matcher m6 = pSpeckle.matcher(line);
                                             m6.find();
@@ -557,7 +557,7 @@ public enum View {
                                             float vR = Integer.parseInt(valStr.substring(1, 3), 16) / 255f;
                                             float vG = Integer.parseInt(valStr.substring(3, 5), 16) / 255f;
                                             float vB = Integer.parseInt(valStr.substring(5, 7), 16) / 255f;
-                                            colour = new GColour(index, R, G, B, .99f, new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
+                                            colour = new GColour(index, r, g, b, .99f, new GCSpeckle(vR, vG, vB, fraction, minSize, maxSize));
                                         }
                                     } catch (Exception e) {
                                         NLogger.error(View.class, "Line: " + line); //$NON-NLS-1$
@@ -566,14 +566,14 @@ public enum View {
                                 }
                                 colourFromIndex.put(index, colour);
                             }
-                            IndexedEntry entry = new IndexedEntry(R, G, B);
+                            IndexedEntry entry = new IndexedEntry(r, g, b);
                             if (index == 16) {
                                 col16_indexedEntry = entry;
                                 original_col16 = colourFromIndex.get(16).createClone();
                             }
                             indexFromColour.put(entry, index);
-                            edgeColourFromIndex.put(index, new GColour(index, R2, G2, B2, 1f));
-                            colourNameFromIndex.put(index, data_segments[2].replaceAll("_", " ")); //$NON-NLS-1$ //$NON-NLS-2$
+                            edgeColourFromIndex.put(index, new GColour(index, r2, g2, b2, 1f));
+                            colourNameFromIndex.put(index, dataSegments[2].replaceAll("_", " ")); //$NON-NLS-1$ //$NON-NLS-2$
                         }
                     }
                 }

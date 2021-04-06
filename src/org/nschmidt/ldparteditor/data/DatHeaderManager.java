@@ -93,12 +93,12 @@ public class DatHeaderManager {
                                     gd = gd2;
                                 }
 
-                                final TreeItem treeItem_Hints = (TreeItem) newEntry[1];
-                                final TreeItem treeItem_Warnings = (TreeItem) newEntry[2];
-                                final TreeItem treeItem_Errors = (TreeItem) newEntry[3];
-                                final TreeItem treeItem_Duplicates = (TreeItem) newEntry[4];
-                                final StyledText styledText_Composite = (StyledText) newEntry[5];
-                                final Label lbl_ProblemCount = (Label) newEntry[6];
+                                final TreeItem treeItemHints = (TreeItem) newEntry[1];
+                                final TreeItem treeItemWarnings = (TreeItem) newEntry[2];
+                                final TreeItem treeItemErrors = (TreeItem) newEntry[3];
+                                final TreeItem treeItemDuplicates = (TreeItem) newEntry[4];
+                                final StyledText styledTextComposite = (StyledText) newEntry[5];
+                                final Label lblProblemCount = (Label) newEntry[6];
                                 final GData firstEntry = gd.next;
                                 int lineNumber = 0;
                                 boolean[] registered = new boolean[]{false};
@@ -109,13 +109,13 @@ public class DatHeaderManager {
                                     registered[0] = false;
                                     int type = gd.type();
                                     String trimmedLine = gd.toString().trim();
-                                    String[] data_segments = trimmedLine.split("\\s+"); //$NON-NLS-1$
+                                    String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
 
                                     // Remove double spaces (essential for complex types)
                                     String normalizedLine;
                                     if (type > 6 || type < 2) {
                                         StringBuilder normalized = new StringBuilder();
-                                        for (String string : data_segments) {
+                                        for (String string : dataSegments) {
                                             normalized.append(string);
                                             normalized.append(" "); //$NON-NLS-1$
                                         }
@@ -648,25 +648,25 @@ public class DatHeaderManager {
                                     @Override
                                     public void run() {
                                         try {
-                                            if (df.updateDatHeaderHints(styledText_Composite, hints)) {
-                                                int errorCount = treeItem_Errors.getItems().size();
-                                                int warningCount = treeItem_Warnings.getItems().size();
-                                                int hintCount = treeItem_Hints.getItems().size();
-                                                int duplicateCount = treeItem_Duplicates.getItems().size();
+                                            if (df.updateDatHeaderHints(styledTextComposite, hints)) {
+                                                int errorCount = treeItemErrors.getItems().size();
+                                                int warningCount = treeItemWarnings.getItems().size();
+                                                int hintCount = treeItemHints.getItems().size();
+                                                int duplicateCount = treeItemDuplicates.getItems().size();
                                                 String errors = errorCount == 1 ? I18n.EDITORTEXT_ERROR : I18n.EDITORTEXT_ERRORS;
                                                 String warnings = warningCount == 1 ? I18n.EDITORTEXT_WARNING : I18n.EDITORTEXT_WARNINGS;
                                                 String hints = hintCount == 1 ? I18n.EDITORTEXT_OTHER : I18n.EDITORTEXT_OTHERS;
                                                 String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_DUPLICATE : I18n.EDITORTEXT_DUPLICATES;
-                                                lbl_ProblemCount.setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-                                                org.nschmidt.ldparteditor.widgets.Tree tree = treeItem_Hints.getParent();
+                                                lblProblemCount.setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                                                org.nschmidt.ldparteditor.widgets.Tree tree = treeItemHints.getParent();
                                                 tree.build();
-                                                lbl_ProblemCount.getParent().layout();
-                                                lbl_ProblemCount.getParent().redraw();
-                                                lbl_ProblemCount.getParent().update();
+                                                lblProblemCount.getParent().layout();
+                                                lblProblemCount.getParent().redraw();
+                                                lblProblemCount.getParent().update();
                                                 tree.redraw();
                                                 tree.update();
-                                                lbl_ProblemCount.redraw();
-                                                lbl_ProblemCount.update();
+                                                lblProblemCount.redraw();
+                                                lblProblemCount.update();
                                             }
                                         } catch (Exception ex) {
                                             // The text editor widget could be disposed

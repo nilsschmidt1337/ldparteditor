@@ -142,25 +142,25 @@ public class MouseActions {
         case MouseButton.LEFT:
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if ((event.stateMask & SWT.SHIFT) == SWT.SHIFT && !window.isAddingSomething()) {
-                Manipulator M = c3d.getManipulator();
-                M.startTranslation2(c3d);
+                Manipulator m = c3d.getManipulator();
+                m.startTranslation2(c3d);
                 translateAtSelect = true;
-                mX = new Vector4f(M.getXaxis());
-                mY = new Vector4f(M.getYaxis());
-                BigDecimal[] aX = M.getAccurateXaxis();
-                BigDecimal[] aY = M.getAccurateYaxis();
+                mX = new Vector4f(m.getXaxis());
+                mY = new Vector4f(m.getYaxis());
+                BigDecimal[] aX = m.getAccurateXaxis();
+                BigDecimal[] aY = m.getAccurateYaxis();
                 aXx = aX[0];
                 aXy = aX[1];
                 aXz = aX[2];
                 aYx = aY[0];
                 aYy = aY[1];
                 aYz = aY[2];
-                M.getXaxis().set(c3d.getGenerator()[0]);
-                M.getXaxis().normalise();
-                M.getYaxis().set(c3d.getGenerator()[1]);
-                M.getYaxis().normalise();
-                M.setAccurateXaxis(new BigDecimal(M.getXaxis().x), new BigDecimal(M.getXaxis().y), new BigDecimal(M.getXaxis().z));
-                M.setAccurateYaxis(new BigDecimal(M.getYaxis().x), new BigDecimal(M.getYaxis().y), new BigDecimal(M.getYaxis().z));
+                m.getXaxis().set(c3d.getGenerator()[0]);
+                m.getXaxis().normalise();
+                m.getYaxis().set(c3d.getGenerator()[1]);
+                m.getYaxis().normalise();
+                m.setAccurateXaxis(new BigDecimal(m.getXaxis().x), new BigDecimal(m.getXaxis().y), new BigDecimal(m.getXaxis().z));
+                m.setAccurateYaxis(new BigDecimal(m.getYaxis().x), new BigDecimal(m.getYaxis().y), new BigDecimal(m.getYaxis().z));
             } else  if (window.getWorkingAction() == WorkingMode.SELECT || window.isAddingSomething()) {
                 c3d.setDoingSelection(true);
             } else  if (!window.isAddingSomething()) {
@@ -279,9 +279,9 @@ public class MouseActions {
         c3d.getMousePosition().set(event.x, event.y);
         KeyStateManager keyboard = c3d.getKeys();
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
-        Matrix4f viewport_translation = c3d.getTranslation();
-        Matrix4f viewport_rotation = c3d.getRotation();
-        float viewport_pixel_per_ldu = c3d.getViewportPixelPerLDU();
+        Matrix4f viewportTranslation = c3d.getTranslation();
+        Matrix4f viewportRotation = c3d.getRotation();
+        float viewportPixelPerLDU = c3d.getViewportPixelPerLDU();
         switch (mouse_button_pressed) {
         case MouseButton.LEFT:
             Vector4f temp;
@@ -318,11 +318,11 @@ public class MouseActions {
                     rx = (float) (Math.atan2(cSize.y / 2f - old_mouse_position.y, cSize.x / 2f - old_mouse_position.x)
                             - Math.atan2(cSize.y / 2f - event.y, cSize.x / 2f - event.x));
                 }
-                Vector4f xAxis4f_rotation = new Vector4f(0f, 0f, 1.0f, 1.0f);
-                Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
-                Matrix4f.transform(ovr_inverse, xAxis4f_rotation, xAxis4f_rotation);
-                Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
-                Matrix4f.rotate(rx, xAxis3f_rotation, old_viewport_rotation, viewport_rotation);
+                Vector4f xAxis4fRotation = new Vector4f(0f, 0f, 1.0f, 1.0f);
+                Matrix4f ovrInverse = Matrix4f.invert(old_viewport_rotation, null);
+                Matrix4f.transform(ovrInverse, xAxis4fRotation, xAxis4fRotation);
+                Vector3f xAxis3fRotation = new Vector3f(xAxis4fRotation.x, xAxis4fRotation.y, xAxis4fRotation.z);
+                Matrix4f.rotate(rx, xAxis3fRotation, old_viewport_rotation, viewportRotation);
             } else {
                 if (c3d.hasNegDeterminant()) {
                     rx = (event.x - old_mouse_position.x) / cSize.x * (float) Math.PI;
@@ -331,15 +331,15 @@ public class MouseActions {
                     rx = (old_mouse_position.x - event.x) / cSize.x * (float) Math.PI;
                     ry = (old_mouse_position.y - event.y) / cSize.y * (float) Math.PI;
                 }
-                Vector4f xAxis4f_rotation = new Vector4f(1.0f, 0f, 0f, 1.0f);
-                Vector4f yAxis4f_rotation = new Vector4f(0f, 1.0f, 0f, 1.0f);
-                Matrix4f ovr_inverse = Matrix4f.invert(old_viewport_rotation, null);
-                Matrix4f.transform(ovr_inverse, xAxis4f_rotation, xAxis4f_rotation);
-                Matrix4f.transform(ovr_inverse, yAxis4f_rotation, yAxis4f_rotation);
-                Vector3f xAxis3f_rotation = new Vector3f(xAxis4f_rotation.x, xAxis4f_rotation.y, xAxis4f_rotation.z);
-                Vector3f yAxis3f_rotation = new Vector3f(yAxis4f_rotation.x, yAxis4f_rotation.y, yAxis4f_rotation.z);
-                Matrix4f.rotate(rx, yAxis3f_rotation, old_viewport_rotation, viewport_rotation);
-                Matrix4f.rotate(ry, xAxis3f_rotation, viewport_rotation, viewport_rotation);
+                Vector4f xAxis4fRotation = new Vector4f(1.0f, 0f, 0f, 1.0f);
+                Vector4f yAxis4fRotation = new Vector4f(0f, 1.0f, 0f, 1.0f);
+                Matrix4f ovrInverse = Matrix4f.invert(old_viewport_rotation, null);
+                Matrix4f.transform(ovrInverse, xAxis4fRotation, xAxis4fRotation);
+                Matrix4f.transform(ovrInverse, yAxis4fRotation, yAxis4fRotation);
+                Vector3f xAxis3fRotation = new Vector3f(xAxis4fRotation.x, xAxis4fRotation.y, xAxis4fRotation.z);
+                Vector3f yAxis3fRotation = new Vector3f(yAxis4fRotation.x, yAxis4fRotation.y, yAxis4fRotation.z);
+                Matrix4f.rotate(rx, yAxis3fRotation, old_viewport_rotation, viewportRotation);
+                Matrix4f.rotate(ry, xAxis3fRotation, viewportRotation, viewportRotation);
             }
             perspective.calculateOriginData();
             c3d.getVertexManager().getResetTimer().set(true);
@@ -350,27 +350,27 @@ public class MouseActions {
             float dx = 0;
             float dy = 0;
             if (!(keyboard.isShiftPressed() || Cocoa.isCocoa && keyboard.isAltPressed()) ) {
-                dx = (old_mouse_position.x - event.x) / viewport_pixel_per_ldu;
+                dx = (old_mouse_position.x - event.x) / viewportPixelPerLDU;
             }
             if (!(keyboard.isCtrlPressed() || Cocoa.isCocoa && keyboard.isCmdPressed()) || Editor3DWindow.getWindow().isAddingSomething()) {
-                dy = (event.y - old_mouse_position.y) / viewport_pixel_per_ldu;
+                dy = (event.y - old_mouse_position.y) / viewportPixelPerLDU;
             }
-            translateViewport(dx, dy, viewport_translation, viewport_rotation, perspective);
+            translateViewport(dx, dy, viewportTranslation, viewportRotation, perspective);
             c3d.getVertexManager().getResetTimer().set(true);
             break;
         default:
             break;
         }
         c3d.getCursor3D().set(perspective.get3DCoordinatesFromScreen(event.x, event.y));
-        final BigDecimal SNAP = Manipulator.getSnap()[0];
-        final float snap = SNAP.floatValue() * 1000f;
+        final BigDecimal snapPrecise = Manipulator.getSnap()[0];
+        final float snap = snapPrecise.floatValue() * 1000f;
         final float sx = c3d.getCursor3D().x;
         final float sy = c3d.getCursor3D().y;
         final float sz = c3d.getCursor3D().z;
 
-        c3d.getCursorSnapped3Dprecise()[0] = new BigDecimal(sx / 1000f).subtract(new BigDecimal(sx / 1000f).remainder(SNAP, Threshold.mc));
-        c3d.getCursorSnapped3Dprecise()[1] = new BigDecimal(sy / 1000f).subtract(new BigDecimal(sy / 1000f).remainder(SNAP, Threshold.mc));
-        c3d.getCursorSnapped3Dprecise()[2] = new BigDecimal(sz / 1000f).subtract(new BigDecimal(sz / 1000f).remainder(SNAP, Threshold.mc));
+        c3d.getCursorSnapped3Dprecise()[0] = new BigDecimal(sx / 1000f).subtract(new BigDecimal(sx / 1000f).remainder(snapPrecise, Threshold.mc));
+        c3d.getCursorSnapped3Dprecise()[1] = new BigDecimal(sy / 1000f).subtract(new BigDecimal(sy / 1000f).remainder(snapPrecise, Threshold.mc));
+        c3d.getCursorSnapped3Dprecise()[2] = new BigDecimal(sz / 1000f).subtract(new BigDecimal(sz / 1000f).remainder(snapPrecise, Threshold.mc));
 
         c3d.getCursorSnapped3D().set(sx - sx % snap, sy - sy % snap, sz - sz % snap, 1f);
 
@@ -678,18 +678,18 @@ public class MouseActions {
         Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
     }
 
-    public void translateViewport(float dx, float dy, Matrix4f viewport_translation, Matrix4f viewport_rotation,
+    public void translateViewport(float dx, float dy, Matrix4f viewportTranslation, Matrix4f viewportRotation,
             PerspectiveCalculator perspective) {
-        Vector4f xAxis4f_translation = new Vector4f(dx, 0, 0, 1.0f);
-        Vector4f yAxis4f_translation = new Vector4f(0, dy, 0, 1.0f);
-        Matrix4f ovr_inverse2 = Matrix4f.invert(viewport_rotation, null);
-        Matrix4f.transform(ovr_inverse2, xAxis4f_translation, xAxis4f_translation);
-        Matrix4f.transform(ovr_inverse2, yAxis4f_translation, yAxis4f_translation);
-        Vector3f xAxis3 = new Vector3f(xAxis4f_translation.x, xAxis4f_translation.y, xAxis4f_translation.z);
-        Vector3f yAxis3 = new Vector3f(yAxis4f_translation.x, yAxis4f_translation.y, yAxis4f_translation.z);
-        Matrix4f.load(old_viewport_translation, viewport_translation);
-        Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
-        Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+        Vector4f xAxis4fTranslation = new Vector4f(dx, 0, 0, 1.0f);
+        Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
+        Matrix4f ovrInverse2 = Matrix4f.invert(viewportRotation, null);
+        Matrix4f.transform(ovrInverse2, xAxis4fTranslation, xAxis4fTranslation);
+        Matrix4f.transform(ovrInverse2, yAxis4fTranslation, yAxis4fTranslation);
+        Vector3f xAxis3 = new Vector3f(xAxis4fTranslation.x, xAxis4fTranslation.y, xAxis4fTranslation.z);
+        Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
+        Matrix4f.load(old_viewport_translation, viewportTranslation);
+        Matrix4f.translate(xAxis3, old_viewport_translation, viewportTranslation);
+        Matrix4f.translate(yAxis3, viewportTranslation, viewportTranslation);
         perspective.calculateOriginData();
     }
 
@@ -1237,13 +1237,13 @@ public class MouseActions {
                     }
                 }
             } else if (translateAtSelect && !window.isAddingSomething()) {
-                Manipulator M = c3d.getManipulator();
-                M.applyTranslationAtSelect(c3d);
+                Manipulator m = c3d.getManipulator();
+                m.applyTranslationAtSelect(c3d);
                 translateAtSelect = false;
-                M.getXaxis().set(mX);
-                M.getYaxis().set(mY);
-                M.setAccurateXaxis(aXx, aXy, aXz);
-                M.setAccurateYaxis(aYx, aYy, aYz);
+                m.getXaxis().set(mX);
+                m.getYaxis().set(mY);
+                m.setAccurateXaxis(aXx, aXy, aXz);
+                m.setAccurateYaxis(aYx, aYy, aYz);
                 checkSyncEditMode(vm, datfile);
             } else if (window.getWorkingAction() == WorkingMode.SELECT) {
                 final SelectorSettings sels = window.loadSelectorSettings();
@@ -1375,8 +1375,8 @@ public class MouseActions {
             final GData1 subfile = vm.getSelectedSubfiles().iterator().next();
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
                 Matrix4f m = subfile.getProductMatrix();
-                Matrix M = subfile.getAccurateProductMatrix();
-                MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, M, m);
+                Matrix mPrecise = subfile.getAccurateProductMatrix();
+                MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, mPrecise, m);
             }
         } else if (GDataCSG.getSelection(c3d.getLockableDatFileReference()).size() == 1) {
             GDataCSG csg = null;
@@ -1395,9 +1395,9 @@ public class MouseActions {
             m2.m30 = m2.m30 / 1000f;
             m2.m31 = m2.m31 / 1000f;
             m2.m32 = m2.m32 / 1000f;
-            Matrix M = new Matrix(m2);
+            Matrix mPrecise = new Matrix(m2);
             if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, M, m);
+                MatrixOperations.moveManipulatorToSubfileOrCSGMatrix(c3d, mPrecise, m);
             }
         }
     }

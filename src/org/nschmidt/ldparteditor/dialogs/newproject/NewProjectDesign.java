@@ -60,57 +60,57 @@ class NewProjectDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_Container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_Container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_newProject = new Label(cmp_Container, SWT.NONE);
+        Label lblNewProject = new Label(cmpContainer, SWT.NONE);
         if (saveAs) {
-            lbl_newProject.setText(I18n.PROJECT_SAVE_PROJECT);
+            lblNewProject.setText(I18n.PROJECT_SAVE_PROJECT);
         } else {
-            lbl_newProject.setText(I18n.PROJECT_CREATE_NEW_PROJECT);
+            lblNewProject.setText(I18n.PROJECT_CREATE_NEW_PROJECT);
         }
 
-        Label lbl_separator = new Label(cmp_Container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_projectLocation = new Label(cmp_Container, SWT.NONE);
-        lbl_projectLocation.setText(I18n.PROJECT_PROJECT_LOCATION);
+        Label lblProjectLocation = new Label(cmpContainer, SWT.NONE);
+        lblProjectLocation.setText(I18n.PROJECT_PROJECT_LOCATION);
 
-        Composite cmp_pathChooser1 = new Composite(cmp_Container, SWT.NONE);
-        cmp_pathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
+        Composite cmpPathChooser1 = new Composite(cmpContainer, SWT.NONE);
+        cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txt_ldrawPath = new Text(cmp_pathChooser1, SWT.BORDER);
-        this.txt_projectPath[0] = txt_ldrawPath;
-        txt_ldrawPath.setEditable(false);
-        txt_ldrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
+        Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
+        this.txt_projectPath[0] = txtLdrawPath;
+        txtLdrawPath.setEditable(false);
+        txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
         if (!saveAs || Project.getProjectPath().equals(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath())) {
-            txt_ldrawPath.setText(""); //$NON-NLS-1$
+            txtLdrawPath.setText(""); //$NON-NLS-1$
         } else {
             String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
-            txt_ldrawPath.setText(new File(Project.getProjectPath()).getParent().substring(authorFolder.length()));
+            txtLdrawPath.setText(new File(Project.getProjectPath()).getParent().substring(authorFolder.length()));
         }
 
-        NButton btn_BrowseLdrawPath = new NButton(cmp_pathChooser1, SWT.NONE);
-        this.btn_browseProjectPath[0] = btn_BrowseLdrawPath;
-        btn_BrowseLdrawPath.setText(I18n.DIALOG_BROWSE);
+        NButton btnBrowseLdrawPath = new NButton(cmpPathChooser1, SWT.NONE);
+        this.btn_browseProjectPath[0] = btnBrowseLdrawPath;
+        btnBrowseLdrawPath.setText(I18n.DIALOG_BROWSE);
 
-        Label lbl_projectName = new Label(cmp_Container, SWT.NONE);
-        lbl_projectName.setText(I18n.PROJECT_PROJECT_NAME);
+        Label lblProjectName = new Label(cmpContainer, SWT.NONE);
+        lblProjectName.setText(I18n.PROJECT_PROJECT_NAME);
 
-        Composite cmp_projectName = new Composite(cmp_Container, SWT.NONE);
-        cmp_projectName.setLayout(new RowLayout(SWT.HORIZONTAL));
+        Composite cmpProjectName = new Composite(cmpContainer, SWT.NONE);
+        cmpProjectName.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-        Text txt_projectName = new Text(cmp_projectName, SWT.BORDER);
-        this.txt_projectName[0] = txt_projectName;
-        txt_projectName.setLayoutData(new RowData(294, SWT.DEFAULT));
+        Text txtProjectName = new Text(cmpProjectName, SWT.BORDER);
+        this.txt_projectName[0] = txtProjectName;
+        txtProjectName.setLayoutData(new RowData(294, SWT.DEFAULT));
 
-        if (!txt_ldrawPath.getText().isEmpty() && saveAs) {
-            txt_projectName.setText(Project.getProjectName());
+        if (!txtLdrawPath.getText().isEmpty() && saveAs) {
+            txtProjectName.setText(Project.getProjectName());
         }
 
-        return cmp_Container;
+        return cmpContainer;
     }
 
     /**

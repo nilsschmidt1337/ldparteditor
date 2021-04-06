@@ -37,16 +37,16 @@ final class WarningFixer {
         switch (s) {
         case 204: // Upper- & Mixed-Case File Name
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
-            if (data_segments.length > 11) {
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
+            if (dataSegments.length > 11) {
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < 11; i++) {
                     sb.append(" "); //$NON-NLS-1$
-                    sb.append(data_segments[i]);
+                    sb.append(dataSegments[i]);
                 }
-                for (int i = 11; i < data_segments.length; i++) {
+                for (int i = 11; i < dataSegments.length; i++) {
                     sb.append(" "); //$NON-NLS-1$
-                    sb.append(data_segments[i].toLowerCase(Locale.ENGLISH));
+                    sb.append(dataSegments[i].toLowerCase(Locale.ENGLISH));
                 }
                 text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
             }
@@ -54,35 +54,36 @@ final class WarningFixer {
         break;
         case 220: // Dithered Colour
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             StringBuilder colourBuilder = new StringBuilder();
             try {
 
-                if (data_segments.length > 3) {
-                    int colourValue = Integer.parseInt(data_segments[1]);
-                    int A = colourValue - 256 >> 4;
-                int B = colourValue - 256 & 0x0F;
-                if (View.hasLDConfigColour(A) && View.hasLDConfigColour(B)) {
-                    GColour colourA = View.getLDConfigColour(A);
-                    GColour colourB = View.getLDConfigColour(B);
-                    colourBuilder.append("0x2"); //$NON-NLS-1$
-                    colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getR() + colourB.getR()) / 2f))).toUpperCase());
-                    colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getG() + colourB.getG()) / 2f))).toUpperCase());
-                    colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getB() + colourB.getB()) / 2f))).toUpperCase());
-                } else {
-                    return text;
-                }
-                StringBuilder sb = new StringBuilder();
-                sb.append(data_segments[0]);
-                sb.append(" ");  //$NON-NLS-1$
-                sb.append(colourBuilder.toString());
-                for (int i = 2; i < data_segments.length - 1; i++) {
+                if (dataSegments.length > 3) {
+                    int colourValue = Integer.parseInt(dataSegments[1]);
+                    int indexA = colourValue - 256 >> 4;
+                    int indexB = colourValue - 256 & 0x0F;
+                    if (View.hasLDConfigColour(indexA) && View.hasLDConfigColour(indexB)) {
+                        GColour colourA = View.getLDConfigColour(indexA);
+                        GColour colourB = View.getLDConfigColour(indexB);
+                        colourBuilder.append("0x2"); //$NON-NLS-1$
+                        colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getR() + colourB.getR()) / 2f))).toUpperCase());
+                        colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getG() + colourB.getG()) / 2f))).toUpperCase());
+                        colourBuilder.append(MathHelper.toHex((int) (255f * ((colourA.getB() + colourB.getB()) / 2f))).toUpperCase());
+                    } else {
+                        return text;
+                    }
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(dataSegments[0]);
+                    sb.append(" ");  //$NON-NLS-1$
+                    sb.append(colourBuilder.toString());
+                    for (int i = 2; i < dataSegments.length - 1; i++) {
+                        sb.append(" "); //$NON-NLS-1$
+                        sb.append(dataSegments[i]);
+                    }
                     sb.append(" "); //$NON-NLS-1$
-                    sb.append(data_segments[i]);
-                }
-                sb.append(" "); //$NON-NLS-1$
-                sb.append(data_segments[data_segments.length - 1]);
-                text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
+                    sb.append(dataSegments[dataSegments.length - 1]);
+                    text = QuickFixer.setLine(lineNumber + 1, sb.toString().trim(), text);
                 }
             } catch (NumberFormatException nfe) {
                 return text;
@@ -91,21 +92,21 @@ final class WarningFixer {
         break;
         case 11: // 0 BFC CERTIFY INVERTNEXT
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             text = QuickFixer.setLine(lineNumber + 1,
-                    "0 " + data_segments[1] + " " +  data_segments[3], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                    "0 " + dataSegments[1] + " " +  dataSegments[3], text);  //$NON-NLS-1$ //$NON-NLS-2$
         }
         break;
         case 12: // 0 BFC CERTIFY CLIP CCW
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             text = QuickFixer.setLine(lineNumber + 1,
-                    "0 " + data_segments[1] + " " +  data_segments[3] + " " +  data_segments[4], text);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    "0 " + dataSegments[1] + " " +  dataSegments[3] + " " +  dataSegments[4], text);  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
         }
         break;
         case 36: // Coplanar Quad
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
 
             final Vector3d vertexA = new Vector3d();
             final Vector3d vertexB = new Vector3d();
@@ -113,21 +114,21 @@ final class WarningFixer {
             final Vector3d vertexD = new Vector3d();
 
             // 1st vertex
-            vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
-            vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
-            vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
             // 2nd vertex
-            vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
-            vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
-            vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
             // 3rd vertex
-            vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
-            vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
-            vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
             // 4th vertex
-            vertexD.setX(new BigDecimal(data_segments[11], Threshold.mc));
-            vertexD.setY(new BigDecimal(data_segments[12], Threshold.mc));
-            vertexD.setZ(new BigDecimal(data_segments[13], Threshold.mc));
+            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
+            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
+            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
 
             Vector3d[] normals = new Vector3d[4];
             Vector3d[] lineVectors = new Vector3d[4];
@@ -144,47 +145,47 @@ final class WarningFixer {
             angle = Math.min(angle, Math.abs(180.0 - angle));
             if (angle > Threshold.coplanarity_angle_error) {
                 text = QuickFixer.setLine(lineNumber + 1,
-                        "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
-                                "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + //$NON-NLS-1$ //$NON-NLS-2$
+                        "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
+                                "<br>3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + //$NON-NLS-1$ //$NON-NLS-2$
                                 "<br>5 24 " +  //$NON-NLS-1$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text);  //$NON-NLS-1$ //$NON-NLS-2$
             } else {
                 text = QuickFixer.setLine(lineNumber + 1,
-                        "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + //$NON-NLS-1$ //$NON-NLS-2$
-                                "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + //$NON-NLS-1$ //$NON-NLS-2$
+                        "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + //$NON-NLS-1$ //$NON-NLS-2$
+                                "<br>3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + //$NON-NLS-1$ //$NON-NLS-2$
                                 "<br>5 24 " +  //$NON-NLS-1$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10], text);  //$NON-NLS-1$ //$NON-NLS-2$
             }
 
         }
         break;
         case 2: // Flat subfile scaled on X
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();
             for (int k = 0; k < 3; k++) {
                 sb.setLength(0);
                 int i = 0;
                 String sign;
-                for (String seg : data_segments) {
+                for (String seg : dataSegments) {
                     if (!seg.trim().equals("")) {  //$NON-NLS-1$
                         i++;
                         switch (i) {
@@ -214,13 +215,13 @@ final class WarningFixer {
         break;
         case 3: // Flat subfile scaled on Y
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();
             for (int k = 0; k < 3; k++) {
                 sb.setLength(0);
                 int i = 0;
                 String sign;
-                for (String seg : data_segments) {
+                for (String seg : dataSegments) {
                     if (!seg.trim().equals("")) {  //$NON-NLS-1$
                         i++;
                         switch (i) {
@@ -250,14 +251,14 @@ final class WarningFixer {
         break;
         case 4: // Flat subfile scaled on Z
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();
 
             for (int k = 0; k < 3; k++) {
                 sb.setLength(0);
                 int i = 0;
                 String sign;
-                for (String seg : data_segments) {
+                for (String seg : dataSegments) {
                     if (!seg.trim().equals("")) {  //$NON-NLS-1$
                         i++;
                         switch (i) {
@@ -297,39 +298,39 @@ final class WarningFixer {
     }
 
     private static boolean hasGoodDeterminant(String line) {
-        String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+        String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
         // [ERROR] Check singularity
         Matrix4f tMatrix = new Matrix4f();
         float det = 0;
         try {
             // Offset
-            BigDecimal M30 = new BigDecimal(data_segments[2]);
-            tMatrix.m30 = M30.floatValue() * 1000f;
-            BigDecimal M31 = new BigDecimal(data_segments[3]);
-            tMatrix.m31 = M31.floatValue() * 1000f;
-            BigDecimal M32 = new BigDecimal(data_segments[4]);
-            tMatrix.m32 = M32.floatValue() * 1000f;
+            BigDecimal m30 = new BigDecimal(dataSegments[2]);
+            tMatrix.m30 = m30.floatValue() * 1000f;
+            BigDecimal m31 = new BigDecimal(dataSegments[3]);
+            tMatrix.m31 = m31.floatValue() * 1000f;
+            BigDecimal m32 = new BigDecimal(dataSegments[4]);
+            tMatrix.m32 = m32.floatValue() * 1000f;
             // First row
-            BigDecimal M00 = new BigDecimal(data_segments[5]);
-            tMatrix.m00 = M00.floatValue();
-            BigDecimal M10 = new BigDecimal(data_segments[6]);
-            tMatrix.m10 = M10.floatValue();
-            BigDecimal M20 = new BigDecimal(data_segments[7]);
-            tMatrix.m20 = M20.floatValue();
+            BigDecimal m00 = new BigDecimal(dataSegments[5]);
+            tMatrix.m00 = m00.floatValue();
+            BigDecimal m10 = new BigDecimal(dataSegments[6]);
+            tMatrix.m10 = m10.floatValue();
+            BigDecimal m20 = new BigDecimal(dataSegments[7]);
+            tMatrix.m20 = m20.floatValue();
             // Second row
-            BigDecimal M01 = new BigDecimal(data_segments[8]);
-            tMatrix.m01 = M01.floatValue();
-            BigDecimal M11 = new BigDecimal(data_segments[9]);
-            tMatrix.m11 = M11.floatValue();
-            BigDecimal M21 = new BigDecimal(data_segments[10]);
-            tMatrix.m21 = M21.floatValue();
+            BigDecimal m01 = new BigDecimal(dataSegments[8]);
+            tMatrix.m01 = m01.floatValue();
+            BigDecimal m11 = new BigDecimal(dataSegments[9]);
+            tMatrix.m11 = m11.floatValue();
+            BigDecimal m21 = new BigDecimal(dataSegments[10]);
+            tMatrix.m21 = m21.floatValue();
             // Third row
-            BigDecimal M02 = new BigDecimal(data_segments[11]);
-            tMatrix.m02 = M02.floatValue();
-            BigDecimal M12 = new BigDecimal(data_segments[12]);
-            tMatrix.m12 = M12.floatValue();
-            BigDecimal M22 = new BigDecimal(data_segments[13]);
-            tMatrix.m22 = M22.floatValue();
+            BigDecimal m02 = new BigDecimal(dataSegments[11]);
+            tMatrix.m02 = m02.floatValue();
+            BigDecimal m12 = new BigDecimal(dataSegments[12]);
+            tMatrix.m12 = m12.floatValue();
+            BigDecimal m22 = new BigDecimal(dataSegments[13]);
+            tMatrix.m22 = m22.floatValue();
         } catch (NumberFormatException nfe) {
             // Can't happen
             return false;

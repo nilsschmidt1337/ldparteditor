@@ -90,106 +90,106 @@ class SlantingMatrixProjectorDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        cmp_container.setLayout(new GridLayout(4, true));
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        cmpContainer.setLayout(new GridLayout(4, true));
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_title = new Label(cmp_container, SWT.NONE);
-        lbl_title.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-        lbl_title.setText(I18n.SLANT_TITLE);
+        Label lblTitle = new Label(cmpContainer, SWT.NONE);
+        lblTitle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+        lblTitle.setText(I18n.SLANT_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
 
-        Label lbl_info = new Label(cmp_container, SWT.NONE);
-        lbl_info.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+        Label lblInfo = new Label(cmpContainer, SWT.NONE);
+        lblInfo.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
 
         switch (vm.getSlantingMatrixStatus()) {
         case NO_SELECTION_THREE_AXIS:
-            lbl_info.setText(I18n.SLANT_NO_SELECTION_THREE_AXES);
-            insertMatrix(cmp_container);
+            lblInfo.setText(I18n.SLANT_NO_SELECTION_THREE_AXES);
+            insertMatrix(cmpContainer);
             break;
         case NO_SELECTION_TWO_AXIS:
-            lbl_info.setText(I18n.SLANT_NO_SELECTION_TWO_AXES);
-            insertMatrix(cmp_container);
+            lblInfo.setText(I18n.SLANT_NO_SELECTION_TWO_AXES);
+            insertMatrix(cmpContainer);
             {
-                NButton cb_setOrigin = new NButton(cmp_container, SWT.CHECK);
-                cb_setOrigin.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-                cb_setOrigin.setText(I18n.SLANT_SET_ORIGIN);
-                cb_setOrigin.setSelection(mps.isMovingOriginToAxisCenter());
+                NButton cbSetOrigin = new NButton(cmpContainer, SWT.CHECK);
+                cbSetOrigin.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+                cbSetOrigin.setText(I18n.SLANT_SET_ORIGIN);
+                cbSetOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                WidgetUtil(cb_setOrigin).addSelectionListener(e -> {
+                WidgetUtil(cbSetOrigin).addSelectionListener(e -> {
                     mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
                     updateMatrix();
                 });
             }
             break;
         case SELECTION:
-            lbl_info.setText(I18n.SLANT_MATRIX_READY);
-            insertMatrix(cmp_container);
+            lblInfo.setText(I18n.SLANT_MATRIX_READY);
+            insertMatrix(cmpContainer);
             {
-                NButton cb_setOrigin = new NButton(cmp_container, SWT.CHECK);
-                cb_setOrigin.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-                cb_setOrigin.setText(I18n.SLANT_SET_ORIGIN);
-                cb_setOrigin.setSelection(mps.isMovingOriginToAxisCenter());
+                NButton cbSetOrigin = new NButton(cmpContainer, SWT.CHECK);
+                cbSetOrigin.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+                cbSetOrigin.setText(I18n.SLANT_SET_ORIGIN);
+                cbSetOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                WidgetUtil(cb_setOrigin).addSelectionListener(e -> {
+                WidgetUtil(cbSetOrigin).addSelectionListener(e -> {
                     mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
                     updateMatrix();
                 });
             }
             {
-                NButton cb_resetSubfileOrientation = new NButton(cmp_container, SWT.CHECK);
-                cb_resetSubfileOrientation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-                cb_resetSubfileOrientation.setText(I18n.SLANT_RESET_SUBFILE_ORIENTATION);
-                cb_resetSubfileOrientation.setSelection(mps.isResettingSubfileTransformation());
+                NButton cbResetSubfileOrientation = new NButton(cmpContainer, SWT.CHECK);
+                cbResetSubfileOrientation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+                cbResetSubfileOrientation.setText(I18n.SLANT_RESET_SUBFILE_ORIENTATION);
+                cbResetSubfileOrientation.setSelection(mps.isResettingSubfileTransformation());
 
 
-                WidgetUtil(cb_resetSubfileOrientation).addSelectionListener(e -> mps.setResettingSubfileTransformation(!mps.isResettingSubfileTransformation()));
+                WidgetUtil(cbResetSubfileOrientation).addSelectionListener(e -> mps.setResettingSubfileTransformation(!mps.isResettingSubfileTransformation()));
             }
             break;
         case INIT:
         default:
-            lbl_info.setText(I18n.SLANT_HOW_TO);
+            lblInfo.setText(I18n.SLANT_HOW_TO);
             break;
         }
 
-        cmp_container.pack();
-        return cmp_container;
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
-    private void insertMatrix(Composite cmp_container) {
+    private void insertMatrix(Composite cmpContainer) {
 
-        final Matrix M = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
+        final Matrix m = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
 
-        insertMatrixCell(cmp_container, M.M00, M00);
-        insertMatrixCell(cmp_container, M.M10, M10);
-        insertMatrixCell(cmp_container, M.M20, M20);
-        insertMatrixCell(cmp_container, M.M30, M30);
-        insertMatrixCell(cmp_container, M.M01, M01);
-        insertMatrixCell(cmp_container, M.M11, M11);
-        insertMatrixCell(cmp_container, M.M21, M21);
-        insertMatrixCell(cmp_container, M.M31, M31);
-        insertMatrixCell(cmp_container, M.M02, M02);
-        insertMatrixCell(cmp_container, M.M12, M12);
-        insertMatrixCell(cmp_container, M.M22, M22);
-        insertMatrixCell(cmp_container, M.M32, M32);
-        insertMatrixCell(cmp_container, BigDecimal.ZERO, M03);
-        insertMatrixCell(cmp_container, BigDecimal.ZERO, M13);
-        insertMatrixCell(cmp_container, BigDecimal.ZERO, M23);
-        insertMatrixCell(cmp_container, BigDecimal.ONE, M33);
+        insertMatrixCell(cmpContainer, m.M00, M00);
+        insertMatrixCell(cmpContainer, m.M10, M10);
+        insertMatrixCell(cmpContainer, m.M20, M20);
+        insertMatrixCell(cmpContainer, m.M30, M30);
+        insertMatrixCell(cmpContainer, m.M01, M01);
+        insertMatrixCell(cmpContainer, m.M11, M11);
+        insertMatrixCell(cmpContainer, m.M21, M21);
+        insertMatrixCell(cmpContainer, m.M31, M31);
+        insertMatrixCell(cmpContainer, m.M02, M02);
+        insertMatrixCell(cmpContainer, m.M12, M12);
+        insertMatrixCell(cmpContainer, m.M22, M22);
+        insertMatrixCell(cmpContainer, m.M32, M32);
+        insertMatrixCell(cmpContainer, BigDecimal.ZERO, M03);
+        insertMatrixCell(cmpContainer, BigDecimal.ZERO, M13);
+        insertMatrixCell(cmpContainer, BigDecimal.ZERO, M23);
+        insertMatrixCell(cmpContainer, BigDecimal.ONE, M33);
 
-        NButton btn_CopyMatrixToClipboard = new NButton(cmp_container, SWT.NONE);
-        btn_CopyMatrixToClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
-        btn_CopyMatrixToClipboard.setText(I18n.SLANT_COPY_TO_CLIPBOARD);
+        NButton btnCopyMatrixToClipboard = new NButton(cmpContainer, SWT.NONE);
+        btnCopyMatrixToClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
+        btnCopyMatrixToClipboard.setText(I18n.SLANT_COPY_TO_CLIPBOARD);
 
-        WidgetUtil(btn_CopyMatrixToClipboard).addSelectionListener(e -> {
-            final Matrix M1 = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
+        WidgetUtil(btnCopyMatrixToClipboard).addSelectionListener(e -> {
+            final Matrix m1 = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
             final StringBuilder cbString = new StringBuilder();
             cbString.append("1 16 "); //$NON-NLS-1$
-            cbString.append(M1.toLDrawString());
+            cbString.append(m1.toLDrawString());
             cbString.append(" "); //$NON-NLS-1$
             final String cbs = cbString.toString();
             Display display = Display.getCurrent();
@@ -199,33 +199,33 @@ class SlantingMatrixProjectorDesign extends Dialog {
         });
     }
 
-    private void insertMatrixCell(Composite cmp_container, BigDecimal val, Text[] textCmp) {
-        Text txt_Cell = new Text(cmp_container, SWT.NONE);
-        textCmp[0] = txt_Cell;
-        txt_Cell.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        txt_Cell.setText(numberFormat.format(val));
-        txt_Cell.setFont(Font.MONOSPACE);
-        txt_Cell.setEditable(false);
+    private void insertMatrixCell(Composite cmpContainer, BigDecimal val, Text[] textCmp) {
+        Text txtCell = new Text(cmpContainer, SWT.NONE);
+        textCmp[0] = txtCell;
+        txtCell.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        txtCell.setText(numberFormat.format(val));
+        txtCell.setFont(Font.MONOSPACE);
+        txtCell.setEditable(false);
     }
 
     private void updateMatrix() {
-        final Matrix M = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
-        updateMatrixCell(M00, M.M00);
-        updateMatrixCell(M01, M.M01);
-        updateMatrixCell(M02, M.M02);
-        updateMatrixCell(M03, M.M03);
-        updateMatrixCell(M10, M.M10);
-        updateMatrixCell(M11, M.M11);
-        updateMatrixCell(M12, M.M12);
-        updateMatrixCell(M13, M.M13);
-        updateMatrixCell(M20, M.M20);
-        updateMatrixCell(M21, M.M21);
-        updateMatrixCell(M22, M.M22);
-        updateMatrixCell(M23, M.M23);
-        updateMatrixCell(M30, M.M30);
-        updateMatrixCell(M31, M.M31);
-        updateMatrixCell(M32, M.M32);
-        updateMatrixCell(M33, M.M33);
+        final Matrix m = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
+        updateMatrixCell(M00, m.M00);
+        updateMatrixCell(M01, m.M01);
+        updateMatrixCell(M02, m.M02);
+        updateMatrixCell(M03, m.M03);
+        updateMatrixCell(M10, m.M10);
+        updateMatrixCell(M11, m.M11);
+        updateMatrixCell(M12, m.M12);
+        updateMatrixCell(M13, m.M13);
+        updateMatrixCell(M20, m.M20);
+        updateMatrixCell(M21, m.M21);
+        updateMatrixCell(M22, m.M22);
+        updateMatrixCell(M23, m.M23);
+        updateMatrixCell(M30, m.M30);
+        updateMatrixCell(M31, m.M31);
+        updateMatrixCell(M32, m.M32);
+        updateMatrixCell(M33, m.M33);
     }
 
     private void updateMatrixCell(Text[] textCmp, BigDecimal val) {

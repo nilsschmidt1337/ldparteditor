@@ -155,8 +155,8 @@ class VM25Smooth extends VM24MeshReducer {
             }
         }
 
-        final BigDecimal FACTOR = SmoothDialog.getFactor();
-        final BigDecimal ONE_MINUS_FACTOR = BigDecimal.ONE.subtract(FACTOR);
+        final BigDecimal factor = SmoothDialog.getFactor();
+        final BigDecimal oneMinusFactor = BigDecimal.ONE.subtract(factor);
         final int iterations = SmoothDialog.getIterations();
         final int size = vertsToProcess.size();
         for (int j = 0; j < iterations; j++) {
@@ -181,17 +181,17 @@ class VM25Smooth extends VM24MeshReducer {
                         }
 
                         if (isX) {
-                            vx = vx.divide(ad, Threshold.mc).multiply(FACTOR).add(vertex.X.multiply(ONE_MINUS_FACTOR));
+                            vx = vx.divide(ad, Threshold.mc).multiply(factor).add(vertex.X.multiply(oneMinusFactor));
                         } else {
                             vx = vertex.X;
                         }
                         if (isY) {
-                            vy = vy.divide(ad, Threshold.mc).multiply(FACTOR).add(vertex.Y.multiply(ONE_MINUS_FACTOR));
+                            vy = vy.divide(ad, Threshold.mc).multiply(factor).add(vertex.Y.multiply(oneMinusFactor));
                         } else {
                             vy = vertex.Y;
                         }
                         if (isZ) {
-                            vz = vz.divide(ad, Threshold.mc).multiply(FACTOR).add(vertex.Z.multiply(ONE_MINUS_FACTOR));
+                            vz = vz.divide(ad, Threshold.mc).multiply(factor).add(vertex.Z.multiply(oneMinusFactor));
                         } else {
                             vz = vertex.Z;
                         }

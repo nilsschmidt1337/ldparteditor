@@ -71,14 +71,14 @@ public class DuplicateManager {
                                     boolean[] registered = new boolean[]{false};
                                     int type = gd.type();
                                     String trimmedLine = gd.toString().trim();
-                                    String[] data_segments = trimmedLine.split("\\s+"); //$NON-NLS-1$
+                                    String[] dataSegments = trimmedLine.split("\\s+"); //$NON-NLS-1$
 
                                     // Remove double spaces (essential for complex types)
                                     String normalizedLine;
                                     if (type > 6 || type < 2) {
                                         StringBuilder normalized = new StringBuilder();
                                         int i = 0;
-                                        for (String string : data_segments) {
+                                        for (String string : dataSegments) {
                                             if (i != 1) {
                                                 normalized.append(string);
                                                 normalized.append(" "); //$NON-NLS-1$
@@ -131,21 +131,21 @@ public class DuplicateManager {
                                             lines.put(normalizedLine, lineNumber);
                                             StringBuilder normalized1 = new StringBuilder();
 
-                                            normalized1.append(data_segments[0]);
+                                            normalized1.append(dataSegments[0]);
                                             normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized1.append(data_segments[2]);
+                                            normalized1.append(dataSegments[2]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[3]);
+                                            normalized1.append(dataSegments[3]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[4]);
+                                            normalized1.append(dataSegments[4]);
                                             normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized1.append(data_segments[5]);
+                                            normalized1.append(dataSegments[5]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[6]);
+                                            normalized1.append(dataSegments[6]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[7]);
+                                            normalized1.append(dataSegments[7]);
 
                                             String normalizedLine1 = normalized1.toString().trim();
 
@@ -156,21 +156,21 @@ public class DuplicateManager {
                                                 lastCommentLine = null;
 
                                                 StringBuilder normalized2 = new StringBuilder();
-                                                normalized2.append(data_segments[0]);
+                                                normalized2.append(dataSegments[0]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized2.append(data_segments[5]);
+                                                normalized2.append(dataSegments[5]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[6]);
+                                                normalized2.append(dataSegments[6]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[7]);
+                                                normalized2.append(dataSegments[7]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized2.append(data_segments[2]);
+                                                normalized2.append(dataSegments[2]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[3]);
+                                                normalized2.append(dataSegments[3]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[4]);
+                                                normalized2.append(dataSegments[4]);
 
                                                 String normalizedLine2 = normalized2.toString().trim();
 
@@ -195,28 +195,28 @@ public class DuplicateManager {
                                             lines.put(normalizedLine, lineNumber);
                                             StringBuilder normalized1 = new StringBuilder();
 
-                                            normalized1.append(data_segments[0]);
+                                            normalized1.append(dataSegments[0]);
                                             normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized1.append(data_segments[2]);
+                                            normalized1.append(dataSegments[2]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[3]);
+                                            normalized1.append(dataSegments[3]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[4]);
-                                            normalized1.append(" "); //$NON-NLS-1$
-
-                                            normalized1.append(data_segments[5]);
-                                            normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[6]);
-                                            normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[7]);
+                                            normalized1.append(dataSegments[4]);
                                             normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized1.append(data_segments[8]);
+                                            normalized1.append(dataSegments[5]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[9]);
+                                            normalized1.append(dataSegments[6]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[10]);
+                                            normalized1.append(dataSegments[7]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+
+                                            normalized1.append(dataSegments[8]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(dataSegments[9]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(dataSegments[10]);
 
                                             String normalizedLine1 = normalized1.toString().trim();
 
@@ -226,28 +226,28 @@ public class DuplicateManager {
                                                 lines.put(normalizedLine1, lineNumber);
                                                 StringBuilder normalized2 = new StringBuilder();
 
-                                                normalized2.append(data_segments[0]);
+                                                normalized2.append(dataSegments[0]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized2.append(data_segments[8]);
+                                                normalized2.append(dataSegments[8]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[9]);
+                                                normalized2.append(dataSegments[9]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[10]);
-                                                normalized2.append(" "); //$NON-NLS-1$
-
-                                                normalized2.append(data_segments[2]);
-                                                normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[3]);
-                                                normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[4]);
+                                                normalized2.append(dataSegments[10]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized2.append(data_segments[5]);
+                                                normalized2.append(dataSegments[2]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[6]);
+                                                normalized2.append(dataSegments[3]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[7]);
+                                                normalized2.append(dataSegments[4]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+
+                                                normalized2.append(dataSegments[5]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(dataSegments[6]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(dataSegments[7]);
 
                                                 String normalizedLine2 = normalized2.toString().trim();
 
@@ -257,28 +257,28 @@ public class DuplicateManager {
                                                     lines.put(normalizedLine2, lineNumber);
                                                     StringBuilder normalized3 = new StringBuilder();
 
-                                                    normalized3.append(data_segments[0]);
+                                                    normalized3.append(dataSegments[0]);
                                                     normalized3.append(" "); //$NON-NLS-1$
 
-                                                    normalized3.append(data_segments[5]);
+                                                    normalized3.append(dataSegments[5]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[6]);
+                                                    normalized3.append(dataSegments[6]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[7]);
-                                                    normalized3.append(" "); //$NON-NLS-1$
-
-                                                    normalized3.append(data_segments[8]);
-                                                    normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[9]);
-                                                    normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[10]);
+                                                    normalized3.append(dataSegments[7]);
                                                     normalized3.append(" "); //$NON-NLS-1$
 
-                                                    normalized3.append(data_segments[2]);
+                                                    normalized3.append(dataSegments[8]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[3]);
+                                                    normalized3.append(dataSegments[9]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[4]);
+                                                    normalized3.append(dataSegments[10]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+
+                                                    normalized3.append(dataSegments[2]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(dataSegments[3]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(dataSegments[4]);
 
                                                     String normalizedLine3 = normalized3.toString().trim();
                                                     if (lines.containsKey(normalizedLine3)) {
@@ -300,35 +300,35 @@ public class DuplicateManager {
                                             lines.put(normalizedLine, lineNumber);
                                             StringBuilder normalized1 = new StringBuilder();
 
-                                            normalized1.append(data_segments[0]);
+                                            normalized1.append(dataSegments[0]);
                                             normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized1.append(data_segments[2]);
+                                            normalized1.append(dataSegments[2]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[3]);
+                                            normalized1.append(dataSegments[3]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[4]);
-                                            normalized1.append(" "); //$NON-NLS-1$
-
-                                            normalized1.append(data_segments[5]);
-                                            normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[6]);
-                                            normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[7]);
+                                            normalized1.append(dataSegments[4]);
                                             normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized1.append(data_segments[8]);
+                                            normalized1.append(dataSegments[5]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[9]);
+                                            normalized1.append(dataSegments[6]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[10]);
+                                            normalized1.append(dataSegments[7]);
                                             normalized1.append(" "); //$NON-NLS-1$
 
-                                            normalized1.append(data_segments[11]);
+                                            normalized1.append(dataSegments[8]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[12]);
+                                            normalized1.append(dataSegments[9]);
                                             normalized1.append(" "); //$NON-NLS-1$
-                                            normalized1.append(data_segments[13]);
+                                            normalized1.append(dataSegments[10]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+
+                                            normalized1.append(dataSegments[11]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(dataSegments[12]);
+                                            normalized1.append(" "); //$NON-NLS-1$
+                                            normalized1.append(dataSegments[13]);
 
                                             String normalizedLine1 = normalized1.toString().trim();
 
@@ -338,35 +338,35 @@ public class DuplicateManager {
                                                 lines.put(normalizedLine1, lineNumber);
                                                 StringBuilder normalized2 = new StringBuilder();
 
-                                                normalized2.append(data_segments[0]);
+                                                normalized2.append(dataSegments[0]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized2.append(data_segments[11]);
+                                                normalized2.append(dataSegments[11]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[12]);
+                                                normalized2.append(dataSegments[12]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[13]);
-                                                normalized2.append(" "); //$NON-NLS-1$
-
-                                                normalized2.append(data_segments[2]);
-                                                normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[3]);
-                                                normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[4]);
+                                                normalized2.append(dataSegments[13]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized2.append(data_segments[5]);
+                                                normalized2.append(dataSegments[2]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[6]);
+                                                normalized2.append(dataSegments[3]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[7]);
+                                                normalized2.append(dataSegments[4]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized2.append(data_segments[8]);
+                                                normalized2.append(dataSegments[5]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[9]);
+                                                normalized2.append(dataSegments[6]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[10]);
+                                                normalized2.append(dataSegments[7]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+
+                                                normalized2.append(dataSegments[8]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(dataSegments[9]);
+                                                normalized2.append(" "); //$NON-NLS-1$
+                                                normalized2.append(dataSegments[10]);
 
                                                 String normalizedLine2 = normalized2.toString().trim();
 
@@ -376,35 +376,35 @@ public class DuplicateManager {
                                                     lines.put(normalizedLine2, lineNumber);
                                                     StringBuilder normalized3 = new StringBuilder();
 
-                                                    normalized3.append(data_segments[0]);
+                                                    normalized3.append(dataSegments[0]);
                                                     normalized3.append(" "); //$NON-NLS-1$
 
-                                                    normalized3.append(data_segments[8]);
+                                                    normalized3.append(dataSegments[8]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[9]);
+                                                    normalized3.append(dataSegments[9]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[10]);
-                                                    normalized3.append(" "); //$NON-NLS-1$
-
-                                                    normalized3.append(data_segments[11]);
-                                                    normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[12]);
-                                                    normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[13]);
+                                                    normalized3.append(dataSegments[10]);
                                                     normalized3.append(" "); //$NON-NLS-1$
 
-                                                    normalized3.append(data_segments[2]);
+                                                    normalized3.append(dataSegments[11]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[3]);
+                                                    normalized3.append(dataSegments[12]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[4]);
+                                                    normalized3.append(dataSegments[13]);
                                                     normalized3.append(" "); //$NON-NLS-1$
 
-                                                    normalized3.append(data_segments[5]);
+                                                    normalized3.append(dataSegments[2]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[6]);
+                                                    normalized3.append(dataSegments[3]);
                                                     normalized3.append(" "); //$NON-NLS-1$
-                                                    normalized3.append(data_segments[7]);
+                                                    normalized3.append(dataSegments[4]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+
+                                                    normalized3.append(dataSegments[5]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(dataSegments[6]);
+                                                    normalized3.append(" "); //$NON-NLS-1$
+                                                    normalized3.append(dataSegments[7]);
 
                                                     String normalizedLine3 = normalized3.toString().trim();
                                                     if (lines.containsKey(normalizedLine3)) {
@@ -413,35 +413,35 @@ public class DuplicateManager {
                                                         lines.put(normalizedLine3, lineNumber);
                                                         StringBuilder normalized4 = new StringBuilder();
 
-                                                        normalized4.append(data_segments[0]);
+                                                        normalized4.append(dataSegments[0]);
                                                         normalized4.append(" "); //$NON-NLS-1$
 
-                                                        normalized4.append(data_segments[5]);
+                                                        normalized4.append(dataSegments[5]);
                                                         normalized4.append(" "); //$NON-NLS-1$
-                                                        normalized4.append(data_segments[6]);
+                                                        normalized4.append(dataSegments[6]);
                                                         normalized4.append(" "); //$NON-NLS-1$
-                                                        normalized4.append(data_segments[7]);
-                                                        normalized4.append(" "); //$NON-NLS-1$
-
-                                                        normalized4.append(data_segments[8]);
-                                                        normalized4.append(" "); //$NON-NLS-1$
-                                                        normalized4.append(data_segments[9]);
-                                                        normalized4.append(" "); //$NON-NLS-1$
-                                                        normalized4.append(data_segments[10]);
+                                                        normalized4.append(dataSegments[7]);
                                                         normalized4.append(" "); //$NON-NLS-1$
 
-                                                        normalized4.append(data_segments[11]);
+                                                        normalized4.append(dataSegments[8]);
                                                         normalized4.append(" "); //$NON-NLS-1$
-                                                        normalized4.append(data_segments[12]);
+                                                        normalized4.append(dataSegments[9]);
                                                         normalized4.append(" "); //$NON-NLS-1$
-                                                        normalized4.append(data_segments[13]);
+                                                        normalized4.append(dataSegments[10]);
                                                         normalized4.append(" "); //$NON-NLS-1$
 
-                                                        normalized4.append(data_segments[2]);
+                                                        normalized4.append(dataSegments[11]);
                                                         normalized4.append(" "); //$NON-NLS-1$
-                                                        normalized4.append(data_segments[3]);
+                                                        normalized4.append(dataSegments[12]);
                                                         normalized4.append(" "); //$NON-NLS-1$
-                                                        normalized4.append(data_segments[4]);
+                                                        normalized4.append(dataSegments[13]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+
+                                                        normalized4.append(dataSegments[2]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(dataSegments[3]);
+                                                        normalized4.append(" "); //$NON-NLS-1$
+                                                        normalized4.append(dataSegments[4]);
 
                                                         String normalizedLine4 = normalized4.toString().trim();
                                                         if (lines.containsKey(normalizedLine4)) {
@@ -474,21 +474,21 @@ public class DuplicateManager {
                                         } else {
                                             StringBuilder normalized3 = new StringBuilder();
 
-                                            normalized3.append(data_segments[0]);
+                                            normalized3.append(dataSegments[0]);
                                             normalized3.append(" "); //$NON-NLS-1$
 
-                                            normalized3.append(data_segments[2]);
+                                            normalized3.append(dataSegments[2]);
                                             normalized3.append(" "); //$NON-NLS-1$
-                                            normalized3.append(data_segments[3]);
+                                            normalized3.append(dataSegments[3]);
                                             normalized3.append(" "); //$NON-NLS-1$
-                                            normalized3.append(data_segments[4]);
+                                            normalized3.append(dataSegments[4]);
                                             normalized3.append(" "); //$NON-NLS-1$
 
-                                            normalized3.append(data_segments[5]);
+                                            normalized3.append(dataSegments[5]);
                                             normalized3.append(" "); //$NON-NLS-1$
-                                            normalized3.append(data_segments[6]);
+                                            normalized3.append(dataSegments[6]);
                                             normalized3.append(" "); //$NON-NLS-1$
-                                            normalized3.append(data_segments[7]);
+                                            normalized3.append(dataSegments[7]);
                                             normalized3.append(" "); //$NON-NLS-1$
 
                                             String normalizedLine3 = normalized3.toString().trim();
@@ -499,21 +499,21 @@ public class DuplicateManager {
                                                 lines.put(normalizedLine3, lineNumber);
                                                 StringBuilder normalized2 = new StringBuilder();
 
-                                                normalized2.append(data_segments[0]);
+                                                normalized2.append(dataSegments[0]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized2.append(data_segments[5]);
+                                                normalized2.append(dataSegments[5]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[6]);
+                                                normalized2.append(dataSegments[6]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[7]);
+                                                normalized2.append(dataSegments[7]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
-                                                normalized2.append(data_segments[2]);
+                                                normalized2.append(dataSegments[2]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[3]);
+                                                normalized2.append(dataSegments[3]);
                                                 normalized2.append(" "); //$NON-NLS-1$
-                                                normalized2.append(data_segments[4]);
+                                                normalized2.append(dataSegments[4]);
                                                 normalized2.append(" "); //$NON-NLS-1$
 
                                                 String normalizedLine2 = normalized2.toString().trim();

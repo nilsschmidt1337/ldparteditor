@@ -35,7 +35,7 @@ enum GL33TexmapRenderer {
         float[] uv;
         float[] triVertices = new float[36];
         float[] quadVertices = new float[48];
-        final Vector4f Nv = new Vector4f(0, 0, 0, 1f);
+        final Vector4f nv = new Vector4f(0, 0, 0, 1f);
         final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
         int[] triIndices = new int[]{0, 1, 2};
         int[] quadIndices = new int[]{0, 1, 2, 2, 3, 0};
@@ -70,10 +70,10 @@ enum GL33TexmapRenderer {
                 Vertex[] v = vertexMap.get(gd);
                 Vector3f[] n = normalMap.get(gd);
                 if (n == null) {
-                    Nv.x = gd3.xn;
-                    Nv.y = gd3.yn;
-                    Nv.z = gd3.zn;
-                    Nv.w = 1f;
+                    nv.x = gd3.xn;
+                    nv.y = gd3.yn;
+                    nv.z = gd3.zn;
+                    nv.w = 1f;
                     Matrix4f loc = matrixMap.get(gd3.parent);
                     if (loc == null) {
                         final Matrix4f rotation = new Matrix4f(gd3.parent.productMatrix);
@@ -85,9 +85,9 @@ enum GL33TexmapRenderer {
                         matrixMap.put(gd3.parent, rotation);
                         loc = rotation;
                     }
-                    Matrix4f.transform(loc, Nv, Nv);
+                    Matrix4f.transform(loc, nv, nv);
                     n = new Vector3f[3];
-                    n[0] = new Vector3f(Nv.x, Nv.y, Nv.z);
+                    n[0] = new Vector3f(nv.x, nv.y, nv.z);
                     n[1] = n[0];
                     n[2] = n[0];
                 }
@@ -215,10 +215,10 @@ enum GL33TexmapRenderer {
                 v = vertexMap.get(gd);
                 n = normalMap.get(gd);
                 if (n == null) {
-                    Nv.x = gd4.xn;
-                    Nv.y = gd4.yn;
-                    Nv.z = gd4.zn;
-                    Nv.w = 1f;
+                    nv.x = gd4.xn;
+                    nv.y = gd4.yn;
+                    nv.z = gd4.zn;
+                    nv.w = 1f;
                     Matrix4f loc = matrixMap.get(gd4.parent);
                     if (loc == null) {
                         final Matrix4f rotation = new Matrix4f(gd4.parent.productMatrix);
@@ -230,9 +230,9 @@ enum GL33TexmapRenderer {
                         matrixMap.put(gd4.parent, rotation);
                         loc = rotation;
                     }
-                    Matrix4f.transform(loc, Nv, Nv);
+                    Matrix4f.transform(loc, nv, nv);
                     n = new Vector3f[4];
-                    n[0] = new Vector3f(Nv.x, Nv.y, Nv.z);
+                    n[0] = new Vector3f(nv.x, nv.y, nv.z);
                     n[1] = n[0];
                     n[2] = n[0];
                     n[3] = n[0];

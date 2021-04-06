@@ -135,10 +135,10 @@ public class GearGL33 {
         for (Float f : vertices) {
             bvertices.put(f);
         }
-        int vertex_count = vertices.size() / 3;
+        int vertexCount = vertices.size() / 3;
 
         for (Integer in : indices) {
-            bindices.put(in % vertex_count);
+            bindices.put(in % vertexCount);
         }
 
         bvertices.flip();

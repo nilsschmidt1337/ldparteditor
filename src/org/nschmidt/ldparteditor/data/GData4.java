@@ -1677,33 +1677,33 @@ public final class GData4 extends GData {
         Vector3d vertexB = new Vector3d(X2, Y2, Z2);
         Vector3d vertexC = new Vector3d(X3, Y3, Z3);
         Vector3d vertexD = new Vector3d(X4, Y4, Z4);
-        Vector3d A = Vector3d.sub(vertexB, vertexA);
-        Vector3d B = Vector3d.sub(vertexB, vertexC);
-        Vector3d C = Vector3d.sub(vertexD, vertexC);
-        Vector3d D = Vector3d.sub(vertexD, vertexA);
+        Vector3d sa = Vector3d.sub(vertexB, vertexA);
+        Vector3d sb = Vector3d.sub(vertexB, vertexC);
+        Vector3d sc = Vector3d.sub(vertexD, vertexC);
+        Vector3d sd = Vector3d.sub(vertexD, vertexA);
 
-        double angle = Vector3d.angle(A, D);
-        double sumAngle = angle;
-        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+        double collinearityAngle = Vector3d.angle(sa, sd);
+        double sumAngle = collinearityAngle;
+        if (collinearityAngle < Threshold.collinear_angle_minimum || collinearityAngle > Threshold.collinear_angle_maximum) {
             return true;
         }
 
-        angle = Vector3d.angle(B, C);
-        sumAngle = sumAngle + angle;
-        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+        collinearityAngle = Vector3d.angle(sb, sc);
+        sumAngle = sumAngle + collinearityAngle;
+        if (collinearityAngle < Threshold.collinear_angle_minimum || collinearityAngle > Threshold.collinear_angle_maximum) {
             return true;
         }
 
-        A.negate();
-        B.negate();
-        angle = Vector3d.angle(A, B);
-        sumAngle = sumAngle + angle;
-        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+        sa.negate();
+        sb.negate();
+        collinearityAngle = Vector3d.angle(sa, sb);
+        sumAngle = sumAngle + collinearityAngle;
+        if (collinearityAngle < Threshold.collinear_angle_minimum || collinearityAngle > Threshold.collinear_angle_maximum) {
             return true;
         }
 
-        angle = 360.0 - sumAngle;
-        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+        collinearityAngle = 360.0 - sumAngle;
+        if (collinearityAngle < Threshold.collinear_angle_minimum || collinearityAngle > Threshold.collinear_angle_maximum) {
             return true;
         }
 

@@ -126,50 +126,50 @@ final class ErrorFixer {
         break;
         case 2: // Singular Matrix
         {
-            String[] data_segments = line.trim().split(" "); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split(" "); //$NON-NLS-1$
 
-            boolean M00 = false;
-            boolean M01 = false;
-            boolean M02 = false;
-            boolean M10 = false;
-            boolean M11 = false;
-            boolean M12 = false;
-            boolean M20 = false;
-            boolean M21 = false;
-            boolean M22 = false;
+            boolean m00 = false;
+            boolean m01 = false;
+            boolean m02 = false;
+            boolean m10 = false;
+            boolean m11 = false;
+            boolean m12 = false;
+            boolean m20 = false;
+            boolean m21 = false;
+            boolean m22 = false;
 
             {
                 int i = 0;
-                for (String seg : data_segments) {
+                for (String seg : dataSegments) {
                     if (!seg.trim().equals("")) {  //$NON-NLS-1$
                         i++;
                         switch (i) {
                         case 6:
-                            M00 = new BigDecimal(seg).equals(BigDecimal.ZERO);
+                            m00 = new BigDecimal(seg).equals(BigDecimal.ZERO);
                             break;
                         case 7:
-                            M01 = new BigDecimal(seg).equals(BigDecimal.ZERO);
+                            m01 = new BigDecimal(seg).equals(BigDecimal.ZERO);
                             break;
                         case 8:
-                            M02 = new BigDecimal(seg).equals(BigDecimal.ZERO);
+                            m02 = new BigDecimal(seg).equals(BigDecimal.ZERO);
                             break;
                         case 9:
-                            M10 = new BigDecimal(seg).equals(BigDecimal.ZERO);
+                            m10 = new BigDecimal(seg).equals(BigDecimal.ZERO);
                             break;
                         case 10:
-                            M11 = new BigDecimal(seg).equals(BigDecimal.ZERO);
+                            m11 = new BigDecimal(seg).equals(BigDecimal.ZERO);
                             break;
                         case 11:
-                            M12 = new BigDecimal(seg).equals(BigDecimal.ZERO);
+                            m12 = new BigDecimal(seg).equals(BigDecimal.ZERO);
                             break;
                         case 12:
-                            M20 = new BigDecimal(seg).equals(BigDecimal.ZERO);
+                            m20 = new BigDecimal(seg).equals(BigDecimal.ZERO);
                             break;
                         case 13:
-                            M21 = new BigDecimal(seg).equals(BigDecimal.ZERO);
+                            m21 = new BigDecimal(seg).equals(BigDecimal.ZERO);
                             break;
                         case 14:
-                            M22 = new BigDecimal(seg).equals(BigDecimal.ZERO);
+                            m22 = new BigDecimal(seg).equals(BigDecimal.ZERO);
                             break;
                         default:
                             break;
@@ -180,26 +180,26 @@ final class ErrorFixer {
             {
                 StringBuilder sb = new StringBuilder();
                 int i = 0;
-                for (String seg : data_segments) {
+                for (String seg : dataSegments) {
                     if (!seg.trim().equals("")) {  //$NON-NLS-1$
                         i++;
                         switch (i) {
                         case 6:
-                            if (M00 && (M01 && M02 || M10 && M20)) {
+                            if (m00 && (m01 && m02 || m10 && m20)) {
                                 sb.append("1"); //$NON-NLS-1$
                             } else {
                                 sb.append(seg);
                             }
                             break;
                         case 10:
-                            if (M11 && (M10 && M12 || M01 && M21)) {
+                            if (m11 && (m10 && m12 || m01 && m21)) {
                                 sb.append("1"); //$NON-NLS-1$
                             } else {
                                 sb.append(seg);
                             }
                             break;
                         case 14:
-                            if (M22 && (M20 && M21 || M02 && M12)) {
+                            if (m22 && (m20 && m21 || m02 && m12)) {
                                 sb.append("1"); //$NON-NLS-1$
                             } else {
                                 sb.append(seg);
@@ -219,41 +219,41 @@ final class ErrorFixer {
         case 4: // Concave quad
         {
 
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             text = QuickFixer.setLine(lineNumber + 1,
-                    "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                            data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[8] + " " + data_segments[9] + " " + data_segments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
-                            "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                            data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + //$NON-NLS-1$ //$NON-NLS-2$
+                    "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                            dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
+                            "<br>3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                            dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + //$NON-NLS-1$ //$NON-NLS-2$
                             "<br>5 24 " +  //$NON-NLS-1$
-                            data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                            dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text);  //$NON-NLS-1$ //$NON-NLS-2$
         }
         break;
         case 65: // Hourglass quad (first variant)
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
-            text = QuickFixer.setLine(lineNumber + 1, data_segments[0] + " " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
+            text = QuickFixer.setLine(lineNumber + 1, dataSegments[0] + " " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                    dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
         }
         break;
         case 66: // Hourglass quad (second variant)
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
-            text = QuickFixer.setLine(lineNumber + 1, data_segments[0] + " " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
+            text = QuickFixer.setLine(lineNumber + 1, dataSegments[0] + " " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                    dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
         }
         break;
         case 13: // Line identical vertices (line, triangle)
@@ -261,7 +261,7 @@ final class ErrorFixer {
             break;
         case 68: // Identical vertices (quad)
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
 
             final Vector3d vertexA = new Vector3d();
             final Vector3d vertexB = new Vector3d();
@@ -269,54 +269,54 @@ final class ErrorFixer {
             final Vector3d vertexD = new Vector3d();
 
             // 1st vertex
-            vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
-            vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
-            vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
             // 2nd vertex
-            vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
-            vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
-            vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
             // 3rd vertex
-            vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
-            vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
-            vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
             // 4th vertex
-            vertexD.setX(new BigDecimal(data_segments[11], Threshold.mc));
-            vertexD.setY(new BigDecimal(data_segments[12], Threshold.mc));
-            vertexD.setZ(new BigDecimal(data_segments[13], Threshold.mc));
+            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
+            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
+            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
 
 
             Vector3d.sub(vertexA, vertexD, vertexA);
             Vector3d.sub(vertexB, vertexD, vertexB);
             Vector3d.sub(vertexC, vertexD, vertexC);
 
-            boolean AD = vertexA.length().compareTo(Threshold.identical_vertex_distance) < 0; // AD
-            boolean BD = vertexB.length().compareTo(Threshold.identical_vertex_distance) < 0; // BD
-            boolean CD = vertexC.length().compareTo(Threshold.identical_vertex_distance) < 0; // CD
-            boolean AB = Vector3d.sub(vertexA, vertexB).length().compareTo(Threshold.identical_vertex_distance) < 0; // AB
-            boolean BC = Vector3d.sub(vertexB, vertexC).length().compareTo(Threshold.identical_vertex_distance) < 0; // BC
-            boolean AC = Vector3d.sub(vertexA, vertexC).length().compareTo(Threshold.identical_vertex_distance) < 0; // AC
+            boolean sAD = vertexA.length().compareTo(Threshold.identical_vertex_distance) < 0; // AD
+            boolean sBD = vertexB.length().compareTo(Threshold.identical_vertex_distance) < 0; // BD
+            boolean sCD = vertexC.length().compareTo(Threshold.identical_vertex_distance) < 0; // CD
+            boolean sAB = Vector3d.sub(vertexA, vertexB).length().compareTo(Threshold.identical_vertex_distance) < 0; // AB
+            boolean sBC = Vector3d.sub(vertexB, vertexC).length().compareTo(Threshold.identical_vertex_distance) < 0; // BC
+            boolean sAC = Vector3d.sub(vertexA, vertexC).length().compareTo(Threshold.identical_vertex_distance) < 0; // AC
 
-            if (AD && !(BD || CD || AB || BC || AC)) {
-                text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                        data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
-            } else if (CD && !(BD || AD || AB || BC || AC)) {
-                text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                        data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
-            } else if (BC && !(BD || CD || AB || AD || AC)) {
-                text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                        data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
-            } else if (AB && !(BD || CD || AD || BC || AC)) {
-                text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                        data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                        data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+            if (sAD && !(sBD || sCD || sAB || sBC || sAC)) {
+                text = QuickFixer.setLine(lineNumber + 1, "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                        dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+            } else if (sCD && !(sBD || sAD || sAB || sBC || sAC)) {
+                text = QuickFixer.setLine(lineNumber + 1, "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                        dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+            } else if (sBC && !(sBD || sCD || sAB || sAD || sAC)) {
+                text = QuickFixer.setLine(lineNumber + 1, "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                        dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+            } else if (sAB && !(sBD || sCD || sAD || sBC || sAC)) {
+                text = QuickFixer.setLine(lineNumber + 1, "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                        dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
             } else {
                 text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             }
@@ -324,7 +324,7 @@ final class ErrorFixer {
         break;
         case 52: // Collinear quad
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
 
             final Vector3d vertexA = new Vector3d();
             final Vector3d vertexB = new Vector3d();
@@ -332,31 +332,31 @@ final class ErrorFixer {
             final Vector3d vertexD = new Vector3d();
 
             // 1st vertex
-            vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
-            vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
-            vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
             // 2nd vertex
-            vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
-            vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
-            vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
             // 3rd vertex
-            vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
-            vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
-            vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
             // 4th vertex
-            vertexD.setX(new BigDecimal(data_segments[11], Threshold.mc));
-            vertexD.setY(new BigDecimal(data_segments[12], Threshold.mc));
-            vertexD.setZ(new BigDecimal(data_segments[13], Threshold.mc));
+            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
+            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
+            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
 
-            Vertex A = new Vertex(vertexA.X, vertexA.Y, vertexA.Z);
-            Vertex B = new Vertex(vertexB.X, vertexB.Y, vertexB.Z);
-            Vertex C = new Vertex(vertexC.X, vertexC.Y, vertexC.Z);
-            Vertex D = new Vertex(vertexD.X, vertexD.Y, vertexD.Z);
+            Vertex vA = new Vertex(vertexA.X, vertexA.Y, vertexA.Z);
+            Vertex vB = new Vertex(vertexB.X, vertexB.Y, vertexB.Z);
+            Vertex vC = new Vertex(vertexC.X, vertexC.Y, vertexC.Z);
+            Vertex vD = new Vertex(vertexD.X, vertexD.Y, vertexD.Z);
 
             Vector3d.sub(vertexB, vertexA, vertexA);
             Vector3d.sub(vertexB, vertexC, vertexB);
             Vector3d.sub(vertexD, vertexC, vertexC);
-            Vector3d.sub(vertexD, new Vector3d(A), vertexD);
+            Vector3d.sub(vertexD, new Vector3d(vA), vertexD);
 
 
             boolean pointA;
@@ -386,84 +386,84 @@ final class ErrorFixer {
                 text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             } else if (pointA) {
                 NLogger.debug(ErrorFixer.class, "Point A"); //$NON-NLS-1$
-                if (vm.linkedCommonFaces(D, A).size() == 1 && vm.linkedCommonFaces(A, B).size() == 1) {
-                    text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                            data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+                if (vm.linkedCommonFaces(vD, vA).size() == 1 && vm.linkedCommonFaces(vA, vB).size() == 1) {
+                    text = QuickFixer.setLine(lineNumber + 1, "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                            dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
                 } else {
                     text = QuickFixer.setLine(lineNumber + 1,
-                            "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                            "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    "<br>3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4], text);  //$NON-NLS-1$ //$NON-NLS-2$
 
                 }
             } else if (pointB) {
                 NLogger.debug(ErrorFixer.class, "Point B"); //$NON-NLS-1$
-                if (vm.linkedCommonFaces(A, B).size() == 1 && vm.linkedCommonFaces(B, C).size() == 1) {
-                    text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                            data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+                if (vm.linkedCommonFaces(vA, vB).size() == 1 && vm.linkedCommonFaces(vB, vC).size() == 1) {
+                    text = QuickFixer.setLine(lineNumber + 1, "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                            dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
                 } else {
                     text = QuickFixer.setLine(lineNumber + 1,
-                            "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + //$NON-NLS-1$ //$NON-NLS-2$
-                                    "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                            "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + //$NON-NLS-1$ //$NON-NLS-2$
+                                    "<br>3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7], text);  //$NON-NLS-1$ //$NON-NLS-2$
                 }
             } else if (pointC) {
                 NLogger.debug(ErrorFixer.class, "Point C"); //$NON-NLS-1$
-                if (vm.linkedCommonFaces(B, C).size() == 1 && vm.linkedCommonFaces(C, D).size() == 1) {
-                    text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                            data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
+                if (vm.linkedCommonFaces(vB, vC).size() == 1 && vm.linkedCommonFaces(vC, vD).size() == 1) {
+                    text = QuickFixer.setLine(lineNumber + 1, "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                            dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text); //$NON-NLS-1$ //$NON-NLS-2$
                 } else {
                     text = QuickFixer.setLine(lineNumber + 1,
-                            "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                            "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    "<br>3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4], text);  //$NON-NLS-1$ //$NON-NLS-2$
 
                 }
             } else if (pointD) {
                 NLogger.debug(ErrorFixer.class, "Point D"); //$NON-NLS-1$
-                if (vm.linkedCommonFaces(C, D).size() == 1 && vm.linkedCommonFaces(D, A).size() == 1) {
-                    text = QuickFixer.setLine(lineNumber + 1, "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                            data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                            data_segments[8] + " " + data_segments[9] + " " + data_segments[10], text); //$NON-NLS-1$ //$NON-NLS-2$
+                if (vm.linkedCommonFaces(vC, vD).size() == 1 && vm.linkedCommonFaces(vD, vA).size() == 1) {
+                    text = QuickFixer.setLine(lineNumber + 1, "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                            dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10], text); //$NON-NLS-1$ //$NON-NLS-2$
                 } else {
                     text = QuickFixer.setLine(lineNumber + 1,
-                            "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + //$NON-NLS-1$ //$NON-NLS-2$
-                                    "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                    data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                    data_segments[5] + " " + data_segments[6] + " " + data_segments[7], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                            "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + //$NON-NLS-1$ //$NON-NLS-2$
+                                    "<br>3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                    dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7], text);  //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
         }
         break;
         case 36: // Coplanar Quad
         {
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
 
             final Vector3d vertexA = new Vector3d();
             final Vector3d vertexB = new Vector3d();
@@ -471,21 +471,21 @@ final class ErrorFixer {
             final Vector3d vertexD = new Vector3d();
 
             // 1st vertex
-            vertexA.setX(new BigDecimal(data_segments[2], Threshold.mc));
-            vertexA.setY(new BigDecimal(data_segments[3], Threshold.mc));
-            vertexA.setZ(new BigDecimal(data_segments[4], Threshold.mc));
+            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
             // 2nd vertex
-            vertexB.setX(new BigDecimal(data_segments[5], Threshold.mc));
-            vertexB.setY(new BigDecimal(data_segments[6], Threshold.mc));
-            vertexB.setZ(new BigDecimal(data_segments[7], Threshold.mc));
+            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
             // 3rd vertex
-            vertexC.setX(new BigDecimal(data_segments[8], Threshold.mc));
-            vertexC.setY(new BigDecimal(data_segments[9], Threshold.mc));
-            vertexC.setZ(new BigDecimal(data_segments[10], Threshold.mc));
+            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
             // 4th vertex
-            vertexD.setX(new BigDecimal(data_segments[11], Threshold.mc));
-            vertexD.setY(new BigDecimal(data_segments[12], Threshold.mc));
-            vertexD.setZ(new BigDecimal(data_segments[13], Threshold.mc));
+            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
+            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
+            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
 
             Vector3d[] normals = new Vector3d[4];
             Vector3d[] lineVectors = new Vector3d[4];
@@ -502,34 +502,34 @@ final class ErrorFixer {
             angle = Math.min(angle, Math.abs(180.0 - angle));
             if (angle > Threshold.coplanarity_angle_error) {
                 text = QuickFixer.setLine(lineNumber + 1,
-                        "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
-                                "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + //$NON-NLS-1$ //$NON-NLS-2$
+                        "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] +  //$NON-NLS-1$ //$NON-NLS-2$
+                                "<br>3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + //$NON-NLS-1$ //$NON-NLS-2$
                                 "<br>5 24 " +  //$NON-NLS-1$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13], text);  //$NON-NLS-1$ //$NON-NLS-2$
             } else {
                 text = QuickFixer.setLine(lineNumber + 1,
-                        "3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + //$NON-NLS-1$ //$NON-NLS-2$
-                                "<br>3 " + data_segments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + //$NON-NLS-1$ //$NON-NLS-2$
+                        "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + //$NON-NLS-1$ //$NON-NLS-2$
+                                "<br>3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + //$NON-NLS-1$ //$NON-NLS-2$
                                 "<br>5 24 " +  //$NON-NLS-1$
-                                data_segments[11] + " " + data_segments[12] + " " + data_segments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[5] + " " + data_segments[6] + " " + data_segments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[2] + " " + data_segments[3] + " " + data_segments[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                data_segments[8] + " " + data_segments[9] + " " + data_segments[10], text);  //$NON-NLS-1$ //$NON-NLS-2$
+                                dataSegments[11] + " " + dataSegments[12] + " " + dataSegments[13] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[5] + " " + dataSegments[6] + " " + dataSegments[7] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                dataSegments[8] + " " + dataSegments[9] + " " + dataSegments[10], text);  //$NON-NLS-1$ //$NON-NLS-2$
             }
 
         }

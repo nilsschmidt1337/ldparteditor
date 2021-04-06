@@ -32,7 +32,7 @@ public class Composite3DViewState {
 
     private float zoom = 0f;
     private float zoom_exponent = 0f;
-    private float viewport_pixel_per_ldu;
+    private float viewportPixelPerLDU;
     private Vector4f offset = new Vector4f(0, 0, 0, 1f);
     final Composite3DState STATE = new Composite3DState();
     private boolean negDeterminant = false;
@@ -70,16 +70,16 @@ public class Composite3DViewState {
         return zoom_exponent;
     }
 
-    void setZoom_exponent(float zoom_exponent) {
-        this.zoom_exponent = zoom_exponent;
+    void setZoom_exponent(float zoomExponent) {
+        this.zoom_exponent = zoomExponent;
     }
 
     public float getViewportPixelPerLDU() {
-        return viewport_pixel_per_ldu;
+        return viewportPixelPerLDU;
     }
 
-    public void setViewportPixelPerLDU(float viewport_pixel_per_ldu) {
-        this.viewport_pixel_per_ldu = viewport_pixel_per_ldu;
+    public void setViewportPixelPerLDU(float viewportPixelPerLDU) {
+        this.viewportPixelPerLDU = viewportPixelPerLDU;
     }
 
     public Vector4f getOffset() {

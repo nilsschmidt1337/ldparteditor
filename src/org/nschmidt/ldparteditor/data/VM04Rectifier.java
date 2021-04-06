@@ -52,7 +52,7 @@ class VM04Rectifier extends VM03Adjacency {
         final double targetAngle = rs.getMaximumAngle().doubleValue();
         final boolean colourise = rs.isColourise();
 
-        final BigDecimal TWO = new BigDecimal(2);
+        final BigDecimal two = new BigDecimal(2);
 
         final Set<GData3> trisToIgnore = new HashSet<>();
 
@@ -215,26 +215,26 @@ class VM04Rectifier extends VM03Adjacency {
                                                         angle = Vector3d.angle(normals[0], normals[2]);
                                                         if (angle > targetAngle) continue;
 
-                                                        Vector3d A = Vector3d.sub(vertexB, vertexA);
-                                                        Vector3d B = Vector3d.sub(vertexB, vertexC);
-                                                        Vector3d C = Vector3d.sub(vertexD, vertexC);
-                                                        Vector3d D = Vector3d.sub(vertexD, vertexA);
+                                                        Vector3d a = Vector3d.sub(vertexB, vertexA);
+                                                        Vector3d b = Vector3d.sub(vertexB, vertexC);
+                                                        Vector3d c = Vector3d.sub(vertexD, vertexC);
+                                                        Vector3d d = Vector3d.sub(vertexD, vertexA);
 
-                                                        angle = Vector3d.angle(A, D);
+                                                        angle = Vector3d.angle(a, d);
                                                         double sumAngle = angle;
                                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                             continue;
                                                         }
 
-                                                        angle = Vector3d.angle(B, C);
+                                                        angle = Vector3d.angle(b, c);
                                                         sumAngle = sumAngle + angle;
                                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                             continue;
                                                         }
 
-                                                        A.negate();
-                                                        B.negate();
-                                                        angle = Vector3d.angle(A, B);
+                                                        a.negate();
+                                                        b.negate();
+                                                        angle = Vector3d.angle(a, b);
                                                         sumAngle = sumAngle + angle;
                                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                                             continue;
@@ -396,14 +396,14 @@ class VM04Rectifier extends VM03Adjacency {
                                     }
                                     GData4 qa = (GData4) quad;
 
-                                    BigDecimal d1X = qa.X1.add(qa.X3).divide(TWO);
-                                    BigDecimal d2X = qa.X2.add(qa.X4).divide(TWO);
+                                    BigDecimal d1X = qa.X1.add(qa.X3).divide(two);
+                                    BigDecimal d2X = qa.X2.add(qa.X4).divide(two);
                                     if (d1X.compareTo(d2X) == 0) {
-                                        BigDecimal d1Y = qa.Y1.add(qa.Y3).divide(TWO);
-                                        BigDecimal d2Y = qa.Y2.add(qa.Y4).divide(TWO);
+                                        BigDecimal d1Y = qa.Y1.add(qa.Y3).divide(two);
+                                        BigDecimal d2Y = qa.Y2.add(qa.Y4).divide(two);
                                         if (d1Y.compareTo(d2Y) == 0) {
-                                            BigDecimal d1Z = qa.Z1.add(qa.Z3).divide(TWO);
-                                            BigDecimal d2Z = qa.Z2.add(qa.Z4).divide(TWO);
+                                            BigDecimal d1Z = qa.Z1.add(qa.Z3).divide(two);
+                                            BigDecimal d2Z = qa.Z2.add(qa.Z4).divide(two);
                                             if (d1Z.compareTo(d2Z) == 0) {
 
                                                 // Its a rhombus!
@@ -518,9 +518,9 @@ class VM04Rectifier extends VM03Adjacency {
                                                 Vector3d temp3 = Vector3d.cross(temp2, temp1);
 
                                                 accurateLocalMatrix = new Matrix(
-                                                        temp1.X.divide(TWO), temp1.Y.divide(TWO), temp1.Z.divide(TWO), BigDecimal.ZERO,
-                                                        temp3.X.divide(TWO), temp3.Y.divide(TWO), temp3.Z.divide(TWO), BigDecimal.ZERO,
-                                                        temp2.X.divide(TWO), temp2.Y.divide(TWO), temp2.Z.divide(TWO), BigDecimal.ZERO,
+                                                        temp1.X.divide(two), temp1.Y.divide(two), temp1.Z.divide(two), BigDecimal.ZERO,
+                                                        temp3.X.divide(two), temp3.Y.divide(two), temp3.Z.divide(two), BigDecimal.ZERO,
+                                                        temp2.X.divide(two), temp2.Y.divide(two), temp2.Z.divide(two), BigDecimal.ZERO,
                                                         d1X, d1Y, d1Z, BigDecimal.ONE);
 
                                                 accurateLocalMatrix = repair(accurateLocalMatrix);
@@ -719,26 +719,26 @@ class VM04Rectifier extends VM03Adjacency {
                                         angle = Vector3d.angle(normals[0], normals[2]);
                                         if (angle > targetAngle) continue;
 
-                                        Vector3d A = Vector3d.sub(vertexB, vertexA);
-                                        Vector3d B = Vector3d.sub(vertexB, vertexC);
-                                        Vector3d C = Vector3d.sub(vertexD, vertexC);
-                                        Vector3d D = Vector3d.sub(vertexD, vertexA);
+                                        Vector3d a = Vector3d.sub(vertexB, vertexA);
+                                        Vector3d b = Vector3d.sub(vertexB, vertexC);
+                                        Vector3d c = Vector3d.sub(vertexD, vertexC);
+                                        Vector3d d = Vector3d.sub(vertexD, vertexA);
 
-                                        angle = Vector3d.angle(A, D);
+                                        angle = Vector3d.angle(a, d);
                                         double sumAngle = angle;
                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                             continue;
                                         }
 
-                                        angle = Vector3d.angle(B, C);
+                                        angle = Vector3d.angle(b, c);
                                         sumAngle = sumAngle + angle;
                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                             continue;
                                         }
 
-                                        A.negate();
-                                        B.negate();
-                                        angle = Vector3d.angle(A, B);
+                                        a.negate();
+                                        b.negate();
+                                        angle = Vector3d.angle(a, b);
                                         sumAngle = sumAngle + angle;
                                         if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
                                             continue;
@@ -901,14 +901,14 @@ class VM04Rectifier extends VM03Adjacency {
                     }
                     GData4 qa = (GData4) quad;
 
-                    BigDecimal d1X = qa.X1.add(qa.X3).divide(TWO);
-                    BigDecimal d2X = qa.X2.add(qa.X4).divide(TWO);
+                    BigDecimal d1X = qa.X1.add(qa.X3).divide(two);
+                    BigDecimal d2X = qa.X2.add(qa.X4).divide(two);
                     if (d1X.compareTo(d2X) == 0) {
-                        BigDecimal d1Y = qa.Y1.add(qa.Y3).divide(TWO);
-                        BigDecimal d2Y = qa.Y2.add(qa.Y4).divide(TWO);
+                        BigDecimal d1Y = qa.Y1.add(qa.Y3).divide(two);
+                        BigDecimal d2Y = qa.Y2.add(qa.Y4).divide(two);
                         if (d1Y.compareTo(d2Y) == 0) {
-                            BigDecimal d1Z = qa.Z1.add(qa.Z3).divide(TWO);
-                            BigDecimal d2Z = qa.Z2.add(qa.Z4).divide(TWO);
+                            BigDecimal d1Z = qa.Z1.add(qa.Z3).divide(two);
+                            BigDecimal d2Z = qa.Z2.add(qa.Z4).divide(two);
                             if (d1Z.compareTo(d2Z) == 0) {
 
                                 // Its a rhombus!
@@ -1023,9 +1023,9 @@ class VM04Rectifier extends VM03Adjacency {
                                 Vector3d temp3 = Vector3d.cross(temp2, temp1);
 
                                 accurateLocalMatrix = new Matrix(
-                                        temp1.X.divide(TWO), temp1.Y.divide(TWO), temp1.Z.divide(TWO), BigDecimal.ZERO,
-                                        temp3.X.divide(TWO), temp3.Y.divide(TWO), temp3.Z.divide(TWO), BigDecimal.ZERO,
-                                        temp2.X.divide(TWO), temp2.Y.divide(TWO), temp2.Z.divide(TWO), BigDecimal.ZERO,
+                                        temp1.X.divide(two), temp1.Y.divide(two), temp1.Z.divide(two), BigDecimal.ZERO,
+                                        temp3.X.divide(two), temp3.Y.divide(two), temp3.Z.divide(two), BigDecimal.ZERO,
+                                        temp2.X.divide(two), temp2.Y.divide(two), temp2.Z.divide(two), BigDecimal.ZERO,
                                         d1X, d1Y, d1Z, BigDecimal.ONE);
 
                                 accurateLocalMatrix = repair(accurateLocalMatrix);
@@ -1121,13 +1121,13 @@ class VM04Rectifier extends VM03Adjacency {
         final BigDecimal epsilon = new BigDecimal("0.000001"); //$NON-NLS-1$
         if (epsilon.compareTo(lengthY) < 0) {
             String line = "1 16 " + m.toLDrawString() + "1.dat"; //$NON-NLS-1$ //$NON-NLS-2$
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             StringBuilder sb = new StringBuilder();
             for (int k = 0; k < 3; k++) {
                 sb.setLength(0);
                 int i = 0;
                 String sign;
-                for (String seg : data_segments) {
+                for (String seg : dataSegments) {
                     if (!seg.trim().equals("")) {  //$NON-NLS-1$
                         i++;
                         switch (i) {
@@ -1153,26 +1153,26 @@ class VM04Rectifier extends VM03Adjacency {
                 if (hasGoodDeterminant(sb.toString())) break;
             }
             line = sb.toString();
-            data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             // [ERROR] Check singularity
             try {
                 // Offset
-                BigDecimal M30 = new BigDecimal(data_segments[2]);
-                BigDecimal M31 = new BigDecimal(data_segments[3]);
-                BigDecimal M32 = new BigDecimal(data_segments[4]);
+                BigDecimal m30 = new BigDecimal(dataSegments[2]);
+                BigDecimal m31 = new BigDecimal(dataSegments[3]);
+                BigDecimal m32 = new BigDecimal(dataSegments[4]);
                 // First row
-                BigDecimal M00 = new BigDecimal(data_segments[5]);
-                BigDecimal M10 = new BigDecimal(data_segments[6]);
-                BigDecimal M20 = new BigDecimal(data_segments[7]);
+                BigDecimal m00 = new BigDecimal(dataSegments[5]);
+                BigDecimal m10 = new BigDecimal(dataSegments[6]);
+                BigDecimal m20 = new BigDecimal(dataSegments[7]);
                 // Second row
-                BigDecimal M01 = new BigDecimal(data_segments[8]);
-                BigDecimal M11 = new BigDecimal(data_segments[9]);
-                BigDecimal M21 = new BigDecimal(data_segments[10]);
+                BigDecimal m01 = new BigDecimal(dataSegments[8]);
+                BigDecimal m11 = new BigDecimal(dataSegments[9]);
+                BigDecimal m21 = new BigDecimal(dataSegments[10]);
                 // Third row
-                BigDecimal M02 = new BigDecimal(data_segments[11]);
-                BigDecimal M12 = new BigDecimal(data_segments[12]);
-                BigDecimal M22 = new BigDecimal(data_segments[13]);
-                return new Matrix(M00, M01, M02, M02, M10, M11, M12, M12, M20, M21, M22, M22, M30, M31, M32, M32);
+                BigDecimal m02 = new BigDecimal(dataSegments[11]);
+                BigDecimal m12 = new BigDecimal(dataSegments[12]);
+                BigDecimal m22 = new BigDecimal(dataSegments[13]);
+                return new Matrix(m00, m01, m02, m02, m10, m11, m12, m12, m20, m21, m22, m22, m30, m31, m32, m32);
             } catch (NumberFormatException nfe) {
             }
         }
@@ -1180,39 +1180,39 @@ class VM04Rectifier extends VM03Adjacency {
     }
 
     private boolean hasGoodDeterminant(String line) {
-        String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+        String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
         // [ERROR] Check singularity
         Matrix4f tMatrix = new Matrix4f();
         float det = 0;
         try {
             // Offset
-            BigDecimal M30 = new BigDecimal(data_segments[2]);
-            tMatrix.m30 = M30.floatValue() * 1000f;
-            BigDecimal M31 = new BigDecimal(data_segments[3]);
-            tMatrix.m31 = M31.floatValue() * 1000f;
-            BigDecimal M32 = new BigDecimal(data_segments[4]);
-            tMatrix.m32 = M32.floatValue() * 1000f;
+            BigDecimal m30 = new BigDecimal(dataSegments[2]);
+            tMatrix.m30 = m30.floatValue() * 1000f;
+            BigDecimal m31 = new BigDecimal(dataSegments[3]);
+            tMatrix.m31 = m31.floatValue() * 1000f;
+            BigDecimal m32 = new BigDecimal(dataSegments[4]);
+            tMatrix.m32 = m32.floatValue() * 1000f;
             // First row
-            BigDecimal M00 = new BigDecimal(data_segments[5]);
-            tMatrix.m00 = M00.floatValue();
-            BigDecimal M10 = new BigDecimal(data_segments[6]);
-            tMatrix.m10 = M10.floatValue();
-            BigDecimal M20 = new BigDecimal(data_segments[7]);
-            tMatrix.m20 = M20.floatValue();
+            BigDecimal m00 = new BigDecimal(dataSegments[5]);
+            tMatrix.m00 = m00.floatValue();
+            BigDecimal m10 = new BigDecimal(dataSegments[6]);
+            tMatrix.m10 = m10.floatValue();
+            BigDecimal m20 = new BigDecimal(dataSegments[7]);
+            tMatrix.m20 = m20.floatValue();
             // Second row
-            BigDecimal M01 = new BigDecimal(data_segments[8]);
-            tMatrix.m01 = M01.floatValue();
-            BigDecimal M11 = new BigDecimal(data_segments[9]);
-            tMatrix.m11 = M11.floatValue();
-            BigDecimal M21 = new BigDecimal(data_segments[10]);
-            tMatrix.m21 = M21.floatValue();
+            BigDecimal m01 = new BigDecimal(dataSegments[8]);
+            tMatrix.m01 = m01.floatValue();
+            BigDecimal m11 = new BigDecimal(dataSegments[9]);
+            tMatrix.m11 = m11.floatValue();
+            BigDecimal m21 = new BigDecimal(dataSegments[10]);
+            tMatrix.m21 = m21.floatValue();
             // Third row
-            BigDecimal M02 = new BigDecimal(data_segments[11]);
-            tMatrix.m02 = M02.floatValue();
-            BigDecimal M12 = new BigDecimal(data_segments[12]);
-            tMatrix.m12 = M12.floatValue();
-            BigDecimal M22 = new BigDecimal(data_segments[13]);
-            tMatrix.m22 = M22.floatValue();
+            BigDecimal m02 = new BigDecimal(dataSegments[11]);
+            tMatrix.m02 = m02.floatValue();
+            BigDecimal m12 = new BigDecimal(dataSegments[12]);
+            tMatrix.m12 = m12.floatValue();
+            BigDecimal m22 = new BigDecimal(dataSegments[13]);
+            tMatrix.m22 = m22.floatValue();
         } catch (NumberFormatException nfe) {
             // Can't happen
             return false;

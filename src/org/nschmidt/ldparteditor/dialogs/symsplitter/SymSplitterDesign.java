@@ -68,97 +68,97 @@ class SymSplitterDesign extends Dialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite cmp_container = (Composite) super.createDialogArea(parent);
-        GridLayout gridLayout = (GridLayout) cmp_container.getLayout();
+        Composite cmpContainer = (Composite) super.createDialogArea(parent);
+        GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
         gridLayout.verticalSpacing = 10;
         gridLayout.horizontalSpacing = 10;
 
-        Label lbl_specify = new Label(cmp_container, SWT.NONE);
-        lbl_specify.setText(I18n.SYMSPLITTER_TITLE);
+        Label lblSpecify = new Label(cmpContainer, SWT.NONE);
+        lblSpecify.setText(I18n.SYMSPLITTER_TITLE);
 
-        Label lbl_separator = new Label(cmp_container, SWT.SEPARATOR | SWT.HORIZONTAL);
-        lbl_separator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        Label lblSeparator = new Label(cmpContainer, SWT.SEPARATOR | SWT.HORIZONTAL);
+        lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
-        Label lbl_hint = new Label(cmp_container, SWT.NONE);
-        lbl_hint.setText(I18n.SYMSPLITTER_HINT);
+        Label lblHint = new Label(cmpContainer, SWT.NONE);
+        lblHint.setText(I18n.SYMSPLITTER_HINT);
 
-        BigDecimalSpinner spn_offset = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_offset [0] = spn_offset;
-        spn_offset.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_offset.setMaximum(new BigDecimal(100000000));
-        spn_offset.setMinimum(new BigDecimal(-100000000));
-        spn_offset.setValue(ss.getOffset());
+        BigDecimalSpinner spnOffset = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_offset [0] = spnOffset;
+        spnOffset.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnOffset.setMaximum(new BigDecimal(100000000));
+        spnOffset.setMinimum(new BigDecimal(-100000000));
+        spnOffset.setValue(ss.getOffset());
 
-        Label lbl_precision = new Label(cmp_container, SWT.NONE);
-        lbl_precision.setText(I18n.SYMSPLITTER_VERTEX_THRESHOLD);
+        Label lblPrecision = new Label(cmpContainer, SWT.NONE);
+        lblPrecision.setText(I18n.SYMSPLITTER_VERTEX_THRESHOLD);
 
-        BigDecimalSpinner spn_precision = new BigDecimalSpinner(cmp_container, SWT.NONE);
-        this.spn_precision [0] = spn_precision;
-        spn_precision.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        spn_precision.setMaximum(new BigDecimal(1000));
-        spn_precision.setMinimum(new BigDecimal(0));
-        spn_precision.setValue(ss.getPrecision());
+        BigDecimalSpinner spnPrecision = new BigDecimalSpinner(cmpContainer, SWT.NONE);
+        this.spn_precision [0] = spnPrecision;
+        spnPrecision.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        spnPrecision.setMaximum(new BigDecimal(1000));
+        spnPrecision.setMinimum(new BigDecimal(0));
+        spnPrecision.setValue(ss.getPrecision());
 
-        Label lbl_splitPlane = new Label(cmp_container, SWT.NONE);
-        lbl_splitPlane.setText(I18n.SYMSPLITTER_SPLITTING_PLANE);
-
-        {
-            Combo cmb_splitPlane = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_splitPlane[0] = cmb_splitPlane;
-            cmb_splitPlane.setItems(new String[] {I18n.SYMSPLITTER_ZP, I18n.SYMSPLITTER_YP, I18n.SYMSPLITTER_XP, I18n.SYMSPLITTER_ZM, I18n.SYMSPLITTER_YM, I18n.SYMSPLITTER_XM});
-            cmb_splitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_splitPlane.setText(cmb_splitPlane.getItem(ss.getSplitPlane()));
-            cmb_splitPlane.select(ss.getSplitPlane());
-        }
-
-        Label lbl_hide = new Label(cmp_container, SWT.NONE);
-        lbl_hide.setText(I18n.SYMSPLITTER_SELECT_WHAT);
-        {
-            Combo cmb_hide = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_hide[0] = cmb_hide;
-            cmb_hide.setItems(new String[] {I18n.SYMSPLITTER_SHOW_ALL, I18n.SYMSPLITTER_SHOW_MIDDLE, I18n.SYMSPLITTER_SHOW_FRONT, I18n.SYMSPLITTER_SHOW_BEHIND});
-            cmb_hide.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_hide.setText(cmb_hide.getItem(ss.getHideLevel()));
-            cmb_hide.select(ss.getHideLevel());
-        }
-
-        Label lbl_dummy = new Label(cmp_container, SWT.NONE);
-        lbl_dummy.setText(""); //$NON-NLS-1$
+        Label lblSplitPlane = new Label(cmpContainer, SWT.NONE);
+        lblSplitPlane.setText(I18n.SYMSPLITTER_SPLITTING_PLANE);
 
         {
-            Combo cmb_validate = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_validate[0] = cmb_validate;
-            cmb_validate.setItems(new String[] {I18n.SYMSPLITTER_NO_VALIDATION, I18n.SYMSPLITTER_VALIDATION});
-            cmb_validate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_validate.setText(cmb_validate.getItem(ss.isValidate() ? 1 : 0));
-            cmb_validate.select(ss.isValidate() ? 1 : 0);
+            Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_splitPlane[0] = cmbSplitPlane;
+            cmbSplitPlane.setItems(new String[] {I18n.SYMSPLITTER_ZP, I18n.SYMSPLITTER_YP, I18n.SYMSPLITTER_XP, I18n.SYMSPLITTER_ZM, I18n.SYMSPLITTER_YM, I18n.SYMSPLITTER_XM});
+            cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbSplitPlane.setText(cmbSplitPlane.getItem(ss.getSplitPlane()));
+            cmbSplitPlane.select(ss.getSplitPlane());
         }
-        {
-            Combo cmb_cutAcross = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_cutAcross[0] = cmb_cutAcross;
-            cmb_cutAcross.setItems(new String[] {I18n.SYMSPLITTER_DO_NOT_CUT, I18n.SYMSPLITTER_CUT});
-            cmb_cutAcross.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_cutAcross.setText(cmb_cutAcross.getItem(ss.isCutAcross() ? 1 : 0));
-            cmb_cutAcross.select(ss.isCutAcross() ? 1 : 0);
-        }
-        {
-            Combo cmb_colourise = new Combo(cmp_container, SWT.READ_ONLY);
-            this.cmb_colourise[0] = cmb_colourise;
-            cmb_colourise.setItems(new String[] {I18n.SYMSPLITTER_NOT_COLOURISE, I18n.SYMSPLITTER_COLOURISE});
-            cmb_colourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-            cmb_colourise.setText(cmb_colourise.getItem(ss.isColourise() ? 1 : 0));
-            cmb_colourise.select(ss.isColourise() ? 1 : 0);
-        }
-        Combo cmb_scope = new Combo(cmp_container, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmb_scope;
-        cmb_scope.setItems(new String[] {I18n.SYMSPLITTER_SCOPE_FILE, I18n.SYMSPLITTER_SCOPE_SELECTION});
-        cmb_scope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
-        cmb_scope.setText(cmb_scope.getItem(0));
-        cmb_scope.select(0);
-        cmb_scope.setEnabled(false);
 
-        cmp_container.pack();
-        return cmp_container;
+        Label lblHide = new Label(cmpContainer, SWT.NONE);
+        lblHide.setText(I18n.SYMSPLITTER_SELECT_WHAT);
+        {
+            Combo cmbHide = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_hide[0] = cmbHide;
+            cmbHide.setItems(new String[] {I18n.SYMSPLITTER_SHOW_ALL, I18n.SYMSPLITTER_SHOW_MIDDLE, I18n.SYMSPLITTER_SHOW_FRONT, I18n.SYMSPLITTER_SHOW_BEHIND});
+            cmbHide.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbHide.setText(cmbHide.getItem(ss.getHideLevel()));
+            cmbHide.select(ss.getHideLevel());
+        }
+
+        Label lblDummy = new Label(cmpContainer, SWT.NONE);
+        lblDummy.setText(""); //$NON-NLS-1$
+
+        {
+            Combo cmbValidate = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_validate[0] = cmbValidate;
+            cmbValidate.setItems(new String[] {I18n.SYMSPLITTER_NO_VALIDATION, I18n.SYMSPLITTER_VALIDATION});
+            cmbValidate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbValidate.setText(cmbValidate.getItem(ss.isValidate() ? 1 : 0));
+            cmbValidate.select(ss.isValidate() ? 1 : 0);
+        }
+        {
+            Combo cmbCutAcross = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_cutAcross[0] = cmbCutAcross;
+            cmbCutAcross.setItems(new String[] {I18n.SYMSPLITTER_DO_NOT_CUT, I18n.SYMSPLITTER_CUT});
+            cmbCutAcross.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbCutAcross.setText(cmbCutAcross.getItem(ss.isCutAcross() ? 1 : 0));
+            cmbCutAcross.select(ss.isCutAcross() ? 1 : 0);
+        }
+        {
+            Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
+            this.cmb_colourise[0] = cmbColourise;
+            cmbColourise.setItems(new String[] {I18n.SYMSPLITTER_NOT_COLOURISE, I18n.SYMSPLITTER_COLOURISE});
+            cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+            cmbColourise.setText(cmbColourise.getItem(ss.isColourise() ? 1 : 0));
+            cmbColourise.select(ss.isColourise() ? 1 : 0);
+        }
+        Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
+        this.cmb_scope[0] = cmbScope;
+        cmbScope.setItems(new String[] {I18n.SYMSPLITTER_SCOPE_FILE, I18n.SYMSPLITTER_SCOPE_SELECTION});
+        cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
+        cmbScope.setText(cmbScope.getItem(0));
+        cmbScope.select(0);
+        cmbScope.setEnabled(false);
+
+        cmpContainer.pack();
+        return cmpContainer;
     }
 
     /**

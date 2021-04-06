@@ -52,14 +52,14 @@ public class GLMatrixStack {
 
     void clear() {
         stack.clear();
-        final Matrix4f ID = new Matrix4f();
-        Matrix4f.setIdentity(ID);
-        final FloatBuffer ID_buf = BufferUtils.createFloatBuffer(16);
-        ID.store(ID_buf);
-        ID_buf.position(0);
-        currentMatrix = ID;
+        final Matrix4f id = new Matrix4f();
+        Matrix4f.setIdentity(id);
+        final FloatBuffer idBuf = BufferUtils.createFloatBuffer(16);
+        id.store(idBuf);
+        idBuf.position(0);
+        currentMatrix = id;
         int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
-        GL20.glUniformMatrix4fv(model, false, ID_buf);
+        GL20.glUniformMatrix4fv(model, false, idBuf);
     }
 
     public void glPushMatrix() {
@@ -80,28 +80,28 @@ public class GLMatrixStack {
     }
 
     public void glLoadIdentity() {
-        final Matrix4f ID = new Matrix4f();
-        Matrix4f.setIdentity(ID);
-        final FloatBuffer ID_buf = BufferUtils.createFloatBuffer(16);
-        ID.store(ID_buf);
-        ID_buf.position(0);
-        currentMatrix = ID;
+        final Matrix4f id = new Matrix4f();
+        Matrix4f.setIdentity(id);
+        final FloatBuffer idBuf = BufferUtils.createFloatBuffer(16);
+        id.store(idBuf);
+        idBuf.position(0);
+        currentMatrix = id;
 
         int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
-        GL20.glUniformMatrix4fv(model, false, ID_buf);
+        GL20.glUniformMatrix4fv(model, false, idBuf);
 
         int view = shader.getUniformLocation("view" ); //$NON-NLS-1$
-        GL20.glUniformMatrix4fv(view, false, ID_buf);
+        GL20.glUniformMatrix4fv(view, false, idBuf);
     }
 
     public void glLoadMatrix(Matrix4f m) {
-        final FloatBuffer m_buf = BufferUtils.createFloatBuffer(16);
-        m.store(m_buf);
-        m_buf.position(0);
+        final FloatBuffer mBuf = BufferUtils.createFloatBuffer(16);
+        m.store(mBuf);
+        mBuf.position(0);
         currentMatrix = m;
 
         int model = shader.getUniformLocation("model" ); //$NON-NLS-1$
-        GL20.glUniformMatrix4fv(model, false, m_buf);
+        GL20.glUniformMatrix4fv(model, false, mBuf);
     }
 
     public void glMultMatrixf(Matrix4f matrix) {

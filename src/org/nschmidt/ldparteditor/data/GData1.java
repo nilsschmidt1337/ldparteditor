@@ -116,8 +116,8 @@ public final class GData1 extends GData {
         this.readOnly = false;
     }
 
-    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, Matrix TMatrix, ArrayList<String> lines, String name, String shortName, int depth, boolean det,
-            Matrix4f pMatrix, Matrix PMatrix, DatFile datFile, GData1 firstRef, boolean readOnly, boolean errorCheckOnly, Set<String> alreadyParsed, GData1 parent) {
+    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, Matrix tMatrixPrec, ArrayList<String> lines, String name, String shortName, int depth, boolean det,
+            Matrix4f pMatrix, Matrix pMatrixPrec, DatFile datFile, GData1 firstRef, boolean readOnly, boolean errorCheckOnly, Set<String> alreadyParsed, GData1 parent) {
         super(parent);
         depth++;
         if (depth < 16) {
@@ -141,8 +141,8 @@ public final class GData1 extends GData {
             this.shortName = shortName;
             this.productMatrix = new Matrix4f(pMatrix);
             this.localMatrix = new Matrix4f(tMatrix);
-            this.accurateProductMatrix = PMatrix;
-            this.accurateLocalMatrix = TMatrix;
+            this.accurateProductMatrix = pMatrixPrec;
+            this.accurateLocalMatrix = tMatrixPrec;
             matrix = BufferUtils.createFloatBuffer(16);
             tMatrix.store(matrix);
 
@@ -178,10 +178,10 @@ public final class GData1 extends GData {
 
                     if (GData.parsedLines.containsKey(key3)) {
                         GData gdata = GData.parsedLines.get(key3);
-                        final GData res_gdata;
+                        final GData resGData;
                         switch (gdata.type()) {
                         case 0:
-                            res_gdata = new GData0(line, this);
+                            resGData = new GData0(line, this);
                             break;
                         case 1:
                             GData1 gd1 = (GData1) gdata;
@@ -204,51 +204,51 @@ public final class GData1 extends GData {
                                 this.boundingBoxMax.y = Math.max(this.boundingBoxMax.y, newGdata1.boundingBoxMax.y);
                                 this.boundingBoxMax.z = Math.max(this.boundingBoxMax.z, newGdata1.boundingBoxMax.z);
                             }
-                            res_gdata = newGdata1;
+                            resGData = newGdata1;
                             break;
                         case 2:
                             GData2 gd2 = (GData2) gdata;
                             GData2 newGdata2 = new GData2(this, gd2.colourNumber, gd2.r, gd2.g, gd2.b, gd2.a, gd2.X1, gd2.Y1, gd2.Z1, gd2.X2, gd2.Y2, gd2.Z2, gd2.x1, gd2.y1, gd2.z1, gd2.x2, gd2.y2,
                                     gd2.z2, datFile, gd2.isLine);
-                            res_gdata = newGdata2;
+                            resGData = newGdata2;
                             break;
                         case 3:
                             GData3 gd3 = (GData3) gdata;
                             GData3 newGdata3 = new GData3(gd3.colourNumber, gd3.r, gd3.g, gd3.b, gd3.a, gd3.X1, gd3.Y1, gd3.Z1, gd3.X2, gd3.Y2, gd3.Z2, gd3.X3, gd3.Y3, gd3.Z3, gd3.x1, gd3.y1, gd3.z1,
                                     gd3.x2, gd3.y2, gd3.z2, gd3.x3, gd3.y3, gd3.z3, gd3.xn, gd3.yn, gd3.zn, this, datFile, gd3.isTriangle);
-                            res_gdata = newGdata3;
+                            resGData = newGdata3;
                             break;
                         case 4:
                             GData4 gd4 = (GData4) gdata;
                             GData4 newGdata4 = new GData4(gd4.colourNumber, gd4.r, gd4.g, gd4.b, gd4.a, gd4.X1, gd4.Y1, gd4.Z1, gd4.X2, gd4.Y2, gd4.Z2, gd4.X3, gd4.Y3, gd4.Z3, gd4.X4, gd4.Y4, gd4.Z4,
                                     gd4.x1, gd4.y1, gd4.z1, gd4.x2, gd4.y2, gd4.z2, gd4.x3, gd4.y3, gd4.z3, gd4.x4, gd4.y4, gd4.z4, gd4.xn, gd4.yn, gd4.zn, this, datFile);
-                            res_gdata = newGdata4;
+                            resGData = newGdata4;
                             break;
                         case 5:
                             GData5 gd5 = (GData5) gdata;
                             GData5 newGdata5 = new GData5(gd5.colourNumber, gd5.r, gd5.g, gd5.b, gd5.a, gd5.X1, gd5.Y1, gd5.Z1, gd5.X2, gd5.Y2, gd5.Z2, gd5.X3, gd5.Y3, gd5.Z3, gd5.X4, gd5.Y4, gd5.Z4,
                                     gd5.x1, gd5.y1, gd5.z1, gd5.x2, gd5.y2, gd5.z2, gd5.x3, gd5.y3, gd5.z3, gd5.x4, gd5.y4, gd5.z4, this, datFile);
-                            res_gdata = newGdata5;
+                            resGData = newGdata5;
                             break;
                         case 6:
                             GDataBFC gd6 = (GDataBFC) gdata;
-                            res_gdata = new GDataBFC(gd6.type, this);
+                            resGData = new GDataBFC(gd6.type, this);
                             break;
                         case 8:
                             GDataCSG gd8 = (GDataCSG) gdata;
-                            res_gdata = new GDataCSG(datFile, gd8.type, gd8.text, this);
+                            resGData = new GDataCSG(datFile, gd8.type, gd8.text, this);
                             break;
                         case 9:
                             GDataTEX gd9 = (GDataTEX) gdata;
-                            res_gdata = new GDataTEX(gd9.linkedData, gd9.text, gd9.meta, gd9.linkedTexture, this);
+                            resGData = new GDataTEX(gd9.linkedData, gd9.text, gd9.meta, gd9.linkedTexture, this);
                             break;
                         default:
                             NLogger.debug(getClass(), "CACHE ERROR"); //$NON-NLS-1$
                             return;
                         }
 
-                        anchorData.setNext(res_gdata);
-                        anchorData = res_gdata;
+                        anchorData.setNext(resGData);
+                        anchorData = resGData;
 
                     } else {
                         GData gdata = DatParser.parseLine(line, 0, depth, r, g, b, a, this, pMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed).get(0).getGraphicalData();
@@ -430,7 +430,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -452,14 +452,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -515,7 +515,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -537,14 +537,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -600,7 +600,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -622,14 +622,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -703,7 +703,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -725,14 +725,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -796,7 +796,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -818,14 +818,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -899,7 +899,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -921,14 +921,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -1004,7 +1004,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -1026,14 +1026,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -1104,7 +1104,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -1126,14 +1126,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -1222,7 +1222,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -1244,14 +1244,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -1307,7 +1307,7 @@ public final class GData1 extends GData {
         if (matrix != null) {
 
             final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator PC = c3d.getPerspectiveCalculator();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
 
             Vector4f bbmin = new Vector4f();
             Vector4f bbmax = new Vector4f();
@@ -1329,14 +1329,14 @@ public final class GData1 extends GData {
             c7.y = boundingBoxMin.y;
             c8.z = boundingBoxMin.z;
 
-            c1.set(PC.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(PC.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(PC.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(PC.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(PC.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(PC.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(PC.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(PC.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
 
             bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
             bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
@@ -1519,12 +1519,12 @@ public final class GData1 extends GData {
 
         if (avoidFlatScaling && (plainOnX || plainOnY || plainOnZ)) {
 
-            final BigDecimal EPSILON = new BigDecimal("1.00000001"); //$NON-NLS-1$
+            final BigDecimal epsilon = new BigDecimal("1.00000001"); //$NON-NLS-1$
             // Check if it's a rotation matrix
             BigDecimal discrX = transformation.M00.multiply(transformation.M00).add(transformation.M01.multiply(transformation.M01)).add(transformation.M02.multiply(transformation.M02));
             BigDecimal discrY = transformation.M10.multiply(transformation.M10).add(transformation.M11.multiply(transformation.M11)).add(transformation.M12.multiply(transformation.M12));
             BigDecimal discrZ = transformation.M20.multiply(transformation.M20).add(transformation.M21.multiply(transformation.M21)).add(transformation.M22.multiply(transformation.M22));
-            if (discrX.compareTo(EPSILON) > 0 && discrY.compareTo(EPSILON) > 0 && discrZ.compareTo(EPSILON) > 0) {
+            if (discrX.compareTo(epsilon) > 0 && discrY.compareTo(epsilon) > 0 && discrZ.compareTo(epsilon) > 0) {
                 if (plainOnX && avoidFlatScaling) {
                     accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 0, 0);
                     accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 0, 1);
@@ -1584,50 +1584,50 @@ public final class GData1 extends GData {
         lineBuilder.append(shortName);
 
         {
-            String[] data_segments = lineBuilder.toString().trim().split(" "); //$NON-NLS-1$
+            String[] dataSegments = lineBuilder.toString().trim().split(" "); //$NON-NLS-1$
 
-            boolean M00 = false;
-            boolean M01 = false;
-            boolean M02 = false;
-            boolean M10 = false;
-            boolean M11 = false;
-            boolean M12 = false;
-            boolean M20 = false;
-            boolean M21 = false;
-            boolean M22 = false;
-            BigDecimal EPSILON = new BigDecimal(".00001"); //$NON-NLS-1$
+            boolean m00 = false;
+            boolean m01 = false;
+            boolean m02 = false;
+            boolean m10 = false;
+            boolean m11 = false;
+            boolean m12 = false;
+            boolean m20 = false;
+            boolean m21 = false;
+            boolean m22 = false;
+            BigDecimal epsilon = new BigDecimal(".00001"); //$NON-NLS-1$
             {
                 int i = 0;
-                for (String seg : data_segments) {
+                for (String seg : dataSegments) {
                     if (!seg.trim().equals("")) {  //$NON-NLS-1$
                         i++;
                         switch (i) {
                         case 6:
-                            M00 = new BigDecimal(seg).abs().compareTo(EPSILON) < 0;
+                            m00 = new BigDecimal(seg).abs().compareTo(epsilon) < 0;
                             break;
                         case 7:
-                            M01 = new BigDecimal(seg).abs().compareTo(EPSILON) < 0;
+                            m01 = new BigDecimal(seg).abs().compareTo(epsilon) < 0;
                             break;
                         case 8:
-                            M02 = new BigDecimal(seg).abs().compareTo(EPSILON) < 0;
+                            m02 = new BigDecimal(seg).abs().compareTo(epsilon) < 0;
                             break;
                         case 9:
-                            M10 = new BigDecimal(seg).abs().compareTo(EPSILON) < 0;
+                            m10 = new BigDecimal(seg).abs().compareTo(epsilon) < 0;
                             break;
                         case 10:
-                            M11 = new BigDecimal(seg).abs().compareTo(EPSILON) < 0;
+                            m11 = new BigDecimal(seg).abs().compareTo(epsilon) < 0;
                             break;
                         case 11:
-                            M12 = new BigDecimal(seg).abs().compareTo(EPSILON) < 0;
+                            m12 = new BigDecimal(seg).abs().compareTo(epsilon) < 0;
                             break;
                         case 12:
-                            M20 = new BigDecimal(seg).abs().compareTo(EPSILON) < 0;
+                            m20 = new BigDecimal(seg).abs().compareTo(epsilon) < 0;
                             break;
                         case 13:
-                            M21 = new BigDecimal(seg).abs().compareTo(EPSILON) < 0;
+                            m21 = new BigDecimal(seg).abs().compareTo(epsilon) < 0;
                             break;
                         case 14:
-                            M22 = new BigDecimal(seg).abs().compareTo(EPSILON) < 0;
+                            m22 = new BigDecimal(seg).abs().compareTo(epsilon) < 0;
                             break;
                         default:
                             break;
@@ -1638,26 +1638,26 @@ public final class GData1 extends GData {
             {
                 StringBuilder sb = new StringBuilder();
                 int i = 0;
-                for (String seg : data_segments) {
+                for (String seg : dataSegments) {
                     if (!seg.trim().equals("")) {  //$NON-NLS-1$
                         i++;
                         switch (i) {
                         case 6:
-                            if (M00 && (M01 && M02 || M10 && M20)) {
+                            if (m00 && (m01 && m02 || m10 && m20)) {
                                 sb.append("1"); //$NON-NLS-1$
                             } else {
                                 sb.append(seg);
                             }
                             break;
                         case 10:
-                            if (M11 && (M10 && M12 || M01 && M21)) {
+                            if (m11 && (m10 && m12 || m01 && m21)) {
                                 sb.append("1"); //$NON-NLS-1$
                             } else {
                                 sb.append(seg);
                             }
                             break;
                         case 14:
-                            if (M22 && (M20 && M21 || M02 && M12)) {
+                            if (m22 && (m20 && m21 || m02 && m12)) {
                                 sb.append("1"); //$NON-NLS-1$
                             } else {
                                 sb.append(seg);
@@ -1800,14 +1800,14 @@ public final class GData1 extends GData {
 
                 // Single vertex declaration
                 if (line.startsWith("0 !LPE") && line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$ //$NON-NLS-2$
-                    String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+                    String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
                     Vector3d start = new Vector3d();
                     boolean numberError = false;
-                    if (data_segments.length == 6) {
+                    if (dataSegments.length == 6) {
                         try {
-                            start.setX(new BigDecimal(data_segments[3], Threshold.mc));
-                            start.setY(new BigDecimal(data_segments[4], Threshold.mc));
-                            start.setZ(new BigDecimal(data_segments[5], Threshold.mc));
+                            start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
+                            start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
+                            start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
                         } catch (NumberFormatException nfe) {
                             numberError = true;
                         }
@@ -1960,20 +1960,20 @@ public final class GData1 extends GData {
                 } else {
                     lineBuilder2.append(g2.colourNumber);
                 }
-                BigDecimal[] g2_v1 = accurateProductMatrix.transform(g2.X1, g2.Y1, g2.Z1);
-                BigDecimal[] g2_v2 = accurateProductMatrix.transform(g2.X2, g2.Y2, g2.Z2);
+                BigDecimal[] g2V1 = accurateProductMatrix.transform(g2.X1, g2.Y1, g2.Z1);
+                BigDecimal[] g2V2 = accurateProductMatrix.transform(g2.X2, g2.Y2, g2.Z2);
                 lineBuilder2.append(" "); //$NON-NLS-1$
-                lineBuilder2.append(bigDecimalToString(g2_v1[0]));
+                lineBuilder2.append(bigDecimalToString(g2V1[0]));
                 lineBuilder2.append(" "); //$NON-NLS-1$
-                lineBuilder2.append(bigDecimalToString(g2_v1[1]));
+                lineBuilder2.append(bigDecimalToString(g2V1[1]));
                 lineBuilder2.append(" "); //$NON-NLS-1$
-                lineBuilder2.append(bigDecimalToString(g2_v1[2]));
+                lineBuilder2.append(bigDecimalToString(g2V1[2]));
                 lineBuilder2.append(" "); //$NON-NLS-1$
-                lineBuilder2.append(bigDecimalToString(g2_v2[0]));
+                lineBuilder2.append(bigDecimalToString(g2V2[0]));
                 lineBuilder2.append(" "); //$NON-NLS-1$
-                lineBuilder2.append(bigDecimalToString(g2_v2[1]));
+                lineBuilder2.append(bigDecimalToString(g2V2[1]));
                 lineBuilder2.append(" "); //$NON-NLS-1$
-                lineBuilder2.append(bigDecimalToString(g2_v2[2]));
+                lineBuilder2.append(bigDecimalToString(g2V2[2]));
                 sb.append(lineBuilder2.toString() + "<br>"); //$NON-NLS-1$
                 break;
             case 3: // Triangle
@@ -1998,33 +1998,33 @@ public final class GData1 extends GData {
                 } else {
                     lineBuilder3.append(g3.colourNumber);
                 }
-                BigDecimal[] g3_v1 = accurateProductMatrix.transform(g3.X1, g3.Y1, g3.Z1);
-                BigDecimal[] g3_v2 = accurateProductMatrix.transform(g3.X2, g3.Y2, g3.Z2);
-                BigDecimal[] g3_v3 = accurateProductMatrix.transform(g3.X3, g3.Y3, g3.Z3);
+                BigDecimal[] g3V1 = accurateProductMatrix.transform(g3.X1, g3.Y1, g3.Z1);
+                BigDecimal[] g3V2 = accurateProductMatrix.transform(g3.X2, g3.Y2, g3.Z2);
+                BigDecimal[] g3V3 = accurateProductMatrix.transform(g3.X3, g3.Y3, g3.Z3);
                 if (flipSurfaces) {
-                    BigDecimal[] temp = g3_v1;
-                    g3_v1 = g3_v2;
-                    g3_v2 = temp;
+                    BigDecimal[] temp = g3V1;
+                    g3V1 = g3V2;
+                    g3V2 = temp;
                 }
 
                 lineBuilder3.append(" "); //$NON-NLS-1$
-                lineBuilder3.append(bigDecimalToString(g3_v1[0]));
+                lineBuilder3.append(bigDecimalToString(g3V1[0]));
                 lineBuilder3.append(" "); //$NON-NLS-1$
-                lineBuilder3.append(bigDecimalToString(g3_v1[1]));
+                lineBuilder3.append(bigDecimalToString(g3V1[1]));
                 lineBuilder3.append(" "); //$NON-NLS-1$
-                lineBuilder3.append(bigDecimalToString(g3_v1[2]));
+                lineBuilder3.append(bigDecimalToString(g3V1[2]));
                 lineBuilder3.append(" "); //$NON-NLS-1$
-                lineBuilder3.append(bigDecimalToString(g3_v2[0]));
+                lineBuilder3.append(bigDecimalToString(g3V2[0]));
                 lineBuilder3.append(" "); //$NON-NLS-1$
-                lineBuilder3.append(bigDecimalToString(g3_v2[1]));
+                lineBuilder3.append(bigDecimalToString(g3V2[1]));
                 lineBuilder3.append(" "); //$NON-NLS-1$
-                lineBuilder3.append(bigDecimalToString(g3_v2[2]));
+                lineBuilder3.append(bigDecimalToString(g3V2[2]));
                 lineBuilder3.append(" "); //$NON-NLS-1$
-                lineBuilder3.append(bigDecimalToString(g3_v3[0]));
+                lineBuilder3.append(bigDecimalToString(g3V3[0]));
                 lineBuilder3.append(" "); //$NON-NLS-1$
-                lineBuilder3.append(bigDecimalToString(g3_v3[1]));
+                lineBuilder3.append(bigDecimalToString(g3V3[1]));
                 lineBuilder3.append(" "); //$NON-NLS-1$
-                lineBuilder3.append(bigDecimalToString(g3_v3[2]));
+                lineBuilder3.append(bigDecimalToString(g3V3[2]));
                 sb.append(lineBuilder3.toString() + "<br>"); //$NON-NLS-1$
                 break;
             case 4: // Quad
@@ -2049,39 +2049,39 @@ public final class GData1 extends GData {
                 } else {
                     lineBuilder4.append(g4.colourNumber);
                 }
-                BigDecimal[] g4_v1 = accurateProductMatrix.transform(g4.X1, g4.Y1, g4.Z1);
-                BigDecimal[] g4_v2 = accurateProductMatrix.transform(g4.X2, g4.Y2, g4.Z2);
-                BigDecimal[] g4_v3 = accurateProductMatrix.transform(g4.X3, g4.Y3, g4.Z3);
-                BigDecimal[] g4_v4 = accurateProductMatrix.transform(g4.X4, g4.Y4, g4.Z4);
+                BigDecimal[] g4V1 = accurateProductMatrix.transform(g4.X1, g4.Y1, g4.Z1);
+                BigDecimal[] g4V2 = accurateProductMatrix.transform(g4.X2, g4.Y2, g4.Z2);
+                BigDecimal[] g4V3 = accurateProductMatrix.transform(g4.X3, g4.Y3, g4.Z3);
+                BigDecimal[] g4V4 = accurateProductMatrix.transform(g4.X4, g4.Y4, g4.Z4);
                 if (flipSurfaces) {
-                    BigDecimal[] temp = g4_v2;
-                    g4_v2 = g4_v4;
-                    g4_v4 = temp;
+                    BigDecimal[] temp = g4V2;
+                    g4V2 = g4V4;
+                    g4V4 = temp;
                 }
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v1[0]));
+                lineBuilder4.append(bigDecimalToString(g4V1[0]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v1[1]));
+                lineBuilder4.append(bigDecimalToString(g4V1[1]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v1[2]));
+                lineBuilder4.append(bigDecimalToString(g4V1[2]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v2[0]));
+                lineBuilder4.append(bigDecimalToString(g4V2[0]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v2[1]));
+                lineBuilder4.append(bigDecimalToString(g4V2[1]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v2[2]));
+                lineBuilder4.append(bigDecimalToString(g4V2[2]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v3[0]));
+                lineBuilder4.append(bigDecimalToString(g4V3[0]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v3[1]));
+                lineBuilder4.append(bigDecimalToString(g4V3[1]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v3[2]));
+                lineBuilder4.append(bigDecimalToString(g4V3[2]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v4[0]));
+                lineBuilder4.append(bigDecimalToString(g4V4[0]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v4[1]));
+                lineBuilder4.append(bigDecimalToString(g4V4[1]));
                 lineBuilder4.append(" "); //$NON-NLS-1$
-                lineBuilder4.append(bigDecimalToString(g4_v4[2]));
+                lineBuilder4.append(bigDecimalToString(g4V4[2]));
                 sb.append(lineBuilder4.toString() + "<br>"); //$NON-NLS-1$
                 break;
             case 5: // Condline
@@ -2106,34 +2106,34 @@ public final class GData1 extends GData {
                 } else {
                     lineBuilder5.append(g5.colourNumber);
                 }
-                BigDecimal[] g5_v1 = accurateProductMatrix.transform(g5.X1, g5.Y1, g5.Z1);
-                BigDecimal[] g5_v2 = accurateProductMatrix.transform(g5.X2, g5.Y2, g5.Z2);
-                BigDecimal[] g5_v3 = accurateProductMatrix.transform(g5.X3, g5.Y3, g5.Z3);
-                BigDecimal[] g5_v4 = accurateProductMatrix.transform(g5.X4, g5.Y4, g5.Z4);
+                BigDecimal[] g5V1 = accurateProductMatrix.transform(g5.X1, g5.Y1, g5.Z1);
+                BigDecimal[] g5V2 = accurateProductMatrix.transform(g5.X2, g5.Y2, g5.Z2);
+                BigDecimal[] g5V3 = accurateProductMatrix.transform(g5.X3, g5.Y3, g5.Z3);
+                BigDecimal[] g5V4 = accurateProductMatrix.transform(g5.X4, g5.Y4, g5.Z4);
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v1[0]));
+                lineBuilder5.append(bigDecimalToString(g5V1[0]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v1[1]));
+                lineBuilder5.append(bigDecimalToString(g5V1[1]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v1[2]));
+                lineBuilder5.append(bigDecimalToString(g5V1[2]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v2[0]));
+                lineBuilder5.append(bigDecimalToString(g5V2[0]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v2[1]));
+                lineBuilder5.append(bigDecimalToString(g5V2[1]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v2[2]));
+                lineBuilder5.append(bigDecimalToString(g5V2[2]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v3[0]));
+                lineBuilder5.append(bigDecimalToString(g5V3[0]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v3[1]));
+                lineBuilder5.append(bigDecimalToString(g5V3[1]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v3[2]));
+                lineBuilder5.append(bigDecimalToString(g5V3[2]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v4[0]));
+                lineBuilder5.append(bigDecimalToString(g5V4[0]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v4[1]));
+                lineBuilder5.append(bigDecimalToString(g5V4[1]));
                 lineBuilder5.append(" "); //$NON-NLS-1$
-                lineBuilder5.append(bigDecimalToString(g5_v4[2]));
+                lineBuilder5.append(bigDecimalToString(g5V4[2]));
                 sb.append(lineBuilder5.toString() + "<br>"); //$NON-NLS-1$
                 break;
             case 8: // CSG Statement
@@ -2143,7 +2143,7 @@ public final class GData1 extends GData {
 
                 String line2 = ((GDataCSG) gs).text;
                 line2 = line2.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                String[] data_segments2 = line2.trim().split("\\s+"); //$NON-NLS-1$
+                String[] dataSegments2 = line2.trim().split("\\s+"); //$NON-NLS-1$
 
                 switch (csgType) {
 
@@ -2187,10 +2187,10 @@ public final class GData1 extends GData {
                 case CSG.INTERSECTION:
                 case CSG.DIFFERENCE:
                 case CSG.UNION:
-                    lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + this.ID + " " + data_segments2[5] + this.ID); //$NON-NLS-1$ //$NON-NLS-2$
+                    lineBuilder8.append(dataSegments2[3] + this.ID + " " + dataSegments2[4] + this.ID + " " + dataSegments2[5] + this.ID); //$NON-NLS-1$ //$NON-NLS-2$
                     break;
                 case CSG.TRANSFORM:
-                    lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + this.ID + " " + data_segments2[5] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    lineBuilder8.append(dataSegments2[3] + this.ID + " " + dataSegments2[4] + this.ID + " " + dataSegments2[5] + " " + //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
                 case CSG.EXTRUDE:
@@ -2200,7 +2200,7 @@ public final class GData1 extends GData {
                 case CSG.CIRCLE:
                 case CSG.CYLINDER:
                 case CSG.MESH:
-                    lineBuilder8.append(data_segments2[3] + this.ID + " " + data_segments2[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$
+                    lineBuilder8.append(dataSegments2[3] + this.ID + " " + dataSegments2[4] + " " + //$NON-NLS-1$ //$NON-NLS-2$
                             MathHelper.csgMatrixMult(g8.matrix, productMatrix));
                     break;
                 case CSG.QUALITY:
@@ -2212,7 +2212,7 @@ public final class GData1 extends GData {
                     lineBuilder8.append(g8.getNiceString());
                     break;
                 case CSG.COMPILE:
-                    lineBuilder8.append("0 !LPE CSG_COMPILE " + data_segments2[3] + this.ID); //$NON-NLS-1$
+                    lineBuilder8.append("0 !LPE CSG_COMPILE " + dataSegments2[3] + this.ID); //$NON-NLS-1$
                     break;
                 default:
                     break;

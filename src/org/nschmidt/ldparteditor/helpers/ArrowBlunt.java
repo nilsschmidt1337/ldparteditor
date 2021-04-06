@@ -46,23 +46,23 @@ public class ArrowBlunt {
     private final float[] cube_y = new float[8];
     private final float[] cube_z = new float[8];
 
-    public ArrowBlunt(float r, float g, float b, float dir_x, float dir_y, float dir_z, float edge_length, float line_width) {
-        dir_x = dir_x / 1000f;
-        dir_y = dir_y / 1000f;
-        dir_z = dir_z / 1000f;
+    public ArrowBlunt(float r, float g, float b, float dirX, float dirY, float dirZ, float edgeLength, float lineWidth) {
+        dirX = dirX / 1000f;
+        dirY = dirY / 1000f;
+        dirZ = dirZ / 1000f;
         this.r = r;
         this.g = g;
         this.b = b;
-        this.line_width = line_width;
-        final float length = (float) Math.sqrt(dir_x * dir_x + dir_y * dir_y + dir_z * dir_z);
-        final float cube_start = length - edge_length;
-        line_end = length - edge_length / 3f;
-        rotation = makeRotationDir(new Vector3f(dir_x, dir_y, dir_z));
+        this.line_width = lineWidth;
+        final float length = (float) Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+        final float cube_start = length - edgeLength;
+        line_end = length - edgeLength / 3f;
+        rotation = makeRotationDir(new Vector3f(dirX, dirY, dirZ));
         matrix = BufferUtils.createFloatBuffer(16);
         rotation.store(matrix);
         matrix.position(0);
 
-        final float half_edge_length = edge_length / 2f;
+        final float half_edge_length = edgeLength / 2f;
         final float half_edge_length_neg = -half_edge_length;
         cube_x[0] = half_edge_length;
         cube_y[0] = cube_start;

@@ -445,7 +445,7 @@ public final class DatFile {
      * Parses the opened dat file for errors and correct data (in realtime, only
      * when opened in text editor)
      */
-    public void parseForErrorAndData(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors,
+    public void parseForErrorAndData(StyledText compositeText, int startOffsetPos, int endOffsetPos, int length, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors,
             TreeItem duplicates, Label problemCount) {
 
         Set<String> alreadyParsed = new HashSet<>();
@@ -456,10 +456,10 @@ public final class DatFile {
 
         long start = System.currentTimeMillis();
 
-        int startLine = compositeText.getLineAtOffset(startOffset_pos);
+        int startLine = compositeText.getLineAtOffset(startOffsetPos);
         int startOffset = compositeText.getOffsetAtLine(startLine);
 
-        int endLine = compositeText.getLineAtOffset(endOffset_pos);
+        int endLine = compositeText.getLineAtOffset(endOffsetPos);
         int endOffset = compositeText.getOffsetAtLine(endLine) + compositeText.getLine(endLine).length();
 
         startLine++;
@@ -747,7 +747,7 @@ public final class DatFile {
      * Parses the opened dat file for errors and correct data (in realtime, only
      * when opened in text editor)
      */
-    public void parseForError(StyledText compositeText, int startOffset_pos, int endOffset_pos, int length, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount, boolean unselectBgPicture) {
+    public void parseForError(StyledText compositeText, int startOffsetPos, int endOffsetPos, int length, String replacedText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount, boolean unselectBgPicture) {
 
         if (compositeText.getText().isEmpty()) {
             duplicate.pushDuplicateCheck(drawChainAnchor);
@@ -762,10 +762,10 @@ public final class DatFile {
 
         long start = System.currentTimeMillis();
 
-        int startLine = compositeText.getLineAtOffset(startOffset_pos);
+        int startLine = compositeText.getLineAtOffset(startOffsetPos);
         int startOffset = compositeText.getOffsetAtLine(startLine);
 
-        int endLine = compositeText.getLineAtOffset(endOffset_pos);
+        int endLine = compositeText.getLineAtOffset(endOffsetPos);
         int endOffset = compositeText.getOffsetAtLine(endLine) + compositeText.getLine(endLine).length();
 
         startLine++;
@@ -976,12 +976,12 @@ public final class DatFile {
     }
 
     synchronized boolean updateDatHeaderHints(StyledText compositeText, TreeItem headerHints) {
-        ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> CACHE_headerHints = datHeader.CACHE_headerHints;
-        if (!CACHE_headerHints.isEmpty()) {
+        ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> cachedHeaderHints = datHeader.CACHE_headerHints;
+        if (!cachedHeaderHints.isEmpty()) {
             int position = 0;
 
-            final Integer firstKey = CACHE_headerHints.firstKey();
-            ArrayList<ParsingResult> allParsingResults = CACHE_headerHints.get(firstKey);
+            final Integer firstKey = cachedHeaderHints.firstKey();
+            ArrayList<ParsingResult> allParsingResults = cachedHeaderHints.get(firstKey);
             if (allParsingResults.isEmpty()) {
                 if (!headerHints.getItems().isEmpty()) {
                     headerHints.getItems().clear();
@@ -1732,13 +1732,13 @@ public final class DatFile {
 
             // Write the new "0 Name: "
             if (lines.size() > 1) {
-                final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+                final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
                 final int maxDetectionLines = Math.min(10, lines.size());
 
                 // 1. Detect the file type
                 String folderPrefix = ""; //$NON-NLS-1$
                 for (int i = 0; i < maxDetectionLines; i++) {
-                    String tLine = WHITESPACE.matcher(lines.get(i)).replaceAll(" ").trim(); //$NON-NLS-1$
+                    String tLine = whitespace.matcher(lines.get(i)).replaceAll(" ").trim(); //$NON-NLS-1$
                     if (tLine.startsWith("0 !LDRAW_ORG")) { //$NON-NLS-1$
                         String typeSuffix = ""; //$NON-NLS-1$
                         String path = newFile.getParent();
@@ -1767,7 +1767,7 @@ public final class DatFile {
 
                 // 2. Set the new name
                 for (int i = 0; i < maxDetectionLines; i++) {
-                    String tLine = WHITESPACE.matcher(lines.get(i)).replaceAll(" ").trim(); //$NON-NLS-1$
+                    String tLine = whitespace.matcher(lines.get(i)).replaceAll(" ").trim(); //$NON-NLS-1$
                     if (tLine.startsWith("0 Name:")) { //$NON-NLS-1$
                         lines.set(i, "0 Name: " + folderPrefix + newFile.getName()); //$NON-NLS-1$
                         break;

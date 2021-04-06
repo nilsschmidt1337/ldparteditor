@@ -238,23 +238,23 @@ public enum SubfileCompiler {
         switch (type) {
         case 0:
             String line = gd.toString();
-            String[] data_segments = line.trim().split("\\s+"); //$NON-NLS-1$
+            String[] dataSegments = line.trim().split("\\s+"); //$NON-NLS-1$
             // Check for 0 !LPE INLINE 1 Colour m1 m2 m3 m4 m5 m6 m7
             // m8 m9 m10 m11 m12 path
-            if (data_segments.length >= 18 && data_segments[2].equals("INLINE") && //$NON-NLS-1$
-                    data_segments[3].equals("1") && //$NON-NLS-1$
-                    data_segments[1].equals("!LPE")) { //$NON-NLS-1$
-                GColour c = DatParser.validateColour(data_segments[4], 0f, 0f, 0f, 1f);
+            if (dataSegments.length >= 18 && dataSegments[2].equals("INLINE") && //$NON-NLS-1$
+                    dataSegments[3].equals("1") && //$NON-NLS-1$
+                    dataSegments[1].equals("!LPE")) { //$NON-NLS-1$
+                GColour c = DatParser.validateColour(dataSegments[4], 0f, 0f, 0f, 1f);
                 if (c != null) {
-                    Matrix theMatrix = MathHelper.matrixFromStringsPrecise(data_segments[5], data_segments[6], data_segments[7], data_segments[8], data_segments[9], data_segments[10],
-                            data_segments[11], data_segments[12], data_segments[13], data_segments[14], data_segments[15], data_segments[16]);
+                    Matrix theMatrix = MathHelper.matrixFromStringsPrecise(dataSegments[5], dataSegments[6], dataSegments[7], dataSegments[8], dataSegments[9], dataSegments[10],
+                            dataSegments[11], dataSegments[12], dataSegments[13], dataSegments[14], dataSegments[15], dataSegments[16]);
                     if (theMatrix != null) {
                         StringBuilder sb2 = new StringBuilder();
-                        for (int s = 17; s < data_segments.length - 1; s++) {
-                            sb2.append(data_segments[s]);
+                        for (int s = 17; s < dataSegments.length - 1; s++) {
+                            sb2.append(dataSegments[s]);
                             sb2.append(" "); //$NON-NLS-1$
                         }
-                        sb2.append(data_segments[data_segments.length - 1]);
+                        sb2.append(dataSegments[dataSegments.length - 1]);
                         String realFilename = sb2.toString();
                         try {
                             realFilename = realFilename.replaceAll("\\\\", File.separator); //$NON-NLS-1$
@@ -297,13 +297,13 @@ public enum SubfileCompiler {
                                 Matrix lastInv = last.invert();
                                 Matrix original = Matrix.mul(lastInv, theMatrix);
 
-                                String col = data_segments[4];
+                                String col = dataSegments[4];
                                 if (col.equals(colour))
                                     col = "16"; //$NON-NLS-1$
                                 builder.append("1 " + col + " " + MathHelper.matrixToStringPrecise(original) + " " + realFilename); //$NON-NLS-1$//$NON-NLS-2$ //$NON-NLS-3$
                                 builder.append(StringHelper.getLineDelimiter());
                             }
-                            colour = data_segments[4];
+                            colour = dataSegments[4];
                             name = shortFilename;
                             builder = new StringBuilder();
                             writeToPartFolder = true;
@@ -349,8 +349,8 @@ public enum SubfileCompiler {
                 }
             } else if ( // Check for INLINE_END
                     (gd.getNext() == null ||
-                    data_segments.length == 3 && data_segments[2].equals("INLINE_END") && //$NON-NLS-1$
-                    data_segments[1].equals("!LPE")) && !toFolderStack.isEmpty() && !skipCompile) { //$NON-NLS-1$
+                    dataSegments.length == 3 && dataSegments[2].equals("INLINE_END") && //$NON-NLS-1$
+                    dataSegments[1].equals("!LPE")) && !toFolderStack.isEmpty() && !skipCompile) { //$NON-NLS-1$
 
                 String targetPath;
                 if (Boolean.TRUE.equals(toFolderStack.peek())) {
@@ -470,9 +470,9 @@ public enum SubfileCompiler {
                 df.updateLastModified();
 
             } else if (!skipCompile) {
-                if (data_segments.length > 2 && data_segments[1].equals("!LDRAW_ORG")) { //$NON-NLS-1$
-                    if (data_segments[2].equals("Primitive") || data_segments[2].equals("48_Primitive") //$NON-NLS-1$ //$NON-NLS-2$
-                            || data_segments[2].equals("Unofficial_Primitive") || data_segments[2].equals("Unofficial_48_Primitive")) { //$NON-NLS-1$ //$NON-NLS-2$
+                if (dataSegments.length > 2 && dataSegments[1].equals("!LDRAW_ORG")) { //$NON-NLS-1$
+                    if (dataSegments[2].equals("Primitive") || dataSegments[2].equals("48_Primitive") //$NON-NLS-1$ //$NON-NLS-2$
+                            || dataSegments[2].equals("Unofficial_Primitive") || dataSegments[2].equals("Unofficial_48_Primitive")) { //$NON-NLS-1$ //$NON-NLS-2$
                         toFolderStack.pop();
                         toFolderStack.push(false);
                         writeToPartFolder = false;

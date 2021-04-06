@@ -260,8 +260,8 @@ public class TextTriangulator {
          * Build the triangle which encompasses the shape (-0.5,+1) - (+0.5,+1)
          * - (0,-1)
          */
-        double TRISIZE = 100000d;
-        Triangle tri = new Triangle(new Pnt(-TRISIZE / 2.0, TRISIZE), new Pnt(+TRISIZE / 2.0, TRISIZE), new Pnt(0, -TRISIZE));
+        double trisize = 100000d;
+        Triangle tri = new Triangle(new Pnt(-trisize / 2.0, trisize), new Pnt(+trisize / 2.0, trisize), new Pnt(0, -trisize));
 
         // now add all triangles which are in the shape to the set
         Set<GData> finalTriangleSet = new HashSet<>();
@@ -563,8 +563,8 @@ public class TextTriangulator {
          * Build the triangle which encompasses the shape (-0.5,+1) - (+0.5,+1)
          * - (0,-1)
          */
-        double TRISIZE = 100000d;
-        Triangle tri = new Triangle(new Pnt(-TRISIZE / 2.0, TRISIZE), new Pnt(+TRISIZE / 2.0, TRISIZE), new Pnt(0, -TRISIZE));
+        double trisize = 100000d;
+        Triangle tri = new Triangle(new Pnt(-trisize / 2.0, trisize), new Pnt(+trisize / 2.0, trisize), new Pnt(0, -trisize));
 
         // now add all triangles which are in the shape to the set
         Set<PGData3> finalTriangleSet = new HashSet<>();
