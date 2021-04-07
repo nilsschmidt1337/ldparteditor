@@ -941,19 +941,19 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     boolean numberError = false;
                     if (dataSegments.length == 6) {
                         try {
-                            start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
+                            start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
                         } catch (NumberFormatException nfe) {
                             numberError = true;
                         }
 
                         try {
-                            start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
+                            start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
                         } catch (NumberFormatException nfe) {
                             numberError = true;
                         }
 
                         try {
-                            start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
+                            start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
                         } catch (NumberFormatException nfe) {
                             numberError = true;
                         }

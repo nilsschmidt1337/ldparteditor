@@ -64,9 +64,9 @@ public enum StringHelper {
         return false;
     }
 
-    private static final String ld = String.format("%n"); //$NON-NLS-1$
+    private static final String LD = String.format("%n"); //$NON-NLS-1$
 
     public static String getLineDelimiter() {
-        return ld;
+        return LD;
     }
 }

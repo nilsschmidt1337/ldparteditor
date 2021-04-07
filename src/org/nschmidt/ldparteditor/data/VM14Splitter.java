@@ -182,7 +182,7 @@ class VM14Splitter extends VM13SymSplitter {
             Vector3d a = new Vector3d(condlines.get(g)[0]);
             Vector3d b = new Vector3d(condlines.get(g)[1]);
 
-            BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+            BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
             BigDecimal cur = BigDecimal.ZERO;
             BigDecimal next = BigDecimal.ZERO;
             for (int i = 0; i < fractions; i++) {
@@ -301,7 +301,7 @@ class VM14Splitter extends VM13SymSplitter {
 
         int fracA = fractions / 2;
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
         BigDecimal cur = BigDecimal.ZERO;
         BigDecimal next = BigDecimal.ZERO;
 
@@ -397,7 +397,7 @@ class VM14Splitter extends VM13SymSplitter {
         Vector3d c = new Vector3d(v3);
         Vector3d d = new Vector3d(v4);
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
 
         ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 4);
 
@@ -496,7 +496,7 @@ class VM14Splitter extends VM13SymSplitter {
         Vector3d c = new Vector3d(v3);
         Vector3d d = new Vector3d(v4);
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
 
         ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 4);
 
@@ -591,11 +591,11 @@ class VM14Splitter extends VM13SymSplitter {
         Vector3d d = new Vector3d(v4);
 
         Vector3d vc = Vector3d.add(Vector3d.add(Vector3d.add(a, b), c), d);
-        vc.setX(vc.X.divide(new BigDecimal(4), Threshold.mc));
-        vc.setY(vc.Y.divide(new BigDecimal(4), Threshold.mc));
-        vc.setZ(vc.Z.divide(new BigDecimal(4), Threshold.mc));
+        vc.setX(vc.X.divide(new BigDecimal(4), Threshold.MC));
+        vc.setY(vc.Y.divide(new BigDecimal(4), Threshold.MC));
+        vc.setZ(vc.Z.divide(new BigDecimal(4), Threshold.MC));
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
 
         ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 3);
 
@@ -685,11 +685,11 @@ class VM14Splitter extends VM13SymSplitter {
         Vector3d d = new Vector3d(v4);
 
         Vector3d vc = Vector3d.add(Vector3d.add(Vector3d.add(a, b), c), d);
-        vc.setX(vc.X.divide(new BigDecimal(4), Threshold.mc));
-        vc.setY(vc.Y.divide(new BigDecimal(4), Threshold.mc));
-        vc.setZ(vc.Z.divide(new BigDecimal(4), Threshold.mc));
+        vc.setX(vc.X.divide(new BigDecimal(4), Threshold.MC));
+        vc.setY(vc.Y.divide(new BigDecimal(4), Threshold.MC));
+        vc.setZ(vc.Z.divide(new BigDecimal(4), Threshold.MC));
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
 
         ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 4);
 
@@ -847,7 +847,7 @@ class VM14Splitter extends VM13SymSplitter {
         Vector3d a = new Vector3d(v1);
         Vector3d b = new Vector3d(v2);
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
         BigDecimal cur = BigDecimal.ZERO;
         BigDecimal next = BigDecimal.ZERO;
         for (int i = 0; i < fractions; i++) {
@@ -889,7 +889,7 @@ class VM14Splitter extends VM13SymSplitter {
         Vector3d b = new Vector3d(v2);
         Vector3d c = new Vector3d(v3);
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
         BigDecimal cur = BigDecimal.ZERO;
         BigDecimal next = BigDecimal.ZERO;
         for (int i = 0; i < fractions; i++) {
@@ -966,11 +966,11 @@ class VM14Splitter extends VM13SymSplitter {
         Vector3d c = new Vector3d(v3);
 
         Vector3d vc = Vector3d.add(Vector3d.add(a, b), c);
-        vc.setX(vc.X.divide(new BigDecimal(3), Threshold.mc));
-        vc.setY(vc.Y.divide(new BigDecimal(3), Threshold.mc));
-        vc.setZ(vc.Z.divide(new BigDecimal(3), Threshold.mc));
+        vc.setX(vc.X.divide(new BigDecimal(3), Threshold.MC));
+        vc.setY(vc.Y.divide(new BigDecimal(3), Threshold.MC));
+        vc.setZ(vc.Z.divide(new BigDecimal(3), Threshold.MC));
 
-        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+        BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
 
         ArrayList<Vector3d> newPoints = new ArrayList<>(fractions * 3);
 
@@ -1072,7 +1072,7 @@ class VM14Splitter extends VM13SymSplitter {
             Vector3d a = new Vector3d(lines.get(g)[0]);
             Vector3d b = new Vector3d(lines.get(g)[1]);
 
-            BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.mc);
+            BigDecimal step = BigDecimal.ONE.divide(new BigDecimal(fractions), Threshold.MC);
             BigDecimal cur = BigDecimal.ZERO;
             BigDecimal next = BigDecimal.ZERO;
             for (int i = 0; i < fractions; i++) {

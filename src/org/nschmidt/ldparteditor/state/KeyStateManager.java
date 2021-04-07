@@ -142,7 +142,7 @@ public class KeyStateManager {
         addTask(Task.TRANSFORM_DOWN, SWT.ARROW_DOWN);
         addTask(Task.TRANSFORM_LEFT, SWT.ARROW_LEFT);
 
-        if (Cocoa.isCocoa) {
+        if (Cocoa.IS_COCOA) {
 
             reservedKeyCodes.add(SWT.ARROW_UP + "+Cmd"); //$NON-NLS-1$
             reservedKeyCodes.add(SWT.ARROW_RIGHT + "+Cmd"); //$NON-NLS-1$
@@ -258,17 +258,17 @@ public class KeyStateManager {
             addTask(Task.PERSPECTIVE_RIGHT, SWT.COMMAND, SWT.KEYPAD_6);
             addTask(Task.PERSPECTIVE_BOTTOM, SWT.COMMAND, SWT.KEYPAD_0);
 
-            addTask(Task.PERSPECTIVE_TwoThirds, SWT.COMMAND, SWT.KEYPAD_3);
+            addTask(Task.PERSPECTIVE_TWO_THIRDS, SWT.COMMAND, SWT.KEYPAD_3);
 
-            addTask(Task.RENDERMODE_NoBackfaceCulling, SWT.ALT, SWT.KEYPAD_1);
-            addTask(Task.RENDERMODE_RandomColours, SWT.ALT, SWT.KEYPAD_2);
-            addTask(Task.RENDERMODE_GreenFrontfacesRedBackfaces, SWT.ALT, SWT.KEYPAD_3);
-            addTask(Task.RENDERMODE_RedBackfaces, SWT.ALT, SWT.KEYPAD_4);
-            addTask(Task.RENDERMODE_RealBackfaceCulling, SWT.ALT, SWT.KEYPAD_5);
-            addTask(Task.RENDERMODE_LDrawStandard, SWT.ALT, SWT.KEYPAD_6);
-            addTask(Task.RENDERMODE_SpecialCondline, SWT.ALT, SWT.KEYPAD_7);
-            addTask(Task.RENDERMODE_CoplanarityHeatmap, SWT.ALT, SWT.KEYPAD_8);
-            addTask(Task.RENDERMODE_Wireframe, SWT.ALT, SWT.KEYPAD_9);
+            addTask(Task.RENDERMODE_NO_BACKFACE_CULLING, SWT.ALT, SWT.KEYPAD_1);
+            addTask(Task.RENDERMODE_RANDOM_COLOURS, SWT.ALT, SWT.KEYPAD_2);
+            addTask(Task.RENDERMODE_GREEN_FRONTFACES_RED_BACKFACES, SWT.ALT, SWT.KEYPAD_3);
+            addTask(Task.RENDERMODE_RED_BACKFACES, SWT.ALT, SWT.KEYPAD_4);
+            addTask(Task.RENDERMODE_REAL_BACKFACE_CULLING, SWT.ALT, SWT.KEYPAD_5);
+            addTask(Task.RENDERMODE_LDRAW_STANDARD, SWT.ALT, SWT.KEYPAD_6);
+            addTask(Task.RENDERMODE_SPECIAL_CONDLINE, SWT.ALT, SWT.KEYPAD_7);
+            addTask(Task.RENDERMODE_COPLANARITY_HEATMAP, SWT.ALT, SWT.KEYPAD_8);
+            addTask(Task.RENDERMODE_WIREFRAME, SWT.ALT, SWT.KEYPAD_9);
 
             addTask(Task.RESET_MANIPULATOR, 'r');
         } else {
@@ -387,17 +387,17 @@ public class KeyStateManager {
             addTask(Task.PERSPECTIVE_RIGHT, SWT.CTRL, SWT.KEYPAD_6);
             addTask(Task.PERSPECTIVE_BOTTOM, SWT.CTRL, SWT.KEYPAD_0);
 
-            addTask(Task.PERSPECTIVE_TwoThirds, SWT.CTRL, SWT.KEYPAD_3);
+            addTask(Task.PERSPECTIVE_TWO_THIRDS, SWT.CTRL, SWT.KEYPAD_3);
 
-            addTask(Task.RENDERMODE_NoBackfaceCulling, SWT.ALT, SWT.KEYPAD_1);
-            addTask(Task.RENDERMODE_RandomColours, SWT.ALT, SWT.KEYPAD_2);
-            addTask(Task.RENDERMODE_GreenFrontfacesRedBackfaces, SWT.ALT, SWT.KEYPAD_3);
-            addTask(Task.RENDERMODE_RedBackfaces, SWT.ALT, SWT.KEYPAD_4);
-            addTask(Task.RENDERMODE_RealBackfaceCulling, SWT.ALT, SWT.KEYPAD_5);
-            addTask(Task.RENDERMODE_LDrawStandard, SWT.ALT, SWT.KEYPAD_6);
-            addTask(Task.RENDERMODE_SpecialCondline, SWT.ALT, SWT.KEYPAD_7);
-            addTask(Task.RENDERMODE_CoplanarityHeatmap, SWT.ALT, SWT.KEYPAD_8);
-            addTask(Task.RENDERMODE_Wireframe, SWT.ALT, SWT.KEYPAD_9);
+            addTask(Task.RENDERMODE_NO_BACKFACE_CULLING, SWT.ALT, SWT.KEYPAD_1);
+            addTask(Task.RENDERMODE_RANDOM_COLOURS, SWT.ALT, SWT.KEYPAD_2);
+            addTask(Task.RENDERMODE_GREEN_FRONTFACES_RED_BACKFACES, SWT.ALT, SWT.KEYPAD_3);
+            addTask(Task.RENDERMODE_RED_BACKFACES, SWT.ALT, SWT.KEYPAD_4);
+            addTask(Task.RENDERMODE_REAL_BACKFACE_CULLING, SWT.ALT, SWT.KEYPAD_5);
+            addTask(Task.RENDERMODE_LDRAW_STANDARD, SWT.ALT, SWT.KEYPAD_6);
+            addTask(Task.RENDERMODE_SPECIAL_CONDLINE, SWT.ALT, SWT.KEYPAD_7);
+            addTask(Task.RENDERMODE_COPLANARITY_HEATMAP, SWT.ALT, SWT.KEYPAD_8);
+            addTask(Task.RENDERMODE_WIREFRAME, SWT.ALT, SWT.KEYPAD_9);
 
             addTask(Task.RESET_MANIPULATOR, 'r');
         }
@@ -665,7 +665,7 @@ public class KeyStateManager {
                     }
                     case RMB:
                     {
-                        if (!Cocoa.isCocoa) {
+                        if (!Cocoa.IS_COCOA) {
                             Composite3D lc3d = DatFile.getLastHoveredComposite();
                             if (lc3d == null) lc3d = c3d;
                             lc3d.getCanvas().forceFocus();
@@ -875,43 +875,43 @@ public class KeyStateManager {
                         c3d.getPerspectiveCalculator().setPerspective(Perspective.BOTTOM);
                         c3d.setPerspectiveOnContextMenu(Perspective.BOTTOM);
                         break;
-                    case PERSPECTIVE_TwoThirds:
+                    case PERSPECTIVE_TWO_THIRDS:
                         c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
                         c3d.setPerspectiveOnContextMenu(Perspective.TWO_THIRDS);
                         break;
-                    case RENDERMODE_NoBackfaceCulling:
+                    case RENDERMODE_NO_BACKFACE_CULLING:
                         c3d.setRenderMode(0);
                         c3d.setRenderModeOnContextMenu(0);
                         break;
-                    case RENDERMODE_RandomColours:
+                    case RENDERMODE_RANDOM_COLOURS:
                         c3d.setRenderMode(1);
                         c3d.setRenderModeOnContextMenu(1);
                         break;
-                    case RENDERMODE_GreenFrontfacesRedBackfaces:
+                    case RENDERMODE_GREEN_FRONTFACES_RED_BACKFACES:
                         c3d.setRenderMode(2);
                         c3d.setRenderModeOnContextMenu(2);
                         break;
-                    case RENDERMODE_RedBackfaces:
+                    case RENDERMODE_RED_BACKFACES:
                         c3d.setRenderMode(3);
                         c3d.setRenderModeOnContextMenu(3);
                         break;
-                    case RENDERMODE_RealBackfaceCulling:
+                    case RENDERMODE_REAL_BACKFACE_CULLING:
                         c3d.setRenderMode(4);
                         c3d.setRenderModeOnContextMenu(4);
                         break;
-                    case RENDERMODE_LDrawStandard:
+                    case RENDERMODE_LDRAW_STANDARD:
                         c3d.setRenderMode(5);
                         c3d.setRenderModeOnContextMenu(5);
                         break;
-                    case RENDERMODE_SpecialCondline:
+                    case RENDERMODE_SPECIAL_CONDLINE:
                         c3d.setRenderMode(6);
                         c3d.setRenderModeOnContextMenu(6);
                         break;
-                    case RENDERMODE_CoplanarityHeatmap:
+                    case RENDERMODE_COPLANARITY_HEATMAP:
                         c3d.setRenderMode(7);
                         c3d.setRenderModeOnContextMenu(7);
                         break;
-                    case RENDERMODE_Wireframe:
+                    case RENDERMODE_WIREFRAME:
                         c3d.setRenderMode(-1);
                         c3d.setRenderModeOnContextMenu(-1);
                         break;
@@ -1027,7 +1027,7 @@ public class KeyStateManager {
                     }
                     case RMB:
                     {
-                        if (!Cocoa.isCocoa) {
+                        if (!Cocoa.IS_COCOA) {
                             cp.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseDown;
@@ -1100,7 +1100,7 @@ public class KeyStateManager {
                     }
                     case RMB:
                     {
-                        if (!Cocoa.isCocoa) {
+                        if (!Cocoa.IS_COCOA) {
                             cp.getCanvas().forceFocus();
                             Event mouseEvent = new Event();
                             mouseEvent.type = SWT.MouseUp;

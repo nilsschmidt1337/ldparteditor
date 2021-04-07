@@ -240,7 +240,7 @@ class VM06Edger2 extends VM05Distance {
         initBFCmap();
         verticesToCheck.clear();
 
-        final double edsquare = es.getEqualDistance().multiply(es.getEqualDistance(), Threshold.mc).doubleValue() * 1E6;
+        final double edsquare = es.getEqualDistance().multiply(es.getEqualDistance(), Threshold.MC).doubleValue() * 1E6;
         TreeMap<Vertex, Vertex> snap = new TreeMap<>();
         TreeMap<Vertex, TreeSet<Vertex>> snapToOriginal = new TreeMap<>();
 

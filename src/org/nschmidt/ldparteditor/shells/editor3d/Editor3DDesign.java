@@ -948,36 +948,36 @@ class Editor3DDesign extends ApplicationWindow {
                             spinnerLDU.addValueChangeListener(spn -> {
                                 if (change.get()) return;
                                 change.set(true);
-                                spinnerInch.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.mc));
-                                spinnerMM.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.mc));
-                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
+                                spinnerInch.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.MC));
+                                spinnerMM.setValue(spn.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.MC));
+                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
                                 change.set(false);
                             });
 
                             spinnerInch.addValueChangeListener(spn -> {
                                 if (change.get()) return;
                                 change.set(true);
-                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.mc));
-                                spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.mc));
-                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
+                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.MC));
+                                spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.MC));
+                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
                                 change.set(false);
                             });
 
                             spinnerMM.addValueChangeListener(spn -> {
                                 if (change.get()) return;
                                 change.set(true);
-                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.mc));
-                                spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.mc));
-                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.mc).setScale(1, RoundingMode.HALF_UP));
+                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.MC));
+                                spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.MC));
+                                spinnerStud.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.MC).setScale(1, RoundingMode.HALF_UP));
                                 change.set(false);
                             });
 
                             spinnerStud.addValueChangeListener(spn -> {
                                 if (change.get()) return;
                                 change.set(true);
-                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.mc));
-                                spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.mc));
-                                spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.mc));
+                                spinnerLDU.setValue(spn.getValue().divide(new BigDecimal(I18n.UNITS_FACTOR_TERTIARY), Threshold.MC));
+                                spinnerInch.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_PRIMARY), Threshold.MC));
+                                spinnerMM.setValue(spinnerLDU.getValue().multiply(new BigDecimal(I18n.UNITS_FACTOR_SECONDARY), Threshold.MC));
                                 change.set(false);
                             });
 
@@ -1852,7 +1852,7 @@ class Editor3DDesign extends ApplicationWindow {
         {
             NButton btnPerspective = new NButton(toolItemViewPerspective, Cocoa.getStyle());
             this.btn_perspectiveTwoThirds[0] = btnPerspective;
-            KeyStateManager.addTooltipText(btnPerspective, I18n.PERSPECTIVE_TWO_THIRDS, Task.PERSPECTIVE_TwoThirds);
+            KeyStateManager.addTooltipText(btnPerspective, I18n.PERSPECTIVE_TWO_THIRDS, Task.PERSPECTIVE_TWO_THIRDS);
             btnPerspective.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
         }
         return toolItemViewPerspective;
@@ -1876,55 +1876,55 @@ class Editor3DDesign extends ApplicationWindow {
         {
             NButton btnRenderModeNoBackfaceCulling = new NButton(toolItemRenderMode, Cocoa.getStyle());
             this.btn_renderModeNoBackfaceCulling[0] = btnRenderModeNoBackfaceCulling;
-            KeyStateManager.addTooltipText(btnRenderModeNoBackfaceCulling, I18n.C3D_NO_BACKFACE_CULLING, Task.RENDERMODE_NoBackfaceCulling);
+            KeyStateManager.addTooltipText(btnRenderModeNoBackfaceCulling, I18n.C3D_NO_BACKFACE_CULLING, Task.RENDERMODE_NO_BACKFACE_CULLING);
             btnRenderModeNoBackfaceCulling.setImage(ResourceManager.getImage("icon16_noBfc.png")); //$NON-NLS-1$
         }
         {
             NButton btnRenderModeRandomColours = new NButton(toolItemRenderMode, Cocoa.getStyle());
             this.btn_renderModeRandomColours[0] = btnRenderModeRandomColours;
-            KeyStateManager.addTooltipText(btnRenderModeRandomColours, I18n.C3D_RANDOM_COLOURS, Task.RENDERMODE_RandomColours);
+            KeyStateManager.addTooltipText(btnRenderModeRandomColours, I18n.C3D_RANDOM_COLOURS, Task.RENDERMODE_RANDOM_COLOURS);
             btnRenderModeRandomColours.setImage(ResourceManager.getImage("icon16_randomColour.png")); //$NON-NLS-1$
         }
         {
             NButton btnRenderModeGreenRed = new NButton(toolItemRenderMode, Cocoa.getStyle());
             this.btn_renderModeGreenRed[0] = btnRenderModeGreenRed;
-            KeyStateManager.addTooltipText(btnRenderModeGreenRed, I18n.C3D_GREEN_RED, Task.RENDERMODE_GreenFrontfacesRedBackfaces);
+            KeyStateManager.addTooltipText(btnRenderModeGreenRed, I18n.C3D_GREEN_RED, Task.RENDERMODE_GREEN_FRONTFACES_RED_BACKFACES);
             btnRenderModeGreenRed.setImage(ResourceManager.getImage("icon16_greenFrontRedBack.png")); //$NON-NLS-1$
         }
         {
             NButton btnRenderModeRedBackfaces = new NButton(toolItemRenderMode, Cocoa.getStyle());
             this.btn_renderModeRedBackfaces[0] = btnRenderModeRedBackfaces;
-            KeyStateManager.addTooltipText(btnRenderModeRedBackfaces, I18n.C3D_RED_BACKFACES, Task.RENDERMODE_RedBackfaces);
+            KeyStateManager.addTooltipText(btnRenderModeRedBackfaces, I18n.C3D_RED_BACKFACES, Task.RENDERMODE_RED_BACKFACES);
             btnRenderModeRedBackfaces.setImage(ResourceManager.getImage("icon16_redBackfaces.png")); //$NON-NLS-1$
         }
         {
             NButton btnRenderModeRealBackfaceCulling = new NButton(toolItemRenderMode, Cocoa.getStyle());
             this.btn_renderModeRealBackfaceCulling[0] = btnRenderModeRealBackfaceCulling;
-            KeyStateManager.addTooltipText(btnRenderModeRealBackfaceCulling, I18n.C3D_REAL_BACKFACE_CULLING, Task.RENDERMODE_RealBackfaceCulling);
+            KeyStateManager.addTooltipText(btnRenderModeRealBackfaceCulling, I18n.C3D_REAL_BACKFACE_CULLING, Task.RENDERMODE_REAL_BACKFACE_CULLING);
             btnRenderModeRealBackfaceCulling.setImage(ResourceManager.getImage("icon16_realBfc.png")); //$NON-NLS-1$
         }
         {
             NButton btnRenderModeLDrawStandard = new NButton(toolItemRenderMode, Cocoa.getStyle());
             this.btn_renderModeLDrawStandard[0] = btnRenderModeLDrawStandard;
-            KeyStateManager.addTooltipText(btnRenderModeLDrawStandard, I18n.C3D_LDRAW_STANDARD, Task.RENDERMODE_LDrawStandard);
+            KeyStateManager.addTooltipText(btnRenderModeLDrawStandard, I18n.C3D_LDRAW_STANDARD, Task.RENDERMODE_LDRAW_STANDARD);
             btnRenderModeLDrawStandard.setImage(ResourceManager.getImage("icon16_ldrawStandard.png")); //$NON-NLS-1$
         }
         {
             NButton btnRenderModeCondlineMode = new NButton(toolItemRenderMode, Cocoa.getStyle());
             this.btn_renderModeCondlineMode[0] = btnRenderModeCondlineMode;
-            KeyStateManager.addTooltipText(btnRenderModeCondlineMode, I18n.C3D_CONDLINE_MODE, Task.RENDERMODE_SpecialCondline);
+            KeyStateManager.addTooltipText(btnRenderModeCondlineMode, I18n.C3D_CONDLINE_MODE, Task.RENDERMODE_SPECIAL_CONDLINE);
             btnRenderModeCondlineMode.setImage(ResourceManager.getImage("icon16_specialCondline.png")); //$NON-NLS-1$
         }
         {
             NButton btnRenderModeCoplanarityMode = new NButton(toolItemRenderMode, Cocoa.getStyle());
             this.btn_renderModeCoplanarityMode[0] = btnRenderModeCoplanarityMode;
-            KeyStateManager.addTooltipText(btnRenderModeCoplanarityMode, I18n.C3D_COPLANARITY_MODE, Task.RENDERMODE_CoplanarityHeatmap);
+            KeyStateManager.addTooltipText(btnRenderModeCoplanarityMode, I18n.C3D_COPLANARITY_MODE, Task.RENDERMODE_COPLANARITY_HEATMAP);
             btnRenderModeCoplanarityMode.setImage(ResourceManager.getImage("icon16_coplanarityHeatmap.png")); //$NON-NLS-1$
         }
         {
             NButton btnRenderModeWireframe = new NButton(toolItemRenderMode, Cocoa.getStyle());
             this.btn_renderModeWireframe[0] = btnRenderModeWireframe;
-            KeyStateManager.addTooltipText(btnRenderModeWireframe, I18n.C3D_WIREFRAME, Task.RENDERMODE_Wireframe);
+            KeyStateManager.addTooltipText(btnRenderModeWireframe, I18n.C3D_WIREFRAME, Task.RENDERMODE_WIREFRAME);
             btnRenderModeWireframe.setImage(ResourceManager.getImage("icon16_wireframe.png")); //$NON-NLS-1$
         }
         return toolItemRenderMode;

@@ -269,33 +269,33 @@ final class ErrorFixer {
             final Vector3d vertexD = new Vector3d();
 
             // 1st vertex
-            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
-            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
-            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
             // 2nd vertex
-            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
-            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
-            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
             // 3rd vertex
-            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
-            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
-            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
             // 4th vertex
-            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
-            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
-            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
+            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
 
 
             Vector3d.sub(vertexA, vertexD, vertexA);
             Vector3d.sub(vertexB, vertexD, vertexB);
             Vector3d.sub(vertexC, vertexD, vertexC);
 
-            boolean sAD = vertexA.length().compareTo(Threshold.identical_vertex_distance) < 0; // AD
-            boolean sBD = vertexB.length().compareTo(Threshold.identical_vertex_distance) < 0; // BD
-            boolean sCD = vertexC.length().compareTo(Threshold.identical_vertex_distance) < 0; // CD
-            boolean sAB = Vector3d.sub(vertexA, vertexB).length().compareTo(Threshold.identical_vertex_distance) < 0; // AB
-            boolean sBC = Vector3d.sub(vertexB, vertexC).length().compareTo(Threshold.identical_vertex_distance) < 0; // BC
-            boolean sAC = Vector3d.sub(vertexA, vertexC).length().compareTo(Threshold.identical_vertex_distance) < 0; // AC
+            boolean sAD = vertexA.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0; // AD
+            boolean sBD = vertexB.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0; // BD
+            boolean sCD = vertexC.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0; // CD
+            boolean sAB = Vector3d.sub(vertexA, vertexB).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0; // AB
+            boolean sBC = Vector3d.sub(vertexB, vertexC).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0; // BC
+            boolean sAC = Vector3d.sub(vertexA, vertexC).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0; // AC
 
             if (sAD && !(sBD || sCD || sAB || sBC || sAC)) {
                 text = QuickFixer.setLine(lineNumber + 1, "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
@@ -332,21 +332,21 @@ final class ErrorFixer {
             final Vector3d vertexD = new Vector3d();
 
             // 1st vertex
-            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
-            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
-            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
             // 2nd vertex
-            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
-            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
-            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
             // 3rd vertex
-            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
-            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
-            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
             // 4th vertex
-            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
-            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
-            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
+            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
 
             Vertex vA = new Vertex(vertexA.X, vertexA.Y, vertexA.Z);
             Vertex vB = new Vertex(vertexB.X, vertexB.Y, vertexB.Z);
@@ -365,20 +365,20 @@ final class ErrorFixer {
             boolean pointD;
             double angle = Vector3d.angle(vertexA, vertexD);
             double sumAngle = angle;
-            pointA = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+            pointA = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
             angle = Vector3d.angle(vertexB, vertexC);
             sumAngle = sumAngle + angle;
-            pointC = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+            pointC = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
             vertexA.negate();
             vertexB.negate();
             angle = Vector3d.angle(vertexA, vertexB);
             sumAngle = sumAngle + angle;
-            pointB = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+            pointB = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
             angle = 360.0 - sumAngle;
-            pointD = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+            pointD = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
             VertexManager vm = datFile.getVertexManager();
 
@@ -471,21 +471,21 @@ final class ErrorFixer {
             final Vector3d vertexD = new Vector3d();
 
             // 1st vertex
-            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
-            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
-            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
             // 2nd vertex
-            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
-            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
-            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
             // 3rd vertex
-            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
-            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
-            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
             // 4th vertex
-            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
-            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
-            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
+            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
 
             Vector3d[] normals = new Vector3d[4];
             Vector3d[] lineVectors = new Vector3d[4];

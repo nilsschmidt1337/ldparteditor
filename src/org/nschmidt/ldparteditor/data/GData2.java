@@ -319,7 +319,7 @@ public final class GData2 extends GData {
             GL11.glPopMatrix();
 
         } else {
-            GL11.glLineWidth(View.lineWidthGL[0]);
+            GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
             GL11.glColor4f(r, g, b, a);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glVertex3f(x1, y1, z1);
@@ -427,7 +427,7 @@ public final class GData2 extends GData {
             GL11.glPopMatrix();
 
         } else {
-            GL11.glLineWidth(View.lineWidthGL[0]);
+            GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
             GL11.glColor4f(r, g, b, a);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glVertex3f(x1, y1, z1);
@@ -510,7 +510,7 @@ public final class GData2 extends GData {
                 b2 = this.b;
             }
 
-            GL11.glLineWidth(View.lineWidthGL[0]);
+            GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
             GL11.glColor4f(r2, g2, b2, 1f);
             GL11.glBegin(GL11.GL_LINES);
             GraphicalDataTools.setVertex(x1, y1, z1, this, true);
@@ -703,7 +703,7 @@ public final class GData2 extends GData {
         final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
-        GL11.glLineWidth(View.lineWidthGL[0]);
+        GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
         GL11.glColor4f(r, g, b, 1f);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(x1, y1, z1);
@@ -809,10 +809,10 @@ public final class GData2 extends GData {
                 tris = View.D9;
                 break;
             case '.':
-                tris = View.Dd;
+                tris = View.DDot;
                 break;
             case ',':
-                tris = View.Dc;
+                tris = View.DComma;
                 break;
             case '-':
                 tris = View.DM;
@@ -865,10 +865,10 @@ public final class GData2 extends GData {
                 tris = View.D9;
                 break;
             case '.':
-                tris = View.Dd;
+                tris = View.DDot;
                 break;
             case ',':
-                tris = View.Dc;
+                tris = View.DComma;
                 break;
             case '-':
                 tris = View.DM;
@@ -892,7 +892,7 @@ public final class GData2 extends GData {
 
         GL33Helper.pointAt7(0, v[0].x, v[0].y, v[0].z, lineData, lineIndex);
         GL33Helper.pointAt7(1, v[1].x, v[1].y, v[1].z, lineData, lineIndex);
-        GL33Helper.colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, lineData, lineIndex);
+        GL33Helper.colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, lineData, lineIndex);
 
         return 4;
     }

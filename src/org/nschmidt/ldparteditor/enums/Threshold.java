@@ -33,21 +33,21 @@ public enum Threshold implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /** The count of the significant numbers for BigDecimal */
-    public static int significant_places = 32;
+    public static final int SIGNIFICANT_PLACES = 32;
     /** The math context for precision */
-    public static MathContext mc = new MathContext(32, RoundingMode.HALF_UP);
+    public static final MathContext MC = new MathContext(32, RoundingMode.HALF_UP);
     /** The threshold for determinats of near singular matrices */
-    public static double singularity_determinant = 0.000001d;
+    public static final double SINGULARITY_DETERMINANT = 0.000001d;
     /** The threshold for identical vertices and invisible condlines */
-    public static BigDecimal identical_vertex_distance = new BigDecimal("0.0001", MathContext.DECIMAL128); //$NON-NLS-1$
+    public static final BigDecimal IDENTICAL_VERTEX_DISTANCE = new BigDecimal("0.0001", MathContext.DECIMAL128); //$NON-NLS-1$
     /** The threshold for the minimum collinear angle */
-    public static double collinear_angle_minimum = 0.025d;
+    public static final double COLLINEAR_ANGLE_MINIMUM = 0.025d;
     /** The threshold for the maximum collinear angle */
-    public static double collinear_angle_maximum = 179.9d;
+    public static final double COLLINEAR_ANGLE_MAXIMUM = 179.9d;
     /** The threshold for the maximum coplanarity angle for warnings */
     public static double coplanarity_angle_warning = 1d;
     /** The threshold for the maximum coplanarity angle */
     public static double coplanarity_angle_error = 3d;
     /** The threshold for the maximum condline angle */
-    public static float condline_angle_maximum = 179.9f;
+    public static final float CONDLINE_ANGLE_MAXIMUM = 179.9f;
 }

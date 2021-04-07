@@ -227,9 +227,9 @@ public enum RingsAndCones {
                                                             }
                                                             minAmount = amount;
                                                             if (minDigits == Integer.MAX_VALUE) {
-                                                                m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                                                m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.MC).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                                             } else {
-                                                                m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.mc).doubleValue()) + " deviation and " + minDigits + " digits."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                                                                m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.MC).doubleValue()) + " deviation and " + minDigits + " digits."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                                                             }
                                                             tlock.lock();
                                                             if (minAmount < minAmountA.get()  || minAmount == minAmountA.get() && minDelta <= minDeltaA.get()) {
@@ -337,16 +337,16 @@ public enum RingsAndCones {
                     BigDecimal px2 = r2;
                     BigDecimal pz2 = BigDecimal.ZERO;
                     for (int i = 0; i < numFaces; i++) {
-                        BigDecimal x1 = new BigDecimal(Math.cos(a) + "", Threshold.mc); //$NON-NLS-1$
+                        BigDecimal x1 = new BigDecimal(Math.cos(a) + "", Threshold.MC); //$NON-NLS-1$
                         x1 = x1.setScale(4, RoundingMode.HALF_UP);
                         x1 = x1.multiply(r1);
-                        BigDecimal z1 = new BigDecimal(Math.sin(a) + "", Threshold.mc); //$NON-NLS-1$
+                        BigDecimal z1 = new BigDecimal(Math.sin(a) + "", Threshold.MC); //$NON-NLS-1$
                         z1 = z1.setScale(4, RoundingMode.HALF_UP);
                         z1 = z1.multiply(r1);
-                        BigDecimal x2 = new BigDecimal(Math.cos(a) + "", Threshold.mc); //$NON-NLS-1$
+                        BigDecimal x2 = new BigDecimal(Math.cos(a) + "", Threshold.MC); //$NON-NLS-1$
                         x2 = x2.setScale(4, RoundingMode.HALF_UP);
                         x2 = x2.multiply(r2);
-                        BigDecimal z2 = new BigDecimal(Math.sin(a) + "", Threshold.mc); //$NON-NLS-1$
+                        BigDecimal z2 = new BigDecimal(Math.sin(a) + "", Threshold.MC); //$NON-NLS-1$
                         z2 = z2.setScale(4, RoundingMode.HALF_UP);
                         z2 = z2.multiply(r2);
                         String line3 = "4 16 " + px1 + " 0 " + pz1 + " " + x1 + " 0 " + z1 + " " + x2 + " " + y + " " + z2 + " " + px2 + " " + y + " " + pz2;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$
@@ -412,13 +412,13 @@ public enum RingsAndCones {
                     height = BigDecimal.ZERO;
                 }
                 for(int i = 1; i <= solutionAmount[0]; i++) {
-                    BigDecimal sf = new BigDecimal(solution[i]).divide(factor, Threshold.mc);
+                    BigDecimal sf = new BigDecimal(solution[i]).divide(factor, Threshold.MC);
                     String sfs = bigDecimalToString(sf);
                     String radiusSuffix = "" + solutionR[i]; //$NON-NLS-1$
 
                     String middle;
                     if (rs.isUsingCones()) {
-                        step = new BigDecimal(solutionR2[i + 1] - solutionR2[i]).divide(width, Threshold.mc).multiply(rs.getHeight());
+                        step = new BigDecimal(solutionR2[i + 1] - solutionR2[i]).divide(width, Threshold.MC).multiply(rs.getHeight());
                         middle = "con"; //$NON-NLS-1$
                         height = height.add(step);
                     } else {
@@ -487,10 +487,10 @@ public enum RingsAndCones {
                     BigDecimal px = r;
                     BigDecimal pz = BigDecimal.ZERO;
                     for (int i = 0; i < numFaces; i++) {
-                        BigDecimal x = new BigDecimal(Math.cos(a) + "", Threshold.mc); //$NON-NLS-1$
+                        BigDecimal x = new BigDecimal(Math.cos(a) + "", Threshold.MC); //$NON-NLS-1$
                         x = x.setScale(4, RoundingMode.HALF_UP);
                         x = x.multiply(r);
-                        BigDecimal z = new BigDecimal(Math.sin(a) + "", Threshold.mc); //$NON-NLS-1$
+                        BigDecimal z = new BigDecimal(Math.sin(a) + "", Threshold.MC); //$NON-NLS-1$
                         z = z.setScale(4, RoundingMode.HALF_UP);
                         z = z.multiply(r);
                         String line3 = "3 16 0 0 0 " + px + " " + y + " " + pz + " " + x + " " + y + " " + z;  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$

@@ -3486,13 +3486,13 @@ public class Editor3DWindow extends Editor3DDesign {
                                 Vector3d v11 = CoordinatesDialog.getStart();
                                 if (CoordinatesDialog.isX() && delta1.X.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine1 = true;
-                                    s1 = v21.X.subtract(CoordinatesDialog.getStart().X).divide(delta1.X, Threshold.mc);
+                                    s1 = v21.X.subtract(CoordinatesDialog.getStart().X).divide(delta1.X, Threshold.MC);
                                 } else if (CoordinatesDialog.isY() && delta1.Y.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine1 = true;
-                                    s1 = v21.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta1.Y, Threshold.mc);
+                                    s1 = v21.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta1.Y, Threshold.MC);
                                 } else if (CoordinatesDialog.isZ() && delta1.Z.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine1 = true;
-                                    s1 = v21.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta1.Z, Threshold.mc);
+                                    s1 = v21.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta1.Z, Threshold.MC);
                                 }
                                 if (doMoveOnLine1) {
                                     CoordinatesDialog.setVertex(new Vertex(v11.X.add(delta1.X.multiply(s1)), v11.Y.add(delta1.Y.multiply(s1)), v11.Z.add(delta1.Z.multiply(s1))));
@@ -3521,13 +3521,13 @@ public class Editor3DWindow extends Editor3DDesign {
                                 Vector3d v12 = CoordinatesDialog.getStart();
                                 if (CoordinatesDialog.isX() && delta2.X.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine2 = true;
-                                    s2 = v22.X.subtract(CoordinatesDialog.getStart().X).divide(delta2.X, Threshold.mc);
+                                    s2 = v22.X.subtract(CoordinatesDialog.getStart().X).divide(delta2.X, Threshold.MC);
                                 } else if (CoordinatesDialog.isY() && delta2.Y.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine2 = true;
-                                    s2 = v22.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta2.Y, Threshold.mc);
+                                    s2 = v22.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta2.Y, Threshold.MC);
                                 } else if (CoordinatesDialog.isZ() && delta2.Z.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine2 = true;
-                                    s2 = v22.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta2.Z, Threshold.mc);
+                                    s2 = v22.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta2.Z, Threshold.MC);
                                 }
                                 BigDecimal xP = !CoordinatesDialog.isX() ? v12.X.add(delta2.X.multiply(s2)) : v22.X;
                                 BigDecimal yP = !CoordinatesDialog.isY() ? v12.Y.add(delta2.Y.multiply(s2)) : v22.Y;
@@ -3623,9 +3623,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     boolean numberError = false;
                                     if (dataSegments.length == 6) {
                                         try {
-                                            start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
-                                            start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
-                                            start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
+                                            start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
+                                            start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
+                                            start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
                                         } catch (NumberFormatException nfe) {
                                             numberError = true;
                                         }
@@ -3687,9 +3687,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     boolean numberError = false;
                                     if (dataSegments.length == 6) {
                                         try {
-                                            start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
-                                            start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
-                                            start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
+                                            start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
+                                            start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
+                                            start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
                                         } catch (NumberFormatException nfe) {
                                             numberError = true;
                                         }
@@ -7724,9 +7724,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
     private void setLineSize(SphereGL20 sp, SphereGL20 spInv, float lineWidth1000, float lineWidth, float lineWidthGL, NButton btn) {
         final boolean useLegacyGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20;
-        View.lineWidth1000[0] = lineWidth1000;
-        View.lineWidth[0] = lineWidth;
-        View.lineWidthGL[0] = lineWidthGL;
+        View.LINE_WIDTH_1000[0] = lineWidth1000;
+        View.LINE_WIDTH[0] = lineWidth;
+        View.LINE_WIDTH_GL[0] = lineWidthGL;
         if (useLegacyGL) {
             GL20Primitives.SPHERE = sp;
             GL20Primitives.SPHERE_INV = spInv;

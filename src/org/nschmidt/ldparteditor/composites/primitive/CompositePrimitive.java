@@ -273,7 +273,7 @@ public class CompositePrimitive extends Composite {
 
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
                 formatter.setLocale(MyLanguage.LOCALE);
-                formatter.applyPattern(Cocoa.isCocoa ? I18n.E3D_ROTATE_VIEW_HINT_MAC :
+                formatter.applyPattern(Cocoa.IS_COCOA ? I18n.E3D_ROTATE_VIEW_HINT_MAC :
                     hasDefaultMouseButtonLayout ? I18n.E3D_ROTATE_VIEW_HINT_MIDDLE_MOUSE : I18n.E3D_ROTATE_VIEW_HINT_RIGHT_MOUSE);
                 String tooltipText = formatter.format(messageArguments);
                 if (!tooltipText.equals(canvas.getToolTipText())) {

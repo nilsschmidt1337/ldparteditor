@@ -23,7 +23,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 public enum Cocoa {
     INSTANCE;
 
-    public static final boolean isCocoa = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
+    public static final boolean IS_COCOA = "cocoa".equals(SWT.getPlatform()); //$NON-NLS-1$
 
     public static int getStyle() {
         // TODO Inline after more testing on Mac OS X
@@ -31,7 +31,7 @@ public enum Cocoa {
     }
 
     public static String replaceCtrlByCmd(String source) {
-        Object[] messageArguments = {isCocoa ? "\u2318" : "Ctrl"}; //$NON-NLS-1$ //$NON-NLS-2$
+        Object[] messageArguments = {IS_COCOA ? "\u2318" : "Ctrl"}; //$NON-NLS-1$ //$NON-NLS-2$
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
         formatter.setLocale(MyLanguage.LOCALE);
         formatter.applyPattern(source);
@@ -39,7 +39,7 @@ public enum Cocoa {
     }
 
     public static boolean checkCtrlOrCmdPressed(int stateMask) {
-        if (isCocoa) {
+        if (IS_COCOA) {
             return (stateMask & SWT.COMMAND) == SWT.COMMAND;
         } else {
             return (stateMask & SWT.CTRL) == SWT.CTRL;

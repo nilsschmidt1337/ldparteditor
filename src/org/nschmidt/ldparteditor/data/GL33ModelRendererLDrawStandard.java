@@ -1167,7 +1167,7 @@ public class GL33ModelRendererLDrawStandard {
         }
 
         final float zoom = c3d.getZoom();
-        final boolean drawLines = View.lineWidthGL[0] > 0.01f;
+        final boolean drawLines = View.LINE_WIDTH_GL[0] > 0.01f;
         final boolean studlogo = c3d.isShowingLogo();
 
         CUBEMAP_TEXTURE.bindGL33(renderer, mainShader);
@@ -1239,7 +1239,7 @@ public class GL33ModelRendererLDrawStandard {
                 GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
 
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-                GL11.glLineWidth(View.lineWidthGL[0]);
+                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
 
                 Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
                 Matrix4f.transform(ivm, tr, tr);
@@ -1318,7 +1318,7 @@ public class GL33ModelRendererLDrawStandard {
                 Matrix4f.transform(ivm, tr, tr);
                 stack.glPushMatrix();
                 stack.glTranslatef(tr.x, tr.y, tr.z);
-                GL11.glLineWidth(View.lineWidthGL[0]);
+                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
                 GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
                 stack.glPopMatrix();
                 mainShader.use();

@@ -310,7 +310,7 @@ public class MouseActions {
             float rx = 0;
             float ry = 0;
 
-            if (keyboard.isCtrlPressed() || Cocoa.isCocoa && keyboard.isAltPressed()) {
+            if (keyboard.isCtrlPressed() || Cocoa.IS_COCOA && keyboard.isAltPressed()) {
                 if (c3d.hasNegDeterminant()) {
                     rx = (float) (Math.atan2(-cSize.y / 2f + old_mouse_position.y, -cSize.x / 2f + old_mouse_position.x)
                             - Math.atan2(-cSize.y / 2f + event.y, -cSize.x / 2f + event.x));
@@ -349,10 +349,10 @@ public class MouseActions {
                 break;
             float dx = 0;
             float dy = 0;
-            if (!(keyboard.isShiftPressed() || Cocoa.isCocoa && keyboard.isAltPressed()) ) {
+            if (!(keyboard.isShiftPressed() || Cocoa.IS_COCOA && keyboard.isAltPressed()) ) {
                 dx = (old_mouse_position.x - event.x) / viewportPixelPerLDU;
             }
-            if (!(keyboard.isCtrlPressed() || Cocoa.isCocoa && keyboard.isCmdPressed()) || Editor3DWindow.getWindow().isAddingSomething()) {
+            if (!(keyboard.isCtrlPressed() || Cocoa.IS_COCOA && keyboard.isCmdPressed()) || Editor3DWindow.getWindow().isAddingSomething()) {
                 dy = (event.y - old_mouse_position.y) / viewportPixelPerLDU;
             }
             translateViewport(dx, dy, viewportTranslation, viewportRotation, perspective);
@@ -368,9 +368,9 @@ public class MouseActions {
         final float sy = c3d.getCursor3D().y;
         final float sz = c3d.getCursor3D().z;
 
-        c3d.getCursorSnapped3Dprecise()[0] = new BigDecimal(sx / 1000f).subtract(new BigDecimal(sx / 1000f).remainder(snapPrecise, Threshold.mc));
-        c3d.getCursorSnapped3Dprecise()[1] = new BigDecimal(sy / 1000f).subtract(new BigDecimal(sy / 1000f).remainder(snapPrecise, Threshold.mc));
-        c3d.getCursorSnapped3Dprecise()[2] = new BigDecimal(sz / 1000f).subtract(new BigDecimal(sz / 1000f).remainder(snapPrecise, Threshold.mc));
+        c3d.getCursorSnapped3Dprecise()[0] = new BigDecimal(sx / 1000f).subtract(new BigDecimal(sx / 1000f).remainder(snapPrecise, Threshold.MC));
+        c3d.getCursorSnapped3Dprecise()[1] = new BigDecimal(sy / 1000f).subtract(new BigDecimal(sy / 1000f).remainder(snapPrecise, Threshold.MC));
+        c3d.getCursorSnapped3Dprecise()[2] = new BigDecimal(sz / 1000f).subtract(new BigDecimal(sz / 1000f).remainder(snapPrecise, Threshold.MC));
 
         c3d.getCursorSnapped3D().set(sx - sx % snap, sy - sy % snap, sz - sz % snap, 1f);
 

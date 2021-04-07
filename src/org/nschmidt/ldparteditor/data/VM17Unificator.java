@@ -182,9 +182,9 @@ class VM17Unificator extends VM16Subdivide {
                                         y = y.add(gv.Y);
                                         z = z.add(gv.Z);
                                     }
-                                    x = x.divide(gc, Threshold.mc);
-                                    y = y.divide(gc, Threshold.mc);
-                                    z = z.divide(gc, Threshold.mc);
+                                    x = x.divide(gc, Threshold.MC);
+                                    y = y.divide(gc, Threshold.MC);
+                                    z = z.divide(gc, Threshold.MC);
                                     Vertex newVertex = new Vertex(x, y, z);
                                     fileVertices.add(newVertex);
                                     for (Vertex gv : group) {

@@ -222,13 +222,13 @@ class VM04Rectifier extends VM03Adjacency {
 
                                                         angle = Vector3d.angle(a, d);
                                                         double sumAngle = angle;
-                                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                        if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                                             continue;
                                                         }
 
                                                         angle = Vector3d.angle(b, c);
                                                         sumAngle = sumAngle + angle;
-                                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                        if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                                             continue;
                                                         }
 
@@ -236,18 +236,18 @@ class VM04Rectifier extends VM03Adjacency {
                                                         b.negate();
                                                         angle = Vector3d.angle(a, b);
                                                         sumAngle = sumAngle + angle;
-                                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                        if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                                             continue;
                                                         }
 
                                                         angle = 360.0 - sumAngle;
-                                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                        if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                                             continue;
                                                         }
 
                                                         BigDecimal m1 = Vector3d.distSquare(new Vector3d(first), new Vector3d(third)).add(BigDecimal.ONE);
                                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
-                                                        BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.mc) : m2.divide(m1, Threshold.mc);
+                                                        BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.MC) : m2.divide(m1, Threshold.MC);
                                                         if (bestIndex == -1) {
                                                             bestRatio = ratio;
                                                             bestIndex = i;
@@ -726,13 +726,13 @@ class VM04Rectifier extends VM03Adjacency {
 
                                         angle = Vector3d.angle(a, d);
                                         double sumAngle = angle;
-                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                        if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                             continue;
                                         }
 
                                         angle = Vector3d.angle(b, c);
                                         sumAngle = sumAngle + angle;
-                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                        if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                             continue;
                                         }
 
@@ -740,18 +740,18 @@ class VM04Rectifier extends VM03Adjacency {
                                         b.negate();
                                         angle = Vector3d.angle(a, b);
                                         sumAngle = sumAngle + angle;
-                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                        if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                             continue;
                                         }
 
                                         angle = 360.0 - sumAngle;
-                                        if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                        if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                             continue;
                                         }
 
                                         BigDecimal m1 = Vector3d.distSquare(new Vector3d(first), new Vector3d(third)).add(BigDecimal.ONE);
                                         BigDecimal m2 = Vector3d.distSquare(new Vector3d(second), new Vector3d(fourth)).add(BigDecimal.ONE);
-                                        BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.mc) : m2.divide(m1, Threshold.mc);
+                                        BigDecimal ratio = m1.compareTo(m2) > 0 ? m1.divide(m2, Threshold.MC) : m2.divide(m1, Threshold.MC);
                                         if (bestIndex == -1) {
                                             bestRatio = ratio;
                                             bestIndex = i;
@@ -1219,6 +1219,6 @@ class VM04Rectifier extends VM03Adjacency {
         }
         tMatrix.m33 = 1f;
         det = tMatrix.determinant();
-        return Math.abs(det) >= Threshold.singularity_determinant;
+        return Math.abs(det) >= Threshold.SINGULARITY_DETERMINANT;
     }
 }

@@ -340,7 +340,7 @@ public enum TexMapParser {
                 cValue.set(16, r, g, b, a);
                 break;
             case 24:
-                cValue.set(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f);
+                cValue.set(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
                 break;
             default:
                 if (View.hasLDConfigColour(colourValue)) {
@@ -452,7 +452,7 @@ public enum TexMapParser {
             }
             tMatrix.m33 = 1f;
             det = tMatrix.determinant();
-            if (Math.abs(det) < Threshold.singularity_determinant)
+            if (Math.abs(det) < Threshold.SINGULARITY_DETERMINANT)
                 return null;
             // [WARNING] Check file existance
             boolean fileExists = true;
@@ -613,7 +613,7 @@ public enum TexMapParser {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            if (Vector3f.sub(start, end, null).length() < Threshold.identical_vertex_distance.floatValue()) {
+            if (Vector3f.sub(start, end, null).length() < Threshold.IDENTICAL_VERTEX_DISTANCE.floatValue()) {
                 return null;
             }
             return new GData2(new Vertex(start.x * 1000f, start.y * 1000f, start.z * 1000f, false), new Vertex(end.x * 1000f, end.y * 1000f, end.z * 1000f, false), colour, parent);
@@ -700,7 +700,7 @@ public enum TexMapParser {
             } catch (NumberFormatException nfe) {
                 return null;
             }
-            final float epsilon = Threshold.identical_vertex_distance.floatValue();
+            final float epsilon = Threshold.IDENTICAL_VERTEX_DISTANCE.floatValue();
             if (Vector3f.sub(start, end, null).length() < epsilon || Vector3f.sub(controlI, controlII, null).length() < epsilon) {
                 return null;
             }

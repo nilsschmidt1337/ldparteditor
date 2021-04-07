@@ -105,33 +105,33 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
         shaderProgram.texmapOff();
 
         {
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l0_r"), View.light1_Colour_r[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l0_g"), View.light1_Colour_g[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l0_b"), View.light1_Colour_b[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_r"), View.light1_specular_Colour_r[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_g"), View.light1_specular_Colour_g[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_b"), View.light1_specular_Colour_b[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0_r"), View.LIGHT1_COLOUR_R[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0_g"), View.LIGHT1_COLOUR_G[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0_b"), View.LIGHT1_COLOUR_B[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_r"), View.LIGHT1_SPECULAR_COLOUR_R[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_g"), View.LIGHT1_SPECULAR_COLOUR_G[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l0s_b"), View.LIGHT1_SPECULAR_COLOUR_B[0]); //$NON-NLS-1$
 
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l1_r"), View.light2_Colour_r[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l1_g"), View.light2_Colour_g[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l1_b"), View.light2_Colour_b[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_r"), View.light2_specular_Colour_r[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_g"), View.light2_specular_Colour_g[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_b"), View.light2_specular_Colour_b[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1_r"), View.LIGHT2_COLOUR_R[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1_g"), View.LIGHT2_COLOUR_G[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1_b"), View.LIGHT2_COLOUR_B[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_r"), View.LIGHT2_SPECULAR_COLOUR_R[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_g"), View.LIGHT2_SPECULAR_COLOUR_G[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l1s_b"), View.LIGHT2_SPECULAR_COLOUR_B[0]); //$NON-NLS-1$
 
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l2_r"), View.light3_Colour_r[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l2_g"), View.light3_Colour_g[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l2_b"), View.light3_Colour_b[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_r"), View.light3_specular_Colour_r[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_g"), View.light3_specular_Colour_g[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_b"), View.light3_specular_Colour_b[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2_r"), View.LIGHT3_COLOUR_R[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2_g"), View.LIGHT3_COLOUR_G[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2_b"), View.LIGHT3_COLOUR_B[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_r"), View.LIGHT3_SPECULAR_COLOUR_R[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_g"), View.LIGHT3_SPECULAR_COLOUR_G[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l2s_b"), View.LIGHT3_SPECULAR_COLOUR_B[0]); //$NON-NLS-1$
 
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l3_r"), View.light4_Colour_r[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l3_g"), View.light4_Colour_g[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l3_b"), View.light4_Colour_b[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_r"), View.light4_specular_Colour_r[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_g"), View.light4_specular_Colour_g[0]); //$NON-NLS-1$
-            GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_b"), View.light4_specular_Colour_b[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3_r"), View.LIGHT4_COLOUR_R[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3_g"), View.LIGHT4_COLOUR_G[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3_b"), View.LIGHT4_COLOUR_B[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_r"), View.LIGHT4_SPECULAR_COLOUR_R[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_g"), View.LIGHT4_SPECULAR_COLOUR_G[0]); //$NON-NLS-1$
+            GL20.glUniform1f(shaderProgram.getUniformLocation("l3s_b"), View.LIGHT4_SPECULAR_COLOUR_B[0]); //$NON-NLS-1$
 
             shaderProgram.setFactor(1f);
         }
@@ -145,7 +145,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
         GL11.glDepthFunc(GL11.GL_LESS);
         GL11.glClearDepth(1.0f);
-        GL11.glClearColor(View.background_Colour_r[0], View.background_Colour_g[0], View.background_Colour_b[0], 1.0f);
+        GL11.glClearColor(View.BACKGROUND_COLOUR_R[0], View.BACKGROUND_COLOUR_G[0], View.BACKGROUND_COLOUR_B[0], 1.0f);
 
         GL11.glPointSize(5);
 
@@ -453,68 +453,68 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     singleMode = false;
                 case ROTATE:
 
-                    c = manipulator.checkManipulatorStatus(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], Manipulator.X_ROTATE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], Manipulator.X_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, rotateSize, arcWidth).drawGL33(stack, mx, my, mz, zoom);
 
                     if (manipulator.isX_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(View.manipulator_x_axis_Colour_r[0], View.manipulator_x_axis_Colour_g[0], View.manipulator_x_axis_Colour_b[0], Manipulator.X_ROTATE_ARROW, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(View.MANIPULATOR_X_AXIS_COLOUR_R[0], View.MANIPULATOR_X_AXIS_COLOUR_G[0], View.MANIPULATOR_X_AXIS_COLOUR_B[0], Manipulator.X_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getX_RotateArrow().x, rotateSize * manipulator.getX_RotateArrow().y, rotateSize * manipulator.getX_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .drawGL33_RGB(stack, mx, my, mz, zoom);
                     }
 
-                    c = manipulator.checkManipulatorStatus(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], Manipulator.Y_ROTATE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], Manipulator.Y_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getYaxis().x, manipulator.getYaxis().y, manipulator.getYaxis().z, rotateSize, arcWidth).drawGL33(stack, mx, my, mz, zoom);
 
                     if (manipulator.isY_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(View.manipulator_y_axis_Colour_r[0], View.manipulator_y_axis_Colour_g[0], View.manipulator_y_axis_Colour_b[0], Manipulator.Y_ROTATE_ARROW, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(View.MANIPULATOR_Y_AXIS_COLOUR_R[0], View.MANIPULATOR_Y_AXIS_COLOUR_G[0], View.MANIPULATOR_Y_AXIS_COLOUR_B[0], Manipulator.Y_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getY_RotateArrow().x, rotateSize * manipulator.getY_RotateArrow().y, rotateSize * manipulator.getY_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .drawGL33_RGB(stack, mx, my, mz, zoom);
                     }
 
-                    c = manipulator.checkManipulatorStatus(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], Manipulator.Z_ROTATE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], Manipulator.Z_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getZaxis().x, manipulator.getZaxis().y, manipulator.getZaxis().z, rotateSize, arcWidth).drawGL33(stack, mx, my, mz, zoom);
 
                     if (manipulator.isZ_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(View.manipulator_z_axis_Colour_r[0], View.manipulator_z_axis_Colour_g[0], View.manipulator_z_axis_Colour_b[0], Manipulator.Z_ROTATE_ARROW, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(View.MANIPULATOR_Z_AXIS_COLOUR_R[0], View.MANIPULATOR_Z_AXIS_COLOUR_G[0], View.MANIPULATOR_Z_AXIS_COLOUR_B[0], Manipulator.Z_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getZ_RotateArrow().x, rotateSize * manipulator.getZ_RotateArrow().y, rotateSize * manipulator.getZ_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .drawGL33_RGB(stack, mx, my, mz, zoom);
                     }
 
                     Vector4f[] gen = c3d.getGenerator();
-                    new Circle(View.manipulator_innerCircle_Colour_r[0], View.manipulator_innerCircle_Colour_g[0], View.manipulator_innerCircle_Colour_b[0], gen[2].x, gen[2].y, gen[2].z, rotateSize, circleWidth).drawGL33(stack, mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(View.manipulator_outerCircle_Colour_r[0], View.manipulator_outerCircle_Colour_g[0], View.manipulator_outerCircle_Colour_b[0], Manipulator.V_ROTATE, c3d, zoom);
+                    new Circle(View.MANIPULATOR_INNERCIRCLE_COLOUR_R[0], View.MANIPULATOR_INNERCIRCLE_COLOUR_G[0], View.MANIPULATOR_INNERCIRCLE_COLOUR_B[0], gen[2].x, gen[2].y, gen[2].z, rotateSize, circleWidth).drawGL33(stack, mx, my, mz, zoom);
+                    c = manipulator.checkManipulatorStatus(View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0], Manipulator.V_ROTATE, c3d, zoom);
                     new Circle(c.getR(), c.getG(), c.getB(), gen[2].x, gen[2].y, gen[2].z, rotateOuterSize, circleWidth).drawGL33(stack, mx, my, mz, zoom);
 
                     if (manipulator.isV_Rotate()) {
-                        c = manipulator.checkManipulatorStatus(View.manipulator_outerCircle_Colour_r[0], View.manipulator_outerCircle_Colour_g[0], View.manipulator_outerCircle_Colour_b[0], Manipulator.V_ROTATE_ARROW, c3d, zoom);
+                        c = manipulator.checkManipulatorStatus(View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0], Manipulator.V_ROTATE_ARROW, c3d, zoom);
                         new Arrow(c.getR(), c.getG(), c.getB(), rotateOuterSize * manipulator.getV_RotateArrow().x, rotateOuterSize * manipulator.getV_RotateArrow().y, rotateOuterSize * manipulator.getV_RotateArrow().z, cone_height, cone_width, lineWidth)
                         .drawGL33_RGB(stack, mx, my, mz, zoom);
                     }
                     if (singleMode)
                         break;
                 case SCALE:
-                    c = manipulator.checkManipulatorStatus(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], Manipulator.X_SCALE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], Manipulator.X_SCALE, c3d, zoom);
                     new ArrowBlunt(c.getR(), c.getG(), c.getB(), scaleSize * manipulator.getXaxis().x, scaleSize * manipulator.getXaxis().y, scaleSize * manipulator.getXaxis().z, bluntSize, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], Manipulator.Y_SCALE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], Manipulator.Y_SCALE, c3d, zoom);
                     new ArrowBlunt(c.getR(), c.getG(), c.getB(), scaleSize * manipulator.getYaxis().x, scaleSize * manipulator.getYaxis().y, scaleSize * manipulator.getYaxis().z, bluntSize, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], Manipulator.Z_SCALE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], Manipulator.Z_SCALE, c3d, zoom);
                     new ArrowBlunt(c.getR(), c.getG(), c.getB(), scaleSize * manipulator.getZaxis().x, scaleSize * manipulator.getZaxis().y, scaleSize * manipulator.getZaxis().z, bluntSize, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
                     if (singleMode)
                         break;
                 case MOVE:
-                    c = manipulator.checkManipulatorStatus(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], Manipulator.X_TRANSLATE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], Manipulator.X_TRANSLATE, c3d, zoom);
                     new Arrow(c.getR(), c.getG(), c.getB(), moveSize * manipulator.getXaxis().x, moveSize * manipulator.getXaxis().y, moveSize * manipulator.getXaxis().z, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], Manipulator.Y_TRANSLATE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], Manipulator.Y_TRANSLATE, c3d, zoom);
                     new Arrow(c.getR(), c.getG(), c.getB(), moveSize * manipulator.getYaxis().x, moveSize * manipulator.getYaxis().y, moveSize * manipulator.getYaxis().z, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], Manipulator.Z_TRANSLATE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], Manipulator.Z_TRANSLATE, c3d, zoom);
                     new Arrow(c.getR(), c.getG(), c.getB(), moveSize * manipulator.getZaxis().x, moveSize * manipulator.getZaxis().y, moveSize * manipulator.getZaxis().z, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
                     break;
                 case MOVE_GLOBAL:
-                    c = manipulator.checkManipulatorStatus(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], Manipulator.X_TRANSLATE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], Manipulator.X_TRANSLATE, c3d, zoom);
                     new Arrow(c.getR(), c.getG(), c.getB(), moveSize, 0f, 0f, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], Manipulator.Y_TRANSLATE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], Manipulator.Y_TRANSLATE, c3d, zoom);
                     new Arrow(c.getR(), c.getG(), c.getB(), 0f, moveSize, 0f, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
-                    c = manipulator.checkManipulatorStatus(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], Manipulator.Z_TRANSLATE, c3d, zoom);
+                    c = manipulator.checkManipulatorStatus(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], Manipulator.Z_TRANSLATE, c3d, zoom);
                     new Arrow(c.getR(), c.getG(), c.getB(), 0f, 0f, moveSize, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
                     break;
                 default:
@@ -532,7 +532,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                             new float[] {
                                     cursor3D.x, cursor3D.y, cursor3D.z,
-                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                     , GL15.GL_STREAM_DRAW);
                     GL20.glEnableVertexAttribArray(0);
                     GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -551,9 +551,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                 new float[] {
                                         v.x, v.y, v.z,
-                                        View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                        View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                         cur.x, cur.y, cur.z,
-                                        View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                        View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                         , GL15.GL_STREAM_DRAW);
                         GL20.glEnableVertexAttribArray(0);
                         GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -575,17 +575,17 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
                                             v.x, v.y, v.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                             cur.x, cur.y, cur.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                             v2.x, v2.y, v2.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                             cur.x, cur.y, cur.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                             v2.x, v2.y, v2.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                             v.x, v.y, v.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                             , GL15.GL_STREAM_DRAW);
                             GL20.glEnableVertexAttribArray(0);
                             GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -600,9 +600,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
                                             v.x, v.y, v.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                             cur.x, cur.y, cur.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                             , GL15.GL_STREAM_DRAW);
                             GL20.glEnableVertexAttribArray(0);
                             GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -629,13 +629,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
                                                     v2.x, v2.y, v2.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     cur.x, cur.y, cur.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v2.x, v2.y, v2.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v.x, v.y, v.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                                     , GL15.GL_STREAM_DRAW);
                                     GL20.glEnableVertexAttribArray(0);
                                     GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -652,21 +652,21 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
                                                     v.x, v.y, v.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v2.x, v2.y, v2.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v2.x, v2.y, v2.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v3.x, v3.y, v3.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v3.x, v3.y, v3.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     cur.x, cur.y, cur.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     cur.x, cur.y, cur.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v.x, v.y, v.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                                     , GL15.GL_STREAM_DRAW);
                                     GL20.glEnableVertexAttribArray(0);
                                     GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -682,13 +682,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                         new float[] {
                                                 v2.x, v2.y, v2.z,
-                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                 cur.x, cur.y, cur.z,
-                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                 v2.x, v2.y, v2.z,
-                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                 v.x, v.y, v.z,
-                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                                View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                                 , GL15.GL_STREAM_DRAW);
                                 GL20.glEnableVertexAttribArray(0);
                                 GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -704,9 +704,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
                                             v.x, v.y, v.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                             cur.x, cur.y, cur.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                             , GL15.GL_STREAM_DRAW);
                             GL20.glEnableVertexAttribArray(0);
                             GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -733,9 +733,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
                                                     v.x, v.y, v.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     cur.x, cur.y, cur.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                                     , GL15.GL_STREAM_DRAW);
                                     GL20.glEnableVertexAttribArray(0);
                                     GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -752,17 +752,17 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                     GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                             new float[] {
                                                     v.x, v.y, v.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v2.x, v2.y, v2.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v2.x, v2.y, v2.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v3.x, v3.y, v3.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     v2.x, v2.y, v2.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                     cur.x, cur.y, cur.z,
-                                                    View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                                    View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                                     , GL15.GL_STREAM_DRAW);
                                     GL20.glEnableVertexAttribArray(0);
                                     GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -778,13 +778,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                                 GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                         new float[] {
                                                 v2.x, v2.y, v2.z,
-                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                 cur.x, cur.y, cur.z,
-                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                 v2.x, v2.y, v2.z,
-                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                                View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                                 v.x, v.y, v.z,
-                                                View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                                View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                                 , GL15.GL_STREAM_DRAW);
                                 GL20.glEnableVertexAttribArray(0);
                                 GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -800,9 +800,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             GL15.glBufferData(GL15.GL_ARRAY_BUFFER,
                                     new float[] {
                                             v.x, v.y, v.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0],
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0],
                                             cur.x, cur.y, cur.z,
-                                            View.add_Object_Colour_r[0], View.add_Object_Colour_g[0], View.add_Object_Colour_b[0]}
+                                            View.ADD_OBJECT_COLOUR_R[0], View.ADD_OBJECT_COLOUR_G[0], View.ADD_OBJECT_COLOUR_B[0]}
                             , GL15.GL_STREAM_DRAW);
                             GL20.glEnableVertexAttribArray(0);
                             GL20.glVertexAttribPointer(0, 3, GL11.GL_FLOAT, false, 24, 0);
@@ -839,13 +839,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                 helper.drawLinesRGB_General(new float[]{
                         selectionCorner3.x, selectionCorner3.y, selectionCorner3.z,
-                        View.cursor1_Colour_r[0], View.cursor1_Colour_g[0], View.cursor1_Colour_b[0],
+                        View.CURSOR1_COLOUR_R[0], View.CURSOR1_COLOUR_G[0], View.CURSOR1_COLOUR_B[0],
                         selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
-                        View.cursor1_Colour_r[0], View.cursor1_Colour_g[0], View.cursor1_Colour_b[0],
+                        View.CURSOR1_COLOUR_R[0], View.CURSOR1_COLOUR_G[0], View.CURSOR1_COLOUR_B[0],
                         selectionCorner4.x, selectionCorner4.y, selectionCorner4.z,
-                        View.cursor2_Colour_r[0], View.cursor2_Colour_g[0], View.cursor2_Colour_b[0],
+                        View.CURSOR2_COLOUR_R[0], View.CURSOR2_COLOUR_G[0], View.CURSOR2_COLOUR_B[0],
                         selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
-                        View.cursor2_Colour_r[0], View.cursor2_Colour_g[0], View.cursor2_Colour_b[0]
+                        View.CURSOR2_COLOUR_R[0], View.CURSOR2_COLOUR_G[0], View.CURSOR2_COLOUR_B[0]
                 });
             }
 
@@ -880,23 +880,23 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 helper.drawLinesRGB_General(new float[]{
 
                         selectionStartMODELVIEW.x, selectionStartMODELVIEW.y, selectionStartMODELVIEW.z,
-                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        View.RUBBER_BAND_COLOUR_R[0], View.RUBBER_BAND_COLOUR_G[0], View.RUBBER_BAND_COLOUR_B[0],
                         selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
-                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        View.RUBBER_BAND_COLOUR_R[0], View.RUBBER_BAND_COLOUR_G[0], View.RUBBER_BAND_COLOUR_B[0],
                         selectionStartMODELVIEW.x, selectionStartMODELVIEW.y, selectionStartMODELVIEW.z,
-                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        View.RUBBER_BAND_COLOUR_R[0], View.RUBBER_BAND_COLOUR_G[0], View.RUBBER_BAND_COLOUR_B[0],
                         selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
-                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        View.RUBBER_BAND_COLOUR_R[0], View.RUBBER_BAND_COLOUR_G[0], View.RUBBER_BAND_COLOUR_B[0],
 
                         selectionEndMODELVIEW.x, selectionEndMODELVIEW.y, selectionEndMODELVIEW.z,
-                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        View.RUBBER_BAND_COLOUR_R[0], View.RUBBER_BAND_COLOUR_G[0], View.RUBBER_BAND_COLOUR_B[0],
                         selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
-                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        View.RUBBER_BAND_COLOUR_R[0], View.RUBBER_BAND_COLOUR_G[0], View.RUBBER_BAND_COLOUR_B[0],
 
                         selectionEndMODELVIEW.x, selectionEndMODELVIEW.y, selectionEndMODELVIEW.z,
-                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0],
+                        View.RUBBER_BAND_COLOUR_R[0], View.RUBBER_BAND_COLOUR_G[0], View.RUBBER_BAND_COLOUR_B[0],
                         selectionCorner2.x, selectionCorner2.y, selectionCorner2.z,
-                        View.rubberBand_Colour_r[0], View.rubberBand_Colour_g[0], View.rubberBand_Colour_b[0]});
+                        View.RUBBER_BAND_COLOUR_R[0], View.RUBBER_BAND_COLOUR_G[0], View.RUBBER_BAND_COLOUR_B[0]});
 
                 GL11.glEnable(GL11.GL_DEPTH_TEST);
 
@@ -917,15 +917,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 float gB;
                 for (int r = 0; r < 5; r += 4) {
                     if (r == 4) {
-                        gR = View.grid10_Colour_r[0];
-                        gG = View.grid10_Colour_g[0];
-                        gB = View.grid10_Colour_b[0];
+                        gR = View.GRID10_COLOUR_R[0];
+                        gG = View.GRID10_COLOUR_G[0];
+                        gB = View.GRID10_COLOUR_B[0];
                         zOffset = 1f;
                         GL11.glLineWidth(2f);
                     } else {
-                        gR = View.grid_Colour_r[0];
-                        gG = View.grid_Colour_g[0];
-                        gB = View.grid_Colour_b[0];
+                        gR = View.GRID_COLOUR_R[0];
+                        gG = View.GRID_COLOUR_G[0];
+                        gB = View.GRID_COLOUR_B[0];
                         zOffset = 0;
                         GL11.glLineWidth(1f);
                     }
@@ -1017,13 +1017,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 GL11.glLineWidth(2f);
                 helper.drawLinesRGB_General(new float[]{
                         viewportOriginAxis[0].x, viewportOriginAxis[0].y, viewportOriginAxis[0].z + zOffset,
-                        View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0],
+                        View.ORIGIN_COLOUR_R[0], View.ORIGIN_COLOUR_G[0], View.ORIGIN_COLOUR_B[0],
                         viewportOriginAxis[1].x, viewportOriginAxis[1].y, viewportOriginAxis[1].z + zOffset,
-                        View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0],
+                        View.ORIGIN_COLOUR_R[0], View.ORIGIN_COLOUR_G[0], View.ORIGIN_COLOUR_B[0],
                         viewportOriginAxis[2].x, viewportOriginAxis[2].y, viewportOriginAxis[2].z + zOffset,
-                        View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0],
+                        View.ORIGIN_COLOUR_R[0], View.ORIGIN_COLOUR_G[0], View.ORIGIN_COLOUR_B[0],
                         viewportOriginAxis[3].x, viewportOriginAxis[3].y, viewportOriginAxis[3].z + zOffset,
-                        View.origin_Colour_r[0], View.origin_Colour_g[0], View.origin_Colour_b[0]});
+                        View.ORIGIN_COLOUR_R[0], View.ORIGIN_COLOUR_G[0], View.ORIGIN_COLOUR_B[0]});
             }
 
             if (c3d.isAnaglyph3d() && !ldrawStandardMode && state3d == 0) {
@@ -1070,9 +1070,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     stack.glPushMatrix();
                     stack.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
                     stack.glMultMatrixf(viewportRotation);
-                    new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], l,  0f, 0f, cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
-                    new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 0f, l,  0f, cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
-                    new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 0f, 0f, l,  cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
+                    new Arrow(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], l,  0f, 0f, cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
+                    new Arrow(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], 0f, l,  0f, cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
+                    new Arrow(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], 0f, 0f, l,  cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
                     stack.glPopMatrix();
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -1124,17 +1124,17 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     final float b;
 
                     if (Project.getFileToEdit().isReadOnly()) {
-                        r = View.text_Colour_r[0];
-                        g = View.text_Colour_g[0];
-                        b = View.text_Colour_b[0];
+                        r = View.TEXT_COLOUR_R[0];
+                        g = View.TEXT_COLOUR_G[0];
+                        b = View.TEXT_COLOUR_B[0];
                     } else if (c3d.equals(Project.getFileToEdit().getLastSelectedComposite())) {
-                        r = 1f - View.vertex_selected_Colour_r[0];
-                        g = 1f - View.vertex_selected_Colour_g[0];
-                        b = 1f - View.vertex_selected_Colour_b[0];
+                        r = 1f - View.VERTEX_SELECTED_COLOUR_R[0];
+                        g = 1f - View.VERTEX_SELECTED_COLOUR_G[0];
+                        b = 1f - View.VERTEX_SELECTED_COLOUR_B[0];
                     } else {
-                        r = View.vertex_selected_Colour_r[0];
-                        g = View.vertex_selected_Colour_g[0];
-                        b = View.vertex_selected_Colour_b[0];
+                        r = View.VERTEX_SELECTED_COLOUR_R[0];
+                        g = View.VERTEX_SELECTED_COLOUR_G[0];
+                        b = View.VERTEX_SELECTED_COLOUR_B[0];
                     }
                     GL11.glLineWidth(7f);
                     helper.drawLinesRGB_General(new float[]{
@@ -1171,17 +1171,17 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     float g;
                     float b;
                     Vector2f mp = c3d.getMousePosition();
-                    r = View.text_Colour_r[0];
-                    g = View.text_Colour_g[0];
-                    b = View.text_Colour_b[0];
+                    r = View.TEXT_COLOUR_R[0];
+                    g = View.TEXT_COLOUR_G[0];
+                    b = View.TEXT_COLOUR_B[0];
                     if (mp.x > 50f || mp.y > 50f) {
                         if (DatFile.getLastHoveredComposite() == c3d) {
                             hoverSettingsTime = System.currentTimeMillis();
                         }
                     } else if (mp.x > 0f && mp.y > 0f) {
-                        r = View.vertex_selected_Colour_r[0];
-                        g = View.vertex_selected_Colour_g[0];
-                        b = View.vertex_selected_Colour_b[0];
+                        r = View.VERTEX_SELECTED_COLOUR_R[0];
+                        g = View.VERTEX_SELECTED_COLOUR_G[0];
+                        b = View.VERTEX_SELECTED_COLOUR_B[0];
                         if (System.currentTimeMillis() - hoverSettingsTime > 600 && DatFile.getLastHoveredComposite() == c3d) {
 
                             hoverSettingsTime = System.currentTimeMillis();
@@ -1217,21 +1217,21 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                         // TOP
                         for (int i = 0; i < 18; i += 6) {
-                            vertices[i + 3] = View.text_Colour_r[0];
-                            vertices[i + 4] = View.text_Colour_g[0];
-                            vertices[i + 5] = View.text_Colour_b[0];
+                            vertices[i + 3] = View.TEXT_COLOUR_R[0];
+                            vertices[i + 4] = View.TEXT_COLOUR_G[0];
+                            vertices[i + 5] = View.TEXT_COLOUR_B[0];
                         }
                         if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y > 25f) {
                             for (int i = 0; i < 18; i += 6) {
-                                vertices[i + 3] = View.text_Colour_r[0];
-                                vertices[i + 4] = View.text_Colour_g[0];
-                                vertices[i + 5] = View.text_Colour_b[0];
+                                vertices[i + 3] = View.TEXT_COLOUR_R[0];
+                                vertices[i + 4] = View.TEXT_COLOUR_G[0];
+                                vertices[i + 5] = View.TEXT_COLOUR_B[0];
                             }
                         } else if (mp.y > 0f && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
                             for (int i = 0; i < 18; i += 6) {
-                                vertices[i + 3] = View.vertex_selected_Colour_r[0];
-                                vertices[i + 4] = View.vertex_selected_Colour_g[0];
-                                vertices[i + 5] = View.vertex_selected_Colour_b[0];
+                                vertices[i + 3] = View.VERTEX_SELECTED_COLOUR_R[0];
+                                vertices[i + 4] = View.VERTEX_SELECTED_COLOUR_G[0];
+                                vertices[i + 5] = View.VERTEX_SELECTED_COLOUR_B[0];
                             }
                             if (DatFile.getLastHoveredComposite() == c3d) {
                                 c3d.getMouse().prepareTranslateViewport();
@@ -1253,21 +1253,21 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                         // BOTTOM
                         for (int i = 0; i < 18; i += 6) {
-                            vertices[i + 3] = View.text_Colour_r[0];
-                            vertices[i + 4] = View.text_Colour_g[0];
-                            vertices[i + 5] = View.text_Colour_b[0];
+                            vertices[i + 3] = View.TEXT_COLOUR_R[0];
+                            vertices[i + 4] = View.TEXT_COLOUR_G[0];
+                            vertices[i + 5] = View.TEXT_COLOUR_B[0];
                         }
                         if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y <= (bounds.height - 25)) {
                             for (int i = 0; i < 18; i += 6) {
-                                vertices[i + 3] = View.text_Colour_r[0];
-                                vertices[i + 4] = View.text_Colour_g[0];
-                                vertices[i + 5] = View.text_Colour_b[0];
+                                vertices[i + 3] = View.TEXT_COLOUR_R[0];
+                                vertices[i + 4] = View.TEXT_COLOUR_G[0];
+                                vertices[i + 5] = View.TEXT_COLOUR_B[0];
                             }
                         } else if (mp.y > (bounds.height - 25) && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
                             for (int i = 0; i < 18; i += 6) {
-                                vertices[i + 3] = View.vertex_selected_Colour_r[0];
-                                vertices[i + 4] = View.vertex_selected_Colour_g[0];
-                                vertices[i + 5] = View.vertex_selected_Colour_b[0];
+                                vertices[i + 3] = View.VERTEX_SELECTED_COLOUR_R[0];
+                                vertices[i + 4] = View.VERTEX_SELECTED_COLOUR_G[0];
+                                vertices[i + 5] = View.VERTEX_SELECTED_COLOUR_B[0];
                             }
                             c3d.getMouse().prepareTranslateViewport();
                             c3d.getMouse().translateViewport(0f, -speed, viewportTranslation, viewportRotation, c3d.getPerspectiveCalculator());
@@ -1287,21 +1287,21 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                         // LEFT
                         for (int i = 0; i < 18; i += 6) {
-                            vertices[i + 3] = View.text_Colour_r[0];
-                            vertices[i + 4] = View.text_Colour_g[0];
-                            vertices[i + 5] = View.text_Colour_b[0];
+                            vertices[i + 3] = View.TEXT_COLOUR_R[0];
+                            vertices[i + 4] = View.TEXT_COLOUR_G[0];
+                            vertices[i + 5] = View.TEXT_COLOUR_B[0];
                         }
                         if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x >= 25) {
                             for (int i = 0; i < 18; i += 6) {
-                                vertices[i + 3] = View.text_Colour_r[0];
-                                vertices[i + 4] = View.text_Colour_g[0];
-                                vertices[i + 5] = View.text_Colour_b[0];
+                                vertices[i + 3] = View.TEXT_COLOUR_R[0];
+                                vertices[i + 4] = View.TEXT_COLOUR_G[0];
+                                vertices[i + 5] = View.TEXT_COLOUR_B[0];
                             }
                         } else if (mp.x < 25 && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
                             for (int i = 0; i < 18; i += 6) {
-                                vertices[i + 3] = View.vertex_selected_Colour_r[0];
-                                vertices[i + 4] = View.vertex_selected_Colour_g[0];
-                                vertices[i + 5] = View.vertex_selected_Colour_b[0];
+                                vertices[i + 3] = View.VERTEX_SELECTED_COLOUR_R[0];
+                                vertices[i + 4] = View.VERTEX_SELECTED_COLOUR_G[0];
+                                vertices[i + 5] = View.VERTEX_SELECTED_COLOUR_B[0];
                             }
                             c3d.getMouse().prepareTranslateViewport();
                             c3d.getMouse().translateViewport(-speed, 0f, viewportTranslation, viewportRotation, c3d.getPerspectiveCalculator());
@@ -1321,21 +1321,21 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                         // RIGHT
                         for (int i = 0; i < 18; i += 6) {
-                            vertices[i + 3] = View.text_Colour_r[0];
-                            vertices[i + 4] = View.text_Colour_g[0];
-                            vertices[i + 5] = View.text_Colour_b[0];
+                            vertices[i + 3] = View.TEXT_COLOUR_R[0];
+                            vertices[i + 4] = View.TEXT_COLOUR_G[0];
+                            vertices[i + 5] = View.TEXT_COLOUR_B[0];
                         }
                         if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x <= (bounds.width - 25)) {
                             for (int i = 0; i < 18; i += 6) {
-                                vertices[i + 3] = View.text_Colour_r[0];
-                                vertices[i + 4] = View.text_Colour_g[0];
-                                vertices[i + 5] = View.text_Colour_b[0];
+                                vertices[i + 3] = View.TEXT_COLOUR_R[0];
+                                vertices[i + 4] = View.TEXT_COLOUR_G[0];
+                                vertices[i + 5] = View.TEXT_COLOUR_B[0];
                             }
                         } else if (mp.x > (bounds.width - 25) && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
                             for (int i = 0; i < 18; i += 6) {
-                                vertices[i + 3] = View.vertex_selected_Colour_r[0];
-                                vertices[i + 4] = View.vertex_selected_Colour_g[0];
-                                vertices[i + 5] = View.vertex_selected_Colour_b[0];
+                                vertices[i + 3] = View.VERTEX_SELECTED_COLOUR_R[0];
+                                vertices[i + 4] = View.VERTEX_SELECTED_COLOUR_G[0];
+                                vertices[i + 5] = View.VERTEX_SELECTED_COLOUR_B[0];
                             }
                             c3d.getMouse().prepareTranslateViewport();
                             c3d.getMouse().translateViewport(speed, 0f, viewportTranslation, viewportRotation, c3d.getPerspectiveCalculator());

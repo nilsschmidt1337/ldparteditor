@@ -121,9 +121,9 @@ public final class GData0 extends GData {
                 String[] dataSegments = text.trim().split("\\s+"); //$NON-NLS-1$
                 if (dataSegments.length == 6) {
                     try {
-                        start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
-                        start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
-                        start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
+                        start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
+                        start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
+                        start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -161,9 +161,9 @@ public final class GData0 extends GData {
                 String[] dataSegments = text.trim().split("\\s+"); //$NON-NLS-1$
                 if (dataSegments.length == 6) {
                     try {
-                        start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
-                        start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
-                        start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
+                        start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
+                        start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
+                        start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }

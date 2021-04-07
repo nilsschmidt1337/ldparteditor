@@ -632,7 +632,7 @@ public class SyntaxFormatter {
                 if (numberError)
                     break;
                 float det = Math.abs(tMatrix.determinant());
-                parseError = det < Threshold.singularity_determinant;
+                parseError = det < Threshold.SINGULARITY_DETERMINANT;
                 break;
             }
             // [WARNING] Check file existance
@@ -790,38 +790,38 @@ public class SyntaxFormatter {
                 boolean numberError = false;
                 // Start vertex
                 try {
-                    start.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+                    start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(3));
                     numberError = true;
                 }
                 try {
-                    start.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+                    start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(4));
                     numberError = true;
                 }
                 try {
-                    start.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+                    start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(5));
                     numberError = true;
                 }
                 // End vertex
                 try {
-                    end.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+                    end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(6));
                     numberError = true;
                 }
                 try {
-                    end.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+                    end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(7));
                     numberError = true;
                 }
                 try {
-                    end.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+                    end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(8));
                     numberError = true;
@@ -840,7 +840,7 @@ public class SyntaxFormatter {
                         setBorderStyle(styles.get(8));
                     }
                 }
-                parseError = Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = Vector3d.sub(start, end).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
                 break;
             }
 
@@ -931,57 +931,57 @@ public class SyntaxFormatter {
                 boolean numberError = false;
                 // 1st vertex
                 try {
-                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(3));
                     numberError = true;
                 }
                 try {
-                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(4));
                     numberError = true;
                 }
                 try {
-                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(5));
                     numberError = true;
                 }
                 // 2nd vertex
                 try {
-                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(6));
                     numberError = true;
                 }
                 try {
-                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(7));
                     numberError = true;
                 }
                 try {
-                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(8));
                     numberError = true;
                 }
                 // 3rd vertex
                 try {
-                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(9));
                     numberError = true;
                 }
                 try {
-                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(10));
                     numberError = true;
                 }
                 try {
-                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(11));
                     numberError = true;
@@ -1012,23 +1012,23 @@ public class SyntaxFormatter {
 
                 double angle = Vector3d.angle(vertexA2, vertexB2);
                 double sumAngle = angle;
-                parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
                 if (!parseError) {
                     vertexA2.negate();
                     angle = Vector3d.angle(vertexA2, vertexC2);
                     sumAngle = sumAngle + angle;
-                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                    parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
                 }
 
                 if (!parseError) {
                     angle = 180.0 - sumAngle;
-                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                    parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
                 }
 
-                parseError = parseError || vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = parseError || vertexA2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                parseError = parseError || vertexB2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                parseError = parseError || vertexC2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
                 break;
             }
         }
@@ -1125,76 +1125,76 @@ public class SyntaxFormatter {
                 boolean numberError = false;
                 // 1st vertex
                 try {
-                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(3));
                     numberError = true;
                 }
                 try {
-                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(4));
                     numberError = true;
                 }
                 try {
-                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(5));
                     numberError = true;
                 }
                 // 2nd vertex
                 try {
-                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(6));
                     numberError = true;
                 }
                 try {
-                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(7));
                     numberError = true;
                 }
                 try {
-                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(8));
                     numberError = true;
                 }
                 // 3rd vertex
                 try {
-                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(9));
                     numberError = true;
                 }
                 try {
-                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(10));
                     numberError = true;
                 }
                 try {
-                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(11));
                     numberError = true;
                 }
                 // 4th vertex
                 try {
-                    vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
+                    vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(12));
                     numberError = true;
                 }
                 try {
-                    vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
+                    vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(13));
                     numberError = true;
                 }
                 try {
-                    vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
+                    vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(14));
                     numberError = true;
@@ -1257,12 +1257,12 @@ public class SyntaxFormatter {
                 // Collinearity
                 angle = Vector3d.angle(vertexA2, vertexD2);
                 double sumAngle = angle;
-                parseError = parseError || angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                parseError = parseError || angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
                 if (!parseError) {
                     angle = Vector3d.angle(vertexB2, vertexC2);
                     sumAngle = sumAngle + angle;
-                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                    parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
                 }
 
                 if (!parseError) {
@@ -1270,19 +1270,19 @@ public class SyntaxFormatter {
                     vertexB2.negate();
                     angle = Vector3d.angle(vertexA2, vertexB2);
                     sumAngle = sumAngle + angle;
-                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                    parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
                 }
 
                 if (!parseError) {
                     angle = 360.0 - sumAngle;
-                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                    parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
                 }
 
-                parseError = parseError || vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || vertexD2.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = parseError || vertexA2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                parseError = parseError || vertexB2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                parseError = parseError || vertexC2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                parseError = parseError || vertexD2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
                 break;
             }
         }
@@ -1386,76 +1386,76 @@ public class SyntaxFormatter {
                 boolean numberError = false;
                 // start vertex
                 try {
-                    start.setX(new BigDecimal(dataSegments[2], Threshold.mc));
+                    start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(3));
                     numberError = true;
                 }
                 try {
-                    start.setY(new BigDecimal(dataSegments[3], Threshold.mc));
+                    start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(4));
                     numberError = true;
                 }
                 try {
-                    start.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+                    start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(5));
                     numberError = true;
                 }
                 // end vertex
                 try {
-                    end.setX(new BigDecimal(dataSegments[5], Threshold.mc));
+                    end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(6));
                     numberError = true;
                 }
                 try {
-                    end.setY(new BigDecimal(dataSegments[6], Threshold.mc));
+                    end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(7));
                     numberError = true;
                 }
                 try {
-                    end.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+                    end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(8));
                     numberError = true;
                 }
                 // control vertex I
                 try {
-                    controlI.setX(new BigDecimal(dataSegments[8], Threshold.mc));
+                    controlI.setX(new BigDecimal(dataSegments[8], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(9));
                     numberError = true;
                 }
                 try {
-                    controlI.setY(new BigDecimal(dataSegments[9], Threshold.mc));
+                    controlI.setY(new BigDecimal(dataSegments[9], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(10));
                     numberError = true;
                 }
                 try {
-                    controlI.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+                    controlI.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(11));
                     numberError = true;
                 }
                 // control vertex II
                 try {
-                    controlII.setX(new BigDecimal(dataSegments[11], Threshold.mc));
+                    controlII.setX(new BigDecimal(dataSegments[11], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(12));
                     numberError = true;
                 }
                 try {
-                    controlII.setY(new BigDecimal(dataSegments[12], Threshold.mc));
+                    controlII.setY(new BigDecimal(dataSegments[12], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(13));
                     numberError = true;
                 }
                 try {
-                    controlII.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
+                    controlII.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     setErrorStyle(styles.get(14));
                     numberError = true;
@@ -1487,8 +1487,8 @@ public class SyntaxFormatter {
                 }
                 Vector3d.sub(start, end, start);
                 Vector3d.sub(controlI, controlII, controlI);
-                parseError = parseError || start.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                parseError = parseError || controlI.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = parseError || start.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                parseError = parseError || controlI.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
                 break;
             }
         }

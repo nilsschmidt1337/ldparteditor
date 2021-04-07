@@ -21,19 +21,19 @@ package org.nschmidt.ldparteditor.text;
  */
 public class HeaderState {
 
-    public static final int _00_TITLE = 0;
-    public static final int _01_NAME = 1;
-    public static final int _02_AUTHOR = 2;
-    public static final int _03_TYPE = 3;
-    public static final int _04_LICENSE = 4;
-    public static final int _05o_HELP = 5;
-    public static final int _06_BFC = 6;
-    public static final int _07o_CATEGORY = 7;
-    public static final int _08o_KEYWORDS = 8;
-    public static final int _09o_CMDLINE = 9;
-    public static final int _10o_HISTORY = 10;
-    public static final int _11o_COMMENT = 11;
-    public static final int _12o_BFC2 = 12;
+    public static final int H00_TITLE = 0;
+    public static final int H01_NAME = 1;
+    public static final int H02_AUTHOR = 2;
+    public static final int H03_TYPE = 3;
+    public static final int H04_LICENSE = 4;
+    public static final int H05_OPTIONAL_HELP = 5;
+    public static final int H06_BFC = 6;
+    public static final int H07_OPTIONAL_CATEGORY = 7;
+    public static final int H08_OPTIONAL_KEYWORDS = 8;
+    public static final int H09_OPTIONAL_CMDLINE = 9;
+    public static final int H10_OPTIONAL_HISTORY = 10;
+    public static final int H11_OPTIONAL_COMMENT = 11;
+    public static final int H12_OPTIONAL_BFC2 = 12;
 
     private boolean hasTITLE = false;
     private boolean hasNAME = false;

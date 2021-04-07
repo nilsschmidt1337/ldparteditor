@@ -124,7 +124,7 @@ public enum MathHelper {
             q.z = 0f;
         }
 
-        float r1 = View.lineWidth[0];
+        float r1 = View.LINE_WIDTH[0];
         float r2 = r1;
 
         float twoPI = (float) Math.PI / 4f;
@@ -237,7 +237,7 @@ public enum MathHelper {
             q.z = 0f;
         }
 
-        float r1 = View.lineWidth1000[0];
+        float r1 = View.LINE_WIDTH_1000[0];
         float r2 = r1;
 
         float twoPI = (float) Math.PI / 4f;
@@ -295,10 +295,10 @@ public enum MathHelper {
      * @return the value's square root
      */
     public static BigDecimal sqrt(BigDecimal value) {
-        final BigDecimal two = new BigDecimal(2, Threshold.mc);
-        BigDecimal result = value.add(BigDecimal.ONE, Threshold.mc).divide(two, Threshold.mc);
+        final BigDecimal two = new BigDecimal(2, Threshold.MC);
+        BigDecimal result = value.add(BigDecimal.ONE, Threshold.MC).divide(two, Threshold.MC);
         for (int i = 0; i < 20; i++) { // Ten iterations should be sufficent
-            result = result.add(value.divide(result, Threshold.mc), Threshold.mc).divide(two, Threshold.mc);
+            result = result.add(value.divide(result, Threshold.MC), Threshold.MC).divide(two, Threshold.MC);
         }
         return result;
     }
@@ -667,7 +667,7 @@ public enum MathHelper {
         tMatrix.m33 = 1f;
 
         float det = tMatrix.determinant();
-        if (Math.abs(det) < Threshold.singularity_determinant) {
+        if (Math.abs(det) < Threshold.SINGULARITY_DETERMINANT) {
             return null;
         }
         return tMatrix;
@@ -827,7 +827,7 @@ public enum MathHelper {
 
         final Matrix result = new Matrix(mn);
         double det = result.determinant().doubleValue();
-        if (Math.abs(det) < Threshold.singularity_determinant) {
+        if (Math.abs(det) < Threshold.SINGULARITY_DETERMINANT) {
             return null;
         }
 
@@ -930,7 +930,7 @@ public enum MathHelper {
             BigDecimal res = mod2pi(x);
             MathContext mc = new MathContext(2 + err2prec());
             BigDecimal p = pi(mc);
-            mc = Threshold.mc;
+            mc = Threshold.MC;
             if (res.compareTo(p) > 0) {
                 /*
                  * pi<x<=2pi: sin(x)= - sin(x-pi)
@@ -1204,7 +1204,7 @@ public enum MathHelper {
          * Example: an error of xerr=+-0.5 a precision of 1 (digit), an error of
          * +-0.05 a precision of 2 (digits)
          */
-        return Threshold.significant_places;
+        return Threshold.SIGNIFICANT_PLACES;
     }
 
     /**

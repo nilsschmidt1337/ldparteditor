@@ -63,7 +63,7 @@ class VM01SelectHelper extends VM01Select {
     public synchronized boolean selectVertices(final Composite3D c3d, boolean addSomething, boolean forceRayTest) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         final boolean noCondlineVerts = !c3d.isShowingCondlineControlPoints();
-        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())) && !addSomething || addSomething) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())) && !addSomething || addSomething) {
             clearSelection2();
         }
         final Vector4f selectionStart = new Vector4f(c3d.getSelectionStart());
@@ -408,7 +408,7 @@ class VM01SelectHelper extends VM01Select {
                 final ArrayList<Vertex> nearVertices2 = new ArrayList<>();
                 BigDecimal epsilon;
                 epsilon = WorkbenchManager.getUserSettingState().getFuzziness3D();
-                epsilon = epsilon.multiply(epsilon, Threshold.mc);
+                epsilon = epsilon.multiply(epsilon, Threshold.MC);
                 NLogger.debug(getClass(), "3D EPSILON² around selection is {0}", epsilon); //$NON-NLS-1$
                 for (Vertex v : selectedVertices) {
                     Vector3d v1 = new Vector3d(v);
@@ -916,7 +916,7 @@ class VM01SelectHelper extends VM01Select {
 
     public synchronized void selectLines(Composite3D c3d, SelectorSettings sels) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
-        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
         Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
@@ -1365,7 +1365,7 @@ class VM01SelectHelper extends VM01Select {
     }
 
     public synchronized void selectFaces(Composite3D c3d, Event event, SelectorSettings sels) {
-        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
         Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
@@ -1715,7 +1715,7 @@ class VM01SelectHelper extends VM01Select {
 
         HashSet<GData1> backupSubfiles = new HashSet<>(selectedSubfiles);
 
-        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
             backupSubfiles.clear();
         }

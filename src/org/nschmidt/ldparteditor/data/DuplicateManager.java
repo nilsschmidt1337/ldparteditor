@@ -469,7 +469,7 @@ public class DuplicateManager {
                                         float a = (float) (Vector3f.angle(pa1, pa2) / Math.PI * 180.0);
 
 
-                                        if (a > Threshold.condline_angle_maximum) {
+                                        if (a > Threshold.CONDLINE_ANGLE_MAXIMUM) {
                                             registerInvisibleCondline(gd, registered);
                                         } else {
                                             StringBuilder normalized3 = new StringBuilder();

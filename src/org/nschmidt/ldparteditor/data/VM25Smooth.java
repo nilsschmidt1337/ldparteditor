@@ -181,17 +181,17 @@ class VM25Smooth extends VM24MeshReducer {
                         }
 
                         if (isX) {
-                            vx = vx.divide(ad, Threshold.mc).multiply(factor).add(vertex.X.multiply(oneMinusFactor));
+                            vx = vx.divide(ad, Threshold.MC).multiply(factor).add(vertex.X.multiply(oneMinusFactor));
                         } else {
                             vx = vertex.X;
                         }
                         if (isY) {
-                            vy = vy.divide(ad, Threshold.mc).multiply(factor).add(vertex.Y.multiply(oneMinusFactor));
+                            vy = vy.divide(ad, Threshold.MC).multiply(factor).add(vertex.Y.multiply(oneMinusFactor));
                         } else {
                             vy = vertex.Y;
                         }
                         if (isZ) {
-                            vz = vz.divide(ad, Threshold.mc).multiply(factor).add(vertex.Z.multiply(oneMinusFactor));
+                            vz = vz.divide(ad, Threshold.MC).multiply(factor).add(vertex.Z.multiply(oneMinusFactor));
                         } else {
                             vz = vertex.Z;
                         }

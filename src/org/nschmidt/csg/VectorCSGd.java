@@ -40,7 +40,7 @@ package org.nschmidt.csg;
  */
 public class VectorCSGd implements Comparable<VectorCSGd>{
 
-    private static final double epsilon = 0.0001;
+    private static final double EPSILON = 0.0001;
 
     public double x;
     public double y;
@@ -191,7 +191,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
     @Override
     public boolean equals(Object obj) {
         VectorCSGd o = (VectorCSGd) obj;
-        return Math.abs(x - o.x) < epsilon && Math.abs(y - o.y) < epsilon && Math.abs(z - o.z) < epsilon;
+        return Math.abs(x - o.x) < EPSILON && Math.abs(y - o.y) < EPSILON && Math.abs(z - o.z) < EPSILON;
     }
 
     @Override
@@ -217,7 +217,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
     @Override
     public int compareTo(VectorCSGd o) {
         double d1 = x - o.x;
-        switch (Double.compare(Math.abs(d1), epsilon)) {
+        switch (Double.compare(Math.abs(d1), EPSILON)) {
         case 0:
         case 1:
             return d1 < 0f ? -1 : 1;
@@ -225,7 +225,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
             break;
         }
         d1 = y - o.y;
-        switch (Double.compare(Math.abs(d1), epsilon)) {
+        switch (Double.compare(Math.abs(d1), EPSILON)) {
         case 0:
         case 1:
             return d1 < 0f ? -1 : 1;
@@ -233,7 +233,7 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
             break;
         }
         d1 = z - o.z;
-        switch (Double.compare(Math.abs(d1), epsilon)) {
+        switch (Double.compare(Math.abs(d1), EPSILON)) {
         case 0:
         case 1:
             return d1 < 0f ? -1 : 1;

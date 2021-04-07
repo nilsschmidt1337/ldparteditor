@@ -64,7 +64,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         GL11.glDepthFunc(GL11.GL_LESS);
         GL11.glEnable(GL11.GL_STENCIL_TEST);
         GL11.glClearDepth(1.0f);
-        GL11.glClearColor(View.primitive_background_Colour_r[0], View.primitive_background_Colour_g[0], View.primitive_background_Colour_b[0], 1.0f);
+        GL11.glClearColor(View.PRIMITIVE_BACKGROUND_COLOUR_R[0], View.PRIMITIVE_BACKGROUND_COLOUR_G[0], View.PRIMITIVE_BACKGROUND_COLOUR_B[0], 1.0f);
 
         GL11.glHint(GL11.GL_PERSPECTIVE_CORRECTION_HINT, GL11.GL_NICEST);
         GL11.glPointSize(4);
@@ -228,9 +228,9 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
         GL11.glPushMatrix();
         GL11.glTranslatef(viewportWidth - .05f, viewportHeight - .05f, 0f);
         GL11.glMultMatrixf(rotation);
-        new Arrow(View.x_axis_Colour_r[0], View.x_axis_Colour_g[0], View.x_axis_Colour_b[0], -.5f,0f, 0f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
-        new Arrow(View.y_axis_Colour_r[0], View.y_axis_Colour_g[0], View.y_axis_Colour_b[0], 0f, .5f,0f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
-        new Arrow(View.z_axis_Colour_r[0], View.z_axis_Colour_g[0], View.z_axis_Colour_b[0], 0f, 0f, .5f,.00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
+        new Arrow(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], -.5f,0f, 0f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
+        new Arrow(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], 0f, .5f,0f, .00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
+        new Arrow(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], 0f, 0f, .5f,.00015f, .00004f, 2f).drawGL20(0f, 0f, 0f, .01f);
         GL11.glPopMatrix();
 
         cp.setMaxY(y - 22f);
@@ -245,24 +245,24 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
 
     private void drawCell(float x, float y, boolean selected, boolean category, boolean focused) {
         if (selected) {
-            drawRoundRectangle(x, y, 20f, 20f, 5f, View.primitive_selectedCell_Colour_r[0], View.primitive_selectedCell_Colour_g[0], View.primitive_selectedCell_Colour_b[0]);
+            drawRoundRectangle(x, y, 20f, 20f, 5f, View.PRIMITIVE_SELECTED_CELL_COLOUR_R[0], View.PRIMITIVE_SELECTED_CELL_COLOUR_G[0], View.PRIMITIVE_SELECTED_CELL_COLOUR_B[0]);
         } else if (focused) {
-            drawRoundRectangle(x, y, 20f, 20f, 5f, View.primitive_focusedCell_Colour_r[0], View.primitive_focusedCell_Colour_g[0], View.primitive_focusedCell_Colour_b[0]);
+            drawRoundRectangle(x, y, 20f, 20f, 5f, View.PRIMITIVE_FOCUSED_CELL_COLOUR_R[0], View.PRIMITIVE_FOCUSED_CELL_COLOUR_G[0], View.PRIMITIVE_FOCUSED_CELL_COLOUR_B[0]);
         } else {
-            drawRoundRectangle(x, y, 20f, 20f, 5f, View.primitive_normalCell_Colour_r[0], View.primitive_normalCell_Colour_g[0], View.primitive_normalCell_Colour_b[0]);
+            drawRoundRectangle(x, y, 20f, 20f, 5f, View.PRIMITIVE_NORMAL_CELL_COLOUR_R[0], View.PRIMITIVE_NORMAL_CELL_COLOUR_G[0], View.PRIMITIVE_NORMAL_CELL_COLOUR_B[0]);
         }
         if (category) {
-            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.primitive_categoryCell_1_Colour_r[0], View.primitive_categoryCell_1_Colour_g[0], View.primitive_categoryCell_1_Colour_b[0]);
-            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.primitive_categoryCell_2_Colour_r[0], View.primitive_categoryCell_2_Colour_g[0], View.primitive_categoryCell_2_Colour_b[0]);
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.PRIMITIVE_CATEGORYCELL_1_COLOUR_R[0], View.PRIMITIVE_CATEGORYCELL_1_COLOUR_G[0], View.PRIMITIVE_CATEGORYCELL_1_COLOUR_B[0]);
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.PRIMITIVE_CATEGORYCELL_2_COLOUR_R[0], View.PRIMITIVE_CATEGORYCELL_2_COLOUR_G[0], View.PRIMITIVE_CATEGORYCELL_2_COLOUR_B[0]);
         } else {
-            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.primitive_cell_1_Colour_r[0], View.primitive_cell_1_Colour_g[0], View.primitive_cell_1_Colour_b[0]);
-            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.primitive_cell_2_Colour_r[0], View.primitive_cell_2_Colour_g[0], View.primitive_cell_2_Colour_b[0]);
+            drawRoundRectangle(x + .5f, y + .5f, 19f, 19f, 5f, View.PRIMITIVE_CELL_1_COLOUR_R[0], View.PRIMITIVE_CELL_1_COLOUR_G[0], View.PRIMITIVE_CELL_1_COLOUR_B[0]);
+            drawRoundRectangle(x + 1f, y + 1f, 18f, 18f, 5f, View.PRIMITIVE_CELL_2_COLOUR_R[0], View.PRIMITIVE_CELL_2_COLOUR_G[0], View.PRIMITIVE_CELL_2_COLOUR_B[0]);
         }
     }
 
     private void drawPlus(float x, float y) {
         drawSignBackground(x, y);
-        GL11.glColor4f(View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0], 1f);
+        GL11.glColor4f(View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0], 1f);
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glNormal3f(0f, 0f, 1f);
         GL11.glVertex3f(x + 14f, y + 15.75f, 0f);
@@ -278,7 +278,7 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
 
     private void drawMinus(float x, float y) {
         drawSignBackground(x, y);
-        GL11.glColor4f(View.primitive_plusNminus_Colour_r[0], View.primitive_plusNminus_Colour_g[0], View.primitive_plusNminus_Colour_b[0], 1f);
+        GL11.glColor4f(View.PRIMITIVE_PLUS_N_MINUS_COLOUR_R[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_G[0], View.PRIMITIVE_PLUS_N_MINUS_COLOUR_B[0], 1f);
         GL11.glBegin(GL11.GL_QUADS);
         GL11.glNormal3f(0f, 0f, 1f);
         GL11.glVertex3f(x + 14f, y + 15.75f, 0f);
@@ -289,8 +289,8 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
     }
 
     private void drawSignBackground(float x, float y) {
-        drawRoundRectangle(x + 13.2f, y + 13.6f, 4f, 4f, .5f, View.primitive_signBG_Colour_r[0], View.primitive_signBG_Colour_g[0], View.primitive_signBG_Colour_b[0]);
-        drawRoundRectangle(x + 13.3f, y + 13.7f, 3.6f, 3.6f, .5f, View.primitive_signFG_Colour_r[0], View.primitive_signFG_Colour_g[0], View.primitive_signFG_Colour_b[0]);
+        drawRoundRectangle(x + 13.2f, y + 13.6f, 4f, 4f, .5f, View.PRIMITIVE_SIGN_BG_COLOUR_R[0], View.PRIMITIVE_SIGN_BG_COLOUR_G[0], View.PRIMITIVE_SIGN_BG_COLOUR_B[0]);
+        drawRoundRectangle(x + 13.3f, y + 13.7f, 3.6f, 3.6f, .5f, View.PRIMITIVE_SIGN_FG_COLOUR_R[0], View.PRIMITIVE_SIGN_FG_COLOUR_G[0], View.PRIMITIVE_SIGN_FG_COLOUR_B[0]);
     }
     private void drawRoundRectangle(float x, float y,float width, float height, float radius, float r, float g, float b) {
 

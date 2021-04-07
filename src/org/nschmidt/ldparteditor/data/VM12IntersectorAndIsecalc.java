@@ -167,7 +167,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         Vector3d line1 = Vector3d.sub(p12, p11);
                         Vector3d line2 = Vector3d.sub(p22, p21);
                         Vector3d temp = Vector3d.cross(line1, line2);
-                        BigDecimal angle = Vector3d.manhattan(temp, zero).divide(Vector3d.manhattan(p12, p11), Threshold.mc).divide(Vector3d.manhattan(p22, p21), Threshold.mc);
+                        BigDecimal angle = Vector3d.manhattan(temp, zero).divide(Vector3d.manhattan(p12, p11), Threshold.MC).divide(Vector3d.manhattan(p22, p21), Threshold.MC);
                         if (angle.compareTo(smallangle) < 0)
                         {
                             colin[i] = distline;
@@ -221,7 +221,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     }
                                     GData2 l1 = newLines.get(i);
                                     GData2 l2 = newLines.get(j);
-                                    GColour c = new GColour(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f);
+                                    GColour c = new GColour(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
                                     GData2 nl;
                                     if (a == 1) {
                                         if (b == 1) {
@@ -669,7 +669,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
     private HashSet<GData2> intersectionLines(final Set<GData5> clinesToDelete, final Set<GData2> linesToDelete, GData g1, GData g2) {
 
-        GColour c = new GColour(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f);
+        GColour c = new GColour(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
 
         HashSet<GData2> result = new HashSet<>();
         HashSet<Vector3d> points = new HashSet<>();
@@ -1312,19 +1312,19 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                     angle = Vector3d.angle(a, c);
                                     double sumAngle = angle;
-                                    if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                    if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                         continue;
                                     }
 
                                     a.negate();
                                     angle = Vector3d.angle(a, b);
                                     sumAngle = sumAngle + angle;
-                                    if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                    if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                         continue;
                                     }
 
                                     angle = 180.0 - sumAngle;
-                                    if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                    if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                         continue;
                                     }
                                 }
@@ -1553,7 +1553,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         diskr = Vector3d.dotP(corner1, pvec);
         if (diskr.abs().compareTo(tolerance) < 0)
             return false;
-        invDiskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
+        invDiskr = BigDecimal.ONE.divide(diskr, Threshold.MC);
         Vector3d tvec = Vector3d.sub(orig, vert0);
         BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(invDiskr);
         if (u.compareTo(zerot) < 0 || u.compareTo(onet) > 0)
@@ -2347,19 +2347,19 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                                                 angle = Vector3d.angle(a, c);
                                                                 double sumAngle = angle;
-                                                                if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                                if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                                                     continue;
                                                                 }
 
                                                                 a.negate();
                                                                 angle = Vector3d.angle(a, b);
                                                                 sumAngle = sumAngle + angle;
-                                                                if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                                if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                                                     continue;
                                                                 }
 
                                                                 angle = 180.0 - sumAngle;
-                                                                if (angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) {
+                                                                if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
                                                                     continue;
                                                                 }
                                                             }
@@ -2642,7 +2642,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         diskr = Vector3d.dotP(corner1, pvec);
         if (diskr.abs().compareTo(TOLERANCER) < 0)
             return false;
-        invDiskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
+        invDiskr = BigDecimal.ONE.divide(diskr, Threshold.MC);
         Vector3d tvec = Vector3d.sub(orig, vert0);
         BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(invDiskr);
         if (u.compareTo(ZEROTR) < 0 || u.compareTo(ONETR) > 0)
@@ -2667,7 +2667,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         diskr = Vector3d.dotP(corner1, pvec);
         if (diskr.abs().compareTo(TOLERANCE) <= 0)
             return false;
-        invDiskr = BigDecimal.ONE.divide(diskr, Threshold.mc);
+        invDiskr = BigDecimal.ONE.divide(diskr, Threshold.MC);
         Vector3d tvec = Vector3d.sub(orig, vert0);
         BigDecimal u = Vector3d.dotP(tvec, pvec).multiply(invDiskr);
         if (u.compareTo(ZEROT) < 0 || u.compareTo(ONET) > 0)

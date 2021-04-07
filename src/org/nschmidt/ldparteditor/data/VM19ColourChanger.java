@@ -299,9 +299,9 @@ class VM19ColourChanger extends VM18LineConverter {
                 case 2:
                 case 5:
                     if (index == 24) {
-                        r = View.line_Colour_r[0];
-                        g = View.line_Colour_g[0];
-                        b = View.line_Colour_b[0];
+                        r = View.LINE_COLOUR_R[0];
+                        g = View.LINE_COLOUR_G[0];
+                        b = View.LINE_COLOUR_B[0];
                         a = 1f;
                     } else {
                         r = cr;

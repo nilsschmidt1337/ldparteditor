@@ -71,7 +71,8 @@ public class PNGDecoder {
 
     private static final int IHDR = 0x49484452;
     private static final int PLTE = 0x504C5445;
-    private static final int tRNS = 0x74524E53;
+    /** tRNS */
+    private static final int TRNS = 0x74524E53;
     private static final int IDAT = 0x49444154;
 
     private static final byte COLOR_GREYSCALE = 0;
@@ -119,7 +120,7 @@ public class PNGDecoder {
             case PLTE:
                 readPLTE();
                 break;
-            case tRNS:
+            case TRNS:
                 readtRNS();
                 break;
             default:

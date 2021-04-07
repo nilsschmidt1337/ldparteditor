@@ -1023,7 +1023,7 @@ public final class GDataCSG extends GData {
     static synchronized void drawSelectionCSG(Composite3D c3d) {
         final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<>());
         if (!selectedTriangles.isEmpty()) {
-            GL11.glColor3f(View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0]);
+            GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
             GL11.glBegin(GL11.GL_LINES);
             for (GData3 tri : selectedTriangles) {
                 GL11.glVertex3f(tri.x1, tri.y1, tri.z1);
@@ -1042,7 +1042,7 @@ public final class GDataCSG extends GData {
             static_lock.lock();
             final DatFile df = c3d.getLockableDatFileReference();
             final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
-            if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
+            if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
                 selectedTriangles.clear();
             }
             final Integer selectedBodyID = selectCSG_helper(c3d, event);
@@ -1118,7 +1118,7 @@ public final class GDataCSG extends GData {
             }
         }
         selectedBodyMap.putIfAbsent(df, new HashSet<>());
-        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed()))) {
+        if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             selectedBodyMap.get(df).clear();
         }
         selectedBodyMap.get(df).add(resultObj);

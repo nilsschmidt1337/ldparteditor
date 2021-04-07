@@ -114,21 +114,21 @@ final class WarningFixer {
             final Vector3d vertexD = new Vector3d();
 
             // 1st vertex
-            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
-            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
-            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+            vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+            vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+            vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
             // 2nd vertex
-            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
-            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
-            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+            vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+            vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+            vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
             // 3rd vertex
-            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
-            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
-            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+            vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+            vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+            vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
             // 4th vertex
-            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
-            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
-            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
+            vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+            vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+            vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
 
             Vector3d[] normals = new Vector3d[4];
             Vector3d[] lineVectors = new Vector3d[4];
@@ -337,6 +337,6 @@ final class WarningFixer {
         }
         tMatrix.m33 = 1f;
         det = tMatrix.determinant();
-        return Math.abs(det) >= Threshold.singularity_determinant;
+        return Math.abs(det) >= Threshold.SINGULARITY_DETERMINANT;
     }
 }

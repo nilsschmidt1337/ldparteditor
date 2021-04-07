@@ -428,7 +428,7 @@ class VM02Add extends VM01SelectHelper {
 
         angle = Vector3f.angle(a, c) * 180d / Math.PI;
         double sumAngle = angle;
-        if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
+        if ((angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             return;
         }
@@ -436,13 +436,13 @@ class VM02Add extends VM01SelectHelper {
         a.negate();
         angle = Vector3f.angle(a, b) * 180d / Math.PI;
         sumAngle = sumAngle + angle;
-        if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
+        if ((angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             return;
         }
 
         angle = 180.0 - sumAngle;
-        if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
+        if ((angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             return;
         }
@@ -653,7 +653,7 @@ class VM02Add extends VM01SelectHelper {
 
         angle = Vector3f.angle(a, d) * 180d / Math.PI;
         double sumAngle = angle;
-        if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
+        if ((angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             linkedDatFile.setObjVertex4(null);
             return;
@@ -661,7 +661,7 @@ class VM02Add extends VM01SelectHelper {
 
         angle = Vector3f.angle(b, c) * 180d / Math.PI;
         sumAngle = sumAngle + angle;
-        if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
+        if ((angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             linkedDatFile.setObjVertex4(null);
             return;
@@ -671,14 +671,14 @@ class VM02Add extends VM01SelectHelper {
         b.negate();
         angle = Vector3f.angle(a, b) * 180d / Math.PI;
         sumAngle = sumAngle + angle;
-        if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
+        if ((angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             linkedDatFile.setObjVertex4(null);
             return;
         }
 
         angle = 360.0 - sumAngle;
-        if ((angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum) && !allowInvalidShapes) {
+        if ((angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) && !allowInvalidShapes) {
             linkedDatFile.setObjVertex3(null);
             linkedDatFile.setObjVertex4(null);
             return;

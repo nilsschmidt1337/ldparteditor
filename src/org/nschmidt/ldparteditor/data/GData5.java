@@ -455,7 +455,7 @@ public final class GData5 extends GData {
                 GL11.glPopMatrix();
 
             } else {
-                GL11.glLineWidth(View.lineWidthGL[0]);
+                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
                 GL11.glColor4f(r, g, b, a);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glVertex3f(x1, y1, z1);
@@ -591,7 +591,7 @@ public final class GData5 extends GData {
                 GL11.glPopMatrix();
 
             } else {
-                GL11.glLineWidth(View.lineWidthGL[0]);
+                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
                 GL11.glColor4f(r, g, b, a);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glVertex3f(x1, y1, z1);
@@ -645,9 +645,9 @@ public final class GData5 extends GData {
                 wasShown = true;
             } else {
                 if (wasShown) {
-                    GL11.glColor4f(View.condline_shown_Colour_r[0], View.condline_shown_Colour_g[0], View.condline_shown_Colour_b[0], 1f);
+                    GL11.glColor4f(View.CONDLINE_SHOWN_COLOUR_R[0], View.CONDLINE_SHOWN_COLOUR_G[0], View.CONDLINE_SHOWN_COLOUR_B[0], 1f);
                 } else {
-                    GL11.glColor4f(View.condline_hidden_Colour_r[0], View.condline_hidden_Colour_g[0], View.condline_hidden_Colour_b[0], 1f);
+                    GL11.glColor4f(View.CONDLINE_HIDDEN_COLOUR_R[0], View.CONDLINE_HIDDEN_COLOUR_G[0], View.CONDLINE_HIDDEN_COLOUR_B[0], 1f);
                 }
             }
 
@@ -714,15 +714,15 @@ public final class GData5 extends GData {
             GL11.glPopMatrix();
 
         } else {
-            GL11.glLineWidth(View.lineWidthGL[0]);
+            GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
             if (result > -1e-20f) {
                 GL11.glColor4f(0f, 0f, 0f, 1f);
                 wasShown = true;
             } else {
                 if (wasShown) {
-                    GL11.glColor4f(View.condline_shown_Colour_r[0], View.condline_shown_Colour_g[0], View.condline_shown_Colour_b[0], 1f);
+                    GL11.glColor4f(View.CONDLINE_SHOWN_COLOUR_R[0], View.CONDLINE_SHOWN_COLOUR_G[0], View.CONDLINE_SHOWN_COLOUR_B[0], 1f);
                 } else {
-                    GL11.glColor4f(View.condline_hidden_Colour_r[0], View.condline_hidden_Colour_g[0], View.condline_hidden_Colour_b[0], 1f);
+                    GL11.glColor4f(View.CONDLINE_HIDDEN_COLOUR_R[0], View.CONDLINE_HIDDEN_COLOUR_G[0], View.CONDLINE_HIDDEN_COLOUR_B[0], 1f);
                 }
             }
             GL11.glBegin(GL11.GL_LINES);
@@ -816,7 +816,7 @@ public final class GData5 extends GData {
                     b2 = this.b;
                 }
 
-                GL11.glLineWidth(View.lineWidthGL[0]);
+                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
                 GL11.glColor4f(r2, g2, b2, 1f);
                 GL11.glBegin(GL11.GL_LINES);
                 GraphicalDataTools.setVertex(x1, y1, z1, this, true);

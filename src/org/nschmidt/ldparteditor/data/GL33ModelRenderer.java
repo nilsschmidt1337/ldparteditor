@@ -528,7 +528,7 @@ public class GL33ModelRenderer {
                                 pointAt7(3, gd3.x1, gd3.y1, gd3.z1, tmpCsgSelectionData, csgSelectionIndex);
                                 pointAt7(4, gd3.x3, gd3.y3, gd3.z3, tmpCsgSelectionData, csgSelectionIndex);
                                 pointAt7(5, gd3.x2, gd3.y2, gd3.z2, tmpCsgSelectionData, csgSelectionIndex);
-                                colourise7(0, 6, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, tmpCsgSelectionData, csgSelectionIndex);
+                                colourise7(0, 6, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, tmpCsgSelectionData, csgSelectionIndex);
                                 csgSelectionIndex += 6;
                             }
                         }
@@ -1062,12 +1062,12 @@ public class GL33ModelRenderer {
 
                         // Build the vertex array
                         {
-                            final float r = View.vertex_Colour_r[0];
-                            final float g = View.vertex_Colour_g[0];
-                            final float b = View.vertex_Colour_b[0];
-                            final float r2 = View.vertex_selected_Colour_r[0];
-                            final float g2 = View.vertex_selected_Colour_g[0];
-                            final float b2 = View.vertex_selected_Colour_b[0];
+                            final float r = View.VERTEX_COLOUR_R[0];
+                            final float g = View.VERTEX_COLOUR_G[0];
+                            final float b = View.VERTEX_COLOUR_B[0];
+                            final float r2 = View.VERTEX_SELECTED_COLOUR_R[0];
+                            final float g2 = View.VERTEX_SELECTED_COLOUR_G[0];
+                            final float b2 = View.VERTEX_SELECTED_COLOUR_B[0];
                             int i = 0;
 
                             if (isTransforming && moveAdjacentData) {
@@ -1157,7 +1157,7 @@ public class GL33ModelRenderer {
                                         Vertex v2 = verts.get(i);
                                         pointAt7(0, v1.x, v1.y, v1.z, selectionLineData, selectionLineIndex);
                                         pointAt7(1, v2.x, v2.y, v2.z, selectionLineData, selectionLineIndex);
-                                        colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                        colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
                                         selectionLineIndex += 2;
                                     }
                                 }
@@ -1194,7 +1194,7 @@ public class GL33ModelRenderer {
                                 case 2:
                                     pointAt7(0, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
                                     pointAt7(1, v[1].x, v[1].y, v[1].z, selectionLineData, selectionLineIndex);
-                                    colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                    colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
                                     selectionLineIndex += 2;
                                     break;
                                 case 3:
@@ -1205,9 +1205,9 @@ public class GL33ModelRenderer {
                                     pointAt7(4, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
                                     pointAt7(5, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
                                     if (((GData3) gd).isTriangle) {
-                                        colourise7(0, 6, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                        colourise7(0, 6, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
                                     } else {
-                                        colourise7(0, 4, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                        colourise7(0, 4, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
                                     }
                                     selectionLineIndex += 6;
                                     break;
@@ -1220,7 +1220,7 @@ public class GL33ModelRenderer {
                                     pointAt7(5, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
                                     pointAt7(6, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
                                     pointAt7(7, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
-                                    colourise7(0, 8, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
+                                    colourise7(0, 8, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
                                     selectionLineIndex += 8;
                                     break;
                                 case 5:
@@ -1230,9 +1230,9 @@ public class GL33ModelRenderer {
                                     pointAt7(3, v[2].x, v[2].y, v[2].z, selectionLineData, selectionLineIndex);
                                     pointAt7(4, v[0].x, v[0].y, v[0].z, selectionLineData, selectionLineIndex);
                                     pointAt7(5, v[3].x, v[3].y, v[3].z, selectionLineData, selectionLineIndex);
-                                    colourise7(0, 2, View.vertex_selected_Colour_r[0], View.vertex_selected_Colour_g[0], View.vertex_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
-                                    colourise7(2, 2, View.condline_selected_Colour_r[0], View.condline_selected_Colour_g[0], View.condline_selected_Colour_b[0], 7f, selectionLineData, selectionLineIndex);
-                                    colourise7(4, 2, View.condline_selected_Colour_r[0] / 2f, View.condline_selected_Colour_g[0] / 2f, View.condline_selected_Colour_b[0] / 2f, 7f, selectionLineData, selectionLineIndex);
+                                    colourise7(0, 2, View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                                    colourise7(2, 2, View.CONDLINE_SELECTED_COLOUR_R[0], View.CONDLINE_SELECTED_COLOUR_G[0], View.CONDLINE_SELECTED_COLOUR_B[0], 7f, selectionLineData, selectionLineIndex);
+                                    colourise7(4, 2, View.CONDLINE_SELECTED_COLOUR_R[0] / 2f, View.CONDLINE_SELECTED_COLOUR_G[0] / 2f, View.CONDLINE_SELECTED_COLOUR_B[0] / 2f, 7f, selectionLineData, selectionLineIndex);
                                     selectionLineIndex += 6;
                                     break;
                                 default:
@@ -1329,7 +1329,7 @@ public class GL33ModelRenderer {
                                         pointAt7(3, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
                                         pointAt7(4, v[2].x, v[2].y, v[2].z, tempLineData, tempLineIndex);
                                         pointAt7(5, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
-                                        colourise7(0, 6, View.meshline_Colour_r[0], View.meshline_Colour_g[0], View.meshline_Colour_b[0], 7f, tempLineData, tempLineIndex);
+                                        colourise7(0, 6, View.MESHLINE_COLOUR_R[0], View.MESHLINE_COLOUR_G[0], View.MESHLINE_COLOUR_B[0], 7f, tempLineData, tempLineIndex);
                                         tempLineIndex += 6;
                                     }
                                     int tmpRenderMode = renderMode;
@@ -1420,24 +1420,24 @@ public class GL33ModelRenderer {
                                         switch (gw.winding) {
                                         case CW:
                                             if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                colourise(0, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
-                                                colourise(3, 3, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                                colourise(3, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                             } else {
-                                                colourise(3, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
-                                                colourise(0, 3, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                                colourise(0, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                             }
                                             break;
                                         case CCW:
                                             if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                colourise(3, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
-                                                colourise(0, 3, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                                colourise(0, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                             } else {
-                                                colourise(0, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
-                                                colourise(3, 3, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
+                                                colourise(3, 3, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                             }
                                             break;
                                         case NOCERTIFY:
-                                            colourise(0, 6, View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                             break;
                                         default:
                                             break;
@@ -1512,24 +1512,24 @@ public class GL33ModelRenderer {
                                         switch (gw.winding) {
                                         case CW:
                                             if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                colourise(0, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                                 colourise(3, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
                                             } else {
-                                                colourise(3, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                                 colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
                                             }
                                             break;
                                         case CCW:
                                             if (gw.negativeDeterminant ^ gw.invertNext) {
-                                                colourise(3, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(3, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                                 colourise(0, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
                                             } else {
-                                                colourise(0, 3, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd3.a, triangleData, tempIndex);
+                                                colourise(0, 3, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                                 colourise(3, 3, gd3.r, gd3.g, gd3.b, gd3.a, triangleData, tempIndex);
                                             }
                                             break;
                                         case NOCERTIFY:
-                                            colourise(0, 6, View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], gd3.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd3.a, triangleData, tempIndex);
                                             break;
                                         default:
                                             break;
@@ -1712,7 +1712,7 @@ public class GL33ModelRenderer {
                                     pointAt7(5, v[3].x, v[3].y, v[3].z, tempLineData, tempLineIndex);
                                     pointAt7(6, v[3].x, v[3].y, v[3].z, tempLineData, tempLineIndex);
                                     pointAt7(7, v[0].x, v[0].y, v[0].z, tempLineData, tempLineIndex);
-                                    colourise7(0, 8, View.meshline_Colour_r[0], View.meshline_Colour_g[0], View.meshline_Colour_b[0], 7f, tempLineData, tempLineIndex);
+                                    colourise7(0, 8, View.MESHLINE_COLOUR_R[0], View.MESHLINE_COLOUR_G[0], View.MESHLINE_COLOUR_B[0], 7f, tempLineData, tempLineIndex);
                                     tempLineIndex += 8;
                                 }
 
@@ -1834,24 +1834,24 @@ public class GL33ModelRenderer {
                                     switch (gw.winding) {
                                     case CW:
                                         if (gw.invertNext  ^ gw.negativeDeterminant) {
-                                            colourise(6, 6, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd4.a, triangleData, tempIndex);
-                                            colourise(0, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(6, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         } else {
-                                            colourise(0, 6, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd4.a, triangleData, tempIndex);
-                                            colourise(6, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                            colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         }
                                         break;
                                     case CCW:
                                         if (gw.invertNext  ^ gw.negativeDeterminant) {
-                                            colourise(0, 6, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd4.a, triangleData, tempIndex);
-                                            colourise(6, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                            colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         } else {
-                                            colourise(6, 6, View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], gd4.a, triangleData, tempIndex);
-                                            colourise(0, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(6, 6, View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], gd4.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         }
                                         break;
                                     case NOCERTIFY:
-                                        colourise(0, 12, View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], gd4.a, triangleData, tempIndex);
+                                        colourise(0, 12, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         break;
                                     default:
                                         break;
@@ -1963,23 +1963,23 @@ public class GL33ModelRenderer {
                                     case CW:
                                         if (gw.invertNext  ^ gw.negativeDeterminant) {
                                             colourise(6, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                            colourise(0, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         } else {
                                             colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                            colourise(6, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         }
                                         break;
                                     case CCW:
                                         if (gw.invertNext  ^ gw.negativeDeterminant) {
                                             colourise(0, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                            colourise(6, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(6, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         } else {
                                             colourise(6, 6, gd4.r, gd4.g, gd4.b, gd4.a, triangleData, tempIndex);
-                                            colourise(0, 6, View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], gd4.a, triangleData, tempIndex);
+                                            colourise(0, 6, View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         }
                                         break;
                                     case NOCERTIFY:
-                                        colourise(0, 12, View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], gd4.a, triangleData, tempIndex);
+                                        colourise(0, 12, View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], gd4.a, triangleData, tempIndex);
                                         break;
                                     default:
                                         break;
@@ -2129,9 +2129,9 @@ public class GL33ModelRenderer {
                                 controlPointAt15(1, 2, v[3].x, v[3].y, v[3].z, condlineData, condlineIndex);
                                 if (condlineMode) {
                                     if (gd5.wasShown()) {
-                                        colourise15(0, 2, View.condline_shown_Colour_r[0], View.condline_shown_Colour_g[0], View.condline_shown_Colour_b[0], condlineData, condlineIndex);
+                                        colourise15(0, 2, View.CONDLINE_SHOWN_COLOUR_R[0], View.CONDLINE_SHOWN_COLOUR_G[0], View.CONDLINE_SHOWN_COLOUR_B[0], condlineData, condlineIndex);
                                     } else {
-                                        colourise15(0, 2, View.condline_hidden_Colour_r[0], View.condline_hidden_Colour_g[0], View.condline_hidden_Colour_b[0], condlineData, condlineIndex);
+                                        colourise15(0, 2, View.CONDLINE_HIDDEN_COLOUR_R[0], View.CONDLINE_HIDDEN_COLOUR_G[0], View.CONDLINE_HIDDEN_COLOUR_B[0], condlineData, condlineIndex);
                                     }
                                 } else {
                                     if (renderMode != 1) {
@@ -2246,7 +2246,7 @@ public class GL33ModelRenderer {
         }
 
         final float zoom = c3d.getZoom();
-        final boolean drawLines = View.lineWidthGL[0] > 0.01f;
+        final boolean drawLines = View.LINE_WIDTH_GL[0] > 0.01f;
         final boolean studlogo = c3d.isShowingLogo();
 
         if (c3d.isLightOn()) {
@@ -2339,7 +2339,7 @@ public class GL33ModelRenderer {
                 GL20.glVertexAttribPointer(2, 4, GL11.GL_FLOAT, false, (3 + 4) * 4, 3 * 4);
 
                 GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
-                GL11.glLineWidth(View.lineWidthGL[0]);
+                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
 
                 Vector4f tr = new Vector4f(vm.m30, vm.m31, vm.m32 + 330f * zoom, 1f);
                 Matrix4f.transform(ivm, tr, tr);
@@ -2476,7 +2476,7 @@ public class GL33ModelRenderer {
                 Matrix4f.transform(ivm, tr, tr);
                 stack.glPushMatrix();
                 stack.glTranslatef(tr.x, tr.y, tr.z);
-                GL11.glLineWidth(View.lineWidthGL[0]);
+                GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
                 GL11.glDrawArrays(GL11.GL_LINES, 0, cls);
                 stack.glPopMatrix();
                 mainShader.use();

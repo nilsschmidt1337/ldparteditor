@@ -367,13 +367,13 @@ public final class GData4 extends GData {
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f( // 111
-                            View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
+                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
@@ -381,13 +381,13 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x4, y4, z4);
                 } else {
                     GL11.glColor4f( // 110
-                            View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
+                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
@@ -397,13 +397,13 @@ public final class GData4 extends GData {
             } else {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f( // 101
-                            View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
+                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
@@ -411,13 +411,13 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                 } else {
                     GL11.glColor4f( // 100
-                            View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
+                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
@@ -430,13 +430,13 @@ public final class GData4 extends GData {
             if (GData.globalNegativeDeterminant) {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f( // 011
-                            View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
+                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
@@ -444,13 +444,13 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                 } else {
                     GL11.glColor4f( // 010
-                            View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
+                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
@@ -460,13 +460,13 @@ public final class GData4 extends GData {
             } else {
                 if (GData.globalInvertNext) {
                     GL11.glColor4f( // 001
-                            View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
+                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
@@ -474,13 +474,13 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x4, y4, z4);
                 } else {
                     GL11.glColor4f( // 000
-                            View.BFC_front_Colour_r[0], View.BFC_front_Colour_g[0], View.BFC_front_Colour_b[0], a);
+                            View.BFC_FRONT_COLOUR_R[0], View.BFC_FRONT_COLOUR_G[0], View.BFC_FRONT_COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
@@ -491,7 +491,7 @@ public final class GData4 extends GData {
             break;
         case NOCERTIFY:
             if (GData.globalNegativeDeterminant) {
-                GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a);
+                GL11.glColor4f(View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], a);
                 GL11.glNormal3f(xn, yn, zn);
                 GL11.glVertex3f(x1, y1, z1);
                 GL11.glVertex3f(x4, y4, z4);
@@ -503,7 +503,7 @@ public final class GData4 extends GData {
                 GL11.glVertex3f(x3, y3, z3);
                 GL11.glVertex3f(x4, y4, z4);
             } else {
-                GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a);
+                GL11.glColor4f(View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], a);
                 GL11.glNormal3f(-xn, -yn, -zn);
                 GL11.glVertex3f(x1, y1, z1);
                 GL11.glVertex3f(x4, y4, z4);
@@ -530,7 +530,7 @@ public final class GData4 extends GData {
             return;
         GL11.glBegin(GL11.GL_QUADS);
         if (GData.globalNegativeDeterminant) {
-            GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a);
+            GL11.glColor4f(View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], a);
             GL11.glNormal3f(xn, yn, zn);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x4, y4, z4);
@@ -542,7 +542,7 @@ public final class GData4 extends GData {
             GL11.glVertex3f(x3, y3, z3);
             GL11.glVertex3f(x4, y4, z4);
         } else {
-            GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a);
+            GL11.glColor4f(View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], a);
             GL11.glNormal3f(-xn, -yn, -zn);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x4, y4, z4);
@@ -574,7 +574,7 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
@@ -587,7 +587,7 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
@@ -602,7 +602,7 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
@@ -615,7 +615,7 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
@@ -633,7 +633,7 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
@@ -646,7 +646,7 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
@@ -661,7 +661,7 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x4, y4, z4);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x2, y2, z2);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(xn, yn, zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x2, y2, z2);
@@ -674,7 +674,7 @@ public final class GData4 extends GData {
                     GL11.glVertex3f(x2, y2, z2);
                     GL11.glVertex3f(x3, y3, z3);
                     GL11.glVertex3f(x4, y4, z4);
-                    GL11.glColor4f(View.BFC_back__Colour_r[0], View.BFC_back__Colour_g[0], View.BFC_back__Colour_b[0], a);
+                    GL11.glColor4f(View.BFC_BACK__COLOUR_R[0], View.BFC_BACK__COLOUR_G[0], View.BFC_BACK__COLOUR_B[0], a);
                     GL11.glNormal3f(-xn, -yn, -zn);
                     GL11.glVertex3f(x1, y1, z1);
                     GL11.glVertex3f(x4, y4, z4);
@@ -685,7 +685,7 @@ public final class GData4 extends GData {
             break;
         case NOCERTIFY:
             if (GData.globalNegativeDeterminant) {
-                GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a);
+                GL11.glColor4f(View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], a);
                 GL11.glNormal3f(xn, yn, zn);
                 GL11.glVertex3f(x1, y1, z1);
                 GL11.glVertex3f(x4, y4, z4);
@@ -697,7 +697,7 @@ public final class GData4 extends GData {
                 GL11.glVertex3f(x3, y3, z3);
                 GL11.glVertex3f(x4, y4, z4);
             } else {
-                GL11.glColor4f(View.BFC_uncertified_Colour_r[0], View.BFC_uncertified_Colour_g[0], View.BFC_uncertified_Colour_b[0], a);
+                GL11.glColor4f(View.BFC_UNCERTIFIED_COLOUR_R[0], View.BFC_UNCERTIFIED_COLOUR_G[0], View.BFC_UNCERTIFIED_COLOUR_B[0], a);
                 GL11.glNormal3f(-xn, -yn, -zn);
                 GL11.glVertex3f(x1, y1, z1);
                 GL11.glVertex3f(x4, y4, z4);
@@ -1684,13 +1684,13 @@ public final class GData4 extends GData {
 
         double collinearityAngle = Vector3d.angle(sa, sd);
         double sumAngle = collinearityAngle;
-        if (collinearityAngle < Threshold.collinear_angle_minimum || collinearityAngle > Threshold.collinear_angle_maximum) {
+        if (collinearityAngle < Threshold.COLLINEAR_ANGLE_MINIMUM || collinearityAngle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
             return true;
         }
 
         collinearityAngle = Vector3d.angle(sb, sc);
         sumAngle = sumAngle + collinearityAngle;
-        if (collinearityAngle < Threshold.collinear_angle_minimum || collinearityAngle > Threshold.collinear_angle_maximum) {
+        if (collinearityAngle < Threshold.COLLINEAR_ANGLE_MINIMUM || collinearityAngle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
             return true;
         }
 
@@ -1698,12 +1698,12 @@ public final class GData4 extends GData {
         sb.negate();
         collinearityAngle = Vector3d.angle(sa, sb);
         sumAngle = sumAngle + collinearityAngle;
-        if (collinearityAngle < Threshold.collinear_angle_minimum || collinearityAngle > Threshold.collinear_angle_maximum) {
+        if (collinearityAngle < Threshold.COLLINEAR_ANGLE_MINIMUM || collinearityAngle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
             return true;
         }
 
         collinearityAngle = 360.0 - sumAngle;
-        if (collinearityAngle < Threshold.collinear_angle_minimum || collinearityAngle > Threshold.collinear_angle_maximum) {
+        if (collinearityAngle < Threshold.COLLINEAR_ANGLE_MINIMUM || collinearityAngle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
             return true;
         }
 

@@ -26,28 +26,28 @@ public enum ProtractorHelper {
     INSTANCE;
 
     public static BigDecimal[] changeLength(BigDecimal newLength, GData3 tri) {
-        BigDecimal factor = newLength.divide(tri.getProtractorLength(), Threshold.mc);
+        BigDecimal factor = newLength.divide(tri.getProtractorLength(), Threshold.MC);
 
         Vector3d center = new Vector3d(tri.X1, tri.Y1, tri.Z1);
         Vector3d aToC = Vector3d.sub(new Vector3d(tri.X3, tri.Y3, tri.Z3), center);
 
         BigDecimal[] result = new BigDecimal[3];
-        result[0] = tri.X1.add(aToC.X.multiply(factor, Threshold.mc));
-        result[1] = tri.Y1.add(aToC.Y.multiply(factor, Threshold.mc));
-        result[2] = tri.Z1.add(aToC.Z.multiply(factor, Threshold.mc));
+        result[0] = tri.X1.add(aToC.X.multiply(factor, Threshold.MC));
+        result[1] = tri.Y1.add(aToC.Y.multiply(factor, Threshold.MC));
+        result[2] = tri.Z1.add(aToC.Z.multiply(factor, Threshold.MC));
         return result;
     }
 
     public static BigDecimal[] changeLength(BigDecimal newLength, GData2 line) {
-        BigDecimal factor = newLength.divide(line.getLength(), Threshold.mc);
+        BigDecimal factor = newLength.divide(line.getLength(), Threshold.MC);
 
         Vector3d center = new Vector3d(line.X1, line.Y1, line.Z1);
         Vector3d aToB = Vector3d.sub(new Vector3d(line.X2, line.Y2, line.Z2), center);
 
         BigDecimal[] result = new BigDecimal[3];
-        result[0] = line.X1.add(aToB.X.multiply(factor, Threshold.mc));
-        result[1] = line.Y1.add(aToB.Y.multiply(factor, Threshold.mc));
-        result[2] = line.Z1.add(aToB.Z.multiply(factor, Threshold.mc));
+        result[0] = line.X1.add(aToB.X.multiply(factor, Threshold.MC));
+        result[1] = line.Y1.add(aToB.Y.multiply(factor, Threshold.MC));
+        result[2] = line.Z1.add(aToB.Z.multiply(factor, Threshold.MC));
         return result;
     }
 
@@ -182,7 +182,7 @@ public enum ProtractorHelper {
 
     private static Object[] eval2(BigDecimal targetDistSq, Vector3d center, Vector3d newPos) {
         Object[] result = new Object[2];
-        double f2 = Vector3d.distSquare(center, newPos).divide(targetDistSq, Threshold.mc).doubleValue();
+        double f2 = Vector3d.distSquare(center, newPos).divide(targetDistSq, Threshold.MC).doubleValue();
         result[0] = Math.abs(f2 - 1);
         result[1] = newPos;
         return result;

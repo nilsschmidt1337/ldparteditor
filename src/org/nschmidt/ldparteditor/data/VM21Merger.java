@@ -98,9 +98,9 @@ public class VM21Merger extends VM20Manipulator {
                 newVertex = Vector3d.add(newVertex, new Vector3d(v));
             }
             final BigDecimal size = new BigDecimal(originVerts.size());
-            newVertex.setX(newVertex.X.divide(size, Threshold.mc));
-            newVertex.setY(newVertex.Y.divide(size, Threshold.mc));
-            newVertex.setZ(newVertex.Z.divide(size, Threshold.mc));
+            newVertex.setX(newVertex.X.divide(size, Threshold.MC));
+            newVertex.setY(newVertex.Y.divide(size, Threshold.MC));
+            newVertex.setZ(newVertex.Z.divide(size, Threshold.MC));
             break;
         case LAST_SELECTED:
             if (lastSelectedVertex == null || !vertexLinkedToPositionInFile.containsKey(lastSelectedVertex)) return;

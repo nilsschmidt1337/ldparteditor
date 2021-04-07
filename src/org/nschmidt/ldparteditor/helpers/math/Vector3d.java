@@ -31,7 +31,7 @@ import org.nschmidt.ldparteditor.enums.Threshold;
 public class Vector3d {
 
     /** A thread safe static reference to the math context constant */
-    private static MathContext mc = Threshold.mc;
+    private static MathContext mc = Threshold.MC;
     /** The x component of the vector. */
     public BigDecimal X;
     /** The y component of the vector. */

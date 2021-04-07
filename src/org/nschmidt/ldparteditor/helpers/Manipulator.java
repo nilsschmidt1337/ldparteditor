@@ -105,10 +105,10 @@ public class Manipulator {
 
     private static BigDecimal factor_Scale = new BigDecimal("1.1"); //$NON-NLS-1$
 
-    private static BigDecimal snap_x_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.mc);
-    private static BigDecimal snap_y_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.mc);
-    private static BigDecimal snap_z_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.mc);
-    private static BigDecimal snap_v_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.mc);
+    private static BigDecimal snap_x_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snap_y_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snap_z_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snap_v_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
 
 
     private static RotationSnap snap_x_RotateFlag = RotationSnap.COMPLEX;
@@ -205,7 +205,7 @@ public class Manipulator {
             snap_v_RotateFlag = RotationSnap.COMPLEX;
         }
 
-        rot = rot.divide(new BigDecimal(180), Threshold.mc).multiply(new BigDecimal(Math.PI));
+        rot = rot.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI));
         snap_x_Translate = trans;
         snap_y_Translate = trans;
         snap_z_Translate = trans;
@@ -520,7 +520,7 @@ public class Manipulator {
 
     public GColour checkManipulatorStatus(float r, float g, float b, int type, Composite3D c3d, float zoom) {
         GColour result = manipulatorStatusHelper(r, g, b, type, c3d, zoom);
-        if (View.manipulator_selected_Colour_r[0] == result.getR() && View.manipulator_selected_Colour_g[0] == result.getG() && View.manipulator_selected_Colour_b[0] == result.getB()) {
+        if (View.MANIPULATOR_SELECTED_COLOUR_R[0] == result.getR() && View.MANIPULATOR_SELECTED_COLOUR_G[0] == result.getG() && View.MANIPULATOR_SELECTED_COLOUR_B[0] == result.getB()) {
             switch (Editor3DWindow.getWindow().getWorkingLayer()) {
             case NONE:
             case TEMP_X:
@@ -546,7 +546,7 @@ public class Manipulator {
                 }
                 return result;
             default:
-                return new GColour(-1, View.manipulator_outerCircle_Colour_r[0], View.manipulator_outerCircle_Colour_g[0], View.manipulator_outerCircle_Colour_b[0], 1f);
+                return new GColour(-1, View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0], 1f);
             }
         }
         switch (Editor3DWindow.getWindow().getWorkingLayer()) {
@@ -555,7 +555,7 @@ public class Manipulator {
             case X_TRANSLATE:
             case X_SCALE:
             case X_ROTATE:
-                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
             default:
             }
             break;
@@ -564,7 +564,7 @@ public class Manipulator {
             case Y_TRANSLATE:
             case Y_SCALE:
             case Y_ROTATE:
-                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
             default:
             }
             break;
@@ -573,7 +573,7 @@ public class Manipulator {
             case Z_TRANSLATE:
             case Z_SCALE:
             case Z_ROTATE:
-                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
             default:
             }
             break;
@@ -585,7 +585,7 @@ public class Manipulator {
             case Y_TRANSLATE:
             case Y_SCALE:
             case Y_ROTATE:
-                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
             default:
             }
             break;
@@ -597,7 +597,7 @@ public class Manipulator {
             case Z_TRANSLATE:
             case Z_SCALE:
             case Z_ROTATE:
-                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
             default:
             }
             break;
@@ -609,12 +609,12 @@ public class Manipulator {
             case Z_TRANSLATE:
             case Z_SCALE:
             case Z_ROTATE:
-                return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
             default:
             }
             break;
         case XYZ:
-            return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+            return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
         case NONE:
         default:
             break;
@@ -653,7 +653,7 @@ public class Manipulator {
             case X_ROTATE:
                 if (lock) {
                     if (x_Rotate) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -665,7 +665,7 @@ public class Manipulator {
             case Y_ROTATE:
                 if (lock) {
                     if (y_Rotate) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -677,7 +677,7 @@ public class Manipulator {
             case Z_ROTATE:
                 if (lock) {
                     if (z_Rotate) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -689,7 +689,7 @@ public class Manipulator {
             case V_ROTATE:
                 if (lock) {
                     if (v_Rotate) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
@@ -751,7 +751,7 @@ public class Manipulator {
                         default:
                             break;
                         }
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     }
                 }
                 Matrix4f.transform(rotMatrix, vector, vector);
@@ -764,64 +764,64 @@ public class Manipulator {
             case X_SCALE:
                 if (lock) {
                     if (x_Scale) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
                     x_Scale = false;
             case Y_SCALE:
                 if (lock) {
                     if (y_Scale) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
                     y_Scale = false;
             case Z_SCALE:
                 if (lock) {
                     if (z_Scale) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
                     z_Scale = false;
                 size = scale_size;
                 break;
             case X_TRANSLATE:
                 if (lock) {
                     if (x_Translate) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
                     x_Translate = false;
             case Y_TRANSLATE:
                 if (lock) {
                     if (y_Translate) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
                     y_Translate = false;
             case Z_TRANSLATE:
                 if (lock) {
                     if (z_Translate) {
-                        return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                        return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.isCocoa && c3d.getKeys().isCmdPressed())))
+                if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
                     z_Translate = false;
                 size = translate_size;
                 break;
@@ -1047,7 +1047,7 @@ public class Manipulator {
                     default:
                         break;
                     }
-                    return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                    return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                 } else {
                     return new GColour(-1, r, g, b, 1f);
                 }
@@ -1078,7 +1078,7 @@ public class Manipulator {
                     default:
                         break;
                     }
-                    return new GColour(-1, View.manipulator_selected_Colour_r[0], View.manipulator_selected_Colour_g[0], View.manipulator_selected_Colour_b[0], 1f);
+                    return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                 } else {
                     return new GColour(-1, r, g, b, 1f);
                 }
@@ -1206,7 +1206,7 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_x_Translate.floatValue() * 1000f), snap_x_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_x_Translate, Threshold.mc)), snap_x_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_x_Translate, Threshold.MC)), snap_x_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = xAxis.x * factor;
@@ -1245,7 +1245,7 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_y_Translate.floatValue() * 1000f), snap_y_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_y_Translate, Threshold.mc)), snap_y_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_y_Translate, Threshold.MC)), snap_y_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = yAxis.x * factor;
@@ -1284,7 +1284,7 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_z_Translate.floatValue() * 1000f), snap_z_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_z_Translate, Threshold.mc)), snap_z_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_z_Translate, Threshold.MC)), snap_z_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = zAxis.x * factor;
@@ -1554,11 +1554,11 @@ public class Manipulator {
             BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else if (scaleThreshold) {
-                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else {
                     initialScaleNew = initialScaleOld;
                     factor_Scale = BigDecimal.ONE;
@@ -1571,7 +1571,7 @@ public class Manipulator {
                     factorPrecise = factor_Scale;
                 } else {
                     factor = 1f / factor_Scale.floatValue();
-                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
                 }
             }
             isScaling = true;
@@ -1660,11 +1660,11 @@ public class Manipulator {
                 if (newScaleFactor) {
                     initialScaleOld = initialScaleNew;
                     if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                        initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
-                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                        initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
+                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                     } else if (scaleThreshold) {
-                        initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
-                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                        initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
+                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                     } else {
                         initialScaleNew = initialScaleOld;
                         factor_Scale = BigDecimal.ONE;
@@ -1677,7 +1677,7 @@ public class Manipulator {
                         factorPrecise = factor_Scale;
                     } else {
                         factor = 1f / factor_Scale.floatValue();
-                        factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                        factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
                     }
                 }
                 isScaling = true;
@@ -1767,11 +1767,11 @@ public class Manipulator {
                 if (newScaleFactor) {
                     initialScaleOld = initialScaleNew;
                     if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                        initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
-                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                        initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
+                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                     } else if (scaleThreshold) {
-                        initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
-                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                        initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
+                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                     } else {
                         initialScaleNew = initialScaleOld;
                         factor_Scale = BigDecimal.ONE;
@@ -1784,7 +1784,7 @@ public class Manipulator {
                         factorPrecise = factor_Scale;
                     } else {
                         factor = 1f / factor_Scale.floatValue();
-                        factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                        factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
                     }
                 }
             }
@@ -1915,7 +1915,7 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_x_Translate.floatValue() * 1000f), snap_x_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_x_Translate, Threshold.mc)), snap_x_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_x_Translate, Threshold.MC)), snap_x_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = xAxis.x * factor;
@@ -1952,7 +1952,7 @@ public class Manipulator {
                 dA.normalise();
 
             float factor = Math.max(l - l % (snap_y_Translate.floatValue() * 1000f), snap_y_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_y_Translate, Threshold.mc)), snap_y_Translate);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_y_Translate, Threshold.MC)), snap_y_Translate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = yAxis.x * factor;
@@ -2337,11 +2337,11 @@ public class Manipulator {
             BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else if (scaleThreshold) {
-                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else {
                     initialScaleNew = initialScaleOld;
                     factor_Scale = BigDecimal.ONE;
@@ -2354,7 +2354,7 @@ public class Manipulator {
                     factorPrecise = factor_Scale;
                 } else {
                     factor = 1f / factor_Scale.floatValue();
-                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
                 }
             }
             transformation.m30 = -position.x;
@@ -2411,11 +2411,11 @@ public class Manipulator {
             BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else if (scaleThreshold) {
-                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else {
                     initialScaleNew = initialScaleOld;
                     factor_Scale = BigDecimal.ONE;
@@ -2428,7 +2428,7 @@ public class Manipulator {
                     factorPrecise = factor_Scale;
                 } else {
                     factor = 1f / factor_Scale.floatValue();
-                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
                 }
             }
             transformation.m30 = -position.x;
@@ -2485,11 +2485,11 @@ public class Manipulator {
             BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.mc);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else if (scaleThreshold) {
-                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.mc);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.mc);
+                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
+                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else {
                     initialScaleNew = initialScaleOld;
                     factor_Scale = BigDecimal.ONE;
@@ -2502,7 +2502,7 @@ public class Manipulator {
                     factorPrecise = factor_Scale;
                 } else {
                     factor = 1f / factor_Scale.floatValue();
-                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.mc);
+                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
                 }
             }
             transformation.m30 = -position.x;

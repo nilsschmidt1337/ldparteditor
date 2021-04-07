@@ -347,7 +347,7 @@ class VM01Select extends VM00Snapshot {
                 tMatrix.m22 = z4.floatValue();
                 tMatrix.m33 = 1f;
                 float det = tMatrix.determinant();
-                if (Math.abs(det) < Threshold.singularity_determinant) {
+                if (Math.abs(det) < Threshold.SINGULARITY_DETERMINANT) {
                     return selectedLine;
                 }
                 Matrix tMatrixPrecise = new Matrix(x2, x3, x4, BigDecimal.ZERO, y2, y3, y4, BigDecimal.ZERO, z2, z3, z4, BigDecimal.ZERO, x1, y1, z1, BigDecimal.ONE);

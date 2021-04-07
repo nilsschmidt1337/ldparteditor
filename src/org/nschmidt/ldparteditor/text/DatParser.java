@@ -150,7 +150,7 @@ public enum DatParser {
                 cValue.set(16, r, g, b, a);
                 break;
             case 24:
-                cValue.set(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f);
+                cValue.set(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
                 break;
             default:
                 if (View.hasLDConfigColour(colourValue)) {
@@ -211,7 +211,7 @@ public enum DatParser {
             cValue.set(16, r, g, b, a);
             break;
         case 24:
-            cValue.set(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f);
+            cValue.set(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
             break;
         default:
             if (View.hasLDConfigColour(arg)) {
@@ -286,9 +286,9 @@ public enum DatParser {
                 boolean numberError = false;
                 if (dataSegments.length == 6) {
                     try {
-                        start.setX(new BigDecimal(dataSegments[3], Threshold.mc));
-                        start.setY(new BigDecimal(dataSegments[4], Threshold.mc));
-                        start.setZ(new BigDecimal(dataSegments[5], Threshold.mc));
+                        start.setX(new BigDecimal(dataSegments[3], Threshold.MC));
+                        start.setY(new BigDecimal(dataSegments[4], Threshold.MC));
+                        start.setZ(new BigDecimal(dataSegments[5], Threshold.MC));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -316,12 +316,12 @@ public enum DatParser {
                         return result;
                     }
                     try {
-                        start.setX(new BigDecimal(dataSegments[4], Threshold.mc));
-                        start.setY(new BigDecimal(dataSegments[5], Threshold.mc));
-                        start.setZ(new BigDecimal(dataSegments[6], Threshold.mc));
-                        end.setX(new BigDecimal(dataSegments[7], Threshold.mc));
-                        end.setY(new BigDecimal(dataSegments[8], Threshold.mc));
-                        end.setZ(new BigDecimal(dataSegments[9], Threshold.mc));
+                        start.setX(new BigDecimal(dataSegments[4], Threshold.MC));
+                        start.setY(new BigDecimal(dataSegments[5], Threshold.MC));
+                        start.setZ(new BigDecimal(dataSegments[6], Threshold.MC));
+                        end.setX(new BigDecimal(dataSegments[7], Threshold.MC));
+                        end.setY(new BigDecimal(dataSegments[8], Threshold.MC));
+                        end.setZ(new BigDecimal(dataSegments[9], Threshold.MC));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -347,15 +347,15 @@ public enum DatParser {
                         return result;
                     }
                     try {
-                        vertexA.setX(new BigDecimal(dataSegments[4], Threshold.mc));
-                        vertexA.setY(new BigDecimal(dataSegments[5], Threshold.mc));
-                        vertexA.setZ(new BigDecimal(dataSegments[6], Threshold.mc));
-                        vertexB.setX(new BigDecimal(dataSegments[7], Threshold.mc));
-                        vertexB.setY(new BigDecimal(dataSegments[8], Threshold.mc));
-                        vertexB.setZ(new BigDecimal(dataSegments[9], Threshold.mc));
-                        vertexC.setX(new BigDecimal(dataSegments[10], Threshold.mc));
-                        vertexC.setY(new BigDecimal(dataSegments[11], Threshold.mc));
-                        vertexC.setZ(new BigDecimal(dataSegments[12], Threshold.mc));
+                        vertexA.setX(new BigDecimal(dataSegments[4], Threshold.MC));
+                        vertexA.setY(new BigDecimal(dataSegments[5], Threshold.MC));
+                        vertexA.setZ(new BigDecimal(dataSegments[6], Threshold.MC));
+                        vertexB.setX(new BigDecimal(dataSegments[7], Threshold.MC));
+                        vertexB.setY(new BigDecimal(dataSegments[8], Threshold.MC));
+                        vertexB.setZ(new BigDecimal(dataSegments[9], Threshold.MC));
+                        vertexC.setX(new BigDecimal(dataSegments[10], Threshold.MC));
+                        vertexC.setY(new BigDecimal(dataSegments[11], Threshold.MC));
+                        vertexC.setZ(new BigDecimal(dataSegments[12], Threshold.MC));
                     } catch (NumberFormatException nfe) {
                         numberError = true;
                     }
@@ -592,7 +592,7 @@ public enum DatParser {
                 }
                 tMatrix.m33 = 1f;
                 det = tMatrix.determinant();
-                parseError = Math.abs(det) < Threshold.singularity_determinant;
+                parseError = Math.abs(det) < Threshold.SINGULARITY_DETERMINANT;
                 break;
             }
             // [WARNING] Check file existance
@@ -853,18 +853,18 @@ public enum DatParser {
             while (true) {
                 try {
                     // Start vertex
-                    start.setX(new BigDecimal(dataSegments[2], Threshold.mc));
-                    start.setY(new BigDecimal(dataSegments[3], Threshold.mc));
-                    start.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+                    start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                    start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                    start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
                     // End vertex
-                    end.setX(new BigDecimal(dataSegments[5], Threshold.mc));
-                    end.setY(new BigDecimal(dataSegments[6], Threshold.mc));
-                    end.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+                    end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                    end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                    end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
-                parseError = Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0;
+                parseError = Vector3d.sub(start, end).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
                 if (parseError) {
                     result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
@@ -919,17 +919,17 @@ public enum DatParser {
             while (true) {
                 try {
                     // 1st vertex
-                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
-                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
-                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
                     // 2nd vertex
-                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
-                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
-                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
                     // 3rd vertex
-                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
-                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
-                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
@@ -949,27 +949,27 @@ public enum DatParser {
 
                     angle = Vector3d.angle(vertexA2, vertexB2);
                     double sumAngle = angle;
-                    parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                    parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
                     if (!parseError) {
                         vertexA2.negate();
                         angle = Vector3d.angle(vertexA2, vertexC2);
                         sumAngle = sumAngle + angle;
-                        parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                        parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
                     }
 
                     if (!parseError) {
                         angle = 180.0 - sumAngle;
-                        parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                        parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
                     }
 
                     if (parseError) {
                         result.add(new ParsingResult(I18n.DATPARSER_COLLINEAR_VERTICES, "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     }
 
-                    parseError = vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                    parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                    parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                    parseError = vertexA2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                    parseError = parseError || vertexB2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                    parseError = parseError || vertexC2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
                     if (parseError) {
                         result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     }
@@ -1022,21 +1022,21 @@ public enum DatParser {
             while (true) {
                 try {
                     // 1st vertex
-                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.mc));
-                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.mc));
-                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
                     // 2nd vertex
-                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.mc));
-                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.mc));
-                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
                     // 3rd vertex
-                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.mc));
-                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.mc));
-                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
                     // 4th vertex
-                    vertexD.setX(new BigDecimal(dataSegments[11], Threshold.mc));
-                    vertexD.setY(new BigDecimal(dataSegments[12], Threshold.mc));
-                    vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
+                    vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+                    vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+                    vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
@@ -1133,12 +1133,12 @@ public enum DatParser {
 
                         angle = Vector3d.angle(vertexA2, vertexD2);
                         double sumAngle = angle;
-                        parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                        parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
                         if (!parseError) {
                             angle = Vector3d.angle(vertexB2, vertexC2);
                             sumAngle = sumAngle + angle;
-                            parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                            parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
                         }
 
                         if (!parseError) {
@@ -1146,13 +1146,13 @@ public enum DatParser {
                             vertexB2.negate();
                             angle = Vector3d.angle(vertexA2, vertexB2);
                             sumAngle = sumAngle + angle;
-                            parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                            parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
 
                         }
 
                         if (!parseError) {
                             angle = 360.0 - sumAngle;
-                            parseError = angle < Threshold.collinear_angle_minimum || angle > Threshold.collinear_angle_maximum;
+                            parseError = angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM;
                         }
 
                         if (parseError) {
@@ -1160,10 +1160,10 @@ public enum DatParser {
                         }
                     }
 
-                    parseError = vertexA2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                    parseError = parseError || vertexB2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                    parseError = parseError || vertexC2.length().compareTo(Threshold.identical_vertex_distance) < 0;
-                    parseError = parseError || vertexD2.length().compareTo(Threshold.identical_vertex_distance) < 0;
+                    parseError = vertexA2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                    parseError = parseError || vertexB2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                    parseError = parseError || vertexC2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
+                    parseError = parseError || vertexD2.length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
                     if (parseError) {
                         if (!errorCheckOnly) {
                             ParsingResult p1 = result.get(0);
@@ -1225,28 +1225,28 @@ public enum DatParser {
             while (true) {
                 try {
                     // start vertex
-                    start.setX(new BigDecimal(dataSegments[2], Threshold.mc));
-                    start.setY(new BigDecimal(dataSegments[3], Threshold.mc));
-                    start.setZ(new BigDecimal(dataSegments[4], Threshold.mc));
+                    start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                    start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                    start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
                     // end vertex
-                    end.setX(new BigDecimal(dataSegments[5], Threshold.mc));
-                    end.setY(new BigDecimal(dataSegments[6], Threshold.mc));
-                    end.setZ(new BigDecimal(dataSegments[7], Threshold.mc));
+                    end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                    end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                    end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
                     // control vertex I
-                    controlI.setX(new BigDecimal(dataSegments[8], Threshold.mc));
-                    controlI.setY(new BigDecimal(dataSegments[9], Threshold.mc));
-                    controlI.setZ(new BigDecimal(dataSegments[10], Threshold.mc));
+                    controlI.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+                    controlI.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+                    controlI.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
                     // control vertex II
-                    controlII.setX(new BigDecimal(dataSegments[11], Threshold.mc));
-                    controlII.setY(new BigDecimal(dataSegments[12], Threshold.mc));
-                    controlII.setZ(new BigDecimal(dataSegments[13], Threshold.mc));
+                    controlII.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+                    controlII.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+                    controlII.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
                 } catch (NumberFormatException nfe) {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                     break;
                 }
-                if (Vector3d.sub(start, end).length().compareTo(Threshold.identical_vertex_distance) < 0) {
+                if (Vector3d.sub(start, end).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0) {
                     result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                } else if (depth < 1 && Vector3d.sub(controlI, controlII).length().compareTo(Threshold.identical_vertex_distance) < 0) {
+                } else if (depth < 1 && Vector3d.sub(controlI, controlII).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0) {
                     result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_CONTROL_POINTS, "[E05] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
                 if (result.isEmpty() && !errorCheckOnly) {

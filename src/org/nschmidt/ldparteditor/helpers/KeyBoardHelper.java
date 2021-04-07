@@ -44,7 +44,7 @@ public enum KeyBoardHelper {
         int accelerator = SWTKeySupport.convertEventToUnmodifiedAccelerator(event);
         KeyStroke keyStroke = SWTKeySupport.convertAcceleratorToKeyStroke(accelerator);
         KeySequence sequence = KeySequence.getInstance(keyStroke);
-        if (Cocoa.isCocoa) {
+        if (Cocoa.IS_COCOA) {
             return sequence.toString()
                     .replace("CTRL+", " " + I18n.KEYBOARD_CTRL.toLowerCase() + " ") //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                     .replace("SHIFT+", "\u21E7") //$NON-NLS-1$ //$NON-NLS-2$

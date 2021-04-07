@@ -42,7 +42,7 @@ public enum Project {
     INSTANCE;
 
     public static final String PROJECT = "project";  //$NON-NLS-1$
-    public static final String DEFAULT_PROJECT_PATH = AppData.getPath() + "project";  //$NON-NLS-1$
+    public static final String DEFAULT_PROJECT_PATH = AppData.getPath() + PROJECT;
     private static String projectName = "default"; //$NON-NLS-1$
     private static String projectPath = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath();
     private static String tempProjectName = "default"; //$NON-NLS-1$

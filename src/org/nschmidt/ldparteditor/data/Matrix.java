@@ -184,7 +184,7 @@ public final class Matrix {
     }
 
     public static Matrix mul(Matrix left, Matrix right) {
-        final MathContext mc = Threshold.mc;
+        final MathContext mc = Threshold.MC;
         final BigDecimal[][] m = new BigDecimal[4][4];
         for (int row = 0; row < 4; row++) {
             for (int column = 0; column < 4; column++) {
@@ -244,7 +244,7 @@ public final class Matrix {
 
         // TODO Should check for 0 determinant
 
-        BigDecimal invdet = BigDecimal.ONE.divide(s0.multiply(c5).subtract(s1.multiply(c4)).add(s2.multiply(c3)).add(s3.multiply(c2)).subtract(s4.multiply(c1)).add(s5.multiply(c0)), Threshold.mc);
+        BigDecimal invdet = BigDecimal.ONE.divide(s0.multiply(c5).subtract(s1.multiply(c4)).add(s2.multiply(c3)).add(s3.multiply(c2)).subtract(s4.multiply(c1)).add(s5.multiply(c0)), Threshold.MC);
 
         mn[0][0] = M[1][1].multiply(c5).subtract(M[1][2].multiply(c4)).add(M[1][3].multiply(c3)).multiply(invdet);
         mn[0][1] = M[0][1].negate().multiply(c5).add(M[0][2].multiply(c4)).subtract(M[0][3].multiply(c3)).multiply(invdet);
@@ -270,7 +270,7 @@ public final class Matrix {
     }
 
     public BigDecimal[] transform(BigDecimal x, BigDecimal y, BigDecimal z) {
-        final MathContext mc = Threshold.mc;
+        final MathContext mc = Threshold.MC;
         final BigDecimal[] result = new BigDecimal[4];
         for (int row = 0; row < 4; row++) {
             final BigDecimal p1 = this.M[0][row].multiply(x, mc);
@@ -601,7 +601,7 @@ public final class Matrix {
         final BigDecimal[][] rounded = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                rounded[i][j] = this.M[i][j].round(Threshold.mc);
+                rounded[i][j] = this.M[i][j].round(Threshold.MC);
             }
         }
         return new Matrix(rounded);

@@ -75,213 +75,213 @@ public enum View {
 
     public static final GColour RANDOM_COLOUR = new GColour(-1, 1f, 1f, 1f, 0f);
 
-    public static final float[] Color16_override_r = new float[] { 0f };
-    public static final float[] Color16_override_g = new float[] { 0f };
-    public static final float[] Color16_override_b = new float[] { 0f };
+    public static final float[] COLOUR16_OVERRIDE_R = new float[] { 0f };
+    public static final float[] COLOUR16_OVERRIDE_G = new float[] { 0f };
+    public static final float[] COLOUR16_OVERRIDE_B = new float[] { 0f };
 
-    public static final float[] BFC_front_Colour_r = new float[] { 0f };
-    public static final float[] BFC_front_Colour_g = new float[] { .9f };
-    public static final float[] BFC_front_Colour_b = new float[] { 0f };
+    public static final float[] BFC_FRONT_COLOUR_R = new float[] { 0f };
+    public static final float[] BFC_FRONT_COLOUR_G = new float[] { .9f };
+    public static final float[] BFC_FRONT_COLOUR_B = new float[] { 0f };
 
-    public static final float[] BFC_back__Colour_r = new float[] { .9f };
-    public static final float[] BFC_back__Colour_g = new float[] { 0f };
-    public static final float[] BFC_back__Colour_b = new float[] { 0f };
+    public static final float[] BFC_BACK__COLOUR_R = new float[] { .9f };
+    public static final float[] BFC_BACK__COLOUR_G = new float[] { 0f };
+    public static final float[] BFC_BACK__COLOUR_B = new float[] { 0f };
 
-    public static final float[] BFC_uncertified_Colour_r = new float[] { 0f };
-    public static final float[] BFC_uncertified_Colour_g = new float[] { 0f };
-    public static final float[] BFC_uncertified_Colour_b = new float[] { 1f };
+    public static final float[] BFC_UNCERTIFIED_COLOUR_R = new float[] { 0f };
+    public static final float[] BFC_UNCERTIFIED_COLOUR_G = new float[] { 0f };
+    public static final float[] BFC_UNCERTIFIED_COLOUR_B = new float[] { 1f };
 
-    public static final float[] vertex_Colour_r = new float[] { 0.118f };
-    public static final float[] vertex_Colour_g = new float[] { 0.565f };
-    public static final float[] vertex_Colour_b = new float[] { 1f };
+    public static final float[] VERTEX_COLOUR_R = new float[] { 0.118f };
+    public static final float[] VERTEX_COLOUR_G = new float[] { 0.565f };
+    public static final float[] VERTEX_COLOUR_B = new float[] { 1f };
 
-    public static final float[] vertex_selected_Colour_r = new float[] { 0.75f };
-    public static final float[] vertex_selected_Colour_g = new float[] { 0.05f };
-    public static final float[] vertex_selected_Colour_b = new float[] { 0.05f };
+    public static final float[] VERTEX_SELECTED_COLOUR_R = new float[] { 0.75f };
+    public static final float[] VERTEX_SELECTED_COLOUR_G = new float[] { 0.05f };
+    public static final float[] VERTEX_SELECTED_COLOUR_B = new float[] { 0.05f };
 
-    public static final float[] condline_selected_Colour_r = new float[] { 0.75f };
-    public static final float[] condline_selected_Colour_g = new float[] { 0.35f };
-    public static final float[] condline_selected_Colour_b = new float[] { 0.05f };
+    public static final float[] CONDLINE_SELECTED_COLOUR_R = new float[] { 0.75f };
+    public static final float[] CONDLINE_SELECTED_COLOUR_G = new float[] { 0.35f };
+    public static final float[] CONDLINE_SELECTED_COLOUR_B = new float[] { 0.05f };
 
-    public static final float[] line_Colour_r = new float[] { 0f };
-    public static final float[] line_Colour_g = new float[] { 0f };
-    public static final float[] line_Colour_b = new float[] { 0f };
+    public static final float[] LINE_COLOUR_R = new float[] { 0f };
+    public static final float[] LINE_COLOUR_G = new float[] { 0f };
+    public static final float[] LINE_COLOUR_B = new float[] { 0f };
 
-    public static final float[] meshline_Colour_r = new float[] { 0f };
-    public static final float[] meshline_Colour_g = new float[] { 0f };
-    public static final float[] meshline_Colour_b = new float[] { 0f };
+    public static final float[] MESHLINE_COLOUR_R = new float[] { 0f };
+    public static final float[] MESHLINE_COLOUR_G = new float[] { 0f };
+    public static final float[] MESHLINE_COLOUR_B = new float[] { 0f };
 
-    public static final float[] condline_Colour_r = new float[] { 0f };
-    public static final float[] condline_Colour_g = new float[] { 0f };
-    public static final float[] condline_Colour_b = new float[] { 0f };
+    public static final float[] CONDLINE_COLOUR_R = new float[] { 0f };
+    public static final float[] CONDLINE_COLOUR_G = new float[] { 0f };
+    public static final float[] CONDLINE_COLOUR_B = new float[] { 0f };
 
-    public static final float[] condline_hidden_Colour_r = new float[] { 1f };
-    public static final float[] condline_hidden_Colour_g = new float[] { .44f };
-    public static final float[] condline_hidden_Colour_b = new float[] { .1f };
+    public static final float[] CONDLINE_HIDDEN_COLOUR_R = new float[] { 1f };
+    public static final float[] CONDLINE_HIDDEN_COLOUR_G = new float[] { .44f };
+    public static final float[] CONDLINE_HIDDEN_COLOUR_B = new float[] { .1f };
 
-    public static final float[] condline_shown_Colour_r = new float[] { .553f };
-    public static final float[] condline_shown_Colour_g = new float[] { .22f };
-    public static final float[] condline_shown_Colour_b = new float[] { 1f };
+    public static final float[] CONDLINE_SHOWN_COLOUR_R = new float[] { .553f };
+    public static final float[] CONDLINE_SHOWN_COLOUR_G = new float[] { .22f };
+    public static final float[] CONDLINE_SHOWN_COLOUR_B = new float[] { 1f };
 
-    public static final float[] cursor1_Colour_r = new float[] { 1f };
-    public static final float[] cursor1_Colour_g = new float[] { 0f };
-    public static final float[] cursor1_Colour_b = new float[] { 0f };
+    public static final float[] CURSOR1_COLOUR_R = new float[] { 1f };
+    public static final float[] CURSOR1_COLOUR_G = new float[] { 0f };
+    public static final float[] CURSOR1_COLOUR_B = new float[] { 0f };
 
-    public static final float[] cursor2_Colour_r = new float[] { 0f };
-    public static final float[] cursor2_Colour_g = new float[] { 0f };
-    public static final float[] cursor2_Colour_b = new float[] { 1f };
+    public static final float[] CURSOR2_COLOUR_R = new float[] { 0f };
+    public static final float[] CURSOR2_COLOUR_G = new float[] { 0f };
+    public static final float[] CURSOR2_COLOUR_B = new float[] { 1f };
 
-    public static final float[] background_Colour_r = new float[] { 1f };
-    public static final float[] background_Colour_g = new float[] { 1f };
-    public static final float[] background_Colour_b = new float[] { 1f };
+    public static final float[] BACKGROUND_COLOUR_R = new float[] { 1f };
+    public static final float[] BACKGROUND_COLOUR_G = new float[] { 1f };
+    public static final float[] BACKGROUND_COLOUR_B = new float[] { 1f };
 
-    public static final float[] light1_Colour_r = new float[] { 0.85f };
-    public static final float[] light1_Colour_g = new float[] { 0.85f };
-    public static final float[] light1_Colour_b = new float[] { 0.85f };
+    public static final float[] LIGHT1_COLOUR_R = new float[] { 0.85f };
+    public static final float[] LIGHT1_COLOUR_G = new float[] { 0.85f };
+    public static final float[] LIGHT1_COLOUR_B = new float[] { 0.85f };
 
-    public static final float[] light1_specular_Colour_r = new float[] { 0.5f };
-    public static final float[] light1_specular_Colour_g = new float[] { 0.5f };
-    public static final float[] light1_specular_Colour_b = new float[] { 0.5f };
+    public static final float[] LIGHT1_SPECULAR_COLOUR_R = new float[] { 0.5f };
+    public static final float[] LIGHT1_SPECULAR_COLOUR_G = new float[] { 0.5f };
+    public static final float[] LIGHT1_SPECULAR_COLOUR_B = new float[] { 0.5f };
 
-    public static final float[] light2_Colour_r = new float[] { 0.27f };
-    public static final float[] light2_Colour_g = new float[] { 0.27f };
-    public static final float[] light2_Colour_b = new float[] { 0.27f };
+    public static final float[] LIGHT2_COLOUR_R = new float[] { 0.27f };
+    public static final float[] LIGHT2_COLOUR_G = new float[] { 0.27f };
+    public static final float[] LIGHT2_COLOUR_B = new float[] { 0.27f };
 
-    public static final float[] light2_specular_Colour_r = new float[] { 0f };
-    public static final float[] light2_specular_Colour_g = new float[] { 0f };
-    public static final float[] light2_specular_Colour_b = new float[] { 0f };
+    public static final float[] LIGHT2_SPECULAR_COLOUR_R = new float[] { 0f };
+    public static final float[] LIGHT2_SPECULAR_COLOUR_G = new float[] { 0f };
+    public static final float[] LIGHT2_SPECULAR_COLOUR_B = new float[] { 0f };
 
-    public static final float[] light3_Colour_r = new float[] { 0.27f };
-    public static final float[] light3_Colour_g = new float[] { 0.27f };
-    public static final float[] light3_Colour_b = new float[] { 0.27f };
+    public static final float[] LIGHT3_COLOUR_R = new float[] { 0.27f };
+    public static final float[] LIGHT3_COLOUR_G = new float[] { 0.27f };
+    public static final float[] LIGHT3_COLOUR_B = new float[] { 0.27f };
 
-    public static final float[] light3_specular_Colour_r = new float[] { 0f };
-    public static final float[] light3_specular_Colour_g = new float[] { 0f };
-    public static final float[] light3_specular_Colour_b = new float[] { 0f };
+    public static final float[] LIGHT3_SPECULAR_COLOUR_R = new float[] { 0f };
+    public static final float[] LIGHT3_SPECULAR_COLOUR_G = new float[] { 0f };
+    public static final float[] LIGHT3_SPECULAR_COLOUR_B = new float[] { 0f };
 
-    public static final float[] light4_Colour_r = new float[] { 0.27f };
-    public static final float[] light4_Colour_g = new float[] { 0.27f };
-    public static final float[] light4_Colour_b = new float[] { 0.27f };
+    public static final float[] LIGHT4_COLOUR_R = new float[] { 0.27f };
+    public static final float[] LIGHT4_COLOUR_G = new float[] { 0.27f };
+    public static final float[] LIGHT4_COLOUR_B = new float[] { 0.27f };
 
-    public static final float[] light4_specular_Colour_r = new float[] { 0f };
-    public static final float[] light4_specular_Colour_g = new float[] { 0f };
-    public static final float[] light4_specular_Colour_b = new float[] { 0f };
+    public static final float[] LIGHT4_SPECULAR_COLOUR_R = new float[] { 0f };
+    public static final float[] LIGHT4_SPECULAR_COLOUR_G = new float[] { 0f };
+    public static final float[] LIGHT4_SPECULAR_COLOUR_B = new float[] { 0f };
 
-    public static final float[] manipulator_selected_Colour_r = new float[] { 0.75f };
-    public static final float[] manipulator_selected_Colour_g = new float[] { 0.75f };
-    public static final float[] manipulator_selected_Colour_b = new float[] { 0f };
+    public static final float[] MANIPULATOR_SELECTED_COLOUR_R = new float[] { 0.75f };
+    public static final float[] MANIPULATOR_SELECTED_COLOUR_G = new float[] { 0.75f };
+    public static final float[] MANIPULATOR_SELECTED_COLOUR_B = new float[] { 0f };
 
-    public static final float[] manipulator_innerCircle_Colour_r = new float[] { .3f };
-    public static final float[] manipulator_innerCircle_Colour_g = new float[] { .3f };
-    public static final float[] manipulator_innerCircle_Colour_b = new float[] { .3f };
+    public static final float[] MANIPULATOR_INNERCIRCLE_COLOUR_R = new float[] { .3f };
+    public static final float[] MANIPULATOR_INNERCIRCLE_COLOUR_G = new float[] { .3f };
+    public static final float[] MANIPULATOR_INNERCIRCLE_COLOUR_B = new float[] { .3f };
 
-    public static final float[] manipulator_outerCircle_Colour_r = new float[] { .85f };
-    public static final float[] manipulator_outerCircle_Colour_g = new float[] { .85f };
-    public static final float[] manipulator_outerCircle_Colour_b = new float[] { .85f };
+    public static final float[] MANIPULATOR_OUTERCIRCLE_COLOUR_R = new float[] { .85f };
+    public static final float[] MANIPULATOR_OUTERCIRCLE_COLOUR_G = new float[] { .85f };
+    public static final float[] MANIPULATOR_OUTERCIRCLE_COLOUR_B = new float[] { .85f };
 
-    public static final float[] manipulator_x_axis_Colour_r = new float[] { .5f };
-    public static final float[] manipulator_x_axis_Colour_g = new float[] { 0f };
-    public static final float[] manipulator_x_axis_Colour_b = new float[] { 0f };
+    public static final float[] MANIPULATOR_X_AXIS_COLOUR_R = new float[] { .5f };
+    public static final float[] MANIPULATOR_X_AXIS_COLOUR_G = new float[] { 0f };
+    public static final float[] MANIPULATOR_X_AXIS_COLOUR_B = new float[] { 0f };
 
-    public static final float[] manipulator_y_axis_Colour_r = new float[] { 0f };
-    public static final float[] manipulator_y_axis_Colour_g = new float[] { .5f };
-    public static final float[] manipulator_y_axis_Colour_b = new float[] { 0f };
+    public static final float[] MANIPULATOR_Y_AXIS_COLOUR_R = new float[] { 0f };
+    public static final float[] MANIPULATOR_Y_AXIS_COLOUR_G = new float[] { .5f };
+    public static final float[] MANIPULATOR_Y_AXIS_COLOUR_B = new float[] { 0f };
 
-    public static final float[] manipulator_z_axis_Colour_r = new float[] { 0f };
-    public static final float[] manipulator_z_axis_Colour_g = new float[] { 0f };
-    public static final float[] manipulator_z_axis_Colour_b = new float[] { .5f };
+    public static final float[] MANIPULATOR_Z_AXIS_COLOUR_R = new float[] { 0f };
+    public static final float[] MANIPULATOR_Z_AXIS_COLOUR_G = new float[] { 0f };
+    public static final float[] MANIPULATOR_Z_AXIS_COLOUR_B = new float[] { .5f };
 
-    public static final float[] lineWidth1000 = new float[] { 100f };
-    public static final float[] lineWidth = new float[] { .100f };
-    public static final float[] lineWidthGL = new float[] { 1.5f };
+    public static final float[] LINE_WIDTH_1000 = new float[] { 100f };
+    public static final float[] LINE_WIDTH = new float[] { .100f };
+    public static final float[] LINE_WIDTH_GL = new float[] { 1.5f };
 
-    public static final float[] add_Object_Colour_r = new float[] { 1f };
-    public static final float[] add_Object_Colour_g = new float[] { 0.6f };
-    public static final float[] add_Object_Colour_b = new float[] { 0f };
+    public static final float[] ADD_OBJECT_COLOUR_R = new float[] { 1f };
+    public static final float[] ADD_OBJECT_COLOUR_G = new float[] { 0.6f };
+    public static final float[] ADD_OBJECT_COLOUR_B = new float[] { 0f };
 
-    public static final float[] origin_Colour_r = new float[] { 0f };
-    public static final float[] origin_Colour_g = new float[] { 0f };
-    public static final float[] origin_Colour_b = new float[] { 0f };
+    public static final float[] ORIGIN_COLOUR_R = new float[] { 0f };
+    public static final float[] ORIGIN_COLOUR_G = new float[] { 0f };
+    public static final float[] ORIGIN_COLOUR_B = new float[] { 0f };
 
-    public static final float[] grid10_Colour_r = new float[] { .5f };
-    public static final float[] grid10_Colour_g = new float[] { .5f };
-    public static final float[] grid10_Colour_b = new float[] { .5f };
+    public static final float[] GRID10_COLOUR_R = new float[] { .5f };
+    public static final float[] GRID10_COLOUR_G = new float[] { .5f };
+    public static final float[] GRID10_COLOUR_B = new float[] { .5f };
 
-    public static final float[] grid_Colour_r = new float[] { 0.15f };
-    public static final float[] grid_Colour_g = new float[] { 0.15f };
-    public static final float[] grid_Colour_b = new float[] { 0.15f };
+    public static final float[] GRID_COLOUR_R = new float[] { 0.15f };
+    public static final float[] GRID_COLOUR_G = new float[] { 0.15f };
+    public static final float[] GRID_COLOUR_B = new float[] { 0.15f };
 
-    public static final float[] rubberBand_Colour_r = new float[] { 1f };
-    public static final float[] rubberBand_Colour_g = new float[] { 0f };
-    public static final float[] rubberBand_Colour_b = new float[] { 0f };
+    public static final float[] RUBBER_BAND_COLOUR_R = new float[] { 1f };
+    public static final float[] RUBBER_BAND_COLOUR_G = new float[] { 0f };
+    public static final float[] RUBBER_BAND_COLOUR_B = new float[] { 0f };
 
-    public static final float[] text_Colour_r = new float[] { 0f };
-    public static final float[] text_Colour_g = new float[] { 0f };
-    public static final float[] text_Colour_b = new float[] { 0f };
+    public static final float[] TEXT_COLOUR_R = new float[] { 0f };
+    public static final float[] TEXT_COLOUR_G = new float[] { 0f };
+    public static final float[] TEXT_COLOUR_B = new float[] { 0f };
 
-    public static final float[] x_axis_Colour_r = new float[] { 1f };
-    public static final float[] x_axis_Colour_g = new float[] { 0f };
-    public static final float[] x_axis_Colour_b = new float[] { 0f };
+    public static final float[] X_AXIS_COLOUR_R = new float[] { 1f };
+    public static final float[] X_AXIS_COLOUR_G = new float[] { 0f };
+    public static final float[] X_AXIS_COLOUR_B = new float[] { 0f };
 
-    public static final float[] y_axis_Colour_r = new float[] { 0f };
-    public static final float[] y_axis_Colour_g = new float[] { 1f };
-    public static final float[] y_axis_Colour_b = new float[] { 0f };
+    public static final float[] Y_AXIS_COLOUR_R = new float[] { 0f };
+    public static final float[] Y_AXIS_COLOUR_G = new float[] { 1f };
+    public static final float[] Y_AXIS_COLOUR_B = new float[] { 0f };
 
-    public static final float[] z_axis_Colour_r = new float[] { 0f };
-    public static final float[] z_axis_Colour_g = new float[] { 0f };
-    public static final float[] z_axis_Colour_b = new float[] { 1f };
+    public static final float[] Z_AXIS_COLOUR_R = new float[] { 0f };
+    public static final float[] Z_AXIS_COLOUR_G = new float[] { 0f };
+    public static final float[] Z_AXIS_COLOUR_B = new float[] { 1f };
 
-    public static final float[] primitive_background_Colour_r = new float[] { 1f };
-    public static final float[] primitive_background_Colour_g = new float[] { 1f };
-    public static final float[] primitive_background_Colour_b = new float[] { 1f };
+    public static final float[] PRIMITIVE_BACKGROUND_COLOUR_R = new float[] { 1f };
+    public static final float[] PRIMITIVE_BACKGROUND_COLOUR_G = new float[] { 1f };
+    public static final float[] PRIMITIVE_BACKGROUND_COLOUR_B = new float[] { 1f };
 
-    public static final float[] primitive_signFG_Colour_r = new float[] { .2f };
-    public static final float[] primitive_signFG_Colour_g = new float[] { .2f };
-    public static final float[] primitive_signFG_Colour_b = new float[] { 1f };
+    public static final float[] PRIMITIVE_SIGN_FG_COLOUR_R = new float[] { .2f };
+    public static final float[] PRIMITIVE_SIGN_FG_COLOUR_G = new float[] { .2f };
+    public static final float[] PRIMITIVE_SIGN_FG_COLOUR_B = new float[] { 1f };
 
-    public static final float[] primitive_signBG_Colour_r = new float[] { 1f };
-    public static final float[] primitive_signBG_Colour_g = new float[] { 1f };
-    public static final float[] primitive_signBG_Colour_b = new float[] { 1f };
+    public static final float[] PRIMITIVE_SIGN_BG_COLOUR_R = new float[] { 1f };
+    public static final float[] PRIMITIVE_SIGN_BG_COLOUR_G = new float[] { 1f };
+    public static final float[] PRIMITIVE_SIGN_BG_COLOUR_B = new float[] { 1f };
 
-    public static final float[] primitive_plusNminus_Colour_r = new float[] { 1f };
-    public static final float[] primitive_plusNminus_Colour_g = new float[] { 1f };
-    public static final float[] primitive_plusNminus_Colour_b = new float[] { 1f };
+    public static final float[] PRIMITIVE_PLUS_N_MINUS_COLOUR_R = new float[] { 1f };
+    public static final float[] PRIMITIVE_PLUS_N_MINUS_COLOUR_G = new float[] { 1f };
+    public static final float[] PRIMITIVE_PLUS_N_MINUS_COLOUR_B = new float[] { 1f };
 
-    public static final float[] primitive_selectedCell_Colour_r = new float[] { 1f };
-    public static final float[] primitive_selectedCell_Colour_g = new float[] { .3f };
-    public static final float[] primitive_selectedCell_Colour_b = new float[] { .3f };
+    public static final float[] PRIMITIVE_SELECTED_CELL_COLOUR_R = new float[] { 1f };
+    public static final float[] PRIMITIVE_SELECTED_CELL_COLOUR_G = new float[] { .3f };
+    public static final float[] PRIMITIVE_SELECTED_CELL_COLOUR_B = new float[] { .3f };
 
-    public static final float[] primitive_focusedCell_Colour_r = new float[] { .6f };
-    public static final float[] primitive_focusedCell_Colour_g = new float[] { .6f };
-    public static final float[] primitive_focusedCell_Colour_b = new float[] { 1f };
+    public static final float[] PRIMITIVE_FOCUSED_CELL_COLOUR_R = new float[] { .6f };
+    public static final float[] PRIMITIVE_FOCUSED_CELL_COLOUR_G = new float[] { .6f };
+    public static final float[] PRIMITIVE_FOCUSED_CELL_COLOUR_B = new float[] { 1f };
 
-    public static final float[] primitive_normalCell_Colour_r = new float[] { .3f };
-    public static final float[] primitive_normalCell_Colour_g = new float[] { .3f };
-    public static final float[] primitive_normalCell_Colour_b = new float[] { .3f };
+    public static final float[] PRIMITIVE_NORMAL_CELL_COLOUR_R = new float[] { .3f };
+    public static final float[] PRIMITIVE_NORMAL_CELL_COLOUR_G = new float[] { .3f };
+    public static final float[] PRIMITIVE_NORMAL_CELL_COLOUR_B = new float[] { .3f };
 
-    public static final float[] primitive_cell_1_Colour_r = new float[] { .7f };
-    public static final float[] primitive_cell_1_Colour_g = new float[] { .7f };
-    public static final float[] primitive_cell_1_Colour_b = new float[] { .7f };
+    public static final float[] PRIMITIVE_CELL_1_COLOUR_R = new float[] { .7f };
+    public static final float[] PRIMITIVE_CELL_1_COLOUR_G = new float[] { .7f };
+    public static final float[] PRIMITIVE_CELL_1_COLOUR_B = new float[] { .7f };
 
-    public static final float[] primitive_cell_2_Colour_r = new float[] { 1f };
-    public static final float[] primitive_cell_2_Colour_g = new float[] { 1f };
-    public static final float[] primitive_cell_2_Colour_b = new float[] { 1f };
+    public static final float[] PRIMITIVE_CELL_2_COLOUR_R = new float[] { 1f };
+    public static final float[] PRIMITIVE_CELL_2_COLOUR_G = new float[] { 1f };
+    public static final float[] PRIMITIVE_CELL_2_COLOUR_B = new float[] { 1f };
 
-    public static final float[] primitive_categoryCell_1_Colour_r = new float[] { .6f };
-    public static final float[] primitive_categoryCell_1_Colour_g = new float[] { .4f };
-    public static final float[] primitive_categoryCell_1_Colour_b = new float[] { .3f };
+    public static final float[] PRIMITIVE_CATEGORYCELL_1_COLOUR_R = new float[] { .6f };
+    public static final float[] PRIMITIVE_CATEGORYCELL_1_COLOUR_G = new float[] { .4f };
+    public static final float[] PRIMITIVE_CATEGORYCELL_1_COLOUR_B = new float[] { .3f };
 
-    public static final float[] primitive_categoryCell_2_Colour_r = new float[] { .7f };
-    public static final float[] primitive_categoryCell_2_Colour_g = new float[] { .5f };
-    public static final float[] primitive_categoryCell_2_Colour_b = new float[] { .4f };
+    public static final float[] PRIMITIVE_CATEGORYCELL_2_COLOUR_R = new float[] { .7f };
+    public static final float[] PRIMITIVE_CATEGORYCELL_2_COLOUR_G = new float[] { .5f };
+    public static final float[] PRIMITIVE_CATEGORYCELL_2_COLOUR_B = new float[] { .4f };
 
-    public static final float[] primitive_edge_Colour_r = new float[] { 0f };
-    public static final float[] primitive_edge_Colour_g = new float[] { 0f };
-    public static final float[] primitive_edge_Colour_b = new float[] { 0f };
+    public static final float[] PRIMITIVE_EDGE_COLOUR_R = new float[] { 0f };
+    public static final float[] PRIMITIVE_EDGE_COLOUR_G = new float[] { 0f };
+    public static final float[] PRIMITIVE_EDGE_COLOUR_B = new float[] { 0f };
 
-    public static final float[] primitive_condline_Colour_r = new float[] { 0f };
-    public static final float[] primitive_condline_Colour_g = new float[] { 0f };
-    public static final float[] primitive_condline_Colour_b = new float[] { 1f };
+    public static final float[] PRIMITIVE_CONDLINE_COLOUR_R = new float[] { 0f };
+    public static final float[] PRIMITIVE_CONDLINE_COLOUR_G = new float[] { 0f };
+    public static final float[] PRIMITIVE_CONDLINE_COLOUR_B = new float[] { 1f };
 
     public static final Set<PGData3> FRONT = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_FRONT, 0.07, 0.3, .012f * (1f + IconSize.getIconsize() / 4f));
     public static final Set<PGData3> BACK = TextTriangulator.triangulateGLText(Font.MONOSPACE, I18n.PERSPECTIVE_BACK, 0.07, 0.3, .012f * (1f + IconSize.getIconsize() / 4f));
@@ -301,9 +301,9 @@ public enum View {
     public static final Set<PGData3> D7 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "7", 0.07, 0.3); //$NON-NLS-1$
     public static final Set<PGData3> D8 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "8", 0.07, 0.3); //$NON-NLS-1$
     public static final Set<PGData3> D9 = TextTriangulator.triangulateGLText(Font.MONOSPACE, "9", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> Dd = TextTriangulator.triangulateGLText(Font.MONOSPACE, ".", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> Dc = TextTriangulator.triangulateGLText(Font.MONOSPACE, ",", 0.07, 0.3); //$NON-NLS-1$
-    public static final Set<PGData3> Dg = TextTriangulator.triangulateGLText(Font.MONOSPACE, "°", 0.07, 0.3); //$NON-NLS-1$
+    public static final Set<PGData3> DDot = TextTriangulator.triangulateGLText(Font.MONOSPACE, ".", 0.07, 0.3); //$NON-NLS-1$
+    public static final Set<PGData3> DComma = TextTriangulator.triangulateGLText(Font.MONOSPACE, ",", 0.07, 0.3); //$NON-NLS-1$
+    public static final Set<PGData3> DDegree = TextTriangulator.triangulateGLText(Font.MONOSPACE, "°", 0.07, 0.3); //$NON-NLS-1$
     public static final Set<PGData3> DX = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dX =", 0.07, 0.3); //$NON-NLS-1$
     public static final Set<PGData3> DY = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dY =", 0.07, 0.3); //$NON-NLS-1$
     public static final Set<PGData3> DZ = TextTriangulator.triangulateGLText(Font.MONOSPACE, "dZ =", 0.07, 0.3); //$NON-NLS-1$
@@ -311,8 +311,8 @@ public enum View {
     public static final Set<PGData3> DM = TextTriangulator.triangulateGLText(Font.MONOSPACE, "-", 0.07, 0.3); //$NON-NLS-1$
 
     private static final GColour BLACK = new GColour(-1, 0f, 0f, 0f, 1f);
-    private static IndexedEntry col16_indexedEntry = new IndexedEntry(.5f + .000016f, .5f + .000016f, .5f + .000016f);
-    private static GColour original_col16 = new GColour(-1, 0f, 0f, 0f, 1f);
+    private static IndexedEntry col16IndexedEntry = new IndexedEntry(.5f + .000016f, .5f + .000016f, .5f + .000016f);
+    private static GColour originalColour16 = new GColour(-1, 0f, 0f, 0f, 1f);
 
     public static final int NUM_CORES = Runtime.getRuntime().availableProcessors();
 
@@ -425,7 +425,7 @@ public enum View {
             Pattern pGlitter = Pattern.compile("GLITTER\\s+VALUE\\s+#[A-F0-9]{6}"); //$NON-NLS-1$
             UTF8BufferedReader reader = null;
             try {
-                indexFromColour.put(new IndexedEntry(View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0]), 24);
+                indexFromColour.put(new IndexedEntry(View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0]), 24);
                 reader = new UTF8BufferedReader(location);
                 while (true) {
                     String line = reader.readLine();
@@ -568,8 +568,8 @@ public enum View {
                             }
                             IndexedEntry entry = new IndexedEntry(r, g, b);
                             if (index == 16) {
-                                col16_indexedEntry = entry;
-                                original_col16 = colourFromIndex.get(16).createClone();
+                                col16IndexedEntry = entry;
+                                originalColour16 = colourFromIndex.get(16).createClone();
                             }
                             indexFromColour.put(entry, index);
                             edgeColourFromIndex.put(index, new GColour(index, r2, g2, b2, 1f));
@@ -595,21 +595,21 @@ public enum View {
         float g;
         float b;
         GColour col16 = getLDConfigColour(16);
-        if (Color16_override_r[0] > 0f && Color16_override_g[0] > 0f && Color16_override_b[0] > 0f) {
-            r = Color16_override_r[0];
-            g = Color16_override_g[0];
-            b = Color16_override_b[0];
+        if (COLOUR16_OVERRIDE_R[0] > 0f && COLOUR16_OVERRIDE_G[0] > 0f && COLOUR16_OVERRIDE_B[0] > 0f) {
+            r = COLOUR16_OVERRIDE_R[0];
+            g = COLOUR16_OVERRIDE_G[0];
+            b = COLOUR16_OVERRIDE_B[0];
         } else {
-            r = original_col16.getR();
-            g = original_col16.getG();
-            b = original_col16.getB();
+            r = originalColour16.getR();
+            g = originalColour16.getG();
+            b = originalColour16.getB();
         }
         col16.setR(r);
         col16.setG(g);
         col16.setB(b);
-        indexFromColour.remove(col16_indexedEntry);
-        col16_indexedEntry = new IndexedEntry(r + .000016f, g + .000016f, b + .000016f);
-        indexFromColour.put(col16_indexedEntry, 16);
+        indexFromColour.remove(col16IndexedEntry);
+        col16IndexedEntry = new IndexedEntry(r + .000016f, g + .000016f, b + .000016f);
+        indexFromColour.put(col16IndexedEntry, 16);
     }
 
 }

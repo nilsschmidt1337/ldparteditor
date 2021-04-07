@@ -30,7 +30,7 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3r;
  */
 public class Vertex implements Comparable<Vertex> {
 
-    private static final float epsilon = 0.0001f;
+    private static final float EPSILON = 0.0001f;
 
     public final BigDecimal X;
     public final BigDecimal Y;
@@ -183,8 +183,8 @@ public class Vertex implements Comparable<Vertex> {
     @Override
     public boolean equals(Object obj) {
         Vertex other = (Vertex) obj;
-        return Math.abs(rounded_x - other.rounded_x) < epsilon && Math.abs(rounded_y - other.rounded_y) < epsilon
-                && Math.abs(rounded_z - other.rounded_z) < epsilon;
+        return Math.abs(rounded_x - other.rounded_x) < EPSILON && Math.abs(rounded_y - other.rounded_y) < EPSILON
+                && Math.abs(rounded_z - other.rounded_z) < EPSILON;
     }
 
     @Override
@@ -196,7 +196,7 @@ public class Vertex implements Comparable<Vertex> {
     public int compareTo(Vertex o) {
         {
             float d1 = rounded_x - o.rounded_x;
-            int c1 = Float.compare(Math.abs(d1), epsilon);
+            int c1 = Float.compare(Math.abs(d1), EPSILON);
             switch (c1) {
             case 0:
             case 1:
@@ -207,7 +207,7 @@ public class Vertex implements Comparable<Vertex> {
         }
         {
             float d1 = rounded_y - o.rounded_y;
-            int c1 = Float.compare(Math.abs(d1), epsilon);
+            int c1 = Float.compare(Math.abs(d1), EPSILON);
             switch (c1) {
             case 0:
             case 1:
@@ -218,7 +218,7 @@ public class Vertex implements Comparable<Vertex> {
         }
         {
             float d1 = rounded_z - o.rounded_z;
-            int c1 = Float.compare(Math.abs(d1), epsilon);
+            int c1 = Float.compare(Math.abs(d1), EPSILON);
             switch (c1) {
             case 0:
             case 1:

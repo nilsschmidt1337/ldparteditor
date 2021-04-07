@@ -134,9 +134,9 @@ class VM16Subdivide extends VM15Flipper {
                 for (Vector3d vd : midEdge) {
                     np = Vector3d.add(np, vd);
                 }
-                np.setX(np.X.divide(c, Threshold.mc));
-                np.setY(np.Y.divide(c, Threshold.mc));
-                np.setZ(np.Z.divide(c, Threshold.mc));
+                np.setX(np.X.divide(c, Threshold.MC));
+                np.setY(np.Y.divide(c, Threshold.MC));
+                np.setZ(np.Z.divide(c, Threshold.MC));
                 newPoints.put(v, new Vertex(np));
             }
         }
@@ -170,9 +170,9 @@ class VM16Subdivide extends VM15Flipper {
             for (Vertex vd : originalVerts) {
                 center = Vector3d.add(center, new Vector3d(vd));
             }
-            center.setX(center.X.divide(c2, Threshold.mc));
-            center.setY(center.Y.divide(c2, Threshold.mc));
-            center.setZ(center.Z.divide(c2, Threshold.mc));
+            center.setX(center.X.divide(c2, Threshold.MC));
+            center.setY(center.Y.divide(c2, Threshold.MC));
+            center.setZ(center.Z.divide(c2, Threshold.MC));
 
             Vertex vc = new Vertex(center);
 
@@ -181,8 +181,8 @@ class VM16Subdivide extends VM15Flipper {
                 ve[i] = new Vertex(Vector3d.add(new Vector3d(originalVerts[i]), new Vector3d(originalVerts[(i + 1) % c])).scaledByHalf());
                 GData2 g2 = null;
                 if ((g2 = hasEdge(originalVerts[i], originalVerts[(i + 1) % c])) != null) {
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
                     linesToDelete2.add(g2);
                 }
             }
@@ -292,8 +292,8 @@ class VM16Subdivide extends VM15Flipper {
                 ve[i] = new Vertex(Vector3d.add(new Vector3d(originalVerts[i]), new Vector3d(originalVerts[(i + 1) % c])).scaledByHalf());
                 GData2 g2 = null;
                 if ((g2 = hasEdge(originalVerts[i], originalVerts[(i + 1) % c])) != null) {
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
-                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.line_Colour_r[0], View.line_Colour_g[0], View.line_Colour_b[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[i], ve[i]) == null) newLines.add(new GData2(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f, originalVerts[i], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
+                    if (!vertexLinkedToPositionInFile.containsKey(ve[i]) || hasEdge(originalVerts[(i + 1) % c], ve[i]) == null) newLines.add(new GData2(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f, originalVerts[(i + 1) % c], ve[i], View.DUMMY_REFERENCE, linkedDatFile, true));
                     linesToDelete2.add(g2);
                 }
             }
@@ -383,9 +383,9 @@ class VM16Subdivide extends VM15Flipper {
                 for (Vector3d vd : midEdge) {
                     np = Vector3d.add(np, vd);
                 }
-                np.setX(v.X.multiply(alphaN2).add(np.X.multiply(oneMinusAlphaDivN, Threshold.mc)));
-                np.setY(v.Y.multiply(alphaN2).add(np.Y.multiply(oneMinusAlphaDivN, Threshold.mc)));
-                np.setZ(v.Z.multiply(alphaN2).add(np.Z.multiply(oneMinusAlphaDivN, Threshold.mc)));
+                np.setX(v.X.multiply(alphaN2).add(np.X.multiply(oneMinusAlphaDivN, Threshold.MC)));
+                np.setY(v.Y.multiply(alphaN2).add(np.Y.multiply(oneMinusAlphaDivN, Threshold.MC)));
+                np.setZ(v.Z.multiply(alphaN2).add(np.Z.multiply(oneMinusAlphaDivN, Threshold.MC)));
                 newPoints.put(v, new Vertex(np));
             }
         }
