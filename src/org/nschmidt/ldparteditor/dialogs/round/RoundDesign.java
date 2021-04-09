@@ -43,12 +43,12 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 class RoundDesign extends Dialog {
 
     // Use final only for subclass/listener references!
-    final Button[] btn_ok = new Button[1];
-    final NButton[] cb_Xaxis = new NButton[1];
-    final NButton[] cb_Yaxis = new NButton[1];
-    final NButton[] cb_Zaxis = new NButton[1];
-    final IntegerSpinner[] spn_coords = new IntegerSpinner[1];
-    final IntegerSpinner[] spn_matrix = new IntegerSpinner[1];
+    final Button[] btnOkPtr = new Button[1];
+    final NButton[] cbXaxisPtr = new NButton[1];
+    final NButton[] cbYaxisPtr = new NButton[1];
+    final NButton[] cbZaxisPtr = new NButton[1];
+    final IntegerSpinner[] spnCoordsPtr = new IntegerSpinner[1];
+    final IntegerSpinner[] spnMatrixPtr = new IntegerSpinner[1];
 
     RoundDesign(Shell parentShell) {
         super(parentShell);
@@ -78,17 +78,17 @@ class RoundDesign extends Dialog {
             cmpCoords.setLayout(new GridLayout(3, true));
 
             NButton cbXaxis = new NButton(cmpCoords, SWT.CHECK);
-            this.cb_Xaxis[0] = cbXaxis;
+            this.cbXaxisPtr[0] = cbXaxis;
             cbXaxis.setText(I18n.ROUND_X);
             cbXaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundX());
 
             NButton cbYaxis = new NButton(cmpCoords, SWT.CHECK);
-            this.cb_Yaxis[0] = cbYaxis;
+            this.cbYaxisPtr[0] = cbYaxis;
             cbYaxis.setText(I18n.ROUND_Y);
             cbYaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundY());
 
             NButton cbZaxis = new NButton(cmpCoords, SWT.CHECK);
-            this.cb_Zaxis[0] = cbZaxis;
+            this.cbZaxisPtr[0] = cbZaxis;
             cbZaxis.setText(I18n.ROUND_Z);
             cbZaxis.setSelection(WorkbenchManager.getUserSettingState().isRoundZ());
         }
@@ -97,7 +97,7 @@ class RoundDesign extends Dialog {
         lblCoordsPrec.setText(I18n.ROUND_COORD_PRECISION);
 
         IntegerSpinner spnCoords = new IntegerSpinner(cmpContainer, SWT.NONE);
-        this.spn_coords[0] = spnCoords;
+        this.spnCoordsPtr[0] = spnCoords;
         spnCoords.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnCoords.setMaximum(9);
         spnCoords.setMinimum(0);
@@ -107,7 +107,7 @@ class RoundDesign extends Dialog {
         lblMatrixPrec.setText(I18n.ROUND_MATRIX_PRECISION);
 
         IntegerSpinner spnMatrix = new IntegerSpinner(cmpContainer, SWT.NONE);
-        this.spn_matrix[0] = spnMatrix;
+        this.spnMatrixPtr[0] = spnMatrix;
         spnMatrix.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnMatrix.setMaximum(9);
         spnMatrix.setMinimum(0);
@@ -127,7 +127,7 @@ class RoundDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
+        btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 

@@ -30,19 +30,19 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
  */
 public class Arrow {
 
-    private final FloatBuffer matrix_buf;
+    private final FloatBuffer matrixBuf;
     private final Matrix4f rotation;
 
-    private final float EPSILON = 0.0000001f;
+    private static final float EPSILON = 0.0000001f;
 
     private final float r;
     private final float g;
     private final float b;
 
     private final float length;
-    private final float cone_start;
-    private final float line_end;
-    private final float line_width;
+    private final float coneStart;
+    private final float lineEnd;
+    private final float lineWidth;
 
     private final float[] cone = new float[34];
 
@@ -53,14 +53,14 @@ public class Arrow {
         this.r = r;
         this.g = g;
         this.b = b;
-        this.line_width = lineWidth;
+        this.lineWidth = lineWidth;
         length = (float) Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
-        cone_start = length - coneHeight;
-        line_end = length - coneHeight / 3f;
+        coneStart = length - coneHeight;
+        lineEnd = length - coneHeight / 3f;
         rotation = makeRotationDir(new Vector3f(dirX, dirY, dirZ));
-        matrix_buf = BufferUtils.createFloatBuffer(16);
-        rotation.store(matrix_buf);
-        matrix_buf.position(0);
+        matrixBuf = BufferUtils.createFloatBuffer(16);
+        rotation.store(matrixBuf);
+        matrixBuf.position(0);
         float coneRadius = coneWidth;
         float step = (float) (Math.PI / 8d);
         float angle = 0f;
@@ -140,67 +140,67 @@ public class Arrow {
         GL11.glPushMatrix();
 
         GL11.glTranslatef(x, y, z);
-        GL11.glMultMatrixf(matrix_buf);
+        GL11.glMultMatrixf(matrixBuf);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glLineWidth(line_width);
+        GL11.glLineWidth(lineWidth);
         GL11.glColor3f(r, g, b);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(0f, 0f, 0f);
-        GL11.glVertex3f(0f, line_end, 0f);
+        GL11.glVertex3f(0f, lineEnd, 0f);
         GL11.glEnd();
 
         GL11.glBegin(GL11.GL_TRIANGLE_FAN);
         GL11.glVertex3f(0f, length, 0f);
 
-        GL11.glVertex3f(cone[0], cone_start, cone[1]);
-        GL11.glVertex3f(cone[2], cone_start, cone[3]);
-        GL11.glVertex3f(cone[4], cone_start, cone[5]);
-        GL11.glVertex3f(cone[6], cone_start, cone[7]);
+        GL11.glVertex3f(cone[0], coneStart, cone[1]);
+        GL11.glVertex3f(cone[2], coneStart, cone[3]);
+        GL11.glVertex3f(cone[4], coneStart, cone[5]);
+        GL11.glVertex3f(cone[6], coneStart, cone[7]);
 
-        GL11.glVertex3f(cone[8], cone_start, cone[9]);
-        GL11.glVertex3f(cone[10], cone_start, cone[11]);
-        GL11.glVertex3f(cone[12], cone_start, cone[13]);
-        GL11.glVertex3f(cone[14], cone_start, cone[15]);
+        GL11.glVertex3f(cone[8], coneStart, cone[9]);
+        GL11.glVertex3f(cone[10], coneStart, cone[11]);
+        GL11.glVertex3f(cone[12], coneStart, cone[13]);
+        GL11.glVertex3f(cone[14], coneStart, cone[15]);
 
-        GL11.glVertex3f(cone[16], cone_start, cone[17]);
-        GL11.glVertex3f(cone[18], cone_start, cone[19]);
-        GL11.glVertex3f(cone[20], cone_start, cone[21]);
-        GL11.glVertex3f(cone[22], cone_start, cone[23]);
+        GL11.glVertex3f(cone[16], coneStart, cone[17]);
+        GL11.glVertex3f(cone[18], coneStart, cone[19]);
+        GL11.glVertex3f(cone[20], coneStart, cone[21]);
+        GL11.glVertex3f(cone[22], coneStart, cone[23]);
 
-        GL11.glVertex3f(cone[24], cone_start, cone[25]);
-        GL11.glVertex3f(cone[26], cone_start, cone[27]);
-        GL11.glVertex3f(cone[28], cone_start, cone[29]);
-        GL11.glVertex3f(cone[30], cone_start, cone[31]);
+        GL11.glVertex3f(cone[24], coneStart, cone[25]);
+        GL11.glVertex3f(cone[26], coneStart, cone[27]);
+        GL11.glVertex3f(cone[28], coneStart, cone[29]);
+        GL11.glVertex3f(cone[30], coneStart, cone[31]);
 
-        GL11.glVertex3f(cone[32], cone_start, cone[33]);
+        GL11.glVertex3f(cone[32], coneStart, cone[33]);
 
         GL11.glEnd();
 
         GL11.glBegin(GL11.GL_TRIANGLE_FAN);
-        GL11.glVertex3f(0f, cone_start, 0f);
+        GL11.glVertex3f(0f, coneStart, 0f);
 
-        GL11.glVertex3f(cone[32], cone_start, cone[33]);
+        GL11.glVertex3f(cone[32], coneStart, cone[33]);
 
-        GL11.glVertex3f(cone[30], cone_start, cone[31]);
-        GL11.glVertex3f(cone[28], cone_start, cone[29]);
-        GL11.glVertex3f(cone[26], cone_start, cone[27]);
-        GL11.glVertex3f(cone[24], cone_start, cone[25]);
+        GL11.glVertex3f(cone[30], coneStart, cone[31]);
+        GL11.glVertex3f(cone[28], coneStart, cone[29]);
+        GL11.glVertex3f(cone[26], coneStart, cone[27]);
+        GL11.glVertex3f(cone[24], coneStart, cone[25]);
 
-        GL11.glVertex3f(cone[22], cone_start, cone[23]);
-        GL11.glVertex3f(cone[20], cone_start, cone[21]);
-        GL11.glVertex3f(cone[18], cone_start, cone[19]);
-        GL11.glVertex3f(cone[16], cone_start, cone[17]);
+        GL11.glVertex3f(cone[22], coneStart, cone[23]);
+        GL11.glVertex3f(cone[20], coneStart, cone[21]);
+        GL11.glVertex3f(cone[18], coneStart, cone[19]);
+        GL11.glVertex3f(cone[16], coneStart, cone[17]);
 
-        GL11.glVertex3f(cone[14], cone_start, cone[15]);
-        GL11.glVertex3f(cone[12], cone_start, cone[13]);
-        GL11.glVertex3f(cone[10], cone_start, cone[11]);
-        GL11.glVertex3f(cone[8], cone_start, cone[9]);
+        GL11.glVertex3f(cone[14], coneStart, cone[15]);
+        GL11.glVertex3f(cone[12], coneStart, cone[13]);
+        GL11.glVertex3f(cone[10], coneStart, cone[11]);
+        GL11.glVertex3f(cone[8], coneStart, cone[9]);
 
-        GL11.glVertex3f(cone[6], cone_start, cone[7]);
-        GL11.glVertex3f(cone[4], cone_start, cone[5]);
-        GL11.glVertex3f(cone[2], cone_start, cone[3]);
-        GL11.glVertex3f(cone[0], cone_start, cone[1]);
+        GL11.glVertex3f(cone[6], coneStart, cone[7]);
+        GL11.glVertex3f(cone[4], coneStart, cone[5]);
+        GL11.glVertex3f(cone[2], coneStart, cone[3]);
+        GL11.glVertex3f(cone[0], coneStart, cone[1]);
 
         GL11.glEnd();
 
@@ -215,13 +215,13 @@ public class Arrow {
         stack.glMultMatrixf(rotation);
         stack.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glLineWidth(line_width);
+        GL11.glLineWidth(lineWidth);
 
         {
             float[] vertexData = new float[]{
                     0f, 0f, 0f,
                     r, g, b,
-                    0f, line_end, 0f,
+                    0f, lineEnd, 0f,
                     r, g, b
             };
             GL33Helper.drawLinesRGB_GeneralSlow(vertexData);
@@ -239,27 +239,27 @@ public class Arrow {
 
                     0f, length, 0f, r, g, b,
 
-                    cone[0], cone_start, cone[1], r, g, b,
-                    cone[2], cone_start, cone[3], r, g, b,
-                    cone[4], cone_start, cone[5], r, g, b,
-                    cone[6], cone_start, cone[7], r, g, b,
+                    cone[0], coneStart, cone[1], r, g, b,
+                    cone[2], coneStart, cone[3], r, g, b,
+                    cone[4], coneStart, cone[5], r, g, b,
+                    cone[6], coneStart, cone[7], r, g, b,
 
-                    cone[8], cone_start, cone[9], r, g, b,
-                    cone[10], cone_start, cone[11], r, g, b,
-                    cone[12], cone_start, cone[13], r, g, b,
-                    cone[14], cone_start, cone[15], r, g, b,
+                    cone[8], coneStart, cone[9], r, g, b,
+                    cone[10], coneStart, cone[11], r, g, b,
+                    cone[12], coneStart, cone[13], r, g, b,
+                    cone[14], coneStart, cone[15], r, g, b,
 
-                    cone[16], cone_start, cone[17], r, g, b,
-                    cone[18], cone_start, cone[19], r, g, b,
-                    cone[20], cone_start, cone[21], r, g, b,
-                    cone[22], cone_start, cone[23], r, g, b,
+                    cone[16], coneStart, cone[17], r, g, b,
+                    cone[18], coneStart, cone[19], r, g, b,
+                    cone[20], coneStart, cone[21], r, g, b,
+                    cone[22], coneStart, cone[23], r, g, b,
 
-                    cone[24], cone_start, cone[25], r, g, b,
-                    cone[26], cone_start, cone[27], r, g, b,
-                    cone[28], cone_start, cone[29], r, g, b,
-                    cone[30], cone_start, cone[31], r, g, b,
+                    cone[24], coneStart, cone[25], r, g, b,
+                    cone[26], coneStart, cone[27], r, g, b,
+                    cone[28], coneStart, cone[29], r, g, b,
+                    cone[30], coneStart, cone[31], r, g, b,
 
-                    cone[32], cone_start, cone[33], r, g, b
+                    cone[32], coneStart, cone[33], r, g, b
             };
 
             GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
@@ -268,29 +268,29 @@ public class Arrow {
         {
             float[] vertexData = new float[]{
 
-                0f, cone_start, 0f, r, g, b,
+                0f, coneStart, 0f, r, g, b,
 
-                cone[32], cone_start, cone[33], r, g, b,
+                cone[32], coneStart, cone[33], r, g, b,
 
-                cone[30], cone_start, cone[31], r, g, b,
-                cone[28], cone_start, cone[29], r, g, b,
-                cone[26], cone_start, cone[27], r, g, b,
-                cone[24], cone_start, cone[25], r, g, b,
+                cone[30], coneStart, cone[31], r, g, b,
+                cone[28], coneStart, cone[29], r, g, b,
+                cone[26], coneStart, cone[27], r, g, b,
+                cone[24], coneStart, cone[25], r, g, b,
 
-                cone[22], cone_start, cone[23], r, g, b,
-                cone[20], cone_start, cone[21], r, g, b,
-                cone[18], cone_start, cone[19], r, g, b,
-                cone[16], cone_start, cone[17], r, g, b,
+                cone[22], coneStart, cone[23], r, g, b,
+                cone[20], coneStart, cone[21], r, g, b,
+                cone[18], coneStart, cone[19], r, g, b,
+                cone[16], coneStart, cone[17], r, g, b,
 
-                cone[14], cone_start, cone[15], r, g, b,
-                cone[12], cone_start, cone[13], r, g, b,
-                cone[10], cone_start, cone[11], r, g, b,
-                cone[8], cone_start, cone[9], r, g, b,
+                cone[14], coneStart, cone[15], r, g, b,
+                cone[12], coneStart, cone[13], r, g, b,
+                cone[10], coneStart, cone[11], r, g, b,
+                cone[8], coneStart, cone[9], r, g, b,
 
-                cone[6], cone_start, cone[7], r, g, b,
-                cone[4], cone_start, cone[5], r, g, b,
-                cone[2], cone_start, cone[3], r, g, b,
-                cone[0], cone_start, cone[1], r, g, b
+                cone[6], coneStart, cone[7], r, g, b,
+                cone[4], coneStart, cone[5], r, g, b,
+                cone[2], coneStart, cone[3], r, g, b,
+                cone[0], coneStart, cone[1], r, g, b
             };
 
             GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);

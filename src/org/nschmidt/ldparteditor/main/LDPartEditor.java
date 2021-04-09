@@ -37,7 +37,7 @@ public class LDPartEditor {
     public static void main(String[] args) {
 
         // Initialize the logger
-        NLogger.setDEBUG(args.length == 1 && "DEBUG".equals(args[0])); //$NON-NLS-1$
+        NLogger.setDebugging(args.length == 1 && "DEBUG".equals(args[0])); //$NON-NLS-1$
         NLogger.init();
 
         // Check if LDPartEditor should open a file

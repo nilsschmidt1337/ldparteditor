@@ -73,11 +73,11 @@ public class SmoothDialog extends SmoothDesign {
         }
 
         // MARK All final listeners will be configured here..
-        WidgetUtil(cb_Xaxis[0]).addSelectionListener(e -> x = cb_Xaxis[0].getSelection());
-        WidgetUtil(cb_Yaxis[0]).addSelectionListener(e -> y = cb_Yaxis[0].getSelection());
-        WidgetUtil(cb_Zaxis[0]).addSelectionListener(e -> z = cb_Zaxis[0].getSelection());
-        spn_pX[0].addValueChangeListener(spn -> iterations = spn.getValue());
-        spn_pY[0].addValueChangeListener(spn -> factor = spn.getValue());
+        WidgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> x = cbXaxisPtr[0].getSelection());
+        WidgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> y = cbYaxisPtr[0].getSelection());
+        WidgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> z = cbZaxisPtr[0].getSelection());
+        spnPXPtr[0].addValueChangeListener(spn -> iterations = spn.getValue());
+        spnPYPtr[0].addValueChangeListener(spn -> factor = spn.getValue());
         return super.open();
     }
 

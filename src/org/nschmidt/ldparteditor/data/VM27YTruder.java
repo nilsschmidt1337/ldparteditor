@@ -27,8 +27,8 @@ import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM27YTruder extends VM26LineIntersector {
 
-    private final double EPSILON = 0.000001;
-    private final double SMALL = 0.01;
+    private static final double EPSILON = 0.000001;
+    private static final double SMALL = 0.01;
     private double[] nullv = new double[] { 0.0, 0.0, 0.0 };
 
     protected VM27YTruder(DatFile linkedDatFile) {
@@ -97,12 +97,12 @@ class VM27YTruder extends VM26LineIntersector {
 
         int originalLineCount = 0;
         for (GData2 gData2 : originalSelection) {
-            inLine[originalLineCount][0][x] = gData2.X1.doubleValue();
-            inLine[originalLineCount][0][y] = gData2.Y1.doubleValue();
-            inLine[originalLineCount][0][z] = gData2.Z1.doubleValue();
-            inLine[originalLineCount][1][x] = gData2.X2.doubleValue();
-            inLine[originalLineCount][1][y] = gData2.Y2.doubleValue();
-            inLine[originalLineCount][1][z] = gData2.Z2.doubleValue();
+            inLine[originalLineCount][0][x] = gData2.x1p.doubleValue();
+            inLine[originalLineCount][0][y] = gData2.y1p.doubleValue();
+            inLine[originalLineCount][0][z] = gData2.z1p.doubleValue();
+            inLine[originalLineCount][1][x] = gData2.x2p.doubleValue();
+            inLine[originalLineCount][1][y] = gData2.y2p.doubleValue();
+            inLine[originalLineCount][1][z] = gData2.z2p.doubleValue();
             lineUsed[originalLineCount] = 0;
             originalLineCount++;
         }

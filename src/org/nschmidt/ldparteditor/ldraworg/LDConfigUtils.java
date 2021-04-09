@@ -73,7 +73,7 @@ public enum LDConfigUtils {
 
         Object[] messageArguments = {ldconfig, lines.size()};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-        formatter.setLocale(MyLanguage.LOCALE);
+        formatter.setLocale(MyLanguage.locale);
         formatter.applyPattern(I18n.E3D_REPLACE_LDCONFIG);
 
         MessageBox messageBoxReplace = new MessageBox(win.getShell(), SWT.ICON_QUESTION | SWT.YES | SWT.NO);

@@ -32,10 +32,10 @@ import org.eclipse.swt.dnd.TransferData;
 public class MyDummyTransfer extends ByteArrayTransfer {
     private static final String MYTYPENAME = "name_for_my_type"; //$NON-NLS-1$
     private static final int MYTYPEID = registerType(MYTYPENAME);
-    private static MyDummyTransfer _instance = new MyDummyTransfer();
+    private static MyDummyTransfer instance = new MyDummyTransfer();
 
     public static MyDummyTransfer getInstance() {
-        return _instance;
+        return instance;
     }
 
     @Override

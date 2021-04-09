@@ -42,9 +42,9 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
  */
 public class IntegerSpinner extends Composite {
 
-    private final NButton[] btn_Up = new NButton[1];
-    private final NButton[] btn_Down = new NButton[1];
-    private final Text[] txt_val = new Text[1];
+    private final NButton[] btnUpPtr = new NButton[1];
+    private final NButton[] btnDownPtr = new NButton[1];
+    private final Text[] txtValPtr = new Text[1];
 
     private int value;
     private int maximum;
@@ -52,7 +52,7 @@ public class IntegerSpinner extends Composite {
     private IntValueChangeAdapter myListener;
 
     private final IntegerSpinner me;
-    private final java.text.DecimalFormat NUMBER_FORMAT0F = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private final java.text.DecimalFormat numberFormat0f = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.locale));
 
     private volatile AtomicInteger counter = new AtomicInteger();
     private volatile boolean focus = true;
@@ -93,7 +93,7 @@ public class IntegerSpinner extends Composite {
         gd3.verticalAlignment = SWT.FILL;
 
         NButton dwn = new NButton(this, SWT.NONE);
-        this.btn_Down[0] = dwn;
+        this.btnDownPtr[0] = dwn;
         dwn.setImage(ResourceManager.getImage("icon16_previous.png")); //$NON-NLS-1$
         dwn.addMouseListener(new MouseListener() {
             @Override
@@ -111,7 +111,7 @@ public class IntegerSpinner extends Composite {
         });
 
         Text txt = new Text(this, SWT.BORDER);
-        this.txt_val[0] = txt;
+        this.txtValPtr[0] = txt;
         txt.setLayoutData(gd1);
         txt.setText("0"); //$NON-NLS-1$
         txt.addMouseWheelListener(new MouseWheelListener() {
@@ -134,11 +134,11 @@ public class IntegerSpinner extends Composite {
 
         txt.addListener(SWT.MouseDown, e -> {
             if (selectAll) {
-                txt_val[0].selectAll();
+                txtValPtr[0].selectAll();
                 selectAll = false;
                 new Thread( () -> {
                     focus = true;
-                    while (focus && !txt_val[0].isDisposed()) {
+                    while (focus && !txtValPtr[0].isDisposed()) {
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException ie) {
@@ -147,7 +147,7 @@ public class IntegerSpinner extends Composite {
                         }
                         Display.getDefault().asyncExec(() -> {
                             try {
-                                focus = txt_val[0].isFocusControl();
+                                focus = txtValPtr[0].isFocusControl();
                             } catch (SWTException swte) {
                                 NLogger.debug(getClass(), swte);
                                 return;
@@ -166,11 +166,11 @@ public class IntegerSpinner extends Composite {
                 return;
             }
 
-            int caret = txt_val[0].getCaretPosition();
+            int caret = txtValPtr[0].getCaretPosition();
             String text = null;
             final String result;
             try {
-                Number val = NUMBER_FORMAT0F.parse(txt_val[0].getText());
+                Number val = numberFormat0f.parse(txtValPtr[0].getText());
                 value = val.intValue();
                 if (value > maximum || value < minimum) {
                     oldValue[0] = value;
@@ -184,11 +184,11 @@ public class IntegerSpinner extends Composite {
 
                 if (oldValue[0] != value) {
                     oldValue[0] = value;
-                    text = NUMBER_FORMAT0F.format(value);
+                    text = numberFormat0f.format(value);
                 }
             } catch (ParseException ex) {
                 if (!invalidInput) {
-                    text = NUMBER_FORMAT0F.format(value);
+                    text = numberFormat0f.format(value);
                 }
             }
 
@@ -197,10 +197,10 @@ public class IntegerSpinner extends Composite {
             new Thread( () -> {
                 final int id = counter.getAndIncrement() + 1;
                 focus = true;
-                while (focus && counter.compareAndSet(id, id) && !forceUpdate && !txt_val[0].isDisposed()) {
+                while (focus && counter.compareAndSet(id, id) && !forceUpdate && !txtValPtr[0].isDisposed()) {
                     Display.getDefault().asyncExec(() -> {
                         try {
-                            focus = txt_val[0].isFocusControl();
+                            focus = txtValPtr[0].isFocusControl();
                         } catch (SWTException swte1) {
                             NLogger.debug(getClass(), swte1);
                             return;
@@ -213,25 +213,25 @@ public class IntegerSpinner extends Composite {
                         throw new LDPartEditorException(ie);
                     }
                 }
-                if (!counter.compareAndSet(id, id) || result == null || txt_val[0].isDisposed()) {
+                if (!counter.compareAndSet(id, id) || result == null || txtValPtr[0].isDisposed()) {
                     return;
                 }
                 Display.getDefault().asyncExec(() -> {
                     invalidInput = true;
                     forceUpdate = false;
                     try {
-                        txt_val[0].setText(result);
+                        txtValPtr[0].setText(result);
                     } catch (SWTException swte2) {
                         NLogger.debug(getClass(), swte2);
                     }
                 });
             }).start();
 
-            txt_val[0].setSelection(caret);
+            txtValPtr[0].setSelection(caret);
         });
 
         NButton up = new NButton(this, SWT.NONE);
-        this.btn_Up[0] = up;
+        this.btnUpPtr[0] = up;
         up.setImage(ResourceManager.getImage("icon16_next.png")); //$NON-NLS-1$
         up.addMouseListener(new MouseListener() {
             @Override
@@ -263,7 +263,7 @@ public class IntegerSpinner extends Composite {
     public void setValue(int value) {
         this.value = Math.min(value, maximum);
         this.value = Math.max(this.value, minimum);
-        txt_val[0].setText(NUMBER_FORMAT0F.format(this.value));
+        txtValPtr[0].setText(numberFormat0f.format(this.value));
         if (myListener != null)
             myListener.valueChanged(this);
     }
@@ -282,10 +282,10 @@ public class IntegerSpinner extends Composite {
 
     @Override
     public void setEnabled(boolean enabled) {
-        btn_Down[0].setEnabled(enabled);
-        btn_Up[0].setEnabled(enabled);
-        txt_val[0].setEditable(enabled);
-        txt_val[0].setEnabled(enabled);
+        btnDownPtr[0].setEnabled(enabled);
+        btnUpPtr[0].setEnabled(enabled);
+        txtValPtr[0].setEditable(enabled);
+        txtValPtr[0].setEnabled(enabled);
         super.setEnabled(enabled);
     }
 }

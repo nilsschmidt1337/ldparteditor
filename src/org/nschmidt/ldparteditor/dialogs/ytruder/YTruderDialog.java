@@ -47,13 +47,13 @@ public class YTruderDialog extends YTruderDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_value[0].addValueChangeListener(spn -> ys.setDistance(spn.getValue().doubleValue()));
-        spn_condlineAngleThreshold[0].addValueChangeListener(spn -> ys.setCondlineAngleThreshold(spn.getValue().doubleValue()));
-        cmb_axis[0].addListener(SWT.Selection, event -> ys.setAxis(cmb_axis[0].getSelectionIndex()));
-        WidgetUtil(btn_TranslateByDistance[0]).addSelectionListener(e -> ys.setMode(1));
-        WidgetUtil(btn_SymmetryAcrossPlane[0]).addSelectionListener(e -> ys.setMode(2));
-        WidgetUtil(btn_ProjectionOnPlane[0]).addSelectionListener(e -> ys.setMode(3));
-        WidgetUtil(btn_ExtrudeRadially[0]).addSelectionListener(e -> ys.setMode(4));
+        spnValuePtr[0].addValueChangeListener(spn -> ys.setDistance(spn.getValue().doubleValue()));
+        spnCondlineAngleThresholdPtr[0].addValueChangeListener(spn -> ys.setCondlineAngleThreshold(spn.getValue().doubleValue()));
+        cmbAxisPtr[0].addListener(SWT.Selection, event -> ys.setAxis(cmbAxisPtr[0].getSelectionIndex()));
+        WidgetUtil(btnTranslateByDistancePtr[0]).addSelectionListener(e -> ys.setMode(1));
+        WidgetUtil(btnSymmetryAcrossPlanePtr[0]).addSelectionListener(e -> ys.setMode(2));
+        WidgetUtil(btnProjectionOnPlanePtr[0]).addSelectionListener(e -> ys.setMode(3));
+        WidgetUtil(btnExtrudeRadiallyPtr[0]).addSelectionListener(e -> ys.setMode(4));
         return super.open();
     }
 }

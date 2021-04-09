@@ -60,31 +60,31 @@ public final class GData5 extends GData {
     final float y4;
     final float z4;
 
-    final BigDecimal X1;
-    final BigDecimal Y1;
-    final BigDecimal Z1;
-    final BigDecimal X2;
-    final BigDecimal Y2;
-    final BigDecimal Z2;
-    final BigDecimal X3;
-    final BigDecimal Y3;
-    final BigDecimal Z3;
-    final BigDecimal X4;
-    final BigDecimal Y4;
-    final BigDecimal Z4;
+    final BigDecimal x1p;
+    final BigDecimal y1p;
+    final BigDecimal z1p;
+    final BigDecimal x2p;
+    final BigDecimal y2p;
+    final BigDecimal z2p;
+    final BigDecimal x3p;
+    final BigDecimal y3p;
+    final BigDecimal z3p;
+    final BigDecimal x4p;
+    final BigDecimal y4p;
+    final BigDecimal z4p;
 
-    private final Vector4f A = new Vector4f(0, 0, 0, 1f);
-    private final Vector4f B = new Vector4f(0, 0, 0, 1f);
-    private final Vector4f C = new Vector4f(0, 0, 0, 1f);
-    private final Vector4f D = new Vector4f(0, 0, 0, 1f);
+    private final Vector4f sA = new Vector4f(0, 0, 0, 1f);
+    private final Vector4f sB = new Vector4f(0, 0, 0, 1f);
+    private final Vector4f sC = new Vector4f(0, 0, 0, 1f);
+    private final Vector4f sD = new Vector4f(0, 0, 0, 1f);
 
-    private final Vector4f A2 = new Vector4f(0, 0, 0, 1f);
-    private final Vector4f B2 = new Vector4f(0, 0, 0, 1f);
-    private final Vector4f C2 = new Vector4f(0, 0, 0, 1f);
-    private final Vector4f D2 = new Vector4f(0, 0, 0, 1f);
+    private final Vector4f sA2 = new Vector4f(0, 0, 0, 1f);
+    private final Vector4f sB2 = new Vector4f(0, 0, 0, 1f);
+    private final Vector4f sC2 = new Vector4f(0, 0, 0, 1f);
+    private final Vector4f sD2 = new Vector4f(0, 0, 0, 1f);
 
-    private final Vector4f N = new Vector4f(0, 0, 0, 1f);
-    private Matrix4f M = new Matrix4f();
+    private final Vector4f n = new Vector4f(0, 0, 0, 1f);
+    private Matrix4f m = new Matrix4f();
 
     private final float[][] lGeom;
 
@@ -101,43 +101,43 @@ public final class GData5 extends GData {
         this.a = a;
         this.lGeom = MathHelper.getLineVertices(new Vector3f(x1.floatValue(), y1.floatValue(), z1.floatValue()), new Vector3f(x2.floatValue(), y2.floatValue(), z2.floatValue()),
                 parent.productMatrix);
-        this.X1 = x1;
-        this.Y1 = y1;
-        this.Z1 = z1;
-        this.X2 = x2;
-        this.Y2 = y2;
-        this.Z2 = z2;
-        this.X3 = x3;
-        this.Y3 = y3;
-        this.Z3 = z3;
-        this.X4 = x4;
-        this.Y4 = y4;
-        this.Z4 = z4;
-        this.x1 = X1.floatValue() * 1000f;
-        this.y1 = Y1.floatValue() * 1000f;
-        this.z1 = Z1.floatValue() * 1000f;
-        this.x2 = X2.floatValue() * 1000f;
-        this.y2 = Y2.floatValue() * 1000f;
-        this.z2 = Z2.floatValue() * 1000f;
-        this.x3 = X3.floatValue() * 1000f;
-        this.y3 = Y3.floatValue() * 1000f;
-        this.z3 = Z3.floatValue() * 1000f;
-        this.x4 = X4.floatValue() * 1000f;
-        this.y4 = Y4.floatValue() * 1000f;
-        this.z4 = Z4.floatValue() * 1000f;
+        this.x1p = x1;
+        this.y1p = y1;
+        this.z1p = z1;
+        this.x2p = x2;
+        this.y2p = y2;
+        this.z2p = z2;
+        this.x3p = x3;
+        this.y3p = y3;
+        this.z3p = z3;
+        this.x4p = x4;
+        this.y4p = y4;
+        this.z4p = z4;
+        this.x1 = x1p.floatValue() * 1000f;
+        this.y1 = y1p.floatValue() * 1000f;
+        this.z1 = z1p.floatValue() * 1000f;
+        this.x2 = x2p.floatValue() * 1000f;
+        this.y2 = y2p.floatValue() * 1000f;
+        this.z2 = z2p.floatValue() * 1000f;
+        this.x3 = x3p.floatValue() * 1000f;
+        this.y3 = y3p.floatValue() * 1000f;
+        this.z3 = z3p.floatValue() * 1000f;
+        this.x4 = x4p.floatValue() * 1000f;
+        this.y4 = y4p.floatValue() * 1000f;
+        this.z4 = z4p.floatValue() * 1000f;
         datFile.getVertexManager().add(this);
-        A2.x = this.x1;
-        B2.x = this.x2;
-        C2.x = this.x3;
-        D2.x = this.x4;
-        A2.y = this.y1;
-        B2.y = this.y2;
-        C2.y = this.y3;
-        D2.y = this.y4;
-        A2.z = this.z1;
-        B2.z = this.z2;
-        C2.z = this.z3;
-        D2.z = this.z4;
+        sA2.x = this.x1;
+        sB2.x = this.x2;
+        sC2.x = this.x3;
+        sD2.x = this.x4;
+        sA2.y = this.y1;
+        sB2.y = this.y2;
+        sC2.y = this.y3;
+        sD2.y = this.y4;
+        sA2.z = this.z1;
+        sB2.z = this.z2;
+        sC2.z = this.z3;
+        sD2.z = this.z4;
 
     }
 
@@ -151,18 +151,18 @@ public final class GData5 extends GData {
         this.g = g;
         this.b = b;
         this.a = a;
-        this.X1 = x1;
-        this.Y1 = y1;
-        this.Z1 = z1;
-        this.X2 = x2;
-        this.Y2 = y2;
-        this.Z2 = z2;
-        this.X3 = x3;
-        this.Y3 = y3;
-        this.Z3 = z3;
-        this.X4 = x4;
-        this.Y4 = y4;
-        this.Z4 = z4;
+        this.x1p = x1;
+        this.y1p = y1;
+        this.z1p = z1;
+        this.x2p = x2;
+        this.y2p = y2;
+        this.z2p = z2;
+        this.x3p = x3;
+        this.y3p = y3;
+        this.z3p = z3;
+        this.x4p = x4;
+        this.y4p = y4;
+        this.z4p = z4;
         this.x1 = x12;
         this.y1 = y12;
         this.z1 = z12;
@@ -177,18 +177,18 @@ public final class GData5 extends GData {
         this.z4 = z42;
         this.lGeom = MathHelper.getLineVertices1000(new Vector3f(this.x1, this.y1, this.z1), new Vector3f(this.x2, this.y2, this.z2), parent.productMatrix);
         datFile.getVertexManager().add(this);
-        A2.x = this.x1;
-        B2.x = this.x2;
-        C2.x = this.x3;
-        D2.x = this.x4;
-        A2.y = this.y1;
-        B2.y = this.y2;
-        C2.y = this.y3;
-        D2.y = this.y4;
-        A2.z = this.z1;
-        B2.z = this.z2;
-        C2.z = this.z3;
-        D2.z = this.z4;
+        sA2.x = this.x1;
+        sB2.x = this.x2;
+        sC2.x = this.x3;
+        sD2.x = this.x4;
+        sA2.y = this.y1;
+        sB2.y = this.y2;
+        sC2.y = this.y3;
+        sD2.y = this.y4;
+        sA2.z = this.z1;
+        sB2.z = this.z2;
+        sC2.z = this.z3;
+        sD2.z = this.z4;
 
     }
 
@@ -221,18 +221,18 @@ public final class GData5 extends GData {
         this.x4 = v4.x;
         this.y4 = v4.y;
         this.z4 = v4.z;
-        this.X1 = v1.X;
-        this.Y1 = v1.Y;
-        this.Z1 = v1.Z;
-        this.X2 = v2.X;
-        this.Y2 = v2.Y;
-        this.Z2 = v2.Z;
-        this.X3 = v3.X;
-        this.Y3 = v3.Y;
-        this.Z3 = v3.Z;
-        this.X4 = v4.X;
-        this.Y4 = v4.Y;
-        this.Z4 = v4.Z;
+        this.x1p = v1.xp;
+        this.y1p = v1.yp;
+        this.z1p = v1.zp;
+        this.x2p = v2.xp;
+        this.y2p = v2.yp;
+        this.z2p = v2.zp;
+        this.x3p = v3.xp;
+        this.y3p = v3.yp;
+        this.z3p = v3.zp;
+        this.x4p = v4.xp;
+        this.y4p = v4.yp;
+        this.z4p = v4.zp;
         this.lGeom = null;
     }
 
@@ -266,30 +266,30 @@ public final class GData5 extends GData {
         this.y4 = v4.y;
         this.z4 = v4.z;
         this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
-        A2.x = this.x1;
-        B2.x = this.x2;
-        C2.x = this.x3;
-        D2.x = this.x4;
-        A2.y = this.y1;
-        B2.y = this.y2;
-        C2.y = this.y3;
-        D2.y = this.y4;
-        A2.z = this.z1;
-        B2.z = this.z2;
-        C2.z = this.z3;
-        D2.z = this.z4;
-        this.X1 = null;
-        this.Y1 = null;
-        this.Z1 = null;
-        this.X2 = null;
-        this.Y2 = null;
-        this.Z2 = null;
-        this.X3 = null;
-        this.Y3 = null;
-        this.Z3 = null;
-        this.X4 = null;
-        this.Y4 = null;
-        this.Z4 = null;
+        sA2.x = this.x1;
+        sB2.x = this.x2;
+        sC2.x = this.x3;
+        sD2.x = this.x4;
+        sA2.y = this.y1;
+        sB2.y = this.y2;
+        sC2.y = this.y3;
+        sD2.y = this.y4;
+        sA2.z = this.z1;
+        sB2.z = this.z2;
+        sC2.z = this.z3;
+        sD2.z = this.z4;
+        this.x1p = null;
+        this.y1p = null;
+        this.z1p = null;
+        this.x2p = null;
+        this.y2p = null;
+        this.z2p = null;
+        this.x3p = null;
+        this.y3p = null;
+        this.z3p = null;
+        this.x4p = null;
+        this.y4p = null;
+        this.z4p = null;
     }
 
     GData5(final int colourNumber, float r, float g, float b, float a, Vertex v1, Vertex v2, Vertex v3, Vertex v4, GData1 parent, DatFile datFile) {
@@ -299,18 +299,18 @@ public final class GData5 extends GData {
         this.g = g;
         this.b = b;
         this.a = a;
-        this.X1 = v1.X;
-        this.Y1 = v1.Y;
-        this.Z1 = v1.Z;
-        this.X2 = v2.X;
-        this.Y2 = v2.Y;
-        this.Z2 = v2.Z;
-        this.X3 = v3.X;
-        this.Y3 = v3.Y;
-        this.Z3 = v3.Z;
-        this.X4 = v4.X;
-        this.Y4 = v4.Y;
-        this.Z4 = v4.Z;
+        this.x1p = v1.xp;
+        this.y1p = v1.yp;
+        this.z1p = v1.zp;
+        this.x2p = v2.xp;
+        this.y2p = v2.yp;
+        this.z2p = v2.zp;
+        this.x3p = v3.xp;
+        this.y3p = v3.yp;
+        this.z3p = v3.zp;
+        this.x4p = v4.xp;
+        this.y4p = v4.yp;
+        this.z4p = v4.zp;
         this.x1 = v1.x;
         this.y1 = v1.y;
         this.z1 = v1.z;
@@ -325,18 +325,18 @@ public final class GData5 extends GData {
         this.z4 = v4.z;
         this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
         datFile.getVertexManager().add(this);
-        A2.x = this.x1;
-        B2.x = this.x2;
-        C2.x = this.x3;
-        D2.x = this.x4;
-        A2.y = this.y1;
-        B2.y = this.y2;
-        C2.y = this.y3;
-        D2.y = this.y4;
-        A2.z = this.z1;
-        B2.z = this.z2;
-        C2.z = this.z3;
-        D2.z = this.z4;
+        sA2.x = this.x1;
+        sB2.x = this.x2;
+        sC2.x = this.x3;
+        sD2.x = this.x4;
+        sA2.y = this.y1;
+        sB2.y = this.y2;
+        sC2.y = this.y3;
+        sD2.y = this.y4;
+        sA2.z = this.z1;
+        sB2.z = this.z2;
+        sC2.z = this.z3;
+        sD2.z = this.z4;
     }
 
     @Override
@@ -366,21 +366,21 @@ public final class GData5 extends GData {
         default:
             final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
             if (m2 == null) {
-                Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
-                GData.CACHE_viewByProjection.put(parent, M);
+                Matrix4f.mul(c3d.getViewport(), parent.productMatrix, m);
+                GData.CACHE_viewByProjection.put(parent, m);
             } else {
-                M = m2;
+                m = m2;
             }
             // Calculate the real coordinates
-            Matrix4f.transform(M, A2, A);
-            Matrix4f.transform(M, B2, B);
-            Matrix4f.transform(M, C2, C);
-            Matrix4f.transform(M, D2, D);
+            Matrix4f.transform(m, sA2, sA);
+            Matrix4f.transform(m, sB2, sB);
+            Matrix4f.transform(m, sC2, sC);
+            Matrix4f.transform(m, sD2, sD);
 
-            N.x = A.y - B.y;
-            N.y = B.x - A.x;
+            n.x = sA.y - sB.y;
+            n.y = sB.x - sA.x;
 
-            result = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null));
+            result = zoom / Vector4f.dot(n, Vector4f.sub(sC, sA, null)) * Vector4f.dot(n, Vector4f.sub(sD, sA, null));
             break;
         }
 
@@ -388,7 +388,7 @@ public final class GData5 extends GData {
 
             if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
-            if (zoom > View.edge_threshold) {
+            if (zoom > View.edgeThreshold) {
 
                 GL11.glColor4f(r, g, b, a);
 
@@ -398,7 +398,7 @@ public final class GData5 extends GData {
 
                 if (GData.globalNegativeDeterminant) {
 
-                    GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                    GL20Primitives.sphereInv.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -421,11 +421,11 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                     GL11.glEnd();
 
-                    GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                    GL20Primitives.sphereInv.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
                 } else {
 
-                    GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                    GL20Primitives.sphere.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -448,7 +448,7 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                     GL11.glEnd();
 
-                    GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                    GL20Primitives.sphere.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
                 }
 
@@ -483,10 +483,10 @@ public final class GData5 extends GData {
 
         final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
         if (m2 == null) {
-            Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
-            GData.CACHE_viewByProjection.put(parent, M);
+            Matrix4f.mul(c3d.getViewport(), parent.productMatrix, m);
+            GData.CACHE_viewByProjection.put(parent, m);
         } else {
-            M = m2;
+            m = m2;
         }
 
         float result;
@@ -504,27 +504,27 @@ public final class GData5 extends GData {
             return;
         default:
             // Calculate the real coordinates
-            Matrix4f.transform(M, A2, A);
-            Matrix4f.transform(M, B2, B);
-            Matrix4f.transform(M, C2, C);
-            Matrix4f.transform(M, D2, D);
+            Matrix4f.transform(m, sA2, sA);
+            Matrix4f.transform(m, sB2, sB);
+            Matrix4f.transform(m, sC2, sC);
+            Matrix4f.transform(m, sD2, sD);
 
-            N.x = A.y - B.y;
-            N.y = B.x - A.x;
+            n.x = sA.y - sB.y;
+            n.y = sB.x - sA.x;
 
-            result = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null));
+            result = zoom / Vector4f.dot(n, Vector4f.sub(sC, sA, null)) * Vector4f.dot(n, Vector4f.sub(sD, sA, null));
             break;
         }
 
         if (result > -1e-20f) {
 
-            final float r = MathHelper.randomFloat(ID, 0);
-            final float g = MathHelper.randomFloat(ID, 1);
-            final float b = MathHelper.randomFloat(ID, 2);
+            final float r = MathHelper.randomFloat(id, 0);
+            final float g = MathHelper.randomFloat(id, 1);
+            final float b = MathHelper.randomFloat(id, 2);
 
             if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
-            if (zoom > View.edge_threshold) {
+            if (zoom > View.edgeThreshold) {
 
                 GL11.glColor4f(r, g, b, a);
 
@@ -534,7 +534,7 @@ public final class GData5 extends GData {
 
                 if (GData.globalNegativeDeterminant) {
 
-                    GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                    GL20Primitives.sphereInv.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -557,11 +557,11 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                     GL11.glEnd();
 
-                    GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                    GL20Primitives.sphereInv.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
                 } else {
 
-                    GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                    GL20Primitives.sphere.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                     GL11.glBegin(GL11.GL_QUAD_STRIP);
                     GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -584,7 +584,7 @@ public final class GData5 extends GData {
                     GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                     GL11.glEnd();
 
-                    GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                    GL20Primitives.sphere.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
                 }
 
@@ -620,25 +620,25 @@ public final class GData5 extends GData {
 
         final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
         if (m2 == null) {
-            Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
-            GData.CACHE_viewByProjection.put(parent, M);
+            Matrix4f.mul(c3d.getViewport(), parent.productMatrix, m);
+            GData.CACHE_viewByProjection.put(parent, m);
         } else {
-            M = m2;
+            m = m2;
         }
         // Calculate the real coordinates
-        Matrix4f.transform(M, A2, A);
-        Matrix4f.transform(M, B2, B);
-        Matrix4f.transform(M, C2, C);
-        Matrix4f.transform(M, D2, D);
+        Matrix4f.transform(m, sA2, sA);
+        Matrix4f.transform(m, sB2, sB);
+        Matrix4f.transform(m, sC2, sC);
+        Matrix4f.transform(m, sD2, sD);
 
-        N.x = A.y - B.y;
-        N.y = B.x - A.x;
+        n.x = sA.y - sB.y;
+        n.y = sB.x - sA.x;
 
-        final float result = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null));
+        final float result = zoom / Vector4f.dot(n, Vector4f.sub(sC, sA, null)) * Vector4f.dot(n, Vector4f.sub(sD, sA, null));
 
         if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
-        if (zoom > View.edge_threshold) {
+        if (zoom > View.edgeThreshold) {
 
             if (result > -1e-20f) {
                 GL11.glColor4f(0f, 0f, 0f, 1f);
@@ -657,7 +657,7 @@ public final class GData5 extends GData {
 
             if (GData.globalNegativeDeterminant) {
 
-                GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                GL20Primitives.sphereInv.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -680,11 +680,11 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                GL20Primitives.sphereInv.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             } else {
 
-                GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                GL20Primitives.sphere.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -707,7 +707,7 @@ public final class GData5 extends GData {
                 GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                GL20Primitives.sphere.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             }
 
@@ -781,21 +781,21 @@ public final class GData5 extends GData {
             default:
                 final Matrix4f m2 = GData.CACHE_viewByProjection.get(parent);
                 if (m2 == null) {
-                    Matrix4f.mul(c3d.getViewport(), parent.productMatrix, M);
-                    GData.CACHE_viewByProjection.put(parent, M);
+                    Matrix4f.mul(c3d.getViewport(), parent.productMatrix, m);
+                    GData.CACHE_viewByProjection.put(parent, m);
                 } else {
-                    M = m2;
+                    m = m2;
                 }
                 // Calculate the real coordinates
-                Matrix4f.transform(M, A2, A);
-                Matrix4f.transform(M, B2, B);
-                Matrix4f.transform(M, C2, C);
-                Matrix4f.transform(M, D2, D);
+                Matrix4f.transform(m, sA2, sA);
+                Matrix4f.transform(m, sB2, sB);
+                Matrix4f.transform(m, sC2, sC);
+                Matrix4f.transform(m, sD2, sD);
 
-                N.x = A.y - B.y;
-                N.y = B.x - A.x;
+                n.x = sA.y - sB.y;
+                n.y = sB.x - sA.x;
 
-                result = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null));
+                result = zoom / Vector4f.dot(n, Vector4f.sub(sC, sA, null)) * Vector4f.dot(n, Vector4f.sub(sD, sA, null));
                 break;
             }
 
@@ -860,29 +860,29 @@ public final class GData5 extends GData {
             lineBuilder.append(colourNumber);
         }
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X1));
+        lineBuilder.append(bigDecimalToString(x1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y1));
+        lineBuilder.append(bigDecimalToString(y1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z1));
+        lineBuilder.append(bigDecimalToString(z1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X2));
+        lineBuilder.append(bigDecimalToString(x2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y2));
+        lineBuilder.append(bigDecimalToString(y2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z2));
+        lineBuilder.append(bigDecimalToString(z2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X3));
+        lineBuilder.append(bigDecimalToString(x3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y3));
+        lineBuilder.append(bigDecimalToString(y3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z3));
+        lineBuilder.append(bigDecimalToString(z3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X4));
+        lineBuilder.append(bigDecimalToString(x4p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y4));
+        lineBuilder.append(bigDecimalToString(y4p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z4));
+        lineBuilder.append(bigDecimalToString(z4p));
         text = lineBuilder.toString();
         return text;
     }
@@ -898,16 +898,16 @@ public final class GData5 extends GData {
         BigDecimal[] v2;
         BigDecimal[] v3;
         BigDecimal[] v4;
-        if (X1 == null) {
+        if (x1p == null) {
             v1 = matrix.transform(new BigDecimal(x1 / 1000f), new BigDecimal(y1 / 1000f), new BigDecimal(z1 / 1000f));
             v2 = matrix.transform(new BigDecimal(x2 / 1000f), new BigDecimal(y2 / 1000f), new BigDecimal(z2 / 1000f));
             v3 = matrix.transform(new BigDecimal(x3 / 1000f), new BigDecimal(y3 / 1000f), new BigDecimal(z3 / 1000f));
             v4 = matrix.transform(new BigDecimal(x4 / 1000f), new BigDecimal(y4 / 1000f), new BigDecimal(z4 / 1000f));
         } else {
-            v1 = matrix.transform(X1, Y1, Z1);
-            v2 = matrix.transform(X2, Y2, Z2);
-            v3 = matrix.transform(X3, Y3, Z3);
-            v4 = matrix.transform(X4, Y4, Z4);
+            v1 = matrix.transform(x1p, y1p, z1p);
+            v2 = matrix.transform(x2p, y2p, z2p);
+            v3 = matrix.transform(x3p, y3p, z3p);
+            v4 = matrix.transform(x4p, y4p, z4p);
         }
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(5);
@@ -1018,29 +1018,29 @@ public final class GData5 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(col);
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X1));
+        lineBuilder.append(bigDecimalToString(x1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y1));
+        lineBuilder.append(bigDecimalToString(y1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z1));
+        lineBuilder.append(bigDecimalToString(z1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X2));
+        lineBuilder.append(bigDecimalToString(x2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y2));
+        lineBuilder.append(bigDecimalToString(y2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z2));
+        lineBuilder.append(bigDecimalToString(z2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X3));
+        lineBuilder.append(bigDecimalToString(x3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y3));
+        lineBuilder.append(bigDecimalToString(y3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z3));
+        lineBuilder.append(bigDecimalToString(z3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X4));
+        lineBuilder.append(bigDecimalToString(x4p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y4));
+        lineBuilder.append(bigDecimalToString(y4p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z4));
+        lineBuilder.append(bigDecimalToString(z4p));
         return lineBuilder.toString();
     }
 
@@ -1052,23 +1052,23 @@ public final class GData5 extends GData {
 
         final Matrix4f m2 = cacheViewByProjection.get(parent);
         if (m2 == null) {
-            Matrix4f.mul(viewport, parent.productMatrix, M);
-            cacheViewByProjection.put(parent, M);
+            Matrix4f.mul(viewport, parent.productMatrix, m);
+            cacheViewByProjection.put(parent, m);
         } else {
-            M = m2;
+            m = m2;
         }
 
         // Calculate the real coordinates
-        Matrix4f.transform(M, A2, A);
-        Matrix4f.transform(M, B2, B);
-        Matrix4f.transform(M, C2, C);
-        Matrix4f.transform(M, D2, D);
+        Matrix4f.transform(m, sA2, sA);
+        Matrix4f.transform(m, sB2, sB);
+        Matrix4f.transform(m, sC2, sC);
+        Matrix4f.transform(m, sD2, sD);
 
-        N.x = A.y - B.y;
-        N.y = B.x - A.x;
-        N.z = 0f;
-        N.w = 1f;
-        wasShown = zoom / Vector4f.dot(N, Vector4f.sub(C, A, null)) * Vector4f.dot(N, Vector4f.sub(D, A, null)) > -1e-20f;
+        n.x = sA.y - sB.y;
+        n.y = sB.x - sA.x;
+        n.z = 0f;
+        n.w = 1f;
+        wasShown = zoom / Vector4f.dot(n, Vector4f.sub(sC, sA, null)) * Vector4f.dot(n, Vector4f.sub(sD, sA, null)) > -1e-20f;
     }
 
     boolean wasShown() {

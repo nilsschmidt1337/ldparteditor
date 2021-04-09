@@ -43,9 +43,9 @@ class CopyDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    final NButton[] btn_1 = new NButton[1];
-    final NButton[] btn_2 = new NButton[1];
-    final NButton[] btn_3 = new NButton[1];
+    final NButton[] btn1 = new NButton[1];
+    final NButton[] btn2 = new NButton[1];
+    final NButton[] btn3 = new NButton[1];
 
     private final String fileName;
 
@@ -67,37 +67,37 @@ class CopyDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         NButton btn1 = new NButton(cmpContainer, SWT.NONE);
-        this.btn_1[0] = btn1;
+        this.btn1[0] = btn1;
         btn1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DIALOG_COPY_FILE_ONLY);
             btn1.setText(formatter.format(messageArguments));
         }
 
         NButton btn2 = new NButton(cmpContainer, SWT.NONE);
-        this.btn_2[0] = btn2;
+        this.btn2[0] = btn2;
         btn2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DIALOG_COPY_FILE_AND_REQUIRED);
             btn2.setText(formatter.format(messageArguments));
         }
 
         NButton btn3 = new NButton(cmpContainer, SWT.NONE);
-        this.btn_3[0] = btn3;
+        this.btn3[0] = btn3;
         btn3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DIALOG_COPY_FILE_AND_REQUIRED_AND_RELATED);
             btn3.setText(formatter.format(messageArguments));
         }

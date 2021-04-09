@@ -54,24 +54,24 @@ class ScaleDesign extends Dialog {
 
     static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
-    final NButton[] btn_Local = new NButton[1];
-    final NButton[] btn_Global = new NButton[1];
+    final NButton[] btnLocalPtr = new NButton[1];
+    final NButton[] btnGlobalPtr = new NButton[1];
 
-    final Button[] btn_Copy = new Button[1];
+    final Button[] btnCopyPtr = new Button[1];
 
-    final NButton[] cb_Xaxis = new NButton[1];
-    final NButton[] cb_Yaxis = new NButton[1];
-    final NButton[] cb_Zaxis = new NButton[1];
-    final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
-    final NButton[] btn_PivotClipboard = new NButton[1];
-    final NButton[] btn_PivotManipulator = new NButton[1];
-    final BigDecimalSpinner[] spn_pX = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_pY = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_pZ = new BigDecimalSpinner[1];
+    final NButton[] cbXaxisPtr = new NButton[1];
+    final NButton[] cbYaxisPtr = new NButton[1];
+    final NButton[] cbZaxisPtr = new NButton[1];
+    final BigDecimalSpinner[] spnXPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnYPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnZPtr = new BigDecimalSpinner[1];
+    final NButton[] btnPivotClipboardPtr = new NButton[1];
+    final NButton[] btnPivotManipulatorPtr = new NButton[1];
+    final BigDecimalSpinner[] spnPXPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnPYPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnPZPtr = new BigDecimalSpinner[1];
 
-    private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
+    private static final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
 
     // Use final only for subclass/listener references!
 
@@ -93,9 +93,9 @@ class ScaleDesign extends Dialog {
         }
         if (clipboardVertices.size() == 1) {
             p = clipboardVertices.iterator().next();
-            c = new Vertex(p.X, p.Y, p.Z);
+            c = new Vertex(p.xp, p.yp, p.zp);
         } else if (transformationMode == ManipulatorScope.LOCAL && manipulatorPosition != null) {
-            p = new Vertex(m.X, m.Y, m.Z);
+            p = new Vertex(m.xp, m.yp, m.zp);
         }
     }
 
@@ -128,7 +128,7 @@ class ScaleDesign extends Dialog {
         ToolItem toolItemTransformationModes = new ToolItem(cmpContainer, SWT.NONE, true);
         {
             NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
-            this.btn_Local[0] = btnLocal;
+            this.btnLocalPtr[0] = btnLocal;
             btnLocal.setToolTipText(I18n.E3D_LOCAL);
             btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.LOCAL) {
@@ -138,7 +138,7 @@ class ScaleDesign extends Dialog {
         }
         {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
-            this.btn_Global[0] = btnGlobal;
+            this.btnGlobalPtr[0] = btnGlobal;
             btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
             btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.GLOBAL) {
@@ -153,16 +153,16 @@ class ScaleDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             NButton cbXaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Xaxis[0] = cbXaxis;
+            this.cbXaxisPtr[0] = cbXaxis;
             cbXaxis.setText(I18n.SCALE_X);
             cbXaxis.setSelection(true);
 
             BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_X[0] = spnX;
+            this.spnXPtr[0] = spnX;
             spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnX.setMaximum(new BigDecimal(1000000));
             spnX.setMinimum(new BigDecimal(-1000000));
-            spnX.setValue(v.X);
+            spnX.setValue(v.xp);
         }
 
         {
@@ -171,16 +171,16 @@ class ScaleDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             NButton cbYaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Yaxis[0] = cbYaxis;
+            this.cbYaxisPtr[0] = cbYaxis;
             cbYaxis.setText(I18n.SCALE_Y);
             cbYaxis.setSelection(true);
 
             BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Y[0] = spnY;
+            this.spnYPtr[0] = spnY;
             spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnY.setMaximum(new BigDecimal(1000000));
             spnY.setMinimum(new BigDecimal(-1000000));
-            spnY.setValue(v.Y);
+            spnY.setValue(v.yp);
         }
 
         {
@@ -189,16 +189,16 @@ class ScaleDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             NButton cbZaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Zaxis[0] = cbZaxis;
+            this.cbZaxisPtr[0] = cbZaxis;
             cbZaxis.setText(I18n.SCALE_Z);
             cbZaxis.setSelection(true);
 
             BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Z[0] = spnZ;
+            this.spnZPtr[0] = spnZ;
             spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnZ.setMaximum(new BigDecimal(1000000));
             spnZ.setMinimum(new BigDecimal(-1000000));
-            spnZ.setValue(v.Z);
+            spnZ.setValue(v.zp);
         }
 
         Label lblPivot = new Label(cmpContainer, SWT.NONE);
@@ -209,7 +209,7 @@ class ScaleDesign extends Dialog {
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnPivotManipulator = new NButton(cmpTxt, SWT.NONE);
-            this.btn_PivotManipulator[0] = btnPivotManipulator;
+            this.btnPivotManipulatorPtr[0] = btnPivotManipulator;
             btnPivotManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnPivotManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
             btnPivotManipulator.setText(I18n.SCALE_PIVOT_MANIPULATOR);
@@ -219,7 +219,7 @@ class ScaleDesign extends Dialog {
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnPivotClipboard = new NButton(cmpTxt, SWT.NONE);
-            this.btn_PivotClipboard[0] = btnPivotClipboard;
+            this.btnPivotClipboardPtr[0] = btnPivotClipboard;
             btnPivotClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnPivotClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
             btnPivotClipboard.setText(I18n.SCALE_PIVOT_CLIPBOARD);
@@ -231,11 +231,11 @@ class ScaleDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(1, true));
 
             BigDecimalSpinner spnPX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_pX[0] = spnPX;
+            this.spnPXPtr[0] = spnPX;
             spnPX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spnPX.setMaximum(new BigDecimal(1000000));
             spnPX.setMinimum(new BigDecimal(-1000000));
-            spnPX.setValue(p.X);
+            spnPX.setValue(p.xp);
         }
 
 
@@ -245,11 +245,11 @@ class ScaleDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(1, true));
 
             BigDecimalSpinner spnPY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_pY[0] = spnPY;
+            this.spnPYPtr[0] = spnPY;
             spnPY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spnPY.setMaximum(new BigDecimal(1000000));
             spnPY.setMinimum(new BigDecimal(-1000000));
-            spnPY.setValue(p.Y);
+            spnPY.setValue(p.yp);
         }
 
         {
@@ -258,11 +258,11 @@ class ScaleDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(1, true));
 
             BigDecimalSpinner spnPZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_pZ[0] = spnPZ;
+            this.spnPZPtr[0] = spnPZ;
             spnPZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spnPZ.setMaximum(new BigDecimal(1000000));
             spnPZ.setMinimum(new BigDecimal(-1000000));
-            spnPZ.setValue(p.Z);
+            spnPZ.setValue(p.zp);
         }
 
         cmpContainer.pack();
@@ -276,7 +276,7 @@ class ScaleDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_Copy[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CREATE_TRANSFORMED_COPY, false);
+        btnCopyPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CREATE_TRANSFORMED_COPY, false);
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }

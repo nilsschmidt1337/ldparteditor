@@ -42,10 +42,10 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 class NewProjectDesign extends Dialog {
 
-    Text[] txt_projectPath = new Text[1];
-    Text[] txt_projectName = new Text[1];
-    NButton[] btn_browseProjectPath = new NButton[1];
-    Button[] btn_ok = new Button[1];
+    Text[] txtProjectPathPtr = new Text[1];
+    Text[] txtProjectNamePtr = new Text[1];
+    NButton[] btnBrowseProjectPathPtr = new NButton[1];
+    Button[] btnOkPtr = new Button[1];
     private boolean saveAs = false;
 
     NewProjectDesign(Shell parentShell, boolean saveAs) {
@@ -82,7 +82,7 @@ class NewProjectDesign extends Dialog {
         cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
         Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
-        this.txt_projectPath[0] = txtLdrawPath;
+        this.txtProjectPathPtr[0] = txtLdrawPath;
         txtLdrawPath.setEditable(false);
         txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
         if (!saveAs || Project.getProjectPath().equals(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath())) {
@@ -93,7 +93,7 @@ class NewProjectDesign extends Dialog {
         }
 
         NButton btnBrowseLdrawPath = new NButton(cmpPathChooser1, SWT.NONE);
-        this.btn_browseProjectPath[0] = btnBrowseLdrawPath;
+        this.btnBrowseProjectPathPtr[0] = btnBrowseLdrawPath;
         btnBrowseLdrawPath.setText(I18n.DIALOG_BROWSE);
 
         Label lblProjectName = new Label(cmpContainer, SWT.NONE);
@@ -103,7 +103,7 @@ class NewProjectDesign extends Dialog {
         cmpProjectName.setLayout(new RowLayout(SWT.HORIZONTAL));
 
         Text txtProjectName = new Text(cmpProjectName, SWT.BORDER);
-        this.txt_projectName[0] = txtProjectName;
+        this.txtProjectNamePtr[0] = txtProjectName;
         txtProjectName.setLayoutData(new RowData(294, SWT.DEFAULT));
 
         if (!txtLdrawPath.getText().isEmpty() && saveAs) {
@@ -120,8 +120,8 @@ class NewProjectDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-        btn_ok[0].setEnabled(false);
+        btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
+        btnOkPtr[0].setEnabled(false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 

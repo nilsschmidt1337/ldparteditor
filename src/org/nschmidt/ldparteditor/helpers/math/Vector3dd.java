@@ -31,7 +31,7 @@ public class Vector3dd extends Vector3d implements Comparable<Vector3dd> {
     }
 
     public Vector3dd(Vector3d tmp) {
-        super(tmp.X, tmp.Y, tmp.Z);
+        super(tmp.x, tmp.y, tmp.z);
     }
     @Override
     public int hashCode() {
@@ -42,28 +42,28 @@ public class Vector3dd extends Vector3d implements Comparable<Vector3dd> {
     @Override
     public boolean equals(Object obj) {
         Vector3dd other = (Vector3dd) obj;
-        return other == this || this.X.subtract(other.X).abs().compareTo(MIN_DIST) < 0 && this.Y.subtract(other.Y).abs().compareTo(MIN_DIST) < 0 && this.Z.subtract(other.Z).abs().compareTo(MIN_DIST) < 0;
+        return other == this || this.x.subtract(other.x).abs().compareTo(MIN_DIST) < 0 && this.y.subtract(other.y).abs().compareTo(MIN_DIST) < 0 && this.z.subtract(other.z).abs().compareTo(MIN_DIST) < 0;
     }
 
     @Override
     public String toString() {
-        return X + " | " + Y + " | " + Z; //$NON-NLS-1$//$NON-NLS-2$
+        return x + " | " + y + " | " + z; //$NON-NLS-1$//$NON-NLS-2$
     }
 
     private static final BigDecimal EPSILON = new BigDecimal("0.000000001"); //$NON-NLS-1$
     public Vector3dd round() {
-        this.X = X.round(new MathContext(7, RoundingMode.HALF_UP));
-        this.Y = Y.round(new MathContext(7, RoundingMode.HALF_UP));
-        this.Z = Z.round(new MathContext(7, RoundingMode.HALF_UP));
-        if (this.X.abs().compareTo(EPSILON) <= 0) this.X = BigDecimal.ZERO;
-        if (this.Y.abs().compareTo(EPSILON) <= 0) this.Y = BigDecimal.ZERO;
-        if (this.Z.abs().compareTo(EPSILON) <= 0) this.Z = BigDecimal.ZERO;
+        this.x = x.round(new MathContext(7, RoundingMode.HALF_UP));
+        this.y = y.round(new MathContext(7, RoundingMode.HALF_UP));
+        this.z = z.round(new MathContext(7, RoundingMode.HALF_UP));
+        if (this.x.abs().compareTo(EPSILON) <= 0) this.x = BigDecimal.ZERO;
+        if (this.y.abs().compareTo(EPSILON) <= 0) this.y = BigDecimal.ZERO;
+        if (this.z.abs().compareTo(EPSILON) <= 0) this.z = BigDecimal.ZERO;
         return this;
     }
     @Override
     public int compareTo(Vector3dd o) {
         {
-            BigDecimal d1 = X.subtract(o.X);
+            BigDecimal d1 = x.subtract(o.x);
             int c1 = d1.abs().compareTo(EPSILON);
             switch (c1) {
             case 0:
@@ -74,7 +74,7 @@ public class Vector3dd extends Vector3d implements Comparable<Vector3dd> {
             }
         }
         {
-            BigDecimal d1 = Y.subtract(o.Y);
+            BigDecimal d1 = y.subtract(o.y);
             int c1 = d1.abs().compareTo(EPSILON);
             switch (c1) {
             case 0:
@@ -85,7 +85,7 @@ public class Vector3dd extends Vector3d implements Comparable<Vector3dd> {
             }
         }
         {
-            BigDecimal d1 = Z.subtract(o.Z);
+            BigDecimal d1 = z.subtract(o.z);
             int c1 = d1.abs().compareTo(EPSILON);
             switch (c1) {
             case 0:

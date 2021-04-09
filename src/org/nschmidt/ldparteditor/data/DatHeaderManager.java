@@ -55,7 +55,7 @@ public class DatHeaderManager {
         this.df = df;
     }
 
-    volatile ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> CACHE_headerHints = new ThreadsafeTreeMap<>(); // Cleared
+    volatile ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> cachedHeaderHints = new ThreadsafeTreeMap<>(); // Cleared
 
     void pushDatHeaderCheck(GData data, StyledText compositeText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount) {
         if (df.isReadOnly()) return;
@@ -628,11 +628,11 @@ public class DatHeaderManager {
                                 final boolean doWait = !allHints.isEmpty();
 
                                 state = h;
-                                int firstKey = CACHE_headerHints.isEmpty() ? Integer.MAX_VALUE : CACHE_headerHints.firstKey();
+                                int firstKey = cachedHeaderHints.isEmpty() ? Integer.MAX_VALUE : cachedHeaderHints.firstKey();
                                 firstKey -= 1;
-                                CACHE_headerHints.put(firstKey, allHints);
-                                if (CACHE_headerHints.size() > 3) {
-                                    CACHE_headerHints.remove(CACHE_headerHints.lastKey());
+                                cachedHeaderHints.put(firstKey, allHints);
+                                if (cachedHeaderHints.size() > 3) {
+                                    cachedHeaderHints.remove(cachedHeaderHints.lastKey());
                                 }
 
                                 if (doWait) {
@@ -687,7 +687,7 @@ public class DatHeaderManager {
                             NLogger.error(getClass(), e);
                         }
                     }
-                    CACHE_headerHints.clear();
+                    cachedHeaderHints.clear();
                 }
 
                 private void registerHint(int lineNumber, String errno, String message, boolean[] registered, ArrayList<ParsingResult> allHints) {
@@ -698,7 +698,7 @@ public class DatHeaderManager {
                     registered[0] = true;
                     Object[] messageArguments = args;
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.setLocale(MyLanguage.locale);
                     formatter.applyPattern(message);
                     allHints.add(new ParsingResult(formatter.format(messageArguments), "[H" + errno + "] " + I18n.DATPARSER_HEADER_HINT, ResultType.HINT, lineNumber)); //$NON-NLS-1$ //$NON-NLS-2$
                 }

@@ -42,9 +42,9 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 class IntersectorDesign extends Dialog {
 
     final IntersectorSettings ins;
-    final Combo[] cmb_colourise = new Combo[1];
-    final NButton[] btn_hideOther = new NButton[1];
-    final Combo[] cmb_scope = new Combo[1];
+    final Combo[] cmbColourise = new Combo[1];
+    final NButton[] btnHideOther = new NButton[1];
+    final Combo[] cmbScope = new Combo[1];
 
     // Use final only for subclass/listener references!
 
@@ -75,12 +75,12 @@ class IntersectorDesign extends Dialog {
         lblDescription.setText(I18n.INTERSECTOR_DESCRIPTION);
         
         NButton btnHideOther = new NButton(cmpContainer, SWT.CHECK);
-        this.btn_hideOther[0] = btnHideOther;
+        this.btnHideOther[0] = btnHideOther;
         btnHideOther.setText(I18n.INTERSECTOR_HIDE_OTHER);
         btnHideOther.setSelection(ins.isHidingOther());
         
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmbScope;
+        this.cmbScope[0] = cmbScope;
         cmbScope.setItems(new String[] {I18n.INTERSECTOR_SCOPE_FILE, I18n.INTERSECTOR_SCOPE_SELECTION});
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(ins.getScope()));
@@ -89,7 +89,7 @@ class IntersectorDesign extends Dialog {
 
         {
             Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_colourise[0] = cmbColourise;
+            this.cmbColourise[0] = cmbColourise;
             cmbColourise.setItems(new String[] {I18n.INTERSECTOR_NO_MODS, I18n.INTERSECTOR_COLOUR_MODS});
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbColourise.setText(cmbColourise.getItem(ins.isColourise() ? 1 : 0));

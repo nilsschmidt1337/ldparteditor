@@ -29,7 +29,7 @@ import org.nschmidt.ldparteditor.data.GDataTEX;
 
 public class CSGMesh extends CSGPrimitive implements Primitive {
 
-    public final int ID = id_counter.getAndIncrement();
+    public final int id = id_counter.getAndIncrement();
 
     private final GDataCSG start;
     private final ArrayList<GData> cachedData;
@@ -48,7 +48,7 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
         if (!needCacheRefresh(cachedData, start, df) && !polygonCache.isEmpty()) {
             for (Polygon p : polygonCache) {
                 GColourIndex i = p.getColour();
-                p.setColour(new GColourIndex(i.getColour(), ID));
+                p.setColour(new GColourIndex(i.getColour(), id));
             }
             return polygonCache;
         }
@@ -73,7 +73,7 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
                         new VectorCSGd(g3.x1, g3.y1, g3.z1),
                         new VectorCSGd(g3.x2, g3.y2, g3.z2), new VectorCSGd(g3.x3, g3.y3, g3.z3)
                         );
-                p1.setColour(new GColourIndex(colour2, ID));
+                p1.setColour(new GColourIndex(colour2, id));
                 polygons.add(p1);
             } else {
                 GData4 g4 = (GData4) g;
@@ -91,8 +91,8 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
                         new VectorCSGd(g4.x3, g4.y3, g4.z3),
                         new VectorCSGd(g4.x4, g4.y4, g4.z4), new VectorCSGd(g4.x1, g4.y1, g4.z1)
                         );
-                p1.setColour(new GColourIndex(colour2, ID));
-                p2.setColour(new GColourIndex(colour2, ID));
+                p1.setColour(new GColourIndex(colour2, id));
+                p2.setColour(new GColourIndex(colour2, id));
                 polygons.add(p1);
                 polygons.add(p2);
             }

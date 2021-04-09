@@ -43,7 +43,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 class SnapshotDesign extends Dialog {
 
     // Use final only for subclass/listener references!
-    final Combo[] cmb_snapshot = new Combo[1];
+    final Combo[] cmbSnapshotPtr = new Combo[1];
     final ArrayList<MemorySnapshot> snapshots;
     final MemorySnapshot[] selection;
 
@@ -73,7 +73,7 @@ class SnapshotDesign extends Dialog {
 
         {
             Combo cmbSnapshot = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_snapshot[0] = cmbSnapshot;
+            this.cmbSnapshotPtr[0] = cmbSnapshot;
 
             String[] items = new String[snapshots.size()];
             for (int i = 0; i < items.length; i++) {

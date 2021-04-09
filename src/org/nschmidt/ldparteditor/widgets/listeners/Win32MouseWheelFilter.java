@@ -57,10 +57,10 @@ public class Win32MouseWheelFilter implements Listener {
 
     private final Display   fDisplay;
 
-    private int             WM_VSCROLL;
-    private int             WM_HSCROLL;
-    private int             SB_LINEUP;
-    private int             SB_LINEDOWN;
+    private int             wmVscroll;
+    private int             wmHscroll;
+    private int             sbLineup;
+    private int             sbLinedown;
 
     private Method          fSendEventMethod32;
     private Method          fSendEventMethod64;
@@ -85,10 +85,10 @@ public class Win32MouseWheelFilter implements Listener {
 
         try {
             Class<?> os = Class.forName("org.eclipse.swt.internal.win32.OS"); //$NON-NLS-1$
-            WM_VSCROLL = os.getDeclaredField("WM_VSCROLL").getInt(null); //$NON-NLS-1$
-            WM_HSCROLL = os.getDeclaredField("WM_HSCROLL").getInt(null); //$NON-NLS-1$
-            SB_LINEUP = os.getDeclaredField("SB_LINEUP").getInt(null); //$NON-NLS-1$
-            SB_LINEDOWN = os.getDeclaredField("SB_LINEDOWN").getInt(null); //$NON-NLS-1$
+            wmVscroll = os.getDeclaredField("WM_VSCROLL").getInt(null); //$NON-NLS-1$
+            wmHscroll = os.getDeclaredField("WM_HSCROLL").getInt(null); //$NON-NLS-1$
+            sbLineup = os.getDeclaredField("SB_LINEUP").getInt(null); //$NON-NLS-1$
+            sbLinedown = os.getDeclaredField("SB_LINEDOWN").getInt(null); //$NON-NLS-1$
 
             try {
                 // Try the 32-bit version first
@@ -192,18 +192,18 @@ public class Win32MouseWheelFilter implements Listener {
                         || !vBar.isEnabled()
                         || !vBar.isVisible()) {
                     // There is no vertical ScrollBar, or it can't be used.
-                    msg = WM_HSCROLL;
+                    msg = wmHscroll;
                 } else
-                    msg = WM_VSCROLL;
+                    msg = wmVscroll;
             } else {
-                msg = WM_HSCROLL;
+                msg = wmHscroll;
             }
 
             int count = event.count;
-            int wParam = SB_LINEUP;
+            int wParam = sbLineup;
             if (event.count < 0) {
                 count = -count;
-                wParam = SB_LINEDOWN;
+                wParam = sbLinedown;
             }
 
             try {

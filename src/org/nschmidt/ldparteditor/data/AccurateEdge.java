@@ -38,19 +38,19 @@ class AccurateEdge {
     public boolean equals(Object obj) {
         AccurateEdge other = (AccurateEdge) obj;
         return
-                this.v1.X.compareTo(other.v1.X) == 0 &&
-                this.v1.Y.compareTo(other.v1.Y) == 0 &&
-                this.v1.Z.compareTo(other.v1.Z) == 0 &&
-                this.v2.X.compareTo(other.v2.X) == 0 &&
-                this.v2.Y.compareTo(other.v2.Y) == 0 &&
-                this.v2.Z.compareTo(other.v2.Z) == 0 ||
+                this.v1.xp.compareTo(other.v1.xp) == 0 &&
+                this.v1.yp.compareTo(other.v1.yp) == 0 &&
+                this.v1.zp.compareTo(other.v1.zp) == 0 &&
+                this.v2.xp.compareTo(other.v2.xp) == 0 &&
+                this.v2.yp.compareTo(other.v2.yp) == 0 &&
+                this.v2.zp.compareTo(other.v2.zp) == 0 ||
 
-                this.v1.X.compareTo(other.v2.X) == 0 &&
-                this.v1.Y.compareTo(other.v2.Y) == 0 &&
-                this.v1.Z.compareTo(other.v2.Z) == 0 &&
-                this.v2.X.compareTo(other.v1.X) == 0 &&
-                this.v2.Y.compareTo(other.v1.Y) == 0 &&
-                this.v2.Z.compareTo(other.v1.Z) == 0;
+                this.v1.xp.compareTo(other.v2.xp) == 0 &&
+                this.v1.yp.compareTo(other.v2.yp) == 0 &&
+                this.v1.zp.compareTo(other.v2.zp) == 0 &&
+                this.v2.xp.compareTo(other.v1.xp) == 0 &&
+                this.v2.yp.compareTo(other.v1.yp) == 0 &&
+                this.v2.zp.compareTo(other.v1.zp) == 0;
     }
 
     @Override

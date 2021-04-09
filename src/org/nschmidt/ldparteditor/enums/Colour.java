@@ -27,52 +27,52 @@ public enum Colour {
     INSTANCE;
 
     /** The background of hightlighted text lines */
-    public static org.eclipse.swt.graphics.Color[] line_highlight_background = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(235, 236, 255)};
+    public static org.eclipse.swt.graphics.Color[] lineHighlightBackground = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(235, 236, 255)};
     /** The background of hightlighted selected text lines */
-    public static org.eclipse.swt.graphics.Color[] line_highlight_selected_background = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(242, 240, 240)};
+    public static org.eclipse.swt.graphics.Color[] lineHighlightSelectedBackground = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(242, 240, 240)};
     /** The underline colour of line errors */
-    public static org.eclipse.swt.graphics.Color[] line_error_underline = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(235, 30, 30)};
+    public static org.eclipse.swt.graphics.Color[] lineErrorUnderline = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(235, 30, 30)};
     /** The underline colour of line warnings */
-    public static org.eclipse.swt.graphics.Color[] line_warning_underline = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(235, 235, 30)};
+    public static org.eclipse.swt.graphics.Color[] lineWarningUnderline = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(235, 235, 30)};
     /** The underline colour of line hints */
-    public static org.eclipse.swt.graphics.Color[] line_hint_underline = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(30, 30, 235)};
+    public static org.eclipse.swt.graphics.Color[] lineHintUnderline = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(30, 30, 235)};
     /** The font colour of line comments */
-    public static org.eclipse.swt.graphics.Color[] line_comment_font = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(10, 10, 255)};
+    public static org.eclipse.swt.graphics.Color[] lineCommentFont = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(10, 10, 255)};
     /** The primary font colour of other line data */
-    public static org.eclipse.swt.graphics.Color[] line_primary_font = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(116, 129, 90)};
+    public static org.eclipse.swt.graphics.Color[] linePrimaryFont = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(116, 129, 90)};
     /** The secondary font colour of other line data */
-    public static org.eclipse.swt.graphics.Color[] line_secondary_font = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(120, 83, 67)};
+    public static org.eclipse.swt.graphics.Color[] lineSecondaryFont = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(120, 83, 67)};
     /** The main font colour of the colour attribute */
-    public static org.eclipse.swt.graphics.Color[] line_colourAttr_font = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(0, 0, 200)};
+    public static org.eclipse.swt.graphics.Color[] lineColourAttrFont = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(0, 0, 200)};
     /** The main font colour of the quad number 4 */
-    public static org.eclipse.swt.graphics.Color[] line_quad_font = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(187, 24, 41)};
+    public static org.eclipse.swt.graphics.Color[] lineQuadFont = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(187, 24, 41)};
     /** The main font colour of font borders */
-    public static org.eclipse.swt.graphics.Color[] line_box_font = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(24, 24, 24)};
+    public static org.eclipse.swt.graphics.Color[] lineBoxFont = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(24, 24, 24)};
     /** The main background colour of the text */
-    public static org.eclipse.swt.graphics.Color[] text_background = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(255, 255, 255)};
+    public static org.eclipse.swt.graphics.Color[] textBackground = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(255, 255, 255)};
     /** The main foreground colour of the text */
-    public static org.eclipse.swt.graphics.Color[] text_foreground = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(0, 0, 0)};
+    public static org.eclipse.swt.graphics.Color[] textForeground = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(0, 0, 0)};
     /** The main foreground colour of the text from hidden objects */
-    public static org.eclipse.swt.graphics.Color[] text_foreground_hidden = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(240, 240, 240)};
+    public static org.eclipse.swt.graphics.Color[] textForegroundHidden = new org.eclipse.swt.graphics.Color[]{SWTResourceManager.getColor(240, 240, 240)};
 
     /**
      * Disposes all colours
      */
     public static void dispose() {
-        line_error_underline[0].dispose();
-        line_warning_underline[0].dispose();
-        line_hint_underline[0].dispose();
-        line_highlight_background[0].dispose();
-        line_highlight_selected_background[0].dispose();
-        line_comment_font[0].dispose();
-        line_primary_font[0].dispose();
-        line_secondary_font[0].dispose();
-        line_quad_font[0].dispose();
-        line_colourAttr_font[0].dispose();
-        line_box_font[0].dispose();
-        text_background[0].dispose();
-        text_foreground[0].dispose();
-        text_foreground_hidden[0].dispose();
+        lineErrorUnderline[0].dispose();
+        lineWarningUnderline[0].dispose();
+        lineHintUnderline[0].dispose();
+        lineHighlightBackground[0].dispose();
+        lineHighlightSelectedBackground[0].dispose();
+        lineCommentFont[0].dispose();
+        linePrimaryFont[0].dispose();
+        lineSecondaryFont[0].dispose();
+        lineQuadFont[0].dispose();
+        lineColourAttrFont[0].dispose();
+        lineBoxFont[0].dispose();
+        textBackground[0].dispose();
+        textForeground[0].dispose();
+        textForegroundHidden[0].dispose();
     }
 
     /**

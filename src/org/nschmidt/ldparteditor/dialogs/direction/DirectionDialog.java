@@ -43,13 +43,13 @@ public class DirectionDialog extends DirectionDesign {
 
     private boolean stopCalculations = false;
 
-    private final int X = 0;
-    private final int Y = 1;
-    private final int Z = 2;
+    private static final int X = 0;
+    private static final int Y = 1;
+    private static final int Z = 2;
 
-    private final int RHO = 0;
-    private final int THETA = 1;
-    private final int PHI = 2;
+    private static final int RHO = 0;
+    private static final int THETA = 1;
+    private static final int PHI = 2;
 
     private final Manipulator mani;
 
@@ -75,33 +75,33 @@ public class DirectionDialog extends DirectionDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_mX[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnMXPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             BigDecimal[] axis = mani.getAccurateXaxis();
             cart = new double[]{axis[0].doubleValue(), axis[1].doubleValue(), axis[2].doubleValue()};
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        WidgetUtil(btn_mY[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnMYPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             BigDecimal[] axis = mani.getAccurateYaxis();
             cart = new double[]{axis[0].doubleValue(), axis[1].doubleValue(), axis[2].doubleValue()};
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        WidgetUtil(btn_mZ[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnMZPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             BigDecimal[] axis = mani.getAccurateZaxis();
             cart = new double[]{axis[0].doubleValue(), axis[1].doubleValue(), axis[2].doubleValue()};
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        WidgetUtil(btn_Local[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
-            btn_Local[0].setSelection(true);
+        WidgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
+            btnLocalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.LOCAL) {
                 Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
                 transformationMode = ManipulatorScope.LOCAL;
@@ -110,9 +110,9 @@ public class DirectionDialog extends DirectionDesign {
             }
             updateValues();
         });
-        WidgetUtil(btn_Global[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.GLOBAL) {
                 Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
                 transformationMode = ManipulatorScope.GLOBAL;
@@ -121,39 +121,39 @@ public class DirectionDialog extends DirectionDesign {
             }
             updateValues();
         });
-        spn_X[0].addValueChangeListener(spn -> {
+        spnXPtr[0].addValueChangeListener(spn -> {
             if (stopCalculations) return;
-            cart = new double[]{spn_X[0].getValue().doubleValue(), spn_Y[0].getValue().doubleValue(), spn_Z[0].getValue().doubleValue()};
+            cart = new double[]{spnXPtr[0].getValue().doubleValue(), spnYPtr[0].getValue().doubleValue(), spnZPtr[0].getValue().doubleValue()};
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        spn_Y[0].addValueChangeListener(spn -> {
+        spnYPtr[0].addValueChangeListener(spn -> {
             if (stopCalculations) return;
-            cart = new double[]{spn_X[0].getValue().doubleValue(), spn_Y[0].getValue().doubleValue(), spn_Z[0].getValue().doubleValue()};
+            cart = new double[]{spnXPtr[0].getValue().doubleValue(), spnYPtr[0].getValue().doubleValue(), spnZPtr[0].getValue().doubleValue()};
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        spn_Z[0].addValueChangeListener(spn -> {
+        spnZPtr[0].addValueChangeListener(spn -> {
             if (stopCalculations) return;
-            cart = new double[]{spn_X[0].getValue().doubleValue(), spn_Y[0].getValue().doubleValue(), spn_Z[0].getValue().doubleValue()};
+            cart = new double[]{spnXPtr[0].getValue().doubleValue(), spnYPtr[0].getValue().doubleValue(), spnZPtr[0].getValue().doubleValue()};
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        spn_Rho[0].addValueChangeListener(spn -> {
+        spnRhoPtr[0].addValueChangeListener(spn -> {
             if (stopCalculations) return;
-            sphe = new double[]{spn_Rho[0].getValue().doubleValue(), spn_Theta[0].getValue().doubleValue(), spn_Phi[0].getValue().doubleValue()};
+            sphe = new double[]{spnRhoPtr[0].getValue().doubleValue(), spnThetaPtr[0].getValue().doubleValue(), spnPhiPtr[0].getValue().doubleValue()};
             cart = sphericalToCartesian(sphe);
             updateValues();
         });
-        spn_Theta[0].addValueChangeListener(spn -> {
+        spnThetaPtr[0].addValueChangeListener(spn -> {
             if (stopCalculations) return;
-            sphe = new double[]{spn_Rho[0].getValue().doubleValue(), spn_Theta[0].getValue().doubleValue(), spn_Phi[0].getValue().doubleValue()};
+            sphe = new double[]{spnRhoPtr[0].getValue().doubleValue(), spnThetaPtr[0].getValue().doubleValue(), spnPhiPtr[0].getValue().doubleValue()};
             cart = sphericalToCartesian(sphe);
             updateValues();
         });
-        spn_Phi[0].addValueChangeListener(spn -> {
+        spnPhiPtr[0].addValueChangeListener(spn -> {
             if (stopCalculations) return;
-            sphe = new double[]{spn_Rho[0].getValue().doubleValue(), spn_Theta[0].getValue().doubleValue(), spn_Phi[0].getValue().doubleValue()};
+            sphe = new double[]{spnRhoPtr[0].getValue().doubleValue(), spnThetaPtr[0].getValue().doubleValue(), spnPhiPtr[0].getValue().doubleValue()};
             cart = sphericalToCartesian(sphe);
             updateValues();
         });
@@ -166,12 +166,12 @@ public class DirectionDialog extends DirectionDesign {
 
     private void updateValues() {
         stopCalculations = true;
-        spn_X[0].setValue(new BigDecimal(cart[X]));
-        spn_Y[0].setValue(new BigDecimal(cart[Y]));
-        spn_Z[0].setValue(new BigDecimal(cart[Z]));
-        spn_Rho[0].setValue(new BigDecimal(sphe[RHO]));
-        spn_Theta[0].setValue(new BigDecimal(sphe[THETA]));
-        spn_Phi[0].setValue(new BigDecimal(sphe[PHI]));
+        spnXPtr[0].setValue(new BigDecimal(cart[X]));
+        spnYPtr[0].setValue(new BigDecimal(cart[Y]));
+        spnZPtr[0].setValue(new BigDecimal(cart[Z]));
+        spnRhoPtr[0].setValue(new BigDecimal(sphe[RHO]));
+        spnThetaPtr[0].setValue(new BigDecimal(sphe[THETA]));
+        spnPhiPtr[0].setValue(new BigDecimal(sphe[PHI]));
         stopCalculations = false;
     }
 
@@ -202,21 +202,21 @@ public class DirectionDialog extends DirectionDesign {
         Vertex vert = new Vertex(new BigDecimal(global[0]), new BigDecimal(global[1]), new BigDecimal(global[2]));
         BigDecimal[] pos = mani.getAccuratePosition();
         Vector3d result = mani.getAccurateRotation().transform(Vector3d.sub(new Vector3d(vert), new Vector3d(pos[0], pos[1], pos[2])));
-        return new double[]{result.X.doubleValue(), result.Y.doubleValue(), result.Z.doubleValue()};
+        return new double[]{result.x.doubleValue(), result.y.doubleValue(), result.z.doubleValue()};
     }
 
     private double[] localToGlobal(double[] local) {
         Vertex vert = new Vertex(new BigDecimal(local[0]), new BigDecimal(local[1]), new BigDecimal(local[2]));
         BigDecimal[] pos = mani.getAccuratePosition();
         Vector3d result = Vector3d.add(mani.getAccurateRotation().invert().transform(new Vector3d(vert)), new Vector3d(pos[0], pos[1], pos[2]));
-        return new double[]{result.X.doubleValue(), result.Y.doubleValue(), result.Z.doubleValue()};
+        return new double[]{result.x.doubleValue(), result.y.doubleValue(), result.z.doubleValue()};
     }
 
     private static double[] localToGlobal(double[] local, Manipulator mani) {
         Vertex vert = new Vertex(new BigDecimal(local[0]), new BigDecimal(local[1]), new BigDecimal(local[2]));
         BigDecimal[] pos = mani.getAccuratePosition();
         Vector3d result = Vector3d.add(mani.getAccurateRotation().invert().transform(new Vector3d(vert)), new Vector3d(pos[0], pos[1], pos[2]));
-        return new double[]{result.X.doubleValue(), result.Y.doubleValue(), result.Z.doubleValue()};
+        return new double[]{result.x.doubleValue(), result.y.doubleValue(), result.z.doubleValue()};
     }
 
     public static Vector3d getDirection() {

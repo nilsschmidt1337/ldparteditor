@@ -43,7 +43,7 @@ class TJunctionDesign extends Dialog {
     final TJunctionSettings ts;
 
     // Use final only for subclass/listener references!
-    final Combo[] cmb_scope = new Combo[1];
+    final Combo[] cmbScopePtr = new Combo[1];
 
     TJunctionDesign(Shell parentShell, TJunctionSettings ts) {
         super(parentShell);
@@ -72,7 +72,7 @@ class TJunctionDesign extends Dialog {
         lblCoordsPrec.setText(I18n.TJUNCTION_MODE);
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmbScope;
+        this.cmbScopePtr[0] = cmbScope;
         cmbScope.setItems(new String[] {I18n.TJUNCTION_FIND, I18n.TJUNCTION_NORMAL, I18n.TJUNCTION_AGGRESSIVE});
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(ts.getMode()));

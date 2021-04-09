@@ -77,9 +77,9 @@ public class StartupDialog extends StartupDesign {
         }
 
         super.create();
-        btn_ok[0].setEnabled(false);
+        btnOkPtr[0].setEnabled(false);
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_browseLdrawPath[0]).addSelectionListener(e -> {
+        WidgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to null
@@ -97,7 +97,7 @@ public class StartupDialog extends StartupDesign {
             String dir = dlg.open();
             if (dir != null) {
                 // Set the text box to the new selection
-                txt_ldrawPath[0].setText(dir);
+                txtLdrawPathPtr[0].setText(dir);
                 ldrawPath = dir;
                 canReadFromLdrawPath = FileHelper.canReadFromPath(ldrawPath);
 
@@ -119,14 +119,14 @@ public class StartupDialog extends StartupDesign {
                             unofficialPath = ""; //$NON-NLS-1$
                         }
                         
-                        txt_unofficialPath[0].setText(unofficialPath);
+                        txtUnofficialPathPtr[0].setText(unofficialPath);
                     }
                 }
 
                 updateOkButtonEnabledState();
             }
         });
-        WidgetUtil(btn_browseAuthoringPath[0]).addSelectionListener(e -> {
+        WidgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to null
@@ -144,13 +144,13 @@ public class StartupDialog extends StartupDesign {
             String dir = dlg.open();
             if (dir != null) {
                 // Set the text box to the new selection
-                txt_partAuthoringPath[0].setText(dir);
+                txtPartAuthoringPathPtr[0].setText(dir);
                 partAuthoringPath = dir;
                 canReadAndWriteToPartAuthoringFolder = FileHelper.canReadFromPath(partAuthoringPath) && FileHelper.canWriteToPath(partAuthoringPath);
                 updateOkButtonEnabledState();
             }
         });
-        WidgetUtil(btn_browseUnofficialPath[0]).addSelectionListener(e -> {
+        WidgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to null
@@ -168,30 +168,30 @@ public class StartupDialog extends StartupDesign {
             String dir = dlg.open();
             if (dir != null) {
                 // Set the text box to the new selection
-                txt_unofficialPath[0].setText(dir);
+                txtUnofficialPathPtr[0].setText(dir);
                 unofficialPath = dir;
                 canReadFromUnofficialLibraryPath = FileHelper.canReadFromPath(unofficialPath);
                 updateOkButtonEnabledState();
             }
         });
-        txt_ldrawUserName[0].addListener(SWT.Modify, e -> {
-            ldrawUserName = txt_ldrawUserName[0].getText();
+        txtLdrawUserNamePtr[0].addListener(SWT.Modify, e -> {
+            ldrawUserName = txtLdrawUserNamePtr[0].getText();
             updateOkButtonEnabledState();
         });
-        txt_realName[0].addListener(SWT.Modify, e -> {
-            realName = txt_realName[0].getText();
+        txtRealNamePtr[0].addListener(SWT.Modify, e -> {
+            realName = txtRealNamePtr[0].getText();
             updateOkButtonEnabledState();
         });
-        cmb_license[0].addListener(SWT.Modify, e -> {
-            license = cmb_license[0].getText();
+        cmbLicensePtr[0].addListener(SWT.Modify, e -> {
+            license = cmbLicensePtr[0].getText();
             updateOkButtonEnabledState();
         });
-        cmb_locale[0].addListener(SWT.Modify, e -> {
-            if (localeMap.containsKey(cmb_locale[0].getText())) {
-                locale = localeMap.get(cmb_locale[0].getText());
+        cmbLocalePtr[0].addListener(SWT.Modify, e -> {
+            if (localeMap.containsKey(cmbLocalePtr[0].getText())) {
+                locale = localeMap.get(cmbLocalePtr[0].getText());
             }
         });
-        btn_ok[0].addListener(SWT.Selection, event -> {
+        btnOkPtr[0].addListener(SWT.Selection, event -> {
             UserSettingState userSettingState = new UserSettingState();
             userSettingState.setAuthoringFolderPath(partAuthoringPath);
             userSettingState.setLdrawFolderPath(ldrawPath);
@@ -201,7 +201,7 @@ public class StartupDialog extends StartupDesign {
             userSettingState.setRealUserName(realName);
             userSettingState.setUsingRelativePaths(false);
             userSettingState.setLocale(locale);
-            MyLanguage.LOCALE = locale;
+            MyLanguage.locale = locale;
             WorkbenchManager.setUserSettingState(userSettingState);
         });
         return super.open();
@@ -217,28 +217,28 @@ public class StartupDialog extends StartupDesign {
     
     private void updateOkButtonEnabledState() {
         
-        lbl_formStatusIcon[0].setImage(ResourceManager.getImage("icon16_warning.png", 16)); //$NON-NLS-1$
+        lblFormStatusIconPtr[0].setImage(ResourceManager.getImage("icon16_warning.png", 16)); //$NON-NLS-1$
         
         if (!canReadFromLdrawPath) {
-            lbl_formStatus[0].setText("Please choose a LDraw library folder with read access."); //$NON-NLS-1$ NO_I18N!!
+            lblFormStatusPtr[0].setText("Please choose a LDraw library folder with read access."); //$NON-NLS-1$ NO_I18N!!
         } else if (ldrawUserName.isEmpty()) {
-            lbl_formStatus[0].setText("Please enter your LDraw user name."); //$NON-NLS-1$ NO_I18N!!
+            lblFormStatusPtr[0].setText("Please enter your LDraw user name."); //$NON-NLS-1$ NO_I18N!!
         } else if (realName.isEmpty()) {
-            lbl_formStatus[0].setText("Please enter a real name."); //$NON-NLS-1$ NO_I18N!!
+            lblFormStatusPtr[0].setText("Please enter a real name."); //$NON-NLS-1$ NO_I18N!!
         } else if (license.isEmpty()) {
-            lbl_formStatus[0].setText("Please choose a license for your work."); //$NON-NLS-1$ NO_I18N!!
+            lblFormStatusPtr[0].setText("Please choose a license for your work."); //$NON-NLS-1$ NO_I18N!!
         } else if (!canReadAndWriteToPartAuthoringFolder) {
-            lbl_formStatus[0].setText("Please choose a part authoring folder with read and write access."); //$NON-NLS-1$ NO_I18N!!
+            lblFormStatusPtr[0].setText("Please choose a part authoring folder with read and write access."); //$NON-NLS-1$ NO_I18N!!
         } else if (!canReadFromUnofficialLibraryPath) {
-            lbl_formStatus[0].setText("Please choose an unofficial library folder with read access."); //$NON-NLS-1$ NO_I18N!!
+            lblFormStatusPtr[0].setText("Please choose an unofficial library folder with read access."); //$NON-NLS-1$ NO_I18N!!
         } else {
-            lbl_formStatusIcon[0].setImage(ResourceManager.getImage("icon16_info.png", 16)); //$NON-NLS-1$
-            lbl_formStatus[0].setText("Setup is complete, press OK to continue."); //$NON-NLS-1$ NO_I18N!!
+            lblFormStatusIconPtr[0].setImage(ResourceManager.getImage("icon16_info.png", 16)); //$NON-NLS-1$
+            lblFormStatusPtr[0].setText("Setup is complete, press OK to continue."); //$NON-NLS-1$ NO_I18N!!
         }
         
-        lbl_formStatus[0].getParent().getParent().layout();
+        lblFormStatusPtr[0].getParent().getParent().layout();
         
-        btn_ok[0].setEnabled(
+        btnOkPtr[0].setEnabled(
                 canReadFromLdrawPath
                 && canReadAndWriteToPartAuthoringFolder
                 && canReadFromUnofficialLibraryPath

@@ -42,11 +42,11 @@ public abstract class PGData implements IPGData, Serializable {
     }
 
     private static final AtomicInteger id_counter = new AtomicInteger(0);
-    private final transient int ID;
+    private final transient int id;
 
     PGData() {
         // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!
-        ID = id_counter.getAndIncrement();
+        id = id_counter.getAndIncrement();
     }
 
     // anchor is the next data to render
@@ -56,7 +56,7 @@ public abstract class PGData implements IPGData, Serializable {
 
     @Override
     public int hashCode() {
-        return ID;
+        return id;
     }
 
     /**

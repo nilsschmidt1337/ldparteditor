@@ -74,13 +74,13 @@ public class Manipulator {
     private double accurateRotationZ = 0.0;
 
     private final FloatBuffer matrix = BufferUtils.createFloatBuffer(16);
-    private final FloatBuffer matrix_inv = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer matrixInv = BufferUtils.createFloatBuffer(16);
     private volatile boolean modified = false;
 
-    private static float translate_size = 140f;
-    private static float rotate_size = 100f;
-    private static float rotate_outer_size = 120f;
-    private static float scale_size = 60f;
+    private static float translateSize = 140f;
+    private static float rotateSize = 100f;
+    private static float rotateOuterSize = 120f;
+    private static float scaleSize = 60f;
 
     private Vector4f xAxis = new Vector4f(1f, 0f, 0f, 1f);
     private Vector4f yAxis = new Vector4f(0f, 1f, 0f, 1f);
@@ -90,31 +90,31 @@ public class Manipulator {
     private BigDecimal[] accurateYaxis = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO };
     private BigDecimal[] accurateZaxis = new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE };
 
-    private Vector4f x_rotateArrow = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f y_rotateArrow = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f z_rotateArrow = new Vector4f(0f, 0f, 1f, 1f);
-    private Vector4f v_rotateArrow = new Vector4f(0f, 0f, 1f, 1f);
+    private Vector4f xRotateArrow = new Vector4f(0f, 0f, 1f, 1f);
+    private Vector4f yRotateArrow = new Vector4f(0f, 0f, 1f, 1f);
+    private Vector4f zRotateArrow = new Vector4f(0f, 0f, 1f, 1f);
+    private Vector4f vRotateArrow = new Vector4f(0f, 0f, 1f, 1f);
 
-    private static BigDecimal snap_x_Translate = new BigDecimal("100"); //$NON-NLS-1$
-    private static BigDecimal snap_y_Translate = new BigDecimal("100"); //$NON-NLS-1$
-    private static BigDecimal snap_z_Translate = new BigDecimal("100"); //$NON-NLS-1$
+    private static BigDecimal snapXtranslate = new BigDecimal("100"); //$NON-NLS-1$
+    private static BigDecimal snapZtranslate = new BigDecimal("100"); //$NON-NLS-1$
+    private static BigDecimal snapYtranslate = new BigDecimal("100"); //$NON-NLS-1$
 
-    private final float snap_x_Scale = 400f;
-    private final float snap_y_Scale = 400f;
-    private final float snap_z_Scale = 400f;
+    private static final float SNAP_X_SCALE = 400f;
+    private static final float SNAP_Z_SCALE = 400f;
+    private static final float SNAP_Y_SCALE = 400f;
 
-    private static BigDecimal factor_Scale = new BigDecimal("1.1"); //$NON-NLS-1$
+    private static BigDecimal factorScale = new BigDecimal("1.1"); //$NON-NLS-1$
 
-    private static BigDecimal snap_x_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
-    private static BigDecimal snap_y_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
-    private static BigDecimal snap_z_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
-    private static BigDecimal snap_v_Rotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snapXrotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snapYrotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snapZrotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
+    private static BigDecimal snapVrotate = new BigDecimal(Math.PI).divide(new BigDecimal(8), Threshold.MC);
 
 
-    private static RotationSnap snap_x_RotateFlag = RotationSnap.COMPLEX;
-    private static RotationSnap snap_y_RotateFlag = RotationSnap.COMPLEX;
-    private static RotationSnap snap_z_RotateFlag = RotationSnap.COMPLEX;
-    private static RotationSnap snap_v_RotateFlag = RotationSnap.COMPLEX;
+    private static RotationSnap snapXrotateFlag = RotationSnap.COMPLEX;
+    private static RotationSnap snapYrotateFlag = RotationSnap.COMPLEX;
+    private static RotationSnap snapZrotateFlag = RotationSnap.COMPLEX;
+    private static RotationSnap snapVrotateFlag = RotationSnap.COMPLEX;
 
     private static BigDecimal initialScaleOld = BigDecimal.ZERO;
     private static BigDecimal initialScaleNew = BigDecimal.ZERO;
@@ -129,136 +129,135 @@ public class Manipulator {
             rot.intValueExact();
             switch (rot.intValue()) {
             case 90:
-                snap_x_RotateFlag = RotationSnap.DEG90;
+                snapXrotateFlag = RotationSnap.DEG90;
                 break;
             case 180:
-                snap_x_RotateFlag = RotationSnap.DEG180;
+                snapXrotateFlag = RotationSnap.DEG180;
                 break;
             case 270:
-                snap_x_RotateFlag = RotationSnap.DEG270;
+                snapXrotateFlag = RotationSnap.DEG270;
                 break;
             case 360:
-                snap_x_RotateFlag = RotationSnap.DEG360;
+                snapXrotateFlag = RotationSnap.DEG360;
                 break;
             default:
-                snap_x_RotateFlag = RotationSnap.COMPLEX;
+                snapXrotateFlag = RotationSnap.COMPLEX;
                 break;
             }
 
             switch (rot.intValue()) {
             case 90:
-                snap_y_RotateFlag = RotationSnap.DEG90;
+                snapYrotateFlag = RotationSnap.DEG90;
                 break;
             case 180:
-                snap_y_RotateFlag = RotationSnap.DEG180;
+                snapYrotateFlag = RotationSnap.DEG180;
                 break;
             case 270:
-                snap_y_RotateFlag = RotationSnap.DEG270;
+                snapYrotateFlag = RotationSnap.DEG270;
                 break;
             case 360:
-                snap_y_RotateFlag = RotationSnap.DEG360;
+                snapYrotateFlag = RotationSnap.DEG360;
                 break;
             default:
-                snap_y_RotateFlag = RotationSnap.COMPLEX;
+                snapYrotateFlag = RotationSnap.COMPLEX;
                 break;
             }
 
             switch (rot.intValue()) {
             case 90:
-                snap_z_RotateFlag = RotationSnap.DEG90;
+                snapZrotateFlag = RotationSnap.DEG90;
                 break;
             case 180:
-                snap_z_RotateFlag = RotationSnap.DEG180;
+                snapZrotateFlag = RotationSnap.DEG180;
                 break;
             case 270:
-                snap_z_RotateFlag = RotationSnap.DEG270;
+                snapZrotateFlag = RotationSnap.DEG270;
                 break;
             case 360:
-                snap_z_RotateFlag = RotationSnap.DEG360;
+                snapZrotateFlag = RotationSnap.DEG360;
                 break;
             default:
-                snap_z_RotateFlag = RotationSnap.COMPLEX;
+                snapZrotateFlag = RotationSnap.COMPLEX;
                 break;
             }
 
             switch (rot.intValue()) {
             case 90:
-                snap_v_RotateFlag = RotationSnap.DEG90;
+                snapVrotateFlag = RotationSnap.DEG90;
                 break;
             case 180:
-                snap_v_RotateFlag = RotationSnap.DEG180;
+                snapVrotateFlag = RotationSnap.DEG180;
                 break;
             case 270:
-                snap_v_RotateFlag = RotationSnap.DEG270;
+                snapVrotateFlag = RotationSnap.DEG270;
                 break;
             case 360:
-                snap_v_RotateFlag = RotationSnap.DEG360;
+                snapVrotateFlag = RotationSnap.DEG360;
                 break;
             default:
-                snap_v_RotateFlag = RotationSnap.COMPLEX;
+                snapVrotateFlag = RotationSnap.COMPLEX;
                 break;
             }
         } catch (ArithmeticException ae) {
-            snap_x_RotateFlag = RotationSnap.COMPLEX;
-            snap_y_RotateFlag = RotationSnap.COMPLEX;
-            snap_z_RotateFlag = RotationSnap.COMPLEX;
-            snap_v_RotateFlag = RotationSnap.COMPLEX;
+            snapXrotateFlag = RotationSnap.COMPLEX;
+            snapYrotateFlag = RotationSnap.COMPLEX;
+            snapZrotateFlag = RotationSnap.COMPLEX;
+            snapVrotateFlag = RotationSnap.COMPLEX;
         }
 
         rot = rot.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI));
-        snap_x_Translate = trans;
-        snap_y_Translate = trans;
-        snap_z_Translate = trans;
+        snapXtranslate = trans;
+        snapZtranslate = trans;
+        snapYtranslate = trans;
 
-        factor_Scale = scale;
+        factorScale = scale;
 
-        snap_x_Rotate = rot;
-        snap_y_Rotate = rot;
-        snap_z_Rotate = rot;
-        snap_v_Rotate = rot;
+        snapXrotate = rot;
+        snapYrotate = rot;
+        snapZrotate = rot;
+        snapVrotate = rot;
 
     }
 
     public static BigDecimal[] getSnap() {
-        return new BigDecimal[] { snap_x_Translate, snap_x_Rotate, factor_Scale };
+        return new BigDecimal[] { snapXtranslate, snapXrotate, factorScale };
     }
 
     private boolean lock = false;
 
-    private boolean x_Translate;
-    private boolean y_Translate;
-    private boolean z_Translate;
+    private boolean xTranslate;
+    private boolean yTranslate;
+    private boolean zTranslate;
 
-    private boolean x_Rotate;
-    private boolean y_Rotate;
-    private boolean z_Rotate;
-    private boolean v_Rotate;
+    private boolean xRotate;
+    private boolean yRotate;
+    private boolean zRotate;
+    private boolean vRotate;
 
-    private boolean x_Scale;
-    private boolean y_Scale;
-    private boolean z_Scale;
+    private boolean xScale;
+    private boolean yScale;
+    private boolean zScale;
 
-    private boolean x_rotatingForwards;
-    private boolean x_rotatingBackwards;
+    private boolean xRotatingForwards;
+    private boolean xRotatingBackwards;
 
-    private boolean y_rotatingForwards;
-    private boolean y_rotatingBackwards;
+    private boolean yRotatingForwards;
+    private boolean yRotatingBackwards;
 
-    private boolean z_rotatingForwards;
-    private boolean z_rotatingBackwards;
+    private boolean zRotatingForwards;
+    private boolean zRotatingBackwards;
 
-    private boolean v_rotatingForwards;
-    private boolean v_rotatingBackwards;
-
+    private boolean vRotatingForwards;
+    private boolean vRotatingBackwards;
 
     private int calmDownCounter = 1;
 
-    private final float PI16TH = (float) (Math.PI / 16d);
+    private static final float PI16TH = (float) (Math.PI / 16d);
 
-    private Vector4f x_Rotate_start = new Vector4f(1f, 0f, 0f, 1f);
-    private Vector4f y_Rotate_start = new Vector4f(1f, 0f, 0f, 1f);
-    private Vector4f z_Rotate_start = new Vector4f(1f, 0f, 0f, 1f);
-    private Vector4f v_Rotate_start = new Vector4f(1f, 0f, 0f, 1f);
+    private Vector4f xRotateStart = new Vector4f(1f, 0f, 0f, 1f);
+    private Vector4f yRotateStart = new Vector4f(1f, 0f, 0f, 1f);
+    private Vector4f zRotateStart = new Vector4f(1f, 0f, 0f, 1f);
+    private Vector4f vRotateStart = new Vector4f(1f, 0f, 0f, 1f);
 
     private static final float ACTIVATION_TRESHOLD = 200f;
 
@@ -320,9 +319,9 @@ public class Manipulator {
     }
 
     public FloatBuffer getTempTransformationInv() {
-        resultinv.store(matrix_inv);
-        matrix_inv.position(0);
-        return matrix_inv;
+        resultinv.store(matrixInv);
+        matrixInv.position(0);
+        return matrixInv;
     }
 
     public Vector4f getUntransformed(float x, float y, float z) {
@@ -355,19 +354,19 @@ public class Manipulator {
     }
 
     public Vector4f getX_RotateArrow() {
-        return x_rotateArrow;
+        return xRotateArrow;
     }
 
     public Vector4f getY_RotateArrow() {
-        return y_rotateArrow;
+        return yRotateArrow;
     }
 
     public Vector4f getZ_RotateArrow() {
-        return z_rotateArrow;
+        return zRotateArrow;
     }
 
     public Vector4f getV_RotateArrow() {
-        return v_rotateArrow;
+        return vRotateArrow;
     }
 
     public Vector4f getPosition() {
@@ -375,147 +374,147 @@ public class Manipulator {
     }
 
     public boolean isX_Translate() {
-        return x_Translate;
+        return xTranslate;
     }
 
     public void setX_Translate(boolean xTranslate) {
-        this.x_Translate = xTranslate;
+        this.xTranslate = xTranslate;
     }
 
     public boolean isY_Translate() {
-        return y_Translate;
+        return yTranslate;
     }
 
     public void setY_Translate(boolean yTranslate) {
-        this.y_Translate = yTranslate;
+        this.yTranslate = yTranslate;
     }
 
     public boolean isZ_Translate() {
-        return z_Translate;
+        return zTranslate;
     }
 
     public void setZ_Translate(boolean zTranslate) {
-        this.z_Translate = zTranslate;
+        this.zTranslate = zTranslate;
     }
 
     public boolean isX_Rotate() {
-        return x_Rotate;
+        return xRotate;
     }
 
     public void setX_Rotate(boolean xRotate) {
-        this.x_Rotate = xRotate;
+        this.xRotate = xRotate;
     }
 
     public boolean isY_Rotate() {
-        return y_Rotate;
+        return yRotate;
     }
 
     public void setY_Rotate(boolean yRotate) {
-        this.y_Rotate = yRotate;
+        this.yRotate = yRotate;
     }
 
     public boolean isZ_Rotate() {
-        return z_Rotate;
+        return zRotate;
     }
 
     public void setZ_Rotate(boolean zRotate) {
-        this.z_Rotate = zRotate;
+        this.zRotate = zRotate;
     }
 
     public boolean isV_Rotate() {
-        return v_Rotate;
+        return vRotate;
     }
 
     public void setV_Rotate(boolean vRotate) {
-        this.v_Rotate = vRotate;
+        this.vRotate = vRotate;
     }
 
     public boolean isX_Scale() {
-        return x_Scale;
+        return xScale;
     }
 
     public void setX_Scale(boolean xScale) {
-        this.x_Scale = xScale;
+        this.xScale = xScale;
     }
 
     public boolean isY_Scale() {
-        return y_Scale;
+        return yScale;
     }
 
     public void setY_Scale(boolean yScale) {
-        this.y_Scale = yScale;
+        this.yScale = yScale;
     }
 
     public boolean isZ_Scale() {
-        return z_Scale;
+        return zScale;
     }
 
     public void setZ_Scale(boolean zScale) {
-        this.z_Scale = zScale;
+        this.zScale = zScale;
     }
 
     public boolean isX_rotatingForwards() {
-        return x_rotatingForwards;
+        return xRotatingForwards;
     }
 
     public void setX_rotatingForwards(boolean xRotatingForwards) {
-        this.x_rotatingForwards = xRotatingForwards;
+        this.xRotatingForwards = xRotatingForwards;
     }
 
     public boolean isX_rotatingBackwards() {
-        return x_rotatingBackwards;
+        return xRotatingBackwards;
     }
 
     public void setX_rotatingBackwards(boolean xRotatingBackwards) {
-        this.x_rotatingBackwards = xRotatingBackwards;
+        this.xRotatingBackwards = xRotatingBackwards;
     }
 
     public boolean isY_rotatingForwards() {
-        return y_rotatingForwards;
+        return yRotatingForwards;
     }
 
     public void setY_rotatingForwards(boolean yRotatingForwards) {
-        this.y_rotatingForwards = yRotatingForwards;
+        this.yRotatingForwards = yRotatingForwards;
     }
 
     public boolean isY_rotatingBackwards() {
-        return y_rotatingBackwards;
+        return yRotatingBackwards;
     }
 
     public void setY_rotatingBackwards(boolean yRotatingBackwards) {
-        this.y_rotatingBackwards = yRotatingBackwards;
+        this.yRotatingBackwards = yRotatingBackwards;
     }
 
     public boolean isZ_rotatingForwards() {
-        return z_rotatingForwards;
+        return zRotatingForwards;
     }
 
     public void setZ_rotatingForwards(boolean zRotatingForwards) {
-        this.z_rotatingForwards = zRotatingForwards;
+        this.zRotatingForwards = zRotatingForwards;
     }
 
     public boolean isZ_rotatingBackwards() {
-        return z_rotatingBackwards;
+        return zRotatingBackwards;
     }
 
     public void setZ_rotatingBackwards(boolean zRotatingBackwards) {
-        this.z_rotatingBackwards = zRotatingBackwards;
+        this.zRotatingBackwards = zRotatingBackwards;
     }
 
     public boolean isV_rotatingForwards() {
-        return v_rotatingForwards;
+        return vRotatingForwards;
     }
 
     public void setV_rotatingForwards(boolean vRotatingForwards) {
-        this.v_rotatingForwards = vRotatingForwards;
+        this.vRotatingForwards = vRotatingForwards;
     }
 
     public boolean isV_rotatingBackwards() {
-        return v_rotatingBackwards;
+        return vRotatingBackwards;
     }
 
     public void setV_rotatingBackwards(boolean vRotatingBackwards) {
-        this.v_rotatingBackwards = vRotatingBackwards;
+        this.vRotatingBackwards = vRotatingBackwards;
     }
 
     public GColour checkManipulatorStatus(float r, float g, float b, int type, Composite3D c3d, float zoom) {
@@ -652,49 +651,49 @@ public class Manipulator {
             switch (type) {
             case X_ROTATE:
                 if (lock) {
-                    if (x_Rotate) {
+                    if (xRotate) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                x_Rotate = false;
+                xRotate = false;
                 vector = new Vector4f(yAxis);
                 axis = new Vector3f(xAxis.x, xAxis.y, xAxis.z);
                 break;
             case Y_ROTATE:
                 if (lock) {
-                    if (y_Rotate) {
+                    if (yRotate) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                y_Rotate = false;
+                yRotate = false;
                 vector = new Vector4f(zAxis);
                 axis = new Vector3f(yAxis.x, yAxis.y, yAxis.z);
                 break;
             case Z_ROTATE:
                 if (lock) {
-                    if (z_Rotate) {
+                    if (zRotate) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                z_Rotate = false;
+                zRotate = false;
                 vector = new Vector4f(xAxis);
                 axis = new Vector3f(zAxis.x, zAxis.y, zAxis.z);
                 break;
             case V_ROTATE:
                 if (lock) {
-                    if (v_Rotate) {
+                    if (vRotate) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
-                v_Rotate = false;
+                vRotate = false;
                 vector = new Vector4f(gen[1].x, gen[1].y, gen[1].z, 1f);
                 axis = new Vector3f(gen[2].x, gen[2].y, gen[2].z);
                 break;
@@ -702,13 +701,13 @@ public class Manipulator {
                 break;
             }
             if (type == V_ROTATE) {
-                vector.scale(rotate_outer_size / zoom / 1000f);
+                vector.scale(rotateOuterSize / zoom / 1000f);
             } else {
-                vector.scale(rotate_size / zoom / 1000f);
+                vector.scale(rotateSize / zoom / 1000f);
             }
 
             float sumangle = 0f;
-            float angle = (float) (2d * Math.asin(ACTIVATION_TRESHOLD / (20d * rotate_size)));
+            float angle = (float) (2d * Math.asin(ACTIVATION_TRESHOLD / (20d * rotateSize)));
 
             float twoPI = (float) (Math.PI * 2f);
 
@@ -733,20 +732,20 @@ public class Manipulator {
                     if (dists < ACTIVATION_TRESHOLD) {
                         switch (type) {
                         case X_ROTATE:
-                            x_Rotate_start.set(vector);
-                            x_Rotate = true;
+                            xRotateStart.set(vector);
+                            xRotate = true;
                             break;
                         case Y_ROTATE:
-                            y_Rotate_start.set(vector);
-                            y_Rotate = true;
+                            yRotateStart.set(vector);
+                            yRotate = true;
                             break;
                         case Z_ROTATE:
-                            z_Rotate_start.set(vector);
-                            z_Rotate = true;
+                            zRotateStart.set(vector);
+                            zRotate = true;
                             break;
                         case V_ROTATE:
-                            v_Rotate_start.set(vector);
-                            v_Rotate = true;
+                            vRotateStart.set(vector);
+                            vRotate = true;
                             break;
                         default:
                             break;
@@ -763,79 +762,79 @@ public class Manipulator {
             switch (type) {
             case X_SCALE:
                 if (lock) {
-                    if (x_Scale) {
+                    if (xScale) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
                 if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
-                    x_Scale = false;
+                    xScale = false;
             case Y_SCALE:
                 if (lock) {
-                    if (y_Scale) {
+                    if (yScale) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
                 if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
-                    y_Scale = false;
+                    yScale = false;
             case Z_SCALE:
                 if (lock) {
-                    if (z_Scale) {
+                    if (zScale) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
                 if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
-                    z_Scale = false;
-                size = scale_size;
+                    zScale = false;
+                size = scaleSize;
                 break;
             case X_TRANSLATE:
                 if (lock) {
-                    if (x_Translate) {
+                    if (xTranslate) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
                 if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
-                    x_Translate = false;
+                    xTranslate = false;
             case Y_TRANSLATE:
                 if (lock) {
-                    if (y_Translate) {
+                    if (yTranslate) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
                 if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
-                    y_Translate = false;
+                    yTranslate = false;
             case Z_TRANSLATE:
                 if (lock) {
-                    if (z_Translate) {
+                    if (zTranslate) {
                         return new GColour(-1, View.MANIPULATOR_SELECTED_COLOUR_R[0], View.MANIPULATOR_SELECTED_COLOUR_G[0], View.MANIPULATOR_SELECTED_COLOUR_B[0], 1f);
                     } else {
                         return new GColour(-1, r, g, b, 1f);
                     }
                 }
                 if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed())))
-                    z_Translate = false;
-                size = translate_size;
+                    zTranslate = false;
+                size = translateSize;
                 break;
             case X_ROTATE_ARROW:
-                size = rotate_size;
+                size = rotateSize;
                 break;
             case Y_ROTATE_ARROW:
-                size = rotate_size;
+                size = rotateSize;
                 break;
             case Z_ROTATE_ARROW:
-                size = rotate_size;
+                size = rotateSize;
                 break;
             case V_ROTATE_ARROW:
-                size = rotate_outer_size;
+                size = rotateOuterSize;
                 break;
             default:
                 break;
@@ -856,32 +855,32 @@ public class Manipulator {
                 vector = new Vector4f(zAxis);
                 break;
             case X_ROTATE_ARROW:
-                vector = new Vector4f(x_Rotate_start);
+                vector = new Vector4f(xRotateStart);
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
-                x_rotateArrow.set(vector);
+                xRotateArrow.set(vector);
                 break;
             case Y_ROTATE_ARROW:
-                vector = new Vector4f(y_Rotate_start);
+                vector = new Vector4f(yRotateStart);
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
-                y_rotateArrow.set(vector);
+                yRotateArrow.set(vector);
                 break;
             case Z_ROTATE_ARROW:
-                vector = new Vector4f(z_Rotate_start);
+                vector = new Vector4f(zRotateStart);
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
-                z_rotateArrow.set(vector);
+                zRotateArrow.set(vector);
                 break;
             case V_ROTATE_ARROW:
-                vector = new Vector4f(v_Rotate_start);
+                vector = new Vector4f(vRotateStart);
                 vector.setW(0f);
                 vector.normalise();
                 vector.setW(1f);
-                v_rotateArrow.set(vector);
+                vRotateArrow.set(vector);
                 break;
             default:
                 break;
@@ -915,16 +914,16 @@ public class Manipulator {
                     Matrix4f.setIdentity(m);
                     switch (type) {
                     case X_ROTATE_ARROW:
-                        m.rotate(Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        m.rotate(Math.max(snapXrotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     case Y_ROTATE_ARROW:
-                        m.rotate(Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        m.rotate(Math.max(snapYrotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     case Z_ROTATE_ARROW:
-                        m.rotate(Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        m.rotate(Math.max(snapZrotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     case V_ROTATE_ARROW:
-                        m.rotate(Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        m.rotate(Math.max(snapVrotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     default:
                         break;
@@ -944,16 +943,16 @@ public class Manipulator {
                     Matrix4f.setIdentity(m);
                     switch (type) {
                     case X_ROTATE_ARROW:
-                        m.rotate(-Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        m.rotate(-Math.max(snapXrotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     case Y_ROTATE_ARROW:
-                        m.rotate(-Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        m.rotate(-Math.max(snapYrotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     case Z_ROTATE_ARROW:
-                        m.rotate(-Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        m.rotate(-Math.max(snapZrotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     case V_ROTATE_ARROW:
-                        m.rotate(-Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
+                        m.rotate(-Math.max(snapVrotate.floatValue(), PI16TH), new Vector3f(axis.x, axis.y, axis.z));
                         break;
                     default:
                         break;
@@ -975,7 +974,7 @@ public class Manipulator {
                                 break;
                             } else {
                                 calmDownCounter = -2;
-                                x_rotatingForwards = true;
+                                xRotatingForwards = true;
                             }
                         }else {
                             if (calmDownCounter < 0) {
@@ -983,7 +982,7 @@ public class Manipulator {
                                 break;
                             } else {
                                 calmDownCounter = 2;
-                                x_rotatingBackwards = true;
+                                xRotatingBackwards = true;
                             }
                         }
                         break;
@@ -994,7 +993,7 @@ public class Manipulator {
                                 break;
                             } else {
                                 calmDownCounter = -2;
-                                y_rotatingForwards = true;
+                                yRotatingForwards = true;
                             }
                         }else {
                             if (calmDownCounter < 0) {
@@ -1002,7 +1001,7 @@ public class Manipulator {
                                 break;
                             } else {
                                 calmDownCounter = 2;
-                                y_rotatingBackwards = true;
+                                yRotatingBackwards = true;
                             }
                         }
                         break;
@@ -1013,7 +1012,7 @@ public class Manipulator {
                                 break;
                             } else {
                                 calmDownCounter = -2;
-                                z_rotatingForwards = true;
+                                zRotatingForwards = true;
                             }
                         }else {
                             if (calmDownCounter < 0) {
@@ -1021,7 +1020,7 @@ public class Manipulator {
                                 break;
                             } else {
                                 calmDownCounter = 2;
-                                z_rotatingBackwards = true;
+                                zRotatingBackwards = true;
                             }
                         }
                         break;
@@ -1032,7 +1031,7 @@ public class Manipulator {
                                 break;
                             } else {
                                 calmDownCounter = -2;
-                                v_rotatingForwards = true;
+                                vRotatingForwards = true;
                             }
                         }else {
                             if (calmDownCounter < 0) {
@@ -1040,7 +1039,7 @@ public class Manipulator {
                                 break;
                             } else {
                                 calmDownCounter = 2;
-                                v_rotatingBackwards = true;
+                                vRotatingBackwards = true;
                             }
                         }
                         break;
@@ -1058,22 +1057,22 @@ public class Manipulator {
                 if (dists < ACTIVATION_TRESHOLD) {
                     switch (type) {
                     case X_TRANSLATE:
-                        x_Translate = true;
+                        xTranslate = true;
                         break;
                     case X_SCALE:
-                        x_Scale = true;
+                        xScale = true;
                         break;
                     case Y_TRANSLATE:
-                        y_Translate = true;
+                        yTranslate = true;
                         break;
                     case Y_SCALE:
-                        y_Scale = true;
+                        yScale = true;
                         break;
                     case Z_TRANSLATE:
-                        z_Translate = true;
+                        zTranslate = true;
                         break;
                     case Z_SCALE:
-                        z_Scale = true;
+                        zScale = true;
                         break;
                     default:
                         break;
@@ -1118,15 +1117,15 @@ public class Manipulator {
         accurateRotationX = 0.0;
         accurateRotationY = 0.0;
         accurateRotationZ = 0.0;
-        x_Translate = true;
-        y_Translate = true;
+        xTranslate = true;
+        yTranslate = true;
     }
 
     public void applyTranslation(Composite3D c3d) {
         if (modified) {
             c3d.getLockableDatFileReference().getVertexManager().transformSelection(accurateResult, null, Editor3DWindow.getWindow().isMovingAdjacentData());
             initialScaleOld = initialScaleNew;
-            Editor3DWindow.getWindow().updateInitialScale(initialScaleNew, factor_Scale, false);
+            Editor3DWindow.getWindow().updateInitialScale(initialScaleNew, factorScale, false);
         }
         resetTranslation();
     }
@@ -1146,22 +1145,22 @@ public class Manipulator {
         accurateRotationZ = 0.0;
         Matrix4f.setIdentity(result);
         Matrix4f.setIdentity(scale);
-        x_Translate = false;
-        y_Translate = false;
-        z_Translate = false;
-        x_Rotate = false;
-        y_Rotate = false;
-        z_Rotate = false;
-        x_Scale = false;
-        y_Scale = false;
-        z_Scale = false;
+        xTranslate = false;
+        yTranslate = false;
+        zTranslate = false;
+        xRotate = false;
+        yRotate = false;
+        zRotate = false;
+        xScale = false;
+        yScale = false;
+        zScale = false;
 
-        x_rotatingForwards = false;
-        x_rotatingBackwards = false;
-        y_rotatingForwards = false;
-        y_rotatingBackwards = false;
-        z_rotatingForwards = false;
-        z_rotatingBackwards = false;
+        xRotatingForwards = false;
+        xRotatingBackwards = false;
+        yRotatingForwards = false;
+        yRotatingBackwards = false;
+        zRotatingForwards = false;
+        zRotatingBackwards = false;
         modified = false;
     }
 
@@ -1193,8 +1192,8 @@ public class Manipulator {
         Matrix accurateTransformation;
         Matrix4f.setIdentity(transformation);
 
-        if (x_Translate) {
-            if (l < snap_x_Translate.floatValue() * 1000f)
+        if (xTranslate) {
+            if (l < snapXtranslate.floatValue() * 1000f)
                 return temp;
             Vector4f vector = new Vector4f(xAxis);
             Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
@@ -1205,8 +1204,8 @@ public class Manipulator {
             if (dA.lengthSquared() != 0f)
                 dA.normalise();
 
-            float factor = Math.max(l - l % (snap_x_Translate.floatValue() * 1000f), snap_x_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_x_Translate, Threshold.MC)), snap_x_Translate);
+            float factor = Math.max(l - l % (snapXtranslate.floatValue() * 1000f), snapXtranslate.floatValue() * 1000f);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapXtranslate, Threshold.MC)), snapXtranslate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = xAxis.x * factor;
@@ -1232,8 +1231,8 @@ public class Manipulator {
             modified = true;
         }
 
-        if (y_Translate) {
-            if (l < snap_y_Translate.floatValue() * 1000f)
+        if (yTranslate) {
+            if (l < snapZtranslate.floatValue() * 1000f)
                 return temp;
             Vector4f vector = new Vector4f(yAxis);
             Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
@@ -1244,8 +1243,8 @@ public class Manipulator {
             if (dA.lengthSquared() != 0f)
                 dA.normalise();
 
-            float factor = Math.max(l - l % (snap_y_Translate.floatValue() * 1000f), snap_y_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_y_Translate, Threshold.MC)), snap_y_Translate);
+            float factor = Math.max(l - l % (snapZtranslate.floatValue() * 1000f), snapZtranslate.floatValue() * 1000f);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapZtranslate, Threshold.MC)), snapZtranslate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = yAxis.x * factor;
@@ -1271,8 +1270,8 @@ public class Manipulator {
             modified = true;
         }
 
-        if (z_Translate) {
-            if (l < snap_z_Translate.floatValue() * 1000f)
+        if (zTranslate) {
+            if (l < snapYtranslate.floatValue() * 1000f)
                 return temp;
             Vector4f vector = new Vector4f(zAxis);
             Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
@@ -1283,8 +1282,8 @@ public class Manipulator {
             if (dA.lengthSquared() != 0f)
                 dA.normalise();
 
-            float factor = Math.max(l - l % (snap_z_Translate.floatValue() * 1000f), snap_z_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_z_Translate, Threshold.MC)), snap_z_Translate);
+            float factor = Math.max(l - l % (snapYtranslate.floatValue() * 1000f), snapYtranslate.floatValue() * 1000f);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapYtranslate, Threshold.MC)), snapYtranslate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = zAxis.x * factor;
@@ -1310,7 +1309,7 @@ public class Manipulator {
             modified = true;
         }
 
-        if (x_Rotate || y_Rotate || z_Rotate || v_Rotate) {
+        if (xRotate || yRotate || zRotate || vRotate) {
             Matrix4f forward = new Matrix4f();
             Matrix4f.setIdentity(forward);
             Matrix4f.translate(new Vector3f(-position.x, -position.y, -position.z), forward, forward);
@@ -1318,41 +1317,41 @@ public class Manipulator {
             accurateResult = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0].negate(), accuratePosition[1].negate(), accuratePosition[2].negate() }), accurateResult);
         }
 
-        if (x_Rotate) {
+        if (xRotate) {
             while (true) {
-                if (x_rotatingForwards) {
-                    transformation.rotate(snap_x_Rotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate, snap_x_RotateFlag, accurateXaxis);
-                    accurateRotationX = accurateRotationX + snap_x_Rotate.doubleValue();
-                    Vector4f vector = new Vector4f(x_rotateArrow);
+                if (xRotatingForwards) {
+                    transformation.rotate(snapXrotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                    accurateTransformation = View.ACCURATE_ID.rotate(snapXrotate, snapXrotateFlag, accurateXaxis);
+                    accurateRotationX = accurateRotationX + snapXrotate.doubleValue();
+                    Vector4f vector = new Vector4f(xRotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
-                    m.rotate(Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                    m.rotate(Math.max(snapXrotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
                     Matrix4f.transform(m, vector, vector);
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    x_rotateArrow.set(vector);
-                    x_Rotate_start.set(x_rotateArrow);
-                } else if (x_rotatingBackwards) {
-                    transformation.rotate(-snap_x_Rotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_x_Rotate.negate(), snap_x_RotateFlag, accurateXaxis);
-                    accurateRotationX = accurateRotationX - snap_x_Rotate.doubleValue();
-                    Vector4f vector = new Vector4f(x_rotateArrow);
+                    xRotateArrow.set(vector);
+                    xRotateStart.set(xRotateArrow);
+                } else if (xRotatingBackwards) {
+                    transformation.rotate(-snapXrotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                    accurateTransformation = View.ACCURATE_ID.rotate(snapXrotate.negate(), snapXrotateFlag, accurateXaxis);
+                    accurateRotationX = accurateRotationX - snapXrotate.doubleValue();
+                    Vector4f vector = new Vector4f(xRotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
-                    m.rotate(-Math.max(snap_x_Rotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                    m.rotate(-Math.max(snapXrotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
                     Matrix4f.transform(m, vector, vector);
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    x_rotateArrow.set(vector);
-                    x_Rotate_start.set(x_rotateArrow);
+                    xRotateArrow.set(vector);
+                    xRotateStart.set(xRotateArrow);
                 } else {
                     break;
                 }
-                x_rotatingForwards = false;
-                x_rotatingBackwards = false;
+                xRotatingForwards = false;
+                xRotatingBackwards = false;
                 Matrix4f.transform(transformation, yAxis, yAxis);
                 Matrix4f.transform(transformation, zAxis, zAxis);
                 accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
@@ -1367,41 +1366,41 @@ public class Manipulator {
             }
         }
 
-        if (y_Rotate) {
+        if (yRotate) {
             while (true) {
-                if (y_rotatingForwards) {
-                    transformation.rotate(snap_y_Rotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate, snap_y_RotateFlag, accurateYaxis);
-                    accurateRotationY = accurateRotationY + snap_y_Rotate.doubleValue();
-                    Vector4f vector = new Vector4f(y_rotateArrow);
+                if (yRotatingForwards) {
+                    transformation.rotate(snapYrotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                    accurateTransformation = View.ACCURATE_ID.rotate(snapYrotate, snapYrotateFlag, accurateYaxis);
+                    accurateRotationY = accurateRotationY + snapYrotate.doubleValue();
+                    Vector4f vector = new Vector4f(yRotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
-                    m.rotate(Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                    m.rotate(Math.max(snapYrotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
                     Matrix4f.transform(m, vector, vector);
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    y_rotateArrow.set(vector);
-                    y_Rotate_start.set(y_rotateArrow);
-                } else if (y_rotatingBackwards) {
-                    transformation.rotate(-snap_y_Rotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_y_Rotate.negate(), snap_y_RotateFlag, accurateYaxis);
-                    accurateRotationY = accurateRotationY - snap_y_Rotate.doubleValue();
-                    Vector4f vector = new Vector4f(y_rotateArrow);
+                    yRotateArrow.set(vector);
+                    yRotateStart.set(yRotateArrow);
+                } else if (yRotatingBackwards) {
+                    transformation.rotate(-snapYrotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                    accurateTransformation = View.ACCURATE_ID.rotate(snapYrotate.negate(), snapYrotateFlag, accurateYaxis);
+                    accurateRotationY = accurateRotationY - snapYrotate.doubleValue();
+                    Vector4f vector = new Vector4f(yRotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
-                    m.rotate(-Math.max(snap_y_Rotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                    m.rotate(-Math.max(snapYrotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
                     Matrix4f.transform(m, vector, vector);
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    y_rotateArrow.set(vector);
-                    y_Rotate_start.set(y_rotateArrow);
+                    yRotateArrow.set(vector);
+                    yRotateStart.set(yRotateArrow);
                 } else {
                     break;
                 }
-                y_rotatingForwards = false;
-                y_rotatingBackwards = false;
+                yRotatingForwards = false;
+                yRotatingBackwards = false;
                 Matrix4f.transform(transformation, xAxis, xAxis);
                 Matrix4f.transform(transformation, zAxis, zAxis);
                 accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
@@ -1416,41 +1415,41 @@ public class Manipulator {
             }
         }
 
-        if (z_Rotate) {
+        if (zRotate) {
             while (true) {
-                if (z_rotatingForwards) {
-                    transformation.rotate(snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate, snap_z_RotateFlag, accurateZaxis);
-                    accurateRotationZ = accurateRotationZ + snap_z_Rotate.doubleValue();
-                    Vector4f vector = new Vector4f(z_rotateArrow);
+                if (zRotatingForwards) {
+                    transformation.rotate(snapZrotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                    accurateTransformation = View.ACCURATE_ID.rotate(snapZrotate, snapZrotateFlag, accurateZaxis);
+                    accurateRotationZ = accurateRotationZ + snapZrotate.doubleValue();
+                    Vector4f vector = new Vector4f(zRotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
-                    m.rotate(Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                    m.rotate(Math.max(snapZrotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
                     Matrix4f.transform(m, vector, vector);
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    z_rotateArrow.set(vector);
-                    z_Rotate_start.set(z_rotateArrow);
-                } else if (z_rotatingBackwards) {
-                    transformation.rotate(-snap_z_Rotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_z_Rotate.negate(), snap_z_RotateFlag, accurateZaxis);
-                    accurateRotationZ = accurateRotationZ - snap_z_Rotate.doubleValue();
-                    Vector4f vector = new Vector4f(z_rotateArrow);
+                    zRotateArrow.set(vector);
+                    zRotateStart.set(zRotateArrow);
+                } else if (zRotatingBackwards) {
+                    transformation.rotate(-snapZrotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                    accurateTransformation = View.ACCURATE_ID.rotate(snapZrotate.negate(), snapZrotateFlag, accurateZaxis);
+                    accurateRotationZ = accurateRotationZ - snapZrotate.doubleValue();
+                    Vector4f vector = new Vector4f(zRotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
-                    m.rotate(-Math.max(snap_z_Rotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                    m.rotate(-Math.max(snapZrotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
                     Matrix4f.transform(m, vector, vector);
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    z_rotateArrow.set(vector);
-                    z_Rotate_start.set(z_rotateArrow);
+                    zRotateArrow.set(vector);
+                    zRotateStart.set(zRotateArrow);
                 } else {
                     break;
                 }
-                z_rotatingForwards = false;
-                z_rotatingBackwards = false;
+                zRotatingForwards = false;
+                zRotatingBackwards = false;
                 Matrix4f.transform(transformation, yAxis, yAxis);
                 Matrix4f.transform(transformation, xAxis, xAxis);
                 accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
@@ -1465,40 +1464,40 @@ public class Manipulator {
             }
         }
 
-        if (v_Rotate) {
+        if (vRotate) {
             while (true) {
                 Vector4f[] gen = c3d.getGenerator();
-                if (v_rotatingForwards) {
-                    transformation.rotate(snap_v_Rotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate, snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
-                    Vector4f vector = new Vector4f(v_rotateArrow);
+                if (vRotatingForwards) {
+                    transformation.rotate(snapVrotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                    accurateTransformation = View.ACCURATE_ID.rotate(snapVrotate, snapVrotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+                    Vector4f vector = new Vector4f(vRotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
-                    m.rotate(Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                    m.rotate(Math.max(snapVrotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
                     Matrix4f.transform(m, vector, vector);
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    v_rotateArrow.set(vector);
-                    v_Rotate_start.set(v_rotateArrow);
-                } else if (v_rotatingBackwards) {
-                    transformation.rotate(-snap_v_Rotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snap_v_Rotate.negate(), snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
-                    Vector4f vector = new Vector4f(v_rotateArrow);
+                    vRotateArrow.set(vector);
+                    vRotateStart.set(vRotateArrow);
+                } else if (vRotatingBackwards) {
+                    transformation.rotate(-snapVrotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                    accurateTransformation = View.ACCURATE_ID.rotate(snapVrotate.negate(), snapVrotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+                    Vector4f vector = new Vector4f(vRotateArrow);
                     Matrix4f m = new Matrix4f();
                     Matrix4f.setIdentity(m);
-                    m.rotate(-Math.max(snap_v_Rotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                    m.rotate(-Math.max(snapVrotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
                     Matrix4f.transform(m, vector, vector);
                     vector.setW(0f);
                     vector.normalise();
                     vector.setW(1f);
-                    v_rotateArrow.set(vector);
-                    v_Rotate_start.set(v_rotateArrow);
+                    vRotateArrow.set(vector);
+                    vRotateStart.set(vRotateArrow);
                 } else {
                     break;
                 }
-                v_rotatingForwards = false;
-                v_rotatingBackwards = false;
+                vRotatingForwards = false;
+                vRotatingBackwards = false;
                 Matrix4f.transform(transformation, zAxis, zAxis);
                 Matrix4f.transform(transformation, yAxis, yAxis);
                 Matrix4f.transform(transformation, xAxis, xAxis);
@@ -1515,7 +1514,7 @@ public class Manipulator {
             }
         }
 
-        if (x_Rotate || y_Rotate || z_Rotate || v_Rotate) {
+        if (xRotate || yRotate || zRotate || vRotate) {
             Matrix4f backward = new Matrix4f();
             Matrix4f.setIdentity(backward);
             Matrix4f.translate(new Vector3f(position.x, position.y, position.z), backward, backward);
@@ -1523,7 +1522,7 @@ public class Manipulator {
             accurateResult = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0], accuratePosition[1], accuratePosition[2] }), accurateResult);
         }
 
-        if (x_Scale || y_Scale || z_Scale) {
+        if (xScale || yScale || zScale) {
             Matrix4f.setIdentity(scale);
             accurateScale = View.ACCURATE_ID;
         }
@@ -1536,10 +1535,10 @@ public class Manipulator {
             initialScaleOld = initialScaleNew;
         }
 
-        boolean scaleThreshold = newScaleFactor && snap_x_Translate.add(snap_x_Translate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0;
+        boolean scaleThreshold = newScaleFactor && snapXtranslate.add(snapXtranslate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0;
 
-        if (x_Scale) {
-            if (l < snap_x_Scale)
+        if (xScale) {
+            if (l < SNAP_X_SCALE)
                 return temp;
             Vector4f vector = new Vector4f(xAxis);
             Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
@@ -1554,24 +1553,24 @@ public class Manipulator {
             BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                    initialScaleNew = initialScaleOld.add(snapXtranslate, Threshold.MC);
+                    factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else if (scaleThreshold) {
-                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                    initialScaleNew = initialScaleOld.subtract(snapXtranslate, Threshold.MC);
+                    factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else {
                     initialScaleNew = initialScaleOld;
-                    factor_Scale = BigDecimal.ONE;
+                    factorScale = BigDecimal.ONE;
                 }
-                factor = factor_Scale.floatValue();
-                factorPrecise = factor_Scale;
+                factor = factorScale.floatValue();
+                factorPrecise = factorScale;
             } else {
                 if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                    factor = factor_Scale.floatValue();
-                    factorPrecise = factor_Scale;
+                    factor = factorScale.floatValue();
+                    factorPrecise = factorScale;
                 } else {
-                    factor = 1f / factor_Scale.floatValue();
-                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
+                    factor = 1f / factorScale.floatValue();
+                    factorPrecise = BigDecimal.ONE.divide(factorScale, Threshold.MC);
                 }
             }
             isScaling = true;
@@ -1639,8 +1638,8 @@ public class Manipulator {
             modified = true;
         }
 
-        if (y_Scale) {
-            if (l < snap_y_Scale)
+        if (yScale) {
+            if (l < SNAP_Z_SCALE)
                 return temp;
             Vector4f vector = new Vector4f(yAxis);
             Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
@@ -1660,24 +1659,24 @@ public class Manipulator {
                 if (newScaleFactor) {
                     initialScaleOld = initialScaleNew;
                     if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                        initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
-                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                        initialScaleNew = initialScaleOld.add(snapXtranslate, Threshold.MC);
+                        factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                     } else if (scaleThreshold) {
-                        initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
-                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                        initialScaleNew = initialScaleOld.subtract(snapXtranslate, Threshold.MC);
+                        factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                     } else {
                         initialScaleNew = initialScaleOld;
-                        factor_Scale = BigDecimal.ONE;
+                        factorScale = BigDecimal.ONE;
                     }
-                    factor = factor_Scale.floatValue();
-                    factorPrecise = factor_Scale;
+                    factor = factorScale.floatValue();
+                    factorPrecise = factorScale;
                 } else {
                     if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                        factor = factor_Scale.floatValue();
-                        factorPrecise = factor_Scale;
+                        factor = factorScale.floatValue();
+                        factorPrecise = factorScale;
                     } else {
-                        factor = 1f / factor_Scale.floatValue();
-                        factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
+                        factor = 1f / factorScale.floatValue();
+                        factorPrecise = BigDecimal.ONE.divide(factorScale, Threshold.MC);
                     }
                 }
                 isScaling = true;
@@ -1746,8 +1745,8 @@ public class Manipulator {
             modified = true;
         }
 
-        if (z_Scale) {
-            if (l < snap_z_Scale)
+        if (zScale) {
+            if (l < SNAP_Y_SCALE)
                 return temp;
             Vector4f vector = new Vector4f(zAxis);
             Vector4f virtpos = new Vector4f(Vector4f.add(vector, position, null));
@@ -1767,24 +1766,24 @@ public class Manipulator {
                 if (newScaleFactor) {
                     initialScaleOld = initialScaleNew;
                     if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                        initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
-                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                        initialScaleNew = initialScaleOld.add(snapXtranslate, Threshold.MC);
+                        factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                     } else if (scaleThreshold) {
-                        initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
-                        factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                        initialScaleNew = initialScaleOld.subtract(snapXtranslate, Threshold.MC);
+                        factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                     } else {
                         initialScaleNew = initialScaleOld;
-                        factor_Scale = BigDecimal.ONE;
+                        factorScale = BigDecimal.ONE;
                     }
-                    factor = factor_Scale.floatValue();
-                    factorPrecise = factor_Scale;
+                    factor = factorScale.floatValue();
+                    factorPrecise = factorScale;
                 } else {
                     if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
-                        factor = factor_Scale.floatValue();
-                        factorPrecise = factor_Scale;
+                        factor = factorScale.floatValue();
+                        factorPrecise = factorScale;
                     } else {
-                        factor = 1f / factor_Scale.floatValue();
-                        factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
+                        factor = 1f / factorScale.floatValue();
+                        factorPrecise = BigDecimal.ONE.divide(factorScale, Threshold.MC);
                     }
                 }
             }
@@ -1850,7 +1849,7 @@ public class Manipulator {
             modified = true;
         }
 
-        if (x_Scale || y_Scale || z_Scale) {
+        if (xScale || yScale || zScale) {
             Matrix4f.mul(scale, result, result);
             accurateResult = Matrix.mul(accurateScale, accurateResult);
         }
@@ -1914,8 +1913,8 @@ public class Manipulator {
             if (dA.lengthSquared() != 0f)
                 dA.normalise();
 
-            float factor = Math.max(l - l % (snap_x_Translate.floatValue() * 1000f), snap_x_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_x_Translate, Threshold.MC)), snap_x_Translate);
+            float factor = Math.max(l - l % (snapXtranslate.floatValue() * 1000f), snapXtranslate.floatValue() * 1000f);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapXtranslate, Threshold.MC)), snapXtranslate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = xAxis.x * factor;
@@ -1951,8 +1950,8 @@ public class Manipulator {
             if (dA.lengthSquared() != 0f)
                 dA.normalise();
 
-            float factor = Math.max(l - l % (snap_y_Translate.floatValue() * 1000f), snap_y_Translate.floatValue() * 1000f);
-            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snap_y_Translate, Threshold.MC)), snap_y_Translate);
+            float factor = Math.max(l - l % (snapZtranslate.floatValue() * 1000f), snapZtranslate.floatValue() * 1000f);
+            BigDecimal factorPrecise = MathHelper.max(lPrecise.subtract(lPrecise.remainder(snapZtranslate, Threshold.MC)), snapZtranslate);
 
             if (Math.acos(dA.x * d.x + dA.y * d.y) < Math.PI / 2d) {
                 transformation.m30 = yAxis.x * factor;
@@ -2046,7 +2045,7 @@ public class Manipulator {
         x.normalise(x);
         y.normalise(y);
         z.normalise(z);
-        return new Matrix(x.X, x.Y, x.Z, BigDecimal.ZERO, y.X, y.Y, y.Z, BigDecimal.ZERO, z.X, z.Y, z.Z, BigDecimal.ZERO, accuratePosition[0], accuratePosition[1], accuratePosition[2], BigDecimal.ONE);
+        return new Matrix(x.x, x.y, x.z, BigDecimal.ZERO, y.x, y.y, y.z, BigDecimal.ZERO, z.x, z.y, z.z, BigDecimal.ZERO, accuratePosition[0], accuratePosition[1], accuratePosition[2], BigDecimal.ONE);
     }
 
     public Matrix getAccurateRotation() {
@@ -2057,9 +2056,9 @@ public class Manipulator {
         y.normalise(y);
         z.normalise(z);
         return new Matrix(
-                x.X, y.X, z.X, BigDecimal.ZERO,
-                x.Y, y.Y, z.Y, BigDecimal.ZERO,
-                x.Z, y.Z, z.Z, BigDecimal.ZERO,
+                x.x, y.x, z.x, BigDecimal.ZERO,
+                x.y, y.y, z.y, BigDecimal.ZERO,
+                x.z, y.z, z.z, BigDecimal.ZERO,
                 BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
     }
 
@@ -2068,19 +2067,19 @@ public class Manipulator {
     }
 
     public static float getTranslate_size() {
-        return translate_size;
+        return translateSize;
     }
 
     public static float getRotate_size() {
-        return rotate_size;
+        return rotateSize;
     }
 
     public static float getRotate_outer_size() {
-        return rotate_outer_size;
+        return rotateOuterSize;
     }
 
     public static float getScale_size() {
-        return scale_size;
+        return scaleSize;
     }
 
     public double getAccurateRotationX() {
@@ -2110,36 +2109,36 @@ public class Manipulator {
         case X:
         case XY:
         case TEMP_X:
-            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) x_Translate = true;
-            if (action == WorkingMode.ROTATE) x_Rotate = true;
-            if (action == WorkingMode.SCALE) x_Scale = true;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) xTranslate = true;
+            if (action == WorkingMode.ROTATE) xRotate = true;
+            if (action == WorkingMode.SCALE) xScale = true;
             if (layer != ManipulatorAxisMode.XY) break;
         case Y:
         case YZ:
         case TEMP_Y:
-            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) y_Translate = true;
-            if (action == WorkingMode.ROTATE) y_Rotate = true;
-            if (action == WorkingMode.SCALE) y_Scale = true;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) yTranslate = true;
+            if (action == WorkingMode.ROTATE) yRotate = true;
+            if (action == WorkingMode.SCALE) yScale = true;
             if (layer != ManipulatorAxisMode.YZ) break;
         case Z:
         case XZ:
         case TEMP_Z:
-            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) z_Translate = true;
-            if (action == WorkingMode.ROTATE) z_Rotate = true;
-            if (action == WorkingMode.SCALE) z_Scale = true;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) zTranslate = true;
+            if (action == WorkingMode.ROTATE) zRotate = true;
+            if (action == WorkingMode.SCALE) zScale = true;
             if (layer != ManipulatorAxisMode.XZ) break;
-            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) x_Translate = true;
-            if (action == WorkingMode.ROTATE) x_Rotate = true;
-            if (action == WorkingMode.SCALE) x_Scale = true;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) xTranslate = true;
+            if (action == WorkingMode.ROTATE) xRotate = true;
+            if (action == WorkingMode.SCALE) xScale = true;
             break;
         case XYZ:
-            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) x_Translate = true;
-            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) y_Translate = true;
-            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) z_Translate = true;
-            if (action == WorkingMode.SCALE) x_Scale = true;
-            if (action == WorkingMode.SCALE) y_Scale = true;
-            if (action == WorkingMode.SCALE) z_Scale = true;
-            if (action == WorkingMode.ROTATE) v_Rotate = true;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) xTranslate = true;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) yTranslate = true;
+            if (action == WorkingMode.MOVE || action == WorkingMode.COMBINED) zTranslate = true;
+            if (action == WorkingMode.SCALE) xScale = true;
+            if (action == WorkingMode.SCALE) yScale = true;
+            if (action == WorkingMode.SCALE) zScale = true;
+            if (action == WorkingMode.ROTATE) vRotate = true;
             break;
         case NONE:
         default:
@@ -2149,7 +2148,7 @@ public class Manipulator {
         }
 
         boolean newScaleFactor = initialScaleOld.compareTo(BigDecimal.ZERO) > 0;
-        boolean scaleThreshold = newScaleFactor && snap_x_Translate.add(snap_x_Translate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0;
+        boolean scaleThreshold = newScaleFactor && snapXtranslate.add(snapXtranslate.divide(new BigDecimal(1000))).compareTo(initialScaleOld) < 0;
         float fdir = ddir.floatValue();
         modified = true;
 
@@ -2165,9 +2164,9 @@ public class Manipulator {
         Matrix accurateTransformation;
         Matrix4f.setIdentity(transformation);
 
-        if (x_Translate) {
-            float factor = snap_x_Translate.floatValue() * 1000f * fdir;
-            BigDecimal factorPrecise = snap_x_Translate.multiply(ddir);
+        if (xTranslate) {
+            float factor = snapXtranslate.floatValue() * 1000f * fdir;
+            BigDecimal factorPrecise = snapXtranslate.multiply(ddir);
             transformation.m30 = xAxis.x * factor;
             transformation.m31 = xAxis.y * factor;
             transformation.m32 = xAxis.z * factor;
@@ -2181,9 +2180,9 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (y_Translate) {
-            float factor = snap_y_Translate.floatValue() * 1000f * fdir;
-            BigDecimal factorPrecise = snap_y_Translate.multiply(ddir);
+        if (yTranslate) {
+            float factor = snapZtranslate.floatValue() * 1000f * fdir;
+            BigDecimal factorPrecise = snapZtranslate.multiply(ddir);
             transformation.m30 = yAxis.x * factor;
             transformation.m31 = yAxis.y * factor;
             transformation.m32 = yAxis.z * factor;
@@ -2197,9 +2196,9 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (z_Translate) {
-            float factor = snap_z_Translate.floatValue() * 1000f * fdir;
-            BigDecimal factorPrecise = snap_z_Translate.multiply(ddir);
+        if (zTranslate) {
+            float factor = snapYtranslate.floatValue() * 1000f * fdir;
+            BigDecimal factorPrecise = snapYtranslate.multiply(ddir);
             transformation.m30 = zAxis.x * factor;
             transformation.m31 = zAxis.y * factor;
             transformation.m32 = zAxis.z * factor;
@@ -2213,7 +2212,7 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (x_Rotate || y_Rotate || z_Rotate || v_Rotate) {
+        if (xRotate || yRotate || zRotate || vRotate) {
             Matrix4f forward = new Matrix4f();
             Matrix4f.setIdentity(forward);
             Matrix4f.translate(new Vector3f(-position.x, -position.y, -position.z), forward, forward);
@@ -2221,12 +2220,12 @@ public class Manipulator {
             accurateResult = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0].negate(), accuratePosition[1].negate(), accuratePosition[2].negate() }), accurateResult);
         }
 
-        if (x_Rotate) {
-            BigDecimal factorPrecise = snap_x_Rotate.multiply(ddir);
+        if (xRotate) {
+            BigDecimal factorPrecise = snapXrotate.multiply(ddir);
             transformation.rotate(factorPrecise.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snap_x_RotateFlag, accurateXaxis);
+            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snapXrotateFlag, accurateXaxis);
             accurateRotationX = accurateRotationX + factorPrecise.doubleValue();
-            Vector4f vector = new Vector4f(x_rotateArrow);
+            Vector4f vector = new Vector4f(xRotateArrow);
             Matrix4f m = new Matrix4f();
             Matrix4f.setIdentity(m);
             m.rotate(Math.max(factorPrecise.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
@@ -2234,8 +2233,8 @@ public class Manipulator {
             vector.setW(0f);
             vector.normalise();
             vector.setW(1f);
-            x_rotateArrow.set(vector);
-            x_Rotate_start.set(x_rotateArrow);
+            xRotateArrow.set(vector);
+            xRotateStart.set(xRotateArrow);
             Matrix4f.transform(transformation, yAxis, yAxis);
             Matrix4f.transform(transformation, zAxis, zAxis);
             accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
@@ -2245,12 +2244,12 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (y_Rotate) {
-            BigDecimal factorPrecise = snap_y_Rotate.multiply(ddir);
+        if (yRotate) {
+            BigDecimal factorPrecise = snapYrotate.multiply(ddir);
             transformation.rotate(factorPrecise.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snap_y_RotateFlag, accurateYaxis);
+            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snapYrotateFlag, accurateYaxis);
             accurateRotationY = accurateRotationY + factorPrecise.doubleValue();
-            Vector4f vector = new Vector4f(y_rotateArrow);
+            Vector4f vector = new Vector4f(yRotateArrow);
             Matrix4f m = new Matrix4f();
             Matrix4f.setIdentity(m);
             m.rotate(Math.max(factorPrecise.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
@@ -2258,8 +2257,8 @@ public class Manipulator {
             vector.setW(0f);
             vector.normalise();
             vector.setW(1f);
-            y_rotateArrow.set(vector);
-            y_Rotate_start.set(y_rotateArrow);
+            yRotateArrow.set(vector);
+            yRotateStart.set(yRotateArrow);
             Matrix4f.transform(transformation, xAxis, xAxis);
             Matrix4f.transform(transformation, zAxis, zAxis);
             accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
@@ -2269,12 +2268,12 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (z_Rotate) {
-            BigDecimal factorPrecise = snap_z_Rotate.multiply(ddir);
+        if (zRotate) {
+            BigDecimal factorPrecise = snapZrotate.multiply(ddir);
             transformation.rotate(factorPrecise.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snap_z_RotateFlag, accurateZaxis);
+            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snapZrotateFlag, accurateZaxis);
             accurateRotationZ = accurateRotationZ + factorPrecise.doubleValue();
-            Vector4f vector = new Vector4f(z_rotateArrow);
+            Vector4f vector = new Vector4f(zRotateArrow);
             Matrix4f m = new Matrix4f();
             Matrix4f.setIdentity(m);
             m.rotate(Math.max(factorPrecise.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
@@ -2282,8 +2281,8 @@ public class Manipulator {
             vector.setW(0f);
             vector.normalise();
             vector.setW(1f);
-            z_rotateArrow.set(vector);
-            z_Rotate_start.set(z_rotateArrow);
+            zRotateArrow.set(vector);
+            zRotateStart.set(zRotateArrow);
             Matrix4f.transform(transformation, yAxis, yAxis);
             Matrix4f.transform(transformation, xAxis, xAxis);
             accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
@@ -2293,12 +2292,12 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (v_Rotate) {
+        if (vRotate) {
             Vector4f[] gen = c3d.getGenerator();
-            BigDecimal factorPrecise = snap_v_Rotate.multiply(ddir);
+            BigDecimal factorPrecise = snapVrotate.multiply(ddir);
             transformation.rotate(factorPrecise.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snap_v_RotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
-            Vector4f vector = new Vector4f(v_rotateArrow);
+            accurateTransformation = View.ACCURATE_ID.rotate(factorPrecise, snapVrotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+            Vector4f vector = new Vector4f(vRotateArrow);
             Matrix4f m = new Matrix4f();
             Matrix4f.setIdentity(m);
             m.rotate(Math.max(factorPrecise.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
@@ -2306,8 +2305,8 @@ public class Manipulator {
             vector.setW(0f);
             vector.normalise();
             vector.setW(1f);
-            v_rotateArrow.set(vector);
-            v_Rotate_start.set(v_rotateArrow);
+            vRotateArrow.set(vector);
+            vRotateStart.set(vRotateArrow);
             Matrix4f.transform(transformation, zAxis, zAxis);
             Matrix4f.transform(transformation, yAxis, yAxis);
             Matrix4f.transform(transformation, xAxis, xAxis);
@@ -2319,7 +2318,7 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (x_Rotate || y_Rotate || z_Rotate || v_Rotate) {
+        if (xRotate || yRotate || zRotate || vRotate) {
             Matrix4f backward = new Matrix4f();
             Matrix4f.setIdentity(backward);
             Matrix4f.translate(new Vector3f(position.x, position.y, position.z), backward, backward);
@@ -2327,34 +2326,34 @@ public class Manipulator {
             accurateResult = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0], accuratePosition[1], accuratePosition[2] }), accurateResult);
         }
 
-        if (x_Scale || y_Scale || z_Scale) {
+        if (xScale || yScale || zScale) {
             Matrix4f.setIdentity(scale);
             accurateScale = View.ACCURATE_ID;
         }
 
-        if (x_Scale) {
+        if (xScale) {
             float factor;
             BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                    initialScaleNew = initialScaleOld.add(snapXtranslate, Threshold.MC);
+                    factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else if (scaleThreshold) {
-                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                    initialScaleNew = initialScaleOld.subtract(snapXtranslate, Threshold.MC);
+                    factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else {
                     initialScaleNew = initialScaleOld;
-                    factor_Scale = BigDecimal.ONE;
+                    factorScale = BigDecimal.ONE;
                 }
-                factor = factor_Scale.floatValue();
-                factorPrecise = factor_Scale;
+                factor = factorScale.floatValue();
+                factorPrecise = factorScale;
             } else {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                    factor = factor_Scale.floatValue();
-                    factorPrecise = factor_Scale;
+                    factor = factorScale.floatValue();
+                    factorPrecise = factorScale;
                 } else {
-                    factor = 1f / factor_Scale.floatValue();
-                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
+                    factor = 1f / factorScale.floatValue();
+                    factorPrecise = BigDecimal.ONE.divide(factorScale, Threshold.MC);
                 }
             }
             transformation.m30 = -position.x;
@@ -2406,29 +2405,29 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (y_Scale) {
+        if (yScale) {
             float factor;
             BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                    initialScaleNew = initialScaleOld.add(snapXtranslate, Threshold.MC);
+                    factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else if (scaleThreshold) {
-                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                    initialScaleNew = initialScaleOld.subtract(snapXtranslate, Threshold.MC);
+                    factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else {
                     initialScaleNew = initialScaleOld;
-                    factor_Scale = BigDecimal.ONE;
+                    factorScale = BigDecimal.ONE;
                 }
-                factor = factor_Scale.floatValue();
-                factorPrecise = factor_Scale;
+                factor = factorScale.floatValue();
+                factorPrecise = factorScale;
             } else {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                    factor = factor_Scale.floatValue();
-                    factorPrecise = factor_Scale;
+                    factor = factorScale.floatValue();
+                    factorPrecise = factorScale;
                 } else {
-                    factor = 1f / factor_Scale.floatValue();
-                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
+                    factor = 1f / factorScale.floatValue();
+                    factorPrecise = BigDecimal.ONE.divide(factorScale, Threshold.MC);
                 }
             }
             transformation.m30 = -position.x;
@@ -2480,29 +2479,29 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (z_Scale) {
+        if (zScale) {
             float factor;
             BigDecimal factorPrecise;
             if (newScaleFactor) {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                    initialScaleNew = initialScaleOld.add(snap_x_Translate, Threshold.MC);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                    initialScaleNew = initialScaleOld.add(snapXtranslate, Threshold.MC);
+                    factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else if (scaleThreshold) {
-                    initialScaleNew = initialScaleOld.subtract(snap_x_Translate, Threshold.MC);
-                    factor_Scale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
+                    initialScaleNew = initialScaleOld.subtract(snapXtranslate, Threshold.MC);
+                    factorScale = initialScaleNew.divide(initialScaleOld, Threshold.MC);
                 } else {
                     initialScaleNew = initialScaleOld;
-                    factor_Scale = BigDecimal.ONE;
+                    factorScale = BigDecimal.ONE;
                 }
-                factor = factor_Scale.floatValue();
-                factorPrecise = factor_Scale;
+                factor = factorScale.floatValue();
+                factorPrecise = factorScale;
             } else {
                 if (BigDecimal.ONE.compareTo(ddir) == 0) {
-                    factor = factor_Scale.floatValue();
-                    factorPrecise = factor_Scale;
+                    factor = factorScale.floatValue();
+                    factorPrecise = factorScale;
                 } else {
-                    factor = 1f / factor_Scale.floatValue();
-                    factorPrecise = BigDecimal.ONE.divide(factor_Scale, Threshold.MC);
+                    factor = 1f / factorScale.floatValue();
+                    factorPrecise = BigDecimal.ONE.divide(factorScale, Threshold.MC);
                 }
             }
             transformation.m30 = -position.x;
@@ -2554,7 +2553,7 @@ public class Manipulator {
             Matrix4f.setIdentity(transformation);
         }
 
-        if (x_Scale || y_Scale || z_Scale) {
+        if (xScale || yScale || zScale) {
             Matrix4f.mul(scale, result, result);
             accurateResult = Matrix.mul(accurateScale, accurateResult);
         }

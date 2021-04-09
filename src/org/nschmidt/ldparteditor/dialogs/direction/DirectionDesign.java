@@ -23,7 +23,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -34,6 +33,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.resources.ResourceManager;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The coordinates dialog
@@ -48,23 +48,23 @@ class DirectionDesign extends Dialog {
 
     static ManipulatorScope transformationMode = ManipulatorScope.GLOBAL;
 
-    final NButton[] btn_Local = new NButton[1];
-    final NButton[] btn_Global = new NButton[1];
+    final NButton[] btnLocalPtr = new NButton[1];
+    final NButton[] btnGlobalPtr = new NButton[1];
 
-    final NButton[] btn_mX = new NButton[1];
-    final NButton[] btn_mY = new NButton[1];
-    final NButton[] btn_mZ = new NButton[1];
+    final NButton[] btnMXPtr = new NButton[1];
+    final NButton[] btnMYPtr = new NButton[1];
+    final NButton[] btnMZPtr = new NButton[1];
 
 
-    final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnXPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnYPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnZPtr = new BigDecimalSpinner[1];
 
-    final BigDecimalSpinner[] spn_Rho = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Theta = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Phi = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnRhoPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnThetaPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnPhiPtr = new BigDecimalSpinner[1];
 
-    private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
+    private static final String NUMBER_FORMAT8F = View.NUMBER_FORMAT8F;
 
     // Use final only for subclass/listener references!
 
@@ -97,7 +97,7 @@ class DirectionDesign extends Dialog {
         ToolItem toolItemTransformationModes = new ToolItem(cmpContainer, SWT.NONE, true);
         {
             NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
-            this.btn_Local[0] = btnLocal;
+            this.btnLocalPtr[0] = btnLocal;
             btnLocal.setToolTipText(I18n.E3D_LOCAL);
             if (transformationMode == ManipulatorScope.LOCAL) {
                 btnLocal.setSelection(true);
@@ -106,7 +106,7 @@ class DirectionDesign extends Dialog {
         }
         {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
-            this.btn_Global[0] = btnGlobal;
+            this.btnGlobalPtr[0] = btnGlobal;
             btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
             if (transformationMode == ManipulatorScope.GLOBAL) {
                 btnGlobal.setSelection(true);
@@ -125,8 +125,8 @@ class DirectionDesign extends Dialog {
             Label lblXaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
             lblXaxis.setText("X:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_X[0] = spnX;
+            BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
+            this.spnXPtr[0] = spnX;
             spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnX.setMaximum(new BigDecimal(1000000));
             spnX.setMinimum(new BigDecimal(-1000000));
@@ -141,8 +141,8 @@ class DirectionDesign extends Dialog {
             Label lblYaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
             lblYaxis.setText("Y:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Y[0] = spnY;
+            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
+            this.spnYPtr[0] = spnY;
             spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnY.setMaximum(new BigDecimal(1000000));
             spnY.setMinimum(new BigDecimal(-1000000));
@@ -157,8 +157,8 @@ class DirectionDesign extends Dialog {
             Label lblZaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
             lblZaxis.setText("Z:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Z[0] = spnZ;
+            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
+            this.spnZPtr[0] = spnZ;
             spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnZ.setMaximum(new BigDecimal(1000000));
             spnZ.setMinimum(new BigDecimal(-1000000));
@@ -176,8 +176,8 @@ class DirectionDesign extends Dialog {
             Label lblXaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
             lblXaxis.setText("r:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spnRho = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Rho[0] = spnRho;
+            BigDecimalSpinner spnRho = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
+            this.spnRhoPtr[0] = spnRho;
             spnRho.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnRho.setMaximum(new BigDecimal(1000000));
             spnRho.setMinimum(new BigDecimal(-1000000));
@@ -192,8 +192,8 @@ class DirectionDesign extends Dialog {
             Label lblYaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
             lblYaxis.setText("θ:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Theta[0] = spnY;
+            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
+            this.spnThetaPtr[0] = spnY;
             spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnY.setMaximum(new BigDecimal(1000000));
             spnY.setMinimum(new BigDecimal(-1000000));
@@ -208,8 +208,8 @@ class DirectionDesign extends Dialog {
             Label lblZaxis = new Label(cmpTxt, I18n.rightToLeftStyle());
             lblZaxis.setText("φ:"); //$NON-NLS-1$ FIXME !i18n!
 
-            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Phi[0] = spnZ;
+            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
+            this.spnPhiPtr[0] = spnZ;
             spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnZ.setMaximum(new BigDecimal(1000000));
             spnZ.setMinimum(new BigDecimal(-1000000));
@@ -221,7 +221,7 @@ class DirectionDesign extends Dialog {
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
-            this.btn_mX[0] = btnClipboard;
+            this.btnMXPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
             btnClipboard.setText("Use X axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
@@ -232,7 +232,7 @@ class DirectionDesign extends Dialog {
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
-            this.btn_mY[0] = btnClipboard;
+            this.btnMYPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
             btnClipboard.setText("Use Y axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!
@@ -243,7 +243,7 @@ class DirectionDesign extends Dialog {
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
-            this.btn_mZ[0] = btnClipboard;
+            this.btnMZPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnClipboard.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
             btnClipboard.setText("Use Z axis from manipulator"); //$NON-NLS-1$ FIXME !i18n!

@@ -475,14 +475,14 @@ class VM05Distance extends VM04Rectifier {
         }
 
         if (minDist == Double.MAX_VALUE) {
-            result[0] = new Vertex(vertex.X, vertex.Y, vertex.Z);
-            result[1] = new Vertex(vertex.X, vertex.Y, vertex.Z);
-            result[2] = new Vertex(vertex.X, vertex.Y, vertex.Z);
+            result[0] = new Vertex(vertex.xp, vertex.yp, vertex.zp);
+            result[1] = new Vertex(vertex.xp, vertex.yp, vertex.zp);
+            result[2] = new Vertex(vertex.xp, vertex.yp, vertex.zp);
             result[3] = minDist;
             return result;
         }
-        result[0] = new Vertex(((Vertex) result[0]).X, ((Vertex) result[0]).Y, ((Vertex) result[0]).Z);
-        result[1] = new Vertex(((Vertex) result[1]).X, ((Vertex) result[1]).Y, ((Vertex) result[1]).Z);
+        result[0] = new Vertex(((Vertex) result[0]).xp, ((Vertex) result[0]).yp, ((Vertex) result[0]).zp);
+        result[1] = new Vertex(((Vertex) result[1]).xp, ((Vertex) result[1]).yp, ((Vertex) result[1]).zp);
         result[2] = new Vertex(result2.x, result2.y, result2.z);
         result[3] = minDist;
         return result;
@@ -570,8 +570,8 @@ class VM05Distance extends VM04Rectifier {
             }
         }
         if (minDist == Double.MAX_VALUE) {
-            result[0] = new Vertex(vertex.X, vertex.Y, vertex.Z);
-            result[1] = new Vertex(vertex.X, vertex.Y, vertex.Z);
+            result[0] = new Vertex(vertex.xp, vertex.yp, vertex.zp);
+            result[1] = new Vertex(vertex.xp, vertex.yp, vertex.zp);
             return result;
         }
         return result;

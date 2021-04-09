@@ -278,7 +278,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         messageBox.setText(I18n.DIALOG_INFO);
         Object[] messageArguments = {count};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-        formatter.setLocale(MyLanguage.LOCALE);
+        formatter.setLocale(MyLanguage.locale);
         formatter.applyPattern(I18n.E3D_REDUCE_COUNT);
         messageBox.setMessage(formatter.format(messageArguments));
         messageBox.open();

@@ -114,7 +114,7 @@ public class GL33ModelRenderer {
     private int vboStudLogo2;
 
     private volatile Lock lock = new ReentrantLock();
-    private static volatile Lock static_lock = new ReentrantLock();
+    private static volatile Lock staticLock = new ReentrantLock();
     private static volatile AtomicInteger idGen = new AtomicInteger(0);
     private static volatile AtomicInteger idCount = new AtomicInteger(0);
 
@@ -151,8 +151,8 @@ public class GL33ModelRenderer {
 
     private volatile boolean usesCSG = false;
 
-    private volatile ArrayList<Matrix4f> stud1_Matrices = new ArrayList<>();
-    private volatile ArrayList<Matrix4f> stud2_Matrices = new ArrayList<>();
+    private volatile ArrayList<Matrix4f> stud1MatricesResult = new ArrayList<>();
+    private volatile ArrayList<Matrix4f> stud2MatricesResult = new ArrayList<>();
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -347,7 +347,7 @@ public class GL33ModelRenderer {
 
                     // Skip render mode 5
                     if (renderMode != 5) try {
-                        static_lock.lock();
+                        staticLock.lock();
 
                         // First we have to get links to the sets from the model
                         final DatFile df = c3d.getLockableDatFileReference();
@@ -554,7 +554,7 @@ public class GL33ModelRenderer {
                                 int csgTransVertexCount = 0;
 
                                 try {
-                                    GDataCSG.static_lock.lock();
+                                    GDataCSG.staticLock.lock();
                                     if (modified) GDataCSG.resetCSG(df, true);
                                     // GDataCSG.forceRecompile(df); // <- Check twice if this is really necessary!
                                     for (GDataCSG csg : csgData2) {
@@ -654,7 +654,7 @@ public class GL33ModelRenderer {
                                 } catch (Exception ex) {
                                     NLogger.error(getClass(), ex);
                                 } finally {
-                                    GDataCSG.static_lock.unlock();
+                                    GDataCSG.staticLock.unlock();
                                     calculateCSG.set(true);
                                 }
                             });
@@ -1256,9 +1256,9 @@ public class GL33ModelRenderer {
                                     if (renderMode != 1) {
                                         colourise7(0, 2, gd2.r, gd2.g, gd2.b, 7f, lineData, lineIndex);
                                     } else {
-                                        final float r = MathHelper.randomFloat(gd2.ID, 0);
-                                        final float g = MathHelper.randomFloat(gd2.ID, 1);
-                                        final float b = MathHelper.randomFloat(gd2.ID, 2);
+                                        final float r = MathHelper.randomFloat(gd2.id, 0);
+                                        final float g = MathHelper.randomFloat(gd2.id, 1);
+                                        final float b = MathHelper.randomFloat(gd2.id, 2);
                                         colourise7(0, 2, r, g, b, 7f, lineData, lineIndex);
                                     }
                                     lineIndex += 2;
@@ -1373,9 +1373,9 @@ public class GL33ModelRenderer {
                                     }
                                     case 1:
                                     {
-                                        final float r = MathHelper.randomFloat(gd3.ID, 0);
-                                        final float g = MathHelper.randomFloat(gd3.ID, 1);
-                                        final float b = MathHelper.randomFloat(gd3.ID, 2);
+                                        final float r = MathHelper.randomFloat(gd3.id, 0);
+                                        final float g = MathHelper.randomFloat(gd3.id, 1);
+                                        final float b = MathHelper.randomFloat(gd3.id, 2);
                                         pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                         pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                         pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
@@ -1769,9 +1769,9 @@ public class GL33ModelRenderer {
                                 }
                                 case 1:
                                 {
-                                    final float r = MathHelper.randomFloat(gd4.ID, 0);
-                                    final float g = MathHelper.randomFloat(gd4.ID, 1);
-                                    final float b = MathHelper.randomFloat(gd4.ID, 2);
+                                    final float r = MathHelper.randomFloat(gd4.id, 0);
+                                    final float g = MathHelper.randomFloat(gd4.id, 1);
+                                    final float b = MathHelper.randomFloat(gd4.id, 2);
                                     pointAt(0, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
                                     pointAt(1, v[1].x, v[1].y, v[1].z, triangleData, tempIndex);
                                     pointAt(2, v[2].x, v[2].y, v[2].z, triangleData, tempIndex);
@@ -1900,7 +1900,7 @@ public class GL33ModelRenderer {
                                     pointAt(11, v[0].x, v[0].y, v[0].z, triangleData, tempIndex);
 
                                     final double angle = gd4.calculateAngle();
-                                    float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarity_angle_warning) / Threshold.coplanarity_angle_error);
+                                    float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarityAngleWarning) / Threshold.coplanarityAngleError);
 
                                     float r = 0f;
                                     float g;
@@ -2137,9 +2137,9 @@ public class GL33ModelRenderer {
                                     if (renderMode != 1) {
                                         colourise15(0, 2, gd5.r, gd5.g, gd5.b, condlineData, condlineIndex);
                                     } else {
-                                        final float r = MathHelper.randomFloat(gd5.ID, 0);
-                                        final float g = MathHelper.randomFloat(gd5.ID, 1);
-                                        final float b = MathHelper.randomFloat(gd5.ID, 2);
+                                        final float r = MathHelper.randomFloat(gd5.id, 0);
+                                        final float g = MathHelper.randomFloat(gd5.id, 1);
+                                        final float b = MathHelper.randomFloat(gd5.id, 2);
                                         colourise15(0, 2, r, g, b, condlineData, condlineIndex);
                                     }
                                 }
@@ -2152,8 +2152,8 @@ public class GL33ModelRenderer {
 
                         if (drawStudLogo) {
                             lock.lock();
-                            stud1_Matrices = stud1Matrices;
-                            stud2_Matrices = stud2Matrices;
+                            stud1MatricesResult = stud1Matrices;
+                            stud2MatricesResult = stud2Matrices;
                             lock.unlock();
                         }
 
@@ -2188,11 +2188,11 @@ public class GL33ModelRenderer {
                         lock.unlock();
 
                     } catch (Exception ex) {
-                        if (NLogger.DEBUG) {
+                        if (NLogger.debugging) {
                             System.out.println("Exception: " + ex.getMessage()); //$NON-NLS-1$
                         }
                     } finally {
-                        static_lock.unlock();
+                        staticLock.unlock();
                     }
                     if (idCount.incrementAndGet() >= idList.size()) {
                         idCount.set(0);
@@ -2357,8 +2357,8 @@ public class GL33ModelRenderer {
 
                 {
                     lock.lock();
-                    ArrayList<Matrix4f> stud1Matrices = stud1_Matrices;
-                    ArrayList<Matrix4f> stud2Matrices = stud2_Matrices;
+                    ArrayList<Matrix4f> stud1Matrices = stud1MatricesResult;
+                    ArrayList<Matrix4f> stud2Matrices = stud2MatricesResult;
                     lock.unlock();
                     GL30.glBindVertexArray(vaoStudLogo1);
                     for (Matrix4f m : stud1Matrices) {
@@ -2547,7 +2547,7 @@ public class GL33ModelRenderer {
                 for (GData2 dm : distanceMeters) {
                     Vertex[] verts = sharedVertexMap.get(dm);
                     if (verts != null) {
-                        if (verts[0].X == null || verts[1].X == null) {
+                        if (verts[0].xp == null || verts[1].xp == null) {
                             dm.drawDistanceGL33(
                                     c3d,
                                     glyphShader,
@@ -2563,12 +2563,12 @@ public class GL33ModelRenderer {
                             dm.drawDistanceGL33(
                                     c3d,
                                     glyphShader,
-                                    verts[0].X,
-                                    verts[0].Y,
-                                    verts[0].Z,
-                                    verts[1].X,
-                                    verts[1].Y,
-                                    verts[1].Z,
+                                    verts[0].xp,
+                                    verts[0].yp,
+                                    verts[0].zp,
+                                    verts[1].xp,
+                                    verts[1].yp,
+                                    verts[1].zp,
                                     false
                                     );
                         }
@@ -2577,7 +2577,7 @@ public class GL33ModelRenderer {
                 for (GData3 pt : protractors) {
                     Vertex[] verts = sharedVertexMap.get(pt);
                     if (verts != null) {
-                        if (verts[0].X == null || verts[1].X == null) {
+                        if (verts[0].xp == null || verts[1].xp == null) {
                             pt.drawProtractorGL33(
                                     c3d,
                                     glyphShader,
@@ -2595,15 +2595,15 @@ public class GL33ModelRenderer {
                             pt.drawProtractorGL33(
                                     c3d,
                                     glyphShader,
-                                    verts[0].X,
-                                    verts[0].Y,
-                                    verts[0].Z,
-                                    verts[1].X,
-                                    verts[1].Y,
-                                    verts[1].Z,
-                                    verts[2].X,
-                                    verts[2].Y,
-                                    verts[2].Z
+                                    verts[0].xp,
+                                    verts[0].yp,
+                                    verts[0].zp,
+                                    verts[1].xp,
+                                    verts[1].yp,
+                                    verts[1].zp,
+                                    verts[2].xp,
+                                    verts[2].yp,
+                                    verts[2].zp
                                     );
                         }
                     }

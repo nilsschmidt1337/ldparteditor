@@ -51,14 +51,14 @@ public class NewProjectDialog extends NewProjectDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        txt_projectName[0].addListener(SWT.Modify, e -> {
-            String txt = txt_projectName[0].getText().toLowerCase();
-            btn_ok[0].setEnabled(FileHelper.isFilenameValid(txt) && !txt.equals("48") && !txt.equalsIgnoreCase("parts") && !txt.equalsIgnoreCase("s") && !txt.equalsIgnoreCase("p")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-            projectName = txt_projectName[0].getText();
+        txtProjectNamePtr[0].addListener(SWT.Modify, e -> {
+            String txt = txtProjectNamePtr[0].getText().toLowerCase();
+            btnOkPtr[0].setEnabled(FileHelper.isFilenameValid(txt) && !txt.equals("48") && !txt.equalsIgnoreCase("parts") && !txt.equalsIgnoreCase("s") && !txt.equalsIgnoreCase("p")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            projectName = txtProjectNamePtr[0].getText();
         });
         final boolean[] firstchoose = new boolean[1];
         firstchoose[0] = true;
-        WidgetUtil(btn_browseProjectPath[0]).addSelectionListener(e -> {
+        WidgetUtil(btnBrowseProjectPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
             String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
 
@@ -89,15 +89,15 @@ public class NewProjectDialog extends NewProjectDesign {
                         && !lcdir.endsWith(File.separator + "p") //$NON-NLS-1$
                         && !dir.endsWith(File.separator + "48")) { //$NON-NLS-1$
                     // Set the text box to the new selection
-                    txt_projectPath[0].setText(dir.substring(authorFolder.length()));
-                    projectPath = authorFolder + txt_projectPath[0].getText();
+                    txtProjectPathPtr[0].setText(dir.substring(authorFolder.length()));
+                    projectPath = authorFolder + txtProjectPathPtr[0].getText();
                 } // do nothing otherwise
             } else {
-                txt_projectPath[0].setText(""); //$NON-NLS-1$
+                txtProjectPathPtr[0].setText(""); //$NON-NLS-1$
                 projectPath = authorFolder;
             }
         });
-        WidgetUtil(btn_ok[0]).addSelectionListener(e -> {
+        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
             Project.setTempProjectName(projectName);
             Project.setTempProjectPath(projectPath + File.separator + projectName);
         });

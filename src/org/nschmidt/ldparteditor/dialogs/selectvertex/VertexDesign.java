@@ -43,9 +43,9 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 class VertexDesign extends Dialog {
 
 
-    final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnXPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnYPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnZPtr = new BigDecimalSpinner[1];
 
     // Use final only for subclass/listener references!
 
@@ -79,11 +79,11 @@ class VertexDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE);
-            this.spn_X[0] = spnX;
+            this.spnXPtr[0] = spnX;
             spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnX.setMaximum(new BigDecimal(1000000));
             spnX.setMinimum(new BigDecimal(-1000000));
-            spnX.setValue(v.X);
+            spnX.setValue(v.xp);
         }
 
         {
@@ -92,11 +92,11 @@ class VertexDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE);
-            this.spn_Y[0] = spnY;
+            this.spnYPtr[0] = spnY;
             spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnY.setMaximum(new BigDecimal(1000000));
             spnY.setMinimum(new BigDecimal(-1000000));
-            spnY.setValue(v.Y);
+            spnY.setValue(v.yp);
         }
 
         {
@@ -105,11 +105,11 @@ class VertexDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE);
-            this.spn_Z[0] = spnZ;
+            this.spnZPtr[0] = spnZ;
             spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnZ.setMaximum(new BigDecimal(1000000));
             spnZ.setMinimum(new BigDecimal(-1000000));
-            spnZ.setValue(v.Z);
+            spnZ.setValue(v.zp);
         }
 
         cmpContainer.pack();

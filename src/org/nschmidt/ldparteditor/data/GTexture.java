@@ -58,12 +58,12 @@ public class GTexture {
 
     private long accessTime = System.currentTimeMillis();
 
-    private HashMap<OpenGLRenderer, Integer> OpenGlID = new HashMap<>();
-    private HashMap<OpenGLRenderer, Integer> OpenGlID_glossmap = new HashMap<>();
-    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemap = new HashMap<>();
-    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemapMatte = new HashMap<>();
-    private HashMap<OpenGLRenderer, Integer> OpenGlID_cubemapMetal = new HashMap<>();
-    private HashMap<OpenGLRenderer, Boolean> OpenGlDisposed = new HashMap<>();
+    private HashMap<OpenGLRenderer, Integer> openGlId = new HashMap<>();
+    private HashMap<OpenGLRenderer, Integer> openGlIdGlossmap = new HashMap<>();
+    private HashMap<OpenGLRenderer, Integer> openGlIdCubemap = new HashMap<>();
+    private HashMap<OpenGLRenderer, Integer> openGlIdCubemapMatte = new HashMap<>();
+    private HashMap<OpenGLRenderer, Integer> openGlIdCubemapMetal = new HashMap<>();
+    private HashMap<OpenGLRenderer, Boolean> openGlDisposed = new HashMap<>();
 
     private String texture = ""; //$NON-NLS-1$
     private String glossmap = ""; //$NON-NLS-1$
@@ -82,7 +82,7 @@ public class GTexture {
     private float width;
     private float height;
 
-    private final float EPSILON = 1f;
+    private static final float EPSILON = 1f;
 
     private Map<GData, UV> uvCache = new HashMap<>();
     private Set<GData> cacheUsage = new HashSet<>();
@@ -444,13 +444,13 @@ public class GTexture {
     }
 
     public void dispose(OpenGLRenderer renderer) {
-        if (OpenGlDisposed.containsKey(renderer)) {
-            boolean disposed = OpenGlDisposed.get(renderer);
-            int id = OpenGlID.get(renderer);
-            int idGlossmap = OpenGlID_glossmap.get(renderer);
-            int idCubemap = OpenGlID_cubemap.get(renderer);
-            int idCubemapMatte = OpenGlID_cubemapMatte.get(renderer);
-            int isCubemapMetal = OpenGlID_cubemapMetal.get(renderer);
+        if (openGlDisposed.containsKey(renderer)) {
+            boolean disposed = openGlDisposed.get(renderer);
+            int id = openGlId.get(renderer);
+            int idGlossmap = openGlIdGlossmap.get(renderer);
+            int idCubemap = openGlIdCubemap.get(renderer);
+            int idCubemapMatte = openGlIdCubemapMatte.get(renderer);
+            int isCubemapMetal = openGlIdCubemapMetal.get(renderer);
             if (!disposed) {
                 uvCache.clear();
                 cacheUsage.clear();
@@ -463,12 +463,12 @@ public class GTexture {
                     if (idCubemapMatte != -1) GL11.glDeleteTextures(idCubemapMatte);
                     if (isCubemapMetal != -1) GL11.glDeleteTextures(isCubemapMetal);
                 }
-                OpenGlDisposed.put(renderer, true);
-                OpenGlID.put(renderer, -1);
-                OpenGlID_glossmap.put(renderer, -1);
-                OpenGlID_cubemap.put(renderer, -1);
-                OpenGlID_cubemapMatte.put(renderer, -1);
-                OpenGlID_cubemapMetal.put(renderer, -1);
+                openGlDisposed.put(renderer, true);
+                openGlId.put(renderer, -1);
+                openGlIdGlossmap.put(renderer, -1);
+                openGlIdCubemap.put(renderer, -1);
+                openGlIdCubemapMatte.put(renderer, -1);
+                openGlIdCubemapMetal.put(renderer, -1);
             }
         }
     }
@@ -493,15 +493,15 @@ public class GTexture {
         int idCubemapMetal = -1;
         boolean disposed = true;
 
-        if (OpenGlDisposed.containsKey(renderer)) {
-            disposed = OpenGlDisposed.get(renderer);
-            id = OpenGlID.get(renderer);
-            idGlossmap = OpenGlID_glossmap.get(renderer);
-            idCubemap = OpenGlID_cubemap.get(renderer);
-            idCubemapMatte = OpenGlID_cubemapMatte.get(renderer);
-            idCubemapMetal = OpenGlID_cubemapMetal.get(renderer);
+        if (openGlDisposed.containsKey(renderer)) {
+            disposed = openGlDisposed.get(renderer);
+            id = openGlId.get(renderer);
+            idGlossmap = openGlIdGlossmap.get(renderer);
+            idCubemap = openGlIdCubemap.get(renderer);
+            idCubemapMatte = openGlIdCubemapMatte.get(renderer);
+            idCubemapMetal = openGlIdCubemapMetal.get(renderer);
         } else {
-            OpenGlDisposed.put(renderer, true);
+            openGlDisposed.put(renderer, true);
         }
 
         if (disposed) {
@@ -526,13 +526,13 @@ public class GTexture {
                     break;
                 }
             }
-            OpenGlDisposed.put(renderer, false);
+            openGlDisposed.put(renderer, false);
             renderer.registerTexture(this);
-            OpenGlID.put(renderer, id);
-            OpenGlID_glossmap.put(renderer, idGlossmap);
-            OpenGlID_cubemap.put(renderer, idCubemap);
-            OpenGlID_cubemapMatte.put(renderer, idCubemapMatte);
-            OpenGlID_cubemapMetal.put(renderer, idCubemapMetal);
+            openGlId.put(renderer, id);
+            openGlIdGlossmap.put(renderer, idGlossmap);
+            openGlIdCubemap.put(renderer, idCubemap);
+            openGlIdCubemapMatte.put(renderer, idCubemapMatte);
+            openGlIdCubemapMetal.put(renderer, idCubemapMetal);
         } else if (id != -1) {
             accessTime = System.currentTimeMillis();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
@@ -585,15 +585,15 @@ public class GTexture {
         int idCubemapMetal = -1;
         boolean disposed = true;
 
-        if (OpenGlDisposed.containsKey(renderer)) {
-            disposed = OpenGlDisposed.get(renderer);
-            id = OpenGlID.get(renderer);
-            idGlossmap = OpenGlID_glossmap.get(renderer);
-            idCubemap = OpenGlID_cubemap.get(renderer);
-            idCubemapMatte = OpenGlID_cubemapMatte.get(renderer);
-            idCubemapMetal = OpenGlID_cubemapMetal.get(renderer);
+        if (openGlDisposed.containsKey(renderer)) {
+            disposed = openGlDisposed.get(renderer);
+            id = openGlId.get(renderer);
+            idGlossmap = openGlIdGlossmap.get(renderer);
+            idCubemap = openGlIdCubemap.get(renderer);
+            idCubemapMatte = openGlIdCubemapMatte.get(renderer);
+            idCubemapMetal = openGlIdCubemapMetal.get(renderer);
         } else {
-            OpenGlDisposed.put(renderer, true);
+            openGlDisposed.put(renderer, true);
         }
 
         if (disposed) {
@@ -616,13 +616,13 @@ public class GTexture {
                     break;
                 }
             }
-            OpenGlDisposed.put(renderer, false);
+            openGlDisposed.put(renderer, false);
             renderer.registerTexture(this);
-            OpenGlID.put(renderer, id);
-            OpenGlID_glossmap.put(renderer, idGlossmap);
-            OpenGlID_cubemap.put(renderer, idCubemap);
-            OpenGlID_cubemapMatte.put(renderer, idCubemapMatte);
-            OpenGlID_cubemapMetal.put(renderer, idCubemapMetal);
+            openGlId.put(renderer, id);
+            openGlIdGlossmap.put(renderer, idGlossmap);
+            openGlIdCubemap.put(renderer, idCubemap);
+            openGlIdCubemapMatte.put(renderer, idCubemapMatte);
+            openGlIdCubemapMetal.put(renderer, idCubemapMetal);
         } else if (id != -1) {
             accessTime = System.currentTimeMillis();
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);

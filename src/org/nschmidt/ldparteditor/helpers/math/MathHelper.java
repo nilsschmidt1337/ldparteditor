@@ -836,29 +836,29 @@ public enum MathHelper {
 
     public static String matrixToStringPrecise(Matrix matrix) {
         StringBuilder lineBuilder = new StringBuilder();
-        lineBuilder.append(bigDecimalToString(matrix.M30));
+        lineBuilder.append(bigDecimalToString(matrix.m30));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M31));
+        lineBuilder.append(bigDecimalToString(matrix.m31));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M32));
+        lineBuilder.append(bigDecimalToString(matrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M00));
+        lineBuilder.append(bigDecimalToString(matrix.m00));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M10));
+        lineBuilder.append(bigDecimalToString(matrix.m10));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M20));
+        lineBuilder.append(bigDecimalToString(matrix.m20));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M01));
+        lineBuilder.append(bigDecimalToString(matrix.m01));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M11));
+        lineBuilder.append(bigDecimalToString(matrix.m11));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M21));
+        lineBuilder.append(bigDecimalToString(matrix.m21));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M02));
+        lineBuilder.append(bigDecimalToString(matrix.m02));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M12));
+        lineBuilder.append(bigDecimalToString(matrix.m12));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(matrix.M22));
+        lineBuilder.append(bigDecimalToString(matrix.m22));
         return lineBuilder.toString();
     }
 
@@ -870,7 +870,7 @@ public enum MathHelper {
         }
     }
 
-    static BigDecimal PI = new BigDecimal("3.14159265358979323846264338327950288419716939937510582097494459230781640628620" //$NON-NLS-1$
+    static BigDecimal pi = new BigDecimal("3.14159265358979323846264338327950288419716939937510582097494459230781640628620" //$NON-NLS-1$
             + "899862803482534211706798214808651328230664709384460955058223172535940812848111" //$NON-NLS-1$
             + "745028410270193852110555964462294895493038196442881097566593344612847564823378" //$NON-NLS-1$
             + "678316527120190914564856692346034861045432664821339360726024914127372458700660" //$NON-NLS-1$
@@ -901,8 +901,8 @@ public enum MathHelper {
      */
     public static BigDecimal pi(final MathContext mc) {
         // look it up if possible
-        if (mc.getPrecision() < PI.precision()) {
-            return PI.round(mc);
+        if (mc.getPrecision() < pi.precision()) {
+            return pi.round(mc);
         } else {
             // Broadhurst
             int[] a = { 1, 0, 0, -1, -1, -1, 0, 0 };
@@ -1238,15 +1238,15 @@ public enum MathHelper {
                 counter += 3;
 
                 result.add(new GData3(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(),
-                        v1.X,
-                        v1.Y,
-                        v1.Z,
-                        v2.X,
-                        v2.Y,
-                        v2.Z,
-                        v3.X,
-                        v3.Y,
-                        v3.Z,
+                        v1.x,
+                        v1.y,
+                        v1.z,
+                        v2.x,
+                        v2.y,
+                        v2.z,
+                        v3.x,
+                        v3.y,
+                        v3.z,
                         dummyReference, df, true));
                 break;
             case 1:
@@ -1278,12 +1278,12 @@ public enum MathHelper {
                 Vector3d v2 = av.get(counter + 1);
                 counter += 2;
                 result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(),
-                        v1.X,
-                        v1.Y,
-                        v1.Z,
-                        v2.X,
-                        v2.Y,
-                        v2.Z,
+                        v1.x,
+                        v1.y,
+                        v1.z,
+                        v2.x,
+                        v2.y,
+                        v2.z,
                         dummyReference, df, true));
                 break;
             case 2:
@@ -1317,18 +1317,18 @@ public enum MathHelper {
                 Vector3d v4 = av.get(counter + 3);
                 counter += 4;
                 result.add(new GData5(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(),
-                        v1.X,
-                        v1.Y,
-                        v1.Z,
-                        v2.X,
-                        v2.Y,
-                        v2.Z,
-                        v3.X,
-                        v3.Y,
-                        v3.Z,
-                        v4.X,
-                        v4.Y,
-                        v4.Z,
+                        v1.x,
+                        v1.y,
+                        v1.z,
+                        v2.x,
+                        v2.y,
+                        v2.z,
+                        v3.x,
+                        v3.y,
+                        v3.z,
+                        v4.x,
+                        v4.y,
+                        v4.z,
                         dummyReference, df));
                 break;
             default:
@@ -1343,21 +1343,21 @@ public enum MathHelper {
             DatFile df) {
         ArrayList<GData3> result = new ArrayList<>(pointsToTriangulate);
         final Vector3d origin = av.get(0);
-        final BigDecimal originX = origin.X;
-        final BigDecimal originY = origin.Y;
-        final BigDecimal originZ = origin.Z;
+        final BigDecimal originX = origin.x;
+        final BigDecimal originY = origin.y;
+        final BigDecimal originZ = origin.z;
 
         pointsToTriangulate--;
 
         Vector3d p1 = av.get(1);
         Vector3d p2 = av.get(2);
-        BigDecimal x1 = p1.X;
-        BigDecimal y1 = p1.Y;
-        BigDecimal z1 = p1.Z;
+        BigDecimal x1 = p1.x;
+        BigDecimal y1 = p1.y;
+        BigDecimal z1 = p1.z;
 
-        BigDecimal x2 = p2.X;
-        BigDecimal y2 = p2.Y;
-        BigDecimal z2 = p2.Z;
+        BigDecimal x2 = p2.x;
+        BigDecimal y2 = p2.y;
+        BigDecimal z2 = p2.z;
 
         result.add(new GData3(colourNumber, r, g, b, a,
                 originX,
@@ -1379,9 +1379,9 @@ public enum MathHelper {
             y1 = y2;
             z1 = z2;
 
-            x2 = p1.X;
-            y2 = p1.Y;
-            z2 = p1.Z;
+            x2 = p1.x;
+            y2 = p1.y;
+            z2 = p1.z;
 
             result.add(new GData3(colourNumber, r, g, b, a,
                     originX,

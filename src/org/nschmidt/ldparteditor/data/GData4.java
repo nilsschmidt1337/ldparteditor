@@ -61,18 +61,18 @@ public final class GData4 extends GData {
     public final float y4;
     public final float z4;
 
-    final BigDecimal X1;
-    final BigDecimal Y1;
-    final BigDecimal Z1;
-    final BigDecimal X2;
-    final BigDecimal Y2;
-    final BigDecimal Z2;
-    final BigDecimal X3;
-    final BigDecimal Y3;
-    final BigDecimal Z3;
-    final BigDecimal X4;
-    final BigDecimal Y4;
-    final BigDecimal Z4;
+    final BigDecimal x1p;
+    final BigDecimal y1p;
+    final BigDecimal z1p;
+    final BigDecimal x2p;
+    final BigDecimal y2p;
+    final BigDecimal z2p;
+    final BigDecimal x3p;
+    final BigDecimal y3p;
+    final BigDecimal z3p;
+    final BigDecimal x4p;
+    final BigDecimal y4p;
+    final BigDecimal z4p;
 
     final float xn;
     final float yn;
@@ -89,30 +89,30 @@ public final class GData4 extends GData {
         this.g = g;
         this.b = b;
         this.a = a;
-        this.X1 = x1;
-        this.Y1 = y1;
-        this.Z1 = z1;
-        this.X2 = x2;
-        this.Y2 = y2;
-        this.Z2 = z2;
-        this.X3 = x3;
-        this.Y3 = y3;
-        this.Z3 = z3;
-        this.X4 = x4;
-        this.Y4 = y4;
-        this.Z4 = z4;
-        this.x1 = X1.floatValue() * 1000f;
-        this.y1 = Y1.floatValue() * 1000f;
-        this.z1 = Z1.floatValue() * 1000f;
-        this.x2 = X2.floatValue() * 1000f;
-        this.y2 = Y2.floatValue() * 1000f;
-        this.z2 = Z2.floatValue() * 1000f;
-        this.x3 = X3.floatValue() * 1000f;
-        this.y3 = Y3.floatValue() * 1000f;
-        this.z3 = Z3.floatValue() * 1000f;
-        this.x4 = X4.floatValue() * 1000f;
-        this.y4 = Y4.floatValue() * 1000f;
-        this.z4 = Z4.floatValue() * 1000f;
+        this.x1p = x1;
+        this.y1p = y1;
+        this.z1p = z1;
+        this.x2p = x2;
+        this.y2p = y2;
+        this.z2p = z2;
+        this.x3p = x3;
+        this.y3p = y3;
+        this.z3p = z3;
+        this.x4p = x4;
+        this.y4p = y4;
+        this.z4p = z4;
+        this.x1 = x1p.floatValue() * 1000f;
+        this.y1 = y1p.floatValue() * 1000f;
+        this.z1 = z1p.floatValue() * 1000f;
+        this.x2 = x2p.floatValue() * 1000f;
+        this.y2 = y2p.floatValue() * 1000f;
+        this.z2 = z2p.floatValue() * 1000f;
+        this.x3 = x3p.floatValue() * 1000f;
+        this.y3 = y3p.floatValue() * 1000f;
+        this.z3 = z3p.floatValue() * 1000f;
+        this.x4 = x4p.floatValue() * 1000f;
+        this.y4 = y4p.floatValue() * 1000f;
+        this.z4 = z4p.floatValue() * 1000f;
         float xn = -normal.getXf();
         float yn = -normal.getYf();
         float zn = -normal.getZf();
@@ -132,18 +132,18 @@ public final class GData4 extends GData {
         this.g = g;
         this.b = b;
         this.a = a;
-        this.X1 = x1;
-        this.Y1 = y1;
-        this.Z1 = z1;
-        this.X2 = x2;
-        this.Y2 = y2;
-        this.Z2 = z2;
-        this.X3 = x3;
-        this.Y3 = y3;
-        this.Z3 = z3;
-        this.X4 = x4;
-        this.Y4 = y4;
-        this.Z4 = z4;
+        this.x1p = x1;
+        this.y1p = y1;
+        this.z1p = z1;
+        this.x2p = x2;
+        this.y2p = y2;
+        this.z2p = z2;
+        this.x3p = x3;
+        this.y3p = y3;
+        this.z3p = z3;
+        this.x4p = x4;
+        this.y4p = y4;
+        this.z4p = z4;
         this.x1 = x12;
         this.y1 = y12;
         this.z1 = z12;
@@ -195,18 +195,18 @@ public final class GData4 extends GData {
         this.x4 = v4.x;
         this.y4 = v4.y;
         this.z4 = v4.z;
-        this.X1 = v1.X;
-        this.Y1 = v1.Y;
-        this.Z1 = v1.Z;
-        this.X2 = v2.X;
-        this.Y2 = v2.Y;
-        this.Z2 = v2.Z;
-        this.X3 = v3.X;
-        this.Y3 = v3.Y;
-        this.Z3 = v3.Z;
-        this.X4 = v4.X;
-        this.Y4 = v4.Y;
-        this.Z4 = v4.Z;
+        this.x1p = v1.xp;
+        this.y1p = v1.yp;
+        this.z1p = v1.zp;
+        this.x2p = v2.xp;
+        this.y2p = v2.yp;
+        this.z2p = v2.zp;
+        this.x3p = v3.xp;
+        this.y3p = v3.yp;
+        this.z3p = v3.zp;
+        this.x4p = v4.xp;
+        this.y4p = v4.yp;
+        this.z4p = v4.zp;
         final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
         {
             final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
@@ -249,18 +249,18 @@ public final class GData4 extends GData {
         this.x4 = v4.x;
         this.y4 = v4.y;
         this.z4 = v4.z;
-        this.X1 = v1.X;
-        this.Y1 = v1.Y;
-        this.Z1 = v1.Z;
-        this.X2 = v2.X;
-        this.Y2 = v2.Y;
-        this.Z2 = v2.Z;
-        this.X3 = v3.X;
-        this.Y3 = v3.Y;
-        this.Z3 = v3.Z;
-        this.X4 = v4.X;
-        this.Y4 = v4.Y;
-        this.Z4 = v4.Z;
+        this.x1p = v1.xp;
+        this.y1p = v1.yp;
+        this.z1p = v1.zp;
+        this.x2p = v2.xp;
+        this.y2p = v2.yp;
+        this.z2p = v2.zp;
+        this.x3p = v3.xp;
+        this.y3p = v3.yp;
+        this.z3p = v3.zp;
+        this.x4p = v4.xp;
+        this.y4p = v4.yp;
+        this.z4p = v4.zp;
         final Vector3f[] normals = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
         {
             final Vector3f[] lineVectors = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
@@ -323,9 +323,9 @@ public final class GData4 extends GData {
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
-        final float r = MathHelper.randomFloat(ID, 0);
-        final float g = MathHelper.randomFloat(ID, 1);
-        final float b = MathHelper.randomFloat(ID, 2);
+        final float r = MathHelper.randomFloat(id, 0);
+        final float g = MathHelper.randomFloat(id, 1);
+        final float b = MathHelper.randomFloat(id, 2);
         GL11.glBegin(GL11.GL_QUADS);
         if (GData.globalNegativeDeterminant) {
             GL11.glColor4f(r, g, b, a);
@@ -1268,7 +1268,7 @@ public final class GData4 extends GData {
     @Override
     public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
         calculateAngle();
-        float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarity_angle_warning) / Threshold.coplanarity_angle_error);
+        float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarityAngleWarning) / Threshold.coplanarityAngleError);
 
         float r = 0f;
         float g;
@@ -1337,29 +1337,29 @@ public final class GData4 extends GData {
             lineBuilder.append(colourNumber);
         }
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X1));
+        lineBuilder.append(bigDecimalToString(x1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y1));
+        lineBuilder.append(bigDecimalToString(y1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z1));
+        lineBuilder.append(bigDecimalToString(z1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X2));
+        lineBuilder.append(bigDecimalToString(x2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y2));
+        lineBuilder.append(bigDecimalToString(y2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z2));
+        lineBuilder.append(bigDecimalToString(z2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X3));
+        lineBuilder.append(bigDecimalToString(x3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y3));
+        lineBuilder.append(bigDecimalToString(y3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z3));
+        lineBuilder.append(bigDecimalToString(z3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X4));
+        lineBuilder.append(bigDecimalToString(x4p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y4));
+        lineBuilder.append(bigDecimalToString(y4p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z4));
+        lineBuilder.append(bigDecimalToString(z4p));
         text = lineBuilder.toString();
         return text;
     }
@@ -1375,16 +1375,16 @@ public final class GData4 extends GData {
         BigDecimal[] v2;
         BigDecimal[] v3;
         BigDecimal[] v4;
-        if (X1 == null) {
+        if (x1p == null) {
             v1 = matrix.transform(new BigDecimal(x1 / 1000f), new BigDecimal(y1 / 1000f), new BigDecimal(z1 / 1000f));
             v2 = matrix.transform(new BigDecimal(x2 / 1000f), new BigDecimal(y2 / 1000f), new BigDecimal(z2 / 1000f));
             v3 = matrix.transform(new BigDecimal(x3 / 1000f), new BigDecimal(y3 / 1000f), new BigDecimal(z3 / 1000f));
             v4 = matrix.transform(new BigDecimal(x4 / 1000f), new BigDecimal(y4 / 1000f), new BigDecimal(z4 / 1000f));
         } else {
-            v1 = matrix.transform(X1, Y1, Z1);
-            v2 = matrix.transform(X2, Y2, Z2);
-            v3 = matrix.transform(X3, Y3, Z3);
-            v4 = matrix.transform(X4, Y4, Z4);
+            v1 = matrix.transform(x1p, y1p, z1p);
+            v2 = matrix.transform(x2p, y2p, z2p);
+            v3 = matrix.transform(x3p, y3p, z3p);
+            v4 = matrix.transform(x4p, y4p, z4p);
         }
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(4);
@@ -1624,29 +1624,29 @@ public final class GData4 extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(col);
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X1));
+        lineBuilder.append(bigDecimalToString(x1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y1));
+        lineBuilder.append(bigDecimalToString(y1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z1));
+        lineBuilder.append(bigDecimalToString(z1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X2));
+        lineBuilder.append(bigDecimalToString(x2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y2));
+        lineBuilder.append(bigDecimalToString(y2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z2));
+        lineBuilder.append(bigDecimalToString(z2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X3));
+        lineBuilder.append(bigDecimalToString(x3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y3));
+        lineBuilder.append(bigDecimalToString(y3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z3));
+        lineBuilder.append(bigDecimalToString(z3p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X4));
+        lineBuilder.append(bigDecimalToString(x4p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y4));
+        lineBuilder.append(bigDecimalToString(y4p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z4));
+        lineBuilder.append(bigDecimalToString(z4p));
         return lineBuilder.toString();
     }
 
@@ -1654,10 +1654,10 @@ public final class GData4 extends GData {
         if (angle < 0) {
             Vector3d[] normals = new Vector3d[4];
             Vector3d[] lineVectors = new Vector3d[4];
-            Vector3d vertexA = new Vector3d(X1, Y1, Z1);
-            Vector3d vertexB = new Vector3d(X2, Y2, Z2);
-            Vector3d vertexC = new Vector3d(X3, Y3, Z3);
-            Vector3d vertexD = new Vector3d(X4, Y4, Z4);
+            Vector3d vertexA = new Vector3d(x1p, y1p, z1p);
+            Vector3d vertexB = new Vector3d(x2p, y2p, z2p);
+            Vector3d vertexC = new Vector3d(x3p, y3p, z3p);
+            Vector3d vertexD = new Vector3d(x4p, y4p, z4p);
             lineVectors[0] = Vector3d.sub(vertexB, vertexA);
             lineVectors[1] = Vector3d.sub(vertexC, vertexB);
             lineVectors[2] = Vector3d.sub(vertexD, vertexC);
@@ -1673,10 +1673,10 @@ public final class GData4 extends GData {
     }
 
     public boolean isCollinear() {
-        Vector3d vertexA = new Vector3d(X1, Y1, Z1);
-        Vector3d vertexB = new Vector3d(X2, Y2, Z2);
-        Vector3d vertexC = new Vector3d(X3, Y3, Z3);
-        Vector3d vertexD = new Vector3d(X4, Y4, Z4);
+        Vector3d vertexA = new Vector3d(x1p, y1p, z1p);
+        Vector3d vertexB = new Vector3d(x2p, y2p, z2p);
+        Vector3d vertexC = new Vector3d(x3p, y3p, z3p);
+        Vector3d vertexD = new Vector3d(x4p, y4p, z4p);
         Vector3d sa = Vector3d.sub(vertexB, vertexA);
         Vector3d sb = Vector3d.sub(vertexB, vertexC);
         Vector3d sc = Vector3d.sub(vertexD, vertexC);
@@ -1712,10 +1712,10 @@ public final class GData4 extends GData {
 
     public int getHourglassConfiguration() {
 
-        Vector3d vertexA = new Vector3d(X1, Y1, Z1);
-        Vector3d vertexB = new Vector3d(X2, Y2, Z2);
-        Vector3d vertexC = new Vector3d(X3, Y3, Z3);
-        Vector3d vertexD = new Vector3d(X4, Y4, Z4);
+        Vector3d vertexA = new Vector3d(x1p, y1p, z1p);
+        Vector3d vertexB = new Vector3d(x2p, y2p, z2p);
+        Vector3d vertexC = new Vector3d(x3p, y3p, z3p);
+        Vector3d vertexD = new Vector3d(x4p, y4p, z4p);
 
         Vector3d[] normals = new Vector3d[4];
         float[] normalDirections = new float[4];

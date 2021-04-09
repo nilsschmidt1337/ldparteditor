@@ -23,7 +23,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -32,6 +31,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The scale dialog
@@ -45,13 +45,13 @@ import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
 class SmoothDesign extends Dialog {
 
 
-    final NButton[] cb_Xaxis = new NButton[1];
-    final NButton[] cb_Yaxis = new NButton[1];
-    final NButton[] cb_Zaxis = new NButton[1];
-    final IntegerSpinner[] spn_pX = new IntegerSpinner[1];
-    final BigDecimalSpinner[] spn_pY = new BigDecimalSpinner[1];
-    
-    private final String NUMBER_FORMAT = View.NUMBER_FORMAT4F;
+    final NButton[] cbXaxisPtr = new NButton[1];
+    final NButton[] cbYaxisPtr = new NButton[1];
+    final NButton[] cbZaxisPtr = new NButton[1];
+    final IntegerSpinner[] spnPXPtr = new IntegerSpinner[1];
+    final BigDecimalSpinner[] spnPYPtr = new BigDecimalSpinner[1];
+
+    private static final String NUMBER_FORMAT = View.NUMBER_FORMAT4F;
 
     // Use final only for subclass/listener references!
 
@@ -79,38 +79,38 @@ class SmoothDesign extends Dialog {
 
         Label lblPreview = new Label(cmpContainer, SWT.NONE);
         lblPreview.setText("This dialog supports a realtime preview of the new mesh."); //$NON-NLS-1$ FIXME !i18n!
-        
+
         {
             Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(3, true));
 
             NButton cbXaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Xaxis[0] = cbXaxis;
+            this.cbXaxisPtr[0] = cbXaxis;
             cbXaxis.setText(I18n.COORDINATESDIALOG_X);
             cbXaxis.setSelection(true);
-            
+
             NButton cbYaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Yaxis[0] = cbYaxis;
+            this.cbYaxisPtr[0] = cbYaxis;
             cbYaxis.setText(I18n.COORDINATESDIALOG_Y);
             cbYaxis.setSelection(true);
-            
+
             NButton cbZaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Zaxis[0] = cbZaxis;
+            this.cbZaxisPtr[0] = cbZaxis;
             cbZaxis.setText(I18n.COORDINATESDIALOG_Z);
             cbZaxis.setSelection(true);
         }
-        
+
         Label lblIter = new Label(cmpContainer, SWT.NONE);
-        lblIter.setText("Iterations:"); //$NON-NLS-1$ FIXME !i18n!      
-        
+        lblIter.setText("Iterations:"); //$NON-NLS-1$ FIXME !i18n!
+
         {
             Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 
             IntegerSpinner spnPX = new IntegerSpinner(cmpTxt, SWT.NONE);
-            this.spn_pX[0] = spnPX;
+            this.spnPXPtr[0] = spnPX;
             spnPX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spnPX.setMaximum(9999);
             spnPX.setMinimum(1);
@@ -119,14 +119,14 @@ class SmoothDesign extends Dialog {
 
         Label lblFactor = new Label(cmpContainer, SWT.NONE);
         lblFactor.setText("Factor:"); //$NON-NLS-1$ FIXME !i18n!
-      
+
         {
             Composite cmpTxt = new Composite(cmpContainer, SWT.NONE);
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
 
             BigDecimalSpinner spnPY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_pY[0] = spnPY;
+            this.spnPYPtr[0] = spnPY;
             spnPY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spnPY.setMaximum(new BigDecimal(1));
             spnPY.setMinimum(new BigDecimal(-1));

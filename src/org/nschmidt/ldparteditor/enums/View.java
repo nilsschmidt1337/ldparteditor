@@ -57,9 +57,9 @@ public enum View {
     /** i18n reference string for the current unit */
     public static String unit = "LDU"; //$NON-NLS-1$
     /** The current unit factor */
-    public static BigDecimal unit_factor = BigDecimal.ONE;
+    public static BigDecimal unitFactor = BigDecimal.ONE;
     /** threshold for "solid" edges (default: 5e-6f) */
-    public static float edge_threshold = 5e-6f;
+    public static float edgeThreshold = 5e-6f;
     /** The standard decimal format for floating point numbers (0 digits) */
     public static final String NUMBER_FORMAT0F = "###,##0;-###,##0"; //$NON-NLS-1$
     /** The standard decimal format for floating point numbers (1 digit) */

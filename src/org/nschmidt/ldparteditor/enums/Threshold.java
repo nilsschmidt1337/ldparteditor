@@ -45,9 +45,9 @@ public enum Threshold implements Serializable {
     /** The threshold for the maximum collinear angle */
     public static final double COLLINEAR_ANGLE_MAXIMUM = 179.9d;
     /** The threshold for the maximum coplanarity angle for warnings */
-    public static double coplanarity_angle_warning = 1d;
+    public static double coplanarityAngleWarning = 1d;
     /** The threshold for the maximum coplanarity angle */
-    public static double coplanarity_angle_error = 3d;
+    public static double coplanarityAngleError = 3d;
     /** The threshold for the maximum condline angle */
     public static final float CONDLINE_ANGLE_MAXIMUM = 179.9f;
 }

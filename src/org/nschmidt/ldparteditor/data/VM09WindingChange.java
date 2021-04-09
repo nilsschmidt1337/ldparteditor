@@ -194,22 +194,22 @@ class VM09WindingChange extends VM08SlicerPro {
                     final Matrix t = subf.accurateLocalMatrix;
                     if (plainOnX) {
                         m = new Matrix(
-                                t.M00.negate(), t.M01.negate(), t.M02.negate(), t.M03,
-                                t.M10, t.M11, t.M12, t.M13,
-                                t.M20, t.M21, t.M22, t.M23,
-                                t.M30, t.M31, t.M32, t.M33);
+                                t.m00.negate(), t.m01.negate(), t.m02.negate(), t.m03,
+                                t.m10, t.m11, t.m12, t.m13,
+                                t.m20, t.m21, t.m22, t.m23,
+                                t.m30, t.m31, t.m32, t.m33);
                     } else if (plainOnY) {
                         m = new Matrix(
-                                t.M00, t.M01, t.M02, t.M03,
-                                t.M10.negate(), t.M11.negate(), t.M12.negate(), t.M13,
-                                t.M20, t.M21, t.M22, t.M23,
-                                t.M30, t.M31, t.M32, t.M33);
+                                t.m00, t.m01, t.m02, t.m03,
+                                t.m10.negate(), t.m11.negate(), t.m12.negate(), t.m13,
+                                t.m20, t.m21, t.m22, t.m23,
+                                t.m30, t.m31, t.m32, t.m33);
                     } else {
                         m = new Matrix(
-                                t.M00, t.M01, t.M02, t.M03,
-                                t.M10, t.M11, t.M12, t.M13,
-                                t.M20.negate(), t.M21.negate(), t.M22.negate(), t.M23,
-                                t.M30, t.M31, t.M32, t.M33);
+                                t.m00, t.m01, t.m02, t.m03,
+                                t.m10, t.m11, t.m12, t.m13,
+                                t.m20.negate(), t.m21.negate(), t.m22.negate(), t.m23,
+                                t.m30, t.m31, t.m32, t.m33);
                     }
                     newSubfile = (GData1) DatParser
                             .parseLine(untransformedSubfile.getTransformedString(m, null, linkedDatFile, false) , dpl.getKey(subf).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false,
@@ -341,12 +341,12 @@ class VM09WindingChange extends VM08SlicerPro {
         GData result = null;
         if (gData.type() < 4) {
             GData3 gd3 = (GData3) gData;
-            GData3 newGdata3 = new GData3(gd3.colourNumber, gd3.r, gd3.g, gd3.b, gd3.a, gd3.X2, gd3.Y2, gd3.Z2, gd3.X1, gd3.Y1, gd3.Z1, gd3.X3, gd3.Y3, gd3.Z3, gd3.x2, gd3.y2, gd3.z2, gd3.x1, gd3.y1, gd3.z1, gd3.x3,
+            GData3 newGdata3 = new GData3(gd3.colourNumber, gd3.r, gd3.g, gd3.b, gd3.a, gd3.x2p, gd3.y2p, gd3.z2p, gd3.x1p, gd3.y1p, gd3.z1p, gd3.x3p, gd3.y3p, gd3.z3p, gd3.x2, gd3.y2, gd3.z2, gd3.x1, gd3.y1, gd3.z1, gd3.x3,
                     gd3.y3, gd3.z3, -gd3.xn, -gd3.yn, -gd3.zn, gd3.parent, linkedDatFile, gd3.isTriangle);
             result = newGdata3;
         } else {
             GData4 gd4 = (GData4) gData;
-            GData4 newGdata4 = new GData4(gd4.colourNumber, gd4.r, gd4.g, gd4.b, gd4.a, gd4.X3, gd4.Y3, gd4.Z3, gd4.X2, gd4.Y2, gd4.Z2, gd4.X1, gd4.Y1, gd4.Z1, gd4.X4, gd4.Y4, gd4.Z4, gd4.x3, gd4.y3, gd4.z3, gd4.x2,
+            GData4 newGdata4 = new GData4(gd4.colourNumber, gd4.r, gd4.g, gd4.b, gd4.a, gd4.x3p, gd4.y3p, gd4.z3p, gd4.x2p, gd4.y2p, gd4.z2p, gd4.x1p, gd4.y1p, gd4.z1p, gd4.x4p, gd4.y4p, gd4.z4p, gd4.x3, gd4.y3, gd4.z3, gd4.x2,
                     gd4.y2, gd4.z2, gd4.x1, gd4.y1, gd4.z1, gd4.x4, gd4.y4, gd4.z4, -gd4.xn, -gd4.yn, -gd4.zn, gd4.parent, linkedDatFile);
             result = newGdata4;
         }

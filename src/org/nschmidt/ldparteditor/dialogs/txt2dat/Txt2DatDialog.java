@@ -48,11 +48,11 @@ public class Txt2DatDialog extends Txt2DatDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_interpolateFlatness[0].addValueChangeListener(spn -> ts.setInterpolateFlatness(spn.getValue()));
-        spn_flatness[0].addValueChangeListener(spn -> ts.setFlatness(spn.getValue()));
-        spn_fontHeight[0].addValueChangeListener(spn -> ts.setFontHeight(spn.getValue()));
-        spn_deltaAngle[0].addValueChangeListener(spn -> ts.setDeltaAngle(spn.getValue()));
-        WidgetUtil(btn_chooseFont[0]).addSelectionListener(e -> {
+        spnInterpolateFlatnessPtr[0].addValueChangeListener(spn -> ts.setInterpolateFlatness(spn.getValue()));
+        spnFlatnessPtr[0].addValueChangeListener(spn -> ts.setFlatness(spn.getValue()));
+        spnFontHeightPtr[0].addValueChangeListener(spn -> ts.setFontHeight(spn.getValue()));
+        spnDeltaAnglePtr[0].addValueChangeListener(spn -> ts.setDeltaAngle(spn.getValue()));
+        WidgetUtil(btnChooseFontPtr[0]).addSelectionListener(e -> {
             final FontDialog fd = new FontDialog(getShell());
             final FontData data = ts.getFontData();
             fd.setFontList(new FontData[]{data});
@@ -62,7 +62,7 @@ public class Txt2DatDialog extends Txt2DatDesign {
             ts.setFontData(fd.open());
             ts.setRGB(fd.getRGB());
         });
-        txt_text[0].addModifyListener(e -> ts.setText(txt_text[0].getText()));
+        txtTextPtr[0].addModifyListener(e -> ts.setText(txtTextPtr[0].getText()));
         return super.open();
     }
 

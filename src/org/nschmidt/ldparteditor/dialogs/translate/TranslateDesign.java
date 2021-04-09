@@ -53,24 +53,24 @@ class TranslateDesign extends Dialog {
 
     static ManipulatorScope transformationMode = ManipulatorScope.LOCAL;
 
-    final NButton[] btn_Local = new NButton[1];
-    final NButton[] btn_Global = new NButton[1];
+    final NButton[] btnLocalPtr = new NButton[1];
+    final NButton[] btnGlobalPtr = new NButton[1];
 
-    final Button[] btn_Copy = new Button[1];
+    final Button[] btnCopyPtr = new Button[1];
 
-    final NButton[] cb_Xaxis = new NButton[1];
-    final NButton[] cb_Yaxis = new NButton[1];
-    final NButton[] cb_Zaxis = new NButton[1];
-    final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+    final NButton[] cbXaxisPtr = new NButton[1];
+    final NButton[] cbYaxisPtr = new NButton[1];
+    final NButton[] cbZaxisPtr = new NButton[1];
+    final BigDecimalSpinner[] spnXPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnYPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnZPtr = new BigDecimalSpinner[1];
 
-    final NButton[] btn_ToManipulatorPosition = new NButton[1];
-    final NButton[] btn_ToManipulatorPositionInverted = new NButton[1];
+    final NButton[] btnToManipulatorPositionPtr = new NButton[1];
+    final NButton[] btnToManipulatorPositionInvertedPtr = new NButton[1];
 
-    final IntegerSpinner[] spn_Iterations = new IntegerSpinner[1];
+    final IntegerSpinner[] spnIterationsPtr = new IntegerSpinner[1];
 
-    private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
+    private static final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
 
     // Use final only for subclass/listener references!
 
@@ -108,7 +108,7 @@ class TranslateDesign extends Dialog {
         ToolItem toolItemTransformationModes = new ToolItem(cmpContainer, SWT.NONE, true);
         {
             NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
-            this.btn_Local[0] = btnLocal;
+            this.btnLocalPtr[0] = btnLocal;
             btnLocal.setToolTipText(I18n.E3D_LOCAL);
             btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.LOCAL) {
@@ -118,7 +118,7 @@ class TranslateDesign extends Dialog {
         }
         {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
-            this.btn_Global[0] = btnGlobal;
+            this.btnGlobalPtr[0] = btnGlobal;
             btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
             btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
             if (transformationMode == ManipulatorScope.GLOBAL) {
@@ -133,12 +133,12 @@ class TranslateDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             NButton cbXaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Xaxis[0] = cbXaxis;
+            this.cbXaxisPtr[0] = cbXaxis;
             cbXaxis.setText(I18n.TRANSLATE_X);
             cbXaxis.setSelection(true);
 
             BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_X[0] = spnX;
+            this.spnXPtr[0] = spnX;
             spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnX.setMaximum(new BigDecimal(1000000));
             spnX.setMinimum(new BigDecimal(-1000000));
@@ -151,12 +151,12 @@ class TranslateDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             NButton cbYaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Yaxis[0] = cbYaxis;
+            this.cbYaxisPtr[0] = cbYaxis;
             cbYaxis.setText(I18n.TRANSLATE_Y);
             cbYaxis.setSelection(true);
 
             BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Y[0] = spnY;
+            this.spnYPtr[0] = spnY;
             spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnY.setMaximum(new BigDecimal(1000000));
             spnY.setMinimum(new BigDecimal(-1000000));
@@ -169,12 +169,12 @@ class TranslateDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             NButton cbZaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Zaxis[0] = cbZaxis;
+            this.cbZaxisPtr[0] = cbZaxis;
             cbZaxis.setText(I18n.TRANSLATE_Z);
             cbZaxis.setSelection(true);
 
             BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Z[0] = spnZ;
+            this.spnZPtr[0] = spnZ;
             spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnZ.setMaximum(new BigDecimal(1000000));
             spnZ.setMinimum(new BigDecimal(-1000000));
@@ -183,13 +183,13 @@ class TranslateDesign extends Dialog {
 
         {
             NButton btnToManipulatorPosition = new NButton(cmpContainer, SWT.NONE);
-            this.btn_ToManipulatorPosition[0] = btnToManipulatorPosition;
+            this.btnToManipulatorPositionPtr[0] = btnToManipulatorPosition;
             btnToManipulatorPosition.setText(I18n.TRANSLATE_TO_MANIPULATOR_POSITION);
             btnToManipulatorPosition.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
             NButton btnToManipulatorPositionInverted = new NButton(cmpContainer, SWT.NONE);
-            this.btn_ToManipulatorPositionInverted[0] = btnToManipulatorPositionInverted;
+            this.btnToManipulatorPositionInvertedPtr[0] = btnToManipulatorPositionInverted;
             btnToManipulatorPositionInverted.setText(I18n.TRANSLATE_TO_MANIPULATOR_POSITION_INVERTED);
             btnToManipulatorPositionInverted.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
@@ -203,7 +203,7 @@ class TranslateDesign extends Dialog {
             lblIterations.setText(I18n.E3D_ITERATIONS);
 
             IntegerSpinner spnIterations = new IntegerSpinner(cmpTxt, SWT.NONE);
-            this.spn_Iterations[0] = spnIterations;
+            this.spnIterationsPtr[0] = spnIterations;
             spnIterations.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             spnIterations.setMaximum(1000);
             spnIterations.setMinimum(1);
@@ -221,7 +221,7 @@ class TranslateDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_Copy[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CREATE_TRANSFORMED_COPY, false);
+        btnCopyPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CREATE_TRANSFORMED_COPY, false);
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }

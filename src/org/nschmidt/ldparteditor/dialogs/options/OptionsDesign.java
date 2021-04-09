@@ -59,28 +59,28 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 
 class OptionsDesign extends ApplicationWindow {
 
-    NButton[] btn_AllowInvalidShapes = new NButton[1];
-    NButton[] btn_translateViewByCursor = new NButton[1];
-    NButton[] btn_disableMAD3D = new NButton[1];
-    NButton[] btn_disableMADtext = new NButton[1];
-    NButton[] btn_invertInvertWheelZoomDirection = new NButton[1];
-    NButton[] btn_OK = new NButton[1];
+    NButton[] btnAllowInvalidShapesPtr = new NButton[1];
+    NButton[] btnTranslateViewByCursorPtr = new NButton[1];
+    NButton[] btnDisableMAD3DPtr = new NButton[1];
+    NButton[] btnDisableMADtextPtr = new NButton[1];
+    NButton[] btnInvertInvertWheelZoomDirectionPtr = new NButton[1];
+    NButton[] btnOkPtr = new NButton[1];
 
-    final Combo[] cmb_textWinArr = new Combo[1];
-    final Combo[] cmb_locale = new Combo[1];
-    final Combo[] cmb_mouseButtonLayout = new Combo[1];
-    final Text[] txt_ldrawPath = new Text[1];
-    final Text[] txt_unofficialPath = new Text[1];
-    final Text[] txt_ldrawUserName = new Text[1];
-    final Text[] txt_realName = new Text[1];
-    final Text[] txt_partAuthoringPath = new Text[1];
-    final Combo[] cmb_license = new Combo[1];
-    final NButton[] btn_browseLdrawPath = new NButton[1];
-    final NButton[] btn_browseUnofficialPath = new NButton[1];
-    final NButton[] btn_browseAuthoringPath = new NButton[1];
-    final BigDecimalSpinner[] spn_coplanarityWarning = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_coplanarityError = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_viewportScale = new BigDecimalSpinner[1];
+    final Combo[] cmbTextWinArrPtr = new Combo[1];
+    final Combo[] cmbLocalePtr = new Combo[1];
+    final Combo[] cmbMouseButtonLayoutPtr = new Combo[1];
+    final Text[] txtLdrawPathPtr = new Text[1];
+    final Text[] txtUnofficialPathPtr = new Text[1];
+    final Text[] txtLdrawUserNamePtr = new Text[1];
+    final Text[] txtRealNamePtr = new Text[1];
+    final Text[] txtPartAuthoringPathPtr = new Text[1];
+    final Combo[] cmbLicensePtr = new Combo[1];
+    final NButton[] btnBrowseLdrawPathPtr = new NButton[1];
+    final NButton[] btnBrowseUnofficialPathPtr = new NButton[1];
+    final NButton[] btnBrowseAuthoringPathPtr = new NButton[1];
+    final BigDecimalSpinner[] spnCoplanarityWarningPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnCoplanarityErrorPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnViewportScalePtr = new BigDecimalSpinner[1];
     final HashMap<String, Locale> localeMap = new HashMap<>();
 
     private HashSet<Task>  s1 = new HashSet<>();
@@ -167,22 +167,22 @@ class OptionsDesign extends ApplicationWindow {
                 cmpContainer.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1));
 
                 NButton btnAllowInvalidShapes = new NButton(cmpContainer, SWT.CHECK);
-                this.btn_AllowInvalidShapes[0] = btnAllowInvalidShapes;
+                this.btnAllowInvalidShapesPtr[0] = btnAllowInvalidShapes;
                 btnAllowInvalidShapes.setText(I18n.OPTIONS_ALLOW_INVALID_SHAPES);
                 btnAllowInvalidShapes.setSelection(userSettings.isAllowInvalidShapes());
 
                 NButton btnTranslateViewByCursor = new NButton(cmpContainer, SWT.CHECK);
-                this.btn_translateViewByCursor[0] = btnTranslateViewByCursor;
+                this.btnTranslateViewByCursorPtr[0] = btnTranslateViewByCursor;
                 btnTranslateViewByCursor.setText(I18n.OPTIONS_TRANSLATE_BY_CURSOR);
                 btnTranslateViewByCursor.setSelection(userSettings.isTranslatingViewByCursor());
 
                 NButton btnDisableMAD3D = new NButton(cmpContainer, SWT.CHECK);
-                this.btn_disableMAD3D[0] = btnDisableMAD3D;
+                this.btnDisableMAD3DPtr[0] = btnDisableMAD3D;
                 btnDisableMAD3D.setText(I18n.OPTIONS_MAD_1);
                 btnDisableMAD3D.setSelection(userSettings.isDisableMAD3D());
 
                 NButton btnDisableMADtext = new NButton(cmpContainer, SWT.CHECK);
-                this.btn_disableMADtext[0] = btnDisableMADtext;
+                this.btnDisableMADtextPtr[0] = btnDisableMADtext;
                 btnDisableMADtext.setText(I18n.OPTIONS_MAD_2);
                 btnDisableMADtext.setSelection(userSettings.isDisableMADtext());
 
@@ -195,7 +195,7 @@ class OptionsDesign extends ApplicationWindow {
                 lblTextWinArr.setText(I18n.OPTIONS_TEXT_WINDOW_ARR);
 
                 Combo cmbTextWinArr = new Combo(cmpContainer, SWT.READ_ONLY);
-                this.cmb_textWinArr[0] = cmbTextWinArr;
+                this.cmbTextWinArrPtr[0] = cmbTextWinArr;
                 cmbTextWinArr.setItems(new String[]{I18n.OPTIONS_TEXT_WINDOW_SEPARATE, I18n.OPTIONS_TEXT_WINDOW_LEFT, I18n.OPTIONS_TEXT_WINDOW_RIGHT});
                 cmbTextWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbTextWinArr.select(userSettings.getTextWinArr());
@@ -210,10 +210,10 @@ class OptionsDesign extends ApplicationWindow {
                 lblCoplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 BigDecimalSpinner spnCoplanarityWarning = new BigDecimalSpinner(cmpContainer, Cocoa.getStyle());
-                this.spn_coplanarityWarning[0] = spnCoplanarityWarning;
+                this.spnCoplanarityWarningPtr[0] = spnCoplanarityWarning;
                 spnCoplanarityWarning.setMaximum(new BigDecimal("179.9999")); //$NON-NLS-1$
                 spnCoplanarityWarning.setMinimum(new BigDecimal("0.01")); //$NON-NLS-1$
-                spnCoplanarityWarning.setValue(new BigDecimal(Threshold.coplanarity_angle_warning));
+                spnCoplanarityWarning.setValue(new BigDecimal(Threshold.coplanarityAngleWarning));
                 spnCoplanarityWarning.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 Label lblCoplanarityError = new Label(cmpContainer, SWT.NONE);
@@ -221,10 +221,10 @@ class OptionsDesign extends ApplicationWindow {
                 lblCoplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 BigDecimalSpinner spnCoplanarityError = new BigDecimalSpinner(cmpContainer, Cocoa.getStyle());
-                this.spn_coplanarityError[0] = spnCoplanarityError;
+                this.spnCoplanarityErrorPtr[0] = spnCoplanarityError;
                 spnCoplanarityError.setMaximum(new BigDecimal("179.9999")); //$NON-NLS-1$
                 spnCoplanarityError.setMinimum(new BigDecimal("0.01")); //$NON-NLS-1$
-                spnCoplanarityError.setValue(new BigDecimal(Threshold.coplanarity_angle_error));
+                spnCoplanarityError.setValue(new BigDecimal(Threshold.coplanarityAngleError));
                 spnCoplanarityError.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 {
@@ -237,7 +237,7 @@ class OptionsDesign extends ApplicationWindow {
                 lblViewportScale.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
                 BigDecimalSpinner spnViewportScale = new BigDecimalSpinner(cmpContainer, Cocoa.getStyle());
-                this.spn_viewportScale[0] = spnViewportScale;
+                this.spnViewportScalePtr[0] = spnViewportScale;
                 spnViewportScale.setMaximum(new BigDecimal("10")); //$NON-NLS-1$
                 spnViewportScale.setMinimum(new BigDecimal("0.1")); //$NON-NLS-1$
                 spnViewportScale.setValue(new BigDecimal(userSettings.getViewportScaleFactor()));
@@ -252,7 +252,7 @@ class OptionsDesign extends ApplicationWindow {
                 lblLocale.setText(I18n.OPTIONS_CHOOSE_LOCALE);
 
                 Combo cmbLocale = new Combo(cmpContainer, SWT.READ_ONLY);
-                this.cmb_locale[0] = cmbLocale;
+                this.cmbLocalePtr[0] = cmbLocale;
 
                 String[] locales = new String[DateFormat.getAvailableLocales().length];
                 Locale[] locs = DateFormat.getAvailableLocales();
@@ -281,20 +281,20 @@ class OptionsDesign extends ApplicationWindow {
                 cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
                 Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
-                this.txt_ldrawPath[0] = txtLdrawPath;
+                this.txtLdrawPathPtr[0] = txtLdrawPath;
                 txtLdrawPath.setEditable(false);
                 txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
                 txtLdrawPath.setText(userSettings.getLdrawFolderPath());
 
                 NButton btnBrowseLdrawPath = new NButton(cmpPathChooser1, SWT.NONE);
-                this.btn_browseLdrawPath[0] = btnBrowseLdrawPath;
+                this.btnBrowseLdrawPathPtr[0] = btnBrowseLdrawPath;
                 btnBrowseLdrawPath.setText(I18n.OPTIONS_BROWSE);
 
                 Label lblLdrawUserQuestion = new Label(cmpContainer, SWT.NONE);
                 lblLdrawUserQuestion.setText(I18n.OPTIONS_LDRAW_NAME);
 
                 Text txtLdrawUserName = new Text(cmpContainer, SWT.BORDER);
-                this.txt_ldrawUserName[0] = txtLdrawUserName;
+                this.txtLdrawUserNamePtr[0] = txtLdrawUserName;
                 txtLdrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txtLdrawUserName.setText(userSettings.getLdrawUserName());
 
@@ -302,7 +302,7 @@ class OptionsDesign extends ApplicationWindow {
                 lblRealNameQuestion.setText(I18n.OPTIONS_REAL_NAME);
 
                 Text txtRealName = new Text(cmpContainer, SWT.BORDER);
-                this.txt_realName[0] = txtRealName;
+                this.txtRealNamePtr[0] = txtRealName;
                 txtRealName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 txtRealName.setText(userSettings.getRealUserName());
 
@@ -310,7 +310,7 @@ class OptionsDesign extends ApplicationWindow {
                 lblLicenseQuestion.setText(I18n.OPTIONS_LICENSE);
 
                 Combo cmbLicense = new Combo(cmpContainer, SWT.NONE);
-                this.cmb_license[0] = cmbLicense;
+                this.cmbLicensePtr[0] = cmbLicense;
                 cmbLicense.setItems(new String[] { "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
                 cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbLicense.setText(userSettings.getLicense());
@@ -322,13 +322,13 @@ class OptionsDesign extends ApplicationWindow {
                 cmpPathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
 
                 Text txtPartAuthoringPath = new Text(cmpPathChooser2, SWT.BORDER);
-                this.txt_partAuthoringPath[0] = txtPartAuthoringPath;
+                this.txtPartAuthoringPathPtr[0] = txtPartAuthoringPath;
                 txtPartAuthoringPath.setEditable(false);
                 txtPartAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
                 txtPartAuthoringPath.setText(userSettings.getAuthoringFolderPath());
 
                 NButton btnBrowseAuthoringPath = new NButton(cmpPathChooser2, SWT.NONE);
-                this.btn_browseAuthoringPath[0] = btnBrowseAuthoringPath;
+                this.btnBrowseAuthoringPathPtr[0] = btnBrowseAuthoringPath;
                 btnBrowseAuthoringPath.setText(I18n.OPTIONS_BROWSE);
 
                 Label lblUnofficialPathQuestion = new Label(cmpContainer, SWT.NONE);
@@ -338,13 +338,13 @@ class OptionsDesign extends ApplicationWindow {
                 cmpPathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
 
                 Text txtUnofficialPath = new Text(cmpPathChooser3, SWT.BORDER);
-                this.txt_unofficialPath[0] = txtUnofficialPath;
+                this.txtUnofficialPathPtr[0] = txtUnofficialPath;
                 txtUnofficialPath.setEditable(false);
                 txtUnofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
                 txtUnofficialPath.setText(userSettings.getUnofficialFolderPath());
 
                 NButton btnBrowseUnofficialPath = new NButton(cmpPathChooser3, SWT.NONE);
-                this.btn_browseUnofficialPath[0] = btnBrowseUnofficialPath;
+                this.btnBrowseUnofficialPathPtr[0] = btnBrowseUnofficialPath;
                 btnBrowseUnofficialPath.setText(I18n.OPTIONS_BROWSE);
 
                 cmpContainerX.setMinSize(cmpContainer.computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -363,13 +363,13 @@ class OptionsDesign extends ApplicationWindow {
                 lblMouseButtonLayout.setText(I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_TITLE);
 
                 Combo cmbMouseButtonLayout = new Combo(cmpContainer, SWT.READ_ONLY);
-                this.cmb_mouseButtonLayout[0] = cmbMouseButtonLayout;
+                this.cmbMouseButtonLayoutPtr[0] = cmbMouseButtonLayout;
                 cmbMouseButtonLayout.setItems(new String[]{I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_A, I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_B});
                 cmbMouseButtonLayout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbMouseButtonLayout.select(userSettings.getMouseButtonLayout());
 
                 NButton btnInvertInvertWheelZoomDirection = new NButton(cmpContainer, SWT.CHECK);
-                this.btn_invertInvertWheelZoomDirection[0] = btnInvertInvertWheelZoomDirection;
+                this.btnInvertInvertWheelZoomDirectionPtr[0] = btnInvertInvertWheelZoomDirection;
                 btnInvertInvertWheelZoomDirection.setText(I18n.KEYBOARD_INVERT_WHEEL_ZOOM_DIRECTION);
                 btnInvertInvertWheelZoomDirection.setSelection(userSettings.isInvertingWheelZoomDirection());
 
@@ -505,23 +505,23 @@ class OptionsDesign extends ApplicationWindow {
                     public void mouseDoubleClick(MouseEvent e) {
                         final TreeItem selection;
                         if (tree.getSelectionCount() == 1 && (selection = tree.getSelection()[0]).getData() != null) {
-                            KeyStateManager.tmp_keyString = null;
-                            if (new KeyDialog(getShell()).open() == IDialogConstants.OK_ID && KeyStateManager.tmp_keyString != null) {
+                            KeyStateManager.tmpKeyString = null;
+                            if (new KeyDialog(getShell()).open() == IDialogConstants.OK_ID && KeyStateManager.tmpKeyString != null) {
                                 Object[] data = (Object[]) selection.getData();
                                 if (data[0] == null) {
-                                    if (KeyStateManager.hasTextTaskKey(KeyStateManager.tmp_mapKey)) {
-                                        showKeyAlreadyInUseWarning(selection.getParentItem(), KeyStateManager.tmp_keyString);
+                                    if (KeyStateManager.hasTextTaskKey(KeyStateManager.tmpMapKey)) {
+                                        showKeyAlreadyInUseWarning(selection.getParentItem(), KeyStateManager.tmpKeyString);
                                     } else {
-                                        KeyStateManager.changeKey(KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (TextTask) data[1]);
-                                        selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                                        KeyStateManager.changeKey(KeyStateManager.tmpMapKey, KeyStateManager.tmpKeyString, (TextTask) data[1]);
+                                        selection.setText(new String[]{selection.getText(0), KeyStateManager.tmpKeyString});
                                     }
                                 }
                                 if (data[1] == null) {
-                                    if (KeyStateManager.hasTaskKey(KeyStateManager.tmp_mapKey)) {
-                                        showKeyAlreadyInUseWarning(selection.getParentItem(), KeyStateManager.tmp_keyString);
+                                    if (KeyStateManager.hasTaskKey(KeyStateManager.tmpMapKey)) {
+                                        showKeyAlreadyInUseWarning(selection.getParentItem(), KeyStateManager.tmpKeyString);
                                     } else {
-                                        KeyStateManager.changeKey(KeyStateManager.tmp_mapKey, KeyStateManager.tmp_keyString, (Task) data[0]);
-                                        selection.setText(new String[]{selection.getText(0), KeyStateManager.tmp_keyString});
+                                        KeyStateManager.changeKey(KeyStateManager.tmpMapKey, KeyStateManager.tmpKeyString, (Task) data[0]);
+                                        selection.setText(new String[]{selection.getText(0), KeyStateManager.tmpKeyString});
                                     }
                                 }
                                 tree.build();
@@ -629,20 +629,20 @@ class OptionsDesign extends ApplicationWindow {
                 registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_EDGE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.PRIMITIVE_EDGE_COLOUR_R, View.PRIMITIVE_EDGE_COLOUR_G, View.PRIMITIVE_EDGE_COLOUR_B});
                 registerColour(trtmEditor3D, I18n.COLOUR_PRIMITVE_CONDLINE_COLOUR, ColourType.OPENGL_COLOUR, new Object[]{View.PRIMITIVE_CONDLINE_COLOUR_R, View.PRIMITIVE_CONDLINE_COLOUR_G, View.PRIMITIVE_CONDLINE_COLOUR_B});
 
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_BG_COLOUR, ColourType.SWT_COLOUR, Colour.text_background);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR, ColourType.SWT_COLOUR, Colour.text_foreground);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR_HIDDEN, ColourType.SWT_COLOUR, Colour.text_foreground_hidden);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_SELECTED_BG_COLOUR, ColourType.SWT_COLOUR, Colour.line_highlight_selected_background);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_HIGHLIGHT_BG_COLOUR, ColourType.SWT_COLOUR, Colour.line_highlight_background);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_COMMENT_COLOUR, ColourType.SWT_COLOUR, Colour.line_comment_font);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_HINT_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, Colour.line_hint_underline);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_WARNING_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, Colour.line_warning_underline);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_ERROR_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, Colour.line_error_underline);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_PRIMARY_COLOUR, ColourType.SWT_COLOUR, Colour.line_primary_font);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_SECONDARY_COLOUR, ColourType.SWT_COLOUR, Colour.line_secondary_font);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_QUAD_COLOUR, ColourType.SWT_COLOUR, Colour.line_quad_font);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_COLOUR_ATTR_COLOUR, ColourType.SWT_COLOUR, Colour.line_colourAttr_font);
-                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_BOX_COLOUR, ColourType.SWT_COLOUR, Colour.line_box_font);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_BG_COLOUR, ColourType.SWT_COLOUR, Colour.textBackground);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR, ColourType.SWT_COLOUR, Colour.textForeground);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_FG_COLOUR_HIDDEN, ColourType.SWT_COLOUR, Colour.textForegroundHidden);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_SELECTED_BG_COLOUR, ColourType.SWT_COLOUR, Colour.lineHighlightSelectedBackground);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_HIGHLIGHT_BG_COLOUR, ColourType.SWT_COLOUR, Colour.lineHighlightBackground);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_COMMENT_COLOUR, ColourType.SWT_COLOUR, Colour.lineCommentFont);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_HINT_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, Colour.lineHintUnderline);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_WARNING_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, Colour.lineWarningUnderline);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_ERROR_UNDERLINE_COLOUR, ColourType.SWT_COLOUR, Colour.lineErrorUnderline);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_PRIMARY_COLOUR, ColourType.SWT_COLOUR, Colour.linePrimaryFont);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_SECONDARY_COLOUR, ColourType.SWT_COLOUR, Colour.lineSecondaryFont);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_QUAD_COLOUR, ColourType.SWT_COLOUR, Colour.lineQuadFont);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_COLOUR_ATTR_COLOUR, ColourType.SWT_COLOUR, Colour.lineColourAttrFont);
+                registerColour(trtmEditorText, I18n.COLOUR_TEXT_EDITOR_BOX_COLOUR, ColourType.SWT_COLOUR, Colour.lineBoxFont);
 
                 tree.build();
 
@@ -712,7 +712,7 @@ class OptionsDesign extends ApplicationWindow {
         spacer.setLayoutData(gridData2);
 
         NButton btnOK = new NButton(cmpButtons, SWT.NONE);
-        this.btn_OK[0] = btnOK;
+        this.btnOkPtr[0] = btnOK;
         btnOK.setText(I18n.DIALOG_OK);
 
         GridData gridData3 = new GridData();

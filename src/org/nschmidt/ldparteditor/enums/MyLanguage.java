@@ -27,7 +27,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum MyLanguage {
     INSTANCE;
 
-    public static Locale LOCALE = getLocale();
+    public static Locale locale = getLocale();
 
     private static Locale getLocale() {
         final UserSettingState userConfig = WorkbenchManager.getUserSettingState();

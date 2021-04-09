@@ -99,11 +99,11 @@ public abstract class GData implements IGData, Comparable<GData> {
     }
 
     private static final AtomicInteger id_counter = new AtomicInteger(0);
-    protected final int ID;
+    protected final int id;
 
     GData(GData1 parent) {
         // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!
-        ID = id_counter.getAndIncrement();
+        id = id_counter.getAndIncrement();
         this.parent = parent;
     }
 
@@ -117,7 +117,7 @@ public abstract class GData implements IGData, Comparable<GData> {
 
     @Override
     public int hashCode() {
-        return ID;
+        return id;
     }
 
 
@@ -136,7 +136,7 @@ public abstract class GData implements IGData, Comparable<GData> {
         if (equals(o)) {
             return 0;
         }
-        return Integer.compare(ID, o.ID);
+        return Integer.compare(id, o.id);
     }
 
     static int getLastID() {

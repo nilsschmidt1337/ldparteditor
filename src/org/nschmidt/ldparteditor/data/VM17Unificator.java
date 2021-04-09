@@ -178,9 +178,9 @@ class VM17Unificator extends VM16Subdivide {
                                     BigDecimal z = BigDecimal.ZERO;
                                     BigDecimal gc = new BigDecimal(group.size());
                                     for (Vertex gv : group) {
-                                        x = x.add(gv.X);
-                                        y = y.add(gv.Y);
-                                        z = z.add(gv.Z);
+                                        x = x.add(gv.xp);
+                                        y = y.add(gv.yp);
+                                        z = z.add(gv.zp);
                                     }
                                     x = x.divide(gc, Threshold.MC);
                                     y = y.divide(gc, Threshold.MC);

@@ -55,27 +55,27 @@ import org.nschmidt.ldparteditor.widgets.NButton;
  */
 class SlantingMatrixProjectorDesign extends Dialog {
 
-    private final Text[] M00 = new Text[1];
-    private final Text[] M01 = new Text[1];
-    private final Text[] M02 = new Text[1];
-    private final Text[] M03 = new Text[1];
-    private final Text[] M10 = new Text[1];
-    private final Text[] M11 = new Text[1];
-    private final Text[] M12 = new Text[1];
-    private final Text[] M13 = new Text[1];
-    private final Text[] M20 = new Text[1];
-    private final Text[] M21 = new Text[1];
-    private final Text[] M22 = new Text[1];
-    private final Text[] M23 = new Text[1];
-    private final Text[] M30 = new Text[1];
-    private final Text[] M31 = new Text[1];
-    private final Text[] M32 = new Text[1];
-    private final Text[] M33 = new Text[1];
+    private final Text[] m00Ptr = new Text[1];
+    private final Text[] m01Ptr = new Text[1];
+    private final Text[] m02Ptr = new Text[1];
+    private final Text[] m03Ptr = new Text[1];
+    private final Text[] m10Ptr = new Text[1];
+    private final Text[] m11Ptr = new Text[1];
+    private final Text[] m12Ptr = new Text[1];
+    private final Text[] m13Ptr = new Text[1];
+    private final Text[] m20Ptr = new Text[1];
+    private final Text[] m21Ptr = new Text[1];
+    private final Text[] m22Ptr = new Text[1];
+    private final Text[] m23Ptr = new Text[1];
+    private final Text[] m30Ptr = new Text[1];
+    private final Text[] m31Ptr = new Text[1];
+    private final Text[] m32Ptr = new Text[1];
+    private final Text[] m33Ptr = new Text[1];
 
     // Use final only for subclass/listener references!
     private final VertexManager vm;
     private final SlantingMatrixProjectorSettings mps;
-    private java.text.DecimalFormat numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMATL4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private java.text.DecimalFormat numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMATL4F, new DecimalFormatSymbols(MyLanguage.locale));
 
     SlantingMatrixProjectorDesign(Shell parentShell, VertexManager vm, SlantingMatrixProjectorSettings mps) {
         super(parentShell);
@@ -164,22 +164,22 @@ class SlantingMatrixProjectorDesign extends Dialog {
 
         final Matrix m = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
 
-        insertMatrixCell(cmpContainer, m.M00, M00);
-        insertMatrixCell(cmpContainer, m.M10, M10);
-        insertMatrixCell(cmpContainer, m.M20, M20);
-        insertMatrixCell(cmpContainer, m.M30, M30);
-        insertMatrixCell(cmpContainer, m.M01, M01);
-        insertMatrixCell(cmpContainer, m.M11, M11);
-        insertMatrixCell(cmpContainer, m.M21, M21);
-        insertMatrixCell(cmpContainer, m.M31, M31);
-        insertMatrixCell(cmpContainer, m.M02, M02);
-        insertMatrixCell(cmpContainer, m.M12, M12);
-        insertMatrixCell(cmpContainer, m.M22, M22);
-        insertMatrixCell(cmpContainer, m.M32, M32);
-        insertMatrixCell(cmpContainer, BigDecimal.ZERO, M03);
-        insertMatrixCell(cmpContainer, BigDecimal.ZERO, M13);
-        insertMatrixCell(cmpContainer, BigDecimal.ZERO, M23);
-        insertMatrixCell(cmpContainer, BigDecimal.ONE, M33);
+        insertMatrixCell(cmpContainer, m.m00, m00Ptr);
+        insertMatrixCell(cmpContainer, m.m10, m10Ptr);
+        insertMatrixCell(cmpContainer, m.m20, m20Ptr);
+        insertMatrixCell(cmpContainer, m.m30, m30Ptr);
+        insertMatrixCell(cmpContainer, m.m01, m01Ptr);
+        insertMatrixCell(cmpContainer, m.m11, m11Ptr);
+        insertMatrixCell(cmpContainer, m.m21, m21Ptr);
+        insertMatrixCell(cmpContainer, m.m31, m31Ptr);
+        insertMatrixCell(cmpContainer, m.m02, m02Ptr);
+        insertMatrixCell(cmpContainer, m.m12, m12Ptr);
+        insertMatrixCell(cmpContainer, m.m22, m22Ptr);
+        insertMatrixCell(cmpContainer, m.m32, m32Ptr);
+        insertMatrixCell(cmpContainer, BigDecimal.ZERO, m03Ptr);
+        insertMatrixCell(cmpContainer, BigDecimal.ZERO, m13Ptr);
+        insertMatrixCell(cmpContainer, BigDecimal.ZERO, m23Ptr);
+        insertMatrixCell(cmpContainer, BigDecimal.ONE, m33Ptr);
 
         NButton btnCopyMatrixToClipboard = new NButton(cmpContainer, SWT.NONE);
         btnCopyMatrixToClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
@@ -210,22 +210,22 @@ class SlantingMatrixProjectorDesign extends Dialog {
 
     private void updateMatrix() {
         final Matrix m = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
-        updateMatrixCell(M00, m.M00);
-        updateMatrixCell(M01, m.M01);
-        updateMatrixCell(M02, m.M02);
-        updateMatrixCell(M03, m.M03);
-        updateMatrixCell(M10, m.M10);
-        updateMatrixCell(M11, m.M11);
-        updateMatrixCell(M12, m.M12);
-        updateMatrixCell(M13, m.M13);
-        updateMatrixCell(M20, m.M20);
-        updateMatrixCell(M21, m.M21);
-        updateMatrixCell(M22, m.M22);
-        updateMatrixCell(M23, m.M23);
-        updateMatrixCell(M30, m.M30);
-        updateMatrixCell(M31, m.M31);
-        updateMatrixCell(M32, m.M32);
-        updateMatrixCell(M33, m.M33);
+        updateMatrixCell(m00Ptr, m.m00);
+        updateMatrixCell(m01Ptr, m.m01);
+        updateMatrixCell(m02Ptr, m.m02);
+        updateMatrixCell(m03Ptr, m.m03);
+        updateMatrixCell(m10Ptr, m.m10);
+        updateMatrixCell(m11Ptr, m.m11);
+        updateMatrixCell(m12Ptr, m.m12);
+        updateMatrixCell(m13Ptr, m.m13);
+        updateMatrixCell(m20Ptr, m.m20);
+        updateMatrixCell(m21Ptr, m.m21);
+        updateMatrixCell(m22Ptr, m.m22);
+        updateMatrixCell(m23Ptr, m.m23);
+        updateMatrixCell(m30Ptr, m.m30);
+        updateMatrixCell(m31Ptr, m.m31);
+        updateMatrixCell(m32Ptr, m.m32);
+        updateMatrixCell(m33Ptr, m.m33);
     }
 
     private void updateMatrixCell(Text[] textCmp, BigDecimal val) {

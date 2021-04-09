@@ -40,9 +40,9 @@ class PartReviewDesign extends Dialog {
         this.alreadyReviewing = alreadyReviewing;
     }
 
-    private Button[] btn_ok = new Button[1];
-    private Button[] btn_cancel = new Button[1];
-    private final Text[] txt_file = new Text[1];
+    private Button[] btnOkPtr = new Button[1];
+    private Button[] btnCancelPtr = new Button[1];
+    private final Text[] txtFilePtr = new Text[1];
 
     /**
      * Create contents of the dialog.
@@ -64,13 +64,13 @@ class PartReviewDesign extends Dialog {
             lblPartName.setText(I18n.E3D_PART_REVIEW_ENTER_PART_NAME);
 
             Text txtFile2 = new Text(cmpContainer, SWT.NONE);
-            this.txt_file[0] = txtFile2;
+            this.txtFilePtr[0] = txtFile2;
             GridData gd = new GridData();
             gd.grabExcessHorizontalSpace = true;
             gd.horizontalAlignment = SWT.FILL;
             txtFile2.setLayoutData(gd);
 
-            this.txt_file[0].addModifyListener(e -> fileName = txt_file[0].getText());
+            this.txtFilePtr[0].addModifyListener(e -> fileName = txtFilePtr[0].getText());
 
             Label lblInfo = new Label(cmpContainer, SWT.NONE);
             lblInfo.setText(I18n.E3D_PART_REVIEW_INFO);
@@ -88,11 +88,11 @@ class PartReviewDesign extends Dialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
         if (alreadyReviewing) {
-            btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_YES, true);
-            btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_NO, false);
+            btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_YES, true);
+            btnCancelPtr[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_NO, false);
         } else {
-            btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
-            btn_cancel[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
+            btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
+            btnCancelPtr[0] = createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
         }
     }
 

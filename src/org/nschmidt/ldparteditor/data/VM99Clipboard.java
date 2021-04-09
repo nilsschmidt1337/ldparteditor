@@ -394,7 +394,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                                 }
                                 int comparism = co1.compareTo(co2);
                                 if (comparism == 0) {
-                                    if (o1.ID > o2.ID) { // The id can "never" be equal!
+                                    if (o1.id > o2.id) { // The id can "never" be equal!
                                         return 1;
                                     } else {
                                         return -1;
@@ -408,7 +408,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                         NLogger.error(getClass(), "NullPointerException within CLIPBOARD!"); //$NON-NLS-1$
                         NLogger.error(getClass(), "Object 1:" + o1.toString()); //$NON-NLS-1$
                         NLogger.error(getClass(), "Object 2:" + o2.toString()); //$NON-NLS-1$
-                        if (o1.ID > o2.ID) { // The id can "never" be equal!
+                        if (o1.id > o2.id) { // The id can "never" be equal!
                             return 1;
                         } else {
                             return -1;
@@ -418,7 +418,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
             }
 
             for (Vertex v : singleVertices) {
-                CLIPBOARD.add(new GData0("0 !LPE VERTEX " + bigDecimalToString(v.X) + " " + bigDecimalToString(v.Y) + " " + bigDecimalToString(v.Z), View.DUMMY_REFERENCE)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
+                CLIPBOARD.add(new GData0("0 !LPE VERTEX " + bigDecimalToString(v.xp) + " " + bigDecimalToString(v.yp) + " " + bigDecimalToString(v.zp), View.DUMMY_REFERENCE)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
             }
 
             // 5. Create text data entry in the OS clipboard
@@ -444,14 +444,14 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                 }
                 if (data.type() == 2 && !((GData2) data).isLine) {
                     GData2 gd2 = (GData2) data;
-                    BigDecimal dx = gd2.X1.subtract(gd2.X2);
-                    BigDecimal dy = gd2.Y1.subtract(gd2.Y2);
-                    BigDecimal dz = gd2.Z1.subtract(gd2.Z2);
+                    BigDecimal dx = gd2.x1p.subtract(gd2.x2p);
+                    BigDecimal dy = gd2.y1p.subtract(gd2.y2p);
+                    BigDecimal dz = gd2.z1p.subtract(gd2.z2p);
                     if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.LOCAL && rotM != null) {
                         Vector3d tr = rotM.transform(new Vector3d(dx, dy, dz));
-                        dx = tr.X;
-                        dy = tr.Y;
-                        dz = tr.Z;
+                        dx = tr.x;
+                        dy = tr.y;
+                        dz = tr.z;
                     }
                     cbString.append("0 //~  DIST: " + bigDecimalToString(gd2.getLength()) + " DX: " + bigDecimalToString(dx) + " DY: " + bigDecimalToString(dy) + " DZ: " + bigDecimalToString(dz)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                     cbString.append(StringHelper.getLineDelimiter());
@@ -920,11 +920,11 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         CLIPBOARD_InvNext.clear();
         final StringBuilder sb = new StringBuilder();
         sb.append("0 !LPE VERTEX "); //$NON-NLS-1$
-        sb.append(MathHelper.bigDecimalToString(vertex.X));
+        sb.append(MathHelper.bigDecimalToString(vertex.xp));
         sb.append(" "); //$NON-NLS-1$
-        sb.append(MathHelper.bigDecimalToString(vertex.Y));
+        sb.append(MathHelper.bigDecimalToString(vertex.yp));
         sb.append(" "); //$NON-NLS-1$
-        sb.append(MathHelper.bigDecimalToString(vertex.Z));
+        sb.append(MathHelper.bigDecimalToString(vertex.zp));
         CLIPBOARD.add(new GData0(sb.toString(), View.DUMMY_REFERENCE));
     }
 

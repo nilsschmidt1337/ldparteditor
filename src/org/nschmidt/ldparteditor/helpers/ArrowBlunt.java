@@ -33,18 +33,18 @@ public class ArrowBlunt {
     private final FloatBuffer matrix;
     private final Matrix4f rotation;
 
-    private final float EPSILON = 0.0000001f;
+    private static final float EPSILON = 0.0000001f;
 
     private final float r;
     private final float g;
     private final float b;
 
-    private final float line_end;
-    private final float line_width;
+    private final float lineEnd;
+    private final float lineWidth;
 
-    private final float[] cube_x = new float[8];
-    private final float[] cube_y = new float[8];
-    private final float[] cube_z = new float[8];
+    private final float[] cubeX = new float[8];
+    private final float[] cubeY = new float[8];
+    private final float[] cubeZ = new float[8];
 
     public ArrowBlunt(float r, float g, float b, float dirX, float dirY, float dirZ, float edgeLength, float lineWidth) {
         dirX = dirX / 1000f;
@@ -53,10 +53,10 @@ public class ArrowBlunt {
         this.r = r;
         this.g = g;
         this.b = b;
-        this.line_width = lineWidth;
+        this.lineWidth = lineWidth;
         final float length = (float) Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
         final float cube_start = length - edgeLength;
-        line_end = length - edgeLength / 3f;
+        lineEnd = length - edgeLength / 3f;
         rotation = makeRotationDir(new Vector3f(dirX, dirY, dirZ));
         matrix = BufferUtils.createFloatBuffer(16);
         rotation.store(matrix);
@@ -64,31 +64,31 @@ public class ArrowBlunt {
 
         final float half_edge_length = edgeLength / 2f;
         final float half_edge_length_neg = -half_edge_length;
-        cube_x[0] = half_edge_length;
-        cube_y[0] = cube_start;
-        cube_z[0] = half_edge_length;
-        cube_x[1] = half_edge_length;
-        cube_y[1] = cube_start;
-        cube_z[1] = half_edge_length_neg;
-        cube_x[2] = half_edge_length_neg;
-        cube_y[2] = cube_start;
-        cube_z[2] = half_edge_length_neg;
-        cube_x[3] = half_edge_length_neg;
-        cube_y[3] = cube_start;
-        cube_z[3] = half_edge_length;
+        cubeX[0] = half_edge_length;
+        cubeY[0] = cube_start;
+        cubeZ[0] = half_edge_length;
+        cubeX[1] = half_edge_length;
+        cubeY[1] = cube_start;
+        cubeZ[1] = half_edge_length_neg;
+        cubeX[2] = half_edge_length_neg;
+        cubeY[2] = cube_start;
+        cubeZ[2] = half_edge_length_neg;
+        cubeX[3] = half_edge_length_neg;
+        cubeY[3] = cube_start;
+        cubeZ[3] = half_edge_length;
 
-        cube_x[4] = half_edge_length;
-        cube_y[4] = length;
-        cube_z[4] = half_edge_length;
-        cube_x[5] = half_edge_length;
-        cube_y[5] = length;
-        cube_z[5] = half_edge_length_neg;
-        cube_x[6] = half_edge_length_neg;
-        cube_y[6] = length;
-        cube_z[6] = half_edge_length_neg;
-        cube_x[7] = half_edge_length_neg;
-        cube_y[7] = length;
-        cube_z[7] = half_edge_length;
+        cubeX[4] = half_edge_length;
+        cubeY[4] = length;
+        cubeZ[4] = half_edge_length;
+        cubeX[5] = half_edge_length;
+        cubeY[5] = length;
+        cubeZ[5] = half_edge_length_neg;
+        cubeX[6] = half_edge_length_neg;
+        cubeY[6] = length;
+        cubeZ[6] = half_edge_length_neg;
+        cubeX[7] = half_edge_length_neg;
+        cubeY[7] = length;
+        cubeZ[7] = half_edge_length;
     }
 
     private Matrix4f makeRotationDir(Vector3f direction) {
@@ -162,38 +162,38 @@ public class ArrowBlunt {
         GL11.glMultMatrixf(matrix);
         GL11.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glLineWidth(line_width);
+        GL11.glLineWidth(lineWidth);
         GL11.glColor3f(r, g, b);
         GL11.glBegin(GL11.GL_LINES);
         GL11.glVertex3f(0f, 0f, 0f);
-        GL11.glVertex3f(0f, line_end, 0f);
+        GL11.glVertex3f(0f, lineEnd, 0f);
         GL11.glEnd();
 
         GL11.glBegin(GL11.GL_QUADS);
 
-        GL11.glVertex3f(cube_x[3], cube_y[3], cube_z[3]);
-        GL11.glVertex3f(cube_x[2], cube_y[2], cube_z[2]);
-        GL11.glVertex3f(cube_x[1], cube_y[1], cube_z[1]);
-        GL11.glVertex3f(cube_x[0], cube_y[0], cube_z[0]);
+        GL11.glVertex3f(cubeX[3], cubeY[3], cubeZ[3]);
+        GL11.glVertex3f(cubeX[2], cubeY[2], cubeZ[2]);
+        GL11.glVertex3f(cubeX[1], cubeY[1], cubeZ[1]);
+        GL11.glVertex3f(cubeX[0], cubeY[0], cubeZ[0]);
 
-        GL11.glVertex3f(cube_x[4], cube_y[4], cube_z[4]);
-        GL11.glVertex3f(cube_x[5], cube_y[5], cube_z[5]);
-        GL11.glVertex3f(cube_x[6], cube_y[6], cube_z[6]);
-        GL11.glVertex3f(cube_x[7], cube_y[7], cube_z[7]);
+        GL11.glVertex3f(cubeX[4], cubeY[4], cubeZ[4]);
+        GL11.glVertex3f(cubeX[5], cubeY[5], cubeZ[5]);
+        GL11.glVertex3f(cubeX[6], cubeY[6], cubeZ[6]);
+        GL11.glVertex3f(cubeX[7], cubeY[7], cubeZ[7]);
 
         GL11.glEnd();
 
         GL11.glBegin(GL11.GL_QUAD_STRIP);
-        GL11.glVertex3f(cube_x[0], cube_y[0], cube_z[0]);
-        GL11.glVertex3f(cube_x[4], cube_y[4], cube_z[4]);
-        GL11.glVertex3f(cube_x[3], cube_y[3], cube_z[3]);
-        GL11.glVertex3f(cube_x[7], cube_y[7], cube_z[7]);
-        GL11.glVertex3f(cube_x[2], cube_y[2], cube_z[2]);
-        GL11.glVertex3f(cube_x[6], cube_y[6], cube_z[6]);
-        GL11.glVertex3f(cube_x[1], cube_y[1], cube_z[1]);
-        GL11.glVertex3f(cube_x[5], cube_y[5], cube_z[5]);
-        GL11.glVertex3f(cube_x[0], cube_y[0], cube_z[0]);
-        GL11.glVertex3f(cube_x[4], cube_y[4], cube_z[4]);
+        GL11.glVertex3f(cubeX[0], cubeY[0], cubeZ[0]);
+        GL11.glVertex3f(cubeX[4], cubeY[4], cubeZ[4]);
+        GL11.glVertex3f(cubeX[3], cubeY[3], cubeZ[3]);
+        GL11.glVertex3f(cubeX[7], cubeY[7], cubeZ[7]);
+        GL11.glVertex3f(cubeX[2], cubeY[2], cubeZ[2]);
+        GL11.glVertex3f(cubeX[6], cubeY[6], cubeZ[6]);
+        GL11.glVertex3f(cubeX[1], cubeY[1], cubeZ[1]);
+        GL11.glVertex3f(cubeX[5], cubeY[5], cubeZ[5]);
+        GL11.glVertex3f(cubeX[0], cubeY[0], cubeZ[0]);
+        GL11.glVertex3f(cubeX[4], cubeY[4], cubeZ[4]);
         GL11.glEnd();
 
         GL11.glPopMatrix();
@@ -207,39 +207,39 @@ public class ArrowBlunt {
         stack.glMultMatrixf(rotation);
         stack.glScalef(zoom_inv, zoom_inv, zoom_inv);
 
-        GL11.glLineWidth(line_width);
+        GL11.glLineWidth(lineWidth);
 
         {
             float[] vertexData = new float[]{
                     0f, 0f, 0f,
                     r, g, b,
-                    0f, line_end, 0f,
+                    0f, lineEnd, 0f,
                     r, g, b
             };
             GL33Helper.drawLinesRGB_GeneralSlow(vertexData);
         }
 
         float[] vertexData = new float[]{
-                cube_x[3], cube_y[3], cube_z[3], r, g, b,
-                cube_x[2], cube_y[2], cube_z[2], r, g, b,
-                cube_x[1], cube_y[1], cube_z[1], r, g, b,
-                cube_x[0], cube_y[0], cube_z[0], r, g, b,
+                cubeX[3], cubeY[3], cubeZ[3], r, g, b,
+                cubeX[2], cubeY[2], cubeZ[2], r, g, b,
+                cubeX[1], cubeY[1], cubeZ[1], r, g, b,
+                cubeX[0], cubeY[0], cubeZ[0], r, g, b,
 
-                cube_x[4], cube_y[4], cube_z[4], r, g, b,
-                cube_x[5], cube_y[5], cube_z[5], r, g, b,
-                cube_x[6], cube_y[6], cube_z[6], r, g, b,
-                cube_x[7], cube_y[7], cube_z[7], r, g, b,
+                cubeX[4], cubeY[4], cubeZ[4], r, g, b,
+                cubeX[5], cubeY[5], cubeZ[5], r, g, b,
+                cubeX[6], cubeY[6], cubeZ[6], r, g, b,
+                cubeX[7], cubeY[7], cubeZ[7], r, g, b,
 
-                cube_x[0], cube_y[0], cube_z[0], r, g, b,
-                cube_x[4], cube_y[4], cube_z[4], r, g, b,
-                cube_x[3], cube_y[3], cube_z[3], r, g, b,
-                cube_x[7], cube_y[7], cube_z[7], r, g, b,
-                cube_x[2], cube_y[2], cube_z[2], r, g, b,
-                cube_x[6], cube_y[6], cube_z[6], r, g, b,
-                cube_x[1], cube_y[1], cube_z[1], r, g, b,
-                cube_x[5], cube_y[5], cube_z[5], r, g, b,
-                cube_x[0], cube_y[0], cube_z[0], r, g, b,
-                cube_x[4], cube_y[4], cube_z[4], r, g, b
+                cubeX[0], cubeY[0], cubeZ[0], r, g, b,
+                cubeX[4], cubeY[4], cubeZ[4], r, g, b,
+                cubeX[3], cubeY[3], cubeZ[3], r, g, b,
+                cubeX[7], cubeY[7], cubeZ[7], r, g, b,
+                cubeX[2], cubeY[2], cubeZ[2], r, g, b,
+                cubeX[6], cubeY[6], cubeZ[6], r, g, b,
+                cubeX[1], cubeY[1], cubeZ[1], r, g, b,
+                cubeX[5], cubeY[5], cubeZ[5], r, g, b,
+                cubeX[0], cubeY[0], cubeZ[0], r, g, b,
+                cubeX[4], cubeY[4], cubeZ[4], r, g, b
         };
 
         int[] indices = new int[]{

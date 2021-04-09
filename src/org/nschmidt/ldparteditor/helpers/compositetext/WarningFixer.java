@@ -143,7 +143,7 @@ final class WarningFixer {
 
             double angle = Vector3d.angle(normals[0], normals[2]);
             angle = Math.min(angle, Math.abs(180.0 - angle));
-            if (angle > Threshold.coplanarity_angle_error) {
+            if (angle > Threshold.coplanarityAngleError) {
                 text = QuickFixer.setLine(lineNumber + 1,
                         "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
                                 dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$

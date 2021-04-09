@@ -60,13 +60,13 @@ public class ScaleDialog extends ScaleDesign {
         if (v == null) {
             setScaleFactors(new Vertex(1f, 1f, 1f));
         } else {
-            setScaleFactors(new Vertex(v.X, v.Y, v.Z));
+            setScaleFactors(new Vertex(v.xp, v.yp, v.zp));
         }
         if (clipboardVertices.size() == 1) {
             p = clipboardVertices.iterator().next();
-            c = new Vertex(p.X, p.Y, p.Z);
+            c = new Vertex(p.xp, p.yp, p.zp);
         } else if (transformationMode == ManipulatorScope.LOCAL && manipulatorPosition != null) {
-            pivot = new Vertex(m.X, m.Y, m.Z);
+            pivot = new Vertex(m.xp, m.yp, m.zp);
         }
     }
 
@@ -74,38 +74,38 @@ public class ScaleDialog extends ScaleDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_Local[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
-            btn_Local[0].setSelection(true);
+        WidgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
+            btnLocalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.LOCAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
         });
-        WidgetUtil(btn_Global[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
         });
-        WidgetUtil(cb_Xaxis[0]).addSelectionListener(e -> x = cb_Xaxis[0].getSelection());
-        WidgetUtil(cb_Yaxis[0]).addSelectionListener(e -> y = cb_Yaxis[0].getSelection());
-        WidgetUtil(cb_Zaxis[0]).addSelectionListener(e -> z = cb_Zaxis[0].getSelection());
-        spn_X[0].addValueChangeListener(spn -> setScaleFactors(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
-        spn_Y[0].addValueChangeListener(spn -> setScaleFactors(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
-        spn_Z[0].addValueChangeListener(spn -> setScaleFactors(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
-        spn_pX[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
-        spn_pY[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
-        spn_pZ[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
-        WidgetUtil(btn_PivotManipulator[0]).addSelectionListener(e -> {
-            spn_pX[0].setValue(m.X);
-            spn_pY[0].setValue(m.Y);
-            spn_pZ[0].setValue(m.Z);
+        WidgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> x = cbXaxisPtr[0].getSelection());
+        WidgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> y = cbYaxisPtr[0].getSelection());
+        WidgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> z = cbZaxisPtr[0].getSelection());
+        spnXPtr[0].addValueChangeListener(spn -> setScaleFactors(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue())));
+        spnYPtr[0].addValueChangeListener(spn -> setScaleFactors(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue())));
+        spnZPtr[0].addValueChangeListener(spn -> setScaleFactors(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue())));
+        spnPXPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
+        spnPYPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
+        spnPZPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
+        WidgetUtil(btnPivotManipulatorPtr[0]).addSelectionListener(e -> {
+            spnPXPtr[0].setValue(m.xp);
+            spnPYPtr[0].setValue(m.yp);
+            spnPZPtr[0].setValue(m.zp);
         });
-        WidgetUtil(btn_PivotClipboard[0]).addSelectionListener(e -> {
-            spn_pX[0].setValue(c.X);
-            spn_pY[0].setValue(c.Y);
-            spn_pZ[0].setValue(c.Z);
+        WidgetUtil(btnPivotClipboardPtr[0]).addSelectionListener(e -> {
+            spnPXPtr[0].setValue(c.xp);
+            spnPYPtr[0].setValue(c.yp);
+            spnPZPtr[0].setValue(c.zp);
         });
-        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
             creatingCopy = true;
             setReturnCode(OK);
             close();

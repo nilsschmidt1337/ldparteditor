@@ -43,10 +43,10 @@ import org.nschmidt.ldparteditor.resources.ResourceManager;
  */
 public class BigDecimalSpinner extends Composite {
 
-    private final NButton[] btn_Up = new NButton[1];
-    private final NButton[] btn_Down = new NButton[1];
-    private final Text[] txt_val = new Text[1];
-    private final Label[] lbl_warn = new Label[1];
+    private final NButton[] btnUp = new NButton[1];
+    private final NButton[] btnDown = new NButton[1];
+    private final Text[] txtVal = new Text[1];
+    private final Label[] lblWarn = new Label[1];
 
     private BigDecimal value;
     private BigDecimal maximum;
@@ -67,7 +67,7 @@ public class BigDecimalSpinner extends Composite {
 
     public BigDecimalSpinner(final Composite parent, int style, String numberFormat) {
         super(parent, style);
-        this.numberFormat = new java.text.DecimalFormat(numberFormat, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        this.numberFormat = new java.text.DecimalFormat(numberFormat, new DecimalFormatSymbols(MyLanguage.locale));
         me = this;
         createContents(parent);
     }
@@ -78,7 +78,7 @@ public class BigDecimalSpinner extends Composite {
      */
     public BigDecimalSpinner(final Composite parent, int style) {
         super(parent, style);
-        numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
         me = this;
         createContents(parent);
     }
@@ -111,7 +111,7 @@ public class BigDecimalSpinner extends Composite {
         gd3.verticalAlignment = SWT.FILL;
 
         NButton dwn = new NButton(this, SWT.NONE);
-        this.btn_Down[0] = dwn;
+        this.btnDown[0] = dwn;
         dwn.setImage(ResourceManager.getImage("icon16_previous.png")); //$NON-NLS-1$
         dwn.addMouseListener(new MouseListener() {
             @Override
@@ -129,7 +129,7 @@ public class BigDecimalSpinner extends Composite {
         });
 
         Text txt = new Text(this, SWT.BORDER);
-        this.txt_val[0] = txt;
+        this.txtVal[0] = txt;
         txt.setLayoutData(gd1);
         txt.setText("0"); //$NON-NLS-1$
         txt.addMouseWheelListener(new MouseWheelListener() {
@@ -152,11 +152,11 @@ public class BigDecimalSpinner extends Composite {
 
         txt.addListener(SWT.MouseDown, e -> {
             if (selectAll) {
-                txt_val[0].selectAll();
+                txtVal[0].selectAll();
                 selectAll = false;
                 new Thread( () -> {
                     focus = true;
-                    while (focus && !txt_val[0].isDisposed()) {
+                    while (focus && !txtVal[0].isDisposed()) {
                         try {
                             Thread.sleep(100);
                         } catch (InterruptedException ie) {
@@ -165,7 +165,7 @@ public class BigDecimalSpinner extends Composite {
                         }
                         Display.getDefault().asyncExec(() -> {
                             try {
-                                focus = txt_val[0].isFocusControl();
+                                focus = txtVal[0].isFocusControl();
                             } catch (SWTException swte) {
                                 NLogger.debug(getClass(), swte);
                                 return;
@@ -186,12 +186,12 @@ public class BigDecimalSpinner extends Composite {
             }
 
 
-            int caret = txt_val[0].getCaretPosition();
+            int caret = txtVal[0].getCaretPosition();
             String text = null;
             final String result;
             try {
                 numberFormat.setParseBigDecimal(true);
-                BigDecimal val = (BigDecimal) numberFormat.parseObject(txt_val[0].getText());
+                BigDecimal val = (BigDecimal) numberFormat.parseObject(txtVal[0].getText());
 
                 value = val;
                 if (value.compareTo(maximum) > 0 || value.compareTo(minimum) < 0) {
@@ -216,15 +216,15 @@ public class BigDecimalSpinner extends Composite {
                     } catch (ParseException consumed) {}
                 }
                 if (differenceBetweenDisplayedAndInput) {
-                    lbl_warn[0].setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
-                    lbl_warn[0].setToolTipText("The real value is " + value.toEngineeringString() + " which differs from the displayed number!\nValue between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
+                    lblWarn[0].setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
+                    lblWarn[0].setToolTipText("The real value is " + value.toEngineeringString() + " which differs from the displayed number!\nValue between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ I18N Needs translation!
                 } else {
-                    lbl_warn[0].setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
-                    lbl_warn[0].setToolTipText("Value between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
+                    lblWarn[0].setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
+                    lblWarn[0].setToolTipText("Value between " + minimum.toEngineeringString() + " and " + maximum.toEngineeringString() + "\nYou can input more digits than displayed."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ I18N Needs translation!
                 }
             } catch (ParseException ex) {
-                lbl_warn[0].setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
-                lbl_warn[0].setToolTipText("Please insert a valid number."); //$NON-NLS-1$ I18N Needs translation!
+                lblWarn[0].setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
+                lblWarn[0].setToolTipText("Please insert a valid number."); //$NON-NLS-1$ I18N Needs translation!
                 if (!invalidInput) {
                     text = numberFormat.format(value);
                 }
@@ -234,10 +234,10 @@ public class BigDecimalSpinner extends Composite {
             new Thread(() -> {
                 final int id = counter.getAndIncrement() + 1;
                 focus = true;
-                while (focus && counter.compareAndSet(id, id) && !forceUpdate && !txt_val[0].isDisposed()) {
+                while (focus && counter.compareAndSet(id, id) && !forceUpdate && !txtVal[0].isDisposed()) {
                     Display.getDefault().asyncExec(() -> {
                         try  {
-                            focus = txt_val[0].isFocusControl();
+                            focus = txtVal[0].isFocusControl();
                         } catch (SWTException swte1) {
                             NLogger.debug(getClass(), swte1);
                             return;
@@ -250,25 +250,25 @@ public class BigDecimalSpinner extends Composite {
                         throw new LDPartEditorException(ie);
                     }
                 }
-                if (!counter.compareAndSet(id, id) || result == null || txt_val[0].isDisposed()) {
+                if (!counter.compareAndSet(id, id) || result == null || txtVal[0].isDisposed()) {
                     return;
                 }
                 Display.getDefault().asyncExec(() -> {
                     invalidInput = true;
                     forceUpdate = false;
                     try {
-                        txt_val[0].setText(result);
+                        txtVal[0].setText(result);
                     } catch (SWTException swte2) {
                         NLogger.debug(getClass(), swte2);
                     }
                 });
             }).start();
 
-            txt_val[0].setSelection(caret);
+            txtVal[0].setSelection(caret);
         });
 
         NButton up = new NButton(this, SWT.NONE);
-        this.btn_Up[0] = up;
+        this.btnUp[0] = up;
         up.setImage(ResourceManager.getImage("icon16_next.png")); //$NON-NLS-1$
         up.addMouseListener(new MouseListener() {
             @Override
@@ -286,7 +286,7 @@ public class BigDecimalSpinner extends Composite {
         });
 
         Label warn = new Label(this, SWT.NONE);
-        lbl_warn[0] = warn;
+        lblWarn[0] = warn;
         warn.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
         warn.setToolTipText("You can input more digits than displayed."); //$NON-NLS-1$ I18N Needs translation!
 
@@ -305,7 +305,7 @@ public class BigDecimalSpinner extends Composite {
     public void setValue(BigDecimal value) {
         this.value = value.compareTo(maximum) == 1 ? maximum : value;
         this.value = value.compareTo(minimum) == -1 ? minimum : value;
-        txt_val[0].setText(numberFormat.format(this.value));
+        txtVal[0].setText(numberFormat.format(this.value));
         if (myListener != null)
             myListener.valueChanged(this);
     }
@@ -315,7 +315,7 @@ public class BigDecimalSpinner extends Composite {
     }
 
     public String getStringValue() {
-        return txt_val[0].getText();
+        return txtVal[0].getText();
     }
 
     public void setMinimum(BigDecimal min) {
@@ -328,10 +328,10 @@ public class BigDecimalSpinner extends Composite {
 
     @Override
     public void setEnabled(boolean enabled) {
-        btn_Down[0].setEnabled(enabled);
-        btn_Up[0].setEnabled(enabled);
-        txt_val[0].setEditable(enabled);
-        txt_val[0].setEnabled(enabled);
+        btnDown[0].setEnabled(enabled);
+        btnUp[0].setEnabled(enabled);
+        txtVal[0].setEditable(enabled);
+        txtVal[0].setEnabled(enabled);
         super.setEnabled(enabled);
     }
 

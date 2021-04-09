@@ -25,45 +25,45 @@ public class GL33HelperPrimitives {
     private static final int COLOUR_SHADER_LOCATION = 1;
     private static final int RGB_STRIDE = (3 + 3) * 4;
 
-    private static int VBO_triangle = -1;
-    private static int EBO_triangle = -1;
-    private static int VBO_quad = -1;
-    private static int EBO_quad = -1;
-    private static int VBO_line = -1;
+    private static int vboTriangle = -1;
+    private static int eboTriangle = -1;
+    private static int vboQuad = -1;
+    private static int eboQuad = -1;
+    private static int vboLine = -1;
 
-    private static int VBO_triangle_backup = -1;
-    private static int EBO_triangle_backup = -1;
-    private static int VBO_quad_backup = -1;
-    private static int EBO_quad_backup = -1;
-    private static int VBO_line_backup = -1;
+    private static int vboTriangleBackup = -1;
+    private static int eboTriangleBackup = -1;
+    private static int vboQuadBackup = -1;
+    private static int eboQuadBackup = -1;
+    private static int vboLineBackup = -1;
 
     static void backupVBO_PrimitiveArea() {
-        VBO_triangle_backup = VBO_triangle;
-        EBO_triangle_backup = EBO_triangle;
-        VBO_quad_backup = VBO_quad;
-        EBO_quad_backup = EBO_quad;
-        VBO_line_backup = VBO_line;
+        vboTriangleBackup = vboTriangle;
+        eboTriangleBackup = eboTriangle;
+        vboQuadBackup = vboQuad;
+        eboQuadBackup = eboQuad;
+        vboLineBackup = vboLine;
     }
 
     static void restoreVBO_PrimitiveArea() {
-        VBO_triangle = VBO_triangle_backup;
-        EBO_triangle = EBO_triangle_backup;
-        VBO_quad = VBO_quad_backup;
-        EBO_quad = EBO_quad_backup;
-        VBO_line = VBO_line_backup;
+        vboTriangle = vboTriangleBackup;
+        eboTriangle = eboTriangleBackup;
+        vboQuad = vboQuadBackup;
+        eboQuad = eboQuadBackup;
+        vboLine = vboLineBackup;
     }
 
     static void createVBO_PrimitiveArea() {
-        VBO_triangle = GL15.glGenBuffers();
-        EBO_triangle = GL15.glGenBuffers();
-        VBO_quad = GL15.glGenBuffers();
-        EBO_quad = GL15.glGenBuffers();
-        VBO_line = GL15.glGenBuffers();
+        vboTriangle = GL15.glGenBuffers();
+        eboTriangle = GL15.glGenBuffers();
+        vboQuad = GL15.glGenBuffers();
+        eboQuad = GL15.glGenBuffers();
+        vboLine = GL15.glGenBuffers();
 
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_quad);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboQuad);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, new float[48], GL15.GL_DYNAMIC_DRAW);
 
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO_quad);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, eboQuad);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, new int[12], GL15.GL_DYNAMIC_DRAW);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
@@ -74,10 +74,10 @@ public class GL33HelperPrimitives {
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_triangle);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTriangle);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, new float[36], GL15.GL_DYNAMIC_DRAW);
 
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO_triangle);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, eboTriangle);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, new int[6], GL15.GL_DYNAMIC_DRAW);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
@@ -88,7 +88,7 @@ public class GL33HelperPrimitives {
 
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
 
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_line);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLine);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, new float[12], GL15.GL_DYNAMIC_DRAW);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
@@ -101,18 +101,18 @@ public class GL33HelperPrimitives {
     }
 
     static void destroyVBO_PrimitiveArea() {
-        GL15.glDeleteBuffers(VBO_triangle);
-        GL15.glDeleteBuffers(EBO_triangle);
-        GL15.glDeleteBuffers(VBO_quad);
-        GL15.glDeleteBuffers(EBO_quad);
-        GL15.glDeleteBuffers(VBO_line);
+        GL15.glDeleteBuffers(vboTriangle);
+        GL15.glDeleteBuffers(eboTriangle);
+        GL15.glDeleteBuffers(vboQuad);
+        GL15.glDeleteBuffers(eboQuad);
+        GL15.glDeleteBuffers(vboLine);
     }
 
     public static void drawTrianglesIndexedRGB_Triangle(float[] vertices, int[] indices) {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_triangle);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTriangle);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, vertices);
 
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO_triangle);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, eboTriangle);
         GL15.glBufferSubData(GL15.GL_ELEMENT_ARRAY_BUFFER, 0, indices);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
@@ -127,10 +127,10 @@ public class GL33HelperPrimitives {
     }
 
     public static void drawTrianglesIndexedRGB_Quad(float[] vertices, int[] indices) {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_quad);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboQuad);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0 , vertices);
 
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO_quad);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, eboQuad);
         GL15.glBufferSubData(GL15.GL_ELEMENT_ARRAY_BUFFER, 0, indices);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
@@ -145,7 +145,7 @@ public class GL33HelperPrimitives {
     }
 
     public static void drawLinesRGB_Line(float[] vertices) {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_line);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLine);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, vertices);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);

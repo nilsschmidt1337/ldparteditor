@@ -72,9 +72,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     private final GL33ModelRendererLDrawStandard modelRendererLDrawStandard = new GL33ModelRendererLDrawStandard(c3d, this);
 
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
-    private final FloatBuffer view_buf = BufferUtils.createFloatBuffer(16);
-    private final FloatBuffer rot_buf = BufferUtils.createFloatBuffer(16);
-    private final Matrix4f rotation_inv4f = new Matrix4f();
+    private final FloatBuffer viewBuf = BufferUtils.createFloatBuffer(16);
+    private final FloatBuffer rotBuf = BufferUtils.createFloatBuffer(16);
+    private final Matrix4f rotationInv4f = new Matrix4f();
 
     private static long hoverSettingsTime = System.currentTimeMillis();
 
@@ -220,34 +220,34 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             final float zoom = c3d.getZoom();
             Matrix4f.scale(new Vector3f(zoom, zoom, zoom), viewportTransform, viewportTransform);
             Matrix4f viewportRotation = c3d.getRotation();
-            viewportRotation.store(rot_buf);
-            rot_buf.flip();
-            Matrix4f.load(viewportRotation, rotation_inv4f);
-            rotation_inv4f.invert();
+            viewportRotation.store(rotBuf);
+            rotBuf.flip();
+            Matrix4f.load(viewportRotation, rotationInv4f);
+            rotationInv4f.invert();
             Matrix4f.mul(viewportRotation, viewportTransform, viewportTransform);
             Matrix4f viewportTranslation = c3d.getTranslation();
             Matrix4f.mul(viewportTransform, viewportTranslation, viewportTransform);
-            viewportTransform.store(view_buf);
-            view_buf.flip();
+            viewportTransform.store(viewBuf);
+            viewBuf.flip();
             c3d.setViewport(viewportTransform);
 
             {
                 shaderProgram2D.use();
                 int view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
-                GL20.glUniformMatrix4fv(view, false, view_buf);
+                GL20.glUniformMatrix4fv(view, false, viewBuf);
                 shaderProgram2.use();
                 view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
-                GL20.glUniformMatrix4fv(view, false, view_buf);
+                GL20.glUniformMatrix4fv(view, false, viewBuf);
                 shaderProgramCondline.use();
                 view = shaderProgramCondline.getUniformLocation("view" ); //$NON-NLS-1$
-                GL20.glUniformMatrix4fv(view, false, view_buf);
+                GL20.glUniformMatrix4fv(view, false, viewBuf);
                 view = shaderProgramCondline.getUniformLocation("zoom" ); //$NON-NLS-1$
                 GL20.glUniform1f(view, zoom);
                 shaderProgram.use();
                 view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
-                GL20.glUniformMatrix4fv(view, false, view_buf);
+                GL20.glUniformMatrix4fv(view, false, viewBuf);
                 view = shaderProgram.getUniformLocation("rotation" ); //$NON-NLS-1$
-                GL20.glUniformMatrix4fv(view, false, rot_buf);
+                GL20.glUniformMatrix4fv(view, false, rotBuf);
             }
 
             if (c3d.isAnaglyph3d() && !ldrawStandardMode) {
@@ -306,21 +306,21 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                 viewportTranslation = c3d.getTranslation();
                 Matrix4f.mul(viewportTransform2, viewportTranslation, viewportTransform2);
-                viewportTransform2.store(view_buf);
-                view_buf.flip();
+                viewportTransform2.store(viewBuf);
+                viewBuf.flip();
                 {
                     shaderProgram2D.use();
                     int view = shaderProgram2D.getUniformLocation("view" ); //$NON-NLS-1$
-                    GL20.glUniformMatrix4fv(view, false, view_buf);
+                    GL20.glUniformMatrix4fv(view, false, viewBuf);
                     shaderProgram2.use();
                     view = shaderProgram2.getUniformLocation("view" ); //$NON-NLS-1$
-                    GL20.glUniformMatrix4fv(view, false, view_buf);
+                    GL20.glUniformMatrix4fv(view, false, viewBuf);
                     shaderProgramCondline.use();
                     view = shaderProgramCondline.getUniformLocation("view" ); //$NON-NLS-1$
-                    GL20.glUniformMatrix4fv(view, false, view_buf);
+                    GL20.glUniformMatrix4fv(view, false, viewBuf);
                     shaderProgram.use();
                     view = shaderProgram.getUniformLocation("view" ); //$NON-NLS-1$
-                    GL20.glUniformMatrix4fv(view, false, view_buf);
+                    GL20.glUniformMatrix4fv(view, false, viewBuf);
                 }
             }
 
@@ -1386,6 +1386,6 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
     }
 
     public Matrix4f getRotationInverse() {
-        return rotation_inv4f;
+        return rotationInv4f;
     }
 }

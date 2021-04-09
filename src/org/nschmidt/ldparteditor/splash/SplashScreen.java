@@ -170,7 +170,7 @@ public class SplashScreen extends ApplicationWindow {
             openGLerror[0] = false;
             if (WorkbenchManager.getUserSettingState().isOpenGL33Engine() && (major > 3 || major == 3 && minor > 2)) {
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(33);
-            } else if (WorkbenchManager.getUserSettingState().isVulkanEngine() && NLogger.DEBUG) {
+            } else if (WorkbenchManager.getUserSettingState().isVulkanEngine() && NLogger.debugging) {
                 // FIXME I have to implement a SWT VKCanvas first!
                 // see https://github.com/httpdigest/lwjgl3-swt
                 WorkbenchManager.getUserSettingState().setOpenGLVersion(20);
@@ -411,7 +411,7 @@ public class SplashScreen extends ApplicationWindow {
 
             // Finally, open the editor window!
 
-            if (NLogger.DEBUG) {
+            if (NLogger.debugging) {
                 DatFile fileToEdit = new DatFile(Project.getProjectPath() + File.separator + "parts" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
                 Project.setFileToEdit(fileToEdit);
             }

@@ -52,20 +52,20 @@ public class PerspectiveCalculator {
     /** The 3D Composite [NOT PUBLIC YET] */
     private final Composite3D c3d;
     /** The view zoom exponent [NOT PUBLIC YET] */
-    private float zoom_exponent;
+    private float zoomExponent;
     /** The view offset [NOT PUBLIC YET] */
     private Vector4f offset = new Vector4f(0, 0, 0, 1f);
     /** The effective clipping value [NOT PUBLIC YET] */
-    private float z_eff;
+    private float zEff;
 
     /** Magic number for numerical stability [NOT PUBLIC YET] */
-    private final Rational TX = new Rational(new BigDecimal("0.146432")); //$NON-NLS-1$
+    private final Rational tx = new Rational(new BigDecimal("0.146432")); //$NON-NLS-1$
     /** Magic number for numerical stability [NOT PUBLIC YET] */
-    private final Rational TY = new Rational(new BigDecimal("0.392734")); //$NON-NLS-1$
+    private final Rational ty = new Rational(new BigDecimal("0.392734")); //$NON-NLS-1$
 
     public PerspectiveCalculator(Composite3D c3d) {
         this.c3d = c3d;
-        this.zoom_exponent = -20; // Start with 1.0% zoom
+        this.zoomExponent = -20; // Start with 1.0% zoom
     }
 
     /**
@@ -187,14 +187,14 @@ public class PerspectiveCalculator {
     private void calculateOrigin(Matrix4f realViewport) {
         Rectangle bounds = c3d.getBounds();
         final float width = (float) bounds.width / (float) bounds.height;
-        z_eff = (float) ((c3d.getzFar() + c3d.getzNear()) / -2.0 * c3d.getZoom());
+        zEff = (float) ((c3d.getzFar() + c3d.getzNear()) / -2.0 * c3d.getZoom());
         Vector3f[] axes = c3d.getViewportOriginAxis();
         offset.set(0, 0, 0, 1f);
         Matrix4f.transform(realViewport, offset, offset);
-        axes[0].set(-width, offset.y, z_eff);
-        axes[1].set(width, offset.y, z_eff);
-        axes[2].set(offset.x, -1f, z_eff);
-        axes[3].set(offset.x, 1f, z_eff);
+        axes[0].set(-width, offset.y, zEff);
+        axes[1].set(width, offset.y, zEff);
+        axes[2].set(offset.x, -1f, zEff);
+        axes[3].set(offset.x, 1f, zEff);
     }
 
     /**
@@ -220,7 +220,7 @@ public class PerspectiveCalculator {
         float restX = offset.x % gridSize;
         float restY = offset.y % gridSize;
         Vector4f[] grid = c3d.getGrid();
-        grid[0].set(restX, restY, z_eff + 0.1f);
+        grid[0].set(restX, restY, zEff + 0.1f);
         grid[1].set(-gridSize, 0f);
         grid[2].set(0f, -gridSize);
         // Multiplicants
@@ -230,7 +230,7 @@ public class PerspectiveCalculator {
         int my10 = (int) (c3d.getBounds().height / gridSize + 4) / 2;
         float restX10 = offset.x % gridSize;
         float restY10 = offset.y % gridSize;
-        grid[4].set(restX10, restY10, z_eff);
+        grid[4].set(restX10, restY10, zEff);
         grid[5].set(-gridSize, 0f);
         grid[6].set(0f, -gridSize);
         // Multiplicants
@@ -307,14 +307,10 @@ public class PerspectiveCalculator {
     /**
      * Transforms screen coordinates to 3D space coordinates
      * (needs viewport inverse)
-     * @param x
-     *            x-screen coordinate
-     * @param y
-     *            y-screen coordinate
      * @return vector position in 3D space
      */
     public Vector3r get3DCoordinatesFromScreen(Vector3r vector3r, RationalMatrix m) {
-        Vector3r relPos = new Vector3r(vector3r.X.subtract(TX), vector3r.Y.subtract(TY), vector3r.Z);
+        Vector3r relPos = new Vector3r(vector3r.x.subtract(tx), vector3r.y.subtract(ty), vector3r.z);
         relPos = m.transform(relPos);
         return relPos;
     }
@@ -325,17 +321,11 @@ public class PerspectiveCalculator {
      *
      *
      * (needs viewport matrix)
-     * @param x
-     *            x-screen coordinate
-     * @param y
-     *            y-screen coordinate
-     * @param z
-     *            z-screen coordinate
      * @return vector position on screen
      */
     public Vector3r getScreenCoordinatesFrom3D(Vector3r vector3r, RationalMatrix m) {
         Vector3r relPos = m.transform(vector3r);
-        relPos = new Vector3r(relPos.X.add(TX), relPos.Y.add(TY), relPos.Z);
+        relPos = new Vector3r(relPos.x.add(tx), relPos.y.add(ty), relPos.z);
         return relPos;
     }
 
@@ -382,11 +372,11 @@ public class PerspectiveCalculator {
     public void zoomIn() {
         if (c3d.isDoingSelection())
             return;
-        zoom_exponent++;
-        if (zoom_exponent > 20) {
-            zoom_exponent = 20;
+        zoomExponent++;
+        if (zoomExponent > 20) {
+            zoomExponent = 20;
         }
-        c3d.setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        c3d.setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
         c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
         GuiStatusManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
@@ -400,11 +390,11 @@ public class PerspectiveCalculator {
     public void zoomOut() {
         if (c3d.isDoingSelection())
             return;
-        zoom_exponent--;
-        if (zoom_exponent < -40) {
-            zoom_exponent = -40;
+        zoomExponent--;
+        if (zoomExponent < -40) {
+            zoomExponent = -40;
         }
-        c3d.setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        c3d.setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
         c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
         GuiStatusManager.updateStatus(c3d);
         ((ScalableComposite) c3d.getParent()).redrawScales();
@@ -415,8 +405,8 @@ public class PerspectiveCalculator {
     public void zoomReset() {
         if (c3d.isDoingSelection())
             return;
-        zoom_exponent = -20;
-        c3d.setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        zoomExponent = -20;
+        c3d.setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
         c3d.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
         c3d.getTranslation().setIdentity();
         GuiStatusManager.updateStatus(c3d);
@@ -452,11 +442,11 @@ public class PerspectiveCalculator {
     }
 
     public float getZoom_exponent() {
-        return zoom_exponent;
+        return zoomExponent;
     }
 
     public void setZoom_exponent(float zoomExponent) {
-        this.zoom_exponent = zoomExponent;
+        this.zoomExponent = zoomExponent;
     }
 
     public Vector4f getOffset() {

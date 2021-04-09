@@ -41,6 +41,6 @@ public class Vector3dh extends Vector3dd {
 
     @Override
     public String toString() {
-        return X + " | " + Y + " | " + Z; //$NON-NLS-1$//$NON-NLS-2$
+        return x + " | " + y + " | " + z; //$NON-NLS-1$//$NON-NLS-2$
     }
 }

@@ -53,7 +53,7 @@ public class KeyDialog extends KeyDesign {
                 sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                KeyStateManager.tmp_mapKey = sb.toString();
+                KeyStateManager.tmpMapKey = sb.toString();
 
                 final Event event = new Event();
                 event.keyCode = keyCode;
@@ -61,11 +61,11 @@ public class KeyDialog extends KeyDesign {
                 if (altPressed) event.stateMask = event.stateMask | SWT.ALT;
                 if (shiftPressed) event.stateMask = event.stateMask | SWT.SHIFT;
                 if (cmdPressed) event.stateMask = event.stateMask | SWT.COMMAND;
-                lbl_PressKey[0].setText(KeyBoardHelper.getKeyString(event));
-                lbl_PressKey[0].update();
-                KeyStateManager.tmp_keyCode = keyCode;
-                KeyStateManager.tmp_stateMask = stateMask;
-                KeyStateManager.tmp_keyString = lbl_PressKey[0].getText();
+                lblPressKeyPtr[0].setText(KeyBoardHelper.getKeyString(event));
+                lblPressKeyPtr[0].update();
+                KeyStateManager.tmpKeyCode = keyCode;
+                KeyStateManager.tmpStateMask = stateMask;
+                KeyStateManager.tmpKeyString = lblPressKeyPtr[0].getText();
             }
         });
 

@@ -28,7 +28,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 class KeyDesign extends Dialog {
 
 
-    final Label[] lbl_PressKey = new Label[1];
+    final Label[] lblPressKeyPtr = new Label[1];
 
     protected KeyDesign(Shell parentShell) {
         super(parentShell);
@@ -46,7 +46,7 @@ class KeyDesign extends Dialog {
         cmpContainer.setLayout(new GridLayout());
 
         Label lblPressKey = new Label(cmpContainer, I18n.rightToLeftStyle());
-        this.lbl_PressKey[0] = lblPressKey;
+        this.lblPressKeyPtr[0] = lblPressKey;
         lblPressKey.setText(I18n.KEYBOARD_PRESS_A_KEY);
 
         return cmpContainer;

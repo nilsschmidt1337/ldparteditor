@@ -62,12 +62,12 @@ public final class GData2 extends GData {
     final float y2;
     final float z2;
 
-    final BigDecimal X1;
-    final BigDecimal Y1;
-    final BigDecimal Z1;
-    final BigDecimal X2;
-    final BigDecimal Y2;
-    final BigDecimal Z2;
+    final BigDecimal x1p;
+    final BigDecimal y1p;
+    final BigDecimal z1p;
+    final BigDecimal x2p;
+    final BigDecimal y2p;
+    final BigDecimal z2p;
 
     private final float[][] lGeom;
 
@@ -83,18 +83,18 @@ public final class GData2 extends GData {
         this.a = a;
         this.lGeom = MathHelper.getLineVertices(new Vector3f(x1.floatValue(), y1.floatValue(), z1.floatValue()), new Vector3f(x2.floatValue(), y2.floatValue(), z2.floatValue()),
                 parent.productMatrix);
-        this.X1 = x1;
-        this.Y1 = y1;
-        this.Z1 = z1;
-        this.X2 = x2;
-        this.Y2 = y2;
-        this.Z2 = z2;
-        this.x1 = X1.floatValue() * 1000f;
-        this.y1 = Y1.floatValue() * 1000f;
-        this.z1 = Z1.floatValue() * 1000f;
-        this.x2 = X2.floatValue() * 1000f;
-        this.y2 = Y2.floatValue() * 1000f;
-        this.z2 = Z2.floatValue() * 1000f;
+        this.x1p = x1;
+        this.y1p = y1;
+        this.z1p = z1;
+        this.x2p = x2;
+        this.y2p = y2;
+        this.z2p = z2;
+        this.x1 = x1p.floatValue() * 1000f;
+        this.y1 = y1p.floatValue() * 1000f;
+        this.z1 = z1p.floatValue() * 1000f;
+        this.x2 = x2p.floatValue() * 1000f;
+        this.y2 = y2p.floatValue() * 1000f;
+        this.z2 = z2p.floatValue() * 1000f;
         this.isLine = isLine;
         datFile.getVertexManager().add(this);
     }
@@ -107,12 +107,12 @@ public final class GData2 extends GData {
         this.g = g;
         this.b = b;
         this.a = a;
-        this.X1 = x1;
-        this.Y1 = y1;
-        this.Z1 = z1;
-        this.X2 = x2;
-        this.Y2 = y2;
-        this.Z2 = z2;
+        this.x1p = x1;
+        this.y1p = y1;
+        this.z1p = z1;
+        this.x2p = x2;
+        this.y2p = y2;
+        this.z2p = z2;
         this.x1 = x12;
         this.y1 = y12;
         this.z1 = z12;
@@ -137,12 +137,12 @@ public final class GData2 extends GData {
         this.x2 = v2.x;
         this.y2 = v2.y;
         this.z2 = v2.z;
-        this.X1 = v1.X;
-        this.Y1 = v1.Y;
-        this.Z1 = v1.Z;
-        this.X2 = v2.X;
-        this.Y2 = v2.Y;
-        this.Z2 = v2.Z;
+        this.x1p = v1.xp;
+        this.y1p = v1.yp;
+        this.z1p = v1.zp;
+        this.x2p = v2.xp;
+        this.y2p = v2.yp;
+        this.z2p = v2.zp;
         this.isLine = isLine;
         datFile.getVertexManager().add(this);
         this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
@@ -170,12 +170,12 @@ public final class GData2 extends GData {
         this.x2 = v2.x;
         this.y2 = v2.y;
         this.z2 = v2.z;
-        this.X1 = v1.X;
-        this.Y1 = v1.Y;
-        this.Z1 = v1.Z;
-        this.X2 = v2.X;
-        this.Y2 = v2.Y;
-        this.Z2 = v2.Z;
+        this.x1p = v1.xp;
+        this.y1p = v1.yp;
+        this.z1p = v1.zp;
+        this.x2p = v2.xp;
+        this.y2p = v2.yp;
+        this.z2p = v2.zp;
         this.isLine = isLine;
         this.lGeom = null;
     }
@@ -207,18 +207,18 @@ public final class GData2 extends GData {
         this.z2 = v2.z;
         this.isLine = true;
         this.lGeom = MathHelper.getLineVertices1000(new Vector3f(x1, y1, z1), new Vector3f(x2, y2, z2), parent.productMatrix);
-        this.X1 = null;
-        this.Y1 = null;
-        this.Z1 = null;
-        this.X2 = null;
-        this.Y2 = null;
-        this.Z2 = null;
+        this.x1p = null;
+        this.y1p = null;
+        this.z1p = null;
+        this.x2p = null;
+        this.y2p = null;
+        this.z2p = null;
     }
 
     public BigDecimal getLength() {
-        BigDecimal dx = X1.subtract(X2);
-        BigDecimal dy = Y1.subtract(Y2);
-        BigDecimal dz = Z1.subtract(Z2);
+        BigDecimal dx = x1p.subtract(x2p);
+        BigDecimal dy = y1p.subtract(y2p);
+        BigDecimal dz = z1p.subtract(z2p);
         return new Vector3d(dx, dy, dz).length();
     }
 
@@ -247,13 +247,13 @@ public final class GData2 extends GData {
         if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
-            drawDistanceGL20(c3d, X1, Y1, Z1, X2, Y2, Z2);
+            drawDistanceGL20(c3d, x1p, y1p, z1p, x2p, y2p, z2p);
             if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
             return;
         }
 
-        if (c3d.getZoom() > View.edge_threshold) {
+        if (c3d.getZoom() > View.edgeThreshold) {
 
             GL11.glPushMatrix();
 
@@ -262,7 +262,7 @@ public final class GData2 extends GData {
 
             if (GData.globalNegativeDeterminant) {
 
-                GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                GL20Primitives.sphereInv.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -285,11 +285,11 @@ public final class GData2 extends GData {
                 GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                GL20Primitives.sphereInv.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             } else {
 
-                GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                GL20Primitives.sphere.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -312,7 +312,7 @@ public final class GData2 extends GData {
                 GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                GL20Primitives.sphere.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             }
 
@@ -351,17 +351,17 @@ public final class GData2 extends GData {
         if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
         if (!isLine) {
-            drawDistanceGL20(c3d, X1, Y1, Z1, X2, Y2, Z2);
+            drawDistanceGL20(c3d, x1p, y1p, z1p, x2p, y2p, z2p);
             if (c3d.isLightOn() && (next == null || next.type() != 2 && next.type() != 5))
                 GL11.glEnable(GL11.GL_LIGHTING);
             return;
         }
 
-        final float r = MathHelper.randomFloat(ID, 0);
-        final float g = MathHelper.randomFloat(ID, 1);
-        final float b = MathHelper.randomFloat(ID, 2);
+        final float r = MathHelper.randomFloat(id, 0);
+        final float g = MathHelper.randomFloat(id, 1);
+        final float b = MathHelper.randomFloat(id, 2);
 
-        if (c3d.getZoom() > View.edge_threshold) {
+        if (c3d.getZoom() > View.edgeThreshold) {
 
             GL11.glPushMatrix();
 
@@ -370,7 +370,7 @@ public final class GData2 extends GData {
 
             if (GData.globalNegativeDeterminant) {
 
-                GL20Primitives.SPHERE_INV.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                GL20Primitives.sphereInv.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[1][0], lGeom[1][1], lGeom[1][2]);
@@ -393,11 +393,11 @@ public final class GData2 extends GData {
                 GL11.glVertex3f(lGeom[16][0], lGeom[16][1], lGeom[16][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE_INV.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                GL20Primitives.sphereInv.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             } else {
 
-                GL20Primitives.SPHERE.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
+                GL20Primitives.sphere.draw(lGeom[18][0], lGeom[18][1], lGeom[18][2]);
 
                 GL11.glBegin(GL11.GL_QUAD_STRIP);
                 GL11.glVertex3f(lGeom[0][0], lGeom[0][1], lGeom[0][2]);
@@ -420,7 +420,7 @@ public final class GData2 extends GData {
                 GL11.glVertex3f(lGeom[17][0], lGeom[17][1], lGeom[17][2]);
                 GL11.glEnd();
 
-                GL20Primitives.SPHERE.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
+                GL20Primitives.sphere.draw(lGeom[19][0], lGeom[19][1], lGeom[19][2]);
 
             }
 
@@ -549,17 +549,17 @@ public final class GData2 extends GData {
             lineBuilder.append(colourNumber);
         }
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X1));
+        lineBuilder.append(bigDecimalToString(x1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y1));
+        lineBuilder.append(bigDecimalToString(y1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z1));
+        lineBuilder.append(bigDecimalToString(z1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X2));
+        lineBuilder.append(bigDecimalToString(x2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y2));
+        lineBuilder.append(bigDecimalToString(y2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z2));
+        lineBuilder.append(bigDecimalToString(z2p));
         text = lineBuilder.toString();
         return text;
     }
@@ -573,12 +573,12 @@ public final class GData2 extends GData {
     public String transformAndColourReplace(String colour, Matrix matrix) {
         BigDecimal[] v1;
         BigDecimal[] v2;
-        if (X1 == null) {
+        if (x1p == null) {
             v1 = matrix.transform(new BigDecimal(x1 / 1000f), new BigDecimal(y1 / 1000f), new BigDecimal(z1 / 1000f));
             v2 = matrix.transform(new BigDecimal(x2 / 1000f), new BigDecimal(y2 / 1000f), new BigDecimal(z2 / 1000f));
         } else {
-            v1 = matrix.transform(X1, Y1, Z1);
-            v2 = matrix.transform(X2, Y2, Z2);
+            v1 = matrix.transform(x1p, y1p, z1p);
+            v2 = matrix.transform(x2p, y2p, z2p);
         }
         StringBuilder lineBuilder = new StringBuilder();
         if (isLine) {
@@ -685,22 +685,22 @@ public final class GData2 extends GData {
         }
         lineBuilder.append(col);
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X1));
+        lineBuilder.append(bigDecimalToString(x1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y1));
+        lineBuilder.append(bigDecimalToString(y1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z1));
+        lineBuilder.append(bigDecimalToString(z1p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(X2));
+        lineBuilder.append(bigDecimalToString(x2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Y2));
+        lineBuilder.append(bigDecimalToString(y2p));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(Z2));
+        lineBuilder.append(bigDecimalToString(z2p));
         return lineBuilder.toString();
     }
 
     void drawDistanceGL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
-        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
         GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
@@ -728,9 +728,9 @@ public final class GData2 extends GData {
             }
         } else {
             Vector3d tr = c3d.getManipulator().getAccurateRotation().transform(new Vector3d(dx, dy, dz));
-            dx = tr.X;
-            dy = tr.Y;
-            dz = tr.Z;
+            dx = tr.x;
+            dy = tr.y;
+            dz = tr.z;
             if (state < 1) {
                 length = new Vector3d(dx, dy, dz).length();
                 state = 11;
@@ -900,7 +900,7 @@ public final class GData2 extends GData {
     void drawDistanceGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, boolean forceLengthCalculation) {
         GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
 
-        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
         final float zoom = 1f / c3d.getZoom();
         final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);
         final Vector4f lineOrigin = new Vector4f(x1, y1, z1, 1f);
@@ -916,9 +916,9 @@ public final class GData2 extends GData {
             }
         } else {
             Vector3d tr = c3d.getManipulator().getAccurateRotation().transform(new Vector3d(dx, dy, dz));
-            dx = tr.X;
-            dy = tr.Y;
-            dz = tr.Z;
+            dx = tr.x;
+            dy = tr.y;
+            dz = tr.z;
             if (state < 1 || forceLengthCalculation) {
                 length = new Vector3d(dx, dy, dz).length();
                 state = 11;

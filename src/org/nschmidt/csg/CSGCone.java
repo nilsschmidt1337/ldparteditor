@@ -32,7 +32,7 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  */
 public class CSGCone extends CSGPrimitive implements Primitive {
 
-    public final int ID = id_counter.getAndIncrement();
+    public final int id = id_counter.getAndIncrement();
     private VectorCSGd start;
     private VectorCSGd end;
     private double radius;
@@ -81,10 +81,10 @@ public class CSGCone extends CSGPrimitive implements Primitive {
             double t1 = (i + 1) / (double) numSlices;
             {
                 polygons.add(new Polygon(df, Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, 0, 0, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0),
-                                                cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), new GColourIndex(colour, ID)));
+                                                cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), new GColourIndex(colour, id)));
             }
             {
-                polygons.add(new Polygon(df, Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), new GColourIndex(colour, ID)));
+                polygons.add(new Polygon(df, Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), new GColourIndex(colour, id)));
             }
         }
 

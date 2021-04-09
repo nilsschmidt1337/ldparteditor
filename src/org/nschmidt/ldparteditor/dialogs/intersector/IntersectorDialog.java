@@ -46,9 +46,9 @@ public class IntersectorDialog extends IntersectorDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        cmb_scope[0].addListener(SWT.Selection, event -> ins.setScope(cmb_scope[0].getSelectionIndex()));
-        cmb_colourise[0].addListener(SWT.Selection, event -> ins.setColourise(cmb_colourise[0].getSelectionIndex() == 1));
-        WidgetUtil(btn_hideOther[0]).addSelectionListener(e -> ins.setHidingOther(btn_hideOther[0].getSelection()));
+        cmbScope[0].addListener(SWT.Selection, event -> ins.setScope(cmbScope[0].getSelectionIndex()));
+        cmbColourise[0].addListener(SWT.Selection, event -> ins.setColourise(cmbColourise[0].getSelectionIndex() == 1));
+        WidgetUtil(btnHideOther[0]).addSelectionListener(e -> ins.setHidingOther(btnHideOther[0].getSelection()));
         return super.open();
     }
 

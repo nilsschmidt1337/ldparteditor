@@ -31,22 +31,22 @@ import org.nschmidt.ldparteditor.workbench.Composite3DState;
 public class Composite3DViewState {
 
     private float zoom = 0f;
-    private float zoom_exponent = 0f;
+    private float zoomExponent = 0f;
     private float viewportPixelPerLDU;
     private Vector4f offset = new Vector4f(0, 0, 0, 1f);
-    final Composite3DState STATE = new Composite3DState();
+    final Composite3DState state = new Composite3DState();
     private boolean negDeterminant = false;
 
-    private final Matrix4f viewport_translation = new Matrix4f();
-    private final Matrix4f viewport_rotation = new Matrix4f();
-    private final Matrix4f viewport_matrix = new Matrix4f();
-    private final Matrix4f viewport_matrix_inv = new Matrix4f();
+    private final Matrix4f viewportTranslation = new Matrix4f();
+    private final Matrix4f viewportRotation = new Matrix4f();
+    private final Matrix4f viewportMatrix = new Matrix4f();
+    private final Matrix4f viewportMatrixInv = new Matrix4f();
     private final Manipulator manipulator = new Manipulator();
 
     /** The generator of the viewport space */
-    private final Vector4f[] viewport_generator = new Vector4f[3];
+    private final Vector4f[] viewportGenerator = new Vector4f[3];
     /** The origin axis coordinates of the viewport */
-    private final Vector3f[] viewport_origin_axis = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+    private final Vector3f[] viewportOriginAxis = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
     /** The viewport z-Near value */
     private double zNear = 1000000f;
     /** The viewport z-Far value */
@@ -67,11 +67,11 @@ public class Composite3DViewState {
     }
 
     float getZoom_exponent() {
-        return zoom_exponent;
+        return zoomExponent;
     }
 
     void setZoom_exponent(float zoomExponent) {
-        this.zoom_exponent = zoomExponent;
+        this.zoomExponent = zoomExponent;
     }
 
     public float getViewportPixelPerLDU() {
@@ -99,27 +99,27 @@ public class Composite3DViewState {
     }
 
     public Matrix4f getViewport_translation() {
-        return viewport_translation;
+        return viewportTranslation;
     }
 
     public Matrix4f getViewport_rotation() {
-        return viewport_rotation;
+        return viewportRotation;
     }
 
     public Matrix4f getViewport_matrix() {
-        return viewport_matrix;
+        return viewportMatrix;
     }
 
     public Matrix4f getViewport_matrix_inv() {
-        return viewport_matrix_inv;
+        return viewportMatrixInv;
     }
 
     public Vector4f[] getViewport_generator() {
-        return viewport_generator;
+        return viewportGenerator;
     }
 
     public Vector3f[] getViewport_origin_axis() {
-        return viewport_origin_axis;
+        return viewportOriginAxis;
     }
 
     double getzNear() {

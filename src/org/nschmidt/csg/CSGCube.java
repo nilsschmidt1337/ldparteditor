@@ -50,7 +50,7 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  */
 public class CSGCube extends CSGPrimitive implements Primitive {
 
-    public final int ID = id_counter.getAndIncrement();
+    public final int id = id_counter.getAndIncrement();
 
     /**
      * Center of this cube.
@@ -87,7 +87,7 @@ public class CSGCube extends CSGPrimitive implements Primitive {
                         * (1 * Math.min(1, i & 4) - 0.5));
                 vertices.add(pos);
             }
-            polygons.add(new Polygon(df, vertices, new GColourIndex(colour, ID)));
+            polygons.add(new Polygon(df, vertices, new GColourIndex(colour, id)));
         }
 
         if (!centered) {

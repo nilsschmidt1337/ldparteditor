@@ -33,7 +33,7 @@ public enum Cocoa {
     public static String replaceCtrlByCmd(String source) {
         Object[] messageArguments = {IS_COCOA ? "\u2318" : "Ctrl"}; //$NON-NLS-1$ //$NON-NLS-2$
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-        formatter.setLocale(MyLanguage.LOCALE);
+        formatter.setLocale(MyLanguage.locale);
         formatter.applyPattern(source);
         return formatter.format(messageArguments);
     }

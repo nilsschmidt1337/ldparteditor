@@ -47,7 +47,7 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  */
 public class CSGSphere extends CSGPrimitive implements Primitive {
 
-    public final int ID = id_counter.getAndIncrement();
+    public final int id = id_counter.getAndIncrement();
 
     private VectorCSGd center;
     private double radius;
@@ -108,7 +108,7 @@ public class CSGSphere extends CSGPrimitive implements Primitive {
                     vertices.add(sphereVertex(center, radius, (i + 1) / (double) numSlices, (j + 1) / (double) numStacks));
                 }
                 vertices.add(sphereVertex(center, radius, i / (double) numSlices, (j + 1) / (double) numStacks));
-                polygons.add(new Polygon(df, vertices, new GColourIndex(colour, ID)));
+                polygons.add(new Polygon(df, vertices, new GColourIndex(colour, id)));
             }
         }
         return polygons;

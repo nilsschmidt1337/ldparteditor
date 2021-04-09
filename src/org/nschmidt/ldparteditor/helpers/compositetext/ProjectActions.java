@@ -94,7 +94,7 @@ public enum ProjectActions {
 
                     Object[] messageArguments = {df.getShortName()};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.setLocale(MyLanguage.locale);
                     formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                     messageBox.setMessage(formatter.format(messageArguments));
 
@@ -226,7 +226,7 @@ public enum ProjectActions {
 
                         Object[] messageArguments = {I18n.DIALOG_THE_OLD_PROJECT};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                         messageBox.setMessage(formatter.format(messageArguments));
 

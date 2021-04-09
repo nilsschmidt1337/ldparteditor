@@ -52,24 +52,24 @@ class CoordinatesDesign extends Dialog {
 
     private static ManipulatorScope transformationMode = ManipulatorScope.GLOBAL;
 
-    final NButton[] btn_Local = new NButton[1];
-    final NButton[] btn_Global = new NButton[1];
+    final NButton[] btnLocalPtr = new NButton[1];
+    final NButton[] btnGlobalPtr = new NButton[1];
 
-    final Button[] btn_Copy = new Button[1];
+    final Button[] btnCopyPtr = new Button[1];
 
-    final NButton[] cb_Xaxis = new NButton[1];
-    final NButton[] cb_Yaxis = new NButton[1];
-    final NButton[] cb_Zaxis = new NButton[1];
-    final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
-    final NButton[] btn_Clipboard = new NButton[1];
-    final NButton[] btn_Manipulator = new NButton[1];
+    final NButton[] cbXaxisPtr = new NButton[1];
+    final NButton[] cbYaxisPtr = new NButton[1];
+    final NButton[] cbZaxisPtr = new NButton[1];
+    final BigDecimalSpinner[] spnXPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnYPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnZPtr = new BigDecimalSpinner[1];
+    final NButton[] btnClipboardPtr = new NButton[1];
+    final NButton[] btnManipulatorPtr = new NButton[1];
 
     Vertex m = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
     Vertex c = new Vertex(BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO);
 
-    private final String NUMBER_FORMAT = View.NUMBER_FORMAT8F;
+    private static final String NUMBER_FORMAT8F = View.NUMBER_FORMAT8F;
 
     // Use final only for subclass/listener references!
 
@@ -82,7 +82,7 @@ class CoordinatesDesign extends Dialog {
         }
         if (v != null) {
             this.v = v;
-            c = new Vertex(v.X, v.Y, v.Z);
+            c = new Vertex(v.xp, v.yp, v.zp);
         }
     }
 
@@ -115,14 +115,14 @@ class CoordinatesDesign extends Dialog {
         ToolItem toolItemTransformationModes = new ToolItem(cmpContainer, SWT.NONE, true);
         {
             NButton btnLocal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
-            this.btn_Local[0] = btnLocal;
+            this.btnLocalPtr[0] = btnLocal;
             btnLocal.setToolTipText(I18n.E3D_LOCAL);
             if (transformationMode == ManipulatorScope.LOCAL) btnLocal.setSelection(true);
             btnLocal.setImage(ResourceManager.getImage("icon16_local.png")); //$NON-NLS-1$
         }
         {
             NButton btnGlobal = new NButton(toolItemTransformationModes, SWT.TOGGLE);
-            this.btn_Global[0] = btnGlobal;
+            this.btnGlobalPtr[0] = btnGlobal;
             btnGlobal.setToolTipText(I18n.E3D_GLOBAL);
             if (transformationMode == ManipulatorScope.GLOBAL) btnGlobal.setSelection(true);
             btnGlobal.setImage(ResourceManager.getImage("icon16_global.png")); //$NON-NLS-1$
@@ -133,7 +133,7 @@ class CoordinatesDesign extends Dialog {
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnManipulator = new NButton(cmpTxt, SWT.NONE);
-            this.btn_Manipulator[0] = btnManipulator;
+            this.btnManipulatorPtr[0] = btnManipulator;
             btnManipulator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnManipulator.setImage(ResourceManager.getImage("icon8_local.png")); //$NON-NLS-1$
             btnManipulator.setText(I18n.COORDINATESDIALOG_MANIPULATOR);
@@ -143,7 +143,7 @@ class CoordinatesDesign extends Dialog {
             cmpTxt.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmpTxt.setLayout(new GridLayout(1, true));
             NButton btnClipboard = new NButton(cmpTxt, SWT.NONE);
-            this.btn_Clipboard[0] = btnClipboard;
+            this.btnClipboardPtr[0] = btnClipboard;
             btnClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
             btnClipboard.setImage(ResourceManager.getImage("icon8_edit-paste.png")); //$NON-NLS-1$
             btnClipboard.setText(I18n.COORDINATESDIALOG_CLIPBOARD);
@@ -155,16 +155,16 @@ class CoordinatesDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             NButton cbXaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Xaxis[0] = cbXaxis;
+            this.cbXaxisPtr[0] = cbXaxis;
             cbXaxis.setText(I18n.COORDINATESDIALOG_X);
             cbXaxis.setSelection(false);
 
-            BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_X[0] = spnX;
+            BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
+            this.spnXPtr[0] = spnX;
             spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnX.setMaximum(new BigDecimal(1000000));
             spnX.setMinimum(new BigDecimal(-1000000));
-            spnX.setValue(v.X);
+            spnX.setValue(v.xp);
         }
 
         {
@@ -173,16 +173,16 @@ class CoordinatesDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             NButton cbYaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Yaxis[0] = cbYaxis;
+            this.cbYaxisPtr[0] = cbYaxis;
             cbYaxis.setText(I18n.COORDINATESDIALOG_Y);
             cbYaxis.setSelection(false);
 
-            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Y[0] = spnY;
+            BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
+            this.spnYPtr[0] = spnY;
             spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnY.setMaximum(new BigDecimal(1000000));
             spnY.setMinimum(new BigDecimal(-1000000));
-            spnY.setValue(v.Y);
+            spnY.setValue(v.yp);
         }
 
         {
@@ -191,16 +191,16 @@ class CoordinatesDesign extends Dialog {
             cmpTxt.setLayout(new GridLayout(6, true));
 
             NButton cbZaxis = new NButton(cmpTxt, SWT.CHECK);
-            this.cb_Zaxis[0] = cbZaxis;
+            this.cbZaxisPtr[0] = cbZaxis;
             cbZaxis.setText(I18n.COORDINATESDIALOG_Z);
             cbZaxis.setSelection(false);
 
-            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-            this.spn_Z[0] = spnZ;
+            BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT8F);
+            this.spnZPtr[0] = spnZ;
             spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 5, 1));
             spnZ.setMaximum(new BigDecimal(1000000));
             spnZ.setMinimum(new BigDecimal(-1000000));
-            spnZ.setValue(v.Z);
+            spnZ.setValue(v.zp);
         }
 
         cmpContainer.pack();
@@ -214,7 +214,7 @@ class CoordinatesDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_Copy[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CREATE_TRANSFORMED_COPY, false);
+        btnCopyPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.E3D_CREATE_TRANSFORMED_COPY, false);
         createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, false);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }

@@ -46,15 +46,15 @@ public class CopyDialog extends CopyDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_1[0]).addSelectionListener(e -> {
+        WidgetUtil(btn1[0]).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.OK_ID);
             close();
         });
-        WidgetUtil(btn_2[0]).addSelectionListener(e -> {
+        WidgetUtil(btn2[0]).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.YES_ID);
             close();
         });
-        WidgetUtil(btn_3[0]).addSelectionListener(e -> {
+        WidgetUtil(btn3[0]).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.NO_ID);
             close();
         });

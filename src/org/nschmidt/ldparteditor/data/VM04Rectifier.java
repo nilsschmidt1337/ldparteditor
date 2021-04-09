@@ -142,14 +142,14 @@ class VM04Rectifier extends VM03Adjacency {
                                                 if (tri2V.iterator().hasNext() && tri1V.iterator().hasNext() && triC.size() == 2) {
 
                                                     Vector3d n1 = new Vector3d(
-                                                            tri1.Y3.subtract(tri1.Y1).multiply(tri1.Z2.subtract(tri1.Z1)).subtract(tri1.Z3.subtract(tri1.Z1).multiply(tri1.Y2.subtract(tri1.Y1))),
-                                                            tri1.Z3.subtract(tri1.Z1).multiply(tri1.X2.subtract(tri1.X1)).subtract(tri1.X3.subtract(tri1.X1).multiply(tri1.Z2.subtract(tri1.Z1))),
-                                                            tri1.X3.subtract(tri1.X1).multiply(tri1.Y2.subtract(tri1.Y1)).subtract(tri1.Y3.subtract(tri1.Y1).multiply(tri1.X2.subtract(tri1.X1)))
+                                                            tri1.y3p.subtract(tri1.y1p).multiply(tri1.z2p.subtract(tri1.z1p)).subtract(tri1.z3p.subtract(tri1.z1p).multiply(tri1.y2p.subtract(tri1.y1p))),
+                                                            tri1.z3p.subtract(tri1.z1p).multiply(tri1.x2p.subtract(tri1.x1p)).subtract(tri1.x3p.subtract(tri1.x1p).multiply(tri1.z2p.subtract(tri1.z1p))),
+                                                            tri1.x3p.subtract(tri1.x1p).multiply(tri1.y2p.subtract(tri1.y1p)).subtract(tri1.y3p.subtract(tri1.y1p).multiply(tri1.x2p.subtract(tri1.x1p)))
                                                             );
                                                     Vector3d n2 = new Vector3d(
-                                                            tri2.Y3.subtract(tri2.Y1).multiply(tri2.Z2.subtract(tri2.Z1)).subtract(tri2.Z3.subtract(tri2.Z1).multiply(tri2.Y2.subtract(tri2.Y1))),
-                                                            tri2.Z3.subtract(tri2.Z1).multiply(tri2.X2.subtract(tri2.X1)).subtract(tri2.X3.subtract(tri2.X1).multiply(tri2.Z2.subtract(tri2.Z1))),
-                                                            tri2.X3.subtract(tri2.X1).multiply(tri2.Y2.subtract(tri2.Y1)).subtract(tri2.Y3.subtract(tri2.Y1).multiply(tri2.X2.subtract(tri2.X1)))
+                                                            tri2.y3p.subtract(tri2.y1p).multiply(tri2.z2p.subtract(tri2.z1p)).subtract(tri2.z3p.subtract(tri2.z1p).multiply(tri2.y2p.subtract(tri2.y1p))),
+                                                            tri2.z3p.subtract(tri2.z1p).multiply(tri2.x2p.subtract(tri2.x1p)).subtract(tri2.x3p.subtract(tri2.x1p).multiply(tri2.z2p.subtract(tri2.z1p))),
+                                                            tri2.x3p.subtract(tri2.x1p).multiply(tri2.y2p.subtract(tri2.y1p)).subtract(tri2.y3p.subtract(tri2.y1p).multiply(tri2.x2p.subtract(tri2.x1p)))
                                                             );
 
                                                     double angle = Vector3d.angle(n1, n2);
@@ -396,14 +396,14 @@ class VM04Rectifier extends VM03Adjacency {
                                     }
                                     GData4 qa = (GData4) quad;
 
-                                    BigDecimal d1X = qa.X1.add(qa.X3).divide(two);
-                                    BigDecimal d2X = qa.X2.add(qa.X4).divide(two);
+                                    BigDecimal d1X = qa.x1p.add(qa.x3p).divide(two);
+                                    BigDecimal d2X = qa.x2p.add(qa.x4p).divide(two);
                                     if (d1X.compareTo(d2X) == 0) {
-                                        BigDecimal d1Y = qa.Y1.add(qa.Y3).divide(two);
-                                        BigDecimal d2Y = qa.Y2.add(qa.Y4).divide(two);
+                                        BigDecimal d1Y = qa.y1p.add(qa.y3p).divide(two);
+                                        BigDecimal d2Y = qa.y2p.add(qa.y4p).divide(two);
                                         if (d1Y.compareTo(d2Y) == 0) {
-                                            BigDecimal d1Z = qa.Z1.add(qa.Z3).divide(two);
-                                            BigDecimal d2Z = qa.Z2.add(qa.Z4).divide(two);
+                                            BigDecimal d1Z = qa.z1p.add(qa.z3p).divide(two);
+                                            BigDecimal d2Z = qa.z2p.add(qa.z4p).divide(two);
                                             if (d1Z.compareTo(d2Z) == 0) {
 
                                                 // Its a rhombus!
@@ -518,9 +518,9 @@ class VM04Rectifier extends VM03Adjacency {
                                                 Vector3d temp3 = Vector3d.cross(temp2, temp1);
 
                                                 accurateLocalMatrix = new Matrix(
-                                                        temp1.X.divide(two), temp1.Y.divide(two), temp1.Z.divide(two), BigDecimal.ZERO,
-                                                        temp3.X.divide(two), temp3.Y.divide(two), temp3.Z.divide(two), BigDecimal.ZERO,
-                                                        temp2.X.divide(two), temp2.Y.divide(two), temp2.Z.divide(two), BigDecimal.ZERO,
+                                                        temp1.x.divide(two), temp1.y.divide(two), temp1.z.divide(two), BigDecimal.ZERO,
+                                                        temp3.x.divide(two), temp3.y.divide(two), temp3.z.divide(two), BigDecimal.ZERO,
+                                                        temp2.x.divide(two), temp2.y.divide(two), temp2.z.divide(two), BigDecimal.ZERO,
                                                         d1X, d1Y, d1Z, BigDecimal.ONE);
 
                                                 accurateLocalMatrix = repair(accurateLocalMatrix);
@@ -540,29 +540,29 @@ class VM04Rectifier extends VM03Adjacency {
                                                 }
                                                 lineBuilder.append(" "); //$NON-NLS-1$
 
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M30));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m30));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M31));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m31));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M32));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m32));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M00));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m00));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M10));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m10));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M20));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m20));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M01));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m01));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M11));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m11));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M21));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m21));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M02));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m02));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M12));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m12));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M22));
+                                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m22));
                                                 lineBuilder.append(" "); //$NON-NLS-1$
                                                 lineBuilder.append(shortName);
 
@@ -646,14 +646,14 @@ class VM04Rectifier extends VM03Adjacency {
                                 if (tri2V.iterator().hasNext() && tri1V.iterator().hasNext() && triC.size() == 2) {
 
                                     Vector3d n1 = new Vector3d(
-                                            tri1.Y3.subtract(tri1.Y1).multiply(tri1.Z2.subtract(tri1.Z1)).subtract(tri1.Z3.subtract(tri1.Z1).multiply(tri1.Y2.subtract(tri1.Y1))),
-                                            tri1.Z3.subtract(tri1.Z1).multiply(tri1.X2.subtract(tri1.X1)).subtract(tri1.X3.subtract(tri1.X1).multiply(tri1.Z2.subtract(tri1.Z1))),
-                                            tri1.X3.subtract(tri1.X1).multiply(tri1.Y2.subtract(tri1.Y1)).subtract(tri1.Y3.subtract(tri1.Y1).multiply(tri1.X2.subtract(tri1.X1)))
+                                            tri1.y3p.subtract(tri1.y1p).multiply(tri1.z2p.subtract(tri1.z1p)).subtract(tri1.z3p.subtract(tri1.z1p).multiply(tri1.y2p.subtract(tri1.y1p))),
+                                            tri1.z3p.subtract(tri1.z1p).multiply(tri1.x2p.subtract(tri1.x1p)).subtract(tri1.x3p.subtract(tri1.x1p).multiply(tri1.z2p.subtract(tri1.z1p))),
+                                            tri1.x3p.subtract(tri1.x1p).multiply(tri1.y2p.subtract(tri1.y1p)).subtract(tri1.y3p.subtract(tri1.y1p).multiply(tri1.x2p.subtract(tri1.x1p)))
                                             );
                                     Vector3d n2 = new Vector3d(
-                                            tri2.Y3.subtract(tri2.Y1).multiply(tri2.Z2.subtract(tri2.Z1)).subtract(tri2.Z3.subtract(tri2.Z1).multiply(tri2.Y2.subtract(tri2.Y1))),
-                                            tri2.Z3.subtract(tri2.Z1).multiply(tri2.X2.subtract(tri2.X1)).subtract(tri2.X3.subtract(tri2.X1).multiply(tri2.Z2.subtract(tri2.Z1))),
-                                            tri2.X3.subtract(tri2.X1).multiply(tri2.Y2.subtract(tri2.Y1)).subtract(tri2.Y3.subtract(tri2.Y1).multiply(tri2.X2.subtract(tri2.X1)))
+                                            tri2.y3p.subtract(tri2.y1p).multiply(tri2.z2p.subtract(tri2.z1p)).subtract(tri2.z3p.subtract(tri2.z1p).multiply(tri2.y2p.subtract(tri2.y1p))),
+                                            tri2.z3p.subtract(tri2.z1p).multiply(tri2.x2p.subtract(tri2.x1p)).subtract(tri2.x3p.subtract(tri2.x1p).multiply(tri2.z2p.subtract(tri2.z1p))),
+                                            tri2.x3p.subtract(tri2.x1p).multiply(tri2.y2p.subtract(tri2.y1p)).subtract(tri2.y3p.subtract(tri2.y1p).multiply(tri2.x2p.subtract(tri2.x1p)))
                                             );
 
                                     double angle = Vector3d.angle(n1, n2);
@@ -901,14 +901,14 @@ class VM04Rectifier extends VM03Adjacency {
                     }
                     GData4 qa = (GData4) quad;
 
-                    BigDecimal d1X = qa.X1.add(qa.X3).divide(two);
-                    BigDecimal d2X = qa.X2.add(qa.X4).divide(two);
+                    BigDecimal d1X = qa.x1p.add(qa.x3p).divide(two);
+                    BigDecimal d2X = qa.x2p.add(qa.x4p).divide(two);
                     if (d1X.compareTo(d2X) == 0) {
-                        BigDecimal d1Y = qa.Y1.add(qa.Y3).divide(two);
-                        BigDecimal d2Y = qa.Y2.add(qa.Y4).divide(two);
+                        BigDecimal d1Y = qa.y1p.add(qa.y3p).divide(two);
+                        BigDecimal d2Y = qa.y2p.add(qa.y4p).divide(two);
                         if (d1Y.compareTo(d2Y) == 0) {
-                            BigDecimal d1Z = qa.Z1.add(qa.Z3).divide(two);
-                            BigDecimal d2Z = qa.Z2.add(qa.Z4).divide(two);
+                            BigDecimal d1Z = qa.z1p.add(qa.z3p).divide(two);
+                            BigDecimal d2Z = qa.z2p.add(qa.z4p).divide(two);
                             if (d1Z.compareTo(d2Z) == 0) {
 
                                 // Its a rhombus!
@@ -1023,9 +1023,9 @@ class VM04Rectifier extends VM03Adjacency {
                                 Vector3d temp3 = Vector3d.cross(temp2, temp1);
 
                                 accurateLocalMatrix = new Matrix(
-                                        temp1.X.divide(two), temp1.Y.divide(two), temp1.Z.divide(two), BigDecimal.ZERO,
-                                        temp3.X.divide(two), temp3.Y.divide(two), temp3.Z.divide(two), BigDecimal.ZERO,
-                                        temp2.X.divide(two), temp2.Y.divide(two), temp2.Z.divide(two), BigDecimal.ZERO,
+                                        temp1.x.divide(two), temp1.y.divide(two), temp1.z.divide(two), BigDecimal.ZERO,
+                                        temp3.x.divide(two), temp3.y.divide(two), temp3.z.divide(two), BigDecimal.ZERO,
+                                        temp2.x.divide(two), temp2.y.divide(two), temp2.z.divide(two), BigDecimal.ZERO,
                                         d1X, d1Y, d1Z, BigDecimal.ONE);
 
                                 accurateLocalMatrix = repair(accurateLocalMatrix);
@@ -1045,29 +1045,29 @@ class VM04Rectifier extends VM03Adjacency {
                                 }
                                 lineBuilder.append(" "); //$NON-NLS-1$
 
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M30));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m30));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M31));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m31));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M32));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m32));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M00));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m00));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M10));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m10));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M20));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m20));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M01));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m01));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M11));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m11));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M21));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m21));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M02));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m02));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M12));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m12));
                                 lineBuilder.append(" "); //$NON-NLS-1$
-                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.M22));
+                                lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m22));
                                 lineBuilder.append(" "); //$NON-NLS-1$
                                 lineBuilder.append(shortName);
 
@@ -1117,7 +1117,7 @@ class VM04Rectifier extends VM03Adjacency {
     }
 
     private Matrix repair(Matrix m) {
-        final BigDecimal lengthY =  MathHelper.sqrt(m.M10.multiply(m.M10).add(m.M11.multiply(m.M11)).add(m.M12.multiply(m.M12))).subtract(BigDecimal.ONE).abs();
+        final BigDecimal lengthY =  MathHelper.sqrt(m.m10.multiply(m.m10).add(m.m11.multiply(m.m11)).add(m.m12.multiply(m.m12))).subtract(BigDecimal.ONE).abs();
         final BigDecimal epsilon = new BigDecimal("0.000001"); //$NON-NLS-1$
         if (epsilon.compareTo(lengthY) < 0) {
             String line = "1 16 " + m.toLDrawString() + "1.dat"; //$NON-NLS-1$ //$NON-NLS-2$

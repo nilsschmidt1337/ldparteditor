@@ -46,15 +46,15 @@ public class EdgerDialog extends EdgerDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_ac[0].addValueChangeListener(spn -> es.setAc(spn.getValue()));
-        spn_af[0].addValueChangeListener(spn -> es.setAf(spn.getValue()));
-        spn_ae[0].addValueChangeListener(spn -> es.setAe(spn.getValue()));
-        spn_vequ[0].addValueChangeListener(spn -> es.setEqualDistance(spn.getValue()));
-        WidgetUtil(cmb_b[0]).addSelectionListener(e -> es.setExtendedRange(cmb_b[0].getSelectionIndex() == 1));
-        WidgetUtil(cmb_c[0]).addSelectionListener(e -> es.setCondlineOnQuads(cmb_c[0].getSelectionIndex() == 1));
-        WidgetUtil(cmb_u[0]).addSelectionListener(e -> es.setUnmatchedMode(cmb_u[0].getSelectionIndex()));
-        WidgetUtil(cmb_scope[0]).addSelectionListener(e -> es.setScope(cmb_scope[0].getSelectionIndex()));
-        WidgetUtil(btn_verbose[0]).addSelectionListener(e -> es.setVerbose(btn_verbose[0].getSelection()));
+        spnAcPtr[0].addValueChangeListener(spn -> es.setAc(spn.getValue()));
+        spnAfPtr[0].addValueChangeListener(spn -> es.setAf(spn.getValue()));
+        spnAePtr[0].addValueChangeListener(spn -> es.setAe(spn.getValue()));
+        spnVequPtr[0].addValueChangeListener(spn -> es.setEqualDistance(spn.getValue()));
+        WidgetUtil(cmbBPtr[0]).addSelectionListener(e -> es.setExtendedRange(cmbBPtr[0].getSelectionIndex() == 1));
+        WidgetUtil(cmbCPtr[0]).addSelectionListener(e -> es.setCondlineOnQuads(cmbCPtr[0].getSelectionIndex() == 1));
+        WidgetUtil(cmbUPtr[0]).addSelectionListener(e -> es.setUnmatchedMode(cmbUPtr[0].getSelectionIndex()));
+        WidgetUtil(cmbScopePtr[0]).addSelectionListener(e -> es.setScope(cmbScopePtr[0].getSelectionIndex()));
+        WidgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> es.setVerbose(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

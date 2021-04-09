@@ -33,7 +33,7 @@ public class Circle {
     private final FloatBuffer matrix;
     private final Matrix4f rotation;
 
-    private final float EPSILON = 0.0000001f;
+    private static final float EPSILON = 0.0000001f;
 
     private final float r;
     private final float g;

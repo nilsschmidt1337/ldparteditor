@@ -123,7 +123,7 @@ public class CompositeTabState {
             } catch (FileNotFoundException e) {
                 Object[] messageArguments = {fileNameObj.getOldName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(I18n.COMPOSITETAB_FILE_NOT_FOUND);
                 getTab().getTextComposite().setText(formatter.format(messageArguments));
                 datFileObj.setText(""); //$NON-NLS-1$
@@ -133,7 +133,7 @@ public class CompositeTabState {
             } catch (LDParsingException e) {
                 Object[] messageArguments = {fileNameObj.getOldName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(I18n.COMPOSITETAB_FILE_READ_ERROR);
                 getTab().getTextComposite().setText(formatter.format(messageArguments));
                 datFileObj.setText(""); //$NON-NLS-1$
@@ -143,7 +143,7 @@ public class CompositeTabState {
             } catch (UnsupportedEncodingException e) {
                 Object[] messageArguments = {fileNameObj.getOldName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(I18n.COMPOSITETAB_FILE_ENCODING_ERROR);
                 getTab().getTextComposite().setText(formatter.format(messageArguments));
                 datFileObj.setText(""); //$NON-NLS-1$

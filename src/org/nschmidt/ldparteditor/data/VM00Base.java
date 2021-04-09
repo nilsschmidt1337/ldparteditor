@@ -441,7 +441,7 @@ class VM00Base {
         cleanupSelection();
         cleanupHiddenData();
         // Do not validate more stuff on release, since it costs a lot performance.
-        if (!NLogger.DEBUG) return;
+        if (!NLogger.debugging) return;
 
         // TreeMap<Vertex, HashSet<VertexManifestation>>
         // vertexLinkedToPositionInFile
@@ -1072,11 +1072,11 @@ class VM00Base {
                 GData2 newLin = null;
                 switch (mani.getPosition()) {
                 case 0:
-                    newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.X, newVertex.Y, newVertex.Z, oldLin.X2, oldLin.Y2, oldLin.Z2, oldLin.parent,
+                    newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.xp, newVertex.yp, newVertex.zp, oldLin.x2p, oldLin.y2p, oldLin.z2p, oldLin.parent,
                             linkedDatFile, oldLin.isLine);
                     break;
                 case 1:
-                    newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.X1, oldLin.Y1, oldLin.Z1, newVertex.X, newVertex.Y, newVertex.Z, oldLin.parent,
+                    newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.x1p, oldLin.y1p, oldLin.z1p, newVertex.xp, newVertex.yp, newVertex.zp, oldLin.parent,
                             linkedDatFile, oldLin.isLine);
                     break;
                 default:
@@ -1093,15 +1093,15 @@ class VM00Base {
                 GData3 newTri = null;
                 switch (mani.getPosition()) {
                 case 0:
-                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, newVertex, new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
-                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile, oldTri.isTriangle);
+                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, newVertex, new Vertex(oldTri.x2p, oldTri.y2p, oldTri.z2p),
+                            new Vertex(oldTri.x3p, oldTri.y3p, oldTri.z3p), oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 case 1:
-                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), newVertex,
-                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile, oldTri.isTriangle);
+                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.x1p, oldTri.y1p, oldTri.z1p), newVertex,
+                            new Vertex(oldTri.x3p, oldTri.y3p, oldTri.z3p), oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 case 2:
-                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
+                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.x1p, oldTri.y1p, oldTri.z1p), new Vertex(oldTri.x2p, oldTri.y2p, oldTri.z2p),
                             newVertex, oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 default:
@@ -1118,20 +1118,20 @@ class VM00Base {
                 GData4 newQuad = null;
                 switch (mani.getPosition()) {
                 case 0:
-                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, newVertex, new Vertex(oldQuad.X2, oldQuad.Y2, oldQuad.Z2), new Vertex(oldQuad.X3,
-                            oldQuad.Y3, oldQuad.Z3), new Vertex(oldQuad.X4, oldQuad.Y4, oldQuad.Z4), oldQuad.parent, linkedDatFile);
+                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, newVertex, new Vertex(oldQuad.x2p, oldQuad.y2p, oldQuad.z2p), new Vertex(oldQuad.x3p,
+                            oldQuad.y3p, oldQuad.z3p), new Vertex(oldQuad.x4p, oldQuad.y4p, oldQuad.z4p), oldQuad.parent, linkedDatFile);
                     break;
                 case 1:
-                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.X1, oldQuad.Y1, oldQuad.Z1), newVertex, new Vertex(oldQuad.X3,
-                            oldQuad.Y3, oldQuad.Z3), new Vertex(oldQuad.X4, oldQuad.Y4, oldQuad.Z4), oldQuad.parent, linkedDatFile);
+                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.x1p, oldQuad.y1p, oldQuad.z1p), newVertex, new Vertex(oldQuad.x3p,
+                            oldQuad.y3p, oldQuad.z3p), new Vertex(oldQuad.x4p, oldQuad.y4p, oldQuad.z4p), oldQuad.parent, linkedDatFile);
                     break;
                 case 2:
-                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.X1, oldQuad.Y1, oldQuad.Z1), new Vertex(oldQuad.X2, oldQuad.Y2,
-                            oldQuad.Z2), newVertex, new Vertex(oldQuad.X4, oldQuad.Y4, oldQuad.Z4), oldQuad.parent, linkedDatFile);
+                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.x1p, oldQuad.y1p, oldQuad.z1p), new Vertex(oldQuad.x2p, oldQuad.y2p,
+                            oldQuad.z2p), newVertex, new Vertex(oldQuad.x4p, oldQuad.y4p, oldQuad.z4p), oldQuad.parent, linkedDatFile);
                     break;
                 case 3:
-                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.X1, oldQuad.Y1, oldQuad.Z1), new Vertex(oldQuad.X2, oldQuad.Y2,
-                            oldQuad.Z2), new Vertex(oldQuad.X3, oldQuad.Y3, oldQuad.Z3), newVertex, oldQuad.parent, linkedDatFile);
+                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.x1p, oldQuad.y1p, oldQuad.z1p), new Vertex(oldQuad.x2p, oldQuad.y2p,
+                            oldQuad.z2p), new Vertex(oldQuad.x3p, oldQuad.y3p, oldQuad.z3p), newVertex, oldQuad.parent, linkedDatFile);
                     break;
                 default:
                     break;
@@ -1147,20 +1147,20 @@ class VM00Base {
                 GData5 newCLin = null;
                 switch (mani.getPosition()) {
                 case 0:
-                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, newVertex, new Vertex(oldCLin.X2, oldCLin.Y2, oldCLin.Z2), new Vertex(oldCLin.X3,
-                            oldCLin.Y3, oldCLin.Z3), new Vertex(oldCLin.X4, oldCLin.Y4, oldCLin.Z4), oldCLin.parent, linkedDatFile);
+                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, newVertex, new Vertex(oldCLin.x2p, oldCLin.y2p, oldCLin.z2p), new Vertex(oldCLin.x3p,
+                            oldCLin.y3p, oldCLin.z3p), new Vertex(oldCLin.x4p, oldCLin.y4p, oldCLin.z4p), oldCLin.parent, linkedDatFile);
                     break;
                 case 1:
-                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.X1, oldCLin.Y1, oldCLin.Z1), newVertex, new Vertex(oldCLin.X3,
-                            oldCLin.Y3, oldCLin.Z3), new Vertex(oldCLin.X4, oldCLin.Y4, oldCLin.Z4), oldCLin.parent, linkedDatFile);
+                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.x1p, oldCLin.y1p, oldCLin.z1p), newVertex, new Vertex(oldCLin.x3p,
+                            oldCLin.y3p, oldCLin.z3p), new Vertex(oldCLin.x4p, oldCLin.y4p, oldCLin.z4p), oldCLin.parent, linkedDatFile);
                     break;
                 case 2:
-                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.X1, oldCLin.Y1, oldCLin.Z1), new Vertex(oldCLin.X2, oldCLin.Y2,
-                            oldCLin.Z2), newVertex, new Vertex(oldCLin.X4, oldCLin.Y4, oldCLin.Z4), oldCLin.parent, linkedDatFile);
+                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.x1p, oldCLin.y1p, oldCLin.z1p), new Vertex(oldCLin.x2p, oldCLin.y2p,
+                            oldCLin.z2p), newVertex, new Vertex(oldCLin.x4p, oldCLin.y4p, oldCLin.z4p), oldCLin.parent, linkedDatFile);
                     break;
                 case 3:
-                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.X1, oldCLin.Y1, oldCLin.Z1), new Vertex(oldCLin.X2, oldCLin.Y2,
-                            oldCLin.Z2), new Vertex(oldCLin.X3, oldCLin.Y3, oldCLin.Z3), newVertex, oldCLin.parent, linkedDatFile);
+                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.x1p, oldCLin.y1p, oldCLin.z1p), new Vertex(oldCLin.x2p, oldCLin.y2p,
+                            oldCLin.z2p), new Vertex(oldCLin.x3p, oldCLin.y3p, oldCLin.z3p), newVertex, oldCLin.parent, linkedDatFile);
                     break;
                 default:
                     break;
@@ -1235,11 +1235,11 @@ class VM00Base {
                 GData2 newLin = null;
                 switch (mani.getPosition()) {
                 case 0:
-                    newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.X, newVertex.Y, newVertex.Z, oldLin.X2, oldLin.Y2, oldLin.Z2, oldLin.parent,
+                    newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, newVertex.xp, newVertex.yp, newVertex.zp, oldLin.x2p, oldLin.y2p, oldLin.z2p, oldLin.parent,
                             linkedDatFile, oldLin.isLine);
                     break;
                 case 1:
-                    newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.X1, oldLin.Y1, oldLin.Z1, newVertex.X, newVertex.Y, newVertex.Z, oldLin.parent,
+                    newLin = new GData2(oldLin.colourNumber, oldLin.r, oldLin.g, oldLin.b, oldLin.a, oldLin.x1p, oldLin.y1p, oldLin.z1p, newVertex.xp, newVertex.yp, newVertex.zp, oldLin.parent,
                             linkedDatFile, oldLin.isLine);
                     break;
                 default:
@@ -1256,15 +1256,15 @@ class VM00Base {
                 GData3 newTri = null;
                 switch (mani.getPosition()) {
                 case 0:
-                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, newVertex, new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
-                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile, oldTri.isTriangle);
+                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, newVertex, new Vertex(oldTri.x2p, oldTri.y2p, oldTri.z2p),
+                            new Vertex(oldTri.x3p, oldTri.y3p, oldTri.z3p), oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 case 1:
-                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), newVertex,
-                            new Vertex(oldTri.X3, oldTri.Y3, oldTri.Z3), oldTri.parent, linkedDatFile, oldTri.isTriangle);
+                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.x1p, oldTri.y1p, oldTri.z1p), newVertex,
+                            new Vertex(oldTri.x3p, oldTri.y3p, oldTri.z3p), oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 case 2:
-                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.X1, oldTri.Y1, oldTri.Z1), new Vertex(oldTri.X2, oldTri.Y2, oldTri.Z2),
+                    newTri = new GData3(oldTri.colourNumber, oldTri.r, oldTri.g, oldTri.b, oldTri.a, new Vertex(oldTri.x1p, oldTri.y1p, oldTri.z1p), new Vertex(oldTri.x2p, oldTri.y2p, oldTri.z2p),
                             newVertex, oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 default:
@@ -1281,20 +1281,20 @@ class VM00Base {
                 GData4 newQuad = null;
                 switch (mani.getPosition()) {
                 case 0:
-                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, newVertex, new Vertex(oldQuad.X2, oldQuad.Y2, oldQuad.Z2), new Vertex(oldQuad.X3,
-                            oldQuad.Y3, oldQuad.Z3), new Vertex(oldQuad.X4, oldQuad.Y4, oldQuad.Z4), oldQuad.parent, linkedDatFile);
+                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, newVertex, new Vertex(oldQuad.x2p, oldQuad.y2p, oldQuad.z2p), new Vertex(oldQuad.x3p,
+                            oldQuad.y3p, oldQuad.z3p), new Vertex(oldQuad.x4p, oldQuad.y4p, oldQuad.z4p), oldQuad.parent, linkedDatFile);
                     break;
                 case 1:
-                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.X1, oldQuad.Y1, oldQuad.Z1), newVertex, new Vertex(oldQuad.X3,
-                            oldQuad.Y3, oldQuad.Z3), new Vertex(oldQuad.X4, oldQuad.Y4, oldQuad.Z4), oldQuad.parent, linkedDatFile);
+                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.x1p, oldQuad.y1p, oldQuad.z1p), newVertex, new Vertex(oldQuad.x3p,
+                            oldQuad.y3p, oldQuad.z3p), new Vertex(oldQuad.x4p, oldQuad.y4p, oldQuad.z4p), oldQuad.parent, linkedDatFile);
                     break;
                 case 2:
-                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.X1, oldQuad.Y1, oldQuad.Z1), new Vertex(oldQuad.X2, oldQuad.Y2,
-                            oldQuad.Z2), newVertex, new Vertex(oldQuad.X4, oldQuad.Y4, oldQuad.Z4), oldQuad.parent, linkedDatFile);
+                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.x1p, oldQuad.y1p, oldQuad.z1p), new Vertex(oldQuad.x2p, oldQuad.y2p,
+                            oldQuad.z2p), newVertex, new Vertex(oldQuad.x4p, oldQuad.y4p, oldQuad.z4p), oldQuad.parent, linkedDatFile);
                     break;
                 case 3:
-                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.X1, oldQuad.Y1, oldQuad.Z1), new Vertex(oldQuad.X2, oldQuad.Y2,
-                            oldQuad.Z2), new Vertex(oldQuad.X3, oldQuad.Y3, oldQuad.Z3), newVertex, oldQuad.parent, linkedDatFile);
+                    newQuad = new GData4(oldQuad.colourNumber, oldQuad.r, oldQuad.g, oldQuad.b, oldQuad.a, new Vertex(oldQuad.x1p, oldQuad.y1p, oldQuad.z1p), new Vertex(oldQuad.x2p, oldQuad.y2p,
+                            oldQuad.z2p), new Vertex(oldQuad.x3p, oldQuad.y3p, oldQuad.z3p), newVertex, oldQuad.parent, linkedDatFile);
                     break;
                 default:
                     break;
@@ -1310,20 +1310,20 @@ class VM00Base {
                 GData5 newCLin = null;
                 switch (mani.getPosition()) {
                 case 0:
-                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, newVertex, new Vertex(oldCLin.X2, oldCLin.Y2, oldCLin.Z2), new Vertex(oldCLin.X3,
-                            oldCLin.Y3, oldCLin.Z3), new Vertex(oldCLin.X4, oldCLin.Y4, oldCLin.Z4), oldCLin.parent, linkedDatFile);
+                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, newVertex, new Vertex(oldCLin.x2p, oldCLin.y2p, oldCLin.z2p), new Vertex(oldCLin.x3p,
+                            oldCLin.y3p, oldCLin.z3p), new Vertex(oldCLin.x4p, oldCLin.y4p, oldCLin.z4p), oldCLin.parent, linkedDatFile);
                     break;
                 case 1:
-                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.X1, oldCLin.Y1, oldCLin.Z1), newVertex, new Vertex(oldCLin.X3,
-                            oldCLin.Y3, oldCLin.Z3), new Vertex(oldCLin.X4, oldCLin.Y4, oldCLin.Z4), oldCLin.parent, linkedDatFile);
+                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.x1p, oldCLin.y1p, oldCLin.z1p), newVertex, new Vertex(oldCLin.x3p,
+                            oldCLin.y3p, oldCLin.z3p), new Vertex(oldCLin.x4p, oldCLin.y4p, oldCLin.z4p), oldCLin.parent, linkedDatFile);
                     break;
                 case 2:
-                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.X1, oldCLin.Y1, oldCLin.Z1), new Vertex(oldCLin.X2, oldCLin.Y2,
-                            oldCLin.Z2), newVertex, new Vertex(oldCLin.X4, oldCLin.Y4, oldCLin.Z4), oldCLin.parent, linkedDatFile);
+                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.x1p, oldCLin.y1p, oldCLin.z1p), new Vertex(oldCLin.x2p, oldCLin.y2p,
+                            oldCLin.z2p), newVertex, new Vertex(oldCLin.x4p, oldCLin.y4p, oldCLin.z4p), oldCLin.parent, linkedDatFile);
                     break;
                 case 3:
-                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.X1, oldCLin.Y1, oldCLin.Z1), new Vertex(oldCLin.X2, oldCLin.Y2,
-                            oldCLin.Z2), new Vertex(oldCLin.X3, oldCLin.Y3, oldCLin.Z3), newVertex, oldCLin.parent, linkedDatFile);
+                    newCLin = new GData5(oldCLin.colourNumber, oldCLin.r, oldCLin.g, oldCLin.b, oldCLin.a, new Vertex(oldCLin.x1p, oldCLin.y1p, oldCLin.z1p), new Vertex(oldCLin.x2p, oldCLin.y2p,
+                            oldCLin.z2p), new Vertex(oldCLin.x3p, oldCLin.y3p, oldCLin.z3p), newVertex, oldCLin.parent, linkedDatFile);
                     break;
                 default:
                     break;
@@ -1367,7 +1367,7 @@ class VM00Base {
         getManifestationLock().lock();
         if (!vertexLinkedToPositionInFile.containsKey(vertex))
             vertexLinkedToPositionInFile.put(vertex, Collections.newSetFromMap(new ThreadsafeHashMap<>()));
-        GData0 vertexTag = new GData0("0 !LPE VERTEX " + bigDecimalToString(vertex.X) + " " + bigDecimalToString(vertex.Y) + " " + bigDecimalToString(vertex.Z), View.DUMMY_REFERENCE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
+        GData0 vertexTag = new GData0("0 !LPE VERTEX " + bigDecimalToString(vertex.xp) + " " + bigDecimalToString(vertex.yp) + " " + bigDecimalToString(vertex.zp), View.DUMMY_REFERENCE); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$)
         vertexLinkedToPositionInFile.get(vertex).add(new VertexManifestation(0, vertexTag));
         getManifestationLock().unlock();
         lineLinkedToVertices.put(vertexTag, Collections.newSetFromMap(new ThreadsafeHashMap<>()));

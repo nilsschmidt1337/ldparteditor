@@ -43,12 +43,12 @@ import org.nschmidt.ldparteditor.widgets.NButton;
 class SortDesign extends Dialog {
 
 
-    final Button[] btn_OK = new Button[1];
+    final Button[] btnOkPtr = new Button[1];
 
-    final NButton[] btn_ignoreStructure = new NButton[1];
+    final NButton[] btnIgnoreStructurePtr = new NButton[1];
 
-    final Combo[] cmb_scope = new Combo[1];
-    final Combo[] cmb_sortCriteria = new Combo[1];
+    final Combo[] cmbScopePtr = new Combo[1];
+    final Combo[] cmbSortCriteriaPtr = new Combo[1];
 
     final int fromLine;
     final int toLine;
@@ -87,7 +87,7 @@ class SortDesign extends Dialog {
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmbScope;
+        this.cmbScopePtr[0] = cmbScope;
         cmbScope.setItems(new String[] {I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION});
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         if (fromLine == toLine) {
@@ -99,14 +99,14 @@ class SortDesign extends Dialog {
         }
 
         Combo cmbSortCriteria = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_sortCriteria[0] = cmbSortCriteria;
+        this.cmbSortCriteriaPtr[0] = cmbSortCriteria;
         cmbSortCriteria.setItems(new String[] {I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC});
         cmbSortCriteria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbSortCriteria.select(2);
         criteria = 2;
 
         NButton btnIgnoreStructure = new NButton(cmpContainer, SWT.CHECK);
-        this.btn_ignoreStructure[0] = btnIgnoreStructure;
+        this.btnIgnoreStructurePtr[0] = btnIgnoreStructure;
         btnIgnoreStructure.setText(I18n.SORT_IGNORE_STRUCTURE);
         cmpContainer.pack();
         return cmpContainer;
@@ -119,7 +119,7 @@ class SortDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_OK[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
+        btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 

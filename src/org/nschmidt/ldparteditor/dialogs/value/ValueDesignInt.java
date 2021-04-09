@@ -35,9 +35,9 @@ import org.nschmidt.ldparteditor.widgets.IntegerSpinner;
  */
 class ValueDesignInt extends Dialog {
 
-    private Label[] lbl_Unit = new Label[1];
-    Button[] btn_ok = new Button[1];
-    protected IntegerSpinner[] spn_Value = new IntegerSpinner[1];
+    private Label[] lblUnitPtr = new Label[1];
+    Button[] btnOkPtr = new Button[1];
+    protected IntegerSpinner[] spnValuePtr = new IntegerSpinner[1];
 
 
     private final String unitText;
@@ -62,7 +62,7 @@ class ValueDesignInt extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         IntegerSpinner spnValue = new IntegerSpinner(cmpContainer, SWT.NONE);
-        this.spn_Value[0] = spnValue;
+        this.spnValuePtr[0] = spnValue;
         GridData gd = new GridData();
         gd.grabExcessHorizontalSpace = true;
         gd.horizontalAlignment = SWT.FILL;
@@ -70,7 +70,7 @@ class ValueDesignInt extends Dialog {
 
 
         Label lblUnit = new Label(cmpContainer, SWT.NONE);
-        this.lbl_Unit[0] = lblUnit;
+        this.lblUnitPtr[0] = lblUnit;
         lblUnit.setText(unitText);
 
         cmpContainer.pack();
@@ -84,7 +84,7 @@ class ValueDesignInt extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
+        btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, I18n.DIALOG_OK, true);
         createButton(parent, IDialogConstants.CANCEL_ID, I18n.DIALOG_CANCEL, false);
     }
 

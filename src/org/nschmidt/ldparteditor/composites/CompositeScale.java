@@ -49,13 +49,13 @@ import org.nschmidt.ldparteditor.widgets.NButton;
  */
 public class CompositeScale extends ScalableComposite {
 
-    private final java.text.DecimalFormat NUMBER_FORMAT2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.locale));
 
-    private final Canvas canvas_horizontal;
-    private final Canvas canvas_vertical;
+    private final Canvas canvasHorizontal;
+    private final Canvas canvasVertical;
 
-    private int pos_horizontal;
-    private int pos_vertical;
+    private int posHorizontal;
+    private int posVertical;
 
     public CompositeScale(Composite parentCompositeContainer, Composite3D composite3D, int style) {
         super(parentCompositeContainer, style);
@@ -87,16 +87,16 @@ public class CompositeScale extends ScalableComposite {
             }
         });
 
-        canvas_horizontal = new Canvas(this, SWT.BORDER | SWT.NO_BACKGROUND);
-        canvas_horizontal.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
-        canvas_horizontal.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-        canvas_horizontal.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
-        canvas_horizontal.setLayout(new FillLayout(SWT.HORIZONTAL));
+        canvasHorizontal = new Canvas(this, SWT.BORDER | SWT.NO_BACKGROUND);
+        canvasHorizontal.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
+        canvasHorizontal.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+        canvasHorizontal.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, false, 1, 1));
+        canvasHorizontal.setLayout(new FillLayout(SWT.HORIZONTAL));
 
         Listener paintHorizontalScaleListener = e -> {
             if (e.gc == null)
                 return;
-            Rectangle rect = canvas_horizontal.getBounds();
+            Rectangle rect = canvasHorizontal.getBounds();
             // Create the image to fill the canvas
             Image image = new Image(Display.getCurrent(), rect);
             // Set up the offscreen gc
@@ -155,7 +155,7 @@ public class CompositeScale extends ScalableComposite {
                     throw new AssertionError();
                 }
 
-                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unit_factor.floatValue();
+                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unitFactor.floatValue();
 
                 if (offset < -halfwidth) {
                     // "Positive"
@@ -165,7 +165,7 @@ public class CompositeScale extends ScalableComposite {
                     // Big lines
                     for (float x1 = origin1 + tenstep; x1 < width; x1 = x1 + tenstep) {
                         if (x1 > 20) {
-                            gc.drawText(NUMBER_FORMAT2F.format((x1 - origin21) * scaleFactor), (int) x1 + 2, -2);
+                            gc.drawText(numberFormat2f.format((x1 - origin21) * scaleFactor), (int) x1 + 2, -2);
                             gc.drawLine((int) x1, 5, (int) x1, 10);
                         }
                     }
@@ -188,7 +188,7 @@ public class CompositeScale extends ScalableComposite {
                     float origin22 = offset + halfwidth;
                     // Big lines
                     for (float x4 = origin3 - tenstep; x4 > 20; x4 = x4 - tenstep) {
-                        gc.drawText(NUMBER_FORMAT2F.format((x4 - origin22) * scaleFactor), (int) x4 + 2, -2);
+                        gc.drawText(numberFormat2f.format((x4 - origin22) * scaleFactor), (int) x4 + 2, -2);
                         gc.drawLine((int) x4, 5, (int) x4, 10);
                     }
                     // Small lines
@@ -211,11 +211,11 @@ public class CompositeScale extends ScalableComposite {
                     }
                     // Big lines
                     for (float x7 = origin4 - tenstep; x7 > 20; x7 = x7 - tenstep) {
-                        gc.drawText(NUMBER_FORMAT2F.format((x7 - origin4) * scaleFactor), (int) x7 + 2, -2);
+                        gc.drawText(numberFormat2f.format((x7 - origin4) * scaleFactor), (int) x7 + 2, -2);
                         gc.drawLine((int) x7, 5, (int) x7, 10);
                     }
                     for (float x8 = origin4 + tenstep; x8 < width; x8 = x8 + tenstep) {
-                        gc.drawText(NUMBER_FORMAT2F.format((x8 - origin4) * scaleFactor), (int) x8 + 2, -2);
+                        gc.drawText(numberFormat2f.format((x8 - origin4) * scaleFactor), (int) x8 + 2, -2);
                         gc.drawLine((int) x8, 5, (int) x8, 10);
                     }
                     // Small lines
@@ -236,26 +236,26 @@ public class CompositeScale extends ScalableComposite {
             }
             // Draw the triangle
             gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
-            gc.fillPolygon(new int[] { pos_horizontal - 5, 10, pos_horizontal, 16, pos_horizontal + 5, 10, pos_horizontal - 5, 10 });
+            gc.fillPolygon(new int[] { posHorizontal - 5, 10, posHorizontal, 16, posHorizontal + 5, 10, posHorizontal - 5, 10 });
             // Draw the offscreen buffer to the screen
             e.gc.drawImage(image, 0, 0);
             // Clean up
             image.dispose();
             gc.dispose();
         };
-        canvas_horizontal.addListener(SWT.Resize, paintHorizontalScaleListener);
-        canvas_horizontal.addListener(SWT.Paint, paintHorizontalScaleListener);
+        canvasHorizontal.addListener(SWT.Resize, paintHorizontalScaleListener);
+        canvasHorizontal.addListener(SWT.Paint, paintHorizontalScaleListener);
 
-        canvas_vertical = new Canvas(this, SWT.BORDER | SWT.NO_BACKGROUND);
-        canvas_vertical.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
-        canvas_vertical.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
-        canvas_vertical.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
-        canvas_vertical.setLayout(new FillLayout(SWT.HORIZONTAL));
+        canvasVertical = new Canvas(this, SWT.BORDER | SWT.NO_BACKGROUND);
+        canvasVertical.setForeground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
+        canvasVertical.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
+        canvasVertical.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, true, 1, 1));
+        canvasVertical.setLayout(new FillLayout(SWT.HORIZONTAL));
 
         Listener paintVerticalScaleListener = e -> {
             if (e.gc == null)
                 return;
-            Rectangle rect = canvas_vertical.getBounds();
+            Rectangle rect = canvasVertical.getBounds();
             // Create the image to fill the canvas
             Image image = new Image(Display.getCurrent(), rect);
             // Set up the offscreen gc
@@ -312,7 +312,7 @@ public class CompositeScale extends ScalableComposite {
                     throw new AssertionError();
                 }
 
-                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unit_factor.floatValue();
+                float scaleFactor = factor / (View.PIXEL_PER_LDU * c3d.getZoom() * 1000f) * View.unitFactor.floatValue();
 
                 if (offset < -halfheight) {
                     // "Positive"
@@ -325,7 +325,7 @@ public class CompositeScale extends ScalableComposite {
                         tr1.translate(0, (int) y1);
                         tr1.rotate(-90);
                         gc.setTransform(tr1);
-                        gc.drawText(NUMBER_FORMAT2F.format((y1 - origin21) * scaleFactor), 0, 0);
+                        gc.drawText(numberFormat2f.format((y1 - origin21) * scaleFactor), 0, 0);
                         gc.setTransform(null);
                         gc.drawLine(5, (int) y1, 10, (int) y1);
                     }
@@ -348,7 +348,7 @@ public class CompositeScale extends ScalableComposite {
                         tr2.translate(0, (int) y4);
                         tr2.rotate(-90);
                         gc.setTransform(tr2);
-                        gc.drawText(NUMBER_FORMAT2F.format((y4 - origin22) * scaleFactor), 0, 0);
+                        gc.drawText(numberFormat2f.format((y4 - origin22) * scaleFactor), 0, 0);
                         gc.setTransform(null);
                         gc.drawLine(5, (int) y4, 10, (int) y4);
                     }
@@ -374,7 +374,7 @@ public class CompositeScale extends ScalableComposite {
                         tr3.translate(0, (int) y7);
                         tr3.rotate(-90);
                         gc.setTransform(tr3);
-                        gc.drawText(NUMBER_FORMAT2F.format((y7 - origin4) * scaleFactor), 0, 0);
+                        gc.drawText(numberFormat2f.format((y7 - origin4) * scaleFactor), 0, 0);
                         gc.setTransform(null);
                         gc.drawLine(5, (int) y7, 10, (int) y7);
                     }
@@ -383,7 +383,7 @@ public class CompositeScale extends ScalableComposite {
                         tr4.translate(0, (int) y8);
                         tr4.rotate(-90);
                         gc.setTransform(tr4);
-                        gc.drawText(NUMBER_FORMAT2F.format((y8 - origin4) * scaleFactor), 0, 0);
+                        gc.drawText(numberFormat2f.format((y8 - origin4) * scaleFactor), 0, 0);
                         gc.setTransform(null);
                         gc.drawLine(5, (int) y8, 10, (int) y8);
                     }
@@ -405,15 +405,15 @@ public class CompositeScale extends ScalableComposite {
             }
             // Draw the triangle
             gc.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_FOREGROUND));
-            gc.fillPolygon(new int[] { 10, pos_vertical - 5, 16, pos_vertical, 10, pos_vertical + 5, 10, pos_vertical - 5 });
+            gc.fillPolygon(new int[] { 10, posVertical - 5, 16, posVertical, 10, posVertical + 5, 10, posVertical - 5 });
             // Draw the offscreen buffer to the screen
             e.gc.drawImage(image, 0, 0);
             // Clean up
             image.dispose();
             gc.dispose();
         };
-        canvas_vertical.addListener(SWT.Resize, paintVerticalScaleListener);
-        canvas_vertical.addListener(SWT.Paint, paintVerticalScaleListener);
+        canvasVertical.addListener(SWT.Resize, paintVerticalScaleListener);
+        canvasVertical.addListener(SWT.Paint, paintVerticalScaleListener);
 
         composite3D.setParent(this);
         composite3D.setLayoutData(new GridData(SWT.FILL, SWT.FILL, false, false, 1, 1));
@@ -436,19 +436,19 @@ public class CompositeScale extends ScalableComposite {
 
     @Override
     public void redrawScales(int x, int y) {
-        pos_horizontal = x - 2;
-        pos_vertical = y - 2;
-        canvas_horizontal.redraw();
-        canvas_horizontal.update();
-        canvas_vertical.redraw();
-        canvas_vertical.update();
+        posHorizontal = x - 2;
+        posVertical = y - 2;
+        canvasHorizontal.redraw();
+        canvasHorizontal.update();
+        canvasVertical.redraw();
+        canvasVertical.update();
     }
 
     @Override
     public void redrawScales() {
-        canvas_horizontal.redraw();
-        canvas_horizontal.update();
-        canvas_vertical.redraw();
-        canvas_vertical.update();
+        canvasHorizontal.redraw();
+        canvasHorizontal.update();
+        canvasVertical.redraw();
+        canvasVertical.update();
     }
 }

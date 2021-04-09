@@ -36,7 +36,7 @@ import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
  */
 public class Tree {
 
-    private final HashMap<TreeItem, org.eclipse.swt.widgets.TreeItem> SWTFromTi = new HashMap<>();
+    private final HashMap<TreeItem, org.eclipse.swt.widgets.TreeItem> swtFromTi = new HashMap<>();
     private final org.eclipse.swt.widgets.Tree tree;
     private final ArrayList<TreeItem> items = new ArrayList<>();
     private final HashMap<org.eclipse.swt.widgets.TreeItem, TreeItem> tiFromSWT = new HashMap<>();
@@ -122,7 +122,7 @@ public class Tree {
     public void build() {
         counter = 0;
         tiFromSWT.clear();
-        SWTFromTi.clear();
+        swtFromTi.clear();
         for (TreeItem t : items) {
             t.build(0);
         }
@@ -151,7 +151,7 @@ public class Tree {
     }
 
     public HashMap<TreeItem, org.eclipse.swt.widgets.TreeItem> getMapInv() {
-        return SWTFromTi;
+        return swtFromTi;
     }
 
     public org.eclipse.swt.widgets.Tree getTree() {
@@ -181,8 +181,8 @@ public class Tree {
     }
 
     public void setSelection(TreeItem treeItem) {
-        if (SWTFromTi.containsKey(treeItem)) {
-            tree.select(SWTFromTi.get(treeItem));
+        if (swtFromTi.containsKey(treeItem)) {
+            tree.select(swtFromTi.get(treeItem));
             tree.showSelection();
         }
     }

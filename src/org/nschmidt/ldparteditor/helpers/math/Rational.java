@@ -69,11 +69,11 @@ public class Rational implements Comparable<Rational> {
         return new BigDecimal(upper).divide(new BigDecimal(lower), mcloc);
     }
 
-    private static BigInteger SD = new BigInteger("1000000000000000"); //$NON-NLS-1$
-    private static BigDecimal SD2 = new BigDecimal("1000000000000000"); //$NON-NLS-1$
+    private static BigInteger sd = new BigInteger("1000000000000000"); //$NON-NLS-1$
+    private static BigDecimal sd2 = new BigDecimal("1000000000000000"); //$NON-NLS-1$
 
     public BigDecimal BigDecimalValue() {
-        return new BigDecimal(upper.multiply(SD).divide(lower)).divide(SD2);
+        return new BigDecimal(upper.multiply(sd).divide(lower)).divide(sd2);
     }
 
     public Rational add(Rational tmp) {

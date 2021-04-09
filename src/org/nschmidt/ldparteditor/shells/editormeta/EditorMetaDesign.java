@@ -54,137 +54,137 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 class EditorMetaDesign extends ApplicationWindow {
 
-    final NButton[] btn_Create = new NButton[1];
+    final NButton[] btnCreatePtr = new NButton[1];
 
-    final Text[] ev_description_txt = new Text[1];
-    final NButton[] ev_description_btn = new NButton[1];
-    final Text[] ev_name_txt = new Text[1];
-    final Text[] ev_author_realName_txt = new Text[1];
-    final Text[] ev_author_userName_txt = new Text[1];
-    final NButton[] ev_type_unofficial_btn = new NButton[1];
-    final Combo[] ev_type_type_cmb = new Combo[1];
-    final NButton[] ev_type_update_btn = new NButton[1];
-    final Text[] ev_type_update_txt  = new Text[1];
-    final Combo[] ev_license_cmb = new Combo[1];
-    final Text[] ev_help_txt = new Text[1];
-    final Combo[] ev_bfcHeader_cmb = new Combo[1];
-    final Combo[] ev_category_cmb = new Combo[1];
-    final Text[] ev_keywords_txt = new Text[1];
-    final Text[] ev_cmdline_txt = new Text[1];
-    final Text[] ev_history11_txt = new Text[1];
-    final Text[] ev_history12_txt = new Text[1];
-    final Text[] ev_history13_txt = new Text[1];
-    final Text[] ev_history21_txt = new Text[1];
-    final Text[] ev_history22_txt = new Text[1];
-    final Text[] ev_history23_txt = new Text[1];
-    final NButton[] ev_comment_btn = new NButton[1];
-    final Text[] ev_comment_txt  = new Text[1];
-    final Combo[] ev_bfc_cmb = new Combo[1];
-    final Combo[] ev_texmapPlanar_cmb = new Combo[1];
-    final Text[] ev_texmapPlanar1_txt  = new Text[1];
-    final Text[] ev_texmapPlanar2_txt  = new Text[1];
-    final Text[] ev_texmapPlanar3_txt  = new Text[1];
-    final Text[] ev_texmapPlanar4_txt  = new Text[1];
-    final Text[] ev_texmapPlanar5_txt  = new Text[1];
-    final Text[] ev_texmapPlanar6_txt  = new Text[1];
-    final Text[] ev_texmapPlanar7_txt  = new Text[1];
-    final Text[] ev_texmapPlanar8_txt  = new Text[1];
-    final Text[] ev_texmapPlanar9_txt  = new Text[1];
-    final Text[] ev_texmapPlanar10_txt  = new Text[1];
-    final NButton[] ev_texmapPlanar_btn = new NButton[1];
-    final Combo[] ev_texmapCyli_cmb = new Combo[1];
-    final Text[] ev_texmapCyli1_txt  = new Text[1];
-    final Text[] ev_texmapCyli2_txt  = new Text[1];
-    final Text[] ev_texmapCyli3_txt  = new Text[1];
-    final Text[] ev_texmapCyli4_txt  = new Text[1];
-    final Text[] ev_texmapCyli5_txt  = new Text[1];
-    final Text[] ev_texmapCyli6_txt  = new Text[1];
-    final Text[] ev_texmapCyli7_txt  = new Text[1];
-    final Text[] ev_texmapCyli8_txt  = new Text[1];
-    final Text[] ev_texmapCyli9_txt  = new Text[1];
-    final Text[] ev_texmapCyli10_txt  = new Text[1];
-    final Text[] ev_texmapCyli11_txt  = new Text[1];
-    final NButton[] ev_texmapCyli_btn = new NButton[1];
-    final Combo[] ev_texmapSphere_cmb = new Combo[1];
-    final Text[] ev_texmapSphere1_txt  = new Text[1];
-    final Text[] ev_texmapSphere2_txt  = new Text[1];
-    final Text[] ev_texmapSphere3_txt  = new Text[1];
-    final Text[] ev_texmapSphere4_txt  = new Text[1];
-    final Text[] ev_texmapSphere5_txt  = new Text[1];
-    final Text[] ev_texmapSphere6_txt  = new Text[1];
-    final Text[] ev_texmapSphere7_txt  = new Text[1];
-    final Text[] ev_texmapSphere8_txt  = new Text[1];
-    final Text[] ev_texmapSphere9_txt  = new Text[1];
-    final Text[] ev_texmapSphere10_txt  = new Text[1];
-    final Text[] ev_texmapSphere11_txt  = new Text[1];
-    final Text[] ev_texmapSphere12_txt  = new Text[1];
-    final NButton[] ev_texmapSphere_btn = new NButton[1];
-    final NButton[] ev_texmapFallback_btn = new NButton[1];
-    final Text[] ev_texmapMeta_txt  = new Text[1];
-    final NButton[] ev_texmapEnd_btn = new NButton[1];
-    final Text[] ev_todo_txt  = new Text[1];
-    final Text[] ev_vertex1_txt  = new Text[1];
-    final Text[] ev_vertex2_txt  = new Text[1];
-    final Text[] ev_vertex3_txt  = new Text[1];
-    final Combo[] ev_csgAction_cmb = new Combo[1];
-    final Text[] ev_csgAction1_txt  = new Text[1];
-    final Text[] ev_csgAction2_txt  = new Text[1];
-    final Text[] ev_csgAction3_txt  = new Text[1];
-    final Combo[] ev_csgBody_cmb = new Combo[1];
-    final Text[] ev_csgBody1_txt  = new Text[1];
-    final Text[] ev_csgBody2_txt  = new Text[1];
-    final Text[] ev_csgBody3_txt  = new Text[1];
-    final Text[] ev_csgBody4_txt  = new Text[1];
-    final Text[] ev_csgBody5_txt  = new Text[1];
-    final Text[] ev_csgBody6_txt  = new Text[1];
-    final Text[] ev_csgBody7_txt  = new Text[1];
-    final Text[] ev_csgBody8_txt  = new Text[1];
-    final Text[] ev_csgBody9_txt  = new Text[1];
-    final Text[] ev_csgBody10_txt  = new Text[1];
-    final Text[] ev_csgBody11_txt  = new Text[1];
-    final Text[] ev_csgBody12_txt  = new Text[1];
-    final Text[] ev_csgBody13_txt  = new Text[1];
-    final Text[] ev_csgBody14_txt  = new Text[1];
-    final Text[] ev_csgTrans1_txt  = new Text[1];
-    final Text[] ev_csgTrans2_txt  = new Text[1];
-    final Text[] ev_csgTrans3_txt  = new Text[1];
-    final Text[] ev_csgTrans4_txt  = new Text[1];
-    final Text[] ev_csgTrans5_txt  = new Text[1];
-    final Text[] ev_csgTrans6_txt  = new Text[1];
-    final Text[] ev_csgTrans7_txt  = new Text[1];
-    final Text[] ev_csgTrans8_txt  = new Text[1];
-    final Text[] ev_csgTrans9_txt  = new Text[1];
-    final Text[] ev_csgTrans10_txt  = new Text[1];
-    final Text[] ev_csgTrans11_txt  = new Text[1];
-    final Text[] ev_csgTrans12_txt  = new Text[1];
-    final Text[] ev_csgTrans13_txt  = new Text[1];
-    final Text[] ev_csgTrans14_txt  = new Text[1];
-    final Text[] ev_csgTrans15_txt  = new Text[1];
-    final Text[] ev_csgEx1_txt = new Text[1];
-    final Text[] ev_csgEx2_txt = new Text[1];
-    final Text[] ev_csgEx3_txt = new Text[1];
-    final Text[] ev_csgEx4_txt = new Text[1];
-    final Text[] ev_csgEx5_txt = new Text[1];
-    final Text[] ev_csgEx6_txt = new Text[1];
-    final Text[] ev_csgEx7_txt = new Text[1];
-    final Text[] ev_csgCompile_txt  = new Text[1];
-    final Text[] ev_csgQuality_txt  = new Text[1];
-    final Text[] ev_csgEpsilon_txt  = new Text[1];
-    final Text[] ev_csgTJunctionEpsilon_txt  = new Text[1];
-    final Text[] ev_csgEdgeCollapseEpsilon_txt  = new Text[1];
-    final NButton[] ev_csgDontOptimize_btn = new NButton[1];
-    final Text[] ev_png1_txt  = new Text[1];
-    final Text[] ev_png2_txt  = new Text[1];
-    final Text[] ev_png3_txt  = new Text[1];
-    final Text[] ev_png4_txt  = new Text[1];
-    final Text[] ev_png5_txt  = new Text[1];
-    final Text[] ev_png6_txt  = new Text[1];
-    final Text[] ev_png7_txt  = new Text[1];
-    final Text[] ev_png8_txt  = new Text[1];
-    final Text[] ev_png9_txt  = new Text[1];
-    final NButton[] ev_png_btn = new NButton[1];
+    final Text[] evDescriptionTxtPtr = new Text[1];
+    final NButton[] evDescriptionBtnPtr = new NButton[1];
+    final Text[] evNameTxtPtr = new Text[1];
+    final Text[] evAuthorRealNameTxtPtr = new Text[1];
+    final Text[] evAuthorUserNameTxtPtr = new Text[1];
+    final NButton[] evTypeUnofficialBtnPtr = new NButton[1];
+    final Combo[] evTypeTypeCmbPtr = new Combo[1];
+    final NButton[] evTypeUpdateBtnPtr = new NButton[1];
+    final Text[] evTypeUpdateTxtPtr = new Text[1];
+    final Combo[] evLicenseCmbPtr = new Combo[1];
+    final Text[] evHelpTxtPtr = new Text[1];
+    final Combo[] evBfcHeaderCmbPtr = new Combo[1];
+    final Combo[] evCategoryCmbPtr = new Combo[1];
+    final Text[] evKeywordsTxtPtr = new Text[1];
+    final Text[] evCmdlineTxtPtr = new Text[1];
+    final Text[] evHistory11TxtPtr = new Text[1];
+    final Text[] evHistory12TxtPtr = new Text[1];
+    final Text[] evHistory13TxtPtr = new Text[1];
+    final Text[] evHistory21TxtPtr = new Text[1];
+    final Text[] evHistory22TxtPtr = new Text[1];
+    final Text[] evHistory23TxtPtr = new Text[1];
+    final NButton[] evCommentBtnPtr = new NButton[1];
+    final Text[] evCommentTxtPtr = new Text[1];
+    final Combo[] evBfcCmbPtr = new Combo[1];
+    final Combo[] evTexmapPlanarCmbPtr = new Combo[1];
+    final Text[] evTexmapPlanar1TxtPtr = new Text[1];
+    final Text[] evTexmapPlanar2TxtPtr = new Text[1];
+    final Text[] evTexmapPlanar3TxtPtr = new Text[1];
+    final Text[] evTexmapPlanar4TxtPtr = new Text[1];
+    final Text[] evTexmapPlanar5TxtPtr = new Text[1];
+    final Text[] evTexmapPlanar6TxtPtr = new Text[1];
+    final Text[] evTexmapPlanar7TxtPtr = new Text[1];
+    final Text[] evTexmapPlanar8TxtPtr = new Text[1];
+    final Text[] evTexmapPlanar9TxtPtr = new Text[1];
+    final Text[] evTexmapPlanar10TxtPtr = new Text[1];
+    final NButton[] evTexmapPlanarBtnPtr = new NButton[1];
+    final Combo[] evTexmapCyliCmbPtr = new Combo[1];
+    final Text[] evTexmapCyli1TxtPtr = new Text[1];
+    final Text[] evTexmapCyli2TxtPtr = new Text[1];
+    final Text[] evTexmapCyli3TxtPtr = new Text[1];
+    final Text[] evTexmapCyli4TxtPtr = new Text[1];
+    final Text[] evTexmapCyli5TxtPtr = new Text[1];
+    final Text[] evTexmapCyli6TxtPtr = new Text[1];
+    final Text[] evTexmapCyli7TxtPtr = new Text[1];
+    final Text[] evTexmapCyli8TxtPtr = new Text[1];
+    final Text[] evTexmapCyli9TxtPtr = new Text[1];
+    final Text[] evTexmapCyli10TxtPtr = new Text[1];
+    final Text[] evTexmapCyli11TxtPtr = new Text[1];
+    final NButton[] evTexmapCyliBtnPtr = new NButton[1];
+    final Combo[] evTexmapSphereCmbPtr = new Combo[1];
+    final Text[] evTexmapSphere1TxtPtr = new Text[1];
+    final Text[] evTexmapSphere2TxtPtr = new Text[1];
+    final Text[] evTexmapSphere3TxtPtr = new Text[1];
+    final Text[] evTexmapSphere4TxtPtr = new Text[1];
+    final Text[] evTexmapSphere5TxtPtr = new Text[1];
+    final Text[] evTexmapSphere6TxtPtr = new Text[1];
+    final Text[] evTexmapSphere7TxtPtr = new Text[1];
+    final Text[] evTexmapSphere8TxtPtr = new Text[1];
+    final Text[] evTexmapSphere9TxtPtr = new Text[1];
+    final Text[] evTexmapSphere10TxtPtr = new Text[1];
+    final Text[] evTexmapSphere11TxtPtr = new Text[1];
+    final Text[] evTexmapSphere12TxtPtr = new Text[1];
+    final NButton[] evTexmapSphereBtnPtr = new NButton[1];
+    final NButton[] evTexmapFallbackBtnPtr = new NButton[1];
+    final Text[] evTexmapMetaTxtPtr = new Text[1];
+    final NButton[] evTexmapEndBtnPtr = new NButton[1];
+    final Text[] evTodoTxtPtr = new Text[1];
+    final Text[] evVertex1TxtPtr = new Text[1];
+    final Text[] evVertex2TxtPtr = new Text[1];
+    final Text[] evVertex3TxtPtr = new Text[1];
+    final Combo[] evCsgActionCmbPtr = new Combo[1];
+    final Text[] evCsgAction1TxtPtr = new Text[1];
+    final Text[] evCsgAction2TxtPtr = new Text[1];
+    final Text[] evCsgAction3TxtPtr = new Text[1];
+    final Combo[] evCsgBodyCmbPtr = new Combo[1];
+    final Text[] evCsgBody1TxtPtr = new Text[1];
+    final Text[] evCsgBody2TxtPtr = new Text[1];
+    final Text[] evCsgBody3TxtPtr = new Text[1];
+    final Text[] evCsgBody4TxtPtr = new Text[1];
+    final Text[] evCsgBody5TxtPtr = new Text[1];
+    final Text[] evCsgBody6TxtPtr = new Text[1];
+    final Text[] evCsgBody7TxtPtr = new Text[1];
+    final Text[] evCsgBody8TxtPtr = new Text[1];
+    final Text[] evCsgBody9TxtPtr = new Text[1];
+    final Text[] evCsgBody10TxtPtr = new Text[1];
+    final Text[] evCsgBody11TxtPtr = new Text[1];
+    final Text[] evCsgBody12TxtPtr = new Text[1];
+    final Text[] evCsgBody13TxtPtr = new Text[1];
+    final Text[] evCsgBody14TxtPtr = new Text[1];
+    final Text[] evCsgTrans1TxtPtr = new Text[1];
+    final Text[] evCsgTrans2TxtPtr = new Text[1];
+    final Text[] evCsgTrans3TxtPtr = new Text[1];
+    final Text[] evCsgTrans4TxtPtr = new Text[1];
+    final Text[] evCsgTrans5TxtPtr = new Text[1];
+    final Text[] evCsgTrans6TxtPtr = new Text[1];
+    final Text[] evCsgTrans7TxtPtr = new Text[1];
+    final Text[] evCsgTrans8TxtPtr = new Text[1];
+    final Text[] evCsgTrans9TxtPtr = new Text[1];
+    final Text[] evCsgTrans10TxtPtr = new Text[1];
+    final Text[] evCsgTrans11TxtPtr = new Text[1];
+    final Text[] evCsgTrans12TxtPtr = new Text[1];
+    final Text[] evCsgTrans13TxtPtr = new Text[1];
+    final Text[] evCsgTrans14TxtPtr = new Text[1];
+    final Text[] evCsgTrans15TxtPtr = new Text[1];
+    final Text[] evCsgEx1TxtPtr = new Text[1];
+    final Text[] evCsgEx2TxtPtr = new Text[1];
+    final Text[] evCsgEx3TxtPtr = new Text[1];
+    final Text[] evCsgEx4TxtPtr = new Text[1];
+    final Text[] evCsgEx5TxtPtr = new Text[1];
+    final Text[] evCsgEx6TxtPtr = new Text[1];
+    final Text[] evCsgEx7TxtPtr = new Text[1];
+    final Text[] evCsgCompileTxtPtr = new Text[1];
+    final Text[] evCsgQualityTxtPtr = new Text[1];
+    final Text[] evCsgEpsilonTxtPtr = new Text[1];
+    final Text[] evCsgTJunctionEpsilonTxtPtr = new Text[1];
+    final Text[] evCsgEdgeCollapseEpsilonTxtPtr = new Text[1];
+    final NButton[] evCsgDontOptimizeBtnPtr = new NButton[1];
+    final Text[] evPng1TxtPtr = new Text[1];
+    final Text[] evPng2TxtPtr = new Text[1];
+    final Text[] evPng3TxtPtr = new Text[1];
+    final Text[] evPng4TxtPtr = new Text[1];
+    final Text[] evPng5TxtPtr = new Text[1];
+    final Text[] evPng6TxtPtr = new Text[1];
+    final Text[] evPng7TxtPtr = new Text[1];
+    final Text[] evPng8TxtPtr = new Text[1];
+    final Text[] evPng9TxtPtr = new Text[1];
+    final NButton[] evPngBtnPtr = new NButton[1];
 
-    final Label[] lbl_lineToInsert  = new Label[1];
+    final Label[] lblLineToInsertPtr  = new Label[1];
 
     EditorMetaDesign() {
         super(null);
@@ -252,11 +252,11 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtDescription = new Text(cmpDescription, SWT.SEARCH);
                         txtDescription.setMessage(I18n.META_DESCRIPTION);
-                        ev_description_txt[0] = txtDescription;
+                        evDescriptionTxtPtr[0] = txtDescription;
 
                         NButton btnNeedsWork = new NButton(cmpDescription, SWT.TOGGLE);
                         btnNeedsWork.setText("(Needs Work)"); //$NON-NLS-1$
-                        ev_description_btn[0] = btnNeedsWork;
+                        evDescriptionBtnPtr[0] = btnNeedsWork;
                     }
 
                     {
@@ -268,7 +268,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtName = new Text(cmpName, SWT.SEARCH);
                         txtName.setMessage(I18n.META_FILENAME);
-                        ev_name_txt[0] = txtName;
+                        evNameTxtPtr[0] = txtName;
                     }
 
                     {
@@ -280,7 +280,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtRealName = new Text(cmpAuthor, SWT.SEARCH);
                         txtRealName.setMessage(I18n.META_AUTHOR);
-                        ev_author_realName_txt[0] = txtRealName;
+                        evAuthorRealNameTxtPtr[0] = txtRealName;
                         if (userSettings.getRealUserName() != null) {
                             txtRealName.setText(userSettings.getRealUserName());
                         }
@@ -290,7 +290,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtUserName = new Text(cmpAuthor, SWT.SEARCH);
                         txtUserName.setMessage(I18n.META_USERNAME);
-                        ev_author_userName_txt[0] = txtUserName;
+                        evAuthorUserNameTxtPtr[0] = txtUserName;
 
                         if (userSettings.getLdrawUserName() != null) {
                             txtUserName.setText(userSettings.getLdrawUserName());
@@ -309,23 +309,23 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         NButton btnUnofficial = new NButton(cmpType, SWT.TOGGLE);
                         btnUnofficial.setText("Unofficial"); //$NON-NLS-1$
-                        ev_type_unofficial_btn[0] = btnUnofficial;
+                        evTypeUnofficialBtnPtr[0] = btnUnofficial;
 
                         Combo cmbType = new Combo(cmpType, SWT.NONE);
                         cmbType.setItems(new String[] { "Part", "Subpart", "Primitive", "8_Primitive", "48_Primitive", "Shortcut", "Part Alias", "Part Physical_Colour",  "Part Physical_Colour Alias", "Part Flexible_Section", "Shortcut Alias", "Shortcut Physical_Colour",  "Shortcut Physical_Colour Alias"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
                         cmbType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbType.setText("Part"); //$NON-NLS-1$
                         cmbType.select(0);
-                        ev_type_type_cmb[0] = cmbType;
+                        evTypeTypeCmbPtr[0] = cmbType;
 
                         NButton btnUpdate = new NButton(cmpType, SWT.TOGGLE);
                         btnUpdate.setText("UPDATE"); //$NON-NLS-1$
-                        ev_type_update_btn[0] = btnUpdate;
+                        evTypeUpdateBtnPtr[0] = btnUpdate;
 
                         Text txtUpdate = new Text(cmpType, SWT.SEARCH);
                         txtUpdate.setMessage(I18n.META_YEAR_RELEASE);
                         txtUpdate.setEnabled(false);
-                        ev_type_update_txt[0] = txtUpdate;
+                        evTypeUpdateTxtPtr[0] = txtUpdate;
                     }
 
                     {
@@ -340,7 +340,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbLicense.setText(userSettings.getLicense() != null ? userSettings.getLicense() : "Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
                         cmbLicense.select(0);
-                        ev_license_cmb[0] = cmbLicense;
+                        evLicenseCmbPtr[0] = cmbLicense;
                     }
 
                     {
@@ -352,7 +352,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtHelp = new Text(cmpHelp, SWT.SEARCH);
                         txtHelp.setMessage(I18n.META_HELP);
-                        ev_help_txt[0] = txtHelp;
+                        evHelpTxtPtr[0] = txtHelp;
                     }
 
                     {
@@ -367,7 +367,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         cmbBfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbBfc.setText("NOCERTIFY"); //$NON-NLS-1$
                         cmbBfc.select(0);
-                        ev_bfcHeader_cmb[0] = cmbBfc;
+                        evBfcHeaderCmbPtr[0] = cmbBfc;
                     }
 
                     {
@@ -378,7 +378,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblCategory.setText("0 !CATEGORY "); //$NON-NLS-1$
 
                         Combo cmbCategory = new Combo(cmpCategory, SWT.NONE);
-                        ev_category_cmb[0] = cmbCategory;
+                        evCategoryCmbPtr[0] = cmbCategory;
                         File categoryFile = new File(AppData.getPath() + "categories.txt"); //$NON-NLS-1$
                         if (!categoryFile.exists() || !categoryFile.isFile()) {
                             categoryFile = new File("categories.txt"); //$NON-NLS-1$
@@ -396,7 +396,7 @@ class EditorMetaDesign extends ApplicationWindow {
                                         categories.add(line);
                                     }
                                 }
-                                ev_category_cmb[0].setItems(categories.toArray(new String[categories.size()]));
+                                evCategoryCmbPtr[0].setItems(categories.toArray(new String[categories.size()]));
                             } catch (LDParsingException e) {
                                 setDefaultCategories();
                             } catch (FileNotFoundException e) {
@@ -428,7 +428,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtKeywords = new Text(cmpKeywords, SWT.SEARCH);
                         txtKeywords.setMessage(I18n.META_KEYWORDS_1);
-                        ev_keywords_txt[0] = txtKeywords;
+                        evKeywordsTxtPtr[0] = txtKeywords;
 
                         Label lblKeywords2 = new Label(cmpKeywords, SWT.NONE);
                         lblKeywords2.setText(I18n.META_KEYWORDS_2);
@@ -443,7 +443,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtCmdline = new Text(cmpCmdline, SWT.SEARCH);
                         txtCmdline.setMessage(I18n.META_COMMAND_LINE);
-                        ev_cmdline_txt[0] = txtCmdline;
+                        evCmdlineTxtPtr[0] = txtCmdline;
                     }
 
                     {
@@ -455,21 +455,21 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtHistory11 = new Text(cmpHistory1, SWT.SEARCH);
                         txtHistory11.setMessage(I18n.META_HISTORY_1);
-                        ev_history11_txt[0] = txtHistory11;
+                        evHistory11TxtPtr[0] = txtHistory11;
 
                         Label lblHistory12 = new Label(cmpHistory1, SWT.NONE);
                         lblHistory12.setText(" ["); //$NON-NLS-1$
 
                         Text txtHistory12 = new Text(cmpHistory1, SWT.SEARCH);
                         txtHistory12.setMessage(I18n.META_HISTORY_2);
-                        ev_history12_txt[0] = txtHistory12;
+                        evHistory12TxtPtr[0] = txtHistory12;
 
                         Label lblHistory13 = new Label(cmpHistory1, SWT.NONE);
                         lblHistory13.setText("] "); //$NON-NLS-1$
 
                         Text txtHistory13 = new Text(cmpHistory1, SWT.SEARCH);
                         txtHistory13.setMessage(I18n.META_HISTORY_4);
-                        ev_history13_txt[0] = txtHistory13;
+                        evHistory13TxtPtr[0] = txtHistory13;
                     }
 
                     {
@@ -481,21 +481,21 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         Text txtHistory21 = new Text(cmpHistory2, SWT.SEARCH);
                         txtHistory21.setMessage(I18n.META_HISTORY_1);
-                        ev_history21_txt[0] = txtHistory21;
+                        evHistory21TxtPtr[0] = txtHistory21;
 
                         Label lblHistory22 = new Label(cmpHistory2, SWT.NONE);
                         lblHistory22.setText(" {"); //$NON-NLS-1$
 
                         Text txtHistory22 = new Text(cmpHistory2, SWT.SEARCH);
                         txtHistory22.setMessage(I18n.META_HISTORY_3);
-                        ev_history22_txt[0] = txtHistory22;
+                        evHistory22TxtPtr[0] = txtHistory22;
 
                         Label lblHistory23 = new Label(cmpHistory2, SWT.NONE);
                         lblHistory23.setText("} "); //$NON-NLS-1$
 
                         Text txtHistory23 = new Text(cmpHistory2, SWT.SEARCH);
                         txtHistory23.setMessage(I18n.META_HISTORY_4);
-                        ev_history23_txt[0] = txtHistory23;
+                        evHistory23TxtPtr[0] = txtHistory23;
                     }
 
                     {
@@ -507,11 +507,11 @@ class EditorMetaDesign extends ApplicationWindow {
 
                         NButton btnNeedsWork2 = new NButton(cmpComment, SWT.TOGGLE);
                         btnNeedsWork2.setText("Needs work:"); //$NON-NLS-1$
-                        ev_comment_btn[0] = btnNeedsWork2;
+                        evCommentBtnPtr[0] = btnNeedsWork2;
 
                         Text txtComment = new Text(cmpComment, SWT.SEARCH);
                         txtComment.setMessage(I18n.META_COMMENT);
-                        ev_comment_txt[0] = txtComment;
+                        evCommentTxtPtr[0] = txtComment;
                     }
                 }
             }
@@ -551,7 +551,7 @@ class EditorMetaDesign extends ApplicationWindow {
                     cmbBfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                     cmbBfc.setText("INVERTNEXT"); //$NON-NLS-1$
                     cmbBfc.select(0);
-                    ev_bfc_cmb[0] = cmbBfc;
+                    evBfcCmbPtr[0] = cmbBfc;
                 }
             }
 
@@ -590,64 +590,64 @@ class EditorMetaDesign extends ApplicationWindow {
                         cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbTexmap.setText("START"); //$NON-NLS-1$
                         cmbTexmap.select(0);
-                        ev_texmapPlanar_cmb[0] = cmbTexmap;
+                        evTexmapPlanarCmbPtr[0] = cmbTexmap;
 
                         Label lblPlanar = new Label(cmpTexmap, SWT.NONE);
                         lblPlanar.setText(" PLANAR "); //$NON-NLS-1$
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
                             txtPlanar.setMessage(I18n.META_TEXTURE_X1);
-                            ev_texmapPlanar1_txt[0] = txtPlanar;
+                            evTexmapPlanar1TxtPtr[0] = txtPlanar;
                         }
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
                             txtPlanar.setMessage(I18n.META_TEXTURE_Y1);
-                            ev_texmapPlanar2_txt[0] = txtPlanar;
+                            evTexmapPlanar2TxtPtr[0] = txtPlanar;
                         }
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
                             txtPlanar.setMessage(I18n.META_TEXTURE_Z1);
-                            ev_texmapPlanar3_txt[0] = txtPlanar;
+                            evTexmapPlanar3TxtPtr[0] = txtPlanar;
                         }
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
                             txtPlanar.setMessage(I18n.META_TEXTURE_X2);
-                            ev_texmapPlanar4_txt[0] = txtPlanar;
+                            evTexmapPlanar4TxtPtr[0] = txtPlanar;
                         }
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
                             txtPlanar.setMessage(I18n.META_TEXTURE_Y2);
-                            ev_texmapPlanar5_txt[0] = txtPlanar;
+                            evTexmapPlanar5TxtPtr[0] = txtPlanar;
                         }
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
                             txtPlanar.setMessage(I18n.META_TEXTURE_Z2);
-                            ev_texmapPlanar6_txt[0] = txtPlanar;
+                            evTexmapPlanar6TxtPtr[0] = txtPlanar;
                         }
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
                             txtPlanar.setMessage(I18n.META_TEXTURE_X3);
-                            ev_texmapPlanar7_txt[0] = txtPlanar;
+                            evTexmapPlanar7TxtPtr[0] = txtPlanar;
                         }
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
                             txtPlanar.setMessage(I18n.META_TEXTURE_Y3);
-                            ev_texmapPlanar8_txt[0] = txtPlanar;
+                            evTexmapPlanar8TxtPtr[0] = txtPlanar;
                         }
                         {
                             Text txtPlanar = new Text(cmpTexmap, SWT.SEARCH);
                             txtPlanar.setMessage(I18n.META_TEXTURE_Z3);
-                            ev_texmapPlanar9_txt[0] = txtPlanar;
+                            evTexmapPlanar9TxtPtr[0] = txtPlanar;
                         }
                         {
                             Text txtPng = new Text(cmpTexmap, SWT.SEARCH);
                             txtPng.setMessage(I18n.META_TEXTURE_PNG);
-                            ev_texmapPlanar10_txt[0] = txtPng;
+                            evTexmapPlanar10TxtPtr[0] = txtPng;
                         }
                         {
                             NButton btnBrowse = new NButton(cmpTexmap, SWT.NONE);
                             btnBrowse.setText(I18n.DIALOG_BROWSE);
-                            ev_texmapPlanar_btn[0] = btnBrowse;
+                            evTexmapPlanarBtnPtr[0] = btnBrowse;
                         }
                     }
                     {
@@ -662,7 +662,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbTexmap.setText("START"); //$NON-NLS-1$
                         cmbTexmap.select(0);
-                        ev_texmapCyli_cmb[0] = cmbTexmap;
+                        evTexmapCyliCmbPtr[0] = cmbTexmap;
 
                         Label lblCylindrical = new Label(cmpTexmap, SWT.NONE);
                         lblCylindrical.setText(" CYLINDRICAL "); //$NON-NLS-1$
@@ -670,70 +670,70 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_X1);
                             txtCylindrical.setToolTipText(I18n.META_CYLINDER_BOTTOM_CENTER);
-                            ev_texmapCyli1_txt[0] = txtCylindrical;
+                            evTexmapCyli1TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_Y1);
                             txtCylindrical.setToolTipText(I18n.META_CYLINDER_BOTTOM_CENTER);
-                            ev_texmapCyli2_txt[0] = txtCylindrical;
+                            evTexmapCyli2TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_Z1);
                             txtCylindrical.setToolTipText(I18n.META_CYLINDER_BOTTOM_CENTER);
-                            ev_texmapCyli3_txt[0] = txtCylindrical;
+                            evTexmapCyli3TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_X2);
                             txtCylindrical.setToolTipText(I18n.META_CYLINDER_TOP_CENTER);
-                            ev_texmapCyli4_txt[0] = txtCylindrical;
+                            evTexmapCyli4TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_Y2);
                             txtCylindrical.setToolTipText(I18n.META_CYLINDER_TOP_CENTER);
-                            ev_texmapCyli5_txt[0] = txtCylindrical;
+                            evTexmapCyli5TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_Z2);
                             txtCylindrical.setToolTipText(I18n.META_CYLINDER_TOP_CENTER);
-                            ev_texmapCyli6_txt[0] = txtCylindrical;
+                            evTexmapCyli6TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_X3);
                             txtCylindrical.setToolTipText(I18n.META_TEXTURE_BOTTOM_CENTER);
-                            ev_texmapCyli7_txt[0] = txtCylindrical;
+                            evTexmapCyli7TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_Y3);
                             txtCylindrical.setToolTipText(I18n.META_TEXTURE_BOTTOM_CENTER);
-                            ev_texmapCyli8_txt[0] = txtCylindrical;
+                            evTexmapCyli8TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_Z3);
                             txtCylindrical.setToolTipText(I18n.META_TEXTURE_BOTTOM_CENTER);
-                            ev_texmapCyli9_txt[0] = txtCylindrical;
+                            evTexmapCyli9TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtCylindrical = new Text(cmpTexmap, SWT.SEARCH);
                             txtCylindrical.setMessage(I18n.META_TEXTURE_ANGLE_1);
-                            ev_texmapCyli10_txt[0] = txtCylindrical;
+                            evTexmapCyli10TxtPtr[0] = txtCylindrical;
                         }
                         {
                             Text txtPng = new Text(cmpTexmap, SWT.SEARCH);
                             txtPng.setMessage(I18n.META_TEXTURE_PNG);
-                            ev_texmapCyli11_txt[0] = txtPng;
+                            evTexmapCyli11TxtPtr[0] = txtPng;
                         }
                         {
                             NButton btnBrowse = new NButton(cmpTexmap, SWT.NONE);
                             btnBrowse.setText(I18n.DIALOG_BROWSE);
-                            ev_texmapCyli_btn[0] = btnBrowse;
+                            evTexmapCyliBtnPtr[0] = btnBrowse;
                         }
                     }
                     {
@@ -748,7 +748,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbTexmap.setText("START"); //$NON-NLS-1$
                         cmbTexmap.select(0);
-                        ev_texmapSphere_cmb[0] = cmbTexmap;
+                        evTexmapSphereCmbPtr[0] = cmbTexmap;
 
                         Label lblSpherical = new Label(cmpTexmap, SWT.NONE);
                         lblSpherical.setText(" SPHERICAL "); //$NON-NLS-1$
@@ -756,81 +756,81 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_X1);
                             txtSpherical.setToolTipText(I18n.META_TEXTURE_SPHERE_CENTER);
-                            ev_texmapSphere1_txt[0] = txtSpherical;
+                            evTexmapSphere1TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_Y1);
                             txtSpherical.setToolTipText(I18n.META_TEXTURE_SPHERE_CENTER);
-                            ev_texmapSphere2_txt[0] = txtSpherical;
+                            evTexmapSphere2TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_Z1);
                             txtSpherical.setToolTipText(I18n.META_TEXTURE_SPHERE_CENTER);
-                            ev_texmapSphere3_txt[0] = txtSpherical;
+                            evTexmapSphere3TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_X2);
                             txtSpherical.setToolTipText(I18n.META_TEXTURE_CENTER);
-                            ev_texmapSphere4_txt[0] = txtSpherical;
+                            evTexmapSphere4TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_Y2);
                             txtSpherical.setToolTipText(I18n.META_TEXTURE_CENTER);
-                            ev_texmapSphere5_txt[0] = txtSpherical;
+                            evTexmapSphere5TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_Z2);
                             txtSpherical.setToolTipText(I18n.META_TEXTURE_CENTER);
-                            ev_texmapSphere6_txt[0] = txtSpherical;
+                            evTexmapSphere6TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_X3);
                             txtSpherical.setToolTipText(I18n.META_TEXTURE_TOP_CENTER);
-                            ev_texmapSphere7_txt[0] = txtSpherical;
+                            evTexmapSphere7TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_Y3);
                             txtSpherical.setToolTipText(I18n.META_TEXTURE_TOP_CENTER);
-                            ev_texmapSphere8_txt[0] = txtSpherical;
+                            evTexmapSphere8TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_Z3);
                             txtSpherical.setToolTipText(I18n.META_TEXTURE_TOP_CENTER);
-                            ev_texmapSphere9_txt[0] = txtSpherical;
+                            evTexmapSphere9TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_ANGLE_1);
-                            ev_texmapSphere10_txt[0] = txtSpherical;
+                            evTexmapSphere10TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtSpherical = new Text(cmpTexmap, SWT.SEARCH);
                             txtSpherical.setMessage(I18n.META_TEXTURE_ANGLE_2);
-                            ev_texmapSphere11_txt[0] = txtSpherical;
+                            evTexmapSphere11TxtPtr[0] = txtSpherical;
                         }
                         {
                             Text txtPng = new Text(cmpTexmap, SWT.SEARCH);
                             txtPng.setMessage(I18n.META_TEXTURE_PNG);
-                            ev_texmapSphere12_txt[0] = txtPng;
+                            evTexmapSphere12TxtPtr[0] = txtPng;
                         }
                         {
                             NButton btnBrowse = new NButton(cmpTexmap, SWT.NONE);
                             btnBrowse.setText(I18n.DIALOG_BROWSE);
-                            ev_texmapSphere_btn[0] = btnBrowse;
+                            evTexmapSphereBtnPtr[0] = btnBrowse;
                         }
                     }
                     {
                         NButton btnTexmap = new NButton(grpMeta, SWT.NONE);
                         btnTexmap.setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
-                        ev_texmapFallback_btn[0] = btnTexmap;
+                        evTexmapFallbackBtnPtr[0] = btnTexmap;
                     }
                     {
                         Composite cmpTexmap = new Composite(grpMeta, SWT.NONE);
@@ -841,13 +841,13 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtMeta = new Text(cmpTexmap, SWT.SEARCH);
                             txtMeta.setMessage(I18n.META_TEXTURE_GEOM_1);
                             txtMeta.setToolTipText(I18n.META_TEXTURE_GEOM_2);
-                            ev_texmapMeta_txt[0] = txtMeta;
+                            evTexmapMetaTxtPtr[0] = txtMeta;
                         }
                     }
                     {
                         NButton btnTexmap = new NButton(grpMeta, SWT.NONE);
                         btnTexmap.setText("0 !TEXMAP END"); //$NON-NLS-1$
-                        ev_texmapEnd_btn[0] = btnTexmap;
+                        evTexmapEndBtnPtr[0] = btnTexmap;
                     }
                 }
             }
@@ -884,7 +884,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         {
                             Text txtTodo = new Text(cmpLpe, SWT.SEARCH);
                             txtTodo.setMessage(I18n.META_TODO);
-                            ev_todo_txt[0] = txtTodo;
+                            evTodoTxtPtr[0] = txtTodo;
                         }
                     }
 
@@ -897,19 +897,19 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtX = new Text(cmpLpe, SWT.SEARCH);
                             txtX.setMessage(I18n.META_VERTEX_X);
                             txtX.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_vertex1_txt[0] = txtX;
+                            evVertex1TxtPtr[0] = txtX;
                         }
                         {
                             Text txtY = new Text(cmpLpe, SWT.SEARCH);
                             txtY.setMessage(I18n.META_VERTEX_Y);
                             txtY.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_vertex2_txt[0] = txtY;
+                            evVertex2TxtPtr[0] = txtY;
                         }
                         {
                             Text txtZ = new Text(cmpLpe, SWT.SEARCH);
                             txtZ.setMessage(I18n.META_VERTEX_Z);
                             txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_vertex3_txt[0] = txtZ;
+                            evVertex3TxtPtr[0] = txtZ;
                         }
                     }
 
@@ -924,22 +924,22 @@ class EditorMetaDesign extends ApplicationWindow {
                             cmbCsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                             cmbCsg.setText("UNION "); //$NON-NLS-1$
                             cmbCsg.select(0);
-                            ev_csgAction_cmb[0] = cmbCsg;
+                            evCsgActionCmbPtr[0] = cmbCsg;
                         }
                         {
                             Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid1.setMessage(I18n.META_CSG_SOURCE_1);
-                            ev_csgAction1_txt[0] = txtCsgid1;
+                            evCsgAction1TxtPtr[0] = txtCsgid1;
                         }
                         {
                             Text txtCsgid2 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid2.setMessage(I18n.META_CSG_SOURCE_2);
-                            ev_csgAction2_txt[0] = txtCsgid2;
+                            evCsgAction2TxtPtr[0] = txtCsgid2;
                         }
                         {
                             Text txtCsgid3 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid3.setMessage(I18n.META_CSG_TARGET_1);
-                            ev_csgAction3_txt[0] = txtCsgid3;
+                            evCsgAction3TxtPtr[0] = txtCsgid3;
                         }
                     }
                     {
@@ -953,95 +953,95 @@ class EditorMetaDesign extends ApplicationWindow {
                             cmbCsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                             cmbCsg.setText("CUBOID "); //$NON-NLS-1$
                             cmbCsg.select(0);
-                            ev_csgBody_cmb[0] = cmbCsg;
+                            evCsgBodyCmbPtr[0] = cmbCsg;
                         }
                         {
                             Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid1.setMessage(I18n.META_CSG_UNIQUE);
                             txtCsgid1.setToolTipText(I18n.META_CSG_UNIQUE_HINT);
-                            ev_csgBody1_txt[0] = txtCsgid1;
+                            evCsgBody1TxtPtr[0] = txtCsgid1;
                         }
                         {
                             Text txtCsgid2 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid2.setMessage(I18n.META_COLOUR);
                             txtCsgid2.setToolTipText(I18n.META_COLOUR_HINT);
-                            ev_csgBody2_txt[0] = txtCsgid2;
+                            evCsgBody2TxtPtr[0] = txtCsgid2;
 
                         }
                         {
                             Text txtX = new Text(cmpLpe, SWT.SEARCH);
                             txtX.setMessage(I18n.META_VERTEX_X);
                             txtX.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgBody3_txt[0] = txtX;
+                            evCsgBody3TxtPtr[0] = txtX;
                         }
                         {
                             Text txtY = new Text(cmpLpe, SWT.SEARCH);
                             txtY.setMessage(I18n.META_VERTEX_Y);
                             txtY.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgBody4_txt[0] = txtY;
+                            evCsgBody4TxtPtr[0] = txtY;
                         }
                         {
                             Text txtZ = new Text(cmpLpe, SWT.SEARCH);
                             txtZ.setMessage(I18n.META_VERTEX_Z);
                             txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgBody5_txt[0] = txtZ;
+                            evCsgBody5TxtPtr[0] = txtZ;
                         }
 
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M00);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody6_txt[0] = txtM;
+                            evCsgBody6TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M01);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody7_txt[0] = txtM;
+                            evCsgBody7TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M02);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody8_txt[0] = txtM;
+                            evCsgBody8TxtPtr[0] = txtM;
                         }
 
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M10);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody9_txt[0] = txtM;
+                            evCsgBody9TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M11);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody10_txt[0] = txtM;
+                            evCsgBody10TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M12);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody11_txt[0] = txtM;
+                            evCsgBody11TxtPtr[0] = txtM;
                         }
 
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M20);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody12_txt[0] = txtM;
+                            evCsgBody12TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M21);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody13_txt[0] = txtM;
+                            evCsgBody13TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M22);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgBody14_txt[0] = txtM;
+                            evCsgBody14TxtPtr[0] = txtM;
                         }
                     }
                     {
@@ -1053,95 +1053,95 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid1.setMessage(I18n.META_CSG_SOURCE_1);
                             txtCsgid1.setToolTipText(I18n.META_CSG_UNIQUE_HINT);
-                            ev_csgTrans1_txt[0] = txtCsgid1;
+                            evCsgTrans1TxtPtr[0] = txtCsgid1;
                         }
                         {
                             Text txtCsgid2 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid2.setMessage(I18n.META_CSG_TARGET_1);
                             txtCsgid2.setToolTipText(I18n.META_CSG_UNIQUE_HINT);
-                            ev_csgTrans2_txt[0] = txtCsgid2;
+                            evCsgTrans2TxtPtr[0] = txtCsgid2;
 
                         }
                         {
                             Text txtCsgcol = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgcol.setMessage(I18n.META_COLOUR);
                             txtCsgcol.setToolTipText(I18n.META_COLOUR_HINT);
-                            ev_csgTrans3_txt[0] = txtCsgcol;
+                            evCsgTrans3TxtPtr[0] = txtCsgcol;
                         }
                         {
                             Text txtX = new Text(cmpLpe, SWT.SEARCH);
                             txtX.setMessage(I18n.META_VERTEX_X);
                             txtX.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgTrans4_txt[0] = txtX;
+                            evCsgTrans4TxtPtr[0] = txtX;
                         }
                         {
                             Text txtY = new Text(cmpLpe, SWT.SEARCH);
                             txtY.setMessage(I18n.META_VERTEX_Y);
                             txtY.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgTrans5_txt[0] = txtY;
+                            evCsgTrans5TxtPtr[0] = txtY;
                         }
                         {
                             Text txtZ = new Text(cmpLpe, SWT.SEARCH);
                             txtZ.setMessage(I18n.META_VERTEX_Z);
                             txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_csgTrans6_txt[0] = txtZ;
+                            evCsgTrans6TxtPtr[0] = txtZ;
                         }
 
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M00);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans7_txt[0] = txtM;
+                            evCsgTrans7TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M01);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans8_txt[0] = txtM;
+                            evCsgTrans8TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M02);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans9_txt[0] = txtM;
+                            evCsgTrans9TxtPtr[0] = txtM;
                         }
 
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M10);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans10_txt[0] = txtM;
+                            evCsgTrans10TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M11);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans11_txt[0] = txtM;
+                            evCsgTrans11TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M12);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans12_txt[0] = txtM;
+                            evCsgTrans12TxtPtr[0] = txtM;
                         }
 
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M20);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans13_txt[0] = txtM;
+                            evCsgTrans13TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M21);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans14_txt[0] = txtM;
+                            evCsgTrans14TxtPtr[0] = txtM;
                         }
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_M22);
                             txtM.setToolTipText(I18n.META_TRANS_MATRIX);
-                            ev_csgTrans15_txt[0] = txtM;
+                            evCsgTrans15TxtPtr[0] = txtM;
                         }
                     }
 
@@ -1154,46 +1154,46 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid1.setMessage(I18n.META_CSG_EXTRUDE_1_A);
                             txtCsgid1.setToolTipText(I18n.META_CSG_EXTRUDE_1_B);
-                            ev_csgEx1_txt[0] = txtCsgid1;
+                            evCsgEx1TxtPtr[0] = txtCsgid1;
                         }
                         {
                             Text txtCsgid2 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid2.setMessage(I18n.META_CSG_EXTRUDE_2_A);
                             txtCsgid2.setToolTipText(I18n.META_CSG_EXTRUDE_2_B);
-                            ev_csgEx2_txt[0] = txtCsgid2;
+                            evCsgEx2TxtPtr[0] = txtCsgid2;
 
                         }
                         {
                             Text txtCsgcol = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgcol.setMessage(I18n.META_CSG_EXTRUDE_3_A);
                             txtCsgcol.setToolTipText(I18n.META_CSG_EXTRUDE_3_B);
-                            ev_csgEx3_txt[0] = txtCsgcol;
+                            evCsgEx3TxtPtr[0] = txtCsgcol;
 
                         }
                         {
                             Text txtX = new Text(cmpLpe, SWT.SEARCH);
                             txtX.setMessage(I18n.META_CSG_EXTRUDE_4_A);
                             txtX.setToolTipText(I18n.META_CSG_EXTRUDE_4_B);
-                            ev_csgEx4_txt[0] = txtX;
+                            evCsgEx4TxtPtr[0] = txtX;
                         }
                         {
                             Text txtY = new Text(cmpLpe, SWT.SEARCH);
                             txtY.setMessage(I18n.META_CSG_EXTRUDE_5_A);
                             txtY.setToolTipText(I18n.META_CSG_EXTRUDE_5_B);
-                            ev_csgEx5_txt[0] = txtY;
+                            evCsgEx5TxtPtr[0] = txtY;
                         }
                         {
                             Text txtZ = new Text(cmpLpe, SWT.SEARCH);
                             txtZ.setMessage(I18n.META_CSG_EXTRUDE_6_A);
                             txtZ.setToolTipText(I18n.META_CSG_EXTRUDE_6_B);
-                            ev_csgEx6_txt[0] = txtZ;
+                            evCsgEx6TxtPtr[0] = txtZ;
                         }
 
                         {
                             Text txtM = new Text(cmpLpe, SWT.SEARCH);
                             txtM.setMessage(I18n.META_CSG_EXTRUDE_7_A);
                             txtM.setToolTipText(I18n.META_CSG_EXTRUDE_7_B);
-                            ev_csgEx7_txt[0] = txtM;
+                            evCsgEx7TxtPtr[0] = txtM;
                         }
                     }
 
@@ -1206,7 +1206,7 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtCsgid1 = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgid1.setMessage(I18n.META_CSG_SOURCE_3);
                             txtCsgid1.setToolTipText(I18n.META_CSG_COMPILE);
-                            ev_csgCompile_txt[0] = txtCsgid1;
+                            evCsgCompileTxtPtr[0] = txtCsgid1;
                         }
                     }
 
@@ -1218,7 +1218,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         {
                             Text txtCsgQuality = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgQuality.setMessage(I18n.META_QUALITY);
-                            ev_csgQuality_txt[0] = txtCsgQuality;
+                            evCsgQualityTxtPtr[0] = txtCsgQuality;
                         }
                     }
 
@@ -1231,7 +1231,7 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtCsgEpsilon = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgEpsilon.setMessage(I18n.META_CSG_EPSILON_1);
                             txtCsgEpsilon.setToolTipText(I18n.META_CSG_EPSILON_2);
-                            ev_csgEpsilon_txt[0] = txtCsgEpsilon;
+                            evCsgEpsilonTxtPtr[0] = txtCsgEpsilon;
                         }
                     }
 
@@ -1244,7 +1244,7 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtCsgTJunctionEpsilon = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgTJunctionEpsilon.setMessage(I18n.META_CSG_JUNCTION_EPSILON_1);
                             txtCsgTJunctionEpsilon.setToolTipText(I18n.META_CSG_JUNCTION_EPSILON_2);
-                            ev_csgTJunctionEpsilon_txt[0] = txtCsgTJunctionEpsilon;
+                            evCsgTJunctionEpsilonTxtPtr[0] = txtCsgTJunctionEpsilon;
                         }
                     }
 
@@ -1257,14 +1257,14 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtCsgEdgeCollapseEpsilon = new Text(cmpLpe, SWT.SEARCH);
                             txtCsgEdgeCollapseEpsilon.setMessage(I18n.META_CSG_COLLAPSE_1);
                             txtCsgEdgeCollapseEpsilon.setToolTipText(I18n.META_CSG_COLLAPSE_2);
-                            ev_csgEdgeCollapseEpsilon_txt[0] = txtCsgEdgeCollapseEpsilon;
+                            evCsgEdgeCollapseEpsilonTxtPtr[0] = txtCsgEdgeCollapseEpsilon;
                         }
                     }
 
                     {
                         NButton btnDontoptimize = new NButton(grpMeta, SWT.NONE);
                         btnDontoptimize.setText("0 !LPE CSG_DONT_OPTIMISE"); //$NON-NLS-1$
-                        ev_csgDontOptimize_btn[0] = btnDontoptimize;
+                        evCsgDontOptimizeBtnPtr[0] = btnDontoptimize;
                     }
 
                     {
@@ -1276,61 +1276,61 @@ class EditorMetaDesign extends ApplicationWindow {
                             Text txtX = new Text(cmpLpe, SWT.SEARCH);
                             txtX.setMessage(I18n.META_VERTEX_X);
                             txtX.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png1_txt[0] = txtX;
+                            evPng1TxtPtr[0] = txtX;
                         }
                         {
                             Text txtY = new Text(cmpLpe, SWT.SEARCH);
                             txtY.setMessage(I18n.META_VERTEX_Y);
                             txtY.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png2_txt[0] = txtY;
+                            evPng2TxtPtr[0] = txtY;
                         }
                         {
                             Text txtZ = new Text(cmpLpe, SWT.SEARCH);
                             txtZ.setMessage(I18n.META_VERTEX_Z);
                             txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png3_txt[0] = txtZ;
+                            evPng3TxtPtr[0] = txtZ;
                         }
 
                         {
                             Text txtX = new Text(cmpLpe, SWT.SEARCH);
                             txtX.setMessage(I18n.META_ROTATION_X);
                             txtX.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png4_txt[0] = txtX;
+                            evPng4TxtPtr[0] = txtX;
                         }
                         {
                             Text txtY = new Text(cmpLpe, SWT.SEARCH);
                             txtY.setMessage(I18n.META_ROTATION_Y);
                             txtY.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png5_txt[0] = txtY;
+                            evPng5TxtPtr[0] = txtY;
                         }
                         {
                             Text txtZ = new Text(cmpLpe, SWT.SEARCH);
                             txtZ.setMessage(I18n.META_ROTATION_Z);
                             txtZ.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png6_txt[0] = txtZ;
+                            evPng6TxtPtr[0] = txtZ;
                         }
 
                         {
                             Text txtX = new Text(cmpLpe, SWT.SEARCH);
                             txtX.setMessage(I18n.META_SCALE_X);
                             txtX.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png7_txt[0] = txtX;
+                            evPng7TxtPtr[0] = txtX;
                         }
                         {
                             Text txtY = new Text(cmpLpe, SWT.SEARCH);
                             txtY.setMessage(I18n.META_SCALE_Y);
                             txtY.setToolTipText(I18n.META_DECIMAL_MARK);
-                            ev_png8_txt[0] = txtY;
+                            evPng8TxtPtr[0] = txtY;
                         }
                         {
                             Text txtPng = new Text(cmpLpe, SWT.SEARCH);
                             txtPng.setMessage(I18n.META_TEXTURE_PNG);
-                            ev_png9_txt[0] = txtPng;
+                            evPng9TxtPtr[0] = txtPng;
                         }
                         {
                             NButton btnBrowse = new NButton(cmpLpe, SWT.NONE);
                             btnBrowse.setText(I18n.DIALOG_BROWSE);
-                            ev_png_btn[0] = btnBrowse;
+                            evPngBtnPtr[0] = btnBrowse;
                         }
                     }
                 }
@@ -1343,7 +1343,7 @@ class EditorMetaDesign extends ApplicationWindow {
 
         Label lblPreview = new Label(container, SWT.BORDER);
         lblPreview.setText("0 BFC CERTIFY CCW"); //$NON-NLS-1$
-        lbl_lineToInsert[0] = lblPreview;
+        lblLineToInsertPtr[0] = lblPreview;
         GridData gdl = new GridData();
         gdl.horizontalAlignment = SWT.CENTER;
         lblPreview.setLayoutData(gdl);
@@ -1354,13 +1354,13 @@ class EditorMetaDesign extends ApplicationWindow {
         GridData gdt = new GridData();
         gdt.horizontalAlignment = SWT.RIGHT;
         btnCreate.setLayoutData(gdt);
-        this.btn_Create[0] = btnCreate;
+        this.btnCreatePtr[0] = btnCreate;
 
         return container;
     }
 
     private void setDefaultCategories() {
-        ev_category_cmb[0].setItems(new String[] {
+        evCategoryCmbPtr[0].setItems(new String[] {
                 "", //$NON-NLS-1$
                 "Animal", //$NON-NLS-1$
                 "Antenna", //$NON-NLS-1$

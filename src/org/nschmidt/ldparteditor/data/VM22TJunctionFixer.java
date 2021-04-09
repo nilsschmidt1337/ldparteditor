@@ -120,7 +120,7 @@ class VM22TJunctionFixer extends VM21Merger {
         messageBox.setText(I18n.DIALOG_INFO);
         Object[] messageArguments = {tJunctionCount[0]};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-        formatter.setLocale(MyLanguage.LOCALE);
+        formatter.setLocale(MyLanguage.locale);
         formatter.applyPattern(I18n.E3D_T_JUNCTION_COUNT);
         messageBox.setMessage(formatter.format(messageArguments));
         messageBox.open();
@@ -149,9 +149,9 @@ class VM22TJunctionFixer extends VM21Merger {
             switch (g.type()) {
             case 3:
                 GData3 g3 = (GData3) g;
-                Vertex v1 = new Vertex(g3.X1, g3.Y1, g3.Z1);
-                Vertex v2 = new Vertex(g3.X2, g3.Y2, g3.Z2);
-                Vertex v3 = new Vertex(g3.X3, g3.Y3, g3.Z3);
+                Vertex v1 = new Vertex(g3.x1p, g3.y1p, g3.z1p);
+                Vertex v2 = new Vertex(g3.x2p, g3.y2p, g3.z2p);
+                Vertex v3 = new Vertex(g3.x3p, g3.y3p, g3.z3p);
                 if (verts2.contains(v1)) verts.add(v1);
                 if (verts2.contains(v2)) verts.add(v2);
                 if (verts2.contains(v3)) verts.add(v3);
@@ -161,10 +161,10 @@ class VM22TJunctionFixer extends VM21Merger {
                 break;
             case 4:
                 GData4 g4 = (GData4) g;
-                Vertex v4 = new Vertex(g4.X1, g4.Y1, g4.Z1);
-                Vertex v5 = new Vertex(g4.X2, g4.Y2, g4.Z2);
-                Vertex v6 = new Vertex(g4.X3, g4.Y3, g4.Z3);
-                Vertex v7 = new Vertex(g4.X4, g4.Y4, g4.Z4);
+                Vertex v4 = new Vertex(g4.x1p, g4.y1p, g4.z1p);
+                Vertex v5 = new Vertex(g4.x2p, g4.y2p, g4.z2p);
+                Vertex v6 = new Vertex(g4.x3p, g4.y3p, g4.z3p);
+                Vertex v7 = new Vertex(g4.x4p, g4.y4p, g4.z4p);
                 if (verts2.contains(v4)) verts.add(v4);
                 if (verts2.contains(v5)) verts.add(v5);
                 if (verts2.contains(v6)) verts.add(v6);

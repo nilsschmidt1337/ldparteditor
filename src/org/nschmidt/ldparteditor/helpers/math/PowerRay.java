@@ -27,17 +27,17 @@ import org.nschmidt.ldparteditor.data.Vertex;
  */
 public final class PowerRay {
 
+    private static final double TOLERANCE = 0.00001d;
+
     private double t;
     private double u;
     private double v;
 
-    private double[] corner1 = new double[3];
-    private double[] corner2 = new double[3];
-    private double[] tvec = new double[3];
-    private double[] pvec = new double[3];
-    private double[] qvec = new double[3];
-
-    private final double TOLERANCE = 0.00001d;
+    private final double[] corner1 = new double[3];
+    private final double[] corner2 = new double[3];
+    private final double[] tvec = new double[3];
+    private final double[] pvec = new double[3];
+    private final double[] qvec = new double[3];
 
     private boolean TRIANGLE_INTERSECT(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
         double diskr = 0;

@@ -72,48 +72,48 @@ class EditorTextDesign extends ApplicationWindow {
 
     private Composite parent = null;
 
-    final NButton[] btn_showLeft = new NButton[1];
-    final NButton[] btn_showRight = new NButton[1];
-    final NButton[] btn_sameWidth = new NButton[1];
+    final NButton[] btnShowLeftPtr = new NButton[1];
+    final NButton[] btnShowRightPtr = new NButton[1];
+    final NButton[] btnSameWidthPtr = new NButton[1];
 
-    final NButton[] btn_New = new NButton[1];
-    final NButton[] btn_Open = new NButton[1];
-    final NButton[] btn_Save = new NButton[1];
-    final NButton[] btn_SaveAs = new NButton[1];
+    final NButton[] btnNewPtr = new NButton[1];
+    final NButton[] btnOpenPtr = new NButton[1];
+    final NButton[] btnSavePtr = new NButton[1];
+    final NButton[] btnSaveAsPtr = new NButton[1];
 
-    final NButton[] btn_Palette = new NButton[1];
+    final NButton[] btnPalettePtr = new NButton[1];
 
-    final NButton[] btn_Hide = new NButton[1];
-    final NButton[] btn_Show = new NButton[1];
+    final NButton[] btnHidePtr = new NButton[1];
+    final NButton[] btnShowPtr = new NButton[1];
 
-    final NButton[] btn_Cut = new NButton[1];
-    final NButton[] btn_Copy = new NButton[1];
-    final NButton[] btn_Paste = new NButton[1];
-    final NButton[] btn_Delete = new NButton[1];
+    final NButton[] btnCutPtr = new NButton[1];
+    final NButton[] btnCopyPtr = new NButton[1];
+    final NButton[] btnPastePtr = new NButton[1];
+    final NButton[] btnDeletePtr = new NButton[1];
 
-    final NButton[] btn_Undo = new NButton[1];
-    final NButton[] btn_AddHistory = new NButton[1];
-    final NButton[] btn_Redo = new NButton[1];
+    final NButton[] btnUndoPtr = new NButton[1];
+    final NButton[] btnAddHistoryPtr = new NButton[1];
+    final NButton[] btnRedoPtr = new NButton[1];
 
-    final NButton[] btn_ShowErrors = new NButton[1];
-    final NButton[] btn_FindAndReplace = new NButton[1];
-    final NButton[] btn_Sort = new NButton[1];
-    final NButton[] btn_SplitQuad = new NButton[1];
-    final NButton[] btn_MergeQuad = new NButton[1];
-    final NButton[] btn_Unrectify = new NButton[1];
-    final NButton[] btn_ShowSelectionIn3D = new NButton[1];
-    final NButton[] btn_OpenIn3D = new NButton[1];
-    final NButton[] btn_SyncEdit = new NButton[1];
-    final NButton[] btn_Inline = new NButton[1];
-    final NButton[] btn_InlineDeep = new NButton[1];
-    final NButton[] btn_InlineLinked = new NButton[1];
-    final NButton[] btn_BFCswap = new NButton[1];
-    final NButton[] btn_CompileSubfile = new NButton[1];
-    final NButton[] btn_RoundSelection = new NButton[1];
-    final NButton[] btn_Texmap = new NButton[1];
-    final NButton[] btn_Annotate = new NButton[1];
+    final NButton[] btnShowErrorsPtr = new NButton[1];
+    final NButton[] btnFindAndReplacePtr = new NButton[1];
+    final NButton[] btnSortPtr = new NButton[1];
+    final NButton[] btnSplitQuadPtr = new NButton[1];
+    final NButton[] btnMergeQuadPtr = new NButton[1];
+    final NButton[] btnUnrectifyPtr = new NButton[1];
+    final NButton[] btnShowSelectionIn3DPtr = new NButton[1];
+    final NButton[] btnOpenIn3DPtr = new NButton[1];
+    final NButton[] btnSyncEditPtr = new NButton[1];
+    final NButton[] btnInlinePtr = new NButton[1];
+    final NButton[] btnInlineDeepPtr = new NButton[1];
+    final NButton[] btnInlineLinkedPtr = new NButton[1];
+    final NButton[] btnBFCswapPtr = new NButton[1];
+    final NButton[] btnCompileSubfilePtr = new NButton[1];
+    final NButton[] btnRoundSelectionPtr = new NButton[1];
+    final NButton[] btnTexmapPtr = new NButton[1];
+    final NButton[] btnAnnotatePtr = new NButton[1];
 
-    private ToolItem toolItem_ColourBar;
+    private ToolItem toolItemColourBar;
     /**
      * The reference to the underlying business logic (only for testing
      * purpose!)
@@ -205,7 +205,7 @@ class EditorTextDesign extends ApplicationWindow {
 
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
             btnCol.setToolTipText(formatter.format(messageArguments));
@@ -219,7 +219,7 @@ class EditorTextDesign extends ApplicationWindow {
 
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
             btnCol.setToolTipText(formatter.format(messageArguments));
@@ -242,7 +242,7 @@ class EditorTextDesign extends ApplicationWindow {
                 if (num1 != -1) {
                     Object[] messageArguments1 = {num1, View.getLDConfigColourName(num1)};
                     MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter1.setLocale(MyLanguage.LOCALE);
+                    formatter1.setLocale(MyLanguage.locale);
                     formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
                     btnCol.setToolTipText(formatter1.format(messageArguments1));
@@ -255,7 +255,7 @@ class EditorTextDesign extends ApplicationWindow {
 
                     Object[] messageArguments2 = {colourBuilder.toString()};
                     MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter2.setLocale(MyLanguage.LOCALE);
+                    formatter2.setLocale(MyLanguage.locale);
                     formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
                     btnCol.setToolTipText(formatter2.format(messageArguments2));
@@ -308,7 +308,7 @@ class EditorTextDesign extends ApplicationWindow {
     }
 
     public void reloadColours() {
-        for (Control ctrl : toolItem_ColourBar.getChildren()) {
+        for (Control ctrl : toolItemColourBar.getChildren()) {
             if (!(ctrl instanceof ToolSeparator)) ctrl.dispose();
         }
 
@@ -316,19 +316,19 @@ class EditorTextDesign extends ApplicationWindow {
 
         final int size = colours.size();
         for (int i = 0; i < size; i++) {
-            addColorButton(toolItem_ColourBar, colours.get(i), i);
+            addColorButton(toolItemColourBar, colours.get(i), i);
         }
 
         {
-            NButton btnPalette = new NButton(toolItem_ColourBar, Cocoa.getStyle());
-            this.btn_Palette[0] = btnPalette;
+            NButton btnPalette = new NButton(toolItemColourBar, Cocoa.getStyle());
+            this.btnPalettePtr[0] = btnPalette;
             btnPalette.setToolTipText(I18n.E3D_MORE);
             btnPalette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
         }
 
-        toolItem_ColourBar.getParent().layout();
-        toolItem_ColourBar.layout();
-        toolItem_ColourBar.redraw();
+        toolItemColourBar.getParent().layout();
+        toolItemColourBar.layout();
+        toolItemColourBar.redraw();
     }
 
     public Control build() {
@@ -349,16 +349,16 @@ class EditorTextDesign extends ApplicationWindow {
                 ToolItem toolItemSashResize = new ToolItem(toolBar, Cocoa.getStyle(), true);
                 if (userSettings.getTextWinArr() == TEXT_LEFT_3D_RIGHT) {
                     NButton btnShowLeft = new NButton(toolItemSashResize, Cocoa.getStyle());
-                    this.btn_showLeft[0] = btnShowLeft;
+                    this.btnShowLeftPtr[0] = btnShowLeft;
                     btnShowLeft.setToolTipText(I18n.E3D_SASH_LEFT);
                     btnShowLeft.setImage(ResourceManager.getImage("icon16_leftSash.png")); //$NON-NLS-1$
                 } else {
                     NButton btnSameWidth = new NButton(toolItemSashResize, Cocoa.getStyle());
-                    this.btn_sameWidth[0] = btnSameWidth;
+                    this.btnSameWidthPtr[0] = btnSameWidth;
                     btnSameWidth.setToolTipText(I18n.E3D_SASH_SAME_WIDTH);
                     btnSameWidth.setImage(ResourceManager.getImage("icon16_sameWidth.png")); //$NON-NLS-1$
                     NButton btnShowRight = new NButton(toolItemSashResize, Cocoa.getStyle());
-                    this.btn_showRight[0] = btnShowRight;
+                    this.btnShowRightPtr[0] = btnShowRight;
                     btnShowRight.setToolTipText(I18n.E3D_SASH_RIGHT);
                     btnShowRight.setImage(ResourceManager.getImage("icon16_rightSash.png")); //$NON-NLS-1$
                 }
@@ -368,25 +368,25 @@ class EditorTextDesign extends ApplicationWindow {
         ToolItem toolItemNewOpenSave = new ToolItem(toolBar, Cocoa.getStyle(), true);
         {
             NButton btnNew = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
-            this.btn_New[0] = btnNew;
+            this.btnNewPtr[0] = btnNew;
             btnNew.setToolTipText(I18n.E3D_NEW_DAT);
             btnNew.setImage(ResourceManager.getImage("icon16_document-newdat.png")); //$NON-NLS-1$
         }
         {
             NButton btnOpen = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
-            this.btn_Open[0] = btnOpen;
+            this.btnOpenPtr[0] = btnOpen;
             btnOpen.setToolTipText(I18n.E3D_OPEN_DAT);
             btnOpen.setImage(ResourceManager.getImage("icon16_document-opendat.png")); //$NON-NLS-1$
         }
         {
             NButton btnSave = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
-            this.btn_Save[0] = btnSave;
+            this.btnSavePtr[0] = btnSave;
             KeyStateManager.addTooltipText(btnSave, I18n.E3D_SAVE, Task.SAVE);
             btnSave.setImage(ResourceManager.getImage("icon16_document-savedat.png")); //$NON-NLS-1$
         }
         {
             NButton btnSaveAs = new NButton(toolItemNewOpenSave, Cocoa.getStyle());
-            this.btn_SaveAs[0] = btnSaveAs;
+            this.btnSaveAsPtr[0] = btnSaveAs;
             btnSaveAs.setToolTipText(I18n.E3D_SAVE_AS);
             btnSaveAs.setImage(ResourceManager.getImage("icon16_document-savedat.png")); //$NON-NLS-1$
             btnSaveAs.setText("..."); //$NON-NLS-1$
@@ -394,169 +394,169 @@ class EditorTextDesign extends ApplicationWindow {
         ToolItem toolItemHideUnhide = new ToolItem(toolBar, Cocoa.getStyle(), true);
         {
             NButton btnHide = new NButton(toolItemHideUnhide, Cocoa.getStyle());
-            this.btn_Hide[0] = btnHide;
+            this.btnHidePtr[0] = btnHide;
             btnHide.setToolTipText(I18n.EDITORTEXT_HIDE);
             btnHide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
         }
         {
             NButton btnShow = new NButton(toolItemHideUnhide, Cocoa.getStyle());
-            this.btn_Show[0] = btnShow;
+            this.btnShowPtr[0] = btnShow;
             btnShow.setToolTipText(I18n.EDITORTEXT_SHOW);
             btnShow.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
         }
         ToolItem toolItemUndoRedo = new ToolItem(toolBar, Cocoa.getStyle(), true);
         {
             NButton btnUndo = new NButton(toolItemUndoRedo, Cocoa.getStyle());
-            this.btn_Undo[0] = btnUndo;
+            this.btnUndoPtr[0] = btnUndo;
             btnUndo.setImage(ResourceManager.getImage("icon16_undo.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnUndo, I18n.E3D_UNDO, TextTask.EDITORTEXT_UNDO);
         }
-        if (NLogger.DEBUG) {
+        if (NLogger.debugging) {
             NButton btnSnapshot = new NButton(toolItemUndoRedo, Cocoa.getStyle());
-            this.btn_AddHistory[0] = btnSnapshot;
+            this.btnAddHistoryPtr[0] = btnSnapshot;
             btnSnapshot.setImage(ResourceManager.getImage("icon16_snapshot.png")); //$NON-NLS-1$
             btnSnapshot.setToolTipText(I18n.E3D_SNAPSHOT);
         }
         {
             NButton btnRedo = new NButton(toolItemUndoRedo, Cocoa.getStyle());
-            this.btn_Redo[0] = btnRedo;
+            this.btnRedoPtr[0] = btnRedo;
             btnRedo.setImage(ResourceManager.getImage("icon16_redo.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnRedo, I18n.E3D_REDO, TextTask.EDITORTEXT_REDO);
         }
         ToolItem toolItemCCPD = new ToolItem(toolBar, Cocoa.getStyle(), true);
         {
             NButton btnCut = new NButton(toolItemCCPD, Cocoa.getStyle());
-            this.btn_Cut[0] = btnCut;
+            this.btnCutPtr[0] = btnCut;
             btnCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnCut, I18n.COPYNPASTE_CUT, Task.CUT);
         }
         {
             NButton btnCopy = new NButton(toolItemCCPD, Cocoa.getStyle());
-            this.btn_Copy[0] = btnCopy;
+            this.btnCopyPtr[0] = btnCopy;
             btnCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnCopy, I18n.COPYNPASTE_COPY, Task.COPY);
         }
         {
             NButton btnPaste = new NButton(toolItemCCPD, Cocoa.getStyle());
-            this.btn_Paste[0] = btnPaste;
+            this.btnPastePtr[0] = btnPaste;
             btnPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnPaste, I18n.COPYNPASTE_PASTE, Task.PASTE);
         }
         {
             NButton btnDelete = new NButton(toolItemCCPD, Cocoa.getStyle());
-            this.btn_Delete[0] = btnDelete;
+            this.btnDeletePtr[0] = btnDelete;
             btnDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnDelete, I18n.COPYNPASTE_DELETE, Task.DELETE);
         }
         ToolItem toolItemDebug = new ToolItem(toolBar, Cocoa.getStyle(), true);
         {
             NButton btnShowErrors = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_ShowErrors[0] = btnShowErrors;
+            this.btnShowErrorsPtr[0] = btnShowErrors;
             btnShowErrors.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
             btnShowErrors.setToolTipText(I18n.EDITORTEXT_SHOW_HIDE_ERROR_TAB);
         }
         {
             NButton btnFindAndReplace = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_FindAndReplace[0] = btnFindAndReplace;
+            this.btnFindAndReplacePtr[0] = btnFindAndReplace;
             btnFindAndReplace.setImage(ResourceManager.getImage("icon16_findReplace.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnFindAndReplace, I18n.EDITORTEXT_FIND_REPLACE, TextTask.EDITORTEXT_FIND);
         }
         {
             NButton btnSort = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_Sort[0] = btnSort;
+            this.btnSortPtr[0] = btnSort;
             btnSort.setImage(ResourceManager.getImage("icon16_sort.png")); //$NON-NLS-1$
             btnSort.setToolTipText(I18n.EDITORTEXT_SORT);
         }
         {
             NButton btnSplitQuad = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_SplitQuad[0] = btnSplitQuad;
+            this.btnSplitQuadPtr[0] = btnSplitQuad;
             btnSplitQuad.setImage(ResourceManager.getImage("icon16_quadToTri.png")); //$NON-NLS-1$
             btnSplitQuad.setToolTipText(I18n.EDITORTEXT_SPLIT_QUAD);
         }
         {
             NButton btnMergeQuad = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_MergeQuad[0] = btnMergeQuad;
+            this.btnMergeQuadPtr[0] = btnMergeQuad;
             btnMergeQuad.setImage(ResourceManager.getImage("icon16_triToquad.png")); //$NON-NLS-1$
             btnMergeQuad.setToolTipText(I18n.EDITORTEXT_MERGE_QUAD);
         }
         {
             NButton btnShowSelectionIn3D = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_ShowSelectionIn3D[0] = btnShowSelectionIn3D;
+            this.btnShowSelectionIn3DPtr[0] = btnShowSelectionIn3D;
             btnShowSelectionIn3D.setImage(ResourceManager.getImage("icon16_text2selection.png")); //$NON-NLS-1$
             btnShowSelectionIn3D.setToolTipText(I18n.EDITORTEXT_SHOW_SELECTION_IN_3D);
         }
         {
             NButton btnOpenIn3D = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_OpenIn3D[0] = btnOpenIn3D;
+            this.btnOpenIn3DPtr[0] = btnOpenIn3D;
             btnOpenIn3D.setImage(ResourceManager.getImage("icon16_openIn3D.png")); //$NON-NLS-1$
             btnOpenIn3D.setToolTipText(I18n.E3D_OPEN_IN_3D_EDITOR);
         }
         {
             NButton btnUnrectify = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_Unrectify[0] = btnUnrectify;
+            this.btnUnrectifyPtr[0] = btnUnrectify;
             btnUnrectify.setImage(ResourceManager.getImage("icon16_unrectify.png")); //$NON-NLS-1$
             btnUnrectify.setToolTipText(Cocoa.replaceCtrlByCmd(I18n.EDITORTEXT_UNRECTIFY));
         }
         {
             NButton btnSyncEdit = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_SyncEdit[0] = btnSyncEdit;
+            this.btnSyncEditPtr[0] = btnSyncEdit;
             btnSyncEdit.setImage(ResourceManager.getImage("icon16_syncedit.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnSyncEdit, I18n.EDITORTEXT_SYNC_EDIT_BUTTON, TextTask.EDITORTEXT_REPLACE_VERTEX);
         }
         {
             NButton btnInline = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_Inline[0] = btnInline;
+            this.btnInlinePtr[0] = btnInline;
             btnInline.setImage(ResourceManager.getImage("icon16_inline.png")); //$NON-NLS-1$
             KeyStateManager.addTooltipText(btnInline, I18n.EDITORTEXT_INLINE_1, TextTask.EDITORTEXT_INLINE);
         }
         {
             NButton btnInlineDeep = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_InlineDeep[0] = btnInlineDeep;
+            this.btnInlineDeepPtr[0] = btnInlineDeep;
             btnInlineDeep.setImage(ResourceManager.getImage("icon16_inlinedeep.png")); //$NON-NLS-1$
             btnInlineDeep.setToolTipText(I18n.EDITORTEXT_INLINE_2);
         }
         {
             NButton btnInlineLinked = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_InlineLinked[0] = btnInlineLinked;
+            this.btnInlineLinkedPtr[0] = btnInlineLinked;
             btnInlineLinked.setImage(ResourceManager.getImage("icon16_inlinelinked.png")); //$NON-NLS-1$
             btnInlineLinked.setToolTipText(I18n.EDITORTEXT_INLINE_3);
         }
         {
             NButton btnBFCswap = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_BFCswap[0] = btnBFCswap;
+            this.btnBFCswapPtr[0] = btnBFCswap;
             btnBFCswap.setToolTipText(I18n.E3D_SWAP_WINDING);
             btnBFCswap.setImage(ResourceManager.getImage("icon16_bfcSwap.png")); //$NON-NLS-1$
         }
         {
             NButton btnCompileSubfile = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_CompileSubfile[0] = btnCompileSubfile;
+            this.btnCompileSubfilePtr[0] = btnCompileSubfile;
             btnCompileSubfile.setToolTipText(I18n.EDITORTEXT_COMPILE);
             btnCompileSubfile.setImage(ResourceManager.getImage("icon16_subcompile.png")); //$NON-NLS-1$
         }
         {
             NButton btnRoundSelection = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_RoundSelection[0] = btnRoundSelection;
+            this.btnRoundSelectionPtr[0] = btnRoundSelection;
             KeyStateManager.addTooltipText(btnRoundSelection, I18n.EDITORTEXT_ROUND + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY), TextTask.EDITORTEXT_ROUND);
             btnRoundSelection.setImage(ResourceManager.getImage("icon16_round.png")); //$NON-NLS-1$
         }
 
         {
             NButton btnTexmap = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_Texmap[0] = btnTexmap;
+            this.btnTexmapPtr[0] = btnTexmap;
             btnTexmap.setToolTipText(I18n.EDITORTEXT_TEXMAP);
             btnTexmap.setImage(ResourceManager.getImage("icon16_texmap.png")); //$NON-NLS-1$
         }
 
         {
             NButton btnAnnotate = new NButton(toolItemDebug, Cocoa.getStyle());
-            this.btn_Annotate[0] = btnAnnotate;
+            this.btnAnnotatePtr[0] = btnAnnotate;
             btnAnnotate.setToolTipText(I18n.EDITORTEXT_COMMENT);
             btnAnnotate.setImage(ResourceManager.getImage("icon16_annotate.png")); //$NON-NLS-1$
         }
 
         {
             ToolItem toolItemColours = new ToolItem(toolBar, Cocoa.getStyle(), true);
-            toolItem_ColourBar = toolItemColours;
+            toolItemColourBar = toolItemColours;
             List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
 
             final int size = colours.size();
@@ -566,7 +566,7 @@ class EditorTextDesign extends ApplicationWindow {
 
             {
                 NButton btnPalette = new NButton(toolItemColours, Cocoa.getStyle());
-                this.btn_Palette[0] = btnPalette;
+                this.btnPalettePtr[0] = btnPalette;
                 btnPalette.setToolTipText(I18n.E3D_MORE);
                 btnPalette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
             }

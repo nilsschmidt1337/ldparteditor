@@ -92,7 +92,7 @@ public class GL33ModelRendererLDrawStandard {
     private int vboStudLogo2;
 
     private volatile Lock lock = new ReentrantLock();
-    private static volatile Lock static_lock = new ReentrantLock();
+    private static volatile Lock staticLock = new ReentrantLock();
     private static volatile AtomicInteger idGen = new AtomicInteger(0);
     private static volatile AtomicInteger idCount = new AtomicInteger(0);
 
@@ -109,12 +109,12 @@ public class GL33ModelRendererLDrawStandard {
 
     private volatile ArrayList<GDataAndTexture> texmapData = new ArrayList<>();
     private volatile HashMap<GData, Vertex[]> sharedVertexMap = new HashMap<>();
-    private volatile HashMap<GData, Vector3f[]> shared_TEXMAP_NormalMap = new HashMap<>();
+    private volatile HashMap<GData, Vector3f[]> sharedTEXMAPnormalMap = new HashMap<>();
 
     private volatile boolean usesTEXMAP = false;
 
-    private volatile ArrayList<Matrix4f> stud1_Matrices = new ArrayList<>();
-    private volatile ArrayList<Matrix4f> stud2_Matrices = new ArrayList<>();
+    private volatile ArrayList<Matrix4f> stud1MatricesResult = new ArrayList<>();
+    private volatile ArrayList<Matrix4f> stud2MatricesResult = new ArrayList<>();
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -248,7 +248,7 @@ public class GL33ModelRendererLDrawStandard {
 
                     // Only process render mode 5
                     if (renderMode == 5) try {
-                        static_lock.lock();
+                        staticLock.lock();
 
                         // First we have to get links to the sets from the model
                         final DatFile df = c3d.getLockableDatFileReference();
@@ -388,7 +388,7 @@ public class GL33ModelRendererLDrawStandard {
                                     }
                                 });
                             }
-                            Iterator<Entry<GData, Vector3f[]>> iter = shared_TEXMAP_NormalMap.entrySet().iterator();
+                            Iterator<Entry<GData, Vector3f[]>> iter = sharedTEXMAPnormalMap.entrySet().iterator();
                             while (iter.hasNext()) {
                                 if(!allData.contains(iter.next().getKey())){
                                     iter.remove();
@@ -490,7 +490,7 @@ public class GL33ModelRendererLDrawStandard {
                             if (usesTEXMAP) {
                                 for (GDataAndWinding gw : texmapDataInOrder) {
                                     final GData key = gw.data;
-                                    shared_TEXMAP_NormalMap.put(key, vertexNormals.get(key));
+                                    sharedTEXMAPnormalMap.put(key, vertexNormals.get(key));
                                 }
                             }
                         } else {
@@ -1096,8 +1096,8 @@ public class GL33ModelRendererLDrawStandard {
 
                         if (drawStudLogo) {
                             lock.lock();
-                            stud1_Matrices = stud1Matrices;
-                            stud2_Matrices = stud2Matrices;
+                            stud1MatricesResult = stud1Matrices;
+                            stud2MatricesResult = stud2Matrices;
                             lock.unlock();
                         }
 
@@ -1121,11 +1121,11 @@ public class GL33ModelRendererLDrawStandard {
                         lock.unlock();
 
                     } catch (Exception ex) {
-                        if (NLogger.DEBUG) {
+                        if (NLogger.debugging) {
                             System.out.println("Exception: " + ex.getMessage()); //$NON-NLS-1$
                         }
                     } finally {
-                        static_lock.unlock();
+                        staticLock.unlock();
                     }
                     if (idCount.incrementAndGet() >= idList.size()) {
                         idCount.set(0);
@@ -1188,7 +1188,7 @@ public class GL33ModelRendererLDrawStandard {
             } else {
                 mainShader.transparentOn();
             }
-            GL33TexmapRenderer.render(texmapData, mainShader, renderer, shared_TEXMAP_NormalMap, sharedVertexMap, c3d.isSmoothShading(), drawSolidMaterials);
+            GL33TexmapRenderer.render(texmapData, mainShader, renderer, sharedTEXMAPnormalMap, sharedVertexMap, c3d.isSmoothShading(), drawSolidMaterials);
             mainShader.texmapOff();
         }
 
@@ -1257,8 +1257,8 @@ public class GL33ModelRendererLDrawStandard {
 
                 {
                     lock.lock();
-                    ArrayList<Matrix4f> stud1Matrices = stud1_Matrices;
-                    ArrayList<Matrix4f> stud2Matrices = stud2_Matrices;
+                    ArrayList<Matrix4f> stud1Matrices = stud1MatricesResult;
+                    ArrayList<Matrix4f> stud2Matrices = stud2MatricesResult;
                     lock.unlock();
                     GL30.glBindVertexArray(vaoStudLogo1);
                     for (Matrix4f m : stud1Matrices) {

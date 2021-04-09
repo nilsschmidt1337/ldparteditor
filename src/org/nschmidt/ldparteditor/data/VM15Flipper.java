@@ -209,21 +209,21 @@ class VM15Flipper extends VM14Splitter {
         }
 
         for (GData2 g : effSelectedLines) {
-            GData2 n = new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.X2, g.Y2, g.Z2, g.X1, g.Y1, g.Z1, g.parent, linkedDatFile, g.isLine);
+            GData2 n = new GData2(g.colourNumber, g.r, g.g, g.b, g.a, g.x2p, g.y2p, g.z2p, g.x1p, g.y1p, g.z1p, g.parent, linkedDatFile, g.isLine);
             newLines.add(n);
             linkedDatFile.insertAfter(g, n);
             linesToDelete2.add(g);
         }
 
         for (GData3 g : effSelectedTriangles) {
-            GData3 n = new GData3(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), g.parent, linkedDatFile, g.isTriangle);
+            GData3 n = new GData3(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.x3p, g.y3p, g.z3p), new Vertex(g.x1p, g.y1p, g.z1p), new Vertex(g.x2p, g.y2p, g.z2p), g.parent, linkedDatFile, g.isTriangle);
             newTriangles.add(n);
             linkedDatFile.insertAfter(g, n);
             trisToDelete2.add(g);
         }
 
         for (GData4 g : effSelectedQuads) {
-            GData4 n = new GData4(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X4, g.Y4, g.Z4), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X3, g.Y3, g.Z3), g.parent, linkedDatFile);
+            GData4 n = new GData4(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.x4p, g.y4p, g.z4p), new Vertex(g.x1p, g.y1p, g.z1p), new Vertex(g.x2p, g.y2p, g.z2p), new Vertex(g.x3p, g.y3p, g.z3p), g.parent, linkedDatFile);
             newQuads.add(n);
             linkedDatFile.insertAfter(g, n);
             quadsToDelete2.add(g);
@@ -233,7 +233,7 @@ class VM15Flipper extends VM14Splitter {
             if (clinesToDelete2.contains(g)) {
                 continue;
             }
-            GData5 n = new GData5(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.X2, g.Y2, g.Z2), new Vertex(g.X1, g.Y1, g.Z1), new Vertex(g.X3, g.Y3, g.Z3), new Vertex(g.X4, g.Y4, g.Z4), g.parent, linkedDatFile);
+            GData5 n = new GData5(g.colourNumber, g.r, g.g, g.b, g.a, new Vertex(g.x2p, g.y2p, g.z2p), new Vertex(g.x1p, g.y1p, g.z1p), new Vertex(g.x3p, g.y3p, g.z3p), new Vertex(g.x4p, g.y4p, g.z4p), g.parent, linkedDatFile);
             newCondlines.add(n);
             linkedDatFile.insertAfter(g, n);
             clinesToDelete2.add(g);

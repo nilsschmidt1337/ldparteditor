@@ -44,11 +44,11 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 class UnificatorDesign extends Dialog {
 
     final UnificatorSettings us;
-    final BigDecimalSpinner[] spn_vertexThreshold = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_subfileThreshold = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnVertexThresholdPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnSubfileThresholdPtr = new BigDecimalSpinner[1];
 
-    final Combo[] cmb_whatToUnify = new Combo[1];
-    final Combo[] cmb_scope = new Combo[1];
+    final Combo[] cmbWhatToUnifyPtr = new Combo[1];
+    final Combo[] cmbScopePtr = new Combo[1];
 
     // Use final only for subclass/listener references!
 
@@ -79,7 +79,7 @@ class UnificatorDesign extends Dialog {
         lblHint.setText(I18n.UNIFICATOR_VERTEX_UNIFIATION);
 
         BigDecimalSpinner spnVertexThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_vertexThreshold [0] = spnVertexThreshold;
+        this.spnVertexThresholdPtr [0] = spnVertexThreshold;
         spnVertexThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnVertexThreshold.setMaximum(new BigDecimal(1000));
         spnVertexThreshold.setMinimum(new BigDecimal(0));
@@ -89,7 +89,7 @@ class UnificatorDesign extends Dialog {
         lblPrecision.setText(I18n.UNIFICATOR_VERTEX_SNAP);
 
         BigDecimalSpinner spnSubfileThreshold = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_subfileThreshold [0] = spnSubfileThreshold;
+        this.spnSubfileThresholdPtr [0] = spnSubfileThreshold;
         spnSubfileThreshold.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnSubfileThreshold.setMaximum(new BigDecimal(1000));
         spnSubfileThreshold.setMinimum(new BigDecimal(0));
@@ -100,7 +100,7 @@ class UnificatorDesign extends Dialog {
 
         {
             Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_whatToUnify[0] = cmbSplitPlane;
+            this.cmbWhatToUnifyPtr[0] = cmbSplitPlane;
             cmbSplitPlane.setItems(new String[] {I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES});
             cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbSplitPlane.setText(cmbSplitPlane.getItem(us.getSnapOn()));
@@ -108,7 +108,7 @@ class UnificatorDesign extends Dialog {
         }
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmbScope;
+        this.cmbScopePtr[0] = cmbScope;
         cmbScope.setItems(new String[] {I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION});
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(us.getScope()));

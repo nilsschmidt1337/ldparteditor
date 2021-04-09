@@ -109,26 +109,26 @@ public class CompositePrimitive extends Composite {
 
     /** The view zoom level */
     private float zoom = WorkbenchManager.getEditor3DWindowState().getPrimitiveZoom();
-    private float zoom_exponent = WorkbenchManager.getEditor3DWindowState().getPrimitiveZoomExponent();
+    private float zoomExponent = WorkbenchManager.getEditor3DWindowState().getPrimitiveZoomExponent();
 
     /** The transformation matrix of the view */
-    private final Matrix4f viewport_matrix = new Matrix4f();
+    private final Matrix4f viewportMatrix = new Matrix4f();
     /** The inverse transformation matrix of the view */
-    private Matrix4f viewport_matrix_inv = new Matrix4f();
+    private Matrix4f viewportMatrixInv = new Matrix4f();
     /** The translation matrix of the view */
-    private final Matrix4f viewport_translation = new Matrix4f();
+    private final Matrix4f viewportTranslation = new Matrix4f();
 
-    private final Matrix4f viewport_rotation = new Matrix4f();
+    private final Matrix4f viewportRotation = new Matrix4f();
 
     private volatile ArrayList<Primitive> primitives = new ArrayList<>();
     private Primitive selectedPrimitive = null;
     private Primitive focusedPrimitive = null;
-    private int mouse_button_pressed;
-    private final Vector2f old_mouse_position = new Vector2f();
-    private final Vector2f mouse_position = new Vector2f();
+    private int mouseButtonPressed;
+    private final Vector2f oldMousePosition = new Vector2f();
+    private final Vector2f mousePosition = new Vector2f();
     /** The old translation matrix of the view [NOT PUBLIC YET] */
-    private final Matrix4f old_viewport_translation = new Matrix4f();
-    private final Matrix4f old_viewport_rotation = new Matrix4f();
+    private final Matrix4f oldViewportTranslation = new Matrix4f();
+    private final Matrix4f oldViewportRotation = new Matrix4f();
 
     /** Resolution of the viewport at n% zoom */
     private float viewportPixelPerLDU;
@@ -161,7 +161,7 @@ public class CompositePrimitive extends Composite {
             FloatBuffer fb = BufferUtils.createFloatBuffer(16);
             fb.put(rpf);
             fb.flip();
-            this.viewport_rotation.load(fb);
+            this.viewportRotation.load(fb);
         }
 
         this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
@@ -236,8 +236,8 @@ public class CompositePrimitive extends Composite {
         canvas.addListener(SWT.MouseDown, event -> mouseDown(event));
 
         canvas.addListener(SWT.MouseDoubleClick, event -> {
-            mouse_button_pressed = event.button;
-            old_mouse_position.set(event.x, event.y);
+            mouseButtonPressed = event.button;
+            oldMousePosition.set(event.x, event.y);
             switch (event.button) {
             case MouseButton.LEFT:
                 setSelectedPrimitive(getFocusedPrimitive());
@@ -246,7 +246,7 @@ public class CompositePrimitive extends Composite {
             case MouseButton.MIDDLE:
                 break;
             case MouseButton.RIGHT:
-                Matrix4f.load(getTranslation(), old_viewport_translation);
+                Matrix4f.load(getTranslation(), oldViewportTranslation);
                 break;
             default:
             }
@@ -272,7 +272,7 @@ public class CompositePrimitive extends Composite {
                 }
 
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(Cocoa.IS_COCOA ? I18n.E3D_ROTATE_VIEW_HINT_MAC :
                     hasDefaultMouseButtonLayout ? I18n.E3D_ROTATE_VIEW_HINT_MIDDLE_MOUSE : I18n.E3D_ROTATE_VIEW_HINT_RIGHT_MOUSE);
                 String tooltipText = formatter.format(messageArguments);
@@ -280,41 +280,41 @@ public class CompositePrimitive extends Composite {
                     canvas.setToolTipText(tooltipText);
                 }
             }
-            mouse_position.set(event.x, event.y);
-            switch (mouse_button_pressed) {
+            mousePosition.set(event.x, event.y);
+            switch (mouseButtonPressed) {
             case MouseButton.LEFT:
                 break;
             case MouseButton.MIDDLE:
                 float rx = 0;
                 float ry = 0;
-                rx = (event.x - old_mouse_position.x) / rotationWidth * (float) Math.PI;
-                ry = (old_mouse_position.y - event.y) / rotationWidth * (float) Math.PI;
+                rx = (event.x - oldMousePosition.x) / rotationWidth * (float) Math.PI;
+                ry = (oldMousePosition.y - event.y) / rotationWidth * (float) Math.PI;
                 Vector4f xAxis4fRotation = new Vector4f(1.0f, 0, 0, 1.0f);
                 Vector4f yAxis4fRotation = new Vector4f(0, 1.0f, 0, 1.0f);
-                Matrix4f ovrInverse = Matrix4f.invert(old_viewport_rotation, null);
+                Matrix4f ovrInverse = Matrix4f.invert(oldViewportRotation, null);
                 Matrix4f.transform(ovrInverse, xAxis4fRotation, xAxis4fRotation);
                 Matrix4f.transform(ovrInverse, yAxis4fRotation, yAxis4fRotation);
                 Vector3f xAxis3fRotation = new Vector3f(xAxis4fRotation.x, xAxis4fRotation.y, xAxis4fRotation.z);
                 Vector3f yAxis3fRotation = new Vector3f(yAxis4fRotation.x, yAxis4fRotation.y, yAxis4fRotation.z);
-                Matrix4f.rotate(rx, yAxis3fRotation, old_viewport_rotation, viewport_rotation);
-                Matrix4f.rotate(ry, xAxis3fRotation, viewport_rotation, viewport_rotation);
+                Matrix4f.rotate(rx, yAxis3fRotation, oldViewportRotation, viewportRotation);
+                Matrix4f.rotate(ry, xAxis3fRotation, viewportRotation, viewportRotation);
                 break;
             case MouseButton.RIGHT:
                 float dx = 0;
                 float dy = 0;
-                dx = (event.x - old_mouse_position.x) / viewportPixelPerLDU;
-                dy = (event.y - old_mouse_position.y) / viewportPixelPerLDU;
+                dx = (event.x - oldMousePosition.x) / viewportPixelPerLDU;
+                dy = (event.y - oldMousePosition.y) / viewportPixelPerLDU;
                 Vector4f xAxis4fTranslation = new Vector4f(dx, 0, 0, 1.0f);
                 Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
                 Vector3f xAxis3 = new Vector3f(xAxis4fTranslation.x, xAxis4fTranslation.y, xAxis4fTranslation.z);
                 Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
-                Matrix4f.load(old_viewport_translation, viewport_translation);
-                Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
-                Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+                Matrix4f.load(oldViewportTranslation, viewportTranslation);
+                Matrix4f.translate(xAxis3, oldViewportTranslation, viewportTranslation);
+                Matrix4f.translate(yAxis3, viewportTranslation, viewportTranslation);
 
-                viewport_translation.m30 = 0f;
-                if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
-                if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
+                viewportTranslation.m30 = 0f;
+                if (viewportTranslation.m31 > 0f) viewportTranslation.m31 = 0f;
+                if (-viewportTranslation.m31 > maxY) viewportTranslation.m31 = -maxY;
                 break;
             default:
             }
@@ -333,7 +333,7 @@ public class CompositePrimitive extends Composite {
             } else {
                 float dy = 0;
 
-                Matrix4f.load(getTranslation(), old_viewport_translation);
+                Matrix4f.load(getTranslation(), oldViewportTranslation);
 
                 if (event.count < 0) {
                     dy = -17f /  viewportPixelPerLDU;
@@ -343,11 +343,11 @@ public class CompositePrimitive extends Composite {
 
                 Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
                 Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
-                Matrix4f.load(old_viewport_translation, viewport_translation);
-                Matrix4f.translate(yAxis3, old_viewport_translation, viewport_translation);
+                Matrix4f.load(oldViewportTranslation, viewportTranslation);
+                Matrix4f.translate(yAxis3, oldViewportTranslation, viewportTranslation);
 
-                if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
-                if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
+                if (viewportTranslation.m31 > 0f) viewportTranslation.m31 = 0f;
+                if (-viewportTranslation.m31 > maxY) viewportTranslation.m31 = -maxY;
             }
 
             openGL.drawScene(event.x, event.y);
@@ -384,7 +384,7 @@ public class CompositePrimitive extends Composite {
     }
 
     public void mouseUp(Event event) {
-        mouse_button_pressed = 0;
+        mouseButtonPressed = 0;
         switch (event.button) {
         case MouseButton.LEFT:
             break;
@@ -398,17 +398,17 @@ public class CompositePrimitive extends Composite {
 
     public void mouseDown(Event event) {
         reMapMouseEvent(event);
-        mouse_button_pressed = event.button;
-        old_mouse_position.set(event.x, event.y);
+        mouseButtonPressed = event.button;
+        oldMousePosition.set(event.x, event.y);
         switch (event.button) {
         case MouseButton.LEFT:
             setSelectedPrimitive(getFocusedPrimitive());
             break;
         case MouseButton.MIDDLE:
-            Matrix4f.load(getRotation(), old_viewport_rotation);
+            Matrix4f.load(getRotation(), oldViewportRotation);
             break;
         case MouseButton.RIGHT:
-            Matrix4f.load(getTranslation(), old_viewport_translation);
+            Matrix4f.load(getTranslation(), oldViewportTranslation);
             break;
         default:
         }
@@ -442,33 +442,33 @@ public class CompositePrimitive extends Composite {
     }
 
     public float getZoom_exponent() {
-        return zoom_exponent;
+        return zoomExponent;
     }
 
     public void setZoom_exponent(float zoomExponent) {
-        this.zoom_exponent = zoomExponent;
+        this.zoomExponent = zoomExponent;
     }
 
     /**
      * @return The translation matrix of the view
      */
     public Matrix4f getTranslation() {
-        return viewport_translation;
+        return viewportTranslation;
     }
 
     public Matrix4f getRotation() {
-        return viewport_rotation;
+        return viewportRotation;
     }
 
     /**
      * @return The transformation matrix of the viewport which was last drawn
      */
     public Matrix4f getViewport() {
-        return viewport_matrix;
+        return viewportMatrix;
     }
 
     public Matrix4f getViewport_Inverse() {
-        return viewport_matrix_inv;
+        return viewportMatrixInv;
     }
 
     /**
@@ -478,19 +478,19 @@ public class CompositePrimitive extends Composite {
      *            the matrix to set.
      */
     public void setViewport(Matrix4f matrix) {
-        viewport_matrix.load(matrix);
-        viewport_matrix_inv = (Matrix4f) matrix.invert();
+        viewportMatrix.load(matrix);
+        viewportMatrixInv = (Matrix4f) matrix.invert();
     }
 
     public void setViewport2(Matrix4f[] m) {
-        viewport_matrix.load(m[0]);
-        viewport_translation.setIdentity(); // .load(m[1]); // Don't load the translation (issue #566)
-        viewport_rotation.load(m[2]);
-        viewport_matrix_inv = (Matrix4f) m[0].invert();
+        viewportMatrix.load(m[0]);
+        viewportTranslation.setIdentity(); // .load(m[1]); // Don't load the translation (issue #566)
+        viewportRotation.load(m[2]);
+        viewportMatrixInv = (Matrix4f) m[0].invert();
     }
 
     public Matrix4f[] getViewport2() {
-        return new Matrix4f[]{viewport_matrix, viewport_translation, viewport_rotation};
+        return new Matrix4f[]{viewportMatrix, viewportTranslation, viewportRotation};
     }
 
     public ArrayList<Primitive> getPrimitives() {
@@ -502,11 +502,11 @@ public class CompositePrimitive extends Composite {
      */
     public void zoomIn() {
         float old = getZoom();
-        zoom_exponent++;
-        if (zoom_exponent > 20) {
-            zoom_exponent = 20;
+        zoomExponent++;
+        if (zoomExponent > 20) {
+            zoomExponent = 20;
         }
-        setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
         this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
         adjustTranslate(old, getZoom());
     }
@@ -516,11 +516,11 @@ public class CompositePrimitive extends Composite {
      */
     public void zoomOut() {
         float old = getZoom();
-        zoom_exponent--;
-        if (zoom_exponent < 3) {
-            zoom_exponent = 3;
+        zoomExponent--;
+        if (zoomExponent < 3) {
+            zoomExponent = 3;
         }
-        setZoom((float) Math.pow(10.0d, zoom_exponent / 10 - 3));
+        setZoom((float) Math.pow(10.0d, zoomExponent / 10 - 3));
         this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
         adjustTranslate(old, getZoom());
     }
@@ -535,13 +535,13 @@ public class CompositePrimitive extends Composite {
         Vector3f xAxis3 = new Vector3f(xAxis4fTranslation.x, xAxis4fTranslation.y, xAxis4fTranslation.z);
         Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
 
-        Matrix4f.load(old_viewport_translation, viewport_translation);
-        Matrix4f.translate(xAxis3, old_viewport_translation, viewport_translation);
-        Matrix4f.translate(yAxis3, viewport_translation, viewport_translation);
+        Matrix4f.load(oldViewportTranslation, viewportTranslation);
+        Matrix4f.translate(xAxis3, oldViewportTranslation, viewportTranslation);
+        Matrix4f.translate(yAxis3, viewportTranslation, viewportTranslation);
 
-        viewport_translation.m30 = 0f;
-        if (viewport_translation.m13 > 0f) viewport_translation.m13 = 0f;
-        if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
+        viewportTranslation.m30 = 0f;
+        if (viewportTranslation.m13 > 0f) viewportTranslation.m13 = 0f;
+        if (-viewportTranslation.m31 > maxY) viewportTranslation.m31 = -maxY;
     }
 
     public float getViewport_pixel_per_ldu() {
@@ -1521,7 +1521,7 @@ public class CompositePrimitive extends Composite {
 
         float dy = 0;
 
-        Matrix4f.load(getTranslation(), old_viewport_translation);
+        Matrix4f.load(getTranslation(), oldViewportTranslation);
 
         if (down) {
             dy = -37f /  viewportPixelPerLDU;
@@ -1531,11 +1531,11 @@ public class CompositePrimitive extends Composite {
 
         Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);
         Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
-        Matrix4f.load(old_viewport_translation, viewport_translation);
-        Matrix4f.translate(yAxis3, old_viewport_translation, viewport_translation);
+        Matrix4f.load(oldViewportTranslation, viewportTranslation);
+        Matrix4f.translate(yAxis3, oldViewportTranslation, viewportTranslation);
 
-        if (viewport_translation.m31 > 0f) viewport_translation.m31 = 0f;
-        if (-viewport_translation.m31 > maxY) viewport_translation.m31 = -maxY;
+        if (viewportTranslation.m31 > 0f) viewportTranslation.m31 = 0f;
+        if (-viewportTranslation.m31 > maxY) viewportTranslation.m31 = -maxY;
 
         openGL.drawScene(-1, -1);
     }
@@ -1579,7 +1579,7 @@ public class CompositePrimitive extends Composite {
     }
 
     public Vector2f getMousePosition() {
-        return mouse_position;
+        return mousePosition;
     }
 
     @Override

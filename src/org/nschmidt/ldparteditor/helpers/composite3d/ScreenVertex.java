@@ -34,10 +34,10 @@ class ScreenVertex implements Comparable<ScreenVertex> {
 
     @Override
     public int compareTo(ScreenVertex o) {
-        final int yComparison = this.projection.Y.compareTo(o.projection.Y);
+        final int yComparison = this.projection.y.compareTo(o.projection.y);
         if (yComparison == 0) {
             // Compare x instead
-            return this.projection.X.compareTo(o.projection.X);
+            return this.projection.x.compareTo(o.projection.x);
         }
 
         return yComparison;

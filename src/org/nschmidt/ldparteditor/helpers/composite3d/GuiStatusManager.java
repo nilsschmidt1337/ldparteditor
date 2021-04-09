@@ -50,10 +50,10 @@ import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 public enum GuiStatusManager {
     INSTANCE;
 
-    private static final DecimalFormat DF0F = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.LOCALE));
-    private static final DecimalFormat DF1F = new java.text.DecimalFormat(View.NUMBER_FORMAT1F, new DecimalFormatSymbols(MyLanguage.LOCALE));
-    private static final DecimalFormat DF2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.LOCALE));
-    private static final DecimalFormat DF4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private static final DecimalFormat DF0F = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.locale));
+    private static final DecimalFormat DF1F = new java.text.DecimalFormat(View.NUMBER_FORMAT1F, new DecimalFormatSymbols(MyLanguage.locale));
+    private static final DecimalFormat DF2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.locale));
+    private static final DecimalFormat DF4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
 
     /**
      * Updates the status text from {@linkplain Editor3DWindow}
@@ -114,11 +114,11 @@ public enum GuiStatusManager {
             sb.append(DF2F.format(Math.round(c3d.getZoom() * 10000000) / 100f));
             sb.append("% ["); //$NON-NLS-1$
             BigDecimal[] cursor3D = c3d.getCursorSnapped3Dprecise();
-            sb.append(DF4F.format(cursor3D[0].multiply(View.unit_factor)));
+            sb.append(DF4F.format(cursor3D[0].multiply(View.unitFactor)));
             sb.append("; "); //$NON-NLS-1$
-            sb.append(DF4F.format(cursor3D[1].multiply(View.unit_factor)));
+            sb.append(DF4F.format(cursor3D[1].multiply(View.unitFactor)));
             sb.append("; "); //$NON-NLS-1$
-            sb.append(DF4F.format(cursor3D[2].multiply(View.unit_factor)));
+            sb.append(DF4F.format(cursor3D[2].multiply(View.unitFactor)));
             sb.append("] "); //$NON-NLS-1$
 
             Manipulator m = c3d.getManipulator();
@@ -129,11 +129,11 @@ public enum GuiStatusManager {
                 double daz = m.getAccurateRotationZ() / Math.PI * 180.0 % 360;
                 if (dax == 0.0 && day == 0.0 && daz == 0.0) {
                     sb.append("delta: ["); //$NON-NLS-1$ I18N Needs translation!
-                    sb.append(DF4F.format(t.M30));
+                    sb.append(DF4F.format(t.m30));
                     sb.append("; "); //$NON-NLS-1$
-                    sb.append(DF4F.format(t.M31));
+                    sb.append(DF4F.format(t.m31));
                     sb.append("; "); //$NON-NLS-1$
-                    sb.append(DF4F.format(t.M32));
+                    sb.append(DF4F.format(t.m32));
                 } else {
                     sb.append("rotation: ["); //$NON-NLS-1$ I18N Needs translation!
                     sb.append(DF4F.format(dax));
@@ -188,7 +188,7 @@ public enum GuiStatusManager {
         try {
             while (vsi.hasNext()) {
                 Vertex v = vsi.next();
-                result.add(new ScreenVertex(v, pc.getScreenCoordinatesFrom3D(v.X, v.Y, v.Z)));
+                result.add(new ScreenVertex(v, pc.getScreenCoordinatesFrom3D(v.xp, v.yp, v.zp)));
             }
         } catch (NoSuchElementException consumed) {}
         return result.iterator();
@@ -198,11 +198,11 @@ public enum GuiStatusManager {
         try {
             Vertex v = vsi.next().getVertex3D();
             sb.append(" Vertex @  ["); //$NON-NLS-1$ I18N Needs translation!
-            sb.append(DF4F.format(v.X.multiply(View.unit_factor)));
+            sb.append(DF4F.format(v.xp.multiply(View.unitFactor)));
             sb.append("; "); //$NON-NLS-1$
-            sb.append(DF4F.format(v.Y.multiply(View.unit_factor)));
+            sb.append(DF4F.format(v.yp.multiply(View.unitFactor)));
             sb.append("; "); //$NON-NLS-1$
-            sb.append(DF4F.format(v.Z.multiply(View.unit_factor)));
+            sb.append(DF4F.format(v.zp.multiply(View.unitFactor)));
             sb.append("]"); //$NON-NLS-1$
         } catch (NoSuchElementException consumed) {}
     }
@@ -211,11 +211,11 @@ public enum GuiStatusManager {
         try {
             Vertex v = vsi.next().getVertex3D();
             sb.append("["); //$NON-NLS-1$ I18N Needs translation!
-            sb.append(DF2F.format(v.X.multiply(View.unit_factor)));
+            sb.append(DF2F.format(v.xp.multiply(View.unitFactor)));
             sb.append("; "); //$NON-NLS-1$
-            sb.append(DF2F.format(v.Y.multiply(View.unit_factor)));
+            sb.append(DF2F.format(v.yp.multiply(View.unitFactor)));
             sb.append("; "); //$NON-NLS-1$
-            sb.append(DF2F.format(v.Z.multiply(View.unit_factor)));
+            sb.append(DF2F.format(v.zp.multiply(View.unitFactor)));
             sb.append("]"); //$NON-NLS-1$
         } catch (NoSuchElementException consumed) {}
     }
@@ -224,11 +224,11 @@ public enum GuiStatusManager {
         try {
             Vertex v = vsi.next().getVertex3D();
             sb.append("["); //$NON-NLS-1$ I18N Needs translation!
-            sb.append(DF1F.format(v.X.multiply(View.unit_factor)));
+            sb.append(DF1F.format(v.xp.multiply(View.unitFactor)));
             sb.append(";"); //$NON-NLS-1$
-            sb.append(DF1F.format(v.Y.multiply(View.unit_factor)));
+            sb.append(DF1F.format(v.yp.multiply(View.unitFactor)));
             sb.append(";"); //$NON-NLS-1$
-            sb.append(DF1F.format(v.Z.multiply(View.unit_factor)));
+            sb.append(DF1F.format(v.zp.multiply(View.unitFactor)));
             sb.append("]"); //$NON-NLS-1$
         } catch (NoSuchElementException consumed) {}
     }
@@ -237,11 +237,11 @@ public enum GuiStatusManager {
         try {
             Vertex v = vsi.next().getVertex3D();
             sb.append("["); //$NON-NLS-1$ I18N Needs translation!
-            sb.append(DF0F.format(v.X.multiply(View.unit_factor)));
+            sb.append(DF0F.format(v.xp.multiply(View.unitFactor)));
             sb.append(";"); //$NON-NLS-1$
-            sb.append(DF0F.format(v.Y.multiply(View.unit_factor)));
+            sb.append(DF0F.format(v.yp.multiply(View.unitFactor)));
             sb.append(";"); //$NON-NLS-1$
-            sb.append(DF0F.format(v.Z.multiply(View.unit_factor)));
+            sb.append(DF0F.format(v.zp.multiply(View.unitFactor)));
             sb.append("]"); //$NON-NLS-1$
         } catch (NoSuchElementException consumed) {}
     }

@@ -67,12 +67,12 @@ public enum Rounder {
             GDataCSG.forceRecompile(datFile);
             Vertex vOld = new Vertex(st.getToReplaceX(), st.getToReplaceY(), st.getToReplaceZ());
             int coordsDecimalPlaces = userSettings.getCoordsPrecision();
-            Vertex vNew = new Vertex(onX ? vOld.X.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.X, onY ? vOld.Y.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.Y, onZ ? vOld.Z.setScale(coordsDecimalPlaces,
-                    RoundingMode.HALF_UP) : vOld.Z);
+            Vertex vNew = new Vertex(onX ? vOld.xp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.xp, onY ? vOld.yp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.yp, onZ ? vOld.zp.setScale(coordsDecimalPlaces,
+                    RoundingMode.HALF_UP) : vOld.zp);
             vm.changeVertexDirectFast(vOld, vNew, true);
-            st.setToReplaceX(vNew.X);
-            st.setToReplaceY(vNew.Y);
-            st.setToReplaceZ(vNew.Z);
+            st.setToReplaceX(vNew.xp);
+            st.setToReplaceY(vNew.yp);
+            st.setToReplaceZ(vNew.zp);
             vm.setVertexToReplace(vNew);
             vm.setModified_NoSync();
             datFile.getVertexManager().restoreHideShowState();

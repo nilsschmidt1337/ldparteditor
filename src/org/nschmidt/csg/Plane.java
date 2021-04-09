@@ -52,7 +52,7 @@ public class Plane implements Comparable<Plane> {
      * }
      * to decide if a point is on the plane.
      */
-    public static double EPSILON = 1e-3;
+    public static double epsilon = 1e-3;
 
     private static final double EPSILON_TO_COMPARE = 0.001;
 
@@ -118,7 +118,7 @@ public class Plane implements Comparable<Plane> {
         int polygonType = 0;
         for (int i = 0; i < size; i++) {
             double t = this.normal.dot(polygon.vertices.get(i)) - this.dist;
-            int type = t < -Plane.EPSILON ? BACK : t > Plane.EPSILON ? FRONT : COPLANAR;
+            int type = t < -Plane.epsilon ? BACK : t > Plane.epsilon ? FRONT : COPLANAR;
             polygonType |= type;
             types[i] = type;
         }

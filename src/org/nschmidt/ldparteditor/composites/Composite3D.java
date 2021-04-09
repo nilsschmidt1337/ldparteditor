@@ -125,15 +125,15 @@ public class Composite3D extends ScalableComposite {
     /** The menu of this composite */
     private final Menu menu;
     /** The "View Angles"-Menu */
-    private final Menu mnu_viewAngles;
+    private final Menu mnuViewAngles;
     /** The "Render Mode"-Menu */
-    public final Menu mnu_renderMode;
+    public final Menu mnuRenderMode;
     /** The "Line Mode"-Menu */
-    private final Menu mnu_lineMode;
+    private final Menu mnuLineMode;
     /** The "Synchronise..."-Menu */
-    private final Menu mnu_syncronise;
+    private final Menu mnuSyncronise;
     /** The "Manipulator"-Menu */
-    private final Menu mnu_Manipulator;
+    private final Menu mnuManipulator;
 
     /** The cursor position in the 3D space [LDU] */
     private final Vector4f cursor3D = new Vector4f(0f, 0f, 0f, 1f);
@@ -159,7 +159,7 @@ public class Composite3D extends ScalableComposite {
     /** Resolution of the viewport at n% zoom */
     private float viewportPixelPerLDU;
     /** The translation matrix of the view */
-    private final Matrix4f viewport_translation = new Matrix4f();
+    private final Matrix4f viewportTranslation = new Matrix4f();
     /** The view zoom level */
     private volatile float zoom;
 
@@ -185,18 +185,18 @@ public class Composite3D extends ScalableComposite {
     /** {@code true} if the grid is shown. */
     private boolean gridShown;
     /** The perspective value */
-    private Perspective viewport_perspective;
+    private Perspective viewportPerspective;
     /** The rotation matrix of the view */
-    private Matrix4f viewport_rotation = new Matrix4f();
+    private Matrix4f viewportRotation = new Matrix4f();
     /** The transformation matrix of the view */
-    private final Matrix4f viewport_matrix = new Matrix4f();
+    private final Matrix4f viewportMatrix = new Matrix4f();
     /** The inverse transformation matrix of the view */
-    private Matrix4f viewport_matrix_inv = new Matrix4f();
+    private Matrix4f viewportMatrixInv = new Matrix4f();
 
     /** The generator of the viewport space */
-    private final Vector4f[] viewport_generator = new Vector4f[3];
+    private final Vector4f[] viewportGenerator = new Vector4f[3];
     /** The origin axis coordinates of the viewport */
-    private final Vector3f[] viewport_origin_axis = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
+    private final Vector3f[] viewportOriginAxis = new Vector3f[] { new Vector3f(), new Vector3f(), new Vector3f(), new Vector3f() };
     /** The viewport z-Near value */
     private double zNear = 1000000f;
     /** The viewport z-Far value */
@@ -205,7 +205,7 @@ public class Composite3D extends ScalableComposite {
      * The grid information (upper left corner, grid x-direction, grid
      * y-direction, cell count)
      */
-    private final Vector4f[] grid_data = new Vector4f[] { new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f() };
+    private final Vector4f[] gridData = new Vector4f[] { new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f(), new Vector4f() };
 
     /** the {@linkplain GLCanvas} */
     private final GLCanvas canvas;
@@ -215,7 +215,7 @@ public class Composite3D extends ScalableComposite {
     /** The {@linkplain PerspectiveCalculator} instance */
     private final PerspectiveCalculator perspective = new PerspectiveCalculator(this);
     /** The {@linkplain Composite3DModifier} instance */
-    private final Composite3DModifier c3d_modifier = new Composite3DModifier(this);
+    private final Composite3DModifier c3dModifier = new Composite3DModifier(this);
     /** The {@linkplain OpenGLRenderer} instance */
     private final OpenGLRenderer openGL = WorkbenchManager.getUserSettingState().getOpenGLVersion() == 20 ?  new OpenGLRenderer20(this) : new OpenGLRenderer33(this);
     /** The {@linkplain MouseActions} instance */
@@ -255,7 +255,7 @@ public class Composite3D extends ScalableComposite {
     private boolean drawingSolidMaterials;
 
     /** The grid size */
-    private float grid_scale = 1f;
+    private float gridScale = 1f;
 
     public final MenuItem[] mntmNoBFC = new MenuItem[1];
     public final MenuItem[] mntmRandomColours = new MenuItem[1];
@@ -354,18 +354,18 @@ public class Composite3D extends ScalableComposite {
         this.setRenderMode(0);
         this.setLockableDatFileReference(Project.getFileToEdit());
         this.setDatFileLockedOnDisplay(false);
-        this.viewport_perspective = Perspective.FRONT;
+        this.viewportPerspective = Perspective.FRONT;
         this.zoom = 0.00001f;
-        Matrix4f.setIdentity(this.viewport_rotation);
-        Matrix4f.setIdentity(this.viewport_translation);
-        viewport_generator[0] = new Vector4f(1.0f, 0, 0, 1.0f);
-        viewport_generator[1] = new Vector4f(0, 1.0f, 0, 1.0f);
-        viewport_generator[2] = new Vector4f(0, 0, 1.0f, 1.0f);
+        Matrix4f.setIdentity(this.viewportRotation);
+        Matrix4f.setIdentity(this.viewportTranslation);
+        viewportGenerator[0] = new Vector4f(1.0f, 0, 0, 1.0f);
+        viewportGenerator[1] = new Vector4f(0, 1.0f, 0, 1.0f);
+        viewportGenerator[2] = new Vector4f(0, 0, 1.0f, 1.0f);
         this.viewportPixelPerLDU = this.zoom * View.PIXEL_PER_LDU;
         this.addControlListener(new ControlListener() {
             @Override
             public void controlResized(ControlEvent e) {
-                c3d_modifier.moveSashOnResize();
+                c3dModifier.moveSashOnResize();
             }
 
             @Override
@@ -436,7 +436,7 @@ public class Composite3D extends ScalableComposite {
         locked = mntmLockedDat;
         WidgetUtil(mntmLockedDat).addSelectionListener(e -> {
             if (!lockableDatFileReference.equals(View.DUMMY_DATFILE)) {
-                c3d_modifier.switchLockedDat(mntmLockedDat.getSelection());
+                c3dModifier.switchLockedDat(mntmLockedDat.getSelection());
             }
         });
         mntmLockedDat.setText(I18n.C3D_LOCK_FILE);
@@ -457,7 +457,7 @@ public class Composite3D extends ScalableComposite {
         mntmJoinInTextEditor.setText(I18n.C3D_JOIN_SELECTION);
         mntmJoinInTextEditor.setSelection(false);
 
-        if (NLogger.DEBUG) {
+        if (NLogger.debugging) {
             new MenuItem(menu, SWT.SEPARATOR);
 
             final MenuItem mntmOpenSnapshot = new MenuItem(menu, SWT.NONE);
@@ -524,16 +524,16 @@ public class Composite3D extends ScalableComposite {
         WidgetUtil(mntmGridSize).addSelectionListener(e -> new ValueDialog(getShell(), I18n.C3D_SET_GRID_SIZE, I18n.getCurrentUnit()) {
             @Override
             public void initializeSpinner() {
-                this.spn_Value[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
-                this.spn_Value[0].setMaximum(new BigDecimal("1000")); //$NON-NLS-1$
-                this.spn_Value[0].setValue(new BigDecimal(grid_scale * 50.0));
+                this.spnValuePtr[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
+                this.spnValuePtr[0].setMaximum(new BigDecimal("1000")); //$NON-NLS-1$
+                this.spnValuePtr[0].setValue(new BigDecimal(gridScale * 50.0));
             }
 
             @Override
             public void applyValue() {
-                grid_scale = (float) (this.spn_Value[0].getValue().doubleValue() / 50.0);
-                if (grid_scale < 0.1f)
-                    grid_scale = 0.1f;
+                gridScale = (float) (this.spnValuePtr[0].getValue().doubleValue() / 50.0);
+                if (gridScale < 0.1f)
+                    gridScale = 0.1f;
                 perspective.calculateOriginData();
             }
         }.open());
@@ -541,13 +541,13 @@ public class Composite3D extends ScalableComposite {
 
         {
             // MARK CMenu Viewing Angles
-            mnu_viewAngles = new Menu(mntmViewAngles);
-            mntmViewAngles.setMenu(mnu_viewAngles);
+            mnuViewAngles = new Menu(mntmViewAngles);
+            mntmViewAngles.setMenu(mnuViewAngles);
 
-            final MenuItem mntmFront = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            final MenuItem mntmFront = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmFront[0] = mntmFront;
             WidgetUtil(mntmFront).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(true);
                 perspective.setPerspective(Perspective.FRONT);
             });
@@ -555,62 +555,62 @@ public class Composite3D extends ScalableComposite {
             mntmFront.setText(I18n.PERSPECTIVE_FRONT);
             mntmFront.setSelection(true);
 
-            final MenuItem mntmBack = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            final MenuItem mntmBack = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmBack[0] = mntmBack;
             WidgetUtil(mntmBack).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(true);
                 perspective.setPerspective(Perspective.BACK);
             });
             mntmBack.setImage(ResourceManager.getImage("icon16_back.png")); //$NON-NLS-1$
             mntmBack.setText(I18n.PERSPECTIVE_BACK);
 
-            final MenuItem mntmLeft = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            final MenuItem mntmLeft = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmLeft[0] = mntmLeft;
             WidgetUtil(mntmLeft).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(true);
                 perspective.setPerspective(Perspective.LEFT);
             });
             mntmLeft.setImage(ResourceManager.getImage("icon16_left.png")); //$NON-NLS-1$
             mntmLeft.setText(I18n.PERSPECTIVE_LEFT);
 
-            final MenuItem mntmRight = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            final MenuItem mntmRight = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmRight[0] = mntmRight;
             WidgetUtil(mntmRight).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(true);
                 perspective.setPerspective(Perspective.RIGHT);
             });
             mntmRight.setImage(ResourceManager.getImage("icon16_right.png")); //$NON-NLS-1$
             mntmRight.setText(I18n.PERSPECTIVE_RIGHT);
 
-            final MenuItem mntmTop = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            final MenuItem mntmTop = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmTop[0] = mntmTop;
             WidgetUtil(mntmTop).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(true);
                 perspective.setPerspective(Perspective.TOP);
             });
             mntmTop.setImage(ResourceManager.getImage("icon16_top.png")); //$NON-NLS-1$
             mntmTop.setText(I18n.PERSPECTIVE_TOP);
 
-            final MenuItem mntmBottom = new MenuItem(mnu_viewAngles, SWT.CHECK);
+            final MenuItem mntmBottom = new MenuItem(mnuViewAngles, SWT.CHECK);
             this.mntmBottom[0] = mntmBottom;
             WidgetUtil(mntmBottom).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 ((MenuItem) e.widget).setSelection(true);
                 perspective.setPerspective(Perspective.BOTTOM);
             });
             mntmBottom.setImage(ResourceManager.getImage("icon16_bottom.png")); //$NON-NLS-1$
             mntmBottom.setText(I18n.PERSPECTIVE_BOTTOM);
 
-            new MenuItem(mnu_viewAngles, SWT.SEPARATOR);
+            new MenuItem(mnuViewAngles, SWT.SEPARATOR);
 
-            final MenuItem mntmTwoThirds = new MenuItem(mnu_viewAngles, SWT.NONE);
+            final MenuItem mntmTwoThirds = new MenuItem(mnuViewAngles, SWT.NONE);
             this.mntmTwoThirds[0] = mntmTwoThirds;
             WidgetUtil(mntmTwoThirds).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_viewAngles);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuViewAngles);
                 perspective.setPerspective(Perspective.TWO_THIRDS);
             });
             mntmTwoThirds.setImage(ResourceManager.getImage("icon16_twoThirds.png")); //$NON-NLS-1$
@@ -619,143 +619,143 @@ public class Composite3D extends ScalableComposite {
 
         {
             // MARK CMenu Manipulator
-            mnu_Manipulator = new Menu(mntmManipulator);
-            mntmManipulator.setMenu(mnu_Manipulator);
+            mnuManipulator = new Menu(mntmManipulator);
+            mntmManipulator.setMenu(mnuManipulator);
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_ORIGIN);
                 btnMani.setImage(ResourceManager.getImage("icon16_toOrigin.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_0_toOrigin());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_WORLD);
                 btnMani.setImage(ResourceManager.getImage("icon16_toWorld.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XIII_toWorld());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_ADJUST_ROTATION_CENTER);
                 btnMani.setImage(ResourceManager.getImage("icon16_adjustrotationcenter.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XIV_adjustRotationCenter());
             }
 
-            new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            new MenuItem(mnuManipulator, SWT.SEPARATOR);
 
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_REVERSE_X);
                 btnMani.setImage(ResourceManager.getImage("icon16_Xinv.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_X_XReverse());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_REVERSE_Y);
                 btnMani.setImage(ResourceManager.getImage("icon16_Yinv.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XI_YReverse());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_REVERSE_Z);
                 btnMani.setImage(ResourceManager.getImage("icon16_Zinv.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XII_ZReverse());
             }
 
-            new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            new MenuItem(mnuManipulator, SWT.SEPARATOR);
 
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_SWAP_XY);
                 btnMani.setImage(ResourceManager.getImage("icon16_XswapY.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_SwitchXY());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_SWAP_XZ);
                 btnMani.setImage(ResourceManager.getImage("icon16_XswapZ.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_SwitchXZ());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_SWAP_YZ);
                 btnMani.setImage(ResourceManager.getImage("icon16_YswapZ.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_SwitchYZ());
             }
 
-            new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            new MenuItem(mnuManipulator, SWT.SEPARATOR);
 
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_CAM_TO_MANIPULATOR);
                 btnMani.setImage(ResourceManager.getImage("icon16_cameratomanipulator.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_1_cameraToPos());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_AVG);
                 btnMani.setImage(ResourceManager.getImage("icon16_toavg.png")); //$NON-NLS-1$
                 KeyStateManager.addKeyText(btnMani, I18n.E3D_MANIPULATOR_TO_AVG, Task.MOVE_TO_AVG);
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_2_toAverage());
             }
 
-            new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            new MenuItem(mnuManipulator, SWT.SEPARATOR);
 
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_SUBFILE);
                 btnMani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_3_toSubfile());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(Cocoa.replaceCtrlByCmd(I18n.E3D_SUBFILE_TO_MANIPULATOR));
                 btnMani.setImage(ResourceManager.getImage("icon16_tosubfile.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
             }
 
-            new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            new MenuItem(mnuManipulator, SWT.SEPARATOR);
 
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_VERTEX);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestvertex.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_4_toVertex());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_EDGE);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestedge.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_5_toEdge());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_FACE);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestface.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_6_toSurface());
             }
 
-            new MenuItem(mnu_Manipulator, SWT.SEPARATOR);
+            new MenuItem(mnuManipulator, SWT.SEPARATOR);
 
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_VERTEX_N);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestvertexN.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_7_toVertexNormal());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_VERTEX_P);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestvertexN2.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_XV_toVertexPosition());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_EDGE_N);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestedgeN.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_8_toEdgeNormal());
             }
             {
-                MenuItem btnMani = new MenuItem(mnu_Manipulator, SWT.PUSH);
+                MenuItem btnMani = new MenuItem(mnuManipulator, SWT.PUSH);
                 btnMani.setText(I18n.E3D_MANIPULATOR_TO_FACE_N);
                 btnMani.setImage(ResourceManager.getImage("icon16_tonearestfaceN.png")); //$NON-NLS-1$
                 WidgetUtil(btnMani).addSelectionListener(e -> Editor3DWindow.getWindow().mntm_Manipulator_9_toSurfaceNormal());
@@ -769,56 +769,56 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmShowOrigin = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmShowOrigin[0] = mntmShowOrigin;
-            WidgetUtil(mntmShowOrigin).addSelectionListener(e -> c3d_modifier.showOrigin(mntmShowOrigin.getSelection()));
+            WidgetUtil(mntmShowOrigin).addSelectionListener(e -> c3dModifier.showOrigin(mntmShowOrigin.getSelection()));
             mntmShowOrigin.setText(I18n.E3D_ORIGIN);
             mntmShowOrigin.setSelection(true);
 
             final MenuItem mntmSwitchLights = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmSwitchLights[0] = mntmSwitchLights;
-            WidgetUtil(mntmSwitchLights).addSelectionListener(e -> c3d_modifier.switchLigths(mntmSwitchLights.getSelection()));
+            WidgetUtil(mntmSwitchLights).addSelectionListener(e -> c3dModifier.switchLigths(mntmSwitchLights.getSelection()));
             mntmSwitchLights.setText(I18n.C3D_LIGHTS);
             mntmSwitchLights.setSelection(true);
 
             final MenuItem mntmMeshLines = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmMeshLines[0] = mntmMeshLines;
-            WidgetUtil(mntmMeshLines).addSelectionListener(e -> c3d_modifier.switchMeshLines(mntmMeshLines.getSelection()));
+            WidgetUtil(mntmMeshLines).addSelectionListener(e -> c3dModifier.switchMeshLines(mntmMeshLines.getSelection()));
             mntmMeshLines.setText(I18n.C3D_MESH_LINES);
             mntmMeshLines.setSelection(true);
 
             final MenuItem mntmSubMeshLines = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmSubMeshLines[0] = mntmSubMeshLines;
-            WidgetUtil(mntmSubMeshLines).addSelectionListener(e -> c3d_modifier.switchSubMeshLines(mntmSubMeshLines.getSelection()));
+            WidgetUtil(mntmSubMeshLines).addSelectionListener(e -> c3dModifier.switchSubMeshLines(mntmSubMeshLines.getSelection()));
             mntmSubMeshLines.setText(I18n.C3D_SUBFILE_MESH_LINES);
             mntmSubMeshLines.setSelection(false);
 
             final MenuItem mntmVertices = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmVertices[0] = mntmVertices;
-            WidgetUtil(mntmVertices).addSelectionListener(e -> c3d_modifier.switchVertices(mntmVertices.getSelection()));
+            WidgetUtil(mntmVertices).addSelectionListener(e -> c3dModifier.switchVertices(mntmVertices.getSelection()));
             mntmVertices.setText(I18n.C3D_VERTICES);
             mntmVertices.setSelection(true);
 
             final MenuItem mntmHiddenVertices = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmHiddenVertices[0] = mntmHiddenVertices;
-            WidgetUtil(mntmHiddenVertices).addSelectionListener(e -> c3d_modifier.switchHiddenVertices(mntmHiddenVertices.getSelection()));
+            WidgetUtil(mntmHiddenVertices).addSelectionListener(e -> c3dModifier.switchHiddenVertices(mntmHiddenVertices.getSelection()));
             mntmHiddenVertices.setText(I18n.C3D_HIDDEN_VERTICES);
             mntmHiddenVertices.setSelection(false);
 
             final MenuItem mntmControlPointVertices = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmControlPointVertices[0] = mntmControlPointVertices;
-            WidgetUtil(mntmControlPointVertices).addSelectionListener(e -> c3d_modifier.switchCondlineControlPoints(mntmControlPointVertices.getSelection()));
+            WidgetUtil(mntmControlPointVertices).addSelectionListener(e -> c3dModifier.switchCondlineControlPoints(mntmControlPointVertices.getSelection()));
             mntmControlPointVertices.setText(I18n.C3D_CONDLINE_VERTICES);
 
             if (WorkbenchManager.getUserSettingState().getOpenGLVersion() >= 33) {
                 final MenuItem mntmSmoothShading = new MenuItem(mnuViewActions, SWT.CHECK);
                 this.mntmSmoothShading[0] = mntmSmoothShading;
-                WidgetUtil(mntmSmoothShading).addSelectionListener(e -> c3d_modifier.switchSmoothShading(mntmSmoothShading.getSelection()));
+                WidgetUtil(mntmSmoothShading).addSelectionListener(e -> c3dModifier.switchSmoothShading(mntmSmoothShading.getSelection()));
                 mntmSmoothShading.setText(I18n.C3D_SMOOTH_SHADING);
                 mntmSmoothShading.setSelection(false);
             }
 
             final MenuItem mntmStudLogo = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmStudLogo[0] = mntmStudLogo;
-            WidgetUtil(mntmStudLogo).addSelectionListener(e -> c3d_modifier.switchShowingLogo(mntmStudLogo.getSelection()));
+            WidgetUtil(mntmStudLogo).addSelectionListener(e -> c3dModifier.switchShowingLogo(mntmStudLogo.getSelection()));
             mntmStudLogo.setText(I18n.C3D_STUD_LOGO);
             mntmStudLogo.setSelection(false);
 
@@ -827,109 +827,109 @@ public class Composite3D extends ScalableComposite {
 
             final MenuItem mntmShowGrid = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmShowGrid[0] = mntmShowGrid;
-            WidgetUtil(mntmShowGrid).addSelectionListener(e -> c3d_modifier.showGrid(mntmShowGrid.getSelection()));
+            WidgetUtil(mntmShowGrid).addSelectionListener(e -> c3dModifier.showGrid(mntmShowGrid.getSelection()));
             KeyStateManager.addKeyText(mntmShowGrid, I18n.E3D_GRID, Task.SHOW_GRID);
             mntmShowGrid.setSelection(true);
 
             final MenuItem mntmShowScale = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmShowScale[0] = mntmShowScale;
             WidgetUtil(mntmShowScale).addSelectionListener(e -> {
-                c3d_modifier.showScale(mntmShowScale.getSelection());
+                c3dModifier.showScale(mntmShowScale.getSelection());
                 getCanvas().forceFocus();
             });
             KeyStateManager.addKeyText(mntmShowScale, I18n.E3D_RULER, Task.SHOW_RULER);
 
             final MenuItem mntmAxis = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmAxis[0] = mntmAxis;
-            WidgetUtil(mntmAxis).addSelectionListener(e -> c3d_modifier.switchAxis(mntmAxis.getSelection()));
+            WidgetUtil(mntmAxis).addSelectionListener(e -> c3dModifier.switchAxis(mntmAxis.getSelection()));
             mntmAxis.setText(I18n.C3D_XYZ_AXIS);
             mntmAxis.setSelection(true);
 
             final MenuItem mntmLabel = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmLabel[0] = mntmLabel;
-            WidgetUtil(mntmLabel).addSelectionListener(e -> c3d_modifier.switchLabel(mntmLabel.getSelection()));
+            WidgetUtil(mntmLabel).addSelectionListener(e -> c3dModifier.switchLabel(mntmLabel.getSelection()));
             mntmLabel.setText(I18n.C3D_PERSPECTIVE_LABEL);
             mntmLabel.setSelection(true);
 
             final MenuItem mntmAnaglyph = new MenuItem(mnuViewActions, SWT.CHECK);
             this.mntmAnaglyph[0] = mntmAnaglyph;
-            WidgetUtil(mntmAnaglyph).addSelectionListener(e -> c3d_modifier.switchAnaglyph3D(mntmAnaglyph.getSelection()));
+            WidgetUtil(mntmAnaglyph).addSelectionListener(e -> c3dModifier.switchAnaglyph3D(mntmAnaglyph.getSelection()));
             mntmAnaglyph.setText(I18n.C3D_ANAGLYPH_3D);
             mntmAnaglyph.setSelection(false);
 
             new MenuItem(mnuViewActions, SWT.SEPARATOR);
 
             MenuItem mntmSplitHorizontally = new MenuItem(mnuViewActions, SWT.NONE);
-            WidgetUtil(mntmSplitHorizontally).addSelectionListener(e -> c3d_modifier.splitViewHorizontally());
+            WidgetUtil(mntmSplitHorizontally).addSelectionListener(e -> c3dModifier.splitViewHorizontally());
             mntmSplitHorizontally.setText(I18n.E3D_SPLIT_HORIZONTALLY);
 
             MenuItem mntmSplitVertically = new MenuItem(mnuViewActions, SWT.NONE);
-            WidgetUtil(mntmSplitVertically).addSelectionListener(e -> c3d_modifier.splitViewVertically());
+            WidgetUtil(mntmSplitVertically).addSelectionListener(e -> c3dModifier.splitViewVertically());
             mntmSplitVertically.setText(I18n.E3D_SPLIT_VERTICALLY);
 
             new MenuItem(mnuViewActions, SWT.SEPARATOR);
 
             MenuItem mntmRotateView = new MenuItem(mnuViewActions, SWT.NONE);
-            WidgetUtil(mntmRotateView).addSelectionListener(e -> c3d_modifier.spinView());
+            WidgetUtil(mntmRotateView).addSelectionListener(e -> c3dModifier.spinView());
             mntmRotateView.setText(I18n.E3D_ROTATE_CLOCKWISE);
 
             new MenuItem(mnuViewActions, SWT.SEPARATOR);
 
             MenuItem mntmClose = new MenuItem(mnuViewActions, SWT.NONE);
-            WidgetUtil(mntmClose).addSelectionListener(e -> c3d_modifier.closeView());
+            WidgetUtil(mntmClose).addSelectionListener(e -> c3dModifier.closeView());
             mntmClose.setText(I18n.E3D_CLOSE_VIEW);
 
             {
                 // MARK CMenu LineMode
                 final MenuItem[] mntmAlwaysBlack = new MenuItem[1];
-                mnu_lineMode = new Menu(mntmLDrawLines);
-                mntmLDrawLines.setMenu(mnu_lineMode);
+                mnuLineMode = new Menu(mntmLDrawLines);
+                mntmLDrawLines.setMenu(mnuLineMode);
 
-                final MenuItem mntmRealPreview = new MenuItem(mnu_lineMode, SWT.CHECK);
+                final MenuItem mntmRealPreview = new MenuItem(mnuLineMode, SWT.CHECK);
                 this.mntmRealPreview[0] = mntmRealPreview;
                 WidgetUtil(mntmRealPreview).addSelectionListener(e -> {
-                    WidgetSelectionHelper.unselectAllChildButtons(mnu_lineMode);
+                    WidgetSelectionHelper.unselectAllChildButtons(mnuLineMode);
                     ((MenuItem) e.widget).setSelection(true);
                     mntmAlwaysBlack[0].setSelection(isBlackEdges());
-                    c3d_modifier.setLineMode(0);
+                    c3dModifier.setLineMode(0);
                 });
                 mntmRealPreview.setText(I18n.C3D_REAL_PREVIEW);
                 mntmRealPreview.setSelection(true);
 
-                final MenuItem mntmShowAll = new MenuItem(mnu_lineMode, SWT.CHECK);
+                final MenuItem mntmShowAll = new MenuItem(mnuLineMode, SWT.CHECK);
                 this.mntmShowAll[0] = mntmShowAll;
                 WidgetUtil(mntmShowAll).addSelectionListener(e -> {
-                    WidgetSelectionHelper.unselectAllChildButtons(mnu_lineMode);
+                    WidgetSelectionHelper.unselectAllChildButtons(mnuLineMode);
                     ((MenuItem) e.widget).setSelection(true);
                     mntmAlwaysBlack[0].setSelection(isBlackEdges());
-                    c3d_modifier.setLineMode(1);
+                    c3dModifier.setLineMode(1);
                 });
                 mntmShowAll.setText(I18n.C3D_SHOW_ALL);
 
-                final MenuItem mntmStdLines = new MenuItem(mnu_lineMode, SWT.CHECK);
+                final MenuItem mntmStdLines = new MenuItem(mnuLineMode, SWT.CHECK);
                 this.mntmStdLines[0] = mntmStdLines;
                 WidgetUtil(mntmStdLines).addSelectionListener(e -> {
-                    WidgetSelectionHelper.unselectAllChildButtons(mnu_lineMode);
+                    WidgetSelectionHelper.unselectAllChildButtons(mnuLineMode);
                     ((MenuItem) e.widget).setSelection(true);
                     mntmAlwaysBlack[0].setSelection(isBlackEdges());
-                    c3d_modifier.setLineMode(2);
+                    c3dModifier.setLineMode(2);
                 });
                 mntmStdLines.setText(I18n.C3D_SHOW_EDGES);
 
-                final MenuItem mntmHideAll = new MenuItem(mnu_lineMode, SWT.CHECK);
+                final MenuItem mntmHideAll = new MenuItem(mnuLineMode, SWT.CHECK);
                 this.mntmHideAll[0] = mntmHideAll;
                 WidgetUtil(mntmHideAll).addSelectionListener(e -> {
-                    WidgetSelectionHelper.unselectAllChildButtons(mnu_lineMode);
+                    WidgetSelectionHelper.unselectAllChildButtons(mnuLineMode);
                     ((MenuItem) e.widget).setSelection(true);
                     mntmAlwaysBlack[0].setSelection(isBlackEdges());
-                    c3d_modifier.setLineMode(4);
+                    c3dModifier.setLineMode(4);
                 });
                 mntmHideAll.setText(I18n.C3D_HIDE_ALL);
 
 
-                new MenuItem(mnu_lineMode, SWT.SEPARATOR);
+                new MenuItem(mnuLineMode, SWT.SEPARATOR);
 
-                mntmAlwaysBlack[0] = new MenuItem(mnu_lineMode, SWT.CHECK);
+                mntmAlwaysBlack[0] = new MenuItem(mnuLineMode, SWT.CHECK);
                 WidgetUtil(mntmAlwaysBlack[0]).addSelectionListener(e -> setBlackEdges(mntmAlwaysBlack[0].getSelection()));
                 mntmAlwaysBlack[0].setText(I18n.C3D_USE_ALWAYS_BLACK_LINES);
                 this.mntmAlwaysBlack[0] = mntmAlwaysBlack[0];
@@ -939,61 +939,61 @@ public class Composite3D extends ScalableComposite {
 
         {
             // MARK CMenu RenderMode
-            mnu_renderMode = new Menu(mntmRenderModes);
-            mntmRenderModes.setMenu(mnu_renderMode);
+            mnuRenderMode = new Menu(mntmRenderModes);
+            mntmRenderModes.setMenu(mnuRenderMode);
 
-            final MenuItem mntmNoBFC = new MenuItem(mnu_renderMode, SWT.CHECK);
+            final MenuItem mntmNoBFC = new MenuItem(mnuRenderMode, SWT.CHECK);
             this.mntmNoBFC[0] = mntmNoBFC;
             WidgetUtil(mntmNoBFC).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3d_modifier.setRenderMode(0);
+                c3dModifier.setRenderMode(0);
                 getRenderer().disposeAllTextures();
             });
             mntmNoBFC.setText(I18n.C3D_NO_BACKFACE_CULLING);
             mntmNoBFC.setSelection(true);
 
-            final MenuItem mntmRandomColours = new MenuItem(mnu_renderMode, SWT.CHECK);
+            final MenuItem mntmRandomColours = new MenuItem(mnuRenderMode, SWT.CHECK);
             this.mntmRandomColours[0] = mntmRandomColours;
             WidgetUtil(mntmRandomColours).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3d_modifier.setRenderMode(1);
+                c3dModifier.setRenderMode(1);
                 getRenderer().disposeAllTextures();
             });
             mntmRandomColours.setText(I18n.C3D_RANDOM_COLOURS);
 
-            final MenuItem mntmBFCFrontBack = new MenuItem(mnu_renderMode, SWT.CHECK);
+            final MenuItem mntmBFCFrontBack = new MenuItem(mnuRenderMode, SWT.CHECK);
             this.mntmBFCFrontBack[0] = mntmBFCFrontBack;
             WidgetUtil(mntmBFCFrontBack).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3d_modifier.setRenderMode(2);
+                c3dModifier.setRenderMode(2);
                 getRenderer().disposeAllTextures();
             });
             mntmBFCFrontBack.setText(I18n.C3D_GREEN_RED);
 
-            final MenuItem mntmBFCBack = new MenuItem(mnu_renderMode, SWT.CHECK);
+            final MenuItem mntmBFCBack = new MenuItem(mnuRenderMode, SWT.CHECK);
             this.mntmBFCBack[0] = mntmBFCBack;
             WidgetUtil(mntmBFCBack).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3d_modifier.setRenderMode(3);
+                c3dModifier.setRenderMode(3);
                 getRenderer().disposeAllTextures();
             });
             mntmBFCBack.setText(I18n.C3D_RED_BACKFACES);
 
-            final MenuItem mntmBFCReal = new MenuItem(mnu_renderMode, SWT.CHECK);
+            final MenuItem mntmBFCReal = new MenuItem(mnuRenderMode, SWT.CHECK);
             this.mntmBFCReal[0] = mntmBFCReal;
             WidgetUtil(mntmBFCReal).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3d_modifier.setRenderMode(4);
+                c3dModifier.setRenderMode(4);
                 getRenderer().disposeAllTextures();
             });
             mntmBFCReal.setText(I18n.C3D_REAL_BACKFACE_CULLING);
 
-            final MenuItem mntmBFCTextured = new MenuItem(mnu_renderMode, SWT.CHECK);
+            final MenuItem mntmBFCTextured = new MenuItem(mnuRenderMode, SWT.CHECK);
             this.mntmBFCTextured[0] = mntmBFCTextured;
             WidgetUtil(mntmBFCTextured).addSelectionListener(e -> {
 
@@ -1005,40 +1005,40 @@ public class Composite3D extends ScalableComposite {
                     WorkbenchManager.getUserSettingState().setBfcCertificationRequiredForLDrawMode(true);
                 }
 
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3d_modifier.setRenderMode(5);
+                c3dModifier.setRenderMode(5);
             });
             mntmBFCTextured.setText(I18n.C3D_LDRAW_STANDARD);
 
-            new MenuItem(mnu_renderMode, SWT.SEPARATOR);
+            new MenuItem(mnuRenderMode, SWT.SEPARATOR);
 
-            final MenuItem mntmCondlineMode = new MenuItem(mnu_renderMode, SWT.CHECK);
+            final MenuItem mntmCondlineMode = new MenuItem(mnuRenderMode, SWT.CHECK);
             this.mntmCondlineMode[0] = mntmCondlineMode;
             WidgetUtil(mntmCondlineMode).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3d_modifier.setRenderMode(6);
+                c3dModifier.setRenderMode(6);
                 getRenderer().disposeAllTextures();
             });
             mntmCondlineMode.setText(I18n.C3D_CONDLINE_MODE);
 
-            final MenuItem mntmCoplanarityHeatmapMode = new MenuItem(mnu_renderMode, SWT.CHECK);
+            final MenuItem mntmCoplanarityHeatmapMode = new MenuItem(mnuRenderMode, SWT.CHECK);
             this.mntmCoplanarityHeatmapMode[0] = mntmCoplanarityHeatmapMode;
             WidgetUtil(mntmCoplanarityHeatmapMode).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3d_modifier.setRenderMode(7);
+                c3dModifier.setRenderMode(7);
                 getRenderer().disposeAllTextures();
             });
             mntmCoplanarityHeatmapMode.setText(I18n.C3D_COPLANARITY_MODE);
 
-            final MenuItem mntmWireframeMode = new MenuItem(mnu_renderMode, SWT.CHECK);
+            final MenuItem mntmWireframeMode = new MenuItem(mnuRenderMode, SWT.CHECK);
             this.mntmWireframeMode[0] = mntmWireframeMode;
             WidgetUtil(mntmWireframeMode).addSelectionListener(e -> {
-                WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+                WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
                 ((MenuItem) e.widget).setSelection(true);
-                c3d_modifier.setRenderMode(-1);
+                c3dModifier.setRenderMode(-1);
                 getRenderer().disposeAllTextures();
             });
             mntmWireframeMode.setText(I18n.C3D_WIREFRAME);
@@ -1046,10 +1046,10 @@ public class Composite3D extends ScalableComposite {
 
         {
             // MARK CMenu Synchronise
-            mnu_syncronise = new Menu(mntmSynchronise);
-            mntmSynchronise.setMenu(mnu_syncronise);
+            mnuSyncronise = new Menu(mntmSynchronise);
+            mntmSynchronise.setMenu(mnuSyncronise);
 
-            final MenuItem mntmSyncroniseManipulator = new MenuItem(mnu_syncronise, SWT.CHECK);
+            final MenuItem mntmSyncroniseManipulator = new MenuItem(mnuSyncronise, SWT.CHECK);
             this.mntmSyncManipulator[0] = mntmSyncroniseManipulator;
             WidgetUtil(mntmSyncroniseManipulator).addSelectionListener(e -> {
                 setSyncManipulator(mntmSyncManipulator[0].getSelection());
@@ -1062,7 +1062,7 @@ public class Composite3D extends ScalableComposite {
             });
             mntmSyncroniseManipulator.setText(I18n.E3D_SYNC_MANIPULATOR);
 
-            final MenuItem mntmSyncTranslation = new MenuItem(mnu_syncronise, SWT.CHECK);
+            final MenuItem mntmSyncTranslation = new MenuItem(mnuSyncronise, SWT.CHECK);
             this.mntmSyncTranslate[0] = mntmSyncTranslation;
             WidgetUtil(mntmSyncTranslation).addSelectionListener(e -> {
                 setSyncTranslation(mntmSyncTranslate[0].getSelection());
@@ -1075,7 +1075,7 @@ public class Composite3D extends ScalableComposite {
             });
             mntmSyncTranslation.setText(I18n.E3D_SYNC_TRANSLATION);
 
-            final MenuItem mntmSyncroniseZoom = new MenuItem(mnu_syncronise, SWT.CHECK);
+            final MenuItem mntmSyncroniseZoom = new MenuItem(mnuSyncronise, SWT.CHECK);
             this.mntmSyncZoom[0] = mntmSyncroniseZoom;
             WidgetUtil(mntmSyncroniseZoom).addSelectionListener(e -> {
                 setSyncZoom(mntmSyncZoom[0].getSelection());
@@ -1371,28 +1371,28 @@ public class Composite3D extends ScalableComposite {
      * @return The translation matrix of the view
      */
     public Matrix4f getTranslation() {
-        return viewport_translation;
+        return viewportTranslation;
     }
 
     /**
      * @return The rotation matrix of the view
      */
     public Matrix4f getRotation() {
-        return viewport_rotation;
+        return viewportRotation;
     }
 
     /**
      * @return The generator array of the view
      */
     public Vector4f[] getGenerator() {
-        return viewport_generator;
+        return viewportGenerator;
     }
 
     /**
      * @return the {@linkplain Perspective}-Index of the viewport
      */
     public Perspective getPerspectiveIndex() {
-        return viewport_perspective;
+        return viewportPerspective;
     }
 
     /**
@@ -1402,25 +1402,25 @@ public class Composite3D extends ScalableComposite {
      *            the {@linkplain Perspective}-Index
      */
     public void setPerspectiveIndex(Perspective perspective) {
-        this.viewport_perspective = perspective;
+        this.viewportPerspective = perspective;
     }
 
     /**
      * @return the origin-axis of the viewport
      */
     public Vector3f[] getViewportOriginAxis() {
-        return viewport_origin_axis;
+        return viewportOriginAxis;
     }
 
     /**
      * @return The transformation matrix of the viewport which was last drawn
      */
     public Matrix4f getViewport() {
-        return viewport_matrix;
+        return viewportMatrix;
     }
 
     public Matrix4f getViewport_Inverse() {
-        return viewport_matrix_inv;
+        return viewportMatrixInv;
     }
 
     /**
@@ -1431,8 +1431,8 @@ public class Composite3D extends ScalableComposite {
      */
     public void setViewport(Matrix4f matrix) {
         GData.CACHE_viewByProjection.clear();
-        viewport_matrix.load(matrix);
-        viewport_matrix_inv = (Matrix4f) matrix.invert();
+        viewportMatrix.load(matrix);
+        viewportMatrixInv = (Matrix4f) matrix.invert();
     }
 
     /**
@@ -1475,7 +1475,7 @@ public class Composite3D extends ScalableComposite {
      * @return the {@linkplain Composite3DModifier}
      */
     public Composite3DModifier getModifier() {
-        return c3d_modifier;
+        return c3dModifier;
     }
 
     /**
@@ -1491,7 +1491,7 @@ public class Composite3D extends ScalableComposite {
      * @return the receiver's menu
      */
     public Menu getViewAnglesMenu() {
-        return mnu_viewAngles;
+        return mnuViewAngles;
     }
 
     /**
@@ -1553,7 +1553,7 @@ public class Composite3D extends ScalableComposite {
      *         y-direction, cell count)
      */
     public Vector4f[] getGrid() {
-        return grid_data;
+        return gridData;
     }
 
     /**
@@ -1650,14 +1650,14 @@ public class Composite3D extends ScalableComposite {
      * @return The grid size as a scaling factor
      */
     public float getGrid_scale() {
-        return grid_scale;
+        return gridScale;
     }
 
     /**
      * Sets the grid size scaling factor
      */
     public void setGrid_scale(float scale) {
-        this.grid_scale = scale;
+        this.gridScale = scale;
     }
 
     public DatFile getLockableDatFileReference() {
@@ -2237,32 +2237,32 @@ public class Composite3D extends ScalableComposite {
         state.setZoom_exponent(getPerspectiveCalculator().getZoom_exponent());
         state.setOffset(getPerspectiveCalculator().getOffset());
 
-        state.getViewport_translation().load(viewport_translation);
-        state.getViewport_rotation().load(viewport_rotation);
-        state.getViewport_matrix().load(viewport_matrix);
-        state.getViewport_matrix_inv().load(viewport_matrix_inv);
+        state.getViewport_translation().load(viewportTranslation);
+        state.getViewport_rotation().load(viewportRotation);
+        state.getViewport_matrix().load(viewportMatrix);
+        state.getViewport_matrix_inv().load(viewportMatrixInv);
 
         for (int i = 0; i < 3; i++) {
-            state.getViewport_generator()[i] = viewport_generator[i];
+            state.getViewport_generator()[i] = viewportGenerator[i];
         }
         for (int i = 0; i < 4; i++) {
-            state.getViewport_origin_axis()[i] = viewport_origin_axis[i];
+            state.getViewport_origin_axis()[i] = viewportOriginAxis[i];
         }
 
         state.setzFar(zFar);
         state.setzNear(zNear);
 
         // FIXME !Save state here for C3D
-        Editor3DWindow.getWindow().fillC3DState(state.STATE, this);
+        Editor3DWindow.getWindow().fillC3DState(state.state, this);
 
         return state;
     }
 
     public void importState(Composite3DViewState state) {
-        WidgetSelectionHelper.unselectAllChildButtons(mnu_renderMode);
+        WidgetSelectionHelper.unselectAllChildButtons(mnuRenderMode);
 
         // FIXME !Load state here for C3D
-        loadState(state.STATE);
+        loadState(state.state);
         manipulator.copyState(state.getManipulator());
 
         viewportPixelPerLDU = state.getViewportPixelPerLDU();
@@ -2271,16 +2271,16 @@ public class Composite3D extends ScalableComposite {
         getPerspectiveCalculator().setZoom_exponent(state.getZoom_exponent());
         getPerspectiveCalculator().setOffset(state.getOffset());
 
-        viewport_translation.load(state.getViewport_translation());
-        viewport_rotation.load(state.getViewport_rotation());
-        viewport_matrix.load(state.getViewport_matrix());
-        viewport_matrix_inv.load(state.getViewport_matrix_inv());
+        viewportTranslation.load(state.getViewport_translation());
+        viewportRotation.load(state.getViewport_rotation());
+        viewportMatrix.load(state.getViewport_matrix());
+        viewportMatrixInv.load(state.getViewport_matrix_inv());
 
         for (int i = 0; i < 3; i++) {
-            viewport_generator[i] = state.getViewport_generator()[i];
+            viewportGenerator[i] = state.getViewport_generator()[i];
         }
         for (int i = 0; i < 4; i++) {
-            viewport_origin_axis[i] = state.getViewport_origin_axis()[i];
+            viewportOriginAxis[i] = state.getViewport_origin_axis()[i];
         }
 
         zFar = state.getzFar();

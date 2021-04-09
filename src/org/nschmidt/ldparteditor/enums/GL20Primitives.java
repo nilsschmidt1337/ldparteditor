@@ -39,6 +39,6 @@ public enum GL20Primitives {
     public static final GearGL20 GEAR_MENU = new GearGL20(.005f, 16, .005f, .0025f);
     public static final GearGL20 GEAR_MENU_INV = new GearGL20(-.005f, 16, -.005f, -.0025f);
 
-    public static SphereGL20 SPHERE = new SphereGL20(100f, 8);
-    public static SphereGL20 SPHERE_INV = new SphereGL20(-100f, 8);
+    public static SphereGL20 sphere = new SphereGL20(100f, 8);
+    public static SphereGL20 sphereInv = new SphereGL20(-100f, 8);
 }

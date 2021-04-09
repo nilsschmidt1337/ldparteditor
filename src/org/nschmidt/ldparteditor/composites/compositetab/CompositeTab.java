@@ -112,8 +112,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class CompositeTab extends CompositeTabDesign {
 
-    private final SyntaxFormatter syntaxFormatter = new SyntaxFormatter(compositeText[0]);
-    private final int caretHeight = compositeText[0].getCaret().getSize().y;
+    private final SyntaxFormatter syntaxFormatter = new SyntaxFormatter(compositeTextPtr[0]);
+    private final int caretHeight = compositeTextPtr[0].getCaret().getSize().y;
 
     /** The state of this tab */
     private CompositeTabState state = new CompositeTabState();
@@ -150,7 +150,7 @@ public class CompositeTab extends CompositeTabDesign {
         this.state.setTab(this);
 
         {
-            DropTarget dt = new DropTarget(compositeText[0], DND.DROP_DEFAULT | DND.DROP_MOVE );
+            DropTarget dt = new DropTarget(compositeTextPtr[0], DND.DROP_DEFAULT | DND.DROP_MOVE );
             dt.setTransfer(new Transfer[] { MyDummyTransfer2.getInstance(), FileTransfer.getInstance() });
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
@@ -239,14 +239,14 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             });
         }
-        compositeText[0].addLineStyleListener(new LineStyleListener() {
+        compositeTextPtr[0].addLineStyleListener(new LineStyleListener() {
             @Override
             public void lineGetStyle(final LineStyleEvent e) {
                 // So the line will be formated with the syntax formatter from
                 // the CompositeText.
                 final DatFile df = state.getFileNameObj();
                 final VertexManager vm = df.getVertexManager();
-                final GData data = df.getDrawPerLine_NOCLONE().getValue(compositeText[0].getLineAtOffset(e.lineOffset) + 1);
+                final GData data = df.getDrawPerLine_NOCLONE().getValue(compositeTextPtr[0].getLineAtOffset(e.lineOffset) + 1);
                 boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
 
                 if (data != null && data.type() == 0) {
@@ -268,7 +268,7 @@ public class CompositeTab extends CompositeTabDesign {
             }
         });
         final boolean[] isDelPressed = new boolean[] { false };
-        compositeText[0].addVerifyKeyListener(new VerifyKeyListener() {
+        compositeTextPtr[0].addVerifyKeyListener(new VerifyKeyListener() {
 
             @Override
             public void verifyKey(VerifyEvent event) {
@@ -280,13 +280,13 @@ public class CompositeTab extends CompositeTabDesign {
             }
 
         });
-        compositeText[0].addVerifyListener(new VerifyListener() {
+        compositeTextPtr[0].addVerifyListener(new VerifyListener() {
 
             @Override
             // only POSSIBLE approach to get this working, VerifyKey has NO use!
             public void verifyText(VerifyEvent event) {
                 event.doit = true;
-                state.setDoingPaste(event.text.length() > 1 && compositeText[0].isFocusControl() && state.getFileNameObj().getVertexManager().isUpdated());
+                state.setDoingPaste(event.text.length() > 1 && compositeTextPtr[0].isFocusControl() && state.getFileNameObj().getVertexManager().isUpdated());
                 final DatFile dat = state.getFileNameObj();
                 final VertexManager vm = dat.getVertexManager();
                 if (vm.getVertexToReplace() != null) {
@@ -294,8 +294,8 @@ public class CompositeTab extends CompositeTabDesign {
                         // Replaced vertex manipulation check
                         NLogger.debug(getClass(), "Vertex Manipulation is ACTIVE"); //$NON-NLS-1$
 
-                        event.start = compositeText[0].getSelection().x;
-                        event.end = compositeText[0].getSelection().y;
+                        event.start = compositeTextPtr[0].getSelection().x;
+                        event.end = compositeTextPtr[0].getSelection().y;
 
                         final boolean doReplace = event.start != event.end;
                         boolean foundVertexMetacommand = false;
@@ -311,11 +311,11 @@ public class CompositeTab extends CompositeTabDesign {
                             }
                         }
 
-                        state.currentCaretPositionLine = compositeText[0].getLineAtOffset(event.start);
-                        state.currentCaretPositionChar = compositeText[0].getCaretOffset() - compositeText[0].getOffsetAtLine(state.currentCaretPositionLine);
-                        state.currentCaretTopIndex = compositeText[0].getTopIndex();
+                        state.currentCaretPositionLine = compositeTextPtr[0].getLineAtOffset(event.start);
+                        state.currentCaretPositionChar = compositeTextPtr[0].getCaretOffset() - compositeTextPtr[0].getOffsetAtLine(state.currentCaretPositionLine);
+                        state.currentCaretTopIndex = compositeTextPtr[0].getTopIndex();
 
-                        String oldLine = compositeText[0].getLine(state.currentCaretPositionLine);
+                        String oldLine = compositeTextPtr[0].getLine(state.currentCaretPositionLine);
                         String newLine;
                         NLogger.debug(getClass(), "Old Line {0}", oldLine); //$NON-NLS-1$
                         NLogger.debug(getClass(), "Key Char {0}", event.character); //$NON-NLS-1$
@@ -472,7 +472,7 @@ public class CompositeTab extends CompositeTabDesign {
 
                             NLogger.debug(getClass(), "VerifyEvent.Text {0}", event.text); //$NON-NLS-1$
                             if (doReplace) {
-                                int off = compositeText[0].getOffsetAtLine(state.currentCaretPositionLine);
+                                int off = compositeTextPtr[0].getOffsetAtLine(state.currentCaretPositionLine);
                                 newLine = oldLine.substring(0, Math.max(0, event.start - off)) + event.text + oldLine.substring(Math.max(0, event.end - off));
                             } else if (event.text.length() == 0 && state.currentCaretPositionChar > 0) {
                                 if (!isDelPressed[0])
@@ -576,7 +576,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     event.doit = false;
                                     vm.setModified_NoSync();
                                     state.currentCaretPositionChar = off2;
-                                    compositeText[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
+                                    compositeTextPtr[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
 
                                 } else {
                                     foundValidVertex = false;
@@ -642,7 +642,7 @@ public class CompositeTab extends CompositeTabDesign {
                                             event.doit = false;
                                             vm.setModified_NoSync();
                                             state.currentCaretPositionChar = off2;
-                                            compositeText[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
+                                            compositeTextPtr[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
                                         } else {
                                             foundValidVertex = false;
                                             try {
@@ -707,7 +707,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                     event.doit = false;
                                                     vm.setModified_NoSync();
                                                     state.currentCaretPositionChar = off2;
-                                                    compositeText[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
+                                                    compositeTextPtr[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
                                                 }
                                             }
                                         }
@@ -722,8 +722,8 @@ public class CompositeTab extends CompositeTabDesign {
 
         // The line number canvas should be updated when the text contents are
         // modified
-        compositeText[0].addExtendedModifyListener(new ExtendedModifyListener() {
-            private int old_line_count;
+        compositeTextPtr[0].addExtendedModifyListener(new ExtendedModifyListener() {
+            private int oldLineCount;
 
             @Override
             public void modifyText(final ExtendedModifyEvent event) {
@@ -734,18 +734,18 @@ public class CompositeTab extends CompositeTabDesign {
 
                 ViewIdleManager.pause[0].compareAndSet(false, true);
 
-                final String text = compositeText[0].getText();
+                final String text = compositeTextPtr[0].getText();
 
-                int newLineCount = compositeText[0].getLineCount();
-                if (old_line_count != newLineCount) {
-                    old_line_count = newLineCount;
+                int newLineCount = compositeTextPtr[0].getLineCount();
+                if (oldLineCount != newLineCount) {
+                    oldLineCount = newLineCount;
                     int numberOfDigits = (int) Math.log10(newLineCount);
-                    ((GridData) canvas_lineNumberArea[0].getLayoutData()).widthHint = (numberOfDigits + (NLogger.DEBUG ? 26 : 2)) * Font.MONOSPACE_WIDTH;
-                    canvas_lineNumberArea[0].getParent().layout();
+                    ((GridData) canvasLineNumberAreaPtr[0].getLayoutData()).widthHint = (numberOfDigits + (NLogger.debugging ? 26 : 2)) * Font.MONOSPACE_WIDTH;
+                    canvasLineNumberAreaPtr[0].getParent().layout();
                 }
                 if (event.length == 0) {
                     // Text deleted
-                    canvas_lineNumberArea[0].redraw();
+                    canvasLineNumberAreaPtr[0].redraw();
                 } else {
                     // Text inserted
                     if (state.isDoingPaste() && Editor3DWindow.getWindow().isMovingAdjacentData() && WorkbenchManager.getUserSettingState().isDisableMADtext()) {
@@ -774,36 +774,36 @@ public class CompositeTab extends CompositeTabDesign {
 
                 if (!state.isSync()) {
                     boolean doRedraw = !vm.getSelectedData().isEmpty();
-                    if (compositeText[0].isFocusControl()) {
+                    if (compositeTextPtr[0].isFocusControl()) {
                         vm.clearSelection();
                     }
                     if (doRedraw) {
-                        compositeText[0].redraw();
+                        compositeTextPtr[0].redraw();
                     }
                 }
                 // Reset the caret position when a vertex was modified
                 if (vm.getVertexToReplace() != null) {
                     if (vm.isModified()) {
                         try {
-                            compositeText[0].setCaretOffset(compositeText[0].getOffsetAtLine(state.currentCaretPositionLine) + state.currentCaretPositionChar);
+                            compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(state.currentCaretPositionLine) + state.currentCaretPositionChar);
                         } catch (IllegalArgumentException iae) {
                             int diff = 1;
                             int trys = 0;
                             while (true) {
                                 try {
-                                    compositeText[0].setCaretOffset(compositeText[0].getOffsetAtLine(state.currentCaretPositionLine) + state.currentCaretPositionChar - diff);
+                                    compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(state.currentCaretPositionLine) + state.currentCaretPositionChar - diff);
                                     break;
                                 } catch (IllegalArgumentException iae2) {
                                     trys++;
                                     diff++;
                                     if (trys > 10) {
-                                        compositeText[0].setCaretOffset(0);
+                                        compositeTextPtr[0].setCaretOffset(0);
                                         break;
                                     }
                                 }
                             }
                         }
-                        compositeText[0].setTopIndex(state.currentCaretTopIndex);
+                        compositeTextPtr[0].setTopIndex(state.currentCaretTopIndex);
                         NLogger.debug(getClass(), "Caret Reset"); //$NON-NLS-1$
                         vm.getSelectedVertices().clear();
                         vm.getSelectedVertices().add(vm.getVertexToReplace());
@@ -811,40 +811,40 @@ public class CompositeTab extends CompositeTabDesign {
                 }
 
                 if (state.isSync()) {
-                    state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0],
-                            treeItem_Duplicates[0], lbl_ProblemCount[0], false);
+                    state.getFileNameObj().parseForError(compositeTextPtr[0], event.start, off, event.length, event.replacedText, treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0],
+                            treeItemDuplicatesPtr[0], lblProblemCountPtr[0], false);
                     vm.setModified(false, true);
                 } else {
                     if (!vm.isModified()) {
                         Display.getCurrent().syncExec(new Runnable() {
                             @Override
                             public void run() {
-                                state.getFileNameObj().parseForErrorAndData(compositeText[0], event.start, off, event.length, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0],
-                                        treeItem_Duplicates[0], lbl_ProblemCount[0]);
+                                state.getFileNameObj().parseForErrorAndData(compositeTextPtr[0], event.start, off, event.length, event.replacedText, treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0],
+                                        treeItemDuplicatesPtr[0], lblProblemCountPtr[0]);
                             }
                         });
                     } else {
                         vm.setModified(false, true);
                         GData.CACHE_warningsAndErrors.clear();
-                        state.getFileNameObj().parseForError(compositeText[0], event.start, off, event.length, event.replacedText, treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0],
-                                treeItem_Duplicates[0], lbl_ProblemCount[0], true);
+                        state.getFileNameObj().parseForError(compositeTextPtr[0], event.start, off, event.length, event.replacedText, treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0],
+                                treeItemDuplicatesPtr[0], lblProblemCountPtr[0], true);
                     }
                     vm.setUpdated(true);
                 }
-                int errorCount = treeItem_Errors[0].getItems().size();
-                int warningCount = treeItem_Warnings[0].getItems().size();
-                int hintCount = treeItem_Hints[0].getItems().size();
-                int duplicateCount = treeItem_Duplicates[0].getItems().size();
+                int errorCount = treeItemErrorsPtr[0].getItems().size();
+                int warningCount = treeItemWarningsPtr[0].getItems().size();
+                int hintCount = treeItemHintsPtr[0].getItems().size();
+                int duplicateCount = treeItemDuplicatesPtr[0].getItems().size();
                 String errors = errorCount == 1 ? I18n.EDITORTEXT_ERROR : I18n.EDITORTEXT_ERRORS;
                 String warnings = warningCount == 1 ? I18n.EDITORTEXT_WARNING : I18n.EDITORTEXT_WARNINGS;
                 String hints = hintCount == 1 ? I18n.EDITORTEXT_OTHER : I18n.EDITORTEXT_OTHERS;
                 String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_DUPLICATE : I18n.EDITORTEXT_DUPLICATES;
-                lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-                lbl_ProblemCount[0].getParent().layout();
+                lblProblemCountPtr[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                lblProblemCountPtr[0].getParent().layout();
             }
         });
         final CompositeTab me = this;
-        compositeText[0].addListener(SWT.KeyDown, event -> {
+        compositeTextPtr[0].addListener(SWT.KeyDown, event -> {
 
             final DatFile df = state.getFileNameObj();
             final VertexManager vm = df.getVertexManager();
@@ -869,9 +869,9 @@ public class CompositeTab extends CompositeTabDesign {
 
                 switch (task) {
                 case EDITORTEXT_REPLACE_VERTEX:
-                    if (compositeText[0].getEditable()) {
+                    if (compositeTextPtr[0].getEditable()) {
                         if (!vm.isUpdated()) return;
-                        VertexMarker.markTheVertex(state, compositeText[0], df);
+                        VertexMarker.markTheVertex(state, compositeTextPtr[0], df);
                         if (state.isReplacingVertex()) {
                             if (state.window[0] == Editor3DWindow.getWindow()) {
                                 Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SYNC_EDIT);
@@ -884,11 +884,11 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                     break;
                 case EDITORTEXT_ESC:
-                    if (compositeText[0].getEditable()) {
+                    if (compositeTextPtr[0].getEditable()) {
                         if (!vm.isUpdated()) return;
                         state.setReplacingVertex(false);
                         vm.setVertexToReplace(null);
-                        compositeText[0].redraw(0, 0, compositeText[0].getBounds().width, compositeText[0].getBounds().height, true);
+                        compositeTextPtr[0].redraw(0, 0, compositeTextPtr[0].getBounds().width, compositeTextPtr[0].getBounds().height, true);
                         if (state.window[0] == Editor3DWindow.getWindow()) {
                             Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SYNC_EDIT_DEACTIVATED);
                             Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
@@ -899,46 +899,46 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                     break;
                 case EDITORTEXT_QUICKFIX:
-                    if (compositeText[0].getEditable()) {
+                    if (compositeTextPtr[0].getEditable()) {
                         if (!vm.isUpdated()) return;
                         HashSet<TreeItem> items = new HashSet<>();
-                        int offset = compositeText[0].getOffsetAtLine(Math.max(Math.min(state.currentLineIndex, compositeText[0].getLineCount() - 1), 0));
-                        for (TreeItem t1 : treeItem_Hints[0].getItems()) {
+                        int offset = compositeTextPtr[0].getOffsetAtLine(Math.max(Math.min(state.currentLineIndex, compositeTextPtr[0].getLineCount() - 1), 0));
+                        for (TreeItem t1 : treeItemHintsPtr[0].getItems()) {
                             if (!t1.getText(0).isEmpty() && ((Integer) t1.getData()).intValue() == offset) {
                                 NLogger.debug(getClass(), "Found hint at {0}", t1.getText(1)); //$NON-NLS-1$
                                 items.add(t1);
                             }
                         }
-                        for (TreeItem t2 : treeItem_Warnings[0].getItems()) {
+                        for (TreeItem t2 : treeItemWarningsPtr[0].getItems()) {
                             if (!t2.getText(0).isEmpty() && ((Integer) t2.getData()).intValue() == offset) {
                                 NLogger.debug(getClass(), "Found warning at {0}", t2.getText(1)); //$NON-NLS-1$
                                 items.add(t2);
                             }
                         }
-                        for (TreeItem t3 : treeItem_Errors[0].getItems()) {
+                        for (TreeItem t3 : treeItemErrorsPtr[0].getItems()) {
                             if (!t3.getText(0).isEmpty() && ((Integer) t3.getData()).intValue() == offset) {
                                 NLogger.debug(getClass(), "Found error at {0}", t3.getText(1)); //$NON-NLS-1$
                                 items.add(t3);
                             }
                         }
-                        for (TreeItem t4 : treeItem_Duplicates[0].getItems()) {
+                        for (TreeItem t4 : treeItemDuplicatesPtr[0].getItems()) {
                             if (!t4.getText(0).isEmpty() && ((Integer) t4.getData()).intValue() == offset) {
                                 NLogger.debug(getClass(), "Found duplicate at {0}", t4.getText(1)); //$NON-NLS-1$
                                 items.add(t4);
                             }
                         }
 
-                        QuickFixer.fixTextIssues(compositeText[0], items, df);
+                        QuickFixer.fixTextIssues(compositeTextPtr[0], items, df);
                     }
                     break;
                 case EDITORTEXT_SELECTALL:
-                    compositeText[0].setSelection(0, compositeText[0].getText().length());
+                    compositeTextPtr[0].setSelection(0, compositeTextPtr[0].getText().length());
                     break;
                 case EDITORTEXT_INLINE:
                 {
                     if (!vm.isUpdated()) return;
                     NLogger.debug(getClass(), "Inlining per action key.."); //$NON-NLS-1$
-                    final StyledText st1 = compositeText[0];
+                    final StyledText st1 = compositeTextPtr[0];
                     int s11 = st1.getSelectionRange().x;
                     int s21 = s11 + st1.getSelectionRange().y;
                     int fromLine1 = s11 > -1 ? st1.getLineAtOffset(s11) : s11 * -1;
@@ -957,9 +957,9 @@ public class CompositeTab extends CompositeTabDesign {
                 case EDITORTEXT_ROUND:
                 {
                     if (!vm.isUpdated()) return;
-                    if (new RoundDialog(compositeText[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
+                    if (new RoundDialog(compositeTextPtr[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
                     NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$
-                    final StyledText st2 = compositeText[0];
+                    final StyledText st2 = compositeTextPtr[0];
                     int s12 = st2.getSelectionRange().x;
                     int s22 = s12 + st2.getSelectionRange().y;
                     int fromLine2 = s12 > -1 ? st2.getLineAtOffset(s12) : s12 * -1;
@@ -984,7 +984,7 @@ public class CompositeTab extends CompositeTabDesign {
                 break;
                 case EDITORTEXT_SAVE:
                     if (!df.isReadOnly()) {
-                        final Shell sh3 = compositeText[0].getDisplay().getActiveShell();
+                        final Shell sh3 = compositeTextPtr[0].getDisplay().getActiveShell();
                         if (df.save()) {
                             Editor3DWindow.getWindow().addRecentFile(df);
                             Project.removeUnsavedFile(df);
@@ -999,7 +999,7 @@ public class CompositeTab extends CompositeTabDesign {
                     break;
                 case EDITORTEXT_FIND:
                 {
-                    final Shell sh4 = compositeText[0].getDisplay().getActiveShell();
+                    final Shell sh4 = compositeTextPtr[0].getDisplay().getActiveShell();
                     if (!vm.isUpdated() || sh4 == null) return;
                     NLogger.debug(getClass(), "Find and Replace.."); //$NON-NLS-1$
                     SearchWindow win = Editor3DWindow.getWindow().getSearchWindow();
@@ -1017,7 +1017,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (!vm.isUpdated() || df.isReadOnly()) return;
                     NLogger.debug(getClass(), "Insert history line.."); //$NON-NLS-1$
 
-                    final StyledText st3 = compositeText[0];
+                    final StyledText st3 = compositeTextPtr[0];
                     int s13 = st3.getSelectionRange().x;
                     int s23 = s13 + st3.getSelectionRange().y;
                     int fromLine3 = s13 > -1 ? st3.getLineAtOffset(s13) : s13 * -1;
@@ -1040,17 +1040,17 @@ public class CompositeTab extends CompositeTabDesign {
                     final String historyLine = (needNewLine1 ? StringHelper.getLineDelimiter() : "") + "0 !HISTORY " + new SimpleDateFormat("yyyy-MM-dd").format(new Date()) + username; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
                     int delta1 = 0;
-                    s13 = compositeText[0].getOffsetAtLine(toLine3);
+                    s13 = compositeTextPtr[0].getOffsetAtLine(toLine3);
                     if (needNewLine1) {
-                        compositeText[0].setSelection(s13 + currentLine1.length());
+                        compositeTextPtr[0].setSelection(s13 + currentLine1.length());
                     } else {
                         if (!currentLine1.isEmpty()) {
-                            compositeText[0].setSelection(s13, s13 + currentLine1.length());
+                            compositeTextPtr[0].setSelection(s13, s13 + currentLine1.length());
                             delta1 = historyLine.length();
                         }
                     }
-                    compositeText[0].insert(historyLine);
-                    compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + historyLine.length() - delta1);
+                    compositeTextPtr[0].insert(historyLine);
+                    compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getCaretOffset() + historyLine.length() - delta1);
                     break;
                 }
                 case EDITORTEXT_INSERT_KEYWORD:
@@ -1058,7 +1058,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (!vm.isUpdated() || df.isReadOnly()) return;
                     NLogger.debug(getClass(), "Insert keyword line.."); //$NON-NLS-1$
 
-                    final StyledText st4 = compositeText[0];
+                    final StyledText st4 = compositeTextPtr[0];
                     int s14 = st4.getSelectionRange().x;
                     int s24 = s14 + st4.getSelectionRange().y;
                     int fromLine4 = s14 > -1 ? st4.getLineAtOffset(s14) : s14 * -1;
@@ -1074,17 +1074,17 @@ public class CompositeTab extends CompositeTabDesign {
                     final String keywordLine = (needNewLine2 ? StringHelper.getLineDelimiter() : "") + "0 !KEYWORDS "; //$NON-NLS-1$ //$NON-NLS-2$
 
                     int delta2 = 0;
-                    s14 = compositeText[0].getOffsetAtLine(toLine4);
+                    s14 = compositeTextPtr[0].getOffsetAtLine(toLine4);
                     if (needNewLine2) {
-                        compositeText[0].setSelection(s14 + currentLine2.length());
+                        compositeTextPtr[0].setSelection(s14 + currentLine2.length());
                     } else {
                         if (!currentLine2.isEmpty()) {
-                            compositeText[0].setSelection(s14, s14 + currentLine2.length());
+                            compositeTextPtr[0].setSelection(s14, s14 + currentLine2.length());
                             delta2 = keywordLine.length();
                         }
                     }
-                    compositeText[0].insert(keywordLine);
-                    compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + keywordLine.length() - delta2);
+                    compositeTextPtr[0].insert(keywordLine);
+                    compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getCaretOffset() + keywordLine.length() - delta2);
                     break;
                 }
                 case EDITORTEXT_INSERT_REFERENCE:
@@ -1092,7 +1092,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (!vm.isUpdated() || df.isReadOnly()) return;
                     NLogger.debug(getClass(), "Insert TYPE 1 reference line.."); //$NON-NLS-1$
 
-                    final StyledText st5 = compositeText[0];
+                    final StyledText st5 = compositeTextPtr[0];
                     int s15 = st5.getSelectionRange().x;
                     int s25 = s15 + st5.getSelectionRange().y;
                     int fromLine5 = s15 > -1 ? st5.getLineAtOffset(s15) : s15 * -1;
@@ -1108,17 +1108,17 @@ public class CompositeTab extends CompositeTabDesign {
                     final String referenceLine = (needNewLine3 ? StringHelper.getLineDelimiter() : "") + "1 16 0 0 0 1 0 0 0 1 0 0 0 1 "; //$NON-NLS-1$ //$NON-NLS-2$
 
                     int delta3 = 0;
-                    s15 = compositeText[0].getOffsetAtLine(toLine5);
+                    s15 = compositeTextPtr[0].getOffsetAtLine(toLine5);
                     if (needNewLine3) {
-                        compositeText[0].setSelection(s15 + currentLine3.length());
+                        compositeTextPtr[0].setSelection(s15 + currentLine3.length());
                     } else {
                         if (!currentLine3.isEmpty()) {
-                            compositeText[0].setSelection(s15, s15 + currentLine3.length());
+                            compositeTextPtr[0].setSelection(s15, s15 + currentLine3.length());
                             delta3 = referenceLine.length();
                         }
                     }
-                    compositeText[0].insert(referenceLine);
-                    compositeText[0].setCaretOffset(compositeText[0].getCaretOffset() + referenceLine.length() - delta3);
+                    compositeTextPtr[0].insert(referenceLine);
+                    compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getCaretOffset() + referenceLine.length() - delta3);
                     break;
                 }
                 case EDITORTEXT_LINE_UP:
@@ -1126,7 +1126,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (!vm.isUpdated() || df.isReadOnly()) return;
                     NLogger.debug(getClass(), "Move line up.."); //$NON-NLS-1$
 
-                    final StyledText st6 = compositeText[0];
+                    final StyledText st6 = compositeTextPtr[0];
                     int s16 = st6.getSelectionRange().x;
                     int s26 = s16 + st6.getSelectionRange().y;
                     int fromLine6 = s16 > -1 ? st6.getLineAtOffset(s16) : s16 * -1;
@@ -1171,7 +1171,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (!vm.isUpdated() || df.isReadOnly()) return;
                     NLogger.debug(getClass(), "Move line down.."); //$NON-NLS-1$
 
-                    final StyledText st7 = compositeText[0];
+                    final StyledText st7 = compositeTextPtr[0];
                     int s17 = st7.getSelectionRange().x;
                     int s27 = s17 + st7.getSelectionRange().y;
                     int fromLine7 = s17 > -1 ? st7.getLineAtOffset(s17) : s17 * -1;
@@ -1217,7 +1217,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
         });
-        compositeText[0].addFocusListener(new FocusListener() {
+        compositeTextPtr[0].addFocusListener(new FocusListener() {
 
             @Override
             public void focusLost(FocusEvent e) {
@@ -1230,7 +1230,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (vm.isModified() && !vm.isUpdated()) {
                         NLogger.debug(getClass(), "Text focused, reload"); //$NON-NLS-1$
                         try {
-                            compositeText[0].setText(state.getFileNameObj().getText());
+                            compositeTextPtr[0].setText(state.getFileNameObj().getText());
                         } catch (IllegalArgumentException iae) {
                             // Ignored on termination
                         }
@@ -1251,48 +1251,48 @@ public class CompositeTab extends CompositeTabDesign {
             }
         });
         //
-        compositeText[0].addCaretListener(new CaretListener() {
+        compositeTextPtr[0].addCaretListener(new CaretListener() {
             @Override
             public void caretMoved(CaretEvent event) {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
-                Point r = compositeText[0].getSelectionRange();
+                Point r = compositeTextPtr[0].getSelectionRange();
                 state.setOldLineIndex(-1);
                 if (!state.isSync()) {
                     DatFile df = state.getFileNameObj();
-                    df.addHistory(compositeText[0].getText(), r.x, r.y, compositeText[0].getTopIndex());
-                    if (df.updateDuplicatesErrors(compositeText[0], treeItem_Duplicates[0])) {
+                    df.addHistory(compositeTextPtr[0].getText(), r.x, r.y, compositeTextPtr[0].getTopIndex());
+                    if (df.updateDuplicatesErrors(compositeTextPtr[0], treeItemDuplicatesPtr[0])) {
                         df.getDuplicate().pushDuplicateCheck(df.getDrawChainStart());
-                        int errorCount = treeItem_Errors[0].getItems().size();
-                        int warningCount = treeItem_Warnings[0].getItems().size();
-                        int hintCount = treeItem_Hints[0].getItems().size();
-                        int duplicateCount = treeItem_Duplicates[0].getItems().size();
+                        int errorCount = treeItemErrorsPtr[0].getItems().size();
+                        int warningCount = treeItemWarningsPtr[0].getItems().size();
+                        int hintCount = treeItemHintsPtr[0].getItems().size();
+                        int duplicateCount = treeItemDuplicatesPtr[0].getItems().size();
                         String errors = errorCount == 1 ? I18n.EDITORTEXT_ERROR : I18n.EDITORTEXT_ERRORS;
                         String warnings = warningCount == 1 ? I18n.EDITORTEXT_WARNING : I18n.EDITORTEXT_WARNINGS;
                         String hints = hintCount == 1 ? I18n.EDITORTEXT_OTHER : I18n.EDITORTEXT_OTHERS;
                         String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_DUPLICATE : I18n.EDITORTEXT_DUPLICATES;
-                        lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-                        treeItem_Hints[0].getParent().build();
-                        lbl_ProblemCount[0].getParent().layout();
+                        lblProblemCountPtr[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                        treeItemHintsPtr[0].getParent().build();
+                        lblProblemCountPtr[0].getParent().layout();
                     }
                 }
                 try {
-                    compositeText[0].setLineBackground(state.currentLineIndex, 1, compositeText[0].getBackground());
+                    compositeTextPtr[0].setLineBackground(state.currentLineIndex, 1, compositeTextPtr[0].getBackground());
                 } catch (Exception a) {
                 }
                 int caretOffset = event.caretOffset;
-                state.currentLineIndex = compositeText[0].getLineAtOffset(caretOffset);
-                if (compositeText[0].getSelectionCount() == 0) {
+                state.currentLineIndex = compositeTextPtr[0].getLineAtOffset(caretOffset);
+                if (compositeTextPtr[0].getSelectionCount() == 0) {
                     try {
-                        compositeText[0].setLineBackground(state.currentLineIndex, 1, Colour.line_highlight_background[0]);
+                        compositeTextPtr[0].setLineBackground(state.currentLineIndex, 1, Colour.lineHighlightBackground[0]);
                     } catch (Exception a) {
                     }
                 }
                 if (state.window[0] == Editor3DWindow.getWindow()) {
                     try {
                         if (state.isReplacingVertex()) {
-                            Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caretOffset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
+                            Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
                         } else {
-                            Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caretOffset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                            Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
                         }
                         Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                         Editor3DWindow.getStatusLabel().update();
@@ -1301,18 +1301,18 @@ public class CompositeTab extends CompositeTabDesign {
                 } else {
                     try {
                         if (state.isReplacingVertex()) {
-                            state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caretOffset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
+                            state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
                         } else {
-                            state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caretOffset - compositeText[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                            state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
                         }
                     } catch (Exception a) {
                     }
                 }
-                canvas_lineNumberArea[0].redraw();
+                canvasLineNumberAreaPtr[0].redraw();
             }
         });
 
-        compositeText[0].addWordMovementListener(new MovementListener() {
+        compositeTextPtr[0].addWordMovementListener(new MovementListener() {
             @Override
             public void getNextOffset (MovementEvent event) {
                 boolean ignoreLineBreak = false;
@@ -1332,12 +1332,12 @@ public class CompositeTab extends CompositeTabDesign {
                 case SWT.MOVEMENT_WORD_END:
                     event.newOffset = event.offset;
                     char c = '#';
-                    final int len = compositeText[0].getText().length() - 1;
+                    final int len = compositeTextPtr[0].getText().length() - 1;
                     while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset < len) {
                         event.newOffset++;
-                        c = compositeText[0].getText().charAt(event.newOffset);
+                        c = compositeTextPtr[0].getText().charAt(event.newOffset);
                     }
-                    if (c != ' ' && compositeText[0].getLineAtOffset(event.offset) == compositeText[0].getLineCount() - 1) {
+                    if (c != ' ' && compositeTextPtr[0].getLineAtOffset(event.offset) == compositeTextPtr[0].getLineCount() - 1) {
                         event.newOffset = Math.max(len + 1, event.newOffset + 1);
                     }
                     break;
@@ -1364,22 +1364,22 @@ public class CompositeTab extends CompositeTabDesign {
                      *   double click drag select word
                      */
                 case SWT.MOVEMENT_WORD_START:
-                    if (!ignoreLineBreak && event.offset == compositeText[0].getOffsetAtLine(compositeText[0].getLineAtOffset(event.offset))) {
+                    if (!ignoreLineBreak && event.offset == compositeTextPtr[0].getOffsetAtLine(compositeTextPtr[0].getLineAtOffset(event.offset))) {
                         return;
                     }
-                    char c = ignoreLineBreak || event.newOffset < 0 ? '#' : compositeText[0].getText().charAt(event.newOffset);
+                    char c = ignoreLineBreak || event.newOffset < 0 ? '#' : compositeTextPtr[0].getText().charAt(event.newOffset);
                     if (!ignoreLineBreak && event.newOffset > 0 && c == '\n'  || c == '\r') {
                         event.newOffset--;
                         c = '#';
                     }
                     while (c != ' ' && (ignoreLineBreak || c != '\n'  && c != '\r') && event.newOffset > 0) {
                         event.newOffset--;
-                        c = compositeText[0].getText().charAt(event.newOffset);
+                        c = compositeTextPtr[0].getText().charAt(event.newOffset);
                     }
                     event.newOffset++;
                     while (event.newOffset > 0 && c == '\n' || c == '\r') {
                         event.newOffset--;
-                        c = compositeText[0].getText().charAt(event.newOffset);
+                        c = compositeTextPtr[0].getText().charAt(event.newOffset);
                     }
                     break;
                 default:
@@ -1387,7 +1387,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
         });
-        tabFolder_partInformation[0].addCTabFolder2Listener(new CTabFolder2Listener() {
+        tabFolderPartInformationPtr[0].addCTabFolder2Listener(new CTabFolder2Listener() {
             @Override
             public void showList(CTabFolderEvent event) {
             }
@@ -1407,46 +1407,46 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void close(CTabFolderEvent event) {
                 ((CTabFolder) event.widget).setVisible(false);
-                sashForm[0].setWeights(new int[] { compositeText[0].getSize().y, 1 });
+                sashFormPtr[0].setWeights(new int[] { compositeTextPtr[0].getSize().y, 1 });
                 event.doit = false;
             }
         });
         final WidgetSelectionListener quickFix = e -> {
-            if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+            if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 HashSet<TreeItem> items = new HashSet<>();
-                for (TreeItem sort1 : tree_Problems[0].getSelection()) {
+                for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
                     items.add(sort1);
                 }
-                if (items.contains(treeItem_Hints[0])) {
+                if (items.contains(treeItemHintsPtr[0])) {
                     NLogger.debug(getClass(), "+Quick fix all hints."); //$NON-NLS-1$
-                    items.remove(treeItem_Hints[0]);
-                    for (TreeItem sort2 : treeItem_Hints[0].getItems()) {
+                    items.remove(treeItemHintsPtr[0]);
+                    for (TreeItem sort2 : treeItemHintsPtr[0].getItems()) {
                         if (!items.contains(sort2))
                             items.add(sort2);
                     }
                 }
-                if (items.contains(treeItem_Errors[0])) {
+                if (items.contains(treeItemErrorsPtr[0])) {
                     NLogger.debug(getClass(), "+Quick fix all errors."); //$NON-NLS-1$
-                    items.remove(treeItem_Errors[0]);
-                    for (TreeItem sort3 : treeItem_Errors[0].getItems()) {
+                    items.remove(treeItemErrorsPtr[0]);
+                    for (TreeItem sort3 : treeItemErrorsPtr[0].getItems()) {
                         if (!items.contains(sort3))
                             items.add(sort3);
                     }
                 }
-                if (items.contains(treeItem_Warnings[0])) {
+                if (items.contains(treeItemWarningsPtr[0])) {
                     NLogger.debug(getClass(), "+Quick fix all warnings."); //$NON-NLS-1$
-                    items.remove(treeItem_Warnings[0]);
-                    for (TreeItem sort4 : treeItem_Warnings[0].getItems()) {
+                    items.remove(treeItemWarningsPtr[0]);
+                    for (TreeItem sort4 : treeItemWarningsPtr[0].getItems()) {
                         if (!items.contains(sort4))
                             items.add(sort4);
                     }
                 }
-                if (items.contains(treeItem_Duplicates[0])) {
+                if (items.contains(treeItemDuplicatesPtr[0])) {
                     NLogger.debug(getClass(), "+Quick fix all duplicates."); //$NON-NLS-1$
-                    items.remove(treeItem_Duplicates[0]);
-                    for (TreeItem sort5 : treeItem_Duplicates[0].getItems()) {
+                    items.remove(treeItemDuplicatesPtr[0]);
+                    for (TreeItem sort5 : treeItemDuplicatesPtr[0].getItems()) {
                         if (!items.contains(sort5))
                             items.add(sort5);
                     }
@@ -1458,25 +1458,25 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 }
 
-                QuickFixer.fixTextIssues(compositeText[0], items, getState().getFileNameObj());
+                QuickFixer.fixTextIssues(compositeTextPtr[0], items, getState().getFileNameObj());
             }
         };
         final WidgetSelectionListener quickFixSame = e -> {
-            if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+            if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 HashSet<TreeItem> items = new HashSet<>();
                 HashSet<String> sorts = new HashSet<>();
-                for (TreeItem sort1 : tree_Problems[0].getSelection()) {
+                for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
                     if (sort1 == null) continue;
-                    if (sort1.equals(treeItem_Hints[0])) {
-                        items.add(treeItem_Hints[0]);
-                    } else if (sort1.equals(treeItem_Errors[0])) {
-                        items.add(treeItem_Errors[0]);
-                    } else if (sort1.equals(treeItem_Warnings[0])) {
-                        items.add(treeItem_Warnings[0]);
-                    } else if (sort1.equals(treeItem_Duplicates[0])) {
-                        items.add(treeItem_Duplicates[0]);
+                    if (sort1.equals(treeItemHintsPtr[0])) {
+                        items.add(treeItemHintsPtr[0]);
+                    } else if (sort1.equals(treeItemErrorsPtr[0])) {
+                        items.add(treeItemErrorsPtr[0]);
+                    } else if (sort1.equals(treeItemWarningsPtr[0])) {
+                        items.add(treeItemWarningsPtr[0]);
+                    } else if (sort1.equals(treeItemDuplicatesPtr[0])) {
+                        items.add(treeItemDuplicatesPtr[0]);
                     }
                     if (sort1.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$
                         if (!sorts.contains(sort1.getText(2)))
@@ -1490,51 +1490,51 @@ public class CompositeTab extends CompositeTabDesign {
                     }
 
                 }
-                for (TreeItem sort2 : treeItem_Hints[0].getItems()) {
+                for (TreeItem sort2 : treeItemHintsPtr[0].getItems()) {
                     if (sorts.contains(sort2.getText(0)) && !items.contains(sort2))
                         items.add(sort2);
                 }
-                for (TreeItem sort3 : treeItem_Errors[0].getItems()) {
+                for (TreeItem sort3 : treeItemErrorsPtr[0].getItems()) {
                     if (sorts.contains(sort3.getText(0)) && !items.contains(sort3))
                         items.add(sort3);
                 }
-                for (TreeItem sort4 : treeItem_Warnings[0].getItems()) {
+                for (TreeItem sort4 : treeItemWarningsPtr[0].getItems()) {
                     if (sorts.contains(sort4.getText(0)) || sorts.contains(sort4.getText(2)) && !items.contains(sort4))
                         items.add(sort4);
                 }
-                for (TreeItem sort5 : treeItem_Duplicates[0].getItems()) {
+                for (TreeItem sort5 : treeItemDuplicatesPtr[0].getItems()) {
                     if (sorts.contains(sort5.getText(0)) || sorts.contains(sort5.getText(2)) && !items.contains(sort5))
                         items.add(sort5);
                 }
 
-                if (items.contains(treeItem_Hints[0])) {
+                if (items.contains(treeItemHintsPtr[0])) {
                     NLogger.debug(getClass(), "+Quick fix all hints."); //$NON-NLS-1$
-                    items.remove(treeItem_Hints[0]);
-                    for (TreeItem sort6 : treeItem_Hints[0].getItems()) {
+                    items.remove(treeItemHintsPtr[0]);
+                    for (TreeItem sort6 : treeItemHintsPtr[0].getItems()) {
                         if (!items.contains(sort6))
                             items.add(sort6);
                     }
                 }
-                if (items.contains(treeItem_Errors[0])) {
+                if (items.contains(treeItemErrorsPtr[0])) {
                     NLogger.debug(getClass(), "+Quick fix all errors."); //$NON-NLS-1$
-                    items.remove(treeItem_Errors[0]);
-                    for (TreeItem sort7 : treeItem_Errors[0].getItems()) {
+                    items.remove(treeItemErrorsPtr[0]);
+                    for (TreeItem sort7 : treeItemErrorsPtr[0].getItems()) {
                         if (!items.contains(sort7))
                             items.add(sort7);
                     }
                 }
-                if (items.contains(treeItem_Warnings[0])) {
+                if (items.contains(treeItemWarningsPtr[0])) {
                     NLogger.debug(getClass(), "+Quick fix all warnings."); //$NON-NLS-1$
-                    items.remove(treeItem_Warnings[0]);
-                    for (TreeItem sort8 : treeItem_Warnings[0].getItems()) {
+                    items.remove(treeItemWarningsPtr[0]);
+                    for (TreeItem sort8 : treeItemWarningsPtr[0].getItems()) {
                         if (!items.contains(sort8))
                             items.add(sort8);
                     }
                 }
-                if (items.contains(treeItem_Duplicates[0])) {
+                if (items.contains(treeItemDuplicatesPtr[0])) {
                     NLogger.debug(getClass(), "+Quick fix all duplicates."); //$NON-NLS-1$
-                    items.remove(treeItem_Duplicates[0]);
-                    for (TreeItem sort9 : treeItem_Duplicates[0].getItems()) {
+                    items.remove(treeItemDuplicatesPtr[0]);
+                    for (TreeItem sort9 : treeItemDuplicatesPtr[0].getItems()) {
                         if (!items.contains(sort9))
                             items.add(sort9);
                     }
@@ -1546,45 +1546,45 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 }
 
-                QuickFixer.fixTextIssues(compositeText[0], items, getState().getFileNameObj());
+                QuickFixer.fixTextIssues(compositeTextPtr[0], items, getState().getFileNameObj());
             }
         };
         final WidgetSelectionListener inspect = e -> {
-            if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+            if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 HashSet<TreeItem> items = new HashSet<>();
-                for (TreeItem sort1 : tree_Problems[0].getSelection()) {
+                for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
                     items.add(sort1);
                 }
-                if (items.contains(treeItem_Hints[0])) {
+                if (items.contains(treeItemHintsPtr[0])) {
                     NLogger.debug(getClass(), "+Inspect all hints."); //$NON-NLS-1$
-                    items.remove(treeItem_Hints[0]);
-                    for (TreeItem sort2 : treeItem_Hints[0].getItems()) {
+                    items.remove(treeItemHintsPtr[0]);
+                    for (TreeItem sort2 : treeItemHintsPtr[0].getItems()) {
                         if (!items.contains(sort2))
                             items.add(sort2);
                     }
                 }
-                if (items.contains(treeItem_Errors[0])) {
+                if (items.contains(treeItemErrorsPtr[0])) {
                     NLogger.debug(getClass(), "+Inspect all errors."); //$NON-NLS-1$
-                    items.remove(treeItem_Errors[0]);
-                    for (TreeItem sort3 : treeItem_Errors[0].getItems()) {
+                    items.remove(treeItemErrorsPtr[0]);
+                    for (TreeItem sort3 : treeItemErrorsPtr[0].getItems()) {
                         if (!items.contains(sort3))
                             items.add(sort3);
                     }
                 }
-                if (items.contains(treeItem_Warnings[0])) {
+                if (items.contains(treeItemWarningsPtr[0])) {
                     NLogger.debug(getClass(), "+Inspect all warnings."); //$NON-NLS-1$
-                    items.remove(treeItem_Warnings[0]);
-                    for (TreeItem sort4 : treeItem_Warnings[0].getItems()) {
+                    items.remove(treeItemWarningsPtr[0]);
+                    for (TreeItem sort4 : treeItemWarningsPtr[0].getItems()) {
                         if (!items.contains(sort4))
                             items.add(sort4);
                     }
                 }
-                if (items.contains(treeItem_Duplicates[0])) {
+                if (items.contains(treeItemDuplicatesPtr[0])) {
                     NLogger.debug(getClass(), "+Inspect all duplicates."); //$NON-NLS-1$
-                    items.remove(treeItem_Duplicates[0]);
-                    for (TreeItem sort5 : treeItem_Duplicates[0].getItems()) {
+                    items.remove(treeItemDuplicatesPtr[0]);
+                    for (TreeItem sort5 : treeItemDuplicatesPtr[0].getItems()) {
                         if (!items.contains(sort5))
                             items.add(sort5);
                     }
@@ -1596,25 +1596,25 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 }
 
-                Inspector.inspectTextIssues(compositeText[0], items, getState().getFileNameObj());
+                Inspector.inspectTextIssues(compositeTextPtr[0], items, getState().getFileNameObj());
             }
         };
         final WidgetSelectionListener inspectSame = e -> {
-            if (compositeText[0].getEditable() && tree_Problems[0].getSelectionCount() > 0) {
+            if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 HashSet<TreeItem> items = new HashSet<>();
                 HashSet<String> sorts = new HashSet<>();
-                for (TreeItem sort1 : tree_Problems[0].getSelection()) {
+                for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
                     if (sort1 == null) continue;
-                    if (sort1.equals(treeItem_Hints[0])) {
-                        items.add(treeItem_Hints[0]);
-                    } else if (sort1.equals(treeItem_Errors[0])) {
-                        items.add(treeItem_Errors[0]);
-                    } else if (sort1.equals(treeItem_Warnings[0])) {
-                        items.add(treeItem_Warnings[0]);
-                    } else if (sort1.equals(treeItem_Duplicates[0])) {
-                        items.add(treeItem_Duplicates[0]);
+                    if (sort1.equals(treeItemHintsPtr[0])) {
+                        items.add(treeItemHintsPtr[0]);
+                    } else if (sort1.equals(treeItemErrorsPtr[0])) {
+                        items.add(treeItemErrorsPtr[0]);
+                    } else if (sort1.equals(treeItemWarningsPtr[0])) {
+                        items.add(treeItemWarningsPtr[0]);
+                    } else if (sort1.equals(treeItemDuplicatesPtr[0])) {
+                        items.add(treeItemDuplicatesPtr[0]);
                     }
                     if (sort1.getText(2).startsWith("[WFE]")) { //$NON-NLS-1$
                         if (!sorts.contains(sort1.getText(2)))
@@ -1628,51 +1628,51 @@ public class CompositeTab extends CompositeTabDesign {
                     }
 
                 }
-                for (TreeItem sort2 : treeItem_Hints[0].getItems()) {
+                for (TreeItem sort2 : treeItemHintsPtr[0].getItems()) {
                     if (sorts.contains(sort2.getText(0)) && !items.contains(sort2))
                         items.add(sort2);
                 }
-                for (TreeItem sort3 : treeItem_Errors[0].getItems()) {
+                for (TreeItem sort3 : treeItemErrorsPtr[0].getItems()) {
                     if (sorts.contains(sort3.getText(0)) && !items.contains(sort3))
                         items.add(sort3);
                 }
-                for (TreeItem sort4 : treeItem_Warnings[0].getItems()) {
+                for (TreeItem sort4 : treeItemWarningsPtr[0].getItems()) {
                     if (sorts.contains(sort4.getText(0)) || sorts.contains(sort4.getText(2)) && !items.contains(sort4))
                         items.add(sort4);
                 }
-                for (TreeItem sort5 : treeItem_Duplicates[0].getItems()) {
+                for (TreeItem sort5 : treeItemDuplicatesPtr[0].getItems()) {
                     if (sorts.contains(sort5.getText(0)) || sorts.contains(sort5.getText(2)) && !items.contains(sort5))
                         items.add(sort5);
                 }
 
-                if (items.contains(treeItem_Hints[0])) {
+                if (items.contains(treeItemHintsPtr[0])) {
                     NLogger.debug(getClass(), "+Inspect all hints."); //$NON-NLS-1$
-                    items.remove(treeItem_Hints[0]);
-                    for (TreeItem sort6 : treeItem_Hints[0].getItems()) {
+                    items.remove(treeItemHintsPtr[0]);
+                    for (TreeItem sort6 : treeItemHintsPtr[0].getItems()) {
                         if (!items.contains(sort6))
                             items.add(sort6);
                     }
                 }
-                if (items.contains(treeItem_Errors[0])) {
+                if (items.contains(treeItemErrorsPtr[0])) {
                     NLogger.debug(getClass(), "+Inspect all errors."); //$NON-NLS-1$
-                    items.remove(treeItem_Errors[0]);
-                    for (TreeItem sort7 : treeItem_Errors[0].getItems()) {
+                    items.remove(treeItemErrorsPtr[0]);
+                    for (TreeItem sort7 : treeItemErrorsPtr[0].getItems()) {
                         if (!items.contains(sort7))
                             items.add(sort7);
                     }
                 }
-                if (items.contains(treeItem_Warnings[0])) {
+                if (items.contains(treeItemWarningsPtr[0])) {
                     NLogger.debug(getClass(), "+Inspect all warnings."); //$NON-NLS-1$
-                    items.remove(treeItem_Warnings[0]);
-                    for (TreeItem sort8 : treeItem_Warnings[0].getItems()) {
+                    items.remove(treeItemWarningsPtr[0]);
+                    for (TreeItem sort8 : treeItemWarningsPtr[0].getItems()) {
                         if (!items.contains(sort8))
                             items.add(sort8);
                     }
                 }
-                if (items.contains(treeItem_Duplicates[0])) {
+                if (items.contains(treeItemDuplicatesPtr[0])) {
                     NLogger.debug(getClass(), "+Inspect all duplicates."); //$NON-NLS-1$
-                    items.remove(treeItem_Duplicates[0]);
-                    for (TreeItem sort9 : treeItem_Duplicates[0].getItems()) {
+                    items.remove(treeItemDuplicatesPtr[0]);
+                    for (TreeItem sort9 : treeItemDuplicatesPtr[0].getItems()) {
                         if (!items.contains(sort9))
                             items.add(sort9);
                     }
@@ -1684,63 +1684,63 @@ public class CompositeTab extends CompositeTabDesign {
                     }
                 }
 
-                Inspector.inspectTextIssues(compositeText[0], items, getState().getFileNameObj());
+                Inspector.inspectTextIssues(compositeTextPtr[0], items, getState().getFileNameObj());
             }
         };
-        WidgetUtil(mntm_QuickFix[0]).addSelectionListener(quickFix);
-        WidgetUtil(mntm_QuickFixSame[0]).addSelectionListener(quickFixSame);
-        WidgetUtil(btn_QuickFix[0]).addSelectionListener(quickFix);
-        WidgetUtil(btn_QuickFixSame[0]).addSelectionListener(quickFixSame);
-        WidgetUtil(mntm_Inspect[0]).addSelectionListener(inspect);
-        WidgetUtil(mntm_InspectSame[0]).addSelectionListener(inspectSame);
-        WidgetUtil(btn_Inspect[0]).addSelectionListener(inspect);
-        WidgetUtil( btn_InspectSame[0]).addSelectionListener(inspectSame);
+        WidgetUtil(mntmQuickFixPtr[0]).addSelectionListener(quickFix);
+        WidgetUtil(mntmQuickFixSamePtr[0]).addSelectionListener(quickFixSame);
+        WidgetUtil(btnQuickFixPtr[0]).addSelectionListener(quickFix);
+        WidgetUtil(btnQuickFixSamePtr[0]).addSelectionListener(quickFixSame);
+        WidgetUtil(mntmInspectPtr[0]).addSelectionListener(inspect);
+        WidgetUtil(mntmInspectSamePtr[0]).addSelectionListener(inspectSame);
+        WidgetUtil(btnInspectPtr[0]).addSelectionListener(inspect);
+        WidgetUtil( btnInspectSamePtr[0]).addSelectionListener(inspectSame);
 
-        tree_Problems[0].addSelectionListener(e -> {
-            boolean enabled = tree_Problems[0].getSelectionCount() == 1 && tree_Problems[0].getSelection()[0] != null;
-            btn_Inspect[0].setEnabled(enabled);
-            btn_InspectSame[0].setEnabled(enabled);
-            btn_QuickFix[0].setEnabled(enabled);
-            btn_QuickFixSame[0].setEnabled(enabled);
+        treeProblemsPtr[0].addSelectionListener(e -> {
+            boolean enabled = treeProblemsPtr[0].getSelectionCount() == 1 && treeProblemsPtr[0].getSelection()[0] != null;
+            btnInspectPtr[0].setEnabled(enabled);
+            btnInspectSamePtr[0].setEnabled(enabled);
+            btnQuickFixPtr[0].setEnabled(enabled);
+            btnQuickFixSamePtr[0].setEnabled(enabled);
         });
-        tree_Problems[0].addListener(SWT.MouseDoubleClick, e -> {
-            final TreeItem[] selection = tree_Problems[0].getSelection();
+        treeProblemsPtr[0].addListener(SWT.MouseDoubleClick, e -> {
+            final TreeItem[] selection = treeProblemsPtr[0].getSelection();
             final TreeItem sel;
             if (selection.length == 1 && (sel = selection[0]) != null) {
                 final Integer pos = (Integer) sel.getData();
                 if (pos != null) {
-                    compositeText[0].setSelection(Math.max(0, pos));
+                    compositeTextPtr[0].setSelection(Math.max(0, pos));
                 }
                 if (sel.getParentItem() == null) {
                     sel.setVisible(!sel.isVisible());
-                    Display.getCurrent().asyncExec(() -> tree_Problems[0].build());
-                    tree_Problems[0].redraw();
-                    tree_Problems[0].update();
-                    tree_Problems[0].getTree().select(tree_Problems[0].getMapInv().get(sel));
+                    Display.getCurrent().asyncExec(() -> treeProblemsPtr[0].build());
+                    treeProblemsPtr[0].redraw();
+                    treeProblemsPtr[0].update();
+                    treeProblemsPtr[0].getTree().select(treeProblemsPtr[0].getMapInv().get(sel));
                 }
             }
         });
-        compositeContainer[0].addControlListener(new ControlAdapter() {
+        compositeContainerPtr[0].addControlListener(new ControlAdapter() {
             @Override
             public void controlResized(ControlEvent e) {
-                ((GridData) compositeText[0].getLayoutData()).minimumHeight = compositeContainer[0].getBounds().height;
-                if (!tabFolder_partInformation[0].getVisible()) {
-                    sashForm[0].setWeights(new int[] { compositeText[0].getSize().y, 1 });
+                ((GridData) compositeTextPtr[0].getLayoutData()).minimumHeight = compositeContainerPtr[0].getBounds().height;
+                if (!tabFolderPartInformationPtr[0].getVisible()) {
+                    sashFormPtr[0].setWeights(new int[] { compositeTextPtr[0].getSize().y, 1 });
                 }
-                compositeContainer[0].layout();
+                compositeContainerPtr[0].layout();
             }
         });
-        canvas_lineNumberArea[0].addMouseListener(new MouseListener() {
+        canvasLineNumberAreaPtr[0].addMouseListener(new MouseListener() {
 
             @Override
             public void mouseUp(MouseEvent e) {}
 
             @Override
             public void mouseDown(MouseEvent e) {
-                int yOffset = -compositeText[0].getVerticalBar().getSelection() % caretHeight;
-                int height = compositeContainer[0].getBounds().height;
-                int startLine = compositeText[0].getVerticalBar().getSelection() / caretHeight + 1;
-                int endLine = compositeText[0].getLineCount() - 1;
+                int yOffset = -compositeTextPtr[0].getVerticalBar().getSelection() % caretHeight;
+                int height = compositeContainerPtr[0].getBounds().height;
+                int startLine = compositeTextPtr[0].getVerticalBar().getSelection() / caretHeight + 1;
+                int endLine = compositeTextPtr[0].getLineCount() - 1;
 
                 NLogger.debug(getClass(), "Mouse down on Line Number Area"); //$NON-NLS-1$
 
@@ -1757,37 +1757,37 @@ public class CompositeTab extends CompositeTabDesign {
                 NLogger.debug(getClass(), "Line " + line); //$NON-NLS-1$
                 line--;
 
-                final int oldSelectionStart = compositeText[0].getSelection().x;
-                final int oldSelectionEnd = compositeText[0].getSelection().y;
+                final int oldSelectionStart = compositeTextPtr[0].getSelection().x;
+                final int oldSelectionEnd = compositeTextPtr[0].getSelection().y;
 
                 if ((e.stateMask & SWT.CTRL) != 0) {
                     try {
-                        int newstart = compositeText[0].getOffsetAtLine(line + 1);
-                        int newend = compositeText[0].getOffsetAtLine(line);
+                        int newstart = compositeTextPtr[0].getOffsetAtLine(line + 1);
+                        int newend = compositeTextPtr[0].getOffsetAtLine(line);
                         newstart = Math.max(Math.max(oldSelectionStart, oldSelectionEnd), newstart);
                         newend = Math.min(Math.min(oldSelectionStart, oldSelectionEnd), newend);
-                        compositeText[0].setSelection(newstart, newend);
+                        compositeTextPtr[0].setSelection(newstart, newend);
                     } catch (IllegalArgumentException iae) {
                         try {
-                            int newstart = compositeText[0].getText().length();
-                            int newend = compositeText[0].getOffsetAtLine(line);
+                            int newstart = compositeTextPtr[0].getText().length();
+                            int newend = compositeTextPtr[0].getOffsetAtLine(line);
                             newstart = Math.max(Math.max(oldSelectionStart, oldSelectionEnd), newstart);
                             newend = Math.min(Math.min(oldSelectionStart, oldSelectionEnd), newend);
-                            compositeText[0].setSelection(newstart, newend);
+                            compositeTextPtr[0].setSelection(newstart, newend);
                         } catch (IllegalArgumentException consumed) {}
                     }
                 } else {
                     try {
-                        compositeText[0].setSelection(compositeText[0].getOffsetAtLine(line + 1), compositeText[0].getOffsetAtLine(line));
+                        compositeTextPtr[0].setSelection(compositeTextPtr[0].getOffsetAtLine(line + 1), compositeTextPtr[0].getOffsetAtLine(line));
                     } catch (IllegalArgumentException iae) {
                         try {
-                            compositeText[0].setSelection(compositeText[0].getText().length(), compositeText[0].getOffsetAtLine(line));
+                            compositeTextPtr[0].setSelection(compositeTextPtr[0].getText().length(), compositeTextPtr[0].getOffsetAtLine(line));
                         } catch (IllegalArgumentException consumed) {}
                     }
                 }
                 try {
-                    if (compositeText[0].getSelectionText().endsWith(StringHelper.getLineDelimiter())) {
-                        compositeText[0].setSelection(compositeText[0].getSelection().x, compositeText[0].getSelection().y - StringHelper.getLineDelimiter().length());
+                    if (compositeTextPtr[0].getSelectionText().endsWith(StringHelper.getLineDelimiter())) {
+                        compositeTextPtr[0].setSelection(compositeTextPtr[0].getSelection().x, compositeTextPtr[0].getSelection().y - StringHelper.getLineDelimiter().length());
                     }
                 } catch (IllegalArgumentException consumed) {}
             }
@@ -1795,16 +1795,16 @@ public class CompositeTab extends CompositeTabDesign {
             @Override
             public void mouseDoubleClick(MouseEvent e) {}
         });
-        canvas_lineNumberArea[0].addPaintListener(e -> {
+        canvasLineNumberAreaPtr[0].addPaintListener(e -> {
             e.gc.setFont(Font.MONOSPACE);
-            int yOffset = -compositeText[0].getVerticalBar().getSelection() % caretHeight;
-            int height = compositeContainer[0].getBounds().height;
-            int startLine = compositeText[0].getVerticalBar().getSelection() / caretHeight + 1;
-            int endLine = compositeText[0].getLineCount() - 1;
+            int yOffset = -compositeTextPtr[0].getVerticalBar().getSelection() % caretHeight;
+            int height = compositeContainerPtr[0].getBounds().height;
+            int startLine = compositeTextPtr[0].getVerticalBar().getSelection() / caretHeight + 1;
+            int endLine = compositeTextPtr[0].getLineCount() - 1;
 
             for (int y = yOffset; y < height; y += caretHeight) {
 
-                if (NLogger.DEBUG && Project.getFileToEdit() != null) {
+                if (NLogger.debugging && Project.getFileToEdit() != null) {
 
                     // Emergency reference debugging
                     StringBuilder sb = new StringBuilder();
@@ -1842,18 +1842,18 @@ public class CompositeTab extends CompositeTabDesign {
             }
 
         });
-        WidgetUtil(compositeText[0].getVerticalBar()).addSelectionListener(e -> {
+        WidgetUtil(compositeTextPtr[0].getVerticalBar()).addSelectionListener(e -> {
             if (!isDisposed()) {
-                canvas_lineNumberArea[0].redraw();
+                canvasLineNumberAreaPtr[0].redraw();
                 getDisplay().update();
             }
         });
-        WidgetUtil(mntm_Delete[0]).addSelectionListener(e -> state.folder[0].delete());
-        WidgetUtil(mntm_Copy[0]).addSelectionListener(e -> state.folder[0].copy());
-        WidgetUtil(mntm_Cut[0]).addSelectionListener(e -> state.folder[0].cut());
-        WidgetUtil(mntm_Paste[0]).addSelectionListener(e -> state.folder[0].paste());
+        WidgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> state.folder[0].delete());
+        WidgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> state.folder[0].copy());
+        WidgetUtil(mntmCutPtr[0]).addSelectionListener(e -> state.folder[0].cut());
+        WidgetUtil(mntmPastePtr[0]).addSelectionListener(e -> state.folder[0].paste());
 
-        WidgetUtil(mntm_DrawSelection[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmDrawSelectionPtr[0]).addSelectionListener(e -> {
             if (!state.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
@@ -1877,7 +1877,7 @@ public class CompositeTab extends CompositeTabDesign {
             st.forceFocus();
         });
 
-        WidgetUtil(mntm_DrawUntilSelection[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmDrawUntilSelectionPtr[0]).addSelectionListener(e -> {
             if (!state.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
@@ -1900,10 +1900,10 @@ public class CompositeTab extends CompositeTabDesign {
             st.forceFocus();
         });
 
-        WidgetUtil(mntm_HideSelection[0]).addSelectionListener(e -> hideSelection());
-        WidgetUtil(mntm_ShowSelection[0]).addSelectionListener(e -> showSelection());
+        WidgetUtil(mntmHideSelectionPtr[0]).addSelectionListener(e -> hideSelection());
+        WidgetUtil(mntmShowSelectionPtr[0]).addSelectionListener(e -> showSelection());
 
-        WidgetUtil(mntm_ShowAll[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmShowAllPtr[0]).addSelectionListener(e -> {
             if (!state.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
@@ -1933,8 +1933,8 @@ public class CompositeTab extends CompositeTabDesign {
      * Shows or hides the error tab
      */
     public void toggleErrorTabVisibility() {
-        setErrorTabVisibility(!tabFolder_partInformation[0].isVisible());
-        compositeContainer[0].layout();
+        setErrorTabVisibility(!tabFolderPartInformationPtr[0].isVisible());
+        compositeContainerPtr[0].layout();
     }
 
     /**
@@ -1944,11 +1944,11 @@ public class CompositeTab extends CompositeTabDesign {
      *            {@code true} when the tab is shown
      */
     public void setErrorTabVisibility(boolean isVisible) {
-        tabFolder_partInformation[0].setVisible(isVisible);
+        tabFolderPartInformationPtr[0].setVisible(isVisible);
         if (isVisible) {
-            sashForm[0].setWeights(new int[] { compositeContainer[0].getSize().y, compositeContainer[0].getSize().y / 2 });
+            sashFormPtr[0].setWeights(new int[] { compositeContainerPtr[0].getSize().y, compositeContainerPtr[0].getSize().y / 2 });
         } else {
-            sashForm[0].setWeights(new int[] { compositeContainer[0].getSize().y, 1 });
+            sashFormPtr[0].setWeights(new int[] { compositeContainerPtr[0].getSize().y, 1 });
         }
     }
 
@@ -1997,21 +1997,21 @@ public class CompositeTab extends CompositeTabDesign {
         final CompositeTab ct = new CompositeTab(folder, SWT.CLOSE, index);
         ct.setText(this.state.getTab().getText());
         ct.getControl().dispose();
-        ct.canvas_lineNumberArea[0] = this.canvas_lineNumberArea[0];
-        ct.compositeText[0] = this.compositeText[0];
-        ct.compositeContainer[0] = this.compositeContainer[0];
-        ct.sashForm[0] = this.sashForm[0];
-        ct.tabFolder_partInformation[0] = this.tabFolder_partInformation[0];
-        ct.tree_Problems[0] = this.tree_Problems[0];
-        ct.treeItem_Hints[0] = this.treeItem_Hints[0];
-        ct.treeItem_Warnings[0] = this.treeItem_Warnings[0];
-        ct.treeItem_Errors[0] = this.treeItem_Errors[0];
-        ct.treeItem_Duplicates[0] = this.treeItem_Duplicates[0];
-        ct.btn_Inspect[0] = this.btn_Inspect[0];
-        ct.btn_InspectSame[0] = this.btn_InspectSame[0];
-        ct.btn_QuickFix[0] = this.btn_QuickFix[0];
-        ct.btn_QuickFixSame[0] = this.btn_QuickFixSame[0];
-        ct.lbl_ProblemCount[0] = this.lbl_ProblemCount[0];
+        ct.canvasLineNumberAreaPtr[0] = this.canvasLineNumberAreaPtr[0];
+        ct.compositeTextPtr[0] = this.compositeTextPtr[0];
+        ct.compositeContainerPtr[0] = this.compositeContainerPtr[0];
+        ct.sashFormPtr[0] = this.sashFormPtr[0];
+        ct.tabFolderPartInformationPtr[0] = this.tabFolderPartInformationPtr[0];
+        ct.treeProblemsPtr[0] = this.treeProblemsPtr[0];
+        ct.treeItemHintsPtr[0] = this.treeItemHintsPtr[0];
+        ct.treeItemWarningsPtr[0] = this.treeItemWarningsPtr[0];
+        ct.treeItemErrorsPtr[0] = this.treeItemErrorsPtr[0];
+        ct.treeItemDuplicatesPtr[0] = this.treeItemDuplicatesPtr[0];
+        ct.btnInspectPtr[0] = this.btnInspectPtr[0];
+        ct.btnInspectSamePtr[0] = this.btnInspectSamePtr[0];
+        ct.btnQuickFixPtr[0] = this.btnQuickFixPtr[0];
+        ct.btnQuickFixSamePtr[0] = this.btnQuickFixSamePtr[0];
+        ct.lblProblemCountPtr[0] = this.lblProblemCountPtr[0];
         try {
             ct.setControl(this.state.getTab().getControl());
         } catch (IllegalArgumentException e) {
@@ -2025,27 +2025,27 @@ public class CompositeTab extends CompositeTabDesign {
     }
 
     public StyledText getTextComposite() {
-        return this.state.getTab().compositeText[0];
+        return this.state.getTab().compositeTextPtr[0];
     }
 
     public void parseForErrorAndHints() {
-        this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), treeItem_Hints[0], treeItem_Warnings[0], treeItem_Errors[0], treeItem_Duplicates[0], lbl_ProblemCount[0], true);
-        int errorCount = treeItem_Errors[0].getItems().size();
-        int warningCount = treeItem_Warnings[0].getItems().size();
-        int hintCount = treeItem_Hints[0].getItems().size();
-        int duplicateCount = treeItem_Duplicates[0].getItems().size();
+        this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0], treeItemDuplicatesPtr[0], lblProblemCountPtr[0], true);
+        int errorCount = treeItemErrorsPtr[0].getItems().size();
+        int warningCount = treeItemWarningsPtr[0].getItems().size();
+        int hintCount = treeItemHintsPtr[0].getItems().size();
+        int duplicateCount = treeItemDuplicatesPtr[0].getItems().size();
         String errors = errorCount == 1 ? I18n.EDITORTEXT_ERROR : I18n.EDITORTEXT_ERRORS;
         String warnings = warningCount == 1 ? I18n.EDITORTEXT_WARNING : I18n.EDITORTEXT_WARNINGS;
         String hints = hintCount == 1 ? I18n.EDITORTEXT_OTHER : I18n.EDITORTEXT_OTHERS;
         String duplicates = duplicateCount == 1 ? I18n.EDITORTEXT_DUPLICATE : I18n.EDITORTEXT_DUPLICATES;
-        lbl_ProblemCount[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
-        lbl_ProblemCount[0].getParent().layout();
+        lblProblemCountPtr[0].setText(errorCount + " " + errors + ", " + warningCount + " " + warnings + ", " + hintCount + " " + hints + ", " + duplicateCount + " " + duplicates); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+        lblProblemCountPtr[0].getParent().layout();
     }
 
     public void updateColours() {
-        this.state.getTab().compositeText[0].setBackground(Colour.text_background[0]);
-        this.state.getTab().compositeText[0].setForeground(Colour.text_foreground[0]);
-        this.state.getTab().compositeText[0].redrawRange(0, this.state.getTab().compositeText[0].getText().length(), false);
+        this.state.getTab().compositeTextPtr[0].setBackground(Colour.textBackground[0]);
+        this.state.getTab().compositeTextPtr[0].setForeground(Colour.textForeground[0]);
+        this.state.getTab().compositeTextPtr[0].redrawRange(0, this.state.getTab().compositeTextPtr[0].getText().length(), false);
     }
 
     public void hideSelection() {

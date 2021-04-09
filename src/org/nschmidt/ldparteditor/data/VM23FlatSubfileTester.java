@@ -108,9 +108,9 @@ class VM23FlatSubfileTester extends VM22TJunctionFixer {
         }
 
         Matrix tMatrix2 = ref.accurateLocalMatrix;
-        final BigDecimal lengthX =  plainOnX ? MathHelper.sqrt(tMatrix2.M00.multiply(tMatrix2.M00).add(tMatrix2.M01.multiply(tMatrix2.M01)).add(tMatrix2.M02.multiply(tMatrix2.M02))).subtract(BigDecimal.ONE).abs() : null;
-        final BigDecimal lengthY =  plainOnY ? MathHelper.sqrt(tMatrix2.M10.multiply(tMatrix2.M10).add(tMatrix2.M11.multiply(tMatrix2.M11)).add(tMatrix2.M12.multiply(tMatrix2.M12))).subtract(BigDecimal.ONE).abs() : null;
-        final BigDecimal lengthZ =  plainOnZ ? MathHelper.sqrt(tMatrix2.M20.multiply(tMatrix2.M20).add(tMatrix2.M21.multiply(tMatrix2.M21)).add(tMatrix2.M22.multiply(tMatrix2.M22))).subtract(BigDecimal.ONE).abs() : null;
+        final BigDecimal lengthX =  plainOnX ? MathHelper.sqrt(tMatrix2.m00.multiply(tMatrix2.m00).add(tMatrix2.m01.multiply(tMatrix2.m01)).add(tMatrix2.m02.multiply(tMatrix2.m02))).subtract(BigDecimal.ONE).abs() : null;
+        final BigDecimal lengthY =  plainOnY ? MathHelper.sqrt(tMatrix2.m10.multiply(tMatrix2.m10).add(tMatrix2.m11.multiply(tMatrix2.m11)).add(tMatrix2.m12.multiply(tMatrix2.m12))).subtract(BigDecimal.ONE).abs() : null;
+        final BigDecimal lengthZ =  plainOnZ ? MathHelper.sqrt(tMatrix2.m20.multiply(tMatrix2.m20).add(tMatrix2.m21.multiply(tMatrix2.m21)).add(tMatrix2.m22.multiply(tMatrix2.m22))).subtract(BigDecimal.ONE).abs() : null;
         // Epsilon is 0.000001 / DATHeader default value is 0.0005
         final BigDecimal epsilon = new BigDecimal("0.000001"); //$NON-NLS-1$
         if (plainOnX && epsilon.compareTo(lengthX) < 0) {

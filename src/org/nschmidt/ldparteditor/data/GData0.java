@@ -131,7 +131,7 @@ public final class GData0 extends GData {
                     numberError = true;
                 }
                 if (!numberError) {
-                    BigDecimal[] vert = matrix.transform(start.X, start.Y, start.Z);
+                    BigDecimal[] vert = matrix.transform(start.x, start.y, start.z);
                     StringBuilder lineBuilder = new StringBuilder();
                     lineBuilder.append("0 !LPE VERTEX "); //$NON-NLS-1$
                     lineBuilder.append(bigDecimalToString(vert[0]));
@@ -171,7 +171,7 @@ public final class GData0 extends GData {
                     numberError = true;
                 }
                 if (!numberError) {
-                    return new Vertex(start.X, start.Y, start.Z);
+                    return new Vertex(start.x, start.y, start.z);
                 }
             }
         }

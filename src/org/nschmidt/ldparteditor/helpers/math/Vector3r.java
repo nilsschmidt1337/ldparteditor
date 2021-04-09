@@ -29,85 +29,85 @@ import org.nschmidt.ldparteditor.data.Vertex;
  */
 public class Vector3r {
 
-    public Rational X;
-    public Rational Y;
-    public Rational Z;
+    public Rational x;
+    public Rational y;
+    public Rational z;
 
     public Vector3r(Vector4f tmp) {
         this(new Vertex(tmp));
     }
 
     public Vector3r(Vector3r tmp) {
-        this(tmp.X, tmp.Y, tmp.Z);
+        this(tmp.x, tmp.y, tmp.z);
     }
 
     public Vector3r(Vertex tmp) {
-        this(tmp.X, tmp.Y, tmp.Z);
+        this(tmp.xp, tmp.yp, tmp.zp);
     }
 
     private Vector3r(BigDecimal x, BigDecimal y, BigDecimal z) {
-        this.X = new Rational(x);
-        this.Y = new Rational(y);
-        this.Z = new Rational(z);
+        this.x = new Rational(x);
+        this.y = new Rational(y);
+        this.z = new Rational(z);
     }
 
     public Vector3r() {
-        this.X = new Rational();
-        this.Y = new Rational();
-        this.Z = new Rational();
+        this.x = new Rational();
+        this.y = new Rational();
+        this.z = new Rational();
     }
 
     public Vector3r(Rational x, Rational y, Rational z) {
-        this.X = x;
-        this.Y = y;
-        this.Z = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public void negate() {
-        this.X = this.X.negate();
-        this.Y = this.Y.negate();
-        this.Z = this.Z.negate();
+        this.x = this.x.negate();
+        this.y = this.y.negate();
+        this.z = this.z.negate();
     }
 
     public static Vector3r sub(Vector3r a, Vector3r b) {
-        return new Vector3r(a.X.subtract(b.X), a.Y.subtract(b.Y), a.Z.subtract(b.Z));
+        return new Vector3r(a.x.subtract(b.x), a.y.subtract(b.y), a.z.subtract(b.z));
     }
 
     public static Vector3r cross(Vector3r a, Vector3r b) {
-        Rational x = a.Y.multiply(b.Z).subtract(a.Z.multiply(b.Y));
-        Rational y = a.Z.multiply(b.X).subtract(a.X.multiply(b.Z));
-        Rational z = a.X.multiply(b.Y).subtract(a.Y.multiply(b.X));
+        Rational x = a.y.multiply(b.z).subtract(a.z.multiply(b.y));
+        Rational y = a.z.multiply(b.x).subtract(a.x.multiply(b.z));
+        Rational z = a.x.multiply(b.y).subtract(a.y.multiply(b.x));
         return new Vector3r(x, y, z);
     }
 
     public static Rational dot(Vector3r a, Vector3r b) {
-        return a.X.multiply(b.X).add(a.Y.multiply(b.Y)).add(a.Z.multiply(b.Z));
+        return a.x.multiply(b.x).add(a.y.multiply(b.y)).add(a.z.multiply(b.z));
     }
 
     public void setX(Rational tmp) {
-        this.X = tmp;
+        this.x = tmp;
     }
 
     public void setY(Rational tmp) {
-        this.Y = tmp;
+        this.y = tmp;
     }
 
     public void setZ(Rational tmp) {
-        this.Z = tmp;
+        this.z = tmp;
     }
 
     public void set(Vertex v) {
-        this.X = new Rational(v.X);
-        this.Y = new Rational(v.Y);
-        this.Z = new Rational(v.Z);
+        this.x = new Rational(v.xp);
+        this.y = new Rational(v.yp);
+        this.z = new Rational(v.zp);
     }
 
     @Override
     public String toString() {
-        return this.X.toString() + " | " + this.Y.toString() + " | " + this.Z.toString(); //$NON-NLS-1$ //$NON-NLS-2$
+        return this.x.toString() + " | " + this.y.toString() + " | " + this.z.toString(); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public boolean equals2d(Vector3r other) {
-        return this.X.compareTo(other.X) == 0 && this.Y.compareTo(other.Y) == 0;
+        return this.x.compareTo(other.x) == 0 && this.y.compareTo(other.y) == 0;
     }
 }

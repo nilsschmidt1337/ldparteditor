@@ -515,7 +515,7 @@ public enum ReferenceParser {
                     messageBoxError.setText(I18n.DIALOG_NOT_FOUND_REQUIRED_TITLE);
                     Object[] messageArguments = {shortFilename, dfToParse.getShortName()};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.setLocale(MyLanguage.locale);
                     formatter.applyPattern(I18n.DIALOG_NOT_FOUND_REQUIRED);
                     messageBoxError.setMessage(formatter.format(messageArguments));
                     messageBoxError.open();

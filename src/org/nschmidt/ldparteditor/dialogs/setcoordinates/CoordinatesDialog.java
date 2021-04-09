@@ -68,7 +68,7 @@ public class CoordinatesDialog extends CoordinatesDesign {
         if (v == null) {
             vertex = new Vertex(0f, 0f, 0f);
         } else {
-            vertex = new Vertex(v.X, v.Y, v.Z);
+            vertex = new Vertex(v.xp, v.yp, v.zp);
         }
         this.mani = mani;
         if (transformationMode == ManipulatorScope.LOCAL) {
@@ -80,9 +80,9 @@ public class CoordinatesDialog extends CoordinatesDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_Local[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
-            btn_Local[0].setSelection(true);
+        WidgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
+            btnLocalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.LOCAL) {
                 transformationMode = ManipulatorScope.LOCAL;
                 Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
@@ -90,9 +90,9 @@ public class CoordinatesDialog extends CoordinatesDesign {
             }
             updateXYZ();
         });
-        WidgetUtil(btn_Global[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.GLOBAL) {
                 transformationMode = ManipulatorScope.GLOBAL;
                 Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
@@ -100,41 +100,41 @@ public class CoordinatesDialog extends CoordinatesDesign {
             }
             updateXYZ();
         });
-        WidgetUtil(cb_Xaxis[0]).addSelectionListener(e -> x = cb_Xaxis[0].getSelection());
-        WidgetUtil(cb_Yaxis[0]).addSelectionListener(e -> y = cb_Yaxis[0].getSelection());
-        WidgetUtil(cb_Zaxis[0]).addSelectionListener(e -> z = cb_Zaxis[0].getSelection());
-        spn_X[0].addValueChangeListener(spn -> {
-            vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
-            cb_Xaxis[0].setSelection(true);
+        WidgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> x = cbXaxisPtr[0].getSelection());
+        WidgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> y = cbYaxisPtr[0].getSelection());
+        WidgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> z = cbZaxisPtr[0].getSelection());
+        spnXPtr[0].addValueChangeListener(spn -> {
+            vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue());
+            cbXaxisPtr[0].setSelection(true);
             x = true;
         });
-        spn_Y[0].addValueChangeListener(spn -> {
-            vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
-            cb_Yaxis[0].setSelection(true);
+        spnYPtr[0].addValueChangeListener(spn -> {
+            vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue());
+            cbYaxisPtr[0].setSelection(true);
             y = true;
         });
-        spn_Z[0].addValueChangeListener(spn -> {
-            vertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
-            cb_Zaxis[0].setSelection(true);
+        spnZPtr[0].addValueChangeListener(spn -> {
+            vertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue());
+            cbZaxisPtr[0].setSelection(true);
             z = true;
         });
-        WidgetUtil(btn_Manipulator[0]).addSelectionListener(e -> {
+        WidgetUtil(btnManipulatorPtr[0]).addSelectionListener(e -> {
             if (transformationMode == ManipulatorScope.GLOBAL) {
-                vertex = new Vertex(m.X, m.Y, m.Z);
+                vertex = new Vertex(m.xp, m.yp, m.zp);
             } else {
-                vertex = globalToLocal(new Vertex(m.X, m.Y, m.Z));
+                vertex = globalToLocal(new Vertex(m.xp, m.yp, m.zp));
             }
             updateXYZ();
         });
-        WidgetUtil(btn_Clipboard[0]).addSelectionListener(e -> {
+        WidgetUtil(btnClipboardPtr[0]).addSelectionListener(e -> {
             if (transformationMode == ManipulatorScope.GLOBAL) {
-                vertex = new Vertex(c.X, c.Y, c.Z);
+                vertex = new Vertex(c.xp, c.yp, c.zp);
             } else {
-                vertex = globalToLocal(new Vertex(c.X, c.Y, c.Z));
+                vertex = globalToLocal(new Vertex(c.xp, c.yp, c.zp));
             }
             updateXYZ();
         });
-        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
             creatingCopy = true;
             setReturnCode(OK);
             close();
@@ -209,9 +209,9 @@ public class CoordinatesDialog extends CoordinatesDesign {
     }
 
     private void updateXYZ() {
-        Vector3d v2 = new Vector3d(vertex.X, vertex.Y, vertex.Z);
-        spn_X[0].setValue(v2.X);
-        spn_Y[0].setValue(v2.Y);
-        spn_Z[0].setValue(v2.Z);
+        Vector3d v2 = new Vector3d(vertex.xp, vertex.yp, vertex.zp);
+        spnXPtr[0].setValue(v2.x);
+        spnYPtr[0].setValue(v2.y);
+        spnZPtr[0].setValue(v2.z);
     }
 }

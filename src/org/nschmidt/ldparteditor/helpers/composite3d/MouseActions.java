@@ -91,13 +91,13 @@ public class MouseActions {
      * The cursor position of the mouse recognized by the MouseDown event [NOT
      * PUBLIC YET]
      */
-    private final Vector2f old_mouse_position = new Vector2f();
+    private final Vector2f oldMousePosition = new Vector2f();
     /** The old translation matrix of the view [NOT PUBLIC YET] */
-    private final Matrix4f old_viewport_translation = new Matrix4f();
+    private final Matrix4f oldViewportTranslation = new Matrix4f();
     /** The old rotation matrix of the view [NOT PUBLIC YET] */
-    private Matrix4f old_viewport_rotation = new Matrix4f();
+    private Matrix4f oldViewportRotation = new Matrix4f();
     /** Greater {@code 0} if the mouse button is down [NOT PUBLIC YET] */
-    private int mouse_button_pressed;
+    private int mouseButtonPressed;
 
     private boolean translateAtSelect = false;
     private BigDecimal aXx = null;
@@ -135,10 +135,10 @@ public class MouseActions {
         vm.getResetTimer().set(true);
         datfile.setLastSelectedComposite(c3d);
 
-        mouse_button_pressed = event.button;
+        mouseButtonPressed = event.button;
 
-        old_mouse_position.set(event.x, event.y);
-        switch (mouse_button_pressed) {
+        oldMousePosition.set(event.x, event.y);
+        switch (mouseButtonPressed) {
         case MouseButton.LEFT:
             final Editor3DWindow window = Editor3DWindow.getWindow();
             if ((event.stateMask & SWT.SHIFT) == SWT.SHIFT && !window.isAddingSomething()) {
@@ -231,7 +231,7 @@ public class MouseActions {
             Project.setFileToEdit(datfile);
             if (c3d.isDoingSelection())
                 break;
-            Matrix4f.load(c3d.getRotation(), old_viewport_rotation);
+            Matrix4f.load(c3d.getRotation(), oldViewportRotation);
             break;
         case MouseButton.RIGHT:
             c3d.getCanvas().forceFocus();
@@ -239,7 +239,7 @@ public class MouseActions {
             Project.setFileToEdit(datfile);
             if (c3d.isDoingSelection())
                 break;
-            Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
+            Matrix4f.load(c3d.getTranslation(), oldViewportTranslation);
             break;
         default:
             break;
@@ -282,14 +282,14 @@ public class MouseActions {
         Matrix4f viewportTranslation = c3d.getTranslation();
         Matrix4f viewportRotation = c3d.getRotation();
         float viewportPixelPerLDU = c3d.getViewportPixelPerLDU();
-        switch (mouse_button_pressed) {
+        switch (mouseButtonPressed) {
         case MouseButton.LEFT:
             Vector4f temp;
             if (! Editor3DWindow.getWindow().isAddingSomething()) {
                 if (translateAtSelect) {
-                    temp = c3d.getManipulator().transformAtSelect(old_mouse_position, event.x, event.y, c3d);
+                    temp = c3d.getManipulator().transformAtSelect(oldMousePosition, event.x, event.y, c3d);
                 } else {
-                    temp = c3d.getManipulator().transform(old_mouse_position, event.x, event.y, c3d);
+                    temp = c3d.getManipulator().transform(oldMousePosition, event.x, event.y, c3d);
                 }
                 if (Editor3DWindow.getWindow().getTransformationMode() == ManipulatorScope.GLOBAL) {
                     c3d.getManipulator().getPosition().set(temp);
@@ -312,33 +312,33 @@ public class MouseActions {
 
             if (keyboard.isCtrlPressed() || Cocoa.IS_COCOA && keyboard.isAltPressed()) {
                 if (c3d.hasNegDeterminant()) {
-                    rx = (float) (Math.atan2(-cSize.y / 2f + old_mouse_position.y, -cSize.x / 2f + old_mouse_position.x)
+                    rx = (float) (Math.atan2(-cSize.y / 2f + oldMousePosition.y, -cSize.x / 2f + oldMousePosition.x)
                             - Math.atan2(-cSize.y / 2f + event.y, -cSize.x / 2f + event.x));
                 } else {
-                    rx = (float) (Math.atan2(cSize.y / 2f - old_mouse_position.y, cSize.x / 2f - old_mouse_position.x)
+                    rx = (float) (Math.atan2(cSize.y / 2f - oldMousePosition.y, cSize.x / 2f - oldMousePosition.x)
                             - Math.atan2(cSize.y / 2f - event.y, cSize.x / 2f - event.x));
                 }
                 Vector4f xAxis4fRotation = new Vector4f(0f, 0f, 1.0f, 1.0f);
-                Matrix4f ovrInverse = Matrix4f.invert(old_viewport_rotation, null);
+                Matrix4f ovrInverse = Matrix4f.invert(oldViewportRotation, null);
                 Matrix4f.transform(ovrInverse, xAxis4fRotation, xAxis4fRotation);
                 Vector3f xAxis3fRotation = new Vector3f(xAxis4fRotation.x, xAxis4fRotation.y, xAxis4fRotation.z);
-                Matrix4f.rotate(rx, xAxis3fRotation, old_viewport_rotation, viewportRotation);
+                Matrix4f.rotate(rx, xAxis3fRotation, oldViewportRotation, viewportRotation);
             } else {
                 if (c3d.hasNegDeterminant()) {
-                    rx = (event.x - old_mouse_position.x) / cSize.x * (float) Math.PI;
-                    ry = (event.y - old_mouse_position.y) / cSize.y * (float) Math.PI;
+                    rx = (event.x - oldMousePosition.x) / cSize.x * (float) Math.PI;
+                    ry = (event.y - oldMousePosition.y) / cSize.y * (float) Math.PI;
                 } else {
-                    rx = (old_mouse_position.x - event.x) / cSize.x * (float) Math.PI;
-                    ry = (old_mouse_position.y - event.y) / cSize.y * (float) Math.PI;
+                    rx = (oldMousePosition.x - event.x) / cSize.x * (float) Math.PI;
+                    ry = (oldMousePosition.y - event.y) / cSize.y * (float) Math.PI;
                 }
                 Vector4f xAxis4fRotation = new Vector4f(1.0f, 0f, 0f, 1.0f);
                 Vector4f yAxis4fRotation = new Vector4f(0f, 1.0f, 0f, 1.0f);
-                Matrix4f ovrInverse = Matrix4f.invert(old_viewport_rotation, null);
+                Matrix4f ovrInverse = Matrix4f.invert(oldViewportRotation, null);
                 Matrix4f.transform(ovrInverse, xAxis4fRotation, xAxis4fRotation);
                 Matrix4f.transform(ovrInverse, yAxis4fRotation, yAxis4fRotation);
                 Vector3f xAxis3fRotation = new Vector3f(xAxis4fRotation.x, xAxis4fRotation.y, xAxis4fRotation.z);
                 Vector3f yAxis3fRotation = new Vector3f(yAxis4fRotation.x, yAxis4fRotation.y, yAxis4fRotation.z);
-                Matrix4f.rotate(rx, yAxis3fRotation, old_viewport_rotation, viewportRotation);
+                Matrix4f.rotate(rx, yAxis3fRotation, oldViewportRotation, viewportRotation);
                 Matrix4f.rotate(ry, xAxis3fRotation, viewportRotation, viewportRotation);
             }
             perspective.calculateOriginData();
@@ -350,10 +350,10 @@ public class MouseActions {
             float dx = 0;
             float dy = 0;
             if (!(keyboard.isShiftPressed() || Cocoa.IS_COCOA && keyboard.isAltPressed()) ) {
-                dx = (old_mouse_position.x - event.x) / viewportPixelPerLDU;
+                dx = (oldMousePosition.x - event.x) / viewportPixelPerLDU;
             }
             if (!(keyboard.isCtrlPressed() || Cocoa.IS_COCOA && keyboard.isCmdPressed()) || Editor3DWindow.getWindow().isAddingSomething()) {
-                dy = (event.y - old_mouse_position.y) / viewportPixelPerLDU;
+                dy = (event.y - oldMousePosition.y) / viewportPixelPerLDU;
             }
             translateViewport(dx, dy, viewportTranslation, viewportRotation, perspective);
             c3d.getVertexManager().getResetTimer().set(true);
@@ -386,7 +386,7 @@ public class MouseActions {
                         c3d.getLockableDatFileReference().setObjVertex1(nv);
                         c3d.getLockableDatFileReference().setObjVertex2(nv);
                         c3d.getCursorSnapped3D().set(nv.x, nv.y, nv.z, 1f);
-                        c3d.setCursorSnapped3Dprecise(nv.X, nv.Y, nv.Z);
+                        c3d.setCursorSnapped3Dprecise(nv.xp, nv.yp, nv.zp);
                     } else if (!keyboard.isCtrlPressed()) {
                         Vertex v2 = c3d.getLockableDatFileReference().getObjVertex2();
                         Vector3f v13 = new Vector3f(v1.x, v1.y, v1.z);
@@ -675,7 +675,7 @@ public class MouseActions {
     }
 
     public void prepareTranslateViewport() {
-        Matrix4f.load(c3d.getTranslation(), old_viewport_translation);
+        Matrix4f.load(c3d.getTranslation(), oldViewportTranslation);
     }
 
     public void translateViewport(float dx, float dy, Matrix4f viewportTranslation, Matrix4f viewportRotation,
@@ -687,8 +687,8 @@ public class MouseActions {
         Matrix4f.transform(ovrInverse2, yAxis4fTranslation, yAxis4fTranslation);
         Vector3f xAxis3 = new Vector3f(xAxis4fTranslation.x, xAxis4fTranslation.y, xAxis4fTranslation.z);
         Vector3f yAxis3 = new Vector3f(yAxis4fTranslation.x, yAxis4fTranslation.y, yAxis4fTranslation.z);
-        Matrix4f.load(old_viewport_translation, viewportTranslation);
-        Matrix4f.translate(xAxis3, old_viewport_translation, viewportTranslation);
+        Matrix4f.load(oldViewportTranslation, viewportTranslation);
+        Matrix4f.translate(xAxis3, oldViewportTranslation, viewportTranslation);
         Matrix4f.translate(yAxis3, viewportTranslation, viewportTranslation);
         perspective.calculateOriginData();
     }
@@ -713,7 +713,7 @@ public class MouseActions {
         Vector2f oldPos = c3d.getOldMousePosition();
         c3d.setWarpedSelection(oldPos.x - event.x < 0 ^ oldPos.y - event.y < 0);
 
-        mouse_button_pressed = 0;
+        mouseButtonPressed = 0;
 
         switch (event.button) {
         case MouseButton.LEFT:
@@ -1286,8 +1286,8 @@ public class MouseActions {
             }
             if (c3d.isDoingSelection())
                 break;
-            float dx = event.x - old_mouse_position.x;
-            float dy = old_mouse_position.y - event.y;
+            float dx = event.x - oldMousePosition.x;
+            float dy = oldMousePosition.y - event.y;
             if (Math.abs(dx) + Math.abs(dy) < 5.0) {
 
                 try {
@@ -1338,9 +1338,9 @@ public class MouseActions {
                         } else {
                             state.setReplacingVertex(!datfile.isReadOnly());
                             vm.setVertexToReplace(v);
-                            state.setToReplaceX(v.X);
-                            state.setToReplaceY(v.Y);
-                            state.setToReplaceZ(v.Z);
+                            state.setToReplaceX(v.xp);
+                            state.setToReplaceY(v.yp);
+                            state.setToReplaceZ(v.zp);
                         }
                     }
                 }

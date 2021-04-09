@@ -27,7 +27,7 @@ import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM19ColourChanger extends VM18LineConverter {
 
-    private final Random RND = new Random((GData.getLastID() + 1) * 19364792647L);
+    private final Random rnd = new Random((GData.getLastID() + 1) * 19364792647L);
 
     protected VM19ColourChanger(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -188,9 +188,9 @@ class VM19ColourChanger extends VM18LineConverter {
                 if (isRandomColour) {
                     colourBuilder.setLength(0);
                     colourBuilder.append("0x2"); //$NON-NLS-1$
-                    colourBuilder.append(MathHelper.toHex((int) (255f * RND.nextFloat())).toUpperCase());
-                    colourBuilder.append(MathHelper.toHex((int) (255f * RND.nextFloat())).toUpperCase());
-                    colourBuilder.append(MathHelper.toHex((int) (255f * RND.nextFloat())).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * rnd.nextFloat())).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * rnd.nextFloat())).toUpperCase());
+                    colourBuilder.append(MathHelper.toHex((int) (255f * rnd.nextFloat())).toUpperCase());
                     col = colourBuilder.toString();
                 }
                 String colouredString = subf.getColouredString(col);
@@ -317,35 +317,35 @@ class VM19ColourChanger extends VM18LineConverter {
                     a = ca;
                 }
             } else if (isRandomColour) {
-                r = RND.nextFloat();
-                g = RND.nextFloat();
-                b = RND.nextFloat();
+                r = rnd.nextFloat();
+                g = rnd.nextFloat();
+                b = rnd.nextFloat();
             }
             GData newGData = null;
             switch (gData.type()) {
             case 2:
                 GData2 gd2 = (GData2) gData;
-                GData2 newGdata2 = new GData2(gd2.parent, index, r, g, b, a, gd2.X1, gd2.Y1, gd2.Z1, gd2.X2, gd2.Y2, gd2.Z2, gd2.x1, gd2.y1, gd2.z1, gd2.x2, gd2.y2, gd2.z2, linkedDatFile, gd2.isLine);
+                GData2 newGdata2 = new GData2(gd2.parent, index, r, g, b, a, gd2.x1p, gd2.y1p, gd2.z1p, gd2.x2p, gd2.y2p, gd2.z2p, gd2.x1, gd2.y1, gd2.z1, gd2.x2, gd2.y2, gd2.z2, linkedDatFile, gd2.isLine);
                 newData.add(newGdata2);
                 newGData = newGdata2;
                 break;
             case 3:
                 GData3 gd3 = (GData3) gData;
-                GData3 newGdata3 = new GData3(index, r, g, b, a, gd3.X1, gd3.Y1, gd3.Z1, gd3.X2, gd3.Y2, gd3.Z2, gd3.X3, gd3.Y3, gd3.Z3, gd3.x1, gd3.y1, gd3.z1, gd3.x2, gd3.y2, gd3.z2, gd3.x3,
+                GData3 newGdata3 = new GData3(index, r, g, b, a, gd3.x1p, gd3.y1p, gd3.z1p, gd3.x2p, gd3.y2p, gd3.z2p, gd3.x3p, gd3.y3p, gd3.z3p, gd3.x1, gd3.y1, gd3.z1, gd3.x2, gd3.y2, gd3.z2, gd3.x3,
                         gd3.y3, gd3.z3, gd3.xn, gd3.yn, gd3.zn, gd3.parent, linkedDatFile, gd3.isTriangle);
                 newData.add(newGdata3);
                 newGData = newGdata3;
                 break;
             case 4:
                 GData4 gd4 = (GData4) gData;
-                GData4 newGdata4 = new GData4(index, r, g, b, a, gd4.X1, gd4.Y1, gd4.Z1, gd4.X2, gd4.Y2, gd4.Z2, gd4.X3, gd4.Y3, gd4.Z3, gd4.X4, gd4.Y4, gd4.Z4, gd4.x1, gd4.y1, gd4.z1, gd4.x2,
+                GData4 newGdata4 = new GData4(index, r, g, b, a, gd4.x1p, gd4.y1p, gd4.z1p, gd4.x2p, gd4.y2p, gd4.z2p, gd4.x3p, gd4.y3p, gd4.z3p, gd4.x4p, gd4.y4p, gd4.z4p, gd4.x1, gd4.y1, gd4.z1, gd4.x2,
                         gd4.y2, gd4.z2, gd4.x3, gd4.y3, gd4.z3, gd4.x4, gd4.y4, gd4.z4, gd4.xn, gd4.yn, gd4.zn, gd4.parent, linkedDatFile);
                 newData.add(newGdata4);
                 newGData = newGdata4;
                 break;
             case 5:
                 GData5 gd5 = (GData5) gData;
-                GData5 newGdata5 = new GData5(index, r, g, b, a, gd5.X1, gd5.Y1, gd5.Z1, gd5.X2, gd5.Y2, gd5.Z2, gd5.X3, gd5.Y3, gd5.Z3, gd5.X4, gd5.Y4, gd5.Z4, gd5.x1, gd5.y1, gd5.z1, gd5.x2, gd5.y2,
+                GData5 newGdata5 = new GData5(index, r, g, b, a, gd5.x1p, gd5.y1p, gd5.z1p, gd5.x2p, gd5.y2p, gd5.z2p, gd5.x3p, gd5.y3p, gd5.z3p, gd5.x4p, gd5.y4p, gd5.z4p, gd5.x1, gd5.y1, gd5.z1, gd5.x2, gd5.y2,
                         gd5.z2, gd5.x3, gd5.y3, gd5.z3, gd5.x4, gd5.y4, gd5.z4, gd5.parent, linkedDatFile);
                 newData.add(newGdata5);
                 newGData = newGdata5;

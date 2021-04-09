@@ -265,10 +265,10 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
 
         // Calculate matrix
         result = new Matrix(
-                mx.X, mx.Y, mx.Z, BigDecimal.ZERO,
-                my.X, my.Y, my.Z, BigDecimal.ZERO,
-                mz.X, mz.Y, mz.Z, BigDecimal.ZERO,
-                origin.X, origin.Y, origin.Z, BigDecimal.ONE);
+                mx.x, mx.y, mx.z, BigDecimal.ZERO,
+                my.x, my.y, my.z, BigDecimal.ZERO,
+                mz.x, mz.y, mz.z, BigDecimal.ZERO,
+                origin.x, origin.y, origin.z, BigDecimal.ONE);
 
         return result;
     }

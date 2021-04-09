@@ -77,17 +77,17 @@ public class EditorMetaWindow extends EditorMetaDesign {
             @Override
             public void shellActivated(ShellEvent e) {
                 final UserSettingState userSettings = WorkbenchManager.getUserSettingState();
-                if (!ev_author_realName_txt[0].getText().equals(userSettings.getRealUserName())) {
-                    ev_author_realName_txt[0].setText(userSettings.getRealUserName());
+                if (!evAuthorRealNameTxtPtr[0].getText().equals(userSettings.getRealUserName())) {
+                    evAuthorRealNameTxtPtr[0].setText(userSettings.getRealUserName());
                 }
-                if (!ev_author_userName_txt[0].getText().equals(userSettings.getLdrawUserName())) {
-                    ev_author_userName_txt[0].setText(userSettings.getLdrawUserName());
+                if (!evAuthorUserNameTxtPtr[0].getText().equals(userSettings.getLdrawUserName())) {
+                    evAuthorUserNameTxtPtr[0].setText(userSettings.getLdrawUserName());
                 }
             }
         });
 
-        WidgetUtil(btn_Create[0]).addSelectionListener(e -> {
-            String textToCompile = lbl_lineToInsert[0].getText();
+        WidgetUtil(btnCreatePtr[0]).addSelectionListener(e -> {
+            String textToCompile = lblLineToInsertPtr[0].getText();
             final DatFile df = Project.getFileToEdit();
             if (df != null) {
                 final boolean insertAtCursor = Editor3DWindow.getWindow().isInsertingAtCursorPosition();
@@ -107,157 +107,157 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        WidgetUtil(ev_description_btn[0]).addSelectionListener(e -> updateDescription());
-        ev_description_txt[0].addModifyListener(e -> updateDescription());
-        ev_description_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        WidgetUtil(evDescriptionBtnPtr[0]).addSelectionListener(e -> updateDescription());
+        evDescriptionTxtPtr[0].addModifyListener(e -> updateDescription());
+        evDescriptionTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateDescription();
             }
         });
 
-        ev_name_txt[0].addModifyListener(e -> updateName());
-        ev_name_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evNameTxtPtr[0].addModifyListener(e -> updateName());
+        evNameTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateName();
             }
         });
 
-        ev_author_realName_txt[0].addModifyListener(e -> updateAuthor());
-        ev_author_realName_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evAuthorRealNameTxtPtr[0].addModifyListener(e -> updateAuthor());
+        evAuthorRealNameTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateAuthor();
             }
         });
-        ev_author_userName_txt[0].addModifyListener(e -> updateAuthor());
-        ev_author_userName_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evAuthorUserNameTxtPtr[0].addModifyListener(e -> updateAuthor());
+        evAuthorUserNameTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateAuthor();
             }
         });
 
-        ev_type_update_txt[0].addModifyListener(e -> updateType());
-        ev_type_update_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evTypeUpdateTxtPtr[0].addModifyListener(e -> updateType());
+        evTypeUpdateTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateType();
             }
         });
-        ev_type_type_cmb[0].addModifyListener(e -> updateType());
-        ev_type_type_cmb[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evTypeTypeCmbPtr[0].addModifyListener(e -> updateType());
+        evTypeTypeCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateType();
             }
         });
-        WidgetUtil(ev_type_unofficial_btn[0]).addSelectionListener(e -> updateType());
-        WidgetUtil(ev_type_update_btn[0]).addSelectionListener(e -> updateType());
+        WidgetUtil(evTypeUnofficialBtnPtr[0]).addSelectionListener(e -> updateType());
+        WidgetUtil(evTypeUpdateBtnPtr[0]).addSelectionListener(e -> updateType());
 
-        ev_license_cmb[0].addModifyListener(e -> updateLicense());
-        ev_license_cmb[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evLicenseCmbPtr[0].addModifyListener(e -> updateLicense());
+        evLicenseCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateLicense();
             }
         });
 
-        ev_help_txt[0].addModifyListener(e -> updateHelp());
-        ev_help_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evHelpTxtPtr[0].addModifyListener(e -> updateHelp());
+        evHelpTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHelp();
             }
         });
 
-        ev_bfcHeader_cmb[0].addModifyListener(e -> updateBfcHeader());
-        ev_bfcHeader_cmb[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evBfcHeaderCmbPtr[0].addModifyListener(e -> updateBfcHeader());
+        evBfcHeaderCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateBfcHeader();
             }
         });
 
-        ev_category_cmb[0].addModifyListener(e -> updateCategory());
-        ev_category_cmb[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evCategoryCmbPtr[0].addModifyListener(e -> updateCategory());
+        evCategoryCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateCategory();
             }
         });
 
-        ev_keywords_txt[0].addModifyListener(e -> updateKeywords());
-        ev_keywords_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evKeywordsTxtPtr[0].addModifyListener(e -> updateKeywords());
+        evKeywordsTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateKeywords();
             }
         });
 
-        ev_cmdline_txt[0].addModifyListener(e -> updateCmdline());
-        ev_cmdline_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evCmdlineTxtPtr[0].addModifyListener(e -> updateCmdline());
+        evCmdlineTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateCmdline();
             }
         });
 
-        ev_history11_txt[0].addModifyListener(e -> updateHistory1());
-        ev_history11_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evHistory11TxtPtr[0].addModifyListener(e -> updateHistory1());
+        evHistory11TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory1();
             }
         });
-        ev_history12_txt[0].addModifyListener(e -> updateHistory1());
-        ev_history12_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evHistory12TxtPtr[0].addModifyListener(e -> updateHistory1());
+        evHistory12TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory1();
             }
         });
-        ev_history13_txt[0].addModifyListener(e -> updateHistory1());
-        ev_history13_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evHistory13TxtPtr[0].addModifyListener(e -> updateHistory1());
+        evHistory13TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory1();
             }
         });
-        ev_history21_txt[0].addModifyListener(e -> updateHistory2());
-        ev_history21_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evHistory21TxtPtr[0].addModifyListener(e -> updateHistory2());
+        evHistory21TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory2();
             }
         });
-        ev_history22_txt[0].addModifyListener(e -> updateHistory2());
-        ev_history22_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evHistory22TxtPtr[0].addModifyListener(e -> updateHistory2());
+        evHistory22TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory2();
             }
         });
-        ev_history23_txt[0].addModifyListener(e -> updateHistory2());
-        ev_history23_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evHistory23TxtPtr[0].addModifyListener(e -> updateHistory2());
+        evHistory23TxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateHistory2();
             }
         });
 
-        ev_comment_txt[0].addModifyListener(e -> updateComment());
-        ev_comment_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evCommentTxtPtr[0].addModifyListener(e -> updateComment());
+        evCommentTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateComment();
             }
         });
-        WidgetUtil(ev_comment_btn[0]).addSelectionListener(e -> updateComment());
+        WidgetUtil(evCommentBtnPtr[0]).addSelectionListener(e -> updateComment());
 
-        ev_bfc_cmb[0].addModifyListener(e -> updateBfc());
-        ev_bfc_cmb[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evBfcCmbPtr[0].addModifyListener(e -> updateBfc());
+        evBfcCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateBfc();
@@ -272,30 +272,30 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
             final ModifyListener m = e -> updateTexmapPlanar();
-            ev_texmapPlanar_cmb[0].addFocusListener(a);
-            ev_texmapPlanar_cmb[0].addModifyListener(m);
-            ev_texmapPlanar1_txt[0].addFocusListener(a);
-            ev_texmapPlanar1_txt[0].addModifyListener(m);
-            ev_texmapPlanar2_txt[0].addFocusListener(a);
-            ev_texmapPlanar2_txt[0].addModifyListener(m);
-            ev_texmapPlanar3_txt[0].addFocusListener(a);
-            ev_texmapPlanar3_txt[0].addModifyListener(m);
-            ev_texmapPlanar4_txt[0].addFocusListener(a);
-            ev_texmapPlanar4_txt[0].addModifyListener(m);
-            ev_texmapPlanar5_txt[0].addFocusListener(a);
-            ev_texmapPlanar5_txt[0].addModifyListener(m);
-            ev_texmapPlanar6_txt[0].addFocusListener(a);
-            ev_texmapPlanar6_txt[0].addModifyListener(m);
-            ev_texmapPlanar7_txt[0].addFocusListener(a);
-            ev_texmapPlanar7_txt[0].addModifyListener(m);
-            ev_texmapPlanar8_txt[0].addFocusListener(a);
-            ev_texmapPlanar8_txt[0].addModifyListener(m);
-            ev_texmapPlanar9_txt[0].addFocusListener(a);
-            ev_texmapPlanar9_txt[0].addModifyListener(m);
-            ev_texmapPlanar10_txt[0].addFocusListener(a);
-            ev_texmapPlanar10_txt[0].addModifyListener(m);
+            evTexmapPlanarCmbPtr[0].addFocusListener(a);
+            evTexmapPlanarCmbPtr[0].addModifyListener(m);
+            evTexmapPlanar1TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar1TxtPtr[0].addModifyListener(m);
+            evTexmapPlanar2TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar2TxtPtr[0].addModifyListener(m);
+            evTexmapPlanar3TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar3TxtPtr[0].addModifyListener(m);
+            evTexmapPlanar4TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar4TxtPtr[0].addModifyListener(m);
+            evTexmapPlanar5TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar5TxtPtr[0].addModifyListener(m);
+            evTexmapPlanar6TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar6TxtPtr[0].addModifyListener(m);
+            evTexmapPlanar7TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar7TxtPtr[0].addModifyListener(m);
+            evTexmapPlanar8TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar8TxtPtr[0].addModifyListener(m);
+            evTexmapPlanar9TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar9TxtPtr[0].addModifyListener(m);
+            evTexmapPlanar10TxtPtr[0].addFocusListener(a);
+            evTexmapPlanar10TxtPtr[0].addModifyListener(m);
 
-            WidgetUtil(ev_texmapPlanar_btn[0]).addSelectionListener(e -> {
+            WidgetUtil(evTexmapPlanarBtnPtr[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -319,7 +319,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 fd.setFilterNames(filterNames);
                 String selected = fd.open();
                 if (selected != null) {
-                    ev_texmapPlanar10_txt[0].setText(selected);
+                    evTexmapPlanar10TxtPtr[0].setText(selected);
                 }
                 updateTexmapPlanar();
             });
@@ -334,32 +334,32 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
             final ModifyListener m = e -> updateTexmapCylindrical();
-            ev_texmapCyli_cmb[0].addFocusListener(a);
-            ev_texmapCyli_cmb[0].addModifyListener(m);
-            ev_texmapCyli1_txt[0].addFocusListener(a);
-            ev_texmapCyli1_txt[0].addModifyListener(m);
-            ev_texmapCyli2_txt[0].addFocusListener(a);
-            ev_texmapCyli2_txt[0].addModifyListener(m);
-            ev_texmapCyli3_txt[0].addFocusListener(a);
-            ev_texmapCyli3_txt[0].addModifyListener(m);
-            ev_texmapCyli4_txt[0].addFocusListener(a);
-            ev_texmapCyli4_txt[0].addModifyListener(m);
-            ev_texmapCyli5_txt[0].addFocusListener(a);
-            ev_texmapCyli5_txt[0].addModifyListener(m);
-            ev_texmapCyli6_txt[0].addFocusListener(a);
-            ev_texmapCyli6_txt[0].addModifyListener(m);
-            ev_texmapCyli7_txt[0].addFocusListener(a);
-            ev_texmapCyli7_txt[0].addModifyListener(m);
-            ev_texmapCyli8_txt[0].addFocusListener(a);
-            ev_texmapCyli8_txt[0].addModifyListener(m);
-            ev_texmapCyli9_txt[0].addFocusListener(a);
-            ev_texmapCyli9_txt[0].addModifyListener(m);
-            ev_texmapCyli10_txt[0].addFocusListener(a);
-            ev_texmapCyli10_txt[0].addModifyListener(m);
-            ev_texmapCyli11_txt[0].addFocusListener(a);
-            ev_texmapCyli11_txt[0].addModifyListener(m);
+            evTexmapCyliCmbPtr[0].addFocusListener(a);
+            evTexmapCyliCmbPtr[0].addModifyListener(m);
+            evTexmapCyli1TxtPtr[0].addFocusListener(a);
+            evTexmapCyli1TxtPtr[0].addModifyListener(m);
+            evTexmapCyli2TxtPtr[0].addFocusListener(a);
+            evTexmapCyli2TxtPtr[0].addModifyListener(m);
+            evTexmapCyli3TxtPtr[0].addFocusListener(a);
+            evTexmapCyli3TxtPtr[0].addModifyListener(m);
+            evTexmapCyli4TxtPtr[0].addFocusListener(a);
+            evTexmapCyli4TxtPtr[0].addModifyListener(m);
+            evTexmapCyli5TxtPtr[0].addFocusListener(a);
+            evTexmapCyli5TxtPtr[0].addModifyListener(m);
+            evTexmapCyli6TxtPtr[0].addFocusListener(a);
+            evTexmapCyli6TxtPtr[0].addModifyListener(m);
+            evTexmapCyli7TxtPtr[0].addFocusListener(a);
+            evTexmapCyli7TxtPtr[0].addModifyListener(m);
+            evTexmapCyli8TxtPtr[0].addFocusListener(a);
+            evTexmapCyli8TxtPtr[0].addModifyListener(m);
+            evTexmapCyli9TxtPtr[0].addFocusListener(a);
+            evTexmapCyli9TxtPtr[0].addModifyListener(m);
+            evTexmapCyli10TxtPtr[0].addFocusListener(a);
+            evTexmapCyli10TxtPtr[0].addModifyListener(m);
+            evTexmapCyli11TxtPtr[0].addFocusListener(a);
+            evTexmapCyli11TxtPtr[0].addModifyListener(m);
 
-            WidgetUtil(ev_texmapCyli_btn[0]).addSelectionListener(e -> {
+            WidgetUtil(evTexmapCyliBtnPtr[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -383,7 +383,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 fd.setFilterNames(filterNames);
                 String selected = fd.open();
                 if (selected != null) {
-                    ev_texmapCyli11_txt[0].setText(selected);
+                    evTexmapCyli11TxtPtr[0].setText(selected);
                 }
                 updateTexmapCylindrical();
             });
@@ -398,34 +398,34 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
             final ModifyListener m = e -> updateTexmapSpherical();
-            ev_texmapSphere_cmb[0].addFocusListener(a);
-            ev_texmapSphere_cmb[0].addModifyListener(m);
-            ev_texmapSphere1_txt[0].addFocusListener(a);
-            ev_texmapSphere1_txt[0].addModifyListener(m);
-            ev_texmapSphere2_txt[0].addFocusListener(a);
-            ev_texmapSphere2_txt[0].addModifyListener(m);
-            ev_texmapSphere3_txt[0].addFocusListener(a);
-            ev_texmapSphere3_txt[0].addModifyListener(m);
-            ev_texmapSphere4_txt[0].addFocusListener(a);
-            ev_texmapSphere4_txt[0].addModifyListener(m);
-            ev_texmapSphere5_txt[0].addFocusListener(a);
-            ev_texmapSphere5_txt[0].addModifyListener(m);
-            ev_texmapSphere6_txt[0].addFocusListener(a);
-            ev_texmapSphere6_txt[0].addModifyListener(m);
-            ev_texmapSphere7_txt[0].addFocusListener(a);
-            ev_texmapSphere7_txt[0].addModifyListener(m);
-            ev_texmapSphere8_txt[0].addFocusListener(a);
-            ev_texmapSphere8_txt[0].addModifyListener(m);
-            ev_texmapSphere9_txt[0].addFocusListener(a);
-            ev_texmapSphere9_txt[0].addModifyListener(m);
-            ev_texmapSphere10_txt[0].addFocusListener(a);
-            ev_texmapSphere10_txt[0].addModifyListener(m);
-            ev_texmapSphere11_txt[0].addFocusListener(a);
-            ev_texmapSphere11_txt[0].addModifyListener(m);
-            ev_texmapSphere12_txt[0].addFocusListener(a);
-            ev_texmapSphere12_txt[0].addModifyListener(m);
+            evTexmapSphereCmbPtr[0].addFocusListener(a);
+            evTexmapSphereCmbPtr[0].addModifyListener(m);
+            evTexmapSphere1TxtPtr[0].addFocusListener(a);
+            evTexmapSphere1TxtPtr[0].addModifyListener(m);
+            evTexmapSphere2TxtPtr[0].addFocusListener(a);
+            evTexmapSphere2TxtPtr[0].addModifyListener(m);
+            evTexmapSphere3TxtPtr[0].addFocusListener(a);
+            evTexmapSphere3TxtPtr[0].addModifyListener(m);
+            evTexmapSphere4TxtPtr[0].addFocusListener(a);
+            evTexmapSphere4TxtPtr[0].addModifyListener(m);
+            evTexmapSphere5TxtPtr[0].addFocusListener(a);
+            evTexmapSphere5TxtPtr[0].addModifyListener(m);
+            evTexmapSphere6TxtPtr[0].addFocusListener(a);
+            evTexmapSphere6TxtPtr[0].addModifyListener(m);
+            evTexmapSphere7TxtPtr[0].addFocusListener(a);
+            evTexmapSphere7TxtPtr[0].addModifyListener(m);
+            evTexmapSphere8TxtPtr[0].addFocusListener(a);
+            evTexmapSphere8TxtPtr[0].addModifyListener(m);
+            evTexmapSphere9TxtPtr[0].addFocusListener(a);
+            evTexmapSphere9TxtPtr[0].addModifyListener(m);
+            evTexmapSphere10TxtPtr[0].addFocusListener(a);
+            evTexmapSphere10TxtPtr[0].addModifyListener(m);
+            evTexmapSphere11TxtPtr[0].addFocusListener(a);
+            evTexmapSphere11TxtPtr[0].addModifyListener(m);
+            evTexmapSphere12TxtPtr[0].addFocusListener(a);
+            evTexmapSphere12TxtPtr[0].addModifyListener(m);
 
-            WidgetUtil(ev_texmapSphere_btn[0]).addSelectionListener(e -> {
+            WidgetUtil(evTexmapSphereBtnPtr[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -449,40 +449,40 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 fd.setFilterNames(filterNames);
                 String selected = fd.open();
                 if (selected != null) {
-                    ev_texmapSphere12_txt[0].setText(selected);
+                    evTexmapSphere12TxtPtr[0].setText(selected);
                 }
                 updateTexmapSpherical();
             });
 
         }
 
-        WidgetUtil(ev_texmapFallback_btn[0]).addSelectionListener(e -> {
-            lbl_lineToInsert[0].setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
-            lbl_lineToInsert[0].getParent().layout();
+        WidgetUtil(evTexmapFallbackBtnPtr[0]).addSelectionListener(e -> {
+            lblLineToInsertPtr[0].setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
+            lblLineToInsertPtr[0].getParent().layout();
         });
 
-        ev_texmapMeta_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evTexmapMetaTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateTexmapMeta();
             }
         });
 
-        ev_texmapMeta_txt[0].addModifyListener(e -> updateTexmapMeta());
+        evTexmapMetaTxtPtr[0].addModifyListener(e -> updateTexmapMeta());
 
-        WidgetUtil(ev_texmapEnd_btn[0]).addSelectionListener(e -> {
-            lbl_lineToInsert[0].setText("0 !TEXMAP END"); //$NON-NLS-1$
-            lbl_lineToInsert[0].getParent().layout();
+        WidgetUtil(evTexmapEndBtnPtr[0]).addSelectionListener(e -> {
+            lblLineToInsertPtr[0].setText("0 !TEXMAP END"); //$NON-NLS-1$
+            lblLineToInsertPtr[0].getParent().layout();
         });
 
-        ev_todo_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evTodoTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateLpeTODO();
             }
         });
 
-        ev_todo_txt[0].addModifyListener(e -> updateLpeTODO());
+        evTodoTxtPtr[0].addModifyListener(e -> updateLpeTODO());
 
         {
             final org.eclipse.swt.events.FocusAdapter a = new org.eclipse.swt.events.FocusAdapter() {
@@ -494,12 +494,12 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
             final ModifyListener m = e -> updateLpeVertex();
 
-            ev_vertex1_txt[0].addFocusListener(a);
-            ev_vertex1_txt[0].addModifyListener(m);
-            ev_vertex2_txt[0].addFocusListener(a);
-            ev_vertex2_txt[0].addModifyListener(m);
-            ev_vertex3_txt[0].addFocusListener(a);
-            ev_vertex3_txt[0].addModifyListener(m);
+            evVertex1TxtPtr[0].addFocusListener(a);
+            evVertex1TxtPtr[0].addModifyListener(m);
+            evVertex2TxtPtr[0].addFocusListener(a);
+            evVertex2TxtPtr[0].addModifyListener(m);
+            evVertex3TxtPtr[0].addFocusListener(a);
+            evVertex3TxtPtr[0].addModifyListener(m);
         }
 
         {
@@ -512,36 +512,36 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
             final ModifyListener m = e -> updateCSGdef();
 
-            ev_csgBody_cmb[0].addFocusListener(a);
-            ev_csgBody_cmb[0].addModifyListener(m);
-            ev_csgBody1_txt[0].addFocusListener(a);
-            ev_csgBody1_txt[0].addModifyListener(m);
-            ev_csgBody2_txt[0].addFocusListener(a);
-            ev_csgBody2_txt[0].addModifyListener(m);
-            ev_csgBody3_txt[0].addFocusListener(a);
-            ev_csgBody3_txt[0].addModifyListener(m);
-            ev_csgBody4_txt[0].addFocusListener(a);
-            ev_csgBody4_txt[0].addModifyListener(m);
-            ev_csgBody5_txt[0].addFocusListener(a);
-            ev_csgBody5_txt[0].addModifyListener(m);
-            ev_csgBody6_txt[0].addFocusListener(a);
-            ev_csgBody6_txt[0].addModifyListener(m);
-            ev_csgBody7_txt[0].addFocusListener(a);
-            ev_csgBody7_txt[0].addModifyListener(m);
-            ev_csgBody8_txt[0].addFocusListener(a);
-            ev_csgBody8_txt[0].addModifyListener(m);
-            ev_csgBody9_txt[0].addFocusListener(a);
-            ev_csgBody9_txt[0].addModifyListener(m);
-            ev_csgBody10_txt[0].addFocusListener(a);
-            ev_csgBody10_txt[0].addModifyListener(m);
-            ev_csgBody11_txt[0].addFocusListener(a);
-            ev_csgBody11_txt[0].addModifyListener(m);
-            ev_csgBody12_txt[0].addFocusListener(a);
-            ev_csgBody12_txt[0].addModifyListener(m);
-            ev_csgBody13_txt[0].addFocusListener(a);
-            ev_csgBody13_txt[0].addModifyListener(m);
-            ev_csgBody14_txt[0].addFocusListener(a);
-            ev_csgBody14_txt[0].addModifyListener(m);
+            evCsgBodyCmbPtr[0].addFocusListener(a);
+            evCsgBodyCmbPtr[0].addModifyListener(m);
+            evCsgBody1TxtPtr[0].addFocusListener(a);
+            evCsgBody1TxtPtr[0].addModifyListener(m);
+            evCsgBody2TxtPtr[0].addFocusListener(a);
+            evCsgBody2TxtPtr[0].addModifyListener(m);
+            evCsgBody3TxtPtr[0].addFocusListener(a);
+            evCsgBody3TxtPtr[0].addModifyListener(m);
+            evCsgBody4TxtPtr[0].addFocusListener(a);
+            evCsgBody4TxtPtr[0].addModifyListener(m);
+            evCsgBody5TxtPtr[0].addFocusListener(a);
+            evCsgBody5TxtPtr[0].addModifyListener(m);
+            evCsgBody6TxtPtr[0].addFocusListener(a);
+            evCsgBody6TxtPtr[0].addModifyListener(m);
+            evCsgBody7TxtPtr[0].addFocusListener(a);
+            evCsgBody7TxtPtr[0].addModifyListener(m);
+            evCsgBody8TxtPtr[0].addFocusListener(a);
+            evCsgBody8TxtPtr[0].addModifyListener(m);
+            evCsgBody9TxtPtr[0].addFocusListener(a);
+            evCsgBody9TxtPtr[0].addModifyListener(m);
+            evCsgBody10TxtPtr[0].addFocusListener(a);
+            evCsgBody10TxtPtr[0].addModifyListener(m);
+            evCsgBody11TxtPtr[0].addFocusListener(a);
+            evCsgBody11TxtPtr[0].addModifyListener(m);
+            evCsgBody12TxtPtr[0].addFocusListener(a);
+            evCsgBody12TxtPtr[0].addModifyListener(m);
+            evCsgBody13TxtPtr[0].addFocusListener(a);
+            evCsgBody13TxtPtr[0].addModifyListener(m);
+            evCsgBody14TxtPtr[0].addFocusListener(a);
+            evCsgBody14TxtPtr[0].addModifyListener(m);
 
         }
 
@@ -555,36 +555,36 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
             final ModifyListener m = e -> updateCSGtrans();
 
-            ev_csgTrans1_txt[0].addFocusListener(a);
-            ev_csgTrans1_txt[0].addModifyListener(m);
-            ev_csgTrans2_txt[0].addFocusListener(a);
-            ev_csgTrans2_txt[0].addModifyListener(m);
-            ev_csgTrans3_txt[0].addFocusListener(a);
-            ev_csgTrans3_txt[0].addModifyListener(m);
-            ev_csgTrans4_txt[0].addFocusListener(a);
-            ev_csgTrans4_txt[0].addModifyListener(m);
-            ev_csgTrans5_txt[0].addFocusListener(a);
-            ev_csgTrans5_txt[0].addModifyListener(m);
-            ev_csgTrans6_txt[0].addFocusListener(a);
-            ev_csgTrans6_txt[0].addModifyListener(m);
-            ev_csgTrans7_txt[0].addFocusListener(a);
-            ev_csgTrans7_txt[0].addModifyListener(m);
-            ev_csgTrans8_txt[0].addFocusListener(a);
-            ev_csgTrans8_txt[0].addModifyListener(m);
-            ev_csgTrans9_txt[0].addFocusListener(a);
-            ev_csgTrans9_txt[0].addModifyListener(m);
-            ev_csgTrans10_txt[0].addFocusListener(a);
-            ev_csgTrans10_txt[0].addModifyListener(m);
-            ev_csgTrans11_txt[0].addFocusListener(a);
-            ev_csgTrans11_txt[0].addModifyListener(m);
-            ev_csgTrans12_txt[0].addFocusListener(a);
-            ev_csgTrans12_txt[0].addModifyListener(m);
-            ev_csgTrans13_txt[0].addFocusListener(a);
-            ev_csgTrans13_txt[0].addModifyListener(m);
-            ev_csgTrans14_txt[0].addFocusListener(a);
-            ev_csgTrans14_txt[0].addModifyListener(m);
-            ev_csgTrans15_txt[0].addFocusListener(a);
-            ev_csgTrans15_txt[0].addModifyListener(m);
+            evCsgTrans1TxtPtr[0].addFocusListener(a);
+            evCsgTrans1TxtPtr[0].addModifyListener(m);
+            evCsgTrans2TxtPtr[0].addFocusListener(a);
+            evCsgTrans2TxtPtr[0].addModifyListener(m);
+            evCsgTrans3TxtPtr[0].addFocusListener(a);
+            evCsgTrans3TxtPtr[0].addModifyListener(m);
+            evCsgTrans4TxtPtr[0].addFocusListener(a);
+            evCsgTrans4TxtPtr[0].addModifyListener(m);
+            evCsgTrans5TxtPtr[0].addFocusListener(a);
+            evCsgTrans5TxtPtr[0].addModifyListener(m);
+            evCsgTrans6TxtPtr[0].addFocusListener(a);
+            evCsgTrans6TxtPtr[0].addModifyListener(m);
+            evCsgTrans7TxtPtr[0].addFocusListener(a);
+            evCsgTrans7TxtPtr[0].addModifyListener(m);
+            evCsgTrans8TxtPtr[0].addFocusListener(a);
+            evCsgTrans8TxtPtr[0].addModifyListener(m);
+            evCsgTrans9TxtPtr[0].addFocusListener(a);
+            evCsgTrans9TxtPtr[0].addModifyListener(m);
+            evCsgTrans10TxtPtr[0].addFocusListener(a);
+            evCsgTrans10TxtPtr[0].addModifyListener(m);
+            evCsgTrans11TxtPtr[0].addFocusListener(a);
+            evCsgTrans11TxtPtr[0].addModifyListener(m);
+            evCsgTrans12TxtPtr[0].addFocusListener(a);
+            evCsgTrans12TxtPtr[0].addModifyListener(m);
+            evCsgTrans13TxtPtr[0].addFocusListener(a);
+            evCsgTrans13TxtPtr[0].addModifyListener(m);
+            evCsgTrans14TxtPtr[0].addFocusListener(a);
+            evCsgTrans14TxtPtr[0].addModifyListener(m);
+            evCsgTrans15TxtPtr[0].addFocusListener(a);
+            evCsgTrans15TxtPtr[0].addModifyListener(m);
 
         }
 
@@ -598,20 +598,20 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
             final ModifyListener m = e -> updateCSGextrude();
 
-            ev_csgEx1_txt[0].addFocusListener(a);
-            ev_csgEx1_txt[0].addModifyListener(m);
-            ev_csgEx2_txt[0].addFocusListener(a);
-            ev_csgEx2_txt[0].addModifyListener(m);
-            ev_csgEx3_txt[0].addFocusListener(a);
-            ev_csgEx3_txt[0].addModifyListener(m);
-            ev_csgEx4_txt[0].addFocusListener(a);
-            ev_csgEx4_txt[0].addModifyListener(m);
-            ev_csgEx5_txt[0].addFocusListener(a);
-            ev_csgEx5_txt[0].addModifyListener(m);
-            ev_csgEx6_txt[0].addFocusListener(a);
-            ev_csgEx6_txt[0].addModifyListener(m);
-            ev_csgEx7_txt[0].addFocusListener(a);
-            ev_csgEx7_txt[0].addModifyListener(m);
+            evCsgEx1TxtPtr[0].addFocusListener(a);
+            evCsgEx1TxtPtr[0].addModifyListener(m);
+            evCsgEx2TxtPtr[0].addFocusListener(a);
+            evCsgEx2TxtPtr[0].addModifyListener(m);
+            evCsgEx3TxtPtr[0].addFocusListener(a);
+            evCsgEx3TxtPtr[0].addModifyListener(m);
+            evCsgEx4TxtPtr[0].addFocusListener(a);
+            evCsgEx4TxtPtr[0].addModifyListener(m);
+            evCsgEx5TxtPtr[0].addFocusListener(a);
+            evCsgEx5TxtPtr[0].addModifyListener(m);
+            evCsgEx6TxtPtr[0].addFocusListener(a);
+            evCsgEx6TxtPtr[0].addModifyListener(m);
+            evCsgEx7TxtPtr[0].addFocusListener(a);
+            evCsgEx7TxtPtr[0].addModifyListener(m);
         }
 
         {
@@ -624,63 +624,63 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
             final ModifyListener m = e -> updateCSGaction();
 
-            ev_csgAction_cmb[0].addFocusListener(a);
-            ev_csgAction_cmb[0].addModifyListener(m);
-            ev_csgAction1_txt[0].addFocusListener(a);
-            ev_csgAction1_txt[0].addModifyListener(m);
-            ev_csgAction2_txt[0].addFocusListener(a);
-            ev_csgAction2_txt[0].addModifyListener(m);
-            ev_csgAction3_txt[0].addFocusListener(a);
-            ev_csgAction3_txt[0].addModifyListener(m);
+            evCsgActionCmbPtr[0].addFocusListener(a);
+            evCsgActionCmbPtr[0].addModifyListener(m);
+            evCsgAction1TxtPtr[0].addFocusListener(a);
+            evCsgAction1TxtPtr[0].addModifyListener(m);
+            evCsgAction2TxtPtr[0].addFocusListener(a);
+            evCsgAction2TxtPtr[0].addModifyListener(m);
+            evCsgAction3TxtPtr[0].addFocusListener(a);
+            evCsgAction3TxtPtr[0].addModifyListener(m);
 
         }
 
-        ev_csgQuality_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evCsgQualityTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateCSGquality();
             }
         });
 
-        ev_csgQuality_txt[0].addModifyListener(e -> updateCSGquality());
+        evCsgQualityTxtPtr[0].addModifyListener(e -> updateCSGquality());
 
-        ev_csgEpsilon_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evCsgEpsilonTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateCSGepsilon();
             }
         });
 
-        ev_csgEpsilon_txt[0].addModifyListener(e -> updateCSGepsilon());
+        evCsgEpsilonTxtPtr[0].addModifyListener(e -> updateCSGepsilon());
 
-        ev_csgTJunctionEpsilon_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evCsgTJunctionEpsilonTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateCSGtjunctionEpsilon();
             }
         });
 
-        ev_csgTJunctionEpsilon_txt[0].addModifyListener(e -> updateCSGtjunctionEpsilon());
+        evCsgTJunctionEpsilonTxtPtr[0].addModifyListener(e -> updateCSGtjunctionEpsilon());
 
-        ev_csgEdgeCollapseEpsilon_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evCsgEdgeCollapseEpsilonTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateCSGedgeCollapseEpsilon();
             }
         });
 
-        ev_csgEdgeCollapseEpsilon_txt[0].addModifyListener(e -> updateCSGedgeCollapseEpsilon());
+        evCsgEdgeCollapseEpsilonTxtPtr[0].addModifyListener(e -> updateCSGedgeCollapseEpsilon());
 
-        WidgetUtil(ev_csgDontOptimize_btn[0]).addSelectionListener(e -> updateCSGdontOptimize());
+        WidgetUtil(evCsgDontOptimizeBtnPtr[0]).addSelectionListener(e -> updateCSGdontOptimize());
 
-        ev_csgCompile_txt[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
+        evCsgCompileTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
             public void focusGained(FocusEvent e) {
                 updateCSGcompile();
             }
         });
 
-        ev_csgCompile_txt[0].addModifyListener(e -> updateCSGcompile());
+        evCsgCompileTxtPtr[0].addModifyListener(e -> updateCSGcompile());
 
         {
             final org.eclipse.swt.events.FocusAdapter a = new org.eclipse.swt.events.FocusAdapter() {
@@ -692,14 +692,14 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
             final ModifyListener m = e -> updateCSGaction();
 
-            ev_csgAction_cmb[0].addFocusListener(a);
-            ev_csgAction_cmb[0].addModifyListener(m);
-            ev_csgAction1_txt[0].addFocusListener(a);
-            ev_csgAction1_txt[0].addModifyListener(m);
-            ev_csgAction2_txt[0].addFocusListener(a);
-            ev_csgAction2_txt[0].addModifyListener(m);
-            ev_csgAction3_txt[0].addFocusListener(a);
-            ev_csgAction3_txt[0].addModifyListener(m);
+            evCsgActionCmbPtr[0].addFocusListener(a);
+            evCsgActionCmbPtr[0].addModifyListener(m);
+            evCsgAction1TxtPtr[0].addFocusListener(a);
+            evCsgAction1TxtPtr[0].addModifyListener(m);
+            evCsgAction2TxtPtr[0].addFocusListener(a);
+            evCsgAction2TxtPtr[0].addModifyListener(m);
+            evCsgAction3TxtPtr[0].addFocusListener(a);
+            evCsgAction3TxtPtr[0].addModifyListener(m);
 
         }
 
@@ -711,27 +711,27 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
             final ModifyListener m = e -> updatePNGdef();
-            WidgetUtil(ev_png_btn[0]).addSelectionListener(e -> updatePNGdef());
-            ev_png1_txt[0].addFocusListener(a);
-            ev_png1_txt[0].addModifyListener(m);
-            ev_png2_txt[0].addFocusListener(a);
-            ev_png2_txt[0].addModifyListener(m);
-            ev_png3_txt[0].addFocusListener(a);
-            ev_png3_txt[0].addModifyListener(m);
-            ev_png4_txt[0].addFocusListener(a);
-            ev_png4_txt[0].addModifyListener(m);
-            ev_png5_txt[0].addFocusListener(a);
-            ev_png5_txt[0].addModifyListener(m);
-            ev_png6_txt[0].addFocusListener(a);
-            ev_png6_txt[0].addModifyListener(m);
-            ev_png7_txt[0].addFocusListener(a);
-            ev_png7_txt[0].addModifyListener(m);
-            ev_png8_txt[0].addFocusListener(a);
-            ev_png8_txt[0].addModifyListener(m);
-            ev_png9_txt[0].addFocusListener(a);
-            ev_png9_txt[0].addModifyListener(m);
+            WidgetUtil(evPngBtnPtr[0]).addSelectionListener(e -> updatePNGdef());
+            evPng1TxtPtr[0].addFocusListener(a);
+            evPng1TxtPtr[0].addModifyListener(m);
+            evPng2TxtPtr[0].addFocusListener(a);
+            evPng2TxtPtr[0].addModifyListener(m);
+            evPng3TxtPtr[0].addFocusListener(a);
+            evPng3TxtPtr[0].addModifyListener(m);
+            evPng4TxtPtr[0].addFocusListener(a);
+            evPng4TxtPtr[0].addModifyListener(m);
+            evPng5TxtPtr[0].addFocusListener(a);
+            evPng5TxtPtr[0].addModifyListener(m);
+            evPng6TxtPtr[0].addFocusListener(a);
+            evPng6TxtPtr[0].addModifyListener(m);
+            evPng7TxtPtr[0].addFocusListener(a);
+            evPng7TxtPtr[0].addModifyListener(m);
+            evPng8TxtPtr[0].addFocusListener(a);
+            evPng8TxtPtr[0].addModifyListener(m);
+            evPng9TxtPtr[0].addFocusListener(a);
+            evPng9TxtPtr[0].addModifyListener(m);
 
-            WidgetUtil(ev_png_btn[0]).addSelectionListener(e -> {
+            WidgetUtil(evPngBtnPtr[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -755,7 +755,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 fd.setFilterNames(filterNames);
                 String selected = fd.open();
                 if (selected != null) {
-                    ev_png9_txt[0].setText(selected);
+                    evPng9TxtPtr[0].setText(selected);
                 }
             });
 
@@ -767,133 +767,133 @@ public class EditorMetaWindow extends EditorMetaDesign {
     private void updatePNGdef() {
         StringBuilder sb = new StringBuilder();
         sb.append("0 !LPE PNG "); //$NON-NLS-1$
-        sb.append(ev_png1_txt[0].getText().trim());
+        sb.append(evPng1TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_png2_txt[0].getText().trim());
+        sb.append(evPng2TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_png3_txt[0].getText().trim());
+        sb.append(evPng3TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_png4_txt[0].getText().trim());
+        sb.append(evPng4TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_png5_txt[0].getText().trim());
+        sb.append(evPng5TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_png6_txt[0].getText().trim());
+        sb.append(evPng6TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_png7_txt[0].getText().trim());
+        sb.append(evPng7TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_png8_txt[0].getText().trim());
+        sb.append(evPng8TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_png9_txt[0].getText().trim());
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        sb.append(evPng9TxtPtr[0].getText().trim());
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
 
     private void updateCSGcompile() {
-        lbl_lineToInsert[0].setText("0 !LPE CSG_COMPILE " + ev_csgCompile_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LPE CSG_COMPILE " + evCsgCompileTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCSGepsilon() {
-        lbl_lineToInsert[0].setText("0 !LPE CSG_EPSILON " + ev_csgEpsilon_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LPE CSG_EPSILON " + evCsgEpsilonTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCSGtjunctionEpsilon() {
-        lbl_lineToInsert[0].setText("0 !LPE CSG_TJUNCTION_EPSILON " + ev_csgTJunctionEpsilon_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LPE CSG_TJUNCTION_EPSILON " + evCsgTJunctionEpsilonTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCSGedgeCollapseEpsilon() {
-        lbl_lineToInsert[0].setText("0 !LPE CSG_EDGE_COLLAPSE_EPSILON " + ev_csgEdgeCollapseEpsilon_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LPE CSG_EDGE_COLLAPSE_EPSILON " + evCsgEdgeCollapseEpsilonTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCSGquality() {
-        lbl_lineToInsert[0].setText("0 !LPE CSG_QUALITY " + ev_csgQuality_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LPE CSG_QUALITY " + evCsgQualityTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCSGaction() {
-        lbl_lineToInsert[0].setText("0 !LPE CSG_" + ev_csgAction_cmb[0].getText().trim() + " " + ev_csgAction1_txt[0].getText().trim() + " " + ev_csgAction2_txt[0].getText().trim() + " " + ev_csgAction3_txt[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LPE CSG_" + evCsgActionCmbPtr[0].getText().trim() + " " + evCsgAction1TxtPtr[0].getText().trim() + " " + evCsgAction2TxtPtr[0].getText().trim() + " " + evCsgAction3TxtPtr[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCSGdontOptimize() {
-        lbl_lineToInsert[0].setText("0 !LPE CSG_DONT_OPTIMISE"); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LPE CSG_DONT_OPTIMISE"); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCSGdef() {
         StringBuilder sb = new StringBuilder();
         sb.append("0 !LPE CSG_"); //$NON-NLS-1$
-        sb.append(ev_csgBody_cmb[0].getText().trim());
+        sb.append(evCsgBodyCmbPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody1_txt[0].getText().trim());
+        sb.append(evCsgBody1TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody2_txt[0].getText().trim());
+        sb.append(evCsgBody2TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody3_txt[0].getText().trim());
+        sb.append(evCsgBody3TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody4_txt[0].getText().trim());
+        sb.append(evCsgBody4TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody5_txt[0].getText().trim());
+        sb.append(evCsgBody5TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody6_txt[0].getText().trim());
+        sb.append(evCsgBody6TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody7_txt[0].getText().trim());
+        sb.append(evCsgBody7TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody8_txt[0].getText().trim());
+        sb.append(evCsgBody8TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody9_txt[0].getText().trim());
+        sb.append(evCsgBody9TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody10_txt[0].getText().trim());
+        sb.append(evCsgBody10TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody11_txt[0].getText().trim());
+        sb.append(evCsgBody11TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody12_txt[0].getText().trim());
+        sb.append(evCsgBody12TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody13_txt[0].getText().trim());
+        sb.append(evCsgBody13TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgBody14_txt[0].getText().trim());
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        sb.append(evCsgBody14TxtPtr[0].getText().trim());
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCSGtrans() {
         StringBuilder sb = new StringBuilder();
         sb.append("0 !LPE CSG_TRANSFORM "); //$NON-NLS-1$
-        sb.append(ev_csgTrans1_txt[0].getText().trim());
+        sb.append(evCsgTrans1TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans2_txt[0].getText().trim());
+        sb.append(evCsgTrans2TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans3_txt[0].getText().trim());
+        sb.append(evCsgTrans3TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans4_txt[0].getText().trim());
+        sb.append(evCsgTrans4TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans5_txt[0].getText().trim());
+        sb.append(evCsgTrans5TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans6_txt[0].getText().trim());
+        sb.append(evCsgTrans6TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans7_txt[0].getText().trim());
+        sb.append(evCsgTrans7TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans8_txt[0].getText().trim());
+        sb.append(evCsgTrans8TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans9_txt[0].getText().trim());
+        sb.append(evCsgTrans9TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans10_txt[0].getText().trim());
+        sb.append(evCsgTrans10TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans11_txt[0].getText().trim());
+        sb.append(evCsgTrans11TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans12_txt[0].getText().trim());
+        sb.append(evCsgTrans12TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans13_txt[0].getText().trim());
+        sb.append(evCsgTrans13TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans14_txt[0].getText().trim());
+        sb.append(evCsgTrans14TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_csgTrans15_txt[0].getText().trim());
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        sb.append(evCsgTrans15TxtPtr[0].getText().trim());
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCSGextrude() {
@@ -902,260 +902,260 @@ public class EditorMetaWindow extends EditorMetaDesign {
         String arg;
         sb.append("0 !LPE CSG_EXT_CFG "); //$NON-NLS-1$
         sb.append("seg_len= "); //$NON-NLS-1$
-        if ((arg = ev_csgEx1_txt[0].getText().trim()).isEmpty()) {
+        if ((arg = evCsgEx1TxtPtr[0].getText().trim()).isEmpty()) {
             sb.append("100000.0"); //$NON-NLS-1$
         } else {
             sb.append(arg);
         }
         sb.append(" no_of_tr= "); //$NON-NLS-1$
-        if ((arg = ev_csgEx2_txt[0].getText().trim()).isEmpty()) {
+        if ((arg = evCsgEx2TxtPtr[0].getText().trim()).isEmpty()) {
             sb.append("1"); //$NON-NLS-1$
         } else {
             sb.append(arg);
         }
         sb.append(" curve= "); //$NON-NLS-1$
-        if ((arg = ev_csgEx3_txt[0].getText().trim()).isEmpty()) {
+        if ((arg = evCsgEx3TxtPtr[0].getText().trim()).isEmpty()) {
             sb.append("10.0"); //$NON-NLS-1$
         } else {
             sb.append(arg);
         }
         sb.append(" center= "); //$NON-NLS-1$
-        if ((arg = ev_csgEx4_txt[0].getText().trim()).isEmpty()) {
+        if ((arg = evCsgEx4TxtPtr[0].getText().trim()).isEmpty()) {
             sb.append("0.5"); //$NON-NLS-1$
         } else {
             sb.append(arg);
         }
         sb.append(" rot= "); //$NON-NLS-1$
-        if ((arg = ev_csgEx5_txt[0].getText().trim()).isEmpty()) {
+        if ((arg = evCsgEx5TxtPtr[0].getText().trim()).isEmpty()) {
             sb.append("0.0"); //$NON-NLS-1$
         } else {
             sb.append(arg);
         }
         sb.append(" comp= "); //$NON-NLS-1$
-        if ((arg = ev_csgEx6_txt[0].getText().trim()).isEmpty()) {
+        if ((arg = evCsgEx6TxtPtr[0].getText().trim()).isEmpty()) {
             sb.append("false"); //$NON-NLS-1$
         } else {
             sb.append(arg);
         }
         sb.append(" invert= "); //$NON-NLS-1$
-        if ((arg = ev_csgEx7_txt[0].getText().trim()).isEmpty()) {
+        if ((arg = evCsgEx7TxtPtr[0].getText().trim()).isEmpty()) {
             sb.append("false"); //$NON-NLS-1$
         } else {
             sb.append(arg);
         }
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateLpeVertex() {
-        lbl_lineToInsert[0].setText("0 !LPE VERTEX " + ev_vertex1_txt[0].getText().trim() + " " + ev_vertex2_txt[0].getText().trim() + " " + ev_vertex3_txt[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LPE VERTEX " + evVertex1TxtPtr[0].getText().trim() + " " + evVertex2TxtPtr[0].getText().trim() + " " + evVertex3TxtPtr[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateLpeTODO() {
-        lbl_lineToInsert[0].setText("0 !LPE TODO " + ev_todo_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LPE TODO " + evTodoTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateTexmapPlanar() {
         StringBuilder sb = new StringBuilder();
         sb.append("0 !TEXMAP "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar_cmb[0].getText().trim());
+        sb.append(evTexmapPlanarCmbPtr[0].getText().trim());
         sb.append(" PLANAR "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar1_txt[0].getText().trim());
+        sb.append(evTexmapPlanar1TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar2_txt[0].getText().trim());
+        sb.append(evTexmapPlanar2TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar3_txt[0].getText().trim());
+        sb.append(evTexmapPlanar3TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar4_txt[0].getText().trim());
+        sb.append(evTexmapPlanar4TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar5_txt[0].getText().trim());
+        sb.append(evTexmapPlanar5TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar6_txt[0].getText().trim());
+        sb.append(evTexmapPlanar6TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar7_txt[0].getText().trim());
+        sb.append(evTexmapPlanar7TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar8_txt[0].getText().trim());
+        sb.append(evTexmapPlanar8TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar9_txt[0].getText().trim());
+        sb.append(evTexmapPlanar9TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapPlanar10_txt[0].getText().trim());
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        sb.append(evTexmapPlanar10TxtPtr[0].getText().trim());
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateTexmapCylindrical() {
         StringBuilder sb = new StringBuilder();
         sb.append("0 !TEXMAP "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli_cmb[0].getText().trim());
+        sb.append(evTexmapCyliCmbPtr[0].getText().trim());
         sb.append(" CYLINDRICAL "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli1_txt[0].getText().trim());
+        sb.append(evTexmapCyli1TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli2_txt[0].getText().trim());
+        sb.append(evTexmapCyli2TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli3_txt[0].getText().trim());
+        sb.append(evTexmapCyli3TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli4_txt[0].getText().trim());
+        sb.append(evTexmapCyli4TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli5_txt[0].getText().trim());
+        sb.append(evTexmapCyli5TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli6_txt[0].getText().trim());
+        sb.append(evTexmapCyli6TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli7_txt[0].getText().trim());
+        sb.append(evTexmapCyli7TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli8_txt[0].getText().trim());
+        sb.append(evTexmapCyli8TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli9_txt[0].getText().trim());
+        sb.append(evTexmapCyli9TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli10_txt[0].getText().trim());
+        sb.append(evTexmapCyli10TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapCyli11_txt[0].getText().trim());
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        sb.append(evTexmapCyli11TxtPtr[0].getText().trim());
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateTexmapSpherical() {
         StringBuilder sb = new StringBuilder();
         sb.append("0 !TEXMAP "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere_cmb[0].getText().trim());
+        sb.append(evTexmapSphereCmbPtr[0].getText().trim());
         sb.append(" SPHERICAL "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere1_txt[0].getText().trim());
+        sb.append(evTexmapSphere1TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere2_txt[0].getText().trim());
+        sb.append(evTexmapSphere2TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere3_txt[0].getText().trim());
+        sb.append(evTexmapSphere3TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere4_txt[0].getText().trim());
+        sb.append(evTexmapSphere4TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere5_txt[0].getText().trim());
+        sb.append(evTexmapSphere5TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere6_txt[0].getText().trim());
+        sb.append(evTexmapSphere6TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere7_txt[0].getText().trim());
+        sb.append(evTexmapSphere7TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere8_txt[0].getText().trim());
+        sb.append(evTexmapSphere8TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere9_txt[0].getText().trim());
+        sb.append(evTexmapSphere9TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere10_txt[0].getText().trim());
+        sb.append(evTexmapSphere10TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere11_txt[0].getText().trim());
+        sb.append(evTexmapSphere11TxtPtr[0].getText().trim());
         sb.append(" "); //$NON-NLS-1$
-        sb.append(ev_texmapSphere12_txt[0].getText().trim());
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        sb.append(evTexmapSphere12TxtPtr[0].getText().trim());
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
 
     private void updateTexmapMeta() {
-        lbl_lineToInsert[0].setText("0 !: " + ev_texmapMeta_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !: " + evTexmapMetaTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateBfc() {
-        lbl_lineToInsert[0].setText("0 BFC " + ev_bfc_cmb[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 BFC " + evBfcCmbPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateComment() {
-        lbl_lineToInsert[0].setText("0 // " + (ev_comment_btn[0].getSelection() ? "Needs work: " : "") + ev_comment_txt[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 // " + (evCommentBtnPtr[0].getSelection() ? "Needs work: " : "") + evCommentTxtPtr[0].getText().trim()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateHistory1() {
         StringBuilder sb = new StringBuilder();
         sb.append("0 !HISTORY "); //$NON-NLS-1$
-        sb.append(ev_history11_txt[0].getText().trim());
-        if (!ev_history12_txt[0].getText().trim().equals("")) { //$NON-NLS-1$
+        sb.append(evHistory11TxtPtr[0].getText().trim());
+        if (!evHistory12TxtPtr[0].getText().trim().equals("")) { //$NON-NLS-1$
             sb.append(" ["); //$NON-NLS-1$
-            sb.append(ev_history12_txt[0].getText().trim());
+            sb.append(evHistory12TxtPtr[0].getText().trim());
             sb.append("] "); //$NON-NLS-1$
         } else {
             sb.append(" "); //$NON-NLS-1$
         }
-        sb.append(ev_history13_txt[0].getText().trim());
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        sb.append(evHistory13TxtPtr[0].getText().trim());
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateHistory2() {
         StringBuilder sb = new StringBuilder();
         sb.append("0 !HISTORY "); //$NON-NLS-1$
-        sb.append(ev_history21_txt[0].getText().trim());
-        if (!ev_history22_txt[0].getText().trim().equals("")) { //$NON-NLS-1$
+        sb.append(evHistory21TxtPtr[0].getText().trim());
+        if (!evHistory22TxtPtr[0].getText().trim().equals("")) { //$NON-NLS-1$
             sb.append(" {"); //$NON-NLS-1$
-            sb.append(ev_history22_txt[0].getText().trim());
+            sb.append(evHistory22TxtPtr[0].getText().trim());
             sb.append("} "); //$NON-NLS-1$
         } else {
             sb.append(" "); //$NON-NLS-1$
         }
-        sb.append(ev_history23_txt[0].getText().trim());
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        sb.append(evHistory23TxtPtr[0].getText().trim());
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCmdline() {
-        lbl_lineToInsert[0].setText("0 !CMDLINE " + ev_cmdline_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !CMDLINE " + evCmdlineTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateKeywords() {
-        lbl_lineToInsert[0].setText("0 !KEYWORDS " + ev_keywords_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !KEYWORDS " + evKeywordsTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateCategory() {
-        lbl_lineToInsert[0].setText("0 !CATEGORY " + ev_category_cmb[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !CATEGORY " + evCategoryCmbPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateBfcHeader() {
-        lbl_lineToInsert[0].setText("0 BFC " + ev_bfcHeader_cmb[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 BFC " + evBfcHeaderCmbPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateHelp() {
-        lbl_lineToInsert[0].setText("0 !HELP " + ev_help_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !HELP " + evHelpTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateLicense() {
-        lbl_lineToInsert[0].setText("0 !LICENSE " + ev_license_cmb[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 !LICENSE " + evLicenseCmbPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateType() {
         StringBuilder sb = new StringBuilder();
         sb.append("0 !LDRAW_ORG "); //$NON-NLS-1$
-        if (ev_type_unofficial_btn[0].getSelection()) {
+        if (evTypeUnofficialBtnPtr[0].getSelection()) {
             sb.append("Unofficial_"); //$NON-NLS-1$
         }
-        sb.append(ev_type_type_cmb[0].getText().trim());
-        if (ev_type_update_btn[0].getSelection()) {
-            ev_type_update_txt[0].setEnabled(true);
+        sb.append(evTypeTypeCmbPtr[0].getText().trim());
+        if (evTypeUpdateBtnPtr[0].getSelection()) {
+            evTypeUpdateTxtPtr[0].setEnabled(true);
             sb.append(" UPDATE "); //$NON-NLS-1$
-            sb.append(ev_type_update_txt[0].getText().trim());
+            sb.append(evTypeUpdateTxtPtr[0].getText().trim());
         } else {
-            ev_type_update_txt[0].setEnabled(false);
+            evTypeUpdateTxtPtr[0].setEnabled(false);
         }
-        lbl_lineToInsert[0].setText(sb.toString());
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText(sb.toString());
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateAuthor() {
-        lbl_lineToInsert[0].setText("0 Author: " + ev_author_realName_txt[0].getText().trim() + (ev_author_userName_txt[0].getText().trim().equals("") ? "" : " [" + ev_author_userName_txt[0].getText().trim() + "]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 Author: " + evAuthorRealNameTxtPtr[0].getText().trim() + (evAuthorUserNameTxtPtr[0].getText().trim().equals("") ? "" : " [" + evAuthorUserNameTxtPtr[0].getText().trim() + "]")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateName() {
-        lbl_lineToInsert[0].setText("0 Name: " + ev_name_txt[0].getText().trim()); //$NON-NLS-1$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 Name: " + evNameTxtPtr[0].getText().trim()); //$NON-NLS-1$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     private void updateDescription() {
-        lbl_lineToInsert[0].setText("0 " + ev_description_txt[0].getText().trim() + (ev_description_btn[0].getSelection() ? " (Needs Work)" : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-        lbl_lineToInsert[0].getParent().layout();
+        lblLineToInsertPtr[0].setText("0 " + evDescriptionTxtPtr[0].getText().trim() + (evDescriptionBtnPtr[0].getSelection() ? " (Needs Work)" : "")); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        lblLineToInsertPtr[0].getParent().layout();
     }
 
     @Override

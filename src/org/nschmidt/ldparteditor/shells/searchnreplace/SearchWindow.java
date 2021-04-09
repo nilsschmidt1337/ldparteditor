@@ -58,22 +58,22 @@ public class SearchWindow extends SearchDesign {
         sh.setMinimumSize(super.getInitialSize());
 
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_find[0]).addSelectionListener(e -> find());
+        WidgetUtil(btnFindPtr[0]).addSelectionListener(e -> find());
 
-        txt_find[0].addModifyListener(e -> {
+        txtFindPtr[0].addModifyListener(e -> {
             setDisabledButtonStatus();
 
-            if (btn_find[0].isEnabled() && cb_incremental[0].getSelection()) {
+            if (btnFindPtr[0].isEnabled() && cbIncrementalPtr[0].getSelection()) {
 
                 final String text;
                 final String criteria;
 
-                if (cb_caseSensitive[0].getSelection()) {
+                if (cbCaseSensitivePtr[0].getSelection()) {
                     text = textComposite.getText();
-                    criteria = txt_find[0].getText();
+                    criteria = txtFindPtr[0].getText();
                 } else {
                     text = textComposite.getText().toLowerCase(Locale.ENGLISH);
-                    criteria = txt_find[0].getText().toLowerCase(Locale.ENGLISH);
+                    criteria = txtFindPtr[0].getText().toLowerCase(Locale.ENGLISH);
                 }
 
                 int len = criteria.length();
@@ -101,7 +101,7 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        txt_find[0].addFocusListener(new FocusListener() {
+        txtFindPtr[0].addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent e) {
                 setDisabledButtonStatus();
@@ -112,15 +112,15 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        WidgetUtil(btn_replace[0]).addSelectionListener(e -> replace());
-        WidgetUtil(btn_replaceAll[0]).addSelectionListener(e -> replaceAll());
-        WidgetUtil(btn_findAndReplace[0]).addSelectionListener(e -> {
+        WidgetUtil(btnReplacePtr[0]).addSelectionListener(e -> replace());
+        WidgetUtil(btnReplaceAllPtr[0]).addSelectionListener(e -> replaceAll());
+        WidgetUtil(btnFindAndReplacePtr[0]).addSelectionListener(e -> {
             replace();
             find();
             replace();
         });
 
-        txt_replace[0].addFocusListener(new FocusListener() {
+        txtReplacePtr[0].addFocusListener(new FocusListener() {
             @Override
             public void focusLost(FocusEvent e) {
                 setDisabledButtonStatus();
@@ -131,9 +131,9 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        WidgetUtil(rb_selectedLines[0]).addSelectionListener(e -> {
+        WidgetUtil(rbSelectedLinesPtr[0]).addSelectionListener(e -> {
             try {
-                if (rb_selectedLines[0].getSelection()) {
+                if (rbSelectedLinesPtr[0].getSelection()) {
                     scopeAll = false;
 
                     {
@@ -182,33 +182,33 @@ public class SearchWindow extends SearchDesign {
 
     private void setDisabledButtonStatus() {
         boolean b = textComposite == null || textComposite.isDisposed();
-        btn_find[0].setEnabled(!b);
-        btn_findAndReplace[0].setEnabled(!b);
-        btn_replace[0].setEnabled(!b);
-        btn_replaceAll[0].setEnabled(!b);
+        btnFindPtr[0].setEnabled(!b);
+        btnFindAndReplacePtr[0].setEnabled(!b);
+        btnReplacePtr[0].setEnabled(!b);
+        btnReplaceAllPtr[0].setEnabled(!b);
         getShell().update();
     }
 
     private void find() {
         setDisabledButtonStatus();
 
-        if (btn_find[0].isEnabled()) {
+        if (btnFindPtr[0].isEnabled()) {
 
             final String text;
             final String criteria;
 
-            if (cb_caseSensitive[0].getSelection()) {
+            if (cbCaseSensitivePtr[0].getSelection()) {
                 text = textComposite.getText();
-                criteria = txt_find[0].getText();
+                criteria = txtFindPtr[0].getText();
             } else {
                 text = textComposite.getText().toLowerCase(Locale.ENGLISH);
-                criteria = txt_find[0].getText().toLowerCase(Locale.ENGLISH);
+                criteria = txtFindPtr[0].getText().toLowerCase(Locale.ENGLISH);
             }
 
             int len = criteria.length();
             if (len > 0) {
 
-                if (rb_forward[0].getSelection()) {
+                if (rbForwardPtr[0].getSelection()) {
 
                     if (textComposite.getSelectionRange().x == 0  && textComposite.getSelectionRange().y == 0 && text.startsWith(criteria)) {
                         textComposite.setSelectionRange(0, len);
@@ -260,19 +260,19 @@ public class SearchWindow extends SearchDesign {
         if (textComposite == null || tab != null && !tab.getState().getFileNameObj().getVertexManager().isUpdated()) return;
         setDisabledButtonStatus();
 
-        if (btn_find[0].isEnabled()) {
+        if (btnFindPtr[0].isEnabled()) {
 
             final String text;
             final String criteria;
 
-            final String replacement = txt_replace[0].getText();
+            final String replacement = txtReplacePtr[0].getText();
 
-            if (cb_caseSensitive[0].getSelection()) {
+            if (cbCaseSensitivePtr[0].getSelection()) {
                 text = textComposite.getSelectionText();
-                criteria = txt_find[0].getText();
+                criteria = txtFindPtr[0].getText();
             } else {
                 text = textComposite.getSelectionText().toLowerCase(Locale.ENGLISH);
-                criteria = txt_find[0].getText().toLowerCase(Locale.ENGLISH);
+                criteria = txtFindPtr[0].getText().toLowerCase(Locale.ENGLISH);
             }
 
             int len = criteria.length();
@@ -280,7 +280,7 @@ public class SearchWindow extends SearchDesign {
                 final int offset = textComposite.getSelectionRange().x;
                 textComposite.insert(replacement);
                 if (replacement.length() == 0) {
-                    if (rb_forward[0].getSelection()) {
+                    if (rbForwardPtr[0].getSelection()) {
                         try {
                             textComposite.setSelectionRange(offset - 1, 0);
                         } catch (IllegalArgumentException iae) {
@@ -306,23 +306,23 @@ public class SearchWindow extends SearchDesign {
         if (textComposite == null || tab != null && !tab.getState().getFileNameObj().getVertexManager().isUpdated()) return;
         setDisabledButtonStatus();
 
-        if (btn_find[0].isEnabled()) {
+        if (btnFindPtr[0].isEnabled()) {
 
             final String criteria;
 
-            final String replacement = txt_replace[0].getText();
+            final String replacement = txtReplacePtr[0].getText();
 
-            if (cb_caseSensitive[0].getSelection()) {
-                criteria = txt_find[0].getText();
+            if (cbCaseSensitivePtr[0].getSelection()) {
+                criteria = txtFindPtr[0].getText();
             } else {
-                criteria = txt_find[0].getText().toLowerCase(Locale.ENGLISH);
+                criteria = txtFindPtr[0].getText().toLowerCase(Locale.ENGLISH);
             }
             int len = criteria.length();
             if (len > 0) {
 
-                if (rb_all[0].getSelection()) {
+                if (rbAllPtr[0].getSelection()) {
                     try {
-                        if (cb_caseSensitive[0].getSelection()) {
+                        if (cbCaseSensitivePtr[0].getSelection()) {
                             try {
                                 textComposite.setText(textComposite.getText().replaceAll(Pattern.quote(criteria), replacement));
                             } catch (Exception e) {
@@ -346,7 +346,7 @@ public class SearchWindow extends SearchDesign {
                     String textToReplace = textComposite.getSelectionText();
                     if (!textToReplace.isEmpty()) {
                         try {
-                            if (cb_caseSensitive[0].getSelection()) {
+                            if (cbCaseSensitivePtr[0].getSelection()) {
                                 try {
                                     textToReplace = textToReplace.replaceAll(Pattern.quote(criteria), replacement);
                                 } catch (Exception e) {
@@ -364,7 +364,7 @@ public class SearchWindow extends SearchDesign {
                             }
 
                             textComposite.insert(textToReplace);
-                            if (rb_selectedLines[0].getSelection()) {
+                            if (rbSelectedLinesPtr[0].getSelection()) {
                                 textComposite.setSelectionRange(selectionStart, textToReplace.length() - StringHelper.getLineDelimiter().length());
                             } else {
                                 textComposite.setSelectionRange(selectionStart, textToReplace.length());
@@ -379,8 +379,8 @@ public class SearchWindow extends SearchDesign {
 
     public void setScopeToAll() {
         try {
-            rb_all[0].setSelection(true);
-            rb_selectedLines[0].setSelection(false);
+            rbAllPtr[0].setSelection(true);
+            rbSelectedLinesPtr[0].setSelection(false);
             getShell().update();
         } catch (Exception consumed) {}
     }

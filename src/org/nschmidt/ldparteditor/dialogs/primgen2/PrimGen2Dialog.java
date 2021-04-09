@@ -68,22 +68,22 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 public class PrimGen2Dialog extends PrimGen2Design {
 
-    private final int CIRCLE = 0;
-    private final int RING = 1;
-    private final int CONE = 2;
-    private final int TORUS = 3;
-    private final int CYLINDER = 4;
-    private final int DISC = 5;
-    private final int DISC_NEGATIVE = 6;
-    private final int CHORD = 7;
+    private static final int CIRCLE = 0;
+    private static final int RING = 1;
+    private static final int CONE = 2;
+    private static final int TORUS = 3;
+    private static final int CYLINDER = 4;
+    private static final int DISC = 5;
+    private static final int DISC_NEGATIVE = 6;
+    private static final int CHORD = 7;
 
     private boolean doUpdate = false;
     private boolean ok = false;
 
-    private final DecimalFormat DEC_VFORMAT_4F = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
-    private final DecimalFormat DEC_VFORMAT_0F = new DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+    private final DecimalFormat decvformat4f = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
+    private final DecimalFormat decvformat0f = new DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.locale));
 
-    private final DecimalFormat DEC_FORMAT_4F = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(Locale.ENGLISH));
+    private final DecimalFormat decformat4f = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(Locale.ENGLISH));
 
     private String name = "1-4edge.dat"; //$NON-NLS-1$
 
@@ -111,18 +111,18 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
         final DatFile oldDf = Project.getFileToEdit();
 
-        DEC_FORMAT_4F.setRoundingMode(RoundingMode.HALF_UP);
+        decformat4f.setRoundingMode(RoundingMode.HALF_UP);
 
-        syntaxFormatter = new SyntaxFormatter(txt_data[0]);
+        syntaxFormatter = new SyntaxFormatter(txtDataPtr[0]);
 
-        spn_major[0].setValue(2);
-        spn_minor[0].setValue(BigDecimal.ONE);
+        spnMajorPtr[0].setValue(2);
+        spnMinorPtr[0].setValue(BigDecimal.ONE);
 
         Display.getCurrent().asyncExec(new Runnable() {
             @Override
             public void run() {
 
-                lbl_standard[0].setText(I18n.PRIMGEN_STANDARD);
+                lblStandardPtr[0].setText(I18n.PRIMGEN_STANDARD);
 
                 final StringBuilder sb = new StringBuilder();
                 sb.append("0 Circle 0.25\n"); //$NON-NLS-1$
@@ -159,19 +159,19 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
                 c3d.setRenderMode(6);
                 c3d.getModifier().switchMeshLines(false);
-                txt_data[0].setText(sb.toString());
+                txtDataPtr[0].setText(sb.toString());
             }
         });
 
         // MARK All final listeners will be configured here..
 
-        txt_data[0].addLineStyleListener(new LineStyleListener() {
+        txtDataPtr[0].addLineStyleListener(new LineStyleListener() {
             @Override
             public void lineGetStyle(final LineStyleEvent e) {
                 // So the line will be formated with the syntax formatter from
                 // the CompositeText.
                 final VertexManager vm = df.getVertexManager();
-                final GData data = df.getDrawPerLine_NOCLONE().getValue(txt_data[0].getLineAtOffset(e.lineOffset) + 1);
+                final GData data = df.getDrawPerLine_NOCLONE().getValue(txtDataPtr[0].getLineAtOffset(e.lineOffset) + 1);
                 boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
                 isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
                 syntaxFormatter.format(e,
@@ -180,35 +180,35 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        txt_data[0].addExtendedModifyListener(new ExtendedModifyListener() {
+        txtDataPtr[0].addExtendedModifyListener(new ExtendedModifyListener() {
             @Override
             public void modifyText(ExtendedModifyEvent event) {
                 df.disposeData();
-                df.setText(txt_data[0].getText());
+                df.setText(txtDataPtr[0].getText());
                 df.parseForData(false);
 
-                if (NLogger.DEBUG) {
-                    int c1 = txt_data[0].getLineCount();
-                    int c2 = txt_data2[0].getLineCount();
+                if (NLogger.debugging) {
+                    int c1 = txtDataPtr[0].getLineCount();
+                    int c2 = txtData2Ptr[0].getLineCount();
                     int matches = 0;
                     HashSet<String> lines = new HashSet<>();
                     for (int i = 0; i < c2; i++) {
-                        String line = txt_data2[0].getLine(i);
+                        String line = txtData2Ptr[0].getLine(i);
                         if (!line.isEmpty() && !line.startsWith("0") && !line.startsWith("5")) { //$NON-NLS-1$ //$NON-NLS-2$
                             lines.add(line);
                         }
                     }
-                    lbl_standard[0].setText(""); //$NON-NLS-1$
+                    lblStandardPtr[0].setText(""); //$NON-NLS-1$
                     for (int i = 0; i < c1; i++) {
-                        String line = txt_data[0].getLine(i);
+                        String line = txtDataPtr[0].getLine(i);
                         if (lines.contains(line)) {
                             matches = matches + 1;
-                        } else if (lbl_standard[0].getText().isEmpty() && !line.isEmpty() && !line.startsWith("0") && !line.startsWith("5")) { //$NON-NLS-1$ //$NON-NLS-2$
-                            lbl_standard[0].setText(i + 1 + " " + line); //$NON-NLS-1$
+                        } else if (lblStandardPtr[0].getText().isEmpty() && !line.isEmpty() && !line.startsWith("0") && !line.startsWith("5")) { //$NON-NLS-1$ //$NON-NLS-2$
+                            lblStandardPtr[0].setText(i + 1 + " " + line); //$NON-NLS-1$
                         }
                     }
 
-                    lbl_standard[0].setText("Coverage: " + matches * 100d / lines.size() + "% " + lbl_standard[0].getText()); //$NON-NLS-1$ //$NON-NLS-2$
+                    lblStandardPtr[0].setText("Coverage: " + matches * 100d / lines.size() + "% " + lblStandardPtr[0].getText()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
                 Display.getCurrent().asyncExec(new Runnable() {
@@ -220,7 +220,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        txt_data[0].addListener(SWT.KeyDown, event -> {
+        txtDataPtr[0].addListener(SWT.KeyDown, event -> {
 
             final int keyCode = event.keyCode;
             final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
@@ -237,7 +237,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 ViewIdleManager.pause[0].compareAndSet(false, true);
                 switch (task) {
                 case EDITORTEXT_SELECTALL:
-                    txt_data[0].setSelection(0, txt_data[0].getText().length());
+                    txtDataPtr[0].setSelection(0, txtDataPtr[0].getText().length());
                     break;
                 default:
                     break;
@@ -245,29 +245,29 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        WidgetUtil(mntm_Delete[0]).addSelectionListener(e -> {
-            final int x = txt_data[0].getSelection().x;
-            if (txt_data[0].getSelection().y == x) {
-                final int start = txt_data[0].getOffsetAtLine(txt_data[0].getLineAtOffset(x));
-                txt_data[0].setSelection(start, start + txt_data[0].getLine(txt_data[0].getLineAtOffset(x)).length());
+        WidgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> {
+            final int x = txtDataPtr[0].getSelection().x;
+            if (txtDataPtr[0].getSelection().y == x) {
+                final int start = txtDataPtr[0].getOffsetAtLine(txtDataPtr[0].getLineAtOffset(x));
+                txtDataPtr[0].setSelection(start, start + txtDataPtr[0].getLine(txtDataPtr[0].getLineAtOffset(x)).length());
             }
-            final int x2 = txt_data[0].getSelection().x;
-            if (txt_data[0].getSelection().y == x2) {
-                txt_data[0].forceFocus();
+            final int x2 = txtDataPtr[0].getSelection().x;
+            if (txtDataPtr[0].getSelection().y == x2) {
+                txtDataPtr[0].forceFocus();
                 return;
             }
-            txt_data[0].insert(""); //$NON-NLS-1$
-            txt_data[0].setSelection(new Point(x, x));
-            txt_data[0].forceFocus();
+            txtDataPtr[0].insert(""); //$NON-NLS-1$
+            txtDataPtr[0].setSelection(new Point(x, x));
+            txtDataPtr[0].forceFocus();
         });
-        WidgetUtil(mntm_Copy[0]).addSelectionListener(e -> txt_data[0].copy());
-        WidgetUtil(mntm_Cut[0]).addSelectionListener(e -> txt_data[0].cut());
-        WidgetUtil(mntm_Paste[0]).addSelectionListener(e -> txt_data[0].paste());
+        WidgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> txtDataPtr[0].copy());
+        WidgetUtil(mntmCutPtr[0]).addSelectionListener(e -> txtDataPtr[0].cut());
+        WidgetUtil(mntmPastePtr[0]).addSelectionListener(e -> txtDataPtr[0].paste());
 
-        btn_ok[0].removeListener(SWT.Selection, btn_ok[0].getListeners(SWT.Selection)[0]);
-        btn_cancel[0].removeListener(SWT.Selection, btn_cancel[0].getListeners(SWT.Selection)[0]);
+        btnOkPtr[0].removeListener(SWT.Selection, btnOkPtr[0].getListeners(SWT.Selection)[0]);
+        btnCancelPtr[0].removeListener(SWT.Selection, btnCancelPtr[0].getListeners(SWT.Selection)[0]);
 
-        WidgetUtil(btn_ok[0]).addSelectionListener(e -> {
+        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
 
             EditorTextWindow w = null;
             for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
@@ -296,9 +296,9 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        WidgetUtil(btn_cancel[0]).addSelectionListener(e -> getShell().close());
+        WidgetUtil(btnCancelPtr[0]).addSelectionListener(e -> getShell().close());
 
-        WidgetUtil(btn_saveAs[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSaveAsPtr[0]).addSelectionListener(e -> {
 
             EditorTextWindow w = null;
             for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
@@ -327,7 +327,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        WidgetUtil(btn_top[0]).addSelectionListener(e -> {
+        WidgetUtil(btnTopPtr[0]).addSelectionListener(e -> {
             c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
@@ -337,78 +337,78 @@ public class PrimGen2Dialog extends PrimGen2Design {
             });
         });
 
-        WidgetUtil(cmb_type[0]).addSelectionListener(e -> {
+        WidgetUtil(cmbTypePtr[0]).addSelectionListener(e -> {
 
             doUpdate = true;
 
-            switch (cmb_type[0].getSelectionIndex()) {
+            switch (cmbTypePtr[0].getSelectionIndex()) {
             case CIRCLE:
             case CYLINDER:
             case DISC:
             case DISC_NEGATIVE:
             case CHORD:
-                lbl_minor[0].setText(I18n.PRIMGEN_MINOR);
-                lbl_major[0].setEnabled(false);
-                lbl_minor[0].setEnabled(false);
-                lbl_size[0].setEnabled(false);
-                lbl_torusType[0].setEnabled(false);
-                spn_major[0].setEnabled(false);
-                spn_minor[0].setEnabled(false);
-                spn_size[0].setEnabled(false);
-                cmb_torusType[0].setEnabled(false);
-                spn_minor[0].setNumberFormat(DEC_VFORMAT_0F);
-                spn_size[0].setNumberFormat(DEC_VFORMAT_0F);
-                spn_size[0].setValue(BigDecimal.ONE);
-                cmb_torusType[0].select(1);
+                lblMinorPtr[0].setText(I18n.PRIMGEN_MINOR);
+                lblMajorPtr[0].setEnabled(false);
+                lblMinorPtr[0].setEnabled(false);
+                lblSizePtr[0].setEnabled(false);
+                lblTorusTypePtr[0].setEnabled(false);
+                spnMajorPtr[0].setEnabled(false);
+                spnMinorPtr[0].setEnabled(false);
+                spnSizePtr[0].setEnabled(false);
+                cmbTorusTypePtr[0].setEnabled(false);
+                spnMinorPtr[0].setNumberFormat(decvformat0f);
+                spnSizePtr[0].setNumberFormat(decvformat0f);
+                spnSizePtr[0].setValue(BigDecimal.ONE);
+                cmbTorusTypePtr[0].select(1);
                 break;
             case RING:
             case CONE:
-                lbl_minor[0].setText(I18n.PRIMGEN_WIDTH);
-                lbl_major[0].setEnabled(false);
-                lbl_minor[0].setEnabled(true);
-                lbl_size[0].setEnabled(true);
-                lbl_torusType[0].setEnabled(false);
-                spn_major[0].setEnabled(false);
-                spn_minor[0].setEnabled(true);
-                spn_size[0].setEnabled(true);
-                cmb_torusType[0].setEnabled(false);
-                spn_minor[0].setNumberFormat(DEC_VFORMAT_4F);
-                spn_size[0].setNumberFormat(DEC_VFORMAT_4F);
-                spn_size[0].setValue(BigDecimal.ONE);
-                cmb_torusType[0].select(1);
+                lblMinorPtr[0].setText(I18n.PRIMGEN_WIDTH);
+                lblMajorPtr[0].setEnabled(false);
+                lblMinorPtr[0].setEnabled(true);
+                lblSizePtr[0].setEnabled(true);
+                lblTorusTypePtr[0].setEnabled(false);
+                spnMajorPtr[0].setEnabled(false);
+                spnMinorPtr[0].setEnabled(true);
+                spnSizePtr[0].setEnabled(true);
+                cmbTorusTypePtr[0].setEnabled(false);
+                spnMinorPtr[0].setNumberFormat(decvformat4f);
+                spnSizePtr[0].setNumberFormat(decvformat4f);
+                spnSizePtr[0].setValue(BigDecimal.ONE);
+                cmbTorusTypePtr[0].select(1);
                 break;
             case TORUS:
-                lbl_minor[0].setText(I18n.PRIMGEN_MINOR);
-                lbl_major[0].setEnabled(true);
-                lbl_minor[0].setEnabled(true);
-                lbl_size[0].setEnabled(false);
-                lbl_torusType[0].setEnabled(true);
-                spn_major[0].setEnabled(true);
-                spn_minor[0].setEnabled(true);
-                spn_size[0].setEnabled(false);
-                cmb_torusType[0].setEnabled(true);
-                spn_minor[0].setNumberFormat(DEC_VFORMAT_0F);
-                spn_size[0].setNumberFormat(DEC_VFORMAT_4F);
-                spn_size[0].setValue(BigDecimal.ONE);
-                cmb_torusType[0].select(1);
+                lblMinorPtr[0].setText(I18n.PRIMGEN_MINOR);
+                lblMajorPtr[0].setEnabled(true);
+                lblMinorPtr[0].setEnabled(true);
+                lblSizePtr[0].setEnabled(false);
+                lblTorusTypePtr[0].setEnabled(true);
+                spnMajorPtr[0].setEnabled(true);
+                spnMinorPtr[0].setEnabled(true);
+                spnSizePtr[0].setEnabled(false);
+                cmbTorusTypePtr[0].setEnabled(true);
+                spnMinorPtr[0].setNumberFormat(decvformat0f);
+                spnSizePtr[0].setNumberFormat(decvformat4f);
+                spnSizePtr[0].setValue(BigDecimal.ONE);
+                cmbTorusTypePtr[0].select(1);
                 break;
             default:
                 break;
             }
 
-            BigDecimal minor = spn_minor[0].getValue();
-            BigDecimal size = spn_size[0].getValue();
+            BigDecimal minor = spnMinorPtr[0].getValue();
+            BigDecimal size = spnSizePtr[0].getValue();
 
-            spn_minor[0].setValue(BigDecimal.ZERO);
-            spn_size[0].setValue(BigDecimal.ZERO);
+            spnMinorPtr[0].setValue(BigDecimal.ZERO);
+            spnSizePtr[0].setValue(BigDecimal.ZERO);
 
-            spn_minor[0].setValue(minor);
-            spn_size[0].setValue(size);
+            spnMinorPtr[0].setValue(minor);
+            spnSizePtr[0].setValue(size);
 
 
             doUpdate = false;
 
-            rebuildPrimitive(EventType.CBO, cmb_type[0]);
+            rebuildPrimitive(EventType.CBO, cmbTypePtr[0]);
         });
 
         final WidgetSelectionListener sa = e -> rebuildPrimitive(EventType.CBO, e.widget);
@@ -416,21 +416,21 @@ public class PrimGen2Dialog extends PrimGen2Design {
         final IntValueChangeAdapter vca = spn -> rebuildPrimitive(EventType.SPN, spn);
         final DecimalValueChangeAdapter vcad = spn -> rebuildPrimitive(EventType.SPN, spn);
 
-        spn_divisions[0].addValueChangeListener(vca);
-        spn_major[0].addValueChangeListener(vca);
-        spn_minor[0].addValueChangeListener(vcad);
-        spn_segments[0].addValueChangeListener(vca);
-        spn_size[0].addValueChangeListener(vcad);
+        spnDivisionsPtr[0].addValueChangeListener(vca);
+        spnMajorPtr[0].addValueChangeListener(vca);
+        spnMinorPtr[0].addValueChangeListener(vcad);
+        spnSegmentsPtr[0].addValueChangeListener(vca);
+        spnSizePtr[0].addValueChangeListener(vcad);
 
-        WidgetUtil(cmb_divisions[0]).addSelectionListener(sa);
-        WidgetUtil(cmb_segments[0]).addSelectionListener(sa);
-        WidgetUtil(cmb_torusType[0]).addSelectionListener(sa);
-        WidgetUtil(cmb_winding[0]).addSelectionListener(sa);
+        WidgetUtil(cmbDivisionsPtr[0]).addSelectionListener(sa);
+        WidgetUtil(cmbSegmentsPtr[0]).addSelectionListener(sa);
+        WidgetUtil(cmbTorusTypePtr[0]).addSelectionListener(sa);
+        WidgetUtil(cmbWindingPtr[0]).addSelectionListener(sa);
 
-        float backup = View.edge_threshold;
-        View.edge_threshold = 5e6f;
+        float backup = View.edgeThreshold;
+        View.edgeThreshold = 5e6f;
         int result = super.open();
-        View.edge_threshold = backup;
+        View.edgeThreshold = backup;
         Project.getUnsavedFiles().remove(df);
         df.disposeData();
         Project.getOpenedFiles().remove(df);
@@ -455,50 +455,50 @@ public class PrimGen2Dialog extends PrimGen2Design {
             return;
         }
 
-        boolean ccw = cmb_winding[0].getSelectionIndex() == 0;
-        int torusType = cmb_torusType[0].getSelectionIndex();
+        boolean ccw = cmbWindingPtr[0].getSelectionIndex() == 0;
+        int torusType = cmbTorusTypePtr[0].getSelectionIndex();
 
         doUpdate = true;
 
-        if (cmb_torusType[0].getSelectionIndex() == 0 && spn_major[0].getValue() <= spn_minor[0].getValue().intValue()) {
-            cmb_torusType[0].select(1);
+        if (cmbTorusTypePtr[0].getSelectionIndex() == 0 && spnMajorPtr[0].getValue() <= spnMinorPtr[0].getValue().intValue()) {
+            cmbTorusTypePtr[0].select(1);
         }
 
-        if (w != spn_divisions[0] && w != cmb_divisions[0] && spn_segments[0].getValue() > spn_divisions[0].getValue()) {
-            spn_divisions[0].setValue(spn_segments[0].getValue());
+        if (w != spnDivisionsPtr[0] && w != cmbDivisionsPtr[0] && spnSegmentsPtr[0].getValue() > spnDivisionsPtr[0].getValue()) {
+            spnDivisionsPtr[0].setValue(spnSegmentsPtr[0].getValue());
         }
 
-        if (w != spn_segments[0] && w != cmb_segments[0] && spn_segments[0].getValue() > spn_divisions[0].getValue()) {
-            spn_segments[0].setValue(spn_divisions[0].getValue());
+        if (w != spnSegmentsPtr[0] && w != cmbSegmentsPtr[0] && spnSegmentsPtr[0].getValue() > spnDivisionsPtr[0].getValue()) {
+            spnSegmentsPtr[0].setValue(spnDivisionsPtr[0].getValue());
         }
 
         if (et == EventType.CBO) {
 
-            switch (cmb_divisions[0].getSelectionIndex()) {
+            switch (cmbDivisionsPtr[0].getSelectionIndex()) {
             case 0:
-                spn_divisions[0].setValue(8);
+                spnDivisionsPtr[0].setValue(8);
                 break;
             case 1:
-                spn_divisions[0].setValue(16);
+                spnDivisionsPtr[0].setValue(16);
                 break;
             case 2:
-                spn_divisions[0].setValue(48);
+                spnDivisionsPtr[0].setValue(48);
                 break;
             default:
                 break;
             }
-            switch (cmb_segments[0].getSelectionIndex()) {
+            switch (cmbSegmentsPtr[0].getSelectionIndex()) {
             case 0:
-                spn_segments[0].setValue(spn_divisions[0].getValue() / 4);
+                spnSegmentsPtr[0].setValue(spnDivisionsPtr[0].getValue() / 4);
                 break;
             case 1:
-                spn_segments[0].setValue(spn_divisions[0].getValue() / 2);
+                spnSegmentsPtr[0].setValue(spnDivisionsPtr[0].getValue() / 2);
                 break;
             case 2:
-                spn_segments[0].setValue(spn_divisions[0].getValue() * 3 / 4);
+                spnSegmentsPtr[0].setValue(spnDivisionsPtr[0].getValue() * 3 / 4);
                 break;
             case 3:
-                spn_segments[0].setValue(spn_divisions[0].getValue());
+                spnSegmentsPtr[0].setValue(spnDivisionsPtr[0].getValue());
                 break;
             default:
                 break;
@@ -506,51 +506,51 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
         } else {
 
-            switch (spn_divisions[0].getValue()) {
+            switch (spnDivisionsPtr[0].getValue()) {
             case 8:
-                cmb_divisions[0].select(0);
+                cmbDivisionsPtr[0].select(0);
                 break;
             case 16:
-                cmb_divisions[0].select(1);
+                cmbDivisionsPtr[0].select(1);
                 break;
             case 48:
-                cmb_divisions[0].select(2);
+                cmbDivisionsPtr[0].select(2);
                 break;
             default:
-                cmb_divisions[0].select(3);
+                cmbDivisionsPtr[0].select(3);
                 break;
             }
-            final int QUARTER = spn_divisions[0].getValue() / 4;
-            final int HALF = spn_divisions[0].getValue() / 2;
-            final int THREE_OF_FOUR = spn_divisions[0].getValue() * 3 / 4;
-            final int WHOLE = spn_divisions[0].getValue();
+            final int QUARTER = spnDivisionsPtr[0].getValue() / 4;
+            final int HALF = spnDivisionsPtr[0].getValue() / 2;
+            final int THREE_OF_FOUR = spnDivisionsPtr[0].getValue() * 3 / 4;
+            final int WHOLE = spnDivisionsPtr[0].getValue();
 
-            if (spn_segments[0].getValue() == QUARTER && spn_divisions[0].getValue() / 4d - QUARTER == 0d) {
-                cmb_segments[0].select(0);
-            } else if (spn_segments[0].getValue() == HALF && spn_divisions[0].getValue() / 2d - HALF == 0d) {
-                cmb_segments[0].select(1);
-            } else if (spn_segments[0].getValue() == THREE_OF_FOUR && spn_divisions[0].getValue() * 3d / 4d - QUARTER == 0d) {
-                cmb_segments[0].select(2);
-            } else if (spn_segments[0].getValue() == WHOLE) {
-                cmb_segments[0].select(3);
+            if (spnSegmentsPtr[0].getValue() == QUARTER && spnDivisionsPtr[0].getValue() / 4d - QUARTER == 0d) {
+                cmbSegmentsPtr[0].select(0);
+            } else if (spnSegmentsPtr[0].getValue() == HALF && spnDivisionsPtr[0].getValue() / 2d - HALF == 0d) {
+                cmbSegmentsPtr[0].select(1);
+            } else if (spnSegmentsPtr[0].getValue() == THREE_OF_FOUR && spnDivisionsPtr[0].getValue() * 3d / 4d - QUARTER == 0d) {
+                cmbSegmentsPtr[0].select(2);
+            } else if (spnSegmentsPtr[0].getValue() == WHOLE) {
+                cmbSegmentsPtr[0].select(3);
             } else {
-                cmb_segments[0].select(4);
+                cmbSegmentsPtr[0].select(4);
             }
 
         }
 
-        if (cmb_type[0].getSelectionIndex() == TORUS) {
-            spn_size[0].setValue(new BigDecimal(DEC_FORMAT_4F.format(spn_minor[0].getValue().intValue() * 1d / spn_major[0].getValue())));
+        if (cmbTypePtr[0].getSelectionIndex() == TORUS) {
+            spnSizePtr[0].setValue(new BigDecimal(decformat4f.format(spnMinorPtr[0].getValue().intValue() * 1d / spnMajorPtr[0].getValue())));
         }
 
         doUpdate = false;
 
-        int divisions = spn_divisions[0].getValue();
-        int segments = spn_segments[0].getValue();
-        int major = spn_major[0].getValue();
-        int minor = spn_minor[0].getValue().intValue();
-        double width = spn_minor[0].getValue().doubleValue();
-        double size = spn_size[0].getValue().doubleValue();
+        int divisions = spnDivisionsPtr[0].getValue();
+        int segments = spnSegmentsPtr[0].getValue();
+        int major = spnMajorPtr[0].getValue();
+        int minor = spnMinorPtr[0].getValue().intValue();
+        double width = spnMinorPtr[0].getValue().doubleValue();
+        double size = spnSizePtr[0].getValue().doubleValue();
 
         int gcd = gcd(divisions, segments);
 
@@ -595,8 +595,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
         final String suffixWidth;
         final String suffixWidthTitle;
         if (width != 1d) {
-            suffixWidth = "w" + removeTrailingZeros(DEC_FORMAT_4F.format(width)); //$NON-NLS-1$
-            suffixWidthTitle = " Width " + removeTrailingZeros(DEC_FORMAT_4F.format(width)); //$NON-NLS-1$
+            suffixWidth = "w" + removeTrailingZeros(decformat4f.format(width)); //$NON-NLS-1$
+            suffixWidthTitle = " Width " + removeTrailingZeros(decformat4f.format(width)); //$NON-NLS-1$
         } else {
             suffixWidth = ""; //$NON-NLS-1$
             suffixWidthTitle = ""; //$NON-NLS-1$
@@ -631,12 +631,12 @@ public class PrimGen2Dialog extends PrimGen2Design {
             sb.append("0 BFC CERTIFY CW\n\n"); //$NON-NLS-1$
         }
 
-        final int pType = cmb_type[0].getSelectionIndex();
+        final int pType = cmbTypePtr[0].getSelectionIndex();
         switch (pType) {
         case CIRCLE:
             name = upper + "-" + lower + "edge.dat"; //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Circle " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sb.insert(0, "0 " + resolution + "Circle " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
             {
                 double deltaAngle = Math.PI * 2d / divisions;
@@ -648,13 +648,13 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     double x2 = Math.cos(nextAngle);
                     double z2 = Math.sin(nextAngle);
                     sb.append("2 24 "); //$NON-NLS-1$
-                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
+                    sb.append(removeTrailingZeros(decformat4f.format(x1)));
                     sb.append(" 0 "); //$NON-NLS-1$
-                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));
+                    sb.append(removeTrailingZeros(decformat4f.format(z1)));
                     sb.append(" "); //$NON-NLS-1$
-                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
+                    sb.append(removeTrailingZeros(decformat4f.format(x2)));
                     sb.append(" 0 "); //$NON-NLS-1$
-                    sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
+                    sb.append(removeTrailingZeros(decformat4f.format(z2)));
                     sb.append("\n"); //$NON-NLS-1$
                     angle = nextAngle;
                 }
@@ -662,17 +662,17 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
             break;
         case RING:
-            name = upper + "-" + lower + "ring" + removeTrailingZeros(DEC_FORMAT_4F.format(size)) + suffixWidth +  ".dat"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            name = upper + "-" + lower + "ring" + removeTrailingZeros(decformat4f.format(size)) + suffixWidth +  ".dat"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Ring " + addExtraSpaces1(removeTrailingZeros(DEC_FORMAT_4F.format(size))) + " x " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + suffixWidthTitle + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            sb.insert(0, "0 " + resolution + "Ring " + addExtraSpaces1(removeTrailingZeros(decformat4f.format(size))) + " x " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + suffixWidthTitle + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
             sb.append(ring(divisions, segments, size, ccw, width));
 
             break;
         case CONE:
-            name = upper + "-" + lower + "con" + removeTrailingZeros(DEC_FORMAT_4F.format(size)) + suffixWidth +  ".dat"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            name = upper + "-" + lower + "con" + removeTrailingZeros(decformat4f.format(size)) + suffixWidth +  ".dat"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Cone " + addExtraSpaces1(removeTrailingZeros(DEC_FORMAT_4F.format(size))) + " x " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + suffixWidthTitle + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            sb.insert(0, "0 " + resolution + "Cone " + addExtraSpaces1(removeTrailingZeros(decformat4f.format(size))) + " x " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + suffixWidthTitle + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
             sb.append(cone(divisions, segments, size, ccw, width));
 
@@ -680,7 +680,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         case TORUS:
 
         {
-            String sweep = DEC_FORMAT_4F.format(minor * 1d / major);
+            String sweep = decformat4f.format(minor * 1d / major);
             String sweep2 = sweep.replace(".", "").substring(sweep.charAt(0) == '0' ? 1 : 0, Math.min(sweep.charAt(0) == '0' ? 5 : 4, sweep.length())); //$NON-NLS-1$ //$NON-NLS-2$
             String frac = "99"; //$NON-NLS-1$
             if (upper == 1 && lower < 100) {
@@ -708,11 +708,11 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
             name = r + frac + t + sweep2 + ".dat"; //$NON-NLS-1$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Torus" + tt + sweep + " x " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            sb.insert(0, "0 " + resolution + "Torus" + tt + sweep + " x " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
             sb.append("0 // Major Radius: " + major + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
             sb.append("0 // Tube(Minor) Radius: " + minor + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.append("0 // Segments(Sweep): " + segments + "/" + divisions + " = " + removeTrailingZeros3(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+            sb.append("0 // Segments(Sweep): " + segments + "/" + divisions + " = " + removeTrailingZeros3(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
             sb.append("0 // 1 9 0 0 0 1 0 0 0 1 0 0 0 1 4-4edge.dat\n"); //$NON-NLS-1$
             sb.append("0 // 1 12 1 0 0 " + sweep + " 0 0 0 0 " + sweep + " 0 1 0 4-4edge.dat\n\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
@@ -723,7 +723,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         case CYLINDER:
             name = upper + "-" + lower + "cyli.dat"; //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Cylinder " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sb.insert(0, "0 " + resolution + "Cylinder " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
             sb.append(cylinder(divisions, segments, ccw));
 
@@ -731,7 +731,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         case DISC:
             name = upper + "-" + lower + "disc.dat"; //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Disc " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sb.insert(0, "0 " + resolution + "Disc " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
             {
                 double deltaAngle = Math.PI * 2d / divisions;
@@ -744,22 +744,22 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     double z2 = Math.sin(nextAngle);
                     if (ccw) {
                         sb.append("3 16 0 0 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x1)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z1)));
                         sb.append(" "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x2)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z2)));
                     } else {
                         sb.append("3 16 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x2)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z2)));
                         sb.append(" "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x1)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z1)));
                         sb.append(" 0 0 0"); //$NON-NLS-1$
                     }
 
@@ -772,7 +772,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         case DISC_NEGATIVE:
             name = upper + "-" + lower + "ndis.dat"; //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Disc Negative " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sb.insert(0, "0 " + resolution + "Disc Negative " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
             {
                 double deltaAngle = Math.PI * 2d / divisions;
@@ -803,30 +803,30 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     }
                     if (ccw) {
                         sb.append("3 16 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x3)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x3)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z3)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z3)));
                         sb.append(" "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x1)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z1)));
                         sb.append(" "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x2)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z2)));
                     } else {
                         sb.append("3 16 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x2)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z2)));
                         sb.append(" "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x1)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z1)));
                         sb.append(" "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x3)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x3)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z3)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z3)));
                     }
 
                     sb.append("\n"); //$NON-NLS-1$
@@ -838,7 +838,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
         case CHORD:
             name = upper + "-" + lower + "chrd.dat"; //$NON-NLS-1$ //$NON-NLS-2$
             sb.insert(0, "0 Name: " + prefix + name + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-            sb.insert(0, "0 " + resolution + "Chord " + removeTrailingZeros2(DEC_FORMAT_4F.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+            sb.insert(0, "0 " + resolution + "Chord " + removeTrailingZeros2(decformat4f.format(segments * 1d / divisions)) + "\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
             {
                 double deltaAngle = Math.PI * 2d / divisions;
@@ -852,22 +852,22 @@ public class PrimGen2Dialog extends PrimGen2Design {
                     double z2 = Math.sin(nextAngle);
                     if (ccw) {
                         sb.append("3 16 1 0 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x1)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z1)));
                         sb.append(" "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x2)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z2)));
                     } else {
                         sb.append("3 16 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x2)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z2)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z2)));
                         sb.append(" "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(x1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(x1)));
                         sb.append(" 0 "); //$NON-NLS-1$
-                        sb.append(removeTrailingZeros(DEC_FORMAT_4F.format(z1)));
+                        sb.append(removeTrailingZeros(decformat4f.format(z1)));
                         sb.append(" 1 0 0"); //$NON-NLS-1$
                     }
 
@@ -884,11 +884,11 @@ public class PrimGen2Dialog extends PrimGen2Design {
         sb.append("0 // Build by LDPartEditor (PrimGen 2.X)"); //$NON-NLS-1$
 
         if (isOfficialRules(pType, size, divisions, segments, minor, ccw)) {
-            lbl_standard[0].setText(I18n.PRIMGEN_STANDARD);
+            lblStandardPtr[0].setText(I18n.PRIMGEN_STANDARD);
         } else {
-            lbl_standard[0].setText(I18n.PRIMGEN_NON_STANDARD);
+            lblStandardPtr[0].setText(I18n.PRIMGEN_NON_STANDARD);
         }
-        txt_data[0].setText(sb.toString());
+        txtDataPtr[0].setText(sb.toString());
     }
 
     private Object cylinder(int divisions, int segments, boolean ccw) {

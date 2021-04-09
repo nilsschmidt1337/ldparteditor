@@ -130,7 +130,7 @@ public enum RingsAndCones {
                                     @Override
                                     public void run() {
                                         {
-                                            final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+                                            final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
                                             int amount = 0;
                                             final long min_r = 1;
                                             long maxR = 100;

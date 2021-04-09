@@ -44,10 +44,10 @@ public class UnificatorDialog extends UnificatorDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_vertexThreshold[0].addValueChangeListener(spn -> us.setVertexThreshold(spn.getValue()));
-        cmb_scope[0].addListener(SWT.Selection, event -> us.setScope(cmb_scope[0].getSelectionIndex()));
-        cmb_whatToUnify[0].addListener(SWT.Selection, event -> us.setSnapOn(cmb_whatToUnify[0].getSelectionIndex()));
-        spn_subfileThreshold[0].addValueChangeListener(spn -> us.setSubvertexThreshold(spn.getValue()));
+        spnVertexThresholdPtr[0].addValueChangeListener(spn -> us.setVertexThreshold(spn.getValue()));
+        cmbScopePtr[0].addListener(SWT.Selection, event -> us.setScope(cmbScopePtr[0].getSelectionIndex()));
+        cmbWhatToUnifyPtr[0].addListener(SWT.Selection, event -> us.setSnapOn(cmbWhatToUnifyPtr[0].getSelectionIndex()));
+        spnSubfileThresholdPtr[0].addValueChangeListener(spn -> us.setSubvertexThreshold(spn.getValue()));
         return super.open();
     }
 

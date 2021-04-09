@@ -1742,7 +1742,7 @@ class VM01SelectHelper extends VM01Select {
         selectedQuadsForSubfile.clear();
         selectedCondlinesForSubfile.clear();
 
-        if (NLogger.DEBUG) {
+        if (NLogger.debugging) {
             NLogger.debug(getClass(), "Selected data:"); //$NON-NLS-1$
             for (GData g : selectedData) {
                 NLogger.debug(getClass(), g.toString());

@@ -480,7 +480,7 @@ public class Editor3DWindow extends Editor3DDesign {
         sh.addListener(SWT.Resize, event ->
             VertexWindow.placeVertexWindow()
         );
-        WidgetUtil(tabFolder_Settings[0]).addSelectionListener(e ->  regainFocus());
+        WidgetUtil(tabFolderSettingsPtr[0]).addSelectionListener(e ->  regainFocus());
 
         WidgetSelectionListener sa = e -> {
             int[] w = leftSash[0].getWeights();
@@ -491,11 +491,11 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         };
 
-        WidgetUtil(btn_showUpper1[0]).addSelectionListener(sa);
-        WidgetUtil(btn_showUpper2[0]).addSelectionListener(sa);
-        WidgetUtil(btn_showUpper3[0]).addSelectionListener(sa);
+        WidgetUtil(btnShowUpper1Ptr[0]).addSelectionListener(sa);
+        WidgetUtil(btnShowUpper2Ptr[0]).addSelectionListener(sa);
+        WidgetUtil(btnShowUpper3Ptr[0]).addSelectionListener(sa);
 
-        WidgetUtil(btn_showMiddle[0]).addSelectionListener(e -> {
+        WidgetUtil(btnShowMiddlePtr[0]).addSelectionListener(e -> {
             int[] w = leftSash[0].getWeights();
             if (w[0] == 100 && w[1] == 800 && w[2] == 100) {
                 leftSash[0].setWeights(new int[]{33, 33, 33});
@@ -504,11 +504,11 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        WidgetUtil(btn_sameHeight[0]).addSelectionListener(e ->
+        WidgetUtil(btnSameHeightPtr[0]).addSelectionListener(e ->
             leftSash[0].setWeights(new int[]{33, 33, 33})
         );
 
-        WidgetUtil(btn_showLower[0]).addSelectionListener(e -> {
+        WidgetUtil(btnShowLowerPtr[0]).addSelectionListener(e -> {
             int[] w = leftSash[0].getWeights();
             if (w[0] == 100 && w[1] == 100 && w[2] == 800) {
                 leftSash[0].setWeights(new int[]{33, 33, 33});
@@ -517,7 +517,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (btn_showLeft[0] != null) WidgetUtil(btn_showLeft[0]).addSelectionListener(e -> {
+        if (btnShowLeftPtr[0] != null) WidgetUtil(btnShowLeftPtr[0]).addSelectionListener(e -> {
             final SashForm sf = splitSash[0];
             int[] w = sf.getWeights();
             if (w[1] * 9 > w[0]) {
@@ -527,7 +527,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (btn_showRight[0] != null) WidgetUtil(btn_showRight[0]).addSelectionListener(e -> {
+        if (btnShowRightPtr[0] != null) WidgetUtil(btnShowRightPtr[0]).addSelectionListener(e -> {
             final SashForm sf = splitSash[0];
             int[] w = sf.getWeights();
             if (w[0] * 9 > w[1]) {
@@ -537,7 +537,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        if (btn_sameWidth[0] != null) WidgetUtil(btn_sameWidth[0]).addSelectionListener(e -> splitSash[0].setWeights(new int[]{50, 50}));
+        if (btnSameWidthPtr[0] != null) WidgetUtil(btnSameWidthPtr[0]).addSelectionListener(e -> splitSash[0].setWeights(new int[]{50, 50}));
 
         if (splitSash[0] != null) splitSash[0].getChildren()[0].addControlListener(new ControlListener() {
             @Override
@@ -553,21 +553,21 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
 
-        WidgetUtil(btn_Sync[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSyncPtr[0]).addSelectionListener(e -> {
 
             resetSearch();
             int[][] stats = new int[15][3];
-            stats[0] = LibraryManager.syncProjectElements(treeItem_Project[0]);
-            stats[5] = LibraryManager.syncUnofficialParts(treeItem_UnofficialParts[0]);
-            stats[6] = LibraryManager.syncUnofficialSubparts(treeItem_UnofficialSubparts[0]);
-            stats[7] = LibraryManager.syncUnofficialPrimitives(treeItem_UnofficialPrimitives[0]);
-            stats[8] = LibraryManager.syncUnofficialHiResPrimitives(treeItem_UnofficialPrimitives48[0]);
-            stats[9] = LibraryManager.syncUnofficialLowResPrimitives(treeItem_UnofficialPrimitives8[0]);
-            stats[10] = LibraryManager.syncOfficialParts(treeItem_OfficialParts[0]);
-            stats[11] = LibraryManager.syncOfficialSubparts(treeItem_OfficialSubparts[0]);
-            stats[12] = LibraryManager.syncOfficialPrimitives(treeItem_OfficialPrimitives[0]);
-            stats[13] = LibraryManager.syncOfficialHiResPrimitives(treeItem_OfficialPrimitives48[0]);
-            stats[14] = LibraryManager.syncOfficialLowResPrimitives(treeItem_OfficialPrimitives8[0]);
+            stats[0] = LibraryManager.syncProjectElements(treeItemProjectPtr[0]);
+            stats[5] = LibraryManager.syncUnofficialParts(treeItemUnofficialPartsPtr[0]);
+            stats[6] = LibraryManager.syncUnofficialSubparts(treeItemUnofficialSubpartsPtr[0]);
+            stats[7] = LibraryManager.syncUnofficialPrimitives(treeItemUnofficialPrimitivesPtr[0]);
+            stats[8] = LibraryManager.syncUnofficialHiResPrimitives(treeItemUnofficialPrimitives48Ptr[0]);
+            stats[9] = LibraryManager.syncUnofficialLowResPrimitives(treeItemUnofficialPrimitives8Ptr[0]);
+            stats[10] = LibraryManager.syncOfficialParts(treeItemOfficialPartsPtr[0]);
+            stats[11] = LibraryManager.syncOfficialSubparts(treeItemOfficialSubpartsPtr[0]);
+            stats[12] = LibraryManager.syncOfficialPrimitives(treeItemOfficialPrimitivesPtr[0]);
+            stats[13] = LibraryManager.syncOfficialHiResPrimitives(treeItemOfficialPrimitives48Ptr[0]);
+            stats[14] = LibraryManager.syncOfficialLowResPrimitives(treeItemOfficialPrimitives8Ptr[0]);
 
             int additions = 0;
             int deletions = 0;
@@ -578,8 +578,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 conflicts += is[2];
             }
 
-            txt_Search[0].setText(" "); //$NON-NLS-1$
-            txt_Search[0].setText(""); //$NON-NLS-1$
+            txtSearchPtr[0].setText(" "); //$NON-NLS-1$
+            txtSearchPtr[0].setText(""); //$NON-NLS-1$
 
             Set<DatFile> dfs = new HashSet<>();
             for (OpenGLRenderer renderer : renders) {
@@ -616,7 +616,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             Object[] messageArguments = {additions, deletions, conflicts};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DIALOG_SYNC);
             messageBox.setMessage(formatter.format(messageArguments));
 
@@ -624,10 +624,10 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_LastOpen[0]).addSelectionListener(e -> {
+        WidgetUtil(btnLastOpenPtr[0]).addSelectionListener(e -> {
 
             Menu lastOpenedMenu = new Menu(treeParts[0].getTree());
-            btn_LastOpen[0].setMenu(lastOpenedMenu);
+            btnLastOpenPtr[0].setMenu(lastOpenedMenu);
 
             final int size = recentItems.size() - 1;
             for (int i = size; i > -1; i--) {
@@ -669,7 +669,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         Object[] messageArguments = {path};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.E3D_LAST_PROJECT);
 
                         mntmItem2.setText(formatter.format(messageArguments));
@@ -677,17 +677,17 @@ public class Editor3DWindow extends Editor3DDesign {
                             File f12 = new File(path);
                             if (f12.exists() && f12.isDirectory() && f12.canRead() && ProjectActions.openProject(path)) {
                                 Project.create(false);
-                                treeItem_Project[0].setData(Project.getProjectPath());
+                                treeItemProjectPtr[0].setData(Project.getProjectPath());
                                 resetSearch();
-                                LibraryManager.readProjectPartsParent(treeItem_ProjectParts[0]);
-                                LibraryManager.readProjectParts(treeItem_ProjectParts[0]);
-                                LibraryManager.readProjectSubparts(treeItem_ProjectSubparts[0]);
-                                LibraryManager.readProjectPrimitives(treeItem_ProjectPrimitives[0]);
-                                LibraryManager.readProjectHiResPrimitives(treeItem_ProjectPrimitives48[0]);
-                                LibraryManager.readProjectLowResPrimitives(treeItem_ProjectPrimitives8[0]);
-                                treeItem_OfficialParts[0].setData(null);
-                                txt_Search[0].setText(" "); //$NON-NLS-1$
-                                txt_Search[0].setText(""); //$NON-NLS-1$
+                                LibraryManager.readProjectPartsParent(treeItemProjectPartsPtr[0]);
+                                LibraryManager.readProjectParts(treeItemProjectPartsPtr[0]);
+                                LibraryManager.readProjectSubparts(treeItemProjectSubpartsPtr[0]);
+                                LibraryManager.readProjectPrimitives(treeItemProjectPrimitivesPtr[0]);
+                                LibraryManager.readProjectHiResPrimitives(treeItemProjectPrimitives48Ptr[0]);
+                                LibraryManager.readProjectLowResPrimitives(treeItemProjectPrimitives8Ptr[0]);
+                                treeItemOfficialPartsPtr[0].setData(null);
+                                txtSearchPtr[0].setText(" "); //$NON-NLS-1$
+                                txtSearchPtr[0].setText(""); //$NON-NLS-1$
                                 updateTree_unsavedEntries();
                             }
                             regainFocus();
@@ -704,33 +704,33 @@ public class Editor3DWindow extends Editor3DDesign {
             lastOpenedMenu.setVisible(true);
             regainFocus();
         });
-        WidgetUtil(btn_New[0]).addSelectionListener(e -> {
+        WidgetUtil(btnNewPtr[0]).addSelectionListener(e -> {
             if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), false)) {
                 addRecentFile(Project.getProjectPath());
             }
             regainFocus();
         });
-        WidgetUtil(btn_Open[0]).addSelectionListener(e -> {
+        WidgetUtil(btnOpenPtr[0]).addSelectionListener(e -> {
             if (ProjectActions.openProject(null)) {
                 addRecentFile(Project.getProjectPath());
                 Project.setLastVisitedPath(Project.getProjectPath());
                 Project.create(false);
-                treeItem_Project[0].setData(Project.getProjectPath());
+                treeItemProjectPtr[0].setData(Project.getProjectPath());
                 resetSearch();
-                LibraryManager.readProjectPartsParent(treeItem_ProjectParts[0]);
-                LibraryManager.readProjectParts(treeItem_ProjectParts[0]);
-                LibraryManager.readProjectSubparts(treeItem_ProjectSubparts[0]);
-                LibraryManager.readProjectPrimitives(treeItem_ProjectPrimitives[0]);
-                LibraryManager.readProjectHiResPrimitives(treeItem_ProjectPrimitives48[0]);
-                LibraryManager.readProjectLowResPrimitives(treeItem_ProjectPrimitives8[0]);
-                treeItem_OfficialParts[0].setData(null);
-                txt_Search[0].setText(" "); //$NON-NLS-1$
-                txt_Search[0].setText(""); //$NON-NLS-1$
+                LibraryManager.readProjectPartsParent(treeItemProjectPartsPtr[0]);
+                LibraryManager.readProjectParts(treeItemProjectPartsPtr[0]);
+                LibraryManager.readProjectSubparts(treeItemProjectSubpartsPtr[0]);
+                LibraryManager.readProjectPrimitives(treeItemProjectPrimitivesPtr[0]);
+                LibraryManager.readProjectHiResPrimitives(treeItemProjectPrimitives48Ptr[0]);
+                LibraryManager.readProjectLowResPrimitives(treeItemProjectPrimitives8Ptr[0]);
+                treeItemOfficialPartsPtr[0].setData(null);
+                txtSearchPtr[0].setText(" "); //$NON-NLS-1$
+                txtSearchPtr[0].setText(""); //$NON-NLS-1$
                 updateTree_unsavedEntries();
             }
             regainFocus();
         });
-        WidgetUtil(btn_Save[0]).addSelectionListener(new WidgetSelectionListener() {
+        WidgetUtil(btnSavePtr[0]).addSelectionListener(new WidgetSelectionListener() {
             @Override
             public void widgetSelected(SelectionEvent e) {
                 if (treeParts[0].getSelectionCount() == 1) {
@@ -770,24 +770,24 @@ public class Editor3DWindow extends Editor3DDesign {
                             }
                         }
                     } else if (treeParts[0].getSelection()[0].getData() instanceof String) {
-                        if (treeParts[0].getSelection()[0].equals(treeItem_Project[0])) {
+                        if (treeParts[0].getSelection()[0].equals(treeItemProjectPtr[0])) {
                             NLogger.debug(getClass(), "Save the project..."); //$NON-NLS-1$
                             if (Project.isDefaultProject()) {
                                 if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
                                     Project.setLastVisitedPath(Project.getProjectPath());
                                 }
                             }
-                            iterateOverItems(treeItem_ProjectParts[0]);
-                            iterateOverItems(treeItem_ProjectSubparts[0]);
-                            iterateOverItems(treeItem_ProjectPrimitives[0]);
-                            iterateOverItems(treeItem_ProjectPrimitives48[0]);
-                            iterateOverItems(treeItem_ProjectPrimitives8[0]);
-                        } else if (treeParts[0].getSelection()[0].equals(treeItem_Unofficial[0])) {
-                            iterateOverItems(treeItem_UnofficialParts[0]);
-                            iterateOverItems(treeItem_UnofficialSubparts[0]);
-                            iterateOverItems(treeItem_UnofficialPrimitives[0]);
-                            iterateOverItems(treeItem_UnofficialPrimitives48[0]);
-                            iterateOverItems(treeItem_UnofficialPrimitives8[0]);
+                            iterateOverItems(treeItemProjectPartsPtr[0]);
+                            iterateOverItems(treeItemProjectSubpartsPtr[0]);
+                            iterateOverItems(treeItemProjectPrimitivesPtr[0]);
+                            iterateOverItems(treeItemProjectPrimitives48Ptr[0]);
+                            iterateOverItems(treeItemProjectPrimitives8Ptr[0]);
+                        } else if (treeParts[0].getSelection()[0].equals(treeItemUnofficialPtr[0])) {
+                            iterateOverItems(treeItemUnofficialPartsPtr[0]);
+                            iterateOverItems(treeItemUnofficialSubpartsPtr[0]);
+                            iterateOverItems(treeItemUnofficialPrimitivesPtr[0]);
+                            iterateOverItems(treeItemUnofficialPrimitives48Ptr[0]);
+                            iterateOverItems(treeItemUnofficialPrimitives8Ptr[0]);
                         }
                         NLogger.debug(getClass(), "Saving all files from this group to {0}", treeParts[0].getSelection()[0].getData()); //$NON-NLS-1$
                     }
@@ -824,7 +824,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        WidgetUtil(btn_SaveAll[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSaveAllPtr[0]).addSelectionListener(e -> {
             HashSet<DatFile> dfs = new HashSet<>(Project.getUnsavedFiles());
             for (DatFile df : dfs) {
                 if (!df.isReadOnly()) {
@@ -848,7 +848,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_NewDat[0]).addSelectionListener(e -> {
+        WidgetUtil(btnNewDatPtr[0]).addSelectionListener(e -> {
             DatFile dat = createNewDatFile(getShell(), OpenInWhat.EDITOR_TEXT_AND_3D);
             if (dat != null) {
                 addRecentFile(dat);
@@ -860,11 +860,11 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_OpenDat[0]).addSelectionListener(e -> {
+        WidgetUtil(btnOpenDatPtr[0]).addSelectionListener(e -> {
             boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
             WorkbenchManager.getUserSettingState().setSyncingTabs(false);
 
-            FileDialog fd = new FileDialog(btn_Open[0].getShell(), SWT.MULTI);
+            FileDialog fd = new FileDialog(btnOpenPtr[0].getShell(), SWT.MULTI);
             fd.setText(I18n.E3D_OPEN_DAT_FILE);
 
             fd.setFilterPath(Project.getLastVisitedPath());
@@ -912,7 +912,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_SaveDat[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSaveDatPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
                 final DatFile df = Project.getFileToEdit();
                 Editor3DWindow.getWindow().addRecentFile(df);
@@ -930,7 +930,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_SaveAsDat[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSaveAsDatPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().equals(View.DUMMY_DATFILE)) {
                 final DatFile df2 = Project.getFileToEdit();
 
@@ -992,7 +992,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_Undo[0]).addSelectionListener(e -> {
+        WidgetUtil(btnUndoPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().undo(false);
@@ -1000,7 +1000,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_Redo[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRedoPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().redo(false);
@@ -1008,8 +1008,8 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        if (NLogger.DEBUG) {
-            WidgetUtil(btn_AddHistory[0]).addSelectionListener(e -> {
+        if (NLogger.debugging) {
+            WidgetUtil(btnAddHistoryPtr[0]).addSelectionListener(e -> {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().addHistory();
@@ -1017,50 +1017,50 @@ public class Editor3DWindow extends Editor3DDesign {
             });
         }
 
-        WidgetUtil(btn_Select[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Select[0]);
+        WidgetUtil(btnSelectPtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnSelectPtr[0]);
             workingAction = WorkingMode.SELECT;
             disableAddAction();
             regainFocus();
         });
-        WidgetUtil(btn_Move[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Move[0]);
+        WidgetUtil(btnMovePtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnMovePtr[0]);
             workingAction = WorkingMode.MOVE;
             disableAddAction();
             regainFocus();
         });
-        WidgetUtil(btn_Rotate[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Rotate[0]);
+        WidgetUtil(btnRotatePtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnRotatePtr[0]);
             workingAction = WorkingMode.ROTATE;
             disableAddAction();
             regainFocus();
         });
-        WidgetUtil(btn_Scale[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Scale[0]);
+        WidgetUtil(btnScalePtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnScalePtr[0]);
             workingAction = WorkingMode.SCALE;
             disableAddAction();
             regainFocus();
         });
-        WidgetUtil(btn_Combined[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Combined[0]);
+        WidgetUtil(btnCombinedPtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnCombinedPtr[0]);
             workingAction = WorkingMode.COMBINED;
             disableAddAction();
             regainFocus();
         });
 
-        WidgetUtil(btn_Local[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Local[0]);
+        WidgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnLocalPtr[0]);
             transformationMode = ManipulatorScope.LOCAL;
             regainFocus();
         });
-        WidgetUtil(btn_Global[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Global[0]);
+        WidgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnGlobalPtr[0]);
             transformationMode = ManipulatorScope.GLOBAL;
             regainFocus();
         });
 
-        WidgetUtil(btn_Vertices[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Vertices[0]);
+        WidgetUtil(btnVerticesPtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnVerticesPtr[0]);
             setWorkingType(ObjectMode.VERTICES);
             if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedVertices().isEmpty()) {
                 final VertexManager vm = Project.getFileToEdit().getVertexManager();
@@ -1075,8 +1075,8 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_TrisNQuads[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_TrisNQuads[0]);
+        WidgetUtil(btnTrisNQuadsPtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnTrisNQuadsPtr[0]);
             setWorkingType(ObjectMode.FACES);
             if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && (!Project.getFileToEdit().getVertexManager().getSelectedQuads().isEmpty() || !Project.getFileToEdit().getVertexManager().getSelectedTriangles().isEmpty())) {
                 final VertexManager vm = Project.getFileToEdit().getVertexManager();
@@ -1094,8 +1094,8 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_Lines[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Lines[0]);
+        WidgetUtil(btnLinesPtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnLinesPtr[0]);
             setWorkingType(ObjectMode.LINES);
             if ((e.stateMask & SWT.ALT) == SWT.ALT && Project.getFileToEdit() != null && (!Project.getFileToEdit().getVertexManager().getSelectedLines().isEmpty() || !Project.getFileToEdit().getVertexManager().getSelectedCondlines().isEmpty())) {
                 final VertexManager vm = Project.getFileToEdit().getVertexManager();
@@ -1113,8 +1113,8 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_Subfiles[0]).addSelectionListener(e -> {
-            clickBtnTest(btn_Subfiles[0]);
+        WidgetUtil(btnSubfilesPtr[0]).addSelectionListener(e -> {
+            clickBtnTest(btnSubfilesPtr[0]);
             setWorkingType(ObjectMode.SUBFILES);
             if ((e.stateMask & SWT.ALT) == SWT.ALT && !Cocoa.checkCtrlOrCmdPressed(e.stateMask) && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedSubfiles().isEmpty()) {
                 final VertexManager vm = Project.getFileToEdit().getVertexManager();
@@ -1128,26 +1128,26 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_AddComment[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAddCommentPtr[0]).addSelectionListener(e -> {
             if (!metaWindow.isOpened()) {
                 metaWindow.run();
             } else {
                 metaWindow.open();
             }
         });
-        WidgetUtil(btn_AddVertex[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAddVertexPtr[0]).addSelectionListener(e -> {
             resetAddState();
-            clickSingleBtn(btn_AddVertex[0]);
-            setAddingVertices(btn_AddVertex[0].getSelection());
+            clickSingleBtn(btnAddVertexPtr[0]);
+            setAddingVertices(btnAddVertexPtr[0].getSelection());
             setAddingSomething(isAddingVertices());
             regainFocus();
         });
-        WidgetUtil(btn_AddPrimitive[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAddPrimitivePtr[0]).addSelectionListener(e -> {
 
             resetAddState();
-            setAddingSubfiles(btn_AddPrimitive[0].getSelection());
+            setAddingSubfiles(btnAddPrimitivePtr[0].getSelection());
 
-            clickSingleBtn(btn_AddPrimitive[0]);
+            clickSingleBtn(btnAddPrimitivePtr[0]);
 
             if (Project.getFileToEdit() != null) {
                 final boolean readOnly = Project.getFileToEdit().isReadOnly();
@@ -1166,7 +1166,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         insertSubfileFromSelection = result1 == SWT.YES;
                         if (result1 != SWT.NO && result1 != SWT.YES) {
                             resetAddState();
-                            btn_AddPrimitive[0].setSelection(false);
+                            btnAddPrimitivePtr[0].setSelection(false);
                             setAddingSubfiles(false);
                             addingSomething = false;
                             regainFocus();
@@ -1183,7 +1183,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             cutTheSelection = result2 == SWT.YES;
                             if (result2 != SWT.NO && result2 != SWT.YES) {
                                 resetAddState();
-                                btn_AddPrimitive[0].setSelection(false);
+                                btnAddPrimitivePtr[0].setSelection(false);
                                 setAddingSubfiles(false);
                                 addingSomething = false;
                                 regainFocus();
@@ -1373,7 +1373,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             break;
                         }
                         resetAddState();
-                        btn_AddPrimitive[0].setSelection(false);
+                        btnAddPrimitivePtr[0].setSelection(false);
                         setAddingSubfiles(false);
                         addingSomething = false;
                         regainFocus();
@@ -1384,97 +1384,97 @@ public class Editor3DWindow extends Editor3DDesign {
             setAddingSomething(isAddingSubfiles());
             regainFocus();
         });
-        WidgetUtil(btn_AddLine[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAddLinePtr[0]).addSelectionListener(e -> {
             resetAddState();
-            setAddingLines(btn_AddLine[0].getSelection());
+            setAddingLines(btnAddLinePtr[0].getSelection());
             setAddingSomething(isAddingLines());
-            clickSingleBtn(btn_AddLine[0]);
+            clickSingleBtn(btnAddLinePtr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_AddTriangle[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAddTrianglePtr[0]).addSelectionListener(e -> {
             resetAddState();
-            setAddingTriangles(btn_AddTriangle[0].getSelection());
+            setAddingTriangles(btnAddTrianglePtr[0].getSelection());
             setAddingSomething(isAddingTriangles());
-            clickSingleBtn(btn_AddTriangle[0]);
+            clickSingleBtn(btnAddTrianglePtr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_AddQuad[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAddQuadPtr[0]).addSelectionListener(e -> {
             resetAddState();
-            setAddingQuads(btn_AddQuad[0].getSelection());
+            setAddingQuads(btnAddQuadPtr[0].getSelection());
             setAddingSomething(isAddingQuads());
-            clickSingleBtn(btn_AddQuad[0]);
+            clickSingleBtn(btnAddQuadPtr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_AddCondline[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAddCondlinePtr[0]).addSelectionListener(e -> {
             resetAddState();
-            setAddingCondlines(btn_AddCondline[0].getSelection());
+            setAddingCondlines(btnAddCondlinePtr[0].getSelection());
             setAddingSomething(isAddingCondlines());
-            clickSingleBtn(btn_AddCondline[0]);
+            clickSingleBtn(btnAddCondlinePtr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_AddDistance[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAddDistancePtr[0]).addSelectionListener(e -> {
             resetAddState();
-            setAddingDistance(btn_AddDistance[0].getSelection());
+            setAddingDistance(btnAddDistancePtr[0].getSelection());
             setAddingSomething(isAddingDistance());
-            clickSingleBtn(btn_AddDistance[0]);
+            clickSingleBtn(btnAddDistancePtr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_AddProtractor[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAddProtractorPtr[0]).addSelectionListener(e -> {
             resetAddState();
-            setAddingProtractor(btn_AddProtractor[0].getSelection());
+            setAddingProtractor(btnAddProtractorPtr[0].getSelection());
             setAddingSomething(isAddingProtractor());
-            clickSingleBtn(btn_AddProtractor[0]);
+            clickSingleBtn(btnAddProtractorPtr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_MoveAdjacentData[0]).addSelectionListener(e -> {
-            clickSingleBtn(btn_MoveAdjacentData[0]);
-            setMovingAdjacentData(btn_MoveAdjacentData[0].getSelection());
+        WidgetUtil(btnMoveAdjacentDataPtr[0]).addSelectionListener(e -> {
+            clickSingleBtn(btnMoveAdjacentDataPtr[0]);
+            setMovingAdjacentData(btnMoveAdjacentDataPtr[0].getSelection());
             GuiStatusManager.updateStatus();
             regainFocus();
         });
-        WidgetUtil(btn_CompileSubfile[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCompileSubfilePtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 SubfileCompiler.compile(Project.getFileToEdit(), false, false);
             }
             regainFocus();
         });
-        if (btn_ToggleLinesOpenGL[0] != null) WidgetUtil(btn_ToggleLinesOpenGL[0]).addSelectionListener(e -> {
-            if (btn_ToggleLinesOpenGL[0].getSelection()) {
-                View.edge_threshold = 5e6f;
+        if (btnToggleLinesOpenGLPtr[0] != null) WidgetUtil(btnToggleLinesOpenGLPtr[0]).addSelectionListener(e -> {
+            if (btnToggleLinesOpenGLPtr[0].getSelection()) {
+                View.edgeThreshold = 5e6f;
             } else {
-                View.edge_threshold = 5e-6f;
+                View.edgeThreshold = 5e-6f;
             }
             regainFocus();
         });
-        WidgetUtil(btn_lineSize0[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE0, GL20Primitives.SPHERE_INV0, 0f, 0f, 0.01f, btn_lineSize0[0]);
+        WidgetUtil(btnLineSize0Ptr[0]).addSelectionListener(e -> {
+            setLineSize(GL20Primitives.SPHERE0, GL20Primitives.SPHERE_INV0, 0f, 0f, 0.01f, btnLineSize0Ptr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_lineSize1[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, 1f, btn_lineSize1[0]);
+        WidgetUtil(btnLineSize1Ptr[0]).addSelectionListener(e -> {
+            setLineSize(GL20Primitives.SPHERE1, GL20Primitives.SPHERE_INV1, 25f, .025f, 1f, btnLineSize1Ptr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_lineSize2[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, 2f, btn_lineSize2[0]);
+        WidgetUtil(btnLineSize2Ptr[0]).addSelectionListener(e -> {
+            setLineSize(GL20Primitives.SPHERE2, GL20Primitives.SPHERE_INV2, 50f, .050f, 2f, btnLineSize2Ptr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_lineSize3[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 3f, btn_lineSize3[0]);
+        WidgetUtil(btnLineSize3Ptr[0]).addSelectionListener(e -> {
+            setLineSize(GL20Primitives.SPHERE3, GL20Primitives.SPHERE_INV3, 100f, .100f, 3f, btnLineSize3Ptr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_lineSize4[0]).addSelectionListener(e -> {
-            setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 4f, btn_lineSize4[0]);
+        WidgetUtil(btnLineSize4Ptr[0]).addSelectionListener(e -> {
+            setLineSize(GL20Primitives.SPHERE4, GL20Primitives.SPHERE_INV4, 200f, .200f, 4f, btnLineSize4Ptr[0]);
             regainFocus();
         });
-        WidgetUtil(btn_CloseView[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCloseViewPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getModifier().closeView();
             }
             regainFocus();
         });
-        WidgetUtil(btn_perspectiveFront[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPerspectiveFrontPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getPerspectiveCalculator().setPerspective(Perspective.FRONT);
@@ -1482,7 +1482,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_perspectiveBack[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPerspectiveBackPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getPerspectiveCalculator().setPerspective(Perspective.BACK);
@@ -1490,7 +1490,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_perspectiveLeft[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPerspectiveLeftPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getPerspectiveCalculator().setPerspective(Perspective.LEFT);
@@ -1498,7 +1498,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_perspectiveRight[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPerspectiveRightPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getPerspectiveCalculator().setPerspective(Perspective.RIGHT);
@@ -1506,7 +1506,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_perspectiveTop[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPerspectiveTopPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
@@ -1514,7 +1514,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_perspectiveBottom[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPerspectiveBottomPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getPerspectiveCalculator().setPerspective(Perspective.BOTTOM);
@@ -1522,7 +1522,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_perspectiveTwoThirds[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPerspectiveTwoThirdsPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.getPerspectiveCalculator().setPerspective(Perspective.TWO_THIRDS);
@@ -1530,7 +1530,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_renderModeNoBackfaceCulling[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRenderModeNoBackfaceCullingPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.setRenderMode(0);
@@ -1538,7 +1538,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_renderModeRandomColours[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRenderModeRandomColoursPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.setRenderMode(1);
@@ -1546,7 +1546,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_renderModeGreenRed[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRenderModeGreenRedPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.setRenderMode(2);
@@ -1554,7 +1554,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_renderModeRedBackfaces[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRenderModeRedBackfacesPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.setRenderMode(3);
@@ -1562,7 +1562,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_renderModeRealBackfaceCulling[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRenderModeRealBackfaceCullingPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.setRenderMode(4);
@@ -1570,7 +1570,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_renderModeLDrawStandard[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRenderModeLDrawStandardPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.setRenderMode(5);
@@ -1578,7 +1578,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_renderModeCondlineMode[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRenderModeCondlineModePtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.setRenderMode(6);
@@ -1586,7 +1586,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_renderModeCoplanarityMode[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRenderModeCoplanarityModePtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.setRenderMode(7);
@@ -1594,7 +1594,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_renderModeWireframe[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRenderModeWireframePtr[0]).addSelectionListener(e -> {
             Composite3D c3d = getCurrentCoposite3d();
             if (c3d != null) {
                 c3d.setRenderMode(-1);
@@ -1603,14 +1603,14 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_ShowSelectionInTextEditor[0]).addSelectionListener(e -> {
+        WidgetUtil(btnShowSelectionInTextEditorPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Composite3D.showSelectionInTextEditor(Project.getFileToEdit(), true);
             }
             regainFocus();
         });
 
-        WidgetUtil(btn_BFCswap[0]).addSelectionListener(e -> {
+        WidgetUtil(btnBFCswapPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().backupHideShowState();
@@ -1619,7 +1619,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_RoundSelection[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRoundSelectionPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                     if (new RoundDialog(getShell()).open() == IDialogConstants.CANCEL_ID) return;
@@ -1633,7 +1633,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_Pipette[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPipettePtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 VertexManager vm = Project.getFileToEdit().getVertexManager();
                 vm.addSnapshot();
@@ -1648,17 +1648,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     lastUsedColour = gColour2;
                 }
                 setLastUsedColour(gColour2);
-                btn_LastUsedColour[0].clearPaintListeners();
-                btn_LastUsedColour[0].clearSelectionListeners();
+                btnLastUsedColourPtr[0].clearPaintListeners();
+                btnLastUsedColourPtr[0].clearSelectionListeners();
                 final int imgSize = IconSize.getImageSizeFromIconSize();
                 final Color col = SWTResourceManager.getColor((int) (gColour2.getR() * 255f), (int) (gColour2.getG() * 255f), (int) (gColour2.getB() * 255f));
-                final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
+                final Point size = btnLastUsedColourPtr[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
                 final int x = Math.round(size.x / 5f);
                 final int y = Math.round(size.y / 5f);
                 final int w = Math.round(size.x * (3f / 5f));
                 final int h = Math.round(size.y * (3f / 5f));
                 int num = gColour2.getColourNumber();
-                btn_LastUsedColour[0].addPaintListener(e1 -> {
+                btnLastUsedColourPtr[0].addPaintListener(e1 -> {
                     e1.gc.setBackground(col);
                     e1.gc.fillRectangle(x, y, w, h);
                     if (gColour2.getA() >= .99f) {
@@ -1667,7 +1667,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         e1.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                     }
                 });
-                WidgetUtil(btn_LastUsedColour[0]).addSelectionListener(e1 -> {
+                WidgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
                     if (Project.getFileToEdit() != null) {
                         int num1 = gColour2.getColourNumber();
                         if (!View.hasLDConfigColour(num1)) {
@@ -1682,10 +1682,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     Object[] messageArguments1 = {num, View.getLDConfigColourName(num)};
                     MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter1.setLocale(MyLanguage.LOCALE);
+                    formatter1.setLocale(MyLanguage.locale);
                     formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
-                    btn_LastUsedColour[0].setToolTipText(formatter1.format(messageArguments1));
+                    btnLastUsedColourPtr[0].setToolTipText(formatter1.format(messageArguments1));
                 } else {
                     StringBuilder colourBuilder = new StringBuilder();
                     colourBuilder.append("0x2"); //$NON-NLS-1$
@@ -1695,17 +1695,17 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     Object[] messageArguments2 = {colourBuilder.toString()};
                     MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter2.setLocale(MyLanguage.LOCALE);
+                    formatter2.setLocale(MyLanguage.locale);
                     formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
-                    btn_LastUsedColour[0].setToolTipText(formatter2.format(messageArguments2));
+                    btnLastUsedColourPtr[0].setToolTipText(formatter2.format(messageArguments2));
                 }
-                btn_LastUsedColour[0].redraw();
+                btnLastUsedColourPtr[0].redraw();
             }
             regainFocus();
         });
 
-        WidgetUtil(btn_Decolour[0]).addSelectionListener(e -> {
+        WidgetUtil(btnDecolourPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 VertexManager vm = Project.getFileToEdit().getVertexManager();
                 vm.addSnapshot();
@@ -1726,61 +1726,61 @@ public class Editor3DWindow extends Editor3DDesign {
 
         initPaletteEvent();
 
-        WidgetUtil(btn_Coarse[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCoarsePtr[0]).addSelectionListener(e -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getCoarse_move_snap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
             snapSize = SnapSize.COARSE;
-            spn_Move[0].setValue(m);
-            spn_Rotate[0].setValue(r);
-            spn_Scale[0].setValue(s);
+            spnMovePtr[0].setValue(m);
+            spnRotatePtr[0].setValue(r);
+            spnScalePtr[0].setValue(s);
             Manipulator.setSnap(m, r, s);
             regainFocus();
         });
 
-        WidgetUtil(btn_Medium[0]).addSelectionListener(e -> {
+        WidgetUtil(btnMediumPtr[0]).addSelectionListener(e -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getMedium_move_snap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
             snapSize = SnapSize.MEDIUM;
-            spn_Move[0].setValue(m);
-            spn_Rotate[0].setValue(r);
-            spn_Scale[0].setValue(s);
+            spnMovePtr[0].setValue(m);
+            spnRotatePtr[0].setValue(r);
+            spnScalePtr[0].setValue(s);
             Manipulator.setSnap(m, r, s);
             regainFocus();
         });
 
-        WidgetUtil(btn_Fine[0]).addSelectionListener(e -> {
+        WidgetUtil(btnFinePtr[0]).addSelectionListener(e -> {
             BigDecimal m = WorkbenchManager.getUserSettingState().getFine_move_snap();
             BigDecimal r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
             BigDecimal s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
             snapSize = SnapSize.FINE;
-            spn_Move[0].setValue(m);
-            spn_Rotate[0].setValue(r);
-            spn_Scale[0].setValue(s);
+            spnMovePtr[0].setValue(m);
+            spnRotatePtr[0].setValue(r);
+            spnScalePtr[0].setValue(s);
             Manipulator.setSnap(m, r, s);
             regainFocus();
         });
 
-        btn_Coarse[0].addListener(SWT.MouseDown, event -> {
+        btnCoarsePtr[0].addListener(SWT.MouseDown, event -> {
             if (event.button == MouseButton.RIGHT) {
 
                 try {
-                    if (btn_Coarse[0].getMenu() != null) {
-                        btn_Coarse[0].getMenu().dispose();
+                    if (btnCoarsePtr[0].getMenu() != null) {
+                        btnCoarsePtr[0].getMenu().dispose();
                     }
                 } catch (Exception ex) {}
 
-                Menu gridMenu = new Menu(btn_Coarse[0]);
-                btn_Coarse[0].setMenu(gridMenu);
-                mnu_coarseMenu[0] = gridMenu;
+                Menu gridMenu = new Menu(btnCoarsePtr[0]);
+                btnCoarsePtr[0].setMenu(gridMenu);
+                mnuCoarseMenuPtr[0] = gridMenu;
 
                 MenuItem mntmGridCoarseDefault = new MenuItem(gridMenu, I18n.noBiDirectionalTextStyle());
-                mntm_gridCoarseDefault[0] = mntmGridCoarseDefault;
+                mntmGridCoarseDefaultPtr[0] = mntmGridCoarseDefault;
                 mntmGridCoarseDefault.setEnabled(true);
                 mntmGridCoarseDefault.setText(I18n.E3D_GRID_COARSE_DEFAULT);
 
-                WidgetUtil(mntm_gridCoarseDefault[0]).addSelectionListener(e -> {
+                WidgetUtil(mntmGridCoarseDefaultPtr[0]).addSelectionListener(e -> {
                     WorkbenchManager.getUserSettingState().setCoarse_move_snap(new BigDecimal("1")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setCoarse_rotate_snap(new BigDecimal("90")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setCoarse_scale_snap(new BigDecimal("2")); //$NON-NLS-1$
@@ -1788,13 +1788,13 @@ public class Editor3DWindow extends Editor3DDesign {
                     BigDecimal r = WorkbenchManager.getUserSettingState().getCoarse_rotate_snap();
                     BigDecimal s = WorkbenchManager.getUserSettingState().getCoarse_scale_snap();
                     snapSize = SnapSize.COARSE;
-                    spn_Move[0].setValue(m);
-                    spn_Rotate[0].setValue(r);
-                    spn_Scale[0].setValue(s);
+                    spnMovePtr[0].setValue(m);
+                    spnRotatePtr[0].setValue(r);
+                    spnScalePtr[0].setValue(s);
                     Manipulator.setSnap(m, r, s);
-                    btn_Coarse[0].setSelection(true);
-                    btn_Medium[0].setSelection(false);
-                    btn_Fine[0].setSelection(false);
+                    btnCoarsePtr[0].setSelection(true);
+                    btnMediumPtr[0].setSelection(false);
+                    btnFinePtr[0].setSelection(false);
                     regainFocus();
                 });
 
@@ -1802,32 +1802,32 @@ public class Editor3DWindow extends Editor3DDesign {
                 final int x = (int) b.getX();
                 final int y = (int) b.getY();
 
-                Menu menu = mnu_coarseMenu[0];
+                Menu menu = mnuCoarseMenuPtr[0];
                 menu.setLocation(x, y);
                 menu.setVisible(true);
                 regainFocus();
             }
         });
 
-        btn_Medium[0].addListener(SWT.MouseDown, event -> {
+        btnMediumPtr[0].addListener(SWT.MouseDown, event -> {
             if (event.button == MouseButton.RIGHT) {
 
                 try {
-                    if (btn_Medium[0].getMenu() != null) {
-                        btn_Medium[0].getMenu().dispose();
+                    if (btnMediumPtr[0].getMenu() != null) {
+                        btnMediumPtr[0].getMenu().dispose();
                     }
                 } catch (Exception ex) {}
 
-                Menu gridMenu = new Menu(btn_Medium[0]);
-                btn_Medium[0].setMenu(gridMenu);
-                mnu_mediumMenu[0] = gridMenu;
+                Menu gridMenu = new Menu(btnMediumPtr[0]);
+                btnMediumPtr[0].setMenu(gridMenu);
+                mnuMediumMenuPtr[0] = gridMenu;
 
                 MenuItem mntmGridMediumDefault = new MenuItem(gridMenu, I18n.noBiDirectionalTextStyle());
-                mntm_gridMediumDefault[0] = mntmGridMediumDefault;
+                mntmGridMediumDefaultPtr[0] = mntmGridMediumDefault;
                 mntmGridMediumDefault.setEnabled(true);
                 mntmGridMediumDefault.setText(I18n.E3D_GRID_MEDIUM_DEFAULT);
 
-                WidgetUtil(mntm_gridMediumDefault[0]).addSelectionListener(e -> {
+                WidgetUtil(mntmGridMediumDefaultPtr[0]).addSelectionListener(e -> {
                     WorkbenchManager.getUserSettingState().setMedium_move_snap(new BigDecimal("0.01")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setMedium_rotate_snap(new BigDecimal("11.25")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setMedium_scale_snap(new BigDecimal("1.1")); //$NON-NLS-1$
@@ -1835,13 +1835,13 @@ public class Editor3DWindow extends Editor3DDesign {
                     BigDecimal r = WorkbenchManager.getUserSettingState().getMedium_rotate_snap();
                     BigDecimal s = WorkbenchManager.getUserSettingState().getMedium_scale_snap();
                     snapSize = SnapSize.MEDIUM;
-                    spn_Move[0].setValue(m);
-                    spn_Rotate[0].setValue(r);
-                    spn_Scale[0].setValue(s);
+                    spnMovePtr[0].setValue(m);
+                    spnRotatePtr[0].setValue(r);
+                    spnScalePtr[0].setValue(s);
                     Manipulator.setSnap(m, r, s);
-                    btn_Coarse[0].setSelection(false);
-                    btn_Medium[0].setSelection(true);
-                    btn_Fine[0].setSelection(false);
+                    btnCoarsePtr[0].setSelection(false);
+                    btnMediumPtr[0].setSelection(true);
+                    btnFinePtr[0].setSelection(false);
                     regainFocus();
                 });
 
@@ -1849,32 +1849,32 @@ public class Editor3DWindow extends Editor3DDesign {
                 final int x = (int) b.getX();
                 final int y = (int) b.getY();
 
-                Menu menu = mnu_mediumMenu[0];
+                Menu menu = mnuMediumMenuPtr[0];
                 menu.setLocation(x, y);
                 menu.setVisible(true);
                 regainFocus();
             }
         });
 
-        btn_Fine[0].addListener(SWT.MouseDown, event -> {
+        btnFinePtr[0].addListener(SWT.MouseDown, event -> {
             if (event.button == MouseButton.RIGHT) {
 
                 try {
-                    if (btn_Fine[0].getMenu() != null) {
-                        btn_Fine[0].getMenu().dispose();
+                    if (btnFinePtr[0].getMenu() != null) {
+                        btnFinePtr[0].getMenu().dispose();
                     }
                 } catch (Exception ex) {}
 
-                Menu gridMenu = new Menu(btn_Fine[0]);
-                btn_Fine[0].setMenu(gridMenu);
-                mnu_fineMenu[0] = gridMenu;
+                Menu gridMenu = new Menu(btnFinePtr[0]);
+                btnFinePtr[0].setMenu(gridMenu);
+                mnuFineMenuPtr[0] = gridMenu;
 
                 MenuItem mntmGridFineDefault = new MenuItem(gridMenu, I18n.noBiDirectionalTextStyle());
-                mntm_gridFineDefault[0] = mntmGridFineDefault;
+                mntmGridFineDefaultPtr[0] = mntmGridFineDefault;
                 mntmGridFineDefault.setEnabled(true);
                 mntmGridFineDefault.setText(I18n.E3D_GRID_FINE_DEFAULT);
 
-                WidgetUtil(mntm_gridFineDefault[0]).addSelectionListener(e -> {
+                WidgetUtil(mntmGridFineDefaultPtr[0]).addSelectionListener(e -> {
                     WorkbenchManager.getUserSettingState().setFine_move_snap(new BigDecimal("0.0001")); //$NON-NLS-1$
                     WorkbenchManager.getUserSettingState().setFine_rotate_snap(BigDecimal.ONE);
                     WorkbenchManager.getUserSettingState().setFine_scale_snap(new BigDecimal("1.001")); //$NON-NLS-1$
@@ -1882,13 +1882,13 @@ public class Editor3DWindow extends Editor3DDesign {
                     BigDecimal r = WorkbenchManager.getUserSettingState().getFine_rotate_snap();
                     BigDecimal s = WorkbenchManager.getUserSettingState().getFine_scale_snap();
                     snapSize = SnapSize.FINE;
-                    spn_Move[0].setValue(m);
-                    spn_Rotate[0].setValue(r);
-                    spn_Scale[0].setValue(s);
+                    spnMovePtr[0].setValue(m);
+                    spnRotatePtr[0].setValue(r);
+                    spnScalePtr[0].setValue(s);
                     Manipulator.setSnap(m, r, s);
-                    btn_Coarse[0].setSelection(false);
-                    btn_Medium[0].setSelection(false);
-                    btn_Fine[0].setSelection(true);
+                    btnCoarsePtr[0].setSelection(false);
+                    btnMediumPtr[0].setSelection(false);
+                    btnFinePtr[0].setSelection(true);
                     regainFocus();
                 });
 
@@ -1896,14 +1896,14 @@ public class Editor3DWindow extends Editor3DDesign {
                 final int x = (int) b.getX();
                 final int y = (int) b.getY();
 
-                Menu menu = mnu_fineMenu[0];
+                Menu menu = mnuFineMenuPtr[0];
                 menu.setLocation(x, y);
                 menu.setVisible(true);
                 regainFocus();
             }
         });
 
-        WidgetUtil(btn_SplitQuad[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSplitQuadPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().splitQuads(true);
@@ -1911,7 +1911,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_MergeQuad[0]).addSelectionListener(e -> {
+        WidgetUtil(btnMergeQuadPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 RectifierSettings rs = new RectifierSettings();
@@ -1922,7 +1922,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_LineIntersection[0]).addSelectionListener(e -> {
+        WidgetUtil(btnLineIntersectionPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().intersectionVerticesBetweenLines3D(true);
@@ -1930,7 +1930,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_CondlineToLine[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCondlineToLinePtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().condlineToLine();
@@ -1938,7 +1938,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_LineToCondline[0]).addSelectionListener(e -> {
+        WidgetUtil(btnLineToCondlinePtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().lineToCondline();
@@ -1946,7 +1946,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(btn_MoveOnLine[0]).addSelectionListener(e -> {
+        WidgetUtil(btnMoveOnLinePtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Set<Vertex> verts = Project.getFileToEdit().getVertexManager().getSelectedVertices();
@@ -1961,7 +1961,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        spn_Move[0].addValueChangeListener(spn -> {
+        spnMovePtr[0].addValueChangeListener(spn -> {
             BigDecimal m;
             BigDecimal r;
             BigDecimal s;
@@ -1987,7 +1987,7 @@ public class Editor3DWindow extends Editor3DDesign {
             Manipulator.setSnap(m, r, s);
         });
 
-        spn_Rotate[0].addValueChangeListener(spn -> {
+        spnRotatePtr[0].addValueChangeListener(spn -> {
             BigDecimal m;
             BigDecimal r;
             BigDecimal s;
@@ -2013,7 +2013,7 @@ public class Editor3DWindow extends Editor3DDesign {
             Manipulator.setSnap(m, r, s);
         });
 
-        spn_Scale[0].addValueChangeListener(spn -> {
+        spnScalePtr[0].addValueChangeListener(spn -> {
             BigDecimal m;
             BigDecimal r;
             BigDecimal s;
@@ -2039,9 +2039,9 @@ public class Editor3DWindow extends Editor3DDesign {
             Manipulator.setSnap(m, r, s);
         });
 
-        spn_ScaleInitial[0].addValueChangeListener(spn -> Manipulator.setInitialScale(spn.getValue()));
+        spnScaleInitialPtr[0].addValueChangeListener(spn -> Manipulator.setInitialScale(spn.getValue()));
 
-        WidgetUtil(btn_PreviousSelection[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPreviousSelectionPtr[0]).addSelectionListener(e -> {
             updatingSelectionTab = true;
             NLogger.debug(getClass(), "Previous Selection..."); //$NON-NLS-1$
             final DatFile df = Project.getFileToEdit();
@@ -2072,112 +2072,112 @@ public class Editor3DWindow extends Editor3DDesign {
                             case 1:
                             case 5:
                             case 4:
-                                spn_SelectionX4[0].setEnabled(true);
-                                spn_SelectionY4[0].setEnabled(true);
-                                spn_SelectionZ4[0].setEnabled(true);
+                                spnSelectionX4Ptr[0].setEnabled(true);
+                                spnSelectionY4Ptr[0].setEnabled(true);
+                                spnSelectionZ4Ptr[0].setEnabled(true);
                             case 3:
-                                spn_SelectionAngle[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
-                                spn_SelectionX3[0].setEnabled(true);
-                                spn_SelectionY3[0].setEnabled(true);
-                                spn_SelectionZ3[0].setEnabled(true);
+                                spnSelectionAnglePtr[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
+                                spnSelectionX3Ptr[0].setEnabled(true);
+                                spnSelectionY3Ptr[0].setEnabled(true);
+                                spnSelectionZ3Ptr[0].setEnabled(true);
                             case 2:
-                                spn_SelectionLength[0].setEnabled(
+                                spnSelectionLengthPtr[0].setEnabled(
                                         gdata.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) gdata).isLine
                                         || gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
-                                spn_SelectionX1[0].setEnabled(true);
-                                spn_SelectionY1[0].setEnabled(true);
-                                spn_SelectionZ1[0].setEnabled(true);
-                                spn_SelectionX2[0].setEnabled(true);
-                                spn_SelectionY2[0].setEnabled(true);
-                                spn_SelectionZ2[0].setEnabled(true);
+                                spnSelectionX1Ptr[0].setEnabled(true);
+                                spnSelectionY1Ptr[0].setEnabled(true);
+                                spnSelectionZ1Ptr[0].setEnabled(true);
+                                spnSelectionX2Ptr[0].setEnabled(true);
+                                spnSelectionY2Ptr[0].setEnabled(true);
+                                spnSelectionZ2Ptr[0].setEnabled(true);
 
-                                txt_Line[0].setText(gdata.toString());
+                                txtLinePtr[0].setText(gdata.toString());
                                 breakIt = true;
-                                btn_MoveAdjacentData2[0].setEnabled(true);
+                                btnMoveAdjacentData2Ptr[0].setEnabled(true);
                                 switch (gdata.type()) {
                                 case 5:
                                     BigDecimal[] g5 = GraphicalDataTools.getPreciseCoordinates(gdata);
-                                    spn_SelectionX1[0].setValue(g5[0]);
-                                    spn_SelectionY1[0].setValue(g5[1]);
-                                    spn_SelectionZ1[0].setValue(g5[2]);
-                                    spn_SelectionX2[0].setValue(g5[3]);
-                                    spn_SelectionY2[0].setValue(g5[4]);
-                                    spn_SelectionZ2[0].setValue(g5[5]);
-                                    spn_SelectionX3[0].setValue(g5[6]);
-                                    spn_SelectionY3[0].setValue(g5[7]);
-                                    spn_SelectionZ3[0].setValue(g5[8]);
-                                    spn_SelectionX4[0].setValue(g5[9]);
-                                    spn_SelectionY4[0].setValue(g5[10]);
-                                    spn_SelectionZ4[0].setValue(g5[11]);
+                                    spnSelectionX1Ptr[0].setValue(g5[0]);
+                                    spnSelectionY1Ptr[0].setValue(g5[1]);
+                                    spnSelectionZ1Ptr[0].setValue(g5[2]);
+                                    spnSelectionX2Ptr[0].setValue(g5[3]);
+                                    spnSelectionY2Ptr[0].setValue(g5[4]);
+                                    spnSelectionZ2Ptr[0].setValue(g5[5]);
+                                    spnSelectionX3Ptr[0].setValue(g5[6]);
+                                    spnSelectionY3Ptr[0].setValue(g5[7]);
+                                    spnSelectionZ3Ptr[0].setValue(g5[8]);
+                                    spnSelectionX4Ptr[0].setValue(g5[9]);
+                                    spnSelectionY4Ptr[0].setValue(g5[10]);
+                                    spnSelectionZ4Ptr[0].setValue(g5[11]);
                                     break;
                                 case 4:
                                     BigDecimal[] g4 = GraphicalDataTools.getPreciseCoordinates(gdata);
-                                    spn_SelectionX1[0].setValue(g4[0]);
-                                    spn_SelectionY1[0].setValue(g4[1]);
-                                    spn_SelectionZ1[0].setValue(g4[2]);
-                                    spn_SelectionX2[0].setValue(g4[3]);
-                                    spn_SelectionY2[0].setValue(g4[4]);
-                                    spn_SelectionZ2[0].setValue(g4[5]);
-                                    spn_SelectionX3[0].setValue(g4[6]);
-                                    spn_SelectionY3[0].setValue(g4[7]);
-                                    spn_SelectionZ3[0].setValue(g4[8]);
-                                    spn_SelectionX4[0].setValue(g4[9]);
-                                    spn_SelectionY4[0].setValue(g4[10]);
-                                    spn_SelectionZ4[0].setValue(g4[11]);
+                                    spnSelectionX1Ptr[0].setValue(g4[0]);
+                                    spnSelectionY1Ptr[0].setValue(g4[1]);
+                                    spnSelectionZ1Ptr[0].setValue(g4[2]);
+                                    spnSelectionX2Ptr[0].setValue(g4[3]);
+                                    spnSelectionY2Ptr[0].setValue(g4[4]);
+                                    spnSelectionZ2Ptr[0].setValue(g4[5]);
+                                    spnSelectionX3Ptr[0].setValue(g4[6]);
+                                    spnSelectionY3Ptr[0].setValue(g4[7]);
+                                    spnSelectionZ3Ptr[0].setValue(g4[8]);
+                                    spnSelectionX4Ptr[0].setValue(g4[9]);
+                                    spnSelectionY4Ptr[0].setValue(g4[10]);
+                                    spnSelectionZ4Ptr[0].setValue(g4[11]);
                                     break;
                                 case 3:
                                     BigDecimal[] g3 = GraphicalDataTools.getPreciseCoordinates(gdata);
-                                    if (spn_SelectionAngle[0].isEnabled()) {
-                                        spn_SelectionAngle[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorAngle()));
+                                    if (spnSelectionAnglePtr[0].isEnabled()) {
+                                        spnSelectionAnglePtr[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorAngle()));
                                     } else {
-                                        spn_SelectionAngle[0].setValue(BigDecimal.ZERO);
+                                        spnSelectionAnglePtr[0].setValue(BigDecimal.ZERO);
                                     }
-                                    if (spn_SelectionLength[0].isEnabled()) {
-                                        spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorLength());
+                                    if (spnSelectionLengthPtr[0].isEnabled()) {
+                                        spnSelectionLengthPtr[0].setValue(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorLength());
                                     } else {
-                                        spn_SelectionLength[0].setValue(BigDecimal.ONE);
+                                        spnSelectionLengthPtr[0].setValue(BigDecimal.ONE);
                                     }
-                                    spn_SelectionX1[0].setValue(g3[0]);
-                                    spn_SelectionY1[0].setValue(g3[1]);
-                                    spn_SelectionZ1[0].setValue(g3[2]);
-                                    spn_SelectionX2[0].setValue(g3[3]);
-                                    spn_SelectionY2[0].setValue(g3[4]);
-                                    spn_SelectionZ2[0].setValue(g3[5]);
-                                    spn_SelectionX3[0].setValue(g3[6]);
-                                    spn_SelectionY3[0].setValue(g3[7]);
-                                    spn_SelectionZ3[0].setValue(g3[8]);
+                                    spnSelectionX1Ptr[0].setValue(g3[0]);
+                                    spnSelectionY1Ptr[0].setValue(g3[1]);
+                                    spnSelectionZ1Ptr[0].setValue(g3[2]);
+                                    spnSelectionX2Ptr[0].setValue(g3[3]);
+                                    spnSelectionY2Ptr[0].setValue(g3[4]);
+                                    spnSelectionZ2Ptr[0].setValue(g3[5]);
+                                    spnSelectionX3Ptr[0].setValue(g3[6]);
+                                    spnSelectionY3Ptr[0].setValue(g3[7]);
+                                    spnSelectionZ3Ptr[0].setValue(g3[8]);
                                     break;
                                 case 2:
                                     BigDecimal[] g2 = GraphicalDataTools.getPreciseCoordinates(gdata);
-                                    if (spn_SelectionLength[0].isEnabled()) {
-                                        spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData2) gdata).getLength());
+                                    if (spnSelectionLengthPtr[0].isEnabled()) {
+                                        spnSelectionLengthPtr[0].setValue(((org.nschmidt.ldparteditor.data.GData2) gdata).getLength());
                                     } else {
-                                        spn_SelectionLength[0].setValue(BigDecimal.ONE);
+                                        spnSelectionLengthPtr[0].setValue(BigDecimal.ONE);
                                     }
-                                    spn_SelectionX1[0].setValue(g2[0]);
-                                    spn_SelectionY1[0].setValue(g2[1]);
-                                    spn_SelectionZ1[0].setValue(g2[2]);
-                                    spn_SelectionX2[0].setValue(g2[3]);
-                                    spn_SelectionY2[0].setValue(g2[4]);
-                                    spn_SelectionZ2[0].setValue(g2[5]);
+                                    spnSelectionX1Ptr[0].setValue(g2[0]);
+                                    spnSelectionY1Ptr[0].setValue(g2[1]);
+                                    spnSelectionZ1Ptr[0].setValue(g2[2]);
+                                    spnSelectionX2Ptr[0].setValue(g2[3]);
+                                    spnSelectionY2Ptr[0].setValue(g2[4]);
+                                    spnSelectionZ2Ptr[0].setValue(g2[5]);
                                     break;
                                 case 1:
                                     vm.getSelectedVertices().clear();
-                                    btn_MoveAdjacentData2[0].setSelection(false);
-                                    btn_MoveAdjacentData2[0].setEnabled(false);
+                                    btnMoveAdjacentData2Ptr[0].setSelection(false);
+                                    btnMoveAdjacentData2Ptr[0].setEnabled(false);
                                     GData1 g1 = (GData1) gdata;
-                                    spn_SelectionX1[0].setValue(g1.getAccurateProductMatrix().M30);
-                                    spn_SelectionY1[0].setValue(g1.getAccurateProductMatrix().M31);
-                                    spn_SelectionZ1[0].setValue(g1.getAccurateProductMatrix().M32);
-                                    spn_SelectionX2[0].setValue(g1.getAccurateProductMatrix().M00);
-                                    spn_SelectionY2[0].setValue(g1.getAccurateProductMatrix().M01);
-                                    spn_SelectionZ2[0].setValue(g1.getAccurateProductMatrix().M02);
-                                    spn_SelectionX3[0].setValue(g1.getAccurateProductMatrix().M10);
-                                    spn_SelectionY3[0].setValue(g1.getAccurateProductMatrix().M11);
-                                    spn_SelectionZ3[0].setValue(g1.getAccurateProductMatrix().M12);
-                                    spn_SelectionX4[0].setValue(g1.getAccurateProductMatrix().M20);
-                                    spn_SelectionY4[0].setValue(g1.getAccurateProductMatrix().M21);
-                                    spn_SelectionZ4[0].setValue(g1.getAccurateProductMatrix().M22);
+                                    spnSelectionX1Ptr[0].setValue(g1.getAccurateProductMatrix().m30);
+                                    spnSelectionY1Ptr[0].setValue(g1.getAccurateProductMatrix().m31);
+                                    spnSelectionZ1Ptr[0].setValue(g1.getAccurateProductMatrix().m32);
+                                    spnSelectionX2Ptr[0].setValue(g1.getAccurateProductMatrix().m00);
+                                    spnSelectionY2Ptr[0].setValue(g1.getAccurateProductMatrix().m01);
+                                    spnSelectionZ2Ptr[0].setValue(g1.getAccurateProductMatrix().m02);
+                                    spnSelectionX3Ptr[0].setValue(g1.getAccurateProductMatrix().m10);
+                                    spnSelectionY3Ptr[0].setValue(g1.getAccurateProductMatrix().m11);
+                                    spnSelectionZ3Ptr[0].setValue(g1.getAccurateProductMatrix().m12);
+                                    spnSelectionX4Ptr[0].setValue(g1.getAccurateProductMatrix().m20);
+                                    spnSelectionY4Ptr[0].setValue(g1.getAccurateProductMatrix().m21);
+                                    spnSelectionZ4Ptr[0].setValue(g1.getAccurateProductMatrix().m22);
                                     break;
                                 default:
                                     disableSelectionTab();
@@ -2185,22 +2185,22 @@ public class Editor3DWindow extends Editor3DDesign {
                                     break;
                                 }
 
-                                lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_ANGLE : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionLength[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH : "") + " {" + spn_SelectionLength[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X1 : "") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y1 : "") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z1 : "") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X2 : "") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y2 : "") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z2 : "") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X3 : "") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y3 : "") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z3 : "") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X4 : "") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y4 : "") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z4 : "") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionAnglePtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_ANGLE : "") + " {" + spnSelectionAnglePtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionLengthPtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH : "") + " {" + spnSelectionLengthPtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionX1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X1 : "") + " {" + spnSelectionX1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionY1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y1 : "") + " {" + spnSelectionY1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionZ1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z1 : "") + " {" + spnSelectionZ1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionX2Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X2 : "") + " {" + spnSelectionX2Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionY2Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y2 : "") + " {" + spnSelectionY2Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionZ2Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z2 : "") + " {" + spnSelectionZ2Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionX3Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X3 : "") + " {" + spnSelectionX3Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionY3Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y3 : "") + " {" + spnSelectionY3Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionZ3Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z3 : "") + " {" + spnSelectionZ3Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionX4Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X4 : "") + " {" + spnSelectionX4Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionY4Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y4 : "") + " {" + spnSelectionY4Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionZ4Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z4 : "") + " {" + spnSelectionZ4Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-                                lbl_SelectionX1[0].getParent().layout();
+                                lblSelectionX1Ptr[0].getParent().layout();
                                 updatingSelectionTab = false;
 
                                 break;
@@ -2222,7 +2222,7 @@ public class Editor3DWindow extends Editor3DDesign {
             updatingSelectionTab = false;
             regainFocus();
         });
-        WidgetUtil(btn_NextSelection[0]).addSelectionListener(e -> {
+        WidgetUtil(btnNextSelectionPtr[0]).addSelectionListener(e -> {
             updatingSelectionTab = true;
             NLogger.debug(getClass(), "Next Selection..."); //$NON-NLS-1$
             final DatFile df = Project.getFileToEdit();
@@ -2252,112 +2252,112 @@ public class Editor3DWindow extends Editor3DDesign {
                             case 1:
                             case 5:
                             case 4:
-                                spn_SelectionX4[0].setEnabled(true);
-                                spn_SelectionY4[0].setEnabled(true);
-                                spn_SelectionZ4[0].setEnabled(true);
+                                spnSelectionX4Ptr[0].setEnabled(true);
+                                spnSelectionY4Ptr[0].setEnabled(true);
+                                spnSelectionZ4Ptr[0].setEnabled(true);
                             case 3:
-                                spn_SelectionAngle[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
-                                spn_SelectionX3[0].setEnabled(true);
-                                spn_SelectionY3[0].setEnabled(true);
-                                spn_SelectionZ3[0].setEnabled(true);
+                                spnSelectionAnglePtr[0].setEnabled(gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
+                                spnSelectionX3Ptr[0].setEnabled(true);
+                                spnSelectionY3Ptr[0].setEnabled(true);
+                                spnSelectionZ3Ptr[0].setEnabled(true);
                             case 2:
-                                spn_SelectionLength[0].setEnabled(
+                                spnSelectionLengthPtr[0].setEnabled(
                                         gdata.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) gdata).isLine
                                         || gdata.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) gdata).isTriangle);
-                                spn_SelectionX1[0].setEnabled(true);
-                                spn_SelectionY1[0].setEnabled(true);
-                                spn_SelectionZ1[0].setEnabled(true);
-                                spn_SelectionX2[0].setEnabled(true);
-                                spn_SelectionY2[0].setEnabled(true);
-                                spn_SelectionZ2[0].setEnabled(true);
+                                spnSelectionX1Ptr[0].setEnabled(true);
+                                spnSelectionY1Ptr[0].setEnabled(true);
+                                spnSelectionZ1Ptr[0].setEnabled(true);
+                                spnSelectionX2Ptr[0].setEnabled(true);
+                                spnSelectionY2Ptr[0].setEnabled(true);
+                                spnSelectionZ2Ptr[0].setEnabled(true);
 
-                                txt_Line[0].setText(gdata.toString());
+                                txtLinePtr[0].setText(gdata.toString());
                                 breakIt = true;
-                                btn_MoveAdjacentData2[0].setEnabled(true);
+                                btnMoveAdjacentData2Ptr[0].setEnabled(true);
                                 switch (gdata.type()) {
                                 case 5:
                                     BigDecimal[] g5 = GraphicalDataTools.getPreciseCoordinates(gdata);
-                                    spn_SelectionX1[0].setValue(g5[0]);
-                                    spn_SelectionY1[0].setValue(g5[1]);
-                                    spn_SelectionZ1[0].setValue(g5[2]);
-                                    spn_SelectionX2[0].setValue(g5[3]);
-                                    spn_SelectionY2[0].setValue(g5[4]);
-                                    spn_SelectionZ2[0].setValue(g5[5]);
-                                    spn_SelectionX3[0].setValue(g5[6]);
-                                    spn_SelectionY3[0].setValue(g5[7]);
-                                    spn_SelectionZ3[0].setValue(g5[8]);
-                                    spn_SelectionX4[0].setValue(g5[9]);
-                                    spn_SelectionY4[0].setValue(g5[10]);
-                                    spn_SelectionZ4[0].setValue(g5[11]);
+                                    spnSelectionX1Ptr[0].setValue(g5[0]);
+                                    spnSelectionY1Ptr[0].setValue(g5[1]);
+                                    spnSelectionZ1Ptr[0].setValue(g5[2]);
+                                    spnSelectionX2Ptr[0].setValue(g5[3]);
+                                    spnSelectionY2Ptr[0].setValue(g5[4]);
+                                    spnSelectionZ2Ptr[0].setValue(g5[5]);
+                                    spnSelectionX3Ptr[0].setValue(g5[6]);
+                                    spnSelectionY3Ptr[0].setValue(g5[7]);
+                                    spnSelectionZ3Ptr[0].setValue(g5[8]);
+                                    spnSelectionX4Ptr[0].setValue(g5[9]);
+                                    spnSelectionY4Ptr[0].setValue(g5[10]);
+                                    spnSelectionZ4Ptr[0].setValue(g5[11]);
                                     break;
                                 case 4:
                                     BigDecimal[] g4 = GraphicalDataTools.getPreciseCoordinates(gdata);
-                                    spn_SelectionX1[0].setValue(g4[0]);
-                                    spn_SelectionY1[0].setValue(g4[1]);
-                                    spn_SelectionZ1[0].setValue(g4[2]);
-                                    spn_SelectionX2[0].setValue(g4[3]);
-                                    spn_SelectionY2[0].setValue(g4[4]);
-                                    spn_SelectionZ2[0].setValue(g4[5]);
-                                    spn_SelectionX3[0].setValue(g4[6]);
-                                    spn_SelectionY3[0].setValue(g4[7]);
-                                    spn_SelectionZ3[0].setValue(g4[8]);
-                                    spn_SelectionX4[0].setValue(g4[9]);
-                                    spn_SelectionY4[0].setValue(g4[10]);
-                                    spn_SelectionZ4[0].setValue(g4[11]);
+                                    spnSelectionX1Ptr[0].setValue(g4[0]);
+                                    spnSelectionY1Ptr[0].setValue(g4[1]);
+                                    spnSelectionZ1Ptr[0].setValue(g4[2]);
+                                    spnSelectionX2Ptr[0].setValue(g4[3]);
+                                    spnSelectionY2Ptr[0].setValue(g4[4]);
+                                    spnSelectionZ2Ptr[0].setValue(g4[5]);
+                                    spnSelectionX3Ptr[0].setValue(g4[6]);
+                                    spnSelectionY3Ptr[0].setValue(g4[7]);
+                                    spnSelectionZ3Ptr[0].setValue(g4[8]);
+                                    spnSelectionX4Ptr[0].setValue(g4[9]);
+                                    spnSelectionY4Ptr[0].setValue(g4[10]);
+                                    spnSelectionZ4Ptr[0].setValue(g4[11]);
                                     break;
                                 case 3:
                                     BigDecimal[] g3 = GraphicalDataTools.getPreciseCoordinates(gdata);
-                                    if (spn_SelectionAngle[0].isEnabled()) {
-                                        spn_SelectionAngle[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorAngle()));
+                                    if (spnSelectionAnglePtr[0].isEnabled()) {
+                                        spnSelectionAnglePtr[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorAngle()));
                                     } else {
-                                        spn_SelectionAngle[0].setValue(BigDecimal.ZERO);
+                                        spnSelectionAnglePtr[0].setValue(BigDecimal.ZERO);
                                     }
-                                    if (spn_SelectionLength[0].isEnabled()) {
-                                        spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorLength());
+                                    if (spnSelectionLengthPtr[0].isEnabled()) {
+                                        spnSelectionLengthPtr[0].setValue(((org.nschmidt.ldparteditor.data.GData3) gdata).getProtractorLength());
                                     } else {
-                                        spn_SelectionLength[0].setValue(BigDecimal.ONE);
+                                        spnSelectionLengthPtr[0].setValue(BigDecimal.ONE);
                                     }
-                                    spn_SelectionX1[0].setValue(g3[0]);
-                                    spn_SelectionY1[0].setValue(g3[1]);
-                                    spn_SelectionZ1[0].setValue(g3[2]);
-                                    spn_SelectionX2[0].setValue(g3[3]);
-                                    spn_SelectionY2[0].setValue(g3[4]);
-                                    spn_SelectionZ2[0].setValue(g3[5]);
-                                    spn_SelectionX3[0].setValue(g3[6]);
-                                    spn_SelectionY3[0].setValue(g3[7]);
-                                    spn_SelectionZ3[0].setValue(g3[8]);
+                                    spnSelectionX1Ptr[0].setValue(g3[0]);
+                                    spnSelectionY1Ptr[0].setValue(g3[1]);
+                                    spnSelectionZ1Ptr[0].setValue(g3[2]);
+                                    spnSelectionX2Ptr[0].setValue(g3[3]);
+                                    spnSelectionY2Ptr[0].setValue(g3[4]);
+                                    spnSelectionZ2Ptr[0].setValue(g3[5]);
+                                    spnSelectionX3Ptr[0].setValue(g3[6]);
+                                    spnSelectionY3Ptr[0].setValue(g3[7]);
+                                    spnSelectionZ3Ptr[0].setValue(g3[8]);
                                     break;
                                 case 2:
                                     BigDecimal[] g2 = GraphicalDataTools.getPreciseCoordinates(gdata);
-                                    if (spn_SelectionLength[0].isEnabled()) {
-                                        spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData2) gdata).getLength());
+                                    if (spnSelectionLengthPtr[0].isEnabled()) {
+                                        spnSelectionLengthPtr[0].setValue(((org.nschmidt.ldparteditor.data.GData2) gdata).getLength());
                                     } else {
-                                        spn_SelectionLength[0].setValue(BigDecimal.ONE);
+                                        spnSelectionLengthPtr[0].setValue(BigDecimal.ONE);
                                     }
-                                    spn_SelectionX1[0].setValue(g2[0]);
-                                    spn_SelectionY1[0].setValue(g2[1]);
-                                    spn_SelectionZ1[0].setValue(g2[2]);
-                                    spn_SelectionX2[0].setValue(g2[3]);
-                                    spn_SelectionY2[0].setValue(g2[4]);
-                                    spn_SelectionZ2[0].setValue(g2[5]);
+                                    spnSelectionX1Ptr[0].setValue(g2[0]);
+                                    spnSelectionY1Ptr[0].setValue(g2[1]);
+                                    spnSelectionZ1Ptr[0].setValue(g2[2]);
+                                    spnSelectionX2Ptr[0].setValue(g2[3]);
+                                    spnSelectionY2Ptr[0].setValue(g2[4]);
+                                    spnSelectionZ2Ptr[0].setValue(g2[5]);
                                     break;
                                 case 1:
                                     vm.getSelectedVertices().clear();
-                                    btn_MoveAdjacentData2[0].setSelection(false);
-                                    btn_MoveAdjacentData2[0].setEnabled(false);
+                                    btnMoveAdjacentData2Ptr[0].setSelection(false);
+                                    btnMoveAdjacentData2Ptr[0].setEnabled(false);
                                     GData1 g1 = (GData1) gdata;
-                                    spn_SelectionX1[0].setValue(g1.getAccurateProductMatrix().M30);
-                                    spn_SelectionY1[0].setValue(g1.getAccurateProductMatrix().M31);
-                                    spn_SelectionZ1[0].setValue(g1.getAccurateProductMatrix().M32);
-                                    spn_SelectionX2[0].setValue(g1.getAccurateProductMatrix().M00);
-                                    spn_SelectionY2[0].setValue(g1.getAccurateProductMatrix().M01);
-                                    spn_SelectionZ2[0].setValue(g1.getAccurateProductMatrix().M02);
-                                    spn_SelectionX3[0].setValue(g1.getAccurateProductMatrix().M10);
-                                    spn_SelectionY3[0].setValue(g1.getAccurateProductMatrix().M11);
-                                    spn_SelectionZ3[0].setValue(g1.getAccurateProductMatrix().M12);
-                                    spn_SelectionX4[0].setValue(g1.getAccurateProductMatrix().M20);
-                                    spn_SelectionY4[0].setValue(g1.getAccurateProductMatrix().M21);
-                                    spn_SelectionZ4[0].setValue(g1.getAccurateProductMatrix().M22);
+                                    spnSelectionX1Ptr[0].setValue(g1.getAccurateProductMatrix().m30);
+                                    spnSelectionY1Ptr[0].setValue(g1.getAccurateProductMatrix().m31);
+                                    spnSelectionZ1Ptr[0].setValue(g1.getAccurateProductMatrix().m32);
+                                    spnSelectionX2Ptr[0].setValue(g1.getAccurateProductMatrix().m00);
+                                    spnSelectionY2Ptr[0].setValue(g1.getAccurateProductMatrix().m01);
+                                    spnSelectionZ2Ptr[0].setValue(g1.getAccurateProductMatrix().m02);
+                                    spnSelectionX3Ptr[0].setValue(g1.getAccurateProductMatrix().m10);
+                                    spnSelectionY3Ptr[0].setValue(g1.getAccurateProductMatrix().m11);
+                                    spnSelectionZ3Ptr[0].setValue(g1.getAccurateProductMatrix().m12);
+                                    spnSelectionX4Ptr[0].setValue(g1.getAccurateProductMatrix().m20);
+                                    spnSelectionY4Ptr[0].setValue(g1.getAccurateProductMatrix().m21);
+                                    spnSelectionZ4Ptr[0].setValue(g1.getAccurateProductMatrix().m22);
                                     break;
                                 default:
                                     disableSelectionTab();
@@ -2365,22 +2365,22 @@ public class Editor3DWindow extends Editor3DDesign {
                                     break;
                                 }
 
-                                lbl_SelectionAngle[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_ANGLE : "") + " {" + spn_SelectionAngle[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionLength[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH : "") + " {" + spn_SelectionLength[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X1 : "X  :") + " {" + spn_SelectionX1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y1 : "Y  :") + " {" + spn_SelectionY1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ1[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z1 : "Z  :") + " {" + spn_SelectionZ1[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X2 : "M00:") + " {" + spn_SelectionX2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y2 : "M01:") + " {" + spn_SelectionY2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ2[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z2 : "M02:") + " {" + spn_SelectionZ2[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X3 : "M10:") + " {" + spn_SelectionX3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y3 : "M11:") + " {" + spn_SelectionY3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ3[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z3 : "M12:") + " {" + spn_SelectionZ3[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionX4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X4 : "M20:") + " {" + spn_SelectionX4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionY4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y4 : "M21:") + " {" + spn_SelectionY4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                lbl_SelectionZ4[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z4 : "M22:") + " {" + spn_SelectionZ4[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionAnglePtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_ANGLE : "") + " {" + spnSelectionAnglePtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionLengthPtr[0].setText((gdata.type() != 1 ? I18n.E3D_PROTRACTOR_LENGTH : "") + " {" + spnSelectionLengthPtr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionX1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X1 : "X  :") + " {" + spnSelectionX1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionY1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y1 : "Y  :") + " {" + spnSelectionY1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionZ1Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z1 : "Z  :") + " {" + spnSelectionZ1Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionX2Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X2 : "M00:") + " {" + spnSelectionX2Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionY2Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y2 : "M01:") + " {" + spnSelectionY2Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionZ2Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z2 : "M02:") + " {" + spnSelectionZ2Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionX3Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X3 : "M10:") + " {" + spnSelectionX3Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionY3Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y3 : "M11:") + " {" + spnSelectionY3Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionZ3Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z3 : "M12:") + " {" + spnSelectionZ3Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionX4Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_X4 : "M20:") + " {" + spnSelectionX4Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionY4Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Y4 : "M21:") + " {" + spnSelectionY4Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                lblSelectionZ4Ptr[0].setText((gdata.type() != 1 ? I18n.E3D_POSITION_Z4 : "M22:") + " {" + spnSelectionZ4Ptr[0].getStringValue() + "}"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
-                                lbl_SelectionX1[0].getParent().layout();
+                                lblSelectionX1Ptr[0].getParent().layout();
                                 break;
                             default:
                                 disableSelectionTab();
@@ -2405,11 +2405,11 @@ public class Editor3DWindow extends Editor3DDesign {
             if (updatingSelectionTab || Project.getFileToEdit() == null) return;
             Project.getFileToEdit().getVertexManager().addSnapshot();
             final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
-                    spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
-                    spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
-                    spn_SelectionX3[0].getValue(), spn_SelectionY3[0].getValue(), spn_SelectionZ3[0].getValue(),
-                    spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
-                    btn_MoveAdjacentData2[0].getSelection()
+                    spnSelectionX1Ptr[0].getValue(), spnSelectionY1Ptr[0].getValue(), spnSelectionZ1Ptr[0].getValue(),
+                    spnSelectionX2Ptr[0].getValue(), spnSelectionY2Ptr[0].getValue(), spnSelectionZ2Ptr[0].getValue(),
+                    spnSelectionX3Ptr[0].getValue(), spnSelectionY3Ptr[0].getValue(), spnSelectionZ3Ptr[0].getValue(),
+                    spnSelectionX4Ptr[0].getValue(), spnSelectionY4Ptr[0].getValue(), spnSelectionZ4Ptr[0].getValue(),
+                    btnMoveAdjacentData2Ptr[0].getSelection()
                     );
             if (newLine == null) {
                 disableSelectionTab();
@@ -2417,21 +2417,21 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 if (newLine.type() == 2 && !((org.nschmidt.ldparteditor.data.GData2) newLine).isLine) {
                     updatingSelectionTab = true;
-                    spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData2) newLine).getLength());
+                    spnSelectionLengthPtr[0].setValue(((org.nschmidt.ldparteditor.data.GData2) newLine).getLength());
                     updatingSelectionTab = false;
                 }
                 if (newLine.type() == 3 && !((org.nschmidt.ldparteditor.data.GData3) newLine).isTriangle) {
                     updatingSelectionTab = true;
-                    spn_SelectionAngle[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorAngle()));
-                    spn_SelectionLength[0].setValue(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorLength());
+                    spnSelectionAnglePtr[0].setValue(new BigDecimal(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorAngle()));
+                    spnSelectionLengthPtr[0].setValue(((org.nschmidt.ldparteditor.data.GData3) newLine).getProtractorLength());
                     updatingSelectionTab = false;
                 }
 
-                txt_Line[0].setText(newLine.toString());
+                txtLinePtr[0].setText(newLine.toString());
             }
         };
 
-        spn_SelectionAngle[0].addValueChangeListener(spn -> {
+        spnSelectionAnglePtr[0].addValueChangeListener(spn -> {
             if (updatingSelectionTab || Project.getFileToEdit() == null) return;
             VertexManager vm = Project.getFileToEdit().getVertexManager();
             vm.addSnapshot();
@@ -2449,26 +2449,26 @@ public class Editor3DWindow extends Editor3DDesign {
 
             BigDecimal[] c = ProtractorHelper.changeAngle(spn.getValue().doubleValue(), tri);
             updatingSelectionTab = true;
-            spn_SelectionX3[0].setValue(c[0]);
-            spn_SelectionY3[0].setValue(c[1]);
-            spn_SelectionZ3[0].setValue(c[2]);
+            spnSelectionX3Ptr[0].setValue(c[0]);
+            spnSelectionY3Ptr[0].setValue(c[1]);
+            spnSelectionZ3Ptr[0].setValue(c[2]);
             updatingSelectionTab = false;
 
             final GData newLine = Project.getFileToEdit().getVertexManager().updateSelectedLine(
-                    spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
-                    spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
+                    spnSelectionX1Ptr[0].getValue(), spnSelectionY1Ptr[0].getValue(), spnSelectionZ1Ptr[0].getValue(),
+                    spnSelectionX2Ptr[0].getValue(), spnSelectionY2Ptr[0].getValue(), spnSelectionZ2Ptr[0].getValue(),
                     c[0], c[1], c[2],
-                    spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
-                    btn_MoveAdjacentData2[0].getSelection()
+                    spnSelectionX4Ptr[0].getValue(), spnSelectionY4Ptr[0].getValue(), spnSelectionZ4Ptr[0].getValue(),
+                    btnMoveAdjacentData2Ptr[0].getSelection()
                     );
             if (newLine == null) {
                 disableSelectionTab();
             } else {
-                txt_Line[0].setText(newLine.toString());
+                txtLinePtr[0].setText(newLine.toString());
             }
         });
 
-        spn_SelectionLength[0].addValueChangeListener(spn -> {
+        spnSelectionLengthPtr[0].addValueChangeListener(spn -> {
             if (updatingSelectionTab || Project.getFileToEdit() == null) return;
             VertexManager vm = Project.getFileToEdit().getVertexManager();
             vm.addSnapshot();
@@ -2483,22 +2483,22 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 BigDecimal[] c1 = ProtractorHelper.changeLength(spn.getValue(), line);
                 updatingSelectionTab = true;
-                spn_SelectionX2[0].setValue(c1[0]);
-                spn_SelectionY2[0].setValue(c1[1]);
-                spn_SelectionZ2[0].setValue(c1[2]);
+                spnSelectionX2Ptr[0].setValue(c1[0]);
+                spnSelectionY2Ptr[0].setValue(c1[1]);
+                spnSelectionZ2Ptr[0].setValue(c1[2]);
                 updatingSelectionTab = false;
 
                 final GData newLine1 = Project.getFileToEdit().getVertexManager().updateSelectedLine(
-                        spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
+                        spnSelectionX1Ptr[0].getValue(), spnSelectionY1Ptr[0].getValue(), spnSelectionZ1Ptr[0].getValue(),
                         c1[0], c1[1], c1[2],
-                        spn_SelectionX3[0].getValue(), spn_SelectionY3[0].getValue(), spn_SelectionZ3[0].getValue(),
-                        spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
-                        btn_MoveAdjacentData2[0].getSelection()
+                        spnSelectionX3Ptr[0].getValue(), spnSelectionY3Ptr[0].getValue(), spnSelectionZ3Ptr[0].getValue(),
+                        spnSelectionX4Ptr[0].getValue(), spnSelectionY4Ptr[0].getValue(), spnSelectionZ4Ptr[0].getValue(),
+                        btnMoveAdjacentData2Ptr[0].getSelection()
                         );
                 if (newLine1 == null) {
                     disableSelectionTab();
                 } else {
-                    txt_Line[0].setText(newLine1.toString());
+                    txtLinePtr[0].setText(newLine1.toString());
                 }
 
             } else {
@@ -2516,46 +2516,46 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 BigDecimal[] c2 = ProtractorHelper.changeLength(spn.getValue(), tri);
                 updatingSelectionTab = true;
-                spn_SelectionX3[0].setValue(c2[0]);
-                spn_SelectionY3[0].setValue(c2[1]);
-                spn_SelectionZ3[0].setValue(c2[2]);
+                spnSelectionX3Ptr[0].setValue(c2[0]);
+                spnSelectionY3Ptr[0].setValue(c2[1]);
+                spnSelectionZ3Ptr[0].setValue(c2[2]);
                 updatingSelectionTab = false;
 
                 final GData newLine2 = Project.getFileToEdit().getVertexManager().updateSelectedLine(
-                        spn_SelectionX1[0].getValue(), spn_SelectionY1[0].getValue(), spn_SelectionZ1[0].getValue(),
-                        spn_SelectionX2[0].getValue(), spn_SelectionY2[0].getValue(), spn_SelectionZ2[0].getValue(),
+                        spnSelectionX1Ptr[0].getValue(), spnSelectionY1Ptr[0].getValue(), spnSelectionZ1Ptr[0].getValue(),
+                        spnSelectionX2Ptr[0].getValue(), spnSelectionY2Ptr[0].getValue(), spnSelectionZ2Ptr[0].getValue(),
                         c2[0], c2[1], c2[2],
-                        spn_SelectionX4[0].getValue(), spn_SelectionY4[0].getValue(), spn_SelectionZ4[0].getValue(),
-                        btn_MoveAdjacentData2[0].getSelection()
+                        spnSelectionX4Ptr[0].getValue(), spnSelectionY4Ptr[0].getValue(), spnSelectionZ4Ptr[0].getValue(),
+                        btnMoveAdjacentData2Ptr[0].getSelection()
                         );
                 if (newLine2 == null) {
                     disableSelectionTab();
                 } else {
-                    txt_Line[0].setText(newLine2.toString());
+                    txtLinePtr[0].setText(newLine2.toString());
                 }
             }
         });
 
-        spn_SelectionX1[0].addValueChangeListener(va);
-        spn_SelectionY1[0].addValueChangeListener(va);
-        spn_SelectionZ1[0].addValueChangeListener(va);
-        spn_SelectionX2[0].addValueChangeListener(va);
-        spn_SelectionY2[0].addValueChangeListener(va);
-        spn_SelectionZ2[0].addValueChangeListener(va);
-        spn_SelectionX3[0].addValueChangeListener(va);
-        spn_SelectionY3[0].addValueChangeListener(va);
-        spn_SelectionZ3[0].addValueChangeListener(va);
-        spn_SelectionX4[0].addValueChangeListener(va);
-        spn_SelectionY4[0].addValueChangeListener(va);
-        spn_SelectionZ4[0].addValueChangeListener(va);
+        spnSelectionX1Ptr[0].addValueChangeListener(va);
+        spnSelectionY1Ptr[0].addValueChangeListener(va);
+        spnSelectionZ1Ptr[0].addValueChangeListener(va);
+        spnSelectionX2Ptr[0].addValueChangeListener(va);
+        spnSelectionY2Ptr[0].addValueChangeListener(va);
+        spnSelectionZ2Ptr[0].addValueChangeListener(va);
+        spnSelectionX3Ptr[0].addValueChangeListener(va);
+        spnSelectionY3Ptr[0].addValueChangeListener(va);
+        spnSelectionZ3Ptr[0].addValueChangeListener(va);
+        spnSelectionX4Ptr[0].addValueChangeListener(va);
+        spnSelectionY4Ptr[0].addValueChangeListener(va);
+        spnSelectionZ4Ptr[0].addValueChangeListener(va);
 
-        WidgetUtil(btn_MoveAdjacentData2[0]).addSelectionListener(e -> regainFocus());
-        WidgetUtil(btn_OpenInTextEditor[0]).addSelectionListener(e -> action_OpenInTextEditor());
-        WidgetUtil(btn_OpenIn3DEditor[0]).addSelectionListener(e -> action_OpenIn3DEditor());
-        WidgetUtil(btn_Revert[0]).addSelectionListener(e -> action_Revert());
-        WidgetUtil(btn_Close[0]).addSelectionListener(e -> action_Close());
-        WidgetUtil(btn_Rename[0]).addSelectionListener(e -> action_Rename());
-        WidgetUtil(btn_CopyToUnofficial[0]).addSelectionListener(e -> action_CopyToUnofficial());
+        WidgetUtil(btnMoveAdjacentData2Ptr[0]).addSelectionListener(e -> regainFocus());
+        WidgetUtil(btnOpenInTextEditorPtr[0]).addSelectionListener(e -> action_OpenInTextEditor());
+        WidgetUtil(btnOpenIn3DEditorPtr[0]).addSelectionListener(e -> action_OpenIn3DEditor());
+        WidgetUtil(btnRevertPtr[0]).addSelectionListener(e -> action_Revert());
+        WidgetUtil(btnClosePtr[0]).addSelectionListener(e -> action_Close());
+        WidgetUtil(btnRenamePtr[0]).addSelectionListener(e -> action_Rename());
+        WidgetUtil(btnCopyToUnofficialPtr[0]).addSelectionListener(e -> action_CopyToUnofficial());
 
         treeParts[0].addMenuDetectListener(new MenuDetectListener() {
             @Override
@@ -2571,60 +2571,60 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile;
                 final boolean writable = enabled && !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly();
-                final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null && !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItem_Unofficial[0]);
+                final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null && !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItemUnofficialPtr[0]);
 
                 Menu treeMenu = new Menu(treeParts[0].getTree());
                 treeParts[0].getTree().setMenu(treeMenu);
-                mnu_treeMenu[0] = treeMenu;
+                mnuTreeMenuPtr[0] = treeMenu;
 
                 MenuItem mntmOpenIn3DEditor = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
-                mntm_OpenIn3DEditor[0] = mntmOpenIn3DEditor;
+                mntmOpenIn3DEditorPtr[0] = mntmOpenIn3DEditor;
                 mntmOpenIn3DEditor.setEnabled(enabled);
                 mntmOpenIn3DEditor.setText(I18n.E3D_OPEN_IN_3D_EDITOR);
 
                 MenuItem mntmOpenInTextEditor = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
-                mntm_OpenInTextEditor[0] = mntmOpenInTextEditor;
+                mntmOpenInTextEditorPtr[0] = mntmOpenInTextEditor;
                 mntmOpenInTextEditor.setEnabled(enabled);
                 mntmOpenInTextEditor.setText(I18n.E3D_OPEN_IN_TEXT_EDITOR);
 
                 new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle() | SWT.SEPARATOR);
 
                 MenuItem mntmClose = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
-                mntm_Close[0] = mntmClose;
+                mntmClosePtr[0] = mntmClose;
                 mntmClose.setEnabled(enabled);
                 mntmClose.setText(I18n.E3D_CLOSE);
 
                 new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle() | SWT.SEPARATOR);
 
                 MenuItem mntmRename = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
-                mntm_Rename[0] = mntmRename;
+                mntmRenamePtr[0] = mntmRename;
                 mntmRename.setEnabled(enabled && writable);
                 mntmRename.setText(I18n.E3D_RENAME_MOVE);
 
                 MenuItem mntmRevert = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
-                mntm_Revert[0] = mntmRevert;
+                mntmRevertPtr[0] = mntmRevert;
                 mntmRevert.setEnabled(enabled && writable);
                 mntmRevert.setText(I18n.E3D_REVERT_ALL_CHANGES);
 
                 new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle() | SWT.SEPARATOR);
 
                 MenuItem mntmCopyToUnofficial = new MenuItem(treeMenu, I18n.noBiDirectionalTextStyle());
-                mntm_CopyToUnofficial[0] = mntmCopyToUnofficial;
+                mntmCopyToUnofficialPtr[0] = mntmCopyToUnofficial;
                 mntmCopyToUnofficial.setEnabled(enabled && isNotUnofficial);
                 mntmCopyToUnofficial.setText(I18n.E3D_COPY_TO_UNOFFICIAL_LIBRARY);
 
-                WidgetUtil(mntm_OpenInTextEditor[0]).addSelectionListener(e1 -> action_OpenInTextEditor());
-                WidgetUtil(mntm_OpenIn3DEditor[0]).addSelectionListener(e1 -> action_OpenIn3DEditor());
-                WidgetUtil(mntm_Revert[0]).addSelectionListener(e1 -> action_Revert());
-                WidgetUtil(mntm_Close[0]).addSelectionListener(e1 -> action_Close());
-                WidgetUtil(mntm_Rename[0]).addSelectionListener(e1 -> action_Rename());
-                WidgetUtil(mntm_CopyToUnofficial[0]).addSelectionListener(e1 -> action_CopyToUnofficial());
+                WidgetUtil(mntmOpenInTextEditorPtr[0]).addSelectionListener(e1 -> action_OpenInTextEditor());
+                WidgetUtil(mntmOpenIn3DEditorPtr[0]).addSelectionListener(e1 -> action_OpenIn3DEditor());
+                WidgetUtil(mntmRevertPtr[0]).addSelectionListener(e1 -> action_Revert());
+                WidgetUtil(mntmClosePtr[0]).addSelectionListener(e1 -> action_Close());
+                WidgetUtil(mntmRenamePtr[0]).addSelectionListener(e1 -> action_Rename());
+                WidgetUtil(mntmCopyToUnofficialPtr[0]).addSelectionListener(e1 -> action_CopyToUnofficial());
 
                 java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
                 final int x = (int) b.getX();
                 final int y = (int) b.getY();
 
-                Menu menu = mnu_treeMenu[0];
+                Menu menu = mnuTreeMenuPtr[0];
                 menu.setLocation(x, y);
                 menu.setVisible(true);
                 regainFocus();
@@ -2634,13 +2634,13 @@ public class Editor3DWindow extends Editor3DDesign {
         treeParts[0].addSelectionListener(e -> {
             final boolean enabled = treeParts[0].getSelectionCount() > 0  && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].getData() instanceof DatFile;
             final boolean writable = enabled && !((DatFile) treeParts[0].getSelection()[0].getData()).isReadOnly();
-            final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null && !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItem_Unofficial[0]);
-            btn_OpenIn3DEditor[0].setEnabled(enabled);
-            btn_OpenInTextEditor[0].setEnabled(enabled);
-            btn_Close[0].setEnabled(enabled);
-            btn_Rename[0].setEnabled(enabled && writable);
-            btn_Revert[0].setEnabled(enabled && writable);
-            btn_CopyToUnofficial[0].setEnabled(enabled && isNotUnofficial);
+            final boolean isNotUnofficial = enabled && treeParts[0].getSelection()[0].getParentItem().getParentItem() != null && !treeParts[0].getSelection()[0].getParentItem().getParentItem().equals(treeItemUnofficialPtr[0]);
+            btnOpenIn3DEditorPtr[0].setEnabled(enabled);
+            btnOpenInTextEditorPtr[0].setEnabled(enabled);
+            btnClosePtr[0].setEnabled(enabled);
+            btnRenamePtr[0].setEnabled(enabled && writable);
+            btnRevertPtr[0].setEnabled(enabled && writable);
+            btnCopyToUnofficialPtr[0].setEnabled(enabled && isNotUnofficial);
         });
 
         treeParts[0].addListener(SWT.MouseDoubleClick, event -> {
@@ -2659,21 +2659,21 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        txt_Search[0].addModifyListener(e -> search(txt_Search[0].getText()));
-        WidgetUtil(btn_ResetSearch[0]).addSelectionListener(e -> {
-            txt_Search[0].setText(""); //$NON-NLS-1$
-            txt_Search[0].setFocus();
+        txtSearchPtr[0].addModifyListener(e -> search(txtSearchPtr[0].getText()));
+        WidgetUtil(btnResetSearchPtr[0]).addSelectionListener(e -> {
+            txtSearchPtr[0].setText(""); //$NON-NLS-1$
+            txtSearchPtr[0].setFocus();
         });
-        txt_primitiveSearch[0].addModifyListener(e -> {
+        txtPrimitiveSearchPtr[0].addModifyListener(e -> {
             if (getCompositePrimitive().stopDraw()) {
-                txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
+                txtPrimitiveSearchPtr[0].setText(""); //$NON-NLS-1$
                 return;
             } else {
                 getCompositePrimitive().disableRefresh();
             }
             getCompositePrimitive().collapseAll();
             ArrayList<Primitive> prims = getCompositePrimitive().getPrimitives();
-            final String crit = txt_primitiveSearch[0].getText();
+            final String crit = txtPrimitiveSearchPtr[0].getText();
             if (crit.trim().isEmpty()) {
                 getCompositePrimitive().setSearchResults(new ArrayList<>());
                 Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
@@ -2701,19 +2701,19 @@ public class Editor3DWindow extends Editor3DDesign {
             Matrix4f.setIdentity(getCompositePrimitive().getTranslation());
             getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
-        WidgetUtil(btn_resetPrimitiveSearch[0]).addSelectionListener(e -> {
-            txt_primitiveSearch[0].setText(""); //$NON-NLS-1$
-            txt_primitiveSearch[0].setFocus();
+        WidgetUtil(btnResetPrimitiveSearchPtr[0]).addSelectionListener(e -> {
+            txtPrimitiveSearchPtr[0].setText(""); //$NON-NLS-1$
+            txtPrimitiveSearchPtr[0].setFocus();
         });
-        WidgetUtil(btn_zoomInPrimitives[0]).addSelectionListener(e -> {
+        WidgetUtil(btnZoomInPrimitivesPtr[0]).addSelectionListener(e -> {
             getCompositePrimitive().zoomIn();
             getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
-        WidgetUtil(btn_zoomOutPrimitives[0]).addSelectionListener(e -> {
+        WidgetUtil(btnZoomOutPrimitivesPtr[0]).addSelectionListener(e -> {
             getCompositePrimitive().zoomOut();
             getCompositePrimitive().getOpenGL().drawScene(-1, -1);
         });
-        WidgetUtil(btn_Hide[0]).addSelectionListener(e -> {
+        WidgetUtil(btnHidePtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 if (!Project.getFileToEdit().getVertexManager().getSelectedData().isEmpty()) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
@@ -2731,7 +2731,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_ShowAll[0]).addSelectionListener(e -> {
+        WidgetUtil(btnShowAllPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().showAll();
@@ -2747,34 +2747,34 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_NoTransparentSelection[0]).addSelectionListener(e -> {
-            setNoTransparentSelection(btn_NoTransparentSelection[0].getSelection());
+        WidgetUtil(btnNoTransparentSelectionPtr[0]).addSelectionListener(e -> {
+            setNoTransparentSelection(btnNoTransparentSelectionPtr[0].getSelection());
             regainFocus();
         });
-        WidgetUtil(btn_BFCToggle[0]).addSelectionListener(e -> {
-            setBfcToggle(btn_BFCToggle[0].getSelection());
+        WidgetUtil(btnBFCTogglePtr[0]).addSelectionListener(e -> {
+            setBfcToggle(btnBFCTogglePtr[0].getSelection());
             regainFocus();
         });
-        WidgetUtil(btn_InsertAtCursorPosition[0]).addSelectionListener(e -> {
-            setInsertingAtCursorPosition(btn_InsertAtCursorPosition[0].getSelection());
+        WidgetUtil(btnInsertAtCursorPositionPtr[0]).addSelectionListener(e -> {
+            setInsertingAtCursorPosition(btnInsertAtCursorPositionPtr[0].getSelection());
             regainFocus();
         });
 
-        WidgetUtil(btn_Delete[0]).addSelectionListener(e -> {
+        WidgetUtil(btnDeletePtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().delete(Editor3DWindow.getWindow().isMovingAdjacentData(), true);
             }
             regainFocus();
         });
-        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().copy();
             }
             regainFocus();
         });
-        WidgetUtil(btn_Cut[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCutPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().copy();
@@ -2782,7 +2782,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_Paste[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPastePtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
                 Project.getFileToEdit().getVertexManager().paste(loadSelectorSettings());
@@ -2794,48 +2794,48 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        if (btn_Manipulator_0_toOrigin[0] != null) WidgetUtil(btn_Manipulator_0_toOrigin[0]).addSelectionListener(e -> mntm_Manipulator_0_toOrigin());
-        if (btn_Manipulator_XIII_toWorld[0] != null) WidgetUtil(btn_Manipulator_XIII_toWorld[0]).addSelectionListener(e -> mntm_Manipulator_XIII_toWorld());
-        if (btn_Manipulator_X_XReverse[0] != null) WidgetUtil(btn_Manipulator_X_XReverse[0]).addSelectionListener(e -> mntm_Manipulator_X_XReverse());
-        if (btn_Manipulator_XI_YReverse[0] != null) WidgetUtil(btn_Manipulator_XI_YReverse[0]).addSelectionListener(e -> mntm_Manipulator_XI_YReverse());
-        if (btn_Manipulator_XII_ZReverse[0] != null) WidgetUtil(btn_Manipulator_XII_ZReverse[0]).addSelectionListener(e -> mntm_Manipulator_XII_ZReverse());
-        if (btn_Manipulator_SwitchXY[0] != null) WidgetUtil(btn_Manipulator_SwitchXY[0]).addSelectionListener(e -> mntm_Manipulator_SwitchXY());
-        if (btn_Manipulator_SwitchXZ[0] != null) WidgetUtil(btn_Manipulator_SwitchXZ[0]).addSelectionListener(e -> mntm_Manipulator_SwitchXZ());
-        if (btn_Manipulator_SwitchYZ[0] != null) WidgetUtil(btn_Manipulator_SwitchYZ[0]).addSelectionListener(e -> mntm_Manipulator_SwitchYZ());
-        if (btn_Manipulator_1_cameraToPos[0] != null) WidgetUtil(btn_Manipulator_1_cameraToPos[0]).addSelectionListener(e -> mntm_Manipulator_1_cameraToPos());
-        if (btn_Manipulator_2_toAverage[0] != null) WidgetUtil(btn_Manipulator_2_toAverage[0]).addSelectionListener(e -> mntm_Manipulator_2_toAverage());
-        if (btn_Manipulator_3_toSubfile[0] != null) WidgetUtil(btn_Manipulator_3_toSubfile[0]).addSelectionListener(e -> mntm_Manipulator_3_toSubfile());
-        if (btn_Manipulator_32_subfileTo[0] != null) WidgetUtil(btn_Manipulator_32_subfileTo[0]).addSelectionListener(e -> mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
-        if (btn_Manipulator_4_toVertex[0] != null) WidgetUtil(btn_Manipulator_4_toVertex[0]).addSelectionListener(e -> mntm_Manipulator_4_toVertex());
-        if (btn_Manipulator_5_toEdge[0] != null) WidgetUtil(btn_Manipulator_5_toEdge[0]).addSelectionListener(e -> mntm_Manipulator_5_toEdge());
-        if (btn_Manipulator_6_toSurface[0] != null) WidgetUtil(btn_Manipulator_6_toSurface[0]).addSelectionListener(e -> mntm_Manipulator_6_toSurface());
-        if (btn_Manipulator_7_toVertexNormal[0] != null) WidgetUtil(btn_Manipulator_7_toVertexNormal[0]).addSelectionListener(e -> mntm_Manipulator_7_toVertexNormal());
-        if (btn_Manipulator_8_toEdgeNormal[0] != null) WidgetUtil(btn_Manipulator_8_toEdgeNormal[0]).addSelectionListener(e -> mntm_Manipulator_8_toEdgeNormal());
-        if (btn_Manipulator_9_toSurfaceNormal[0] != null) WidgetUtil(btn_Manipulator_9_toSurfaceNormal[0]).addSelectionListener(e -> mntm_Manipulator_9_toSurfaceNormal());
-        if (btn_Manipulator_XIV_adjustRotationCenter[0] != null) WidgetUtil(btn_Manipulator_XIV_adjustRotationCenter[0]).addSelectionListener(e -> mntm_Manipulator_XIV_adjustRotationCenter());
-        if (btn_Manipulator_XV_toVertexPosition[0] != null) WidgetUtil(btn_Manipulator_XV_toVertexPosition[0]).addSelectionListener(e -> mntm_Manipulator_XV_toVertexPosition());
-        if (mntm_Manipulator_0_toOrigin[0] != null) WidgetUtil(mntm_Manipulator_0_toOrigin[0]).addSelectionListener(e -> mntm_Manipulator_0_toOrigin());
-        if (mntm_Manipulator_XIII_toWorld[0] != null) WidgetUtil(mntm_Manipulator_XIII_toWorld[0]).addSelectionListener(e -> mntm_Manipulator_XIII_toWorld());
-        if (mntm_Manipulator_X_XReverse[0] != null) WidgetUtil(mntm_Manipulator_X_XReverse[0]).addSelectionListener(e -> mntm_Manipulator_X_XReverse());
-        if (mntm_Manipulator_XI_YReverse[0] != null) WidgetUtil(mntm_Manipulator_XI_YReverse[0]).addSelectionListener(e -> mntm_Manipulator_XI_YReverse());
-        if (mntm_Manipulator_XII_ZReverse[0] != null) WidgetUtil(mntm_Manipulator_XII_ZReverse[0]).addSelectionListener(e -> mntm_Manipulator_XII_ZReverse());
-        if (mntm_Manipulator_SwitchXY[0] != null) WidgetUtil(mntm_Manipulator_SwitchXY[0]).addSelectionListener(e -> mntm_Manipulator_SwitchXY());
-        if (mntm_Manipulator_SwitchXZ[0] != null) WidgetUtil(mntm_Manipulator_SwitchXZ[0]).addSelectionListener(e -> mntm_Manipulator_SwitchXZ());
-        if (mntm_Manipulator_SwitchYZ[0] != null) WidgetUtil(mntm_Manipulator_SwitchYZ[0]).addSelectionListener(e -> mntm_Manipulator_SwitchYZ());
-        if (mntm_Manipulator_1_cameraToPos[0] != null) WidgetUtil(mntm_Manipulator_1_cameraToPos[0]).addSelectionListener(e -> mntm_Manipulator_1_cameraToPos());
-        if (mntm_Manipulator_2_toAverage[0] != null) WidgetUtil(mntm_Manipulator_2_toAverage[0]).addSelectionListener(e -> mntm_Manipulator_2_toAverage());
-        if (mntm_Manipulator_3_toSubfile[0] != null) WidgetUtil(mntm_Manipulator_3_toSubfile[0]).addSelectionListener(e -> mntm_Manipulator_3_toSubfile());
-        if (mntm_Manipulator_32_subfileTo[0] != null) WidgetUtil(mntm_Manipulator_32_subfileTo[0]).addSelectionListener(e -> mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
-        if (mntm_Manipulator_4_toVertex[0] != null) WidgetUtil(mntm_Manipulator_4_toVertex[0]).addSelectionListener(e -> mntm_Manipulator_4_toVertex());
-        if (mntm_Manipulator_5_toEdge[0] != null) WidgetUtil(mntm_Manipulator_5_toEdge[0]).addSelectionListener(e -> mntm_Manipulator_5_toEdge());
-        if (mntm_Manipulator_6_toSurface[0] != null) WidgetUtil(mntm_Manipulator_6_toSurface[0]).addSelectionListener(e -> mntm_Manipulator_6_toSurface());
-        if (mntm_Manipulator_7_toVertexNormal[0] != null) WidgetUtil(mntm_Manipulator_7_toVertexNormal[0]).addSelectionListener(e -> mntm_Manipulator_7_toVertexNormal());
-        if (mntm_Manipulator_8_toEdgeNormal[0] != null) WidgetUtil(mntm_Manipulator_8_toEdgeNormal[0]).addSelectionListener(e -> mntm_Manipulator_8_toEdgeNormal());
-        if (mntm_Manipulator_9_toSurfaceNormal[0] != null) WidgetUtil(mntm_Manipulator_9_toSurfaceNormal[0]).addSelectionListener(e -> mntm_Manipulator_9_toSurfaceNormal());
-        if (mntm_Manipulator_XIV_adjustRotationCenter[0] != null) WidgetUtil(mntm_Manipulator_XIV_adjustRotationCenter[0]).addSelectionListener(e -> mntm_Manipulator_XIV_adjustRotationCenter());
-        if (mntm_Manipulator_XV_toVertexPosition[0] != null) WidgetUtil(mntm_Manipulator_XV_toVertexPosition[0]).addSelectionListener(e -> mntm_Manipulator_XV_toVertexPosition());
+        if (btnManipulatorToOriginPtr[0] != null) WidgetUtil(btnManipulatorToOriginPtr[0]).addSelectionListener(e -> mntm_Manipulator_0_toOrigin());
+        if (btnManipulatorToWorldPtr[0] != null) WidgetUtil(btnManipulatorToWorldPtr[0]).addSelectionListener(e -> mntm_Manipulator_XIII_toWorld());
+        if (btnManipulatorXReversePtr[0] != null) WidgetUtil(btnManipulatorXReversePtr[0]).addSelectionListener(e -> mntm_Manipulator_X_XReverse());
+        if (btnManipulatorYReversePtr[0] != null) WidgetUtil(btnManipulatorYReversePtr[0]).addSelectionListener(e -> mntm_Manipulator_XI_YReverse());
+        if (btnManipulatorZReversePtr[0] != null) WidgetUtil(btnManipulatorZReversePtr[0]).addSelectionListener(e -> mntm_Manipulator_XII_ZReverse());
+        if (btnManipulatorSwitchXYPtr[0] != null) WidgetUtil(btnManipulatorSwitchXYPtr[0]).addSelectionListener(e -> mntm_Manipulator_SwitchXY());
+        if (btnManipulatorSwitchXZPtr[0] != null) WidgetUtil(btnManipulatorSwitchXZPtr[0]).addSelectionListener(e -> mntm_Manipulator_SwitchXZ());
+        if (btnManipulatorSwitchYZPtr[0] != null) WidgetUtil(btnManipulatorSwitchYZPtr[0]).addSelectionListener(e -> mntm_Manipulator_SwitchYZ());
+        if (btnManipulatorCameraToPosPtr[0] != null) WidgetUtil(btnManipulatorCameraToPosPtr[0]).addSelectionListener(e -> mntm_Manipulator_1_cameraToPos());
+        if (btnManipulatorToAveragePtr[0] != null) WidgetUtil(btnManipulatorToAveragePtr[0]).addSelectionListener(e -> mntm_Manipulator_2_toAverage());
+        if (btnManipulatorToSubfilePtr[0] != null) WidgetUtil(btnManipulatorToSubfilePtr[0]).addSelectionListener(e -> mntm_Manipulator_3_toSubfile());
+        if (btnManipulatorSubfileToPtr[0] != null) WidgetUtil(btnManipulatorSubfileToPtr[0]).addSelectionListener(e -> mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
+        if (btnManipulatorToVertexPtr[0] != null) WidgetUtil(btnManipulatorToVertexPtr[0]).addSelectionListener(e -> mntm_Manipulator_4_toVertex());
+        if (btnManipulatorToEdgePtr[0] != null) WidgetUtil(btnManipulatorToEdgePtr[0]).addSelectionListener(e -> mntm_Manipulator_5_toEdge());
+        if (btnManipulatorToSurfacePtr[0] != null) WidgetUtil(btnManipulatorToSurfacePtr[0]).addSelectionListener(e -> mntm_Manipulator_6_toSurface());
+        if (btnManipulatorToVertexNormalPtr[0] != null) WidgetUtil(btnManipulatorToVertexNormalPtr[0]).addSelectionListener(e -> mntm_Manipulator_7_toVertexNormal());
+        if (btnManipulatorToEdgeNormalPtr[0] != null) WidgetUtil(btnManipulatorToEdgeNormalPtr[0]).addSelectionListener(e -> mntm_Manipulator_8_toEdgeNormal());
+        if (btnManipulatorToSurfaceNormalPtr[0] != null) WidgetUtil(btnManipulatorToSurfaceNormalPtr[0]).addSelectionListener(e -> mntm_Manipulator_9_toSurfaceNormal());
+        if (btnManipulatorAdjustRotationCenterPtr[0] != null) WidgetUtil(btnManipulatorAdjustRotationCenterPtr[0]).addSelectionListener(e -> mntm_Manipulator_XIV_adjustRotationCenter());
+        if (btnManipulatorToVertexPositionPtr[0] != null) WidgetUtil(btnManipulatorToVertexPositionPtr[0]).addSelectionListener(e -> mntm_Manipulator_XV_toVertexPosition());
+        if (mntmManipulatorToOriginPtr[0] != null) WidgetUtil(mntmManipulatorToOriginPtr[0]).addSelectionListener(e -> mntm_Manipulator_0_toOrigin());
+        if (mntmManipulatorToWorldPtr[0] != null) WidgetUtil(mntmManipulatorToWorldPtr[0]).addSelectionListener(e -> mntm_Manipulator_XIII_toWorld());
+        if (mntmManipulatorXReversePtr[0] != null) WidgetUtil(mntmManipulatorXReversePtr[0]).addSelectionListener(e -> mntm_Manipulator_X_XReverse());
+        if (mntmManipulatorYReversePtr[0] != null) WidgetUtil(mntmManipulatorYReversePtr[0]).addSelectionListener(e -> mntm_Manipulator_XI_YReverse());
+        if (mntmManipulatorZReversePtr[0] != null) WidgetUtil(mntmManipulatorZReversePtr[0]).addSelectionListener(e -> mntm_Manipulator_XII_ZReverse());
+        if (mntmManipulatorSwitchXYPtr[0] != null) WidgetUtil(mntmManipulatorSwitchXYPtr[0]).addSelectionListener(e -> mntm_Manipulator_SwitchXY());
+        if (mntmManipulatorSwitchXZPtr[0] != null) WidgetUtil(mntmManipulatorSwitchXZPtr[0]).addSelectionListener(e -> mntm_Manipulator_SwitchXZ());
+        if (mntmManipulatorSwitchYZPtr[0] != null) WidgetUtil(mntmManipulatorSwitchYZPtr[0]).addSelectionListener(e -> mntm_Manipulator_SwitchYZ());
+        if (mntmManipulatorCameraToPosPtr[0] != null) WidgetUtil(mntmManipulatorCameraToPosPtr[0]).addSelectionListener(e -> mntm_Manipulator_1_cameraToPos());
+        if (mntmManipulatorToAveragePtr[0] != null) WidgetUtil(mntmManipulatorToAveragePtr[0]).addSelectionListener(e -> mntm_Manipulator_2_toAverage());
+        if (mntmManipulatorToSubfilePtr[0] != null) WidgetUtil(mntmManipulatorToSubfilePtr[0]).addSelectionListener(e -> mntm_Manipulator_3_toSubfile());
+        if (mntmManipulatorSubfileToPtr[0] != null) WidgetUtil(mntmManipulatorSubfileToPtr[0]).addSelectionListener(e -> mntm_Manipulator_32_subfileTo(Cocoa.checkCtrlOrCmdPressed(e.stateMask)));
+        if (mntmManipulatorToVertexPtr[0] != null) WidgetUtil(mntmManipulatorToVertexPtr[0]).addSelectionListener(e -> mntm_Manipulator_4_toVertex());
+        if (mntmManipulatorToEdgePtr[0] != null) WidgetUtil(mntmManipulatorToEdgePtr[0]).addSelectionListener(e -> mntm_Manipulator_5_toEdge());
+        if (mntmManipulatorToSurfacePtr[0] != null) WidgetUtil(mntmManipulatorToSurfacePtr[0]).addSelectionListener(e -> mntm_Manipulator_6_toSurface());
+        if (mntmManipulatorToVertexNormalPtr[0] != null) WidgetUtil(mntmManipulatorToVertexNormalPtr[0]).addSelectionListener(e -> mntm_Manipulator_7_toVertexNormal());
+        if (mntmManipulatorToEdgeNormalPtr[0] != null) WidgetUtil(mntmManipulatorToEdgeNormalPtr[0]).addSelectionListener(e -> mntm_Manipulator_8_toEdgeNormal());
+        if (mntmManipulatorToSurfaceNormalPtr[0] != null) WidgetUtil(mntmManipulatorToSurfaceNormalPtr[0]).addSelectionListener(e -> mntm_Manipulator_9_toSurfaceNormal());
+        if (mntmManipulatorAdjustRotationCenterPtr[0] != null) WidgetUtil(mntmManipulatorAdjustRotationCenterPtr[0]).addSelectionListener(e -> mntm_Manipulator_XIV_adjustRotationCenter());
+        if (mntmManipulatorToVertexPositionPtr[0] != null) WidgetUtil(mntmManipulatorToVertexPositionPtr[0]).addSelectionListener(e -> mntm_Manipulator_XV_toVertexPosition());
 
-        WidgetUtil(mntm_SelectAll[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectAllPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -2850,7 +2850,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_SelectAllVisible[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectAllVisiblePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -2865,7 +2865,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_SelectAllWithColours[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectAllWithColoursPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -2880,7 +2880,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_SelectAllVisibleWithColours[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectAllVisibleWithColoursPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -2895,7 +2895,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_SelectNone[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectNonePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -2909,7 +2909,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_SelectInverse[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectInversePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -2925,16 +2925,16 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_WithSameColour[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmWithSameColourPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    mntm_SelectEverything[0].setEnabled(
-                            mntm_WithHiddenData[0].getSelection() ||
-                            mntm_WithSameColour[0].getSelection() ||
-                            mntm_WithSameType[0].getSelection() ||
-                            mntm_WithSameOrientation[0].getSelection() ||
-                            mntm_ExceptSubfiles[0].getSelection()
+                    mntmSelectEverythingPtr[0].setEnabled(
+                            mntmWithHiddenDataPtr[0].getSelection() ||
+                            mntmWithSameColourPtr[0].getSelection() ||
+                            mntmWithSameTypePtr[0].getSelection() ||
+                            mntmWithSameOrientationPtr[0].getSelection() ||
+                            mntmExceptSubfilesPtr[0].getSelection()
                             );
                     showSelectMenu();
                 }
@@ -2942,16 +2942,16 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_WithSameType[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmWithSameTypePtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    mntm_SelectEverything[0].setEnabled(
-                            mntm_WithHiddenData[0].getSelection() ||
-                            mntm_WithSameColour[0].getSelection() ||
-                            mntm_WithSameType[0].getSelection() ||
-                            mntm_WithSameOrientation[0].getSelection() ||
-                            mntm_ExceptSubfiles[0].getSelection()
+                    mntmSelectEverythingPtr[0].setEnabled(
+                            mntmWithHiddenDataPtr[0].getSelection() ||
+                            mntmWithSameColourPtr[0].getSelection() ||
+                            mntmWithSameTypePtr[0].getSelection() ||
+                            mntmWithSameOrientationPtr[0].getSelection() ||
+                            mntmExceptSubfilesPtr[0].getSelection()
                             );
                     showSelectMenu();
                 }
@@ -2959,32 +2959,32 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_WithSameOrientation[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmWithSameOrientationPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    mntm_SelectEverything[0].setEnabled(
-                            mntm_WithHiddenData[0].getSelection() ||
-                            mntm_WithSameColour[0].getSelection() ||
-                            mntm_WithSameType[0].getSelection() ||
-                            mntm_WithSameOrientation[0].getSelection() ||
-                            mntm_ExceptSubfiles[0].getSelection()
+                    mntmSelectEverythingPtr[0].setEnabled(
+                            mntmWithHiddenDataPtr[0].getSelection() ||
+                            mntmWithSameColourPtr[0].getSelection() ||
+                            mntmWithSameTypePtr[0].getSelection() ||
+                            mntmWithSameOrientationPtr[0].getSelection() ||
+                            mntmExceptSubfilesPtr[0].getSelection()
                             );
-                    if (mntm_WithSameOrientation[0].getSelection()) {
+                    if (mntmWithSameOrientationPtr[0].getSelection()) {
 
 
                         new ValueDialog(getShell(), I18n.E3D_ANGLE_DIFF, I18n.E3D_THRESH_IN_DEG) {
 
                             @Override
                             public void initializeSpinner() {
-                                this.spn_Value[0].setMinimum(new BigDecimal("-90")); //$NON-NLS-1$
-                                this.spn_Value[0].setMaximum(new BigDecimal("180")); //$NON-NLS-1$
-                                this.spn_Value[0].setValue(sels.getAngle());
+                                this.spnValuePtr[0].setMinimum(new BigDecimal("-90")); //$NON-NLS-1$
+                                this.spnValuePtr[0].setMaximum(new BigDecimal("180")); //$NON-NLS-1$
+                                this.spnValuePtr[0].setValue(sels.getAngle());
                             }
 
                             @Override
                             public void applyValue() {
-                                sels.setAngle(this.spn_Value[0].getValue());
+                                sels.setAngle(this.spnValuePtr[0].getValue());
                             }
                         }.open();
                     }
@@ -2994,31 +2994,31 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_WithAccuracy[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmWithAccuracyPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    mntm_SelectEverything[0].setEnabled(
-                            mntm_WithHiddenData[0].getSelection() ||
-                            mntm_WithSameColour[0].getSelection() ||
-                            mntm_WithSameType[0].getSelection() ||
-                            mntm_WithSameOrientation[0].getSelection() ||
-                            mntm_ExceptSubfiles[0].getSelection()
+                    mntmSelectEverythingPtr[0].setEnabled(
+                            mntmWithHiddenDataPtr[0].getSelection() ||
+                            mntmWithSameColourPtr[0].getSelection() ||
+                            mntmWithSameTypePtr[0].getSelection() ||
+                            mntmWithSameOrientationPtr[0].getSelection() ||
+                            mntmExceptSubfilesPtr[0].getSelection()
                             );
-                    if (mntm_WithAccuracy[0].getSelection()) {
+                    if (mntmWithAccuracyPtr[0].getSelection()) {
 
                         new ValueDialog(getShell(), I18n.E3D_SET_ACCURACY, I18n.E3D_THRESH_IN_LDU) {
 
                             @Override
                             public void initializeSpinner() {
-                                this.spn_Value[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
-                                this.spn_Value[0].setMaximum(new BigDecimal("1000")); //$NON-NLS-1$
-                                this.spn_Value[0].setValue(sels.getEqualDistance());
+                                this.spnValuePtr[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
+                                this.spnValuePtr[0].setMaximum(new BigDecimal("1000")); //$NON-NLS-1$
+                                this.spnValuePtr[0].setValue(sels.getEqualDistance());
                             }
 
                             @Override
                             public void applyValue() {
-                                sels.setEqualDistance(this.spn_Value[0].getValue());
+                                sels.setEqualDistance(this.spnValuePtr[0].getValue());
                             }
                         }.open();
                     }
@@ -3027,23 +3027,23 @@ public class Editor3DWindow extends Editor3DDesign {
             });
             regainFocus();
         });
-        WidgetUtil(mntm_WithHiddenData[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmWithHiddenDataPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    mntm_SelectEverything[0].setEnabled(
-                            mntm_WithHiddenData[0].getSelection() ||
-                            mntm_WithSameColour[0].getSelection() ||
-                            mntm_WithSameType[0].getSelection() ||
-                            mntm_WithSameOrientation[0].getSelection() ||
-                            mntm_ExceptSubfiles[0].getSelection()
+                    mntmSelectEverythingPtr[0].setEnabled(
+                            mntmWithHiddenDataPtr[0].getSelection() ||
+                            mntmWithSameColourPtr[0].getSelection() ||
+                            mntmWithSameTypePtr[0].getSelection() ||
+                            mntmWithSameOrientationPtr[0].getSelection() ||
+                            mntmExceptSubfilesPtr[0].getSelection()
                             );
                     showSelectMenu();
                 }
             });
             regainFocus();
         });
-        WidgetUtil(mntm_WithWholeSubfiles[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmWithWholeSubfilesPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3052,7 +3052,7 @@ public class Editor3DWindow extends Editor3DDesign {
             });
             regainFocus();
         });
-        WidgetUtil(mntm_WithAdjacency[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmWithAdjacencyPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3061,24 +3061,24 @@ public class Editor3DWindow extends Editor3DDesign {
             });
             regainFocus();
         });
-        WidgetUtil(mntm_ExceptSubfiles[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmExceptSubfilesPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    mntm_SelectEverything[0].setEnabled(
-                            mntm_WithHiddenData[0].getSelection() ||
-                            mntm_WithSameColour[0].getSelection() ||
-                            mntm_WithSameType[0].getSelection() ||
-                            mntm_WithSameOrientation[0].getSelection() ||
-                            mntm_ExceptSubfiles[0].getSelection()
+                    mntmSelectEverythingPtr[0].setEnabled(
+                            mntmWithHiddenDataPtr[0].getSelection() ||
+                            mntmWithSameColourPtr[0].getSelection() ||
+                            mntmWithSameTypePtr[0].getSelection() ||
+                            mntmWithSameOrientationPtr[0].getSelection() ||
+                            mntmExceptSubfilesPtr[0].getSelection()
                             );
-                    mntm_WithWholeSubfiles[0].setEnabled(!mntm_ExceptSubfiles[0].getSelection());
+                    mntmWithWholeSubfilesPtr[0].setEnabled(!mntmExceptSubfilesPtr[0].getSelection());
                     showSelectMenu();
                 }
             });
             regainFocus();
         });
-        WidgetUtil(mntm_StopAtEdges[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmStopAtEdgesPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3087,7 +3087,7 @@ public class Editor3DWindow extends Editor3DDesign {
             });
             regainFocus();
         });
-        WidgetUtil(mntm_SAllTypes[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSAllTypesPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3097,30 +3097,21 @@ public class Editor3DWindow extends Editor3DDesign {
             });
             regainFocus();
         });
-        WidgetUtil(mntm_SNothing[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSNothingPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
-                    mntm_SVertices[0].setSelection(false);
-                    mntm_SLines[0].setSelection(false);
-                    mntm_STriangles[0].setSelection(false);
-                    mntm_SQuads[0].setSelection(false);
-                    mntm_SCLines[0].setSelection(false);
+                    mntmSVerticesPtr[0].setSelection(false);
+                    mntmSLinesPtr[0].setSelection(false);
+                    mntmSTrianglesPtr[0].setSelection(false);
+                    mntmSQuadsPtr[0].setSelection(false);
+                    mntmSCLinesPtr[0].setSelection(false);
                     showSelectMenu();
                 }
             });
             regainFocus();
         });
-        WidgetUtil(mntm_STriangles[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    showSelectMenu();
-                }
-            });
-            regainFocus();
-        });
-        WidgetUtil(mntm_SQuads[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSTrianglesPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3129,7 +3120,7 @@ public class Editor3DWindow extends Editor3DDesign {
             });
             regainFocus();
         });
-        WidgetUtil(mntm_SCLines[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSQuadsPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3138,7 +3129,7 @@ public class Editor3DWindow extends Editor3DDesign {
             });
             regainFocus();
         });
-        WidgetUtil(mntm_SVertices[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSCLinesPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3147,7 +3138,16 @@ public class Editor3DWindow extends Editor3DDesign {
             });
             regainFocus();
         });
-        WidgetUtil(mntm_SLines[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSVerticesPtr[0]).addSelectionListener(e -> {
+            Display.getCurrent().asyncExec(new Runnable() {
+                @Override
+                public void run() {
+                    showSelectMenu();
+                }
+            });
+            regainFocus();
+        });
+        WidgetUtil(mntmSLinesPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3157,7 +3157,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SelectEverything[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectEverythingPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -3174,7 +3174,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SelectConnected[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectConnectedPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -3191,7 +3191,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SelectTouching[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectTouchingPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -3208,7 +3208,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SelectIsolatedVertices[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectIsolatedVerticesPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3228,7 +3228,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Split[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSplitPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3247,7 +3247,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SplitNTimes[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSplitNTimesPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3260,14 +3260,14 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                 @Override
                                 public void initializeSpinner() {
-                                    this.spn_Value[0].setMinimum(2);
-                                    this.spn_Value[0].setMaximum(1000);
-                                    this.spn_Value[0].setValue(2);
+                                    this.spnValuePtr[0].setMinimum(2);
+                                    this.spnValuePtr[0].setMaximum(1000);
+                                    this.spnValuePtr[0].setValue(2);
                                 }
 
                                 @Override
                                 public void applyValue() {
-                                    frac[0] = this.spn_Value[0].getValue();
+                                    frac[0] = this.spnValuePtr[0].getValue();
                                 }
                             }.open() == OK) {
 
@@ -3284,7 +3284,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Smooth[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSmoothPtr[0]).addSelectionListener(e -> {
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
                 public void run() {
@@ -3307,7 +3307,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_MergeToAverage[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmMergeToAveragePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3320,7 +3320,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_MergeToLastSelected[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmMergeToLastSelectedPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3333,7 +3333,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_MergeToNearestVertex[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmMergeToNearestVertexPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3346,7 +3346,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_MergeToNearestEdge[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmMergeToNearestEdgePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3359,7 +3359,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_MergeToNearestEdgeSplit[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmMergeToNearestEdgeSplitPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3372,7 +3372,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(mntm_MergeToNearestFace[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmMergeToNearestFacePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3386,7 +3386,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_MergeToNearestFaceDir[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmMergeToNearestFaceDirPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3407,7 +3407,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SelectSingleVertex[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectSingleVertexPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -3427,7 +3427,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_setXYZ[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSetXYZPtr[0]).addSelectionListener(e -> {
             final boolean noReset = !Cocoa.checkCtrlOrCmdPressed(e.stateMask);
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
@@ -3484,18 +3484,18 @@ public class Editor3DWindow extends Editor3DDesign {
                                 boolean doMoveOnLine1 = false;
                                 BigDecimal s1 = BigDecimal.ZERO;
                                 Vector3d v11 = CoordinatesDialog.getStart();
-                                if (CoordinatesDialog.isX() && delta1.X.compareTo(BigDecimal.ZERO) != 0) {
+                                if (CoordinatesDialog.isX() && delta1.x.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine1 = true;
-                                    s1 = v21.X.subtract(CoordinatesDialog.getStart().X).divide(delta1.X, Threshold.MC);
-                                } else if (CoordinatesDialog.isY() && delta1.Y.compareTo(BigDecimal.ZERO) != 0) {
+                                    s1 = v21.xp.subtract(CoordinatesDialog.getStart().x).divide(delta1.x, Threshold.MC);
+                                } else if (CoordinatesDialog.isY() && delta1.y.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine1 = true;
-                                    s1 = v21.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta1.Y, Threshold.MC);
-                                } else if (CoordinatesDialog.isZ() && delta1.Z.compareTo(BigDecimal.ZERO) != 0) {
+                                    s1 = v21.yp.subtract(CoordinatesDialog.getStart().y).divide(delta1.y, Threshold.MC);
+                                } else if (CoordinatesDialog.isZ() && delta1.z.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine1 = true;
-                                    s1 = v21.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta1.Z, Threshold.MC);
+                                    s1 = v21.zp.subtract(CoordinatesDialog.getStart().z).divide(delta1.z, Threshold.MC);
                                 }
                                 if (doMoveOnLine1) {
-                                    CoordinatesDialog.setVertex(new Vertex(v11.X.add(delta1.X.multiply(s1)), v11.Y.add(delta1.Y.multiply(s1)), v11.Z.add(delta1.Z.multiply(s1))));
+                                    CoordinatesDialog.setVertex(new Vertex(v11.x.add(delta1.x.multiply(s1)), v11.y.add(delta1.y.multiply(s1)), v11.z.add(delta1.z.multiply(s1))));
                                     CoordinatesDialog.setX(true);
                                     CoordinatesDialog.setY(true);
                                     CoordinatesDialog.setZ(true);
@@ -3519,19 +3519,19 @@ public class Editor3DWindow extends Editor3DDesign {
                                 boolean doMoveOnLine2 = false;
                                 BigDecimal s2 = BigDecimal.ZERO;
                                 Vector3d v12 = CoordinatesDialog.getStart();
-                                if (CoordinatesDialog.isX() && delta2.X.compareTo(BigDecimal.ZERO) != 0) {
+                                if (CoordinatesDialog.isX() && delta2.x.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine2 = true;
-                                    s2 = v22.X.subtract(CoordinatesDialog.getStart().X).divide(delta2.X, Threshold.MC);
-                                } else if (CoordinatesDialog.isY() && delta2.Y.compareTo(BigDecimal.ZERO) != 0) {
+                                    s2 = v22.xp.subtract(CoordinatesDialog.getStart().x).divide(delta2.x, Threshold.MC);
+                                } else if (CoordinatesDialog.isY() && delta2.y.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine2 = true;
-                                    s2 = v22.Y.subtract(CoordinatesDialog.getStart().Y).divide(delta2.Y, Threshold.MC);
-                                } else if (CoordinatesDialog.isZ() && delta2.Z.compareTo(BigDecimal.ZERO) != 0) {
+                                    s2 = v22.yp.subtract(CoordinatesDialog.getStart().y).divide(delta2.y, Threshold.MC);
+                                } else if (CoordinatesDialog.isZ() && delta2.z.compareTo(BigDecimal.ZERO) != 0) {
                                     doMoveOnLine2 = true;
-                                    s2 = v22.Z.subtract(CoordinatesDialog.getStart().Z).divide(delta2.Z, Threshold.MC);
+                                    s2 = v22.zp.subtract(CoordinatesDialog.getStart().z).divide(delta2.z, Threshold.MC);
                                 }
-                                BigDecimal xP = !CoordinatesDialog.isX() ? v12.X.add(delta2.X.multiply(s2)) : v22.X;
-                                BigDecimal yP = !CoordinatesDialog.isY() ? v12.Y.add(delta2.Y.multiply(s2)) : v22.Y;
-                                BigDecimal zP = !CoordinatesDialog.isZ() ? v12.Z.add(delta2.Z.multiply(s2)) : v22.Z;
+                                BigDecimal xP = !CoordinatesDialog.isX() ? v12.x.add(delta2.x.multiply(s2)) : v22.xp;
+                                BigDecimal yP = !CoordinatesDialog.isY() ? v12.y.add(delta2.y.multiply(s2)) : v22.yp;
+                                BigDecimal zP = !CoordinatesDialog.isZ() ? v12.z.add(delta2.z.multiply(s2)) : v22.zp;
                                 if (doMoveOnLine2) {
                                     CoordinatesDialog.setVertex(new Vertex(xP, yP, zP));
                                     CoordinatesDialog.setX(true);
@@ -3570,7 +3570,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Translate[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmTranslatePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())
@@ -3606,7 +3606,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Rotate[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmRotatePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3670,7 +3670,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Scale[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmScalePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -3732,9 +3732,9 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_PartReview[0]).addSelectionListener(new WidgetSelectionListener() {
+        WidgetUtil(mntmPartReviewPtr[0]).addSelectionListener(new WidgetSelectionListener() {
 
-            final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
+            final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
             final Pattern pattern = Pattern.compile("\r?\n|\r"); //$NON-NLS-1$
 
             @Override
@@ -3813,14 +3813,14 @@ public class Editor3DWindow extends Editor3DDesign {
                                         Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
                                         getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                         getShell().update();
-                                        treeItem_Project[0].setText(fileName);
-                                        treeItem_Project[0].setData(Project.getProjectPath());
+                                        treeItemProjectPtr[0].setText(fileName);
+                                        treeItemProjectPtr[0].setData(Project.getProjectPath());
 
-                                        treeItem_ProjectParts[0].getItems().clear();
-                                        treeItem_ProjectSubparts[0].getItems().clear();
-                                        treeItem_ProjectPrimitives[0].getItems().clear();
+                                        treeItemProjectPartsPtr[0].getItems().clear();
+                                        treeItemProjectSubpartsPtr[0].getItems().clear();
+                                        treeItemProjectPrimitivesPtr[0].getItems().clear();
 
-                                        treeItem_OfficialParts[0].setData(null);
+                                        treeItemOfficialPartsPtr[0].setData(null);
 
                                         list.add(0, new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator + oldFileName2);
                                         list.add(1, source);
@@ -3851,35 +3851,35 @@ public class Editor3DWindow extends Editor3DDesign {
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "parts" + File.separator + "s" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectSubparts[0]);
+                                                n = new TreeItem(treeItemProjectSubpartsPtr[0]);
                                                 df.setType(DatType.SUBPART);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator);
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "p" + File.separator).toString();  //$NON-NLS-1$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectPrimitives[0]);
+                                                n = new TreeItem(treeItemProjectPrimitivesPtr[0]);
                                                 df.setType(DatType.PRIMITIVE);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_48_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator + "48" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 2, File.separator + "p" + File.separator  + "48" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectPrimitives48[0]);
+                                                n = new TreeItem(treeItemProjectPrimitives48Ptr[0]);
                                                 df.setType(DatType.PRIMITIVE48);
                                             } else if (source.contains("0 !LDRAW_ORG Unofficial_8_Primitive")) { //$NON-NLS-1$
                                                 int ind = fileName.lastIndexOf(File.separator + "8" + File.separator); //$NON-NLS-1$
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "p" + File.separator  + "8" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectPrimitives8[0]);
+                                                n = new TreeItem(treeItemProjectPrimitives8Ptr[0]);
                                                 df.setType(DatType.PRIMITIVE8);
                                             } else {
                                                 int ind = fileName.lastIndexOf(File.separator);
                                                 if (ind >= 0) {
                                                     fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "parts" + File.separator).toString();  //$NON-NLS-1$
                                                 }
-                                                n = new TreeItem(treeItem_ProjectParts[0]);
+                                                n = new TreeItem(treeItemProjectPartsPtr[0]);
                                                 df.setType(DatType.PART);
                                             }
 
@@ -3911,9 +3911,9 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                         resetSearch();
 
-                                        treeItem_Project[0].getParent().build();
-                                        treeItem_Project[0].getParent().redraw();
-                                        treeItem_Project[0].getParent().update();
+                                        treeItemProjectPtr[0].getParent().build();
+                                        treeItemProjectPtr[0].getParent().redraw();
+                                        treeItemProjectPtr[0].getParent().update();
 
                                         Project.setFileToEdit(main);
 
@@ -3925,7 +3925,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                         int state = 0;
                                         for (OpenGLRenderer renderer : getRenders()) {
                                             Composite3D c3d = renderer.getC3D();
-                                            WidgetSelectionHelper.unselectAllChildButtons(c3d.mnu_renderMode);
+                                            WidgetSelectionHelper.unselectAllChildButtons(c3d.mnuRenderMode);
                                             if (state == 0) {
                                                 c3d.mntmNoBFC[0].setSelection(true);
                                                 c3d.getMntmStudLogo().setSelection(true);
@@ -3984,7 +3984,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (String line : lines) {
                     line = line.trim();
                     if (line.startsWith("1 ")) { //$NON-NLS-1$
-                        final String[] dataSegments = WHITESPACE.split(line.trim());
+                        final String[] dataSegments = whitespace.split(line.trim());
                         if (dataSegments.length > 14) {
                             StringBuilder sb = new StringBuilder();
                             for (int s = 14; s < dataSegments.length - 1; s++) {
@@ -4034,7 +4034,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        WidgetUtil(mntm_Edger2[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmEdger2Ptr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4067,7 +4067,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     vm.getLines().size() - oldLineCount - unmatchedLines,
                                     unmatchedLines};
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                            formatter.setLocale(MyLanguage.LOCALE);
+                            formatter.setLocale(MyLanguage.locale);
                             formatter.applyPattern(I18n.EDGER_VERBOSE_MSG);
 
                             messageBox.setMessage(formatter.format(messageArguments));
@@ -4081,12 +4081,12 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_PrimGen2[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmPrimGen2Ptr[0]).addSelectionListener(e -> {
             new PrimGen2Dialog(getShell()).open();
             regainFocus();
         });
 
-        WidgetUtil(mntm_Rectifier[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmRectifierPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4107,7 +4107,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     result[3]
                             };
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                            formatter.setLocale(MyLanguage.LOCALE);
+                            formatter.setLocale(MyLanguage.locale);
                             formatter.applyPattern(I18n.RECTIFIER_VERBOSE_MSG);
 
                             messageBox.setMessage(formatter.format(messageArguments));
@@ -4121,7 +4121,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Isecalc[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmIsecalcPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4137,7 +4137,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SlicerPro[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSlicerProPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4153,7 +4153,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Intersector[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmIntersectorPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4169,7 +4169,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SlantingMatrixProjector[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSlantingMatrixProjectorPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4185,7 +4185,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Lines2Pattern[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmLines2PatternPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4201,7 +4201,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_PathTruder[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmPathTruderPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4217,7 +4217,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_YTruder[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmYTruderPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4233,7 +4233,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SymSplitter[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSymSplitterPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4249,7 +4249,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Unificator[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmUnificatorPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
@@ -4265,13 +4265,13 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_RingsAndCones[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmRingsAndConesPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
                     if (new RingsAndConesDialog(getShell(), ris).open() == IDialogConstants.OK_ID) {
                         c3d.getLockableDatFileReference().getVertexManager().addSnapshot();
-                        RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), c3d.getLockableDatFileReference(), cmp_Primitives[0].getPrimitives(), ris, true);
+                        RingsAndCones.solve(Editor3DWindow.getWindow().getShell(), c3d.getLockableDatFileReference(), cmpPrimitivesPtr[0].getPrimitives(), ris, true);
                     }
                     regainFocus();
                     return;
@@ -4280,7 +4280,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_TJunctionFinder[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmTJunctionFinderPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
@@ -4297,7 +4297,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_MeshReducer[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmMeshReducerPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
@@ -4314,7 +4314,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Txt2Dat[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmTxt2DatPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -4386,7 +4386,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         // MARK Options
 
-        WidgetUtil(mntm_UserConfigSave[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmUserConfigSavePtr[0]).addSelectionListener(e -> {
             FileDialog fd = new FileDialog(getShell(), SWT.SAVE);
             fd.setText(I18n.E3D_USER_CONFIG_SELECT_SAVE);
             fd.setOverwrite(true);
@@ -4407,9 +4407,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
                 winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights());
-                winState.setPrimitiveZoom(cmp_Primitives[0].getZoom());
-                winState.setPrimitiveZoomExponent(cmp_Primitives[0].getZoom_exponent());
-                winState.setPrimitiveViewport(cmp_Primitives[0].getViewport2());
+                winState.setPrimitiveZoom(cmpPrimitivesPtr[0].getZoom());
+                winState.setPrimitiveZoomExponent(cmpPrimitivesPtr[0].getZoom_exponent());
+                winState.setPrimitiveViewport(cmpPrimitivesPtr[0].getViewport2());
 
                 WorkbenchManager.getPrimitiveCache().setPrimitiveCache(CompositePrimitive.getCache());
                 WorkbenchManager.getPrimitiveCache().setPrimitiveFileCache(CompositePrimitive.getFileCache());
@@ -4425,7 +4425,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        WidgetUtil(mntm_UserConfigLoad[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmUserConfigLoadPtr[0]).addSelectionListener(e -> {
 
             FileDialog fd = new FileDialog(getShell(), SWT.OPEN);
             fd.setText(I18n.E3D_USER_CONFIG_SELECT_LOAD);
@@ -4476,7 +4476,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        WidgetUtil(mntm_ResetSettingsOnRestart[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmResetSettingsOnRestartPtr[0]).addSelectionListener(e -> {
             MessageBox messageBox = new MessageBox(getShell(), SWT.ICON_WARNING | SWT.OK | SWT.CANCEL);
             messageBox.setText(I18n.DIALOG_WARNING);
             messageBox.setMessage(I18n.E3D_DELETE_CONFIG);
@@ -4489,13 +4489,13 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_Options[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmOptionsPtr[0]).addSelectionListener(e -> {
             OptionsDialog dialog = new OptionsDialog(getShell());
             dialog.run();
             regainFocus();
         });
 
-        WidgetUtil(mntm_SelectAnotherLDConfig[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSelectAnotherLDConfigPtr[0]).addSelectionListener(e -> {
             FileDialog fd = new FileDialog(sh, SWT.OPEN);
             fd.setText(I18n.E3D_OPEN_LDCONFIG);
             fd.setFilterPath(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
@@ -4510,17 +4510,17 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_DownloadLDConfig[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmDownloadLDConfigPtr[0]).addSelectionListener(e -> {
             LDConfigUtils.downloadLDConfig();
             regainFocus();
         });
 
-        WidgetUtil(mntm_DownloadCategories[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmDownloadCategoriesPtr[0]).addSelectionListener(e -> {
             CategoriesUtils.downloadCategories();
             regainFocus();
         });
 
-        WidgetUtil(mntm_SavePalette[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSavePalettePtr[0]).addSelectionListener(e -> {
 
             FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.SAVE);
 
@@ -4568,7 +4568,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_LoadPalette[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmLoadPalettePtr[0]).addSelectionListener(e -> {
 
             FileDialog dlg = new FileDialog(Editor3DWindow.getWindow().getShell(), SWT.OPEN);
 
@@ -4628,7 +4628,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SetPaletteSize[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSetPaletteSizePtr[0]).addSelectionListener(e -> {
 
             final List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
 
@@ -4637,14 +4637,14 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 @Override
                 public void initializeSpinner() {
-                    this.spn_Value[0].setMinimum(1);
-                    this.spn_Value[0].setMaximum(100);
-                    this.spn_Value[0].setValue(colours.size());
+                    this.spnValuePtr[0].setMinimum(1);
+                    this.spnValuePtr[0].setMaximum(100);
+                    this.spnValuePtr[0].setValue(colours.size());
                 }
 
                 @Override
                 public void applyValue() {
-                    frac[0] = this.spn_Value[0].getValue();
+                    frac[0] = this.spnValuePtr[0].getValue();
                 }
             }.open() == OK) {
 
@@ -4676,7 +4676,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_ResetPalette[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmResetPalettePtr[0]).addSelectionListener(e -> {
 
             final List<GColour> colours = WorkbenchManager.getUserSettingState().getUserPalette();
             colours.clear();
@@ -4694,7 +4694,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_UploadLogs[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmUploadLogsPtr[0]).addSelectionListener(e -> {
 
             String source = ""; //$NON-NLS-1$
             {
@@ -4773,10 +4773,10 @@ public class Editor3DWindow extends Editor3DDesign {
                 UTF8BufferedReader b12 = null;
                 UTF8BufferedReader b22 = null;
 
-                if (mntm_UploadLogs[0].getData() == null) {
-                    mntm_UploadLogs[0].setData(0);
+                if (mntmUploadLogsPtr[0].getData() == null) {
+                    mntmUploadLogsPtr[0].setData(0);
                 } else {
-                    int uploadCount = (int) mntm_UploadLogs[0].getData();
+                    int uploadCount = (int) mntmUploadLogsPtr[0].getData();
                     uploadCount++;
                     if (uploadCount > 16) {
                         MessageBox messageBox3 = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
@@ -4786,7 +4786,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         regainFocus();
                         return;
                     }
-                    mntm_UploadLogs[0].setData(uploadCount);
+                    mntmUploadLogsPtr[0].setData(uploadCount);
                 }
 
                 try {
@@ -4843,7 +4843,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         messageBox4.setText(I18n.DIALOG_INFO);
                         Object[] messageArguments = {response.readLine()};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.E3D_LOG_UPLOAD_SUCCESS);
                         messageBox4.setMessage(formatter.format(messageArguments));
                         messageBox4.open();
@@ -4874,35 +4874,35 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_AntiAliasing[0]).addSelectionListener(e -> {
-            WorkbenchManager.getUserSettingState().setAntiAliasing(mntm_AntiAliasing[0].getSelection());
+        WidgetUtil(mntmAntiAliasingPtr[0]).addSelectionListener(e -> {
+            WorkbenchManager.getUserSettingState().setAntiAliasing(mntmAntiAliasingPtr[0].getSelection());
             regainFocus();
         });
 
-        WidgetUtil(mntm_OpenGL33Engine[0]).addSelectionListener(e -> {
-            WorkbenchManager.getUserSettingState().setOpenGL33Engine(mntm_OpenGL33Engine[0].getSelection());
+        WidgetUtil(mntmOpenGL33EnginePtr[0]).addSelectionListener(e -> {
+            WorkbenchManager.getUserSettingState().setOpenGL33Engine(mntmOpenGL33EnginePtr[0].getSelection());
             WorkbenchManager.getUserSettingState().setVulkanEngine(false);
-            if (NLogger.DEBUG) {
-                mntm_VulkanEngine[0].setSelection(false);
+            if (NLogger.debugging) {
+                mntmVulkanEnginePtr[0].setSelection(false);
             }
             regainFocus();
         });
 
-        if (NLogger.DEBUG) WidgetUtil(mntm_VulkanEngine[0]).addSelectionListener(e -> {
-            WorkbenchManager.getUserSettingState().setVulkanEngine(mntm_VulkanEngine[0].getSelection());
+        if (NLogger.debugging) WidgetUtil(mntmVulkanEnginePtr[0]).addSelectionListener(e -> {
+            WorkbenchManager.getUserSettingState().setVulkanEngine(mntmVulkanEnginePtr[0].getSelection());
             WorkbenchManager.getUserSettingState().setOpenGL33Engine(false);
-            mntm_OpenGL33Engine[0].setSelection(false);
+            mntmOpenGL33EnginePtr[0].setSelection(false);
             regainFocus();
         });
 
-        WidgetUtil(mntm_SyncLpeInline[0]).addSelectionListener(e -> {
-            WorkbenchManager.getUserSettingState().getSyncWithLpeInline().set(mntm_SyncLpeInline[0].getSelection());
+        WidgetUtil(mntmSyncLpeInlinePtr[0]).addSelectionListener(e -> {
+            WorkbenchManager.getUserSettingState().getSyncWithLpeInline().set(mntmSyncLpeInlinePtr[0].getSelection());
             regainFocus();
         });
 
         // MARK Merge, split...
 
-        WidgetUtil(mntm_Flip[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmFlipPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -4916,7 +4916,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SubdivideCatmullClark[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSubdivideCatmullClarkPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -4930,7 +4930,7 @@ public class Editor3DWindow extends Editor3DDesign {
             regainFocus();
         });
 
-        WidgetUtil(mntm_SubdivideLoop[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmSubdivideLoopPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
@@ -4945,7 +4945,7 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         // MARK Background PNG
-        WidgetUtil(btn_PngFocus[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPngFocusPtr[0]).addSelectionListener(e -> {
             Composite3D c3d = null;
             for (OpenGLRenderer renderer : renders) {
                 c3d = renderer.getC3D();
@@ -5024,7 +5024,7 @@ public class Editor3DWindow extends Editor3DDesign {
             vm.setSelectedBgPicture(c3d.getLockableDatFileReference().getBackgroundPicture(vm.getSelectedBgPictureIndex()));
             regainFocus();
         });
-        WidgetUtil(btn_PngImage[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPngImagePtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -5083,7 +5083,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        WidgetUtil(btn_PngNext[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPngNextPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
@@ -5116,7 +5116,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        WidgetUtil(btn_PngPrevious[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPngPreviousPtr[0]).addSelectionListener(e -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 DatFile df = c3d.getLockableDatFileReference();
@@ -5149,7 +5149,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
             regainFocus();
         });
-        spn_PngA1[0].addValueChangeListener(spn -> {
+        spnPngA1Ptr[0].addValueChangeListener(spn -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -5190,7 +5190,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        spn_PngA2[0].addValueChangeListener(spn -> {
+        spnPngA2Ptr[0].addValueChangeListener(spn -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -5229,7 +5229,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        spn_PngA3[0].addValueChangeListener(spn -> {
+        spnPngA3Ptr[0].addValueChangeListener(spn -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -5268,7 +5268,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        spn_PngSX[0].addValueChangeListener(spn -> {
+        spnPngSXPtr[0].addValueChangeListener(spn -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -5288,7 +5288,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         updateBgPictureTab();
                     }
 
-                    Vertex newScale = new Vertex(spn.getValue(), png.scale.Y, png.scale.Z);
+                    Vertex newScale = new Vertex(spn.getValue(), png.scale.yp, png.scale.zp);
                     String newText = png.getString(png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
 
                     GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath, View.DUMMY_REFERENCE);
@@ -5308,7 +5308,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        spn_PngSY[0].addValueChangeListener(spn -> {
+        spnPngSYPtr[0].addValueChangeListener(spn -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -5328,7 +5328,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         updateBgPictureTab();
                     }
 
-                    Vertex newScale = new Vertex(png.scale.X, spn.getValue(), png.scale.Z);
+                    Vertex newScale = new Vertex(png.scale.xp, spn.getValue(), png.scale.zp);
                     String newText = png.getString(png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath);
 
                     GDataPNG newPngPicture = new GDataPNG(newText, png.offset, png.angleA, png.angleB, png.angleC, newScale, png.texturePath, View.DUMMY_REFERENCE);
@@ -5340,7 +5340,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        spn_PngX[0].addValueChangeListener(spn -> {
+        spnPngXPtr[0].addValueChangeListener(spn -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -5361,7 +5361,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
 
 
-                    Vertex newOffset = new Vertex(spn.getValue(), png.offset.Y, png.offset.Z);
+                    Vertex newOffset = new Vertex(spn.getValue(), png.offset.yp, png.offset.zp);
                     String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
 
                     GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
@@ -5381,7 +5381,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        spn_PngY[0].addValueChangeListener(spn -> {
+        spnPngYPtr[0].addValueChangeListener(spn -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -5401,7 +5401,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         updateBgPictureTab();
                     }
 
-                    Vertex newOffset = new Vertex(png.offset.X, spn.getValue(), png.offset.Z);
+                    Vertex newOffset = new Vertex(png.offset.xp, spn.getValue(), png.offset.zp);
                     String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
 
                     GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
@@ -5421,7 +5421,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         });
-        spn_PngZ[0].addValueChangeListener(spn -> {
+        spnPngZPtr[0].addValueChangeListener(spn -> {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !Project.getFileToEdit().isReadOnly()) {
@@ -5441,7 +5441,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         updateBgPictureTab();
                     }
 
-                    Vertex newOffset = new Vertex(png.offset.X, png.offset.Y, spn.getValue());
+                    Vertex newOffset = new Vertex(png.offset.xp, png.offset.yp, spn.getValue());
                     String newText = png.getString(newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath);
 
                     GDataPNG newPngPicture = new GDataPNG(newText, newOffset, png.angleA, png.angleB, png.angleC, png.scale, png.texturePath, View.DUMMY_REFERENCE);
@@ -5462,35 +5462,35 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        WidgetUtil(mntm_IconSize1[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmIconSize1Ptr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setIconSize(-1);
             regainFocus();
         });
-        WidgetUtil(mntm_IconSize2[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmIconSize2Ptr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setIconSize(0);
             regainFocus();
         });
-        WidgetUtil(mntm_IconSize3[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmIconSize3Ptr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setIconSize(1);
             regainFocus();
         });
-        WidgetUtil(mntm_IconSize4[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmIconSize4Ptr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setIconSize(2);
             regainFocus();
         });
-        WidgetUtil(mntm_IconSize5[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmIconSize5Ptr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setIconSize(3);
             regainFocus();
         });
-        WidgetUtil(mntm_IconSize6[0]).addSelectionListener(e -> {
+        WidgetUtil(mntmIconSize6Ptr[0]).addSelectionListener(e -> {
             WorkbenchManager.getUserSettingState().setIconSize(4);
             regainFocus();
         });
 
         Project.createDefault();
-        treeItem_Project[0].setData(Project.getProjectPath());
-        treeItem_Official[0].setData(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
-        treeItem_Unofficial[0].setData(WorkbenchManager.getUserSettingState().getUnofficialFolderPath());
+        treeItemProjectPtr[0].setData(Project.getProjectPath());
+        treeItemOfficialPtr[0].setData(WorkbenchManager.getUserSettingState().getLdrawFolderPath());
+        treeItemUnofficialPtr[0].setData(WorkbenchManager.getUserSettingState().getUnofficialFolderPath());
 
         try {
             new ProgressMonitorDialog(Editor3DWindow.getWindow().getShell()).run(true, false, new IRunnableWithProgress() {
@@ -5500,16 +5500,16 @@ public class Editor3DWindow extends Editor3DDesign {
                     Display.getDefault().asyncExec(new Runnable() {
                         @Override
                         public void run() {
-                            LibraryManager.readUnofficialParts(treeItem_UnofficialParts[0]);
-                            LibraryManager.readUnofficialSubparts(treeItem_UnofficialSubparts[0]);
-                            LibraryManager.readUnofficialPrimitives(treeItem_UnofficialPrimitives[0]);
-                            LibraryManager.readUnofficialHiResPrimitives(treeItem_UnofficialPrimitives48[0]);
-                            LibraryManager.readUnofficialLowResPrimitives(treeItem_UnofficialPrimitives8[0]);
-                            LibraryManager.readOfficialParts(treeItem_OfficialParts[0]);
-                            LibraryManager.readOfficialSubparts(treeItem_OfficialSubparts[0]);
-                            LibraryManager.readOfficialPrimitives(treeItem_OfficialPrimitives[0]);
-                            LibraryManager.readOfficialHiResPrimitives(treeItem_OfficialPrimitives48[0]);
-                            LibraryManager.readOfficialLowResPrimitives(treeItem_OfficialPrimitives8[0]);
+                            LibraryManager.readUnofficialParts(treeItemUnofficialPartsPtr[0]);
+                            LibraryManager.readUnofficialSubparts(treeItemUnofficialSubpartsPtr[0]);
+                            LibraryManager.readUnofficialPrimitives(treeItemUnofficialPrimitivesPtr[0]);
+                            LibraryManager.readUnofficialHiResPrimitives(treeItemUnofficialPrimitives48Ptr[0]);
+                            LibraryManager.readUnofficialLowResPrimitives(treeItemUnofficialPrimitives8Ptr[0]);
+                            LibraryManager.readOfficialParts(treeItemOfficialPartsPtr[0]);
+                            LibraryManager.readOfficialSubparts(treeItemOfficialSubpartsPtr[0]);
+                            LibraryManager.readOfficialPrimitives(treeItemOfficialPrimitivesPtr[0]);
+                            LibraryManager.readOfficialHiResPrimitives(treeItemOfficialPrimitives48Ptr[0]);
+                            LibraryManager.readOfficialLowResPrimitives(treeItemOfficialPrimitives8Ptr[0]);
                         }
                     });
                 }
@@ -5520,11 +5520,11 @@ public class Editor3DWindow extends Editor3DDesign {
             throw new LDPartEditorException(ie);
         }
 
-        tabFolder_OpenDatFiles[0].getItem(0).setData(View.DUMMY_DATFILE);
-        tabFolder_OpenDatFiles[0].getItem(1).setData(Project.getFileToEdit());
+        tabFolderOpenDatFilesPtr[0].getItem(0).setData(View.DUMMY_DATFILE);
+        tabFolderOpenDatFilesPtr[0].getItem(1).setData(Project.getFileToEdit());
         Project.addOpenedFile(Project.getFileToEdit());
 
-        tabFolder_OpenDatFiles[0].addCTabFolder2Listener(new CTabFolder2Listener() {
+        tabFolderOpenDatFilesPtr[0].addCTabFolder2Listener(new CTabFolder2Listener() {
 
             @Override
             public void showList(CTabFolderEvent event) {}
@@ -5558,15 +5558,15 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        WidgetUtil(tabFolder_OpenDatFiles[0]).addSelectionListener(e -> {
+        WidgetUtil(tabFolderOpenDatFilesPtr[0]).addSelectionListener(e -> {
 
             if (Editor3DWindow.getNoSyncDeadlock().compareAndSet(false, true)) {
-                if (tabFolder_OpenDatFiles[0].getData() != null) {
+                if (tabFolderOpenDatFilesPtr[0].getData() != null) {
                     Editor3DWindow.getNoSyncDeadlock().set(false);
                     return;
                 }
                 DatFile df = null;
-                if (tabFolder_OpenDatFiles[0].getSelection() != null && (df = (DatFile) tabFolder_OpenDatFiles[0].getSelection().getData()) != null) {
+                if (tabFolderOpenDatFilesPtr[0].getSelection() != null && (df = (DatFile) tabFolderOpenDatFilesPtr[0].getSelection().getData()) != null) {
 
                     openFileIn3DEditor(df);
                     if (!df.equals(View.DUMMY_DATFILE) && WorkbenchManager.getUserSettingState().isSyncingTabs()) {
@@ -5606,10 +5606,10 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
 
-        WidgetUtil(btn_SyncTabs[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setSyncingTabs(btn_SyncTabs[0].getSelection()));
+        WidgetUtil(btnSyncTabsPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setSyncingTabs(btnSyncTabsPtr[0].getSelection()));
 
-        txt_Search[0].setText(" "); //$NON-NLS-1$
-        txt_Search[0].setText(""); //$NON-NLS-1$
+        txtSearchPtr[0].setText(" "); //$NON-NLS-1$
+        txtSearchPtr[0].setText(""); //$NON-NLS-1$
 
         Project.getFileToEdit().setLastSelectedComposite(Editor3DWindow.renders.get(0).getC3D());
         new EditorTextWindow().run(Project.getFileToEdit(), true);
@@ -5623,7 +5623,7 @@ public class Editor3DWindow extends Editor3DDesign {
             Project.addOpenedFile(fileToOpen);
             Project.setFileToEdit(fileToOpen);
             updateTabs();
-            tabFolder_OpenDatFiles[0].setSelection(2);
+            tabFolderOpenDatFilesPtr[0].setSelection(2);
             Project.getFileToEdit().parseForData(true);
             Project.getFileToEdit().setLastSelectedComposite(Editor3DWindow.renders.get(0).getC3D());
             for (OpenGLRenderer renderer : renders) {
@@ -5635,7 +5635,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         // Dispose all resources (never delete this!)
         CSG.executorService.shutdown();
-        cmp_Primitives[0].getOpenGL().dispose();
+        cmpPrimitivesPtr[0].getOpenGL().dispose();
         ResourceManager.dispose();
         SWTResourceManager.dispose();
         // Dispose the display (never delete this, too!)
@@ -5721,61 +5721,61 @@ public class Editor3DWindow extends Editor3DDesign {
     public void setAddState(int type) {
         if (isAddingSomething()) {
             resetAddState();
-            btn_AddVertex[0].setSelection(false);
-            btn_AddLine[0].setSelection(false);
-            btn_AddTriangle[0].setSelection(false);
-            btn_AddQuad[0].setSelection(false);
-            btn_AddCondline[0].setSelection(false);
-            btn_AddDistance[0].setSelection(false);
-            btn_AddProtractor[0].setSelection(false);
-            btn_AddPrimitive[0].setSelection(false);
+            btnAddVertexPtr[0].setSelection(false);
+            btnAddLinePtr[0].setSelection(false);
+            btnAddTrianglePtr[0].setSelection(false);
+            btnAddQuadPtr[0].setSelection(false);
+            btnAddCondlinePtr[0].setSelection(false);
+            btnAddDistancePtr[0].setSelection(false);
+            btnAddProtractorPtr[0].setSelection(false);
+            btnAddPrimitivePtr[0].setSelection(false);
             setAddingSomething(false);
         }
         switch (type) {
         case 0:
-            btn_AddComment[0].notifyListeners(SWT.Selection, new Event());
+            btnAddCommentPtr[0].notifyListeners(SWT.Selection, new Event());
             break;
         case 1:
             setAddingVertices(!isAddingVertices());
-            btn_AddVertex[0].setSelection(isAddingVertices());
+            btnAddVertexPtr[0].setSelection(isAddingVertices());
             setAddingSomething(isAddingVertices());
-            clickSingleBtn(btn_AddVertex[0]);
+            clickSingleBtn(btnAddVertexPtr[0]);
             break;
         case 2:
             setAddingLines(!isAddingLines());
-            btn_AddLine[0].setSelection(isAddingLines());
+            btnAddLinePtr[0].setSelection(isAddingLines());
             setAddingSomething(isAddingLines());
-            clickSingleBtn(btn_AddLine[0]);
+            clickSingleBtn(btnAddLinePtr[0]);
             break;
         case 3:
             setAddingTriangles(!isAddingTriangles());
-            btn_AddTriangle[0].setSelection(isAddingTriangles());
+            btnAddTrianglePtr[0].setSelection(isAddingTriangles());
             setAddingSomething(isAddingTriangles());
-            clickSingleBtn(btn_AddTriangle[0]);
+            clickSingleBtn(btnAddTrianglePtr[0]);
             break;
         case 4:
             setAddingQuads(!isAddingQuads());
-            btn_AddQuad[0].setSelection(isAddingQuads());
+            btnAddQuadPtr[0].setSelection(isAddingQuads());
             setAddingSomething(isAddingQuads());
-            clickSingleBtn(btn_AddQuad[0]);
+            clickSingleBtn(btnAddQuadPtr[0]);
             break;
         case 5:
             setAddingCondlines(!isAddingCondlines());
-            btn_AddCondline[0].setSelection(isAddingCondlines());
+            btnAddCondlinePtr[0].setSelection(isAddingCondlines());
             setAddingSomething(isAddingCondlines());
-            clickSingleBtn(btn_AddCondline[0]);
+            clickSingleBtn(btnAddCondlinePtr[0]);
             break;
         case 6:
             setAddingDistance(!isAddingDistance());
-            btn_AddDistance[0].setSelection(isAddingDistance());
+            btnAddDistancePtr[0].setSelection(isAddingDistance());
             setAddingSomething(isAddingDistance());
-            clickSingleBtn(btn_AddDistance[0]);
+            clickSingleBtn(btnAddDistancePtr[0]);
             break;
         case 7:
             setAddingProtractor(!isAddingProtractor());
-            btn_AddProtractor[0].setSelection(isAddingProtractor());
+            btnAddProtractorPtr[0].setSelection(isAddingProtractor());
             setAddingSomething(isAddingProtractor());
-            clickSingleBtn(btn_AddProtractor[0]);
+            clickSingleBtn(btnAddProtractorPtr[0]);
             break;
         default:
             break;
@@ -5784,37 +5784,37 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void toggleInsertAtCursor() {
         setInsertingAtCursorPosition(!isInsertingAtCursorPosition());
-        btn_InsertAtCursorPosition[0].setSelection(isInsertingAtCursorPosition());
-        clickSingleBtn(btn_InsertAtCursorPosition[0]);
+        btnInsertAtCursorPositionPtr[0].setSelection(isInsertingAtCursorPosition());
+        clickSingleBtn(btnInsertAtCursorPositionPtr[0]);
     }
 
     public void toggleMoveAdjacentData() {
         setMovingAdjacentData(!isMovingAdjacentData());
-        btn_MoveAdjacentData[0].setSelection(isMovingAdjacentData());
-        clickSingleBtn(btn_MoveAdjacentData[0]);
+        btnMoveAdjacentDataPtr[0].setSelection(isMovingAdjacentData());
+        clickSingleBtn(btnMoveAdjacentDataPtr[0]);
     }
 
     public void setObjMode(int type) {
         switch (type) {
         case 0:
-            btn_Vertices[0].setSelection(true);
+            btnVerticesPtr[0].setSelection(true);
             setWorkingType(ObjectMode.VERTICES);
-            clickSingleBtn(btn_Vertices[0]);
+            clickSingleBtn(btnVerticesPtr[0]);
             break;
         case 1:
-            btn_TrisNQuads[0].setSelection(true);
+            btnTrisNQuadsPtr[0].setSelection(true);
             setWorkingType(ObjectMode.FACES);
-            clickSingleBtn(btn_TrisNQuads[0]);
+            clickSingleBtn(btnTrisNQuadsPtr[0]);
             break;
         case 2:
-            btn_Lines[0].setSelection(true);
+            btnLinesPtr[0].setSelection(true);
             setWorkingType(ObjectMode.LINES);
-            clickSingleBtn(btn_Lines[0]);
+            clickSingleBtn(btnLinesPtr[0]);
             break;
         case 3:
-            btn_Subfiles[0].setSelection(true);
+            btnSubfilesPtr[0].setSelection(true);
             setWorkingType(ObjectMode.SUBFILES);
-            clickSingleBtn(btn_Subfiles[0]);
+            clickSingleBtn(btnSubfilesPtr[0]);
             break;
         default:
             break;
@@ -5835,7 +5835,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 Object[] messageArguments = {df.getShortName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                 messageBox.setMessage(formatter.format(messageArguments));
 
@@ -5902,9 +5902,9 @@ public class Editor3DWindow extends Editor3DDesign {
         }
         winState.setLeftSashWeights(((SashForm) Editor3DDesign.getSashForm().getChildren()[0]).getWeights());
         winState.setLeftSashWidth(Editor3DDesign.getSashForm().getWeights());
-        winState.setPrimitiveZoom(cmp_Primitives[0].getZoom());
-        winState.setPrimitiveZoomExponent(cmp_Primitives[0].getZoom_exponent());
-        winState.setPrimitiveViewport(cmp_Primitives[0].getViewport2());
+        winState.setPrimitiveZoom(cmpPrimitivesPtr[0].getZoom());
+        winState.setPrimitiveZoomExponent(cmpPrimitivesPtr[0].getZoom_exponent());
+        winState.setPrimitiveViewport(cmpPrimitivesPtr[0].getViewport2());
 
         WorkbenchManager.getPrimitiveCache().setPrimitiveCache(CompositePrimitive.getCache());
         WorkbenchManager.getPrimitiveCache().setPrimitiveFileCache(CompositePrimitive.getFileCache());
@@ -5980,16 +5980,16 @@ public class Editor3DWindow extends Editor3DDesign {
      */
     public void updateTree_unsavedEntries() {
         ArrayList<TreeItem> categories = new ArrayList<>();
-        categories.add(this.treeItem_ProjectParts[0]);
-        categories.add(this.treeItem_ProjectSubparts[0]);
-        categories.add(this.treeItem_ProjectPrimitives[0]);
-        categories.add(this.treeItem_ProjectPrimitives48[0]);
-        categories.add(this.treeItem_ProjectPrimitives8[0]);
-        categories.add(this.treeItem_UnofficialParts[0]);
-        categories.add(this.treeItem_UnofficialSubparts[0]);
-        categories.add(this.treeItem_UnofficialPrimitives[0]);
-        categories.add(this.treeItem_UnofficialPrimitives48[0]);
-        categories.add(this.treeItem_UnofficialPrimitives8[0]);
+        categories.add(this.treeItemProjectPartsPtr[0]);
+        categories.add(this.treeItemProjectSubpartsPtr[0]);
+        categories.add(this.treeItemProjectPrimitivesPtr[0]);
+        categories.add(this.treeItemProjectPrimitives48Ptr[0]);
+        categories.add(this.treeItemProjectPrimitives8Ptr[0]);
+        categories.add(this.treeItemUnofficialPartsPtr[0]);
+        categories.add(this.treeItemUnofficialSubpartsPtr[0]);
+        categories.add(this.treeItemUnofficialPrimitivesPtr[0]);
+        categories.add(this.treeItemUnofficialPrimitives48Ptr[0]);
+        categories.add(this.treeItemUnofficialPrimitives8Ptr[0]);
         int counter = 0;
         for (TreeItem item : categories) {
             counter++;
@@ -6002,7 +6002,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     nameSb.insert(0, "(!) "); //$NON-NLS-1$
                 }
 
-                if (NLogger.DEBUG) {
+                if (NLogger.debugging) {
                     DatType t = d.getType();
                     if (t == DatType.PART) {
                         nameSb.append(" PART"); //$NON-NLS-1$
@@ -6026,10 +6026,10 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         }
-        this.treeItem_Unsaved[0].removeAll();
+        this.treeItemUnsavedPtr[0].removeAll();
         Set<DatFile> unsaved = Project.getUnsavedFiles();
         for (DatFile df : unsaved) {
-            TreeItem ti = new TreeItem(this.treeItem_Unsaved[0]);
+            TreeItem ti = new TreeItem(this.treeItemUnsavedPtr[0]);
             StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
             final String d = df.getDescription();
             if (d != null)
@@ -6048,21 +6048,21 @@ public class Editor3DWindow extends Editor3DDesign {
      */
     public void updateTree_selectedDatFile(DatFile sdf) {
         ArrayList<TreeItem> categories = new ArrayList<>();
-        categories.add(this.treeItem_ProjectParts[0]);
-        categories.add(this.treeItem_ProjectSubparts[0]);
-        categories.add(this.treeItem_ProjectPrimitives[0]);
-        categories.add(this.treeItem_ProjectPrimitives48[0]);
-        categories.add(this.treeItem_ProjectPrimitives8[0]);
-        categories.add(this.treeItem_UnofficialParts[0]);
-        categories.add(this.treeItem_UnofficialSubparts[0]);
-        categories.add(this.treeItem_UnofficialPrimitives[0]);
-        categories.add(this.treeItem_UnofficialPrimitives48[0]);
-        categories.add(this.treeItem_UnofficialPrimitives8[0]);
-        categories.add(this.treeItem_OfficialParts[0]);
-        categories.add(this.treeItem_OfficialSubparts[0]);
-        categories.add(this.treeItem_OfficialPrimitives[0]);
-        categories.add(this.treeItem_OfficialPrimitives48[0]);
-        categories.add(this.treeItem_OfficialPrimitives8[0]);
+        categories.add(this.treeItemProjectPartsPtr[0]);
+        categories.add(this.treeItemProjectSubpartsPtr[0]);
+        categories.add(this.treeItemProjectPrimitivesPtr[0]);
+        categories.add(this.treeItemProjectPrimitives48Ptr[0]);
+        categories.add(this.treeItemProjectPrimitives8Ptr[0]);
+        categories.add(this.treeItemUnofficialPartsPtr[0]);
+        categories.add(this.treeItemUnofficialSubpartsPtr[0]);
+        categories.add(this.treeItemUnofficialPrimitivesPtr[0]);
+        categories.add(this.treeItemUnofficialPrimitives48Ptr[0]);
+        categories.add(this.treeItemUnofficialPrimitives8Ptr[0]);
+        categories.add(this.treeItemOfficialPartsPtr[0]);
+        categories.add(this.treeItemOfficialSubpartsPtr[0]);
+        categories.add(this.treeItemOfficialPrimitivesPtr[0]);
+        categories.add(this.treeItemOfficialPrimitives48Ptr[0]);
+        categories.add(this.treeItemOfficialPrimitives8Ptr[0]);
         for (TreeItem item : categories) {
             ArrayList<TreeItem> datFileTreeItems = item.getItems();
             for (TreeItem df : datFileTreeItems) {
@@ -6095,121 +6095,121 @@ public class Editor3DWindow extends Editor3DDesign {
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS" + File.separator + "S" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_UnofficialSubparts[0]);
+            categories.put(s, this.treeItemUnofficialSubpartsPtr[0]);
             types.put(s, DatType.SUBPART);
         }
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts" + File.separator + "s" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_UnofficialSubparts[0]);
+            categories.put(s, this.treeItemUnofficialSubpartsPtr[0]);
             types.put(s, DatType.SUBPART);
         }
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS" + File.separator; //$NON-NLS-1$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_UnofficialParts[0]);
+            categories.put(s, this.treeItemUnofficialPartsPtr[0]);
             types.put(s, DatType.PART);
         }
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts" + File.separator; //$NON-NLS-1$
             validPrefixes.add(s);
-            categories.put(s,this.treeItem_UnofficialParts[0]);
+            categories.put(s,this.treeItemUnofficialPartsPtr[0]);
             types.put(s, DatType.PART);
         }
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_UnofficialPrimitives48[0]);
+            categories.put(s, this.treeItemUnofficialPrimitives48Ptr[0]);
             types.put(s, DatType.PRIMITIVE48);
         }
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_UnofficialPrimitives48[0]);
+            categories.put(s, this.treeItemUnofficialPrimitives48Ptr[0]);
             types.put(s, DatType.PRIMITIVE48);
         }
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_UnofficialPrimitives8[0]);
+            categories.put(s, this.treeItemUnofficialPrimitives8Ptr[0]);
             types.put(s, DatType.PRIMITIVE8);
         }
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_UnofficialPrimitives8[0]);
+            categories.put(s, this.treeItemUnofficialPrimitives8Ptr[0]);
             types.put(s, DatType.PRIMITIVE8);
         }
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator; //$NON-NLS-1$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_UnofficialPrimitives[0]);
+            categories.put(s, this.treeItemUnofficialPrimitivesPtr[0]);
             types.put(s, DatType.PRIMITIVE);
         }
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator; //$NON-NLS-1$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_UnofficialPrimitives[0]);
+            categories.put(s, this.treeItemUnofficialPrimitivesPtr[0]);
             types.put(s, DatType.PRIMITIVE);
         }
         {
             String s = Project.getProjectPath() + File.separator + "PARTS" + File.separator + "S" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectSubparts[0]);
+            categories.put(s, this.treeItemProjectSubpartsPtr[0]);
             types.put(s, DatType.SUBPART);
         }
         {
             String s = Project.getProjectPath() + File.separator + "parts" + File.separator + "s" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectSubparts[0]);
+            categories.put(s, this.treeItemProjectSubpartsPtr[0]);
             types.put(s, DatType.SUBPART);
         }
         {
             String s = Project.getProjectPath() + File.separator + "PARTS" + File.separator; //$NON-NLS-1$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectParts[0]);
+            categories.put(s, this.treeItemProjectPartsPtr[0]);
             types.put(s, DatType.PART);
         }
         {
             String s = Project.getProjectPath() + File.separator + "parts" + File.separator; //$NON-NLS-1$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectParts[0]);
+            categories.put(s, this.treeItemProjectPartsPtr[0]);
             types.put(s, DatType.PART);
         }
         {
             String s = Project.getProjectPath() + File.separator + "P" + File.separator + "48" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectPrimitives48[0]);
+            categories.put(s, this.treeItemProjectPrimitives48Ptr[0]);
             types.put(s, DatType.PRIMITIVE48);
         }
         {
             String s = Project.getProjectPath() + File.separator + "p" + File.separator + "48" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectPrimitives48[0]);
+            categories.put(s, this.treeItemProjectPrimitives48Ptr[0]);
             types.put(s, DatType.PRIMITIVE48);
         }
         {
             String s = Project.getProjectPath() + File.separator + "P" + File.separator + "8" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectPrimitives8[0]);
+            categories.put(s, this.treeItemProjectPrimitives8Ptr[0]);
             types.put(s, DatType.PRIMITIVE8);
         }
         {
             String s = Project.getProjectPath() + File.separator + "p" + File.separator + "8" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectPrimitives8[0]);
+            categories.put(s, this.treeItemProjectPrimitives8Ptr[0]);
             types.put(s, DatType.PRIMITIVE8);
         }
         {
             String s = Project.getProjectPath() + File.separator + "P" + File.separator; //$NON-NLS-1$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectPrimitives[0]);
+            categories.put(s, this.treeItemProjectPrimitivesPtr[0]);
             types.put(s, DatType.PRIMITIVE);
         }
         {
             String s = Project.getProjectPath() + File.separator + "p" + File.separator; //$NON-NLS-1$
             validPrefixes.add(s);
-            categories.put(s, this.treeItem_ProjectPrimitives[0]);
+            categories.put(s, this.treeItemProjectPrimitivesPtr[0]);
             types.put(s, DatType.PRIMITIVE);
         }
 
@@ -6275,16 +6275,16 @@ public class Editor3DWindow extends Editor3DDesign {
      */
     public void updateTree_removeEntry(DatFile e) {
         ArrayList<TreeItem> categories = new ArrayList<>();
-        categories.add(this.treeItem_ProjectParts[0]);
-        categories.add(this.treeItem_ProjectSubparts[0]);
-        categories.add(this.treeItem_ProjectPrimitives[0]);
-        categories.add(this.treeItem_ProjectPrimitives8[0]);
-        categories.add(this.treeItem_ProjectPrimitives48[0]);
-        categories.add(this.treeItem_UnofficialParts[0]);
-        categories.add(this.treeItem_UnofficialSubparts[0]);
-        categories.add(this.treeItem_UnofficialPrimitives[0]);
-        categories.add(this.treeItem_UnofficialPrimitives8[0]);
-        categories.add(this.treeItem_UnofficialPrimitives48[0]);
+        categories.add(this.treeItemProjectPartsPtr[0]);
+        categories.add(this.treeItemProjectSubpartsPtr[0]);
+        categories.add(this.treeItemProjectPrimitivesPtr[0]);
+        categories.add(this.treeItemProjectPrimitives8Ptr[0]);
+        categories.add(this.treeItemProjectPrimitives48Ptr[0]);
+        categories.add(this.treeItemUnofficialPartsPtr[0]);
+        categories.add(this.treeItemUnofficialSubpartsPtr[0]);
+        categories.add(this.treeItemUnofficialPrimitivesPtr[0]);
+        categories.add(this.treeItemUnofficialPrimitives8Ptr[0]);
+        categories.add(this.treeItemUnofficialPrimitives48Ptr[0]);
         int counter = 0;
         for (TreeItem item : categories) {
             counter++;
@@ -6309,7 +6309,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
         }
-        this.treeItem_Unsaved[0].removeAll();
+        this.treeItemUnsavedPtr[0].removeAll();
         Project.removeUnsavedFile(e);
         for (OpenGLRenderer renderer : renders) {
             Composite3D c3d = renderer.getC3D();
@@ -6324,7 +6324,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         Set<DatFile> unsaved = Project.getUnsavedFiles();
         for (DatFile df : unsaved) {
-            TreeItem ti = new TreeItem(this.treeItem_Unsaved[0]);
+            TreeItem ti = new TreeItem(this.treeItemUnsavedPtr[0]);
             StringBuilder nameSb = new StringBuilder(new File(df.getNewName()).getName());
             final String d = df.getDescription();
             if (d != null)
@@ -6334,17 +6334,17 @@ public class Editor3DWindow extends Editor3DDesign {
         }
 
         TreeItem[] folders = new TreeItem[10];
-        folders[0] = treeItem_ProjectParts[0];
-        folders[1] = treeItem_ProjectPrimitives[0];
-        folders[2] = treeItem_ProjectPrimitives8[0];
-        folders[3] = treeItem_ProjectPrimitives48[0];
-        folders[4] = treeItem_ProjectSubparts[0];
+        folders[0] = treeItemProjectPartsPtr[0];
+        folders[1] = treeItemProjectPrimitivesPtr[0];
+        folders[2] = treeItemProjectPrimitives8Ptr[0];
+        folders[3] = treeItemProjectPrimitives48Ptr[0];
+        folders[4] = treeItemProjectSubpartsPtr[0];
 
-        folders[5] = treeItem_UnofficialParts[0];
-        folders[6] = treeItem_UnofficialPrimitives[0];
-        folders[7] = treeItem_UnofficialPrimitives8[0];
-        folders[8] = treeItem_UnofficialPrimitives48[0];
-        folders[9] = treeItem_UnofficialSubparts[0];
+        folders[5] = treeItemUnofficialPartsPtr[0];
+        folders[6] = treeItemUnofficialPrimitivesPtr[0];
+        folders[7] = treeItemUnofficialPrimitives8Ptr[0];
+        folders[8] = treeItemUnofficialPrimitives48Ptr[0];
+        folders[9] = treeItemUnofficialSubpartsPtr[0];
 
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
@@ -6362,16 +6362,16 @@ public class Editor3DWindow extends Editor3DDesign {
     private synchronized void updateTabs() {
 
         boolean isSelected = false;
-        if (tabFolder_OpenDatFiles[0].getData() != null) {
+        if (tabFolderOpenDatFilesPtr[0].getData() != null) {
             return;
         }
-        tabFolder_OpenDatFiles[0].setData(true);
-        for (CTabItem c : tabFolder_OpenDatFiles[0].getItems()) {
+        tabFolderOpenDatFilesPtr[0].setData(true);
+        for (CTabItem c : tabFolderOpenDatFilesPtr[0].getItems()) {
             c.dispose();
         }
 
         {
-            CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles[0], SWT.NONE);
+            CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
             tItem.setText(I18n.E3D_NO_FILE_SELECTED);
             tItem.setData(View.DUMMY_DATFILE);
         }
@@ -6384,21 +6384,21 @@ public class Editor3DWindow extends Editor3DDesign {
         }
 
         for (DatFile df2 : Project.getOpenedFiles()) {
-            CTabItem tItem = new CTabItem(tabFolder_OpenDatFiles[0], SWT.NONE);
+            CTabItem tItem = new CTabItem(tabFolderOpenDatFilesPtr[0], SWT.NONE);
             tItem.setText(df2.getShortName() + (Project.getUnsavedFiles().contains(df2) ? "*" : "")); //$NON-NLS-1$ //$NON-NLS-2$
             tItem.setData(df2);
             if (df2.equals(Project.getFileToEdit())) {
-                tabFolder_OpenDatFiles[0].setSelection(tItem);
+                tabFolderOpenDatFilesPtr[0].setSelection(tItem);
                 isSelected = true;
             }
         }
         if (!isSelected) {
-            tabFolder_OpenDatFiles[0].setSelection(0);
+            tabFolderOpenDatFilesPtr[0].setSelection(0);
             Project.setFileToEdit(View.DUMMY_DATFILE);
         }
-        tabFolder_OpenDatFiles[0].setData(null);
-        tabFolder_OpenDatFiles[0].layout();
-        tabFolder_OpenDatFiles[0].redraw();
+        tabFolderOpenDatFilesPtr[0].setData(null);
+        tabFolderOpenDatFilesPtr[0].layout();
+        tabFolderOpenDatFilesPtr[0].redraw();
     }
 
     // Helper functions
@@ -6498,14 +6498,14 @@ public class Editor3DWindow extends Editor3DDesign {
         addingSubfiles = false;
         addingDistance = false;
         addingProtractor = false;
-        btn_AddVertex[0].setSelection(false);
-        btn_AddLine[0].setSelection(false);
-        btn_AddTriangle[0].setSelection(false);
-        btn_AddQuad[0].setSelection(false);
-        btn_AddCondline[0].setSelection(false);
-        btn_AddDistance[0].setSelection(false);
-        btn_AddProtractor[0].setSelection(false);
-        btn_AddPrimitive[0].setSelection(false);
+        btnAddVertexPtr[0].setSelection(false);
+        btnAddLinePtr[0].setSelection(false);
+        btnAddTrianglePtr[0].setSelection(false);
+        btnAddQuadPtr[0].setSelection(false);
+        btnAddCondlinePtr[0].setSelection(false);
+        btnAddDistancePtr[0].setSelection(false);
+        btnAddProtractorPtr[0].setSelection(false);
+        btnAddPrimitivePtr[0].setSelection(false);
 
         for (DatFile df : Project.getOpenedFiles()) {
             final VertexManager vm2 = df.getVertexManager();
@@ -6526,67 +6526,67 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public TreeItem getProjectParts() {
-        return treeItem_ProjectParts[0];
+        return treeItemProjectPartsPtr[0];
     }
 
     public TreeItem getProjectPrimitives() {
-        return treeItem_ProjectPrimitives[0];
+        return treeItemProjectPrimitivesPtr[0];
     }
 
     public TreeItem getProjectPrimitives48() {
-        return treeItem_ProjectPrimitives48[0];
+        return treeItemProjectPrimitives48Ptr[0];
     }
 
     public TreeItem getProjectPrimitives8() {
-        return treeItem_ProjectPrimitives8[0];
+        return treeItemProjectPrimitives8Ptr[0];
     }
 
     public TreeItem getProjectSubparts() {
-        return treeItem_ProjectSubparts[0];
+        return treeItemProjectSubpartsPtr[0];
     }
 
     public TreeItem getUnofficialParts() {
-        return treeItem_UnofficialParts[0];
+        return treeItemUnofficialPartsPtr[0];
     }
 
     public TreeItem getUnofficialPrimitives() {
-        return treeItem_UnofficialPrimitives[0];
+        return treeItemUnofficialPrimitivesPtr[0];
     }
 
     public TreeItem getUnofficialPrimitives48() {
-        return treeItem_UnofficialPrimitives48[0];
+        return treeItemUnofficialPrimitives48Ptr[0];
     }
 
     public TreeItem getUnofficialPrimitives8() {
-        return treeItem_UnofficialPrimitives8[0];
+        return treeItemUnofficialPrimitives8Ptr[0];
     }
 
     public TreeItem getUnofficialSubparts() {
-        return treeItem_UnofficialSubparts[0];
+        return treeItemUnofficialSubpartsPtr[0];
     }
 
     public TreeItem getOfficialParts() {
-        return treeItem_OfficialParts[0];
+        return treeItemOfficialPartsPtr[0];
     }
 
     public TreeItem getOfficialPrimitives() {
-        return treeItem_OfficialPrimitives[0];
+        return treeItemOfficialPrimitivesPtr[0];
     }
 
     public TreeItem getOfficialPrimitives48() {
-        return treeItem_OfficialPrimitives48[0];
+        return treeItemOfficialPrimitives48Ptr[0];
     }
 
     public TreeItem getOfficialPrimitives8() {
-        return treeItem_OfficialPrimitives8[0];
+        return treeItemOfficialPrimitives8Ptr[0];
     }
 
     public TreeItem getOfficialSubparts() {
-        return treeItem_OfficialSubparts[0];
+        return treeItemOfficialSubpartsPtr[0];
     }
 
     public TreeItem getUnsaved() {
-        return treeItem_Unsaved[0];
+        return treeItemUnsavedPtr[0];
     }
 
     public ObjectMode getWorkingType() {
@@ -6602,7 +6602,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void setMovingAdjacentData(boolean movingAdjacentData) {
-        btn_MoveAdjacentData[0].setSelection(movingAdjacentData);
+        btnMoveAdjacentDataPtr[0].setSelection(movingAdjacentData);
         this.movingAdjacentData = movingAdjacentData;
         WorkbenchManager.getUserSettingState().setMovingAdjacentData(movingAdjacentData);
     }
@@ -6615,19 +6615,19 @@ public class Editor3DWindow extends Editor3DDesign {
         this.workingAction = workingAction;
         switch (workingAction) {
         case COMBINED:
-            clickBtnTest(btn_Combined[0]);
+            clickBtnTest(btnCombinedPtr[0]);
             break;
         case MOVE:
-            clickBtnTest(btn_Move[0]);
+            clickBtnTest(btnMovePtr[0]);
             break;
         case ROTATE:
-            clickBtnTest(btn_Rotate[0]);
+            clickBtnTest(btnRotatePtr[0]);
             break;
         case SCALE:
-            clickBtnTest(btn_Scale[0]);
+            clickBtnTest(btnScalePtr[0]);
             break;
         case SELECT:
-            clickBtnTest(btn_Select[0]);
+            clickBtnTest(btnSelectPtr[0]);
             break;
         default:
             break;
@@ -6669,34 +6669,34 @@ public class Editor3DWindow extends Editor3DDesign {
     @SuppressWarnings("unchecked")
     private void setReviewingAPart(boolean reviewingAPart, Set<DatFile> partsForReview) {
         if (reviewingAPart) {
-            NButton btnEndPartReview = new NButton(cmp_SyncAndReview[0], SWT.NONE);
+            NButton btnEndPartReview = new NButton(cmpSyncAndReviewPtr[0], SWT.NONE);
             btnEndPartReview.setText(I18n.E3D_END_PART_REVIEW);
             btnEndPartReview.setData(partsForReview);
             WidgetUtil(btnEndPartReview).addSelectionListener(e -> setReviewingAPart(false, null));
         } else {
             // Close all review files
-            partsForReview = (Set<DatFile>) cmp_SyncAndReview[0].getChildren()[1].getData();
+            partsForReview = (Set<DatFile>) cmpSyncAndReviewPtr[0].getChildren()[1].getData();
             for (DatFile df : partsForReview) {
                 Project.removeOpenedFile(df);
                 closeDatfile(df);
             }
             // Hide "End Review" button
-            cmp_SyncAndReview[0].getChildren()[1].dispose();
+            cmpSyncAndReviewPtr[0].getChildren()[1].dispose();
             // Reset project
             Project.setFileToEdit(View.DUMMY_DATFILE);
             Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
             getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             getShell().update();
-            treeItem_Project[0].setText(I18n.PROJECT_NEW_PROJECT);
-            treeItem_Project[0].setData(Project.getProjectPath());
-            treeItem_Project[0].getParent().build();
-            treeItem_Project[0].getParent().redraw();
-            treeItem_Project[0].getParent().update();
+            treeItemProjectPtr[0].setText(I18n.PROJECT_NEW_PROJECT);
+            treeItemProjectPtr[0].setData(Project.getProjectPath());
+            treeItemProjectPtr[0].getParent().build();
+            treeItemProjectPtr[0].getParent().redraw();
+            treeItemProjectPtr[0].getParent().update();
             // Restore the viewport
             closeAllComposite3D();
             reloadC3DStates(WorkbenchManager.getEditor3DWindowState().getThreeDwindowConfig());
         }
-        cmp_SyncAndReview[0].getParent().layout(true);
+        cmpSyncAndReviewPtr[0].getParent().layout(true);
 
         this.reviewingAPart = reviewingAPart;
     }
@@ -6727,15 +6727,15 @@ public class Editor3DWindow extends Editor3DDesign {
             num = -1;
         }
         Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
-        btn_LastUsedColour[0].clearPaintListeners();
-        btn_LastUsedColour[0].clearSelectionListeners();
+        btnLastUsedColourPtr[0].clearPaintListeners();
+        btnLastUsedColourPtr[0].clearSelectionListeners();
         final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-        final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
+        final Point size = btnLastUsedColourPtr[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
         final int x = size.x / 4;
         final int y = size.y / 4;
         final int w = size.x / 2;
         final int h = size.y / 2;
-        btn_LastUsedColour[0].addPaintListener(e -> {
+        btnLastUsedColourPtr[0].addPaintListener(e -> {
             e.gc.setBackground(col);
             e.gc.fillRectangle(x, y, w, h);
             if (gColour2[0].getA() >= .99f) {
@@ -6746,7 +6746,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 e.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
             }
         });
-        WidgetUtil(btn_LastUsedColour[0]).addSelectionListener(e -> {
+        WidgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
                 int num1 = gColour2[0].getColourNumber();
@@ -6760,10 +6760,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
-            btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
+            btnLastUsedColourPtr[0].setToolTipText(formatter.format(messageArguments));
         } else {
             StringBuilder colourBuilder = new StringBuilder();
             colourBuilder.append("0x2"); //$NON-NLS-1$
@@ -6773,13 +6773,13 @@ public class Editor3DWindow extends Editor3DDesign {
 
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
-            btn_LastUsedColour[0].setToolTipText(formatter.format(messageArguments));
-            if (gColour2[0].getA() == 0f) btn_LastUsedColour[0].setToolTipText(I18n.COLOURDIALOG_RANDOM_COLOURS);
+            btnLastUsedColourPtr[0].setToolTipText(formatter.format(messageArguments));
+            if (gColour2[0].getA() == 0f) btnLastUsedColourPtr[0].setToolTipText(I18n.COLOURDIALOG_RANDOM_COLOURS);
         }
-        btn_LastUsedColour[0].redraw();
+        btnLastUsedColourPtr[0].redraw();
     }
 
     public void cleanupClosedData() {
@@ -6806,7 +6806,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public String getSearchCriteria() {
-        return txt_Search[0].getText();
+        return txtSearchPtr[0].getText();
     }
 
     private void resetSearch() {
@@ -6823,23 +6823,23 @@ public class Editor3DWindow extends Editor3DDesign {
                 String criteria = ".*" + word + ".*"; //$NON-NLS-1$ //$NON-NLS-2$
 
                 TreeItem[] folders = new TreeItem[15];
-                folders[0] = treeItem_OfficialParts[0];
-                folders[1] = treeItem_OfficialPrimitives[0];
-                folders[2] = treeItem_OfficialPrimitives8[0];
-                folders[3] = treeItem_OfficialPrimitives48[0];
-                folders[4] = treeItem_OfficialSubparts[0];
+                folders[0] = treeItemOfficialPartsPtr[0];
+                folders[1] = treeItemOfficialPrimitivesPtr[0];
+                folders[2] = treeItemOfficialPrimitives8Ptr[0];
+                folders[3] = treeItemOfficialPrimitives48Ptr[0];
+                folders[4] = treeItemOfficialSubpartsPtr[0];
 
-                folders[5] = treeItem_UnofficialParts[0];
-                folders[6] = treeItem_UnofficialPrimitives[0];
-                folders[7] = treeItem_UnofficialPrimitives8[0];
-                folders[8] = treeItem_UnofficialPrimitives48[0];
-                folders[9] = treeItem_UnofficialSubparts[0];
+                folders[5] = treeItemUnofficialPartsPtr[0];
+                folders[6] = treeItemUnofficialPrimitivesPtr[0];
+                folders[7] = treeItemUnofficialPrimitives8Ptr[0];
+                folders[8] = treeItemUnofficialPrimitives48Ptr[0];
+                folders[9] = treeItemUnofficialSubpartsPtr[0];
 
-                folders[10] = treeItem_ProjectParts[0];
-                folders[11] = treeItem_ProjectPrimitives[0];
-                folders[12] = treeItem_ProjectPrimitives8[0];
-                folders[13] = treeItem_ProjectPrimitives48[0];
-                folders[14] = treeItem_ProjectSubparts[0];
+                folders[10] = treeItemProjectPartsPtr[0];
+                folders[11] = treeItemProjectPrimitivesPtr[0];
+                folders[12] = treeItemProjectPrimitives8Ptr[0];
+                folders[13] = treeItemProjectPrimitives48Ptr[0];
+                folders[14] = treeItemProjectSubpartsPtr[0];
 
                 if (folders[0].getData() == null) {
                     for (TreeItem folder : folders) {
@@ -6903,22 +6903,22 @@ public class Editor3DWindow extends Editor3DDesign {
     public TreeData getDatFileTreeData(DatFile df) {
         TreeData result = new TreeData();
         ArrayList<TreeItem> categories = new ArrayList<>();
-        categories.add(this.treeItem_ProjectParts[0]);
-        categories.add(this.treeItem_ProjectSubparts[0]);
-        categories.add(this.treeItem_ProjectPrimitives[0]);
-        categories.add(this.treeItem_ProjectPrimitives48[0]);
-        categories.add(this.treeItem_ProjectPrimitives8[0]);
-        categories.add(this.treeItem_UnofficialParts[0]);
-        categories.add(this.treeItem_UnofficialSubparts[0]);
-        categories.add(this.treeItem_UnofficialPrimitives[0]);
-        categories.add(this.treeItem_UnofficialPrimitives48[0]);
-        categories.add(this.treeItem_UnofficialPrimitives8[0]);
-        categories.add(this.treeItem_OfficialParts[0]);
-        categories.add(this.treeItem_OfficialSubparts[0]);
-        categories.add(this.treeItem_OfficialPrimitives[0]);
-        categories.add(this.treeItem_OfficialPrimitives48[0]);
-        categories.add(this.treeItem_OfficialPrimitives8[0]);
-        categories.add(this.treeItem_Unsaved[0]);
+        categories.add(this.treeItemProjectPartsPtr[0]);
+        categories.add(this.treeItemProjectSubpartsPtr[0]);
+        categories.add(this.treeItemProjectPrimitivesPtr[0]);
+        categories.add(this.treeItemProjectPrimitives48Ptr[0]);
+        categories.add(this.treeItemProjectPrimitives8Ptr[0]);
+        categories.add(this.treeItemUnofficialPartsPtr[0]);
+        categories.add(this.treeItemUnofficialSubpartsPtr[0]);
+        categories.add(this.treeItemUnofficialPrimitivesPtr[0]);
+        categories.add(this.treeItemUnofficialPrimitives48Ptr[0]);
+        categories.add(this.treeItemUnofficialPrimitives8Ptr[0]);
+        categories.add(this.treeItemOfficialPartsPtr[0]);
+        categories.add(this.treeItemOfficialSubpartsPtr[0]);
+        categories.add(this.treeItemOfficialPrimitivesPtr[0]);
+        categories.add(this.treeItemOfficialPrimitives48Ptr[0]);
+        categories.add(this.treeItemOfficialPrimitives8Ptr[0]);
+        categories.add(this.treeItemUnsavedPtr[0]);
         for (TreeItem item : categories) {
             ArrayList<TreeItem> datFileTreeItems = item.getItems();
             for (TreeItem ti : datFileTreeItems) {
@@ -6945,70 +6945,70 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (png == null) {
 
                     updatingPngPictureTab = true;
-                    txt_PngPath[0].setText("---"); //$NON-NLS-1$
-                    txt_PngPath[0].setToolTipText("---"); //$NON-NLS-1$
+                    txtPngPathPtr[0].setText("---"); //$NON-NLS-1$
+                    txtPngPathPtr[0].setToolTipText("---"); //$NON-NLS-1$
 
-                    spn_PngX[0].setValue(BigDecimal.ZERO);
-                    spn_PngY[0].setValue(BigDecimal.ZERO);
-                    spn_PngZ[0].setValue(BigDecimal.ZERO);
+                    spnPngXPtr[0].setValue(BigDecimal.ZERO);
+                    spnPngYPtr[0].setValue(BigDecimal.ZERO);
+                    spnPngZPtr[0].setValue(BigDecimal.ZERO);
 
-                    spn_PngA1[0].setValue(BigDecimal.ZERO);
-                    spn_PngA2[0].setValue(BigDecimal.ZERO);
-                    spn_PngA3[0].setValue(BigDecimal.ZERO);
+                    spnPngA1Ptr[0].setValue(BigDecimal.ZERO);
+                    spnPngA2Ptr[0].setValue(BigDecimal.ZERO);
+                    spnPngA3Ptr[0].setValue(BigDecimal.ZERO);
 
-                    spn_PngSX[0].setValue(BigDecimal.ONE);
-                    spn_PngSY[0].setValue(BigDecimal.ONE);
+                    spnPngSXPtr[0].setValue(BigDecimal.ONE);
+                    spnPngSYPtr[0].setValue(BigDecimal.ONE);
 
-                    txt_PngPath[0].setEnabled(false);
-                    btn_PngFocus[0].setEnabled(false);
-                    btn_PngImage[0].setEnabled(false);
-                    spn_PngX[0].setEnabled(false);
-                    spn_PngY[0].setEnabled(false);
-                    spn_PngZ[0].setEnabled(false);
+                    txtPngPathPtr[0].setEnabled(false);
+                    btnPngFocusPtr[0].setEnabled(false);
+                    btnPngImagePtr[0].setEnabled(false);
+                    spnPngXPtr[0].setEnabled(false);
+                    spnPngYPtr[0].setEnabled(false);
+                    spnPngZPtr[0].setEnabled(false);
 
-                    spn_PngA1[0].setEnabled(false);
-                    spn_PngA2[0].setEnabled(false);
-                    spn_PngA3[0].setEnabled(false);
+                    spnPngA1Ptr[0].setEnabled(false);
+                    spnPngA2Ptr[0].setEnabled(false);
+                    spnPngA3Ptr[0].setEnabled(false);
 
-                    spn_PngSX[0].setEnabled(false);
-                    spn_PngSY[0].setEnabled(false);
+                    spnPngSXPtr[0].setEnabled(false);
+                    spnPngSYPtr[0].setEnabled(false);
 
-                    spn_PngA1[0].getParent().update();
+                    spnPngA1Ptr[0].getParent().update();
                     updatingPngPictureTab = false;
                     return;
                 }
 
                 updatingPngPictureTab = true;
 
-                txt_PngPath[0].setEnabled(true);
-                btn_PngFocus[0].setEnabled(true);
-                btn_PngImage[0].setEnabled(true);
-                spn_PngX[0].setEnabled(true);
-                spn_PngY[0].setEnabled(true);
-                spn_PngZ[0].setEnabled(true);
+                txtPngPathPtr[0].setEnabled(true);
+                btnPngFocusPtr[0].setEnabled(true);
+                btnPngImagePtr[0].setEnabled(true);
+                spnPngXPtr[0].setEnabled(true);
+                spnPngYPtr[0].setEnabled(true);
+                spnPngZPtr[0].setEnabled(true);
 
-                spn_PngA1[0].setEnabled(true);
-                spn_PngA2[0].setEnabled(true);
-                spn_PngA3[0].setEnabled(true);
+                spnPngA1Ptr[0].setEnabled(true);
+                spnPngA2Ptr[0].setEnabled(true);
+                spnPngA3Ptr[0].setEnabled(true);
 
-                spn_PngSX[0].setEnabled(true);
-                spn_PngSY[0].setEnabled(true);
+                spnPngSXPtr[0].setEnabled(true);
+                spnPngSYPtr[0].setEnabled(true);
 
-                txt_PngPath[0].setText(png.texturePath);
-                txt_PngPath[0].setToolTipText(png.texturePath);
+                txtPngPathPtr[0].setText(png.texturePath);
+                txtPngPathPtr[0].setToolTipText(png.texturePath);
 
-                spn_PngX[0].setValue(png.offset.X);
-                spn_PngY[0].setValue(png.offset.Y);
-                spn_PngZ[0].setValue(png.offset.Z);
+                spnPngXPtr[0].setValue(png.offset.xp);
+                spnPngYPtr[0].setValue(png.offset.yp);
+                spnPngZPtr[0].setValue(png.offset.zp);
 
-                spn_PngA1[0].setValue(png.angleA);
-                spn_PngA2[0].setValue(png.angleB);
-                spn_PngA3[0].setValue(png.angleC);
+                spnPngA1Ptr[0].setValue(png.angleA);
+                spnPngA2Ptr[0].setValue(png.angleB);
+                spnPngA3Ptr[0].setValue(png.angleC);
 
-                spn_PngSX[0].setValue(png.scale.X);
-                spn_PngSY[0].setValue(png.scale.Y);
+                spnPngSXPtr[0].setValue(png.scale.xp);
+                spnPngSYPtr[0].setValue(png.scale.yp);
 
-                spn_PngA1[0].getParent().update();
+                spnPngA1Ptr[0].getParent().update();
                 updatingPngPictureTab = false;
                 return;
             }
@@ -7017,7 +7017,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void unselectAddSubfile() {
         resetAddState();
-        btn_AddPrimitive[0].setSelection(false);
+        btnAddPrimitivePtr[0].setSelection(false);
         setAddingSubfiles(false);
         setAddingSomething(false);
     }
@@ -7060,24 +7060,24 @@ public class Editor3DWindow extends Editor3DDesign {
                     String folderPrefix = ""; //$NON-NLS-1$
                     String subfilePrefix = ""; //$NON-NLS-1$
                     String path = new File(selected).getParent();
-                    TreeItem parent = this.treeItem_ProjectParts[0];
+                    TreeItem parent = this.treeItemProjectPartsPtr[0];
 
                     if (path.endsWith(File.separator + "S") || path.endsWith(File.separator + "s")) { //$NON-NLS-1$ //$NON-NLS-2$
                         typeSuffix = "Unofficial_Subpart"; //$NON-NLS-1$
                         folderPrefix = "s\\"; //$NON-NLS-1$
                         subfilePrefix = "~"; //$NON-NLS-1$
-                        parent = this.treeItem_ProjectSubparts[0];
+                        parent = this.treeItemProjectSubpartsPtr[0];
                     } else if (path.endsWith(File.separator + "P" + File.separator + "48") || path.endsWith(File.separator + "p" + File.separator + "48")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                         typeSuffix = "Unofficial_48_Primitive"; //$NON-NLS-1$
                         folderPrefix = "48\\"; //$NON-NLS-1$
-                        parent = this.treeItem_ProjectPrimitives48[0];
+                        parent = this.treeItemProjectPrimitives48Ptr[0];
                     } else if (path.endsWith(File.separator + "P" + File.separator + "8") || path.endsWith(File.separator + "p" + File.separator + "8")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                         typeSuffix = "Unofficial_8_Primitive"; //$NON-NLS-1$
                         folderPrefix = "8\\"; //$NON-NLS-1$
-                        parent = this.treeItem_ProjectPrimitives8[0];
+                        parent = this.treeItemProjectPrimitives8Ptr[0];
                     } else if (path.endsWith(File.separator + "P") || path.endsWith(File.separator + "p")) { //$NON-NLS-1$ //$NON-NLS-2$
                         typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
-                        parent = this.treeItem_ProjectPrimitives[0];
+                        parent = this.treeItemProjectPrimitivesPtr[0];
                     }
 
                     df.addToTail(new GData0("0 " + subfilePrefix, View.DUMMY_REFERENCE)); //$NON-NLS-1$
@@ -7109,7 +7109,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     ti.setData(df);
 
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPartsPtr[0].getData();
                     cachedReferences.add(df);
 
                     Project.addUnsavedFile(df);
@@ -7244,7 +7244,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPartsPtr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7252,7 +7252,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectSubpartsPtr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7260,7 +7260,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitivesPtr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7268,7 +7268,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitives48Ptr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7276,7 +7276,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives8[0].getData();
+                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitives8Ptr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7291,50 +7291,50 @@ public class Editor3DWindow extends Editor3DDesign {
             case PART:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPartsPtr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectParts[0]);
+            ti = new TreeItem(this.treeItemProjectPartsPtr[0]);
             break;
             case SUBPART:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectSubparts[0].getData();
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectSubpartsPtr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectSubparts[0]);
+            ti = new TreeItem(this.treeItemProjectSubpartsPtr[0]);
             break;
             case PRIMITIVE:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives[0].getData();
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitivesPtr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectPrimitives[0]);
+            ti = new TreeItem(this.treeItemProjectPrimitivesPtr[0]);
             break;
             case PRIMITIVE48:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives48[0].getData();
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitives48Ptr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectPrimitives48[0]);
+            ti = new TreeItem(this.treeItemProjectPrimitives48Ptr[0]);
             break;
             case PRIMITIVE8:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectPrimitives8[0].getData();
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitives8Ptr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectPrimitives8[0]);
+            ti = new TreeItem(this.treeItemProjectPrimitives8Ptr[0]);
             break;
             default:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItem_ProjectParts[0].getData();
+                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPartsPtr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
-            ti = new TreeItem(this.treeItem_ProjectParts[0]);
+            ti = new TreeItem(this.treeItemProjectPartsPtr[0]);
             break;
             }
 
@@ -7485,51 +7485,51 @@ public class Editor3DWindow extends Editor3DDesign {
     public void disableSelectionTab() {
         if (Thread.currentThread() == Display.getDefault().getThread()) {
             updatingSelectionTab = true;
-            txt_Line[0].setText(""); //$NON-NLS-1$
-            btn_MoveAdjacentData2[0].setSelection(false);
-            spn_SelectionAngle[0].setEnabled(false);
-            spn_SelectionLength[0].setEnabled(false);
-            spn_SelectionX1[0].setEnabled(false);
-            spn_SelectionY1[0].setEnabled(false);
-            spn_SelectionZ1[0].setEnabled(false);
-            spn_SelectionX2[0].setEnabled(false);
-            spn_SelectionY2[0].setEnabled(false);
-            spn_SelectionZ2[0].setEnabled(false);
-            spn_SelectionX3[0].setEnabled(false);
-            spn_SelectionY3[0].setEnabled(false);
-            spn_SelectionZ3[0].setEnabled(false);
-            spn_SelectionX4[0].setEnabled(false);
-            spn_SelectionY4[0].setEnabled(false);
-            spn_SelectionZ4[0].setEnabled(false);
-            spn_SelectionAngle[0].setValue(BigDecimal.ZERO);
-            spn_SelectionLength[0].setValue(BigDecimal.ONE);
-            spn_SelectionX1[0].setValue(BigDecimal.ZERO);
-            spn_SelectionY1[0].setValue(BigDecimal.ZERO);
-            spn_SelectionZ1[0].setValue(BigDecimal.ZERO);
-            spn_SelectionX2[0].setValue(BigDecimal.ZERO);
-            spn_SelectionY2[0].setValue(BigDecimal.ZERO);
-            spn_SelectionZ2[0].setValue(BigDecimal.ZERO);
-            spn_SelectionX3[0].setValue(BigDecimal.ZERO);
-            spn_SelectionY3[0].setValue(BigDecimal.ZERO);
-            spn_SelectionZ3[0].setValue(BigDecimal.ZERO);
-            spn_SelectionX4[0].setValue(BigDecimal.ZERO);
-            spn_SelectionY4[0].setValue(BigDecimal.ZERO);
-            spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
-            lbl_SelectionAngle[0].setText(I18n.E3D_PROTRACTOR_ANGLE);
-            lbl_SelectionLength[0].setText(I18n.E3D_PROTRACTOR_LENGTH);
-            lbl_SelectionX1[0].setText(I18n.E3D_POSITION_X1);
-            lbl_SelectionY1[0].setText(I18n.E3D_POSITION_Y1);
-            lbl_SelectionZ1[0].setText(I18n.E3D_POSITION_Z1);
-            lbl_SelectionX2[0].setText(I18n.E3D_POSITION_X2);
-            lbl_SelectionY2[0].setText(I18n.E3D_POSITION_Y2);
-            lbl_SelectionZ2[0].setText(I18n.E3D_POSITION_Z2);
-            lbl_SelectionX3[0].setText(I18n.E3D_POSITION_X3);
-            lbl_SelectionY3[0].setText(I18n.E3D_POSITION_Y3);
-            lbl_SelectionZ3[0].setText(I18n.E3D_POSITION_Z3);
-            lbl_SelectionX4[0].setText(I18n.E3D_POSITION_X4);
-            lbl_SelectionY4[0].setText(I18n.E3D_POSITION_Y4);
-            lbl_SelectionZ4[0].setText(I18n.E3D_POSITION_Z4);
-            lbl_SelectionZ4[0].getParent().layout();
+            txtLinePtr[0].setText(""); //$NON-NLS-1$
+            btnMoveAdjacentData2Ptr[0].setSelection(false);
+            spnSelectionAnglePtr[0].setEnabled(false);
+            spnSelectionLengthPtr[0].setEnabled(false);
+            spnSelectionX1Ptr[0].setEnabled(false);
+            spnSelectionY1Ptr[0].setEnabled(false);
+            spnSelectionZ1Ptr[0].setEnabled(false);
+            spnSelectionX2Ptr[0].setEnabled(false);
+            spnSelectionY2Ptr[0].setEnabled(false);
+            spnSelectionZ2Ptr[0].setEnabled(false);
+            spnSelectionX3Ptr[0].setEnabled(false);
+            spnSelectionY3Ptr[0].setEnabled(false);
+            spnSelectionZ3Ptr[0].setEnabled(false);
+            spnSelectionX4Ptr[0].setEnabled(false);
+            spnSelectionY4Ptr[0].setEnabled(false);
+            spnSelectionZ4Ptr[0].setEnabled(false);
+            spnSelectionAnglePtr[0].setValue(BigDecimal.ZERO);
+            spnSelectionLengthPtr[0].setValue(BigDecimal.ONE);
+            spnSelectionX1Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionY1Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionZ1Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionX2Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionY2Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionZ2Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionX3Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionY3Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionZ3Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionX4Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionY4Ptr[0].setValue(BigDecimal.ZERO);
+            spnSelectionZ4Ptr[0].setValue(BigDecimal.ZERO);
+            lblSelectionAnglePtr[0].setText(I18n.E3D_PROTRACTOR_ANGLE);
+            lblSelectionLengthPtr[0].setText(I18n.E3D_PROTRACTOR_LENGTH);
+            lblSelectionX1Ptr[0].setText(I18n.E3D_POSITION_X1);
+            lblSelectionY1Ptr[0].setText(I18n.E3D_POSITION_Y1);
+            lblSelectionZ1Ptr[0].setText(I18n.E3D_POSITION_Z1);
+            lblSelectionX2Ptr[0].setText(I18n.E3D_POSITION_X2);
+            lblSelectionY2Ptr[0].setText(I18n.E3D_POSITION_Y2);
+            lblSelectionZ2Ptr[0].setText(I18n.E3D_POSITION_Z2);
+            lblSelectionX3Ptr[0].setText(I18n.E3D_POSITION_X3);
+            lblSelectionY3Ptr[0].setText(I18n.E3D_POSITION_Y3);
+            lblSelectionZ3Ptr[0].setText(I18n.E3D_POSITION_Z3);
+            lblSelectionX4Ptr[0].setText(I18n.E3D_POSITION_X4);
+            lblSelectionY4Ptr[0].setText(I18n.E3D_POSITION_Y4);
+            lblSelectionZ4Ptr[0].setText(I18n.E3D_POSITION_Z4);
+            lblSelectionZ4Ptr[0].getParent().layout();
             updatingSelectionTab = false;
         } else {
             NLogger.error(getClass(), new SWTException(SWT.ERROR_THREAD_INVALID_ACCESS, "A wrong thread tries to access the GUI!")); //$NON-NLS-1$
@@ -7538,49 +7538,49 @@ public class Editor3DWindow extends Editor3DDesign {
                 public void run() {
                     try {
                         updatingSelectionTab = true;
-                        txt_Line[0].setText(""); //$NON-NLS-1$
-                        btn_MoveAdjacentData2[0].setSelection(false);
-                        spn_SelectionAngle[0].setEnabled(false);
-                        spn_SelectionLength[0].setEnabled(false);
-                        spn_SelectionX1[0].setEnabled(false);
-                        spn_SelectionY1[0].setEnabled(false);
-                        spn_SelectionZ1[0].setEnabled(false);
-                        spn_SelectionX2[0].setEnabled(false);
-                        spn_SelectionY2[0].setEnabled(false);
-                        spn_SelectionZ2[0].setEnabled(false);
-                        spn_SelectionX3[0].setEnabled(false);
-                        spn_SelectionY3[0].setEnabled(false);
-                        spn_SelectionZ3[0].setEnabled(false);
-                        spn_SelectionX4[0].setEnabled(false);
-                        spn_SelectionY4[0].setEnabled(false);
-                        spn_SelectionZ4[0].setEnabled(false);
-                        spn_SelectionX1[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionY1[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionZ1[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionX2[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionY2[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionZ2[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionX3[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionY3[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionZ3[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionX4[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionY4[0].setValue(BigDecimal.ZERO);
-                        spn_SelectionZ4[0].setValue(BigDecimal.ZERO);
-                        lbl_SelectionAngle[0].setText(I18n.E3D_PROTRACTOR_ANGLE);
-                        lbl_SelectionLength[0].setText(I18n.E3D_PROTRACTOR_LENGTH);
-                        lbl_SelectionX1[0].setText(I18n.E3D_POSITION_X1);
-                        lbl_SelectionY1[0].setText(I18n.E3D_POSITION_Y1);
-                        lbl_SelectionZ1[0].setText(I18n.E3D_POSITION_Z1);
-                        lbl_SelectionX2[0].setText(I18n.E3D_POSITION_X2);
-                        lbl_SelectionY2[0].setText(I18n.E3D_POSITION_Y2);
-                        lbl_SelectionZ2[0].setText(I18n.E3D_POSITION_Z2);
-                        lbl_SelectionX3[0].setText(I18n.E3D_POSITION_X3);
-                        lbl_SelectionY3[0].setText(I18n.E3D_POSITION_Y3);
-                        lbl_SelectionZ3[0].setText(I18n.E3D_POSITION_Z3);
-                        lbl_SelectionX4[0].setText(I18n.E3D_POSITION_X4);
-                        lbl_SelectionY4[0].setText(I18n.E3D_POSITION_Y4);
-                        lbl_SelectionZ4[0].setText(I18n.E3D_POSITION_Z4);
-                        lbl_SelectionZ4[0].getParent().layout();
+                        txtLinePtr[0].setText(""); //$NON-NLS-1$
+                        btnMoveAdjacentData2Ptr[0].setSelection(false);
+                        spnSelectionAnglePtr[0].setEnabled(false);
+                        spnSelectionLengthPtr[0].setEnabled(false);
+                        spnSelectionX1Ptr[0].setEnabled(false);
+                        spnSelectionY1Ptr[0].setEnabled(false);
+                        spnSelectionZ1Ptr[0].setEnabled(false);
+                        spnSelectionX2Ptr[0].setEnabled(false);
+                        spnSelectionY2Ptr[0].setEnabled(false);
+                        spnSelectionZ2Ptr[0].setEnabled(false);
+                        spnSelectionX3Ptr[0].setEnabled(false);
+                        spnSelectionY3Ptr[0].setEnabled(false);
+                        spnSelectionZ3Ptr[0].setEnabled(false);
+                        spnSelectionX4Ptr[0].setEnabled(false);
+                        spnSelectionY4Ptr[0].setEnabled(false);
+                        spnSelectionZ4Ptr[0].setEnabled(false);
+                        spnSelectionX1Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionY1Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionZ1Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionX2Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionY2Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionZ2Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionX3Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionY3Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionZ3Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionX4Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionY4Ptr[0].setValue(BigDecimal.ZERO);
+                        spnSelectionZ4Ptr[0].setValue(BigDecimal.ZERO);
+                        lblSelectionAnglePtr[0].setText(I18n.E3D_PROTRACTOR_ANGLE);
+                        lblSelectionLengthPtr[0].setText(I18n.E3D_PROTRACTOR_LENGTH);
+                        lblSelectionX1Ptr[0].setText(I18n.E3D_POSITION_X1);
+                        lblSelectionY1Ptr[0].setText(I18n.E3D_POSITION_Y1);
+                        lblSelectionZ1Ptr[0].setText(I18n.E3D_POSITION_Z1);
+                        lblSelectionX2Ptr[0].setText(I18n.E3D_POSITION_X2);
+                        lblSelectionY2Ptr[0].setText(I18n.E3D_POSITION_Y2);
+                        lblSelectionZ2Ptr[0].setText(I18n.E3D_POSITION_Z2);
+                        lblSelectionX3Ptr[0].setText(I18n.E3D_POSITION_X3);
+                        lblSelectionY3Ptr[0].setText(I18n.E3D_POSITION_Y3);
+                        lblSelectionZ3Ptr[0].setText(I18n.E3D_POSITION_Z3);
+                        lblSelectionX4Ptr[0].setText(I18n.E3D_POSITION_X4);
+                        lblSelectionY4Ptr[0].setText(I18n.E3D_POSITION_Y4);
+                        lblSelectionZ4Ptr[0].setText(I18n.E3D_POSITION_Z4);
+                        lblSelectionZ4Ptr[0].getParent().layout();
                         updatingSelectionTab = false;
                     } catch (Exception ex) {
                         NLogger.error(getClass(), ex);
@@ -7604,43 +7604,43 @@ public class Editor3DWindow extends Editor3DDesign {
 
 
     public SelectorSettings loadSelectorSettings()  {
-        sels.setColour(mntm_WithSameColour[0].getSelection());
-        sels.setType(mntm_WithSameType[0].getSelection());
-        sels.setEdgeAdjacency(mntm_WithAdjacency[0].getSelection());
-        sels.setEdgeStop(mntm_StopAtEdges[0].getSelection());
-        sels.setHidden(mntm_WithHiddenData[0].getSelection());
-        sels.setNoSubfiles(mntm_ExceptSubfiles[0].getSelection());
-        sels.setOrientation(mntm_WithSameOrientation[0].getSelection());
-        sels.setDistance(mntm_WithAccuracy[0].getSelection());
-        sels.setWholeSubfiles(mntm_WithWholeSubfiles[0].getSelection());
-        sels.setVertices(mntm_SVertices[0].getSelection());
-        sels.setLines(mntm_SLines[0].getSelection());
-        sels.setTriangles(mntm_STriangles[0].getSelection());
-        sels.setQuads(mntm_SQuads[0].getSelection());
-        sels.setCondlines(mntm_SCLines[0].getSelection());
+        sels.setColour(mntmWithSameColourPtr[0].getSelection());
+        sels.setType(mntmWithSameTypePtr[0].getSelection());
+        sels.setEdgeAdjacency(mntmWithAdjacencyPtr[0].getSelection());
+        sels.setEdgeStop(mntmStopAtEdgesPtr[0].getSelection());
+        sels.setHidden(mntmWithHiddenDataPtr[0].getSelection());
+        sels.setNoSubfiles(mntmExceptSubfilesPtr[0].getSelection());
+        sels.setOrientation(mntmWithSameOrientationPtr[0].getSelection());
+        sels.setDistance(mntmWithAccuracyPtr[0].getSelection());
+        sels.setWholeSubfiles(mntmWithWholeSubfilesPtr[0].getSelection());
+        sels.setVertices(mntmSVerticesPtr[0].getSelection());
+        sels.setLines(mntmSLinesPtr[0].getSelection());
+        sels.setTriangles(mntmSTrianglesPtr[0].getSelection());
+        sels.setQuads(mntmSQuadsPtr[0].getSelection());
+        sels.setCondlines(mntmSCLinesPtr[0].getSelection());
         return sels;
     }
 
     public boolean isFileNameAllocated(String dir, DatFile df, boolean createNew) {
 
         TreeItem[] folders = new TreeItem[15];
-        folders[0] = treeItem_OfficialParts[0];
-        folders[1] = treeItem_OfficialPrimitives[0];
-        folders[2] = treeItem_OfficialPrimitives8[0];
-        folders[3] = treeItem_OfficialPrimitives48[0];
-        folders[4] = treeItem_OfficialSubparts[0];
+        folders[0] = treeItemOfficialPartsPtr[0];
+        folders[1] = treeItemOfficialPrimitivesPtr[0];
+        folders[2] = treeItemOfficialPrimitives8Ptr[0];
+        folders[3] = treeItemOfficialPrimitives48Ptr[0];
+        folders[4] = treeItemOfficialSubpartsPtr[0];
 
-        folders[5] = treeItem_UnofficialParts[0];
-        folders[6] = treeItem_UnofficialPrimitives[0];
-        folders[7] = treeItem_UnofficialPrimitives8[0];
-        folders[8] = treeItem_UnofficialPrimitives48[0];
-        folders[9] = treeItem_UnofficialSubparts[0];
+        folders[5] = treeItemUnofficialPartsPtr[0];
+        folders[6] = treeItemUnofficialPrimitivesPtr[0];
+        folders[7] = treeItemUnofficialPrimitives8Ptr[0];
+        folders[8] = treeItemUnofficialPrimitives48Ptr[0];
+        folders[9] = treeItemUnofficialSubpartsPtr[0];
 
-        folders[10] = treeItem_ProjectParts[0];
-        folders[11] = treeItem_ProjectPrimitives[0];
-        folders[12] = treeItem_ProjectPrimitives8[0];
-        folders[13] = treeItem_ProjectPrimitives48[0];
-        folders[14] = treeItem_ProjectSubparts[0];
+        folders[10] = treeItemProjectPartsPtr[0];
+        folders[11] = treeItemProjectPrimitivesPtr[0];
+        folders[12] = treeItemProjectPrimitives8Ptr[0];
+        folders[13] = treeItemProjectPrimitives48Ptr[0];
+        folders[14] = treeItemProjectSubpartsPtr[0];
 
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
@@ -7662,23 +7662,23 @@ public class Editor3DWindow extends Editor3DDesign {
     private DatFile isFileNameAllocated2(String dir) {
 
         TreeItem[] folders = new TreeItem[15];
-        folders[0] = treeItem_OfficialParts[0];
-        folders[1] = treeItem_OfficialPrimitives[0];
-        folders[2] = treeItem_OfficialPrimitives8[0];
-        folders[3] = treeItem_OfficialPrimitives48[0];
-        folders[4] = treeItem_OfficialSubparts[0];
+        folders[0] = treeItemOfficialPartsPtr[0];
+        folders[1] = treeItemOfficialPrimitivesPtr[0];
+        folders[2] = treeItemOfficialPrimitives8Ptr[0];
+        folders[3] = treeItemOfficialPrimitives48Ptr[0];
+        folders[4] = treeItemOfficialSubpartsPtr[0];
 
-        folders[5] = treeItem_UnofficialParts[0];
-        folders[6] = treeItem_UnofficialPrimitives[0];
-        folders[7] = treeItem_UnofficialPrimitives8[0];
-        folders[8] = treeItem_UnofficialPrimitives48[0];
-        folders[9] = treeItem_UnofficialSubparts[0];
+        folders[5] = treeItemUnofficialPartsPtr[0];
+        folders[6] = treeItemUnofficialPrimitivesPtr[0];
+        folders[7] = treeItemUnofficialPrimitives8Ptr[0];
+        folders[8] = treeItemUnofficialPrimitives48Ptr[0];
+        folders[9] = treeItemUnofficialSubpartsPtr[0];
 
-        folders[10] = treeItem_ProjectParts[0];
-        folders[11] = treeItem_ProjectPrimitives[0];
-        folders[12] = treeItem_ProjectPrimitives8[0];
-        folders[13] = treeItem_ProjectPrimitives48[0];
-        folders[14] = treeItem_ProjectSubparts[0];
+        folders[10] = treeItemProjectPartsPtr[0];
+        folders[11] = treeItemProjectPrimitivesPtr[0];
+        folders[12] = treeItemProjectPrimitives8Ptr[0];
+        folders[13] = treeItemProjectPrimitives48Ptr[0];
+        folders[14] = treeItemProjectSubpartsPtr[0];
 
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
@@ -7697,17 +7697,17 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void updatePrimitiveLabel(Primitive p) {
-        if (lbl_selectedPrimitiveItem[0] == null) return;
+        if (lblSelectedPrimitiveItemPtr[0] == null) return;
         if (p == null) {
-            lbl_selectedPrimitiveItem[0].setText(I18n.E3D_NO_PRIMITIVE_SELECTED);
+            lblSelectedPrimitiveItemPtr[0].setText(I18n.E3D_NO_PRIMITIVE_SELECTED);
         } else {
-            lbl_selectedPrimitiveItem[0].setText(p.toString());
+            lblSelectedPrimitiveItemPtr[0].setText(p.toString());
         }
-        lbl_selectedPrimitiveItem[0].getParent().layout();
+        lblSelectedPrimitiveItemPtr[0].getParent().layout();
     }
 
     public CompositePrimitive getCompositePrimitive() {
-        return cmp_Primitives[0];
+        return cmpPrimitivesPtr[0];
     }
 
     public static AtomicBoolean getAlive() {
@@ -7715,7 +7715,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public MenuItem getMntmWithSameColour() {
-        return mntm_WithSameColour[0];
+        return mntmWithSameColourPtr[0];
     }
 
     public ArrayList<String> getRecentItems() {
@@ -7728,8 +7728,8 @@ public class Editor3DWindow extends Editor3DDesign {
         View.LINE_WIDTH[0] = lineWidth;
         View.LINE_WIDTH_GL[0] = lineWidthGL;
         if (useLegacyGL) {
-            GL20Primitives.SPHERE = sp;
-            GL20Primitives.SPHERE_INV = spInv;
+            GL20Primitives.sphere = sp;
+            GL20Primitives.sphereInv = spInv;
             compileAll(false);
         }
         clickSingleBtn(btn);
@@ -7980,7 +7980,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 }
                 c3d.getManipulator().getPosition().set(min.x, min.y, min.z, 1f);
-                c3d.getManipulator().setAccuratePosition(minVertex.X, minVertex.Y, minVertex.Z);
+                c3d.getManipulator().setAccuratePosition(minVertex.xp, minVertex.yp, minVertex.zp);
             }
         }
         regainFocus();
@@ -8350,7 +8350,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             Object[] messageArguments = {df.getShortName()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
             messageBox.setMessage(formatter.format(messageArguments));
 
@@ -8452,9 +8452,9 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void selectTabWithDatFile(DatFile df) {
-        for (CTabItem ti : tabFolder_OpenDatFiles[0].getItems()) {
+        for (CTabItem ti : tabFolderOpenDatFilesPtr[0].getItems()) {
             if (df.equals(ti.getData())) {
-                tabFolder_OpenDatFiles[0].setSelection(ti);
+                tabFolderOpenDatFilesPtr[0].setSelection(ti);
                 openFileIn3DEditor(df);
                 cleanupClosedData();
                 regainFocus();
@@ -8467,7 +8467,7 @@ public class Editor3DWindow extends Editor3DDesign {
         if (View.DUMMY_DATFILE.equals(df) || df == null) {
             return;
         }
-        for (CTabItem ti : tabFolder_OpenDatFiles[0].getItems()) {
+        for (CTabItem ti : tabFolderOpenDatFilesPtr[0].getItems()) {
             if (df.equals(ti.getData())) {
                 ti.dispose();
                 Project.removeOpenedFile(df);
@@ -8498,7 +8498,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         Object[] messageArguments = {df.getShortName(), df.getLastSavedOpened()};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-        formatter.setLocale(MyLanguage.LOCALE);
+        formatter.setLocale(MyLanguage.locale);
         formatter.applyPattern(I18n.DIALOG_REVERT);
         messageBox.setMessage(formatter.format(messageArguments));
 
@@ -8575,7 +8575,7 @@ public class Editor3DWindow extends Editor3DDesign {
         // Cleanup old states
         {
             HashSet<DatFile> allFiles = new HashSet<>();
-            for (CTabItem ci : tabFolder_OpenDatFiles[0].getItems()) {
+            for (CTabItem ci : tabFolderOpenDatFilesPtr[0].getItems()) {
                 allFiles.add((DatFile) ci.getData());
             }
 
@@ -8726,7 +8726,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     Object[] messageArguments = {new File(newPath).getName()};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.setLocale(MyLanguage.locale);
                     formatter.applyPattern(I18n.DIALOG_NO_PROJECT_LOCATION);
                     messageBox.setMessage(formatter.format(messageArguments));
 
@@ -8765,7 +8765,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 updateTree_renamedEntries();
                 updateTree_unsavedEntries();
             }
-        } else if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].equals(treeItem_Project[0])) {
+        } else if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null && treeParts[0].getSelection()[0].equals(treeItemProjectPtr[0])) {
             if (Project.isDefaultProject()) {
                 if (ProjectActions.createNewProject(Editor3DWindow.getWindow(), true)) {
                     Project.setLastVisitedPath(Project.getProjectPath());
@@ -8851,51 +8851,51 @@ public class Editor3DWindow extends Editor3DDesign {
             String targetPathDirL;
             TreeItem targetTreeItem;
             boolean projectIsFileOrigin = false;
-            if (treeItem_ProjectParts[0].equals(p)) {
+            if (treeItemProjectPartsPtr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
-                targetTreeItem = treeItem_UnofficialParts[0];
+                targetTreeItem = treeItemUnofficialPartsPtr[0];
                 projectIsFileOrigin = true;
-            } else if (treeItem_ProjectPrimitives[0].equals(p)) {
+            } else if (treeItemProjectPrimitivesPtr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
-                targetTreeItem = treeItem_UnofficialPrimitives[0];
+                targetTreeItem = treeItemUnofficialPrimitivesPtr[0];
                 projectIsFileOrigin = true;
-            } else if (treeItem_ProjectPrimitives48[0].equals(p)) {
+            } else if (treeItemProjectPrimitives48Ptr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetTreeItem = treeItem_UnofficialPrimitives48[0];
+                targetTreeItem = treeItemUnofficialPrimitives48Ptr[0];
                 projectIsFileOrigin = true;
-            } else if (treeItem_ProjectPrimitives8[0].equals(p)) {
+            } else if (treeItemProjectPrimitives8Ptr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetTreeItem = treeItem_UnofficialPrimitives8[0];
+                targetTreeItem = treeItemUnofficialPrimitives8Ptr[0];
                 projectIsFileOrigin = true;
-            } else if (treeItem_ProjectSubparts[0].equals(p)) {
+            } else if (treeItemProjectSubpartsPtr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetTreeItem = treeItem_UnofficialSubparts[0];
+                targetTreeItem = treeItemUnofficialSubpartsPtr[0];
                 projectIsFileOrigin = true;
-            } else if (treeItem_OfficialParts[0].equals(p)) {
+            } else if (treeItemOfficialPartsPtr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"; //$NON-NLS-1$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"; //$NON-NLS-1$
-                targetTreeItem = treeItem_UnofficialParts[0];
-            } else if (treeItem_OfficialPrimitives[0].equals(p)) {
+                targetTreeItem = treeItemUnofficialPartsPtr[0];
+            } else if (treeItemOfficialPrimitivesPtr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P"; //$NON-NLS-1$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p"; //$NON-NLS-1$
-                targetTreeItem = treeItem_UnofficialPrimitives[0];
-            } else if (treeItem_OfficialPrimitives48[0].equals(p)) {
+                targetTreeItem = treeItemUnofficialPrimitivesPtr[0];
+            } else if (treeItemOfficialPrimitives48Ptr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "48"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetTreeItem = treeItem_UnofficialPrimitives48[0];
-            } else if (treeItem_OfficialPrimitives8[0].equals(p)) {
+                targetTreeItem = treeItemUnofficialPrimitives48Ptr[0];
+            } else if (treeItemOfficialPrimitives8Ptr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "P" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "p" + File.separator + "8"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetTreeItem = treeItem_UnofficialPrimitives8[0];
-            } else if (treeItem_OfficialSubparts[0].equals(p)) {
+                targetTreeItem = treeItemUnofficialPrimitives8Ptr[0];
+            } else if (treeItemOfficialSubpartsPtr[0].equals(p)) {
                 targetPathU = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS"+ File.separator + "S"; //$NON-NLS-1$ //$NON-NLS-2$
                 targetPathL = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "parts"+ File.separator + "s"; //$NON-NLS-1$ //$NON-NLS-2$
-                targetTreeItem = treeItem_UnofficialSubparts[0];
+                targetTreeItem = treeItemUnofficialSubpartsPtr[0];
             } else {
                 regainFocus();
                 return;
@@ -8914,11 +8914,11 @@ public class Editor3DWindow extends Editor3DDesign {
             DatFile targetFile = null;
 
             TreeItem[] folders = new TreeItem[5];
-            folders[0] = treeItem_UnofficialParts[0];
-            folders[1] = treeItem_UnofficialPrimitives[0];
-            folders[2] = treeItem_UnofficialPrimitives48[0];
-            folders[3] = treeItem_UnofficialPrimitives8[0];
-            folders[4] = treeItem_UnofficialSubparts[0];
+            folders[0] = treeItemUnofficialPartsPtr[0];
+            folders[1] = treeItemUnofficialPrimitivesPtr[0];
+            folders[2] = treeItemUnofficialPrimitives48Ptr[0];
+            folders[3] = treeItemUnofficialPrimitives8Ptr[0];
+            folders[4] = treeItemUnofficialSubpartsPtr[0];
 
             for (TreeItem folder : folders) {
                 ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
@@ -8936,7 +8936,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 Object[] messageArguments = {newName};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(I18n.DIALOG_REPLACE);
                 messageBox.setMessage(formatter.format(messageArguments));
 
@@ -8963,17 +8963,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     case IDialogConstants.NO_ID:
                         // Copy File and required and related
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0], treeItemUnofficialPtr[0], treeItemOfficialPtr[0]);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0], treeItemUnofficialPtr[0], treeItemProjectPtr[0]);
                         }
                         break;
                     case IDialogConstants.YES_ID:
                         // Copy File and required
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0], treeItemUnofficialPtr[0], treeItemOfficialPtr[0]);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0], treeItemUnofficialPtr[0], treeItemProjectPtr[0]);
                         }
                         break;
                     default:
@@ -9006,17 +9006,17 @@ public class Editor3DWindow extends Editor3DDesign {
                     case IDialogConstants.NO_ID:
                         // Copy File and required and related
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemProjectPtr[0], treeItemUnofficialPtr[0], treeItemOfficialPtr[0]);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED_AND_RELATED, treeItemOfficialPtr[0], treeItemUnofficialPtr[0], treeItemProjectPtr[0]);
                         }
                         break;
                     case IDialogConstants.YES_ID:
                         // Copy File and required
                         if (projectIsFileOrigin) {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Project[0], treeItem_Unofficial[0], treeItem_Official[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemProjectPtr[0], treeItemUnofficialPtr[0], treeItemOfficialPtr[0]);
                         } else {
-                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItem_Official[0], treeItem_Unofficial[0], treeItem_Project[0]);
+                            refResult = ReferenceParser.checkForReferences(df, References.REQUIRED, treeItemOfficialPtr[0], treeItemUnofficialPtr[0], treeItemProjectPtr[0]);
                         }
                         break;
                     default:
@@ -9045,7 +9045,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         }
                     }
                     // Create new data
-                    TreeItem[] targetTrees = new TreeItem[]{treeItem_UnofficialParts[0], treeItem_UnofficialSubparts[0], treeItem_UnofficialPrimitives[0], treeItem_UnofficialPrimitives48[0], treeItem_UnofficialPrimitives8[0]};
+                    TreeItem[] targetTrees = new TreeItem[]{treeItemUnofficialPartsPtr[0], treeItemUnofficialSubpartsPtr[0], treeItemUnofficialPrimitivesPtr[0], treeItemUnofficialPrimitives48Ptr[0], treeItemUnofficialPrimitives8Ptr[0]};
                     for(int i = 5; i < 10; i++) {
                         ArrayList<DatFile> toCreate = refResult.get(i);
                         for (DatFile datToCreate : toCreate) {
@@ -9071,7 +9071,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private void reloadColours() {
-        for (Control ctrl : toolItem_ColourBar.getChildren()) {
+        for (Control ctrl : toolItemColourBar.getChildren()) {
             if (!(ctrl instanceof ToolSeparator)) ctrl.dispose();
         }
 
@@ -9079,20 +9079,20 @@ public class Editor3DWindow extends Editor3DDesign {
 
         final int size = colours.size();
         for (int i = 0; i < size; i++) {
-            addColorButton(toolItem_ColourBar, colours.get(i), i);
+            addColorButton(toolItemColourBar, colours.get(i), i);
         }
 
         {
-            NButton btnPalette = new NButton(toolItem_ColourBar, SWT.NONE);
-            this.btn_Palette[0] = btnPalette;
+            NButton btnPalette = new NButton(toolItemColourBar, SWT.NONE);
+            this.btnPalettePtr[0] = btnPalette;
             btnPalette.setToolTipText(I18n.E3D_MORE);
             btnPalette.setImage(ResourceManager.getImage("icon16_colours.png")); //$NON-NLS-1$
             initPaletteEvent();
         }
 
-        toolItem_ColourBar.getParent().layout();
-        toolItem_ColourBar.layout();
-        toolItem_ColourBar.redraw();
+        toolItemColourBar.getParent().layout();
+        toolItemColourBar.layout();
+        toolItemColourBar.redraw();
     }
 
     public static void reloadAllColours() {
@@ -9103,7 +9103,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     private void initPaletteEvent() {
-        WidgetUtil(btn_Palette[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPalettePtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null) {
                 final GColour[] gColour2 = new GColour[1];
                 new ColourDialog(getShell(), gColour2, true).run();
@@ -9116,16 +9116,16 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     Project.getFileToEdit().getVertexManager().colourChangeSelection(num, gColour2[0].getR(), gColour2[0].getG(), gColour2[0].getB(), gColour2[0].getA(), true);
 
-                    btn_LastUsedColour[0].clearPaintListeners();
-                    btn_LastUsedColour[0].clearSelectionListeners();
+                    btnLastUsedColourPtr[0].clearPaintListeners();
+                    btnLastUsedColourPtr[0].clearSelectionListeners();
                     final Color col = SWTResourceManager.getColor((int) (gColour2[0].getR() * 255f), (int) (gColour2[0].getG() * 255f), (int) (gColour2[0].getB() * 255f));
-                    final Point size = btn_LastUsedColour[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
+                    final Point size = btnLastUsedColourPtr[0].computeSize(SWT.DEFAULT, SWT.DEFAULT);
                     final int x = Math.round(size.x / 5f);
                     final int y = Math.round(size.y / 5f);
                     final int w = Math.round(size.x * (3f / 5f));
                     final int h = Math.round(size.y * (3f / 5f));
                     final int imgSize = IconSize.getImageSizeFromIconSize();
-                    btn_LastUsedColour[0].addPaintListener(e1 -> {
+                    btnLastUsedColourPtr[0].addPaintListener(e1 -> {
                         e1.gc.setBackground(col);
                         e1.gc.fillRectangle(x, y, w, h);
                         if (gColour2[0].getA() >= .99f) {
@@ -9136,7 +9136,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             e1.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                         }
                     });
-                    WidgetUtil(btn_LastUsedColour[0]).addSelectionListener(e1 -> {
+                    WidgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
                         if (Project.getFileToEdit() != null) {
                             int num1 = gColour2[0].getColourNumber();
                             if (!View.hasLDConfigColour(num1)) {
@@ -9151,10 +9151,10 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         Object[] messageArguments1 = {num, View.getLDConfigColourName(num)};
                         MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                        formatter1.setLocale(MyLanguage.LOCALE);
+                        formatter1.setLocale(MyLanguage.locale);
                         formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
-                        btn_LastUsedColour[0].setToolTipText(formatter1.format(messageArguments1));
+                        btnLastUsedColourPtr[0].setToolTipText(formatter1.format(messageArguments1));
                     } else {
                         StringBuilder colourBuilder = new StringBuilder();
                         colourBuilder.append("0x2"); //$NON-NLS-1$
@@ -9164,13 +9164,13 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         Object[] messageArguments2 = {colourBuilder.toString()};
                         MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                        formatter2.setLocale(MyLanguage.LOCALE);
+                        formatter2.setLocale(MyLanguage.locale);
                         formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
-                        btn_LastUsedColour[0].setToolTipText(formatter2.format(messageArguments2));
-                        if (gColour2[0].getA() == 0f) btn_LastUsedColour[0].setToolTipText(I18n.COLOURDIALOG_RANDOM_COLOURS);
+                        btnLastUsedColourPtr[0].setToolTipText(formatter2.format(messageArguments2));
+                        if (gColour2[0].getA() == 0f) btnLastUsedColourPtr[0].setToolTipText(I18n.COLOURDIALOG_RANDOM_COLOURS);
                     }
-                    btn_LastUsedColour[0].redraw();
+                    btnLastUsedColourPtr[0].redraw();
                 }
             }
             regainFocus();
@@ -9178,7 +9178,7 @@ public class Editor3DWindow extends Editor3DDesign {
     }
 
     public void updateInitialScale(BigDecimal initialScale, BigDecimal scaleFacor, boolean setDefaults) {
-        if (BigDecimal.ZERO.compareTo(spn_ScaleInitial[0].getValue()) != 0) {
+        if (BigDecimal.ZERO.compareTo(spnScaleInitialPtr[0].getValue()) != 0) {
             if (setDefaults) {
                 switch (snapSize) {
                 case FINE:
@@ -9198,17 +9198,17 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
 
-            spn_ScaleInitial[0].setValue(initialScale);
-            spn_Scale[0].setValue(scaleFacor);
+            spnScaleInitialPtr[0].setValue(initialScale);
+            spnScalePtr[0].setValue(scaleFacor);
         }
     }
 
     public void activateAllTypes() {
-        mntm_SVertices[0].setSelection(true);
-        mntm_SLines[0].setSelection(true);
-        mntm_STriangles[0].setSelection(true);
-        mntm_SQuads[0].setSelection(true);
-        mntm_SCLines[0].setSelection(true);
+        mntmSVerticesPtr[0].setSelection(true);
+        mntmSLinesPtr[0].setSelection(true);
+        mntmSTrianglesPtr[0].setSelection(true);
+        mntmSQuadsPtr[0].setSelection(true);
+        mntmSCLinesPtr[0].setSelection(true);
     }
 
     public ArrayList<Composite3DState> getC3DStates() {

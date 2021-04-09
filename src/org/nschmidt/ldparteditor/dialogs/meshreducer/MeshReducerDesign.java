@@ -43,7 +43,7 @@ class MeshReducerDesign extends Dialog {
     final MeshReducerSettings ms;
 
     // Use final only for subclass/listener references!
-    final Combo[] cmb_scope = new Combo[1];
+    final Combo[] cmbScopePtr = new Combo[1];
 
     MeshReducerDesign(Shell parentShell, MeshReducerSettings ms) {
         super(parentShell);
@@ -72,7 +72,7 @@ class MeshReducerDesign extends Dialog {
         lblCoordsPrec.setText(I18n.MESHREDUCE_MODE);
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmbScope;
+        this.cmbScopePtr[0] = cmbScope;
         cmbScope.setItems(new String[] {I18n.MESHREDUCE_DESTROY_COLOURS, I18n.MESHREDUCE_KEEP_COLOURS});
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(ms.getMode()));

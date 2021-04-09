@@ -70,15 +70,15 @@ public class VM20Manipulator extends VM19ColourChanger {
         // Calculate the new vertex position
         if (newVertex == null) {
             for (Vertex v : allVertices) {
-                BigDecimal[] temp = transformation.transform(v.X, v.Y, v.Z);
+                BigDecimal[] temp = transformation.transform(v.xp, v.yp, v.zp);
                 oldToNewVertex.put(v, new Vertex(temp[0], temp[1], temp[2]));
             }
         } else {
             for (Vertex v : allVertices) {
                 oldToNewVertex.put(v, new Vertex(
-                        newVertex.X == null ? v.X : newVertex.X,
-                                newVertex.Y == null ? v.Y : newVertex.Y,
-                                        newVertex.Z == null ? v.Z : newVertex.Z
+                        newVertex.x == null ? v.xp : newVertex.x,
+                                newVertex.y == null ? v.yp : newVertex.y,
+                                        newVertex.z == null ? v.zp : newVertex.z
                         ));
             }
         }
@@ -637,7 +637,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         boolean swapWinding = false;
         Matrix transformation = null;
         Vertex offset = null;
-        if (tm == TransformationMode.TRANSLATE) offset = new Vertex(target.X, target.Y, target.Z);
+        if (tm == TransformationMode.TRANSLATE) offset = new Vertex(target.xp, target.yp, target.zp);
 
         if (pivot == null) pivot = new Vertex(0f, 0f, 0f);
 
@@ -646,8 +646,8 @@ public class VM20Manipulator extends VM19ColourChanger {
             RotationSnap flag;
             if (x) {
                 try {
-                    target.X.intValueExact();
-                    switch (Math.abs(target.X.intValue())) {
+                    target.xp.intValueExact();
+                    switch (Math.abs(target.xp.intValue())) {
                     case 90:
                         flag = RotationSnap.DEG90;
                         break;
@@ -667,11 +667,11 @@ public class VM20Manipulator extends VM19ColourChanger {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = View.ACCURATE_ID.rotate(target.X.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
+                transformation = View.ACCURATE_ID.rotate(target.xp.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO });
             } else if (y) {
                 try {
-                    target.Y.intValueExact();
-                    switch (Math.abs(target.Y.intValue())) {
+                    target.yp.intValueExact();
+                    switch (Math.abs(target.yp.intValue())) {
                     case 90:
                         flag = RotationSnap.DEG90;
                         break;
@@ -691,11 +691,11 @@ public class VM20Manipulator extends VM19ColourChanger {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = View.ACCURATE_ID.rotate(target.Y.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
+                transformation = View.ACCURATE_ID.rotate(target.yp.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO });
             } else {
                 try {
-                    target.Z.intValueExact();
-                    switch (Math.abs(target.Z.intValue())) {
+                    target.zp.intValueExact();
+                    switch (Math.abs(target.zp.intValue())) {
                     case 90:
                         flag = RotationSnap.DEG90;
                         break;
@@ -715,13 +715,13 @@ public class VM20Manipulator extends VM19ColourChanger {
                 } catch (ArithmeticException ae) {
                     flag = RotationSnap.COMPLEX;
                 }
-                transformation = View.ACCURATE_ID.rotate(target.Z.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
+                transformation = View.ACCURATE_ID.rotate(target.zp.divide(new BigDecimal(180), Threshold.MC).multiply(new BigDecimal(Math.PI)), flag, new BigDecimal[] { BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE });
             }
             break;
         case SCALE:
-            BigDecimal sx = target.X;
-            BigDecimal sy = target.Y;
-            BigDecimal sz = target.Z;
+            BigDecimal sx = target.xp;
+            BigDecimal sy = target.yp;
+            BigDecimal sz = target.zp;
 
             int count = 0;
             int cmp1 = 0;
@@ -748,7 +748,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                     BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
                     BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO,
-                    x ? offset.X : BigDecimal.ZERO, y ? offset.Y : BigDecimal.ZERO, z ? offset.Z : BigDecimal.ZERO, BigDecimal.ONE);
+                    x ? offset.xp : BigDecimal.ZERO, y ? offset.yp : BigDecimal.ZERO, z ? offset.zp : BigDecimal.ZERO, BigDecimal.ONE);
             break;
         default:
             break;
@@ -756,7 +756,7 @@ public class VM20Manipulator extends VM19ColourChanger {
 
         if (tm == TransformationMode.SET) {
 
-            transformSelection(View.ACCURATE_ID, new Vector3d(x ? target.X : null,  y ? target.Y : null, z ? target.Z : null), moveAdjacentData);
+            transformSelection(View.ACCURATE_ID, new Vector3d(x ? target.xp : null,  y ? target.yp : null, z ? target.zp : null), moveAdjacentData);
 
         } else {
 
@@ -776,8 +776,8 @@ public class VM20Manipulator extends VM19ColourChanger {
                 transformation = Matrix.mul(transformation, mi);
             }
 
-            final Matrix forward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X.negate(), pivot.Y.negate(), pivot.Z.negate() }), View.ACCURATE_ID);
-            final Matrix backward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.X, pivot.Y, pivot.Z }), View.ACCURATE_ID);
+            final Matrix forward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.xp.negate(), pivot.yp.negate(), pivot.zp.negate() }), View.ACCURATE_ID);
+            final Matrix backward = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { pivot.xp, pivot.yp, pivot.zp }), View.ACCURATE_ID);
 
             transformation = Matrix.mul(backward, transformation);
             transformation = Matrix.mul(transformation, forward);

@@ -44,7 +44,7 @@ public class IsecalcDialog extends IsecalcDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        cmb_scope[0].addListener(SWT.Selection, event -> is.setScope(cmb_scope[0].getSelectionIndex()));
+        cmbScopePtr[0].addListener(SWT.Selection, event -> is.setScope(cmbScopePtr[0].getSelectionIndex()));
         return super.open();
     }
 }

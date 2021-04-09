@@ -82,7 +82,7 @@ public final class DatFile {
     private final GData drawChainAnchor = new GDataInit(View.DUMMY_REFERENCE);
 
     private final HashBiMap<Integer, GData> drawPerLine = new HashBiMap<>();
-    private final HashMap<Integer, GData> copy_drawPerLine = new HashMap<>();
+    private final HashMap<Integer, GData> copyDrawPerLine = new HashMap<>();
 
     private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE, View.DUMMY_REFERENCE); //$NON-NLS-1$
@@ -508,14 +508,14 @@ public final class DatFile {
                 GData data;
 
                 while ((data = drawPerLine.getValue(actionStartLine)) != null) {
-                    copy_drawPerLine.put(actionStartLine + diff, data);
+                    copyDrawPerLine.put(actionStartLine + diff, data);
                     drawPerLine.removeByKey(actionStartLine);
                     actionStartLine++;
                 }
-                for (Entry<Integer, GData> entry : copy_drawPerLine.entrySet()) {
+                for (Entry<Integer, GData> entry : copyDrawPerLine.entrySet()) {
                     drawPerLine.put(entry.getKey(), entry.getValue());
                 }
-                copy_drawPerLine.clear();
+                copyDrawPerLine.clear();
             }
 
         } else if (length > 0) {
@@ -555,13 +555,13 @@ public final class DatFile {
 
                     int lcount = compositeText.getLineCount() - newLineCount + 1;
                     for (int i = startLine + 1; i < lcount; i++) {
-                        copy_drawPerLine.put(i + newLineCount, drawPerLine.getValue(i));
+                        copyDrawPerLine.put(i + newLineCount, drawPerLine.getValue(i));
                         drawPerLine.removeByKey(i);
                     }
-                    for (Entry<Integer, GData> entry : copy_drawPerLine.entrySet()) {
+                    for (Entry<Integer, GData> entry : copyDrawPerLine.entrySet()) {
                         drawPerLine.put(entry.getKey(), entry.getValue());
                     }
-                    copy_drawPerLine.clear();
+                    copyDrawPerLine.clear();
                 }
             }
 
@@ -611,7 +611,7 @@ public final class DatFile {
 
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(warnings);
@@ -626,7 +626,7 @@ public final class DatFile {
 
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -681,7 +681,7 @@ public final class DatFile {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -710,7 +710,7 @@ public final class DatFile {
                     position = compositeText.getOffsetAtLine(lineNumber - 1);
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.setLocale(MyLanguage.locale);
                     formatter.applyPattern(I18n.DATFILE_LINE);
 
                     TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -807,7 +807,7 @@ public final class DatFile {
 
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(warnings);
@@ -822,7 +822,7 @@ public final class DatFile {
 
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -870,7 +870,7 @@ public final class DatFile {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -898,7 +898,7 @@ public final class DatFile {
                     position = compositeText.getOffsetAtLine(lineNumber - 1);
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.LOCALE);
+                    formatter.setLocale(MyLanguage.locale);
                     formatter.applyPattern(I18n.DATFILE_LINE);
 
                     TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -956,7 +956,7 @@ public final class DatFile {
                 }
                 Object[] messageArguments = {lineNumber2, position};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(I18n.DATFILE_LINE);
 
                 TreeItem trtmNewTreeitem = new TreeItem(duplicates);
@@ -976,7 +976,7 @@ public final class DatFile {
     }
 
     synchronized boolean updateDatHeaderHints(StyledText compositeText, TreeItem headerHints) {
-        ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> cachedHeaderHints = datHeader.CACHE_headerHints;
+        ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> cachedHeaderHints = datHeader.cachedHeaderHints;
         if (!cachedHeaderHints.isEmpty()) {
             int position = 0;
 
@@ -1018,7 +1018,7 @@ public final class DatFile {
                     for (ParsingResult result : parsingResults) {
                         Object[] messageArguments = {lineNumber2, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.LOCALE);
+                        formatter.setLocale(MyLanguage.locale);
                         formatter.applyPattern(I18n.DATFILE_LINE);
                         TreeItem trtmNewTreeitem = new TreeItem(headerHints);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
@@ -1541,7 +1541,7 @@ public final class DatFile {
             drawPerLine.getValue(lineNumber).derefer();
         }
         drawPerLine.clear();
-        copy_drawPerLine.clear();
+        copyDrawPerLine.clear();
         drawChainAnchor.setNext(null);
         Project.getParsedFiles().remove(this);
     }
@@ -1797,7 +1797,7 @@ public final class DatFile {
 
             Object[] messageArguments = {getShortName(), getLastSavedOpened()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DIALOG_MODIFIED);
             messageBox.setMessage(formatter.format(messageArguments));
 

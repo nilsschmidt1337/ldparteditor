@@ -33,14 +33,14 @@ public class Arc {
     private final FloatBuffer matrix;
     private final Matrix4f rotation;
 
-    private final float EPSILON = 0.0000001f;
+    private static final float EPSILON = 0.0000001f;
 
     private final float r;
     private final float g;
     private final float b;
 
-    private final float arc_width;
-    private final float arc_width_neg;
+    private final float arcWidth;
+    private final float arcWidthNeg;
 
     private final float[] circle = new float[66];
     private final float[] circle2 = new float[66];
@@ -54,8 +54,8 @@ public class Arc {
         this.g = g;
         this.b = b;
 
-        this.arc_width = arcWidth;
-        this.arc_width_neg = -arcWidth;
+        this.arcWidth = arcWidth;
+        this.arcWidthNeg = -arcWidth;
 
         rotation = makeRotationDir(new Vector3f(dirX, dirY, dirZ));
         matrix = BufferUtils.createFloatBuffer(16);
@@ -150,156 +150,156 @@ public class Arc {
         GL11.glBegin(GL11.GL_QUAD_STRIP);
 
         GL11.glVertex3f(circle[0], 0f, circle[1]);
-        GL11.glVertex3f(circle2[0], arc_width, circle2[1]);
+        GL11.glVertex3f(circle2[0], arcWidth, circle2[1]);
         GL11.glVertex3f(circle[2], 0f, circle[3]);
-        GL11.glVertex3f(circle2[2], arc_width, circle2[3]);
+        GL11.glVertex3f(circle2[2], arcWidth, circle2[3]);
         GL11.glVertex3f(circle[4], 0f, circle[5]);
-        GL11.glVertex3f(circle2[4], arc_width, circle2[5]);
+        GL11.glVertex3f(circle2[4], arcWidth, circle2[5]);
         GL11.glVertex3f(circle[6], 0f, circle[7]);
-        GL11.glVertex3f(circle2[6], arc_width, circle2[7]);
+        GL11.glVertex3f(circle2[6], arcWidth, circle2[7]);
 
         GL11.glVertex3f(circle[8], 0f, circle[9]);
-        GL11.glVertex3f(circle2[8], arc_width, circle2[9]);
+        GL11.glVertex3f(circle2[8], arcWidth, circle2[9]);
         GL11.glVertex3f(circle[10], 0f, circle[11]);
-        GL11.glVertex3f(circle2[10], arc_width, circle2[11]);
+        GL11.glVertex3f(circle2[10], arcWidth, circle2[11]);
         GL11.glVertex3f(circle[12], 0f, circle[13]);
-        GL11.glVertex3f(circle2[12], arc_width, circle2[13]);
+        GL11.glVertex3f(circle2[12], arcWidth, circle2[13]);
         GL11.glVertex3f(circle[14], 0f, circle[15]);
-        GL11.glVertex3f(circle2[14], arc_width, circle2[15]);
+        GL11.glVertex3f(circle2[14], arcWidth, circle2[15]);
 
         GL11.glVertex3f(circle[16], 0f, circle[17]);
-        GL11.glVertex3f(circle2[16], arc_width, circle2[17]);
+        GL11.glVertex3f(circle2[16], arcWidth, circle2[17]);
         GL11.glVertex3f(circle[18], 0f, circle[19]);
-        GL11.glVertex3f(circle2[18], arc_width, circle2[19]);
+        GL11.glVertex3f(circle2[18], arcWidth, circle2[19]);
         GL11.glVertex3f(circle[20], 0f, circle[21]);
-        GL11.glVertex3f(circle2[20], arc_width, circle2[21]);
+        GL11.glVertex3f(circle2[20], arcWidth, circle2[21]);
         GL11.glVertex3f(circle[22], 0f, circle[23]);
-        GL11.glVertex3f(circle2[22], arc_width, circle2[23]);
+        GL11.glVertex3f(circle2[22], arcWidth, circle2[23]);
 
         GL11.glVertex3f(circle[24], 0f, circle[25]);
-        GL11.glVertex3f(circle2[24], arc_width, circle2[25]);
+        GL11.glVertex3f(circle2[24], arcWidth, circle2[25]);
         GL11.glVertex3f(circle[26], 0f, circle[27]);
-        GL11.glVertex3f(circle2[26], arc_width, circle2[27]);
+        GL11.glVertex3f(circle2[26], arcWidth, circle2[27]);
         GL11.glVertex3f(circle[28], 0f, circle[29]);
-        GL11.glVertex3f(circle2[28], arc_width, circle2[29]);
+        GL11.glVertex3f(circle2[28], arcWidth, circle2[29]);
         GL11.glVertex3f(circle[30], 0f, circle[31]);
-        GL11.glVertex3f(circle2[30], arc_width, circle2[31]);
+        GL11.glVertex3f(circle2[30], arcWidth, circle2[31]);
 
         GL11.glVertex3f(circle[32], 0f, circle[33]);
-        GL11.glVertex3f(circle2[32], arc_width, circle2[33]);
+        GL11.glVertex3f(circle2[32], arcWidth, circle2[33]);
         GL11.glVertex3f(circle[34], 0f, circle[35]);
-        GL11.glVertex3f(circle2[34], arc_width, circle2[35]);
+        GL11.glVertex3f(circle2[34], arcWidth, circle2[35]);
         GL11.glVertex3f(circle[36], 0f, circle[37]);
-        GL11.glVertex3f(circle2[36], arc_width, circle2[37]);
+        GL11.glVertex3f(circle2[36], arcWidth, circle2[37]);
         GL11.glVertex3f(circle[38], 0f, circle[39]);
-        GL11.glVertex3f(circle2[38], arc_width, circle2[39]);
+        GL11.glVertex3f(circle2[38], arcWidth, circle2[39]);
 
         GL11.glVertex3f(circle[40], 0f, circle[41]);
-        GL11.glVertex3f(circle2[40], arc_width, circle2[41]);
+        GL11.glVertex3f(circle2[40], arcWidth, circle2[41]);
         GL11.glVertex3f(circle[42], 0f, circle[43]);
-        GL11.glVertex3f(circle2[42], arc_width, circle2[43]);
+        GL11.glVertex3f(circle2[42], arcWidth, circle2[43]);
         GL11.glVertex3f(circle[44], 0f, circle[45]);
-        GL11.glVertex3f(circle2[44], arc_width, circle2[45]);
+        GL11.glVertex3f(circle2[44], arcWidth, circle2[45]);
         GL11.glVertex3f(circle[46], 0f, circle[47]);
-        GL11.glVertex3f(circle2[46], arc_width, circle2[47]);
+        GL11.glVertex3f(circle2[46], arcWidth, circle2[47]);
 
         GL11.glVertex3f(circle[48], 0f, circle[49]);
-        GL11.glVertex3f(circle2[48], arc_width, circle2[49]);
+        GL11.glVertex3f(circle2[48], arcWidth, circle2[49]);
         GL11.glVertex3f(circle[50], 0f, circle[51]);
-        GL11.glVertex3f(circle2[50], arc_width, circle2[51]);
+        GL11.glVertex3f(circle2[50], arcWidth, circle2[51]);
         GL11.glVertex3f(circle[52], 0f, circle[53]);
-        GL11.glVertex3f(circle2[52], arc_width, circle2[53]);
+        GL11.glVertex3f(circle2[52], arcWidth, circle2[53]);
         GL11.glVertex3f(circle[54], 0f, circle[55]);
-        GL11.glVertex3f(circle2[54], arc_width, circle2[55]);
+        GL11.glVertex3f(circle2[54], arcWidth, circle2[55]);
 
         GL11.glVertex3f(circle[56], 0f, circle[57]);
-        GL11.glVertex3f(circle2[56], arc_width, circle2[57]);
+        GL11.glVertex3f(circle2[56], arcWidth, circle2[57]);
         GL11.glVertex3f(circle[58], 0f, circle[59]);
-        GL11.glVertex3f(circle2[58], arc_width, circle2[59]);
+        GL11.glVertex3f(circle2[58], arcWidth, circle2[59]);
         GL11.glVertex3f(circle[60], 0f, circle[61]);
-        GL11.glVertex3f(circle2[60], arc_width, circle2[61]);
+        GL11.glVertex3f(circle2[60], arcWidth, circle2[61]);
         GL11.glVertex3f(circle[62], 0f, circle[63]);
-        GL11.glVertex3f(circle2[62], arc_width, circle2[63]);
+        GL11.glVertex3f(circle2[62], arcWidth, circle2[63]);
 
         GL11.glVertex3f(circle[64], 0f, circle[65]);
-        GL11.glVertex3f(circle2[64], arc_width, circle2[65]);
+        GL11.glVertex3f(circle2[64], arcWidth, circle2[65]);
         GL11.glEnd();
 
         GL11.glBegin(GL11.GL_QUAD_STRIP);
 
-        GL11.glVertex3f(circle2[0], arc_width_neg, circle2[1]);
+        GL11.glVertex3f(circle2[0], arcWidthNeg, circle2[1]);
         GL11.glVertex3f(circle[0], 0f, circle[1]);
-        GL11.glVertex3f(circle2[2], arc_width_neg, circle2[3]);
+        GL11.glVertex3f(circle2[2], arcWidthNeg, circle2[3]);
         GL11.glVertex3f(circle[2], 0f, circle[3]);
-        GL11.glVertex3f(circle2[4], arc_width_neg, circle2[5]);
+        GL11.glVertex3f(circle2[4], arcWidthNeg, circle2[5]);
         GL11.glVertex3f(circle[4], 0f, circle[5]);
-        GL11.glVertex3f(circle2[6], arc_width_neg, circle2[7]);
+        GL11.glVertex3f(circle2[6], arcWidthNeg, circle2[7]);
         GL11.glVertex3f(circle[6], 0f, circle[7]);
 
-        GL11.glVertex3f(circle2[8], arc_width_neg, circle2[9]);
+        GL11.glVertex3f(circle2[8], arcWidthNeg, circle2[9]);
         GL11.glVertex3f(circle[8], 0f, circle[9]);
-        GL11.glVertex3f(circle2[10], arc_width_neg, circle2[11]);
+        GL11.glVertex3f(circle2[10], arcWidthNeg, circle2[11]);
         GL11.glVertex3f(circle[10], 0f, circle[11]);
-        GL11.glVertex3f(circle2[12], arc_width_neg, circle2[13]);
+        GL11.glVertex3f(circle2[12], arcWidthNeg, circle2[13]);
         GL11.glVertex3f(circle[12], 0f, circle[13]);
-        GL11.glVertex3f(circle2[14], arc_width_neg, circle2[15]);
+        GL11.glVertex3f(circle2[14], arcWidthNeg, circle2[15]);
         GL11.glVertex3f(circle[14], 0f, circle[15]);
 
-        GL11.glVertex3f(circle2[16], arc_width_neg, circle2[17]);
+        GL11.glVertex3f(circle2[16], arcWidthNeg, circle2[17]);
         GL11.glVertex3f(circle[16], 0f, circle[17]);
-        GL11.glVertex3f(circle2[18], arc_width_neg, circle2[19]);
+        GL11.glVertex3f(circle2[18], arcWidthNeg, circle2[19]);
         GL11.glVertex3f(circle[18], 0f, circle[19]);
-        GL11.glVertex3f(circle2[20], arc_width_neg, circle2[21]);
+        GL11.glVertex3f(circle2[20], arcWidthNeg, circle2[21]);
         GL11.glVertex3f(circle[20], 0f, circle[21]);
-        GL11.glVertex3f(circle2[22], arc_width_neg, circle2[23]);
+        GL11.glVertex3f(circle2[22], arcWidthNeg, circle2[23]);
         GL11.glVertex3f(circle[22], 0f, circle[23]);
 
-        GL11.glVertex3f(circle2[24], arc_width_neg, circle2[25]);
+        GL11.glVertex3f(circle2[24], arcWidthNeg, circle2[25]);
         GL11.glVertex3f(circle[24], 0f, circle[25]);
-        GL11.glVertex3f(circle2[26], arc_width_neg, circle2[27]);
+        GL11.glVertex3f(circle2[26], arcWidthNeg, circle2[27]);
         GL11.glVertex3f(circle[26], 0f, circle[27]);
-        GL11.glVertex3f(circle2[28], arc_width_neg, circle2[29]);
+        GL11.glVertex3f(circle2[28], arcWidthNeg, circle2[29]);
         GL11.glVertex3f(circle[28], 0f, circle[29]);
-        GL11.glVertex3f(circle2[30], arc_width_neg, circle2[31]);
+        GL11.glVertex3f(circle2[30], arcWidthNeg, circle2[31]);
         GL11.glVertex3f(circle[30], 0f, circle[31]);
 
-        GL11.glVertex3f(circle2[32], arc_width_neg, circle2[33]);
+        GL11.glVertex3f(circle2[32], arcWidthNeg, circle2[33]);
         GL11.glVertex3f(circle[32], 0f, circle[33]);
-        GL11.glVertex3f(circle2[34], arc_width_neg, circle2[35]);
+        GL11.glVertex3f(circle2[34], arcWidthNeg, circle2[35]);
         GL11.glVertex3f(circle[34], 0f, circle[35]);
-        GL11.glVertex3f(circle2[36], arc_width_neg, circle2[37]);
+        GL11.glVertex3f(circle2[36], arcWidthNeg, circle2[37]);
         GL11.glVertex3f(circle[36], 0f, circle[37]);
-        GL11.glVertex3f(circle2[38], arc_width_neg, circle2[39]);
+        GL11.glVertex3f(circle2[38], arcWidthNeg, circle2[39]);
         GL11.glVertex3f(circle[38], 0f, circle[39]);
 
-        GL11.glVertex3f(circle2[40], arc_width_neg, circle2[41]);
+        GL11.glVertex3f(circle2[40], arcWidthNeg, circle2[41]);
         GL11.glVertex3f(circle[40], 0f, circle[41]);
-        GL11.glVertex3f(circle2[42], arc_width_neg, circle2[43]);
+        GL11.glVertex3f(circle2[42], arcWidthNeg, circle2[43]);
         GL11.glVertex3f(circle[42], 0f, circle[43]);
-        GL11.glVertex3f(circle2[44], arc_width_neg, circle2[45]);
+        GL11.glVertex3f(circle2[44], arcWidthNeg, circle2[45]);
         GL11.glVertex3f(circle[44], 0f, circle[45]);
-        GL11.glVertex3f(circle2[46], arc_width_neg, circle2[47]);
+        GL11.glVertex3f(circle2[46], arcWidthNeg, circle2[47]);
         GL11.glVertex3f(circle[46], 0f, circle[47]);
 
-        GL11.glVertex3f(circle2[48], arc_width_neg, circle2[49]);
+        GL11.glVertex3f(circle2[48], arcWidthNeg, circle2[49]);
         GL11.glVertex3f(circle[48], 0f, circle[49]);
-        GL11.glVertex3f(circle2[50], arc_width_neg, circle2[51]);
+        GL11.glVertex3f(circle2[50], arcWidthNeg, circle2[51]);
         GL11.glVertex3f(circle[50], 0f, circle[51]);
-        GL11.glVertex3f(circle2[52], arc_width_neg, circle2[53]);
+        GL11.glVertex3f(circle2[52], arcWidthNeg, circle2[53]);
         GL11.glVertex3f(circle[52], 0f, circle[53]);
-        GL11.glVertex3f(circle2[54], arc_width_neg, circle2[55]);
+        GL11.glVertex3f(circle2[54], arcWidthNeg, circle2[55]);
         GL11.glVertex3f(circle[54], 0f, circle[55]);
 
-        GL11.glVertex3f(circle2[56], arc_width_neg, circle2[57]);
+        GL11.glVertex3f(circle2[56], arcWidthNeg, circle2[57]);
         GL11.glVertex3f(circle[56], 0f, circle[57]);
-        GL11.glVertex3f(circle2[58], arc_width_neg, circle2[59]);
+        GL11.glVertex3f(circle2[58], arcWidthNeg, circle2[59]);
         GL11.glVertex3f(circle[58], 0f, circle[59]);
-        GL11.glVertex3f(circle2[60], arc_width_neg, circle2[61]);
+        GL11.glVertex3f(circle2[60], arcWidthNeg, circle2[61]);
         GL11.glVertex3f(circle[60], 0f, circle[61]);
-        GL11.glVertex3f(circle2[62], arc_width_neg, circle2[63]);
+        GL11.glVertex3f(circle2[62], arcWidthNeg, circle2[63]);
         GL11.glVertex3f(circle[62], 0f, circle[63]);
 
-        GL11.glVertex3f(circle2[64], arc_width_neg, circle2[65]);
+        GL11.glVertex3f(circle2[64], arcWidthNeg, circle2[65]);
         GL11.glVertex3f(circle[64], 0f, circle[65]);
 
         GL11.glEnd();
@@ -338,7 +338,7 @@ public class Arc {
             vertexData[i + 4]  = g;
             vertexData[i + 5]  = b;
             vertexData[i + 6]  = circle2[j];
-            vertexData[i + 7]  = arc_width;
+            vertexData[i + 7]  = arcWidth;
             vertexData[i + 8]  = circle2[j + 1];
             vertexData[i + 9]  = r;
             vertexData[i + 10] = g;
@@ -351,7 +351,7 @@ public class Arc {
         j = 0;
         for(int i = 0; i < 396; i += 12) {
             vertexData[i]      = circle2[j];
-            vertexData[i + 1]  = arc_width_neg;
+            vertexData[i + 1]  = arcWidthNeg;
             vertexData[i + 2]  = circle2[j + 1];
             vertexData[i + 3]  = r;
             vertexData[i + 4]  = g;

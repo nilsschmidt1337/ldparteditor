@@ -742,7 +742,7 @@ class VM06Edger2 extends VM05Distance {
                 return v;
             }
         }
-        final Vertex result = new Vertex(ov.X, ov.Y, ov.Z);
+        final Vertex result = new Vertex(ov.xp, ov.yp, ov.zp);
         verticesToCheck.add(result);
         return result;
     }

@@ -111,42 +111,42 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     for (Vertex v : verts) {
                         switch (sp) {
                         case SymSplitterSettings.Z_PLUS:
-                            if (v.Z.compareTo(o) > 0) {
+                            if (v.zp.compareTo(o) > 0) {
                                 pos++;
                             } else {
                                 neg++;
                             }
                             break;
                         case SymSplitterSettings.Z_MINUS:
-                            if (v.Z.compareTo(o) > 0) {
+                            if (v.zp.compareTo(o) > 0) {
                                 neg++;
                             } else {
                                 pos++;
                             }
                             break;
                         case SymSplitterSettings.Y_PLUS:
-                            if (v.Y.compareTo(o) > 0) {
+                            if (v.yp.compareTo(o) > 0) {
                                 pos++;
                             } else {
                                 neg++;
                             }
                             break;
                         case SymSplitterSettings.Y_MINUS:
-                            if (v.Y.compareTo(o) > 0) {
+                            if (v.yp.compareTo(o) > 0) {
                                 neg++;
                             } else {
                                 pos++;
                             }
                             break;
                         case SymSplitterSettings.X_PLUS:
-                            if (v.X.compareTo(o) > 0) {
+                            if (v.xp.compareTo(o) > 0) {
                                 pos++;
                             } else {
                                 neg++;
                             }
                             break;
                         case SymSplitterSettings.X_MINUS:
-                            if (v.X.compareTo(o) > 0) {
+                            if (v.xp.compareTo(o) > 0) {
                                 neg++;
                             } else {
                                 pos++;
@@ -244,20 +244,20 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                 switch (sp) {
                 case SymSplitterSettings.Z_PLUS:
                 case SymSplitterSettings.Z_MINUS:
-                    if (p.compareTo(v.Z.subtract(o).abs()) > 0) {
-                        wasModified = changeVertexDirectFast(v, new Vertex(v.X, v.Y, o), true) || wasModified;
+                    if (p.compareTo(v.zp.subtract(o).abs()) > 0) {
+                        wasModified = changeVertexDirectFast(v, new Vertex(v.xp, v.yp, o), true) || wasModified;
                     }
                     break;
                 case SymSplitterSettings.Y_PLUS:
                 case SymSplitterSettings.Y_MINUS:
-                    if (p.compareTo(v.Y.subtract(o).abs()) > 0) {
-                        wasModified = changeVertexDirectFast(v, new Vertex(v.X, o, v.Z), true) || wasModified;
+                    if (p.compareTo(v.yp.subtract(o).abs()) > 0) {
+                        wasModified = changeVertexDirectFast(v, new Vertex(v.xp, o, v.zp), true) || wasModified;
                     }
                     break;
                 case SymSplitterSettings.X_PLUS:
                 case SymSplitterSettings.X_MINUS:
-                    if (p.compareTo(v.X.subtract(o).abs()) > 0) {
-                        wasModified = changeVertexDirectFast(v, new Vertex(o, v.Y, v.Z), true) || wasModified;
+                    if (p.compareTo(v.xp.subtract(o).abs()) > 0) {
+                        wasModified = changeVertexDirectFast(v, new Vertex(o, v.yp, v.zp), true) || wasModified;
                     }
                     break;
                 default:
@@ -302,7 +302,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     if (shortName.contains("stug") || shortName.contains("stud.dat") || shortName.contains("stud2.dat")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         forceMiddle = true;
                     }
-                    verts = new Vertex[]{new Vertex(g1.accurateProductMatrix.M30, g1.accurateProductMatrix.M31, g1.accurateProductMatrix.M32)};
+                    verts = new Vertex[]{new Vertex(g1.accurateProductMatrix.m30, g1.accurateProductMatrix.m31, g1.accurateProductMatrix.m32)};
                     break;
                 case 2:
                     verts = lines.get(g);
@@ -356,7 +356,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                 for (Vertex v : verts) {
                     switch (sp) {
                     case SymSplitterSettings.Z_PLUS:
-                        switch (v.Z.compareTo(o)) {
+                        switch (v.zp.compareTo(o)) {
                         case -1:
                             neg++;
                             break;
@@ -372,7 +372,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         }
                         break;
                     case SymSplitterSettings.Z_MINUS:
-                        switch (v.Z.compareTo(o)) {
+                        switch (v.zp.compareTo(o)) {
                         case -1:
                             pos++;
                             break;
@@ -388,7 +388,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         }
                         break;
                     case SymSplitterSettings.Y_PLUS:
-                        switch (v.Y.compareTo(o)) {
+                        switch (v.yp.compareTo(o)) {
                         case -1:
                             neg++;
                             break;
@@ -404,7 +404,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         }
                         break;
                     case SymSplitterSettings.Y_MINUS:
-                        switch (v.Y.compareTo(o)) {
+                        switch (v.yp.compareTo(o)) {
                         case -1:
                             pos++;
                             break;
@@ -420,7 +420,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         }
                         break;
                     case SymSplitterSettings.X_PLUS:
-                        switch (v.X.compareTo(o)) {
+                        switch (v.xp.compareTo(o)) {
                         case -1:
                             neg++;
                             break;
@@ -436,7 +436,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         }
                         break;
                     case SymSplitterSettings.X_MINUS:
-                        switch (v.X.compareTo(o)) {
+                        switch (v.xp.compareTo(o)) {
                         case -1:
                             pos++;
                             break;
@@ -564,8 +564,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                     case SymSplitterSettings.Z_MINUS:
                                         for (int i = 0; i < verts.length - 1; i++) {
                                             int j = (i + 1) % verts.length;
-                                            BigDecimal di = verts[i].Z.subtract(o);
-                                            BigDecimal dj = verts[j].Z.subtract(o);
+                                            BigDecimal di = verts[i].zp.subtract(o);
+                                            BigDecimal dj = verts[j].zp.subtract(o);
                                             if (di.signum() != dj.signum()) {
                                                 if (di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
                                                     isSymmetrical = false;
@@ -578,8 +578,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                     case SymSplitterSettings.Y_MINUS:
                                         for (int i = 0; i < verts.length - 1; i++) {
                                             int j = (i + 1) % verts.length;
-                                            BigDecimal di = verts[i].Y.subtract(o);
-                                            BigDecimal dj = verts[j].Y.subtract(o);
+                                            BigDecimal di = verts[i].yp.subtract(o);
+                                            BigDecimal dj = verts[j].yp.subtract(o);
                                             if (di.signum() != dj.signum()) {
                                                 if (di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
                                                     isSymmetrical = false;
@@ -592,8 +592,8 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                     case SymSplitterSettings.X_MINUS:
                                         for (int i = 0; i < verts.length - 1; i++) {
                                             int j = (i + 1) % verts.length;
-                                            BigDecimal di = verts[i].X.subtract(o);
-                                            BigDecimal dj = verts[j].X.subtract(o);
+                                            BigDecimal di = verts[i].xp.subtract(o);
+                                            BigDecimal dj = verts[j].xp.subtract(o);
                                             if (di.signum() != dj.signum()) {
                                                 if (di.abs().subtract(dj.abs()).abs().compareTo(p) > 0) {
                                                     isSymmetrical = false;
@@ -759,7 +759,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             if (shortName.contains("stug") || shortName.contains("stud.dat") || shortName.contains("stud2.dat")) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                                 forceMiddle = true;
                             }
-                            verts = new Vertex[]{new Vertex(g1.accurateProductMatrix.M30, g1.accurateProductMatrix.M31, g1.accurateProductMatrix.M32)};
+                            verts = new Vertex[]{new Vertex(g1.accurateProductMatrix.m30, g1.accurateProductMatrix.m31, g1.accurateProductMatrix.m32)};
                             break;
                         case 2:
                             verts = lines.get(g);
@@ -813,7 +813,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         for (Vertex v : verts) {
                             switch (sp) {
                             case SymSplitterSettings.Z_PLUS:
-                                switch (v.Z.compareTo(o)) {
+                                switch (v.zp.compareTo(o)) {
                                 case -1:
                                     neg++;
                                     break;
@@ -829,7 +829,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 }
                                 break;
                             case SymSplitterSettings.Z_MINUS:
-                                switch (v.Z.compareTo(o)) {
+                                switch (v.zp.compareTo(o)) {
                                 case -1:
                                     pos++;
                                     break;
@@ -845,7 +845,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 }
                                 break;
                             case SymSplitterSettings.Y_PLUS:
-                                switch (v.Y.compareTo(o)) {
+                                switch (v.yp.compareTo(o)) {
                                 case -1:
                                     neg++;
                                     break;
@@ -861,7 +861,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 }
                                 break;
                             case SymSplitterSettings.Y_MINUS:
-                                switch (v.Y.compareTo(o)) {
+                                switch (v.yp.compareTo(o)) {
                                 case -1:
                                     pos++;
                                     break;
@@ -877,7 +877,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 }
                                 break;
                             case SymSplitterSettings.X_PLUS:
-                                switch (v.X.compareTo(o)) {
+                                switch (v.xp.compareTo(o)) {
                                 case -1:
                                     neg++;
                                     break;
@@ -893,7 +893,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                                 }
                                 break;
                             case SymSplitterSettings.X_MINUS:
-                                switch (v.X.compareTo(o)) {
+                                switch (v.xp.compareTo(o)) {
                                 case -1:
                                     pos++;
                                     break;

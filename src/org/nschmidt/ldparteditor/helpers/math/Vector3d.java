@@ -33,11 +33,11 @@ public class Vector3d {
     /** A thread safe static reference to the math context constant */
     private static MathContext mc = Threshold.MC;
     /** The x component of the vector. */
-    public BigDecimal X;
+    public BigDecimal x;
     /** The y component of the vector. */
-    public BigDecimal Y;
+    public BigDecimal y;
     /** The z component of the vector. */
-    public BigDecimal Z;
+    public BigDecimal z;
 
     /**
      * Creates a new 3-tuple BigDecimal vector with the initial value (0, 0, 0).
@@ -57,21 +57,21 @@ public class Vector3d {
      *            the z component of the vector.
      */
     public Vector3d(BigDecimal x, BigDecimal y, BigDecimal z) {
-        this.X = x;
-        this.Y = y;
-        this.Z = z;
+        this.x = x;
+        this.y = y;
+        this.z = z;
     }
 
     public Vector3d(Vector3d vertex) {
-        this.X = vertex.X;
-        this.Y = vertex.Y;
-        this.Z = vertex.Z;
+        this.x = vertex.x;
+        this.y = vertex.y;
+        this.z = vertex.z;
     }
 
     public Vector3d(Vertex vertex) {
-        this.X = vertex.X;
-        this.Y = vertex.Y;
-        this.Z = vertex.Z;
+        this.x = vertex.xp;
+        this.y = vertex.yp;
+        this.z = vertex.zp;
     }
 
     public Vector3d(VectorCSGd v) {
@@ -85,7 +85,7 @@ public class Vector3d {
      *            the component value to set
      */
     public void setX(BigDecimal x) {
-        this.X = x;
+        this.x = x;
     }
 
     /**
@@ -95,7 +95,7 @@ public class Vector3d {
      *            the component value to set
      */
     public void setY(BigDecimal y) {
-        this.Y = y;
+        this.y = y;
     }
 
     /**
@@ -105,7 +105,7 @@ public class Vector3d {
      *            the component value to set
      */
     public void setZ(BigDecimal z) {
-        this.Z = z;
+        this.z = z;
     }
 
     /**
@@ -121,11 +121,11 @@ public class Vector3d {
      * @return the difference vector
      */
     public static Vector3d sub(Vector3d left, Vector3d right, Vector3d target) {
-        Vector3d result = new Vector3d(left.X.subtract(right.X, mc), left.Y.subtract(right.Y, mc), left.Z.subtract(right.Z, mc));
+        Vector3d result = new Vector3d(left.x.subtract(right.x, mc), left.y.subtract(right.y, mc), left.z.subtract(right.z, mc));
         if (target != null) {
-            target.setX(result.X);
-            target.setY(result.Y);
-            target.setZ(result.Z);
+            target.setX(result.x);
+            target.setY(result.y);
+            target.setZ(result.z);
         }
         return result;
     }
@@ -140,20 +140,20 @@ public class Vector3d {
      * @return the difference vector
      */
     public static Vector3d sub(Vector3d left, Vector3d right) {
-        return new Vector3d(left.X.subtract(right.X, mc), left.Y.subtract(right.Y, mc), left.Z.subtract(right.Z, mc));
+        return new Vector3d(left.x.subtract(right.x, mc), left.y.subtract(right.y, mc), left.z.subtract(right.z, mc));
     }
 
     public static BigDecimal manhattan(Vector3d left, Vector3d right) {
-        BigDecimal dx = left.X.subtract(right.X, mc);
-        BigDecimal dy = left.Y.subtract(right.Y, mc);
-        BigDecimal dz = left.Z.subtract(right.Z, mc);
+        BigDecimal dx = left.x.subtract(right.x, mc);
+        BigDecimal dy = left.y.subtract(right.y, mc);
+        BigDecimal dz = left.z.subtract(right.z, mc);
         return dx.abs().add(dy.abs()).add(dz.abs());
     }
 
     public static BigDecimal distSquare(Vector3d left, Vector3d right) {
-        BigDecimal dx = left.X.subtract(right.X, mc);
-        BigDecimal dy = left.Y.subtract(right.Y, mc);
-        BigDecimal dz = left.Z.subtract(right.Z, mc);
+        BigDecimal dx = left.x.subtract(right.x, mc);
+        BigDecimal dy = left.y.subtract(right.y, mc);
+        BigDecimal dz = left.z.subtract(right.z, mc);
         return dx.multiply(dx).add(dy.multiply(dy)).add(dz.multiply(dz));
     }
 
@@ -167,17 +167,17 @@ public class Vector3d {
      * @return the cross product between two vectors
      */
     public static Vector3d cross(Vector3d left, Vector3d right) {
-        BigDecimal x = left.Y.multiply(right.Z).subtract(left.Z.multiply(right.Y));
-        BigDecimal y = left.Z.multiply(right.X).subtract(left.X.multiply(right.Z));
-        BigDecimal z = left.X.multiply(right.Y).subtract(left.Y.multiply(right.X));
-        return new Vector3d(x, y, z);
+        BigDecimal cx = left.y.multiply(right.z).subtract(left.z.multiply(right.y));
+        BigDecimal cy = left.z.multiply(right.x).subtract(left.x.multiply(right.z));
+        BigDecimal cz = left.x.multiply(right.y).subtract(left.y.multiply(right.x));
+        return new Vector3d(cx, cy, cz);
     }
 
     /**
      * @return calculates the length (Euklidian Norm) from the vector.
      */
     public BigDecimal length() {
-        return MathHelper.sqrt(X.pow(2, mc).add(Y.pow(2, mc), mc).add(Z.pow(2, mc)));
+        return MathHelper.sqrt(x.pow(2, mc).add(y.pow(2, mc), mc).add(z.pow(2, mc)));
     }
 
     /**
@@ -207,7 +207,7 @@ public class Vector3d {
         Vector3d vectorB = new Vector3d();
         vectorA1.normalise(vectorA);
         vectorB1.normalise(vectorB);
-        double cosinus = vectorA.X.multiply(vectorB.X, mc).add(vectorA.Y.multiply(vectorB.Y, mc), mc).add(vectorA.Z.multiply(vectorB.Z, mc), mc)
+        double cosinus = vectorA.x.multiply(vectorB.x, mc).add(vectorA.y.multiply(vectorB.y, mc), mc).add(vectorA.z.multiply(vectorB.z, mc), mc)
                 .divide(vectorA.length().multiply(vectorB.length(), mc), mc).doubleValue();
         return Math.acos(cosinus);
     }
@@ -217,7 +217,7 @@ public class Vector3d {
         Vector3d vectorB = new Vector3d();
         vectorA1.normalise(vectorA);
         vectorB1.normalise(vectorB);
-        double cosinus = vectorA.X.multiply(vectorB.X, mc).add(vectorA.Y.multiply(vectorB.Y, mc), mc).add(vectorA.Z.multiply(vectorB.Z, mc), mc).doubleValue();
+        double cosinus = vectorA.x.multiply(vectorB.x, mc).add(vectorA.y.multiply(vectorB.y, mc), mc).add(vectorA.z.multiply(vectorB.z, mc), mc).doubleValue();
         return Math.acos(cosinus) * 180d / Math.PI;
     }
 
@@ -230,9 +230,9 @@ public class Vector3d {
      */
     public BigDecimal normalise(Vector3d normal1) {
         BigDecimal length = this.length();
-        normal1.setX(this.X.divide(length, mc));
-        normal1.setY(this.Y.divide(length, mc));
-        normal1.setZ(this.Z.divide(length, mc));
+        normal1.setX(this.x.divide(length, mc));
+        normal1.setY(this.y.divide(length, mc));
+        normal1.setZ(this.z.divide(length, mc));
         return length;
     }
 
@@ -246,7 +246,7 @@ public class Vector3d {
      * @return the dot product of {@code vectorA} and {@code vectorB}.
      */
     static double dot(Vector3d vectorA, Vector3d vectorB) {
-        return vectorA.X.multiply(vectorB.X, mc).add(vectorA.Y.multiply(vectorB.Y, mc), mc).add(vectorA.Z.multiply(vectorB.Z, mc), mc).doubleValue();
+        return vectorA.x.multiply(vectorB.x, mc).add(vectorA.y.multiply(vectorB.y, mc), mc).add(vectorA.z.multiply(vectorB.z, mc), mc).doubleValue();
     }
 
     /**
@@ -259,19 +259,19 @@ public class Vector3d {
      * @return the dot product of {@code vectorA} and {@code vectorB}.
      */
     public static BigDecimal dotP(Vector3d vectorA, Vector3d vectorB) {
-        return vectorA.X.multiply(vectorB.X).add(vectorA.Y.multiply(vectorB.Y)).add(vectorA.Z.multiply(vectorB.Z));
+        return vectorA.x.multiply(vectorB.x).add(vectorA.y.multiply(vectorB.y)).add(vectorA.z.multiply(vectorB.z));
     }
 
     public float getXf() {
-        return this.X.floatValue();
+        return this.x.floatValue();
     }
 
     public float getYf() {
-        return this.Y.floatValue();
+        return this.y.floatValue();
     }
 
     public float getZf() {
-        return this.Z.floatValue();
+        return this.z.floatValue();
     }
 
     /**
@@ -287,11 +287,11 @@ public class Vector3d {
      * @return the vector sum
      */
     public static Vector3d add(Vector3d left, Vector3d right, Vector3d target) {
-        Vector3d result = new Vector3d(left.X.add(right.X, mc), left.Y.add(right.Y, mc), left.Z.add(right.Z, mc));
+        Vector3d result = new Vector3d(left.x.add(right.x, mc), left.y.add(right.y, mc), left.z.add(right.z, mc));
         if (target != null) {
-            target.setX(result.X);
-            target.setY(result.Y);
-            target.setZ(result.Z);
+            target.setX(result.x);
+            target.setY(result.y);
+            target.setZ(result.z);
         }
         return result;
     }
@@ -306,7 +306,7 @@ public class Vector3d {
      * @return the vector sum
      */
     public static Vector3d add(Vector3d left, Vector3d right) {
-        return new Vector3d(left.X.add(right.X, mc), left.Y.add(right.Y, mc), left.Z.add(right.Z, mc));
+        return new Vector3d(left.x.add(right.x, mc), left.y.add(right.y, mc), left.z.add(right.z, mc));
     }
 
     @Override
@@ -315,28 +315,29 @@ public class Vector3d {
     }
 
     public void negate() {
-        X = X.negate();
-        Y = Y.negate();
-        Z = Z.negate();
+        x = x.negate();
+        y = y.negate();
+        z = z.negate();
     }
 
     public static Vector3d getNormal(Vector3d v1, Vector3d v2, Vector3d v3) {
         //      g3.Y3.subtract(g3.Y1).multiply(g3.Z2.subtract(g3.Z1)).subtract(g3.Z3.subtract(g3.Z1).multiply(g3.Y2.subtract(g3.Y1))),
         //      g3.Z3.subtract(g3.Z1).multiply(g3.X2.subtract(g3.X1)).subtract(g3.X3.subtract(g3.X1).multiply(g3.Z2.subtract(g3.Z1))),
         //      g3.X3.subtract(g3.X1).multiply(g3.Y2.subtract(g3.Y1)).subtract(g3.Y3.subtract(g3.Y1).multiply(g3.X2.subtract(g3.X1)))
-        BigDecimal x = v1.Y.subtract(v2.Y).multiply(v3.Z.subtract(v2.Z)).subtract(v1.Z.subtract(v2.Z).multiply(v3.Y.subtract(v2.Y)));
-        BigDecimal y = v1.Z.subtract(v2.Z).multiply(v3.X.subtract(v2.X)).subtract(v1.X.subtract(v2.X).multiply(v3.Z.subtract(v2.Z)));
-        BigDecimal z = v1.X.subtract(v2.X).multiply(v3.Y.subtract(v2.Y)).subtract(v1.Y.subtract(v2.Y).multiply(v3.X.subtract(v2.X)));
+        BigDecimal x = v1.y.subtract(v2.y).multiply(v3.z.subtract(v2.z)).subtract(v1.z.subtract(v2.z).multiply(v3.y.subtract(v2.y)));
+        BigDecimal y = v1.z.subtract(v2.z).multiply(v3.x.subtract(v2.x)).subtract(v1.x.subtract(v2.x).multiply(v3.z.subtract(v2.z)));
+        BigDecimal z = v1.x.subtract(v2.x).multiply(v3.y.subtract(v2.y)).subtract(v1.y.subtract(v2.y).multiply(v3.x.subtract(v2.x)));
         return new Vector3d(x, y, z);
     }
 
-    private static BigDecimal HALF = new BigDecimal(".5"); //$NON-NLS-1$
+    private static final BigDecimal HALF = new BigDecimal(".5"); //$NON-NLS-1$
+
     public Vector3d scaledByHalf() {
-        return new Vector3d(X.multiply(HALF), Y.multiply(HALF), Z.multiply(HALF));
+        return new Vector3d(x.multiply(HALF), y.multiply(HALF), z.multiply(HALF));
     }
 
     public Vector3d scale(BigDecimal scale) {
-        return new Vector3d(X.multiply(scale), Y.multiply(scale), Z.multiply(scale));
+        return new Vector3d(x.multiply(scale), y.multiply(scale), z.multiply(scale));
     }
 
 }

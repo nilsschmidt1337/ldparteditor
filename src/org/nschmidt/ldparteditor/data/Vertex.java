@@ -32,16 +32,16 @@ public class Vertex implements Comparable<Vertex> {
 
     private static final float EPSILON = 0.0001f;
 
-    public final BigDecimal X;
-    public final BigDecimal Y;
-    public final BigDecimal Z;
+    public final BigDecimal xp;
+    public final BigDecimal yp;
+    public final BigDecimal zp;
     public final float x;
     public final float y;
     public final float z;
-    private final Vector4f vertex;
-    private final float rounded_x;
-    private final float rounded_y;
-    private final float rounded_z;
+    private final Vector4f vector4f;
+    private final float roundedX;
+    private final float roundedY;
+    private final float roundedZ;
 
     // Lowest accuracy version (simple float to BigDecimal cast)
     public Vertex(Vector4f vertex) {
@@ -50,29 +50,29 @@ public class Vertex implements Comparable<Vertex> {
         this.y = vertex.y;
         this.z = vertex.z;
 
-        BigDecimal x = new BigDecimal(this.x);
-        X = x.scaleByPowerOfTen(-3);
-        x = x.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rx = new BigDecimal(this.x);
+        xp = rx.scaleByPowerOfTen(-3);
+        rx = rx.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal y = new BigDecimal(this.y);
-        Y = y.scaleByPowerOfTen(-3);
-        y = y.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal ry = new BigDecimal(this.y);
+        yp = ry.scaleByPowerOfTen(-3);
+        ry = ry.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal z = new BigDecimal(this.z);
-        Z = z.scaleByPowerOfTen(-3);
-        z = z.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rz = new BigDecimal(this.z);
+        zp = rz.scaleByPowerOfTen(-3);
+        rz = rz.setScale(2, RoundingMode.HALF_UP);
 
-        this.rounded_x = x.floatValue();
-        this.rounded_y = y.floatValue();
-        this.rounded_z = z.floatValue();
+        this.roundedX = rx.floatValue();
+        this.roundedY = ry.floatValue();
+        this.roundedZ = rz.floatValue();
 
-        this.vertex = new Vector4f(vertex);
+        this.vector4f = new Vector4f(vertex);
 
         // NLogger.error(getClass(), "Standard accuracy on vertex."); //$NON-NLS-1$
     }
 
     public Vertex(Vector3d v3d) {
-        this(v3d.X, v3d.Y, v3d.Z);
+        this(v3d.x, v3d.y, v3d.z);
     }
 
     // High accuracy version
@@ -82,11 +82,11 @@ public class Vertex implements Comparable<Vertex> {
         this.y = by.floatValue() * 1000f;
         this.z = bz.floatValue() * 1000f;
 
-        this.vertex = new Vector4f(this.x, this.y, this.z, 1f);
+        this.vector4f = new Vector4f(this.x, this.y, this.z, 1f);
 
-        this.X = bx;
-        this.Y = by;
-        this.Z = bz;
+        this.xp = bx;
+        this.yp = by;
+        this.zp = bz;
 
         BigDecimal x = new BigDecimal(this.x);
         x = x.setScale(2, RoundingMode.HALF_UP);
@@ -97,9 +97,9 @@ public class Vertex implements Comparable<Vertex> {
         BigDecimal z = new BigDecimal(this.z);
         z = z.setScale(2, RoundingMode.HALF_UP);
 
-        this.rounded_x = x.floatValue();
-        this.rounded_y = y.floatValue();
-        this.rounded_z = z.floatValue();
+        this.roundedX = x.floatValue();
+        this.roundedY = y.floatValue();
+        this.roundedZ = z.floatValue();
     }
 
     // High performance version / only for texture rendering, primitive preview
@@ -109,10 +109,10 @@ public class Vertex implements Comparable<Vertex> {
         this.y = vy;
         this.z = vz;
 
-        this.vertex = null;
-        this.X = null;
-        this.Y = null;
-        this.Z = null;
+        this.vector4f = null;
+        this.xp = null;
+        this.yp = null;
+        this.zp = null;
 
         BigDecimal x = new BigDecimal(this.x);
         x = x.setScale(2, RoundingMode.HALF_UP);
@@ -123,9 +123,9 @@ public class Vertex implements Comparable<Vertex> {
         BigDecimal z = new BigDecimal(this.z);
         z = z.setScale(2, RoundingMode.HALF_UP);
 
-        this.rounded_x = x.floatValue();
-        this.rounded_y = y.floatValue();
-        this.rounded_z = z.floatValue();
+        this.roundedX = x.floatValue();
+        this.roundedY = y.floatValue();
+        this.roundedZ = z.floatValue();
     }
 
     // High accuracy version (better performance)
@@ -135,11 +135,11 @@ public class Vertex implements Comparable<Vertex> {
         this.y = vertex.y;
         this.z = vertex.z;
 
-        this.vertex = new Vector4f(vertex);
+        this.vector4f = new Vector4f(vertex);
 
-        this.X = bx;
-        this.Y = by;
-        this.Z = bz;
+        this.xp = bx;
+        this.yp = by;
+        this.zp = bz;
 
         BigDecimal x = new BigDecimal(this.x);
         x = x.setScale(2, RoundingMode.HALF_UP);
@@ -150,9 +150,9 @@ public class Vertex implements Comparable<Vertex> {
         BigDecimal z = new BigDecimal(this.z);
         z = z.setScale(2, RoundingMode.HALF_UP);
 
-        this.rounded_x = x.floatValue();
-        this.rounded_y = y.floatValue();
-        this.rounded_z = z.floatValue();
+        this.roundedX = x.floatValue();
+        this.roundedY = y.floatValue();
+        this.roundedZ = z.floatValue();
     }
 
     public Vertex(float x, float y, float z) {
@@ -164,16 +164,16 @@ public class Vertex implements Comparable<Vertex> {
     }
 
     Vertex(Vector3r vector3r) {
-        this(vector3r.X.BigDecimalValue(), vector3r.Y.BigDecimalValue(), vector3r.Z.BigDecimalValue());
+        this(vector3r.x.BigDecimalValue(), vector3r.y.BigDecimalValue(), vector3r.z.BigDecimalValue());
     }
 
     public final Vector4f toVector4f() {
-        return new Vector4f(vertex);
-    };
+        return new Vector4f(vector4f);
+    }
 
     final Vector4f toVector4fm() {
-        return vertex;
-    };
+        return vector4f;
+    }
 
     @Override
     public int hashCode() {
@@ -183,8 +183,8 @@ public class Vertex implements Comparable<Vertex> {
     @Override
     public boolean equals(Object obj) {
         Vertex other = (Vertex) obj;
-        return Math.abs(rounded_x - other.rounded_x) < EPSILON && Math.abs(rounded_y - other.rounded_y) < EPSILON
-                && Math.abs(rounded_z - other.rounded_z) < EPSILON;
+        return Math.abs(roundedX - other.roundedX) < EPSILON && Math.abs(roundedY - other.roundedY) < EPSILON
+                && Math.abs(roundedZ - other.roundedZ) < EPSILON;
     }
 
     @Override
@@ -195,7 +195,7 @@ public class Vertex implements Comparable<Vertex> {
     @Override
     public int compareTo(Vertex o) {
         {
-            float d1 = rounded_x - o.rounded_x;
+            float d1 = roundedX - o.roundedX;
             int c1 = Float.compare(Math.abs(d1), EPSILON);
             switch (c1) {
             case 0:
@@ -206,7 +206,7 @@ public class Vertex implements Comparable<Vertex> {
             }
         }
         {
-            float d1 = rounded_y - o.rounded_y;
+            float d1 = roundedY - o.roundedY;
             int c1 = Float.compare(Math.abs(d1), EPSILON);
             switch (c1) {
             case 0:
@@ -217,7 +217,7 @@ public class Vertex implements Comparable<Vertex> {
             }
         }
         {
-            float d1 = rounded_z - o.rounded_z;
+            float d1 = roundedZ - o.roundedZ;
             int c1 = Float.compare(Math.abs(d1), EPSILON);
             switch (c1) {
             case 0:

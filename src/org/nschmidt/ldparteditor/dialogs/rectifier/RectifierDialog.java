@@ -46,13 +46,13 @@ public class RectifierDialog extends RectifierDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_angle[0].addValueChangeListener(spn -> rs.setMaximumAngle(spn.getValue()));
-        cmb_scope[0].addListener(SWT.Selection, event -> rs.setScope(cmb_scope[0].getSelectionIndex()));
-        cmb_colourise[0].addListener(SWT.Selection, event -> rs.setColourise(cmb_colourise[0].getSelectionIndex() == 1));
-        cmb_noBorderedQuadToRectConversation[0].addListener(SWT.Selection, event -> rs.setNoBorderedQuadToRectConversation(cmb_noBorderedQuadToRectConversation[0].getSelectionIndex() == 1));
-        cmb_noQuadConversation[0].addListener(SWT.Selection, event -> rs.setNoQuadConversation(cmb_noQuadConversation[0].getSelectionIndex() == 1));
-        cmb_noRectConversationOnAdjacentCondlines[0].addListener(SWT.Selection, event -> rs.setNoRectConversationOnAdjacentCondlines(cmb_noRectConversationOnAdjacentCondlines[0].getSelectionIndex() == 1));
-        WidgetUtil(btn_verbose[0]).addSelectionListener(e -> rs.setVerbose(btn_verbose[0].getSelection()));
+        spnAnglePtr[0].addValueChangeListener(spn -> rs.setMaximumAngle(spn.getValue()));
+        cmbScopePtr[0].addListener(SWT.Selection, event -> rs.setScope(cmbScopePtr[0].getSelectionIndex()));
+        cmbColourisePtr[0].addListener(SWT.Selection, event -> rs.setColourise(cmbColourisePtr[0].getSelectionIndex() == 1));
+        cmbNoBorderedQuadToRectConversationPtr[0].addListener(SWT.Selection, event -> rs.setNoBorderedQuadToRectConversation(cmbNoBorderedQuadToRectConversationPtr[0].getSelectionIndex() == 1));
+        cmbNoQuadConversationPtr[0].addListener(SWT.Selection, event -> rs.setNoQuadConversation(cmbNoQuadConversationPtr[0].getSelectionIndex() == 1));
+        cmbNoRectConversationOnAdjacentCondlinesPtr[0].addListener(SWT.Selection, event -> rs.setNoRectConversationOnAdjacentCondlines(cmbNoRectConversationOnAdjacentCondlinesPtr[0].getSelectionIndex() == 1));
+        WidgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> rs.setVerbose(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

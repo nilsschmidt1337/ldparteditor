@@ -44,14 +44,14 @@ public class SymSplitterDialog extends SymSplitterDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_offset[0].addValueChangeListener(spn -> ss.setOffset(spn.getValue()));
-        cmb_scope[0].addListener(SWT.Selection, event -> ss.setScope(cmb_scope[0].getSelectionIndex()));
-        cmb_splitPlane[0].addListener(SWT.Selection, event -> ss.setSplitPlane(cmb_splitPlane[0].getSelectionIndex()));
-        cmb_hide[0].addListener(SWT.Selection, event -> ss.setHideLevel(cmb_hide[0].getSelectionIndex()));
-        cmb_colourise[0].addListener(SWT.Selection, event -> ss.setColourise(cmb_colourise[0].getSelectionIndex() == 1));
-        cmb_cutAcross[0].addListener(SWT.Selection, event -> ss.setCutAcross(cmb_cutAcross[0].getSelectionIndex() == 1));
-        cmb_validate[0].addListener(SWT.Selection, event -> ss.setValidate(cmb_validate[0].getSelectionIndex() == 1));
-        spn_precision[0].addValueChangeListener(spn -> ss.setPrecision(spn.getValue()));
+        spnOffsetPtr[0].addValueChangeListener(spn -> ss.setOffset(spn.getValue()));
+        cmbScopePtr[0].addListener(SWT.Selection, event -> ss.setScope(cmbScopePtr[0].getSelectionIndex()));
+        cmbSplitPlanePtr[0].addListener(SWT.Selection, event -> ss.setSplitPlane(cmbSplitPlanePtr[0].getSelectionIndex()));
+        cmbHidePtr[0].addListener(SWT.Selection, event -> ss.setHideLevel(cmbHidePtr[0].getSelectionIndex()));
+        cmbColourisePtr[0].addListener(SWT.Selection, event -> ss.setColourise(cmbColourisePtr[0].getSelectionIndex() == 1));
+        cmbCutAcrossPtr[0].addListener(SWT.Selection, event -> ss.setCutAcross(cmbCutAcrossPtr[0].getSelectionIndex() == 1));
+        cmbValidatePtr[0].addListener(SWT.Selection, event -> ss.setValidate(cmbValidatePtr[0].getSelectionIndex() == 1));
+        spnPrecisionPtr[0].addValueChangeListener(spn -> ss.setPrecision(spn.getValue()));
         return super.open();
     }
 }

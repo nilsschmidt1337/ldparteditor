@@ -59,9 +59,9 @@ class ColourDesign extends ApplicationWindow {
     final boolean randomColours;
 
     // Use final only for subclass/listener references!
-    final NButton[] btn_colourChoose = new NButton[1];
-    final NButton[] btn_colourTable = new NButton[1];
-    final NButton[] btn_randomColours = new NButton[1];
+    final NButton[] btnColourChoose = new NButton[1];
+    final NButton[] btnColourTable = new NButton[1];
+    final NButton[] btnRandomColours = new NButton[1];
 
     ColourDesign(Shell parentShell, GColour[] refCol, final boolean randomColours) {
         super(parentShell);
@@ -97,7 +97,7 @@ class ColourDesign extends ApplicationWindow {
         }
 
         NButton btnPickDirectColour = new NButton(cmpContainer, SWT.NONE);
-        btn_colourChoose[0] = btnPickDirectColour;
+        btnColourChoose[0] = btnPickDirectColour;
         btnPickDirectColour.setText(I18n.COLOURDIALOG_DIRECT_COLOUR);
 
         {
@@ -107,7 +107,7 @@ class ColourDesign extends ApplicationWindow {
 
         if (randomColours) {
             NButton btnRandomColour = new NButton(cmpContainer, SWT.NONE);
-            btn_randomColours[0] = btnRandomColour;
+            btnRandomColours[0] = btnRandomColour;
             btnRandomColour.setText(I18n.COLOURDIALOG_RANDOM_COLOURS);
             btnRandomColour.setImage(ResourceManager.getImage("icon16_randomColours.png")); //$NON-NLS-1$
 
@@ -131,7 +131,7 @@ class ColourDesign extends ApplicationWindow {
         }
 
         NButton btnShowTable = new NButton(cmpContainer, SWT.NONE);
-        btn_colourTable[0] = btnShowTable;
+        btnColourTable[0] = btnShowTable;
         btnShowTable.setText(I18n.COLOURDIALOG_SHOW_COLOUR_TABLE);
 
         {
@@ -184,7 +184,7 @@ class ColourDesign extends ApplicationWindow {
 
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
             btnCol.setToolTipText(formatter.format(messageArguments));
@@ -198,7 +198,7 @@ class ColourDesign extends ApplicationWindow {
 
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
             btnCol.setToolTipText(formatter.format(messageArguments));

@@ -44,11 +44,11 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        spn_height[0].addValueChangeListener(spn -> rs.setHeight(spn_height[0].getValue()));
-        spn_radi1[0].addValueChangeListener(spn -> rs.setRadius1(spn_radi1[0].getValue()));
-        spn_radi2[0].addValueChangeListener(spn -> rs.setRadius2(spn_radi2[0].getValue()));
-        cmb_angle[0].addListener(SWT.Selection, event -> {
-            int si = cmb_angle[0].getSelectionIndex();
+        spnHeightPtr[0].addValueChangeListener(spn -> rs.setHeight(spnHeightPtr[0].getValue()));
+        spnRadi1Ptr[0].addValueChangeListener(spn -> rs.setRadius1(spnRadi1Ptr[0].getValue()));
+        spnRadi2Ptr[0].addValueChangeListener(spn -> rs.setRadius2(spnRadi2Ptr[0].getValue()));
+        cmbAnglePtr[0].addListener(SWT.Selection, event -> {
+            int si = cmbAnglePtr[0].getSelectionIndex();
             rs.setAngle(si);
             if (!rs.isUsingHiRes()) {
                 boolean hiRes = true;
@@ -64,20 +64,20 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
                     tc++;
                 }
                 if (hiRes) {
-                    int index = cmb_shape[0].getSelectionIndex() + 2;
-                    cmb_shape[0].select(index);
+                    int index = cmbShapePtr[0].getSelectionIndex() + 2;
+                    cmbShapePtr[0].select(index);
                     rs.setUsingHiRes(true);
                     rs.setUsingCones(index == 3);
                     rs.setUsingHiRes(index > 1);
                 }
             }
         });
-        cmb_existingOnly[0].addListener(SWT.Selection, event -> rs.setUsingExistingPrimitives(cmb_existingOnly[0].getSelectionIndex() == 0));
-        cmb_createWhat[0].addListener(SWT.Selection, event -> rs.setCreatingNothingOnNoSolution(cmb_createWhat[0].getSelectionIndex() == 0));
-        this.cmb_shape[0].addListener(SWT.Selection, event -> {
-            rs.setUsingCones(cmb_shape[0].getSelectionIndex() == 1 || cmb_shape[0].getSelectionIndex() == 3);
-            rs.setUsingHiRes(cmb_shape[0].getSelectionIndex() > 1);
-            int si = cmb_angle[0].getSelectionIndex();
+        cmbExistingOnlyPtr[0].addListener(SWT.Selection, event -> rs.setUsingExistingPrimitives(cmbExistingOnlyPtr[0].getSelectionIndex() == 0));
+        cmbCreateWhatPtr[0].addListener(SWT.Selection, event -> rs.setCreatingNothingOnNoSolution(cmbCreateWhatPtr[0].getSelectionIndex() == 0));
+        this.cmbShapePtr[0].addListener(SWT.Selection, event -> {
+            rs.setUsingCones(cmbShapePtr[0].getSelectionIndex() == 1 || cmbShapePtr[0].getSelectionIndex() == 3);
+            rs.setUsingHiRes(cmbShapePtr[0].getSelectionIndex() > 1);
+            int si = cmbAnglePtr[0].getSelectionIndex();
             if (!rs.isUsingHiRes()) {
                 boolean hiRes = true;
                 int tc = 0;
@@ -92,7 +92,7 @@ public class RingsAndConesDialog extends RingsAndConesDesign {
                     tc++;
                 }
                 if (hiRes) {
-                    cmb_angle[0].select(47);
+                    cmbAnglePtr[0].select(47);
                     rs.setAngle(47);
                 }
             }

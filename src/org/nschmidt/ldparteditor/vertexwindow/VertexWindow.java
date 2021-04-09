@@ -57,13 +57,13 @@ public class VertexWindow extends ApplicationWindow {
 
     private static Vertex selectedVertex = new Vertex(0,0,0);
 
-    private final BigDecimalSpinner[] spn_X = new BigDecimalSpinner[1];
-    private final BigDecimalSpinner[] spn_Y = new BigDecimalSpinner[1];
-    private final BigDecimalSpinner[] spn_Z = new BigDecimalSpinner[1];
+    private final BigDecimalSpinner[] spnXPtr = new BigDecimalSpinner[1];
+    private final BigDecimalSpinner[] spnYPtr = new BigDecimalSpinner[1];
+    private final BigDecimalSpinner[] spnZPtr = new BigDecimalSpinner[1];
 
-    private final NButton[] btn_Copy = new NButton[1];
-    private final NButton[] btn_Paste = new NButton[1];
-    private final NButton[] btn_Merge = new NButton[1];
+    private final NButton[] btnCopyPtr = new NButton[1];
+    private final NButton[] btnPastePtr = new NButton[1];
+    private final NButton[] btnMergePtr = new NButton[1];
 
     private boolean isUpdating = false;
 
@@ -105,20 +105,20 @@ public class VertexWindow extends ApplicationWindow {
             @Override
             public void shellActivated(ShellEvent consumed) {}
         });
-        spn_X[0].addValueChangeListener(spn -> changeVertex());
-        spn_Y[0].addValueChangeListener(spn -> changeVertex());
-        spn_Z[0].addValueChangeListener(spn -> changeVertex());
-        WidgetUtil(btn_Paste[0]).addSelectionListener(e -> {
+        spnXPtr[0].addValueChangeListener(spn -> changeVertex());
+        spnYPtr[0].addValueChangeListener(spn -> changeVertex());
+        spnZPtr[0].addValueChangeListener(spn -> changeVertex());
+        WidgetUtil(btnPastePtr[0]).addSelectionListener(e -> {
             final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
             if (clipboardVertex != null) {
                 updateVertex(clipboardVertex);
                 changeVertex();
             }
         });
-        WidgetUtil(btn_Copy[0]).addSelectionListener(e ->
+        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e ->
             VertexManager.copySingleVertexIntoClipboard(selectedVertex)
         );
-        WidgetUtil(btn_Merge[0]).addSelectionListener(e -> {
+        WidgetUtil(btnMergePtr[0]).addSelectionListener(e -> {
             final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
             if (lastHoveredC3d == null) return;
             final DatFile df = lastHoveredC3d.getLockableDatFileReference();
@@ -131,13 +131,13 @@ public class VertexWindow extends ApplicationWindow {
 
     private void changeVertex() {
         if (isUpdating) return;
-        selectedVertex = new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue());
+        selectedVertex = new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue());
         final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
         if (lastHoveredC3d == null) return;
         final DatFile df = lastHoveredC3d.getLockableDatFileReference();
         final VertexManager vm = df.getVertexManager();
-        btn_Merge[0].setEnabled(vm.getVertices().contains(selectedVertex));
-        if (!btn_Merge[0].isEnabled()) {
+        btnMergePtr[0].setEnabled(vm.getVertices().contains(selectedVertex));
+        if (!btnMergePtr[0].isEnabled()) {
             vm.setXyzOrTranslateOrTransform(selectedVertex, null, TransformationMode.SET, true, true, true, true, true, ManipulatorScope.GLOBAL);
         }
         vm.setVertexToReplace(selectedVertex);
@@ -200,9 +200,9 @@ public class VertexWindow extends ApplicationWindow {
         if (!selectedVertex.equals(selected)) {
             selectedVertex = selected;
             isUpdating = true;
-            spn_X[0].setValue(selectedVertex.X);
-            spn_Y[0].setValue(selectedVertex.Y);
-            spn_Z[0].setValue(selectedVertex.Z);
+            spnXPtr[0].setValue(selectedVertex.xp);
+            spnYPtr[0].setValue(selectedVertex.yp);
+            spnZPtr[0].setValue(selectedVertex.zp);
             isUpdating = false;
         }
     }
@@ -229,14 +229,14 @@ public class VertexWindow extends ApplicationWindow {
 
                 {
                     NButton btnCopy = new NButton(cmpTxt, Cocoa.getStyle());
-                    this.btn_Copy[0] = btnCopy;
+                    this.btnCopyPtr[0] = btnCopy;
                     btnCopy.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                     btnCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
                     KeyStateManager.addTooltipText(btnCopy, I18n.COPYNPASTE_COPY, Task.COPY);
                 }
                 {
                     NButton btnPaste = new NButton(cmpTxt, Cocoa.getStyle());
-                    this.btn_Paste[0] = btnPaste;
+                    this.btnPastePtr[0] = btnPaste;
                     btnPaste.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 1, 1));
                     btnPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
                     KeyStateManager.addTooltipText(btnPaste, I18n.COPYNPASTE_PASTE, Task.PASTE);
@@ -249,11 +249,11 @@ public class VertexWindow extends ApplicationWindow {
                 cmpTxt.setLayout(new GridLayout(1, true));
 
                 BigDecimalSpinner spnX = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-                this.spn_X[0] = spnX;
+                this.spnXPtr[0] = spnX;
                 spnX.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
                 spnX.setMaximum(new BigDecimal(1000000));
                 spnX.setMinimum(new BigDecimal(-1000000));
-                spnX.setValue(selectedVertex.X);
+                spnX.setValue(selectedVertex.xp);
             }
 
             {
@@ -262,11 +262,11 @@ public class VertexWindow extends ApplicationWindow {
                 cmpTxt.setLayout(new GridLayout(1, true));
 
                 BigDecimalSpinner spnY = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-                this.spn_Y[0] = spnY;
+                this.spnYPtr[0] = spnY;
                 spnY.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
                 spnY.setMaximum(new BigDecimal(1000000));
                 spnY.setMinimum(new BigDecimal(-1000000));
-                spnY.setValue(selectedVertex.Y);
+                spnY.setValue(selectedVertex.yp);
             }
 
             {
@@ -275,11 +275,11 @@ public class VertexWindow extends ApplicationWindow {
                 cmpTxt.setLayout(new GridLayout(1, true));
 
                 BigDecimalSpinner spnZ = new BigDecimalSpinner(cmpTxt, SWT.NONE, NUMBER_FORMAT);
-                this.spn_Z[0] = spnZ;
+                this.spnZPtr[0] = spnZ;
                 spnZ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
                 spnZ.setMaximum(new BigDecimal(1000000));
                 spnZ.setMinimum(new BigDecimal(-1000000));
-                spnZ.setValue(selectedVertex.Z);
+                spnZ.setValue(selectedVertex.zp);
             }
 
             {
@@ -288,7 +288,7 @@ public class VertexWindow extends ApplicationWindow {
                 cmpTxt.setLayout(new GridLayout(1, true));
 
                 NButton btnMerge = new NButton(cmpTxt, Cocoa.getStyle());
-                this.btn_Merge[0] = btnMerge;
+                this.btnMergePtr[0] = btnMerge;
                 btnMerge.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
                 btnMerge.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
                 btnMerge.setText(I18n.E3D_MERGE_VERTEX);

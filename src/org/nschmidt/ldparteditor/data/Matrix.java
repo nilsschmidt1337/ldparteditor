@@ -32,62 +32,62 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
  */
 public final class Matrix {
 
-    public final BigDecimal M00;
-    public final BigDecimal M01;
-    public final BigDecimal M02;
-    public final BigDecimal M03;
-    public final BigDecimal M10;
-    public final BigDecimal M11;
-    public final BigDecimal M12;
-    public final BigDecimal M13;
-    public final BigDecimal M20;
-    public final BigDecimal M21;
-    public final BigDecimal M22;
-    public final BigDecimal M23;
-    public final BigDecimal M30;
-    public final BigDecimal M31;
-    public final BigDecimal M32;
-    public final BigDecimal M33;
+    public final BigDecimal m00;
+    public final BigDecimal m01;
+    public final BigDecimal m02;
+    public final BigDecimal m03;
+    public final BigDecimal m10;
+    public final BigDecimal m11;
+    public final BigDecimal m12;
+    public final BigDecimal m13;
+    public final BigDecimal m20;
+    public final BigDecimal m21;
+    public final BigDecimal m22;
+    public final BigDecimal m23;
+    public final BigDecimal m30;
+    public final BigDecimal m31;
+    public final BigDecimal m32;
+    public final BigDecimal m33;
 
-    private final BigDecimal[][] M = new BigDecimal[4][4];
+    private final BigDecimal[][] m = new BigDecimal[4][4];
 
     /**
      *
      */
     public Matrix(BigDecimal m00, BigDecimal m01, BigDecimal m02, BigDecimal m03, BigDecimal m10, BigDecimal m11, BigDecimal m12, BigDecimal m13, BigDecimal m20, BigDecimal m21, BigDecimal m22,
             BigDecimal m23, BigDecimal m30, BigDecimal m31, BigDecimal m32, BigDecimal m33) {
-        this.M00 = m00;
-        this.M01 = m01;
-        this.M02 = m02;
-        this.M03 = m03;
-        this.M10 = m10;
-        this.M11 = m11;
-        this.M12 = m12;
-        this.M13 = m13;
-        this.M20 = m20;
-        this.M21 = m21;
-        this.M22 = m22;
-        this.M23 = m23;
-        this.M30 = m30;
-        this.M31 = m31;
-        this.M32 = m32;
-        this.M33 = m33;
-        this.M[0][0] = m00;
-        this.M[1][0] = m10;
-        this.M[2][0] = m20;
-        this.M[3][0] = m30;
-        this.M[0][1] = m01;
-        this.M[1][1] = m11;
-        this.M[2][1] = m21;
-        this.M[3][1] = m31;
-        this.M[0][2] = m02;
-        this.M[1][2] = m12;
-        this.M[2][2] = m22;
-        this.M[3][2] = m32;
-        this.M[0][3] = m03;
-        this.M[1][3] = m13;
-        this.M[2][3] = m23;
-        this.M[3][3] = m33;
+        this.m00 = m00;
+        this.m01 = m01;
+        this.m02 = m02;
+        this.m03 = m03;
+        this.m10 = m10;
+        this.m11 = m11;
+        this.m12 = m12;
+        this.m13 = m13;
+        this.m20 = m20;
+        this.m21 = m21;
+        this.m22 = m22;
+        this.m23 = m23;
+        this.m30 = m30;
+        this.m31 = m31;
+        this.m32 = m32;
+        this.m33 = m33;
+        this.m[0][0] = m00;
+        this.m[1][0] = m10;
+        this.m[2][0] = m20;
+        this.m[3][0] = m30;
+        this.m[0][1] = m01;
+        this.m[1][1] = m11;
+        this.m[2][1] = m21;
+        this.m[3][1] = m31;
+        this.m[0][2] = m02;
+        this.m[1][2] = m12;
+        this.m[2][2] = m22;
+        this.m[3][2] = m32;
+        this.m[0][3] = m03;
+        this.m[1][3] = m13;
+        this.m[2][3] = m23;
+        this.m[3][3] = m33;
     }
 
     public Matrix(Matrix4f m) {
@@ -107,62 +107,62 @@ public final class Matrix {
         BigDecimal m31 = new BigDecimal(m.m31);
         BigDecimal m32 = new BigDecimal(m.m32);
         BigDecimal m33 = new BigDecimal(m.m33);
-        this.M00 = m00;
-        this.M01 = m01;
-        this.M02 = m02;
-        this.M03 = m03;
-        this.M10 = m10;
-        this.M11 = m11;
-        this.M12 = m12;
-        this.M13 = m13;
-        this.M20 = m20;
-        this.M21 = m21;
-        this.M22 = m22;
-        this.M23 = m23;
-        this.M30 = m30;
-        this.M31 = m31;
-        this.M32 = m32;
-        this.M33 = m33;
-        this.M[0][0] = m00;
-        this.M[1][0] = m10;
-        this.M[2][0] = m20;
-        this.M[3][0] = m30;
-        this.M[0][1] = m01;
-        this.M[1][1] = m11;
-        this.M[2][1] = m21;
-        this.M[3][1] = m31;
-        this.M[0][2] = m02;
-        this.M[1][2] = m12;
-        this.M[2][2] = m22;
-        this.M[3][2] = m32;
-        this.M[0][3] = m03;
-        this.M[1][3] = m13;
-        this.M[2][3] = m23;
-        this.M[3][3] = m33;
+        this.m00 = m00;
+        this.m01 = m01;
+        this.m02 = m02;
+        this.m03 = m03;
+        this.m10 = m10;
+        this.m11 = m11;
+        this.m12 = m12;
+        this.m13 = m13;
+        this.m20 = m20;
+        this.m21 = m21;
+        this.m22 = m22;
+        this.m23 = m23;
+        this.m30 = m30;
+        this.m31 = m31;
+        this.m32 = m32;
+        this.m33 = m33;
+        this.m[0][0] = m00;
+        this.m[1][0] = m10;
+        this.m[2][0] = m20;
+        this.m[3][0] = m30;
+        this.m[0][1] = m01;
+        this.m[1][1] = m11;
+        this.m[2][1] = m21;
+        this.m[3][1] = m31;
+        this.m[0][2] = m02;
+        this.m[1][2] = m12;
+        this.m[2][2] = m22;
+        this.m[3][2] = m32;
+        this.m[0][3] = m03;
+        this.m[1][3] = m13;
+        this.m[2][3] = m23;
+        this.m[3][3] = m33;
     }
 
     public Matrix(BigDecimal[][] m) {
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                this.M[j][i] = m[j][i];
+                this.m[j][i] = m[j][i];
             }
         }
-        this.M00 = this.M[0][0];
-        this.M01 = this.M[0][1];
-        this.M02 = this.M[0][2];
-        this.M03 = this.M[0][3];
-        this.M10 = this.M[1][0];
-        this.M11 = this.M[1][1];
-        this.M12 = this.M[1][2];
-        this.M13 = this.M[1][3];
-        this.M20 = this.M[2][0];
-        this.M21 = this.M[2][1];
-        this.M22 = this.M[2][2];
-        this.M23 = this.M[2][3];
-        this.M30 = this.M[3][0];
-        this.M31 = this.M[3][1];
-        this.M32 = this.M[3][2];
-        this.M33 = this.M[3][3];
+        this.m00 = this.m[0][0];
+        this.m01 = this.m[0][1];
+        this.m02 = this.m[0][2];
+        this.m03 = this.m[0][3];
+        this.m10 = this.m[1][0];
+        this.m11 = this.m[1][1];
+        this.m12 = this.m[1][2];
+        this.m13 = this.m[1][3];
+        this.m20 = this.m[2][0];
+        this.m21 = this.m[2][1];
+        this.m22 = this.m[2][2];
+        this.m23 = this.m[2][3];
+        this.m30 = this.m[3][0];
+        this.m31 = this.m[3][1];
+        this.m32 = this.m[3][2];
+        this.m33 = this.m[3][3];
     }
 
     Matrix set(BigDecimal value, int col, int row) {
@@ -172,7 +172,7 @@ public final class Matrix {
                 if (i == row && j == col) {
                     n[j][i] = value;
                 } else {
-                    n[j][i] = M[j][i];
+                    n[j][i] = m[j][i];
                 }
             }
         }
@@ -180,7 +180,7 @@ public final class Matrix {
     }
 
     public Matrix(Matrix matrix) {
-        this(matrix.M);
+        this(matrix.m);
     }
 
     public static Matrix mul(Matrix left, Matrix right) {
@@ -188,10 +188,10 @@ public final class Matrix {
         final BigDecimal[][] m = new BigDecimal[4][4];
         for (int row = 0; row < 4; row++) {
             for (int column = 0; column < 4; column++) {
-                final BigDecimal p1 = left.M[0][row].multiply(right.M[column][0], mc);
-                final BigDecimal p2 = left.M[1][row].multiply(right.M[column][1], mc);
-                final BigDecimal p3 = left.M[2][row].multiply(right.M[column][2], mc);
-                final BigDecimal p4 = left.M[3][row].multiply(right.M[column][3], mc);
+                final BigDecimal p1 = left.m[0][row].multiply(right.m[column][0], mc);
+                final BigDecimal p2 = left.m[1][row].multiply(right.m[column][1], mc);
+                final BigDecimal p3 = left.m[2][row].multiply(right.m[column][2], mc);
+                final BigDecimal p4 = left.m[3][row].multiply(right.m[column][3], mc);
                 m[column][row] = p1.add(p2, mc).add(p3, mc).add(p4, mc);
             }
         }
@@ -203,7 +203,7 @@ public final class Matrix {
         final BigDecimal[][] mn = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                mn[i][j] = this.M[j][i];
+                mn[i][j] = this.m[j][i];
             }
         }
         return new Matrix(mn);
@@ -213,13 +213,13 @@ public final class Matrix {
         final BigDecimal[][] mn = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                mn[i][j] = this.M[i][j];
+                mn[i][j] = this.m[i][j];
             }
         }
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (i == 3 || j == 3)
-                    mn[j][i] = this.M[i][j];
+                    mn[j][i] = this.m[i][j];
             }
         }
         return new Matrix(mn);
@@ -228,43 +228,43 @@ public final class Matrix {
     public Matrix invert() {
         final BigDecimal[][] mn = new BigDecimal[4][4];
 
-        BigDecimal s0 = M[0][0].multiply(M[1][1]).subtract(M[1][0].multiply(M[0][1]));
-        BigDecimal s1 = M[0][0].multiply(M[1][2]).subtract(M[1][0].multiply(M[0][2]));
-        BigDecimal s2 = M[0][0].multiply(M[1][3]).subtract(M[1][0].multiply(M[0][3]));
-        BigDecimal s3 = M[0][1].multiply(M[1][2]).subtract(M[1][1].multiply(M[0][2]));
-        BigDecimal s4 = M[0][1].multiply(M[1][3]).subtract(M[1][1].multiply(M[0][3]));
-        BigDecimal s5 = M[0][2].multiply(M[1][3]).subtract(M[1][2].multiply(M[0][3]));
+        BigDecimal s0 = m[0][0].multiply(m[1][1]).subtract(m[1][0].multiply(m[0][1]));
+        BigDecimal s1 = m[0][0].multiply(m[1][2]).subtract(m[1][0].multiply(m[0][2]));
+        BigDecimal s2 = m[0][0].multiply(m[1][3]).subtract(m[1][0].multiply(m[0][3]));
+        BigDecimal s3 = m[0][1].multiply(m[1][2]).subtract(m[1][1].multiply(m[0][2]));
+        BigDecimal s4 = m[0][1].multiply(m[1][3]).subtract(m[1][1].multiply(m[0][3]));
+        BigDecimal s5 = m[0][2].multiply(m[1][3]).subtract(m[1][2].multiply(m[0][3]));
 
-        BigDecimal c5 = M[2][2].multiply(M[3][3]).subtract(M[3][2].multiply(M[2][3]));
-        BigDecimal c4 = M[2][1].multiply(M[3][3]).subtract(M[3][1].multiply(M[2][3]));
-        BigDecimal c3 = M[2][1].multiply(M[3][2]).subtract(M[3][1].multiply(M[2][2]));
-        BigDecimal c2 = M[2][0].multiply(M[3][3]).subtract(M[3][0].multiply(M[2][3]));
-        BigDecimal c1 = M[2][0].multiply(M[3][2]).subtract(M[3][0].multiply(M[2][2]));
-        BigDecimal c0 = M[2][0].multiply(M[3][1]).subtract(M[3][0].multiply(M[2][1]));
+        BigDecimal c5 = m[2][2].multiply(m[3][3]).subtract(m[3][2].multiply(m[2][3]));
+        BigDecimal c4 = m[2][1].multiply(m[3][3]).subtract(m[3][1].multiply(m[2][3]));
+        BigDecimal c3 = m[2][1].multiply(m[3][2]).subtract(m[3][1].multiply(m[2][2]));
+        BigDecimal c2 = m[2][0].multiply(m[3][3]).subtract(m[3][0].multiply(m[2][3]));
+        BigDecimal c1 = m[2][0].multiply(m[3][2]).subtract(m[3][0].multiply(m[2][2]));
+        BigDecimal c0 = m[2][0].multiply(m[3][1]).subtract(m[3][0].multiply(m[2][1]));
 
         // TODO Should check for 0 determinant
 
         BigDecimal invdet = BigDecimal.ONE.divide(s0.multiply(c5).subtract(s1.multiply(c4)).add(s2.multiply(c3)).add(s3.multiply(c2)).subtract(s4.multiply(c1)).add(s5.multiply(c0)), Threshold.MC);
 
-        mn[0][0] = M[1][1].multiply(c5).subtract(M[1][2].multiply(c4)).add(M[1][3].multiply(c3)).multiply(invdet);
-        mn[0][1] = M[0][1].negate().multiply(c5).add(M[0][2].multiply(c4)).subtract(M[0][3].multiply(c3)).multiply(invdet);
-        mn[0][2] = M[3][1].multiply(s5).subtract(M[3][2].multiply(s4)).add(M[3][3].multiply(s3)).multiply(invdet);
-        mn[0][3] = M[2][1].negate().multiply(s5).add(M[2][2].multiply(s4)).subtract(M[2][3].multiply(s3)).multiply(invdet);
+        mn[0][0] = m[1][1].multiply(c5).subtract(m[1][2].multiply(c4)).add(m[1][3].multiply(c3)).multiply(invdet);
+        mn[0][1] = m[0][1].negate().multiply(c5).add(m[0][2].multiply(c4)).subtract(m[0][3].multiply(c3)).multiply(invdet);
+        mn[0][2] = m[3][1].multiply(s5).subtract(m[3][2].multiply(s4)).add(m[3][3].multiply(s3)).multiply(invdet);
+        mn[0][3] = m[2][1].negate().multiply(s5).add(m[2][2].multiply(s4)).subtract(m[2][3].multiply(s3)).multiply(invdet);
 
-        mn[1][0] = M[1][0].negate().multiply(c5).add(M[1][2].multiply(c2)).subtract(M[1][3].multiply(c1)).multiply(invdet);
-        mn[1][1] = M[0][0].multiply(c5).subtract(M[0][2].multiply(c2)).add(M[0][3].multiply(c1)).multiply(invdet);
-        mn[1][2] = M[3][0].negate().multiply(s5).add(M[3][2].multiply(s2)).subtract(M[3][3].multiply(s1)).multiply(invdet);
-        mn[1][3] = M[2][0].multiply(s5).subtract(M[2][2].multiply(s2)).add(M[2][3].multiply(s1)).multiply(invdet);
+        mn[1][0] = m[1][0].negate().multiply(c5).add(m[1][2].multiply(c2)).subtract(m[1][3].multiply(c1)).multiply(invdet);
+        mn[1][1] = m[0][0].multiply(c5).subtract(m[0][2].multiply(c2)).add(m[0][3].multiply(c1)).multiply(invdet);
+        mn[1][2] = m[3][0].negate().multiply(s5).add(m[3][2].multiply(s2)).subtract(m[3][3].multiply(s1)).multiply(invdet);
+        mn[1][3] = m[2][0].multiply(s5).subtract(m[2][2].multiply(s2)).add(m[2][3].multiply(s1)).multiply(invdet);
 
-        mn[2][0] = M[1][0].multiply(c4).subtract(M[1][1].multiply(c2)).add(M[1][3].multiply(c0)).multiply(invdet);
-        mn[2][1] = M[0][0].negate().multiply(c4).add(M[0][1].multiply(c2)).subtract(M[0][3].multiply(c0)).multiply(invdet);
-        mn[2][2] = M[3][0].multiply(s4).subtract(M[3][1].multiply(s2)).add(M[3][3].multiply(s0)).multiply(invdet);
-        mn[2][3] = M[2][0].negate().multiply(s4).add(M[2][1].multiply(s2)).subtract(M[2][3].multiply(s0)).multiply(invdet);
+        mn[2][0] = m[1][0].multiply(c4).subtract(m[1][1].multiply(c2)).add(m[1][3].multiply(c0)).multiply(invdet);
+        mn[2][1] = m[0][0].negate().multiply(c4).add(m[0][1].multiply(c2)).subtract(m[0][3].multiply(c0)).multiply(invdet);
+        mn[2][2] = m[3][0].multiply(s4).subtract(m[3][1].multiply(s2)).add(m[3][3].multiply(s0)).multiply(invdet);
+        mn[2][3] = m[2][0].negate().multiply(s4).add(m[2][1].multiply(s2)).subtract(m[2][3].multiply(s0)).multiply(invdet);
 
-        mn[3][0] = M[1][0].negate().multiply(c3).add(M[1][1].multiply(c1)).subtract(M[1][2].multiply(c0)).multiply(invdet);
-        mn[3][1] = M[0][0].multiply(c3).subtract(M[0][1].multiply(c1)).add(M[0][2].multiply(c0)).multiply(invdet);
-        mn[3][2] = M[3][0].negate().multiply(s3).add(M[3][1].multiply(s1)).subtract(M[3][2].multiply(s0)).multiply(invdet);
-        mn[3][3] = M[2][0].multiply(s3).subtract(M[2][1].multiply(s1)).add(M[2][2].multiply(s0)).multiply(invdet);
+        mn[3][0] = m[1][0].negate().multiply(c3).add(m[1][1].multiply(c1)).subtract(m[1][2].multiply(c0)).multiply(invdet);
+        mn[3][1] = m[0][0].multiply(c3).subtract(m[0][1].multiply(c1)).add(m[0][2].multiply(c0)).multiply(invdet);
+        mn[3][2] = m[3][0].negate().multiply(s3).add(m[3][1].multiply(s1)).subtract(m[3][2].multiply(s0)).multiply(invdet);
+        mn[3][3] = m[2][0].multiply(s3).subtract(m[2][1].multiply(s1)).add(m[2][2].multiply(s0)).multiply(invdet);
 
         return new Matrix(mn);
     }
@@ -273,10 +273,10 @@ public final class Matrix {
         final MathContext mc = Threshold.MC;
         final BigDecimal[] result = new BigDecimal[4];
         for (int row = 0; row < 4; row++) {
-            final BigDecimal p1 = this.M[0][row].multiply(x, mc);
-            final BigDecimal p2 = this.M[1][row].multiply(y, mc);
-            final BigDecimal p3 = this.M[2][row].multiply(z, mc);
-            final BigDecimal p4 = this.M[3][row];
+            final BigDecimal p1 = this.m[0][row].multiply(x, mc);
+            final BigDecimal p2 = this.m[1][row].multiply(y, mc);
+            final BigDecimal p3 = this.m[2][row].multiply(z, mc);
+            final BigDecimal p4 = this.m[3][row];
             result[row] = p1.add(p2, mc).add(p3, mc).add(p4, mc);
         }
         return result;
@@ -284,7 +284,7 @@ public final class Matrix {
 
 
     public Vector3d transform(Vector3d v) {
-        final BigDecimal[] result = transform(v.X, v.Y, v.Z);
+        final BigDecimal[] result = transform(v.x, v.y, v.z);
         return new Vector3d(result[0], result[1], result[2]);
     }
 
@@ -293,7 +293,7 @@ public final class Matrix {
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                result.append(this.M[j][i].floatValue());
+                result.append(this.m[j][i].floatValue());
                 result.append(" "); //$NON-NLS-1$
             }
             result.append("\n"); //$NON-NLS-1$
@@ -304,15 +304,15 @@ public final class Matrix {
     public String toLDrawString() {
         StringBuilder result = new StringBuilder();
         result.append(" "); //$NON-NLS-1$
-        result.append(bigDecimalToString(this.M30));
+        result.append(bigDecimalToString(this.m30));
         result.append(" "); //$NON-NLS-1$
-        result.append(bigDecimalToString(this.M31));
+        result.append(bigDecimalToString(this.m31));
         result.append(" "); //$NON-NLS-1$
-        result.append(bigDecimalToString(this.M32));
+        result.append(bigDecimalToString(this.m32));
         result.append(" "); //$NON-NLS-1$
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                result.append(bigDecimalToString(this.M[j][i]));
+                result.append(bigDecimalToString(this.m[j][i]));
                 result.append(" "); //$NON-NLS-1$
             }
         }
@@ -334,44 +334,44 @@ public final class Matrix {
 
         Matrix4f result = new Matrix4f();
 
-        result.m00 = M00.floatValue();
-        result.m01 = M01.floatValue();
-        result.m02 = M02.floatValue();
-        result.m03 = M03.floatValue();
+        result.m00 = m00.floatValue();
+        result.m01 = m01.floatValue();
+        result.m02 = m02.floatValue();
+        result.m03 = m03.floatValue();
 
-        result.m10 = M10.floatValue();
-        result.m11 = M11.floatValue();
-        result.m12 = M12.floatValue();
-        result.m13 = M13.floatValue();
+        result.m10 = m10.floatValue();
+        result.m11 = m11.floatValue();
+        result.m12 = m12.floatValue();
+        result.m13 = m13.floatValue();
 
-        result.m20 = M20.floatValue();
-        result.m21 = M21.floatValue();
-        result.m22 = M22.floatValue();
-        result.m23 = M23.floatValue();
+        result.m20 = m20.floatValue();
+        result.m21 = m21.floatValue();
+        result.m22 = m22.floatValue();
+        result.m23 = m23.floatValue();
 
-        result.m30 = M30.floatValue();
-        result.m31 = M31.floatValue();
-        result.m32 = M32.floatValue();
-        result.m33 = M33.floatValue();
+        result.m30 = m30.floatValue();
+        result.m31 = m31.floatValue();
+        result.m32 = m32.floatValue();
+        result.m33 = m33.floatValue();
 
         return result;
     }
 
     public BigDecimal determinant() {
 
-        BigDecimal s0 = M[0][0].multiply(M[1][1]).subtract(M[1][0].multiply(M[0][1]));
-        BigDecimal s1 = M[0][0].multiply(M[1][2]).subtract(M[1][0].multiply(M[0][2]));
-        BigDecimal s2 = M[0][0].multiply(M[1][3]).subtract(M[1][0].multiply(M[0][3]));
-        BigDecimal s3 = M[0][1].multiply(M[1][2]).subtract(M[1][1].multiply(M[0][2]));
-        BigDecimal s4 = M[0][1].multiply(M[1][3]).subtract(M[1][1].multiply(M[0][3]));
-        BigDecimal s5 = M[0][2].multiply(M[1][3]).subtract(M[1][2].multiply(M[0][3]));
+        BigDecimal s0 = m[0][0].multiply(m[1][1]).subtract(m[1][0].multiply(m[0][1]));
+        BigDecimal s1 = m[0][0].multiply(m[1][2]).subtract(m[1][0].multiply(m[0][2]));
+        BigDecimal s2 = m[0][0].multiply(m[1][3]).subtract(m[1][0].multiply(m[0][3]));
+        BigDecimal s3 = m[0][1].multiply(m[1][2]).subtract(m[1][1].multiply(m[0][2]));
+        BigDecimal s4 = m[0][1].multiply(m[1][3]).subtract(m[1][1].multiply(m[0][3]));
+        BigDecimal s5 = m[0][2].multiply(m[1][3]).subtract(m[1][2].multiply(m[0][3]));
 
-        BigDecimal c5 = M[2][2].multiply(M[3][3]).subtract(M[3][2].multiply(M[2][3]));
-        BigDecimal c4 = M[2][1].multiply(M[3][3]).subtract(M[3][1].multiply(M[2][3]));
-        BigDecimal c3 = M[2][1].multiply(M[3][2]).subtract(M[3][1].multiply(M[2][2]));
-        BigDecimal c2 = M[2][0].multiply(M[3][3]).subtract(M[3][0].multiply(M[2][3]));
-        BigDecimal c1 = M[2][0].multiply(M[3][2]).subtract(M[3][0].multiply(M[2][2]));
-        BigDecimal c0 = M[2][0].multiply(M[3][1]).subtract(M[3][0].multiply(M[2][1]));
+        BigDecimal c5 = m[2][2].multiply(m[3][3]).subtract(m[3][2].multiply(m[2][3]));
+        BigDecimal c4 = m[2][1].multiply(m[3][3]).subtract(m[3][1].multiply(m[2][3]));
+        BigDecimal c3 = m[2][1].multiply(m[3][2]).subtract(m[3][1].multiply(m[2][2]));
+        BigDecimal c2 = m[2][0].multiply(m[3][3]).subtract(m[3][0].multiply(m[2][3]));
+        BigDecimal c1 = m[2][0].multiply(m[3][2]).subtract(m[3][0].multiply(m[2][2]));
+        BigDecimal c0 = m[2][0].multiply(m[3][1]).subtract(m[3][0].multiply(m[2][1]));
 
         return s0.multiply(c5).subtract(s1.multiply(c4)).add(s2.multiply(c3)).add(s3.multiply(c2)).subtract(s4.multiply(c1)).add(s5.multiply(c0));
     }
@@ -564,44 +564,44 @@ public final class Matrix {
         }
 
 
-        BigDecimal t00 = M00.multiply(f00).add(M10.multiply(f01)).add(M20.multiply(f02));
-        BigDecimal t01 = M01.multiply(f00).add(M11.multiply(f01)).add(M21.multiply(f02));
-        BigDecimal t02 = M02.multiply(f00).add(M12.multiply(f01)).add(M22.multiply(f02));
-        BigDecimal t03 = M03.multiply(f00).add(M13.multiply(f01)).add(M23.multiply(f02));
-        BigDecimal t10 = M00.multiply(f10).add(M10.multiply(f11)).add(M20.multiply(f12));
-        BigDecimal t11 = M01.multiply(f10).add(M11.multiply(f11)).add(M21.multiply(f12));
-        BigDecimal t12 = M02.multiply(f10).add(M12.multiply(f11)).add(M22.multiply(f12));
-        BigDecimal t13 = M03.multiply(f10).add(M13.multiply(f11)).add(M23.multiply(f12));
-        BigDecimal m20 = M00.multiply(f20).add(M10.multiply(f21)).add(M20.multiply(f22));
-        BigDecimal m21 = M01.multiply(f20).add(M11.multiply(f21)).add(M21.multiply(f22));
-        BigDecimal m22 = M02.multiply(f20).add(M12.multiply(f21)).add(M22.multiply(f22));
-        BigDecimal m23 = M03.multiply(f20).add(M13.multiply(f21)).add(M23.multiply(f22));
-        BigDecimal m00 = t00;
-        BigDecimal m01 = t01;
-        BigDecimal m02 = t02;
-        BigDecimal m03 = t03;
-        BigDecimal m10 = t10;
-        BigDecimal m11 = t11;
-        BigDecimal m12 = t12;
-        BigDecimal m13 = t13;
+        BigDecimal t00 = m00.multiply(f00).add(m10.multiply(f01)).add(m20.multiply(f02));
+        BigDecimal t01 = m01.multiply(f00).add(m11.multiply(f01)).add(m21.multiply(f02));
+        BigDecimal t02 = m02.multiply(f00).add(m12.multiply(f01)).add(m22.multiply(f02));
+        BigDecimal t03 = m03.multiply(f00).add(m13.multiply(f01)).add(m23.multiply(f02));
+        BigDecimal t10 = m00.multiply(f10).add(m10.multiply(f11)).add(m20.multiply(f12));
+        BigDecimal t11 = m01.multiply(f10).add(m11.multiply(f11)).add(m21.multiply(f12));
+        BigDecimal t12 = m02.multiply(f10).add(m12.multiply(f11)).add(m22.multiply(f12));
+        BigDecimal t13 = m03.multiply(f10).add(m13.multiply(f11)).add(m23.multiply(f12));
+        BigDecimal tm20 = m00.multiply(f20).add(m10.multiply(f21)).add(m20.multiply(f22));
+        BigDecimal tm21 = m01.multiply(f20).add(m11.multiply(f21)).add(m21.multiply(f22));
+        BigDecimal tm22 = m02.multiply(f20).add(m12.multiply(f21)).add(m22.multiply(f22));
+        BigDecimal tm23 = m03.multiply(f20).add(m13.multiply(f21)).add(m23.multiply(f22));
+        BigDecimal tm00 = t00;
+        BigDecimal tm01 = t01;
+        BigDecimal tm02 = t02;
+        BigDecimal tm03 = t03;
+        BigDecimal tm10 = t10;
+        BigDecimal tm11 = t11;
+        BigDecimal tm12 = t12;
+        BigDecimal tm13 = t13;
 
-        return new Matrix(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
+        return new Matrix(tm00, tm01, tm02, tm03, tm10, tm11, tm12, tm13, tm20, tm21, tm22, tm23, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
     }
 
     public Matrix translate(BigDecimal[] vec) {
 
-        BigDecimal m30 = M30.add(M00.multiply(vec[0]).add(M10.multiply(vec[1])).add(M20.multiply(vec[2])));
-        BigDecimal m31 = M31.add(M01.multiply(vec[0]).add(M11.multiply(vec[1])).add(M21.multiply(vec[2])));
-        BigDecimal m32 = M32.add(M02.multiply(vec[0]).add(M12.multiply(vec[1])).add(M22.multiply(vec[2])));
+        BigDecimal tm30 = m30.add(m00.multiply(vec[0]).add(m10.multiply(vec[1])).add(m20.multiply(vec[2])));
+        BigDecimal tm31 = m31.add(m01.multiply(vec[0]).add(m11.multiply(vec[1])).add(m21.multiply(vec[2])));
+        BigDecimal tm32 = m32.add(m02.multiply(vec[0]).add(m12.multiply(vec[1])).add(m22.multiply(vec[2])));
 
-        return new Matrix(M00, M01, M02, M03, M10, M11, M12, M13, M20, M21, M22, M23, m30, m31, m32, BigDecimal.ONE);
+        return new Matrix(m00, m01, m02, m03, m10, m11, m12, m13, m20, m21, m22, m23, tm30, tm31, tm32, BigDecimal.ONE);
     }
 
     Matrix reduceAccuracy() {
         final BigDecimal[][] rounded = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
-                rounded[i][j] = this.M[i][j].round(Threshold.MC);
+                rounded[i][j] = this.m[i][j].round(Threshold.MC);
             }
         }
         return new Matrix(rounded);

@@ -63,49 +63,49 @@ public class TranslateDialog extends TranslateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_Local[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
-            btn_Local[0].setSelection(true);
+        WidgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
+            btnLocalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.LOCAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
         });
-        WidgetUtil(btn_Global[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
         });
-        WidgetUtil(btn_ToManipulatorPosition[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnToManipulatorPositionPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
-            spn_X[0].setValue(manipulator.X);
-            spn_Y[0].setValue(manipulator.Y);
-            spn_Z[0].setValue(manipulator.Z);
+            spnXPtr[0].setValue(manipulator.xp);
+            spnYPtr[0].setValue(manipulator.yp);
+            spnZPtr[0].setValue(manipulator.zp);
         });
-        WidgetUtil(btn_ToManipulatorPositionInverted[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnToManipulatorPositionInvertedPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
-            spn_X[0].setValue(manipulator.X.negate());
-            spn_Y[0].setValue(manipulator.Y.negate());
-            spn_Z[0].setValue(manipulator.Z.negate());
+            spnXPtr[0].setValue(manipulator.xp.negate());
+            spnYPtr[0].setValue(manipulator.yp.negate());
+            spnZPtr[0].setValue(manipulator.zp.negate());
         });
 
-        WidgetUtil(cb_Xaxis[0]).addSelectionListener(e -> x = cb_Xaxis[0].getSelection());
-        WidgetUtil(cb_Yaxis[0]).addSelectionListener(e -> y = cb_Yaxis[0].getSelection());
-        WidgetUtil(cb_Zaxis[0]).addSelectionListener(e -> z = cb_Zaxis[0].getSelection());
-        spn_X[0].addValueChangeListener(spn -> setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
-        spn_Y[0].addValueChangeListener(spn -> setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
-        spn_Z[0].addValueChangeListener(spn -> setOffset(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue())));
-        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> {
+        WidgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> x = cbXaxisPtr[0].getSelection());
+        WidgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> y = cbYaxisPtr[0].getSelection());
+        WidgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> z = cbZaxisPtr[0].getSelection());
+        spnXPtr[0].addValueChangeListener(spn -> setOffset(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue())));
+        spnYPtr[0].addValueChangeListener(spn -> setOffset(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue())));
+        spnZPtr[0].addValueChangeListener(spn -> setOffset(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue())));
+        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
             creatingCopy = true;
             setReturnCode(OK);
             close();
         });
-        spn_Iterations[0].addValueChangeListener(spn -> iterations = spn.getValue());
+        spnIterationsPtr[0].addValueChangeListener(spn -> iterations = spn.getValue());
         return super.open();
     }
 

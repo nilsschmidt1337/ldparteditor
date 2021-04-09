@@ -28,46 +28,46 @@ public enum ProtractorHelper {
     public static BigDecimal[] changeLength(BigDecimal newLength, GData3 tri) {
         BigDecimal factor = newLength.divide(tri.getProtractorLength(), Threshold.MC);
 
-        Vector3d center = new Vector3d(tri.X1, tri.Y1, tri.Z1);
-        Vector3d aToC = Vector3d.sub(new Vector3d(tri.X3, tri.Y3, tri.Z3), center);
+        Vector3d center = new Vector3d(tri.x1p, tri.y1p, tri.z1p);
+        Vector3d aToC = Vector3d.sub(new Vector3d(tri.x3p, tri.y3p, tri.z3p), center);
 
         BigDecimal[] result = new BigDecimal[3];
-        result[0] = tri.X1.add(aToC.X.multiply(factor, Threshold.MC));
-        result[1] = tri.Y1.add(aToC.Y.multiply(factor, Threshold.MC));
-        result[2] = tri.Z1.add(aToC.Z.multiply(factor, Threshold.MC));
+        result[0] = tri.x1p.add(aToC.x.multiply(factor, Threshold.MC));
+        result[1] = tri.y1p.add(aToC.y.multiply(factor, Threshold.MC));
+        result[2] = tri.z1p.add(aToC.z.multiply(factor, Threshold.MC));
         return result;
     }
 
     public static BigDecimal[] changeLength(BigDecimal newLength, GData2 line) {
         BigDecimal factor = newLength.divide(line.getLength(), Threshold.MC);
 
-        Vector3d center = new Vector3d(line.X1, line.Y1, line.Z1);
-        Vector3d aToB = Vector3d.sub(new Vector3d(line.X2, line.Y2, line.Z2), center);
+        Vector3d center = new Vector3d(line.x1p, line.y1p, line.z1p);
+        Vector3d aToB = Vector3d.sub(new Vector3d(line.x2p, line.y2p, line.z2p), center);
 
         BigDecimal[] result = new BigDecimal[3];
-        result[0] = line.X1.add(aToB.X.multiply(factor, Threshold.MC));
-        result[1] = line.Y1.add(aToB.Y.multiply(factor, Threshold.MC));
-        result[2] = line.Z1.add(aToB.Z.multiply(factor, Threshold.MC));
+        result[0] = line.x1p.add(aToB.x.multiply(factor, Threshold.MC));
+        result[1] = line.y1p.add(aToB.y.multiply(factor, Threshold.MC));
+        result[2] = line.z1p.add(aToB.z.multiply(factor, Threshold.MC));
         return result;
     }
 
     public static BigDecimal[] changeAngle(double angle, GData3 tri) {
-        return changeAngle(angle, new Vector3d(tri.X1, tri.Y1, tri.Z1), new Vector3d(tri.X2, tri.Y2, tri.Z2), new Vector3d(tri.X3, tri.Y3, tri.Z3), 6, 10);
+        return changeAngle(angle, new Vector3d(tri.x1p, tri.y1p, tri.z1p), new Vector3d(tri.x2p, tri.y2p, tri.z2p), new Vector3d(tri.x3p, tri.y3p, tri.z3p), 6, 10);
     }
 
     public static BigDecimal[] changeAngle(double angle, Vector3d a, Vector3d b, Vector3d c, int angleAccuracy, int lenghtAccuracy) {
 
         BigDecimal[] result = new BigDecimal[3];
-        result[0] = c.X;
-        result[1] = c.Y;
-        result[2] = c.Z;
+        result[0] = c.x;
+        result[1] = c.y;
+        result[2] = c.z;
 
-        Vector3d oldPos = new Vector3d(c.X, c.Y, c.Z);
-        Vector3d center = new Vector3d(a.X, a.Y, a.Z);
+        Vector3d oldPos = new Vector3d(c.x, c.y, c.z);
+        Vector3d center = new Vector3d(a.x, a.y, a.z);
 
-        Vector3d aToB = Vector3d.sub(new Vector3d(b.X, b.Y, b.Z), center);
-        Vector3d aToC = Vector3d.sub(new Vector3d(c.X, c.Y, c.Z), center);
-        BigDecimal targetDistSq = Vector3d.distSquare(new Vector3d(c.X, c.Y, c.Z), center);
+        Vector3d aToB = Vector3d.sub(new Vector3d(b.x, b.y, b.z), center);
+        Vector3d aToC = Vector3d.sub(new Vector3d(c.x, c.y, c.z), center);
+        BigDecimal targetDistSq = Vector3d.distSquare(new Vector3d(c.x, c.y, c.z), center);
         if (angle == 0.0 || angle == 180.0 || BigDecimal.ZERO.compareTo(aToB.length()) == 0 || BigDecimal.ZERO.compareTo(aToC.length()) == 0) {
             return result;
         }
@@ -165,9 +165,9 @@ public enum ProtractorHelper {
             iterations++;
         }
 
-        result[0] = pMin.X;
-        result[1] = pMin.Y;
-        result[2] = pMin.Z;
+        result[0] = pMin.xp;
+        result[1] = pMin.yp;
+        result[2] = pMin.zp;
         return result;
     }
 

@@ -48,13 +48,13 @@ class YTruderDesign extends Dialog {
     final YTruderSettings ys;
 
     // Use final only for subclass/listener references!
-    final BigDecimalSpinner[] spn_value = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_condlineAngleThreshold = new BigDecimalSpinner[1];
-    final Combo[] cmb_axis = new Combo[1];
-    final NButton[] btn_TranslateByDistance = new NButton[1];
-    final NButton[] btn_SymmetryAcrossPlane = new NButton[1];
-    final NButton[] btn_ProjectionOnPlane = new NButton[1];
-    final NButton[] btn_ExtrudeRadially = new NButton[1];
+    final BigDecimalSpinner[] spnValuePtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnCondlineAngleThresholdPtr = new BigDecimalSpinner[1];
+    final Combo[] cmbAxisPtr = new Combo[1];
+    final NButton[] btnTranslateByDistancePtr = new NButton[1];
+    final NButton[] btnSymmetryAcrossPlanePtr = new NButton[1];
+    final NButton[] btnProjectionOnPlanePtr = new NButton[1];
+    final NButton[] btnExtrudeRadiallyPtr = new NButton[1];
 
     YTruderDesign(Shell parentShell, YTruderSettings ys) {
         super(parentShell);
@@ -84,28 +84,28 @@ class YTruderDesign extends Dialog {
 
         {
             NButton btnTranslateByDistance = new NButton(cmpContainer, SWT.RADIO);
-            this.btn_TranslateByDistance[0] = btnTranslateByDistance;
+            this.btnTranslateByDistancePtr[0] = btnTranslateByDistance;
             btnTranslateByDistance.setText(I18n.YTRUDER_TRANSLATION_BY_DISTANCE);
             btnTranslateByDistance.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btnTranslateByDistance.setSelection(ys.getMode() == 1);
         }
         {
             NButton btnSymmetryAcrossPlane = new NButton(cmpContainer, SWT.RADIO);
-            this.btn_SymmetryAcrossPlane[0] = btnSymmetryAcrossPlane;
+            this.btnSymmetryAcrossPlanePtr[0] = btnSymmetryAcrossPlane;
             btnSymmetryAcrossPlane.setText(I18n.YTRUDER_SYMMETRY_ACROSS_PLANE);
             btnSymmetryAcrossPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btnSymmetryAcrossPlane.setSelection(ys.getMode() == 2);
         }
         {
             NButton btnProjectionOnPlane = new NButton(cmpContainer, SWT.RADIO);
-            this.btn_ProjectionOnPlane[0] = btnProjectionOnPlane;
+            this.btnProjectionOnPlanePtr[0] = btnProjectionOnPlane;
             btnProjectionOnPlane.setText(I18n.YTRUDER_PROJECTION_ON_PLANE);
             btnProjectionOnPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btnProjectionOnPlane.setSelection(ys.getMode() == 3);
         }
         {
             NButton btnExtrudeRadially = new NButton(cmpContainer, SWT.RADIO);
-            this.btn_ExtrudeRadially[0] = btnExtrudeRadially;
+            this.btnExtrudeRadiallyPtr[0] = btnExtrudeRadially;
             btnExtrudeRadially.setText(I18n.YTRUDER_EXTRUDE_RADIALLY);
             btnExtrudeRadially.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btnExtrudeRadially.setSelection(ys.getMode() == 4);
@@ -115,7 +115,7 @@ class YTruderDesign extends Dialog {
         lblLineThreshold.setText(I18n.YTRUDER_VALUE);
 
         BigDecimalSpinner spnValue = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_value[0] = spnValue;
+        this.spnValuePtr[0] = spnValue;
         spnValue.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnValue.setMaximum(new BigDecimal(999999));
         spnValue.setMinimum(new BigDecimal(-999999));
@@ -125,7 +125,7 @@ class YTruderDesign extends Dialog {
         lblRotationAngle.setText(I18n.YTRUDER_CONDLINE_ANGLE);
 
         BigDecimalSpinner spnRotationAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_condlineAngleThreshold[0] = spnRotationAngle;
+        this.spnCondlineAngleThresholdPtr[0] = spnRotationAngle;
         spnRotationAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnRotationAngle.setMaximum(new BigDecimal(180));
         spnRotationAngle.setMinimum(new BigDecimal(0));
@@ -135,7 +135,7 @@ class YTruderDesign extends Dialog {
         lblAf.setText(I18n.YTRUDER_AXIS);
 
         Combo cmbAxis = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_axis[0] = cmbAxis;
+        this.cmbAxisPtr[0] = cmbAxis;
         cmbAxis.setItems(new String[] {I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z});
         cmbAxis.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbAxis.select(ys.getAxis());

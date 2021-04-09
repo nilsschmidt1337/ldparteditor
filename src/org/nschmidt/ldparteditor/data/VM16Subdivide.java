@@ -134,9 +134,9 @@ class VM16Subdivide extends VM15Flipper {
                 for (Vector3d vd : midEdge) {
                     np = Vector3d.add(np, vd);
                 }
-                np.setX(np.X.divide(c, Threshold.MC));
-                np.setY(np.Y.divide(c, Threshold.MC));
-                np.setZ(np.Z.divide(c, Threshold.MC));
+                np.setX(np.x.divide(c, Threshold.MC));
+                np.setY(np.y.divide(c, Threshold.MC));
+                np.setZ(np.z.divide(c, Threshold.MC));
                 newPoints.put(v, new Vertex(np));
             }
         }
@@ -170,9 +170,9 @@ class VM16Subdivide extends VM15Flipper {
             for (Vertex vd : originalVerts) {
                 center = Vector3d.add(center, new Vector3d(vd));
             }
-            center.setX(center.X.divide(c2, Threshold.MC));
-            center.setY(center.Y.divide(c2, Threshold.MC));
-            center.setZ(center.Z.divide(c2, Threshold.MC));
+            center.setX(center.x.divide(c2, Threshold.MC));
+            center.setY(center.y.divide(c2, Threshold.MC));
+            center.setZ(center.z.divide(c2, Threshold.MC));
 
             Vertex vc = new Vertex(center);
 
@@ -383,9 +383,9 @@ class VM16Subdivide extends VM15Flipper {
                 for (Vector3d vd : midEdge) {
                     np = Vector3d.add(np, vd);
                 }
-                np.setX(v.X.multiply(alphaN2).add(np.X.multiply(oneMinusAlphaDivN, Threshold.MC)));
-                np.setY(v.Y.multiply(alphaN2).add(np.Y.multiply(oneMinusAlphaDivN, Threshold.MC)));
-                np.setZ(v.Z.multiply(alphaN2).add(np.Z.multiply(oneMinusAlphaDivN, Threshold.MC)));
+                np.setX(v.xp.multiply(alphaN2).add(np.x.multiply(oneMinusAlphaDivN, Threshold.MC)));
+                np.setY(v.yp.multiply(alphaN2).add(np.y.multiply(oneMinusAlphaDivN, Threshold.MC)));
+                np.setZ(v.zp.multiply(alphaN2).add(np.z.multiply(oneMinusAlphaDivN, Threshold.MC)));
                 newPoints.put(v, new Vertex(np));
             }
         }

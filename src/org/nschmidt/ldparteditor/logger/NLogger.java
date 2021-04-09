@@ -40,15 +40,13 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum NLogger {
     INSTANCE;
 
-
-
-    public static boolean DEBUG = false;
+    public static boolean debugging = false;
 
     /**
      * The error counter. If it reaches 100 within one session, no more caught
      * errors will be evaluated.
      */
-    private static int error_Count = 0;
+    private static int errorCount = 0;
 
     /** A flag which indicates, if the logger writes to ERROR_LOG2 */
     private static boolean writeInNewFile;
@@ -67,7 +65,7 @@ public enum NLogger {
      */
     public static void init() {
         try {
-            if (!DEBUG) {
+            if (!debugging) {
                 File log = new File(ERROR_LOG);
                 if (log.length() > 100000) {
                     log.delete();
@@ -77,7 +75,7 @@ public enum NLogger {
             }
             StringBuilder sb = new StringBuilder();
             sb.append("[LDPartEditor "); //$NON-NLS-1$
-            sb.append(DEBUG ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
+            sb.append(debugging ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
             sb.append("] Started on "); //$NON-NLS-1$
             sb.append(new java.util.Date());
             System.err.println(sb.toString());
@@ -98,7 +96,7 @@ public enum NLogger {
      *            The throwable exception
      */
     public static void debug(Class<?> clazz, Throwable t) {
-        if (DEBUG) {
+        if (debugging) {
             debug_sync(clazz, t);
         }
     }
@@ -113,7 +111,7 @@ public enum NLogger {
      *            The message to display
      */
     public static void debug(Class<?> clazz, String message) {
-        if (DEBUG) {
+        if (debugging) {
             debug_sync(clazz, message);
         }
     }
@@ -131,25 +129,25 @@ public enum NLogger {
      *            Parameters separated with a comma
      */
     public static void debug(Class<?> clazz, String message, Object... args) {
-        if (DEBUG) {
+        if (debugging) {
             debug_sync(clazz, message, args);
         }
     }
 
     public static void debug(Class<?> clazz, float value) {
-        if (DEBUG) {
+        if (debugging) {
             debug_sync(clazz, Float.toString(value));
         }
     }
 
     public static void debug(Class<?> clazz, double value) {
-        if (DEBUG) {
+        if (debugging) {
             debug_sync(clazz, Double.toString(value));
         }
     }
 
     public static void debug(Class<?> clazz, int value) {
-        if (DEBUG) {
+        if (debugging) {
             debug_sync(clazz, Integer.toString(value));
         }
     }
@@ -234,7 +232,7 @@ public enum NLogger {
     public static synchronized void writeVersion() {
         StringBuilder sb = new StringBuilder();
         sb.append("[LDPartEditor "); //$NON-NLS-1$
-        sb.append(DEBUG ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
+        sb.append(debugging ? "DEBUG " : "RELEASE "); //$NON-NLS-1$ //$NON-NLS-2$
         sb.append(Version.getVersion());
         sb.append(" @ SWT v"); //$NON-NLS-1$
         sb.append(SWT.getVersion());
@@ -257,8 +255,8 @@ public enum NLogger {
      */
     public static synchronized void error(Class<?> clazz, Throwable t) {
         // Log only 100 errors per session.. ;-)
-        if (error_Count < 100) {
-            error_Count++;
+        if (errorCount < 100) {
+            errorCount++;
             FileWriter fw = null;
             if (!writeInNewFile) {
                 // Check if "error_log1.txt" is greater than 100KB
@@ -354,8 +352,8 @@ public enum NLogger {
         }
     }
 
-    public static void setDEBUG(boolean debug) {
-        DEBUG = debug;
+    public static void setDebugging(boolean debug) {
+        debugging = debug;
     }
 
 }

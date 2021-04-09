@@ -37,7 +37,7 @@ class VM07PathTruder extends VM06Edger2 {
 
     /* Null vector */
     private final double[] nullv = new double[]{0.0,0.0,0.0};
-    private final double EPSILON = 0.000001;
+    private static final double EPSILON = 0.000001;
 
     protected VM07PathTruder(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -148,8 +148,8 @@ class VM07PathTruder extends VM06Edger2 {
                     Vertex[] verts = lines.get(ind);
                     if (verts == null) {
                         verts = new Vertex[2];
-                        verts[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
-                        verts[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
+                        verts[0] = new Vertex(ind.x1p, ind.y1p, ind.z1p);
+                        verts[1] = new Vertex(ind.x2p, ind.y2p, ind.z2p);
                     }
                     liVerts.add(verts[0]);
                     liVerts.add(verts[1]);
@@ -167,8 +167,8 @@ class VM07PathTruder extends VM06Edger2 {
                         if (verts == null) {
                             GData2 ind = shape1.get(i);
                             verts = new Vertex[2];
-                            verts[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
-                            verts[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
+                            verts[0] = new Vertex(ind.x1p, ind.y1p, ind.z1p);
+                            verts[1] = new Vertex(ind.x2p, ind.y2p, ind.z2p);
                         }
                         if (i == 0) {
                             if (liVerts.contains(verts[0])) {
@@ -187,8 +187,8 @@ class VM07PathTruder extends VM06Edger2 {
                             if (verts2 == null) {
                                 GData2 ind = shape1.get(i - 1);
                                 verts2 = new Vertex[2];
-                                verts2[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
-                                verts2[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
+                                verts2[0] = new Vertex(ind.x1p, ind.y1p, ind.z1p);
+                                verts2[1] = new Vertex(ind.x2p, ind.y2p, ind.z2p);
                             }
                             if (verts2[1].equals(verts[0]) && liVerts.contains(verts[0])) {
                                 shapeTmp.add(new GData2(verts[0], verts[0], View.DUMMY_REFERENCE, new GColour(), true));
@@ -211,8 +211,8 @@ class VM07PathTruder extends VM06Edger2 {
                         if (verts == null) {
                             GData2 ind = shape2.get(i);
                             verts = new Vertex[2];
-                            verts[0] = new Vertex(ind.X1, ind.Y1, ind.Z1);
-                            verts[1] = new Vertex(ind.X2, ind.Y2, ind.Z2);
+                            verts[0] = new Vertex(ind.x1p, ind.y1p, ind.z1p);
+                            verts[1] = new Vertex(ind.x2p, ind.y2p, ind.z2p);
                         }
                         if (i == 0) {
                             if (indices.contains(i)) {
@@ -328,12 +328,12 @@ class VM07PathTruder extends VM06Edger2 {
                                             path1.add(path1endSegments.get(1));
                                         }
                                         for (GData2 p : path1) {
-                                            sortBuf[path1Len][0][0] = p.X1.doubleValue();
-                                            sortBuf[path1Len][0][1] = p.Y1.doubleValue();
-                                            sortBuf[path1Len][0][2] = p.Z1.doubleValue();
-                                            sortBuf[path1Len][1][0] = p.X2.doubleValue();
-                                            sortBuf[path1Len][1][1] = p.Y2.doubleValue();
-                                            sortBuf[path1Len][1][2] = p.Z2.doubleValue();
+                                            sortBuf[path1Len][0][0] = p.x1p.doubleValue();
+                                            sortBuf[path1Len][0][1] = p.y1p.doubleValue();
+                                            sortBuf[path1Len][0][2] = p.z1p.doubleValue();
+                                            sortBuf[path1Len][1][0] = p.x2p.doubleValue();
+                                            sortBuf[path1Len][1][1] = p.y2p.doubleValue();
+                                            sortBuf[path1Len][1][2] = p.z2p.doubleValue();
                                             next[path1Len][0][0] = next[path1Len][1][0] = -1;
                                             path1Len++;
                                         }
@@ -411,12 +411,12 @@ class VM07PathTruder extends VM06Edger2 {
                                             path2.add(path2endSegments.get(1));
                                         }
                                         for (GData2 p : path2) {
-                                            sortBuf[path2Len][0][0] = p.X1.doubleValue();
-                                            sortBuf[path2Len][0][1] = p.Y1.doubleValue();
-                                            sortBuf[path2Len][0][2] = p.Z1.doubleValue();
-                                            sortBuf[path2Len][1][0] = p.X2.doubleValue();
-                                            sortBuf[path2Len][1][1] = p.Y2.doubleValue();
-                                            sortBuf[path2Len][1][2] = p.Z2.doubleValue();
+                                            sortBuf[path2Len][0][0] = p.x1p.doubleValue();
+                                            sortBuf[path2Len][0][1] = p.y1p.doubleValue();
+                                            sortBuf[path2Len][0][2] = p.z1p.doubleValue();
+                                            sortBuf[path2Len][1][0] = p.x2p.doubleValue();
+                                            sortBuf[path2Len][1][1] = p.y2p.doubleValue();
+                                            sortBuf[path2Len][1][2] = p.z2p.doubleValue();
                                             next[path2Len][0][0] = next[path2Len][1][0] = -1;
                                             path2Len++;
                                         }
@@ -486,22 +486,22 @@ class VM07PathTruder extends VM06Edger2 {
                                     }
 
                                     for (GData2 p : shape1) {
-                                        shape1Arr[shape1Len][0][0] = p.X1.doubleValue();
-                                        shape1Arr[shape1Len][0][1] = p.Y1.doubleValue();
-                                        shape1Arr[shape1Len][0][2] = p.Z1.doubleValue();
-                                        shape1Arr[shape1Len][1][0] = p.X2.doubleValue();
-                                        shape1Arr[shape1Len][1][1] = p.Y2.doubleValue();
-                                        shape1Arr[shape1Len][1][2] = p.Z2.doubleValue();
+                                        shape1Arr[shape1Len][0][0] = p.x1p.doubleValue();
+                                        shape1Arr[shape1Len][0][1] = p.y1p.doubleValue();
+                                        shape1Arr[shape1Len][0][2] = p.z1p.doubleValue();
+                                        shape1Arr[shape1Len][1][0] = p.x2p.doubleValue();
+                                        shape1Arr[shape1Len][1][1] = p.y2p.doubleValue();
+                                        shape1Arr[shape1Len][1][2] = p.z2p.doubleValue();
                                         shape1Len++;
                                     }
 
                                     for (GData2 p : shape2) {
-                                        shape2Arr[shape2Len][0][0] = p.X1.doubleValue();
-                                        shape2Arr[shape2Len][0][1] = p.Y1.doubleValue();
-                                        shape2Arr[shape2Len][0][2] = p.Z1.doubleValue();
-                                        shape2Arr[shape2Len][1][0] = p.X2.doubleValue();
-                                        shape2Arr[shape2Len][1][1] = p.Y2.doubleValue();
-                                        shape2Arr[shape2Len][1][2] = p.Z2.doubleValue();
+                                        shape2Arr[shape2Len][0][0] = p.x1p.doubleValue();
+                                        shape2Arr[shape2Len][0][1] = p.y1p.doubleValue();
+                                        shape2Arr[shape2Len][0][2] = p.z1p.doubleValue();
+                                        shape2Arr[shape2Len][1][0] = p.x2p.doubleValue();
+                                        shape2Arr[shape2Len][1][1] = p.y2p.doubleValue();
+                                        shape2Arr[shape2Len][1][2] = p.z2p.doubleValue();
                                         shape2Len++;
                                     }
 
@@ -942,12 +942,12 @@ class VM07PathTruder extends VM06Edger2 {
                             path1.add(path1endSegments.get(1));
                         }
                         for (GData2 p : path1) {
-                            sortBuf[path1Len][0][0] = p.X1.doubleValue();
-                            sortBuf[path1Len][0][1] = p.Y1.doubleValue();
-                            sortBuf[path1Len][0][2] = p.Z1.doubleValue();
-                            sortBuf[path1Len][1][0] = p.X2.doubleValue();
-                            sortBuf[path1Len][1][1] = p.Y2.doubleValue();
-                            sortBuf[path1Len][1][2] = p.Z2.doubleValue();
+                            sortBuf[path1Len][0][0] = p.x1p.doubleValue();
+                            sortBuf[path1Len][0][1] = p.y1p.doubleValue();
+                            sortBuf[path1Len][0][2] = p.z1p.doubleValue();
+                            sortBuf[path1Len][1][0] = p.x2p.doubleValue();
+                            sortBuf[path1Len][1][1] = p.y2p.doubleValue();
+                            sortBuf[path1Len][1][2] = p.z2p.doubleValue();
                             next[path1Len][0][0] = next[path1Len][1][0] = -1;
                             path1Len++;
                         }
@@ -1025,12 +1025,12 @@ class VM07PathTruder extends VM06Edger2 {
                             path2.add(path2endSegments.get(1));
                         }
                         for (GData2 p : path2) {
-                            sortBuf[path2Len][0][0] = p.X1.doubleValue();
-                            sortBuf[path2Len][0][1] = p.Y1.doubleValue();
-                            sortBuf[path2Len][0][2] = p.Z1.doubleValue();
-                            sortBuf[path2Len][1][0] = p.X2.doubleValue();
-                            sortBuf[path2Len][1][1] = p.Y2.doubleValue();
-                            sortBuf[path2Len][1][2] = p.Z2.doubleValue();
+                            sortBuf[path2Len][0][0] = p.x1p.doubleValue();
+                            sortBuf[path2Len][0][1] = p.y1p.doubleValue();
+                            sortBuf[path2Len][0][2] = p.z1p.doubleValue();
+                            sortBuf[path2Len][1][0] = p.x2p.doubleValue();
+                            sortBuf[path2Len][1][1] = p.y2p.doubleValue();
+                            sortBuf[path2Len][1][2] = p.z2p.doubleValue();
                             next[path2Len][0][0] = next[path2Len][1][0] = -1;
                             path2Len++;
                         }
@@ -1100,22 +1100,22 @@ class VM07PathTruder extends VM06Edger2 {
                     }
 
                     for (GData2 p : shape1) {
-                        shape1Arr[shape1Len][0][0] = p.X1.doubleValue();
-                        shape1Arr[shape1Len][0][1] = p.Y1.doubleValue();
-                        shape1Arr[shape1Len][0][2] = p.Z1.doubleValue();
-                        shape1Arr[shape1Len][1][0] = p.X2.doubleValue();
-                        shape1Arr[shape1Len][1][1] = p.Y2.doubleValue();
-                        shape1Arr[shape1Len][1][2] = p.Z2.doubleValue();
+                        shape1Arr[shape1Len][0][0] = p.x1p.doubleValue();
+                        shape1Arr[shape1Len][0][1] = p.y1p.doubleValue();
+                        shape1Arr[shape1Len][0][2] = p.z1p.doubleValue();
+                        shape1Arr[shape1Len][1][0] = p.x2p.doubleValue();
+                        shape1Arr[shape1Len][1][1] = p.y2p.doubleValue();
+                        shape1Arr[shape1Len][1][2] = p.z2p.doubleValue();
                         shape1Len++;
                     }
 
                     for (GData2 p : shape2) {
-                        shape2Arr[shape2Len][0][0] = p.X1.doubleValue();
-                        shape2Arr[shape2Len][0][1] = p.Y1.doubleValue();
-                        shape2Arr[shape2Len][0][2] = p.Z1.doubleValue();
-                        shape2Arr[shape2Len][1][0] = p.X2.doubleValue();
-                        shape2Arr[shape2Len][1][1] = p.Y2.doubleValue();
-                        shape2Arr[shape2Len][1][2] = p.Z2.doubleValue();
+                        shape2Arr[shape2Len][0][0] = p.x1p.doubleValue();
+                        shape2Arr[shape2Len][0][1] = p.y1p.doubleValue();
+                        shape2Arr[shape2Len][0][2] = p.z1p.doubleValue();
+                        shape2Arr[shape2Len][1][0] = p.x2p.doubleValue();
+                        shape2Arr[shape2Len][1][1] = p.y2p.doubleValue();
+                        shape2Arr[shape2Len][1][2] = p.z2p.doubleValue();
                         shape2Len++;
                     }
 

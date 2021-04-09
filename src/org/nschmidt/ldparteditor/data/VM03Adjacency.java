@@ -835,8 +835,8 @@ class VM03Adjacency extends VM02Add {
                 setModified_NoSync();
             }
             for (Vertex vOld : singleVertices) {
-                Vertex vNew = new Vertex(onX ? vOld.X.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.X, onY ? vOld.Y.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.Y, onZ ? vOld.Z.setScale(coordsDecimalPlaces,
-                        RoundingMode.HALF_UP) : vOld.Z);
+                Vertex vNew = new Vertex(onX ? vOld.xp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.xp, onY ? vOld.yp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.yp, onZ ? vOld.zp.setScale(coordsDecimalPlaces,
+                        RoundingMode.HALF_UP) : vOld.zp);
                 changeVertexDirectFast(vOld, vNew, moveAdjacentData);
             }
 

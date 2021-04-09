@@ -50,12 +50,12 @@ public class RoundDialog extends RoundDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(cb_Xaxis[0]).addSelectionListener(e -> onX = cb_Xaxis[0].getSelection());
-        WidgetUtil(cb_Yaxis[0]).addSelectionListener(e -> onY = cb_Yaxis[0].getSelection());
-        WidgetUtil(cb_Zaxis[0]).addSelectionListener(e -> onZ = cb_Zaxis[0].getSelection());
-        btn_ok[0].addListener(SWT.Selection, event -> {
-            WorkbenchManager.getUserSettingState().setCoordsPrecision(spn_coords[0].getValue());
-            WorkbenchManager.getUserSettingState().setTransMatrixPrecision(spn_matrix[0].getValue());
+        WidgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> onX = cbXaxisPtr[0].getSelection());
+        WidgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> onY = cbYaxisPtr[0].getSelection());
+        WidgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> onZ = cbZaxisPtr[0].getSelection());
+        btnOkPtr[0].addListener(SWT.Selection, event -> {
+            WorkbenchManager.getUserSettingState().setCoordsPrecision(spnCoordsPtr[0].getValue());
+            WorkbenchManager.getUserSettingState().setTransMatrixPrecision(spnMatrixPtr[0].getValue());
             WorkbenchManager.getUserSettingState().setRoundX(onX);
             WorkbenchManager.getUserSettingState().setRoundY(onY);
             WorkbenchManager.getUserSettingState().setRoundZ(onZ);

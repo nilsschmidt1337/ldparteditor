@@ -57,13 +57,13 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 class VM12IntersectorAndIsecalc extends VM11HideShow {
 
-    private final BigDecimal TOLERANCE = BigDecimal.ZERO;
-    private final BigDecimal ZEROT = BigDecimal.ZERO;
-    private final BigDecimal ONET = BigDecimal.ONE;
+    private static final BigDecimal TOLERANCE = BigDecimal.ZERO;
+    private static final BigDecimal ZEROT = BigDecimal.ZERO;
+    private static final BigDecimal ONET = BigDecimal.ONE;
 
-    private final BigDecimal TOLERANCER = new BigDecimal("0.00001"); //$NON-NLS-1$
-    private final BigDecimal ZEROTR = new BigDecimal("-0.00001"); //$NON-NLS-1$
-    private final BigDecimal ONETR = new BigDecimal("1.00001"); //$NON-NLS-1$
+    private static final BigDecimal TOLERANCER = new BigDecimal("0.00001"); //$NON-NLS-1$
+    private static final BigDecimal ZEROTR = new BigDecimal("-0.00001"); //$NON-NLS-1$
+    private static final BigDecimal ONETR = new BigDecimal("1.00001"); //$NON-NLS-1$
 
     protected VM12IntersectorAndIsecalc(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -135,9 +135,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             BigDecimal epsilon = new BigDecimal(".0001"); //$NON-NLS-1$
             for (Iterator<GData2> li = newLines.iterator(); li.hasNext();) {
                 GData2 l = li.next();
-                BigDecimal dx = l.X1.subtract(l.X2);
-                BigDecimal dy = l.Y1.subtract(l.Y2);
-                BigDecimal dz = l.Z1.subtract(l.Z2);
+                BigDecimal dx = l.x1p.subtract(l.x2p);
+                BigDecimal dy = l.y1p.subtract(l.y2p);
+                BigDecimal dz = l.z1p.subtract(l.z2p);
                 BigDecimal len = dx.multiply(dx).add(dy.multiply(dy)).add(dz.multiply(dz));
                 if (len.compareTo(epsilon) <= 0) {
                     remove(l);
@@ -160,10 +160,10 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 {
                     for (int j= i + 1; j < lineCount; j++)
                     {
-                        Vector3d p11 = new Vector3d(newLines.get(i).X1, newLines.get(i).Y1, newLines.get(i).Z1);
-                        Vector3d p12 = new Vector3d(newLines.get(i).X2, newLines.get(i).Y2, newLines.get(i).Z2);
-                        Vector3d p21 = new Vector3d(newLines.get(j).X1, newLines.get(j).Y1, newLines.get(j).Z1);
-                        Vector3d p22 = new Vector3d(newLines.get(j).X2, newLines.get(j).Y2, newLines.get(j).Z2);
+                        Vector3d p11 = new Vector3d(newLines.get(i).x1p, newLines.get(i).y1p, newLines.get(i).z1p);
+                        Vector3d p12 = new Vector3d(newLines.get(i).x2p, newLines.get(i).y2p, newLines.get(i).z2p);
+                        Vector3d p21 = new Vector3d(newLines.get(j).x1p, newLines.get(j).y1p, newLines.get(j).z1p);
+                        Vector3d p22 = new Vector3d(newLines.get(j).x2p, newLines.get(j).y2p, newLines.get(j).z2p);
                         Vector3d line1 = Vector3d.sub(p12, p11);
                         Vector3d line2 = Vector3d.sub(p22, p21);
                         Vector3d temp = Vector3d.cross(line1, line2);
@@ -191,10 +191,10 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         {
                             if(colin[i]==colin[j])
                             {
-                                Vector3d p11 = new Vector3d(newLines.get(i).X1, newLines.get(i).Y1, newLines.get(i).Z1);
-                                Vector3d p12 = new Vector3d(newLines.get(i).X2, newLines.get(i).Y2, newLines.get(i).Z2);
-                                Vector3d p21 = new Vector3d(newLines.get(j).X1, newLines.get(j).Y1, newLines.get(j).Z1);
-                                Vector3d p22 = new Vector3d(newLines.get(j).X2, newLines.get(j).Y2, newLines.get(j).Z2);
+                                Vector3d p11 = new Vector3d(newLines.get(i).x1p, newLines.get(i).y1p, newLines.get(i).z1p);
+                                Vector3d p12 = new Vector3d(newLines.get(i).x2p, newLines.get(i).y2p, newLines.get(i).z2p);
+                                Vector3d p21 = new Vector3d(newLines.get(j).x1p, newLines.get(j).y1p, newLines.get(j).z1p);
+                                Vector3d p22 = new Vector3d(newLines.get(j).x2p, newLines.get(j).y2p, newLines.get(j).z2p);
                                 if(Vector3d.manhattan(p11, p21).compareTo(small) < 0 ||
                                         Vector3d.manhattan(p11, p22).compareTo(small) < 0 ||
                                         Vector3d.manhattan(p12, p22).compareTo(small) < 0 ||
@@ -225,15 +225,15 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     GData2 nl;
                                     if (a == 1) {
                                         if (b == 1) {
-                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l1.X1, l1.Y1, l1.Z1, l2.X2, l2.Y2, l2.Z2, View.DUMMY_REFERENCE, linkedDatFile, true);
+                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l1.x1p, l1.y1p, l1.z1p, l2.x2p, l2.y2p, l2.z2p, View.DUMMY_REFERENCE, linkedDatFile, true);
                                         } else {
-                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l1.X1, l1.Y1, l1.Z1, l2.X1, l2.Y1, l2.Z1, View.DUMMY_REFERENCE, linkedDatFile, true);
+                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l1.x1p, l1.y1p, l1.z1p, l2.x1p, l2.y1p, l2.z1p, View.DUMMY_REFERENCE, linkedDatFile, true);
                                         }
                                     } else {
                                         if (b == 1) {
-                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l2.X2, l2.Y2, l2.Z2, l1.X2, l1.Y2, l1.Z2, View.DUMMY_REFERENCE, linkedDatFile, true);
+                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l2.x2p, l2.y2p, l2.z2p, l1.x2p, l1.y2p, l1.z2p, View.DUMMY_REFERENCE, linkedDatFile, true);
                                         } else {
-                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l2.X1, l2.Y1, l2.Z1, l1.X2, l1.Y2, l1.Z2, View.DUMMY_REFERENCE, linkedDatFile, true);
+                                            nl = new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), l2.x1p, l2.y1p, l2.z1p, l1.x2p, l1.y2p, l1.z2p, View.DUMMY_REFERENCE, linkedDatFile, true);
                                         }
                                     }
                                     remove(l1);
@@ -897,7 +897,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             for (Vector3d p2 : points) {
                 if (!p1.equals(p2)) {
                     Vector3d p3 = Vector3d.sub(p1, p2);
-                    BigDecimal md = p3.X.multiply(p3.X).add(p3.Y.multiply(p3.Y)).add(p3.Z.multiply(p3.Z));
+                    BigDecimal md = p3.x.multiply(p3.x).add(p3.y.multiply(p3.y)).add(p3.z.multiply(p3.z));
                     if (md.compareTo(epsilon) <= 0) {
                         i.remove();
                         break;
@@ -908,20 +908,20 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         if (points.size() == 4) {
             ArrayList<Vector3d> points2 = new ArrayList<>();
             points2.addAll(points);
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(1).X, points2.get(1).Y, points2.get(1).Z, points2.get(2).X, points2.get(2).Y, points2.get(2).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).X, points2.get(2).Y, points2.get(2).Z, points2.get(3).X, points2.get(3).Y, points2.get(3).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(3).X, points2.get(3).Y, points2.get(3).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(1).x, points2.get(1).y, points2.get(1).z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(1).x, points2.get(1).y, points2.get(1).z, points2.get(2).x, points2.get(2).y, points2.get(2).z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).x, points2.get(2).y, points2.get(2).z, points2.get(3).x, points2.get(3).y, points2.get(3).z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(3).x, points2.get(3).y, points2.get(3).z, View.DUMMY_REFERENCE, linkedDatFile, true));
         } else if (points.size() == 3) {
             ArrayList<Vector3d> points2 = new ArrayList<>();
             points2.addAll(points);
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).X, points2.get(2).Y, points2.get(2).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(2).X, points2.get(2).Y, points2.get(2).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(1).x, points2.get(1).y, points2.get(1).z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).x, points2.get(2).y, points2.get(2).z, points2.get(1).x, points2.get(1).y, points2.get(1).z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(2).x, points2.get(2).y, points2.get(2).z, View.DUMMY_REFERENCE, linkedDatFile, true));
         } else if (points.size() == 2) {
             ArrayList<Vector3d> points2 = new ArrayList<>();
             points2.addAll(points);
-            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).X, points2.get(0).Y, points2.get(0).Z, points2.get(1).X, points2.get(1).Y, points2.get(1).Z, View.DUMMY_REFERENCE, linkedDatFile, true));
+            result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(1).x, points2.get(1).y, points2.get(1).z, View.DUMMY_REFERENCE, linkedDatFile, true));
         }
 
         return result;
@@ -977,9 +977,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                         // Calculate pseudo mid-point
                         Vector3dd mid = new Vector3dd();
-                        mid.setX(start.X.multiply(MathHelper.R1).add(end.X.multiply(MathHelper.R2.add(MathHelper.R3))));
-                        mid.setY(start.Y.multiply(MathHelper.R1).add(end.Y.multiply(MathHelper.R2.add(MathHelper.R3))));
-                        mid.setZ(start.Z.multiply(MathHelper.R1).add(end.Z.multiply(MathHelper.R2.add(MathHelper.R3))));
+                        mid.setX(start.x.multiply(MathHelper.R1).add(end.x.multiply(MathHelper.R2.add(MathHelper.R3))));
+                        mid.setY(start.y.multiply(MathHelper.R1).add(end.y.multiply(MathHelper.R2.add(MathHelper.R3))));
+                        mid.setZ(start.z.multiply(MathHelper.R1).add(end.z.multiply(MathHelper.R2.add(MathHelper.R3))));
 
                         int intersectionCount = 0;
 
@@ -1344,9 +1344,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     // Calculate pseudo mid-point
                                     Vector3dd mid = new Vector3dd();
 
-                                    mid.setX(triVerts[0].X.multiply(MathHelper.R1).add(triVerts[1].X.multiply(MathHelper.R2)).add(triVerts[2].X.multiply(MathHelper.R3)));
-                                    mid.setY(triVerts[0].Y.multiply(MathHelper.R1).add(triVerts[1].Y.multiply(MathHelper.R2)).add(triVerts[2].Y.multiply(MathHelper.R3)));
-                                    mid.setZ(triVerts[0].Z.multiply(MathHelper.R1).add(triVerts[1].Z.multiply(MathHelper.R2)).add(triVerts[2].Z.multiply(MathHelper.R3)));
+                                    mid.setX(triVerts[0].x.multiply(MathHelper.R1).add(triVerts[1].x.multiply(MathHelper.R2)).add(triVerts[2].x.multiply(MathHelper.R3)));
+                                    mid.setY(triVerts[0].y.multiply(MathHelper.R1).add(triVerts[1].y.multiply(MathHelper.R2)).add(triVerts[2].y.multiply(MathHelper.R3)));
+                                    mid.setZ(triVerts[0].z.multiply(MathHelper.R1).add(triVerts[1].z.multiply(MathHelper.R2)).add(triVerts[2].z.multiply(MathHelper.R3)));
 
                                     int intersectionCount = 0;
 
@@ -1565,9 +1565,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         BigDecimal t = Vector3d.dotP(corner2, qvec).multiply(invDiskr);
         if (t.compareTo(zerot) < 0 || t.compareTo(len.add(tolerance)) > 0)
             return false;
-        r.setX(orig.X.add(dir.X.multiply(t)));
-        r.setY(orig.Y.add(dir.Y.multiply(t)));
-        r.setZ(orig.Z.add(dir.Z.multiply(t)));
+        r.setX(orig.x.add(dir.x.multiply(t)));
+        r.setY(orig.y.add(dir.y.multiply(t)));
+        r.setZ(orig.z.add(dir.z.multiply(t)));
         return true;
     }
 
@@ -1738,16 +1738,16 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                             }
                         }
                         if (p3 == null) return;
-                        Vector3d a = new Vector3d(p1.X.add(s.X), p1.Y.add(s.Y),p1.Z.add(s.Z));
-                        Vector3d b = new Vector3d(p2.X.add(s.X), p2.Y.add(s.Y),p2.Z.add(s.Z));
-                        Vector3d c = new Vector3d(p3.X.add(s.X), p3.Y.add(s.Y),p3.Z.add(s.Z));
+                        Vector3d a = new Vector3d(p1.xp.add(s.xp), p1.yp.add(s.yp),p1.zp.add(s.zp));
+                        Vector3d b = new Vector3d(p2.xp.add(s.xp), p2.yp.add(s.yp),p2.zp.add(s.zp));
+                        Vector3d c = new Vector3d(p3.xp.add(s.xp), p3.yp.add(s.yp),p3.zp.add(s.zp));
 
                         Vector3d pOrigin = new Vector3d(p1);
                         Vector3d n = Vector3d.cross(Vector3d.sub(a, c), Vector3d.sub(b, c));
                         n.normalise(n);
-                        originalNormal.setX(n.X);
-                        originalNormal.setY(n.Y);
-                        originalNormal.setZ(n.Z);
+                        originalNormal.setX(n.x);
+                        originalNormal.setY(n.y);
+                        originalNormal.setZ(n.z);
                         BigDecimal epsilon = new BigDecimal("0.001"); //$NON-NLS-1$
                         for (Vertex vertex : m2) {
                             Vector3d vp = new Vector3d(vertex);
@@ -2039,7 +2039,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                         Object[] messageArguments = {i, vertCount};
                                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                        formatter.setLocale(MyLanguage.LOCALE);
+                                        formatter.setLocale(MyLanguage.locale);
                                         formatter.applyPattern(I18n.VM_DETECT_NEW_EDGES);
 
                                         monitor.subTask(formatter.format(messageArguments));
@@ -2284,7 +2284,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                                 Object[] messageArguments = {counter2.toString(), vertCount};
                                                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                                formatter.setLocale(MyLanguage.LOCALE);
+                                                formatter.setLocale(MyLanguage.locale);
                                                 formatter.applyPattern(I18n.VM_TRIANGULATE);
 
                                                 monitor.subTask(formatter.format(messageArguments));
@@ -2558,9 +2558,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             // Prepare triangle set for the FlipTriangleOptimizer
             final List<GData3> unbindTriangles = new ArrayList<>();
             for (final GData3 tri : colouredTriangles) {
-                final Vertex v1 = new Vertex(tri.X1, tri.Y1, tri.Z1);
-                final Vertex v2 = new Vertex(tri.X2, tri.Y2, tri.Z2);
-                final Vertex v3 = new Vertex(tri.X3, tri.Y3, tri.Z3);
+                final Vertex v1 = new Vertex(tri.x1p, tri.y1p, tri.z1p);
+                final Vertex v2 = new Vertex(tri.x2p, tri.y2p, tri.z2p);
+                final Vertex v3 = new Vertex(tri.x3p, tri.y3p, tri.z3p);
                 unbindTriangles.add(new GData3(v1, v2, v3, tri.parent, new GColour(tri.colourNumber, tri.r, tri.g, tri.b, tri.a), true));
             }
 
@@ -2602,9 +2602,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             clearSelection();
             colouredTriangles.clear();
             for (final GData3 tri : optimization) {
-                final Vertex v1 = new Vertex(tri.X1, tri.Y1, tri.Z1);
-                final Vertex v2 = new Vertex(tri.X2, tri.Y2, tri.Z2);
-                final Vertex v3 = new Vertex(tri.X3, tri.Y3, tri.Z3);
+                final Vertex v1 = new Vertex(tri.x1p, tri.y1p, tri.z1p);
+                final Vertex v2 = new Vertex(tri.x2p, tri.y2p, tri.z2p);
+                final Vertex v3 = new Vertex(tri.x3p, tri.y3p, tri.z3p);
                 final GData3 newTri = new GData3(tri.colourNumber, tri.r, tri.g, tri.b, tri.a, v1, v2, v3, tri.parent, linkedDatFile, true);
                 colouredTriangles.add(newTri);
                 linkedDatFile.addToTailOrInsertAfterCursor(newTri);

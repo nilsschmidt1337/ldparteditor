@@ -41,7 +41,7 @@ public class SWTResourceManager {
     // Color
     //
     // //////////////////////////////////////////////////////////////////////////
-    private static Map<RGB, Color> m_colorMap = new HashMap<>();
+    private static Map<RGB, Color> mColorMap = new HashMap<>();
 
     /**
      * Returns the system {@link Color} matching the specific ID.
@@ -87,11 +87,11 @@ public class SWTResourceManager {
      * @return the {@link Color} matching the RGB value
      */
     public static Color getColor(RGB rgb) {
-        Color color = m_colorMap.get(rgb);
+        Color color = mColorMap.get(rgb);
         if (color == null) {
             Display display = Display.getCurrent();
             color = new Color(display, rgb);
-            m_colorMap.put(rgb, color);
+            mColorMap.put(rgb, color);
         }
         return color;
     }
@@ -100,10 +100,10 @@ public class SWTResourceManager {
      * Dispose of all the cached {@link Color}'s.
      */
     private static void disposeColors() {
-        for (Color color : m_colorMap.values()) {
+        for (Color color : mColorMap.values()) {
             color.dispose();
         }
-        m_colorMap.clear();
+        mColorMap.clear();
     }
 
     // //////////////////////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@ public class SWTResourceManager {
     /**
      * Maps font names to fonts.
      */
-    private static Map<String, Font> m_fontMap = new HashMap<>();
+    private static Map<String, Font> mFontMap = new HashMap<>();
 
     /**
      * Returns a {@link Font} based on its name, height and style.
@@ -150,7 +150,7 @@ public class SWTResourceManager {
      */
     private static Font getFont(String name, int size, int style, boolean strikeout, boolean underline) {
         String fontName = name + '|' + size + '|' + style + '|' + strikeout + '|' + underline;
-        Font font = m_fontMap.get(fontName);
+        Font font = mFontMap.get(fontName);
         if (font == null) {
             FontData fontData = new FontData(name, size, style);
             if (strikeout || underline) {
@@ -170,7 +170,7 @@ public class SWTResourceManager {
                 }
             }
             font = new Font(Display.getCurrent(), fontData);
-            m_fontMap.put(fontName, font);
+            mFontMap.put(fontName, font);
         }
         return font;
     }
@@ -180,10 +180,10 @@ public class SWTResourceManager {
      */
     private static void disposeFonts() {
         // clear fonts
-        for (Font font : m_fontMap.values()) {
+        for (Font font : mFontMap.values()) {
             font.dispose();
         }
-        m_fontMap.clear();
+        mFontMap.clear();
     }
 
     // //////////////////////////////////////////////////////////////////////////

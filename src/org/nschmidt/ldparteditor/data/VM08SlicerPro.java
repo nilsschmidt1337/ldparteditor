@@ -270,9 +270,9 @@ class VM08SlicerPro extends VM07PathTruder {
                                                     switch (pointsToTriangulate) {
                                                     case 3:
                                                         newTriangles.add(new GData3(CN, R, G, B, A,
-                                                                av.get(0).X, av.get(0).Y, av.get(0).Z,
-                                                                av.get(1).X, av.get(1).Y, av.get(1).Z,
-                                                                av.get(2).X, av.get(2).Y, av.get(2).Z,
+                                                                av.get(0).x, av.get(0).y, av.get(0).z,
+                                                                av.get(1).x, av.get(1).y, av.get(1).z,
+                                                                av.get(2).x, av.get(2).y, av.get(2).z,
                                                                 View.DUMMY_REFERENCE, linkedDatFile, true));
                                                         break;
                                                     case 4:
@@ -428,9 +428,9 @@ class VM08SlicerPro extends VM07PathTruder {
         if (v.compareTo(Rational.ZERO) < 0 || u.add(v).compareTo(Rational.ONE) > 0)
             return false;
         Rational t = Vector3r.dot(corner2, qvec).multiply(invDiskr);
-        ip.setX(orig.X.add(dir2.X.multiply(t)));
-        ip.setY(orig.Y.add(dir2.Y.multiply(t)));
-        ip.setZ(orig.Z.add(dir2.Z.multiply(t)));
+        ip.setX(orig.x.add(dir2.x.multiply(t)));
+        ip.setY(orig.y.add(dir2.y.multiply(t)));
+        ip.setZ(orig.z.add(dir2.z.multiply(t)));
         return true;
     }
 
@@ -480,7 +480,7 @@ class VM08SlicerPro extends VM07PathTruder {
                 for (Vector3r v : insideTarget2) {
                     Vector3r pv = new Vector3r();
                     v = pc.get3DCoordinatesFromScreen(v, minv);
-                    projectRayOnTrianglePlane(new Vector3r(v.X, v.Y, v.Z) , dirN, tv[0], tv[1], tv[2], pv);
+                    projectRayOnTrianglePlane(new Vector3r(v.x, v.y, v.z) , dirN, tv[0], tv[1], tv[2], pv);
                     iT.add(pv);
                 }
             }
@@ -499,7 +499,7 @@ class VM08SlicerPro extends VM07PathTruder {
                 for (Vector3r v : insideOrigin2) {
                     Vector3r pv = new Vector3r();
                     v = pc.get3DCoordinatesFromScreen(v, minv);
-                    projectRayOnTrianglePlane(new Vector3r(v.X, v.Y, v.Z) , dirN, tv[0], tv[1], tv[2], pv);
+                    projectRayOnTrianglePlane(new Vector3r(v.x, v.y, v.z) , dirN, tv[0], tv[1], tv[2], pv);
                     iT.add(pv);
                 }
             }
@@ -698,7 +698,7 @@ class VM08SlicerPro extends VM07PathTruder {
                     for (Vector3r v : allVertices2) {
                         Vector3r v3 = new Vector3r();
                         v = pc.get3DCoordinatesFromScreen(v, minv);
-                        projectRayOnTrianglePlane(new Vector3r(v.X, v.Y, v.Z) , dirN, tv[0], tv[1], tv[2], v3);
+                        projectRayOnTrianglePlane(new Vector3r(v.x, v.y, v.z) , dirN, tv[0], tv[1], tv[2], v3);
                         allVertices.add(v3);
                     }
                     // Return the intersection info
@@ -819,9 +819,9 @@ class VM08SlicerPro extends VM07PathTruder {
         Vector3r tvec = Vector3r.sub(orig2, vert0);
         Vector3r qvec = Vector3r.cross(tvec, corner1);
         Rational t = Vector3r.dot(corner2, qvec).multiply(invDiskr);
-        r.setX(orig2.X.add(dir2.X.multiply(t)));
-        r.setY(orig2.Y.add(dir2.Y.multiply(t)));
-        r.setZ(orig2.Z.add(dir2.Z.multiply(t)));
+        r.setX(orig2.x.add(dir2.x.multiply(t)));
+        r.setY(orig2.y.add(dir2.y.multiply(t)));
+        r.setZ(orig2.z.add(dir2.z.multiply(t)));
     }
 
     private ArrayList<Vector3r> convexHull(ArrayList<Vector3r> allVertices) {
@@ -924,16 +924,16 @@ class VM08SlicerPro extends VM07PathTruder {
         Vector3r u = Vector3r.sub(p2, p);
         Vector3r v = Vector3r.sub(q2, q);
         Vector3r w = Vector3r.sub(p, q);
-        Rational d = u.X.multiply(v.Y).subtract(u.Y.multiply(v.X));
+        Rational d = u.x.multiply(v.y).subtract(u.y.multiply(v.x));
 
         if (d.isZero()) {
 
-            if (!u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).isZero() || !v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).isZero())  {
+            if (!u.x.multiply(w.y).subtract(u.y.multiply(w.x)).isZero() || !v.x.multiply(w.y).subtract(v.y.multiply(w.x)).isZero())  {
                 return 0;
             }
 
-            Rational du = u.X.multiply(u.X).add(u.Y.multiply(u.Y));
-            Rational dv = v.X.multiply(v.X).add(v.Y.multiply(v.Y));
+            Rational du = u.x.multiply(u.x).add(u.y.multiply(u.y));
+            Rational dv = v.x.multiply(v.x).add(v.y.multiply(v.y));
 
             if (du.isZero() || dv.isZero()) {
                 return 0;
@@ -942,13 +942,13 @@ class VM08SlicerPro extends VM07PathTruder {
             Rational t0;
             Rational t1;
             Vector3r w2 = Vector3r.sub(p2, q);
-            if (!v.X.isZero()) {
-                t0 = w.X.divide(v.X);
-                t1 = w2.X.divide(v.X);
+            if (!v.x.isZero()) {
+                t0 = w.x.divide(v.x);
+                t1 = w2.x.divide(v.x);
             }
             else {
-                t0 = w.Y.divide(v.Y);
-                t1 = w2.Y.divide(v.Y);
+                t0 = w.y.divide(v.y);
+                t1 = w2.y.divide(v.y);
             }
             if (t0.compareTo(t1) > 0) {
                 Rational t=t0; t0=t1; t1=t;
@@ -962,26 +962,26 @@ class VM08SlicerPro extends VM07PathTruder {
                 return 0;
             }
 
-            ip.setX(q.X.add(t0.multiply(v.X)));
-            ip.setY(q.Y.add(t0.multiply(v.Y)));
-            ip.setZ(q.Z.add(t0.multiply(v.Z)));
-            ip2.setX(q.X.add(t1.multiply(v.X)));
-            ip2.setY(q.Y.add(t1.multiply(v.Y)));
-            ip2.setZ(q.Z.add(t1.multiply(v.Z)));
+            ip.setX(q.x.add(t0.multiply(v.x)));
+            ip.setY(q.y.add(t0.multiply(v.y)));
+            ip.setZ(q.z.add(t0.multiply(v.z)));
+            ip2.setX(q.x.add(t1.multiply(v.x)));
+            ip2.setY(q.y.add(t1.multiply(v.y)));
+            ip2.setZ(q.z.add(t1.multiply(v.z)));
             return 2;
         }
 
-        Rational sI = v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).divide(d);
+        Rational sI = v.x.multiply(w.y).subtract(v.y.multiply(w.x)).divide(d);
         if (sI.compareTo(Rational.ZERO) < 0 || sI.compareTo(Rational.ONE) > 0)
             return 0;
 
-        Rational tI = u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).divide(d);
+        Rational tI = u.x.multiply(w.y).subtract(u.y.multiply(w.x)).divide(d);
         if (tI.compareTo(Rational.ZERO) < 0 || tI.compareTo(Rational.ONE) > 0)
             return 0;
 
-        ip.setX(p.X.add(sI.multiply(u.X)));
-        ip.setY(p.Y.add(sI.multiply(u.Y)));
-        ip.setZ(p.Z.add(sI.multiply(u.Z)));
+        ip.setX(p.x.add(sI.multiply(u.x)));
+        ip.setY(p.y.add(sI.multiply(u.y)));
+        ip.setZ(p.z.add(sI.multiply(u.z)));
         return 1;
     }
 
@@ -990,16 +990,16 @@ class VM08SlicerPro extends VM07PathTruder {
         Vector3r u = Vector3r.sub(p2, p);
         Vector3r v = Vector3r.sub(q2, q);
         Vector3r w = Vector3r.sub(p, q);
-        Rational d = u.X.multiply(v.Y).subtract(u.Y.multiply(v.X));
+        Rational d = u.x.multiply(v.y).subtract(u.y.multiply(v.x));
 
         if (d.isZero()) {
 
-            if (!u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).isZero() || !v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).isZero())  {
+            if (!u.x.multiply(w.y).subtract(u.y.multiply(w.x)).isZero() || !v.x.multiply(w.y).subtract(v.y.multiply(w.x)).isZero())  {
                 return false;
             }
 
-            Rational du = u.X.multiply(u.X).add(u.Y.multiply(u.Y));
-            Rational dv = v.X.multiply(v.X).add(v.Y.multiply(v.Y));
+            Rational du = u.x.multiply(u.x).add(u.y.multiply(u.y));
+            Rational dv = v.x.multiply(v.x).add(v.y.multiply(v.y));
 
             if (du.isZero() && dv.isZero()) {
                 return p.equals(q);
@@ -1013,13 +1013,13 @@ class VM08SlicerPro extends VM07PathTruder {
             Rational t0;
             Rational t1;
             Vector3r w2 = Vector3r.sub(p2, q);
-            if (!v.X.isZero()) {
-                t0 = w.X.divide(v.X);
-                t1 = w2.X.divide(v.X);
+            if (!v.x.isZero()) {
+                t0 = w.x.divide(v.x);
+                t1 = w2.x.divide(v.x);
             }
             else {
-                t0 = w.Y.divide(v.Y);
-                t1 = w2.Y.divide(v.Y);
+                t0 = w.y.divide(v.y);
+                t1 = w2.y.divide(v.y);
             }
             if (t0.compareTo(t1) > 0) {
                 Rational t=t0; t0=t1; t1=t;
@@ -1030,11 +1030,11 @@ class VM08SlicerPro extends VM07PathTruder {
             return true;
         }
 
-        Rational sI = v.X.multiply(w.Y).subtract(v.Y.multiply(w.X)).divide(d);
+        Rational sI = v.x.multiply(w.y).subtract(v.y.multiply(w.x)).divide(d);
         if (sI.compareTo(Rational.ZERO) < 0 || sI.compareTo(Rational.ONE) > 0)
             return false;
 
-        Rational tI = u.X.multiply(w.Y).subtract(u.Y.multiply(w.X)).divide(d);
+        Rational tI = u.x.multiply(w.y).subtract(u.y.multiply(w.x)).divide(d);
         if (tI.compareTo(Rational.ZERO) < 0 || tI.compareTo(Rational.ONE) > 0)
             return false;
 
@@ -1042,15 +1042,15 @@ class VM08SlicerPro extends VM07PathTruder {
     }
 
     private boolean inSegment(Vector3r p, Vector3r s1, Vector3r s2) {
-        if (s1.X.compareTo(s1.X) != 0) {
-            if (s1.X.compareTo(p.X) <= 0 && p.X.compareTo(s2.X) <= 0)
+        if (s1.x.compareTo(s1.x) != 0) {
+            if (s1.x.compareTo(p.x) <= 0 && p.x.compareTo(s2.x) <= 0)
                 return true;
-            if (s1.X.compareTo(p.X) >= 0  && p.X.compareTo(s2.X) >= 0)
+            if (s1.x.compareTo(p.x) >= 0  && p.x.compareTo(s2.x) >= 0)
                 return true;
         } else {
-            if (s1.Y.compareTo(p.Y) <= 0 && p.Y.compareTo(s2.Y) <= 0)
+            if (s1.y.compareTo(p.y) <= 0 && p.y.compareTo(s2.y) <= 0)
                 return true;
-            if (s1.Y.compareTo(p.Y) >= 0 && p.Y.compareTo(s2.Y) >= 0)
+            if (s1.y.compareTo(p.y) >= 0 && p.y.compareTo(s2.y) >= 0)
                 return true;
         }
         return false;

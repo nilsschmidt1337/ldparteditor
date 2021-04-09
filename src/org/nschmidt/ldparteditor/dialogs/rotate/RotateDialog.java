@@ -61,13 +61,13 @@ public class RotateDialog extends RotateDesign {
         if (v == null) {
             setAngles(new Vertex(0f, 0f, 0f));
         } else {
-            setAngles(new Vertex(v.X, v.Y, v.Z));
+            setAngles(new Vertex(v.xp, v.yp, v.zp));
         }
         if (clipboardVertices.size() == 1) {
             p = clipboardVertices.iterator().next();
-            c = new Vertex(p.X, p.Y, p.Z);
+            c = new Vertex(p.xp, p.yp, p.zp);
         } else if (transformationMode == ManipulatorScope.LOCAL && manipulatorPosition != null) {
-            pivot = new Vertex(m.X, m.Y, m.Z);
+            pivot = new Vertex(m.xp, m.yp, m.zp);
         }
     }
 
@@ -75,85 +75,85 @@ public class RotateDialog extends RotateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_Local[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Local[0].getParent());
-            btn_Local[0].setSelection(true);
+        WidgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
+            btnLocalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.LOCAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
         });
-        WidgetUtil(btn_Global[0]).addSelectionListener(e -> {
-            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btn_Global[0].getParent());
-            btn_Global[0].setSelection(true);
+        WidgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+            WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
+            btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
         });
-        WidgetUtil(rb_Xaxis[0]).addSelectionListener(e -> {
-            if (rb_Xaxis[0].getSelection()) {
+        WidgetUtil(rbXaxisPtr[0]).addSelectionListener(e -> {
+            if (rbXaxisPtr[0].getSelection()) {
                 x = true;
                 y = false;
                 z = false;
             }
         });
-        WidgetUtil(rb_Yaxis[0]).addSelectionListener(e -> {
-            if (rb_Yaxis[0].getSelection()) {
+        WidgetUtil(rbYaxisPtr[0]).addSelectionListener(e -> {
+            if (rbYaxisPtr[0].getSelection()) {
                 x = false;
                 y = true;
                 z = false;
             }
         });
-        WidgetUtil(rb_Zaxis[0]).addSelectionListener(e -> {
-            if (rb_Zaxis[0].getSelection()) {
+        WidgetUtil(rbZaxisPtr[0]).addSelectionListener(e -> {
+            if (rbZaxisPtr[0].getSelection()) {
                 x = false;
                 y = false;
                 z = true;
             }
         });
-        spn_X[0].addValueChangeListener(spn -> {
-            setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
-            rb_Xaxis[0].setSelection(true);
-            rb_Yaxis[0].setSelection(false);
-            rb_Zaxis[0].setSelection(false);
+        spnXPtr[0].addValueChangeListener(spn -> {
+            setAngles(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
+            rbXaxisPtr[0].setSelection(true);
+            rbYaxisPtr[0].setSelection(false);
+            rbZaxisPtr[0].setSelection(false);
             x = true;
             y = false;
             z = false;
         });
-        spn_Y[0].addValueChangeListener(spn -> {
-            setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
-            rb_Xaxis[0].setSelection(false);
-            rb_Yaxis[0].setSelection(true);
-            rb_Zaxis[0].setSelection(false);
+        spnYPtr[0].addValueChangeListener(spn -> {
+            setAngles(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
+            rbXaxisPtr[0].setSelection(false);
+            rbYaxisPtr[0].setSelection(true);
+            rbZaxisPtr[0].setSelection(false);
             x = false;
             y = true;
             z = false;
         });
-        spn_Z[0].addValueChangeListener(spn -> {
-            setAngles(new Vertex(spn_X[0].getValue(), spn_Y[0].getValue(), spn_Z[0].getValue()));
-            rb_Xaxis[0].setSelection(false);
-            rb_Yaxis[0].setSelection(false);
-            rb_Zaxis[0].setSelection(true);
+        spnZPtr[0].addValueChangeListener(spn -> {
+            setAngles(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue()));
+            rbXaxisPtr[0].setSelection(false);
+            rbYaxisPtr[0].setSelection(false);
+            rbZaxisPtr[0].setSelection(true);
             x = false;
             y = false;
             z = true;
         });
-        spn_pX[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
-        spn_pY[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
-        spn_pZ[0].addValueChangeListener(spn -> setPivot(new Vertex(spn_pX[0].getValue(), spn_pY[0].getValue(), spn_pZ[0].getValue())));
-        WidgetUtil(btn_PivotManipulator[0]).addSelectionListener(e -> {
-            spn_pX[0].setValue(m.X);
-            spn_pY[0].setValue(m.Y);
-            spn_pZ[0].setValue(m.Z);
+        spnPXPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
+        spnPYPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
+        spnPZPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
+        WidgetUtil(btnPivotManipulatorPtr[0]).addSelectionListener(e -> {
+            spnPXPtr[0].setValue(m.xp);
+            spnPYPtr[0].setValue(m.yp);
+            spnPZPtr[0].setValue(m.zp);
         });
-        WidgetUtil(btn_PivotClipboard[0]).addSelectionListener(e -> {
-            spn_pX[0].setValue(c.X);
-            spn_pY[0].setValue(c.Y);
-            spn_pZ[0].setValue(c.Z);
+        WidgetUtil(btnPivotClipboardPtr[0]).addSelectionListener(e -> {
+            spnPXPtr[0].setValue(c.xp);
+            spnPYPtr[0].setValue(c.yp);
+            spnPZPtr[0].setValue(c.zp);
         });
-        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
             creatingCopy = true;
             setReturnCode(OK);
             close();
         });
-        spn_Iterations[0].addValueChangeListener(spn -> iterations = spn.getValue());
+        spnIterationsPtr[0].addValueChangeListener(spn -> iterations = spn.getValue());
         return super.open();
     }
 

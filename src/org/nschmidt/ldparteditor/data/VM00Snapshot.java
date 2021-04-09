@@ -32,7 +32,7 @@ class VM00Snapshot extends VM00Base {
     }
 
     public void addSnapshot() {
-        if (NLogger.DEBUG) {
+        if (NLogger.debugging) {
             MemorySnapshot snapshot = new MemorySnapshot(linkedDatFile);
             getSnapshots().add(snapshot);
             NLogger.debug(getClass(), "CREATED SNAPSHOT ON {0} ", snapshot.toString()); //$NON-NLS-1$
@@ -40,7 +40,7 @@ class VM00Snapshot extends VM00Base {
     }
 
     public void loadSnapshot(MemorySnapshot s) {
-        if (NLogger.DEBUG) {
+        if (NLogger.debugging) {
             clear();
             GData0 emptyLine = new GData0("", View.DUMMY_REFERENCE); //$NON-NLS-1$
             linkedDatFile.getDrawPerLine_NOCLONE().clear();

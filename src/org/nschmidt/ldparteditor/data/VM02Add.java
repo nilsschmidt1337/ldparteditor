@@ -107,19 +107,19 @@ class VM02Add extends VM01SelectHelper {
             }
             vdArray[0] = new VertexManifestation(0, gd2);
             vdArray[1] = new VertexManifestation(1, gd2);
-            if (gd2.X1 == null) {
+            if (gd2.x1p == null) {
                 vArray[0] = new Vertex(lv[0]);
                 vArray[1] = new Vertex(lv[1]);
             } else {
                 if (subVertex) {
                     Matrix matrix = parent2.accurateProductMatrix;
-                    BigDecimal[] p1 = matrix.transform(gd2.X1, gd2.Y1, gd2.Z1);
-                    BigDecimal[] p2 = matrix.transform(gd2.X2, gd2.Y2, gd2.Z2);
+                    BigDecimal[] p1 = matrix.transform(gd2.x1p, gd2.y1p, gd2.z1p);
+                    BigDecimal[] p2 = matrix.transform(gd2.x2p, gd2.y2p, gd2.z2p);
                     vArray[0] = new Vertex(p1[0], p1[1], p1[2], lv[0]);
                     vArray[1] = new Vertex(p2[0], p2[1], p2[2], lv[1]);
                 } else {
-                    vArray[0] = new Vertex(gd2.X1, gd2.Y1, gd2.Z1, lv[0]);
-                    vArray[1] = new Vertex(gd2.X2, gd2.Y2, gd2.Z2, lv[1]);
+                    vArray[0] = new Vertex(gd2.x1p, gd2.y1p, gd2.z1p, lv[0]);
+                    vArray[1] = new Vertex(gd2.x2p, gd2.y2p, gd2.z2p, lv[1]);
                 }
             }
             lines.put(gd2, Arrays.copyOf(vArray, 2));
@@ -144,23 +144,23 @@ class VM02Add extends VM01SelectHelper {
             vdArray[0] = new VertexManifestation(0, gd3);
             vdArray[1] = new VertexManifestation(1, gd3);
             vdArray[2] = new VertexManifestation(2, gd3);
-            if (gd3.X1 == null) {
+            if (gd3.x1p == null) {
                 vArray[0] = new Vertex(tv[0]);
                 vArray[1] = new Vertex(tv[1]);
                 vArray[2] = new Vertex(tv[2]);
             } else {
                 if (subVertex) {
                     Matrix matrix = parent3.accurateProductMatrix;
-                    BigDecimal[] p1 = matrix.transform(gd3.X1, gd3.Y1, gd3.Z1);
-                    BigDecimal[] p2 = matrix.transform(gd3.X2, gd3.Y2, gd3.Z2);
-                    BigDecimal[] p3 = matrix.transform(gd3.X3, gd3.Y3, gd3.Z3);
+                    BigDecimal[] p1 = matrix.transform(gd3.x1p, gd3.y1p, gd3.z1p);
+                    BigDecimal[] p2 = matrix.transform(gd3.x2p, gd3.y2p, gd3.z2p);
+                    BigDecimal[] p3 = matrix.transform(gd3.x3p, gd3.y3p, gd3.z3p);
                     vArray[0] = new Vertex(p1[0], p1[1], p1[2], tv[0]);
                     vArray[1] = new Vertex(p2[0], p2[1], p2[2], tv[1]);
                     vArray[2] = new Vertex(p3[0], p3[1], p3[2], tv[2]);
                 } else {
-                    vArray[0] = new Vertex(gd3.X1, gd3.Y1, gd3.Z1, tv[0]);
-                    vArray[1] = new Vertex(gd3.X2, gd3.Y2, gd3.Z2, tv[1]);
-                    vArray[2] = new Vertex(gd3.X3, gd3.Y3, gd3.Z3, tv[2]);
+                    vArray[0] = new Vertex(gd3.x1p, gd3.y1p, gd3.z1p, tv[0]);
+                    vArray[1] = new Vertex(gd3.x2p, gd3.y2p, gd3.z2p, tv[1]);
+                    vArray[2] = new Vertex(gd3.x3p, gd3.y3p, gd3.z3p, tv[2]);
                 }
             }
             triangles.put(gd3, Arrays.copyOf(vArray, 3));
@@ -188,7 +188,7 @@ class VM02Add extends VM01SelectHelper {
             vdArray[1] = new VertexManifestation(1, gd4);
             vdArray[2] = new VertexManifestation(2, gd4);
             vdArray[3] = new VertexManifestation(3, gd4);
-            if (gd4.X1 == null) {
+            if (gd4.x1p == null) {
                 vArray[0] = new Vertex(qv[0]);
                 vArray[1] = new Vertex(qv[1]);
                 vArray[2] = new Vertex(qv[2]);
@@ -196,19 +196,19 @@ class VM02Add extends VM01SelectHelper {
             } else {
                 if (subVertex) {
                     Matrix matrix = parent4.accurateProductMatrix;
-                    BigDecimal[] p1 = matrix.transform(gd4.X1, gd4.Y1, gd4.Z1);
-                    BigDecimal[] p2 = matrix.transform(gd4.X2, gd4.Y2, gd4.Z2);
-                    BigDecimal[] p3 = matrix.transform(gd4.X3, gd4.Y3, gd4.Z3);
-                    BigDecimal[] p4 = matrix.transform(gd4.X4, gd4.Y4, gd4.Z4);
+                    BigDecimal[] p1 = matrix.transform(gd4.x1p, gd4.y1p, gd4.z1p);
+                    BigDecimal[] p2 = matrix.transform(gd4.x2p, gd4.y2p, gd4.z2p);
+                    BigDecimal[] p3 = matrix.transform(gd4.x3p, gd4.y3p, gd4.z3p);
+                    BigDecimal[] p4 = matrix.transform(gd4.x4p, gd4.y4p, gd4.z4p);
                     vArray[0] = new Vertex(p1[0], p1[1], p1[2], qv[0]);
                     vArray[1] = new Vertex(p2[0], p2[1], p2[2], qv[1]);
                     vArray[2] = new Vertex(p3[0], p3[1], p3[2], qv[2]);
                     vArray[3] = new Vertex(p4[0], p4[1], p4[2], qv[3]);
                 } else {
-                    vArray[0] = new Vertex(gd4.X1, gd4.Y1, gd4.Z1, qv[0]);
-                    vArray[1] = new Vertex(gd4.X2, gd4.Y2, gd4.Z2, qv[1]);
-                    vArray[2] = new Vertex(gd4.X3, gd4.Y3, gd4.Z3, qv[2]);
-                    vArray[3] = new Vertex(gd4.X4, gd4.Y4, gd4.Z4, qv[3]);
+                    vArray[0] = new Vertex(gd4.x1p, gd4.y1p, gd4.z1p, qv[0]);
+                    vArray[1] = new Vertex(gd4.x2p, gd4.y2p, gd4.z2p, qv[1]);
+                    vArray[2] = new Vertex(gd4.x3p, gd4.y3p, gd4.z3p, qv[2]);
+                    vArray[3] = new Vertex(gd4.x4p, gd4.y4p, gd4.z4p, qv[3]);
                 }
             }
             quads.put(gd4, Arrays.copyOf(vArray, 4));
@@ -236,7 +236,7 @@ class VM02Add extends VM01SelectHelper {
             vdArray[1] = new VertexManifestation(1, gd5);
             vdArray[2] = new VertexManifestation(2, gd5);
             vdArray[3] = new VertexManifestation(3, gd5);
-            if (gd5.X1 == null) {
+            if (gd5.x1p == null) {
                 vArray[0] = new Vertex(ov[0]);
                 vArray[1] = new Vertex(ov[1]);
                 vArray[2] = new Vertex(ov[2]);
@@ -244,19 +244,19 @@ class VM02Add extends VM01SelectHelper {
             } else {
                 if (subVertex) {
                     Matrix matrix = parent5.accurateProductMatrix;
-                    BigDecimal[] p1 = matrix.transform(gd5.X1, gd5.Y1, gd5.Z1);
-                    BigDecimal[] p2 = matrix.transform(gd5.X2, gd5.Y2, gd5.Z2);
-                    BigDecimal[] p3 = matrix.transform(gd5.X3, gd5.Y3, gd5.Z3);
-                    BigDecimal[] p4 = matrix.transform(gd5.X4, gd5.Y4, gd5.Z4);
+                    BigDecimal[] p1 = matrix.transform(gd5.x1p, gd5.y1p, gd5.z1p);
+                    BigDecimal[] p2 = matrix.transform(gd5.x2p, gd5.y2p, gd5.z2p);
+                    BigDecimal[] p3 = matrix.transform(gd5.x3p, gd5.y3p, gd5.z3p);
+                    BigDecimal[] p4 = matrix.transform(gd5.x4p, gd5.y4p, gd5.z4p);
                     vArray[0] = new Vertex(p1[0], p1[1], p1[2], ov[0]);
                     vArray[1] = new Vertex(p2[0], p2[1], p2[2], ov[1]);
                     vArray[2] = new Vertex(p3[0], p3[1], p3[2], ov[2]);
                     vArray[3] = new Vertex(p4[0], p4[1], p4[2], ov[3]);
                 } else {
-                    vArray[0] = new Vertex(gd5.X1, gd5.Y1, gd5.Z1, ov[0]);
-                    vArray[1] = new Vertex(gd5.X2, gd5.Y2, gd5.Z2, ov[1]);
-                    vArray[2] = new Vertex(gd5.X3, gd5.Y3, gd5.Z3, ov[2]);
-                    vArray[3] = new Vertex(gd5.X4, gd5.Y4, gd5.Z4, ov[3]);
+                    vArray[0] = new Vertex(gd5.x1p, gd5.y1p, gd5.z1p, ov[0]);
+                    vArray[1] = new Vertex(gd5.x2p, gd5.y2p, gd5.z2p, ov[1]);
+                    vArray[2] = new Vertex(gd5.x3p, gd5.y3p, gd5.z3p, ov[2]);
+                    vArray[3] = new Vertex(gd5.x4p, gd5.y4p, gd5.z4p, ov[3]);
                 }
             }
             condlines.put(gd5, Arrays.copyOf(vArray, 4));
@@ -685,7 +685,7 @@ class VM02Add extends VM01SelectHelper {
         }
 
         // Coplanarity
-        if (angle2 > Threshold.coplanarity_angle_error && !allowInvalidShapes) {
+        if (angle2 > Threshold.coplanarityAngleError && !allowInvalidShapes) {
             linkedDatFile.setObjVertex4(null);
             return;
         }

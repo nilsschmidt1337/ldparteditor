@@ -123,7 +123,7 @@ public enum DatParser {
             // Mark unknown linetypes as error
             Object[] messageArguments = {linetype};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DATPARSER_UNKNOWN_LINE_TYPE);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         }
@@ -280,7 +280,7 @@ public enum DatParser {
             } else if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
                 Object[] messageArguments = {line.substring(14)};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(I18n.DATPARSER_VERTEX_AT);
                 result.add(new ParsingResult(formatter.format(messageArguments) , "[WFE] " + I18n.DATPARSER_VERTEX_DECLARATION, ResultType.WARN)); //$NON-NLS-1$
                 boolean numberError = false;
@@ -299,7 +299,7 @@ public enum DatParser {
                     result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 } else if (!errorCheckOnly) {
                     if (depth == 0) {
-                        datFile.getVertexManager().addVertex(new Vertex(start.X, start.Y, start.Z), newLPEmetaTag);
+                        datFile.getVertexManager().addVertex(new Vertex(start.x, start.y, start.z), newLPEmetaTag);
                     } else {
                         Vector4f vert = new Vector4f(start.getXf() * 1000f, start.getYf() * 1000f, start.getZf() * 1000f, 1f);
                         Matrix4f.transform(productMatrix, vert, vert);
@@ -334,7 +334,7 @@ public enum DatParser {
                 } else if (!errorCheckOnly) {
                     if (depth == 0) {
                         result.remove(0);
-                        result.add(0, new ParsingResult(new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, false)));
+                        result.add(0, new ParsingResult(new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.x, start.y, start.z, end.x, end.y, end.z, parent, datFile, false)));
                     }
                 }
             } else if (line.startsWith("PROTRACTOR ", 7)) { //$NON-NLS-1$
@@ -368,7 +368,7 @@ public enum DatParser {
                 } else if (!errorCheckOnly) {
                     if (depth == 0) {
                         result.remove(0);
-                        result.add(0, new ParsingResult(new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.X, vertexA.Y, vertexA.Z, vertexB.X, vertexB.Y, vertexB.Z, vertexC.X, vertexC.Y, vertexC.Z, parent, datFile, false)));
+                        result.add(0, new ParsingResult(new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z, vertexC.x, vertexC.y, vertexC.z, parent, datFile, false)));
                     }
                 }
             } else if (line.startsWith("CSG_", 7)) { //$NON-NLS-1$
@@ -523,7 +523,7 @@ public enum DatParser {
         if (dataSegments.length < 15) {
             Object[] messageArguments = {dataSegments.length, 15};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
@@ -839,7 +839,7 @@ public enum DatParser {
         if (dataSegments.length != 8) {
             Object[] messageArguments = {dataSegments.length, 8};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
@@ -869,7 +869,7 @@ public enum DatParser {
                     result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
                 if (result.isEmpty() && !errorCheckOnly) {
-                    GData2 data = new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, parent, datFile, true);
+                    GData2 data = new GData2(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.x, start.y, start.z, end.x, end.y, end.z, parent, datFile, true);
                     result.add(new ParsingResult(data));
                 }
                 // [WARNING] Dithered colour
@@ -905,7 +905,7 @@ public enum DatParser {
         if (dataSegments.length != 11) {
             Object[] messageArguments = {dataSegments.length, 11};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
@@ -935,8 +935,8 @@ public enum DatParser {
                     break;
                 }
                 if (!errorCheckOnly) { // result.size() < 1 &&
-                    GData3 data = new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.X, vertexA.Y, vertexA.Z, vertexB.X, vertexB.Y, vertexB.Z,
-                            vertexC.X, vertexC.Y, vertexC.Z, parent, datFile, true);
+                    GData3 data = new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z,
+                            vertexC.x, vertexC.y, vertexC.z, parent, datFile, true);
                     result.add(new ParsingResult(data));
                 }
                 if (depth < 1) {
@@ -1007,7 +1007,7 @@ public enum DatParser {
         if (dataSegments.length != 14) {
             Object[] messageArguments = {dataSegments.length, 14};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
@@ -1044,21 +1044,21 @@ public enum DatParser {
 
                 final boolean depthLower1 = depth < 1;
 
-                vertexA2.X = vertexA.X;
-                vertexA2.Y = vertexA.Y;
-                vertexA2.Z = vertexA.Z;
+                vertexA2.x = vertexA.x;
+                vertexA2.y = vertexA.y;
+                vertexA2.z = vertexA.z;
 
-                vertexB2.X = vertexB.X;
-                vertexB2.Y = vertexB.Y;
-                vertexB2.Z = vertexB.Z;
+                vertexB2.x = vertexB.x;
+                vertexB2.y = vertexB.y;
+                vertexB2.z = vertexB.z;
 
-                vertexC2.X = vertexC.X;
-                vertexC2.Y = vertexC.Y;
-                vertexC2.Z = vertexC.Z;
+                vertexC2.x = vertexC.x;
+                vertexC2.y = vertexC.y;
+                vertexC2.z = vertexC.z;
 
-                vertexD2.X = vertexD.X;
-                vertexD2.Y = vertexD.Y;
-                vertexD2.Z = vertexD.Z;
+                vertexD2.x = vertexD.x;
+                vertexD2.y = vertexD.y;
+                vertexD2.z = vertexD.z;
 
                 Vector3d[] normals = new Vector3d[4];
                 float[] normalDirections = new float[4];
@@ -1086,8 +1086,8 @@ public enum DatParser {
                 }
 
                 if (!errorCheckOnly) { // result.size() < 1 &&
-                    GData4 data = new GData4(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA2.X, vertexA2.Y, vertexA2.Z, vertexB2.X, vertexB2.Y,
-                            vertexB2.Z, vertexC2.X, vertexC2.Y, vertexC2.Z, vertexD2.X, vertexD2.Y, vertexD2.Z, normal, parent, datFile);
+                    GData4 data = new GData4(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA2.x, vertexA2.y, vertexA2.z, vertexB2.x, vertexB2.y,
+                            vertexB2.z, vertexC2.x, vertexC2.y, vertexC2.z, vertexD2.x, vertexD2.y, vertexD2.z, normal, parent, datFile);
                     result.add(new ParsingResult(data));
                 }
                 if (depthLower1) {
@@ -1116,8 +1116,8 @@ public enum DatParser {
 
                         angle = Math.max(Vector3d.angle(normals[0], normals[2]), Vector3d.angle(normals[1], normals[3]));
 
-                        parseWarning = angle > Threshold.coplanarity_angle_warning;
-                        if (angle > Threshold.coplanarity_angle_error) {
+                        parseWarning = angle > Threshold.coplanarityAngleWarning;
+                        if (angle > Threshold.coplanarityAngleError) {
                             result.add(new ParsingResult(I18n.DATPARSER_COPLANARITY, "[E24] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                             parseError = true;
                             parseWarning = false;
@@ -1211,7 +1211,7 @@ public enum DatParser {
         if (dataSegments.length != 14) {
             Object[] messageArguments = {dataSegments.length, 14};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.LOCALE);
+            formatter.setLocale(MyLanguage.locale);
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
@@ -1250,8 +1250,8 @@ public enum DatParser {
                     result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_CONTROL_POINTS, "[E05] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }
                 if (result.isEmpty() && !errorCheckOnly) {
-                    GData5 data = new GData5(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.X, start.Y, start.Z, end.X, end.Y, end.Z, controlI.X,
-                            controlI.Y, controlI.Z, controlII.X, controlII.Y, controlII.Z, parent, datFile);
+                    GData5 data = new GData5(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), start.x, start.y, start.z, end.x, end.y, end.z, controlI.x,
+                            controlI.y, controlI.z, controlII.x, controlII.y, controlII.z, parent, datFile);
                     result.add(new ParsingResult(data));
                 }
                 if (depth < 1 && colour.getType() != null && GCType.DITHERED == colour.getType().type()) {

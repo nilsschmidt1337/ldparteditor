@@ -48,13 +48,13 @@ class RingsAndConesDesign extends Dialog {
 
     final RingsAndConesSettings rs;
 
-    final Combo[] cmb_createWhat = new Combo[1];;
-    final Combo[] cmb_existingOnly = new Combo[1];
-    final Combo[] cmb_angle = new Combo[1];
-    final BigDecimalSpinner[] spn_height = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_radi1 = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_radi2 = new BigDecimalSpinner[1];
-    final Combo[] cmb_shape = new Combo[1];
+    final Combo[] cmbCreateWhatPtr = new Combo[1];
+    final Combo[] cmbExistingOnlyPtr = new Combo[1];
+    final Combo[] cmbAnglePtr = new Combo[1];
+    final BigDecimalSpinner[] spnHeightPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnRadi1Ptr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnRadi2Ptr = new BigDecimalSpinner[1];
+    final Combo[] cmbShapePtr = new Combo[1];
 
     // Use final only for subclass/listener references!
 
@@ -71,7 +71,7 @@ class RingsAndConesDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
 
-        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.LOCALE));
+        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
 
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();
@@ -94,7 +94,7 @@ class RingsAndConesDesign extends Dialog {
         }
         {
             Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_shape[0] = cmb;
+            this.cmbShapePtr[0] = cmb;
             cmb.setItems(new String[] {I18n.RCONES_RING, I18n.RCONES_CONE, I18n.RCONES_RING_48, I18n.RCONES_CONE_48});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select((rs.isUsingCones() ? 1 : 0) + (rs.isUsingHiRes() ? 2 : 0));
@@ -105,7 +105,7 @@ class RingsAndConesDesign extends Dialog {
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-            this.spn_radi1 [0] = spn;
+            this.spnRadi1Ptr [0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(10000));
             spn.setMinimum(BigDecimal.ZERO);
@@ -117,7 +117,7 @@ class RingsAndConesDesign extends Dialog {
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-            this.spn_radi2[0] = spn;
+            this.spnRadi2Ptr[0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(10000));
             spn.setMinimum(BigDecimal.ZERO);
@@ -130,7 +130,7 @@ class RingsAndConesDesign extends Dialog {
         }
         {
             BigDecimalSpinner spn = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-            this.spn_height[0] = spn;
+            this.spnHeightPtr[0] = spn;
             spn.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             spn.setMaximum(new BigDecimal(10000));
             spn.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
@@ -143,7 +143,7 @@ class RingsAndConesDesign extends Dialog {
         }
         {
             Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_angle[0] = cmb;
+            this.cmbAnglePtr[0] = cmb;
             cmb.setItems(new String[] {
                     I18n.RCONES_ANGLE_01,
                     I18n.RCONES_ANGLE_02,
@@ -208,14 +208,14 @@ class RingsAndConesDesign extends Dialog {
         }
         {
             Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_existingOnly[0] = cmb;
+            this.cmbExistingOnlyPtr[0] = cmb;
             cmb.setItems(new String[] {I18n.RCONES_PRIMS_1, I18n.RCONES_PRIMS_2});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isUsingExistingPrimitives() ? 0 : 1);
         }
         {
             Combo cmb = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_createWhat[0] = cmb;
+            this.cmbCreateWhatPtr[0] = cmb;
             cmb.setItems(new String[] {I18n.RCONES_CREATE_1, I18n.RCONES_CREATE_2});
             cmb.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmb.select(rs.isCreatingNothingOnNoSolution() ? 0 : 1);

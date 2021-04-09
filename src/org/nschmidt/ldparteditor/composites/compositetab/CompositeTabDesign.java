@@ -56,40 +56,40 @@ class CompositeTabDesign extends CTabItem {
     /** The menu of this composite */
     private final Menu[] menu = new Menu[1];
 
-    final MenuItem[] mntm_HideSelection = new MenuItem[1];
-    final MenuItem[] mntm_ShowSelection = new MenuItem[1];
-    final MenuItem[] mntm_ShowAll = new MenuItem[1];
-    final MenuItem[] mntm_DrawSelection = new MenuItem[1];
-    final MenuItem[] mntm_DrawUntilSelection = new MenuItem[1];
+    final MenuItem[] mntmHideSelectionPtr = new MenuItem[1];
+    final MenuItem[] mntmShowSelectionPtr = new MenuItem[1];
+    final MenuItem[] mntmShowAllPtr = new MenuItem[1];
+    final MenuItem[] mntmDrawSelectionPtr = new MenuItem[1];
+    final MenuItem[] mntmDrawUntilSelectionPtr = new MenuItem[1];
 
-    final MenuItem[] mntm_Copy = new MenuItem[1];
-    final MenuItem[] mntm_Cut = new MenuItem[1];
-    final MenuItem[] mntm_Delete = new MenuItem[1];
-    final MenuItem[] mntm_Paste = new MenuItem[1];
+    final MenuItem[] mntmCopyPtr = new MenuItem[1];
+    final MenuItem[] mntmCutPtr = new MenuItem[1];
+    final MenuItem[] mntmDeletePtr = new MenuItem[1];
+    final MenuItem[] mntmPastePtr = new MenuItem[1];
 
-    final MenuItem[] mntm_QuickFix = new MenuItem[1];
-    final MenuItem[] mntm_QuickFixSame = new MenuItem[1];
-    final NButton[] btn_QuickFix = new NButton[1];
-    final NButton[] btn_QuickFixSame = new NButton[1];
+    final MenuItem[] mntmQuickFixPtr = new MenuItem[1];
+    final MenuItem[] mntmQuickFixSamePtr = new MenuItem[1];
+    final NButton[] btnQuickFixPtr = new NButton[1];
+    final NButton[] btnQuickFixSamePtr = new NButton[1];
 
-    final MenuItem[] mntm_Inspect = new MenuItem[1];
-    final MenuItem[] mntm_InspectSame = new MenuItem[1];
-    final NButton[] btn_Inspect = new NButton[1];
-    final NButton[] btn_InspectSame = new NButton[1];
+    final MenuItem[] mntmInspectPtr = new MenuItem[1];
+    final MenuItem[] mntmInspectSamePtr = new MenuItem[1];
+    final NButton[] btnInspectPtr = new NButton[1];
+    final NButton[] btnInspectSamePtr = new NButton[1];
 
-    final Canvas[] canvas_lineNumberArea = new Canvas[1];
-    final StyledText[] compositeText = new StyledText[1];
-    final Label[] lbl_ProblemCount = new Label[1];
-    final Composite[] compositeContainer = new Composite[1];
-    final CTabFolder[] tabFolder_partInformation = new CTabFolder[1];
-    final SashForm[] sashForm = new SashForm[1];
+    final Canvas[] canvasLineNumberAreaPtr = new Canvas[1];
+    final StyledText[] compositeTextPtr = new StyledText[1];
+    final Label[] lblProblemCountPtr = new Label[1];
+    final Composite[] compositeContainerPtr = new Composite[1];
+    final CTabFolder[] tabFolderPartInformationPtr = new CTabFolder[1];
+    final SashForm[] sashFormPtr = new SashForm[1];
 
-    final TreeItem[] treeItem_Hints = new TreeItem[1];
-    final TreeItem[] treeItem_Warnings = new TreeItem[1];
-    final TreeItem[] treeItem_Errors = new TreeItem[1];
-    final TreeItem[] treeItem_Duplicates = new TreeItem[1];
+    final TreeItem[] treeItemHintsPtr = new TreeItem[1];
+    final TreeItem[] treeItemWarningsPtr = new TreeItem[1];
+    final TreeItem[] treeItemErrorsPtr = new TreeItem[1];
+    final TreeItem[] treeItemDuplicatesPtr = new TreeItem[1];
 
-    final Tree[] tree_Problems = new Tree[1];
+    final Tree[] treeProblemsPtr = new Tree[1];
 
     public CompositeTabDesign(CTabFolder tabFolder, int style) {
         super(tabFolder, style);
@@ -109,10 +109,10 @@ class CompositeTabDesign extends CTabItem {
             this.setControl(cmpTextArea);
 
             SashForm sashForm = new SashForm(cmpTextArea, SWT.VERTICAL);
-            this.sashForm[0] = sashForm;
+            this.sashFormPtr[0] = sashForm;
 
             Composite composite = new Composite(sashForm, SWT.NONE);
-            compositeContainer[0] = composite;
+            compositeContainerPtr[0] = composite;
             composite.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
             GridLayout glComposite = new GridLayout(3, false);
             glComposite.marginBottom = 0;
@@ -124,13 +124,13 @@ class CompositeTabDesign extends CTabItem {
             composite.setLayout(glComposite);
 
             Canvas canvasLineNumberArea = new Canvas(composite, SWT.NONE);
-            this.canvas_lineNumberArea[0] = canvasLineNumberArea;
+            this.canvasLineNumberAreaPtr[0] = canvasLineNumberArea;
             canvasLineNumberArea.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
             canvasLineNumberArea.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
-            this.canvas_lineNumberArea[0].addDisposeListener(new DisposeListener() {
+            this.canvasLineNumberAreaPtr[0].addDisposeListener(new DisposeListener() {
                 @Override
                 public void widgetDisposed(DisposeEvent e) {
-                    canvas_lineNumberArea[0].getCursor().dispose();
+                    canvasLineNumberAreaPtr[0].getCursor().dispose();
                 }
             });
 
@@ -138,15 +138,15 @@ class CompositeTabDesign extends CTabItem {
             canvasLineNumberArea.setLayoutData(gdCanvasLineNumberArea);
 
             StyledText compositeText = new StyledText(composite, SWT.V_SCROLL | SWT.H_SCROLL | SWT.MULTI);
-            this.compositeText[0] = compositeText;
+            this.compositeTextPtr[0] = compositeText;
             compositeText.getVerticalBar().setPageIncrement(100);
             GridData gdCompositeText = new GridData(SWT.FILL, SWT.FILL, true, true);
             gdCompositeText.minimumHeight = 50;
             gdCompositeText.minimumWidth = 50;
             compositeText.setLayoutData(gdCompositeText);
 
-            compositeText.setBackground(Colour.text_background[0]);
-            compositeText.setForeground(Colour.text_foreground[0]);
+            compositeText.setBackground(Colour.textBackground[0]);
+            compositeText.setForeground(Colour.textForeground[0]);
             compositeText.setFont(Font.MONOSPACE);
             compositeText.setLineSpacing(0);
 
@@ -163,7 +163,7 @@ class CompositeTabDesign extends CTabItem {
                 cmpInfoArea.setLayout(new FillLayout(SWT.HORIZONTAL));
 
                 CTabFolder tabFolderPartInformation = new CTabFolder(cmpInfoArea, SWT.BORDER);
-                this.tabFolder_partInformation[0] = tabFolderPartInformation;
+                this.tabFolderPartInformationPtr[0] = tabFolderPartInformation;
                 tabFolderPartInformation.setSingle(true);
                 tabFolderPartInformation.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
 
@@ -176,13 +176,13 @@ class CompositeTabDesign extends CTabItem {
                 cmpPartProblems.setLayout(new GridLayout(5, false));
 
                 Label lblProblemCount = new Label(cmpPartProblems, SWT.NONE);
-                this.lbl_ProblemCount[0] = lblProblemCount;
+                this.lblProblemCountPtr[0] = lblProblemCount;
                 lblProblemCount.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, true, false, 5, 1));
                 lblProblemCount.setText("0 " + I18n.EDITORTEXT_ERRORS + ", 0 " + I18n.EDITORTEXT_WARNINGS + ", 0 " + I18n.EDITORTEXT_OTHERS + ", 0 " + I18n.EDITORTEXT_DUPLICATES); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
 
                 Tree tree = new Tree(cmpPartProblems, SWT.BORDER | SWT.MULTI, 128);
 
-                tree_Problems[0] = tree;
+                treeProblemsPtr[0] = tree;
                 tree.setLinesVisible(true);
                 tree.setHeaderVisible(true);
                 tree.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 5, 1));
@@ -200,22 +200,22 @@ class CompositeTabDesign extends CTabItem {
                 trclmnType.setText(I18n.COMPOSITETAB_TYPE);
 
                 TreeItem trtmHints = new TreeItem(tree);
-                treeItem_Hints[0] = trtmHints;
+                treeItemHintsPtr[0] = trtmHints;
                 trtmHints.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                 trtmHints.setText(new String[] { I18n.COMPOSITETAB_HINTS, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 TreeItem trtmWarnings = new TreeItem(tree);
-                treeItem_Warnings[0] = trtmWarnings;
+                treeItemWarningsPtr[0] = trtmWarnings;
                 trtmWarnings.setImage(ResourceManager.getImage("icon16_warning.png")); //$NON-NLS-1$
                 trtmWarnings.setText(new String[] { I18n.COMPOSITETAB_WARNINGS, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 TreeItem trtmErrors = new TreeItem(tree);
-                treeItem_Errors[0] = trtmErrors;
+                treeItemErrorsPtr[0] = trtmErrors;
                 trtmErrors.setImage(ResourceManager.getImage("icon16_error.png")); //$NON-NLS-1$
                 trtmErrors.setText(new String[] { I18n.COMPOSITETAB_ERRORS, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
                 TreeItem trtmDuplicates = new TreeItem(tree);
-                treeItem_Duplicates[0] = trtmDuplicates;
+                treeItemDuplicatesPtr[0] = trtmDuplicates;
                 trtmDuplicates.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
                 trtmDuplicates.setText(new String[] { I18n.COMPOSITETAB_DUPLICATES, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
@@ -223,22 +223,22 @@ class CompositeTabDesign extends CTabItem {
                 tree.setMenu(menu);
 
                 MenuItem mntmQuickFix = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
-                mntm_QuickFix[0] = mntmQuickFix;
+                mntmQuickFixPtr[0] = mntmQuickFix;
                 mntmQuickFix.setEnabled(true);
                 mntmQuickFix.setText(I18n.COMPOSITETAB_QUICK_FIX);
 
                 MenuItem mntmQuickFixSame = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
-                mntm_QuickFixSame[0] = mntmQuickFixSame;
+                mntmQuickFixSamePtr[0] = mntmQuickFixSame;
                 mntmQuickFixSame.setEnabled(true);
                 mntmQuickFixSame.setText(I18n.COMPOSITETAB_QUICK_FIX_SIMILAR);
 
                 MenuItem mntmInspect = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
-                mntm_Inspect[0] = mntmInspect;
+                mntmInspectPtr[0] = mntmInspect;
                 mntmInspect.setEnabled(true);
                 mntmInspect.setText(I18n.COMPOSITETAB_INSPECT);
 
                 MenuItem mntmInspectSame = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
-                mntm_InspectSame[0] = mntmInspectSame;
+                mntmInspectSamePtr[0] = mntmInspectSame;
                 mntmInspectSame.setEnabled(true);
                 mntmInspectSame.setText(I18n.COMPOSITETAB_INSPECT_SIMILAR);
 
@@ -248,26 +248,26 @@ class CompositeTabDesign extends CTabItem {
                 lblSeparator.setText(" "); //$NON-NLS-1$
 
                 NButton btnInspect = new NButton(cmpPartProblems, SWT.NONE);
-                this.btn_Inspect[0] = btnInspect;
+                this.btnInspectPtr[0] = btnInspect;
                 btnInspect.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, true, false, 1, 1));
                 btnInspect.setEnabled(false);
                 btnInspect.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
                 btnInspect.setText(I18n.COMPOSITETAB_INSPECT);
 
                 NButton btnInspectSame = new NButton(cmpPartProblems, SWT.NONE);
-                this.btn_InspectSame[0] = btnInspectSame;
+                this.btnInspectSamePtr[0] = btnInspectSame;
                 btnInspectSame.setEnabled(false);
                 btnInspectSame.setImage(ResourceManager.getImage("icon16_inspect.png")); //$NON-NLS-1$
                 btnInspectSame.setText(I18n.COMPOSITETAB_INSPECT_SIMILAR);
 
                 NButton btnQuickFix = new NButton(cmpPartProblems, SWT.NONE);
-                this.btn_QuickFix[0] = btnQuickFix;
+                this.btnQuickFixPtr[0] = btnQuickFix;
                 btnQuickFix.setEnabled(false);
                 btnQuickFix.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                 btnQuickFix.setText(I18n.COMPOSITETAB_QUICK_FIX);
 
                 NButton btnQuickFixSame = new NButton(cmpPartProblems, SWT.NONE);
-                this.btn_QuickFixSame[0] = btnQuickFixSame;
+                this.btnQuickFixSamePtr[0] = btnQuickFixSame;
                 btnQuickFixSame.setEnabled(false);
                 btnQuickFixSame.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
                 btnQuickFixSame.setText(I18n.COMPOSITETAB_QUICK_FIX_SIMILAR);
@@ -281,45 +281,45 @@ class CompositeTabDesign extends CTabItem {
             MenuItem mntmHide = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmHide.setText(I18n.EDITORTEXT_HIDE);
             mntmHide.setImage(ResourceManager.getImage("icon16_hide.png")); //$NON-NLS-1$
-            mntm_HideSelection[0] = mntmHide;
+            mntmHideSelectionPtr[0] = mntmHide;
 
             MenuItem mntmShowSelection = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmShowSelection.setText(I18n.EDITORTEXT_SHOW);
             mntmShowSelection.setImage(ResourceManager.getImage("icon16_unhide.png")); //$NON-NLS-1$
-            mntm_ShowSelection[0] = mntmShowSelection;
+            mntmShowSelectionPtr[0] = mntmShowSelection;
 
             MenuItem mntmShowAll = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmShowAll.setText(I18n.E3D_SHOW_ALL);
-            mntm_ShowAll[0] = mntmShowAll;
+            mntmShowAllPtr[0] = mntmShowAll;
 
             new MenuItem(menu[0], SWT.SEPARATOR);
 
             MenuItem mntmDrawSelection = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmDrawSelection.setText(I18n.EDITORTEXT_DRAW_SELECTION);
-            mntm_DrawSelection[0] = mntmDrawSelection;
+            mntmDrawSelectionPtr[0] = mntmDrawSelection;
 
             MenuItem mntmDrawUntilSelection = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmDrawUntilSelection.setText(I18n.EDITORTEXT_DRAW_UNTIL_SELECTION);
-            mntm_DrawUntilSelection[0] = mntmDrawUntilSelection;
+            mntmDrawUntilSelectionPtr[0] = mntmDrawUntilSelection;
 
             new MenuItem(menu[0], SWT.SEPARATOR);
 
             MenuItem mntmCut = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmCut.setText(I18n.COPYNPASTE_CUT);
             mntmCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
-            mntm_Cut[0] = mntmCut;
+            mntmCutPtr[0] = mntmCut;
             MenuItem mntmCopy = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmCopy.setText(I18n.COPYNPASTE_COPY);
             mntmCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
-            mntm_Copy[0] = mntmCopy;
+            mntmCopyPtr[0] = mntmCopy;
             MenuItem mntmPaste = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmPaste.setText(I18n.COPYNPASTE_PASTE);
             mntmPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
-            mntm_Paste[0] = mntmPaste;
+            mntmPastePtr[0] = mntmPaste;
             MenuItem mntmDelete = new MenuItem(menu[0], I18n.rightToLeftStyle());
             mntmDelete.setText(I18n.COPYNPASTE_DELETE);
             mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
-            mntm_Delete[0] = mntmDelete;
+            mntmDeletePtr[0] = mntmDelete;
         }
     }
 }

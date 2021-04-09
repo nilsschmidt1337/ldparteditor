@@ -53,19 +53,19 @@ import org.nschmidt.ldparteditor.widgets.NButton;
 class StartupDesign extends Dialog {
 
     // Use final only for subclass/listener references!
-    final Button[] btn_ok = new Button[1];
-    final Combo[] cmb_locale = new Combo[1];
-    final Text[] txt_ldrawPath = new Text[1];
-    final Text[] txt_unofficialPath = new Text[1];
-    final Text[] txt_ldrawUserName = new Text[1];
-    final Text[] txt_realName = new Text[1];
-    final Text[] txt_partAuthoringPath = new Text[1];
-    final Combo[] cmb_license = new Combo[1];
-    final Label[] lbl_formStatusIcon = new Label[1];
-    final Label[] lbl_formStatus = new Label[1];
-    final NButton[] btn_browseLdrawPath = new NButton[1];
-    final NButton[] btn_browseUnofficialPath = new NButton[1];
-    final NButton[] btn_browseAuthoringPath = new NButton[1];
+    final Button[] btnOkPtr = new Button[1];
+    final Combo[] cmbLocalePtr = new Combo[1];
+    final Text[] txtLdrawPathPtr = new Text[1];
+    final Text[] txtUnofficialPathPtr = new Text[1];
+    final Text[] txtLdrawUserNamePtr = new Text[1];
+    final Text[] txtRealNamePtr = new Text[1];
+    final Text[] txtPartAuthoringPathPtr = new Text[1];
+    final Combo[] cmbLicensePtr = new Combo[1];
+    final Label[] lblFormStatusIconPtr = new Label[1];
+    final Label[] lblFormStatusPtr = new Label[1];
+    final NButton[] btnBrowseLdrawPathPtr = new NButton[1];
+    final NButton[] btnBrowseUnofficialPathPtr = new NButton[1];
+    final NButton[] btnBrowseAuthoringPathPtr = new NButton[1];
 
     final HashMap<String, Locale> localeMap = new HashMap<>();
 
@@ -98,7 +98,7 @@ class StartupDesign extends Dialog {
         lblLocale.setText("Choose your locale:"); //$NON-NLS-1$ NO_I18N!!
 
         Combo cmbLocale = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_locale[0] = cmbLocale;
+        this.cmbLocalePtr[0] = cmbLocale;
 
         String[] locales = new String[DateFormat.getAvailableLocales().length];
         Locale[] locs = DateFormat.getAvailableLocales();
@@ -126,7 +126,7 @@ class StartupDesign extends Dialog {
         cmpPathChooser1.setLayout(new RowLayout(SWT.HORIZONTAL));
 
         Text txtLdrawPath = new Text(cmpPathChooser1, SWT.BORDER);
-        this.txt_ldrawPath[0] = txtLdrawPath;
+        this.txtLdrawPathPtr[0] = txtLdrawPath;
         txtLdrawPath.setEditable(false);
         txtLdrawPath.setLayoutData(new RowData(294, SWT.DEFAULT));
 
@@ -136,28 +136,28 @@ class StartupDesign extends Dialog {
         }
 
         NButton btnBrowseLdrawPath = new NButton(cmpPathChooser1, SWT.NONE);
-        this.btn_browseLdrawPath[0] = btnBrowseLdrawPath;
+        this.btnBrowseLdrawPathPtr[0] = btnBrowseLdrawPath;
         btnBrowseLdrawPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
         Label lblLdrawUserQuestion = new Label(cmpContainer, SWT.NONE);
         lblLdrawUserQuestion.setText("What is your LDraw user name?"); //$NON-NLS-1$ NO_I18N!!
 
         Text txtLdrawUserName = new Text(cmpContainer, SWT.BORDER);
-        this.txt_ldrawUserName[0] = txtLdrawUserName;
+        this.txtLdrawUserNamePtr[0] = txtLdrawUserName;
         txtLdrawUserName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lblRealNameQuestion = new Label(cmpContainer, SWT.NONE);
         lblRealNameQuestion.setText("What is your real name?"); //$NON-NLS-1$ NO_I18N!!
 
         Text txtRealName = new Text(cmpContainer, SWT.BORDER);
-        this.txt_realName[0] = txtRealName;
+        this.txtRealNamePtr[0] = txtRealName;
         txtRealName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Label lblLicenseQuestion = new Label(cmpContainer, SWT.NONE);
         lblLicenseQuestion.setText("Under which license do you want to publish your work?"); //$NON-NLS-1$ NO_I18N!!
 
         Combo cmbLicense = new Combo(cmpContainer, SWT.NONE);
-        this.cmb_license[0] = cmbLicense;
+        this.cmbLicensePtr[0] = cmbLicense;
         cmbLicense.setItems(new String[] { "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
         cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbLicense.setText("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
@@ -170,12 +170,12 @@ class StartupDesign extends Dialog {
         cmpPathChooser2.setLayout(new RowLayout(SWT.HORIZONTAL));
 
         Text txtPartAuthoringPath = new Text(cmpPathChooser2, SWT.BORDER);
-        this.txt_partAuthoringPath[0] = txtPartAuthoringPath;
+        this.txtPartAuthoringPathPtr[0] = txtPartAuthoringPath;
         txtPartAuthoringPath.setEditable(false);
         txtPartAuthoringPath.setLayoutData(new RowData(294, SWT.DEFAULT));
 
         NButton btnBrowseAuthoringPath = new NButton(cmpPathChooser2, SWT.NONE);
-        this.btn_browseAuthoringPath[0] = btnBrowseAuthoringPath;
+        this.btnBrowseAuthoringPathPtr[0] = btnBrowseAuthoringPath;
         btnBrowseAuthoringPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
         Label lblUnofficialPathQuestion = new Label(cmpContainer, SWT.NONE);
@@ -185,7 +185,7 @@ class StartupDesign extends Dialog {
         cmpPathChooser3.setLayout(new RowLayout(SWT.HORIZONTAL));
 
         Text txtUnofficialPath = new Text(cmpPathChooser3, SWT.BORDER);
-        this.txt_unofficialPath[0] = txtUnofficialPath;
+        this.txtUnofficialPathPtr[0] = txtUnofficialPath;
         txtUnofficialPath.setEditable(false);
         txtUnofficialPath.setLayoutData(new RowData(294, SWT.DEFAULT));
 
@@ -194,18 +194,18 @@ class StartupDesign extends Dialog {
         }
 
         NButton btnBrowseUnofficialPath = new NButton(cmpPathChooser3, SWT.NONE);
-        this.btn_browseUnofficialPath[0] = btnBrowseUnofficialPath;
+        this.btnBrowseUnofficialPathPtr[0] = btnBrowseUnofficialPath;
         btnBrowseUnofficialPath.setText("Browse..."); //$NON-NLS-1$ NO_I18N!!
 
         Composite cmpFormStatus = new Composite(cmpContainer, SWT.NONE);
         cmpFormStatus.setLayout(new RowLayout(SWT.HORIZONTAL));
 
         Label lblFormStatusIcon = new Label(cmpFormStatus, SWT.NONE);
-        this.lbl_formStatusIcon[0] = lblFormStatusIcon;
+        this.lblFormStatusIconPtr[0] = lblFormStatusIcon;
         lblFormStatusIcon.setImage(ResourceManager.getImage("icon16_info.png", 16)); //$NON-NLS-1$
 
         Label lblFormStatus = new Label(cmpFormStatus, SWT.NONE);
-        this.lbl_formStatus[0] = lblFormStatus;
+        this.lblFormStatusPtr[0] = lblFormStatus;
         lblFormStatus.setText("Please complete the form."); //$NON-NLS-1$ NO_I18N!!
 
         return cmpContainer;
@@ -218,7 +218,7 @@ class StartupDesign extends Dialog {
      */
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        btn_ok[0] = createButton(parent, IDialogConstants.OK_ID, "OK", true); //$NON-NLS-1$ NO_I18N!!
+        btnOkPtr[0] = createButton(parent, IDialogConstants.OK_ID, "OK", true); //$NON-NLS-1$ NO_I18N!!
         createButton(parent, IDialogConstants.CANCEL_ID, "Cancel", false); //$NON-NLS-1$ NO_I18N!!
     }
 

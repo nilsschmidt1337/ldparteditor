@@ -58,8 +58,8 @@ import org.nschmidt.ldparteditor.enums.View;
 public final class Polygon {
 
     // FIXME Remove this ID after the implementation is done
-    private static int pseudo_id_counter = 0;
-    private final int PSEUDO_ID;
+    private static int pseudoIdCounter = 0;
+    private final int pseudoId;
 
     /**
      * Polygon vertices
@@ -90,7 +90,7 @@ public final class Polygon {
      */
     private Polygon(DatFile df, List<VectorCSGd> vertices) {
         // NOTE: A possible overflow is irrelevant since equals() will return distinct results!!
-        PSEUDO_ID = pseudo_id_counter++;
+        pseudoId = pseudoIdCounter++;
         this.df = df;
         this.plane = Plane.createFromPoints(vertices.get(0), vertices.get(1), vertices.get(2));
         this.vertices = vertices;
@@ -98,7 +98,7 @@ public final class Polygon {
 
     @Override
     public int hashCode() {
-        return PSEUDO_ID;
+        return pseudoId;
     }
 
     /**
@@ -140,7 +140,7 @@ public final class Polygon {
     }
 
     Polygon(DatFile df, List<VectorCSGd> vertices, Polygon o) {
-        PSEUDO_ID = pseudo_id_counter++;
+        pseudoId = pseudoIdCounter++;
         this.df = df;
         this.plane = o.plane.createClone();
         this.vertices = vertices;

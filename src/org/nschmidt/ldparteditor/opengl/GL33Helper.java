@@ -30,24 +30,24 @@ public class GL33Helper {
     private static final int RGB_STRIDE = (3 + 3) * 4;
     private static final int RGB_UV_STRIDE = (3 + 3 + 4 + 2) * 4;
 
-    private int VBO_general = -1;
-    private int EBO_general = -1;
+    private int vboGeneral = -1;
+    private int eboGeneral = -1;
 
     void createVBO() {
-        VBO_general = GL15.glGenBuffers();
-        EBO_general = GL15.glGenBuffers();
+        vboGeneral = GL15.glGenBuffers();
+        eboGeneral = GL15.glGenBuffers();
     }
 
     void destroyVBO() {
-        GL15.glDeleteBuffers(VBO_general);
-        GL15.glDeleteBuffers(EBO_general);
+        GL15.glDeleteBuffers(vboGeneral);
+        GL15.glDeleteBuffers(eboGeneral);
     }
 
     void drawTrianglesIndexedRGB_General(float[] vertices, int[] indices) {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGeneral);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 
-        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, EBO_general);
+        GL15.glBindBuffer(GL15.GL_ELEMENT_ARRAY_BUFFER, eboGeneral);
         GL15.glBufferData(GL15.GL_ELEMENT_ARRAY_BUFFER, indices, GL15.GL_STREAM_DRAW);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);
@@ -62,7 +62,7 @@ public class GL33Helper {
     }
 
     void drawLinesRGB_General(float[] vertices) {
-        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, VBO_general);
+        GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboGeneral);
         GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STREAM_DRAW);
 
         GL20.glEnableVertexAttribArray(POSITION_SHADER_LOCATION);

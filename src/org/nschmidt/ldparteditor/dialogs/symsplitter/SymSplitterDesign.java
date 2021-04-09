@@ -44,15 +44,15 @@ import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
 class SymSplitterDesign extends Dialog {
 
     final SymSplitterSettings ss;
-    final BigDecimalSpinner[] spn_offset = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_precision = new BigDecimalSpinner[1];
-    final Combo[] cmb_scope = new Combo[1];
+    final BigDecimalSpinner[] spnOffsetPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnPrecisionPtr = new BigDecimalSpinner[1];
+    final Combo[] cmbScopePtr = new Combo[1];
 
-    final Combo[] cmb_splitPlane = new Combo[1];
-    final Combo[] cmb_hide = new Combo[1];
-    final Combo[] cmb_colourise = new Combo[1];
-    final Combo[] cmb_validate = new Combo[1];
-    final Combo[] cmb_cutAcross = new Combo[1];
+    final Combo[] cmbSplitPlanePtr = new Combo[1];
+    final Combo[] cmbHidePtr = new Combo[1];
+    final Combo[] cmbColourisePtr = new Combo[1];
+    final Combo[] cmbValidatePtr = new Combo[1];
+    final Combo[] cmbCutAcrossPtr = new Combo[1];
 
     // Use final only for subclass/listener references!
 
@@ -83,7 +83,7 @@ class SymSplitterDesign extends Dialog {
         lblHint.setText(I18n.SYMSPLITTER_HINT);
 
         BigDecimalSpinner spnOffset = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_offset [0] = spnOffset;
+        this.spnOffsetPtr [0] = spnOffset;
         spnOffset.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnOffset.setMaximum(new BigDecimal(100000000));
         spnOffset.setMinimum(new BigDecimal(-100000000));
@@ -93,7 +93,7 @@ class SymSplitterDesign extends Dialog {
         lblPrecision.setText(I18n.SYMSPLITTER_VERTEX_THRESHOLD);
 
         BigDecimalSpinner spnPrecision = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_precision [0] = spnPrecision;
+        this.spnPrecisionPtr [0] = spnPrecision;
         spnPrecision.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnPrecision.setMaximum(new BigDecimal(1000));
         spnPrecision.setMinimum(new BigDecimal(0));
@@ -104,7 +104,7 @@ class SymSplitterDesign extends Dialog {
 
         {
             Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_splitPlane[0] = cmbSplitPlane;
+            this.cmbSplitPlanePtr[0] = cmbSplitPlane;
             cmbSplitPlane.setItems(new String[] {I18n.SYMSPLITTER_ZP, I18n.SYMSPLITTER_YP, I18n.SYMSPLITTER_XP, I18n.SYMSPLITTER_ZM, I18n.SYMSPLITTER_YM, I18n.SYMSPLITTER_XM});
             cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbSplitPlane.setText(cmbSplitPlane.getItem(ss.getSplitPlane()));
@@ -115,7 +115,7 @@ class SymSplitterDesign extends Dialog {
         lblHide.setText(I18n.SYMSPLITTER_SELECT_WHAT);
         {
             Combo cmbHide = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_hide[0] = cmbHide;
+            this.cmbHidePtr[0] = cmbHide;
             cmbHide.setItems(new String[] {I18n.SYMSPLITTER_SHOW_ALL, I18n.SYMSPLITTER_SHOW_MIDDLE, I18n.SYMSPLITTER_SHOW_FRONT, I18n.SYMSPLITTER_SHOW_BEHIND});
             cmbHide.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbHide.setText(cmbHide.getItem(ss.getHideLevel()));
@@ -127,7 +127,7 @@ class SymSplitterDesign extends Dialog {
 
         {
             Combo cmbValidate = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_validate[0] = cmbValidate;
+            this.cmbValidatePtr[0] = cmbValidate;
             cmbValidate.setItems(new String[] {I18n.SYMSPLITTER_NO_VALIDATION, I18n.SYMSPLITTER_VALIDATION});
             cmbValidate.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbValidate.setText(cmbValidate.getItem(ss.isValidate() ? 1 : 0));
@@ -135,7 +135,7 @@ class SymSplitterDesign extends Dialog {
         }
         {
             Combo cmbCutAcross = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_cutAcross[0] = cmbCutAcross;
+            this.cmbCutAcrossPtr[0] = cmbCutAcross;
             cmbCutAcross.setItems(new String[] {I18n.SYMSPLITTER_DO_NOT_CUT, I18n.SYMSPLITTER_CUT});
             cmbCutAcross.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbCutAcross.setText(cmbCutAcross.getItem(ss.isCutAcross() ? 1 : 0));
@@ -143,14 +143,14 @@ class SymSplitterDesign extends Dialog {
         }
         {
             Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
-            this.cmb_colourise[0] = cmbColourise;
+            this.cmbColourisePtr[0] = cmbColourise;
             cmbColourise.setItems(new String[] {I18n.SYMSPLITTER_NOT_COLOURISE, I18n.SYMSPLITTER_COLOURISE});
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbColourise.setText(cmbColourise.getItem(ss.isColourise() ? 1 : 0));
             cmbColourise.select(ss.isColourise() ? 1 : 0);
         }
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmbScope;
+        this.cmbScopePtr[0] = cmbScope;
         cmbScope.setItems(new String[] {I18n.SYMSPLITTER_SCOPE_FILE, I18n.SYMSPLITTER_SCOPE_SELECTION});
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(0));

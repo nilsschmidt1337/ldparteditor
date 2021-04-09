@@ -465,11 +465,11 @@ public final class GDataPNG extends GData {
     public String getString(Vertex offset, BigDecimal angleA, BigDecimal angleB, BigDecimal angleC, Vertex scale, String texturePath) {
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append("0 !LPE PNG "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(offset.X));
+        lineBuilder.append(bigDecimalToString(offset.xp));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(offset.Y));
+        lineBuilder.append(bigDecimalToString(offset.yp));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(offset.Z));
+        lineBuilder.append(bigDecimalToString(offset.zp));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(angleA));
         lineBuilder.append(" "); //$NON-NLS-1$
@@ -477,9 +477,9 @@ public final class GDataPNG extends GData {
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(bigDecimalToString(angleC));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(scale.X));
+        lineBuilder.append(bigDecimalToString(scale.xp));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(scale.Y));
+        lineBuilder.append(bigDecimalToString(scale.yp));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(texturePath);
         return lineBuilder.toString();

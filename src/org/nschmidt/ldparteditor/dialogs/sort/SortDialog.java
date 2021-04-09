@@ -47,10 +47,10 @@ public class SortDialog extends SortDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_OK[0]).addSelectionListener(e -> Sorter.sort(fromLine, toLine, fileNameObj, scope, criteria, destructive));
-        cmb_scope[0].addListener(SWT.Selection, event -> scope = cmb_scope[0].getSelectionIndex());
-        cmb_sortCriteria[0].addListener(SWT.Selection, event -> criteria = cmb_sortCriteria[0].getSelectionIndex());
-        WidgetUtil(btn_ignoreStructure[0]).addSelectionListener(e -> destructive = btn_ignoreStructure[0].getSelection());
+        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> Sorter.sort(fromLine, toLine, fileNameObj, scope, criteria, destructive));
+        cmbScopePtr[0].addListener(SWT.Selection, event -> scope = cmbScopePtr[0].getSelectionIndex());
+        cmbSortCriteriaPtr[0].addListener(SWT.Selection, event -> criteria = cmbSortCriteriaPtr[0].getSelectionIndex());
+        WidgetUtil(btnIgnoreStructurePtr[0]).addSelectionListener(e -> destructive = btnIgnoreStructurePtr[0].getSelection());
         return super.open();
     }
 }

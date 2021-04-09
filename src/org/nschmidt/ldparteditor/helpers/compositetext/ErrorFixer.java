@@ -91,24 +91,24 @@ final class ErrorFixer {
                 switch (s) {
                 case 10: // INVERTNEXT on X (Flat subfile)
                     m = new Matrix(
-                            t.M00.negate(), t.M01.negate(), t.M02.negate(), t.M03,
-                            t.M10, t.M11, t.M12, t.M13,
-                            t.M20, t.M21, t.M22, t.M23,
-                            t.M30, t.M31, t.M32, t.M33);
+                            t.m00.negate(), t.m01.negate(), t.m02.negate(), t.m03,
+                            t.m10, t.m11, t.m12, t.m13,
+                            t.m20, t.m21, t.m22, t.m23,
+                            t.m30, t.m31, t.m32, t.m33);
                     break;
                 case 11: // INVERTNEXT on Y (Flat subfile)
                     m = new Matrix(
-                            t.M00, t.M01, t.M02, t.M03,
-                            t.M10.negate(), t.M11.negate(), t.M12.negate(), t.M13,
-                            t.M20, t.M21, t.M22, t.M23,
-                            t.M30, t.M31, t.M32, t.M33);
+                            t.m00, t.m01, t.m02, t.m03,
+                            t.m10.negate(), t.m11.negate(), t.m12.negate(), t.m13,
+                            t.m20, t.m21, t.m22, t.m23,
+                            t.m30, t.m31, t.m32, t.m33);
                     break;
                 case 12: // INVERTNEXT on Z (Flat subfile)
                     m = new Matrix(
-                            t.M00, t.M01, t.M02, t.M03,
-                            t.M10, t.M11, t.M12, t.M13,
-                            t.M20.negate(), t.M21.negate(), t.M22.negate(), t.M23,
-                            t.M30, t.M31, t.M32, t.M33);
+                            t.m00, t.m01, t.m02, t.m03,
+                            t.m10, t.m11, t.m12, t.m13,
+                            t.m20.negate(), t.m21.negate(), t.m22.negate(), t.m23,
+                            t.m30, t.m31, t.m32, t.m33);
                     break;
                 default:
                     break;
@@ -348,10 +348,10 @@ final class ErrorFixer {
             vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
             vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
 
-            Vertex vA = new Vertex(vertexA.X, vertexA.Y, vertexA.Z);
-            Vertex vB = new Vertex(vertexB.X, vertexB.Y, vertexB.Z);
-            Vertex vC = new Vertex(vertexC.X, vertexC.Y, vertexC.Z);
-            Vertex vD = new Vertex(vertexD.X, vertexD.Y, vertexD.Z);
+            Vertex vA = new Vertex(vertexA.x, vertexA.y, vertexA.z);
+            Vertex vB = new Vertex(vertexB.x, vertexB.y, vertexB.z);
+            Vertex vC = new Vertex(vertexC.x, vertexC.y, vertexC.z);
+            Vertex vD = new Vertex(vertexD.x, vertexD.y, vertexD.z);
 
             Vector3d.sub(vertexB, vertexA, vertexA);
             Vector3d.sub(vertexB, vertexC, vertexB);
@@ -500,7 +500,7 @@ final class ErrorFixer {
 
             double angle = Vector3d.angle(normals[0], normals[2]);
             angle = Math.min(angle, Math.abs(180.0 - angle));
-            if (angle > Threshold.coplanarity_angle_error) {
+            if (angle > Threshold.coplanarityAngleError) {
                 text = QuickFixer.setLine(lineNumber + 1,
                         "3 " + dataSegments[1] + " " +  //$NON-NLS-1$ //$NON-NLS-2$
                                 dataSegments[2] + " " + dataSegments[3] + " " + dataSegments[4] + " " +  //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
@@ -544,7 +544,7 @@ final class ErrorFixer {
 
                 Object[] messageArguments = {lineNumber + 1, g1.toString()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(I18n.ERRORFIXER_MOVED_TO_HINT);
 
                 messageBox.setMessage(formatter.format(messageArguments));

@@ -90,7 +90,7 @@ public class SyntaxFormatter {
             errStyleRange.start = e.lineOffset;
             errStyleRange.length = e.lineText.length();
             errStyleRange.underline = true;
-            errStyleRange.underlineColor = Colour.line_error_underline[0];
+            errStyleRange.underlineColor = Colour.lineErrorUnderline[0];
             errStyleRange.underlineStyle = SWT.UNDERLINE_ERROR;
             styles.add(errStyleRange);
             e.styles = styles.toArray(new StyleRange[0]);
@@ -117,7 +117,7 @@ public class SyntaxFormatter {
                     errStyleRange.start = e.lineOffset;
                     errStyleRange.length = e.lineText.length();
                     errStyleRange.underline = true;
-                    errStyleRange.underlineColor = Colour.line_error_underline[0];
+                    errStyleRange.underlineColor = Colour.lineErrorUnderline[0];
                     errStyleRange.underlineStyle = SWT.UNDERLINE_ERROR;
                     styles.add(errStyleRange);
                     e.styles = styles.toArray(new StyleRange[0]);
@@ -151,20 +151,20 @@ public class SyntaxFormatter {
             errStyleRange.start = e.lineOffset;
             errStyleRange.length = e.lineText.length();
             errStyleRange.underline = true;
-            errStyleRange.underlineColor = Colour.line_error_underline[0];
+            errStyleRange.underlineColor = Colour.lineErrorUnderline[0];
             errStyleRange.underlineStyle = SWT.UNDERLINE_ERROR;
             styles.add(errStyleRange);
             break;
         }
         if (!isVisible) {
             for (StyleRange sr : styles) {
-                sr.foreground = Colour.text_foreground_hidden[0];
+                sr.foreground = Colour.textForegroundHidden[0];
             }
         }
         if (isSelected) {
             for (StyleRange sr : styles) {
                 if (sr.background == null) {
-                    sr.background = Colour.line_highlight_selected_background[0];
+                    sr.background = Colour.lineHighlightSelectedBackground[0];
                 } else if (replaceVertex) {
                     sr.fontStyle = SWT.BOLD;
                 }
@@ -186,7 +186,7 @@ public class SyntaxFormatter {
     private void setErrorStyle(StyleRange range) {
         range.underline = true;
         range.underlineStyle = SWT.UNDERLINE_ERROR;
-        range.underlineColor = Colour.line_error_underline[0];
+        range.underlineColor = Colour.lineErrorUnderline[0];
         range.length = range.length - 1;
     }
 
@@ -198,7 +198,7 @@ public class SyntaxFormatter {
      */
     private void setBorderStyle(StyleRange range) {
         range.borderStyle = SWT.BORDER_SOLID;
-        range.borderColor = Colour.line_box_font[0];
+        range.borderColor = Colour.lineBoxFont[0];
     }
 
     /**
@@ -210,7 +210,7 @@ public class SyntaxFormatter {
     private void setWarningStyle(StyleRange range) {
         range.underline = true;
         range.underlineStyle = SWT.UNDERLINE_SQUIGGLE;
-        range.underlineColor = Colour.line_warning_underline[0];
+        range.underlineColor = Colour.lineWarningUnderline[0];
         range.length = range.length - 1;
     }
 
@@ -286,7 +286,7 @@ public class SyntaxFormatter {
         StyleRange commentStyleRange = new StyleRange();
         commentStyleRange.start = offset;
         commentStyleRange.length = e.lineText.length();
-        commentStyleRange.foreground = Colour.line_comment_font[0];
+        commentStyleRange.foreground = Colour.lineCommentFont[0];
         styles.add(commentStyleRange);
 
         if (offset == 0)
@@ -306,7 +306,7 @@ public class SyntaxFormatter {
                 metaStyleRange.start = offset;
                 metaStyleRange.length = segment.length();
                 metaStyleRange.fontStyle = SWT.BOLD | SWT.ITALIC;
-                metaStyleRange.foreground = Colour.line_comment_font[0];
+                metaStyleRange.foreground = Colour.lineCommentFont[0];
                 styles.add(metaStyleRange);
                 return;
             } else if (segment.equals("VERTEX")) { //$NON-NLS-1$
@@ -336,7 +336,7 @@ public class SyntaxFormatter {
                         metaStyleRange.start = offset;
                         metaStyleRange.length = segment.length();
                         metaStyleRange.fontStyle = SWT.BOLD | SWT.ITALIC;
-                        metaStyleRange.foreground = Colour.line_comment_font[0];
+                        metaStyleRange.foreground = Colour.lineCommentFont[0];
                         switch (checkForVertexCounter) {
                         case 0:
                             if (segment.equals("!LPE"))checkForVertexCounter++; //$NON-NLS-1$
@@ -352,7 +352,7 @@ public class SyntaxFormatter {
                         StyleRange metaStyleRange = new StyleRange();
                         metaStyleRange.start = offset;
                         metaStyleRange.length = segment.length();
-                        metaStyleRange.foreground = Colour.line_comment_font[0];
+                        metaStyleRange.foreground = Colour.lineCommentFont[0];
                         switch (checkForVertexCounter) {
                         case 2:
                             try {
@@ -403,7 +403,7 @@ public class SyntaxFormatter {
                         metaStyleRange.start = offset;
                         metaStyleRange.length = segment.length();
                         metaStyleRange.fontStyle = SWT.BOLD | SWT.ITALIC;
-                        metaStyleRange.foreground = Colour.line_comment_font[0];
+                        metaStyleRange.foreground = Colour.lineCommentFont[0];
                         styles.add(metaStyleRange);
                         switch (checkForProtractorAndDistanceCounter) {
                         case 0:
@@ -439,7 +439,7 @@ public class SyntaxFormatter {
                         case 9:
                         case 10:
                             metaStyleRange.fontStyle = SWT.NORMAL;
-                            metaStyleRange.foreground = Colour.line_secondary_font[0];
+                            metaStyleRange.foreground = Colour.lineSecondaryFont[0];
                             styles.add(metaStyleRange);
                             checkForProtractorAndDistanceCounter++;
                             break;
@@ -448,7 +448,7 @@ public class SyntaxFormatter {
                         case 6:
                         case 7:
                             metaStyleRange.fontStyle = SWT.NORMAL;
-                            metaStyleRange.foreground = Colour.line_primary_font[0];
+                            metaStyleRange.foreground = Colour.linePrimaryFont[0];
                             styles.add(metaStyleRange);
                             checkForProtractorAndDistanceCounter++;
                             break;
@@ -490,7 +490,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.line_primary_font[0];
+        lineStyleRange.foreground = Colour.linePrimaryFont[0];
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -510,27 +510,27 @@ public class SyntaxFormatter {
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.line_colourAttr_font[0];
+                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // x,y,z offset
-                    segmentStyleRange.foreground = Colour.line_secondary_font[0];
+                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // 1st matrix row
-                    segmentStyleRange.foreground = Colour.line_primary_font[0];
+                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
                     break;
                 case 8: // *fall through*
                 case 9:
                 case 10: // 2nd matrix row
-                    segmentStyleRange.foreground = Colour.line_secondary_font[0];
+                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
                     break;
                 case 11: // *fall through*
                 case 12:
                 case 13: // 3rd matrix row
-                    segmentStyleRange.foreground = Colour.line_primary_font[0];
+                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
                     break;
                 default: // dat file reference
                     segmentStyleRange.foreground = compositeText.getForeground();
@@ -713,7 +713,7 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.line_error_underline[0];
+                style.underlineColor = Colour.lineErrorUnderline[0];
             }
         }
     }
@@ -738,7 +738,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.line_primary_font[0];
+        lineStyleRange.foreground = Colour.linePrimaryFont[0];
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -758,17 +758,17 @@ public class SyntaxFormatter {
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.line_colourAttr_font[0];
+                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // start vertex
-                    segmentStyleRange.foreground = Colour.line_secondary_font[0];
+                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // end vertex
-                    segmentStyleRange.foreground = Colour.line_primary_font[0];
+                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
                     break;
                 default: // error
                     break;
@@ -829,12 +829,12 @@ public class SyntaxFormatter {
                 if (numberError)
                     break;
                 if (replaceVertex) {
-                    if (Math.abs(vx - start.X.floatValue()) < replaceEpsilon && Math.abs(vy - start.Y.floatValue()) < replaceEpsilon && Math.abs(vz - start.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - start.x.floatValue()) < replaceEpsilon && Math.abs(vy - start.y.floatValue()) < replaceEpsilon && Math.abs(vz - start.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(3));
                         setBorderStyle(styles.get(4));
                         setBorderStyle(styles.get(5));
                     }
-                    if (Math.abs(vx - end.X.floatValue()) < replaceEpsilon && Math.abs(vy - end.Y.floatValue()) < replaceEpsilon && Math.abs(vz - end.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - end.x.floatValue()) < replaceEpsilon && Math.abs(vy - end.y.floatValue()) < replaceEpsilon && Math.abs(vz - end.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(6));
                         setBorderStyle(styles.get(7));
                         setBorderStyle(styles.get(8));
@@ -849,7 +849,7 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.line_error_underline[0];
+                style.underlineColor = Colour.lineErrorUnderline[0];
             }
         }
     }
@@ -874,7 +874,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.line_primary_font[0];
+        lineStyleRange.foreground = Colour.linePrimaryFont[0];
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -894,22 +894,22 @@ public class SyntaxFormatter {
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.line_colourAttr_font[0];
+                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // 1st vertex
-                    segmentStyleRange.foreground = Colour.line_secondary_font[0];
+                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // 2nd vertex
-                    segmentStyleRange.foreground = Colour.line_primary_font[0];
+                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
                     break;
                 case 8: // *fall through*
                 case 9:
                 case 10: // 3rd vertex
-                    segmentStyleRange.foreground = Colour.line_secondary_font[0];
+                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
                     break;
                 default: // error
                     break;
@@ -989,17 +989,17 @@ public class SyntaxFormatter {
                 if (numberError)
                     break;
                 if (replaceVertex) {
-                    if (Math.abs(vx - vertexA.X.floatValue()) < replaceEpsilon && Math.abs(vy - vertexA.Y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexA.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - vertexA.x.floatValue()) < replaceEpsilon && Math.abs(vy - vertexA.y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexA.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(3));
                         setBorderStyle(styles.get(4));
                         setBorderStyle(styles.get(5));
                     }
-                    if (Math.abs(vx - vertexB.X.floatValue()) < replaceEpsilon && Math.abs(vy - vertexB.Y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexB.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - vertexB.x.floatValue()) < replaceEpsilon && Math.abs(vy - vertexB.y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexB.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(6));
                         setBorderStyle(styles.get(7));
                         setBorderStyle(styles.get(8));
                     }
-                    if (Math.abs(vx - vertexC.X.floatValue()) < replaceEpsilon && Math.abs(vy - vertexC.Y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexC.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - vertexC.x.floatValue()) < replaceEpsilon && Math.abs(vy - vertexC.y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexC.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(9));
                         setBorderStyle(styles.get(10));
                         setBorderStyle(styles.get(11));
@@ -1036,7 +1036,7 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.line_error_underline[0];
+                style.underlineColor = Colour.lineErrorUnderline[0];
             }
         }
     }
@@ -1061,7 +1061,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.line_primary_font[0];
+        lineStyleRange.foreground = Colour.linePrimaryFont[0];
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -1079,30 +1079,30 @@ public class SyntaxFormatter {
                 segmentStyleRange.length = segmentLength;
                 switch (segmentNumber) {
                 case 0: // type
-                    segmentStyleRange.foreground = Colour.line_quad_font[0];
+                    segmentStyleRange.foreground = Colour.lineQuadFont[0];
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.line_colourAttr_font[0];
+                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // 1st vertex
-                    segmentStyleRange.foreground = Colour.line_secondary_font[0];
+                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // 2nd vertex
-                    segmentStyleRange.foreground = Colour.line_primary_font[0];
+                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
                     break;
                 case 8: // *fall through*
                 case 9:
                 case 10: // 3rd vertex
-                    segmentStyleRange.foreground = Colour.line_secondary_font[0];
+                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
                     break;
                 case 11: // *fall through*
                 case 12:
                 case 13: // 4th vertex
-                    segmentStyleRange.foreground = Colour.line_primary_font[0];
+                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
                     break;
                 default: // error
                     break;
@@ -1202,22 +1202,22 @@ public class SyntaxFormatter {
                 if (numberError)
                     break;
                 if (replaceVertex) {
-                    if (Math.abs(vx - vertexA.X.floatValue()) < replaceEpsilon && Math.abs(vy - vertexA.Y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexA.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - vertexA.x.floatValue()) < replaceEpsilon && Math.abs(vy - vertexA.y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexA.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(3));
                         setBorderStyle(styles.get(4));
                         setBorderStyle(styles.get(5));
                     }
-                    if (Math.abs(vx - vertexB.X.floatValue()) < replaceEpsilon && Math.abs(vy - vertexB.Y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexB.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - vertexB.x.floatValue()) < replaceEpsilon && Math.abs(vy - vertexB.y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexB.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(6));
                         setBorderStyle(styles.get(7));
                         setBorderStyle(styles.get(8));
                     }
-                    if (Math.abs(vx - vertexC.X.floatValue()) < replaceEpsilon && Math.abs(vy - vertexC.Y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexC.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - vertexC.x.floatValue()) < replaceEpsilon && Math.abs(vy - vertexC.y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexC.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(9));
                         setBorderStyle(styles.get(10));
                         setBorderStyle(styles.get(11));
                     }
-                    if (Math.abs(vx - vertexD.X.floatValue()) < replaceEpsilon && Math.abs(vy - vertexD.Y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexD.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - vertexD.x.floatValue()) < replaceEpsilon && Math.abs(vy - vertexD.y.floatValue()) < replaceEpsilon && Math.abs(vz - vertexD.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(12));
                         setBorderStyle(styles.get(13));
                         setBorderStyle(styles.get(14));
@@ -1246,8 +1246,8 @@ public class SyntaxFormatter {
                 double angle;
                 angle = Vector3d.angle(normals[0], normals[2]);
                 // Coplanarity
-                parseWarning = angle > Threshold.coplanarity_angle_warning;
-                parseError = parseError || angle > Threshold.coplanarity_angle_error;
+                parseWarning = angle > Threshold.coplanarityAngleWarning;
+                parseError = parseError || angle > Threshold.coplanarityAngleError;
 
                 Vector3d.sub(vertexB, vertexA, vertexA2);
                 Vector3d.sub(vertexB, vertexC, vertexB2);
@@ -1290,14 +1290,14 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.line_error_underline[0];
+                style.underlineColor = Colour.lineErrorUnderline[0];
             }
         } else {
             if (parseWarning) {
                 for (StyleRange style : styles) {
                     style.underline = true;
                     style.underlineStyle = SWT.UNDERLINE_ERROR;
-                    style.underlineColor = Colour.line_warning_underline[0];
+                    style.underlineColor = Colour.lineWarningUnderline[0];
                 }
             }
         }
@@ -1323,7 +1323,7 @@ public class SyntaxFormatter {
         StyleRange lineStyleRange = new StyleRange();
         lineStyleRange.start = offset;
         lineStyleRange.length = e.lineText.length();
-        lineStyleRange.foreground = Colour.line_primary_font[0];
+        lineStyleRange.foreground = Colour.linePrimaryFont[0];
         styles.add(lineStyleRange);
 
         boolean parseError = false;
@@ -1344,27 +1344,27 @@ public class SyntaxFormatter {
                     segmentStyleRange.foreground = compositeText.getForeground();
                     break;
                 case 1: // colour
-                    segmentStyleRange.foreground = Colour.line_colourAttr_font[0];
+                    segmentStyleRange.foreground = Colour.lineColourAttrFont[0];
                     break;
                 case 2: // *fall through*
                 case 3:
                 case 4: // start vertex
-                    segmentStyleRange.foreground = Colour.line_secondary_font[0];
+                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
                     break;
                 case 5: // *fall through*
                 case 6:
                 case 7: // end vertex
-                    segmentStyleRange.foreground = Colour.line_primary_font[0];
+                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
                     break;
                 case 8: // *fall through*
                 case 9:
                 case 10: // control vertex I
-                    segmentStyleRange.foreground = Colour.line_secondary_font[0];
+                    segmentStyleRange.foreground = Colour.lineSecondaryFont[0];
                     break;
                 case 11: // *fall through*
                 case 12:
                 case 13: // control vertex II
-                    segmentStyleRange.foreground = Colour.line_primary_font[0];
+                    segmentStyleRange.foreground = Colour.linePrimaryFont[0];
                     break;
                 default: // error
                     break;
@@ -1463,23 +1463,23 @@ public class SyntaxFormatter {
                 if (numberError)
                     break;
                 if (replaceVertex) {
-                    if (Math.abs(vx - start.X.floatValue()) < replaceEpsilon && Math.abs(vy - start.Y.floatValue()) < replaceEpsilon && Math.abs(vz - start.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - start.x.floatValue()) < replaceEpsilon && Math.abs(vy - start.y.floatValue()) < replaceEpsilon && Math.abs(vz - start.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(3));
                         setBorderStyle(styles.get(4));
                         setBorderStyle(styles.get(5));
                     }
-                    if (Math.abs(vx - end.X.floatValue()) < replaceEpsilon && Math.abs(vy - end.Y.floatValue()) < replaceEpsilon && Math.abs(vz - end.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - end.x.floatValue()) < replaceEpsilon && Math.abs(vy - end.y.floatValue()) < replaceEpsilon && Math.abs(vz - end.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(6));
                         setBorderStyle(styles.get(7));
                         setBorderStyle(styles.get(8));
                     }
-                    if (Math.abs(vx - controlI.X.floatValue()) < replaceEpsilon && Math.abs(vy - controlI.Y.floatValue()) < replaceEpsilon && Math.abs(vz - controlI.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - controlI.x.floatValue()) < replaceEpsilon && Math.abs(vy - controlI.y.floatValue()) < replaceEpsilon && Math.abs(vz - controlI.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(9));
                         setBorderStyle(styles.get(10));
                         setBorderStyle(styles.get(11));
                     }
-                    if (Math.abs(vx - controlII.X.floatValue()) < replaceEpsilon && Math.abs(vy - controlII.Y.floatValue()) < replaceEpsilon
-                            && Math.abs(vz - controlII.Z.floatValue()) < replaceEpsilon) {
+                    if (Math.abs(vx - controlII.x.floatValue()) < replaceEpsilon && Math.abs(vy - controlII.y.floatValue()) < replaceEpsilon
+                            && Math.abs(vz - controlII.z.floatValue()) < replaceEpsilon) {
                         setBorderStyle(styles.get(12));
                         setBorderStyle(styles.get(13));
                         setBorderStyle(styles.get(14));
@@ -1496,14 +1496,14 @@ public class SyntaxFormatter {
             for (StyleRange style : styles) {
                 style.underline = true;
                 style.underlineStyle = SWT.UNDERLINE_ERROR;
-                style.underlineColor = Colour.line_error_underline[0];
+                style.underlineColor = Colour.lineErrorUnderline[0];
             }
         } else {
             if (parseWarning) {
                 for (StyleRange style : styles) {
                     style.underline = true;
                     style.underlineStyle = SWT.UNDERLINE_ERROR;
-                    style.underlineColor = Colour.line_warning_underline[0];
+                    style.underlineColor = Colour.lineWarningUnderline[0];
                 }
             }
         }

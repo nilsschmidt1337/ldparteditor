@@ -175,25 +175,25 @@ class VM25Smooth extends VM24MeshReducer {
                         BigDecimal vz = BigDecimal.ZERO;
 
                         for (Integer k : il) {
-                            if (isX) vx = vx.add(vertsToProcess.get(k).X);
-                            if (isY) vy = vy.add(vertsToProcess.get(k).Y);
-                            if (isZ) vz = vz.add(vertsToProcess.get(k).Z);
+                            if (isX) vx = vx.add(vertsToProcess.get(k).xp);
+                            if (isY) vy = vy.add(vertsToProcess.get(k).yp);
+                            if (isZ) vz = vz.add(vertsToProcess.get(k).zp);
                         }
 
                         if (isX) {
-                            vx = vx.divide(ad, Threshold.MC).multiply(factor).add(vertex.X.multiply(oneMinusFactor));
+                            vx = vx.divide(ad, Threshold.MC).multiply(factor).add(vertex.xp.multiply(oneMinusFactor));
                         } else {
-                            vx = vertex.X;
+                            vx = vertex.xp;
                         }
                         if (isY) {
-                            vy = vy.divide(ad, Threshold.MC).multiply(factor).add(vertex.Y.multiply(oneMinusFactor));
+                            vy = vy.divide(ad, Threshold.MC).multiply(factor).add(vertex.yp.multiply(oneMinusFactor));
                         } else {
-                            vy = vertex.Y;
+                            vy = vertex.yp;
                         }
                         if (isZ) {
-                            vz = vz.divide(ad, Threshold.MC).multiply(factor).add(vertex.Z.multiply(oneMinusFactor));
+                            vz = vz.divide(ad, Threshold.MC).multiply(factor).add(vertex.zp.multiply(oneMinusFactor));
                         } else {
-                            vz = vertex.Z;
+                            vz = vertex.zp;
                         }
 
                         newPos.add(new Vertex(vx, vy, vz));

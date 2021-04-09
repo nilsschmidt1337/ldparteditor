@@ -33,18 +33,18 @@ public class OptionsDialog extends OptionsDesign {
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         final UserSettingState userSettingState = WorkbenchManager.getUserSettingState();
 
-        WidgetUtil(btn_OK[0]).addSelectionListener(e -> {
+        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
             closingProcedure();
             me.close();
         });
 
-        WidgetUtil(btn_AllowInvalidShapes[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btn_AllowInvalidShapes[0].getSelection()));
-        WidgetUtil(btn_translateViewByCursor[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setTranslatingViewByCursor( btn_translateViewByCursor[0].getSelection()));
-        WidgetUtil(btn_disableMAD3D[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btn_disableMAD3D[0].getSelection()));
-        WidgetUtil(btn_disableMADtext[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btn_disableMADtext[0].getSelection()));
-        WidgetUtil(btn_invertInvertWheelZoomDirection[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btn_invertInvertWheelZoomDirection[0].getSelection()));
+        WidgetUtil(btnAllowInvalidShapesPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btnAllowInvalidShapesPtr[0].getSelection()));
+        WidgetUtil(btnTranslateViewByCursorPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setTranslatingViewByCursor( btnTranslateViewByCursorPtr[0].getSelection()));
+        WidgetUtil(btnDisableMAD3DPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btnDisableMAD3DPtr[0].getSelection()));
+        WidgetUtil(btnDisableMADtextPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btnDisableMADtextPtr[0].getSelection()));
+        WidgetUtil(btnInvertInvertWheelZoomDirectionPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btnInvertInvertWheelZoomDirectionPtr[0].getSelection()));
 
-        WidgetUtil(btn_browseLdrawPath[0]).addSelectionListener(e -> {
+        WidgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to the last selected path
@@ -62,12 +62,12 @@ public class OptionsDialog extends OptionsDesign {
             String dir = dlg.open();
             if (dir != null) {
                 // Set the text box to the new selection
-                txt_ldrawPath[0].setText(dir);
+                txtLdrawPathPtr[0].setText(dir);
                 String ldrawPath = dir;
                 userSettingState.setLdrawFolderPath(ldrawPath);
             }
         });
-        WidgetUtil(btn_browseAuthoringPath[0]).addSelectionListener(e -> {
+        WidgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to the last selected path
@@ -85,12 +85,12 @@ public class OptionsDialog extends OptionsDesign {
             String dir = dlg.open();
             if (dir != null) {
                 // Set the text box to the new selection
-                txt_partAuthoringPath[0].setText(dir);
+                txtPartAuthoringPathPtr[0].setText(dir);
                 String partAuthoringPath = dir;
                 userSettingState.setAuthoringFolderPath(partAuthoringPath);
             }
         });
-        WidgetUtil(btn_browseUnofficialPath[0]).addSelectionListener(e -> {
+        WidgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to the last selected path
@@ -108,52 +108,52 @@ public class OptionsDialog extends OptionsDesign {
             String dir = dlg.open();
             if (dir != null) {
                 // Set the text box to the new selection
-                txt_unofficialPath[0].setText(dir);
+                txtUnofficialPathPtr[0].setText(dir);
                 String unofficialPath = dir;
                 userSettingState.setUnofficialFolderPath(unofficialPath);
             }
         });
-        txt_ldrawUserName[0].addListener(SWT.Modify, e -> {
-            String ldrawUserName = txt_ldrawUserName[0].getText();
+        txtLdrawUserNamePtr[0].addListener(SWT.Modify, e -> {
+            String ldrawUserName = txtLdrawUserNamePtr[0].getText();
             userSettingState.setLdrawUserName(ldrawUserName);
         });
-        txt_realName[0].addListener(SWT.Modify, e -> {
-            String realName = txt_realName[0].getText();
+        txtRealNamePtr[0].addListener(SWT.Modify, e -> {
+            String realName = txtRealNamePtr[0].getText();
             userSettingState.setRealUserName(realName);
         });
-        cmb_license[0].addListener(SWT.Modify, e -> {
-            String license = cmb_license[0].getText();
+        cmbLicensePtr[0].addListener(SWT.Modify, e -> {
+            String license = cmbLicensePtr[0].getText();
             userSettingState.setLicense(license);
         });
-        cmb_locale[0].addListener(SWT.Modify, e -> {
-            if (localeMap.containsKey(cmb_locale[0].getText())) {
-                Locale locale = localeMap.get(cmb_locale[0].getText());
+        cmbLocalePtr[0].addListener(SWT.Modify, e -> {
+            if (localeMap.containsKey(cmbLocalePtr[0].getText())) {
+                Locale locale = localeMap.get(cmbLocalePtr[0].getText());
                 userSettingState.setLocale(locale);
-                MyLanguage.LOCALE = locale;
+                MyLanguage.locale = locale;
             }
         });
-        cmb_textWinArr[0].addListener(SWT.Modify, e -> {
-            final int index = cmb_textWinArr[0].getSelectionIndex();
+        cmbTextWinArrPtr[0].addListener(SWT.Modify, e -> {
+            final int index = cmbTextWinArrPtr[0].getSelectionIndex();
             if (index != -1) {
                 userSettingState.setTextWinArr(index);
             }
         });
-        spn_coplanarityWarning[0].addValueChangeListener(spn -> {
-            final double angle = spn_coplanarityWarning[0].getValue().doubleValue();
-            Threshold.coplanarity_angle_warning = angle;
+        spnCoplanarityWarningPtr[0].addValueChangeListener(spn -> {
+            final double angle = spnCoplanarityWarningPtr[0].getValue().doubleValue();
+            Threshold.coplanarityAngleWarning = angle;
             userSettingState.setCoplanarity_angle_warning(angle);
         });
-        spn_coplanarityError[0].addValueChangeListener(spn -> {
-            final double angle = spn_coplanarityError[0].getValue().doubleValue();
-            Threshold.coplanarity_angle_error = angle;
+        spnCoplanarityErrorPtr[0].addValueChangeListener(spn -> {
+            final double angle = spnCoplanarityErrorPtr[0].getValue().doubleValue();
+            Threshold.coplanarityAngleError = angle;
             userSettingState.setCoplanarity_angle_error(angle);
         });
-        spn_viewportScale[0].addValueChangeListener(spn -> {
-            final double scaleFactor = spn_viewportScale[0].getValue().doubleValue();
+        spnViewportScalePtr[0].addValueChangeListener(spn -> {
+            final double scaleFactor = spnViewportScalePtr[0].getValue().doubleValue();
             userSettingState.setViewportScaleFactor(scaleFactor);
         });
-        cmb_mouseButtonLayout[0].addListener(SWT.Modify, e -> {
-            final int index = cmb_mouseButtonLayout[0].getSelectionIndex();
+        cmbMouseButtonLayoutPtr[0].addListener(SWT.Modify, e -> {
+            final int index = cmbMouseButtonLayoutPtr[0].getSelectionIndex();
             if (index != -1) {
                 userSettingState.setMouseButtonLayout(index);
             }

@@ -56,19 +56,19 @@ public class HeaderState {
     private int lineAUTHOR = 0;
     private int lineTYPE = -1;
     private int lineLICENSE = 0;
-    private int lineHELP_start = 0;
-    private int lineHELP_end = 0;
+    private int lineHELPstart = 0;
+    private int lineHELPend = 0;
     private int lineBFC = 0;
     private int lineCATEGORY = 0;
-    private int lineKEYWORDS_start = 0;
-    private int lineKEYWORDS_end = 0;
+    private int lineKEYWORDSstart = 0;
+    private int lineKEYWORDSend = 0;
     private int lineCMDLINE = 0;
-    private int lineHISTORY_start = 0;
-    private int lineHISTORY_end = 0;
-    private int lineCOMMENT_start = 0;
-    private int lineCOMMENT_end = 0;
-    private int lineBFC2_start = 0;
-    private int lineBFC2_end = 0;
+    private int lineHISTORYstart = 0;
+    private int lineHISTORYend = 0;
+    private int lineCOMMENTstart = 0;
+    private int lineCOMMENTend = 0;
+    private int lineBFC2start = 0;
+    private int lineBFC2end = 0;
 
     private int state = 0;
     private String lastHistoryEntry = null;
@@ -226,19 +226,19 @@ public class HeaderState {
     }
 
     public int getLineHELP_start() {
-        return lineHELP_start;
+        return lineHELPstart;
     }
 
     public void setLineHELP_start(int lineHELPstart) {
-        this.lineHELP_start = lineHELPstart;
+        this.lineHELPstart = lineHELPstart;
     }
 
     public int getLineHELP_end() {
-        return lineHELP_end;
+        return lineHELPend;
     }
 
     public void setLineHELP_end(int lineHELPend) {
-        this.lineHELP_end = lineHELPend;
+        this.lineHELPend = lineHELPend;
     }
 
     public int getLineBFC() {
@@ -258,19 +258,19 @@ public class HeaderState {
     }
 
     public int getLineKEYWORDS_start() {
-        return lineKEYWORDS_start;
+        return lineKEYWORDSstart;
     }
 
     public void setLineKEYWORDS_start(int lineKEYWORDSstart) {
-        this.lineKEYWORDS_start = lineKEYWORDSstart;
+        this.lineKEYWORDSstart = lineKEYWORDSstart;
     }
 
     public int getLineKEYWORDS_end() {
-        return lineKEYWORDS_end;
+        return lineKEYWORDSend;
     }
 
     public void setLineKEYWORDS_end(int lineKEYWORDSend) {
-        this.lineKEYWORDS_end = lineKEYWORDSend;
+        this.lineKEYWORDSend = lineKEYWORDSend;
     }
 
     public int getLineCMDLINE() {
@@ -282,51 +282,51 @@ public class HeaderState {
     }
 
     public int getLineHISTORY_start() {
-        return lineHISTORY_start;
+        return lineHISTORYstart;
     }
 
     public void setLineHISTORY_start(int lineHISTORYstart) {
-        this.lineHISTORY_start = lineHISTORYstart;
+        this.lineHISTORYstart = lineHISTORYstart;
     }
 
     public int getLineHISTORY_end() {
-        return lineHISTORY_end;
+        return lineHISTORYend;
     }
 
     public void setLineHISTORY_end(int lineHISTORYend) {
-        this.lineHISTORY_end = lineHISTORYend;
+        this.lineHISTORYend = lineHISTORYend;
     }
 
     public int getLineCOMMENT_start() {
-        return lineCOMMENT_start;
+        return lineCOMMENTstart;
     }
 
     public void setLineCOMMENT_start(int lineCOMMENTstart) {
-        this.lineCOMMENT_start = lineCOMMENTstart;
+        this.lineCOMMENTstart = lineCOMMENTstart;
     }
 
     public int getLineCOMMENT_end() {
-        return lineCOMMENT_end;
+        return lineCOMMENTend;
     }
 
     public void setLineCOMMENT_end(int lineCOMMENTend) {
-        this.lineCOMMENT_end = lineCOMMENTend;
+        this.lineCOMMENTend = lineCOMMENTend;
     }
 
     public int getLineBFC2_start() {
-        return lineBFC2_start;
+        return lineBFC2start;
     }
 
     public void setLineBFC2_start(int lineBFC2start) {
-        this.lineBFC2_start = lineBFC2start;
+        this.lineBFC2start = lineBFC2start;
     }
 
     public int getLineBFC2_end() {
-        return lineBFC2_end;
+        return lineBFC2end;
     }
 
     public void setLineBFC2_end(int lineBFC2end) {
-        this.lineBFC2_end = lineBFC2end;
+        this.lineBFC2end = lineBFC2end;
     }
 
     public int getState() {
@@ -366,19 +366,19 @@ public class HeaderState {
         h.lineAUTHOR = lineAUTHOR;
         h.lineTYPE = lineTYPE;
         h.lineLICENSE = lineLICENSE;
-        h.lineHELP_start = lineHELP_start;
-        h.lineHELP_end = lineHELP_end;
+        h.lineHELPstart = lineHELPstart;
+        h.lineHELPend = lineHELPend;
         h.lineBFC = lineBFC;
         h.lineCATEGORY = lineCATEGORY;
-        h.lineKEYWORDS_start = lineKEYWORDS_start;
-        h.lineKEYWORDS_end = lineKEYWORDS_end;
+        h.lineKEYWORDSstart = lineKEYWORDSstart;
+        h.lineKEYWORDSend = lineKEYWORDSend;
         h.lineCMDLINE = lineCMDLINE;
-        h.lineHISTORY_start = lineHISTORY_start;
-        h.lineHISTORY_end = lineHISTORY_end;
-        h.lineCOMMENT_start = lineCOMMENT_start;
-        h.lineCOMMENT_end = lineCOMMENT_end;
-        h.lineBFC2_start = lineBFC2_start;
-        h.lineBFC2_end = lineBFC2_end;
+        h.lineHISTORYstart = lineHISTORYstart;
+        h.lineHISTORYend = lineHISTORYend;
+        h.lineCOMMENTstart = lineCOMMENTstart;
+        h.lineCOMMENTend = lineCOMMENTend;
+        h.lineBFC2start = lineBFC2start;
+        h.lineBFC2end = lineBFC2end;
         h.state = state;
         h.lastHistoryEntry = lastHistoryEntry;
         return h;

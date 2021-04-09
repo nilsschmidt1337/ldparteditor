@@ -39,7 +39,7 @@ public abstract class ValueDialogInt extends ValueDesignInt {
         getShell().setText(shellText);
         initializeSpinner();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn_ok[0]).addSelectionListener(e -> applyValue());
+        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> applyValue());
         return super.open();
     }
 

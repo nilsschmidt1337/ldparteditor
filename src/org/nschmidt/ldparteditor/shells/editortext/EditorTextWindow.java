@@ -308,7 +308,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
                 Object[] messageArguments = {df.getShortName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.LOCALE);
+                formatter.setLocale(MyLanguage.locale);
                 formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                 messageBox.setMessage(formatter.format(messageArguments));
 
@@ -496,7 +496,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (btn_showLeft[0] != null) WidgetUtil(btn_showLeft[0]).addSelectionListener(e -> {
+        if (btnShowLeftPtr[0] != null) WidgetUtil(btnShowLeftPtr[0]).addSelectionListener(e -> {
             final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm();
             int[] w = sf.getWeights();
             if (w[1] * 9 > w[0]) {
@@ -506,7 +506,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (btn_showRight[0] != null) WidgetUtil(btn_showRight[0]).addSelectionListener(e -> {
+        if (btnShowRightPtr[0] != null) WidgetUtil(btnShowRightPtr[0]).addSelectionListener(e -> {
             final SashForm sf = Editor3DWindow.getWindow().getSplitSashForm();
             int[] w = sf.getWeights();
             if (w[0] * 9 > w[1]) {
@@ -516,15 +516,15 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (btn_sameWidth[0] != null) WidgetUtil(btn_sameWidth[0]).addSelectionListener(e -> Editor3DWindow.getWindow().getSplitSashForm().setWeights(new int[]{50, 50}));
+        if (btnSameWidthPtr[0] != null) WidgetUtil(btnSameWidthPtr[0]).addSelectionListener(e -> Editor3DWindow.getWindow().getSplitSashForm().setWeights(new int[]{50, 50}));
 
-        WidgetUtil(btn_New[0]).addSelectionListener(e -> {
+        WidgetUtil(btnNewPtr[0]).addSelectionListener(e -> {
             final boolean isSyncTabs = WorkbenchManager.getUserSettingState().isSyncingTabs();
             DatFile df;
             if (isSyncTabs) {
-                df = Editor3DWindow.getWindow().createNewDatFile(btn_New[0].getShell(), OpenInWhat.EDITOR_3D);
+                df = Editor3DWindow.getWindow().createNewDatFile(btnNewPtr[0].getShell(), OpenInWhat.EDITOR_3D);
             } else {
-                df = Editor3DWindow.getWindow().createNewDatFile(btn_New[0].getShell(), OpenInWhat.EDITOR_TEXT);
+                df = Editor3DWindow.getWindow().createNewDatFile(btnNewPtr[0].getShell(), OpenInWhat.EDITOR_TEXT);
             }
             if (df != null && isSyncTabs && !Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, editorTextWindow)) {
                 final File f = new File(df.getNewName());
@@ -541,9 +541,9 @@ public class EditorTextWindow extends EditorTextDesign {
                 }
             }
         });
-        WidgetUtil(btn_Open[0]).addSelectionListener(e -> {
+        WidgetUtil(btnOpenPtr[0]).addSelectionListener(e -> {
 
-            FileDialog fd = new FileDialog(btn_Open[0].getShell(), SWT.MULTI);
+            FileDialog fd = new FileDialog(btnOpenPtr[0].getShell(), SWT.MULTI);
             fd.setText(I18n.E3D_OPEN_DAT_FILE);
 
             fd.setFilterPath(Project.getLastVisitedPath());
@@ -587,7 +587,7 @@ public class EditorTextWindow extends EditorTextDesign {
             Editor3DWindow.getWindow().cleanupClosedData();
             Editor3DWindow.getWindow().updateTree_unsavedEntries();
         });
-        WidgetUtil(btn_Save[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSavePtr[0]).addSelectionListener(e -> {
             final CompositeTab ct = (CompositeTab) tabFolder[0].getSelection();
             if (ct != null) {
                 CompositeTabState state = ct.getState();
@@ -602,7 +602,7 @@ public class EditorTextWindow extends EditorTextDesign {
                         Editor3DWindow.getWindow().updateTree_unsavedEntries();
                         ((CompositeTab) tabFolder[0].getSelection()).getTextComposite().setText(state.getFileNameObj().getText());
                     } else {
-                        MessageBox messageBoxError = new MessageBox(btn_Save[0].getShell(), SWT.ICON_ERROR | SWT.OK);
+                        MessageBox messageBoxError = new MessageBox(btnSavePtr[0].getShell(), SWT.ICON_ERROR | SWT.OK);
                         messageBoxError.setText(I18n.DIALOG_ERROR);
                         messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                     }
@@ -611,17 +611,17 @@ public class EditorTextWindow extends EditorTextDesign {
                 ct.getTextComposite().forceFocus();
             }
         });
-        WidgetUtil(btn_SaveAs[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSaveAsPtr[0]).addSelectionListener(e -> {
             if (tabFolder[0].getSelection() != null) {
                 saveAs(((CompositeTab) tabFolder[0].getSelection()).getState().getFileNameObj(), null, null);
             }
         });
-        WidgetUtil(btn_Cut[0]).addSelectionListener(e -> tabFolder[0].cut());
-        WidgetUtil(btn_Copy[0]).addSelectionListener(e -> tabFolder[0].copy());
-        WidgetUtil(btn_Paste[0]).addSelectionListener(e -> tabFolder[0].paste());
-        WidgetUtil(btn_Delete[0]).addSelectionListener(e -> tabFolder[0].delete());
+        WidgetUtil(btnCutPtr[0]).addSelectionListener(e -> tabFolder[0].cut());
+        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e -> tabFolder[0].copy());
+        WidgetUtil(btnPastePtr[0]).addSelectionListener(e -> tabFolder[0].paste());
+        WidgetUtil(btnDeletePtr[0]).addSelectionListener(e -> tabFolder[0].delete());
 
-        WidgetUtil(btn_Undo[0]).addSelectionListener(e -> {
+        WidgetUtil(btnUndoPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -631,7 +631,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_Redo[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRedoPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -641,8 +641,8 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        if (NLogger.DEBUG) {
-            WidgetUtil(btn_AddHistory[0]).addSelectionListener(e -> {
+        if (NLogger.debugging) {
+            WidgetUtil(btnAddHistoryPtr[0]).addSelectionListener(e -> {
                 CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
                 if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                     if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -653,7 +653,7 @@ public class EditorTextWindow extends EditorTextDesign {
             });
         }
 
-        WidgetUtil(btn_SyncEdit[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSyncEditPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -687,7 +687,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_Inline[0]).addSelectionListener(e -> {
+        WidgetUtil(btnInlinePtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -711,7 +711,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_InlineDeep[0]).addSelectionListener(e -> {
+        WidgetUtil(btnInlineDeepPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -735,7 +735,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_Annotate[0]).addSelectionListener(e -> {
+        WidgetUtil(btnAnnotatePtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -761,7 +761,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_Texmap[0]).addSelectionListener(e -> {
+        WidgetUtil(btnTexmapPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -787,7 +787,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_ShowSelectionIn3D[0]).addSelectionListener(e -> {
+        WidgetUtil(btnShowSelectionIn3DPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -810,7 +810,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_OpenIn3D[0]).addSelectionListener(e -> {
+        WidgetUtil(btnOpenIn3DPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -821,21 +821,21 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_FindAndReplace[0]).addSelectionListener(e -> {
+        WidgetUtil(btnFindAndReplacePtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null) {
                 SearchWindow win = Editor3DWindow.getWindow().getSearchWindow();
                 if (win != null) {
                     win.close();
                 }
-                Editor3DWindow.getWindow().setSearchWindow(new SearchWindow(btn_FindAndReplace[0].getShell()));
+                Editor3DWindow.getWindow().setSearchWindow(new SearchWindow(btnFindAndReplacePtr[0].getShell()));
                 Editor3DWindow.getWindow().getSearchWindow().run();
                 Editor3DWindow.getWindow().getSearchWindow().setTextComposite(selection);
                 Editor3DWindow.getWindow().getSearchWindow().setScopeToAll();
             }
         });
 
-        WidgetUtil(btn_Sort[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSortPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -851,13 +851,13 @@ public class EditorTextWindow extends EditorTextDesign {
                 toLine++;
                 NLogger.debug(getClass(), "From line {0}", fromLine); //$NON-NLS-1$
                 NLogger.debug(getClass(), "To   line {0}", toLine); //$NON-NLS-1$
-                final SortDialog sd = new SortDialog(btn_Sort[0].getShell(), fromLine, toLine, selection.getState().getFileNameObj());
+                final SortDialog sd = new SortDialog(btnSortPtr[0].getShell(), fromLine, toLine, selection.getState().getFileNameObj());
                 sd.open();
                 st.forceFocus();
             }
         });
 
-        WidgetUtil(btn_SplitQuad[0]).addSelectionListener(e -> {
+        WidgetUtil(btnSplitQuadPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -878,7 +878,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_MergeQuad[0]).addSelectionListener(e -> {
+        WidgetUtil(btnMergeQuadPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -899,7 +899,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_Unrectify[0]).addSelectionListener(e -> {
+        WidgetUtil(btnUnrectifyPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -918,9 +918,9 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_Palette[0]).addSelectionListener(e -> {
+        WidgetUtil(btnPalettePtr[0]).addSelectionListener(e -> {
             final GColour[] gColour2 = new GColour[1];
-            new ColourDialog(btn_Palette[0].getShell(), gColour2, true).run();
+            new ColourDialog(btnPalettePtr[0].getShell(), gColour2, true).run();
             if (gColour2[0] != null) {
                 int num = gColour2[0].getColourNumber();
                 if (!View.hasLDConfigColour(num)) {
@@ -948,7 +948,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_InlineLinked[0]).addSelectionListener(e -> {
+        WidgetUtil(btnInlineLinkedPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -971,7 +971,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 st.forceFocus();
             }
         });
-        WidgetUtil(btn_BFCswap[0]).addSelectionListener(e -> {
+        WidgetUtil(btnBFCswapPtr[0]).addSelectionListener(e -> {
 
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null) {
@@ -995,7 +995,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 st.forceFocus();
             }
         });
-        WidgetUtil(btn_CompileSubfile[0]).addSelectionListener(e -> {
+        WidgetUtil(btnCompileSubfilePtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
@@ -1006,14 +1006,14 @@ public class EditorTextWindow extends EditorTextDesign {
                 st.forceFocus();
             }
         });
-        WidgetUtil(btn_RoundSelection[0]).addSelectionListener(e -> {
+        WidgetUtil(btnRoundSelectionPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null && !selection.getState().getFileNameObj().isReadOnly()) {
                 if (!selection.getState().getFileNameObj().getVertexManager().isUpdated()){
                     return;
                 }
                 if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
-                    if (new RoundDialog(btn_RoundSelection[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
+                    if (new RoundDialog(btnRoundSelectionPtr[0].getShell()).open() == IDialogConstants.CANCEL_ID) return;
                 }
                 NLogger.debug(getClass(), "Rounding.."); //$NON-NLS-1$
                 final StyledText st = selection.getTextComposite();
@@ -1030,21 +1030,21 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        WidgetUtil(btn_ShowErrors[0]).addSelectionListener(e -> {
+        WidgetUtil(btnShowErrorsPtr[0]).addSelectionListener(e -> {
             CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
             if (selection != null) {
                 selection.toggleErrorTabVisibility();
             }
         });
 
-        WidgetUtil(btn_Hide[0]).addSelectionListener(e -> {
+        WidgetUtil(btnHidePtr[0]).addSelectionListener(e -> {
             CompositeTab selectedTab = (CompositeTab) tabFolder[0].getSelection();
             if (selectedTab != null) {
                 selectedTab.hideSelection();
             }
         });
 
-        WidgetUtil(btn_Show[0]).addSelectionListener(e -> {
+        WidgetUtil(btnShowPtr[0]).addSelectionListener(e -> {
             CompositeTab selectedTab = (CompositeTab) tabFolder[0].getSelection();
             if (selectedTab != null) {
                 selectedTab.showSelection();
@@ -1219,7 +1219,7 @@ public class EditorTextWindow extends EditorTextDesign {
     }
 
     public boolean saveAs(DatFile dfToSave, String name, String filePath) {
-        FileDialog fd = new FileDialog(btn_SaveAs[0].getShell(), SWT.SAVE);
+        FileDialog fd = new FileDialog(btnSaveAsPtr[0].getShell(), SWT.SAVE);
         fd.setText(I18n.E3D_SAVE_DAT_FILE_AS);
         fd.setOverwrite(true);
 
@@ -1252,7 +1252,7 @@ public class EditorTextWindow extends EditorTextDesign {
                 if (selected != null) {
 
                     if (Editor3DWindow.getWindow().isFileNameAllocated(selected, new DatFile(selected), true)) {
-                        MessageBox messageBox = new MessageBox(btn_SaveAs[0].getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
+                        MessageBox messageBox = new MessageBox(btnSaveAsPtr[0].getShell(), SWT.ICON_ERROR | SWT.RETRY | SWT.CANCEL);
                         messageBox.setText(I18n.DIALOG_ALREADY_ALLOCATED_NAME_TITLE);
                         messageBox.setMessage(I18n.DIALOG_ALREADY_ALLOCATED_NAME);
 

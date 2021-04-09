@@ -47,12 +47,12 @@ class Txt2DatDesign extends Dialog {
     final Txt2DatSettings ts;
 
     // Use final only for subclass/listener references!
-    final NButton[] btn_chooseFont = new NButton[1];
-    final BigDecimalSpinner[] spn_flatness = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_interpolateFlatness = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_fontHeight = new BigDecimalSpinner[1];
-    final BigDecimalSpinner[] spn_deltaAngle = new BigDecimalSpinner[1];
-    final Text[] txt_text = new Text[1];
+    final NButton[] btnChooseFontPtr = new NButton[1];
+    final BigDecimalSpinner[] spnFlatnessPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnInterpolateFlatnessPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnFontHeightPtr = new BigDecimalSpinner[1];
+    final BigDecimalSpinner[] spnDeltaAnglePtr = new BigDecimalSpinner[1];
+    final Text[] txtTextPtr = new Text[1];
 
     Txt2DatDesign(Shell parentShell, Txt2DatSettings ts) {
         super(parentShell);
@@ -81,7 +81,7 @@ class Txt2DatDesign extends Dialog {
         lblCoordsPrec.setText(I18n.TXT2DAT_FONT);
 
         NButton spnVequ = new NButton(cmpContainer, SWT.NONE);
-        this.btn_chooseFont[0] = spnVequ;
+        this.btnChooseFontPtr[0] = spnVequ;
         spnVequ.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnVequ.setText(I18n.TXT2DAT_SELECT);
 
@@ -89,7 +89,7 @@ class Txt2DatDesign extends Dialog {
         lblText.setText(I18n.TXT2DAT_TEXT);
 
         Text txtText = new Text(cmpContainer, SWT.NONE);
-        this.txt_text[0] = txtText;
+        this.txtTextPtr[0] = txtText;
         txtText.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         txtText.setText(ts.getText());
 
@@ -97,7 +97,7 @@ class Txt2DatDesign extends Dialog {
         lblUse180deg.setText(I18n.TXT2DAT_FLATNESS);
 
         BigDecimalSpinner spnFlatness = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_flatness[0] = spnFlatness;
+        this.spnFlatnessPtr[0] = spnFlatness;
         spnFlatness.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnFlatness.setMaximum(new BigDecimal(1000));
         spnFlatness.setMinimum(new BigDecimal(0));
@@ -107,7 +107,7 @@ class Txt2DatDesign extends Dialog {
         lblAf.setText(I18n.TXT2DAT_INTERPOLATE_FLATNESS);
 
         BigDecimalSpinner spnInterpolateFlatness = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_interpolateFlatness[0] = spnInterpolateFlatness;
+        this.spnInterpolateFlatnessPtr[0] = spnInterpolateFlatness;
         spnInterpolateFlatness.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnInterpolateFlatness.setMaximum(new BigDecimal(1000));
         spnInterpolateFlatness.setMinimum(new BigDecimal(0));
@@ -117,7 +117,7 @@ class Txt2DatDesign extends Dialog {
         lblAc.setText(I18n.TXT2DAT_FONT_HEIGHT);
 
         BigDecimalSpinner spnFontHeight = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_fontHeight[0] = spnFontHeight;
+        this.spnFontHeightPtr[0] = spnFontHeight;
         spnFontHeight.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnFontHeight.setMaximum(new BigDecimal(10000));
         spnFontHeight.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
@@ -126,7 +126,7 @@ class Txt2DatDesign extends Dialog {
         Label lblAe = new Label(cmpContainer, SWT.NONE);
         lblAe.setText(I18n.TXT2DAT_ANGLE);
         BigDecimalSpinner spnDeltaAngle = new BigDecimalSpinner(cmpContainer, SWT.NONE);
-        this.spn_deltaAngle[0] = spnDeltaAngle;
+        this.spnDeltaAnglePtr[0] = spnDeltaAngle;
         spnDeltaAngle.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         spnDeltaAngle.setMaximum(new BigDecimal(30));
         spnDeltaAngle.setMinimum(new BigDecimal(0));

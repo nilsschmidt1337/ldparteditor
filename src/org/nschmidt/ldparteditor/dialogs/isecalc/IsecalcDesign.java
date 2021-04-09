@@ -41,7 +41,7 @@ import org.nschmidt.ldparteditor.i18n.I18n;
 class IsecalcDesign extends Dialog {
 
     final IsecalcSettings is;
-    final Combo[] cmb_scope = new Combo[1];
+    final Combo[] cmbScopePtr = new Combo[1];
 
     // Use final only for subclass/listener references!
 
@@ -69,7 +69,7 @@ class IsecalcDesign extends Dialog {
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
-        this.cmb_scope[0] = cmbScope;
+        this.cmbScopePtr[0] = cmbScope;
         cmbScope.setItems(new String[] {I18n.ISECALC_SCOPE_FILE, I18n.ISECALC_SCOPE_SELECTION});
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(is.getScope()));

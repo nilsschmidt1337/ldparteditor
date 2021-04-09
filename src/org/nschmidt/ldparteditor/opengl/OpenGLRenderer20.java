@@ -86,8 +86,8 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     /** The transformation matrix buffer of the view [NOT PUBLIC YET] */
     private final FloatBuffer viewport = BufferUtils.createFloatBuffer(16);
     private final FloatBuffer rotation = BufferUtils.createFloatBuffer(16);
-    private final FloatBuffer rotation_inv = BufferUtils.createFloatBuffer(16);
-    private final Matrix4f rotation_inv4f = new Matrix4f();
+    private final FloatBuffer rotationInv = BufferUtils.createFloatBuffer(16);
+    private final Matrix4f rotationInv4f = new Matrix4f();
 
     private final float[][][] renderedPoints = new float[1][][];
     private final float[][] solidColours = new float[1][];
@@ -107,7 +107,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
     private static long hoverSettingsTime = System.currentTimeMillis();
 
     public FloatBuffer getRotationInverse() {
-        return rotation_inv;
+        return rotationInv;
     }
 
     public OpenGLRenderer20(Composite3D c3d) {
@@ -288,9 +288,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
             Matrix4f viewportRotation = c3d.getRotation();
             viewportRotation.store(rotation);
             rotation.flip();
-            Matrix4f.load(viewportRotation, rotation_inv4f);
-            ((Matrix4f) rotation_inv4f.invert()).store(rotation_inv);
-            rotation_inv.flip();
+            Matrix4f.load(viewportRotation, rotationInv4f);
+            ((Matrix4f) rotationInv4f.invert()).store(rotationInv);
+            rotationInv.flip();
             Matrix4f.mul(viewportRotation, viewportTransform, viewportTransform);
             Matrix4f viewportTranslation = c3d.getTranslation();
             Matrix4f.mul(viewportTransform, viewportTranslation, viewportTransform);
