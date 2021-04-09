@@ -92,7 +92,7 @@ public final class PGData4 extends PGData implements Serializable {
     }
 
     @Override
-    public void drawBFCprimitive_GL20(int drawOnlyMode) {
+    public void drawBFCprimitiveGL20(int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case CCW:
@@ -253,7 +253,7 @@ public final class PGData4 extends PGData implements Serializable {
     }
 
     @Override
-    public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case CCW:
@@ -398,7 +398,7 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[45] = vertices[27];
             vertices[46] = vertices[28];
             vertices[47] = vertices[29];
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_Quad(vertices, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGBquad(vertices, indices);
             break;
         case NOCERTIFY:
             indices[0] = 0;
@@ -437,7 +437,7 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[45] = vertices[3];
             vertices[46] = vertices[4];
             vertices[47] = vertices[5];
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_Quad(vertices, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGBquad(vertices, indices);
             break;
         case NOCLIP:
             indices[0] = 0;
@@ -476,7 +476,7 @@ public final class PGData4 extends PGData implements Serializable {
             vertices[45] = vertices[3];
             vertices[46] = vertices[4];
             vertices[47] = vertices[5];
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_Quad(vertices, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGBquad(vertices, indices);
         default:
             break;
         }

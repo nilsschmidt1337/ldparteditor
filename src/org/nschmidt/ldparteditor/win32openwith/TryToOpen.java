@@ -42,7 +42,7 @@ public enum TryToOpen {
      * @param path the path to the file
      * @return a {@linkplain FileActionResult} which indicates if the file was not found/accessible, if it will be opened or if it was delegated to another LDPE instance
      */
-    public static FileActionResult File(String path) {
+    public static FileActionResult file(String path) {
 
         FileActionResult result = FILE_NOT_FOUND;
 

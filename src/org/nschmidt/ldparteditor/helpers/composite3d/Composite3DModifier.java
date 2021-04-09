@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers.composite3d;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.File;
 import java.util.Locale;
@@ -401,7 +401,7 @@ public class Composite3DModifier {
                 btnOpenIn3DEditor.setLayoutData(gd);
                 btnOpenIn3DEditor.setData(Project.getFileToEdit());
 
-                WidgetUtil(btnOpenIn3DEditor).addSelectionListener(e -> {
+                widgetUtil(btnOpenIn3DEditor).addSelectionListener(e -> {
                     DatFile df = (DatFile) btnOpenIn3DEditor.getData();
                     if (df == null) {
                         df = View.DUMMY_DATFILE;
@@ -519,10 +519,10 @@ public class Composite3DModifier {
         } else {
             c3d.setZoom(b.height / (maxY * 4f * View.PIXEL_PER_LDU));
         }
-        pc.setZoom_exponent((float) (Math.log10(c3d.getZoom()) + 3f) * 10f);
+        pc.setZoomExponent((float) (Math.log10(c3d.getZoom()) + 3f) * 10f);
 
-        if (Float.isInfinite(c3d.getZoom()) || Float.isInfinite(pc.getZoom_exponent()) || Float.isNaN(c3d.getZoom()) || Float.isNaN(pc.getZoom_exponent())) {
-            pc.setZoom_exponent(-20f);
+        if (Float.isInfinite(c3d.getZoom()) || Float.isInfinite(pc.getZoomExponent()) || Float.isNaN(c3d.getZoom()) || Float.isNaN(pc.getZoomExponent())) {
+            pc.setZoomExponent(-20f);
             c3d.setZoom((float) Math.pow(10.0d, -20f / 10 - 3));
         }
 
@@ -539,7 +539,7 @@ public class Composite3DModifier {
                 Composite3D c3d2 = renderer.getC3D();
                 if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
                     c3d2.setZoom(c3d.getZoom());
-                    c3d2.getPerspectiveCalculator().setZoom_exponent(c3d.getPerspectiveCalculator().getZoom_exponent());
+                    c3d2.getPerspectiveCalculator().setZoomExponent(c3d.getPerspectiveCalculator().getZoomExponent());
                     c3d2.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
                     ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();

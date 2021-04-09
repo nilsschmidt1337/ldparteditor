@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.intersector;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -48,7 +48,7 @@ public class IntersectorDialog extends IntersectorDesign {
         // MARK All final listeners will be configured here..
         cmbScope[0].addListener(SWT.Selection, event -> ins.setScope(cmbScope[0].getSelectionIndex()));
         cmbColourise[0].addListener(SWT.Selection, event -> ins.setColourise(cmbColourise[0].getSelectionIndex() == 1));
-        WidgetUtil(btnHideOther[0]).addSelectionListener(e -> ins.setHidingOther(btnHideOther[0].getSelection()));
+        widgetUtil(btnHideOther[0]).addSelectionListener(e -> ins.setHidingOther(btnHideOther[0].getSelection()));
         return super.open();
     }
 

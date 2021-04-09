@@ -68,7 +68,7 @@ public final class VertexManager extends VM99Clipboard {
         if (!linkedDatFile.isDrawSelection()) return;
 
         Matrix4f vm = c3d.getViewport();
-        Matrix4f ivm = c3d.getViewport_Inverse();
+        Matrix4f ivm = c3d.getViewportInverse();
         Set<Vertex> tmpHiddenVertices = c3d.getTmpHiddenVertices();
 
         Manipulator manipulator = c3d.getManipulator();
@@ -258,7 +258,7 @@ public final class VertexManager extends VM99Clipboard {
                                     }
                                 }
                                 GL11.glMultMatrixf(matrixInv);
-                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, gd3.r, gd3.g, gd3.b, 0f), false).drawProtractor_GL20(true, c3d, triverts[0].xp, triverts[0].yp, triverts[0].zp, triverts[1].xp, triverts[1].yp, triverts[1].zp, triverts[2].xp, triverts[2].yp, triverts[2].zp);
+                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, gd3.r, gd3.g, gd3.b, 0f), false).drawProtractorGL20(true, c3d, triverts[0].xp, triverts[0].yp, triverts[0].zp, triverts[1].xp, triverts[1].yp, triverts[1].zp, triverts[2].xp, triverts[2].yp, triverts[2].zp);
                                 GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
@@ -380,7 +380,7 @@ public final class VertexManager extends VM99Clipboard {
                             nz = (triverts[2].x - triverts[0].x) * (triverts[1].y - triverts[0].y) - (triverts[2].y - triverts[0].y) * (triverts[1].x - triverts[0].x);
                             if (!gd3.isTriangle) {
                                 GL11.glMultMatrixf(matrixInv);
-                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, gd3.r, gd3.g, gd3.b, 0f), false).drawProtractor_GL20(true, c3d, triverts[0].xp, triverts[0].yp, triverts[0].zp, triverts[1].xp, triverts[1].yp, triverts[1].zp, triverts[2].xp, triverts[2].yp, triverts[2].zp);
+                                new GData3(triverts2[0], triverts2[1], triverts2[2], null, new GColour(16, gd3.r, gd3.g, gd3.b, 0f), false).drawProtractorGL20(true, c3d, triverts[0].xp, triverts[0].yp, triverts[0].zp, triverts[1].xp, triverts[1].yp, triverts[1].zp, triverts[2].xp, triverts[2].yp, triverts[2].zp);
                                 GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
@@ -763,7 +763,7 @@ public final class VertexManager extends VM99Clipboard {
                                     lineverts[i1] = new Vertex(res.x, res.y, res.z);
                                 }
                                 GL11.glMultMatrixf(matrixInv);
-                                new GData3(dataVerts[0], dataVerts[1], dataVerts[2], null, new GColour(16, tri.r, tri.g, tri.b, 0f), false).drawProtractor_GL20(true, c3d, lineverts[0].xp, lineverts[0].yp, lineverts[0].zp, lineverts[1].xp, lineverts[1].yp, lineverts[1].zp, lineverts[2].xp, lineverts[2].yp, lineverts[2].zp);
+                                new GData3(dataVerts[0], dataVerts[1], dataVerts[2], null, new GColour(16, tri.r, tri.g, tri.b, 0f), false).drawProtractorGL20(true, c3d, lineverts[0].xp, lineverts[0].yp, lineverts[0].zp, lineverts[1].xp, lineverts[1].yp, lineverts[1].zp, lineverts[2].xp, lineverts[2].yp, lineverts[2].zp);
                                 GL11.glMultMatrixf(matrix);
                                 GL11.glBegin(GL11.GL_LINES);
                                 GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
@@ -888,7 +888,7 @@ public final class VertexManager extends VM99Clipboard {
                 triQuadVerts[i] = tvertex;
                 i++;
             }
-            if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
+            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
                 if (dist[0] < minDist) {
                     minDist = dist[0];
                     minPoint.set(point);
@@ -905,7 +905,7 @@ public final class VertexManager extends VM99Clipboard {
                 triQuadVerts[1] = new Vertex(triangle.x2, triangle.y2, triangle.z2);
                 triQuadVerts[2] = new Vertex(triangle.x3, triangle.y3, triangle.z3);
 
-                if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
+                if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
                     if (dist[0] < minDist) {
                         minDist = dist[0];
                         minPoint.set(point);
@@ -924,8 +924,8 @@ public final class VertexManager extends VM99Clipboard {
                 triQuadVerts[i] = tvertex;
                 i++;
             }
-            if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
-                    || powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist)) {
+            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
+                    || powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist)) {
                 if (dist[0] < minDist) {
                     minDist = dist[0];
                     minPoint.set(point);

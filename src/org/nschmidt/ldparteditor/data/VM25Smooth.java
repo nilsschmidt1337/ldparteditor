@@ -62,7 +62,7 @@ class VM25Smooth extends VM24MeshReducer {
         }
 
         if (!selectedVertices.isEmpty()) {
-            setModified_NoSync();
+            setModifiedNoSync();
             linkedDatFile.getVertexManager().restoreHideShowState();
             syncWithTextEditors(true);
             updateUnsavedStatus();

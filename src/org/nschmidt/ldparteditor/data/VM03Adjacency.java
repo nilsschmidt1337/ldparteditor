@@ -832,7 +832,7 @@ class VM03Adjacency extends VM02Add {
             // 3. Rounding of the selected data (no whole subfiles!!)
             // + selectedData update!
             if (!singleVertices.isEmpty()) {
-                setModified_NoSync();
+                setModifiedNoSync();
             }
             for (Vertex vOld : singleVertices) {
                 Vertex vNew = new Vertex(onX ? vOld.xp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.xp, onY ? vOld.yp.setScale(coordsDecimalPlaces, RoundingMode.HALF_UP) : vOld.yp, onZ ? vOld.zp.setScale(coordsDecimalPlaces,
@@ -842,7 +842,7 @@ class VM03Adjacency extends VM02Add {
 
             // 4. Subfile Based Rounding & Selection
             if (!selectedSubfiles.isEmpty()) {
-                HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+                HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
                 HashSet<GData1> newSubfiles = new HashSet<>();
                 for (GData1 subf : selectedSubfiles) {
                     String roundedString = subf.getRoundedString(coordsDecimalPlaces, matrixDecimalPlaces, onX, onY, onZ);
@@ -897,12 +897,12 @@ class VM03Adjacency extends VM02Add {
                         }
                     }
                 }
-                setModified_NoSync();
+                setModifiedNoSync();
             }
 
             if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
                 HashSet<GDataCSG> newCSGSelection = new HashSet<>();
-                HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+                HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
                 for (GDataCSG csg : GDataCSG.getSelection(linkedDatFile)) {
                     if (csg.type == CSG.COMPILE || csg.type == CSG.QUALITY || csg.type == CSG.UNION || csg.type == CSG.DIFFERENCE || csg.type == CSG.INTERSECTION  || csg.type == CSG.EPSILON || csg.type == CSG.TJUNCTION || csg.type == CSG.COLLAPSE || csg.type == CSG.DONTOPTIMIZE || csg.type == CSG.EXTRUDE_CFG) {
                         continue;
@@ -935,7 +935,7 @@ class VM03Adjacency extends VM02Add {
                 }
                 GDataCSG.getSelection(linkedDatFile).clear();
                 GDataCSG.getSelection(linkedDatFile).addAll(newCSGSelection);
-                setModified_NoSync();
+                setModifiedNoSync();
             }
 
             if (isModified()) {

@@ -314,17 +314,17 @@ public enum TexMapParser {
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            return parse_Comment(line, dataSegments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
+            return parseComment(line, dataSegments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
         case 1:
-            return parse_Reference(dataSegments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
+            return parseReference(dataSegments, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
         case 2:
-            return parse_Line(dataSegments, r, g, b, a, parent);
+            return parseLine(dataSegments, r, g, b, a, parent);
         case 3:
-            return parse_Triangle(dataSegments, r, g, b, a, parent);
+            return parseTriangle(dataSegments, r, g, b, a, parent);
         case 4:
-            return parse_Quad(dataSegments, r, g, b, a, parent);
+            return parseQuad(dataSegments, r, g, b, a, parent);
         case 5:
-            return parse_Condline(dataSegments, r, g, b, a, parent);
+            return parseCondline(dataSegments, r, g, b, a, parent);
         default:
             break;
         }
@@ -384,7 +384,7 @@ public enum TexMapParser {
         return cValue;
     }
 
-    private static GData parse_Comment(String line, String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
+    private static GData parseComment(String line, String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
         if (line.startsWith("0 !: ")) { //$NON-NLS-1$
             return TexMapParser.parseGeometry(line, depth, r, g, b, a, parent, productMatrix, alreadyParsed, datFile);
@@ -425,7 +425,7 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Reference(String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
+    private static GData parseReference(String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Set<String> alreadyParsed, DatFile datFile) {
         if (dataSegments.length < 15) {
             return null;
         } else {
@@ -596,7 +596,7 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Line(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
+    private static GData parseLine(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
         if (dataSegments.length != 8) {
             return null;
         } else {
@@ -620,7 +620,7 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Triangle(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
+    private static GData parseTriangle(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
         if (dataSegments.length != 11) {
             return null;
         } else {
@@ -649,7 +649,7 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Quad(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
+    private static GData parseQuad(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
         if (dataSegments.length != 14) {
             return null;
         } else {
@@ -677,7 +677,7 @@ public enum TexMapParser {
         }
     }
 
-    private static GData parse_Condline(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
+    private static GData parseCondline(String[] dataSegments, float r, float g, float b, float a, GData1 parent) {
         if (dataSegments.length != 14) {
             return null;
         } else {

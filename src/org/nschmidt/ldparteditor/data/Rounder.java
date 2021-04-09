@@ -74,7 +74,7 @@ public enum Rounder {
             st.setToReplaceY(vNew.yp);
             st.setToReplaceZ(vNew.zp);
             vm.setVertexToReplace(vNew);
-            vm.setModified_NoSync();
+            vm.setModifiedNoSync();
             datFile.getVertexManager().restoreHideShowState();
             datFile.getVertexManager().syncWithTextEditors(true);
 

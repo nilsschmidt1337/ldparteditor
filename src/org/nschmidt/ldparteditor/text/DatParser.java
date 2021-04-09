@@ -102,22 +102,22 @@ public enum DatParser {
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            result.addAll(parse_Comment(line, dataSegments, depth, r, g, b, a, parent, productMatrix, datFile, errorCheckOnly, alreadyParsed));
+            result.addAll(parseComment(line, dataSegments, depth, r, g, b, a, parent, productMatrix, datFile, errorCheckOnly, alreadyParsed));
             break;
         case 1:
-            result.addAll(parse_Reference(dataSegments, depth, r, g, b, a, parent, productMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed, lineNumber));
+            result.addAll(parseReference(dataSegments, depth, r, g, b, a, parent, productMatrix, accurateProductMatrix, datFile, errorCheckOnly, alreadyParsed, lineNumber));
             break;
         case 2:
-            result.addAll(parse_Line(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly));
+            result.addAll(parseLine(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly));
             break;
         case 3:
-            result.addAll(parse_Triangle(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
+            result.addAll(parseTriangle(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
             break;
         case 4:
-            result.addAll(parse_Quad(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
+            result.addAll(parseQuad(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
             break;
         case 5:
-            result.addAll(parse_Condline(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
+            result.addAll(parseCondline(dataSegments, r, g, b, a, parent, datFile, errorCheckOnly, depth));
             break;
         default:
             // Mark unknown linetypes as error
@@ -244,7 +244,7 @@ public enum DatParser {
      *
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Comment(String line, String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, DatFile datFile,
+    private static ArrayList<ParsingResult> parseComment(String line, String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, DatFile datFile,
             boolean errorCheckOnly, Set<String> alreadyParsed) {
 
         ArrayList<ParsingResult> result = new ArrayList<>();
@@ -514,7 +514,7 @@ public enum DatParser {
      *
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Reference(String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
+    private static ArrayList<ParsingResult> parseReference(String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed, int lineNumber) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         boolean parseError = false;
@@ -715,7 +715,7 @@ public enum DatParser {
                             g1 = result.get(0).getGraphicalData();
                         }
                         if (g1 == null) {
-                            g1 = datFile.getDrawPerLine_NOCLONE().getValue(lineNumber);
+                            g1 = datFile.getDrawPerLineNoClone().getValue(lineNumber);
                         }
                         if (g1 != null && g1.type() == 1) {
                             result.addAll(datFile.getVertexManager().checkForFlatScaling((GData1) g1));
@@ -778,7 +778,7 @@ public enum DatParser {
                             g1 = result.get(0).getGraphicalData();
                         }
                         if (g1 == null) {
-                            g1 = datFile.getDrawPerLine_NOCLONE().getValue(lineNumber);
+                            g1 = datFile.getDrawPerLineNoClone().getValue(lineNumber);
                         }
                         if (g1 != null && g1.type() == 1) {
                             result.addAll(datFile.getVertexManager().checkForFlatScaling((GData1) g1));
@@ -832,7 +832,7 @@ public enum DatParser {
      * @param errorCheckOnly
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Line(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly) {
+    private static ArrayList<ParsingResult> parseLine(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         boolean parseError = false;
         // [ERROR] Check argument count
@@ -899,7 +899,7 @@ public enum DatParser {
      * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Triangle(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
+    private static ArrayList<ParsingResult> parseTriangle(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
         if (dataSegments.length != 11) {
@@ -1001,7 +1001,7 @@ public enum DatParser {
      * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Quad(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
+    private static ArrayList<ParsingResult> parseQuad(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
         if (dataSegments.length != 14) {
@@ -1205,7 +1205,7 @@ public enum DatParser {
      * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parse_Condline(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
+    private static ArrayList<ParsingResult> parseCondline(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
         ArrayList<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
         if (dataSegments.length != 14) {

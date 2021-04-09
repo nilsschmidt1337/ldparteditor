@@ -561,7 +561,7 @@ public enum RingsAndCones {
             vm.setModified(true, true);
             vm.validateState();
         } else {
-            vm.setModified_NoSync();
+            vm.setModifiedNoSync();
         }
 
     }

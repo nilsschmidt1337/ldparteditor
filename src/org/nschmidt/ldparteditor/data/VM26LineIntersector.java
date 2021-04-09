@@ -166,7 +166,7 @@ class VM26LineIntersector extends VM25Smooth {
         }
 
         if (!intersectionPoints.isEmpty()) {
-            setModified_NoSync();
+            setModifiedNoSync();
             syncWithTextEditors(true);
             updateUnsavedStatus();
         }

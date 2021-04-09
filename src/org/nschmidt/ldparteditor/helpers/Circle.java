@@ -319,7 +319,7 @@ public class Circle {
             j += 2;
         }
 
-        GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
+        GL33Helper.drawTrianglesIndexedRGBgeneralSlow(vertexData, indices);
 
         stack.glPopMatrix();
     }

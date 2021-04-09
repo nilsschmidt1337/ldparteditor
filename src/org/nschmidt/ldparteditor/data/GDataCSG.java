@@ -580,7 +580,7 @@ public final class GDataCSG extends GData {
             if (c3d.getRenderMode() != 5) {
                 compiledCSG.draw(c3d, df);
             } else {
-                compiledCSG.draw_textured(c3d, df);
+                compiledCSG.drawTextured(c3d, df);
             }
         }
     }
@@ -595,47 +595,47 @@ public final class GDataCSG extends GData {
     }
 
     @Override
-    public synchronized void drawGL20_RandomColours(Composite3D c3d) {
+    public synchronized void drawGL20RandomColours(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawGL20_BFC(Composite3D c3d) {
+    public synchronized void drawGL20BFC(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawGL20_BFCuncertified(Composite3D c3d) {
+    public synchronized void drawGL20BFCuncertified(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawGL20_BFC_backOnly(Composite3D c3d) {
+    public synchronized void drawGL20BFCbackOnly(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawGL20_BFC_Colour(Composite3D c3d) {
+    public synchronized void drawGL20BFCcolour(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawGL20_BFC_Textured(Composite3D c3d) {
+    public synchronized void drawGL20BFCtextured(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public synchronized void drawGL20_WhileAddCondlines(Composite3D c3d) {
+    public synchronized void drawGL20WhileAddCondlines(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+    public void drawGL20CoplanarityHeatmap(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
     @Override
-    public void drawGL20_Wireframe(Composite3D c3d) {
+    public void drawGL20Wireframe(Composite3D c3d) {
         drawAndParse(c3d);
     }
 
@@ -1045,7 +1045,7 @@ public final class GDataCSG extends GData {
             if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
                 selectedTriangles.clear();
             }
-            final Integer selectedBodyID = selectCSG_helper(c3d, event);
+            final Integer selectedBodyID = selectCSGhelper(c3d, event);
             if (selectedBodyID != null) {
                 for (Entry<String, CSG> csg_pair : linkedCSG.putIfAbsent(df, new HashMap<>()).entrySet()) {
                     if (csg_pair.getKey() != null && csg_pair.getKey().endsWith("#>null")) { //$NON-NLS-1$
@@ -1065,10 +1065,10 @@ public final class GDataCSG extends GData {
         }
     }
 
-    private static Integer selectCSG_helper(Composite3D c3d, Event event) {
+    private static Integer selectCSGhelper(Composite3D c3d, Event event) {
         final PowerRay powerRay = new PowerRay();
         final DatFile df = c3d.getLockableDatFileReference();
-        final HashBiMap<Integer, GData> dpl = df.getDrawPerLine_NOCLONE();
+        final HashBiMap<Integer, GData> dpl = df.getDrawPerLineNoClone();
         registeredData.putIfAbsent(df, new HashSet<>());
 
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
@@ -1096,7 +1096,7 @@ public final class GDataCSG extends GData {
                 triQuadVerts[1] = new Vertex(triangle.x2, triangle.y2, triangle.z2);
                 triQuadVerts[2] = new Vertex(triangle.x3, triangle.y3, triangle.z3);
 
-                if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
+                if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
                     if (dist[0] < minDist) {
                         Integer result2 = pair.getValue().id;
                         if (result2 != null) {

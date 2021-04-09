@@ -359,16 +359,16 @@ public enum ReferenceParser {
         // Parse the line according to its type
         switch (linetype) {
         case 0:
-            return parse_Reference(dataSegments, alreadyParsed, true, showNotFoundWarning);
+            return parseReference(dataSegments, alreadyParsed, true, showNotFoundWarning);
         case 1:
-            return parse_Reference(dataSegments, alreadyParsed, false, showNotFoundWarning);
+            return parseReference(dataSegments, alreadyParsed, false, showNotFoundWarning);
         default:
             return null;
         }
 
     }
 
-    private static DatFile parse_Reference(String[] dataSegments, Set<String> alreadyParsed, boolean couldBeTEXMAP, boolean showNotFoundWarning) {
+    private static DatFile parseReference(String[] dataSegments, Set<String> alreadyParsed, boolean couldBeTEXMAP, boolean showNotFoundWarning) {
         final int texmapOffset = couldBeTEXMAP ? 2 : 0;
         if (dataSegments.length >= 15 + texmapOffset) {
             if (couldBeTEXMAP && !"!:".equals(dataSegments[1])) { //$NON-NLS-1$

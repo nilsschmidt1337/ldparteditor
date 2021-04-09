@@ -48,7 +48,7 @@ public enum QuadMerger {
         Text2SelectionConverter.convert(lineStart, lineEnd, datFile);
 
         final Set<GData> sd = datFile.getVertexManager().getSelectedData();
-        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
 
         lineEnd += 1;
         for (int line = lineStart; line < lineEnd; line++) {
@@ -62,7 +62,7 @@ public enum QuadMerger {
 
         vm.restoreSelection();
         vm.restoreHideShowState();
-        vm.setModified_NoSync();
+        vm.setModifiedNoSync();
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {

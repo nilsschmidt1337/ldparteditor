@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.rectifier;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -52,7 +52,7 @@ public class RectifierDialog extends RectifierDesign {
         cmbNoBorderedQuadToRectConversationPtr[0].addListener(SWT.Selection, event -> rs.setNoBorderedQuadToRectConversation(cmbNoBorderedQuadToRectConversationPtr[0].getSelectionIndex() == 1));
         cmbNoQuadConversationPtr[0].addListener(SWT.Selection, event -> rs.setNoQuadConversation(cmbNoQuadConversationPtr[0].getSelectionIndex() == 1));
         cmbNoRectConversationOnAdjacentCondlinesPtr[0].addListener(SWT.Selection, event -> rs.setNoRectConversationOnAdjacentCondlines(cmbNoRectConversationOnAdjacentCondlinesPtr[0].getSelectionIndex() == 1));
-        WidgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> rs.setVerbose(btnVerbosePtr[0].getSelection()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> rs.setVerbose(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

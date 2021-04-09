@@ -207,7 +207,7 @@ public class Arrow {
         GL11.glPopMatrix();
     }
 
-    public void drawGL33_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
+    public void drawGL33rgb(GLMatrixStack stack, float x, float y, float z, float zoom) {
         final float zoom_inv = 1f / zoom;
         stack.glPushMatrix();
 
@@ -224,7 +224,7 @@ public class Arrow {
                     0f, lineEnd, 0f,
                     r, g, b
             };
-            GL33Helper.drawLinesRGB_GeneralSlow(vertexData);
+            GL33Helper.drawLinesRGBgeneralSlow(vertexData);
         }
 
         int[] indices = new int[16 * 3];
@@ -262,7 +262,7 @@ public class Arrow {
                     cone[32], coneStart, cone[33], r, g, b
             };
 
-            GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
+            GL33Helper.drawTrianglesIndexedRGBgeneralSlow(vertexData, indices);
         }
 
         {
@@ -293,7 +293,7 @@ public class Arrow {
                 cone[0], coneStart, cone[1], r, g, b
             };
 
-            GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
+            GL33Helper.drawTrianglesIndexedRGBgeneralSlow(vertexData, indices);
         }
 
         stack.glPopMatrix();

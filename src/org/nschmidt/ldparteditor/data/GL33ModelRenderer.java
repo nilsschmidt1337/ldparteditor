@@ -416,7 +416,7 @@ public class GL33ModelRenderer {
                         hiddenSet.clear();
                         cacheViewByProjection.clear();
 
-                        usesCSG = load_BFC_info(
+                        usesCSG = loadBFCinfo(
                                 dataInOrder, csgData, vertexMap, matrixMap, df,
                                 lines, triangles, quads, condlines, drawStudLogo,
                                 pngImages, tmpDistanceMeters, tmpProtractors);
@@ -2239,7 +2239,7 @@ public class GL33ModelRenderer {
     public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader glyphShader, boolean drawSolidMaterials) {
 
         Matrix4f vm = c3d.getViewport();
-        Matrix4f ivm = c3d.getViewport_Inverse();
+        Matrix4f ivm = c3d.getViewportInverse();
 
         if (dataTriangles == null || dataLines == null || dataVertices == null) {
             return;
@@ -2620,7 +2620,7 @@ public class GL33ModelRenderer {
         GL30.glBindVertexArray(0);
     }
 
-    private boolean load_BFC_info(
+    private boolean loadBFCinfo(
             final ArrayList<GDataAndWinding> dataInOrder,
             final ArrayList<GDataCSG> csgData,
             final HashMap<GData, Vertex[]> vertexMap,

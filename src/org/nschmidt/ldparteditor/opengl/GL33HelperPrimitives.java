@@ -37,7 +37,7 @@ public class GL33HelperPrimitives {
     private static int eboQuadBackup = -1;
     private static int vboLineBackup = -1;
 
-    static void backupVBO_PrimitiveArea() {
+    static void backupVBOprimitiveArea() {
         vboTriangleBackup = vboTriangle;
         eboTriangleBackup = eboTriangle;
         vboQuadBackup = vboQuad;
@@ -45,7 +45,7 @@ public class GL33HelperPrimitives {
         vboLineBackup = vboLine;
     }
 
-    static void restoreVBO_PrimitiveArea() {
+    static void restoreVBOprimitiveArea() {
         vboTriangle = vboTriangleBackup;
         eboTriangle = eboTriangleBackup;
         vboQuad = vboQuadBackup;
@@ -53,7 +53,7 @@ public class GL33HelperPrimitives {
         vboLine = vboLineBackup;
     }
 
-    static void createVBO_PrimitiveArea() {
+    static void createVBOprimitiveArea() {
         vboTriangle = GL15.glGenBuffers();
         eboTriangle = GL15.glGenBuffers();
         vboQuad = GL15.glGenBuffers();
@@ -100,7 +100,7 @@ public class GL33HelperPrimitives {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, 0);
     }
 
-    static void destroyVBO_PrimitiveArea() {
+    static void destroyVBOprimitiveArea() {
         GL15.glDeleteBuffers(vboTriangle);
         GL15.glDeleteBuffers(eboTriangle);
         GL15.glDeleteBuffers(vboQuad);
@@ -108,7 +108,7 @@ public class GL33HelperPrimitives {
         GL15.glDeleteBuffers(vboLine);
     }
 
-    public static void drawTrianglesIndexedRGB_Triangle(float[] vertices, int[] indices) {
+    public static void drawTrianglesIndexedRGBtriangle(float[] vertices, int[] indices) {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboTriangle);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, vertices);
 
@@ -126,7 +126,7 @@ public class GL33HelperPrimitives {
         GL11.glDrawElements(GL11.GL_TRIANGLES, 6, GL11.GL_UNSIGNED_INT, 0);
     }
 
-    public static void drawTrianglesIndexedRGB_Quad(float[] vertices, int[] indices) {
+    public static void drawTrianglesIndexedRGBquad(float[] vertices, int[] indices) {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboQuad);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0 , vertices);
 
@@ -144,7 +144,7 @@ public class GL33HelperPrimitives {
         GL11.glDrawElements(GL11.GL_TRIANGLES, 12, GL11.GL_UNSIGNED_INT, 0);
     }
 
-    public static void drawLinesRGB_Line(float[] vertices) {
+    public static void drawLinesRGBline(float[] vertices) {
         GL15.glBindBuffer(GL15.GL_ARRAY_BUFFER, vboLine);
         GL15.glBufferSubData(GL15.GL_ARRAY_BUFFER, 0, vertices);
 

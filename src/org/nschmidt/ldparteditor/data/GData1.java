@@ -481,9 +481,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1_GL20();
+                        drawStudLogo1GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2_GL20();
+                        drawStudLogo2GL20();
                 }
 
                 GData data2draw = myGData;
@@ -509,7 +509,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL20_RandomColours(Composite3D c3d) {
+    public void drawGL20RandomColours(Composite3D c3d) {
         if (!visible)
             return;
         if (matrix != null) {
@@ -566,20 +566,20 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1_GL20();
+                        drawStudLogo1GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2_GL20();
+                        drawStudLogo2GL20();
                 }
 
                 GData data2draw = myGData;
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20_RandomColours(c3d);
+                        data2draw.drawGL20RandomColours(c3d);
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20_RandomColours(c3d);
+                        data2draw.drawGL20RandomColours(c3d);
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
                 }
@@ -594,203 +594,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC(Composite3D c3d) {
-        if (!visible)
-            return;
-        if (matrix != null) {
-
-            final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
-
-            Vector4f bbmin = new Vector4f();
-            Vector4f bbmax = new Vector4f();
-
-            Vector4f c1 = new Vector4f(boundingBoxMin);
-            Vector4f c2 = new Vector4f(boundingBoxMin);
-            Vector4f c3 = new Vector4f(boundingBoxMin);
-            Vector4f c4 = new Vector4f(boundingBoxMin);
-            Vector4f c5 = new Vector4f(boundingBoxMax);
-            Vector4f c6 = new Vector4f(boundingBoxMax);
-            Vector4f c7 = new Vector4f(boundingBoxMax);
-            Vector4f c8 = new Vector4f(boundingBoxMax);
-
-            c2.x = boundingBoxMax.x;
-            c3.y = boundingBoxMax.y;
-            c4.z = boundingBoxMax.z;
-
-            c6.x = boundingBoxMin.x;
-            c7.y = boundingBoxMin.y;
-            c8.z = boundingBoxMin.z;
-
-            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
-
-            bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
-            bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
-
-            bbmin.y = Math.min(c1.y, Math.min(c2.y, Math.min(c3.y, Math.min(c4.y, Math.min(c5.y, Math.min(c6.y, Math.min(c7.y, c8.y)))))));
-            bbmax.y = Math.max(c1.y, Math.max(c2.y, Math.max(c3.y, Math.max(c4.y, Math.max(c5.y, Math.max(c6.y, Math.max(c7.y, c8.y)))))));
-
-            Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
-
-            BFC tempWinding = GData.localWinding;
-            boolean tempInvertNext = GData.globalInvertNext;
-            boolean tempInvertNextFound = GData.globalInvertNextFound;
-            boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
-
-            GData.globalInvertNextFound = false;
-            GData.localWinding = BFC.NOCERTIFY;
-            GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
-
-            if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
-                    || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
-                    || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
-
-                GL11.glPushMatrix();
-                GL11.glMultMatrixf(matrix);
-
-                if (c3d.isShowingLogo()) {
-                    if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1_GL20();
-                    else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2_GL20();
-                }
-
-                GData data2draw = myGData;
-
-                if (GData.accumClip > 0) {
-                    GData.accumClip++;
-                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20(c3d);
-                    GData.accumClip--;
-                } else {
-                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                        switch (tempWinding) {
-                        case NOCERTIFY:
-                            data2draw.drawGL20_BFCuncertified(c3d);
-                            break;
-                        default:
-                            data2draw.drawGL20_BFC(c3d);
-                            break;
-                        }
-                    }
-                    if (GData.accumClip > 0)
-                        GData.accumClip = 0;
-                }
-
-                GL11.glPopMatrix();
-
-            }
-
-            GData.localWinding = tempWinding;
-            if (tempInvertNextFound)
-                GData.globalInvertNext = !tempInvertNext;
-
-            GData.globalNegativeDeterminant = tempNegativeDeterminant;
-        }
-    }
-
-    @Override
-    public void drawGL20_BFCuncertified(Composite3D c3d) {
-        if (!visible)
-            return;
-        if (matrix != null) {
-
-            final Rectangle bounds = c3d.getClientArea();
-            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
-
-            Vector4f bbmin = new Vector4f();
-            Vector4f bbmax = new Vector4f();
-
-            Vector4f c1 = new Vector4f(boundingBoxMin);
-            Vector4f c2 = new Vector4f(boundingBoxMin);
-            Vector4f c3 = new Vector4f(boundingBoxMin);
-            Vector4f c4 = new Vector4f(boundingBoxMin);
-            Vector4f c5 = new Vector4f(boundingBoxMax);
-            Vector4f c6 = new Vector4f(boundingBoxMax);
-            Vector4f c7 = new Vector4f(boundingBoxMax);
-            Vector4f c8 = new Vector4f(boundingBoxMax);
-
-            c2.x = boundingBoxMax.x;
-            c3.y = boundingBoxMax.y;
-            c4.z = boundingBoxMax.z;
-
-            c6.x = boundingBoxMin.x;
-            c7.y = boundingBoxMin.y;
-            c8.z = boundingBoxMin.z;
-
-            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
-            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
-            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
-            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
-            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
-            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
-            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
-            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
-
-            bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
-            bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
-
-            bbmin.y = Math.min(c1.y, Math.min(c2.y, Math.min(c3.y, Math.min(c4.y, Math.min(c5.y, Math.min(c6.y, Math.min(c7.y, c8.y)))))));
-            bbmax.y = Math.max(c1.y, Math.max(c2.y, Math.max(c3.y, Math.max(c4.y, Math.max(c5.y, Math.max(c6.y, Math.max(c7.y, c8.y)))))));
-
-            Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
-
-
-            BFC tempWinding = GData.localWinding;
-            boolean tempInvertNext = GData.globalInvertNext;
-            boolean tempInvertNextFound = GData.globalInvertNextFound;
-            boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
-            GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
-
-            if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
-                    || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
-                    || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
-
-                GL11.glPushMatrix();
-                GL11.glMultMatrixf(matrix);
-
-                if (c3d.isShowingLogo()) {
-                    if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1_GL20();
-                    else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2_GL20();
-                }
-
-                GData data2draw = myGData;
-                if (GData.accumClip > 0) {
-                    GData.accumClip++;
-                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20_BFCuncertified(c3d);
-                    GData.accumClip--;
-                } else {
-                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20_BFCuncertified(c3d);
-                    if (GData.accumClip > 0)
-                        GData.accumClip = 0;
-                }
-
-                GL11.glPopMatrix();
-
-            }
-
-            GData.localWinding = tempWinding;
-            if (tempInvertNextFound)
-                GData.globalInvertNext = !tempInvertNext;
-
-            GData.globalNegativeDeterminant = tempNegativeDeterminant;
-
-        }
-    }
-
-    @Override
-    public void drawGL20_BFC_backOnly(Composite3D c3d) {
+    public void drawGL20BFC(Composite3D c3d) {
         if (!visible)
             return;
         if (matrix != null) {
@@ -853,9 +657,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1_GL20();
+                        drawStudLogo1GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2_GL20();
+                        drawStudLogo2GL20();
                 }
 
                 GData data2draw = myGData;
@@ -869,10 +673,10 @@ public final class GData1 extends GData {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
                         case NOCERTIFY:
-                            data2draw.drawGL20_BFCuncertified(c3d);
+                            data2draw.drawGL20BFCuncertified(c3d);
                             break;
                         default:
-                            data2draw.drawGL20_BFC_backOnly(c3d);
+                            data2draw.drawGL20BFC(c3d);
                             break;
                         }
                     }
@@ -893,7 +697,100 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC_Colour(Composite3D c3d) {
+    public void drawGL20BFCuncertified(Composite3D c3d) {
+        if (!visible)
+            return;
+        if (matrix != null) {
+
+            final Rectangle bounds = c3d.getClientArea();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
+
+            Vector4f bbmin = new Vector4f();
+            Vector4f bbmax = new Vector4f();
+
+            Vector4f c1 = new Vector4f(boundingBoxMin);
+            Vector4f c2 = new Vector4f(boundingBoxMin);
+            Vector4f c3 = new Vector4f(boundingBoxMin);
+            Vector4f c4 = new Vector4f(boundingBoxMin);
+            Vector4f c5 = new Vector4f(boundingBoxMax);
+            Vector4f c6 = new Vector4f(boundingBoxMax);
+            Vector4f c7 = new Vector4f(boundingBoxMax);
+            Vector4f c8 = new Vector4f(boundingBoxMax);
+
+            c2.x = boundingBoxMax.x;
+            c3.y = boundingBoxMax.y;
+            c4.z = boundingBoxMax.z;
+
+            c6.x = boundingBoxMin.x;
+            c7.y = boundingBoxMin.y;
+            c8.z = boundingBoxMin.z;
+
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+
+            bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
+            bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
+
+            bbmin.y = Math.min(c1.y, Math.min(c2.y, Math.min(c3.y, Math.min(c4.y, Math.min(c5.y, Math.min(c6.y, Math.min(c7.y, c8.y)))))));
+            bbmax.y = Math.max(c1.y, Math.max(c2.y, Math.max(c3.y, Math.max(c4.y, Math.max(c5.y, Math.max(c6.y, Math.max(c7.y, c8.y)))))));
+
+            Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
+
+
+            BFC tempWinding = GData.localWinding;
+            boolean tempInvertNext = GData.globalInvertNext;
+            boolean tempInvertNextFound = GData.globalInvertNextFound;
+            boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
+            GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
+
+            if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
+                    || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
+                    || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
+
+                GL11.glPushMatrix();
+                GL11.glMultMatrixf(matrix);
+
+                if (c3d.isShowingLogo()) {
+                    if (filesWithLogo1.contains(shortName))
+                        drawStudLogo1GL20();
+                    else if (filesWithLogo2.contains(shortName))
+                        drawStudLogo2GL20();
+                }
+
+                GData data2draw = myGData;
+                if (GData.accumClip > 0) {
+                    GData.accumClip++;
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
+                        data2draw.drawGL20BFCuncertified(c3d);
+                    GData.accumClip--;
+                } else {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
+                        data2draw.drawGL20BFCuncertified(c3d);
+                    if (GData.accumClip > 0)
+                        GData.accumClip = 0;
+                }
+
+                GL11.glPopMatrix();
+
+            }
+
+            GData.localWinding = tempWinding;
+            if (tempInvertNextFound)
+                GData.globalInvertNext = !tempInvertNext;
+
+            GData.globalNegativeDeterminant = tempNegativeDeterminant;
+
+        }
+    }
+
+    @Override
+    public void drawGL20BFCbackOnly(Composite3D c3d) {
         if (!visible)
             return;
         if (matrix != null) {
@@ -956,9 +853,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1_GL20();
+                        drawStudLogo1GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2_GL20();
+                        drawStudLogo2GL20();
                 }
 
                 GData data2draw = myGData;
@@ -972,10 +869,10 @@ public final class GData1 extends GData {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
                         switch (tempWinding) {
                         case NOCERTIFY:
-                            data2draw.drawGL20_BFCuncertified(c3d);
+                            data2draw.drawGL20BFCuncertified(c3d);
                             break;
                         default:
-                            data2draw.drawGL20_BFC_Colour(c3d);
+                            data2draw.drawGL20BFCbackOnly(c3d);
                             break;
                         }
                     }
@@ -996,7 +893,110 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC_Textured(Composite3D c3d) {
+    public void drawGL20BFCcolour(Composite3D c3d) {
+        if (!visible)
+            return;
+        if (matrix != null) {
+
+            final Rectangle bounds = c3d.getClientArea();
+            final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
+
+            Vector4f bbmin = new Vector4f();
+            Vector4f bbmax = new Vector4f();
+
+            Vector4f c1 = new Vector4f(boundingBoxMin);
+            Vector4f c2 = new Vector4f(boundingBoxMin);
+            Vector4f c3 = new Vector4f(boundingBoxMin);
+            Vector4f c4 = new Vector4f(boundingBoxMin);
+            Vector4f c5 = new Vector4f(boundingBoxMax);
+            Vector4f c6 = new Vector4f(boundingBoxMax);
+            Vector4f c7 = new Vector4f(boundingBoxMax);
+            Vector4f c8 = new Vector4f(boundingBoxMax);
+
+            c2.x = boundingBoxMax.x;
+            c3.y = boundingBoxMax.y;
+            c4.z = boundingBoxMax.z;
+
+            c6.x = boundingBoxMin.x;
+            c7.y = boundingBoxMin.y;
+            c8.z = boundingBoxMin.z;
+
+            c1.set(pc.getScreenCoordinatesFrom3D(c1.x, c1.y, c1.z));
+            c2.set(pc.getScreenCoordinatesFrom3D(c2.x, c2.y, c2.z));
+            c3.set(pc.getScreenCoordinatesFrom3D(c3.x, c3.y, c3.z));
+            c4.set(pc.getScreenCoordinatesFrom3D(c4.x, c4.y, c4.z));
+            c5.set(pc.getScreenCoordinatesFrom3D(c5.x, c5.y, c5.z));
+            c6.set(pc.getScreenCoordinatesFrom3D(c6.x, c6.y, c6.z));
+            c7.set(pc.getScreenCoordinatesFrom3D(c7.x, c7.y, c7.z));
+            c8.set(pc.getScreenCoordinatesFrom3D(c8.x, c8.y, c8.z));
+
+            bbmin.x = Math.min(c1.x, Math.min(c2.x, Math.min(c3.x, Math.min(c4.x, Math.min(c5.x, Math.min(c6.x, Math.min(c7.x, c8.x)))))));
+            bbmax.x = Math.max(c1.x, Math.max(c2.x, Math.max(c3.x, Math.max(c4.x, Math.max(c5.x, Math.max(c6.x, Math.max(c7.x, c8.x)))))));
+
+            bbmin.y = Math.min(c1.y, Math.min(c2.y, Math.min(c3.y, Math.min(c4.y, Math.min(c5.y, Math.min(c6.y, Math.min(c7.y, c8.y)))))));
+            bbmax.y = Math.max(c1.y, Math.max(c2.y, Math.max(c3.y, Math.max(c4.y, Math.max(c5.y, Math.max(c6.y, Math.max(c7.y, c8.y)))))));
+
+            Rectangle boundingBox = new Rectangle((int) bbmin.x, (int) bbmin.y, (int) (bbmax.x - bbmin.x), (int) (bbmax.y - bbmin.y));
+
+            BFC tempWinding = GData.localWinding;
+            boolean tempInvertNext = GData.globalInvertNext;
+            boolean tempInvertNextFound = GData.globalInvertNextFound;
+            boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
+
+            GData.globalInvertNextFound = false;
+            GData.localWinding = BFC.NOCERTIFY;
+            GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
+
+            if (boundingBox.intersects(bounds) || boundingBox.contains(0, 0) || boundingBox.contains(bounds.width, bounds.height) || boundingBox.contains(bounds.width, 0)
+                    || boundingBox.contains(0, bounds.height) || bounds.contains(boundingBox.x, boundingBox.y) || bounds.contains(boundingBox.x, boundingBox.y + boundingBox.height)
+                    || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y) || bounds.contains(boundingBox.x + boundingBox.width, boundingBox.y + boundingBox.height)) {
+
+                GL11.glPushMatrix();
+                GL11.glMultMatrixf(matrix);
+
+                if (c3d.isShowingLogo()) {
+                    if (filesWithLogo1.contains(shortName))
+                        drawStudLogo1GL20();
+                    else if (filesWithLogo2.contains(shortName))
+                        drawStudLogo2GL20();
+                }
+
+                GData data2draw = myGData;
+
+                if (GData.accumClip > 0) {
+                    GData.accumClip++;
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
+                        data2draw.drawGL20(c3d);
+                    GData.accumClip--;
+                } else {
+                    while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
+                        switch (tempWinding) {
+                        case NOCERTIFY:
+                            data2draw.drawGL20BFCuncertified(c3d);
+                            break;
+                        default:
+                            data2draw.drawGL20BFCcolour(c3d);
+                            break;
+                        }
+                    }
+                    if (GData.accumClip > 0)
+                        GData.accumClip = 0;
+                }
+
+                GL11.glPopMatrix();
+
+            }
+
+            GData.localWinding = tempWinding;
+            if (tempInvertNextFound)
+                GData.globalInvertNext = !tempInvertNext;
+
+            GData.globalNegativeDeterminant = tempNegativeDeterminant;
+        }
+    }
+
+    @Override
+    public void drawGL20BFCtextured(Composite3D c3d) {
         boolean tNext = GData.globalFoundTEXMAPNEXT;
         GData.globalFoundTEXMAPNEXT = false;
         if (!visible || !GData.globalDrawObjects)
@@ -1063,11 +1063,11 @@ public final class GData1 extends GData {
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20_BFC_Textured(c3d);
+                        data2draw.drawGL20BFCtextured(c3d);
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get()) {
-                        data2draw.drawGL20_BFC_Textured(c3d);
+                        data2draw.drawGL20BFCtextured(c3d);
                     }
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
@@ -1098,7 +1098,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
+    public void drawGL20WhileAddCondlines(Composite3D c3d) {
         if (!visible)
             return;
         if (matrix != null) {
@@ -1161,9 +1161,9 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1_GL20();
+                        drawStudLogo1GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2_GL20();
+                        drawStudLogo2GL20();
                 }
 
                 GData data2draw = myGData;
@@ -1174,7 +1174,7 @@ public final class GData1 extends GData {
                         switch (data2draw.type()) {
                         case 1:
                         case 5:
-                            data2draw.drawGL20_WhileAddCondlines(c3d);
+                            data2draw.drawGL20WhileAddCondlines(c3d);
                             break;
                         default:
                             data2draw.drawGL20(c3d);
@@ -1188,14 +1188,14 @@ public final class GData1 extends GData {
                             switch (data2draw.type()) {
                             case 1:
                             case 5:
-                                data2draw.drawGL20_WhileAddCondlines(c3d);
+                                data2draw.drawGL20WhileAddCondlines(c3d);
                                 break;
                             default:
                                 data2draw.drawGL20(c3d);
                             }
                             break;
                         default:
-                            data2draw.drawGL20_WhileAddCondlines(c3d);
+                            data2draw.drawGL20WhileAddCondlines(c3d);
                             break;
                         }
                     }
@@ -1216,7 +1216,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+    public void drawGL20CoplanarityHeatmap(Composite3D c3d) {
         if (!visible)
             return;
         if (matrix != null) {
@@ -1273,20 +1273,20 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1_GL20();
+                        drawStudLogo1GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2_GL20();
+                        drawStudLogo2GL20();
                 }
 
                 GData data2draw = myGData;
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20_CoplanarityHeatmap(c3d);
+                        data2draw.drawGL20CoplanarityHeatmap(c3d);
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20_CoplanarityHeatmap(c3d);
+                        data2draw.drawGL20CoplanarityHeatmap(c3d);
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
                 }
@@ -1301,7 +1301,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void drawGL20_Wireframe(Composite3D c3d) {
+    public void drawGL20Wireframe(Composite3D c3d) {
         if (!visible)
             return;
         if (matrix != null) {
@@ -1358,20 +1358,20 @@ public final class GData1 extends GData {
 
                 if (c3d.isShowingLogo()) {
                     if (filesWithLogo1.contains(shortName))
-                        drawStudLogo1_GL20();
+                        drawStudLogo1GL20();
                     else if (filesWithLogo2.contains(shortName))
-                        drawStudLogo2_GL20();
+                        drawStudLogo2GL20();
                 }
 
                 GData data2draw = myGData;
                 if (GData.accumClip > 0) {
                     GData.accumClip++;
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20_Wireframe(c3d);
+                        data2draw.drawGL20Wireframe(c3d);
                     GData.accumClip--;
                 } else {
                     while ((data2draw = data2draw.next) != null && !ViewIdleManager.pause[0].get())
-                        data2draw.drawGL20_Wireframe(c3d);
+                        data2draw.drawGL20Wireframe(c3d);
                     if (GData.accumClip > 0)
                         GData.accumClip = 0;
                 }
@@ -2288,7 +2288,7 @@ public final class GData1 extends GData {
         return lineBuilder.toString();
     }
 
-    private static void drawStudLogo1_GL20() {
+    private static void drawStudLogo1GL20() {
         final float Y = -4.04f;
         GL11.glLineWidth(2f);
         GL11.glColor4f(0f, 0f, 0f, 1f);
@@ -2474,7 +2474,7 @@ public final class GData1 extends GData {
         GL11.glEnd();
     }
 
-    private static void drawStudLogo2_GL20() {
+    private static void drawStudLogo2GL20() {
         final float Y = -0.04f;
         GL11.glLineWidth(2f);
         GL11.glColor4f(0f, 0f, 0f, 1f);

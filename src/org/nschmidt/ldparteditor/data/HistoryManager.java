@@ -585,7 +585,7 @@ class HistoryManager {
         vm.setUpdated(true);
         vm.setSkipSyncWithTextEditor(false);
 
-        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         action.set(0);
         df.getVertexManager().setSelectedBgPicture(null);
         df.getVertexManager().setSelectedBgPictureIndex(0);

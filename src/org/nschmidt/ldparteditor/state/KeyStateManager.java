@@ -554,7 +554,7 @@ public class KeyStateManager {
                         win.disableAddAction();
                         break;
                     case MOVE_TO_AVG:
-                        win.mntm_Manipulator_2_toAverage();
+                        win.mntmManipulatorToAverage();
                         break;
                     case MOVE_ADJACENT_DATA:
                         win.toggleMoveAdjacentData();
@@ -709,7 +709,7 @@ public class KeyStateManager {
                             if (df.save()) {
                                 Editor3DWindow.getWindow().addRecentFile(df);
                                 Project.removeUnsavedFile(df);
-                                Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                                Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                                 pressedKeyCodes.remove(keyCode);
                             } else {
                                 MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);

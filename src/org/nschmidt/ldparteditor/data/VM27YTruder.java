@@ -126,7 +126,7 @@ class VM27YTruder extends VM26LineIntersector {
                     for (int j = 0; j < originalLineCount; j++) {
                         if (lineUsed[j] == 0) {
                             for (int k = 0; k < 2; k++) {
-                                if (MANHATTAN(inLine[current][end], inLine[j][k]) < SMALL) {
+                                if (manhattan(inLine[current][end], inLine[j][k]) < SMALL) {
                                     current = j;
                                     end = 1 - k;
                                     lineUsed[current] = 1;
@@ -144,10 +144,10 @@ class VM27YTruder extends VM26LineIntersector {
 
                 end = 1 - end;
                 surfstart = numSurf;
-                SET(surf[numSurf][0], inLine[current][1 - end]);
-                SET(surf[numSurf][1], inLine[current][end]);
-                SET(surf[numSurf][2], inLine[current][end]);
-                SET(surf[numSurf][3], inLine[current][1 - end]);
+                set(surf[numSurf][0], inLine[current][1 - end]);
+                set(surf[numSurf][1], inLine[current][end]);
+                set(surf[numSurf][2], inLine[current][end]);
+                set(surf[numSurf][3], inLine[current][1 - end]);
                 switch (mode) {
                 case YTruderSettings.MODE_TRANSLATE_BY_DISTANCE:
                     surf[numSurf][2][1] = surf[numSurf][2][1] + distance;
@@ -168,8 +168,8 @@ class VM27YTruder extends VM26LineIntersector {
                     p1[0] = 0;
                     p1[1] = surf[numSurf][1][1];
                     p1[2] = 0;
-                    d0 = DIST(p0, surf[numSurf][0]);
-                    d1 = DIST(p1, surf[numSurf][1]);
+                    d0 = dist(p0, surf[numSurf][0]);
+                    d1 = dist(p1, surf[numSurf][1]);
                     if (d0 > EPSILON) {
                         surf[numSurf][3][0] = surf[numSurf][3][0] * (d0 + distance) / d0;
                         surf[numSurf][3][2] = surf[numSurf][3][2] * (d0 + distance) / d0;
@@ -179,12 +179,12 @@ class VM27YTruder extends VM26LineIntersector {
                         surf[numSurf][2][2] = surf[numSurf][2][2] * (d1 + distance) / d1;
                     }
                     double a;
-                    a = Tri_Angle(surf[numSurf][0], surf[numSurf][1], surf[numSurf][2], surf[numSurf][0], surf[numSurf][2], surf[numSurf][3]);
+                    a = triAngle(surf[numSurf][0], surf[numSurf][1], surf[numSurf][2], surf[numSurf][0], surf[numSurf][2], surf[numSurf][3]);
                     if (a > 0.5) {
-                        SET(condLine[numCond][0], surf[numSurf][0]);
-                        SET(condLine[numCond][1], surf[numSurf][2]);
-                        SET(condLine[numCond][2], surf[numSurf][1]);
-                        SET(condLine[numCond][3], surf[numSurf][3]);
+                        set(condLine[numCond][0], surf[numSurf][0]);
+                        set(condLine[numCond][1], surf[numSurf][2]);
+                        set(condLine[numCond][2], surf[numSurf][1]);
+                        set(condLine[numCond][3], surf[numSurf][3]);
                         condFlag[numCond] = 5;
                         numCond++;
                     }
@@ -200,14 +200,14 @@ class VM27YTruder extends VM26LineIntersector {
                     for (int j = 0; j < originalLineCount; j++) {
                         if (lineUsed[j] < 2) {
                             for (int k = 0; k < 2; k++) {
-                                if (MANHATTAN(inLine[current][end], inLine[j][k]) < SMALL && lineUsed[j] < 2) {
+                                if (manhattan(inLine[current][end], inLine[j][k]) < SMALL && lineUsed[j] < 2) {
                                     current = j;
                                     end = 1 - k;
                                     flag = true;
-                                    SET(surf[numSurf][0], inLine[current][1 - end]);
-                                    SET(surf[numSurf][1], inLine[current][end]);
-                                    SET(surf[numSurf][2], inLine[current][end]);
-                                    SET(surf[numSurf][3], inLine[current][1 - end]);
+                                    set(surf[numSurf][0], inLine[current][1 - end]);
+                                    set(surf[numSurf][1], inLine[current][end]);
+                                    set(surf[numSurf][2], inLine[current][end]);
+                                    set(surf[numSurf][3], inLine[current][1 - end]);
                                     switch (mode) {
                                     case YTruderSettings.MODE_TRANSLATE_BY_DISTANCE:
                                         surf[numSurf][2][1] = surf[numSurf][2][1] + distance;
@@ -228,8 +228,8 @@ class VM27YTruder extends VM26LineIntersector {
                                         p1[0] = 0;
                                         p1[1] = surf[numSurf][1][1];
                                         p1[2] = 0;
-                                        d0 = DIST(p0, surf[numSurf][0]);
-                                        d1 = DIST(p1, surf[numSurf][1]);
+                                        d0 = dist(p0, surf[numSurf][0]);
+                                        d1 = dist(p1, surf[numSurf][1]);
                                         if (d0 > EPSILON) {
                                             surf[numSurf][3][0] = surf[numSurf][3][0] * (d0 + distance) / d0;
                                             surf[numSurf][3][2] = surf[numSurf][3][2] * (d0 + distance) / d0;
@@ -239,10 +239,10 @@ class VM27YTruder extends VM26LineIntersector {
                                             surf[numSurf][2][2] = surf[numSurf][2][2] * (d1 + distance) / d1;
                                         }
 
-                                        SET(condLine[numCond][0], surf[numSurf][0]);
-                                        SET(condLine[numCond][1], surf[numSurf][2]);
-                                        SET(condLine[numCond][2], surf[numSurf][1]);
-                                        SET(condLine[numCond][3], surf[numSurf][3]);
+                                        set(condLine[numCond][0], surf[numSurf][0]);
+                                        set(condLine[numCond][1], surf[numSurf][2]);
+                                        set(condLine[numCond][2], surf[numSurf][1]);
+                                        set(condLine[numCond][3], surf[numSurf][3]);
                                         condFlag[numCond] = 5;
                                         numCond++;
 
@@ -250,10 +250,10 @@ class VM27YTruder extends VM26LineIntersector {
                                     default:
                                         break;
                                     }
-                                    SET(condLine[numCond][0], surf[numSurf][0]);
-                                    SET(condLine[numCond][1], surf[numSurf][3]);
-                                    SET(condLine[numCond][2], surf[numSurf][1]);
-                                    SET(condLine[numCond][3], surf[numSurf - 1][0]);
+                                    set(condLine[numCond][0], surf[numSurf][0]);
+                                    set(condLine[numCond][1], surf[numSurf][3]);
+                                    set(condLine[numCond][2], surf[numSurf][1]);
+                                    set(condLine[numCond][3], surf[numSurf - 1][0]);
                                     condFlag[numCond] = 5;
                                     numSurf++;
                                     numCond++;
@@ -267,20 +267,20 @@ class VM27YTruder extends VM26LineIntersector {
                             break;
                     }
                 } while (flag);
-                if (MANHATTAN(surf[numSurf - 1][1], surf[surfstart][0]) < SMALL) {
-                    SET(condLine[numCond][0], surf[numSurf - 1][1]);
-                    SET(condLine[numCond][1], surf[numSurf - 1][2]);
-                    SET(condLine[numCond][2], surf[numSurf - 1][0]);
-                    SET(condLine[numCond][3], surf[surfstart][1]);
+                if (manhattan(surf[numSurf - 1][1], surf[surfstart][0]) < SMALL) {
+                    set(condLine[numCond][0], surf[numSurf - 1][1]);
+                    set(condLine[numCond][1], surf[numSurf - 1][2]);
+                    set(condLine[numCond][2], surf[numSurf - 1][0]);
+                    set(condLine[numCond][3], surf[surfstart][1]);
                     condFlag[numCond] = 5;
                     numCond++;
                 } else {
-                    SET(condLine[numCond][0], surf[numSurf - 1][1]);
-                    SET(condLine[numCond][1], surf[numSurf - 1][2]);
+                    set(condLine[numCond][0], surf[numSurf - 1][1]);
+                    set(condLine[numCond][1], surf[numSurf - 1][2]);
                     condFlag[numCond] = 2;
                     numCond++;
-                    SET(condLine[numCond][0], surf[surfstart][0]);
-                    SET(condLine[numCond][1], surf[surfstart][3]);
+                    set(condLine[numCond][0], surf[surfstart][0]);
+                    set(condLine[numCond][1], surf[surfstart][3]);
                     condFlag[numCond] = 2;
                     numCond++;
                 }
@@ -288,16 +288,16 @@ class VM27YTruder extends VM26LineIntersector {
         }
 
         for (int k = 0; k < numSurf; k++) {
-            if (MANHATTAN(surf[k][0], surf[k][3]) < SMALL && MANHATTAN(surf[k][1], surf[k][2]) < SMALL)
+            if (manhattan(surf[k][0], surf[k][3]) < SMALL && manhattan(surf[k][1], surf[k][2]) < SMALL)
                 continue;
-            if (MANHATTAN(surf[k][0], surf[k][3]) < SMALL) {
+            if (manhattan(surf[k][0], surf[k][3]) < SMALL) {
                 Vertex v1 = new Vertex(new BigDecimal(surf[k][0][x]), new BigDecimal(surf[k][0][y]), new BigDecimal(surf[k][0][z]));
                 Vertex v2 = new Vertex(new BigDecimal(surf[k][1][x]), new BigDecimal(surf[k][1][y]), new BigDecimal(surf[k][1][z]));
                 Vertex v3 = new Vertex(new BigDecimal(surf[k][2][x]), new BigDecimal(surf[k][2][y]), new BigDecimal(surf[k][2][z]));
                 newTriangles.add(new GData3(
                         bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(),
                         v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
-            } else if (MANHATTAN(surf[k][1], surf[k][2]) < SMALL) {
+            } else if (manhattan(surf[k][1], surf[k][2]) < SMALL) {
                 Vertex v1 = new Vertex(new BigDecimal(surf[k][0][x]), new BigDecimal(surf[k][0][y]), new BigDecimal(surf[k][0][z]));
                 Vertex v2 = new Vertex(new BigDecimal(surf[k][1][x]), new BigDecimal(surf[k][1][y]), new BigDecimal(surf[k][1][z]));
                 Vertex v3 = new Vertex(new BigDecimal(surf[k][3][x]), new BigDecimal(surf[k][3][y]), new BigDecimal(surf[k][3][z]));
@@ -306,7 +306,7 @@ class VM27YTruder extends VM26LineIntersector {
                         v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
             } else if (mode == YTruderSettings.MODE_TRANSLATE_BY_DISTANCE
                     || mode == YTruderSettings.MODE_SYMMETRY_ACROSS_PLANE
-                    || Tri_Angle(surf[k][0], surf[k][1], surf[k][2], surf[k][0], surf[k][2], surf[k][3]) <= 0.5) {
+                    || triAngle(surf[k][0], surf[k][1], surf[k][2], surf[k][0], surf[k][2], surf[k][3]) <= 0.5) {
                 Vertex v1 = new Vertex(new BigDecimal(surf[k][0][x]), new BigDecimal(surf[k][0][y]), new BigDecimal(surf[k][0][z]));
                 Vertex v2 = new Vertex(new BigDecimal(surf[k][1][x]), new BigDecimal(surf[k][1][y]), new BigDecimal(surf[k][1][z]));
                 Vertex v3 = new Vertex(new BigDecimal(surf[k][2][x]), new BigDecimal(surf[k][2][y]), new BigDecimal(surf[k][2][z]));
@@ -335,11 +335,11 @@ class VM27YTruder extends VM26LineIntersector {
         }
 
         for (int k = 0; k < numCond; k++) {
-            if (MANHATTAN(condLine[k][0], condLine[k][1]) < SMALL)
+            if (manhattan(condLine[k][0], condLine[k][1]) < SMALL)
                 continue;
             if (condFlag[k] == 5) {
                 double a;
-                a = Tri_Angle(condLine[k][0], condLine[k][1], condLine[k][2], condLine[k][0], condLine[k][3], condLine[k][1]);
+                a = triAngle(condLine[k][0], condLine[k][1], condLine[k][2], condLine[k][0], condLine[k][3], condLine[k][1]);
                 if (a < angleLineThr) {
                     Vertex v1 = new Vertex(new BigDecimal(condLine[k][0][x]), new BigDecimal(condLine[k][0][y]), new BigDecimal(condLine[k][0][z]));
                     Vertex v2 = new Vertex(new BigDecimal(condLine[k][1][x]), new BigDecimal(condLine[k][1][y]), new BigDecimal(condLine[k][1][z]));
@@ -466,46 +466,46 @@ class VM27YTruder extends VM26LineIntersector {
         NLogger.debug(getClass(), "Done."); //$NON-NLS-1$
     }
 
-    private void CROSS(double[] dest, double[] left, double[] right) {
+    private void cross(double[] dest, double[] left, double[] right) {
         dest[0] = left[1] * right[2] - left[2] * right[1];
         dest[1] = left[2] * right[0] - left[0] * right[2];
         dest[2] = left[0] * right[1] - left[1] * right[0];
     }
 
-    private double DOT(double[] v1, double[] v2) {
+    private double dot(double[] v1, double[] v2) {
         return v1[0] * v2[0] + v1[1] * v2[1] + v1[2] * v2[2];
     }
 
-    private void SUB(double[] dest, double[] left, double[] right) {
+    private void sub(double[] dest, double[] left, double[] right) {
         dest[0] = left[0] - right[0];
         dest[1] = left[1] - right[1];
         dest[2] = left[2] - right[2];
     }
 
-    private void MULT(double[] dest, double[] v, double factor) {
+    private void mult(double[] dest, double[] v, double factor) {
         dest[0] = factor * v[0];
         dest[1] = factor * v[1];
         dest[2] = factor * v[2];
     }
 
-    private void SET(double[] dest, double[] src) {
+    private void set(double[] dest, double[] src) {
         dest[0] = src[0];
         dest[1] = src[1];
         dest[2] = src[2];
     }
 
-    private double MANHATTAN(double[] v1, double[] v2) {
+    private double manhattan(double[] v1, double[] v2) {
         return Math.abs(v1[0] - v2[0]) + Math.abs(v1[1] - v2[1]) + Math.abs(v1[2] - v2[2]);
     }
 
-    private double DIST(double[] v1, double[] v2) {
+    private double dist(double[] v1, double[] v2) {
         return Math.sqrt((v1[0] - v2[0]) * (v1[0] - v2[0]) + (v1[1] - v2[1]) * (v1[1] - v2[1]) + (v1[2] - v2[2]) * (v1[2] - v2[2]));
     }
 
     // Tri_Angle computes the cosine of the angle between the planes of two
     // triangles.
     // They are assumed to be non-degenerated
-    private double Tri_Angle(double[] u0, double[] u1, double[] u2, double[] v0, double[] v1, double[] v2) {
+    private double triAngle(double[] u0, double[] u1, double[] u2, double[] v0, double[] v1, double[] v2) {
         double[] unorm = new double[3];
         double[] vnorm = new double[3];
         double[] temp = new double[3];
@@ -514,16 +514,16 @@ class VM27YTruder extends VM26LineIntersector {
         double[] v10 = new double[3];
         double[] v20 = new double[3];
         double len;
-        SUB(u10, u1, u0);
-        SUB(u20, u2, u0);
-        SUB(v10, v1, v0);
-        SUB(v20, v2, v0);
-        CROSS(temp, u10, u20);
-        len = DIST(temp, nullv);
-        MULT(unorm, temp, 1 / len);
-        CROSS(temp, v10, v20);
-        len = DIST(temp, nullv);
-        MULT(vnorm, temp, 1 / len);
-        return 180 / 3.14159 * Math.acos(DOT(unorm, vnorm));
+        sub(u10, u1, u0);
+        sub(u20, u2, u0);
+        sub(v10, v1, v0);
+        sub(v20, v2, v0);
+        cross(temp, u10, u20);
+        len = dist(temp, nullv);
+        mult(unorm, temp, 1 / len);
+        cross(temp, v10, v20);
+        len = dist(temp, nullv);
+        mult(vnorm, temp, 1 / len);
+        return 180 / 3.14159 * Math.acos(dot(unorm, vnorm));
     }
 }

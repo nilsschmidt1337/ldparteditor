@@ -352,7 +352,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
             }
             // Sort the clipboard content by linenumber (or ID if the linenumber is the same)
             {
-                final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+                final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
                 Collections.sort(CLIPBOARD, (o1, o2) -> {
                     try {
                         if (dpl.containsValue(o1)) {
@@ -597,7 +597,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     }
                 }
             } else {
-                final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+                final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
                 int linecount = dpl.size();
                 GData before = linkedDatFile.getDrawChainTail();
                 GData tailData = null;
@@ -708,7 +708,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         final GColour col16 = View.getLDConfigColour(16);
         if (!CLIPBOARD.isEmpty()) {
             clearSelection();
-            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
             int linecount = dpl.size();
             final GData oldNext = g2.next;
             GData before = g2;
@@ -858,7 +858,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
             }
         }
         if (cutExtension) {
-            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
             java.util.ListIterator<GData> li = CLIPBOARD.listIterator(CLIPBOARD.size());
             while(li.hasPrevious()) {
                 GData g = li.previous();

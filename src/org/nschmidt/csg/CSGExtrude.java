@@ -63,7 +63,7 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
         cachedData.clear();
         fillCache(cachedData, start);
 
-        final HashBiMap<Integer, GData> dpl = df.getDrawPerLine_NOCLONE();
+        final HashBiMap<Integer, GData> dpl = df.getDrawPerLineNoClone();
         final VertexManager vm= df.getVertexManager();
 
         final TreeSet<GData> sl = new TreeSet<>();

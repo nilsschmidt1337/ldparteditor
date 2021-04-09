@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editormeta;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.net.URLDecoder;
 
@@ -86,7 +86,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        WidgetUtil(btnCreatePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCreatePtr[0]).addSelectionListener(e -> {
             String textToCompile = lblLineToInsertPtr[0].getText();
             final DatFile df = Project.getFileToEdit();
             if (df != null) {
@@ -107,7 +107,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             }
         });
 
-        WidgetUtil(evDescriptionBtnPtr[0]).addSelectionListener(e -> updateDescription());
+        widgetUtil(evDescriptionBtnPtr[0]).addSelectionListener(e -> updateDescription());
         evDescriptionTxtPtr[0].addModifyListener(e -> updateDescription());
         evDescriptionTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -153,8 +153,8 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 updateType();
             }
         });
-        WidgetUtil(evTypeUnofficialBtnPtr[0]).addSelectionListener(e -> updateType());
-        WidgetUtil(evTypeUpdateBtnPtr[0]).addSelectionListener(e -> updateType());
+        widgetUtil(evTypeUnofficialBtnPtr[0]).addSelectionListener(e -> updateType());
+        widgetUtil(evTypeUpdateBtnPtr[0]).addSelectionListener(e -> updateType());
 
         evLicenseCmbPtr[0].addModifyListener(e -> updateLicense());
         evLicenseCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
@@ -254,7 +254,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 updateComment();
             }
         });
-        WidgetUtil(evCommentBtnPtr[0]).addSelectionListener(e -> updateComment());
+        widgetUtil(evCommentBtnPtr[0]).addSelectionListener(e -> updateComment());
 
         evBfcCmbPtr[0].addModifyListener(e -> updateBfc());
         evBfcCmbPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
@@ -295,7 +295,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             evTexmapPlanar10TxtPtr[0].addFocusListener(a);
             evTexmapPlanar10TxtPtr[0].addModifyListener(m);
 
-            WidgetUtil(evTexmapPlanarBtnPtr[0]).addSelectionListener(e -> {
+            widgetUtil(evTexmapPlanarBtnPtr[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -359,7 +359,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             evTexmapCyli11TxtPtr[0].addFocusListener(a);
             evTexmapCyli11TxtPtr[0].addModifyListener(m);
 
-            WidgetUtil(evTexmapCyliBtnPtr[0]).addSelectionListener(e -> {
+            widgetUtil(evTexmapCyliBtnPtr[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -425,7 +425,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             evTexmapSphere12TxtPtr[0].addFocusListener(a);
             evTexmapSphere12TxtPtr[0].addModifyListener(m);
 
-            WidgetUtil(evTexmapSphereBtnPtr[0]).addSelectionListener(e -> {
+            widgetUtil(evTexmapSphereBtnPtr[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);
@@ -456,7 +456,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
         }
 
-        WidgetUtil(evTexmapFallbackBtnPtr[0]).addSelectionListener(e -> {
+        widgetUtil(evTexmapFallbackBtnPtr[0]).addSelectionListener(e -> {
             lblLineToInsertPtr[0].setText("0 !TEXMAP FALLBACK"); //$NON-NLS-1$
             lblLineToInsertPtr[0].getParent().layout();
         });
@@ -470,7 +470,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
         evTexmapMetaTxtPtr[0].addModifyListener(e -> updateTexmapMeta());
 
-        WidgetUtil(evTexmapEndBtnPtr[0]).addSelectionListener(e -> {
+        widgetUtil(evTexmapEndBtnPtr[0]).addSelectionListener(e -> {
             lblLineToInsertPtr[0].setText("0 !TEXMAP END"); //$NON-NLS-1$
             lblLineToInsertPtr[0].getParent().layout();
         });
@@ -671,7 +671,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
 
         evCsgEdgeCollapseEpsilonTxtPtr[0].addModifyListener(e -> updateCSGedgeCollapseEpsilon());
 
-        WidgetUtil(evCsgDontOptimizeBtnPtr[0]).addSelectionListener(e -> updateCSGdontOptimize());
+        widgetUtil(evCsgDontOptimizeBtnPtr[0]).addSelectionListener(e -> updateCSGdontOptimize());
 
         evCsgCompileTxtPtr[0].addFocusListener(new org.eclipse.swt.events.FocusAdapter() {
             @Override
@@ -711,7 +711,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
                 }
             };
             final ModifyListener m = e -> updatePNGdef();
-            WidgetUtil(evPngBtnPtr[0]).addSelectionListener(e -> updatePNGdef());
+            widgetUtil(evPngBtnPtr[0]).addSelectionListener(e -> updatePNGdef());
             evPng1TxtPtr[0].addFocusListener(a);
             evPng1TxtPtr[0].addModifyListener(m);
             evPng2TxtPtr[0].addFocusListener(a);
@@ -731,7 +731,7 @@ public class EditorMetaWindow extends EditorMetaDesign {
             evPng9TxtPtr[0].addFocusListener(a);
             evPng9TxtPtr[0].addModifyListener(m);
 
-            WidgetUtil(evPngBtnPtr[0]).addSelectionListener(e -> {
+            widgetUtil(evPngBtnPtr[0]).addSelectionListener(e -> {
 
                 FileDialog fd = new FileDialog(sh, SWT.OPEN);
                 fd.setText(I18n.META_CHOOSE_PNG);

@@ -97,7 +97,7 @@ public enum NLogger {
      */
     public static void debug(Class<?> clazz, Throwable t) {
         if (debugging) {
-            debug_sync(clazz, t);
+            debugSync(clazz, t);
         }
     }
 
@@ -112,7 +112,7 @@ public enum NLogger {
      */
     public static void debug(Class<?> clazz, String message) {
         if (debugging) {
-            debug_sync(clazz, message);
+            debugSync(clazz, message);
         }
     }
 
@@ -130,25 +130,25 @@ public enum NLogger {
      */
     public static void debug(Class<?> clazz, String message, Object... args) {
         if (debugging) {
-            debug_sync(clazz, message, args);
+            debugSync(clazz, message, args);
         }
     }
 
     public static void debug(Class<?> clazz, float value) {
         if (debugging) {
-            debug_sync(clazz, Float.toString(value));
+            debugSync(clazz, Float.toString(value));
         }
     }
 
     public static void debug(Class<?> clazz, double value) {
         if (debugging) {
-            debug_sync(clazz, Double.toString(value));
+            debugSync(clazz, Double.toString(value));
         }
     }
 
     public static void debug(Class<?> clazz, int value) {
         if (debugging) {
-            debug_sync(clazz, Integer.toString(value));
+            debugSync(clazz, Integer.toString(value));
         }
     }
 
@@ -160,7 +160,7 @@ public enum NLogger {
      * @param t
      *            The throwable exception
      */
-    private static synchronized void debug_sync(Class<?> clazz, Throwable t) {
+    private static synchronized void debugSync(Class<?> clazz, Throwable t) {
         StringBuilder sb = new StringBuilder();
         sb.append("[DEBUG "); //$NON-NLS-1$
         sb.append(Version.getVersion());
@@ -180,7 +180,7 @@ public enum NLogger {
      * @param args
      *            Parameters separated with a comma
      */
-    private static synchronized void debug_sync(Class<?> clazz, String message, Object... args) {
+    private static synchronized void debugSync(Class<?> clazz, String message, Object... args) {
         MessageFormat formatter = new MessageFormat("", Locale.ENGLISH); //$NON-NLS-1$
         formatter.applyPattern(message);
         StringBuilder sb = new StringBuilder();
@@ -201,7 +201,7 @@ public enum NLogger {
      * @param message
      *            The message to display
      */
-    private static synchronized void debug_sync(Class<?> clazz, String message) {
+    private static synchronized void debugSync(Class<?> clazz, String message) {
         StringBuilder sb = new StringBuilder();
         sb.append("[DEBUG "); //$NON-NLS-1$
         sb.append(Version.getVersion());

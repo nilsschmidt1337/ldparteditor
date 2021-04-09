@@ -345,7 +345,7 @@ public class Arc {
             vertexData[i + 11] = b;
             j += 2;
         }
-        GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
+        GL33Helper.drawTrianglesIndexedRGBgeneralSlow(vertexData, indices);
 
 
         j = 0;
@@ -364,7 +364,7 @@ public class Arc {
             vertexData[i + 11] = b;
             j += 2;
         }
-        GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
+        GL33Helper.drawTrianglesIndexedRGBgeneralSlow(vertexData, indices);
         stack.glPopMatrix();
     }
 }

@@ -315,15 +315,15 @@ class VM02Add extends VM01SelectHelper {
     }
 
     public void addBackgroundPicture(String text, Vertex offset, BigDecimal angleA, BigDecimal angleB, BigDecimal angleC, Vertex scale, String texturePath) {
-        setModified_NoSync();
+        setModifiedNoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
-            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
         GDataPNG pic = new GDataPNG(new GDataPNG(text, offset, angleA, angleB, angleC, scale, texturePath, View.DUMMY_REFERENCE).getString(offset, angleA, angleB, angleC, scale, texturePath), offset, angleA, angleB, angleC, scale, texturePath, View.DUMMY_REFERENCE);
         linkedDatFile.addToTailOrInsertAfterCursor(pic);
         setSelectedBgPicture(pic);
-        setModified_NoSync();
+        setModifiedNoSync();
     }
 
     public void addLine(Vertex v1, Vertex v2) {
@@ -355,10 +355,10 @@ class VM02Add extends VM01SelectHelper {
                     return;
             }
         }
-        setModified_NoSync();
+        setModifiedNoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
-            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         if (col.getColourNumber() == 16 || col.getColourNumber() == 24) {
@@ -460,10 +460,10 @@ class VM02Add extends VM01SelectHelper {
             v1 = v2;
             v2 = t;
         }
-        setModified_NoSync();
+        setModifiedNoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
-            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, isTriangle));
@@ -572,10 +572,10 @@ class VM02Add extends VM01SelectHelper {
                 v1 = v3;
                 v3 = t;
             }
-            setModified_NoSync();
+            setModifiedNoSync();
             if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
                 Project.addUnsavedFile(linkedDatFile);
-                Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                Editor3DWindow.getWindow().updateTreeUnsavedEntries();
             }
             GColour col = Editor3DWindow.getWindow().getLastUsedColour();
             linkedDatFile.addToTailOrInsertAfterCursor(new GData3(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile, true));
@@ -705,10 +705,10 @@ class VM02Add extends VM01SelectHelper {
             v3 = t;
         }
 
-        setModified_NoSync();
+        setModifiedNoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
-            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         linkedDatFile.addToTailOrInsertAfterCursor(new GData4(col.getColourNumber(), col.getR(), col.getG(), col.getB(), col.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
@@ -751,10 +751,10 @@ class VM02Add extends VM01SelectHelper {
                 }
             }
         }
-        setModified_NoSync();
+        setModifiedNoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
-            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
         GColour col = Editor3DWindow.getWindow().getLastUsedColour();
         if (col.getColourNumber() == 16 || col.getColourNumber() == 24) {
@@ -779,10 +779,10 @@ class VM02Add extends VM01SelectHelper {
             pasted = new GData0(lineToParse, View.DUMMY_REFERENCE);
         }
 
-        setModified_NoSync();
+        setModifiedNoSync();
         if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
-            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
         linkedDatFile.addToTailOrInsertAfterCursor(pasted);
         setModified(true, true);

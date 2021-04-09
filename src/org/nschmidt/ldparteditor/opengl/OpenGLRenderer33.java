@@ -350,15 +350,15 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 final Primitive p = c3d.getDraggedPrimitive();
                 if (p != null) {
                     Vector4f cur = c3d.getCursorSnapped3D();
-                    GL33HelperPrimitives.backupVBO_PrimitiveArea();
-                    GL33HelperPrimitives.createVBO_PrimitiveArea();
+                    GL33HelperPrimitives.backupVBOprimitiveArea();
+                    GL33HelperPrimitives.createVBOprimitiveArea();
                     stack.setShader(shaderProgram2);
                     shaderProgram2.use();
                     p.drawGL33(stack, cur.x, cur.y, cur.z);
                     stack.setShader(shaderProgram);
                     shaderProgram.use();
-                    GL33HelperPrimitives.destroyVBO_PrimitiveArea();
-                    GL33HelperPrimitives.restoreVBO_PrimitiveArea();
+                    GL33HelperPrimitives.destroyVBOprimitiveArea();
+                    GL33HelperPrimitives.restoreVBOprimitiveArea();
                 }
             } else {
                 c3d.setDraggedPrimitive(null);
@@ -391,10 +391,10 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                 final float arcWidth;
                 final float bluntSize;
                 // The size will be set on application start!
-                final float moveSize = Manipulator.getTranslate_size();
-                final float rotateSize = Manipulator.getRotate_size();
-                final float rotateOuterSize = Manipulator.getRotate_outer_size();
-                final float scaleSize = Manipulator.getScale_size();
+                final float moveSize = Manipulator.getTranslateSize();
+                final float rotateSize = Manipulator.getRotateSize();
+                final float rotateOuterSize = Manipulator.getRotateOuterSize();
+                final float scaleSize = Manipulator.getScaleSize();
                 // mSize has normally a length of 11
                 // (lineWidth, cone_height, cone_width, bluntSize, circleWidth, arcWidth,
                 // moveSizeFactor, rotateSizeFactor, rotateOuterSizeFactor, scaleSizeFactor
@@ -456,28 +456,28 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     c = manipulator.checkManipulatorStatus(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], Manipulator.X_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, rotateSize, arcWidth).drawGL33(stack, mx, my, mz, zoom);
 
-                    if (manipulator.isX_Rotate()) {
+                    if (manipulator.isXrotate()) {
                         c = manipulator.checkManipulatorStatus(View.MANIPULATOR_X_AXIS_COLOUR_R[0], View.MANIPULATOR_X_AXIS_COLOUR_G[0], View.MANIPULATOR_X_AXIS_COLOUR_B[0], Manipulator.X_ROTATE_ARROW, c3d, zoom);
-                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getX_RotateArrow().x, rotateSize * manipulator.getX_RotateArrow().y, rotateSize * manipulator.getX_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .drawGL33_RGB(stack, mx, my, mz, zoom);
+                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getXrotateArrow().x, rotateSize * manipulator.getXrotateArrow().y, rotateSize * manipulator.getXrotateArrow().z, cone_height, cone_width, lineWidth)
+                        .drawGL33rgb(stack, mx, my, mz, zoom);
                     }
 
                     c = manipulator.checkManipulatorStatus(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], Manipulator.Y_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getYaxis().x, manipulator.getYaxis().y, manipulator.getYaxis().z, rotateSize, arcWidth).drawGL33(stack, mx, my, mz, zoom);
 
-                    if (manipulator.isY_Rotate()) {
+                    if (manipulator.isYrotate()) {
                         c = manipulator.checkManipulatorStatus(View.MANIPULATOR_Y_AXIS_COLOUR_R[0], View.MANIPULATOR_Y_AXIS_COLOUR_G[0], View.MANIPULATOR_Y_AXIS_COLOUR_B[0], Manipulator.Y_ROTATE_ARROW, c3d, zoom);
-                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getY_RotateArrow().x, rotateSize * manipulator.getY_RotateArrow().y, rotateSize * manipulator.getY_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .drawGL33_RGB(stack, mx, my, mz, zoom);
+                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getYrotateArrow().x, rotateSize * manipulator.getYrotateArrow().y, rotateSize * manipulator.getYrotateArrow().z, cone_height, cone_width, lineWidth)
+                        .drawGL33rgb(stack, mx, my, mz, zoom);
                     }
 
                     c = manipulator.checkManipulatorStatus(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], Manipulator.Z_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getZaxis().x, manipulator.getZaxis().y, manipulator.getZaxis().z, rotateSize, arcWidth).drawGL33(stack, mx, my, mz, zoom);
 
-                    if (manipulator.isZ_Rotate()) {
+                    if (manipulator.isZrotate()) {
                         c = manipulator.checkManipulatorStatus(View.MANIPULATOR_Z_AXIS_COLOUR_R[0], View.MANIPULATOR_Z_AXIS_COLOUR_G[0], View.MANIPULATOR_Z_AXIS_COLOUR_B[0], Manipulator.Z_ROTATE_ARROW, c3d, zoom);
-                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getZ_RotateArrow().x, rotateSize * manipulator.getZ_RotateArrow().y, rotateSize * manipulator.getZ_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .drawGL33_RGB(stack, mx, my, mz, zoom);
+                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getZrotateArrow().x, rotateSize * manipulator.getZrotateArrow().y, rotateSize * manipulator.getZrotateArrow().z, cone_height, cone_width, lineWidth)
+                        .drawGL33rgb(stack, mx, my, mz, zoom);
                     }
 
                     Vector4f[] gen = c3d.getGenerator();
@@ -485,37 +485,37 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     c = manipulator.checkManipulatorStatus(View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0], Manipulator.V_ROTATE, c3d, zoom);
                     new Circle(c.getR(), c.getG(), c.getB(), gen[2].x, gen[2].y, gen[2].z, rotateOuterSize, circleWidth).drawGL33(stack, mx, my, mz, zoom);
 
-                    if (manipulator.isV_Rotate()) {
+                    if (manipulator.isVrotate()) {
                         c = manipulator.checkManipulatorStatus(View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0], Manipulator.V_ROTATE_ARROW, c3d, zoom);
-                        new Arrow(c.getR(), c.getG(), c.getB(), rotateOuterSize * manipulator.getV_RotateArrow().x, rotateOuterSize * manipulator.getV_RotateArrow().y, rotateOuterSize * manipulator.getV_RotateArrow().z, cone_height, cone_width, lineWidth)
-                        .drawGL33_RGB(stack, mx, my, mz, zoom);
+                        new Arrow(c.getR(), c.getG(), c.getB(), rotateOuterSize * manipulator.getVrotateArrow().x, rotateOuterSize * manipulator.getVrotateArrow().y, rotateOuterSize * manipulator.getVrotateArrow().z, cone_height, cone_width, lineWidth)
+                        .drawGL33rgb(stack, mx, my, mz, zoom);
                     }
                     if (singleMode)
                         break;
                 case SCALE:
                     c = manipulator.checkManipulatorStatus(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], Manipulator.X_SCALE, c3d, zoom);
-                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), scaleSize * manipulator.getXaxis().x, scaleSize * manipulator.getXaxis().y, scaleSize * manipulator.getXaxis().z, bluntSize, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
+                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), scaleSize * manipulator.getXaxis().x, scaleSize * manipulator.getXaxis().y, scaleSize * manipulator.getXaxis().z, bluntSize, lineWidth).drawGL33rgb(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], Manipulator.Y_SCALE, c3d, zoom);
-                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), scaleSize * manipulator.getYaxis().x, scaleSize * manipulator.getYaxis().y, scaleSize * manipulator.getYaxis().z, bluntSize, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
+                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), scaleSize * manipulator.getYaxis().x, scaleSize * manipulator.getYaxis().y, scaleSize * manipulator.getYaxis().z, bluntSize, lineWidth).drawGL33rgb(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], Manipulator.Z_SCALE, c3d, zoom);
-                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), scaleSize * manipulator.getZaxis().x, scaleSize * manipulator.getZaxis().y, scaleSize * manipulator.getZaxis().z, bluntSize, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
+                    new ArrowBlunt(c.getR(), c.getG(), c.getB(), scaleSize * manipulator.getZaxis().x, scaleSize * manipulator.getZaxis().y, scaleSize * manipulator.getZaxis().z, bluntSize, lineWidth).drawGL33rgb(stack, mx, my, mz, zoom);
                     if (singleMode)
                         break;
                 case MOVE:
                     c = manipulator.checkManipulatorStatus(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], Manipulator.X_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), moveSize * manipulator.getXaxis().x, moveSize * manipulator.getXaxis().y, moveSize * manipulator.getXaxis().z, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), moveSize * manipulator.getXaxis().x, moveSize * manipulator.getXaxis().y, moveSize * manipulator.getXaxis().z, cone_height, cone_width, lineWidth).drawGL33rgb(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], Manipulator.Y_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), moveSize * manipulator.getYaxis().x, moveSize * manipulator.getYaxis().y, moveSize * manipulator.getYaxis().z, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), moveSize * manipulator.getYaxis().x, moveSize * manipulator.getYaxis().y, moveSize * manipulator.getYaxis().z, cone_height, cone_width, lineWidth).drawGL33rgb(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], Manipulator.Z_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), moveSize * manipulator.getZaxis().x, moveSize * manipulator.getZaxis().y, moveSize * manipulator.getZaxis().z, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), moveSize * manipulator.getZaxis().x, moveSize * manipulator.getZaxis().y, moveSize * manipulator.getZaxis().z, cone_height, cone_width, lineWidth).drawGL33rgb(stack, mx, my, mz, zoom);
                     break;
                 case MOVE_GLOBAL:
                     c = manipulator.checkManipulatorStatus(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], Manipulator.X_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), moveSize, 0f, 0f, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), moveSize, 0f, 0f, cone_height, cone_width, lineWidth).drawGL33rgb(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], Manipulator.Y_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), 0f, moveSize, 0f, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 0f, moveSize, 0f, cone_height, cone_width, lineWidth).drawGL33rgb(stack, mx, my, mz, zoom);
                     c = manipulator.checkManipulatorStatus(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], Manipulator.Z_TRANSLATE, c3d, zoom);
-                    new Arrow(c.getR(), c.getG(), c.getB(), 0f, 0f, moveSize, cone_height, cone_width, lineWidth).drawGL33_RGB(stack, mx, my, mz, zoom);
+                    new Arrow(c.getR(), c.getG(), c.getB(), 0f, 0f, moveSize, cone_height, cone_width, lineWidth).drawGL33rgb(stack, mx, my, mz, zoom);
                     break;
                 default:
                     break;
@@ -837,7 +837,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                 GL11.glLineWidth(2f);
 
-                helper.drawLinesRGB_General(new float[]{
+                helper.drawLinesRGBgeneral(new float[]{
                         selectionCorner3.x, selectionCorner3.y, selectionCorner3.z,
                         View.CURSOR1_COLOUR_R[0], View.CURSOR1_COLOUR_G[0], View.CURSOR1_COLOUR_B[0],
                         selectionCorner1.x, selectionCorner1.y, selectionCorner1.z,
@@ -877,7 +877,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
 
                 GL11.glLineWidth(3f);
 
-                helper.drawLinesRGB_General(new float[]{
+                helper.drawLinesRGBgeneral(new float[]{
 
                         selectionStartMODELVIEW.x, selectionStartMODELVIEW.y, selectionStartMODELVIEW.z,
                         View.RUBBER_BAND_COLOUR_R[0], View.RUBBER_BAND_COLOUR_G[0], View.RUBBER_BAND_COLOUR_B[0],
@@ -1007,7 +1007,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         vertices[j] = gB; j++;
                         Vector4f.add(gridCenter1, c3d.getGrid()[1 + r], gridCenter1);
                     }
-                    helper.drawLinesRGB_General(vertices);
+                    helper.drawLinesRGBgeneral(vertices);
                 }
                 zOffset = 2f;
             }
@@ -1015,7 +1015,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
             if (c3d.isOriginShown()) {
                 // Origin
                 GL11.glLineWidth(2f);
-                helper.drawLinesRGB_General(new float[]{
+                helper.drawLinesRGBgeneral(new float[]{
                         viewportOriginAxis[0].x, viewportOriginAxis[0].y, viewportOriginAxis[0].z + zOffset,
                         View.ORIGIN_COLOUR_R[0], View.ORIGIN_COLOUR_G[0], View.ORIGIN_COLOUR_B[0],
                         viewportOriginAxis[1].x, viewportOriginAxis[1].y, viewportOriginAxis[1].z + zOffset,
@@ -1070,9 +1070,9 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     stack.glPushMatrix();
                     stack.glTranslatef(ox - viewportWidth, viewportHeight - oy, 0f);
                     stack.glMultMatrixf(viewportRotation);
-                    new Arrow(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], l,  0f, 0f, cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
-                    new Arrow(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], 0f, l,  0f, cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
-                    new Arrow(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], 0f, 0f, l,  cone_height, cone_width, line_width).drawGL33_RGB(stack, 0f, 0f, 0f, .01f);
+                    new Arrow(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], l,  0f, 0f, cone_height, cone_width, line_width).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
+                    new Arrow(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], 0f, l,  0f, cone_height, cone_width, line_width).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
+                    new Arrow(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], 0f, 0f, l,  cone_height, cone_width, line_width).drawGL33rgb(stack, 0f, 0f, 0f, .01f);
                     stack.glPopMatrix();
                 }
                 GL11.glDisable(GL11.GL_DEPTH_TEST);
@@ -1137,28 +1137,28 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         b = View.VERTEX_SELECTED_COLOUR_B[0];
                     }
                     GL11.glLineWidth(7f);
-                    helper.drawLinesRGB_General(new float[]{
+                    helper.drawLinesRGBgeneral(new float[]{
                             viewportWidth, viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
                             viewportWidth, -viewportHeight, viewportOriginAxis[3].z,
                             r, g, b
                     });
                     GL11.glLineWidth(10f);
-                    helper.drawLinesRGB_General(new float[]{
+                    helper.drawLinesRGBgeneral(new float[]{
                             -viewportWidth, -viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
                             -viewportWidth, viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
                     });
                     GL11.glLineWidth(5f);
-                    helper.drawLinesRGB_General(new float[]{
+                    helper.drawLinesRGBgeneral(new float[]{
                             -viewportWidth, viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
                             viewportWidth, viewportHeight, viewportOriginAxis[3].z,
                             r, g, b
                     });
                     GL11.glLineWidth(10f);
-                    helper.drawLinesRGB_General(new float[]{
+                    helper.drawLinesRGBgeneral(new float[]{
                             -viewportWidth, -viewportHeight, viewportOriginAxis[3].z,
                             r, g, b,
                             viewportWidth, -viewportHeight, viewportOriginAxis[3].z,
@@ -1249,7 +1249,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         vertices[13] = -viewportHeight + 0.009f;
                         vertices[14] = viewportOriginAxis[0].z;
 
-                        helper.drawTrianglesIndexedRGB_General(vertices, indices);
+                        helper.drawTrianglesIndexedRGBgeneral(vertices, indices);
 
                         // BOTTOM
                         for (int i = 0; i < 18; i += 6) {
@@ -1283,7 +1283,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         vertices[13] = viewportHeight - 0.009f;
                         vertices[14] = viewportOriginAxis[0].z;
 
-                        helper.drawTrianglesIndexedRGB_General(vertices, indices);
+                        helper.drawTrianglesIndexedRGBgeneral(vertices, indices);
 
                         // LEFT
                         for (int i = 0; i < 18; i += 6) {
@@ -1317,7 +1317,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         vertices[13] = 0;
                         vertices[14] = viewportOriginAxis[0].z;
 
-                        helper.drawTrianglesIndexedRGB_General(vertices, indices);
+                        helper.drawTrianglesIndexedRGBgeneral(vertices, indices);
 
                         // RIGHT
                         for (int i = 0; i < 18; i += 6) {
@@ -1351,7 +1351,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                         vertices[13] = 0;
                         vertices[14] = viewportOriginAxis[0].z;
 
-                        helper.drawTrianglesIndexedRGB_General(vertices, indices);
+                        helper.drawTrianglesIndexedRGBgeneral(vertices, indices);
                     }
                 }
 

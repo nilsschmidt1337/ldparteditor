@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.translate;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.composites.ToolItem;
@@ -63,19 +63,19 @@ public class TranslateDialog extends TranslateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
             btnLocalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.LOCAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
         });
-        WidgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
         });
-        WidgetUtil(btnToManipulatorPositionPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnToManipulatorPositionPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
@@ -84,7 +84,7 @@ public class TranslateDialog extends TranslateDesign {
             spnYPtr[0].setValue(manipulator.yp);
             spnZPtr[0].setValue(manipulator.zp);
         });
-        WidgetUtil(btnToManipulatorPositionInvertedPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnToManipulatorPositionInvertedPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
@@ -94,13 +94,13 @@ public class TranslateDialog extends TranslateDesign {
             spnZPtr[0].setValue(manipulator.zp.negate());
         });
 
-        WidgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> x = cbXaxisPtr[0].getSelection());
-        WidgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> y = cbYaxisPtr[0].getSelection());
-        WidgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> z = cbZaxisPtr[0].getSelection());
+        widgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> x = cbXaxisPtr[0].getSelection());
+        widgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> y = cbYaxisPtr[0].getSelection());
+        widgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> z = cbZaxisPtr[0].getSelection());
         spnXPtr[0].addValueChangeListener(spn -> setOffset(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue())));
         spnYPtr[0].addValueChangeListener(spn -> setOffset(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue())));
         spnZPtr[0].addValueChangeListener(spn -> setOffset(new Vertex(spnXPtr[0].getValue(), spnYPtr[0].getValue(), spnZPtr[0].getValue())));
-        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
             creatingCopy = true;
             setReturnCode(OK);
             close();

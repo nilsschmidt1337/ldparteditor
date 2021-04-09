@@ -31,12 +31,12 @@ public final class PGDataInit extends PGData implements Serializable {
     public PGDataInit() {}
 
     @Override
-    public void drawBFCprimitive_GL20(int drawOnlyMode) {
-        drawBFCprimitive_GL33(null, drawOnlyMode);
+    public void drawBFCprimitiveGL20(int drawOnlyMode) {
+        drawBFCprimitiveGL33(null, drawOnlyMode);
     }
     
     @Override
-    public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         PGData.localWinding = BFC.NOCERTIFY;
         PGData.accumClip = 0;
         PGData.globalInvertNext = false;

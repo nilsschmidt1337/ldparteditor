@@ -141,15 +141,15 @@ class VM09WindingChange extends VM08SlicerPro {
         }
 
         if (!selectedTriangles.isEmpty())
-            setModified_NoSync();
+            setModifiedNoSync();
         if (!selectedQuads.isEmpty())
-            setModified_NoSync();
+            setModifiedNoSync();
 
         // 4. Subfile Based Change & Selection
         if (!selectedSubfiles.isEmpty()) {
 
 
-            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
             HashSet<GData1> newSubfiles = new HashSet<>();
             for (GData1 subf : selectedSubfiles) {
                 GData1 untransformedSubfile;
@@ -317,7 +317,7 @@ class VM09WindingChange extends VM08SlicerPro {
                     }
                 }
             }
-            setModified_NoSync();
+            setModifiedNoSync();
         }
 
         if (isModified()) {

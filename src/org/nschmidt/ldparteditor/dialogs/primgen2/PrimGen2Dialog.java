@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.primgen2;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -171,7 +171,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 // So the line will be formated with the syntax formatter from
                 // the CompositeText.
                 final VertexManager vm = df.getVertexManager();
-                final GData data = df.getDrawPerLine_NOCLONE().getValue(txtDataPtr[0].getLineAtOffset(e.lineOffset) + 1);
+                final GData data = df.getDrawPerLineNoClone().getValue(txtDataPtr[0].getLineAtOffset(e.lineOffset) + 1);
                 boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
                 isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
                 syntaxFormatter.format(e,
@@ -245,7 +245,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        WidgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> {
             final int x = txtDataPtr[0].getSelection().x;
             if (txtDataPtr[0].getSelection().y == x) {
                 final int start = txtDataPtr[0].getOffsetAtLine(txtDataPtr[0].getLineAtOffset(x));
@@ -260,14 +260,14 @@ public class PrimGen2Dialog extends PrimGen2Design {
             txtDataPtr[0].setSelection(new Point(x, x));
             txtDataPtr[0].forceFocus();
         });
-        WidgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> txtDataPtr[0].copy());
-        WidgetUtil(mntmCutPtr[0]).addSelectionListener(e -> txtDataPtr[0].cut());
-        WidgetUtil(mntmPastePtr[0]).addSelectionListener(e -> txtDataPtr[0].paste());
+        widgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> txtDataPtr[0].copy());
+        widgetUtil(mntmCutPtr[0]).addSelectionListener(e -> txtDataPtr[0].cut());
+        widgetUtil(mntmPastePtr[0]).addSelectionListener(e -> txtDataPtr[0].paste());
 
         btnOkPtr[0].removeListener(SWT.Selection, btnOkPtr[0].getListeners(SWT.Selection)[0]);
         btnCancelPtr[0].removeListener(SWT.Selection, btnCancelPtr[0].getListeners(SWT.Selection)[0]);
 
-        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
 
             EditorTextWindow w = null;
             for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
@@ -296,9 +296,9 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        WidgetUtil(btnCancelPtr[0]).addSelectionListener(e -> getShell().close());
+        widgetUtil(btnCancelPtr[0]).addSelectionListener(e -> getShell().close());
 
-        WidgetUtil(btnSaveAsPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnSaveAsPtr[0]).addSelectionListener(e -> {
 
             EditorTextWindow w = null;
             for (EditorTextWindow w2 : Project.getOpenTextWindows()) {
@@ -327,7 +327,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             }
         });
 
-        WidgetUtil(btnTopPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnTopPtr[0]).addSelectionListener(e -> {
             c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
             Display.getCurrent().asyncExec(new Runnable() {
                 @Override
@@ -337,7 +337,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             });
         });
 
-        WidgetUtil(cmbTypePtr[0]).addSelectionListener(e -> {
+        widgetUtil(cmbTypePtr[0]).addSelectionListener(e -> {
 
             doUpdate = true;
 
@@ -422,10 +422,10 @@ public class PrimGen2Dialog extends PrimGen2Design {
         spnSegmentsPtr[0].addValueChangeListener(vca);
         spnSizePtr[0].addValueChangeListener(vcad);
 
-        WidgetUtil(cmbDivisionsPtr[0]).addSelectionListener(sa);
-        WidgetUtil(cmbSegmentsPtr[0]).addSelectionListener(sa);
-        WidgetUtil(cmbTorusTypePtr[0]).addSelectionListener(sa);
-        WidgetUtil(cmbWindingPtr[0]).addSelectionListener(sa);
+        widgetUtil(cmbDivisionsPtr[0]).addSelectionListener(sa);
+        widgetUtil(cmbSegmentsPtr[0]).addSelectionListener(sa);
+        widgetUtil(cmbTorusTypePtr[0]).addSelectionListener(sa);
+        widgetUtil(cmbWindingPtr[0]).addSelectionListener(sa);
 
         float backup = View.edgeThreshold;
         View.edgeThreshold = 5e6f;
@@ -439,7 +439,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
             Project.setFileToEdit(oldDf);
         }
         Editor3DWindow.getWindow().cleanupClosedData();
-        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         return result;
     }
 

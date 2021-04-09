@@ -33,7 +33,7 @@ class IntersectionInfo {
 
     IntersectionInfo(GData target2, GData origin2, ArrayList<Vector3r> allVertices) {
         for (Vector3r v : allVertices) {
-            this.allVertices.add(new Vector3d(v.x.BigDecimalValue(), v.y.BigDecimalValue(), v.z.BigDecimalValue()));
+            this.allVertices.add(new Vector3d(v.x.bigDecimalValue(), v.y.bigDecimalValue(), v.z.bigDecimalValue()));
         }
         this.target = target2;
         this.origin = origin2;

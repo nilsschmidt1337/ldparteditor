@@ -43,9 +43,9 @@ class VM00Snapshot extends VM00Base {
         if (NLogger.debugging) {
             clear();
             GData0 emptyLine = new GData0("", View.DUMMY_REFERENCE); //$NON-NLS-1$
-            linkedDatFile.getDrawPerLine_NOCLONE().clear();
+            linkedDatFile.getDrawPerLineNoClone().clear();
             linkedDatFile.getDrawChainStart().setNext(emptyLine);
-            linkedDatFile.getDrawPerLine_NOCLONE().put(1, emptyLine);
+            linkedDatFile.getDrawPerLineNoClone().put(1, emptyLine);
             setModified(true, false);
             StringBuilder sb = new StringBuilder();
             for (String line : s.getBackup()) {

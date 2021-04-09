@@ -149,7 +149,7 @@ public enum IdenticalVertexRemover {
         if (syncWithTextEditor) {
             vm.setModified(true, true);
         } else {
-            vm.setModified_NoSync();
+            vm.setModifiedNoSync();
         }
     }
 }

@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.slantingmatrixprojector;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
@@ -120,7 +120,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
                 cbSetOrigin.setText(I18n.SLANT_SET_ORIGIN);
                 cbSetOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                WidgetUtil(cbSetOrigin).addSelectionListener(e -> {
+                widgetUtil(cbSetOrigin).addSelectionListener(e -> {
                     mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
                     updateMatrix();
                 });
@@ -135,7 +135,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
                 cbSetOrigin.setText(I18n.SLANT_SET_ORIGIN);
                 cbSetOrigin.setSelection(mps.isMovingOriginToAxisCenter());
 
-                WidgetUtil(cbSetOrigin).addSelectionListener(e -> {
+                widgetUtil(cbSetOrigin).addSelectionListener(e -> {
                     mps.setMovingOriginToAxisCenter(!mps.isMovingOriginToAxisCenter());
                     updateMatrix();
                 });
@@ -147,7 +147,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
                 cbResetSubfileOrientation.setSelection(mps.isResettingSubfileTransformation());
 
 
-                WidgetUtil(cbResetSubfileOrientation).addSelectionListener(e -> mps.setResettingSubfileTransformation(!mps.isResettingSubfileTransformation()));
+                widgetUtil(cbResetSubfileOrientation).addSelectionListener(e -> mps.setResettingSubfileTransformation(!mps.isResettingSubfileTransformation()));
             }
             break;
         case INIT:
@@ -185,7 +185,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
         btnCopyMatrixToClipboard.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 4, 1));
         btnCopyMatrixToClipboard.setText(I18n.SLANT_COPY_TO_CLIPBOARD);
 
-        WidgetUtil(btnCopyMatrixToClipboard).addSelectionListener(e -> {
+        widgetUtil(btnCopyMatrixToClipboard).addSelectionListener(e -> {
             final Matrix m1 = vm.getSlantingMatrix(mps.isMovingOriginToAxisCenter());
             final StringBuilder cbString = new StringBuilder();
             cbString.append("1 16 "); //$NON-NLS-1$

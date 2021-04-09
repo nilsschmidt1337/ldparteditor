@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.colour;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
@@ -52,7 +52,7 @@ public class ColourDialog extends ColourDesign {
         this.setShellStyle(SWT.APPLICATION_MODAL | SWT.SHELL_TRIM ^ SWT.MIN);
         this.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btnColourChoose[0]).addSelectionListener(e -> {
+        widgetUtil(btnColourChoose[0]).addSelectionListener(e -> {
             ColorDialog dlg = new ColorDialog(getShell());
             // Change the title bar text
             dlg.setText(I18n.COLOURDIALOG_CHOOSE_DIRECT_COLOUR);
@@ -63,11 +63,11 @@ public class ColourDialog extends ColourDesign {
                 me.close();
             }
         });
-        WidgetUtil(btnColourTable[0]).addSelectionListener(e -> {
+        widgetUtil(btnColourTable[0]).addSelectionListener(e -> {
             new ColourTableDialog(getShell(), refCol).run();
             me.close();
         });
-        if (randomColours) WidgetUtil(btnRandomColours[0]).addSelectionListener(e -> {
+        if (randomColours) widgetUtil(btnRandomColours[0]).addSelectionListener(e -> {
             refCol[0] = View.RANDOM_COLOUR;
             me.close();
         });

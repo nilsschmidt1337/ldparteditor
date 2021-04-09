@@ -207,7 +207,7 @@ class VM04Rectifier extends VM03Adjacency {
                                                             }
                                                         }
 
-                                                        if (cnc == 1 || cnc == 3 || !linkedDatFile.getDrawPerLine_NOCLONE().containsValue(tri2)) {
+                                                        if (cnc == 1 || cnc == 3 || !linkedDatFile.getDrawPerLineNoClone().containsValue(tri2)) {
                                                             // Concave
                                                             continue;
                                                         }
@@ -366,7 +366,7 @@ class VM04Rectifier extends VM03Adjacency {
                                             }
 
                                             linkedDatFile.insertAfter(tri2, quad);
-                                            setModified_NoSync();
+                                            setModifiedNoSync();
                                             result2[0] += 2;
 
                                             lines1.retainAll(lines3);
@@ -441,64 +441,64 @@ class VM04Rectifier extends VM03Adjacency {
                                                 case 0:
                                                     continue;
                                                 case 1:
-                                                    vq = ROTQUAD(vq);
-                                                    vq = ROTQUAD(vq);
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
+                                                    vq = rotquad(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect1.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 2:
                                                     shortName = "rect1.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 4:
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect1.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 8:
-                                                    vq = ROTQUAD(vq);
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect1.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 3:
-                                                    vq = ROTQUAD(vq);
-                                                    vq = ROTQUAD(vq);
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
+                                                    vq = rotquad(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect2a.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 6:
                                                     shortName = "rect2a.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 12:
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect2a.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 9:
-                                                    vq = ROTQUAD(vq);
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect2a.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 5:
                                                     shortName = "rect2p.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 10:
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect2p.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 7:
-                                                    vq = ROTQUAD(vq);
-                                                    vq = ROTQUAD(vq);
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
+                                                    vq = rotquad(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect3.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 14:
                                                     shortName = "rect3.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 13:
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect3.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 11:
-                                                    vq = ROTQUAD(vq);
-                                                    vq = ROTQUAD(vq);
+                                                    vq = rotquad(vq);
+                                                    vq = rotquad(vq);
                                                     shortName = "rect3.dat"; //$NON-NLS-1$
                                                     break;
                                                 case 15:
@@ -711,7 +711,7 @@ class VM04Rectifier extends VM03Adjacency {
                                             }
                                         }
 
-                                        if (cnc == 1 || cnc == 3 || !linkedDatFile.getDrawPerLine_NOCLONE().containsValue(tri2)) {
+                                        if (cnc == 1 || cnc == 3 || !linkedDatFile.getDrawPerLineNoClone().containsValue(tri2)) {
                                             // Concave
                                             continue;
                                         }
@@ -864,13 +864,13 @@ class VM04Rectifier extends VM03Adjacency {
                                 quad = new GData4(yellow.getColourNumber(), yellow.getR(), yellow.getG(), yellow.getB(), yellow.getA(), first, second, third, fourth, View.DUMMY_REFERENCE, linkedDatFile);
 
                                 linkedDatFile.insertAfter(tri2, quad);
-                                setModified_NoSync();
+                                setModifiedNoSync();
                             } else {
 
                                 quad = new GData4(tri1.colourNumber, tri1.r, tri1.g, tri1.b, tri1.a, first, second, third, fourth, View.DUMMY_REFERENCE, linkedDatFile);
 
                                 linkedDatFile.insertAfter(tri2, quad);
-                                setModified_NoSync();
+                                setModifiedNoSync();
                             }
 
 
@@ -946,64 +946,64 @@ class VM04Rectifier extends VM03Adjacency {
                                 case 0:
                                     continue;
                                 case 1:
-                                    vq = ROTQUAD(vq);
-                                    vq = ROTQUAD(vq);
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
+                                    vq = rotquad(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect1.dat"; //$NON-NLS-1$
                                     break;
                                 case 2:
                                     shortName = "rect1.dat"; //$NON-NLS-1$
                                     break;
                                 case 4:
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect1.dat"; //$NON-NLS-1$
                                     break;
                                 case 8:
-                                    vq = ROTQUAD(vq);
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect1.dat"; //$NON-NLS-1$
                                     break;
                                 case 3:
-                                    vq = ROTQUAD(vq);
-                                    vq = ROTQUAD(vq);
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
+                                    vq = rotquad(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect2a.dat"; //$NON-NLS-1$
                                     break;
                                 case 6:
                                     shortName = "rect2a.dat"; //$NON-NLS-1$
                                     break;
                                 case 12:
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect2a.dat"; //$NON-NLS-1$
                                     break;
                                 case 9:
-                                    vq = ROTQUAD(vq);
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect2a.dat"; //$NON-NLS-1$
                                     break;
                                 case 5:
                                     shortName = "rect2p.dat"; //$NON-NLS-1$
                                     break;
                                 case 10:
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect2p.dat"; //$NON-NLS-1$
                                     break;
                                 case 7:
-                                    vq = ROTQUAD(vq);
-                                    vq = ROTQUAD(vq);
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
+                                    vq = rotquad(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect3.dat"; //$NON-NLS-1$
                                     break;
                                 case 14:
                                     shortName = "rect3.dat"; //$NON-NLS-1$
                                     break;
                                 case 13:
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect3.dat"; //$NON-NLS-1$
                                     break;
                                 case 11:
-                                    vq = ROTQUAD(vq);
-                                    vq = ROTQUAD(vq);
+                                    vq = rotquad(vq);
+                                    vq = rotquad(vq);
                                     shortName = "rect3.dat"; //$NON-NLS-1$
                                     break;
                                 case 15:
@@ -1107,7 +1107,7 @@ class VM04Rectifier extends VM03Adjacency {
         return result2;
     }
 
-    private Vertex[] ROTQUAD(Vertex[] vq) {
+    private Vertex[] rotquad(Vertex[] vq) {
         Vertex[] result = new Vertex[4];
         result[0] = vq[1];
         result[1] = vq[2];

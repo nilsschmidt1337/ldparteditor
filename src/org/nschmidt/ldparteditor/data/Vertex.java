@@ -164,7 +164,7 @@ public class Vertex implements Comparable<Vertex> {
     }
 
     Vertex(Vector3r vector3r) {
-        this(vector3r.x.BigDecimalValue(), vector3r.y.BigDecimalValue(), vector3r.z.BigDecimalValue());
+        this(vector3r.x.bigDecimalValue(), vector3r.y.bigDecimalValue(), vector3r.z.bigDecimalValue());
     }
 
     public final Vector4f toVector4f() {

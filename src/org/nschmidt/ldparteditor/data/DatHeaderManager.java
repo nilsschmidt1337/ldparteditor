@@ -312,9 +312,9 @@ public class DatHeaderManager {
                                             // I expect that this line is a valid Help
                                             if (normalizedLine.startsWith("0 !HELP")) { //$NON-NLS-1$
                                                 if (h.hasHELP()) {
-                                                    h.setLineHELP_end(lineNumber);
+                                                    h.setLineHELPend(lineNumber);
                                                 } else {
-                                                    h.setLineHELP_start(lineNumber);
+                                                    h.setLineHELPstart(lineNumber);
                                                 }
                                                 h.setHasHELP(true);
                                                 headerState = HeaderState.H05_OPTIONAL_HELP;
@@ -332,7 +332,7 @@ public class DatHeaderManager {
                                                     if (headerState > HeaderState.H05_OPTIONAL_HELP) { // Its misplaced
                                                         registerHint(lineNumber, "52", I18n.DATPARSER_MISPLACED_HELP, registered, allHints); //$NON-NLS-1$
                                                     }
-                                                    h.setLineHELP_start(lineNumber);
+                                                    h.setLineHELPstart(lineNumber);
                                                     h.setHasHELP(true);
                                                     headerState = HeaderState.H05_OPTIONAL_HELP;
                                                 }

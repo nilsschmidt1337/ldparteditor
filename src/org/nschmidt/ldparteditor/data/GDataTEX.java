@@ -45,37 +45,37 @@ public final class GDataTEX extends GData {
     }
 
     @Override
-    public void drawGL20_RandomColours(Composite3D c3d) {
+    public void drawGL20RandomColours(Composite3D c3d) {
     }
 
     @Override
-    public void drawGL20_BFC(Composite3D c3d) {
+    public void drawGL20BFC(Composite3D c3d) {
     }
 
     @Override
-    public void drawGL20_BFCuncertified(Composite3D c3d) {
+    public void drawGL20BFCuncertified(Composite3D c3d) {
     }
 
     @Override
-    public void drawGL20_BFC_backOnly(Composite3D c3d) {
+    public void drawGL20BFCbackOnly(Composite3D c3d) {
     }
 
     @Override
-    public void drawGL20_BFC_Colour(Composite3D c3d) {
+    public void drawGL20BFCcolour(Composite3D c3d) {
     }
 
     @Override
-    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
+    public void drawGL20WhileAddCondlines(Composite3D c3d) {
     }
 
     @Override
-    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {}
+    public void drawGL20CoplanarityHeatmap(Composite3D c3d) {}
 
     @Override
-    public void drawGL20_Wireframe(Composite3D c3d) {}
+    public void drawGL20Wireframe(Composite3D c3d) {}
 
     @Override
-    public void drawGL20_BFC_Textured(Composite3D c3d) {
+    public void drawGL20BFCtextured(Composite3D c3d) {
         boolean foundLocalTEXMAP = GData.globalFoundTEXMAPStack.peek();
         if (GData.globalFoundTEXMAPNEXT) {
             GData.globalFoundTEXMAPStack.pop();
@@ -85,7 +85,7 @@ public final class GDataTEX extends GData {
             foundLocalTEXMAP = false;
         }
         if (linkedData != null && foundLocalTEXMAP) {
-            linkedData.drawGL20_BFC_Textured(c3d);
+            linkedData.drawGL20BFCtextured(c3d);
         } else {
             if (meta == TexMeta.FALLBACK && foundLocalTEXMAP && GData.globalDrawObjects) {
                 GData.globalDrawObjects = false;

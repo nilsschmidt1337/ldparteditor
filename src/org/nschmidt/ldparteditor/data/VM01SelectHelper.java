@@ -97,7 +97,7 @@ class VM01SelectHelper extends VM01Select {
                         continue;
                     MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), selectionWidth);
                     if (selectionWidth.x * selectionWidth.x + selectionWidth.y * selectionWidth.y + selectionWidth.z * selectionWidth.z < discr) {
-                        selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
+                        selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                     }
                 }
             } else { // Multithreaded selection for many faces
@@ -131,7 +131,7 @@ class VM01SelectHelper extends VM01Select {
                                 MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
                                 if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
                                     if (dialogCanceled.get()) return;
-                                    selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
+                                    selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                                 }
                             }
                         }
@@ -239,7 +239,7 @@ class VM01SelectHelper extends VM01Select {
                     b[2] = vertex.z - selectionStart.z;
                     b = MathHelper.gaussianElimination(a, b);
                     if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
-                        selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
+                        selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                     }
                 }
             } else {  // Multithreaded selection for many, many faces
@@ -289,7 +289,7 @@ class VM01SelectHelper extends VM01Select {
                                 b = MathHelper.gaussianElimination(a, b);
                                 if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
                                     if (dialogCanceled.get()) return;
-                                    selectVertices_helper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
+                                    selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                                 }
                             }
                         }
@@ -519,7 +519,7 @@ class VM01SelectHelper extends VM01Select {
                         continue;
                     MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), selectionWidth);
                     if (selectionWidth.x * selectionWidth.x + selectionWidth.y * selectionWidth.y + selectionWidth.z * selectionWidth.z < discr) {
-                        selectVertices2_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
+                        selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                     }
                 }
             } else { // Multithreaded selection for many faces
@@ -552,7 +552,7 @@ class VM01SelectHelper extends VM01Select {
                                 MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
                                 if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
                                     if (dialogCanceled.get()) return;
-                                    selectVertices2_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
+                                    selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                                 }
                             }
                         }
@@ -657,7 +657,7 @@ class VM01SelectHelper extends VM01Select {
                     b[2] = vertex.z - selectionStart.z;
                     b = MathHelper.gaussianElimination(a, b);
                     if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
-                        selectVertices2_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
+                        selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                     }
                 }
             } else { // Multithreaded selection for many faces
@@ -707,7 +707,7 @@ class VM01SelectHelper extends VM01Select {
                                 b = MathHelper.gaussianElimination(a, b);
                                 if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
                                     if (dialogCanceled.get()) return;
-                                    selectVertices2_helper(c3d, vertex, selectionDepth, powerRay, noTrans);
+                                    selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                                 }
                             }
                         }
@@ -783,7 +783,7 @@ class VM01SelectHelper extends VM01Select {
         }
     }
 
-    private void selectVertices_helper(final Composite3D c3d, final Vertex vertex, final Vector4f rayDirection, PowerRay powerRay, boolean noTrans, boolean needRayTest) {
+    private void selectVerticesHelper(final Composite3D c3d, final Vertex vertex, final Vector4f rayDirection, PowerRay powerRay, boolean noTrans, boolean needRayTest) {
         final Set<GData3> tris = triangles.keySet();
         final Set<GData4> qs = quads.keySet();
         if (c3d.isShowingHiddenVertices()) {
@@ -803,7 +803,7 @@ class VM01SelectHelper extends VM01Select {
                     continue;
                 Vertex[] tverts = triangles.get(triangle);
                 if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex)) {
-                    if (powerRay.TRIANGLE_INTERSECT(point, rayDirection, tverts[0], tverts[1], tverts[2])) {
+                    if (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])) {
                         vertexIsShown = false;
                         break;
                     }
@@ -815,8 +815,8 @@ class VM01SelectHelper extends VM01Select {
                         continue;
                     Vertex[] tverts = quads.get(quad);
                     if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex) && !tverts[3].equals(vertex)) {
-                        if (powerRay.TRIANGLE_INTERSECT(point, rayDirection, tverts[0], tverts[1], tverts[2])
-                                || powerRay.TRIANGLE_INTERSECT(point, rayDirection, tverts[2], tverts[3], tverts[0])) {
+                        if (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])
+                                || powerRay.triangleIntersect(point, rayDirection, tverts[2], tverts[3], tverts[0])) {
                             vertexIsShown = false;
                             break;
                         }
@@ -836,7 +836,7 @@ class VM01SelectHelper extends VM01Select {
         }
     }
 
-    private void selectVertices2_helper(final Composite3D c3d, final Vertex vertex, final Vector4f rayDirection, PowerRay powerRay, boolean noTrans) {
+    private void selectVertices2Helper(final Composite3D c3d, final Vertex vertex, final Vector4f rayDirection, PowerRay powerRay, boolean noTrans) {
         final Set<GData3> tris = triangles.keySet();
         final Set<GData4> qs = quads.keySet();
         if (c3d.isShowingHiddenVertices()) {
@@ -849,7 +849,7 @@ class VM01SelectHelper extends VM01Select {
                     continue;
                 Vertex[] tverts = triangles.get(triangle);
                 if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex)) {
-                    if (powerRay.TRIANGLE_INTERSECT(point, rayDirection, tverts[0], tverts[1], tverts[2])) {
+                    if (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])) {
                         vertexIsShown = false;
                         break;
                     }
@@ -861,8 +861,8 @@ class VM01SelectHelper extends VM01Select {
                         continue;
                     Vertex[] tverts = quads.get(quad);
                     if (!tverts[0].equals(vertex) && !tverts[1].equals(vertex) && !tverts[2].equals(vertex) && !tverts[3].equals(vertex)) {
-                        if (powerRay.TRIANGLE_INTERSECT(point, rayDirection, tverts[0], tverts[1], tverts[2])
-                                || powerRay.TRIANGLE_INTERSECT(point, rayDirection, tverts[2], tverts[3], tverts[0])) {
+                        if (powerRay.triangleIntersect(point, rayDirection, tverts[0], tverts[1], tverts[2])
+                                || powerRay.triangleIntersect(point, rayDirection, tverts[2], tverts[3], tverts[0])) {
                             vertexIsShown = false;
                             break;
                         }
@@ -889,7 +889,7 @@ class VM01SelectHelper extends VM01Select {
                     i++;
                 }
                 if (!triQuadVerts[0].equals(vertex) && !triQuadVerts[1].equals(vertex) && !triQuadVerts[2].equals(vertex)) {
-                    if (powerRay.TRIANGLE_INTERSECT(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])) {
+                    if (powerRay.triangleIntersect(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])) {
                         return false;
                     }
                 }
@@ -904,8 +904,8 @@ class VM01SelectHelper extends VM01Select {
                     i++;
                 }
                 if (!triQuadVerts[0].equals(vertex) && !triQuadVerts[1].equals(vertex) && !triQuadVerts[2].equals(vertex) && !triQuadVerts[3].equals(vertex)) {
-                    if (powerRay.TRIANGLE_INTERSECT(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])
-                            || powerRay.TRIANGLE_INTERSECT(point, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0])) {
+                    if (powerRay.triangleIntersect(point, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2])
+                            || powerRay.triangleIntersect(point, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0])) {
                         return false;
                     }
                 }
@@ -1418,7 +1418,7 @@ class VM01SelectHelper extends VM01Select {
                     }
                 }
             } else {
-                GData selection = selectFaces_helper(c3d, event);
+                GData selection = selectFacesHelper(c3d, event);
                 if (selection != null) {
                     if (selection.type() == 4 && sels.isQuads()) {
                         GData4 gd4 = (GData4) selection;
@@ -1532,7 +1532,7 @@ class VM01SelectHelper extends VM01Select {
                 }
             } else {
 
-                GData selection = selectFaces_helper(c3d, event);
+                GData selection = selectFacesHelper(c3d, event);
                 if (selection != null) {
                     if (selection.type() == 4) {
                         GData4 gd4 = (GData4) selection;
@@ -1577,7 +1577,7 @@ class VM01SelectHelper extends VM01Select {
         selectedVerticesForSubfile.addAll(selVert4sTemp);
     }
 
-    private synchronized GData selectFaces_helper(Composite3D c3d, Event event) {
+    private synchronized GData selectFacesHelper(Composite3D c3d, Event event) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
         PerspectiveCalculator perspective = c3d.getPerspectiveCalculator();
         Matrix4f viewportRotation = c3d.getRotation();
@@ -1607,7 +1607,7 @@ class VM01SelectHelper extends VM01Select {
                 i++;
             }
 
-            if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
+            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)) {
                 if (dist[0] < minDist) {
                     if (triangle.isTriangle) minDist = dist[0];
                     if (triangle.isTriangle || result == null) result = triangle;
@@ -1624,8 +1624,8 @@ class VM01SelectHelper extends VM01Select {
                 triQuadVerts[i] = tvertex;
                 i++;
             }
-            if (powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
-                    || powerRay.TRIANGLE_INTERSECT(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist)) {
+            if (powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[0], triQuadVerts[1], triQuadVerts[2], point, dist)
+                    || powerRay.triangleIntersect(orig, rayDirection, triQuadVerts[2], triQuadVerts[3], triQuadVerts[0], point, dist)) {
                 if (dist[0] < minDist) {
                     minDist = dist[0];
                     result = quad;
@@ -1878,7 +1878,7 @@ class VM01SelectHelper extends VM01Select {
         boolean firstToken = true;
         final String token2 = token.substring(0, 4);
         final GColour col16 = View.getLDConfigColour(16);
-        HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
         for (GData g : selectedData) {
             final GData b = g.getBefore();
             final GData n = g.getNext();

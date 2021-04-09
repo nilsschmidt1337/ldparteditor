@@ -1,6 +1,6 @@
 package org.nschmidt.ldparteditor.dialogs.options;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.util.Locale;
 
@@ -33,18 +33,18 @@ public class OptionsDialog extends OptionsDesign {
         sh.setImage(ResourceManager.getImage("imgDuke2.png")); //$NON-NLS-1$
         final UserSettingState userSettingState = WorkbenchManager.getUserSettingState();
 
-        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
             closingProcedure();
             me.close();
         });
 
-        WidgetUtil(btnAllowInvalidShapesPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btnAllowInvalidShapesPtr[0].getSelection()));
-        WidgetUtil(btnTranslateViewByCursorPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setTranslatingViewByCursor( btnTranslateViewByCursorPtr[0].getSelection()));
-        WidgetUtil(btnDisableMAD3DPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btnDisableMAD3DPtr[0].getSelection()));
-        WidgetUtil(btnDisableMADtextPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btnDisableMADtextPtr[0].getSelection()));
-        WidgetUtil(btnInvertInvertWheelZoomDirectionPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btnInvertInvertWheelZoomDirectionPtr[0].getSelection()));
+        widgetUtil(btnAllowInvalidShapesPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setAllowInvalidShapes(btnAllowInvalidShapesPtr[0].getSelection()));
+        widgetUtil(btnTranslateViewByCursorPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setTranslatingViewByCursor( btnTranslateViewByCursorPtr[0].getSelection()));
+        widgetUtil(btnDisableMAD3DPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMAD3D(btnDisableMAD3DPtr[0].getSelection()));
+        widgetUtil(btnDisableMADtextPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setDisableMADtext(btnDisableMADtextPtr[0].getSelection()));
+        widgetUtil(btnInvertInvertWheelZoomDirectionPtr[0]).addSelectionListener(e -> WorkbenchManager.getUserSettingState().setInvertingWheelZoomDirection(btnInvertInvertWheelZoomDirectionPtr[0].getSelection()));
 
-        WidgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to the last selected path
@@ -67,7 +67,7 @@ public class OptionsDialog extends OptionsDesign {
                 userSettingState.setLdrawFolderPath(ldrawPath);
             }
         });
-        WidgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to the last selected path
@@ -90,7 +90,7 @@ public class OptionsDialog extends OptionsDesign {
                 userSettingState.setAuthoringFolderPath(partAuthoringPath);
             }
         });
-        WidgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to the last selected path
@@ -141,12 +141,12 @@ public class OptionsDialog extends OptionsDesign {
         spnCoplanarityWarningPtr[0].addValueChangeListener(spn -> {
             final double angle = spnCoplanarityWarningPtr[0].getValue().doubleValue();
             Threshold.coplanarityAngleWarning = angle;
-            userSettingState.setCoplanarity_angle_warning(angle);
+            userSettingState.setCoplanarityAngleWarning(angle);
         });
         spnCoplanarityErrorPtr[0].addValueChangeListener(spn -> {
             final double angle = spnCoplanarityErrorPtr[0].getValue().doubleValue();
             Threshold.coplanarityAngleError = angle;
-            userSettingState.setCoplanarity_angle_error(angle);
+            userSettingState.setCoplanarityAngleError(angle);
         });
         spnViewportScalePtr[0].addValueChangeListener(spn -> {
             final double scaleFactor = spnViewportScalePtr[0].getValue().doubleValue();

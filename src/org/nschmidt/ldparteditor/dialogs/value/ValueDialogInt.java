@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.value;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.widgets.Shell;
 
@@ -39,7 +39,7 @@ public abstract class ValueDialogInt extends ValueDesignInt {
         getShell().setText(shellText);
         initializeSpinner();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> applyValue());
+        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> applyValue());
         return super.open();
     }
 

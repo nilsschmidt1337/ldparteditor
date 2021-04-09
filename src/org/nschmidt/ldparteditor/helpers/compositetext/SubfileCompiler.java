@@ -134,12 +134,12 @@ public enum SubfileCompiler {
         HashSet<Vertex> selectedVertices = new HashSet<>();
         if (preserveSelection) {
             selectedVertices.addAll(vm.getSelectedVertices());
-            HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+            HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
             Set<Integer> keys = dpl.keySet();
             ArrayList<Integer> lineNumbers = new ArrayList<>();
             lineNumbers.addAll(keys);
             for (Integer l : dpl.keySet()) {
-                GData gd = datFile.getDrawPerLine_NOCLONE().getValue(l);
+                GData gd = datFile.getDrawPerLineNoClone().getValue(l);
                 int type = gd.type();
                 if (type != 1) {
                     if (vm.getSelectedData().contains(gd)) selectedDataIndices.add(l);
@@ -158,7 +158,7 @@ public enum SubfileCompiler {
             datFile.parseForData(false);
         }
 
-        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
 
         Set<Integer> keys = dpl.keySet();
         ArrayList<Integer> lineNumbers = new ArrayList<>();
@@ -177,12 +177,12 @@ public enum SubfileCompiler {
         toFolderStack.clear();
 
         builder = null;
-        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         datFile.getVertexManager().clear();
         datFile.parseForData(false);
 
         // Link last line
-        NLogger.debug(SubfileCompiler.class, "Last line is {0}", datFile.getDrawPerLine_NOCLONE().getValue(lineNumbers.size())); //$NON-NLS-1$
+        NLogger.debug(SubfileCompiler.class, "Last line is {0}", datFile.getDrawPerLineNoClone().getValue(lineNumbers.size())); //$NON-NLS-1$
 
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
@@ -224,7 +224,7 @@ public enum SubfileCompiler {
 
     @SuppressWarnings("unchecked")
     private static void compile(Integer lineNumber, DatFile datFile) {
-        GData gd = datFile.getDrawPerLine_NOCLONE().getValue(lineNumber);
+        GData gd = datFile.getDrawPerLineNoClone().getValue(lineNumber);
         int type = gd.type();
 
         if (skipCompile && type != 0)
@@ -416,7 +416,7 @@ public enum SubfileCompiler {
                     Project.setFileToEdit(df);
                 }
 
-                df.getVertexManager().setModified_NoSync();
+                df.getVertexManager().setModifiedNoSync();
 
                 Project.addUnsavedFile(df);
 

@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editor3d;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
@@ -848,7 +848,7 @@ class Editor3DDesign extends ApplicationWindow {
                             this.spnMovePtr[0] = spinner;
                             spinner.setMaximum(new BigDecimal("100")); //$NON-NLS-1$
                             spinner.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-                            spinner.setValue(userSettings.getMedium_move_snap());
+                            spinner.setValue(userSettings.getMediumMoveSnap());
                             spinner.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label lblNewLabel2 = new Label(cmpSnappingArea, Cocoa.getStyle());
@@ -859,7 +859,7 @@ class Editor3DDesign extends ApplicationWindow {
                             this.spnRotatePtr[0] = spinner2;
                             spinner2.setMaximum(new BigDecimal("360.0")); //$NON-NLS-1$
                             spinner2.setMinimum(new BigDecimal("0.0001")); //$NON-NLS-1$
-                            spinner2.setValue(userSettings.getMedium_rotate_snap());
+                            spinner2.setValue(userSettings.getMediumRotateSnap());
                             spinner2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
                             Label lblNewLabel3 = new Label(cmpSnappingArea, Cocoa.getStyle());
@@ -870,7 +870,7 @@ class Editor3DDesign extends ApplicationWindow {
                             this.spnScalePtr[0] = spinner3;
                             spinner3.setMaximum(new BigDecimal("100.0")); //$NON-NLS-1$
                             spinner3.setMinimum(new BigDecimal("0.01")); //$NON-NLS-1$
-                            spinner3.setValue(userSettings.getMedium_scale_snap());
+                            spinner3.setValue(userSettings.getMediumScaleSnap());
                             spinner3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 3, 1));
 
 
@@ -2037,7 +2037,7 @@ class Editor3DDesign extends ApplicationWindow {
                 e.gc.fillRectangle(x, y, w, h);
                 e.gc.drawImage(ResourceManager.getImage("icon16_transparent.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
             });
-            WidgetUtil(btnLastUsedColour).addSelectionListener(e -> {
+            widgetUtil(btnLastUsedColour).addSelectionListener(e -> {
                 if (Project.getFileToEdit() != null) {
                     Project.getFileToEdit().getVertexManager().addSnapshot();
                     GColour col1 = View.getLDConfigColour(16);
@@ -2303,7 +2303,7 @@ class Editor3DDesign extends ApplicationWindow {
             btnSelect.setToolTipText(I18n.E3D_ADVANCED_SELECT);
             btnSelect.setText(I18n.E3D_ADVANCED_SELECT);
             this.mnuSelect = new Menu(this.getShell(), SWT.POP_UP);
-            WidgetUtil(btnSelect).addSelectionListener(e -> {
+            widgetUtil(btnSelect).addSelectionListener(e -> {
                 showSelectMenu();
                 Editor3DWindow.getWindow().regainFocus();
             });
@@ -2474,7 +2474,7 @@ class Editor3DDesign extends ApplicationWindow {
             btnMergeNSplit.setToolTipText(I18n.E3D_MERGE_SPLIT);
             btnMergeNSplit.setText(I18n.E3D_MERGE_SPLIT);
             final Menu mnuMerge = new Menu(this.getShell(), SWT.POP_UP);
-            WidgetUtil(btnMergeNSplit).addSelectionListener(e -> {
+            widgetUtil(btnMergeNSplit).addSelectionListener(e -> {
                 Point loc = btnMergeNSplit.getLocation();
                 Rectangle rect = btnMergeNSplit.getBounds();
                 Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
@@ -2579,7 +2579,7 @@ class Editor3DDesign extends ApplicationWindow {
             btnToolsActions.setText(I18n.E3D_TOOLS);
             btnToolsActions.setToolTipText(I18n.E3D_TOOLS_OPTIONS);
             final Menu mnuTools = new Menu(this.getShell(), SWT.POP_UP);
-            WidgetUtil(btnToolsActions).addSelectionListener(e -> {
+            widgetUtil(btnToolsActions).addSelectionListener(e -> {
                 Point loc = btnToolsActions.getLocation();
                 Rectangle rect = btnToolsActions.getBounds();
                 Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
@@ -2848,7 +2848,7 @@ class Editor3DDesign extends ApplicationWindow {
             final NButton btnManipulatorActions = new NButton(toolItem, SWT.ARROW | SWT.DOWN);
             btnManipulatorActions.setToolTipText(I18n.E3D_MODIFY_MANIPULATOR);
             final Menu mnuManipulator = new Menu(this.getShell(), SWT.POP_UP);
-            WidgetUtil(btnManipulatorActions).addSelectionListener(e -> {
+            widgetUtil(btnManipulatorActions).addSelectionListener(e -> {
                 Point loc = btnManipulatorActions.getLocation();
                 Rectangle rect = btnManipulatorActions.getBounds();
                 Point mLoc = new Point(loc.x - 1, loc.y + rect.height);
@@ -3469,7 +3469,7 @@ class Editor3DDesign extends ApplicationWindow {
 
         btnCol.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-        WidgetUtil(btnCol).addSelectionListener(e -> {
+        widgetUtil(btnCol).addSelectionListener(e -> {
             if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                 // Choose new colour
                 new ColourDialog(getShell(), gColour2, false).run();
@@ -3533,7 +3533,7 @@ class Editor3DDesign extends ApplicationWindow {
                         e1.gc.drawImage(ResourceManager.getImage("icon16_halftrans.png"), 0, 0, imgSize, imgSize, x, y, w, h); //$NON-NLS-1$
                     }
                 });
-                WidgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
+                widgetUtil(btnLastUsedColourPtr[0]).addSelectionListener(e1 -> {
                     if (Project.getFileToEdit() != null) {
                         Editor3DWindow.getWindow().setLastUsedColour(gColour2[0]);
                         int num1 = gColour2[0].getColourNumber();

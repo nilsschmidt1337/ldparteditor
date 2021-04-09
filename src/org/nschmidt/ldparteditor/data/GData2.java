@@ -332,7 +332,7 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void drawGL20_RandomColours(Composite3D c3d) {
+    public void drawGL20RandomColours(Composite3D c3d) {
         if (!visible) {
             return;
         }
@@ -440,40 +440,40 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC(Composite3D c3d) {
+    public void drawGL20BFC(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_BFCuncertified(Composite3D c3d) {
+    public void drawGL20BFCuncertified(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_BFC_backOnly(Composite3D c3d) {
+    public void drawGL20BFCbackOnly(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_BFC_Colour(Composite3D c3d) {
+    public void drawGL20BFCcolour(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
+    public void drawGL20WhileAddCondlines(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+    public void drawGL20CoplanarityHeatmap(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_Wireframe(Composite3D c3d) {}
+    public void drawGL20Wireframe(Composite3D c3d) {}
 
     @Override
-    public void drawGL20_BFC_Textured(Composite3D c3d) {
+    public void drawGL20BFCtextured(Composite3D c3d) {
         // done :)
         if (GData.globalDrawObjects) {
             final OpenGLRenderer20 r = (OpenGLRenderer20) c3d.getRenderer();
@@ -877,7 +877,7 @@ public final class GData2 extends GData {
                 break;
             }
             for (PGData3 tri : tris) {
-                tri.drawTextGL33_VAO(ox + ox2, oy, oz + 100000f, zoom);
+                tri.drawTextGL33vao(ox + ox2, oy, oz + 100000f, zoom);
             }
             ox2 = ox2 - .01f * zoom;
         }
@@ -936,19 +936,19 @@ public final class GData2 extends GData {
         final float oy3 = .045f * zoom;
         final float ox1 = -.045f * zoom;
         for (PGData3 tri : View.S) {
-            tri.drawTextGL33_VAO(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
+            tri.drawTextGL33vao(lineOrigin.x, lineOrigin.y, lineOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.DA) {
-            tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33vao(textOrigin.x, textOrigin.y, textOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.DX) {
-            tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy1, textOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.DY) {
-            tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy2, textOrigin.z + 100000f, zoom);
         }
         for (PGData3 tri : View.DZ) {
-            tri.drawTextGL33_VAO(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
+            tri.drawTextGL33vao(textOrigin.x, textOrigin.y + oy3, textOrigin.z + 100000f, zoom);
         }
         drawNumberGL33(dAS, textOrigin.x + ox1, textOrigin.y, textOrigin.z, zoom);
         drawNumberGL33(dxS, textOrigin.x + ox1, textOrigin.y + oy1, textOrigin.z, zoom);

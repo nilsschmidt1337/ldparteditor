@@ -278,7 +278,7 @@ public class VM20Manipulator extends VM19ColourChanger {
             if (newData != null) {
                 linker(gd, newData);
                 allNewData.add(newData);
-                setModified_NoSync();
+                setModifiedNoSync();
                 if (updateSelection) {
                     switch (newData.type()) {
                     case 2:
@@ -351,7 +351,7 @@ public class VM20Manipulator extends VM19ColourChanger {
             for (GData gd : newSelection) {
                 GDataCSG.getSelection(linkedDatFile).add((GDataCSG) gd);
             }
-            setModified_NoSync();
+            setModifiedNoSync();
         }
 
         // 0. Deselect selected subfile data (for whole selected subfiles)
@@ -550,7 +550,7 @@ public class VM20Manipulator extends VM19ColourChanger {
 
             // 4. Subfile Based Transformation & Selection
             if (!selectedSubfiles.isEmpty()) {
-                HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+                HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
                 HashSet<GData1> newSubfiles = new HashSet<>();
                 for (GData1 subf : selectedSubfiles) {
                     if (!drawPerLine.containsValue(subf)) {
@@ -602,7 +602,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                         }
                     }
                 }
-                setModified_NoSync();
+                setModifiedNoSync();
             }
 
             if (isModified()) {
@@ -806,7 +806,7 @@ public class VM20Manipulator extends VM19ColourChanger {
     }
 
     public void transformSubfile(GData1 g, Matrix m, boolean clearSelection, boolean syncWithTextEditor) {
-        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
         StringBuilder colourBuilder = new StringBuilder();
         final GColour col16 = View.getLDConfigColour(16);
         if (g.colourNumber == -1) {
@@ -852,7 +852,7 @@ public class VM20Manipulator extends VM19ColourChanger {
             restoreHideShowState();
             setModified(true, true);
         } else {
-            setModified_NoSync();
+            setModifiedNoSync();
         }
     }
 }

@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.overwrite;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.nschmidt.ldparteditor.i18n.I18n;
@@ -43,15 +43,15 @@ public class OverwriteDialog extends OverwriteDesign {
         super.create();
         getShell().setText(I18n.DIALOG_REPLACE_TITLE);
         // MARK All final listeners will be configured here..
-        WidgetUtil(getButton(IDialogConstants.YES_ID)).addSelectionListener(e -> {
+        widgetUtil(getButton(IDialogConstants.YES_ID)).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.YES_ID);
             close();
         });
-        WidgetUtil(getButton(IDialogConstants.NO_ID)).addSelectionListener(e -> {
+        widgetUtil(getButton(IDialogConstants.NO_ID)).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.NO_ID);
             close();
         });
-        WidgetUtil(getButton(IDialogConstants.SKIP_ID)).addSelectionListener(e -> {
+        widgetUtil(getButton(IDialogConstants.SKIP_ID)).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.SKIP_ID);
             close();
         });

@@ -419,7 +419,7 @@ public enum MathHelper {
         float zl = pz + d * zn;
 
         Vector4f closestPoint = new Vector4f();
-        double[] solution = new PowerRay().BARYCENTRIC(new double[] { xl, yl, zl }, // point
+        double[] solution = new PowerRay().barycentric(new double[] { xl, yl, zl }, // point
                 new double[] { xn, yn, zn }, // normal
                 new double[] { x1, y1, z1 }, // v1
                 new double[] { x2, y2, z2 }, // v2
@@ -1151,7 +1151,7 @@ public enum MathHelper {
                 break;
             }
             MathContext mcloc = new MathContext(1 + err2prec());
-            res = res.add(r.BigDecimalValue(mcloc));
+            res = res.add(r.bigDecimalValue(mcloc));
 
         }
         return res.round(mc);

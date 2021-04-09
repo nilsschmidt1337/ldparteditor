@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
@@ -76,7 +76,7 @@ public class CompositeScale extends ScalableComposite {
         btnOpenContextMenu.setImage(ResourceManager.getImage("icon16_contextMenu.png")); //$NON-NLS-1$
         btnOpenContextMenu.setBounds(0, 0, 20, 20);
 
-        WidgetUtil(btnOpenContextMenu).addSelectionListener(e -> {
+        widgetUtil(btnOpenContextMenu).addSelectionListener(e -> {
             PointerInfo a = MouseInfo.getPointerInfo();
             java.awt.Point b = a.getLocation();
             int x = (int) b.getX();

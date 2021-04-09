@@ -451,9 +451,9 @@ public class CSG {
         }
     }
 
-    public void draw_textured(Composite3D c3d, DatFile df) {
+    public void drawTextured(Composite3D c3d, DatFile df) {
         for (GData3 tri : getResult(df).keySet()) {
-            tri.drawGL20_BFC_Textured(c3d);
+            tri.drawGL20BFCtextured(c3d);
         }
     }
 

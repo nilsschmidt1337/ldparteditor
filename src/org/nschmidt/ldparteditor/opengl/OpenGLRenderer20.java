@@ -482,7 +482,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 final Vector3f ray3f;
                                 final Vector3f ray3f2 = new Vector3f(-20f, -20f, 100f);
                                 ray3f2.normalise();
-                                final Matrix4f vInverse = c3d.getViewport_Inverse();
+                                final Matrix4f vInverse = c3d.getViewportInverse();
                                 final Matrix4f vM = c3d.getViewport();
                                 final float z = 100f;
                                 {
@@ -719,7 +719,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                             hitSort.clear();
                                                             final Vector4f posv = get3DCoordinatesFromScreen(x, y, z, w, h, vInverse);
                                                             for (float[] tri : tris) {
-                                                                float[] zHit = pr.TRIANGLE_INTERSECT(posv, ray, tri);
+                                                                float[] zHit = pr.triangleIntersect(posv, ray, tri);
                                                                 if (zHit != null) {
                                                                     Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
                                                                     hitSort.put(sz.z, sz);
@@ -1398,10 +1398,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                 final float arcWidth;
                 final float bluntSize;
                 // The size will be set on application start!
-                final float moveSize = Manipulator.getTranslate_size();
-                final float rotateSize = Manipulator.getRotate_size();
-                final float rotateOuterSize = Manipulator.getRotate_outer_size();
-                final float scaleSize = Manipulator.getScale_size();
+                final float moveSize = Manipulator.getTranslateSize();
+                final float rotateSize = Manipulator.getRotateSize();
+                final float rotateOuterSize = Manipulator.getRotateOuterSize();
+                final float scaleSize = Manipulator.getScaleSize();
                 // mSize has normally a length of 11
                 // (lineWidth, cone_height, cone_width, bluntSize, circleWidth, arcWidth,
                 // moveSizeFactor, rotateSizeFactor, rotateOuterSizeFactor, scaleSizeFactor
@@ -1462,27 +1462,27 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     c = manipulator.checkManipulatorStatus(View.X_AXIS_COLOUR_R[0], View.X_AXIS_COLOUR_G[0], View.X_AXIS_COLOUR_B[0], Manipulator.X_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getXaxis().x, manipulator.getXaxis().y, manipulator.getXaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
 
-                    if (manipulator.isX_Rotate()) {
+                    if (manipulator.isXrotate()) {
                         c = manipulator.checkManipulatorStatus(View.MANIPULATOR_X_AXIS_COLOUR_R[0], View.MANIPULATOR_X_AXIS_COLOUR_G[0], View.MANIPULATOR_X_AXIS_COLOUR_B[0], Manipulator.X_ROTATE_ARROW, c3d, zoom);
-                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getX_RotateArrow().x, rotateSize * manipulator.getX_RotateArrow().y, rotateSize * manipulator.getX_RotateArrow().z, cone_height, cone_width, lineWidth)
+                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getXrotateArrow().x, rotateSize * manipulator.getXrotateArrow().y, rotateSize * manipulator.getXrotateArrow().z, cone_height, cone_width, lineWidth)
                         .drawGL20(mx, my, mz, zoom);
                     }
 
                     c = manipulator.checkManipulatorStatus(View.Y_AXIS_COLOUR_R[0], View.Y_AXIS_COLOUR_G[0], View.Y_AXIS_COLOUR_B[0], Manipulator.Y_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getYaxis().x, manipulator.getYaxis().y, manipulator.getYaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
 
-                    if (manipulator.isY_Rotate()) {
+                    if (manipulator.isYrotate()) {
                         c = manipulator.checkManipulatorStatus(View.MANIPULATOR_Y_AXIS_COLOUR_R[0], View.MANIPULATOR_Y_AXIS_COLOUR_G[0], View.MANIPULATOR_Y_AXIS_COLOUR_B[0], Manipulator.Y_ROTATE_ARROW, c3d, zoom);
-                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getY_RotateArrow().x, rotateSize * manipulator.getY_RotateArrow().y, rotateSize * manipulator.getY_RotateArrow().z, cone_height, cone_width, lineWidth)
+                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getYrotateArrow().x, rotateSize * manipulator.getYrotateArrow().y, rotateSize * manipulator.getYrotateArrow().z, cone_height, cone_width, lineWidth)
                         .drawGL20(mx, my, mz, zoom);
                     }
 
                     c = manipulator.checkManipulatorStatus(View.Z_AXIS_COLOUR_R[0], View.Z_AXIS_COLOUR_G[0], View.Z_AXIS_COLOUR_B[0], Manipulator.Z_ROTATE, c3d, zoom);
                     new Arc(c.getR(), c.getG(), c.getB(), manipulator.getZaxis().x, manipulator.getZaxis().y, manipulator.getZaxis().z, rotateSize, arcWidth).draw(mx, my, mz, zoom);
 
-                    if (manipulator.isZ_Rotate()) {
+                    if (manipulator.isZrotate()) {
                         c = manipulator.checkManipulatorStatus(View.MANIPULATOR_Z_AXIS_COLOUR_R[0], View.MANIPULATOR_Z_AXIS_COLOUR_G[0], View.MANIPULATOR_Z_AXIS_COLOUR_B[0], Manipulator.Z_ROTATE_ARROW, c3d, zoom);
-                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getZ_RotateArrow().x, rotateSize * manipulator.getZ_RotateArrow().y, rotateSize * manipulator.getZ_RotateArrow().z, cone_height, cone_width, lineWidth)
+                        new Arrow(c.getR(), c.getG(), c.getB(), rotateSize * manipulator.getZrotateArrow().x, rotateSize * manipulator.getZrotateArrow().y, rotateSize * manipulator.getZrotateArrow().z, cone_height, cone_width, lineWidth)
                         .drawGL20(mx, my, mz, zoom);
                     }
 
@@ -1491,9 +1491,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     c = manipulator.checkManipulatorStatus(View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0], Manipulator.V_ROTATE, c3d, zoom);
                     new Circle(c.getR(), c.getG(), c.getB(), gen[2].x, gen[2].y, gen[2].z, rotateOuterSize, circleWidth).draw(mx, my, mz, zoom);
 
-                    if (manipulator.isV_Rotate()) {
+                    if (manipulator.isVrotate()) {
                         c = manipulator.checkManipulatorStatus(View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0], Manipulator.V_ROTATE_ARROW, c3d, zoom);
-                        new Arrow(c.getR(), c.getG(), c.getB(), rotateOuterSize * manipulator.getV_RotateArrow().x, rotateOuterSize * manipulator.getV_RotateArrow().y, rotateOuterSize * manipulator.getV_RotateArrow().z, cone_height, cone_width, lineWidth)
+                        new Arrow(c.getR(), c.getG(), c.getB(), rotateOuterSize * manipulator.getVrotateArrow().x, rotateOuterSize * manipulator.getVrotateArrow().y, rotateOuterSize * manipulator.getVrotateArrow().z, cone_height, cone_width, lineWidth)
                         .drawGL20(mx, my, mz, zoom);
                     }
                     if (singleMode)

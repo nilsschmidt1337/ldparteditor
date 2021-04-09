@@ -30,7 +30,7 @@ public enum WidgetUtility {
      * @param ctrl
      * @return
      */
-    public static WUtil WidgetUtil(Widget w) {
+    public static WUtil widgetUtil(Widget w) {
         return new WUtil(w);
     }
 }

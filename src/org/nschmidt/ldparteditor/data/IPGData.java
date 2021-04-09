@@ -22,8 +22,8 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
  *
  */
 interface IPGData {
-    public void drawBFCprimitive_GL20(int drawOnlyMode);
-    public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode);
+    public void drawBFCprimitiveGL20(int drawOnlyMode);
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode);
     public int type();
     public PGData data();
 }

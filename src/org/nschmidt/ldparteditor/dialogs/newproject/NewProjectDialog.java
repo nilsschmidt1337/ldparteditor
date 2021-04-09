@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.newproject;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.File;
 
@@ -58,7 +58,7 @@ public class NewProjectDialog extends NewProjectDesign {
         });
         final boolean[] firstchoose = new boolean[1];
         firstchoose[0] = true;
-        WidgetUtil(btnBrowseProjectPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseProjectPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
             String authorFolder = WorkbenchManager.getUserSettingState().getAuthoringFolderPath();
 
@@ -97,7 +97,7 @@ public class NewProjectDialog extends NewProjectDesign {
                 projectPath = authorFolder;
             }
         });
-        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> {
             Project.setTempProjectName(projectName);
             Project.setTempProjectPath(projectPath + File.separator + projectName);
         });

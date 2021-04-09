@@ -212,7 +212,7 @@ public class PerspectiveCalculator {
         if (gridSize > 10f) {
             gridSize = gridSize / 2f;
         }
-        gridSize = gridSize * 10f * c3d.getGrid_scale();
+        gridSize = gridSize * 10f * c3d.getGridScale();
         int mx = (int) (c3d.getBounds().width / gridSize + 4) / 2;
         int my = (int) (c3d.getBounds().height / gridSize + 4) / 2;
         gridSize = gridSize / 1000f;
@@ -267,7 +267,7 @@ public class PerspectiveCalculator {
         relPos.x = (0.5f * cSize.x - x) / View.PIXEL_PER_LDU;
         relPos.y = (y - 0.5f * cSize.y) / View.PIXEL_PER_LDU;
         relPos.w = 1.0f;
-        Matrix4f vInverse = c3d.getViewport_Inverse();
+        Matrix4f vInverse = c3d.getViewportInverse();
         Matrix4f.transform(vInverse, relPos, relPos);
         return relPos;
     }
@@ -441,11 +441,11 @@ public class PerspectiveCalculator {
         }
     }
 
-    public float getZoom_exponent() {
+    public float getZoomExponent() {
         return zoomExponent;
     }
 
-    public void setZoom_exponent(float zoomExponent) {
+    public void setZoomExponent(float zoomExponent) {
         this.zoomExponent = zoomExponent;
     }
 
@@ -466,7 +466,7 @@ public class PerspectiveCalculator {
                 Composite3D c3d2 = renderer.getC3D();
                 if (c3d != c3d2 && c3d.getLockableDatFileReference().equals(c3d2.getLockableDatFileReference())) {
                     c3d2.setZoom(c3d.getZoom());
-                    c3d2.getPerspectiveCalculator().setZoom_exponent(c3d.getPerspectiveCalculator().getZoom_exponent());
+                    c3d2.getPerspectiveCalculator().setZoomExponent(c3d.getPerspectiveCalculator().getZoomExponent());
                     c3d2.setViewportPixelPerLDU(c3d.getZoom() * View.PIXEL_PER_LDU);
                     ((ScalableComposite) c3d2.getParent()).redrawScales();
                     c3d2.getPerspectiveCalculator().initializeViewportPerspective();

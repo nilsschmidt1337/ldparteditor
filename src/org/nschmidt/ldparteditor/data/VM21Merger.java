@@ -239,7 +239,7 @@ public class VM21Merger extends VM20Manipulator {
                 if (modified) {
                     IdenticalVertexRemover.removeIdenticalVertices(this, linkedDatFile, false, true);
                     clearSelection();
-                    setModified_NoSync();
+                    setModifiedNoSync();
                 }
             }
 
@@ -272,7 +272,7 @@ public class VM21Merger extends VM20Manipulator {
                     Merger.mergeTo(new Vertex(newVertex), this, linkedDatFile, false);
                 }
                 clearSelection();
-                setModified_NoSync();
+                setModifiedNoSync();
             }
             if (syncWithTextEditor) {
                 syncWithTextEditors(true);

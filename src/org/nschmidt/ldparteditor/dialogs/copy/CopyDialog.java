@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.copy;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.widgets.Shell;
@@ -46,15 +46,15 @@ public class CopyDialog extends CopyDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btn1[0]).addSelectionListener(e -> {
+        widgetUtil(btn1[0]).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.OK_ID);
             close();
         });
-        WidgetUtil(btn2[0]).addSelectionListener(e -> {
+        widgetUtil(btn2[0]).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.YES_ID);
             close();
         });
-        WidgetUtil(btn3[0]).addSelectionListener(e -> {
+        widgetUtil(btn3[0]).addSelectionListener(e -> {
             setReturnCode(IDialogConstants.NO_ID);
             close();
         });

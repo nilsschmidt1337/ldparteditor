@@ -66,11 +66,11 @@ public class Composite3DViewState {
         this.zoom = zoom;
     }
 
-    float getZoom_exponent() {
+    float getZoomExponent() {
         return zoomExponent;
     }
 
-    void setZoom_exponent(float zoomExponent) {
+    void setZoomExponent(float zoomExponent) {
         this.zoomExponent = zoomExponent;
     }
 
@@ -98,27 +98,27 @@ public class Composite3DViewState {
         this.negDeterminant = negDeterminant;
     }
 
-    public Matrix4f getViewport_translation() {
+    public Matrix4f getViewportTranslation() {
         return viewportTranslation;
     }
 
-    public Matrix4f getViewport_rotation() {
+    public Matrix4f getViewportRotation() {
         return viewportRotation;
     }
 
-    public Matrix4f getViewport_matrix() {
+    public Matrix4f getViewportMatrix() {
         return viewportMatrix;
     }
 
-    public Matrix4f getViewport_matrix_inv() {
+    public Matrix4f getViewportMatrixInv() {
         return viewportMatrixInv;
     }
 
-    public Vector4f[] getViewport_generator() {
+    public Vector4f[] getViewportGenerator() {
         return viewportGenerator;
     }
 
-    public Vector3f[] getViewport_origin_axis() {
+    public Vector3f[] getViewportOriginAxis() {
         return viewportOriginAxis;
     }
 

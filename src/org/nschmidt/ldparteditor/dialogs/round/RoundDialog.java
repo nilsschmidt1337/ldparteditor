@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.round;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -50,9 +50,9 @@ public class RoundDialog extends RoundDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> onX = cbXaxisPtr[0].getSelection());
-        WidgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> onY = cbYaxisPtr[0].getSelection());
-        WidgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> onZ = cbZaxisPtr[0].getSelection());
+        widgetUtil(cbXaxisPtr[0]).addSelectionListener(e -> onX = cbXaxisPtr[0].getSelection());
+        widgetUtil(cbYaxisPtr[0]).addSelectionListener(e -> onY = cbYaxisPtr[0].getSelection());
+        widgetUtil(cbZaxisPtr[0]).addSelectionListener(e -> onZ = cbZaxisPtr[0].getSelection());
         btnOkPtr[0].addListener(SWT.Selection, event -> {
             WorkbenchManager.getUserSettingState().setCoordsPrecision(spnCoordsPtr[0].getValue());
             WorkbenchManager.getUserSettingState().setTransMatrixPrecision(spnMatrixPtr[0].getValue());

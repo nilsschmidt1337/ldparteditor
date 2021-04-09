@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.vertexwindow;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 import java.util.NoSuchElementException;
@@ -108,17 +108,17 @@ public class VertexWindow extends ApplicationWindow {
         spnXPtr[0].addValueChangeListener(spn -> changeVertex());
         spnYPtr[0].addValueChangeListener(spn -> changeVertex());
         spnZPtr[0].addValueChangeListener(spn -> changeVertex());
-        WidgetUtil(btnPastePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPastePtr[0]).addSelectionListener(e -> {
             final Vertex clipboardVertex = VertexManager.getSingleVertexFromClipboard();
             if (clipboardVertex != null) {
                 updateVertex(clipboardVertex);
                 changeVertex();
             }
         });
-        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e ->
+        widgetUtil(btnCopyPtr[0]).addSelectionListener(e ->
             VertexManager.copySingleVertexIntoClipboard(selectedVertex)
         );
-        WidgetUtil(btnMergePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMergePtr[0]).addSelectionListener(e -> {
             final Composite3D lastHoveredC3d = DatFile.getLastHoveredComposite();
             if (lastHoveredC3d == null) return;
             final DatFile df = lastHoveredC3d.getLockableDatFileReference();

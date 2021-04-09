@@ -92,8 +92,8 @@ public enum WorkbenchManager {
                 if (WorkbenchManager.userSettingState.getOpenGLVersion() == 0) {
                     WorkbenchManager.userSettingState.setOpenGLVersion(20);
                 }
-                Manipulator.setSnap(WorkbenchManager.userSettingState.getMedium_move_snap(), WorkbenchManager.userSettingState.getMedium_rotate_snap(),
-                        WorkbenchManager.userSettingState.getMedium_scale_snap());
+                Manipulator.setSnap(WorkbenchManager.userSettingState.getMediumMoveSnap(), WorkbenchManager.userSettingState.getMediumRotateSnap(),
+                        WorkbenchManager.userSettingState.getMediumScaleSnap());
                 try {
                     WorkbenchManager.primitiveCache = (PrimitiveCache) configFileStream.readObject();
                 } catch (Exception e) {
@@ -134,20 +134,20 @@ public enum WorkbenchManager {
             WorkbenchManager.userSettingState.setFuzziness2D(7);
         }
 
-        if (Math.abs(WorkbenchManager.userSettingState.getCoplanarity_angle_warning() - 0.0) < 0.001) {
-            WorkbenchManager.userSettingState.setCoplanarity_angle_warning(1.0);
+        if (Math.abs(WorkbenchManager.userSettingState.getCoplanarityAngleWarning() - 0.0) < 0.001) {
+            WorkbenchManager.userSettingState.setCoplanarityAngleWarning(1.0);
         }
 
-        if (Math.abs(WorkbenchManager.userSettingState.getCoplanarity_angle_error() - 0.0) < 0.001) {
-            WorkbenchManager.userSettingState.setCoplanarity_angle_error(3.0);
+        if (Math.abs(WorkbenchManager.userSettingState.getCoplanarityAngleError() - 0.0) < 0.001) {
+            WorkbenchManager.userSettingState.setCoplanarityAngleError(3.0);
         }
 
         if (Math.abs(WorkbenchManager.userSettingState.getViewportScaleFactor() - 0.0) < 0.001) {
             WorkbenchManager.userSettingState.setViewportScaleFactor(1.0);
         }
 
-        Threshold.coplanarityAngleWarning = WorkbenchManager.userSettingState.getCoplanarity_angle_warning();
-        Threshold.coplanarityAngleError = WorkbenchManager.userSettingState.getCoplanarity_angle_error();
+        Threshold.coplanarityAngleWarning = WorkbenchManager.userSettingState.getCoplanarityAngleWarning();
+        Threshold.coplanarityAngleError = WorkbenchManager.userSettingState.getCoplanarityAngleError();
 
         return true;
     }

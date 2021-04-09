@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.searchnreplace;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.util.Locale;
 import java.util.regex.Pattern;
@@ -58,7 +58,7 @@ public class SearchWindow extends SearchDesign {
         sh.setMinimumSize(super.getInitialSize());
 
         // MARK All final listeners will be configured here..
-        WidgetUtil(btnFindPtr[0]).addSelectionListener(e -> find());
+        widgetUtil(btnFindPtr[0]).addSelectionListener(e -> find());
 
         txtFindPtr[0].addModifyListener(e -> {
             setDisabledButtonStatus();
@@ -112,9 +112,9 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        WidgetUtil(btnReplacePtr[0]).addSelectionListener(e -> replace());
-        WidgetUtil(btnReplaceAllPtr[0]).addSelectionListener(e -> replaceAll());
-        WidgetUtil(btnFindAndReplacePtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnReplacePtr[0]).addSelectionListener(e -> replace());
+        widgetUtil(btnReplaceAllPtr[0]).addSelectionListener(e -> replaceAll());
+        widgetUtil(btnFindAndReplacePtr[0]).addSelectionListener(e -> {
             replace();
             find();
             replace();
@@ -131,7 +131,7 @@ public class SearchWindow extends SearchDesign {
             }
         });
 
-        WidgetUtil(rbSelectedLinesPtr[0]).addSelectionListener(e -> {
+        widgetUtil(rbSelectedLinesPtr[0]).addSelectionListener(e -> {
             try {
                 if (rbSelectedLinesPtr[0].getSelection()) {
                     scopeAll = false;

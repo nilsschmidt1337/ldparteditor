@@ -225,19 +225,19 @@ public class HeaderState {
         this.lineLICENSE = lineLICENSE;
     }
 
-    public int getLineHELP_start() {
+    public int getLineHELPstart() {
         return lineHELPstart;
     }
 
-    public void setLineHELP_start(int lineHELPstart) {
+    public void setLineHELPstart(int lineHELPstart) {
         this.lineHELPstart = lineHELPstart;
     }
 
-    public int getLineHELP_end() {
+    public int getLineHELPend() {
         return lineHELPend;
     }
 
-    public void setLineHELP_end(int lineHELPend) {
+    public void setLineHELPend(int lineHELPend) {
         this.lineHELPend = lineHELPend;
     }
 
@@ -257,19 +257,19 @@ public class HeaderState {
         this.lineCATEGORY = lineCATEGORY;
     }
 
-    public int getLineKEYWORDS_start() {
+    public int getLineKEYWORDSstart() {
         return lineKEYWORDSstart;
     }
 
-    public void setLineKEYWORDS_start(int lineKEYWORDSstart) {
+    public void setLineKEYWORDSstart(int lineKEYWORDSstart) {
         this.lineKEYWORDSstart = lineKEYWORDSstart;
     }
 
-    public int getLineKEYWORDS_end() {
+    public int getLineKEYWORDSend() {
         return lineKEYWORDSend;
     }
 
-    public void setLineKEYWORDS_end(int lineKEYWORDSend) {
+    public void setLineKEYWORDSend(int lineKEYWORDSend) {
         this.lineKEYWORDSend = lineKEYWORDSend;
     }
 
@@ -281,51 +281,51 @@ public class HeaderState {
         this.lineCMDLINE = lineCMDLINE;
     }
 
-    public int getLineHISTORY_start() {
+    public int getLineHISTORYstart() {
         return lineHISTORYstart;
     }
 
-    public void setLineHISTORY_start(int lineHISTORYstart) {
+    public void setLineHISTORYstart(int lineHISTORYstart) {
         this.lineHISTORYstart = lineHISTORYstart;
     }
 
-    public int getLineHISTORY_end() {
+    public int getLineHISTORYend() {
         return lineHISTORYend;
     }
 
-    public void setLineHISTORY_end(int lineHISTORYend) {
+    public void setLineHISTORYend(int lineHISTORYend) {
         this.lineHISTORYend = lineHISTORYend;
     }
 
-    public int getLineCOMMENT_start() {
+    public int getLineCOMMENTstart() {
         return lineCOMMENTstart;
     }
 
-    public void setLineCOMMENT_start(int lineCOMMENTstart) {
+    public void setLineCOMMENTstart(int lineCOMMENTstart) {
         this.lineCOMMENTstart = lineCOMMENTstart;
     }
 
-    public int getLineCOMMENT_end() {
+    public int getLineCOMMENTend() {
         return lineCOMMENTend;
     }
 
-    public void setLineCOMMENT_end(int lineCOMMENTend) {
+    public void setLineCOMMENTend(int lineCOMMENTend) {
         this.lineCOMMENTend = lineCOMMENTend;
     }
 
-    public int getLineBFC2_start() {
+    public int getLineBFC2start() {
         return lineBFC2start;
     }
 
-    public void setLineBFC2_start(int lineBFC2start) {
+    public void setLineBFC2start(int lineBFC2start) {
         this.lineBFC2start = lineBFC2start;
     }
 
-    public int getLineBFC2_end() {
+    public int getLineBFC2end() {
         return lineBFC2end;
     }
 
-    public void setLineBFC2_end(int lineBFC2end) {
+    public void setLineBFC2end(int lineBFC2end) {
         this.lineBFC2end = lineBFC2end;
     }
 

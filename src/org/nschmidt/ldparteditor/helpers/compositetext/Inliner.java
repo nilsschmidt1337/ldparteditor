@@ -70,7 +70,7 @@ public enum Inliner {
         bfcStatusTarget = BFC.NOCERTIFY;
         hasINVERTNEXT = false;
 
-        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
 
         Set<Integer> keys = dpl.keySet();
 
@@ -209,7 +209,7 @@ public enum Inliner {
         bfcStatusTarget = BFC.NOCERTIFY;
         hasINVERTNEXT = false;
 
-        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
 
         HashMap<Integer, BFC> bfcStatusToLine = new HashMap<>();
 
@@ -334,7 +334,7 @@ public enum Inliner {
 
     private static String inline(Integer lineNumber, String line, String source, DatFile datFile, boolean removeTrailingBreak) {
 
-        GData gd = datFile.getDrawPerLine_NOCLONE().getValue(lineNumber);
+        GData gd = datFile.getDrawPerLineNoClone().getValue(lineNumber);
         switch (gd.type()) {
         case 6:
             GDataBFC gbfc = (GDataBFC) gd;

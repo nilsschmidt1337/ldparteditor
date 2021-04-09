@@ -354,7 +354,7 @@ class VM01Select extends VM00Snapshot {
 
                 final GData before = selectedLine.getBefore();
                 final GData next = selectedLine.getNext();
-                final HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+                final HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
                 final GColour col16 = View.getLDConfigColour(16);
 
                 GData newData = null;
@@ -468,7 +468,7 @@ class VM01Select extends VM00Snapshot {
             } else {
                 final GData before = selectedLine.getBefore();
                 final GData next = selectedLine.getNext();
-                final HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+                final HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
                 GData newData = null;
                 switch (selectedLine.type()) {
                 case 2:
@@ -665,7 +665,7 @@ class VM01Select extends VM00Snapshot {
 
     public synchronized void addTextLineToSelection(int line) {
         final GData gd;
-        if ((gd = linkedDatFile.getDrawPerLine_NOCLONE().getValue(line)) != null) {
+        if ((gd = linkedDatFile.getDrawPerLineNoClone().getValue(line)) != null) {
             if (gd.type() > 0 && gd.type() < 6) {
                 selectedData.add(gd);
             }

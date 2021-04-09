@@ -65,14 +65,14 @@ public class Rational implements Comparable<Rational> {
         return new BigDecimal(upper).divide(new BigDecimal(lower), MathContext.DECIMAL128).doubleValue();
     }
 
-    BigDecimal BigDecimalValue(MathContext mcloc) {
+    BigDecimal bigDecimalValue(MathContext mcloc) {
         return new BigDecimal(upper).divide(new BigDecimal(lower), mcloc);
     }
 
     private static BigInteger sd = new BigInteger("1000000000000000"); //$NON-NLS-1$
     private static BigDecimal sd2 = new BigDecimal("1000000000000000"); //$NON-NLS-1$
 
-    public BigDecimal BigDecimalValue() {
+    public BigDecimal bigDecimalValue() {
         return new BigDecimal(upper.multiply(sd).divide(lower)).divide(sd2);
     }
 

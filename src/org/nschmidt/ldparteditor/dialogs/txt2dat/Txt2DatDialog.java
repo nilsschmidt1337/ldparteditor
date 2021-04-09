@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.txt2dat;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.widgets.FontDialog;
@@ -52,7 +52,7 @@ public class Txt2DatDialog extends Txt2DatDesign {
         spnFlatnessPtr[0].addValueChangeListener(spn -> ts.setFlatness(spn.getValue()));
         spnFontHeightPtr[0].addValueChangeListener(spn -> ts.setFontHeight(spn.getValue()));
         spnDeltaAnglePtr[0].addValueChangeListener(spn -> ts.setDeltaAngle(spn.getValue()));
-        WidgetUtil(btnChooseFontPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnChooseFontPtr[0]).addSelectionListener(e -> {
             final FontDialog fd = new FontDialog(getShell());
             final FontData data = ts.getFontData();
             fd.setFontList(new FontData[]{data});

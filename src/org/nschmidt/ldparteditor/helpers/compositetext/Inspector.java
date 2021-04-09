@@ -59,7 +59,7 @@ public enum Inspector {
             vm.addTextLineToSelection(line);
         }
 
-        vm.setModified_NoSync();
+        vm.setModifiedNoSync();
         vm.syncWithTextEditors(true);
         vm.updateUnsavedStatus();
 

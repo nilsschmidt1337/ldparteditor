@@ -128,7 +128,7 @@ class VM19ColourChanger extends VM18LineConverter {
             for (GData gd : newSelection) {
                 GDataCSG.getSelection(linkedDatFile).add((GDataCSG) gd);
             }
-            setModified_NoSync();
+            setModifiedNoSync();
         }
 
         selectedLines.clear();
@@ -157,13 +157,13 @@ class VM19ColourChanger extends VM18LineConverter {
         }
 
         if (!selectedLines.isEmpty())
-            setModified_NoSync();
+            setModifiedNoSync();
         if (!selectedTriangles.isEmpty())
-            setModified_NoSync();
+            setModifiedNoSync();
         if (!selectedQuads.isEmpty())
-            setModified_NoSync();
+            setModifiedNoSync();
         if (!selectedCondlines.isEmpty())
-            setModified_NoSync();
+            setModifiedNoSync();
 
         // 4. Subfile Based Change & Selection
         if (!selectedSubfiles.isEmpty()) {
@@ -179,7 +179,7 @@ class VM19ColourChanger extends VM18LineConverter {
             }
             String col = colourBuilder.toString();
             final boolean isRandomColour = a == 0f;
-            HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+            HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
             HashSet<GData1> newSubfiles = new HashSet<>();
             for (GData1 subf : selectedSubfiles) {
                 if (!drawPerLine.containsValue(subf)) {
@@ -246,7 +246,7 @@ class VM19ColourChanger extends VM18LineConverter {
                     }
                 }
             }
-            setModified_NoSync();
+            setModifiedNoSync();
         }
 
         if (isModified()) {

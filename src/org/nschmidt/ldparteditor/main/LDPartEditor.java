@@ -42,7 +42,7 @@ public class LDPartEditor {
 
         // Check if LDPartEditor should open a file
         if (args.length > 0) {
-            if (TryToOpen.File(args[0]) == DELEGATED_TO_ANOTHER_INSTANCE) {
+            if (TryToOpen.file(args[0]) == DELEGATED_TO_ANOTHER_INSTANCE) {
                 NLogger.flushErrorStream();
                 return;
             }

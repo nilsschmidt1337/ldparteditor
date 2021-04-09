@@ -183,7 +183,7 @@ public class MouseActions {
                         vm.setModified(true, true);
                         if (!Project.getUnsavedFiles().contains(datfile)) {
                             Project.addUnsavedFile(datfile);
-                            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         }
                         datfile.addToTailOrInsertAfterCursor(vertexLine);
                     }
@@ -215,7 +215,7 @@ public class MouseActions {
                                 datfile.getVertexManager().setModified(true, true);
                                 if (!Project.getUnsavedFiles().contains(datfile)) {
                                     Project.addUnsavedFile(datfile);
-                                    Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                                    Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                                 }
                                 datfile.getVertexManager().validateState();
                             }

@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.direction;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 
@@ -75,7 +75,7 @@ public class DirectionDialog extends DirectionDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btnMXPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMXPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             BigDecimal[] axis = mani.getAccurateXaxis();
@@ -83,7 +83,7 @@ public class DirectionDialog extends DirectionDesign {
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        WidgetUtil(btnMYPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMYPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             BigDecimal[] axis = mani.getAccurateYaxis();
@@ -91,7 +91,7 @@ public class DirectionDialog extends DirectionDesign {
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        WidgetUtil(btnMZPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnMZPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             BigDecimal[] axis = mani.getAccurateZaxis();
@@ -99,7 +99,7 @@ public class DirectionDialog extends DirectionDesign {
             sphe = cartesianToSpherical(cart);
             updateValues();
         });
-        WidgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
             btnLocalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.LOCAL) {
@@ -110,7 +110,7 @@ public class DirectionDialog extends DirectionDesign {
             }
             updateValues();
         });
-        WidgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             if (transformationMode != ManipulatorScope.GLOBAL) {

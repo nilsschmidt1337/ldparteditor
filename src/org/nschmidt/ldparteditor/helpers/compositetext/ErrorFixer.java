@@ -58,7 +58,7 @@ final class ErrorFixer {
             text = QuickFixer.setLine(lineNumber + 1, "<rm>", text); //$NON-NLS-1$
             GData1 subfileToFlip = null;
             boolean validState = false;
-            GData g = datFile.getDrawPerLine_NOCLONE().getValue(lineNumber + 1).getNext();
+            GData g = datFile.getDrawPerLineNoClone().getValue(lineNumber + 1).getNext();
             while (g != null && g.type() < 2) {
                 lineNumber++;
                 if (g.type() == 1) {
@@ -115,7 +115,7 @@ final class ErrorFixer {
                 }
 
                 GData1 newSubfile = (GData1) DatParser
-                        .parseLine(untransformedSubfile.getTransformedString(m, null, datFile, false) , datFile.getDrawPerLine_NOCLONE().getKey(subfileToFlip).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false,
+                        .parseLine(untransformedSubfile.getTransformedString(m, null, datFile, false) , datFile.getDrawPerLineNoClone().getKey(subfileToFlip).intValue(), 0, col16.getR(), col16.getG(), col16.getB(), 1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datFile, false,
                                 new HashSet<>()).get(0).getGraphicalData();
                 if (newSubfile == null) break;
                 text = QuickFixer.setLine(lineNumber + 1, newSubfile.toString(), text);
@@ -536,7 +536,7 @@ final class ErrorFixer {
         break;
         case 42: // '~Moved to' Reference
         {
-            GData1 g1 =  (GData1) datFile.getDrawPerLine_NOCLONE().getValue(lineNumber + 1);
+            GData1 g1 =  (GData1) datFile.getDrawPerLineNoClone().getValue(lineNumber + 1);
             String newReference = g1.getSolvedMoveTo();
             if (newReference == null) {
                 MessageBox messageBox = new MessageBox(tWinShell, SWT.ICON_INFORMATION);

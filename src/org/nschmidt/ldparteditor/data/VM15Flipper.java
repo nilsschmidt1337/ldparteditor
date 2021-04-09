@@ -240,7 +240,7 @@ class VM15Flipper extends VM14Splitter {
         }
 
         if (newLines.size() + newTriangles.size() + newQuads.size() + newCondlines.size() > 0) {
-            setModified_NoSync();
+            setModifiedNoSync();
         }
 
         selectedLines.addAll(linesToDelete2);

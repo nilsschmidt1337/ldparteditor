@@ -347,7 +347,7 @@ class VM07PathTruder extends VM06Edger2 {
                                                 for (int k = 0; k < path1Len; k++) {
                                                     if (k != i) {
                                                         for (int l = 0; l < 2; l++) {
-                                                            d = MANHATTAN(sortBuf[i][j], sortBuf[k][l]);
+                                                            d = manhattan(sortBuf[i][j], sortBuf[k][l]);
                                                             if (d < dmax) {
                                                                 dmax = d;
                                                                 next[i][j][0] = k;
@@ -383,8 +383,8 @@ class VM07PathTruder extends VM06Edger2 {
                                                     a = i;
                                                     b = j;
                                                     do {
-                                                        SET(path1aArr[inLineIdx][0], sortBuf[a][b]);
-                                                        SET(path1aArr[inLineIdx][1], sortBuf[a][1 - b]);
+                                                        set(path1aArr[inLineIdx][0], sortBuf[a][b]);
+                                                        set(path1aArr[inLineIdx][1], sortBuf[a][1 - b]);
                                                         inLineIdx++;
 
                                                         d2 = next[a][1 - b][1];
@@ -430,7 +430,7 @@ class VM07PathTruder extends VM06Edger2 {
                                                 for (int k = 0; k < path2Len; k++) {
                                                     if (k != i) {
                                                         for (int l = 0; l < 2; l++) {
-                                                            d = MANHATTAN(sortBuf[i][j], sortBuf[k][l]);
+                                                            d = manhattan(sortBuf[i][j], sortBuf[k][l]);
                                                             if (d < dmax) {
                                                                 dmax = d;
                                                                 next[i][j][0] = k;
@@ -466,8 +466,8 @@ class VM07PathTruder extends VM06Edger2 {
                                                     a = i;
                                                     b = j;
                                                     do {
-                                                        SET(path2aArr[inLineIdx][0], sortBuf[a][b]);
-                                                        SET(path2aArr[inLineIdx][1], sortBuf[a][1 - b]);
+                                                        set(path2aArr[inLineIdx][0], sortBuf[a][b]);
+                                                        set(path2aArr[inLineIdx][1], sortBuf[a][1 - b]);
                                                         inLineIdx++;
 
                                                         d2 = next[a][1 - b][1];
@@ -533,14 +533,14 @@ class VM07PathTruder extends VM06Edger2 {
                                         int nsplit1;
                                         int nsplit2;
 
-                                        SET(p1, path1aArr[i][0]);
-                                        SET(p2, path1aArr[i][1]);
+                                        set(p1, path1aArr[i][0]);
+                                        set(p2, path1aArr[i][1]);
 
-                                        SET(q1, path2aArr[i][0]);
-                                        SET(q2, path2aArr[i][1]);
+                                        set(q1, path2aArr[i][0]);
+                                        set(q2, path2aArr[i][1]);
 
-                                        nsplit1 = (int) (DIST(p1, p2) / maxlength) + 1;
-                                        nsplit2 = (int) (DIST(q1, q2) / maxlength) + 1;
+                                        nsplit1 = (int) (dist(p1, p2) / maxlength) + 1;
+                                        nsplit2 = (int) (dist(q1, q2) / maxlength) + 1;
 
                                         // don't split endings segments
                                         if (endings) {
@@ -550,38 +550,38 @@ class VM07PathTruder extends VM06Edger2 {
 
                                         nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;
 
-                                        SUB(delta1, p2, p1);
-                                        MULT(delta1, delta1, 1.0 / nsplit1);
-                                        SUB(delta2, q2, q1);
-                                        MULT(delta2, delta2, 1.0 / nsplit1);
+                                        sub(delta1, p2, p1);
+                                        mult(delta1, delta1, 1.0 / nsplit1);
+                                        sub(delta2, q2, q1);
+                                        mult(delta2, delta2, 1.0 / nsplit1);
                                         for (int k = 0; k < nsplit1; k++) {
-                                            MULT(temp, delta1, k);
-                                            ADD(path1Arr[inLineIdx][0], p1, temp);
-                                            ADD(path1Arr[inLineIdx][1], path1Arr[inLineIdx][0], delta1);
-                                            MULT(temp, delta2, k);
-                                            ADD(path2Arr[inLineIdx][0], q1, temp);
-                                            ADD(path2Arr[inLineIdx][1], path2Arr[inLineIdx][0], delta2);
+                                            mult(temp, delta1, k);
+                                            add(path1Arr[inLineIdx][0], p1, temp);
+                                            add(path1Arr[inLineIdx][1], path1Arr[inLineIdx][0], delta1);
+                                            mult(temp, delta2, k);
+                                            add(path2Arr[inLineIdx][0], q1, temp);
+                                            add(path2Arr[inLineIdx][1], path2Arr[inLineIdx][0], delta2);
 
                                             inLineIdx++;
                                         }
                                     }
 
                                     path1Len = path2Len = inLineIdx;
-                                    SET(path1Arr[path1Len][0], path1Arr[path1Len - 1][1]);
-                                    SET(path1Arr[path1Len][1], path1Arr[path1Len - 1][0]);
+                                    set(path1Arr[path1Len][0], path1Arr[path1Len - 1][1]);
+                                    set(path1Arr[path1Len][1], path1Arr[path1Len - 1][0]);
 
-                                    SET(path2Arr[path2Len][0], path2Arr[path2Len - 1][1]);
-                                    SET(path2Arr[path2Len][1], path2Arr[path2Len - 1][0]);
+                                    set(path2Arr[path2Len][0], path2Arr[path2Len - 1][1]);
+                                    set(path2Arr[path2Len][1], path2Arr[path2Len - 1][0]);
 
-                                    len = DIST(shape1Arr[0][0], shape1Arr[0][1]);
+                                    len = dist(shape1Arr[0][0], shape1Arr[0][1]);
 
                                     for (int i = 1; i < shape1Len; i++) {
-                                        SUB(shape1Arr[i][0], shape1Arr[i][0], shape1Arr[0][0]);
-                                        MULT(shape1Arr[i][0], shape1Arr[i][0], 1 / len);
-                                        SUB(shape1Arr[i][1], shape1Arr[i][1], shape1Arr[0][0]);
-                                        MULT(shape1Arr[i][1], shape1Arr[i][1], 1 / len);
+                                        sub(shape1Arr[i][0], shape1Arr[i][0], shape1Arr[0][0]);
+                                        mult(shape1Arr[i][0], shape1Arr[i][0], 1 / len);
+                                        sub(shape1Arr[i][1], shape1Arr[i][1], shape1Arr[0][0]);
+                                        mult(shape1Arr[i][1], shape1Arr[i][1], 1 / len);
                                     }
-                                    SUB(shape1Vect, shape1Arr[0][1], shape1Arr[0][0]);
+                                    sub(shape1Vect, shape1Arr[0][1], shape1Arr[0][0]);
 
                                     angle = Math.atan2(-shape1Vect[0], -shape1Vect[1]);
 
@@ -604,15 +604,15 @@ class VM07PathTruder extends VM06Edger2 {
 
                                     // Normalize shape 2
 
-                                    len = DIST(shape2Arr[0][0], shape2Arr[0][1]);
+                                    len = dist(shape2Arr[0][0], shape2Arr[0][1]);
 
                                     for (int i = 1; i < shape2Len; i++) {
-                                        SUB(shape2Arr[i][0], shape2Arr[i][0], shape2Arr[0][0]);
-                                        MULT(shape2Arr[i][0], shape2Arr[i][0], 1 / len);
-                                        SUB(shape2Arr[i][1], shape2Arr[i][1], shape2Arr[0][0]);
-                                        MULT(shape2Arr[i][1], shape2Arr[i][1], 1 / len);
+                                        sub(shape2Arr[i][0], shape2Arr[i][0], shape2Arr[0][0]);
+                                        mult(shape2Arr[i][0], shape2Arr[i][0], 1 / len);
+                                        sub(shape2Arr[i][1], shape2Arr[i][1], shape2Arr[0][0]);
+                                        mult(shape2Arr[i][1], shape2Arr[i][1], 1 / len);
                                     }
-                                    SUB(shape2Vect, shape2Arr[0][1], shape2Arr[0][0]);
+                                    sub(shape2Vect, shape2Arr[0][1], shape2Arr[0][0]);
 
                                     angle = Math.atan2(-shape2Vect[0], -shape2Vect[1]);
 
@@ -639,32 +639,32 @@ class VM07PathTruder extends VM06Edger2 {
                                         endings = false;
 
                                     if (endings) {
-                                        double angle2 = PathLocalBasis(0, 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                                        angle = PathLocalBasis(0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                                        double angle2 = pathLocalBasis(0, 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                        angle = pathLocalBasis(0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
                                         if (angle2 > 90) {
-                                            MULT(xVect, xVect, -1);
-                                            MULT(zVect, zVect, -1);
+                                            mult(xVect, xVect, -1);
+                                            mult(zVect, zVect, -1);
                                         }
                                     } else {
-                                        angle = PathLocalBasis(circular ? path1Len - 1 : 0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                                        angle = pathLocalBasis(circular ? path1Len - 1 : 0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
                                     }
                                     // compensate sharp angles
                                     if (compensate) {
-                                        MULT(xVect, xVect, 1 / Math.cos(angle * pi / 360));
+                                        mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
                                     }
 
                                     // Calculate next transformed shape
                                     for (int j = 0; j < shape1Len; j++) {
                                         for (int k = 0; k < 2; k++) {
-                                            MULT(nxtShape[j][k], xVect, shape1Arr[j][k][0]);
-                                            MULT(temp1, yVect, shape1Arr[j][k][1]);
-                                            ADD(nxtShape[j][k], nxtShape[j][k], temp1);
-                                            MULT(temp1, zVect, shape1Arr[j][k][2]);
-                                            ADD(nxtShape[j][k], nxtShape[j][k], temp1);
+                                            mult(nxtShape[j][k], xVect, shape1Arr[j][k][0]);
+                                            mult(temp1, yVect, shape1Arr[j][k][1]);
+                                            add(nxtShape[j][k], nxtShape[j][k], temp1);
+                                            mult(temp1, zVect, shape1Arr[j][k][2]);
+                                            add(nxtShape[j][k], nxtShape[j][k], temp1);
                                             if (endings) {
-                                                ADD(nxtShape[j][k], nxtShape[j][k], path1Arr[1][0]);
+                                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[1][0]);
                                             } else {
-                                                ADD(nxtShape[j][k], nxtShape[j][k], path1Arr[0][0]);
+                                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[0][0]);
                                             }
                                         }
 
@@ -690,38 +690,38 @@ class VM07PathTruder extends VM06Edger2 {
 
                                         // Transfer old next shape to current.
                                         for (int j = 0; j < shape1Len; j++) {
-                                            SET(curShape[j][0], nxtShape[j][0]);
-                                            SET(curShape[j][1], nxtShape[j][1]);
+                                            set(curShape[j][0], nxtShape[j][0]);
+                                            set(curShape[j][1], nxtShape[j][1]);
                                         }
 
                                         if (i == end - 1) {
                                             if (circular) {
-                                                angle = PathLocalBasis(i, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                                                angle = pathLocalBasis(i, 0, xVect, yVect, zVect, path1Arr, path2Arr);
                                             } else {
                                                 if (endings) {
-                                                    double angle2 = PathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                                                    angle = PathLocalBasis(i + 2, i + 2, xVect, yVect, zVect, path1Arr, path2Arr);
+                                                    double angle2 = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                                    angle = pathLocalBasis(i + 2, i + 2, xVect, yVect, zVect, path1Arr, path2Arr);
                                                     if (angle2 < 90) {
                                                         // in that case the local
                                                         // base is mirrorred...
-                                                        SUB(xVect, nullv, xVect);
-                                                        SUB(zVect, nullv, zVect);
+                                                        sub(xVect, nullv, xVect);
+                                                        sub(zVect, nullv, zVect);
                                                     }
                                                 } else {
-                                                    angle = PathLocalBasis(i + 1, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                                    angle = pathLocalBasis(i + 1, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
                                                     // in that case the local base
                                                     // is mirrorred...
-                                                    SUB(xVect, nullv, xVect);
-                                                    SUB(zVect, nullv, zVect);
+                                                    sub(xVect, nullv, xVect);
+                                                    sub(zVect, nullv, zVect);
                                                 }
                                             }
                                         } else {
-                                            angle = PathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                            angle = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
                                         }
 
                                         // compensate sharp angles
                                         if (compensate) {
-                                            MULT(xVect, xVect, 1 / Math.cos(angle * pi / 360));
+                                            mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
                                         }
 
                                         {
@@ -745,12 +745,12 @@ class VM07PathTruder extends VM06Edger2 {
                                                 temp2[0] = shape2Arr[j][k][0] * ca - shape2Arr[j][k][1] * sa;
                                                 temp2[1] = shape2Arr[j][k][0] * sa + shape2Arr[j][k][1] * ca;
 
-                                                MULT(nxtShape[j][k], xVect, temp1[0] * (1.0 - ratio) + temp2[0] * ratio);
-                                                MULT(temp3, yVect, temp1[1] * (1.0 - ratio) + temp2[1] * ratio);
-                                                ADD(nxtShape[j][k], nxtShape[j][k], temp3);
-                                                MULT(temp3, zVect, shape1Arr[j][k][2] * (1.0 - ratio) + shape2Arr[j][k][2] * ratio);
-                                                ADD(nxtShape[j][k], nxtShape[j][k], temp3);
-                                                ADD(nxtShape[j][k], nxtShape[j][k], path1Arr[i + 1][0]);
+                                                mult(nxtShape[j][k], xVect, temp1[0] * (1.0 - ratio) + temp2[0] * ratio);
+                                                mult(temp3, yVect, temp1[1] * (1.0 - ratio) + temp2[1] * ratio);
+                                                add(nxtShape[j][k], nxtShape[j][k], temp3);
+                                                mult(temp3, zVect, shape1Arr[j][k][2] * (1.0 - ratio) + shape2Arr[j][k][2] * ratio);
+                                                add(nxtShape[j][k], nxtShape[j][k], temp3);
+                                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[i + 1][0]);
                                             }
                                         }
                                         if (angle > crease) {
@@ -764,7 +764,7 @@ class VM07PathTruder extends VM06Edger2 {
                                         // Generate tri/quad sheet
                                         for (int j = 0; j < shape1Len; j++) {
                                             if (!lineIndicators.isEmpty()) {
-                                                if (DIST(shape1Arr[j][0], shape1Arr[j][1]) < EPSILON && DIST(shape2Arr[j][0], shape2Arr[j][1]) < EPSILON) {
+                                                if (dist(shape1Arr[j][0], shape1Arr[j][1]) < EPSILON && dist(shape2Arr[j][0], shape2Arr[j][1]) < EPSILON) {
                                                     // Null lenth segment in shape file
                                                     // -> generate line at that place
                                                     Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
@@ -772,8 +772,8 @@ class VM07PathTruder extends VM06Edger2 {
                                                     newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
                                                 }
                                             }
-                                            if (DIST(curShape[j][0], curShape[j][1]) < vertmerge) {
-                                                if (DIST(nxtShape[j][0], nxtShape[j][1]) < vertmerge || DIST(curShape[j][0], nxtShape[j][0]) < vertmerge || DIST(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                            if (dist(curShape[j][0], curShape[j][1]) < vertmerge) {
+                                                if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge || dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
                                                     // Degenerated. Nothing to
                                                     // output
                                                     continue;
@@ -785,8 +785,8 @@ class VM07PathTruder extends VM06Edger2 {
                                                     continue;
                                                 }
                                             }
-                                            if (DIST(nxtShape[j][0], nxtShape[j][1]) < vertmerge) {
-                                                if (DIST(curShape[j][0], nxtShape[j][0]) < vertmerge || DIST(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                            if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge) {
+                                                if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
                                                     // Degenerated. Nothing to
                                                     // output
                                                     continue;
@@ -798,8 +798,8 @@ class VM07PathTruder extends VM06Edger2 {
                                                     continue;
                                                 }
                                             }
-                                            if (DIST(curShape[j][0], nxtShape[j][0]) < vertmerge) {
-                                                if (DIST(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                            if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge) {
+                                                if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
                                                     // Degenerated. Nothing to
                                                     // output
                                                     continue;
@@ -811,14 +811,14 @@ class VM07PathTruder extends VM06Edger2 {
                                                     continue;
                                                 }
                                             }
-                                            if (DIST(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                            if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
                                                 Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
                                                 Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
                                                 newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
                                                 continue;
                                             }
-                                            if (Tri_Angle(curShape[j][0], nxtShape[j][0], nxtShape[j][1], curShape[j][1]) < smallAngle) {
+                                            if (triAngle(curShape[j][0], nxtShape[j][0], nxtShape[j][1], curShape[j][1]) < smallAngle) {
                                                 Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
                                                 Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
@@ -961,7 +961,7 @@ class VM07PathTruder extends VM06Edger2 {
                                 for (int k = 0; k < path1Len; k++) {
                                     if (k != i) {
                                         for (int l = 0; l < 2; l++) {
-                                            d = MANHATTAN(sortBuf[i][j], sortBuf[k][l]);
+                                            d = manhattan(sortBuf[i][j], sortBuf[k][l]);
                                             if (d < dmax) {
                                                 dmax = d;
                                                 next[i][j][0] = k;
@@ -997,8 +997,8 @@ class VM07PathTruder extends VM06Edger2 {
                                     a = i;
                                     b = j;
                                     do {
-                                        SET(path1aArr[inLineIdx][0], sortBuf[a][b]);
-                                        SET(path1aArr[inLineIdx][1], sortBuf[a][1 - b]);
+                                        set(path1aArr[inLineIdx][0], sortBuf[a][b]);
+                                        set(path1aArr[inLineIdx][1], sortBuf[a][1 - b]);
                                         inLineIdx++;
 
                                         d2 = next[a][1 - b][1];
@@ -1044,7 +1044,7 @@ class VM07PathTruder extends VM06Edger2 {
                                 for (int k = 0; k < path2Len; k++) {
                                     if (k != i) {
                                         for (int l = 0; l < 2; l++) {
-                                            d = MANHATTAN(sortBuf[i][j], sortBuf[k][l]);
+                                            d = manhattan(sortBuf[i][j], sortBuf[k][l]);
                                             if (d < dmax) {
                                                 dmax = d;
                                                 next[i][j][0] = k;
@@ -1080,8 +1080,8 @@ class VM07PathTruder extends VM06Edger2 {
                                     a = i;
                                     b = j;
                                     do {
-                                        SET(path2aArr[inLineIdx][0], sortBuf[a][b]);
-                                        SET(path2aArr[inLineIdx][1], sortBuf[a][1 - b]);
+                                        set(path2aArr[inLineIdx][0], sortBuf[a][b]);
+                                        set(path2aArr[inLineIdx][1], sortBuf[a][1 - b]);
                                         inLineIdx++;
 
                                         d2 = next[a][1 - b][1];
@@ -1147,14 +1147,14 @@ class VM07PathTruder extends VM06Edger2 {
                         int nsplit1;
                         int nsplit2;
 
-                        SET(p1, path1aArr[i][0]);
-                        SET(p2, path1aArr[i][1]);
+                        set(p1, path1aArr[i][0]);
+                        set(p2, path1aArr[i][1]);
 
-                        SET(q1, path2aArr[i][0]);
-                        SET(q2, path2aArr[i][1]);
+                        set(q1, path2aArr[i][0]);
+                        set(q2, path2aArr[i][1]);
 
-                        nsplit1 = (int) (DIST(p1, p2) / maxlength) + 1;
-                        nsplit2 = (int) (DIST(q1, q2) / maxlength) + 1;
+                        nsplit1 = (int) (dist(p1, p2) / maxlength) + 1;
+                        nsplit2 = (int) (dist(q1, q2) / maxlength) + 1;
 
                         // don't split endings segments
                         if (endings) {
@@ -1164,38 +1164,38 @@ class VM07PathTruder extends VM06Edger2 {
 
                         nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;
 
-                        SUB(delta1, p2, p1);
-                        MULT(delta1, delta1, 1.0 / nsplit1);
-                        SUB(delta2, q2, q1);
-                        MULT(delta2, delta2, 1.0 / nsplit1);
+                        sub(delta1, p2, p1);
+                        mult(delta1, delta1, 1.0 / nsplit1);
+                        sub(delta2, q2, q1);
+                        mult(delta2, delta2, 1.0 / nsplit1);
                         for (int k = 0; k < nsplit1; k++) {
-                            MULT(temp, delta1, k);
-                            ADD(path1Arr[inLineIdx][0], p1, temp);
-                            ADD(path1Arr[inLineIdx][1], path1Arr[inLineIdx][0], delta1);
-                            MULT(temp, delta2, k);
-                            ADD(path2Arr[inLineIdx][0], q1, temp);
-                            ADD(path2Arr[inLineIdx][1], path2Arr[inLineIdx][0], delta2);
+                            mult(temp, delta1, k);
+                            add(path1Arr[inLineIdx][0], p1, temp);
+                            add(path1Arr[inLineIdx][1], path1Arr[inLineIdx][0], delta1);
+                            mult(temp, delta2, k);
+                            add(path2Arr[inLineIdx][0], q1, temp);
+                            add(path2Arr[inLineIdx][1], path2Arr[inLineIdx][0], delta2);
 
                             inLineIdx++;
                         }
                     }
 
                     path1Len = path2Len = inLineIdx;
-                    SET(path1Arr[path1Len][0], path1Arr[path1Len - 1][1]);
-                    SET(path1Arr[path1Len][1], path1Arr[path1Len - 1][0]);
+                    set(path1Arr[path1Len][0], path1Arr[path1Len - 1][1]);
+                    set(path1Arr[path1Len][1], path1Arr[path1Len - 1][0]);
 
-                    SET(path2Arr[path2Len][0], path2Arr[path2Len - 1][1]);
-                    SET(path2Arr[path2Len][1], path2Arr[path2Len - 1][0]);
+                    set(path2Arr[path2Len][0], path2Arr[path2Len - 1][1]);
+                    set(path2Arr[path2Len][1], path2Arr[path2Len - 1][0]);
 
-                    len = DIST(shape1Arr[0][0], shape1Arr[0][1]);
+                    len = dist(shape1Arr[0][0], shape1Arr[0][1]);
 
                     for (int i = 1; i < shape1Len; i++) {
-                        SUB(shape1Arr[i][0], shape1Arr[i][0], shape1Arr[0][0]);
-                        MULT(shape1Arr[i][0], shape1Arr[i][0], 1 / len);
-                        SUB(shape1Arr[i][1], shape1Arr[i][1], shape1Arr[0][0]);
-                        MULT(shape1Arr[i][1], shape1Arr[i][1], 1 / len);
+                        sub(shape1Arr[i][0], shape1Arr[i][0], shape1Arr[0][0]);
+                        mult(shape1Arr[i][0], shape1Arr[i][0], 1 / len);
+                        sub(shape1Arr[i][1], shape1Arr[i][1], shape1Arr[0][0]);
+                        mult(shape1Arr[i][1], shape1Arr[i][1], 1 / len);
                     }
-                    SUB(shape1Vect, shape1Arr[0][1], shape1Arr[0][0]);
+                    sub(shape1Vect, shape1Arr[0][1], shape1Arr[0][0]);
 
                     angle = Math.atan2(-shape1Vect[0], -shape1Vect[1]);
 
@@ -1218,15 +1218,15 @@ class VM07PathTruder extends VM06Edger2 {
 
                     // Normalize shape 2
 
-                    len = DIST(shape2Arr[0][0], shape2Arr[0][1]);
+                    len = dist(shape2Arr[0][0], shape2Arr[0][1]);
 
                     for (int i = 1; i < shape2Len; i++) {
-                        SUB(shape2Arr[i][0], shape2Arr[i][0], shape2Arr[0][0]);
-                        MULT(shape2Arr[i][0], shape2Arr[i][0], 1 / len);
-                        SUB(shape2Arr[i][1], shape2Arr[i][1], shape2Arr[0][0]);
-                        MULT(shape2Arr[i][1], shape2Arr[i][1], 1 / len);
+                        sub(shape2Arr[i][0], shape2Arr[i][0], shape2Arr[0][0]);
+                        mult(shape2Arr[i][0], shape2Arr[i][0], 1 / len);
+                        sub(shape2Arr[i][1], shape2Arr[i][1], shape2Arr[0][0]);
+                        mult(shape2Arr[i][1], shape2Arr[i][1], 1 / len);
                     }
-                    SUB(shape2Vect, shape2Arr[0][1], shape2Arr[0][0]);
+                    sub(shape2Vect, shape2Arr[0][1], shape2Arr[0][0]);
 
                     angle = Math.atan2(-shape2Vect[0], -shape2Vect[1]);
 
@@ -1253,32 +1253,32 @@ class VM07PathTruder extends VM06Edger2 {
                         endings = false;
 
                     if (endings) {
-                        double angle2 = PathLocalBasis(0, 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                        angle = PathLocalBasis(0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                        double angle2 = pathLocalBasis(0, 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                        angle = pathLocalBasis(0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
                         if (angle2 > 90) {
-                            MULT(xVect, xVect, -1);
-                            MULT(zVect, zVect, -1);
+                            mult(xVect, xVect, -1);
+                            mult(zVect, zVect, -1);
                         }
                     } else {
-                        angle = PathLocalBasis(circular ? path1Len - 1 : 0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                        angle = pathLocalBasis(circular ? path1Len - 1 : 0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
                     }
                     // compensate sharp angles
                     if (compensate) {
-                        MULT(xVect, xVect, 1 / Math.cos(angle * pi / 360));
+                        mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
                     }
 
                     // Calculate next transformed shape
                     for (int j = 0; j < shape1Len; j++) {
                         for (int k = 0; k < 2; k++) {
-                            MULT(nxtShape[j][k], xVect, shape1Arr[j][k][0]);
-                            MULT(temp1, yVect, shape1Arr[j][k][1]);
-                            ADD(nxtShape[j][k], nxtShape[j][k], temp1);
-                            MULT(temp1, zVect, shape1Arr[j][k][2]);
-                            ADD(nxtShape[j][k], nxtShape[j][k], temp1);
+                            mult(nxtShape[j][k], xVect, shape1Arr[j][k][0]);
+                            mult(temp1, yVect, shape1Arr[j][k][1]);
+                            add(nxtShape[j][k], nxtShape[j][k], temp1);
+                            mult(temp1, zVect, shape1Arr[j][k][2]);
+                            add(nxtShape[j][k], nxtShape[j][k], temp1);
                             if (endings) {
-                                ADD(nxtShape[j][k], nxtShape[j][k], path1Arr[1][0]);
+                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[1][0]);
                             } else {
-                                ADD(nxtShape[j][k], nxtShape[j][k], path1Arr[0][0]);
+                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[0][0]);
                             }
                         }
 
@@ -1296,38 +1296,38 @@ class VM07PathTruder extends VM06Edger2 {
 
                         // Transfer old next shape to current.
                         for (int j = 0; j < shape1Len; j++) {
-                            SET(curShape[j][0], nxtShape[j][0]);
-                            SET(curShape[j][1], nxtShape[j][1]);
+                            set(curShape[j][0], nxtShape[j][0]);
+                            set(curShape[j][1], nxtShape[j][1]);
                         }
 
                         if (i == end - 1) {
                             if (circular) {
-                                angle = PathLocalBasis(i, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                                angle = pathLocalBasis(i, 0, xVect, yVect, zVect, path1Arr, path2Arr);
                             } else {
                                 if (endings) {
-                                    double angle2 = PathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                                    angle = PathLocalBasis(i + 2, i + 2, xVect, yVect, zVect, path1Arr, path2Arr);
+                                    double angle2 = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                    angle = pathLocalBasis(i + 2, i + 2, xVect, yVect, zVect, path1Arr, path2Arr);
                                     if (angle2 < 90) {
                                         // in that case the local
                                         // base is mirrorred...
-                                        SUB(xVect, nullv, xVect);
-                                        SUB(zVect, nullv, zVect);
+                                        sub(xVect, nullv, xVect);
+                                        sub(zVect, nullv, zVect);
                                     }
                                 } else {
-                                    angle = PathLocalBasis(i + 1, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                    angle = pathLocalBasis(i + 1, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
                                     // in that case the local base
                                     // is mirrorred...
-                                    SUB(xVect, nullv, xVect);
-                                    SUB(zVect, nullv, zVect);
+                                    sub(xVect, nullv, xVect);
+                                    sub(zVect, nullv, zVect);
                                 }
                             }
                         } else {
-                            angle = PathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                            angle = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
                         }
 
                         // compensate sharp angles
                         if (compensate) {
-                            MULT(xVect, xVect, 1 / Math.cos(angle * pi / 360));
+                            mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
                         }
 
                         {
@@ -1351,18 +1351,18 @@ class VM07PathTruder extends VM06Edger2 {
                                 temp2[0] = shape2Arr[j][k][0] * ca - shape2Arr[j][k][1] * sa;
                                 temp2[1] = shape2Arr[j][k][0] * sa + shape2Arr[j][k][1] * ca;
 
-                                MULT(nxtShape[j][k], xVect, temp1[0] * (1.0 - ratio) + temp2[0] * ratio);
-                                MULT(temp3, yVect, temp1[1] * (1.0 - ratio) + temp2[1] * ratio);
-                                ADD(nxtShape[j][k], nxtShape[j][k], temp3);
-                                MULT(temp3, zVect, shape1Arr[j][k][2] * (1.0 - ratio) + shape2Arr[j][k][2] * ratio);
-                                ADD(nxtShape[j][k], nxtShape[j][k], temp3);
-                                ADD(nxtShape[j][k], nxtShape[j][k], path1Arr[i + 1][0]);
+                                mult(nxtShape[j][k], xVect, temp1[0] * (1.0 - ratio) + temp2[0] * ratio);
+                                mult(temp3, yVect, temp1[1] * (1.0 - ratio) + temp2[1] * ratio);
+                                add(nxtShape[j][k], nxtShape[j][k], temp3);
+                                mult(temp3, zVect, shape1Arr[j][k][2] * (1.0 - ratio) + shape2Arr[j][k][2] * ratio);
+                                add(nxtShape[j][k], nxtShape[j][k], temp3);
+                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[i + 1][0]);
                             }
                         }
                         // Generate tri/quad sheet
                         for (int j = 0; j < shape1Len; j++) {
-                            if (DIST(curShape[j][0], curShape[j][1]) < vertmerge) {
-                                if (DIST(nxtShape[j][0], nxtShape[j][1]) < vertmerge || DIST(curShape[j][0], nxtShape[j][0]) < vertmerge || DIST(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                            if (dist(curShape[j][0], curShape[j][1]) < vertmerge) {
+                                if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge || dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
                                     // Degenerated. Nothing to output
                                     continue;
                                 } else {
@@ -1373,8 +1373,8 @@ class VM07PathTruder extends VM06Edger2 {
                                     continue;
                                 }
                             }
-                            if (DIST(nxtShape[j][0], nxtShape[j][1]) < vertmerge) {
-                                if (DIST(curShape[j][0], nxtShape[j][0]) < vertmerge || DIST(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                            if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge) {
+                                if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
                                     // Degenerated. Nothing to output
                                     continue;
                                 } else {
@@ -1385,8 +1385,8 @@ class VM07PathTruder extends VM06Edger2 {
                                     continue;
                                 }
                             }
-                            if (DIST(curShape[j][0], nxtShape[j][0]) < vertmerge) {
-                                if (DIST(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                            if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge) {
+                                if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
                                     // Degenerated. Nothing to output
                                     continue;
                                 } else {
@@ -1397,14 +1397,14 @@ class VM07PathTruder extends VM06Edger2 {
                                     continue;
                                 }
                             }
-                            if (DIST(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                            if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
                                 Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
                                 Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
                                 Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
                                 newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
                                 continue;
                             }
-                            if (Tri_Angle(curShape[j][0], nxtShape[j][0], nxtShape[j][1], curShape[j][1]) < smallAngle) {
+                            if (triAngle(curShape[j][0], nxtShape[j][0], nxtShape[j][1], curShape[j][1]) < smallAngle) {
                                 Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
                                 Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
                                 Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
@@ -1552,37 +1552,37 @@ class VM07PathTruder extends VM06Edger2 {
         return y;
     }
 
-    private void CROSS(double[] dest, double[] left, double[] right) {
+    private void cross(double[] dest, double[] left, double[] right) {
         dest[0]=left[1]*right[2]-left[2]*right[1];
         dest[1]=left[2]*right[0]-left[0]*right[2];
         dest[2]=left[0]*right[1]-left[1]*right[0];
     }
 
-    private double DOT(double[] v1, double[] v2) {
+    private double dot(double[] v1, double[] v2) {
         return v1[0]*v2[0]+v1[1]*v2[1]+v1[2]*v2[2];
     }
 
-    private void SUB(double[] dest, double[] left, double[] right) {
+    private void sub(double[] dest, double[] left, double[] right) {
         dest[0]=left[0]-right[0]; dest[1]=left[1]-right[1]; dest[2]=left[2]-right[2];
     }
 
-    private void ADD(double[] dest, double[] left, double[] right) {
+    private void add(double[] dest, double[] left, double[] right) {
         dest[0]=left[0]+right[0]; dest[1]=left[1]+right[1]; dest[2]=left[2]+right[2];
     }
 
-    private void MULT(double[] dest, double[] v, double factor) {
+    private void mult(double[] dest, double[] v, double factor) {
         dest[0]=factor*v[0]; dest[1]=factor*v[1]; dest[2]=factor*v[2];
     }
 
-    private void SET(double[] dest, double[] src) {
+    private void set(double[] dest, double[] src) {
         dest[0]=src[0]; dest[1]=src[1]; dest[2]=src[2];
     }
 
-    private double MANHATTAN(double[] v1, double[] v2) {
+    private double manhattan(double[] v1, double[] v2) {
         return Math.abs(v1[0]-v2[0]) + Math.abs(v1[1]-v2[1]) + Math.abs(v1[2]-v2[2]);
     }
 
-    private double DIST(double[] v1, double[] v2) {
+    private double dist(double[] v1, double[] v2) {
         return Math.sqrt((v1[0]-v2[0])*(v1[0]-v2[0]) + (v1[1]-v2[1])*(v1[1]-v2[1]) + (v1[2]-v2[2])*(v1[2]-v2[2]));
     }
 
@@ -1590,7 +1590,7 @@ class VM07PathTruder extends VM06Edger2 {
     // Calculate local basis, based on the direction of the i-th vector between both paths,
     // and the average of the planes defined by the paths before and after this vector
     // Returns angle between these planes.
-    private double PathLocalBasis (int n, int i,  double[] xv,double[] yv,double[] zv, double[][][] path1, double[][][] path2)
+    private double pathLocalBasis(int n, int i,  double[] xv,double[] yv,double[] zv, double[][][] path1, double[][][] path2)
     {
         double a;
         double scale;
@@ -1600,97 +1600,97 @@ class VM07PathTruder extends VM06Edger2 {
         double[] temp4 = new double[3];
 
         // Calculate local coordinate basis
-        scale = DIST(path2[i][0], path1[i][0]);
+        scale = dist(path2[i][0], path1[i][0]);
 
         if(scale < EPSILON)
         {
             // size is 0... any non-degenerated base will do!
-            SET (yv, nullv);
+            set (yv, nullv);
             yv[0]=1;
         }
         else
         {
-            SUB(yv, path1[i][0], path2[i][0]);
+            sub(yv, path1[i][0], path2[i][0]);
         }
 
         // Average Path Normal
-        SUB(temp1, path1[i][1], path1[i][0]);
-        SUB(temp2, path2[i][1], path1[i][0]);
-        CROSS(xv, temp2, temp1);
-        a=DIST(xv, nullv);
+        sub(temp1, path1[i][1], path1[i][0]);
+        sub(temp2, path2[i][1], path1[i][0]);
+        cross(xv, temp2, temp1);
+        a=dist(xv, nullv);
         if (a > EPSILON) {
-            MULT(xv, xv, 1.0/a);
+            mult(xv, xv, 1.0/a);
         } else {
-            SET(xv, nullv);
+            set(xv, nullv);
         }
-        SUB(temp1, path2[i][1], path2[i][0]);
-        SUB(temp2, path1[i][0], path2[i][0]);
-        CROSS(temp3, temp1, temp2);
-        a=DIST(temp3, nullv);
+        sub(temp1, path2[i][1], path2[i][0]);
+        sub(temp2, path1[i][0], path2[i][0]);
+        cross(temp3, temp1, temp2);
+        a=dist(temp3, nullv);
         if (a > EPSILON) {
-            MULT(temp3, temp3, 1.0/a);
+            mult(temp3, temp3, 1.0/a);
         } else {
-            SET(temp3, nullv);
+            set(temp3, nullv);
         }
-        ADD(xv, xv, temp3);
-        a=DIST(xv, nullv);
+        add(xv, xv, temp3);
+        a=dist(xv, nullv);
         if (a > EPSILON) {
-            MULT(xv, xv, 1/a);
+            mult(xv, xv, 1/a);
         } else {
-            SET(xv, nullv);
+            set(xv, nullv);
         }
 
-        SUB(temp1, path1[n][1], path1[n][0]);
-        SUB(temp2, path2[n][1], path1[n][0]);
-        CROSS(temp4, temp2, temp1);
-        a=DIST(temp4, nullv);
+        sub(temp1, path1[n][1], path1[n][0]);
+        sub(temp2, path2[n][1], path1[n][0]);
+        cross(temp4, temp2, temp1);
+        a=dist(temp4, nullv);
         if(a > EPSILON) {
-            MULT(temp4, temp4, 1.0/a);
+            mult(temp4, temp4, 1.0/a);
         } else {
-            SET(temp4, nullv);
+            set(temp4, nullv);
         }
-        SUB(temp1, path2[n][1], path2[n][0]);
-        SUB(temp2, path1[n][0], path2[n][0]);
-        CROSS(temp3, temp1, temp2);
-        a=DIST(temp3, nullv);
+        sub(temp1, path2[n][1], path2[n][0]);
+        sub(temp2, path1[n][0], path2[n][0]);
+        cross(temp3, temp1, temp2);
+        a=dist(temp3, nullv);
         if(a > EPSILON) {
-            MULT(temp3, temp3, 1.0/a);
+            mult(temp3, temp3, 1.0/a);
         } else {
-            SET(temp3, nullv);
+            set(temp3, nullv);
         }
-        ADD(temp4, temp4, temp3);
-        a=DIST(temp4, nullv);
+        add(temp4, temp4, temp3);
+        a=dist(temp4, nullv);
         if(a > EPSILON) {
-            MULT(temp4, temp4, 1.0/a);
+            mult(temp4, temp4, 1.0/a);
         } else {
-            SET(temp4, nullv);
+            set(temp4, nullv);
         }
 
         // Average previous and current path normals
-        ADD(xv, xv, temp4);
-        a=DIST(xv, nullv);
+        add(xv, xv, temp4);
+        a=dist(xv, nullv);
         if(a > EPSILON) {
-            MULT(xv, xv, 1/a);
+            mult(xv, xv, 1/a);
         } else {
-            SET(xv, nullv);
+            set(xv, nullv);
         }
 
         // calculate angle
-        a = 360.0 / Math.PI * Math.acos(DOT(xv,temp4));
+        a = 360.0 / Math.PI * Math.acos(dot(xv,temp4));
 
-        CROSS(zv,xv,yv);
-        MULT(xv, xv, scale);
+        cross(zv,xv,yv);
+        mult(xv, xv, scale);
         if(scale < EPSILON)
         {
-            SET(yv, nullv);
-            SET(zv, nullv);
+            set(yv, nullv);
+            set(zv, nullv);
         }
         return a;
     }
 
-    // Tri_Angle computes the angle (in degrees) between the planes of a quad.
+    // triAngle computes the angle (in degrees) between the planes of a quad.
     // They are assumed to be non-degenerated
-    private double Tri_Angle(double[] u0,double[] u1,double[] u2, double[] u3)
+    private double triAngle(double[] u0,double[] u1,double[] u2, double[] u3)
     {
         double[] unorm = new double[3];
         double[] vnorm = new double[3];
@@ -1700,19 +1700,19 @@ class VM07PathTruder extends VM06Edger2 {
         double[] v10 = new double[3];
         double[] v20 = new double[3];
         double len;
-        SUB(u10, u1, u0);
-        SUB(u20, u2, u0);
-        SUB(v10, u2, u0);
-        SUB(v20, u3, u0);
-        CROSS(temp, u10, u20);
-        len = DIST(temp, nullv);
-        MULT(unorm, temp, 1/len);
-        CROSS(temp, v10, v20);
-        len = DIST(temp, nullv);
-        MULT(vnorm, temp, 1/len);
-        CROSS(temp, unorm, vnorm);
+        sub(u10, u1, u0);
+        sub(u20, u2, u0);
+        sub(v10, u2, u0);
+        sub(v20, u3, u0);
+        cross(temp, u10, u20);
+        len = dist(temp, nullv);
+        mult(unorm, temp, 1/len);
+        cross(temp, v10, v20);
+        len = dist(temp, nullv);
+        mult(vnorm, temp, 1/len);
+        cross(temp, unorm, vnorm);
         double dist;
-        dist = DIST(temp, nullv);
+        dist = dist(temp, nullv);
         if(dist > 0.9999999999) return 90;
         return 180 / Math.PI * Math.asin(dist);
     }

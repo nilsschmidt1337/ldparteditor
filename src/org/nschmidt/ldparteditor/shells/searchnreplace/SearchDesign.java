@@ -16,7 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.shells.searchnreplace;
 
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
@@ -165,7 +165,7 @@ class SearchDesign extends ApplicationWindow {
             btnClose.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             btnClose.setText(I18n.SEARCH_CLOSE);
 
-            WidgetUtil(btnClose).addSelectionListener(e -> getShell().close());
+            widgetUtil(btnClose).addSelectionListener(e -> getShell().close());
         }
 
         cmpContainer.pack();

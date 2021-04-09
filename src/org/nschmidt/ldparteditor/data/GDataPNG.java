@@ -235,7 +235,7 @@ public final class GDataPNG extends GData {
 
         if (selected) {
 
-            GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(new float[] {
+            GL33Helper.drawTrianglesIndexedTexturedGeneralSlow(new float[] {
             w + 0.05f, 1f + 0.05f, 0f,
             1f, 0f, 0f,
             1f, 0f, 0f, 7f,
@@ -308,7 +308,7 @@ public final class GDataPNG extends GData {
             GL11.glEnable(GL11.GL_CULL_FACE);
 
             if (scale.x * scale.y < 0f) {
-                GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(new float[] {
+                GL33Helper.drawTrianglesIndexedTexturedGeneralSlow(new float[] {
                 // 1 1
                 -w, -1f, 0f,
                 1f, 0f, 0f,
@@ -331,7 +331,7 @@ public final class GDataPNG extends GData {
                 1f, 0f,
                 }, new int[]{0,1,2,2,3,0});
             } else {
-                GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(new float[] {
+                GL33Helper.drawTrianglesIndexedTexturedGeneralSlow(new float[] {
                 // 1 1
                 w, 1f, 0f,
                 1f, 0f, 0f,
@@ -357,7 +357,7 @@ public final class GDataPNG extends GData {
 
         } else {
 
-            GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(new float[] {
+            GL33Helper.drawTrianglesIndexedTexturedGeneralSlow(new float[] {
             // 1 1
             w, 1f, 0f,
             1f, 0f, 0f,
@@ -387,47 +387,47 @@ public final class GDataPNG extends GData {
     }
 
     @Override
-    public void drawGL20_RandomColours(Composite3D c3d) {
+    public void drawGL20RandomColours(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_BFC(Composite3D c3d) {
+    public void drawGL20BFC(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_BFCuncertified(Composite3D c3d) {
+    public void drawGL20BFCuncertified(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_BFC_backOnly(Composite3D c3d) {
+    public void drawGL20BFCbackOnly(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_BFC_Colour(Composite3D c3d) {
+    public void drawGL20BFCcolour(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
+    public void drawGL20WhileAddCondlines(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+    public void drawGL20CoplanarityHeatmap(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_Wireframe(Composite3D c3d) {
+    public void drawGL20Wireframe(Composite3D c3d) {
         drawGL20(c3d);
     }
 
     @Override
-    public void drawGL20_BFC_Textured(Composite3D c3d) {}
+    public void drawGL20BFCtextured(Composite3D c3d) {}
 
     @Override
     public int type() {

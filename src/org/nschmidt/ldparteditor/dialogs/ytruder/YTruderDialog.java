@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.ytruder;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -50,10 +50,10 @@ public class YTruderDialog extends YTruderDesign {
         spnValuePtr[0].addValueChangeListener(spn -> ys.setDistance(spn.getValue().doubleValue()));
         spnCondlineAngleThresholdPtr[0].addValueChangeListener(spn -> ys.setCondlineAngleThreshold(spn.getValue().doubleValue()));
         cmbAxisPtr[0].addListener(SWT.Selection, event -> ys.setAxis(cmbAxisPtr[0].getSelectionIndex()));
-        WidgetUtil(btnTranslateByDistancePtr[0]).addSelectionListener(e -> ys.setMode(1));
-        WidgetUtil(btnSymmetryAcrossPlanePtr[0]).addSelectionListener(e -> ys.setMode(2));
-        WidgetUtil(btnProjectionOnPlanePtr[0]).addSelectionListener(e -> ys.setMode(3));
-        WidgetUtil(btnExtrudeRadiallyPtr[0]).addSelectionListener(e -> ys.setMode(4));
+        widgetUtil(btnTranslateByDistancePtr[0]).addSelectionListener(e -> ys.setMode(1));
+        widgetUtil(btnSymmetryAcrossPlanePtr[0]).addSelectionListener(e -> ys.setMode(2));
+        widgetUtil(btnProjectionOnPlanePtr[0]).addSelectionListener(e -> ys.setMode(3));
+        widgetUtil(btnExtrudeRadiallyPtr[0]).addSelectionListener(e -> ys.setMode(4));
         return super.open();
     }
 }

@@ -274,7 +274,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             roundSelection(6, 10, true, false, true, true, true);
 
             clearSelection();
-            setModified_NoSync();
+            setModifiedNoSync();
         }
 
         selectedLines.addAll(linesToDelete);
@@ -655,7 +655,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             if (syncWithTextEditor) {
                 setModified(true, true);
             } else {
-                setModified_NoSync();
+                setModifiedNoSync();
             }
 
             NLogger.debug(getClass(), "Done."); //$NON-NLS-1$

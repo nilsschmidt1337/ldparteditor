@@ -164,7 +164,7 @@ class VM00Base {
         }
     }
 
-    public final synchronized void setModified_NoSync() {
+    public final synchronized void setModifiedNoSync() {
         this.modified = true;
         setUpdated(false);
     }
@@ -384,11 +384,11 @@ class VM00Base {
             // (they are virtual, because they were not saved at all!)
             if (Project.getUnsavedFiles().contains(linkedDatFile) && !linkedDatFile.isVirtual()) {
                 Project.removeUnsavedFile(linkedDatFile);
-                Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                Editor3DWindow.getWindow().updateTreeUnsavedEntries();
             }
         } else if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
             Project.addUnsavedFile(linkedDatFile);
-            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
         }
     }
 
@@ -856,7 +856,7 @@ class VM00Base {
      * @return
      */
     public final synchronized boolean changeVertexDirect(Vertex oldVertex, Vertex newVertex, boolean modifyVertexMetaCommands) {
-        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
         TreeSet<Integer> keys = new TreeSet<>(drawPerLine.keySet());
         HashSet<GData> dataToRemove = new HashSet<>();
         boolean foundVertexDuplicate = false;
@@ -1042,7 +1042,7 @@ class VM00Base {
             return false;
         HashSet<VertexManifestation> manis = new HashSet<>(manis2);
 
-        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
 
         for (VertexManifestation mani : manis) {
             GData oldData = mani.getGdata();
@@ -1205,7 +1205,7 @@ class VM00Base {
             return og;
         HashSet<VertexManifestation> manis = new HashSet<>(manis2);
 
-        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
 
         for (VertexManifestation mani : manis) {
             GData oldData = mani.getGdata();
@@ -1468,14 +1468,14 @@ class VM00Base {
         if (linkedDatFile.isReadOnly())
             return;
 
-        if (selectedBgPicture != null && linkedDatFile.getDrawPerLine_NOCLONE().containsValue(selectedBgPicture)) {
+        if (selectedBgPicture != null && linkedDatFile.getDrawPerLineNoClone().containsValue(selectedBgPicture)) {
             GData before = selectedBgPicture.getBefore();
             GData next = selectedBgPicture.getNext();
-            linkedDatFile.getDrawPerLine_NOCLONE().removeByValue(selectedBgPicture);
+            linkedDatFile.getDrawPerLineNoClone().removeByValue(selectedBgPicture);
             before.setNext(next);
             remove(selectedBgPicture);
             selectedBgPicture = null;
-            setModified_NoSync();
+            setModifiedNoSync();
         }
 
         final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
@@ -1644,16 +1644,16 @@ class VM00Base {
             // 3. Deletion of the selected data (no whole subfiles!!)
 
             if (!effSelectedVertices.isEmpty())
-                setModified_NoSync();
+                setModifiedNoSync();
             if (!effSelectedLines.isEmpty())
-                setModified_NoSync();
+                setModifiedNoSync();
             if (!effSelectedTriangles.isEmpty())
-                setModified_NoSync();
+                setModifiedNoSync();
             if (!effSelectedQuads.isEmpty())
-                setModified_NoSync();
+                setModifiedNoSync();
             if (!effSelectedCondlines.isEmpty())
-                setModified_NoSync();
-            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLine_NOCLONE();
+                setModifiedNoSync();
+            final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
             for (GData0 gd : effSelectedVertices) {
                 dpl.removeByValue(gd);
                 gd.getBefore().setNext(gd.getNext());
@@ -1691,7 +1691,7 @@ class VM00Base {
                             dpl.removeByValue(g);
                             g.getBefore().setNext(g.getNext());
                             remove(g);
-                            setModified_NoSync();
+                            setModifiedNoSync();
                         }
                     }
                 }
@@ -1729,7 +1729,7 @@ class VM00Base {
                     remove(gd);
                 }
                 selectedSubfiles.clear();
-                setModified_NoSync();
+                setModifiedNoSync();
             }
 
             if (isModified()) {
@@ -1769,7 +1769,7 @@ class VM00Base {
      * @param newData
      */
     protected final void linker(GData oldData, GData newData) {
-        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
         if (oldData.equals(linkedDatFile.getDrawChainTail()))
             linkedDatFile.setDrawChainTail(newData);
         GData oldNext = oldData.getNext();
@@ -1794,11 +1794,11 @@ class VM00Base {
         return new HashMap<>(triangles);
     }
 
-    public final synchronized ThreadsafeHashMap<GData3, Vertex[]> getTriangles_NOCLONE() {
+    public final synchronized ThreadsafeHashMap<GData3, Vertex[]> getTrianglesNoClone() {
         return triangles;
     }
 
-    public final synchronized ThreadsafeHashMap<GData4, Vertex[]> getQuads_NOCLONE() {
+    public final synchronized ThreadsafeHashMap<GData4, Vertex[]> getQuadsNoClone() {
         return quads;
     }
 

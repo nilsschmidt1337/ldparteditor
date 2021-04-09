@@ -202,10 +202,10 @@ enum GL33TexmapRenderer {
                         colourise(3, 0f, 0f, 0f, 0f, triVertices);
                         continue;
                     }
-                    GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndices);
+                    GL33Helper.drawTrianglesIndexedTexturedGeneralSlow(triVertices, triIndices);
                     if (gw.noclip || (isTextured && gd3.a < 1f)) {
                         flipnormals(3, triVertices);
-                        GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(triVertices, triIndicesNOCLIP);
+                        GL33Helper.drawTrianglesIndexedTexturedGeneralSlow(triVertices, triIndicesNOCLIP);
                     }
                 }
                 continue;
@@ -365,10 +365,10 @@ enum GL33TexmapRenderer {
                         colourise(4, 0f, 0f, 0f, 0f, quadVertices);
                         continue;
                     }
-                    GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndices);
+                    GL33Helper.drawTrianglesIndexedTexturedGeneralSlow(quadVertices, quadIndices);
                     if (gw.noclip || (isTextured && gd4.a < 1f)) {
                         flipnormals(4, quadVertices);
-                        GL33Helper.drawTrianglesIndexedTextured_GeneralSlow(quadVertices, quadIndicesNOCLIP);
+                        GL33Helper.drawTrianglesIndexedTexturedGeneralSlow(quadVertices, quadIndicesNOCLIP);
                     }
                 }
                 continue;

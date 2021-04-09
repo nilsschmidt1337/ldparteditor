@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.rotate;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.util.Set;
 
@@ -75,33 +75,33 @@ public class RotateDialog extends RotateDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnLocalPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnLocalPtr[0].getParent());
             btnLocalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.LOCAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE);
         });
-        WidgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnGlobalPtr[0]).addSelectionListener(e -> {
             WidgetSelectionHelper.unselectAllChildButtons((ToolItem) btnGlobalPtr[0].getParent());
             btnGlobalPtr[0].setSelection(true);
             transformationMode = ManipulatorScope.GLOBAL;
             Editor3DWindow.getWindow().setWorkingAction(WorkingMode.MOVE_GLOBAL);
         });
-        WidgetUtil(rbXaxisPtr[0]).addSelectionListener(e -> {
+        widgetUtil(rbXaxisPtr[0]).addSelectionListener(e -> {
             if (rbXaxisPtr[0].getSelection()) {
                 x = true;
                 y = false;
                 z = false;
             }
         });
-        WidgetUtil(rbYaxisPtr[0]).addSelectionListener(e -> {
+        widgetUtil(rbYaxisPtr[0]).addSelectionListener(e -> {
             if (rbYaxisPtr[0].getSelection()) {
                 x = false;
                 y = true;
                 z = false;
             }
         });
-        WidgetUtil(rbZaxisPtr[0]).addSelectionListener(e -> {
+        widgetUtil(rbZaxisPtr[0]).addSelectionListener(e -> {
             if (rbZaxisPtr[0].getSelection()) {
                 x = false;
                 y = false;
@@ -138,17 +138,17 @@ public class RotateDialog extends RotateDesign {
         spnPXPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
         spnPYPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
         spnPZPtr[0].addValueChangeListener(spn -> setPivot(new Vertex(spnPXPtr[0].getValue(), spnPYPtr[0].getValue(), spnPZPtr[0].getValue())));
-        WidgetUtil(btnPivotManipulatorPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPivotManipulatorPtr[0]).addSelectionListener(e -> {
             spnPXPtr[0].setValue(m.xp);
             spnPYPtr[0].setValue(m.yp);
             spnPZPtr[0].setValue(m.zp);
         });
-        WidgetUtil(btnPivotClipboardPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnPivotClipboardPtr[0]).addSelectionListener(e -> {
             spnPXPtr[0].setValue(c.xp);
             spnPYPtr[0].setValue(c.yp);
             spnPZPtr[0].setValue(c.zp);
         });
-        WidgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnCopyPtr[0]).addSelectionListener(e -> {
             creatingCopy = true;
             setReturnCode(OK);
             close();

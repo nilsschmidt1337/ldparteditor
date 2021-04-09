@@ -441,11 +441,11 @@ public class CompositePrimitive extends Composite {
         this.zoom = zoom;
     }
 
-    public float getZoom_exponent() {
+    public float getZoomExponent() {
         return zoomExponent;
     }
 
-    public void setZoom_exponent(float zoomExponent) {
+    public void setZoomExponent(float zoomExponent) {
         this.zoomExponent = zoomExponent;
     }
 
@@ -467,7 +467,7 @@ public class CompositePrimitive extends Composite {
         return viewportMatrix;
     }
 
-    public Matrix4f getViewport_Inverse() {
+    public Matrix4f getViewportInverse() {
         return viewportMatrixInv;
     }
 
@@ -544,11 +544,11 @@ public class CompositePrimitive extends Composite {
         if (-viewportTranslation.m31 > maxY) viewportTranslation.m31 = -maxY;
     }
 
-    public float getViewport_pixel_per_ldu() {
+    public float getViewportPixelPerLDU() {
         return viewportPixelPerLDU;
     }
 
-    public void setViewport_pixel_per_ldu(float viewportPixelPerLDU) {
+    public void setViewportPixelPerLDU(float viewportPixelPerLDU) {
         this.viewportPixelPerLDU = viewportPixelPerLDU;
 
     }
@@ -1214,21 +1214,21 @@ public class CompositePrimitive extends Composite {
 
         switch (linetype) {
         case 0:
-            result = parse_Comment(line, dataSegments[1]);
+            result = parseComment(line, dataSegments[1]);
             break;
         case 1:
-            return parse_Reference(dataSegments, depth, productMatrix, alreadyParsed, hotMap);
+            return parseReference(dataSegments, depth, productMatrix, alreadyParsed, hotMap);
         case 2:
-            result = parse_Line(dataSegments);
+            result = parseLine(dataSegments);
             break;
         case 3:
-            result = parse_Triangle(dataSegments);
+            result = parseTriangle(dataSegments);
             break;
         case 4:
-            result = parse_Quad(dataSegments);
+            result = parseQuad(dataSegments);
             break;
         case 5:
-            result = parse_Condline(dataSegments);
+            result = parseCondline(dataSegments);
             break;
         default:
             break;
@@ -1240,7 +1240,7 @@ public class CompositePrimitive extends Composite {
         return result;
     }
 
-    private static PGData parse_Comment(String line, String bfc) {
+    private static PGData parseComment(String line, String bfc) {
         if ("BFC".equals(bfc)) { //$NON-NLS-1$
             line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
             if (line.startsWith("INVERTNEXT", 6)) { //$NON-NLS-1$
@@ -1277,7 +1277,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Reference(String[] dataSegments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
+    private static PGData parseReference(String[] dataSegments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
         if (dataSegments.length < 15) {
             return null;
         } else {
@@ -1430,7 +1430,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Line(String[] dataSegments) {
+    private static PGData parseLine(String[] dataSegments) {
         if (dataSegments.length != 8) {
             return null;
         } else {
@@ -1446,7 +1446,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Triangle(String[] dataSegments) {
+    private static PGData parseTriangle(String[] dataSegments) {
         if (dataSegments.length != 11) {
             return null;
         } else {
@@ -1463,7 +1463,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Quad(String[] dataSegments) {
+    private static PGData parseQuad(String[] dataSegments) {
         if (dataSegments.length != 14) {
             return null;
         } else {
@@ -1481,7 +1481,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parse_Condline(String[] dataSegments) {
+    private static PGData parseCondline(String[] dataSegments) {
         if (dataSegments.length != 14) {
             return null;
         } else {

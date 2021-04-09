@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.startup;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.File;
 import java.util.Locale;
@@ -79,7 +79,7 @@ public class StartupDialog extends StartupDesign {
         super.create();
         btnOkPtr[0].setEnabled(false);
         // MARK All final listeners will be configured here..
-        WidgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseLdrawPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to null
@@ -126,7 +126,7 @@ public class StartupDialog extends StartupDesign {
                 updateOkButtonEnabledState();
             }
         });
-        WidgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseAuthoringPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to null
@@ -150,7 +150,7 @@ public class StartupDialog extends StartupDesign {
                 updateOkButtonEnabledState();
             }
         });
-        WidgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(e -> {
+        widgetUtil(btnBrowseUnofficialPathPtr[0]).addSelectionListener(e -> {
             DirectoryDialog dlg = new DirectoryDialog(getShell());
 
             // Set the initial filter to null

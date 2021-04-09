@@ -274,7 +274,7 @@ public final class GData3 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
+            drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -303,13 +303,13 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawGL20_RandomColours(Composite3D c3d) {
+    public void drawGL20RandomColours(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
+            drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
             return;
         }
         final float r = MathHelper.randomFloat(id, 0);
@@ -341,13 +341,13 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC(Composite3D c3d) {
+    public void drawGL20BFC(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
+            drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -507,7 +507,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawGL20_BFCuncertified(Composite3D c3d) {
+    public void drawGL20BFCuncertified(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -538,13 +538,13 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC_backOnly(Composite3D c3d) {
+    public void drawGL20BFCbackOnly(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
+            drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -704,13 +704,13 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC_Colour(Composite3D c3d) {
+    public void drawGL20BFCcolour(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
+            drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -829,13 +829,13 @@ public final class GData3 extends GData {
         GL11.glEnd();
     }
 
-    private void drawBFC_Colour2(Composite3D c3d, float r, float g, float b, float a, int useCubeMap) {
+    private void drawBFCcolour2(Composite3D c3d, float r, float g, float b, float a, int useCubeMap) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
+            drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
             return;
         }
         switch (a < 1f ? BFC.NOCERTIFY : GData.localWinding) {
@@ -962,7 +962,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC_Textured(Composite3D c3d) {
+    public void drawGL20BFCtextured(Composite3D c3d) {
         if (GData.globalDrawObjects) {
             GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
             GColourType ct = c.getType();
@@ -1004,12 +1004,12 @@ public final class GData3 extends GData {
                 GL20.glUniform1f(ren.getCubeMapSwitch(), useCubeMap);
                 switch (GData.accumClip) {
                 case 0:
-                    drawBFC_Colour2(c3d, r, g, b, a, useCubeMap);
+                    drawBFCcolour2(c3d, r, g, b, a, useCubeMap);
                     break;
                 default:
                     BFC tmp = GData.localWinding;
                     GData.localWinding = BFC.NOCERTIFY;
-                    drawBFC_Colour2(c3d, r, g, b, a, useCubeMap);
+                    drawBFCcolour2(c3d, r, g, b, a, useCubeMap);
                     GData.localWinding = tmp;
                     break;
                 }
@@ -1214,18 +1214,18 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
-        drawGL20_BFC(c3d);
+    public void drawGL20WhileAddCondlines(Composite3D c3d) {
+        drawGL20BFC(c3d);
     }
 
     @Override
-    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+    public void drawGL20CoplanarityHeatmap(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         if (!isTriangle) {
-            drawProtractor_GL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
+            drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
             return;
         }
         GL11.glBegin(GL11.GL_TRIANGLES);
@@ -1253,7 +1253,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void drawGL20_Wireframe(Composite3D c3d) {}
+    public void drawGL20Wireframe(Composite3D c3d) {}
 
     @Override
     public int type() {
@@ -1414,7 +1414,7 @@ public final class GData3 extends GData {
     @Override
     public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         if (state.globalDrawObjects) {
-            Vertex[] verts = vm.getTriangles_NOCLONE().get(this);
+            Vertex[] verts = vm.getTrianglesNoClone().get(this);
             if (verts == null) {
                 verts = new Vertex[3];
                 Vector4f v1 = new Vector4f(x1, y1, z1, 1f);
@@ -1612,7 +1612,7 @@ public final class GData3 extends GData {
         drawNumberGL33(angleS, textOrigin.x, textOrigin.y, textOrigin.z, zoom);
     }
 
-    void drawProtractor_GL20(boolean selected, Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
+    void drawProtractorGL20(boolean selected, Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.locale));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
@@ -1819,7 +1819,7 @@ public final class GData3 extends GData {
                 break;
             }
             for (PGData3 tri : tris) {
-                tri.drawTextGL33_VAO(ox + ox2, oy, oz + 100000f, zoom);
+                tri.drawTextGL33vao(ox + ox2, oy, oz + 100000f, zoom);
             }
             ox2 = ox2 - .01f * zoom;
         }

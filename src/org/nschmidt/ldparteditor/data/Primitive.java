@@ -111,7 +111,7 @@ public class Primitive implements Comparable<Primitive> {
             case 4:
             case 6:
             case 7:
-                gd.drawBFCprimitive_GL20(1);
+                gd.drawBFCprimitiveGL20(1);
                 break;
             default:
                 break;
@@ -130,7 +130,7 @@ public class Primitive implements Comparable<Primitive> {
             case 5:
             case 6:
             case 7:
-                gd.drawBFCprimitive_GL20(2);
+                gd.drawBFCprimitiveGL20(2);
                 break;
             default:
                 break;
@@ -152,7 +152,7 @@ public class Primitive implements Comparable<Primitive> {
             case 4:
             case 6:
             case 7:
-                gd.drawBFCprimitive_GL33(stack, 1);
+                gd.drawBFCprimitiveGL33(stack, 1);
                 break;
             default:
                 break;
@@ -171,7 +171,7 @@ public class Primitive implements Comparable<Primitive> {
             case 5:
             case 6:
             case 7:
-                gd.drawBFCprimitive_GL33(stack, 2);
+                gd.drawBFCprimitiveGL33(stack, 2);
                 break;
             default:
                 break;
@@ -185,7 +185,7 @@ public class Primitive implements Comparable<Primitive> {
         GL11.glTranslatef(x, y, z);
         GL11.glScalef(1000f, 1000f, 1000f);
         for (PGData gd : graphicalData) {
-            gd.drawBFCprimitive_GL20(0);
+            gd.drawBFCprimitiveGL20(0);
         }
         GL11.glPopMatrix();
     }
@@ -195,7 +195,7 @@ public class Primitive implements Comparable<Primitive> {
         stack.glTranslatef(x, y, z);
         stack.glScalef(1000f, 1000f, 1000f);
         for (PGData gd : graphicalData) {
-            gd.drawBFCprimitive_GL33(stack, 0);
+            gd.drawBFCprimitiveGL33(stack, 0);
         }
         stack.glPopMatrix();
     }

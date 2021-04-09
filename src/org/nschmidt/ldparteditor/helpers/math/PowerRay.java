@@ -39,7 +39,7 @@ public final class PowerRay {
     private final double[] pvec = new double[3];
     private final double[] qvec = new double[3];
 
-    private boolean TRIANGLE_INTERSECT(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
+    private boolean triangleIntersect(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
         double diskr = 0;
         double invDiskr = 0;
         corner1[0] = vert1[0] - vert0[0];
@@ -73,7 +73,7 @@ public final class PowerRay {
         return true;
     }
 
-    private boolean TRIANGLE_INTERSECT2(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
+    private boolean triangleIntersect2(double[] orig, double[] dir, double[] vert0, double[] vert1, double[] vert2) {
         double diskr = 0;
         double invDiskr = 0;
         corner1[0] = vert1[0] - vert0[0];
@@ -105,22 +105,22 @@ public final class PowerRay {
         return true;
     }
 
-    public boolean TRIANGLE_INTERSECT(Vector4f orig, Vector4f dir, Vertex vert0, Vertex vert1, Vertex vert2) {
+    public boolean triangleIntersect(Vector4f orig, Vector4f dir, Vertex vert0, Vertex vert1, Vertex vert2) {
         double[] origArr = new double[] { orig.x + dir.x * 100f, orig.y + dir.y * 100f, orig.z + dir.z * 100f };
         double[] dirArr = new double[] { dir.x, dir.y, dir.z };
         double[] vert0Arr = new double[] { vert0.x, vert0.y, vert0.z };
         double[] vert1Arr = new double[] { vert1.x, vert1.y, vert1.z };
         double[] vert2Arr = new double[] { vert2.x, vert2.y, vert2.z };
-        return TRIANGLE_INTERSECT(origArr, dirArr, vert0Arr, vert1Arr, vert2Arr);
+        return triangleIntersect(origArr, dirArr, vert0Arr, vert1Arr, vert2Arr);
     }
 
-    public boolean TRIANGLE_INTERSECT(Vector4f orig, Vector4f dir, Vertex vert0, Vertex vert1, Vertex vert2, Vector4f intersectionPoint, double[] dist) {
+    public boolean triangleIntersect(Vector4f orig, Vector4f dir, Vertex vert0, Vertex vert1, Vertex vert2, Vector4f intersectionPoint, double[] dist) {
         double[] origArr = new double[] { orig.x, orig.y, orig.z };
         double[] dirArr = new double[] { dir.x, dir.y, dir.z };
         double[] vert0Arr = new double[] { vert0.x, vert0.y, vert0.z };
         double[] vert1Arr = new double[] { vert1.x, vert1.y, vert1.z };
         double[] vert2Arr = new double[] { vert2.x, vert2.y, vert2.z };
-        if (TRIANGLE_INTERSECT2(origArr, dirArr, vert0Arr, vert1Arr, vert2Arr)) {
+        if (triangleIntersect2(origArr, dirArr, vert0Arr, vert1Arr, vert2Arr)) {
             intersectionPoint.set((float) (origArr[0] + dirArr[0] * t), (float) (origArr[1] + dirArr[1] * t), (float) (origArr[2] + dirArr[2] * t), 1f);
             dist[0] = t;
             return true;
@@ -128,7 +128,7 @@ public final class PowerRay {
         return false;
     }
 
-    double[] BARYCENTRIC(double[] point, double[] normal, double[] vert0, double[] vert1, double[] vert2, Vector4f intersectionPoint) {
+    double[] barycentric(double[] point, double[] normal, double[] vert0, double[] vert1, double[] vert2, Vector4f intersectionPoint) {
         double[] orig = new double[] { 100.0 * normal[0] + point[0], 100.0 * normal[1] + point[1], 100.0 * normal[2] + point[2] };
         double diskr = 0;
         double invDiskr = 0;
@@ -162,7 +162,7 @@ public final class PowerRay {
         return new double[] { u, v, w };
     }
 
-    public float[] TRIANGLE_INTERSECT(Vector4f orig, float[] dir, float[] tri) {
+    public float[] triangleIntersect(Vector4f orig, float[] dir, float[] tri) {
         double diskr = 0;
         double invDiskr = 0;
         corner1[0] = tri[3] - tri[0];

@@ -275,7 +275,7 @@ public class GL33ModelRendererLDrawStandard {
                         cacheViewByProjection.clear();
 
                         {
-                            usesTEXMAP = load_BFC_and_TEXMAP_info(
+                            usesTEXMAP = loadBFCandTEXMAPinfo(
                                     dataInOrder, texmapDataInOrder, vertexMap, matrixMap, df, lines,
                                     triangles, quads, condlines, drawStudLogo);
                             HashSet<GData> allData = new HashSet<>();
@@ -1160,7 +1160,7 @@ public class GL33ModelRendererLDrawStandard {
     public void draw(GLMatrixStack stack, GLShader mainShader, GLShader condlineShader, GLShader glyphShader, boolean drawSolidMaterials, DatFile df) {
 
         Matrix4f vm = c3d.getViewport();
-        Matrix4f ivm = c3d.getViewport_Inverse();
+        Matrix4f ivm = c3d.getViewportInverse();
 
         if (dataTriangles == null || dataLines == null) {
             return;
@@ -1329,7 +1329,7 @@ public class GL33ModelRendererLDrawStandard {
         GL30.glBindVertexArray(0);
     }
 
-    private boolean load_BFC_and_TEXMAP_info(
+    private boolean loadBFCandTEXMAPinfo(
             final ArrayList<GDataAndWinding> dataInOrder,
             final ArrayList<GDataAndTexture> texmapDataInOrder,
             final HashMap<GData, Vertex[]> vertexMap,

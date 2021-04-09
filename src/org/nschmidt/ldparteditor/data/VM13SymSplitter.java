@@ -40,7 +40,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
 
         if (linkedDatFile.isReadOnly()) return;
 
-        setModified_NoSync();
+        setModifiedNoSync();
         final String originalContent = linkedDatFile.getText();
 
         clearSelection();
@@ -727,16 +727,16 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
             if (wasModified || !symSplitterOutput.equals(originalContent)) {
                 if (!Project.getUnsavedFiles().contains(linkedDatFile)) {
                     Project.addUnsavedFile(linkedDatFile);
-                    Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                    Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                 }
 
                 GDataCSG.resetCSG(linkedDatFile, false);
                 GDataCSG.forceRecompile(linkedDatFile);
-                setModified_NoSync();
+                setModifiedNoSync();
                 linkedDatFile.setText(symSplitterOutput);
                 linkedDatFile.parseForData(true);
 
-                setModified_NoSync();
+                setModifiedNoSync();
 
                 // Separate the data according the plane and hide or show it
 

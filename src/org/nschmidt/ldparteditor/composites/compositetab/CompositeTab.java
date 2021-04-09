@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites.compositetab;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -200,7 +200,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                 }
                                             }
                                         }
-                                        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                                     }
                                     break;
                                 }
@@ -246,7 +246,7 @@ public class CompositeTab extends CompositeTabDesign {
                 // the CompositeText.
                 final DatFile df = state.getFileNameObj();
                 final VertexManager vm = df.getVertexManager();
-                final GData data = df.getDrawPerLine_NOCLONE().getValue(compositeTextPtr[0].getLineAtOffset(e.lineOffset) + 1);
+                final GData data = df.getDrawPerLineNoClone().getValue(compositeTextPtr[0].getLineAtOffset(e.lineOffset) + 1);
                 boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
 
                 if (data != null && data.type() == 0) {
@@ -574,7 +574,7 @@ public class CompositeTab extends CompositeTabDesign {
                                     state.setToReplaceY(y);
                                     state.setToReplaceZ(z);
                                     event.doit = false;
-                                    vm.setModified_NoSync();
+                                    vm.setModifiedNoSync();
                                     state.currentCaretPositionChar = off2;
                                     compositeTextPtr[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
 
@@ -640,7 +640,7 @@ public class CompositeTab extends CompositeTabDesign {
                                             state.setToReplaceY(y);
                                             state.setToReplaceZ(z);
                                             event.doit = false;
-                                            vm.setModified_NoSync();
+                                            vm.setModifiedNoSync();
                                             state.currentCaretPositionChar = off2;
                                             compositeTextPtr[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
                                         } else {
@@ -705,7 +705,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                     state.setToReplaceY(y);
                                                     state.setToReplaceZ(z);
                                                     event.doit = false;
-                                                    vm.setModified_NoSync();
+                                                    vm.setModifiedNoSync();
                                                     state.currentCaretPositionChar = off2;
                                                     compositeTextPtr[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
                                                 }
@@ -760,13 +760,13 @@ public class CompositeTab extends CompositeTabDesign {
                     // (they are virtual, because they were not saved at all!)
                     if (Project.getUnsavedFiles().contains(dat) && !dat.isVirtual()) {
                         Project.removeUnsavedFile(dat);
-                        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                     }
                 } else {
                     state.getTab().setText(state.getFilenameWithStar());
                     if (!Project.getUnsavedFiles().contains(dat)) {
                         Project.addUnsavedFile(dat);
-                        Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                     }
                 }
                 dat.setText(text);
@@ -988,7 +988,7 @@ public class CompositeTab extends CompositeTabDesign {
                         if (df.save()) {
                             Editor3DWindow.getWindow().addRecentFile(df);
                             Project.removeUnsavedFile(df);
-                            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         } else if (sh3 != null) {
                             MessageBox messageBoxError = new MessageBox(sh3, SWT.ICON_ERROR | SWT.OK);
                             messageBoxError.setText(I18n.DIALOG_ERROR);
@@ -1687,14 +1687,14 @@ public class CompositeTab extends CompositeTabDesign {
                 Inspector.inspectTextIssues(compositeTextPtr[0], items, getState().getFileNameObj());
             }
         };
-        WidgetUtil(mntmQuickFixPtr[0]).addSelectionListener(quickFix);
-        WidgetUtil(mntmQuickFixSamePtr[0]).addSelectionListener(quickFixSame);
-        WidgetUtil(btnQuickFixPtr[0]).addSelectionListener(quickFix);
-        WidgetUtil(btnQuickFixSamePtr[0]).addSelectionListener(quickFixSame);
-        WidgetUtil(mntmInspectPtr[0]).addSelectionListener(inspect);
-        WidgetUtil(mntmInspectSamePtr[0]).addSelectionListener(inspectSame);
-        WidgetUtil(btnInspectPtr[0]).addSelectionListener(inspect);
-        WidgetUtil( btnInspectSamePtr[0]).addSelectionListener(inspectSame);
+        widgetUtil(mntmQuickFixPtr[0]).addSelectionListener(quickFix);
+        widgetUtil(mntmQuickFixSamePtr[0]).addSelectionListener(quickFixSame);
+        widgetUtil(btnQuickFixPtr[0]).addSelectionListener(quickFix);
+        widgetUtil(btnQuickFixSamePtr[0]).addSelectionListener(quickFixSame);
+        widgetUtil(mntmInspectPtr[0]).addSelectionListener(inspect);
+        widgetUtil(mntmInspectSamePtr[0]).addSelectionListener(inspectSame);
+        widgetUtil(btnInspectPtr[0]).addSelectionListener(inspect);
+        widgetUtil( btnInspectSamePtr[0]).addSelectionListener(inspectSame);
 
         treeProblemsPtr[0].addSelectionListener(e -> {
             boolean enabled = treeProblemsPtr[0].getSelectionCount() == 1 && treeProblemsPtr[0].getSelection()[0] != null;
@@ -1842,18 +1842,18 @@ public class CompositeTab extends CompositeTabDesign {
             }
 
         });
-        WidgetUtil(compositeTextPtr[0].getVerticalBar()).addSelectionListener(e -> {
+        widgetUtil(compositeTextPtr[0].getVerticalBar()).addSelectionListener(e -> {
             if (!isDisposed()) {
                 canvasLineNumberAreaPtr[0].redraw();
                 getDisplay().update();
             }
         });
-        WidgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> state.folder[0].delete());
-        WidgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> state.folder[0].copy());
-        WidgetUtil(mntmCutPtr[0]).addSelectionListener(e -> state.folder[0].cut());
-        WidgetUtil(mntmPastePtr[0]).addSelectionListener(e -> state.folder[0].paste());
+        widgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> state.folder[0].delete());
+        widgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> state.folder[0].copy());
+        widgetUtil(mntmCutPtr[0]).addSelectionListener(e -> state.folder[0].cut());
+        widgetUtil(mntmPastePtr[0]).addSelectionListener(e -> state.folder[0].paste());
 
-        WidgetUtil(mntmDrawSelectionPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDrawSelectionPtr[0]).addSelectionListener(e -> {
             if (!state.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
@@ -1877,7 +1877,7 @@ public class CompositeTab extends CompositeTabDesign {
             st.forceFocus();
         });
 
-        WidgetUtil(mntmDrawUntilSelectionPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmDrawUntilSelectionPtr[0]).addSelectionListener(e -> {
             if (!state.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
@@ -1900,10 +1900,10 @@ public class CompositeTab extends CompositeTabDesign {
             st.forceFocus();
         });
 
-        WidgetUtil(mntmHideSelectionPtr[0]).addSelectionListener(e -> hideSelection());
-        WidgetUtil(mntmShowSelectionPtr[0]).addSelectionListener(e -> showSelection());
+        widgetUtil(mntmHideSelectionPtr[0]).addSelectionListener(e -> hideSelection());
+        widgetUtil(mntmShowSelectionPtr[0]).addSelectionListener(e -> showSelection());
 
-        WidgetUtil(mntmShowAllPtr[0]).addSelectionListener(e -> {
+        widgetUtil(mntmShowAllPtr[0]).addSelectionListener(e -> {
             if (!state.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }

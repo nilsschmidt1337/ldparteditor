@@ -318,7 +318,7 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL20_RandomColours(Composite3D c3d) {
+    public void drawGL20RandomColours(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -356,7 +356,7 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC(Composite3D c3d) {
+    public void drawGL20BFC(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -523,7 +523,7 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL20_BFCuncertified(Composite3D c3d) {
+    public void drawGL20BFCuncertified(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -558,7 +558,7 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC_backOnly(Composite3D c3d) {
+    public void drawGL20BFCbackOnly(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -717,7 +717,7 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC_Colour(Composite3D c3d) {
+    public void drawGL20BFCcolour(Composite3D c3d) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -827,7 +827,7 @@ public final class GData4 extends GData {
         GL11.glEnd();
     }
 
-    private void drawBFC_Colour2(Composite3D c3d, float r, float g, float b, float a, int useCubeMap) {
+    private void drawBFCcolour2(Composite3D c3d, float r, float g, float b, float a, int useCubeMap) {
         if (!visible)
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
@@ -972,7 +972,7 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL20_BFC_Textured(Composite3D c3d) {
+    public void drawGL20BFCtextured(Composite3D c3d) {
         if (GData.globalDrawObjects) {
             GColour c = View.getLDConfigColour(View.getLDConfigIndex(r, g, b));
             GColourType ct = c.getType();
@@ -1014,12 +1014,12 @@ public final class GData4 extends GData {
                 GL20.glUniform1f(ren.getCubeMapSwitch(), useCubeMap);
                 switch (GData.accumClip) {
                 case 0:
-                    drawBFC_Colour2(c3d, r, g, b, a, useCubeMap);
+                    drawBFCcolour2(c3d, r, g, b, a, useCubeMap);
                     break;
                 default:
                     BFC tmp = GData.localWinding;
                     GData.localWinding = BFC.NOCERTIFY;
-                    drawBFC_Colour2(c3d, r, g, b, a, useCubeMap);
+                    drawBFCcolour2(c3d, r, g, b, a, useCubeMap);
                     GData.localWinding = tmp;
                     break;
                 }
@@ -1261,12 +1261,12 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL20_WhileAddCondlines(Composite3D c3d) {
-        drawGL20_BFC(c3d);
+    public void drawGL20WhileAddCondlines(Composite3D c3d) {
+        drawGL20BFC(c3d);
     }
 
     @Override
-    public void drawGL20_CoplanarityHeatmap(Composite3D c3d) {
+    public void drawGL20CoplanarityHeatmap(Composite3D c3d) {
         calculateAngle();
         float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarityAngleWarning) / Threshold.coplanarityAngleError);
 
@@ -1315,7 +1315,7 @@ public final class GData4 extends GData {
     }
 
     @Override
-    public void drawGL20_Wireframe(Composite3D c3d) {}
+    public void drawGL20Wireframe(Composite3D c3d) {}
 
     @Override
     public int type() {
@@ -1483,7 +1483,7 @@ public final class GData4 extends GData {
     @Override
     public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         if (state.globalDrawObjects) {
-            Vertex[] verts = vm.getQuads_NOCLONE().get(this);
+            Vertex[] verts = vm.getQuadsNoClone().get(this);
             if (verts == null) {
                 verts = new Vertex[4];
                 Vector4f v1 = new Vector4f(x1, y1, z1, 1f);

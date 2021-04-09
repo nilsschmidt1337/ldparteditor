@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.shells.editortext;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.text.MessageFormat;
 import java.util.List;
@@ -227,7 +227,7 @@ class EditorTextDesign extends ApplicationWindow {
 
         btnCol.setImage(ResourceManager.getImage("icon16_fullTransparent.png")); //$NON-NLS-1$
 
-        WidgetUtil(btnCol).addSelectionListener(e -> {
+        widgetUtil(btnCol).addSelectionListener(e -> {
             if (Cocoa.checkCtrlOrCmdPressed(e.stateMask)) {
                 // Choose new colour
                 new ColourDialog(btnCol.getShell(), gColour2, false).run();

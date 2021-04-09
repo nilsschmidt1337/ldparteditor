@@ -139,7 +139,7 @@ class VM14Splitter extends VM13SymSplitter {
         }
 
         if (newLines.size() + newTriangles.size() + newCondlines.size() > 0) {
-            setModified_NoSync();
+            setModifiedNoSync();
         }
 
         selectedLines.addAll(linesToDelete2);
@@ -1239,7 +1239,7 @@ class VM14Splitter extends VM13SymSplitter {
         }
 
         if (newLines.size() + newTriangles.size() + newCondlines.size() > 0) {
-            setModified_NoSync();
+            setModifiedNoSync();
         }
 
         backupSelection();
@@ -1328,7 +1328,7 @@ class VM14Splitter extends VM13SymSplitter {
         if (quadsToParse.isEmpty()) {
             return;
         } else {
-            setModified_NoSync();
+            setModifiedNoSync();
         }
         quadsToDelete.addAll(quadsToParse);
 

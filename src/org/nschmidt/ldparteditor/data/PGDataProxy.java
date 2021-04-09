@@ -36,9 +36,9 @@ public final class PGDataProxy extends PGData implements Serializable {
     }
 
     @Override
-    public void drawBFCprimitive_GL20(int drawOnlyMode) {
+    public void drawBFCprimitiveGL20(int drawOnlyMode) {
         if (initialised) {
-            data.drawBFCprimitive_GL20(drawOnlyMode);
+            data.drawBFCprimitiveGL20(drawOnlyMode);
         } else {
             initialised = true;
             switch (data.type()) {
@@ -61,15 +61,15 @@ public final class PGDataProxy extends PGData implements Serializable {
                 initialised = false;
             }
             if (initialised) {
-                data.drawBFCprimitive_GL20(drawOnlyMode);
+                data.drawBFCprimitiveGL20(drawOnlyMode);
             }
         }
     }
 
     @Override
-    public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         if (initialised) {
-            data.drawBFCprimitive_GL33(stack, drawOnlyMode);
+            data.drawBFCprimitiveGL33(stack, drawOnlyMode);
         } else {
             initialised = true;
             switch (data.type()) {
@@ -92,7 +92,7 @@ public final class PGDataProxy extends PGData implements Serializable {
                 initialised = false;
             }
             if (initialised) {
-                data.drawBFCprimitive_GL33(stack, drawOnlyMode);
+                data.drawBFCprimitiveGL33(stack, drawOnlyMode);
             }
         }
     }

@@ -81,7 +81,7 @@ public final class PGData3 extends PGData implements Serializable {
         return 3;
     }
     @Override
-    public void drawBFCprimitive_GL20(int drawOnlyMode) {
+    public void drawBFCprimitiveGL20(int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case CCW:
@@ -213,7 +213,7 @@ public final class PGData3 extends PGData implements Serializable {
     }
 
     @Override
-    public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         if (drawOnlyMode == 2) return;
         switch (PGData.accumClip > 0 ? BFC.NOCLIP : PGData.localWinding) {
         case CCW:
@@ -304,7 +304,7 @@ public final class PGData3 extends PGData implements Serializable {
             vertices[33] = vertices[21];
             vertices[34] = vertices[22];
             vertices[35] = vertices[23];
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_Triangle(vertices, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGBtriangle(vertices, indices);
             break;
         case NOCERTIFY:
             indices[0] = 0;
@@ -331,7 +331,7 @@ public final class PGData3 extends PGData implements Serializable {
             vertices[33] = vertices[3];
             vertices[34] = vertices[4];
             vertices[35] = vertices[5];
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_Triangle(vertices, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGBtriangle(vertices, indices);
             break;
         case NOCLIP:
             indices[0] = 0;
@@ -358,7 +358,7 @@ public final class PGData3 extends PGData implements Serializable {
             vertices[33] = vertices[3];
             vertices[34] = vertices[4];
             vertices[35] = vertices[5];
-            GL33HelperPrimitives.drawTrianglesIndexedRGB_Triangle(vertices, indices);
+            GL33HelperPrimitives.drawTrianglesIndexedRGBtriangle(vertices, indices);
         default:
             break;
         }
@@ -392,15 +392,15 @@ public final class PGData3 extends PGData implements Serializable {
     }
 
     public void drawTextGL33(float x, float y, float z) {
-        GL33Helper.drawTriangle_GeneralSlow(new float[]{
+        GL33Helper.drawTriangleGeneralSlow(new float[]{
             -x1 + x, y1 + y, z1 + z,
             -x3 + x, y3 + y, z3 + z,
             -x2 + x, y2 + y, z2 + z
         });
     }
 
-    void drawTextGL33_VAO(float x, float y, float z, float scale) {
-        GL33Helper.drawTriangleVAO_GeneralSlow(new float[] {
+    void drawTextGL33vao(float x, float y, float z, float scale) {
+        GL33Helper.drawTriangleVAOgeneralSlow(new float[] {
             -x1 * scale + x, y1 * scale + y, z1 * scale + z,
             -x3 * scale + x, y3 * scale + y, z3 * scale + z,
             -x2 * scale + x, y2 * scale + y, z2 * scale + z

@@ -57,7 +57,7 @@ public enum AnnotatorTexmap {
         vm.clearSelection();
 
         final Set<GData> sd = datFile.getVertexManager().getSelectedData();
-        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
 
         GDataCSG.resetCSG(datFile, false);
         GDataCSG.forceRecompile(datFile);
@@ -70,7 +70,7 @@ public enum AnnotatorTexmap {
         final int[] correction = vm.toggleTEXMAP();
         vm.restoreSelection();
         vm.restoreHideShowState();
-        vm.setModified_NoSync();
+        vm.setModifiedNoSync();
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {

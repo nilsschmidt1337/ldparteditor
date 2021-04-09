@@ -33,7 +33,7 @@ public class MemorySnapshot {
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy h:mm:ss a"); //$NON-NLS-1$
         String formattedDate = sdf.format(date);
-        final int objCount = df.getDrawPerLine_NOCLONE().size();
+        final int objCount = df.getDrawPerLineNoClone().size();
         creation =  formattedDate + " (" + objCount + " Objects)"; //$NON-NLS-1$ //$NON-NLS-2$
         String[] backup = new String[objCount];
         int count = 0;

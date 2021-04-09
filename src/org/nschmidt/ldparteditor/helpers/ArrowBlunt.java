@@ -199,7 +199,7 @@ public class ArrowBlunt {
         GL11.glPopMatrix();
     }
 
-    public void drawGL33_RGB(GLMatrixStack stack, float x, float y, float z, float zoom) {
+    public void drawGL33rgb(GLMatrixStack stack, float x, float y, float z, float zoom) {
         final float zoom_inv = 1f / zoom;
         stack.glPushMatrix();
 
@@ -216,7 +216,7 @@ public class ArrowBlunt {
                     0f, lineEnd, 0f,
                     r, g, b
             };
-            GL33Helper.drawLinesRGB_GeneralSlow(vertexData);
+            GL33Helper.drawLinesRGBgeneralSlow(vertexData);
         }
 
         float[] vertexData = new float[]{
@@ -262,7 +262,7 @@ public class ArrowBlunt {
                 16, 15, 17
         };
 
-        GL33Helper.drawTrianglesIndexedRGB_GeneralSlow(vertexData, indices);
+        GL33Helper.drawTrianglesIndexedRGBgeneralSlow(vertexData, indices);
 
         stack.glPopMatrix();
     }

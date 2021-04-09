@@ -110,7 +110,7 @@ public final class PGData1 extends PGData implements Serializable {
     }
 
     @Override
-    public void drawBFCprimitive_GL20(int drawOnlyMode) {
+    public void drawBFCprimitiveGL20(int drawOnlyMode) {
         if (matrix != null) {
             BFC tempWinding = PGData.localWinding;
             boolean tempInvertNext = PGData.globalInvertNext;
@@ -125,11 +125,11 @@ public final class PGData1 extends PGData implements Serializable {
             if (PGData.accumClip > 0) {
                 PGData.accumClip++;
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
-                    data2draw.drawBFCprimitive_GL20(drawOnlyMode);
+                    data2draw.drawBFCprimitiveGL20(drawOnlyMode);
                 PGData.accumClip--;
             } else {
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                    data2draw.drawBFCprimitive_GL20(drawOnlyMode);
+                    data2draw.drawBFCprimitiveGL20(drawOnlyMode);
                 }
                 if (PGData.accumClip > 0)
                     PGData.accumClip = 0;
@@ -142,7 +142,7 @@ public final class PGData1 extends PGData implements Serializable {
         }
     }
     @Override
-    public void drawBFCprimitive_GL33(GLMatrixStack stack, int drawOnlyMode) {
+    public void drawBFCprimitiveGL33(GLMatrixStack stack, int drawOnlyMode) {
         if (matrix != null) {
             BFC tempWinding = PGData.localWinding;
             boolean tempInvertNext = PGData.globalInvertNext;
@@ -157,11 +157,11 @@ public final class PGData1 extends PGData implements Serializable {
             if (PGData.accumClip > 0) {
                 PGData.accumClip++;
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get())
-                    data2draw.drawBFCprimitive_GL33(stack, drawOnlyMode);
+                    data2draw.drawBFCprimitiveGL33(stack, drawOnlyMode);
                 PGData.accumClip--;
             } else {
                 while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                    data2draw.drawBFCprimitive_GL33(stack, drawOnlyMode);
+                    data2draw.drawBFCprimitiveGL33(stack, drawOnlyMode);
                 }
                 if (PGData.accumClip > 0)
                     PGData.accumClip = 0;

@@ -552,7 +552,7 @@ public enum Sorter {
             }
         }
 
-        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLine_NOCLONE();
+        HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
 
         final int size = sortedData.size() + 1;
 
@@ -569,7 +569,7 @@ public enum Sorter {
 
         vm.restoreSelection();
         vm.restoreHideShowState();
-        vm.setModified_NoSync();
+        vm.setModifiedNoSync();
         for (EditorTextWindow w : Project.getOpenTextWindows()) {
             for (CTabItem t : w.getTabFolder().getItems()) {
                 if (datFile.equals(((CompositeTab) t).getState().getFileNameObj())) {

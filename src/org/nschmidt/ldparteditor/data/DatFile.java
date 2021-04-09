@@ -183,9 +183,9 @@ public final class DatFile {
             renderMode = 6;
         switch (renderMode) {
         case -1: // Wireframe
-            data2draw.drawGL20_Wireframe(c3d);
+            data2draw.drawGL20Wireframe(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawGL20_Wireframe(c3d);
+                data2draw.drawGL20Wireframe(c3d);
             }
             break;
         case 0: // No BFC
@@ -195,17 +195,17 @@ public final class DatFile {
             }
             break;
         case 1: // Random Colours
-            data2draw.drawGL20_RandomColours(c3d);
+            data2draw.drawGL20RandomColours(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawGL20_RandomColours(c3d);
+                data2draw.drawGL20RandomColours(c3d);
             }
             break;
         case 2: // Front-Backface BFC
-            data2draw.drawGL20_BFC(c3d);
+            data2draw.drawGL20BFC(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 switch (GData.accumClip) {
                 case 0:
-                    data2draw.drawGL20_BFC(c3d);
+                    data2draw.drawGL20BFC(c3d);
                     break;
                 default:
                     data2draw.drawGL20(c3d);
@@ -214,11 +214,11 @@ public final class DatFile {
             }
             break;
         case 3: // Backface only BFC
-            data2draw.drawGL20_BFC_backOnly(c3d);
+            data2draw.drawGL20BFCbackOnly(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 switch (GData.accumClip) {
                 case 0:
-                    data2draw.drawGL20_BFC_backOnly(c3d);
+                    data2draw.drawGL20BFCbackOnly(c3d);
                     break;
                 default:
                     data2draw.drawGL20(c3d);
@@ -227,11 +227,11 @@ public final class DatFile {
             }
             break;
         case 4: // Real BFC
-            data2draw.drawGL20_BFC_Colour(c3d);
+            data2draw.drawGL20BFCcolour(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
                 switch (GData.accumClip) {
                 case 0:
-                    data2draw.drawGL20_BFC_Colour(c3d);
+                    data2draw.drawGL20BFCcolour(c3d);
                     break;
                 default:
                     data2draw.drawGL20(c3d);
@@ -241,17 +241,17 @@ public final class DatFile {
             break;
         case 5: // Real BFC with texture mapping
             GL11.glEnable(GL11.GL_TEXTURE_2D);
-            data2draw.drawGL20_BFC_Textured(c3d);
+            data2draw.drawGL20BFCtextured(c3d);
             GDataInit.resetBfcState();
-            data2draw.drawGL20_BFC_Textured(c3d);
-            CUBEMAP.drawGL20_BFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawGL20_BFC_Textured(c3d.getComposite3D());
-            CUBEMAP_MATTE.drawGL20_BFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL20_BFC_Textured(c3d.getComposite3D());
-            CUBEMAP_METAL.drawGL20_BFC_Textured(c3d);
-            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL20_BFC_Textured(c3d.getComposite3D());
+            data2draw.drawGL20BFCtextured(c3d);
+            CUBEMAP.drawGL20BFCtextured(c3d);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCChrome()), true).drawGL20BFCtextured(c3d.getComposite3D());
+            CUBEMAP_MATTE.drawGL20BFCtextured(c3d);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMatteMetal()), true).drawGL20BFCtextured(c3d.getComposite3D());
+            CUBEMAP_METAL.drawGL20BFCtextured(c3d);
+            new GData3(new Vertex(0,0,0), new Vertex(1,0,0), new Vertex(1,1,0), View.DUMMY_REFERENCE, new GColour(0, 0, 0, 0, 0, new GCMetal()), true).drawGL20BFCtextured(c3d.getComposite3D());
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawGL20_BFC_Textured(c3d);
+                data2draw.drawGL20BFCtextured(c3d);
             }
 
             GL13.glActiveTexture(GL13.GL_TEXTURE0 + 0);
@@ -267,15 +267,15 @@ public final class DatFile {
             GL11.glDisable(GL11.GL_TEXTURE_2D);
             break;
         case 6: // Special mode for "Add condlines"
-            data2draw.drawGL20_WhileAddCondlines(c3d);
+            data2draw.drawGL20WhileAddCondlines(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawGL20_WhileAddCondlines(c3d);
+                data2draw.drawGL20WhileAddCondlines(c3d);
             }
             break;
         case 7: // Special mode for coplanar quads
-            data2draw.drawGL20_CoplanarityHeatmap(c3d);
+            data2draw.drawGL20CoplanarityHeatmap(c3d);
             while ((data2draw = data2draw.getNext()) != null && !ViewIdleManager.pause[0].get()) {
-                data2draw.drawGL20_CoplanarityHeatmap(c3d);
+                data2draw.drawGL20CoplanarityHeatmap(c3d);
             }
             break;
         default:
@@ -1263,7 +1263,7 @@ public final class DatFile {
         return drawPerLine.copy();
     }
 
-    public HashBiMap<Integer, GData> getDrawPerLine_NOCLONE() {
+    public HashBiMap<Integer, GData> getDrawPerLineNoClone() {
         return drawPerLine;
     }
 
@@ -1807,7 +1807,7 @@ public final class DatFile {
             } else if (result2 == SWT.YES) {
                 Project.removeUnsavedFile(this);
                 parseForData(true);
-                Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                 HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
                 for (EditorTextWindow win : windows) {
                     win.updateTabWithDatfile(this);

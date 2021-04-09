@@ -102,17 +102,17 @@ public enum ProjectActions {
 
                     if (result == SWT.NO) {
                         // Remove file from tree
-                        Editor3DWindow.getWindow().updateTree_removeEntry(df);
+                        Editor3DWindow.getWindow().updateTreeRemoveEntry(df);
                     } else if (result == SWT.YES) {
                         if (df.save()) {
                             Editor3DWindow.getWindow().addRecentFile(df);
-                            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                         } else {
                             MessageBox messageBoxError = new MessageBox(win.getShell(), SWT.ICON_ERROR | SWT.OK);
                             messageBoxError.setText(I18n.DIALOG_ERROR);
                             messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                             messageBoxError.open();
-                            Editor3DWindow.getWindow().updateTree_unsavedEntries();
+                            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                             return false;
                         }
                     } else return false;

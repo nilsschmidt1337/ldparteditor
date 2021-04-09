@@ -353,19 +353,19 @@ public class Manipulator {
         return zAxis;
     }
 
-    public Vector4f getX_RotateArrow() {
+    public Vector4f getXrotateArrow() {
         return xRotateArrow;
     }
 
-    public Vector4f getY_RotateArrow() {
+    public Vector4f getYrotateArrow() {
         return yRotateArrow;
     }
 
-    public Vector4f getZ_RotateArrow() {
+    public Vector4f getZrotateArrow() {
         return zRotateArrow;
     }
 
-    public Vector4f getV_RotateArrow() {
+    public Vector4f getVrotateArrow() {
         return vRotateArrow;
     }
 
@@ -373,147 +373,147 @@ public class Manipulator {
         return position;
     }
 
-    public boolean isX_Translate() {
+    public boolean isXtranslate() {
         return xTranslate;
     }
 
-    public void setX_Translate(boolean xTranslate) {
+    public void setXtranslate(boolean xTranslate) {
         this.xTranslate = xTranslate;
     }
 
-    public boolean isY_Translate() {
+    public boolean isYtranslate() {
         return yTranslate;
     }
 
-    public void setY_Translate(boolean yTranslate) {
+    public void setYtranslate(boolean yTranslate) {
         this.yTranslate = yTranslate;
     }
 
-    public boolean isZ_Translate() {
+    public boolean isZtranslate() {
         return zTranslate;
     }
 
-    public void setZ_Translate(boolean zTranslate) {
+    public void setZtranslate(boolean zTranslate) {
         this.zTranslate = zTranslate;
     }
 
-    public boolean isX_Rotate() {
+    public boolean isXrotate() {
         return xRotate;
     }
 
-    public void setX_Rotate(boolean xRotate) {
+    public void setXrotate(boolean xRotate) {
         this.xRotate = xRotate;
     }
 
-    public boolean isY_Rotate() {
+    public boolean isYrotate() {
         return yRotate;
     }
 
-    public void setY_Rotate(boolean yRotate) {
+    public void setYrotate(boolean yRotate) {
         this.yRotate = yRotate;
     }
 
-    public boolean isZ_Rotate() {
+    public boolean isZrotate() {
         return zRotate;
     }
 
-    public void setZ_Rotate(boolean zRotate) {
+    public void setZrotate(boolean zRotate) {
         this.zRotate = zRotate;
     }
 
-    public boolean isV_Rotate() {
+    public boolean isVrotate() {
         return vRotate;
     }
 
-    public void setV_Rotate(boolean vRotate) {
+    public void setVrotate(boolean vRotate) {
         this.vRotate = vRotate;
     }
 
-    public boolean isX_Scale() {
+    public boolean isXscale() {
         return xScale;
     }
 
-    public void setX_Scale(boolean xScale) {
+    public void setXscale(boolean xScale) {
         this.xScale = xScale;
     }
 
-    public boolean isY_Scale() {
+    public boolean isYscale() {
         return yScale;
     }
 
-    public void setY_Scale(boolean yScale) {
+    public void setYscale(boolean yScale) {
         this.yScale = yScale;
     }
 
-    public boolean isZ_Scale() {
+    public boolean isZscale() {
         return zScale;
     }
 
-    public void setZ_Scale(boolean zScale) {
+    public void setZscale(boolean zScale) {
         this.zScale = zScale;
     }
 
-    public boolean isX_rotatingForwards() {
+    public boolean isXrotatingForwards() {
         return xRotatingForwards;
     }
 
-    public void setX_rotatingForwards(boolean xRotatingForwards) {
+    public void setXrotatingForwards(boolean xRotatingForwards) {
         this.xRotatingForwards = xRotatingForwards;
     }
 
-    public boolean isX_rotatingBackwards() {
+    public boolean isXrotatingBackwards() {
         return xRotatingBackwards;
     }
 
-    public void setX_rotatingBackwards(boolean xRotatingBackwards) {
+    public void setXrotatingBackwards(boolean xRotatingBackwards) {
         this.xRotatingBackwards = xRotatingBackwards;
     }
 
-    public boolean isY_rotatingForwards() {
+    public boolean isYrotatingForwards() {
         return yRotatingForwards;
     }
 
-    public void setY_rotatingForwards(boolean yRotatingForwards) {
+    public void setYrotatingForwards(boolean yRotatingForwards) {
         this.yRotatingForwards = yRotatingForwards;
     }
 
-    public boolean isY_rotatingBackwards() {
+    public boolean isYrotatingBackwards() {
         return yRotatingBackwards;
     }
 
-    public void setY_rotatingBackwards(boolean yRotatingBackwards) {
+    public void setYrotatingBackwards(boolean yRotatingBackwards) {
         this.yRotatingBackwards = yRotatingBackwards;
     }
 
-    public boolean isZ_rotatingForwards() {
+    public boolean isZrotatingForwards() {
         return zRotatingForwards;
     }
 
-    public void setZ_rotatingForwards(boolean zRotatingForwards) {
+    public void setZrotatingForwards(boolean zRotatingForwards) {
         this.zRotatingForwards = zRotatingForwards;
     }
 
-    public boolean isZ_rotatingBackwards() {
+    public boolean isZrotatingBackwards() {
         return zRotatingBackwards;
     }
 
-    public void setZ_rotatingBackwards(boolean zRotatingBackwards) {
+    public void setZrotatingBackwards(boolean zRotatingBackwards) {
         this.zRotatingBackwards = zRotatingBackwards;
     }
 
-    public boolean isV_rotatingForwards() {
+    public boolean isVrotatingForwards() {
         return vRotatingForwards;
     }
 
-    public void setV_rotatingForwards(boolean vRotatingForwards) {
+    public void setVrotatingForwards(boolean vRotatingForwards) {
         this.vRotatingForwards = vRotatingForwards;
     }
 
-    public boolean isV_rotatingBackwards() {
+    public boolean isVrotatingBackwards() {
         return vRotatingBackwards;
     }
 
-    public void setV_rotatingBackwards(boolean vRotatingBackwards) {
+    public void setVrotatingBackwards(boolean vRotatingBackwards) {
         this.vRotatingBackwards = vRotatingBackwards;
     }
 
@@ -2066,19 +2066,19 @@ public class Manipulator {
         return lock;
     }
 
-    public static float getTranslate_size() {
+    public static float getTranslateSize() {
         return translateSize;
     }
 
-    public static float getRotate_size() {
+    public static float getRotateSize() {
         return rotateSize;
     }
 
-    public static float getRotate_outer_size() {
+    public static float getRotateOuterSize() {
         return rotateOuterSize;
     }
 
-    public static float getScale_size() {
+    public static float getScaleSize() {
         return scaleSize;
     }
 

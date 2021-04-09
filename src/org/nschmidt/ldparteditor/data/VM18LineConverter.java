@@ -49,7 +49,7 @@ class VM18LineConverter extends VM17Unificator {
         if (condlinesToParse.isEmpty()) {
             return;
         } else {
-            setModified_NoSync();
+            setModifiedNoSync();
         }
         condlinesToDelete.addAll(condlinesToParse);
 
@@ -94,7 +94,7 @@ class VM18LineConverter extends VM17Unificator {
         if (linesToParse.isEmpty()) {
             return;
         } else {
-            setModified_NoSync();
+            setModifiedNoSync();
         }
         linesToDelete.addAll(linesToParse);
 

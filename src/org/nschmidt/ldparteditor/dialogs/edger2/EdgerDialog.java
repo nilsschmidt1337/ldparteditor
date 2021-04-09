@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.edger2;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.Edger2Settings;
@@ -50,11 +50,11 @@ public class EdgerDialog extends EdgerDesign {
         spnAfPtr[0].addValueChangeListener(spn -> es.setAf(spn.getValue()));
         spnAePtr[0].addValueChangeListener(spn -> es.setAe(spn.getValue()));
         spnVequPtr[0].addValueChangeListener(spn -> es.setEqualDistance(spn.getValue()));
-        WidgetUtil(cmbBPtr[0]).addSelectionListener(e -> es.setExtendedRange(cmbBPtr[0].getSelectionIndex() == 1));
-        WidgetUtil(cmbCPtr[0]).addSelectionListener(e -> es.setCondlineOnQuads(cmbCPtr[0].getSelectionIndex() == 1));
-        WidgetUtil(cmbUPtr[0]).addSelectionListener(e -> es.setUnmatchedMode(cmbUPtr[0].getSelectionIndex()));
-        WidgetUtil(cmbScopePtr[0]).addSelectionListener(e -> es.setScope(cmbScopePtr[0].getSelectionIndex()));
-        WidgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> es.setVerbose(btnVerbosePtr[0].getSelection()));
+        widgetUtil(cmbBPtr[0]).addSelectionListener(e -> es.setExtendedRange(cmbBPtr[0].getSelectionIndex() == 1));
+        widgetUtil(cmbCPtr[0]).addSelectionListener(e -> es.setCondlineOnQuads(cmbCPtr[0].getSelectionIndex() == 1));
+        widgetUtil(cmbUPtr[0]).addSelectionListener(e -> es.setUnmatchedMode(cmbUPtr[0].getSelectionIndex()));
+        widgetUtil(cmbScopePtr[0]).addSelectionListener(e -> es.setScope(cmbScopePtr[0].getSelectionIndex()));
+        widgetUtil(btnVerbosePtr[0]).addSelectionListener(e -> es.setVerbose(btnVerbosePtr[0].getSelection()));
         return super.open();
     }
 }

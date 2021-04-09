@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.sort;
 
-import static org.nschmidt.ldparteditor.helpers.WidgetUtility.WidgetUtil;
+import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -47,10 +47,10 @@ public class SortDialog extends SortDesign {
     public int open() {
         super.create();
         // MARK All final listeners will be configured here..
-        WidgetUtil(btnOkPtr[0]).addSelectionListener(e -> Sorter.sort(fromLine, toLine, fileNameObj, scope, criteria, destructive));
+        widgetUtil(btnOkPtr[0]).addSelectionListener(e -> Sorter.sort(fromLine, toLine, fileNameObj, scope, criteria, destructive));
         cmbScopePtr[0].addListener(SWT.Selection, event -> scope = cmbScopePtr[0].getSelectionIndex());
         cmbSortCriteriaPtr[0].addListener(SWT.Selection, event -> criteria = cmbSortCriteriaPtr[0].getSelectionIndex());
-        WidgetUtil(btnIgnoreStructurePtr[0]).addSelectionListener(e -> destructive = btnIgnoreStructurePtr[0].getSelection());
+        widgetUtil(btnIgnoreStructurePtr[0]).addSelectionListener(e -> destructive = btnIgnoreStructurePtr[0].getSelection());
         return super.open();
     }
 }
