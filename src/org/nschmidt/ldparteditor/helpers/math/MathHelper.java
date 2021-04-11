@@ -425,7 +425,7 @@ public enum MathHelper {
                 new double[] { x2, y2, z2 }, // v2
                 new double[] { x3, y3, z3 }, // v3
                 closestPoint);
-        if (solution != null) {
+        if (solution.length != 0) {
             return new Vector4f(closestPoint.x, closestPoint.y, closestPoint.z, 1f);
         }
 

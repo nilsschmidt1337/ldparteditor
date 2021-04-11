@@ -43,7 +43,7 @@ public enum GraphicalDataTools {
             GData5 g5 = (GData5) g;
             return new BigDecimal[]{g5.x1p, g5.y1p, g5.z1p, g5.x2p, g5.y2p, g5.z2p, g5.x3p, g5.y3p, g5.z3p, g5.x4p, g5.y4p, g5.z4p};
         default:
-            return null;
+            return new BigDecimal[0];
         }
     }
 

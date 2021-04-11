@@ -173,7 +173,7 @@ class VM08SlicerPro extends VM07PathTruder {
                                                 counter2.incrementAndGet();
                                                 for (GData t : targetSurfs) {
                                                     ArrayList<IntersectionInfo> ii = getIntersectionInfo(o, t, dir, dirN, m, minv, pc, ss);
-                                                    if (ii != null) {
+                                                    if (!ii.isEmpty()) {
                                                         intersectionSet.add(ii);
                                                         switch (t.type()) {
                                                         case 3:
@@ -723,12 +723,9 @@ class VM08SlicerPro extends VM07PathTruder {
             Vector3r[] tv1 = new Vector3r[]{new Vector3r(tv[0]), new Vector3r(tv[1]), new Vector3r(tv[2])};
 
             IntersectionInfo tti = getTriangleTriangleIntersection(ov1, tv1, origin, target, dir, dirN, m, minv, pc, ss);
-            if (tti == null) {
-                return null;
+            if (tti != null) {
+                result.add(tti);
             }
-            result.add(tti);
-            return result;
-
         } else if (ot == 4 && tt == 4) {
 
             Vertex[] ov = quads.get(origin);
@@ -756,8 +753,6 @@ class VM08SlicerPro extends VM07PathTruder {
             if (tti4 != null) {
                 result.add(tti4);
             }
-            if (result.isEmpty()) return null;
-            return result;
         } else if (ot == 4 && tt == 3) {
             Vertex[] ov = quads.get(origin);
             Vertex[] tv = triangles.get(target);
@@ -775,8 +770,6 @@ class VM08SlicerPro extends VM07PathTruder {
             if (tti2 != null) {
                 result.add(tti2);
             }
-            if (result.isEmpty()) return null;
-            return result;
         } else if (ot == 3 && tt == 4) {
 
             Vertex[] ov = triangles.get(origin);
@@ -795,11 +788,9 @@ class VM08SlicerPro extends VM07PathTruder {
             if (tti2 != null) {
                 result.add(tti2);
             }
-            if (result.isEmpty()) return null;
-            return result;
-
         }
-        return null;
+
+        return result;
     }
 
     private void projectRayOnTrianglePlane(Vector3r vector3r, Vector3r dirN, Vector3r tv, Vector3r tv2, Vector3r tv3, Vector3r r) {

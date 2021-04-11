@@ -720,7 +720,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                             final Vector4f posv = get3DCoordinatesFromScreen(x, y, z, w, h, vInverse);
                                                             for (float[] tri : tris) {
                                                                 float[] zHit = pr.triangleIntersect(posv, ray, tri);
-                                                                if (zHit != null) {
+                                                                if (zHit.length != 0) {
                                                                     Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
                                                                     hitSort.put(sz.z, sz);
                                                                     zSort.put(sz.z, tri);

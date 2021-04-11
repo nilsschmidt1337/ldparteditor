@@ -29,6 +29,9 @@ public final class PowerRay {
 
     private static final double TOLERANCE = 0.00001d;
 
+    private static final float[] EMPTY_FLOAT_ARRAY = new float[0];
+    private static final double[] EMPTY_DOUBLE_ARRAY = new double[0];
+
     private double t;
     private double u;
     private double v;
@@ -143,20 +146,20 @@ public final class PowerRay {
         pvec[2] = normal[0] * corner2[1] - normal[1] * corner2[0];
         diskr = corner1[0] * pvec[0] + corner1[1] * pvec[1] + corner1[2] * pvec[2];
         if (diskr > -TOLERANCE && diskr < TOLERANCE)
-            return null;
+            return EMPTY_DOUBLE_ARRAY;
         invDiskr = 1d / diskr;
         tvec[0] = orig[0] - vert0[0];
         tvec[1] = orig[1] - vert0[1];
         tvec[2] = orig[2] - vert0[2];
         u = (tvec[0] * pvec[0] + tvec[1] * pvec[1] + tvec[2] * pvec[2]) * invDiskr;
         if (u < 0 || u > 1d)
-            return null;
+            return EMPTY_DOUBLE_ARRAY;
         qvec[0] = tvec[1] * corner1[2] - tvec[2] * corner1[1];
         qvec[1] = tvec[2] * corner1[0] - tvec[0] * corner1[2];
         qvec[2] = tvec[0] * corner1[1] - tvec[1] * corner1[0];
         v = (normal[0] * qvec[0] + normal[1] * qvec[1] + normal[2] * qvec[2]) * invDiskr;
         if (v < 0 || u + v > 1d)
-            return null;
+            return EMPTY_DOUBLE_ARRAY;
         double w = 1.0 - u - v;
         intersectionPoint.set((float) (vert0[0] * w + vert1[0] * u + vert2[0] * v), (float) (vert0[1] * w + vert1[1] * u + vert2[1] * v), (float) (vert0[2] * w + vert1[2] * u + vert2[2] * v), 1f);
         return new double[] { u, v, w };
@@ -176,20 +179,20 @@ public final class PowerRay {
         pvec[2] = dir[0] * corner2[1] - dir[1] * corner2[0];
         diskr = corner1[0] * pvec[0] + corner1[1] * pvec[1] + corner1[2] * pvec[2];
         if (diskr > -TOLERANCE && diskr < TOLERANCE)
-            return null;
+            return EMPTY_FLOAT_ARRAY;
         invDiskr = 1d / diskr;
         tvec[0] = orig.x - tri[0];
         tvec[1] = orig.y - tri[1];
         tvec[2] = orig.z - tri[2];
         u = (tvec[0] * pvec[0] + tvec[1] * pvec[1] + tvec[2] * pvec[2]) * invDiskr;
         if (u < 0 || u > 1)
-            return null;
+            return EMPTY_FLOAT_ARRAY;
         qvec[0] = tvec[1] * corner1[2] - tvec[2] * corner1[1];
         qvec[1] = tvec[2] * corner1[0] - tvec[0] * corner1[2];
         qvec[2] = tvec[0] * corner1[1] - tvec[1] * corner1[0];
         v = (dir[0] * qvec[0] + dir[1] * qvec[1] + dir[2] * qvec[2]) * invDiskr;
         if (v < 0 || u + v > 1)
-            return null;
+            return EMPTY_FLOAT_ARRAY;
         t = (corner2[0] * qvec[0] + corner2[1] * qvec[1] + corner2[2] * qvec[2]) * invDiskr;
         return new float[]{(float) (orig.x + dir[0] * t), (float) (orig.y + dir[1] * t), (float) (orig.z + dir[2] * t), (float) u, (float) v};
     }
