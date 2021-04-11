@@ -28,14 +28,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
  * @author nils
  *
  */
-public class ThreadsafeTreeMap<K, V> implements Map<K, V> {
+public class ThreadsafeSortedMap<K, V> implements Map<K, V> {
 
     private final TreeMap<K, V> map;
     private final ReadWriteLock rwl = new ReentrantReadWriteLock();
     private final Lock rl = rwl.readLock();
     private final Lock wl = rwl.writeLock();
 
-    public ThreadsafeTreeMap() {
+    public ThreadsafeSortedMap() {
         try {
             wl.lock();
             map = new TreeMap<>();

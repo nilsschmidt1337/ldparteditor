@@ -17,9 +17,10 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayDeque;
-import java.util.ArrayList;
 import java.util.Deque;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -59,13 +60,13 @@ public abstract class GData implements IGData, Comparable<GData> {
     static Deque<Boolean> globalFoundTEXMAPStack = new ArrayDeque<>();
 
     // Cleared before viewport change
-    public static final HashMap<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<>(1000);
+    public static final Map<GData1, Matrix4f> CACHE_viewByProjection = new HashMap<>(1000);
 
     // Cleared before parse
-    public static final HashMap<String, ArrayList<String>> CACHE_parsedFilesSource = new HashMap<>(1000);
-    public static final HashMap<String, GData> parsedLines = new HashMap<>(1000);
+    public static final Map<String, List<String>> CACHE_parsedFilesSource = new HashMap<>(1000);
+    public static final Map<String, GData> parsedLines = new HashMap<>(1000);
 
-    public static final HashMap<GData, ArrayList<ParsingResult>> CACHE_warningsAndErrors = new HashMap<>(1000); // Cleared
+    public static final Map<GData, List<ParsingResult>> CACHE_warningsAndErrors = new HashMap<>(1000); // Cleared
     public static final ThreadsafeHashMap<GData, ParsingResult> CACHE_duplicates = new ThreadsafeHashMap<>(1000); // Cleared
 
     public GData getNext() {

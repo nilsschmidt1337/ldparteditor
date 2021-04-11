@@ -30,12 +30,11 @@ import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 
 public class Primitive implements Comparable<Primitive> {
 
-
     private String name = ""; //$NON-NLS-1$
     private String description = ""; //$NON-NLS-1$
-    private ArrayList<PGData> graphicalData = new ArrayList<>();
-    private ArrayList<Primitive> primitives = new ArrayList<>();
-    private ArrayList<Primitive> primitivesExtended = new ArrayList<>();
+    private List<PGData> graphicalData = new ArrayList<>();
+    private List<Primitive> primitives = new ArrayList<>();
+    private List<Primitive> primitivesExtended = new ArrayList<>();
     private boolean extended = false;
     private boolean category = false;
     private float zoom = 1f;
@@ -62,9 +61,9 @@ public class Primitive implements Comparable<Primitive> {
         }
     }
 
-    public ArrayList<Primitive> getPrimitives() {
+    public List<Primitive> getPrimitives() {
         if (isExtended()) {
-            ArrayList<Primitive> result = new ArrayList<>();
+            List<Primitive> result = new ArrayList<>();
             result.addAll(primitives);
             for (Primitive p : primitivesExtended) {
                 result.addAll(p.getPrimitives());
@@ -78,9 +77,9 @@ public class Primitive implements Comparable<Primitive> {
         }
     }
 
-    public ArrayList<Primitive> getAllPrimitives() {
+    public List<Primitive> getAllPrimitives() {
         if (isCategory()) {
-            ArrayList<Primitive> result = new ArrayList<>();
+            List<Primitive> result = new ArrayList<>();
             result.addAll(primitives);
             for (Primitive p : primitivesExtended) {
                 result.addAll(p.getPrimitives());
@@ -94,7 +93,7 @@ public class Primitive implements Comparable<Primitive> {
         }
     }
 
-    public ArrayList<Primitive> getCategories() {
+    public List<Primitive> getCategories() {
         return primitivesExtended;
     }
 
@@ -200,7 +199,7 @@ public class Primitive implements Comparable<Primitive> {
         stack.glPopMatrix();
     }
 
-    public void setPrimitives(ArrayList<Primitive> primitives) {
+    public void setPrimitives(List<Primitive> primitives) {
         this.primitives = primitives;
     }
 
@@ -220,11 +219,11 @@ public class Primitive implements Comparable<Primitive> {
         this.category = category;
     }
 
-    public ArrayList<PGData> getGraphicalData() {
+    public List<PGData> getGraphicalData() {
         return graphicalData;
     }
 
-    public void setGraphicalData(ArrayList<PGData> graphicalData) {
+    public void setGraphicalData(List<PGData> graphicalData) {
         this.graphicalData = graphicalData;
     }
 

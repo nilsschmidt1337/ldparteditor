@@ -18,7 +18,9 @@ package org.nschmidt.ldparteditor.data;
 import java.text.MessageFormat;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -60,9 +62,9 @@ public class DuplicateManager {
                             if (newEntry != null) {
                                 NLogger.debug(getClass(), "Started duplicate check..."); //$NON-NLS-1$
 
-                                final HashSet<GData> allKeys = new HashSet<>();
+                                final Set<GData> allKeys = new HashSet<>();
                                 String lastCommentLine = null;
-                                final HashMap<String, Integer> lines = new HashMap<>();
+                                final Map<String, Integer> lines = new HashMap<>();
 
                                 allKeys.addAll(GData.CACHE_duplicates.threadsafeKeySet());
                                 GData gd = newEntry;

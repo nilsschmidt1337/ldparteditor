@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.window.ApplicationWindow;
@@ -81,10 +83,10 @@ class OptionsDesign extends ApplicationWindow {
     final BigDecimalSpinner[] spnCoplanarityWarningPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnCoplanarityErrorPtr = new BigDecimalSpinner[1];
     final BigDecimalSpinner[] spnViewportScalePtr = new BigDecimalSpinner[1];
-    final HashMap<String, Locale> localeMap = new HashMap<>();
+    final Map<String, Locale> localeMap = new HashMap<>();
 
-    private HashSet<Task>  s1 = new HashSet<>();
-    private HashSet<TextTask> s2 = new HashSet<>();
+    private Set<Task> s1 = new HashSet<>();
+    private Set<TextTask> s2 = new HashSet<>();
 
     private enum ColourType {
         SWT_COLOUR,
@@ -734,7 +736,7 @@ class OptionsDesign extends ApplicationWindow {
     private void showKeyAlreadyInUseWarning(TreeItem parentItem, String keyString) {
         String actionString = "advanced usage by LDPartEditor"; //$NON-NLS-1$ I18N Needs translation!
         final MessageBox messageBoxInfo = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
-        final HashMap<String, String> reservedKeysMappedToAction = new HashMap<>();
+        final Map<String, String> reservedKeysMappedToAction = new HashMap<>();
         final String inputTheColourNumber = "colour number input";//$NON-NLS-1$ I18N Needs translation!
 
         for (int n = 0; n < 10; n++) {
@@ -802,10 +804,10 @@ class OptionsDesign extends ApplicationWindow {
         String keyCombination = ""; //$NON-NLS-1$
 
         if (t1 != null) {
-            HashMap<Task, String> m = KeyStateManager.getTaskKeymap();
+            Map<Task, String> m = KeyStateManager.getTaskKeymap();
             keyCombination = m.get(t1);
         } else if (t2 != null) {
-            HashMap<TextTask, String> m = KeyStateManager.getTextTaskKeymap();
+            Map<TextTask, String> m = KeyStateManager.getTextTaskKeymap();
             keyCombination = m.get(t2);
         }
         if (visibility) {

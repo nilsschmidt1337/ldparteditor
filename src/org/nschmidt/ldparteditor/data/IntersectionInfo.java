@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.helpers.math.Vector3r;
@@ -29,9 +30,9 @@ class IntersectionInfo {
     private GData target;
     private GData origin;
 
-    private ArrayList<Vector3d> allVertices = new ArrayList<>();
+    private List<Vector3d> allVertices = new ArrayList<>();
 
-    IntersectionInfo(GData target2, GData origin2, ArrayList<Vector3r> allVertices) {
+    IntersectionInfo(GData target2, GData origin2, List<Vector3r> allVertices) {
         for (Vector3r v : allVertices) {
             this.allVertices.add(new Vector3d(v.x.bigDecimalValue(), v.y.bigDecimalValue(), v.z.bigDecimalValue()));
         }
@@ -59,12 +60,12 @@ class IntersectionInfo {
     }
 
 
-    public ArrayList<Vector3d> getAllVertices() {
+    public List<Vector3d> getAllVertices() {
         return allVertices;
     }
 
 
-    public void setAllVertices(ArrayList<Vector3d> allVertices) {
+    public void setAllVertices(List<Vector3d> allVertices) {
         this.allVertices = allVertices;
     }
 }

@@ -21,14 +21,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.csg.CSG;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.text.DatParser;
 
 class VM03Adjacency extends VM02Add {
@@ -42,8 +45,8 @@ class VM03Adjacency extends VM02Add {
         int t1 = g1.type();
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<>();
-        TreeSet<Vertex> v2 = new TreeSet<>();
+        SortedSet<Vertex> v1 = new TreeSet<>();
+        SortedSet<Vertex> v2 = new TreeSet<>();
 
         GData1 p1 = null;
         GData1 p2 = null;
@@ -97,8 +100,8 @@ class VM03Adjacency extends VM02Add {
         return 2 == co - cn;
     }
 
-    public HashSet<GData> getLinkedSurfaces(Vertex vertex) {
-        HashSet<GData> rval = new HashSet<>();
+    public Set<GData> getLinkedSurfaces(Vertex vertex) {
+        Set<GData> rval = new HashSet<>();
         Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
         if (vm != null) {
             getManifestationLock().lock();
@@ -112,8 +115,8 @@ class VM03Adjacency extends VM02Add {
         return rval;
     }
 
-    public HashSet<GData> getLinkedSurfacesOfSameColour(Vertex vertex) {
-        HashSet<GData> rval = new HashSet<>();
+    public Set<GData> getLinkedSurfacesOfSameColour(Vertex vertex) {
+        Set<GData> rval = new HashSet<>();
         Set<VertexManifestation> vm = vertexLinkedToPositionInFile.get(vertex);
         if (vm != null) {
             GColour colour = null;
@@ -210,8 +213,8 @@ class VM03Adjacency extends VM02Add {
         return hasCondline;
     }
 
-    protected ArrayList<GData> linkedCommonFaces(TreeSet<Vertex> h1, TreeSet<Vertex> h2) {
-        ArrayList<GData> result = new ArrayList<>();
+    protected List<GData> linkedCommonFaces(SortedSet<Vertex> h1, SortedSet<Vertex> h2) {
+        List<GData> result = new ArrayList<>();
         Set<VertexManifestation> m1 = new HashSet<>();
         Set<VertexManifestation> m2 = new HashSet<>();
         if (h1 == null || h2 == null) {
@@ -245,8 +248,8 @@ class VM03Adjacency extends VM02Add {
         return result;
     }
 
-    public ArrayList<GData> linkedCommonFaces(Vertex v1, Vertex v2) {
-        ArrayList<GData> result = new ArrayList<>();
+    public List<GData> linkedCommonFaces(Vertex v1, Vertex v2) {
+        List<GData> result = new ArrayList<>();
         Set<VertexManifestation> m1 = vertexLinkedToPositionInFile.get(v1);
         Set<VertexManifestation> m2 = vertexLinkedToPositionInFile.get(v2);
         if (m1 == null || m2 == null) {
@@ -303,8 +306,8 @@ class VM03Adjacency extends VM02Add {
         int t1 = g1.type();
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<>();
-        TreeSet<Vertex> v2 = new TreeSet<>();
+        SortedSet<Vertex> v1 = new TreeSet<>();
+        SortedSet<Vertex> v2 = new TreeSet<>();
 
         switch (t1) {
         case 3:
@@ -356,13 +359,13 @@ class VM03Adjacency extends VM02Add {
      * @param adjaencyByPrecision a map which contains informations about near vertices
      * @return {@code true} if they do / {@code false} otherwise
      */
-    protected boolean hasSameEdge(GData g1, GData g2, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+    protected boolean hasSameEdge(GData g1, GData g2, SortedMap<Vertex, SortedSet<Vertex>> adjaencyByPrecision) {
 
         int t1 = g1.type();
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<>();
-        TreeSet<Vertex> v2 = new TreeSet<>();
+        SortedSet<Vertex> v1 = new TreeSet<>();
+        SortedSet<Vertex> v2 = new TreeSet<>();
 
 
         switch (t1) {
@@ -413,17 +416,17 @@ class VM03Adjacency extends VM02Add {
 
         // Create the sets
 
-        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<>();
-        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<>();
+        List<SortedSet<Vertex>> setList1 = new ArrayList<>();
+        List<SortedSet<Vertex>> setList2 = new ArrayList<>();
 
         for (Vertex v : v1) {
-            TreeSet<Vertex> newSet = new TreeSet<>();
+            SortedSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList1.add(newSet);
         }
 
         for (Vertex v : v2) {
-            TreeSet<Vertex> newSet = new TreeSet<>();
+            SortedSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList2.add(newSet);
         }
@@ -431,9 +434,9 @@ class VM03Adjacency extends VM02Add {
         // Now we have to detect a least 2 set intersections
 
         int intersections = 0;
-        for (TreeSet<Vertex> s1 : setList1) {
-            for (TreeSet<Vertex> s2 : setList2) {
-                TreeSet<Vertex> newSet = new TreeSet<>();
+        for (SortedSet<Vertex> s1 : setList1) {
+            for (SortedSet<Vertex> s2 : setList2) {
+                SortedSet<Vertex> newSet = new TreeSet<>();
                 newSet.addAll(s1);
                 int co = newSet.size();
                 newSet.removeAll(s2);
@@ -450,7 +453,7 @@ class VM03Adjacency extends VM02Add {
         return false;
     }
 
-    public boolean isEdgeAdjacentToSelectedData(GData g1, Set<? extends GData> data, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+    public boolean isEdgeAdjacentToSelectedData(GData g1, Set<? extends GData> data, SortedMap<Vertex, SortedSet<Vertex>> adjaencyByPrecision) {
         if (data == null) {
             data = selectedData;
         }
@@ -470,13 +473,13 @@ class VM03Adjacency extends VM02Add {
      * @param adjaencyByPrecision a map which contains informations about near vertices
      * @return {@code true} if they do / {@code false} otherwise
      */
-    private boolean hasSameEdge2(GData g1, GData g2, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+    private boolean hasSameEdge2(GData g1, GData g2, SortedMap<Vertex, SortedSet<Vertex>> adjaencyByPrecision) {
 
         int t1 = g1.type();
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<>();
-        TreeSet<Vertex> v2 = new TreeSet<>();
+        SortedSet<Vertex> v1 = new TreeSet<>();
+        SortedSet<Vertex> v2 = new TreeSet<>();
 
         switch (t1) {
         case 2:
@@ -536,17 +539,17 @@ class VM03Adjacency extends VM02Add {
 
         // Create the sets
 
-        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<>();
-        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<>();
+        List<SortedSet<Vertex>> setList1 = new ArrayList<>();
+        List<SortedSet<Vertex>> setList2 = new ArrayList<>();
 
         for (Vertex v : v1) {
-            TreeSet<Vertex> newSet = new TreeSet<>();
+            SortedSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList1.add(newSet);
         }
 
         for (Vertex v : v2) {
-            TreeSet<Vertex> newSet = new TreeSet<>();
+            SortedSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList2.add(newSet);
         }
@@ -554,9 +557,9 @@ class VM03Adjacency extends VM02Add {
         // Now we have to detect a least 2 set intersections
 
         int intersections = 0;
-        for (TreeSet<Vertex> s1 : setList1) {
-            for (TreeSet<Vertex> s2 : setList2) {
-                TreeSet<Vertex> newSet = new TreeSet<>();
+        for (SortedSet<Vertex> s1 : setList1) {
+            for (SortedSet<Vertex> s2 : setList2) {
+                SortedSet<Vertex> newSet = new TreeSet<>();
                 newSet.addAll(s1);
                 int co = newSet.size();
                 newSet.removeAll(s2);
@@ -580,12 +583,12 @@ class VM03Adjacency extends VM02Add {
      * @param adjaencyByPrecision a map which contains informations about near vertices
      * @return {@code true} if they do / {@code false} otherwise
      */
-    protected boolean hasSameEdge(AccurateEdge e1, GData g2, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+    protected boolean hasSameEdge(AccurateEdge e1, GData g2, SortedMap<Vertex, SortedSet<Vertex>> adjaencyByPrecision) {
 
         int t2 = g2.type();
 
-        TreeSet<Vertex> v1 = new TreeSet<>();
-        TreeSet<Vertex> v2 = new TreeSet<>();
+        SortedSet<Vertex> v1 = new TreeSet<>();
+        SortedSet<Vertex> v2 = new TreeSet<>();
 
         v1.add(e1.v1);
         v1.add(e1.v2);
@@ -615,17 +618,17 @@ class VM03Adjacency extends VM02Add {
 
         // Create the sets
 
-        ArrayList<TreeSet<Vertex>> setList1 = new ArrayList<>();
-        ArrayList<TreeSet<Vertex>> setList2 = new ArrayList<>();
+        List<SortedSet<Vertex>> setList1 = new ArrayList<>();
+        List<SortedSet<Vertex>> setList2 = new ArrayList<>();
 
         for (Vertex v : v1) {
-            TreeSet<Vertex> newSet = new TreeSet<>();
+            SortedSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList1.add(newSet);
         }
 
         for (Vertex v : v2) {
-            TreeSet<Vertex> newSet = new TreeSet<>();
+            SortedSet<Vertex> newSet = new TreeSet<>();
             newSet.addAll(adjaencyByPrecision.get(v));
             setList2.add(newSet);
         }
@@ -633,9 +636,9 @@ class VM03Adjacency extends VM02Add {
         // Now we have to detect a least 2 set intersections
 
         int intersections = 0;
-        for (TreeSet<Vertex> s1 : setList1) {
-            for (TreeSet<Vertex> s2 : setList2) {
-                TreeSet<Vertex> newSet = new TreeSet<>();
+        for (SortedSet<Vertex> s1 : setList1) {
+            for (SortedSet<Vertex> s2 : setList2) {
+                SortedSet<Vertex> newSet = new TreeSet<>();
                 newSet.addAll(s1);
                 int co = newSet.size();
                 newSet.removeAll(s2);
@@ -658,13 +661,13 @@ class VM03Adjacency extends VM02Add {
         if (linkedDatFile.isReadOnly())
             return;
 
-        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
-        final HashSet<GData0> effSelectedVertices = new HashSet<>();
-        final HashSet<GData2> effSelectedLines = new HashSet<>();
-        final HashSet<GData3> effSelectedTriangles = new HashSet<>();
-        final HashSet<GData4> effSelectedQuads = new HashSet<>();
-        final HashSet<GData5> effSelectedCondlines = new HashSet<>();
+        final Set<GData0> effSelectedVertices = new HashSet<>();
+        final Set<GData2> effSelectedLines = new HashSet<>();
+        final Set<GData3> effSelectedTriangles = new HashSet<>();
+        final Set<GData4> effSelectedQuads = new HashSet<>();
+        final Set<GData5> effSelectedCondlines = new HashSet<>();
 
         final GColour col16 = View.getLDConfigColour(16);
 
@@ -699,9 +702,9 @@ class VM03Adjacency extends VM02Add {
 
         // 1. Vertex Based Selection
         {
-            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
             {
-                HashMap<GData, Integer> occurMap = new HashMap<>();
+                Map<GData, Integer> occurMap = new HashMap<>();
                 for (Vertex vertex : selectedVertices) {
                     Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
                     if (occurences == null)
@@ -843,7 +846,7 @@ class VM03Adjacency extends VM02Add {
             // 4. Subfile Based Rounding & Selection
             if (!selectedSubfiles.isEmpty()) {
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
-                HashSet<GData1> newSubfiles = new HashSet<>();
+                Set<GData1> newSubfiles = new HashSet<>();
                 for (GData1 subf : selectedSubfiles) {
                     String roundedString = subf.getRoundedString(coordsDecimalPlaces, matrixDecimalPlaces, onX, onY, onZ);
                     GData roundedSubfile;
@@ -901,7 +904,7 @@ class VM03Adjacency extends VM02Add {
             }
 
             if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
-                HashSet<GDataCSG> newCSGSelection = new HashSet<>();
+                Set<GDataCSG> newCSGSelection = new HashSet<>();
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
                 for (GDataCSG csg : GDataCSG.getSelection(linkedDatFile)) {
                     if (csg.type == CSG.COMPILE || csg.type == CSG.QUALITY || csg.type == CSG.UNION || csg.type == CSG.DIFFERENCE || csg.type == CSG.INTERSECTION  || csg.type == CSG.EPSILON || csg.type == CSG.TJUNCTION || csg.type == CSG.COLLAPSE || csg.type == CSG.DONTOPTIMIZE || csg.type == CSG.EXTRUDE_CFG) {
@@ -969,7 +972,7 @@ class VM03Adjacency extends VM02Add {
     }
 
     public synchronized Set<GData0> getLinkedVertexMetaCommands(Vertex v) {
-        HashSet<GData0> result = new HashSet<>();
+        Set<GData0> result = new HashSet<>();
         Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
         if (manis != null) {
             for (VertexManifestation mani : manis) {

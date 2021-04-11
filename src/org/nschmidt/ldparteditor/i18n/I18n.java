@@ -19,6 +19,7 @@ import java.awt.ComponentOrientation;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.ResourceBundle;
+import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.eclipse.swt.SWT;
@@ -1320,7 +1321,7 @@ public final class I18n {
     private static Field[] getSortedFields() {
         Field[] fieldsToSort = I18n.class.getFields();
 
-        TreeMap<String, Field> map = new TreeMap<>();
+        SortedMap<String, Field> map = new TreeMap<>();
 
         for (Field f : fieldsToSort) {
             map.put(f.getName(), f);

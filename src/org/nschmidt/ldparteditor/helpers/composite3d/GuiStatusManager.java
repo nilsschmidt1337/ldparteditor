@@ -21,6 +21,7 @@ import java.text.DecimalFormatSymbols;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.swt.SWT;
@@ -184,7 +185,7 @@ public enum GuiStatusManager {
     }
 
     private static Iterator<ScreenVertex> getVerticesOrderedByScreenCoordinate(Iterator<Vertex> vsi, PerspectiveCalculator pc) {
-        final Set<ScreenVertex> result = new TreeSet<>();
+        final SortedSet<ScreenVertex> result = new TreeSet<>();
         try {
             while (vsi.hasNext()) {
                 Vertex v = vsi.next();

@@ -22,11 +22,12 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.jface.action.StatusLineManager;
@@ -564,7 +565,7 @@ class Editor3DDesign extends ApplicationWindow {
             }
         }
 
-        HashSet<String> missingItemsToCreate = new HashSet<>();
+        Set<String> missingItemsToCreate = new HashSet<>();
         missingItemsToCreate.add("SYNC_AND_RECENT_FILES"); //$NON-NLS-1$
         missingItemsToCreate.add("PROJECT_MANAGEMENT"); //$NON-NLS-1$
         missingItemsToCreate.add("OPEN_SAVE_DATFILE"); //$NON-NLS-1$
@@ -1704,7 +1705,7 @@ class Editor3DDesign extends ApplicationWindow {
                     }
                 }
 
-                ArrayList<Composite3DState> threeDconfig = windowState.getThreeDwindowConfig();
+                List<Composite3DState> threeDconfig = windowState.getThreeDwindowConfig();
                 if (threeDconfig == null) {
                     new CompositeContainer(sashForm, false);
                 } else {
@@ -3640,7 +3641,7 @@ class Editor3DDesign extends ApplicationWindow {
         mnuSelect.setVisible(true);
     }
 
-    void reloadC3DStates(ArrayList<Composite3DState> threeDconfig) {
+    void reloadC3DStates(List<Composite3DState> threeDconfig) {
 
         // TODO Needs implementation!
 
@@ -3658,10 +3659,10 @@ class Editor3DDesign extends ApplicationWindow {
             if (threeDconfig.size() == 1) {
                 Editor3DWindow.getRenders().get(0).getC3D().loadState(threeDconfig.get(0));
             } else {
-                HashSet<String> splitCandidate = new HashSet<>();
-                HashSet<String> splitAlready = new HashSet<>();
-                HashMap<String, CompositeContainer> cmpMap = new HashMap<>();
-                HashMap<String, Composite3DState> sMap = new HashMap<>();
+                Set<String> splitCandidate = new HashSet<>();
+                Set<String> splitAlready = new HashSet<>();
+                Map<String, CompositeContainer> cmpMap = new HashMap<>();
+                Map<String, Composite3DState> sMap = new HashMap<>();
 
                 splitCandidate.add("|"); //$NON-NLS-1$
                 splitAlready.add("|"); //$NON-NLS-1$
@@ -3723,7 +3724,7 @@ class Editor3DDesign extends ApplicationWindow {
         }
     }
 
-    private void applyC3DStatesOnStartup(ArrayList<Composite3DState> threeDconfig) {
+    private void applyC3DStatesOnStartup(List<Composite3DState> threeDconfig) {
 
         Collections.sort(threeDconfig, (o1, o2) -> {
             final int cmp = Integer.compare(o1.getPath().length(), o2.getPath().length());
@@ -3735,10 +3736,10 @@ class Editor3DDesign extends ApplicationWindow {
         CompositeContainer cmpContainer = new CompositeContainer(sashForm, false);
         cmpContainer.moveBelow(sashForm.getChildren()[0]);
 
-        HashSet<String> splitCandidate = new HashSet<>();
-        HashSet<String> splitAlready = new HashSet<>();
-        HashMap<String, CompositeContainer> cmpMap = new HashMap<>();
-        HashMap<String, Composite3DState> sMap = new HashMap<>();
+        Set<String> splitCandidate = new HashSet<>();
+        Set<String> splitAlready = new HashSet<>();
+        Map<String, CompositeContainer> cmpMap = new HashMap<>();
+        Map<String, Composite3DState> sMap = new HashMap<>();
 
         splitCandidate.add("|"); //$NON-NLS-1$
         splitAlready.add("|"); //$NON-NLS-1$

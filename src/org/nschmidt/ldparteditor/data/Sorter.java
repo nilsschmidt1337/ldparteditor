@@ -56,7 +56,7 @@ public enum Sorter {
         vm.clearSelection();
 
         // Basic Data Structure
-        List<ArrayList<GData>> subLists = new ArrayList<>();
+        List<List<GData>> subLists = new ArrayList<>();
         List<Boolean> shouldListBeSorted = new ArrayList<>();
 
         {
@@ -68,7 +68,7 @@ public enum Sorter {
             }
             GData data2draw = datFile.getDrawChainStart();
             int state = 0;
-            ArrayList<GData> currentList = new ArrayList<>();
+            List<GData> currentList = new ArrayList<>();
             int lineCount = 0;
             while ((data2draw = data2draw.getNext()) != null) {
                 boolean validType = false;
@@ -538,7 +538,7 @@ public enum Sorter {
 
         StringBuilder newDatText = new StringBuilder();
         final String ld = StringHelper.getLineDelimiter();
-        final ArrayList<GData> sortedData = new ArrayList<>();
+        final List<GData> sortedData = new ArrayList<>();
         for (int i = 0; i < listCount; i++) {
             List<GData> listToSort = subLists.get(i);
             int listCount2 = listToSort.size();

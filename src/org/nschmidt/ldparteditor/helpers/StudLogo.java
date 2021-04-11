@@ -16,6 +16,7 @@ ARISING FROM * 1000f, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OT
 package org.nschmidt.ldparteditor.helpers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public enum StudLogo {
     INSTANCE;
@@ -387,7 +388,7 @@ public enum StudLogo {
 
     public static float[] getStudLogoData1() {
         if (stud1 == null) {
-            ArrayList<float[]> letters = new ArrayList<>();
+            List<float[]> letters = new ArrayList<>();
             letters.add(letter_L_logo1);
             letters.add(letter_E_logo1);
             letters.add(letter_G_logo1);
@@ -400,7 +401,7 @@ public enum StudLogo {
 
     public static float[] getStudLogoData2() {
         if (stud2 == null) {
-            ArrayList<float[]> letters = new ArrayList<>();
+            List<float[]> letters = new ArrayList<>();
             letters.add(letter_L_logo2);
             letters.add(letter_E_logo2);
             letters.add(letter_G_logo2);
@@ -411,7 +412,7 @@ public enum StudLogo {
         return stud2;
     }
 
-    private static float[] createStudData(ArrayList<float[]> letters) {
+    private static float[] createStudData(List<float[]> letters) {
         float[] result;
         int resultSize = 0;
         for (float[] letter : letters) {

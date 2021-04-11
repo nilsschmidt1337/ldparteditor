@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -416,8 +417,8 @@ class VM01Select extends VM00Snapshot {
                 Vertex oldVertex = null;
                 Vertex newVertex = null;
 
-                TreeSet<Vertex> ov = new TreeSet<>();
-                TreeSet<Vertex> nv = new TreeSet<>();
+                SortedSet<Vertex> ov = new TreeSet<>();
+                SortedSet<Vertex> nv = new TreeSet<>();
 
                 switch (selectedLine.type()) {
                 case 5:
@@ -442,7 +443,7 @@ class VM01Select extends VM00Snapshot {
                     return null;
                 }
 
-                TreeSet<Vertex> nv2 = new TreeSet<>(nv);
+                SortedSet<Vertex> nv2 = new TreeSet<>(nv);
                 nv2.removeAll(ov);
                 ov.removeAll(nv);
 
@@ -692,7 +693,7 @@ class VM01Select extends VM00Snapshot {
                 selectedCondlines.add((GData5) gd);
                 break;
             case 8:
-                HashSet<GDataCSG> selection = GDataCSG.getSelection(linkedDatFile);
+                Set<GDataCSG> selection = GDataCSG.getSelection(linkedDatFile);
                 GDataCSG g = (GDataCSG) gd;
                 if (g.canSelect()) {
                     selection.add(g);

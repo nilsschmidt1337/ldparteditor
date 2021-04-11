@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.text;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
@@ -83,7 +84,7 @@ public class SyntaxFormatter {
             float replaceEpsilon, boolean replaceVertex, boolean isSelected, boolean isDuplicate, boolean isVisible,
             DatFile df) {
 
-        ArrayList<StyleRange> styles = new ArrayList<>();
+        List<StyleRange> styles = new ArrayList<>();
 
         if (isDuplicate) {
             StyleRange errStyleRange = new StyleRange();
@@ -277,7 +278,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatComment(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatComment(List<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 
@@ -484,7 +485,7 @@ public class SyntaxFormatter {
      * @param e
      *            the {@linkplain LineStyleEvent}
      */
-    private void formatReference(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, DatFile datFile) {
+    private void formatReference(List<StyleRange> styles, LineStyleEvent e, String[] textSegments, DatFile datFile) {
         int offset = e.lineOffset;
 
         StyleRange lineStyleRange = new StyleRange();
@@ -731,7 +732,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatLine(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatLine(List<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 
@@ -867,7 +868,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatTriangle(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatTriangle(List<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 
@@ -1054,7 +1055,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatQuad(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatQuad(List<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 
@@ -1316,7 +1317,7 @@ public class SyntaxFormatter {
      * @param vx
      * @param replaceEpsilon
      */
-    private void formatCondline(ArrayList<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
+    private void formatCondline(List<StyleRange> styles, LineStyleEvent e, String[] textSegments, float vx, float vy, float vz, boolean replaceVertex, float replaceEpsilon) {
         // All work done here..
         int offset = e.lineOffset;
 

@@ -15,11 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 
 /**
  * @author nils
@@ -47,18 +47,17 @@ interface IGData {
 
     public void drawGL20Wireframe(Composite3D c3d);
 
-    public void getBFCorientationMap(HashMap<GData, BFC> map);
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map);
-    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map);
+    public void getBFCorientationMap(Map<GData,BFC> map);
+    public void getBFCorientationMapNOCERTIFY(Map<GData, BFC> map);
+    public void getBFCorientationMapNOCLIP(Map<GData, BFC> map);
 
-    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
-    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
-    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
+    public void getVertexNormalMap(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm);
 
     public String inlinedString(BFC bfcStatusTarget, GColour colour);
 
     public String transformAndColourReplace(String colour, Matrix matrix);
 
     public int type();
-
 }

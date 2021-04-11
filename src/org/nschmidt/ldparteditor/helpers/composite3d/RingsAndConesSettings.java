@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -26,7 +27,7 @@ import java.util.ArrayList;
  */
 public class RingsAndConesSettings {
 
-    private ArrayList<String> angles = new ArrayList<>();
+    private List<String> angles = new ArrayList<>();
     private boolean usingCones = false;
     private boolean usingHiRes = false;
     private boolean creatingNothingOnNoSolution = false;
@@ -59,10 +60,10 @@ public class RingsAndConesSettings {
     public void setRadius1(BigDecimal radius1) {
         this.radius1 = radius1;
     }
-    public ArrayList<String> getAngles() {
+    public List<String> getAngles() {
         return angles;
     }
-    public void setAngles(ArrayList<String> angles) {
+    public void setAngles(List<String> angles) {
         this.angles = angles;
     }
     public int getAngle() {

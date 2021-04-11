@@ -17,12 +17,14 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
@@ -42,7 +44,7 @@ import org.nschmidt.ldparteditor.enums.WorkingMode;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
@@ -78,7 +80,7 @@ public final class VertexManager extends VM99Clipboard {
 
         if (calculateCondlineControlPoints.compareAndSet(true, false)) {
             CompletableFuture.runAsync( () -> {
-                final Set<Vertex> tmpHiddenVertices2 = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+                final Set<Vertex> tmpHiddenVertices2 = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
                 tmpHiddenVertices2.addAll(hiddenVertices);
                 if (c3d.isShowingCondlineControlPoints() || c3d.getRenderMode() == 6) {
                     if (!tmpHiddenVertices.isEmpty()) {
@@ -167,7 +169,7 @@ public final class VertexManager extends VM99Clipboard {
         if (modifiedManipulator) {
             Set<GData> alreadyMoved = new HashSet<>();
 
-            Set<Vertex> allVertices = new TreeSet<>(selectedVertices);
+            SortedSet<Vertex> allVertices = new TreeSet<>(selectedVertices);
             GL11.glLineWidth(2f);
             if (c3d.isShowingVertices()) {
                 GL11.glBegin(GL11.GL_POINTS);
@@ -520,11 +522,11 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
             Object[] obj = getSmoothedVertices(selectedVertices);
             @SuppressWarnings("unchecked")
-            ArrayList<Vertex> verts = (ArrayList<Vertex>) obj[0];
+            List<Vertex> verts = (List<Vertex>) obj[0];
             @SuppressWarnings("unchecked")
-            TreeMap<Vertex, Integer> indmap = (TreeMap<Vertex, Integer>) obj[1];
+            SortedMap<Vertex, Integer> indmap = (SortedMap<Vertex, Integer>) obj[1];
             @SuppressWarnings("unchecked")
-            TreeMap<Integer, ArrayList<Integer>> adjacency = (TreeMap<Integer, ArrayList<Integer>>) obj[2];
+            SortedMap<Integer, List<Integer>> adjacency = (SortedMap<Integer, List<Integer>>) obj[2];
             for (Vertex vertex : verts) {
                 GL11.glVertex3f(vertex.x, vertex.y, vertex.z);
             }

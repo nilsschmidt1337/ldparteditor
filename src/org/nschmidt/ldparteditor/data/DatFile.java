@@ -25,9 +25,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.regex.Pattern;
 
@@ -50,7 +53,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
@@ -82,7 +85,7 @@ public final class DatFile {
     private final GData drawChainAnchor = new GDataInit(View.DUMMY_REFERENCE);
 
     private final HashBiMap<Integer, GData> drawPerLine = new HashBiMap<>();
-    private final HashMap<Integer, GData> copyDrawPerLine = new HashMap<>();
+    private final Map<Integer, GData> copyDrawPerLine = new HashMap<>();
 
     private static final GTexture CUBEMAP_TEXTURE = new GTexture(TexType.PLANAR, "cmap.png", null, 1, new Vector3f(1,0,0), new Vector3f(1,1,0), new Vector3f(1,1,1), 0, 0); //$NON-NLS-1$
     private static final GDataTEX CUBEMAP = new GDataTEX(null, "", TexMeta.NEXT, CUBEMAP_TEXTURE, View.DUMMY_REFERENCE); //$NON-NLS-1$
@@ -288,7 +291,7 @@ public final class DatFile {
             vertices.showHidden();
     }
 
-    synchronized void getBFCorientationMap(HashMap<GData, BFC> bfcMap) {
+    synchronized void getBFCorientationMap(Map<GData, BFC> bfcMap) {
         GDataCSG.resetCSG(this, false);
         GData data2draw = drawChainAnchor;
         data2draw.getBFCorientationMap(bfcMap);
@@ -409,8 +412,8 @@ public final class DatFile {
      * <br> This functions reads the contents from the harddrive if the file was not loaded before.
      * <br> The list will be empty if the file can't be read or can't be found
      */
-    public ArrayList<String> getSource() {
-        ArrayList<String> result = new ArrayList<>();
+    public List<String> getSource() {
+        List<String> result = new ArrayList<>();
         if (originalText.isEmpty() && new File(this.getOldName()).exists()) {
             UTF8BufferedReader reader = null;
             try {
@@ -574,7 +577,7 @@ public final class DatFile {
         int offset = compositeText.getLineDelimiter().length();
         int position = startOffset;
 
-        ArrayList<ParsingResult> results;
+        List<ParsingResult> results;
         final GColour col16 = View.getLDConfigColour(16);
 
         // Clear the cache..
@@ -779,7 +782,7 @@ public final class DatFile {
         int offset = StringHelper.getLineDelimiter().length();
         int position = startOffset;
 
-        ArrayList<ParsingResult> results;
+        List<ParsingResult> results;
         final GColour col16 = View.getLDConfigColour(16);
 
         // Clear the cache..
@@ -934,8 +937,8 @@ public final class DatFile {
         if (!duplicates.getItems().isEmpty() || !GData.CACHE_duplicates.isEmpty()) {
             int position;
             duplicates.getItems().clear();
-            HashSet<GData> entriesToRemove = new HashSet<>();
-            TreeMap<Integer, ParsingResult> results = new TreeMap<>();
+            Set<GData> entriesToRemove = new HashSet<>();
+            SortedMap<Integer, ParsingResult> results = new TreeMap<>();
 
             for (Entry<GData, ParsingResult> entry : GData.CACHE_duplicates.entrySet()) {
                 Integer lineNumber2 = drawPerLine.getKey(entry.getKey());
@@ -976,12 +979,12 @@ public final class DatFile {
     }
 
     synchronized boolean updateDatHeaderHints(StyledText compositeText, TreeItem headerHints) {
-        ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> cachedHeaderHints = datHeader.cachedHeaderHints;
+        ThreadsafeSortedMap<Integer, List<ParsingResult>> cachedHeaderHints = datHeader.cachedHeaderHints;
         if (!cachedHeaderHints.isEmpty()) {
             int position = 0;
 
             final Integer firstKey = cachedHeaderHints.firstKey();
-            ArrayList<ParsingResult> allParsingResults = cachedHeaderHints.get(firstKey);
+            List<ParsingResult> allParsingResults = cachedHeaderHints.get(firstKey);
             if (allParsingResults.isEmpty()) {
                 if (!headerHints.getItems().isEmpty()) {
                     headerHints.getItems().clear();
@@ -992,20 +995,20 @@ public final class DatFile {
 
             headerHints.getItems().clear();
 
-            TreeMap<Integer, ArrayList<ParsingResult>> results = new TreeMap<>();
+            SortedMap<Integer, List<ParsingResult>> results = new TreeMap<>();
             for (ParsingResult entry : allParsingResults) {
                 Integer lineNumber = entry.getLineNumber();
-                ArrayList<ParsingResult> results2 = new ArrayList<>();
+                List<ParsingResult> results2 = new ArrayList<>();
                 results.putIfAbsent(lineNumber, results2);
                 results2 = results.get(lineNumber);
                 results2.add(entry);
             }
 
-            for (Entry<Integer, ArrayList<ParsingResult>> entry : results.entrySet()) {
+            for (Entry<Integer, List<ParsingResult>> entry : results.entrySet()) {
 
                 final int lineNumber2 = entry.getKey();
                 final boolean isLineBoundHint = lineNumber2 > 0;
-                ArrayList<ParsingResult> parsingResults = entry.getValue();
+                List<ParsingResult> parsingResults = entry.getValue();
                 try {
                     if (isLineBoundHint) {
                         position = compositeText.getOffsetAtLine(lineNumber2 - 1);
@@ -1081,11 +1084,11 @@ public final class DatFile {
         int oldLineCount = drawPerLine.size();
         drawChainTail = drawChainAnchor;
 
-        HashMap<String, GData> candidateForRemoval = new HashMap<>();
+        Map<String, GData> candidateForRemoval = new HashMap<>();
         for (String line : lines) {
             if (oldG == null) {
                 if (isNotBlank(line)) {
-                    ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
+                    List<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
                     newG = results.get(0).getGraphicalData();
                     if (newG == null) {
                         newG = new GData0(line, View.DUMMY_REFERENCE);
@@ -1105,7 +1108,7 @@ public final class DatFile {
                         candidateForRemoval.remove(line);
                     } else {
                         if (isNotBlank(line)) {
-                            ArrayList<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
+                            List<ParsingResult> results = DatParser.parseLine(line, lineNumber, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, this, false, alreadyParsed);
                             newG = results.get(0).getGraphicalData();
                             if (newG == null) {
                                 newG = new GData0(line, View.DUMMY_REFERENCE);
@@ -1166,7 +1169,7 @@ public final class DatFile {
             }
         } else {
             StringBuilder sb = new StringBuilder();
-            ArrayList<String> lines2 = new ArrayList<>(4096);
+            List<String> lines2 = new ArrayList<>(4096);
             UTF8BufferedReader reader = null;
             try {
                 reader = new UTF8BufferedReader(this.getOldName());
@@ -1208,7 +1211,7 @@ public final class DatFile {
         GData anchorData = drawChainAnchor;
         GData targetData = null;
 
-        ArrayList<ParsingResult> results;
+        List<ParsingResult> results;
         final GColour col16 = View.getLDConfigColour(16);
 
         // Clear the cache..
@@ -1613,7 +1616,7 @@ public final class DatFile {
                 newFile.getParentFile().mkdirs();
             }
             r = new UTF8PrintWriter(newName);
-            ArrayList<String> lines = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
                 final int index = lines.size() - 1;
@@ -1641,7 +1644,7 @@ public final class DatFile {
             setLastSavedOpened(new Date());
             lastModified = new File(getNewName()).lastModified();
             Project.removeUnsavedFile(this);
-            HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
+            Set<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
             for (EditorTextWindow win : windows) {
                 win.updateTabWithDatfile(this);
             }
@@ -1668,7 +1671,7 @@ public final class DatFile {
                 newFile.getParentFile().mkdirs();
             }
             r = new UTF8PrintWriter(newName);
-            ArrayList<String> lines = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
                 final int index = lines.size() - 1;
@@ -1692,7 +1695,7 @@ public final class DatFile {
             setLastSavedOpened(new Date());
             lastModified = new File(getNewName()).lastModified();
             Project.removeUnsavedFile(this);
-            HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
+            Set<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
             for (EditorTextWindow win : windows) {
                 win.updateTabWithDatfile(this);
             }
@@ -1718,7 +1721,7 @@ public final class DatFile {
                 newFile.getParentFile().mkdirs();
             }
             r = new UTF8PrintWriter(newName);
-            ArrayList<String> lines = new ArrayList<>();
+            List<String> lines = new ArrayList<>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
                 final int index = lines.size() - 1;
@@ -1808,7 +1811,7 @@ public final class DatFile {
                 Project.removeUnsavedFile(this);
                 parseForData(true);
                 Editor3DWindow.getWindow().updateTreeUnsavedEntries();
-                HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
+                Set<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
                 for (EditorTextWindow win : windows) {
                     win.updateTabWithDatfile(this);
                 }
@@ -1976,8 +1979,8 @@ public final class DatFile {
         vertices.storeAxisForSlantingMatrixProjector();
         final int objCount = drawPerLine.size();
         GData[] backup = new GData[objCount];
-        HashMap<String, ArrayList<Boolean>> backupHiddenData = null;
-        HashMap<String, ArrayList<Boolean>> backupSelectedData = null;
+        Map<String, List<Boolean>> backupHiddenData = null;
+        Map<String, List<Boolean>> backupSelectedData = null;
         int count = 0;
         GData data2draw = drawChainAnchor;
         final boolean isBackupHiddenData = !vertices.hiddenData.isEmpty();

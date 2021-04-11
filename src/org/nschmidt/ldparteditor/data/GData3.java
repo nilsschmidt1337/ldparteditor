@@ -17,8 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormatSymbols;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.lwjgl.opengl.GL11;
@@ -31,7 +31,7 @@ import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLShader;
@@ -1363,7 +1363,7 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, BFC> map) {
+    public void getBFCorientationMap(Map<GData,BFC> map) {
         switch (GData.localWinding) {
         case CCW:
             if (GData.globalNegativeDeterminant) {
@@ -1404,17 +1404,17 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
+    public void getBFCorientationMapNOCERTIFY(Map<GData, BFC> map) {
         // Don't get it for NOCERTIFY.
     }
 
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
+    public void getBFCorientationMapNOCLIP(Map<GData, BFC> map) {
         map.put(this, BFC.NOCLIP);
     }
 
     @Override
-    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMap(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         if (state.globalDrawObjects) {
             Vertex[] verts = vm.getTrianglesNoClone().get(this);
             if (verts == null) {
@@ -1524,12 +1524,12 @@ public final class GData3 extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         // Implementation is not required.
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         getVertexNormalMap(state, vertexLinkedToNormalCACHE, dataLinkedToNormalCACHE, vm);
     }
 

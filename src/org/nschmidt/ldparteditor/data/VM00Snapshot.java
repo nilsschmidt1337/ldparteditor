@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
@@ -27,7 +27,7 @@ class VM00Snapshot extends VM00Base {
         super(linkedDatFile);
     }
 
-    public ArrayList<MemorySnapshot> getSnapshots() {
+    public List<MemorySnapshot> getSnapshots() {
         return snapshots;
     }
 

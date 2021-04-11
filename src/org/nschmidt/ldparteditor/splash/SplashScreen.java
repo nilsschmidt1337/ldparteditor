@@ -19,8 +19,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -232,11 +233,11 @@ public class SplashScreen extends ApplicationWindow {
                 if (WorkbenchManager.getPrimitiveCache() == null) {
                     WorkbenchManager.setPrimitiveCache(new PrimitiveCache());
                 }
-                HashMap<String, PGData> pcache = WorkbenchManager.getPrimitiveCache().getPrimitiveCache();
+                Map<String, PGData> pcache = WorkbenchManager.getPrimitiveCache().getPrimitiveCache();
                 if (pcache != null) {
                     CompositePrimitive.setCache(pcache);
                 }
-                HashMap<PGTimestamp, ArrayList<String>> pfcache = WorkbenchManager.getPrimitiveCache().getPrimitiveFileCache();
+                Map<PGTimestamp, List<String>> pfcache = WorkbenchManager.getPrimitiveCache().getPrimitiveFileCache();
                 if (pfcache != null) {
                     CompositePrimitive.setFileCache(pfcache);
                 }
@@ -255,7 +256,7 @@ public class SplashScreen extends ApplicationWindow {
                 UTF8BufferedReader reader = null;
                 String line = null;
                 try {
-                    ArrayList<ToolItemState> states = WorkbenchManager.getUserSettingState().getToolItemConfig3D();
+                    List<ToolItemState> states = WorkbenchManager.getUserSettingState().getToolItemConfig3D();
                     if (states == null) {
                         states = new ArrayList<>();
                         WorkbenchManager.getUserSettingState().setToolItemConfig3D(states);

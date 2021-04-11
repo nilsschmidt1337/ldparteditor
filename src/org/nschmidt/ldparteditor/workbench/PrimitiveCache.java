@@ -16,8 +16,9 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.workbench;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.nschmidt.ldparteditor.data.PGData;
 import org.nschmidt.ldparteditor.data.PGTimestamp;
@@ -34,22 +35,22 @@ public class PrimitiveCache implements Serializable {
     /** V1.00 */
     private static final long serialVersionUID = 1L;
 
-    private HashMap<String, PGData> primitiveCache = new HashMap<>();
-    private HashMap<PGTimestamp, ArrayList<String>> primitiveFileCache = new HashMap<>();
+    private Map<String, PGData> primitiveCache = new HashMap<>();
+    private Map<PGTimestamp, List<String>> primitiveFileCache = new HashMap<>();
 
-    public HashMap<String, PGData> getPrimitiveCache() {
+    public Map<String, PGData> getPrimitiveCache() {
         return primitiveCache;
     }
 
-    public void setPrimitiveCache(HashMap<String, PGData> primitiveCache) {
+    public void setPrimitiveCache(Map<String, PGData> primitiveCache) {
         this.primitiveCache = primitiveCache;
     }
 
-    public HashMap<PGTimestamp, ArrayList<String>> getPrimitiveFileCache() {
+    public Map<PGTimestamp, List<String>> getPrimitiveFileCache() {
         return primitiveFileCache;
     }
 
-    public void setPrimitiveFileCache(HashMap<PGTimestamp, ArrayList<String>> primitiveFileCache) {
+    public void setPrimitiveFileCache(Map<PGTimestamp, List<String>> primitiveFileCache) {
         this.primitiveFileCache = primitiveFileCache;
     }
 }

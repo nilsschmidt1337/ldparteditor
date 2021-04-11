@@ -16,11 +16,12 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -474,7 +475,7 @@ class VM02Add extends VM01SelectHelper {
         if (v1 == null || v2 == null || v3 == null || v4 == null) return;
         final boolean allowInvalidShapes = WorkbenchManager.getUserSettingState().isAllowInvalidShapes();
         {
-            Set<Vertex> dupl = new TreeSet<>();
+            SortedSet<Vertex> dupl = new TreeSet<>();
             dupl.add(v1);
             dupl.add(v2);
             dupl.add(v3);
@@ -718,7 +719,7 @@ class VM02Add extends VM01SelectHelper {
     public void addCondline(Vertex v1, Vertex v2, Vertex v3, Vertex v4) {
         if (v1 == null || v2 == null || v3 == null || v4 == null) return;
         {
-            Set<Vertex> dupl = new TreeSet<>();
+            SortedSet<Vertex> dupl = new TreeSet<>();
             dupl.add(v1);
             dupl.add(v2);
             dupl.add(v3);
@@ -773,7 +774,7 @@ class VM02Add extends VM01SelectHelper {
         final GColour col16 = View.getLDConfigColour(16);
         Set<String> alreadyParsed = new HashSet<>();
         alreadyParsed.add(linkedDatFile.getShortName());
-        ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
+        List<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
         GData pasted = result.get(0).getGraphicalData();
         if (pasted == null) {
             pasted = new GData0(lineToParse, View.DUMMY_REFERENCE);

@@ -42,6 +42,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -115,7 +116,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  */
 public class CSG {
 
-    private TreeMap<GData3, IdAndPlane> result = new TreeMap<>();
+    private SortedMap<GData3, IdAndPlane> result = new TreeMap<>();
 
     private List<Polygon> polygons;
     private Bounds bounds = null;
@@ -427,8 +428,8 @@ public class CSG {
      *
      * @return this csg as list of LDraw triangles
      */
-    private TreeMap<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
-        TreeMap<GData3, IdAndPlane> result = new TreeMap<>();
+    private SortedMap<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
+        SortedMap<GData3, IdAndPlane> result = new TreeMap<>();
         for (Polygon p : this.polygons) {
             result.putAll(p.toLDrawTriangles(parent));
         }
@@ -458,8 +459,8 @@ public class CSG {
     }
 
     private volatile boolean shouldOptimize = true;
-    private volatile TreeMap<GData3, IdAndPlane> optimizedResult = null;
-    private volatile TreeMap<GData3, IdAndPlane> optimizedTriangles = new TreeMap<>();
+    private volatile SortedMap<GData3, IdAndPlane> optimizedResult = null;
+    private volatile SortedMap<GData3, IdAndPlane> optimizedTriangles = new TreeMap<>();
     private final Random rnd = new Random(12345678L);
     public static ExecutorService executorService = Executors.newSingleThreadExecutor();
 
@@ -474,7 +475,7 @@ public class CSG {
 
     private final Map<GData3, Map<GData3, Boolean>> flipCache = new HashMap<>();
 
-    public TreeMap<GData3, IdAndPlane> getResult(DatFile df) {
+    public SortedMap<GData3, IdAndPlane> getResult(DatFile df) {
 
         if (optimizedTriangles.isEmpty() && df != null && df.isOptimizingCSG()) {
             optimizedTriangles = new TreeMap<>();
@@ -490,7 +491,7 @@ public class CSG {
             shouldOptimize = false;
             executorService.execute(() -> {
 
-                TreeMap<GData3, IdAndPlane> optimization = new TreeMap<>();
+                SortedMap<GData3, IdAndPlane> optimization = new TreeMap<>();
                 if (optimizedResult != null) {
                     optimization.putAll(optimizedResult);
                 } else {
@@ -498,7 +499,7 @@ public class CSG {
                 }
 
                 // Optimize for each plane
-                Map<Plane, List<GData3>> trianglesPerPlane = new TreeMap<>();
+                SortedMap<Plane, List<GData3>> trianglesPerPlane = new TreeMap<>();
                 List<GData3> obsoleteTriangles = new ArrayList<>();
                 for (Entry<GData3, IdAndPlane> entry : optimization.entrySet()) {
                     IdAndPlane id = entry.getValue();

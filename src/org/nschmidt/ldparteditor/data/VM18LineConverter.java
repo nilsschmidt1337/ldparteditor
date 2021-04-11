@@ -15,10 +15,11 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.enums.View;
@@ -101,12 +102,12 @@ class VM18LineConverter extends VM17Unificator {
         for (GData2 g2 : linesToParse) {
             Vertex[] v = lines.get(g2);
 
-            ArrayList<GData> faces = linkedCommonFaces(v[0], v[1]);
+            List<GData> faces = linkedCommonFaces(v[0], v[1]);
 
             if (faces.size() == 2) {
 
-                TreeSet<Vertex> fv1 = new TreeSet<>();
-                TreeSet<Vertex> fv2 = new TreeSet<>();
+                SortedSet<Vertex> fv1 = new TreeSet<>();
+                SortedSet<Vertex> fv2 = new TreeSet<>();
 
                 switch (faces.get(0).type()) {
                 case 3:

@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.dialogs.colour;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.jface.window.ApplicationWindow;
@@ -69,7 +70,7 @@ class ColourTableDesign extends ApplicationWindow {
         gridLayout.horizontalSpacing = 10;
         cmpContainer.setLayout(gridLayout);
 
-        final Set<String> names = new TreeSet<>(View.getNameMap().values());
+        final SortedSet<String> names = new TreeSet<>(View.getNameMap().values());
         final Tree tree = new Tree(cmpContainer, SWT.BORDER | SWT.MULTI | SWT.V_SCROLL, names.size());
         tree.setLinesVisible(true);
         tree.setHeaderVisible(true);

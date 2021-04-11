@@ -18,6 +18,8 @@ package org.nschmidt.ldparteditor.helpers.compositetext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -128,7 +130,7 @@ public enum Inliner {
             }
         }
 
-        ArrayList<Integer> lineNumbers = new ArrayList<>();
+        List<Integer> lineNumbers = new ArrayList<>();
         lineEnd += 1;
         for (int line = lineStart; line < lineEnd; line++) {
             lineNumbers.add(line);
@@ -199,7 +201,7 @@ public enum Inliner {
      *            end line number to inline
      * @param datFile
      */
-    public static void inline(StyledText cText, ArrayList<Integer> lineNumbers, DatFile datFile) {
+    public static void inline(StyledText cText, List<Integer> lineNumbers, DatFile datFile) {
 
         if (datFile.isReadOnly())
             return;
@@ -211,7 +213,7 @@ public enum Inliner {
 
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
 
-        HashMap<Integer, BFC> bfcStatusToLine = new HashMap<>();
+        Map<Integer, BFC> bfcStatusToLine = new HashMap<>();
 
         Set<Integer> keys = dpl.keySet();
 

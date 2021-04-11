@@ -17,10 +17,11 @@ package org.nschmidt.ldparteditor.helpers.composite3d;
 
 import java.io.File;
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.swt.SWT;
@@ -206,7 +207,7 @@ public class MouseActions {
                             Set<String> alreadyParsed = new HashSet<>();
                             alreadyParsed.add(datfile.getShortName());
                             final GColour col16 = View.getLDConfigColour(16);
-                            ArrayList<ParsingResult> subfileLine = DatParser
+                            List<ParsingResult> subfileLine = DatParser
                                     .parseLine(
                                             "1 16 " + MathHelper.bigDecimalToString(cur[0]) + " " + MathHelper.bigDecimalToString(cur[1]) + " " + MathHelper.bigDecimalToString(cur[2]) + " 1 0 0 0 1 0 0 0 1 " + ref, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datfile, false, alreadyParsed); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                             GData1 vertexLine = (GData1) subfileLine.get(0).getGraphicalData();
@@ -481,7 +482,7 @@ public class MouseActions {
                                 c3d.getLockableDatFileReference().getVertexManager().getSelectedVertices().clear();
                                 Vertex[] tv = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToTriangleEdges(v3d, v1, v2, v3, c3d);
                                 Vertex[] tv2 = c3d.getLockableDatFileReference().getVertexManager().getMinimalDistanceVerticesToTriangleEdges(v3d, v3, v4, v1, c3d);
-                                Set<Vertex> qverts = new TreeSet<>();
+                                SortedSet<Vertex> qverts = new TreeSet<>();
                                 qverts.add(tv[0]);
                                 qverts.add(tv[1]);
                                 qverts.add(tv2[0]);

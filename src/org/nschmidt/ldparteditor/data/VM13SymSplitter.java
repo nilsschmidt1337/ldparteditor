@@ -18,6 +18,8 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.enums.View;
@@ -81,7 +83,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
             selectAll(null, true);
 
             {
-                HashSet<GData> dataToCut = new HashSet<>();
+                Set<GData> dataToCut = new HashSet<>();
                 for (GData g : selectedData) {
                     if (!lineLinkedToVertices.containsKey(g)) continue;
                     final Vertex[] verts;
@@ -237,7 +239,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
         // Merge vertices to the plane
         if (needMerge) {
             selectAll(null, true);
-            TreeSet<Vertex> allVertices = new TreeSet<>();
+            SortedSet<Vertex> allVertices = new TreeSet<>();
             allVertices.addAll(selectedVertices);
             clearSelection();
             for (Vertex v : allVertices) {
@@ -272,11 +274,11 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
 
         {
 
-            HashSet<GData> subfilesWithInvertnext = new HashSet<>();
+            Set<GData> subfilesWithInvertnext = new HashSet<>();
 
-            HashSet<GData> before = new HashSet<>();
-            HashSet<GData> between = new HashSet<>();
-            HashSet<GData> behind = new HashSet<>();
+            Set<GData> before = new HashSet<>();
+            Set<GData> between = new HashSet<>();
+            Set<GData> behind = new HashSet<>();
 
             for (GData g : selectedData) {
                 if (!lineLinkedToVertices.containsKey(g)) continue;
@@ -307,7 +309,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                 case 2:
                     verts = lines.get(g);
                     {
-                        TreeSet<Vertex> vv = new TreeSet<>();
+                        SortedSet<Vertex> vv = new TreeSet<>();
                         for (Vertex v : verts) {
                             vv.add(v);
                         }
@@ -317,7 +319,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                 case 3:
                     verts = triangles.get(g);
                     {
-                        TreeSet<Vertex> vv = new TreeSet<>();
+                        SortedSet<Vertex> vv = new TreeSet<>();
                         for (Vertex v : verts) {
                             vv.add(v);
                         }
@@ -327,7 +329,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                 case 4:
                     verts = quads.get(g);
                     {
-                        TreeSet<Vertex> vv = new TreeSet<>();
+                        SortedSet<Vertex> vv = new TreeSet<>();
                         for (Vertex v : verts) {
                             vv.add(v);
                         }
@@ -338,7 +340,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     Vertex[] v2 = condlines.get(g);
                     verts = new Vertex[]{v2[0], v2[1]};
                     {
-                        TreeSet<Vertex> vv = new TreeSet<>();
+                        SortedSet<Vertex> vv = new TreeSet<>();
                         for (Vertex v : verts) {
                             vv.add(v);
                         }
@@ -764,7 +766,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         case 2:
                             verts = lines.get(g);
                             {
-                                TreeSet<Vertex> vv = new TreeSet<>();
+                                SortedSet<Vertex> vv = new TreeSet<>();
                                 for (Vertex v : verts) {
                                     vv.add(v);
                                 }
@@ -774,7 +776,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         case 3:
                             verts = triangles.get(g);
                             {
-                                TreeSet<Vertex> vv = new TreeSet<>();
+                                SortedSet<Vertex> vv = new TreeSet<>();
                                 for (Vertex v : verts) {
                                     vv.add(v);
                                 }
@@ -784,7 +786,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                         case 4:
                             verts = quads.get(g);
                             {
-                                TreeSet<Vertex> vv = new TreeSet<>();
+                                SortedSet<Vertex> vv = new TreeSet<>();
                                 for (Vertex v : verts) {
                                     vv.add(v);
                                 }
@@ -795,7 +797,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             Vertex[] v2 = condlines.get(g);
                             verts = new Vertex[]{v2[0], v2[1]};
                             {
-                                TreeSet<Vertex> vv = new TreeSet<>();
+                                SortedSet<Vertex> vv = new TreeSet<>();
                                 for (Vertex v : verts) {
                                     vv.add(v);
                                 }

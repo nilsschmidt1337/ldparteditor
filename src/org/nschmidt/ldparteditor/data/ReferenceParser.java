@@ -57,25 +57,25 @@ public enum ReferenceParser {
 
     Die Funktion gibt eine Matrix zurück mit dem folgenden Format
 
-    ArrayList<DatFile>[0] = Zu entfernende Ziel-Parts
-    ArrayList<DatFile>[1] = Zu entfernende Ziel-Subparts
-    ArrayList<DatFile>[2] = Zu entfernende Ziel-Primitives
-    ArrayList<DatFile>[3] = Zu entfernende Ziel-Primitives48
-    ArrayList<DatFile>[4] = Zu entfernende Ziel-Primitives8
+    List<DatFile>[0] = Zu entfernende Ziel-Parts
+    List<DatFile>[1] = Zu entfernende Ziel-Subparts
+    List<DatFile>[2] = Zu entfernende Ziel-Primitives
+    List<DatFile>[3] = Zu entfernende Ziel-Primitives48
+    List<DatFile>[4] = Zu entfernende Ziel-Primitives8
 
-    ArrayList<DatFile>[5] = Zu erstellende Ziel-Parts (mit Abhängigkeit zu df)
-    ArrayList<DatFile>[6] = Zu erstellende Ziel-Subparts (mit Abhängigkeit zu df)
-    ArrayList<DatFile>[7] = Zu erstellende Ziel-Primitives (mit Abhängigkeit zu df)
-    ArrayList<DatFile>[8] = Zu erstellende Ziel-Primitives48 (mit Abhängigkeit zu df)
-    ArrayList<DatFile>[9] = Zu erstellende Ziel-Primitives8 (mit Abhängigkeit zu df)
+    List<DatFile>[5] = Zu erstellende Ziel-Parts (mit Abhängigkeit zu df)
+    List<DatFile>[6] = Zu erstellende Ziel-Subparts (mit Abhängigkeit zu df)
+    List<DatFile>[7] = Zu erstellende Ziel-Primitives (mit Abhängigkeit zu df)
+    List<DatFile>[8] = Zu erstellende Ziel-Primitives48 (mit Abhängigkeit zu df)
+    List<DatFile>[9] = Zu erstellende Ziel-Primitives8 (mit Abhängigkeit zu df)
 
 
     Wenn Dateien zu entfernen sind, soll zusätzlich gefragt werden, ob der Löschvorgang gewünscht ist.
 
 
      */
-    public static ArrayList<ArrayList<DatFile>> checkForReferences(DatFile df, References refMode, TreeItem origin, TreeItem target, TreeItem secondSource) {
-        ArrayList<ArrayList<DatFile>> result = new ArrayList<>();
+    public static List<List<DatFile>> checkForReferences(DatFile df, References refMode, TreeItem origin, TreeItem target, TreeItem secondSource) {
+        List<List<DatFile>> result = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             result.add(new ArrayList<>());
         }
@@ -180,14 +180,14 @@ public enum ReferenceParser {
 
 
             // 1. Gather a full list..
-            ArrayList<TreeItem> childs = origin.getItems();
+            List<TreeItem> childs = origin.getItems();
             for (TreeItem child : childs) {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> entries = (ArrayList<DatFile>) child.getData();
+                List<DatFile> entries = (List<DatFile>) child.getData();
                 for (DatFile df2 : entries) {
                     // 2. Parse every DatFile
                     if (df2.equals(df)) continue;
-                    ArrayList<String> source = df2.getSource();
+                    List<String> source = df2.getSource();
                     for (String line : source) {
                         DatFile ref = parseLine(line, alreadyParsed, false);
                         if (ref != null && ref.getShortName().equals(df.getShortName()) && !alreadyParsed2.contains(df2)) {
@@ -259,7 +259,7 @@ public enum ReferenceParser {
         return result;
     }
 
-    private static void recursiveParseREQUIRED(Editor3DWindow win, DatFile df, ArrayList<ArrayList<DatFile>> result, Set<String> alreadyParsed, Set<DatFile> alreadyParsed2) {
+    private static void recursiveParseREQUIRED(Editor3DWindow win, DatFile df, List<List<DatFile>> result, Set<String> alreadyParsed, Set<DatFile> alreadyParsed2) {
         List<String> dfSource = df.getSource();
         for (String line : dfSource) {
             dfToParse = df;

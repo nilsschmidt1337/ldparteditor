@@ -21,7 +21,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -45,7 +48,7 @@ import org.nschmidt.ldparteditor.helpers.compositetext.SubfileCompiler;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -58,7 +61,7 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  */
 class VM00Base {
 
-    protected final ArrayList<MemorySnapshot> snapshots = new ArrayList<>();
+    protected final List<MemorySnapshot> snapshots = new ArrayList<>();
 
     // 1 Vertex kann an mehreren Stellen (GData2-5 + position) manifestiert sein
     /**
@@ -66,10 +69,10 @@ class VM00Base {
      * {@code lineLinkedToVertices} checken, wenn ausgeschlossen werden soll,
      * dass es sich um Subfile Daten handelt
      */
-    protected final ThreadsafeTreeMap<Vertex, Set<VertexManifestation>> vertexLinkedToPositionInFile = new ThreadsafeTreeMap<>();
+    protected final ThreadsafeSortedMap<Vertex, Set<VertexManifestation>> vertexLinkedToPositionInFile = new ThreadsafeSortedMap<>();
 
     // 1 Vertex kann keinem oder mehreren Subfiles angehören
-    protected final ThreadsafeTreeMap<Vertex, Set<GData1>> vertexLinkedToSubfile = new ThreadsafeTreeMap<>();
+    protected final ThreadsafeSortedMap<Vertex, Set<GData1>> vertexLinkedToSubfile = new ThreadsafeSortedMap<>();
 
     // Auf Dateiebene: 1 Vertex kann an mehreren Stellen (GData1-5 + position)
     // manifestiert sein, ist er auch im Subfile, so gibt VertexInfo dies an
@@ -80,7 +83,7 @@ class VM00Base {
         return lineLinkedToVertices;
     }
 
-    private final ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE = new ThreadsafeTreeMap<>();
+    private final ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE = new ThreadsafeSortedMap<>();
     protected final ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE = new ThreadsafeHashMap<>();
 
     protected final ThreadsafeHashMap<GData1, Integer> vertexCountInSubfile = new ThreadsafeHashMap<>();
@@ -94,7 +97,7 @@ class VM00Base {
     protected final Vertex[] vArray = new Vertex[4];
     protected final VertexManifestation[] vdArray = new VertexManifestation[4];
 
-    protected final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+    protected final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
     protected final Set<GData> selectedData = Collections.newSetFromMap(new ThreadsafeHashMap<>());
     protected final Set<GData1> selectedSubfiles = Collections.newSetFromMap(new ThreadsafeHashMap<>());
@@ -103,7 +106,7 @@ class VM00Base {
     protected final Set<GData4> selectedQuads = Collections.newSetFromMap(new ThreadsafeHashMap<>());
     protected final Set<GData5> selectedCondlines = Collections.newSetFromMap(new ThreadsafeHashMap<>());
 
-    protected final Set<Vertex> backupSelectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+    protected final Set<Vertex> backupSelectedVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
     protected final Set<GData> backupSelectedData = Collections.newSetFromMap(new ThreadsafeHashMap<>());
     protected final Set<GData1> backupSelectedSubfiles = Collections.newSetFromMap(new ThreadsafeHashMap<>());
@@ -117,7 +120,7 @@ class VM00Base {
     protected GDataPNG selectedBgPicture = null;
     protected int selectedBgPictureIndex = -1;
 
-    protected final Set<Vertex> selectedVerticesForSubfile = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+    protected final Set<Vertex> selectedVerticesForSubfile = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
     protected final Set<GData2> selectedLinesForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<>());
     protected final Set<GData3> selectedTrianglesForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<>());
     protected final Set<GData4> selectedQuadsForSubfile = Collections.newSetFromMap(new ThreadsafeHashMap<>());
@@ -141,10 +144,10 @@ class VM00Base {
 
     protected Vertex lastSelectedVertex = null;
 
-    protected final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+    protected final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
     protected final Set<GData> hiddenData = Collections.newSetFromMap(new ThreadsafeHashMap<>());
 
-    protected final HashMap<GData, BFC> bfcMap = new HashMap<>();
+    protected final Map<GData, BFC> bfcMap = new HashMap<>();
 
     private volatile AtomicBoolean resetTimer = new AtomicBoolean(false);
     private volatile AtomicBoolean skipTimer = new AtomicBoolean(false);
@@ -440,22 +443,9 @@ class VM00Base {
         // Do not validate more stuff on release, since it costs a lot performance.
         if (!NLogger.debugging) return;
 
-        // TreeMap<Vertex, HashSet<VertexManifestation>>
-        // vertexLinkedToPositionInFile
-        // TreeMap<Vertex, HashSet<GData1>> vertexLinkedToSubfile
-        // HashMap<GData, HashSet<VertexInfo>> lineLinkedToVertices
-
-        // HashMap<GData1, Integer> vertexCountInSubfile
-
-        // HashMap<GData2, Vertex[]> lines
-        // HashMap<GData3, Vertex[]> triangles
-        // HashMap<GData4, Vertex[]> quads
-        // HashMap<GData5, Vertex[]> condlines
-
-        // TreeSet<Vertex> selectedVertices
-
         Set<Vertex> vertices = vertexLinkedToPositionInFile.keySet();
-        Set<Vertex> verticesInUse = new TreeSet<>();
+        SortedSet<Vertex> verticesInUse = new TreeSet<>();
+
         for (GData0 line : declaredVertices.keySet()) {
             for (Vertex vertex : declaredVertices.get(line)) {
                 verticesInUse.add(vertex);
@@ -498,7 +488,7 @@ class VM00Base {
             throw new AssertionError("The first line can't be null."); //$NON-NLS-1$
 
         GData previousData = lineMap.getValue(1).getBefore();
-        TreeSet<Integer> lineNumbers = new TreeSet<>(lineMap.keySet());
+        SortedSet<Integer> lineNumbers = new TreeSet<>(lineMap.keySet());
         boolean nullReferenceFound = false;
         for (Integer lineNumber : lineNumbers) {
             if (nullReferenceFound)
@@ -536,13 +526,13 @@ class VM00Base {
 
     private final void cleanupHiddenData() {
         if (!hiddenData.isEmpty()) {
-            HashMap<String, ArrayList<GData>> dict = null;
+            Map<String, List<GData>> dict = null;
             Set<GData1> s1 = vertexCountInSubfile.keySet();
             Set<GData2> s2 = lines.keySet();
             Set<GData3> s3 = triangles.keySet();
             Set<GData4> s4 = quads.keySet();
             Set<GData5> s5 = condlines.keySet();
-            HashSet<GData> dataToHide = new HashSet<>();
+            Set<GData> dataToHide = new HashSet<>();
             for (Iterator<GData> hi = hiddenData.iterator(); hi.hasNext();) {
                 final GData oldData = hi.next();
                 if (
@@ -557,7 +547,7 @@ class VM00Base {
                 if (dict == null) {
                     dict = buildObjectDictionary();
                 }
-                ArrayList<GData> g3 = dict.get(oldData.toString());
+                List<GData> g3 = dict.get(oldData.toString());
                 if (g3 != null) {
                     for (GData g : g3) {
                         if (isSharingSameSubfile(g, oldData)) {
@@ -572,8 +562,8 @@ class VM00Base {
         }
     }
 
-    private HashMap<String, ArrayList<GData>> buildObjectDictionary() {
-        HashMap<String, ArrayList<GData>> dict = new HashMap<>();
+    private Map<String, List<GData>> buildObjectDictionary() {
+        Map<String, List<GData>> dict = new HashMap<>();
         for (GData1 g1 : vertexCountInSubfile.keySet()) {
             final String key = g1.getNiceString();
             dict.putIfAbsent(key, new ArrayList<>());
@@ -854,8 +844,8 @@ class VM00Base {
      */
     public final synchronized boolean changeVertexDirect(Vertex oldVertex, Vertex newVertex, boolean modifyVertexMetaCommands) {
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
-        TreeSet<Integer> keys = new TreeSet<>(drawPerLine.keySet());
-        HashSet<GData> dataToRemove = new HashSet<>();
+        SortedSet<Integer> keys = new TreeSet<>(drawPerLine.keySet());
+        Set<GData> dataToRemove = new HashSet<>();
         boolean foundVertexDuplicate = false;
         for (Integer key : keys) {
             GData vm = linkedDatFile.getDrawPerLine().getValue(key);
@@ -1037,7 +1027,7 @@ class VM00Base {
         Set<VertexManifestation> manis2 = vertexLinkedToPositionInFile.get(oldVertex);
         if (manis2 == null || manis2.isEmpty())
             return false;
-        HashSet<VertexManifestation> manis = new HashSet<>(manis2);
+        Set<VertexManifestation> manis = new HashSet<>(manis2);
 
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
 
@@ -1200,7 +1190,7 @@ class VM00Base {
         Set<VertexManifestation> manis2 = vertexLinkedToPositionInFile.get(oldVertex);
         if (manis2 == null || manis2.isEmpty())
             return og;
-        HashSet<VertexManifestation> manis = new HashSet<>(manis2);
+        Set<VertexManifestation> manis = new HashSet<>(manis2);
 
         HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
 
@@ -1475,13 +1465,13 @@ class VM00Base {
             setModifiedNoSync();
         }
 
-        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
-        final HashSet<GData0> effSelectedVertices = new HashSet<>();
-        final HashSet<GData2> effSelectedLines = new HashSet<>();
-        final HashSet<GData3> effSelectedTriangles = new HashSet<>();
-        final HashSet<GData4> effSelectedQuads = new HashSet<>();
-        final HashSet<GData5> effSelectedCondlines = new HashSet<>();
+        final Set<GData0> effSelectedVertices = new HashSet<>();
+        final Set<GData2> effSelectedLines = new HashSet<>();
+        final Set<GData3> effSelectedTriangles = new HashSet<>();
+        final Set<GData4> effSelectedQuads = new HashSet<>();
+        final Set<GData5> effSelectedCondlines = new HashSet<>();
 
         selectedData.clear();
 
@@ -1514,9 +1504,9 @@ class VM00Base {
 
         // 1. Vertex Based Selection
         {
-            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
             {
-                HashMap<GData, Integer> occurMap = new HashMap<>();
+                Map<GData, Integer> occurMap = new HashMap<>();
                 for (Vertex vertex : selectedVertices) {
                     Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
                     if (occurences == null)
@@ -1733,7 +1723,7 @@ class VM00Base {
 
                 // Update Draw per line
 
-                TreeSet<Integer> ts = new TreeSet<>();
+                SortedSet<Integer> ts = new TreeSet<>();
                 ts.addAll(dpl.keySet());
 
                 int counter = 1;
@@ -1779,15 +1769,15 @@ class VM00Base {
         remove(oldData);
     }
 
-    public synchronized HashMap<GData0, Vertex[]> getDeclaredVertices() {
+    public synchronized Map<GData0, Vertex[]> getDeclaredVertices() {
         return new HashMap<>(declaredVertices);
     }
 
-    public final synchronized HashMap<GData2, Vertex[]> getLines() {
+    public final synchronized Map<GData2, Vertex[]> getLines() {
         return new HashMap<>(lines);
     }
 
-    public final synchronized HashMap<GData3, Vertex[]> getTriangles() {
+    public final synchronized Map<GData3, Vertex[]> getTriangles() {
         return new HashMap<>(triangles);
     }
 
@@ -1799,11 +1789,11 @@ class VM00Base {
         return quads;
     }
 
-    public final synchronized HashMap<GData4, Vertex[]> getQuads() {
+    public final synchronized Map<GData4, Vertex[]> getQuads() {
         return new HashMap<>(quads);
     }
 
-    public final synchronized HashMap<GData5, Vertex[]> getCondlines() {
+    public final synchronized Map<GData5, Vertex[]> getCondlines() {
         return new HashMap<>(condlines);
     }
 

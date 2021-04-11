@@ -17,7 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.nio.FloatBuffer;
-import java.util.HashMap;
+import java.util.Map;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -26,7 +26,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.composites.Composite3D;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.opengl.GL33Helper;
 import org.nschmidt.ldparteditor.opengl.GLMatrixStack;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer20;
@@ -452,32 +452,32 @@ public final class GDataPNG extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, BFC> map) {
+    public void getBFCorientationMap(Map<GData,BFC> map) {
         // Implementation is not required.
     }
 
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
+    public void getBFCorientationMapNOCERTIFY(Map<GData, BFC> map) {
         // Implementation is not required.
     }
 
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
+    public void getBFCorientationMapNOCLIP(Map<GData, BFC> map) {
         // Implementation is not required.
     }
 
     @Override
-    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMap(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         // Implementation is not required.
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         // Implementation is not required.
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         // Implementation is not required.
     }
 

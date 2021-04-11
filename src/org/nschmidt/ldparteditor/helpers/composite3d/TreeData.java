@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helpers.composite3d;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.nschmidt.ldparteditor.widgets.TreeItem;
 
@@ -26,14 +27,14 @@ import org.nschmidt.ldparteditor.widgets.TreeItem;
 public class TreeData {
 
     private TreeItem location;
-    private final HashSet<TreeItem> locationsWithSameShortFilenames = new HashSet<>();
+    private final Set<TreeItem> locationsWithSameShortFilenames = new HashSet<>();
     public TreeItem getLocation() {
         return location;
     }
     public void setLocation(TreeItem location) {
         this.location = location;
     }
-    public HashSet<TreeItem> getLocationsWithSameShortFilenames() {
+    public Set<TreeItem> getLocationsWithSameShortFilenames() {
         return locationsWithSameShortFilenames;
     }
 }

@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.widgets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.PaintEvent;
@@ -55,7 +56,7 @@ public class NButton extends Canvas {
     private boolean hovered = false;
     private boolean pressed = false;
     private boolean selected = false;
-    private static HashMap<Composite, ArrayList<NButton>> radioGroups = new HashMap<>();
+    private static Map<Composite, List<NButton>> radioGroups = new HashMap<>();
 
     public NButton(Composite parent, int style) {
         super(parent, style);
@@ -70,7 +71,7 @@ public class NButton extends Canvas {
         }
 
         if (isRadio) {
-            ArrayList<NButton> groups = radioGroups.get(parent);
+            List<NButton> groups = radioGroups.get(parent);
             if (groups == null) {
                 groups = new ArrayList<>();
                 radioGroups.put(parent, groups);

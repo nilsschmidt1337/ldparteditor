@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.swt.custom.StyledText;
 
@@ -37,7 +38,7 @@ public enum QuadSplitter {
         VertexManager vm = fileNameObj.getVertexManager();
         vm.clearSelection();
 
-        HashSet<GData4> selectedQuads = new HashSet<>();
+        Set<GData4> selectedQuads = new HashSet<>();
 
         GData data2draw = fileNameObj.getDrawChainStart();
         int lineCount = 0;

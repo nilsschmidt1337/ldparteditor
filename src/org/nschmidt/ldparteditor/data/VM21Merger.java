@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -65,7 +66,7 @@ public class VM21Merger extends VM20Manipulator {
         }
 
         Vector3d newVertex = new Vector3d();
-        Set<Vertex> originVerts = new TreeSet<>();
+        SortedSet<Vertex> originVerts = new TreeSet<>();
 
         if (mode != MergeTo.LAST_SELECTED) {
             originVerts.addAll(selectedVertices);
@@ -116,7 +117,7 @@ public class VM21Merger extends VM20Manipulator {
                 // First, I had to extend the selection to adjacent data,
                 // so the nearest edge will not be adjacent to the (selected) origin vertex
 
-                final HashSet<VertexManifestation> emptySet = new HashSet<>();
+                final Set<VertexManifestation> emptySet = new HashSet<>();
                 for (Vertex v : originVerts) {
                     for (VertexManifestation mani : vertexLinkedToPositionInFile.getOrDefault(v, emptySet)) {
                         GData gd = mani.getGdata();
@@ -161,11 +162,11 @@ public class VM21Merger extends VM20Manipulator {
                         modified = split((Vertex) target[0], (Vertex) target[1], (Vertex) target[2]) || modified;
                     }
                 } else if (directional) {
-                    final HashSet<GData> allSurfs = new HashSet<>();
+                    final Set<GData> allSurfs = new HashSet<>();
                     allSurfs.addAll(triangles.keySet());
                     allSurfs.addAll(quads.keySet());
                     for (Vertex vertex : originVerts) {
-                        HashSet<GData> linkedSurfs = getLinkedSurfaces(vertex);
+                        Set<GData> linkedSurfs = getLinkedSurfaces(vertex);
                         Vector3r orig = new Vector3r(vertex);
                         Vector3r r = new Vector3r();
                         Vector3r p1 = new Vector3r();
@@ -251,7 +252,7 @@ public class VM21Merger extends VM20Manipulator {
             if (originVerts.isEmpty()) return;
             {
                 float minDist = Float.MAX_VALUE;
-                Set<Vertex> allVerticesMinusSelection = new TreeSet<>();
+                SortedSet<Vertex> allVerticesMinusSelection = new TreeSet<>();
                 allVerticesMinusSelection.addAll(getVertices());
                 allVerticesMinusSelection.removeAll(originVerts);
                 clearSelection();

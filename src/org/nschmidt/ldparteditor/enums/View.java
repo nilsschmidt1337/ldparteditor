@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.enums;
 import java.io.File;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -323,11 +324,11 @@ public enum View {
     public static final Matrix ACCURATE_ID = new Matrix(BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO,
             BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ONE);
 
-    private static final HashMap<Integer, GColour> colourFromIndex = new HashMap<>();
-    private static final HashMap<Integer, GColour> edgeColourFromIndex = new HashMap<>();
-    private static final HashMap<Integer, String> colourNameFromIndex = new HashMap<>();
+    private static final Map<Integer, GColour> colourFromIndex = new HashMap<>();
+    private static final Map<Integer, GColour> edgeColourFromIndex = new HashMap<>();
+    private static final Map<Integer, String> colourNameFromIndex = new HashMap<>();
 
-    private static final HashMap<IndexedEntry, Integer> indexFromColour = new HashMap<>();
+    private static final Map<IndexedEntry, Integer> indexFromColour = new HashMap<>();
 
     public static final GColour getLDConfigColour(int index) {
         GColour result =  colourFromIndex.get(index);
@@ -351,11 +352,11 @@ public enum View {
         return colourNameFromIndex.getOrDefault(index, "<???>"); //$NON-NLS-1$
     }
 
-    public static final HashMap<Integer, GColour> getColourMap() {
+    public static final Map<Integer, GColour> getColourMap() {
         return colourFromIndex;
     }
 
-    public static final HashMap<Integer, String> getNameMap() {
+    public static final Map<Integer, String> getNameMap() {
         return colourNameFromIndex;
     }
 

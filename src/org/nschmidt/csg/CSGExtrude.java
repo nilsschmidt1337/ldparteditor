@@ -17,6 +17,7 @@ package org.nschmidt.csg;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -37,11 +38,11 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
     public final int id = id_counter.getAndIncrement();
 
     private final GDataCSG start;
-    private final ArrayList<GData> cachedData;
+    private final List<GData> cachedData;
     private final PathTruderSettings pts;
     private final List<Polygon> polygonCache;
 
-    public CSGExtrude(GDataCSG gDataCSG, ArrayList<GData> cachedData2, PathTruderSettings pts2, List<Polygon> polygonCache2) {
+    public CSGExtrude(GDataCSG gDataCSG, List<GData> cachedData2, PathTruderSettings pts2, List<Polygon> polygonCache2) {
         start = gDataCSG;
         cachedData = cachedData2;
         pts = pts2;
@@ -66,7 +67,7 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
         final HashBiMap<Integer, GData> dpl = df.getDrawPerLineNoClone();
         final VertexManager vm= df.getVertexManager();
 
-        final TreeSet<GData> sl = new TreeSet<>();
+        final SortedSet<GData> sl = new TreeSet<>();
         for (GData g : cachedData) {
             if (g.type() == 9) {
                 GDataTEX tex = (GDataTEX) g;
@@ -135,7 +136,7 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
     }
 
 
-    public static void fillCache(ArrayList<GData> cachedData, GData start) {
+    public static void fillCache(List<GData> cachedData, GData start) {
         if (cachedData.isEmpty()) {
             GData next = start;
             while ((next = next.getNext()) != null && next.type() == 8) {
@@ -165,8 +166,8 @@ public class CSGExtrude extends CSGPrimitive implements Primitive {
         }
     }
 
-    public static boolean needCacheRefresh(ArrayList<GData> cachedData2, GData start, DatFile df) {
-        ArrayList<GData> cachedData = new ArrayList<>();
+    public static boolean needCacheRefresh(List<GData> cachedData2, GData start, DatFile df) {
+        List<GData> cachedData = new ArrayList<>();
         GData next = start;
         while ((next = next.getNext()) != null && next.type() == 8) {
 

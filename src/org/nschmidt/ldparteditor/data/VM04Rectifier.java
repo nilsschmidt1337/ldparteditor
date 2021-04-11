@@ -20,7 +20,9 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -105,7 +107,7 @@ class VM04Rectifier extends VM03Adjacency {
                                     Vertex[] v = triangles.get(tri);
 
                                     @SuppressWarnings("unchecked")
-                                    ArrayList<GData>[] cf = new ArrayList[3];
+                                    List<GData>[] cf = new ArrayList[3];
 
                                     cf[0] = linkedCommonFaces(v[0], v[1]);
                                     cf[1] = linkedCommonFaces(v[0], v[2]);
@@ -119,9 +121,9 @@ class VM04Rectifier extends VM03Adjacency {
                                             GData3 tri2 = (GData3) cf[i].get(1);
                                             if (tri1.parent.equals(View.DUMMY_REFERENCE) && tri2.parent.equals(View.DUMMY_REFERENCE) && tri1.colourNumber == tri2.colourNumber && (tri1.colourNumber != -1 || tri1.r == tri2.r && tri1.g == tri2.g && tri1.b == tri2.b && tri1.a == tri2.a)) {
 
-                                                TreeSet<Vertex> tri1V = new TreeSet<>();
-                                                TreeSet<Vertex> tri2V = new TreeSet<>();
-                                                TreeSet<Vertex> triC = new TreeSet<>();
+                                                SortedSet<Vertex> tri1V = new TreeSet<>();
+                                                SortedSet<Vertex> tri2V = new TreeSet<>();
+                                                SortedSet<Vertex> triC = new TreeSet<>();
 
                                                 Vertex[] v1 = triangles.get(tri1);
                                                 Vertex[] v2 = triangles.get(tri2);
@@ -265,9 +267,9 @@ class VM04Rectifier extends VM03Adjacency {
                                         GData3 tri1 = (GData3) cf[bestIndex].get(0);
                                         GData3 tri2 = (GData3) cf[bestIndex].get(1);
 
-                                        TreeSet<Vertex> tri1V = new TreeSet<>();
-                                        TreeSet<Vertex> tri2V = new TreeSet<>();
-                                        TreeSet<Vertex> triC = new TreeSet<>();
+                                        SortedSet<Vertex> tri1V = new TreeSet<>();
+                                        SortedSet<Vertex> tri2V = new TreeSet<>();
+                                        SortedSet<Vertex> triC = new TreeSet<>();
 
                                         Vertex[] v1 = triangles.get(tri1);
                                         Vertex[] v2 = triangles.get(tri2);
@@ -568,7 +570,7 @@ class VM04Rectifier extends VM03Adjacency {
 
                                                 Set<String> alreadyParsed = new HashSet<>();
                                                 alreadyParsed.add(linkedDatFile.getShortName());
-                                                ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
+                                                List<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                                                 GData rect = result.get(0).getGraphicalData();
                                                 if (rect == null)
                                                     rect = new GData0(lineBuilder.toString(), View.DUMMY_REFERENCE);
@@ -609,7 +611,7 @@ class VM04Rectifier extends VM03Adjacency {
                     Vertex[] v = triangles.get(tri);
 
                     @SuppressWarnings("unchecked")
-                    ArrayList<GData>[] cf = new ArrayList[3];
+                    List<GData>[] cf = new ArrayList[3];
 
                     cf[0] = linkedCommonFaces(v[0], v[1]);
                     cf[1] = linkedCommonFaces(v[0], v[2]);
@@ -623,9 +625,9 @@ class VM04Rectifier extends VM03Adjacency {
                             GData3 tri2 = (GData3) cf[i].get(1);
                             if (tri1.parent.equals(View.DUMMY_REFERENCE) && tri2.parent.equals(View.DUMMY_REFERENCE) && tri1.colourNumber == tri2.colourNumber && (tri1.colourNumber != -1 || tri1.r == tri2.r && tri1.g == tri2.g && tri1.b == tri2.b && tri1.a == tri2.a)) {
 
-                                TreeSet<Vertex> tri1V = new TreeSet<>();
-                                TreeSet<Vertex> tri2V = new TreeSet<>();
-                                TreeSet<Vertex> triC = new TreeSet<>();
+                                SortedSet<Vertex> tri1V = new TreeSet<>();
+                                SortedSet<Vertex> tri2V = new TreeSet<>();
+                                SortedSet<Vertex> triC = new TreeSet<>();
 
                                 Vertex[] v1 = triangles.get(tri1);
                                 Vertex[] v2 = triangles.get(tri2);
@@ -769,9 +771,9 @@ class VM04Rectifier extends VM03Adjacency {
                         GData3 tri1 = (GData3) cf[bestIndex].get(0);
                         GData3 tri2 = (GData3) cf[bestIndex].get(1);
 
-                        TreeSet<Vertex> tri1V = new TreeSet<>();
-                        TreeSet<Vertex> tri2V = new TreeSet<>();
-                        TreeSet<Vertex> triC = new TreeSet<>();
+                        SortedSet<Vertex> tri1V = new TreeSet<>();
+                        SortedSet<Vertex> tri2V = new TreeSet<>();
+                        SortedSet<Vertex> triC = new TreeSet<>();
 
                         Vertex[] v1 = triangles.get(tri1);
                         Vertex[] v2 = triangles.get(tri2);
@@ -1073,7 +1075,7 @@ class VM04Rectifier extends VM03Adjacency {
 
                                 Set<String> alreadyParsed = new HashSet<>();
                                 alreadyParsed.add(linkedDatFile.getShortName());
-                                ArrayList<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
+                                List<ParsingResult> result = DatParser.parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                                 GData rect = result.get(0).getGraphicalData();
                                 if (rect == null)
                                     rect = new GData0(lineBuilder.toString(), View.DUMMY_REFERENCE);

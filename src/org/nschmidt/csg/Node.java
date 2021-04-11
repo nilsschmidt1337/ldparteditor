@@ -358,7 +358,7 @@ final class Node {
      */
     private final List<NodePolygon> build(List<Polygon> polygons) {
 
-        final ArrayList<NodePolygon> result = new ArrayList<>(2);
+        final List<NodePolygon> result = new ArrayList<>(2);
 
         if (this.plane == null && !polygons.isEmpty()) {
             this.plane = polygons.get(0).plane.createClone();
@@ -405,7 +405,7 @@ final class Node {
 
     public final List<NodePolygon> buildForResult(List<Polygon> polygons) {
 
-        final ArrayList<NodePolygon> result = new ArrayList<>(2);
+        final List<NodePolygon> result = new ArrayList<>(2);
 
         if (this.plane == null && !polygons.isEmpty()) {
             this.plane = polygons.get(0).plane.createClone();

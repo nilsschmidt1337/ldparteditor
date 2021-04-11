@@ -17,8 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -59,7 +59,7 @@ class HistoryManager {
         this.df = df;
     }
 
-    void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, HashMap<String, ArrayList<Boolean>> selectedData, HashMap<String, ArrayList<Boolean>> hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
+    void pushHistory(String text, int selectionStart, int selectionEnd, GData[] data, Map<String, List<Boolean>> selectedData, Map<String, List<Boolean>> hiddenData, Vertex[] selectedVertices, Vertex[] hiddenVertices, int topIndex) {
         if (df.isReadOnly()) return;
         if (hasNoThread) {
             hasNoThread = false;
@@ -73,15 +73,15 @@ class HistoryManager {
                     int pointer = 0;
                     int pointerMax = 0;
 
-                    final ArrayList<Integer> historySelectionStart = new ArrayList<>();
-                    final ArrayList<Integer> historySelectionEnd = new ArrayList<>();
-                    final ArrayList<Integer> historyTopIndex = new ArrayList<>();
-                    final ArrayList<String> historyFullText = new ArrayList<>();
-                    final ArrayList<String[]> historyText = new ArrayList<>();
-                    final ArrayList<HashMap<String, ArrayList<Boolean>>> historySelectedData = new ArrayList<>();
-                    final ArrayList<HashMap<String, ArrayList<Boolean>>> historyHiddenData = new ArrayList<>();
-                    final ArrayList<Vertex[]> historySelectedVertices = new ArrayList<>();
-                    final ArrayList<Vertex[]> historyHiddenVertices = new ArrayList<>();
+                    final List<Integer> historySelectionStart = new ArrayList<>();
+                    final List<Integer> historySelectionEnd = new ArrayList<>();
+                    final List<Integer> historyTopIndex = new ArrayList<>();
+                    final List<String> historyFullText = new ArrayList<>();
+                    final List<String[]> historyText = new ArrayList<>();
+                    final List<Map<String, List<Boolean>>> historySelectedData = new ArrayList<>();
+                    final List<Map<String, List<Boolean>>> historyHiddenData = new ArrayList<>();
+                    final List<Vertex[]> historySelectedVertices = new ArrayList<>();
+                    final List<Vertex[]> historyHiddenVertices = new ArrayList<>();
 
                     while (isRunning.get() && Editor3DWindow.getAlive().get()) {
                         try {
@@ -174,10 +174,10 @@ class HistoryManager {
 
                                 historySelectionStart.add((Integer) newEntry[1]);
                                 historySelectionEnd.add((Integer) newEntry[2]);
-                                historySelectedData.add((HashMap<String, ArrayList<Boolean>>) newEntry[4]);
+                                historySelectedData.add((Map<String, List<Boolean>>) newEntry[4]);
                                 historySelectedVertices.add((Vertex[]) newEntry[5]);
                                 historyTopIndex.add((Integer) newEntry[6]);
-                                historyHiddenData.add((HashMap<String, ArrayList<Boolean>>) newEntry[7]);
+                                historyHiddenData.add((Map<String, List<Boolean>>) newEntry[7]);
                                 historyHiddenVertices.add((Vertex[]) newEntry[8]);
                                 historyText.add(result);
                                 historyFullText.add(resultFullText);
@@ -275,8 +275,8 @@ class HistoryManager {
                                         final int topIndex = historyTopIndex.get(pointer);
                                         final String fullText = historyFullText.get(pointer);
                                         final String[] lines = historyText.get(pointer);
-                                        HashMap<String, ArrayList<Boolean>> selection = historySelectedData.get(pointer);
-                                        HashMap<String, ArrayList<Boolean>> hiddenSelection = historyHiddenData.get(pointer);
+                                        Map<String, List<Boolean>> selection = historySelectedData.get(pointer);
+                                        Map<String, List<Boolean>> hiddenSelection = historyHiddenData.get(pointer);
                                         final Vertex[] verts = historySelectedVertices.get(pointer);
                                         final Vertex[] verts2 = historyHiddenVertices.get(pointer);
                                         while (!answerQueue.offer(new Object[]{
@@ -400,8 +400,8 @@ class HistoryManager {
         int topIndex = -1;
         String fullText = null;
         String[] lines = null;
-        HashMap<String, ArrayList<Boolean>> selection = null;
-        HashMap<String, ArrayList<Boolean>> hiddenSelection = null;
+        Map<String, List<Boolean>> selection = null;
+        Map<String, List<Boolean>> hiddenSelection = null;
         Vertex[] verts = null;
         Vertex[] verts2 = null;
         while (true) {
@@ -417,8 +417,8 @@ class HistoryManager {
                 topIndex = (int) newEntry[3];
                 fullText = (String) newEntry[4];
                 lines = (String[]) newEntry[5];
-                selection = (HashMap<String, ArrayList<Boolean>>) newEntry[6];
-                hiddenSelection = (HashMap<String, ArrayList<Boolean>>) newEntry[7];
+                selection = (Map<String, List<Boolean>>) newEntry[6];
+                hiddenSelection = (Map<String, List<Boolean>>) newEntry[7];
                 verts = (Vertex[]) newEntry[8];
                 verts2 = (Vertex[]) newEntry[9];
                 break;

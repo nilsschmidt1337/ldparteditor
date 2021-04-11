@@ -16,11 +16,13 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.state;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Event;
@@ -71,15 +73,15 @@ public class KeyStateManager {
     private final CompositePrimitive cp;
 
     /** A set of all keys which are pressed at the moment */
-    private HashSet<Integer> pressedKeyCodes = new HashSet<>();
+    private Set<Integer> pressedKeyCodes = new HashSet<>();
     /** A map which assigns a pressed key to a task */
-    private static final HashMap<String, Task> taskMap = new HashMap<>();
-    private static final HashMap<Task, String> taskKeyMap = new HashMap<>();
+    private static final Map<String, Task> taskMap = new HashMap<>();
+    private static final Map<Task, String> taskKeyMap = new HashMap<>();
     /** A set of all reserved keys */
-    private static final HashSet<String> reservedKeyCodes = new HashSet<>();
+    private static final Set<String> reservedKeyCodes = new HashSet<>();
     /** A map which assigns a pressed key to a task (for the text editor)*/
-    private static final HashMap<String, TextTask> textTaskMap = new HashMap<>();
-    private static final HashMap<TextTask, String> textTaskKeyMap = new HashMap<>();
+    private static final Map<String, TextTask> textTaskMap = new HashMap<>();
+    private static final Map<TextTask, String> textTaskKeyMap = new HashMap<>();
 
     private int multi = 100;
     private int colourNumber = 0;
@@ -984,7 +986,7 @@ public class KeyStateManager {
             }
 
             // Synchronise key state with other composites
-            ArrayList<OpenGLRenderer> r = Editor3DWindow.getRenders();
+            List<OpenGLRenderer> r = Editor3DWindow.getRenders();
             for (OpenGLRenderer renderer : r) {
                 renderer.getC3D().getKeys().synchronise(this);
             }
@@ -1164,23 +1166,23 @@ public class KeyStateManager {
         this.cmdPressed = ksm.cmdPressed;
     }
 
-    public static HashSet<String> getReservedKeyCodes() {
+    public static Set<String> getReservedKeyCodes() {
         return reservedKeyCodes;
     }
 
-    public static HashMap<String, Task> getTaskmap() {
+    public static Map<String, Task> getTaskmap() {
         return taskMap;
     }
 
-    public static HashMap<String, TextTask> getTextTaskmap() {
+    public static Map<String, TextTask> getTextTaskmap() {
         return textTaskMap;
     }
 
-    public static HashMap<Task, String> getTaskKeymap() {
+    public static Map<Task, String> getTaskKeymap() {
         return taskKeyMap;
     }
 
-    public static HashMap<TextTask, String> getTextTaskKeymap() {
+    public static Map<TextTask, String> getTextTaskKeymap() {
         return textTaskKeyMap;
     }
 

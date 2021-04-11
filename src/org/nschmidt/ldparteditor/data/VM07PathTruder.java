@@ -19,7 +19,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -51,16 +53,16 @@ class VM07PathTruder extends VM06Edger2 {
         final Set<GData3> newTriangles = new HashSet<>();
         final Set<GData4> newQuads = new HashSet<>();
 
-        final ArrayList<GData2> shape1 = new ArrayList<>();
-        final ArrayList<GData2> shape2 = new ArrayList<>();
+        final List<GData2> shape1 = new ArrayList<>();
+        final List<GData2> shape2 = new ArrayList<>();
 
-        final ArrayList<GData2> path1 = new ArrayList<>();
-        final ArrayList<GData2> path2 = new ArrayList<>();
+        final List<GData2> path1 = new ArrayList<>();
+        final List<GData2> path2 = new ArrayList<>();
 
-        final ArrayList<GData2> path1endSegments = new ArrayList<>();
-        final ArrayList<GData2> path2endSegments = new ArrayList<>();
+        final List<GData2> path1endSegments = new ArrayList<>();
+        final List<GData2> path2endSegments = new ArrayList<>();
 
-        final ArrayList<GData2> lineIndicators = new ArrayList<>();
+        final List<GData2> lineIndicators = new ArrayList<>();
 
         if (syncWithEditor) {
             originalSelection.addAll(selectedLines);
@@ -143,7 +145,7 @@ class VM07PathTruder extends VM06Edger2 {
 
             // Insert zero length lines as line indicators
             {
-                Set<Vertex> liVerts = new TreeSet<>();
+                SortedSet<Vertex> liVerts = new TreeSet<>();
                 for (GData2 ind : lineIndicators) {
                     Vertex[] verts = lines.get(ind);
                     if (verts == null) {
@@ -160,7 +162,7 @@ class VM07PathTruder extends VM06Edger2 {
                 // Shape 1
                 {
                     int ss = shape1.size();
-                    final ArrayList<GData2> shapeTmp = new ArrayList<>(ss);
+                    final List<GData2> shapeTmp = new ArrayList<>(ss);
                     int ssm = ss - 1;
                     for (int i = 0; i < ss; i++) {
                         Vertex[] verts = lines.get(shape1.get(i));
@@ -204,7 +206,7 @@ class VM07PathTruder extends VM06Edger2 {
                 // Shape 2
                 {
                     int ss = shape2.size();
-                    final ArrayList<GData2> shapeTmp = new ArrayList<>(ss);
+                    final List<GData2> shapeTmp = new ArrayList<>(ss);
                     int ssm = ss - 1;
                     for (int i = 0; i < ss; i++) {
                         Vertex[] verts = lines.get(shape2.get(i));
@@ -1455,7 +1457,7 @@ class VM07PathTruder extends VM06Edger2 {
         {
             for (GData2 g2 : newLines) {
                 Vertex[] verts = lines.get(g2);
-                Set<Vertex> verts2 = new TreeSet<>();
+                SortedSet<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -1465,7 +1467,7 @@ class VM07PathTruder extends VM06Edger2 {
             }
             for (GData3 g3 : newTriangles) {
                 Vertex[] verts = triangles.get(g3);
-                Set<Vertex> verts2 = new TreeSet<>();
+                SortedSet<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -1475,7 +1477,7 @@ class VM07PathTruder extends VM06Edger2 {
             }
             for (GData4 g4 : newQuads) {
                 Vertex[] verts = quads.get(g4);
-                Set<Vertex> verts2 = new TreeSet<>();
+                SortedSet<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }

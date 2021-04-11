@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.enums.Threshold;
@@ -78,13 +80,13 @@ public enum ProtractorHelper {
 
         double targetAngle = angle;
 
-        TreeSet<Vertex> itearatedPositions =  new TreeSet<>();
+        SortedSet<Vertex> itearatedPositions =  new TreeSet<>();
         int iterations = 0;
 
         final BigDecimal tenth = new BigDecimal("0.1"); //$NON-NLS-1$
 
         Vertex pMin = new Vertex(oldPos);
-        ArrayList<Object[]> res = new ArrayList<>();
+        List<Object[]> res = new ArrayList<>();
 
         int innerIterations = 0;
 

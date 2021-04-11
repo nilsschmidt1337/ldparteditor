@@ -22,7 +22,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.regex.Pattern;
@@ -39,7 +42,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -66,23 +69,23 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         CLIPBOARD.clear();
         CLIPBOARD_InvNext.clear();
 
-        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
-        final HashSet<GData2> effSelectedLines = new HashSet<>();
-        final HashSet<GData3> effSelectedTriangles = new HashSet<>();
-        final HashSet<GData4> effSelectedQuads = new HashSet<>();
-        final HashSet<GData5> effSelectedCondlines = new HashSet<>();
+        final Set<GData2> effSelectedLines = new HashSet<>();
+        final Set<GData3> effSelectedTriangles = new HashSet<>();
+        final Set<GData4> effSelectedQuads = new HashSet<>();
+        final Set<GData5> effSelectedCondlines = new HashSet<>();
 
-        final TreeSet<Vertex> effSelectedVertices2 = new TreeSet<>(selectedVertices);
-        final HashSet<GData2> effSelectedLines2 = new HashSet<>(selectedLines);
-        final HashSet<GData3> effSelectedTriangles2 = new HashSet<>(selectedTriangles);
-        final HashSet<GData4> effSelectedQuads2 = new HashSet<>(selectedQuads);
-        final HashSet<GData5> effSelectedCondlines2 = new HashSet<>(selectedCondlines);
+        final SortedSet<Vertex> effSelectedVertices2 = new TreeSet<>(selectedVertices);
+        final Set<GData2> effSelectedLines2 = new HashSet<>(selectedLines);
+        final Set<GData3> effSelectedTriangles2 = new HashSet<>(selectedTriangles);
+        final Set<GData4> effSelectedQuads2 = new HashSet<>(selectedQuads);
+        final Set<GData5> effSelectedCondlines2 = new HashSet<>(selectedCondlines);
 
         selectedData.clear();
 
         {
-            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
             // 0. Deselect selected subfile data I (for whole selected subfiles)
             for (GData1 subf : selectedSubfiles) {
                 Set<VertexInfo> vis = lineLinkedToVertices.get(subf);
@@ -143,7 +146,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
             // 1. Vertex Based Selection
 
             {
-                HashMap<GData, Integer> occurMap = new HashMap<>();
+                Map<GData, Integer> occurMap = new HashMap<>();
                 for (Vertex vertex : selectedVertices) {
                     Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
                     if (occurences == null)
@@ -533,7 +536,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                         GDataBFC invNext = new GDataBFC(BFC.INVERTNEXT, View.DUMMY_REFERENCE);
                         linkedDatFile.insertAfterCursor(invNext);
                     }
-                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
+                    List<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                     GData pasted = result.get(0).getGraphicalData();
                     if (pasted == null)
                         pasted = new GData0(g.toString(), View.DUMMY_REFERENCE);
@@ -626,7 +629,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                         linecount++;
                         dpl.put(linecount, invNext);
                     }
-                    ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
+                    List<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                     GData pasted = result.get(0).getGraphicalData();
                     if (pasted == null)
                         pasted = new GData0(g.toString(), View.DUMMY_REFERENCE);
@@ -721,7 +724,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     before = invNext;
                     linecount++;
                 }
-                ArrayList<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
+                List<ParsingResult> result = DatParser.parseLine(g.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                 GData pasted = result.get(0).getGraphicalData();
                 if (pasted == null)
                     pasted = new GData0(g.toString(), View.DUMMY_REFERENCE);
@@ -804,13 +807,13 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
 
     public void extendClipboardContent(boolean cutExtension) {
 
-        TreeMap<Integer, ArrayList<GData>> dataToInsert = new TreeMap<>();
-        HashSet<GData> cset = new HashSet<>(CLIPBOARD);
+        SortedMap<Integer, List<GData>> dataToInsert = new TreeMap<>();
+        Set<GData> cset = new HashSet<>(CLIPBOARD);
 
         if (!CLIPBOARD.isEmpty()) {
             final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
             GData g = CLIPBOARD.get(0);
-            ArrayList<GData> l = new ArrayList<>();
+            List<GData> l = new ArrayList<>();
             while ((g = g.before) != null && g.type() == 0 && (g.toString().trim().isEmpty() || whitespace.matcher(g.toString()).replaceAll(" ").trim().startsWith("0 //"))) { //$NON-NLS-1$ //$NON-NLS-2$
                 l.add(g);
             }
@@ -822,7 +825,7 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
         int lineNumber = -1;
         for (Iterator<GData> itc = CLIPBOARD.iterator(); itc.hasNext();) {
             GData g = itc.next();
-            ArrayList<GData> l = new ArrayList<>();
+            List<GData> l = new ArrayList<>();
             while ((g = g.next) != null && (g.type() < 1 || g.type() > 5) && !CLIPBOARD_InvNext.contains(g) && !cset.contains(g)) {
                 l.add(g);
             }

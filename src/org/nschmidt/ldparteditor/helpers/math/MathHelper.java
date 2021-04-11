@@ -20,7 +20,9 @@ import java.math.BigInteger;
 import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -498,7 +500,7 @@ public enum MathHelper {
             float dzup = p.z - pz;
             dist7 = dxup * dxup + dyup * dyup + dzup * dzup;
         }
-        TreeSet<Float> ts = new TreeSet<>();
+        SortedSet<Float> ts = new TreeSet<>();
         ts.add(dist2);
         ts.add(dist3);
         ts.add(dist4);
@@ -630,7 +632,7 @@ public enum MathHelper {
     }
 
     public static Matrix4f matrixFromStrings(String s30, String s31, String s32, String s00, String s05, String s06, String s07, String s08, String s09, String s10, String s11, String s12) {
-        ArrayList<String> as = new ArrayList<>();
+        List<String> as = new ArrayList<>();
         as.add(s30);
         as.add(s31);
         as.add(s32);
@@ -643,7 +645,7 @@ public enum MathHelper {
         as.add(s10);
         as.add(s11);
         as.add(s12);
-        ArrayList<Float> af = new ArrayList<>();
+        List<Float> af = new ArrayList<>();
         try {
             for (String s : as) {
                 af.add(Float.parseFloat(s));
@@ -787,7 +789,7 @@ public enum MathHelper {
 
         final BigDecimal[][] mn = new BigDecimal[4][4];
 
-        ArrayList<String> as = new ArrayList<>();
+        List<String> as = new ArrayList<>();
         as.add(s30);
         as.add(s31);
         as.add(s32);
@@ -800,7 +802,7 @@ public enum MathHelper {
         as.add(s10);
         as.add(s11);
         as.add(s12);
-        ArrayList<BigDecimal> ab = new ArrayList<>();
+        List<BigDecimal> ab = new ArrayList<>();
         try {
             for (String s : as) {
                 ab.add(new BigDecimal(s));
@@ -1224,9 +1226,9 @@ public enum MathHelper {
 
     }
 
-    public static ArrayList<GData3> triangulatePointGroups(ArrayList<GColour> cols, ArrayList<Vector3dd> av, ArrayList<Integer> types, GData1 dummyReference,
+    public static List<GData3> triangulatePointGroups(List<GColour> cols, List<Vector3dd> av, List<Integer> types, GData1 dummyReference,
             DatFile df) {
-        ArrayList<GData3> result = new ArrayList<>();
+        List<GData3> result = new ArrayList<>();
         int counter = 0;
         int counter2 = 0;
         for (GColour c : cols) {
@@ -1263,9 +1265,9 @@ public enum MathHelper {
         return result;
     }
 
-    public static ArrayList<GData2> triangulatePointGroups2(ArrayList<GColour> cols, ArrayList<Vector3dd> av, ArrayList<Integer> types, GData1 dummyReference,
+    public static List<GData2> triangulatePointGroups2(List<GColour> cols, List<Vector3dd> av, List<Integer> types, GData1 dummyReference,
             DatFile df) {
-        ArrayList<GData2> result = new ArrayList<>();
+        List<GData2> result = new ArrayList<>();
         int counter = 0;
         int counter2 = 0;
         for (GColour c : cols) {
@@ -1297,9 +1299,9 @@ public enum MathHelper {
         return result;
     }
 
-    public static ArrayList<GData5> triangulatePointGroups5(ArrayList<GColour> cols, ArrayList<Vector3dd> av, ArrayList<Integer> types, GData1 dummyReference,
+    public static List<GData5> triangulatePointGroups5(List<GColour> cols, List<Vector3dd> av, List<Integer> types, GData1 dummyReference,
             DatFile df) {
-        ArrayList<GData5> result = new ArrayList<>();
+        List<GData5> result = new ArrayList<>();
         int counter = 0;
         int counter2 = 0;
         for (GColour c : cols) {
@@ -1339,9 +1341,9 @@ public enum MathHelper {
         return result;
     }
 
-    public static ArrayList<GData3> triangulateNPoints(int colourNumber, float r, float g, float b, float a, int pointsToTriangulate, ArrayList<Vector3d> av, GData1 dummyReference,
+    public static List<GData3> triangulateNPoints(int colourNumber, float r, float g, float b, float a, int pointsToTriangulate, List<Vector3d> av, GData1 dummyReference,
             DatFile df) {
-        ArrayList<GData3> result = new ArrayList<>(pointsToTriangulate);
+        List<GData3> result = new ArrayList<>(pointsToTriangulate);
         final Vector3d origin = av.get(0);
         final BigDecimal originX = origin.x;
         final BigDecimal originY = origin.y;

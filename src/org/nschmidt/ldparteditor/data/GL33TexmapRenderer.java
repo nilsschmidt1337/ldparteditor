@@ -15,8 +15,9 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
-import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.lwjgl.util.vector.Matrix4f;
 import org.lwjgl.util.vector.Vector3f;
@@ -29,14 +30,14 @@ import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
 enum GL33TexmapRenderer {
     INSTANCE;
 
-    static void render(ArrayList<GDataAndTexture> texmapData, GLShader mainShader, OpenGLRenderer renderer,
-            HashMap<GData, Vector3f[]> normalMap, HashMap<GData, Vertex[]> vertexMap, boolean smoothShading, boolean drawSolidMaterials) {
+    static void render(List<GDataAndTexture> texmapData, GLShader mainShader, OpenGLRenderer renderer,
+            Map<GData, Vector3f[]> normalMap, Map<GData, Vertex[]> vertexMap, boolean smoothShading, boolean drawSolidMaterials) {
         GTexture lastTexture = null;
         float[] uv;
         float[] triVertices = new float[36];
         float[] quadVertices = new float[48];
         final Vector4f nv = new Vector4f(0, 0, 0, 1f);
-        final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
+        final Map<GData1, Matrix4f> matrixMap = new HashMap<>();
         int[] triIndices = new int[]{0, 1, 2};
         int[] quadIndices = new int[]{0, 1, 2, 2, 3, 0};
 

@@ -17,8 +17,8 @@ package org.nschmidt.ldparteditor.helpers.compositetext;
 
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -139,31 +139,31 @@ public enum ProjectActions {
                 } else return false;
             }
             {
-                ArrayList<TreeItem> ta = win.getProjectParts().getItems();
+                List<TreeItem> ta = win.getProjectParts().getItems();
                 for (TreeItem ti : ta) {
                     unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals(""); //$NON-NLS-1$
                 }
             }
             {
-                ArrayList<TreeItem> ta = win.getProjectSubparts().getItems();
+                List<TreeItem> ta = win.getProjectSubparts().getItems();
                 for (TreeItem ti : ta) {
                     unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals(""); //$NON-NLS-1$
                 }
             }
             {
-                ArrayList<TreeItem> ta = win.getProjectPrimitives().getItems();
+                List<TreeItem> ta = win.getProjectPrimitives().getItems();
                 for (TreeItem ti : ta) {
                     unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals(""); //$NON-NLS-1$
                 }
             }
             {
-                ArrayList<TreeItem> ta = win.getProjectPrimitives48().getItems();
+                List<TreeItem> ta = win.getProjectPrimitives48().getItems();
                 for (TreeItem ti : ta) {
                     unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals(""); //$NON-NLS-1$
                 }
             }
             {
-                ArrayList<TreeItem> ta = win.getProjectPrimitives8().getItems();
+                List<TreeItem> ta = win.getProjectPrimitives8().getItems();
                 for (TreeItem ti : ta) {
                     unsavedProjectFiles = unsavedProjectFiles || !((DatFile) ti.getData()).getText().trim().equals(""); //$NON-NLS-1$
                 }

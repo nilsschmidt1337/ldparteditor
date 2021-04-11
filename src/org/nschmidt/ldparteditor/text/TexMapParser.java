@@ -20,6 +20,7 @@ import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -512,7 +513,7 @@ public enum TexMapParser {
                 if (fileExists) break;
             }
 
-            ArrayList<String> lines = null;
+            List<String> lines = null;
             String absoluteFilename = null;
             // MARK Virtual file check for project files...
             boolean isVirtual = false;

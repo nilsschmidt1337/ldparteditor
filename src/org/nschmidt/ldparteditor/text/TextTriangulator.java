@@ -26,6 +26,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Lock;
@@ -163,7 +164,7 @@ public class TextTriangulator {
         double maxX = -Double.MAX_VALUE;
         double maxY = -Double.MAX_VALUE;
 
-        ArrayList<Pnt> places = new ArrayList<>();
+        List<Pnt> places = new ArrayList<>();
 
         while (!shapePathIterator.isDone() && !monitor.isCanceled()) {
             px = x;
@@ -467,7 +468,7 @@ public class TextTriangulator {
         double maxX = -Double.MAX_VALUE;
         double maxY = -Double.MAX_VALUE;
 
-        ArrayList<Pnt> places = new ArrayList<>();
+        List<Pnt> places = new ArrayList<>();
 
         while (!shapePathIterator.isDone()) {
             px = x;

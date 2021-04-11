@@ -25,9 +25,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
+import java.util.SortedMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -64,7 +65,7 @@ import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -80,23 +81,23 @@ public final class GDataCSG extends GData {
 
     static volatile Lock staticLock = new ReentrantLock();
 
-    private static final ThreadsafeHashMap<DatFile, HashMap<String, CSG>> linkedCSG = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, Map<String, CSG>> linkedCSG = new ThreadsafeHashMap<>();
     private static final ThreadsafeHashMap<DatFile, HashBiMap<Integer, GDataCSG>> idToGDataCSG = new ThreadsafeHashMap<>();
-    private static final ThreadsafeHashMap<DatFile, HashSet<GData3>> selectedTrianglesMap = new ThreadsafeHashMap<>();
-    private static final ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> selectedBodyMap = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, Set<GData3>> selectedTrianglesMap = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, Set<GDataCSG>> selectedBodyMap = new ThreadsafeHashMap<>();
 
-    private static final ThreadsafeHashMap<DatFile, HashSet<GData3>> backupSelectedTrianglesMap = new ThreadsafeHashMap<>();
-    private static final ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> backupSelectedBodyMap = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, Set<GData3>> backupSelectedTrianglesMap = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, Set<GDataCSG>> backupSelectedBodyMap = new ThreadsafeHashMap<>();
 
     private static volatile boolean deleteAndRecompile = true;
 
-    private static final ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> registeredData = new ThreadsafeHashMap<>();
-    private static final ThreadsafeHashMap<DatFile, HashSet<GDataCSG>> parsedData = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, Set<GDataCSG>> registeredData = new ThreadsafeHashMap<>();
+    private static final ThreadsafeHashMap<DatFile, Set<GDataCSG>> parsedData = new ThreadsafeHashMap<>();
     private static final ThreadsafeHashMap<DatFile, PathTruderSettings> globalExtruderConfig = new ThreadsafeHashMap<>();
     private static final ThreadsafeHashMap<DatFile, Boolean> clearPolygonCache = new ThreadsafeHashMap<>();
     private static final ThreadsafeHashMap<DatFile, Boolean> fullClearPolygonCache = new ThreadsafeHashMap<>();
 
-    private final ArrayList<GData> cachedData = new ArrayList<>();
+    private final List<GData> cachedData = new ArrayList<>();
     private final List<Polygon> polygonCache = new ArrayList<>();
     private PathTruderSettings extruderConfig = new PathTruderSettings();
 
@@ -143,7 +144,7 @@ public final class GDataCSG extends GData {
         } else {
             quality = 16;
         }
-        HashSet<GDataCSG> ref = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
+        Set<GDataCSG> ref = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         ref.removeAll(parsedData.putIfAbsent(df, new HashSet<>()));
         clearPolygonCache.putIfAbsent(df, true);
         fullClearPolygonCache.putIfAbsent(df, true);
@@ -381,13 +382,13 @@ public final class GDataCSG extends GData {
         if (clearCaches) {
             clearPolygonCache.put(df, true);
         }
-        final HashSet<GDataCSG> parsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<>());
+        final Set<GDataCSG> parsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<>());
         parsedData.add(this);
         final boolean modified = c3d != null && c3d.getManipulator().isModified();
         if (deleteAndRecompile || modified || clearCaches) {
             final HashBiMap<Integer, GDataCSG> idToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<>());
-            final HashMap<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<>());
-            final HashSet<GDataCSG> registeredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<>());
+            final Map<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<>());
+            final Set<GDataCSG> registeredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<>());
             final Matrix4f m;
             if (modified) {
                 m = c3d.getManipulator().getTempTransformationCSG4f();
@@ -693,7 +694,7 @@ public final class GDataCSG extends GData {
 
                                 sb.append(formatter.format(messageArguments) + "<br>"); //$NON-NLS-1$
 
-                                TreeMap<GData3, IdAndPlane> result = compiledCSG.getResult(null);
+                                SortedMap<GData3, IdAndPlane> result = compiledCSG.getResult(null);
 
                                 for (GData3 g3 : result.keySet()) {
                                     StringBuilder lineBuilder3 = new StringBuilder();
@@ -1000,32 +1001,32 @@ public final class GDataCSG extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, BFC> map) {
+    public void getBFCorientationMap(Map<GData,BFC> map) {
         // Implementation is not required.
     }
 
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
+    public void getBFCorientationMapNOCERTIFY(Map<GData, BFC> map) {
         // Implementation is not required.
     }
 
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
+    public void getBFCorientationMapNOCLIP(Map<GData, BFC> map) {
         // Implementation is not required.
     }
 
     @Override
-    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMap(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         // Implementation is not required.
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         // Implementation is not required.
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         // Implementation is not required.
     }
 
@@ -1039,7 +1040,7 @@ public final class GDataCSG extends GData {
     }
 
     static synchronized void drawSelectionCSG(Composite3D c3d) {
-        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<>());
+        final Set<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(c3d.getLockableDatFileReference(), new HashSet<>());
         if (!selectedTriangles.isEmpty()) {
             GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
             GL11.glBegin(GL11.GL_LINES);
@@ -1059,7 +1060,7 @@ public final class GDataCSG extends GData {
         try {
             staticLock.lock();
             final DatFile df = c3d.getLockableDatFileReference();
-            final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
+            final Set<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
             if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
                 selectedTriangles.clear();
             }
@@ -1143,8 +1144,8 @@ public final class GDataCSG extends GData {
         return result;
     }
 
-    public static synchronized HashSet<GDataCSG> getSelection(DatFile df) {
-        HashSet<GDataCSG> result = selectedBodyMap.putIfAbsent(df, new HashSet<>());
+    public static synchronized Set<GDataCSG> getSelection(DatFile df) {
+        Set<GDataCSG> result = selectedBodyMap.putIfAbsent(df, new HashSet<>());
         for (Iterator<GDataCSG> it = result.iterator(); it.hasNext();) {
             if (it.next() == null) it.remove();
         }
@@ -1153,7 +1154,7 @@ public final class GDataCSG extends GData {
 
     static synchronized void selectAll(DatFile df) {
         clearSelection(df);
-        HashSet<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
+        Set<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
             final GDataCSG g = it.next();
             if (g != null && g.canSelect()) {
@@ -1173,9 +1174,9 @@ public final class GDataCSG extends GData {
         return false;
     }
 
-    static synchronized HashSet<GColour> getSelectedColours(DatFile df) {
-        final HashSet<GColour> colours = new HashSet<>();
-        final HashSet<GDataCSG> selection = getSelection(df);
+    static synchronized Set<GColour> getSelectedColours(DatFile df) {
+        final Set<GColour> colours = new HashSet<>();
+        final Set<GDataCSG> selection = getSelection(df);
         for (GDataCSG g : selection) {
             colours.add(g.colour);
         }
@@ -1183,7 +1184,7 @@ public final class GDataCSG extends GData {
     }
 
     static synchronized void selectAllWithSameColours(DatFile df, Set<GColour> allColours) {
-        HashSet<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
+        Set<GDataCSG> newSelection = new HashSet<>(registeredData.putIfAbsent(df, new HashSet<>()));
         for (Iterator<GDataCSG> it = newSelection.iterator(); it.hasNext();) {
             final GDataCSG g = it.next();
             if (g != null && g.canSelect() && allColours.contains(g.colour)) {
@@ -1201,8 +1202,8 @@ public final class GDataCSG extends GData {
     static void rebuildSelection(DatFile df) {
         final Composite3D c3d = df.getLastSelectedComposite();
         if (c3d == null || df.getLastSelectedComposite().isDisposed()) return;
-        final HashSet<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
-        final HashSet<GDataCSG> selectedBodies = selectedBodyMap.get(df);
+        final Set<GData3> selectedTriangles = selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
+        final Set<GDataCSG> selectedBodies = selectedBodyMap.get(df);
         selectedTriangles.clear();
         if (selectedBodies != null) {
             try {
@@ -1382,7 +1383,7 @@ public final class GDataCSG extends GData {
         }
     }
 
-    static HashSet<GData3> getSelectionData(DatFile df) {
+    static Set<GData3> getSelectionData(DatFile df) {
         return selectedTrianglesMap.putIfAbsent(df, new HashSet<>());
     }
 

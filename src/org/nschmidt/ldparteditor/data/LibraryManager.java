@@ -22,6 +22,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.eclipse.swt.custom.CTabItem;
@@ -592,9 +595,9 @@ public class LibraryManager {
         boolean canSearch = true;
         final File baseFolder = new File(basePath);
         if (prefix1.isEmpty()) {
-            HashMap<DatFileName, TreeItem> parentMap = new HashMap<>();
-            HashMap<DatFileName, DatType> typeMap = new HashMap<>();
-            ArrayList<DatFileName> datFiles = new ArrayList<>();
+            Map<DatFileName, TreeItem> parentMap = new HashMap<>();
+            Map<DatFileName, DatType> typeMap = new HashMap<>();
+            List<DatFileName> datFiles = new ArrayList<>();
             File libFolder = new File(folderPath);
             StringBuilder titleSb = new StringBuilder();
             File[] files = libFolder.listFiles();
@@ -736,7 +739,7 @@ public class LibraryManager {
                     }
                     if (canSearch) {
                         // Do the search for DAT files
-                        ArrayList<DatFileName> datFiles = new ArrayList<>();
+                        List<DatFileName> datFiles = new ArrayList<>();
                         File libFolder = new File(folderPath);
                         final File[] libFolderFiles = libFolder.listFiles();
                         if (libFolderFiles != null) {
@@ -793,27 +796,27 @@ public class LibraryManager {
 
         int[] result = new int[3];
 
-        HashMap<String, TreeItem> parentMap = new HashMap<>();
-        HashMap<String, DatType> typeMap = new HashMap<>();
-        HashMap<String, DatFileName> dfnMap = new HashMap<>();
-        HashSet<String> locked = new HashSet<>();
-        HashSet<String> loaded = new HashSet<>();
-        HashMap<String, DatFile> existingMap = new HashMap<>();
+        Map<String, TreeItem> parentMap = new HashMap<>();
+        Map<String, DatType> typeMap = new HashMap<>();
+        Map<String, DatFileName> dfnMap = new HashMap<>();
+        Set<String> locked = new HashSet<>();
+        Set<String> loaded = new HashSet<>();
+        Map<String, DatFile> existingMap = new HashMap<>();
 
-        HashMap<String, Boolean> readOnly = new HashMap<>();
+        Map<String, Boolean> readOnly = new HashMap<>();
 
-        HashMap<String, HashSet<Composite3D>> openIn3DMap = new HashMap<>();
-        HashMap<String, CompositeTab> openInTextMap = new HashMap<>();
+        Map<String, Set<Composite3D>> openIn3DMap = new HashMap<>();
+        Map<String, CompositeTab> openInTextMap = new HashMap<>();
 
-        HashMap<String, HashSet<Composite3D>> unsavedIn3DMap = new HashMap<>();
-        HashMap<String, CompositeTab> unsavedInTextMap = new HashMap<>();
+        Map<String, Set<Composite3D>> unsavedIn3DMap = new HashMap<>();
+        Map<String, CompositeTab> unsavedInTextMap = new HashMap<>();
 
-        HashMap<String, TreeItem> newParentMap = new HashMap<>();
-        HashMap<String, DatType> newTypeMap = new HashMap<>();
-        HashMap<String, DatFileName> newDfnMap = new HashMap<>();
+        Map<String, TreeItem> newParentMap = new HashMap<>();
+        Map<String, DatType> newTypeMap = new HashMap<>();
+        Map<String, DatFileName> newDfnMap = new HashMap<>();
 
-        HashMap<String, HistoryManager> historyMap = new HashMap<>();
-        HashMap<String, DuplicateManager> duplicateMap = new HashMap<>();
+        Map<String, HistoryManager> historyMap = new HashMap<>();
+        Map<String, DuplicateManager> duplicateMap = new HashMap<>();
 
         if (prefix1.isEmpty()) {
 
@@ -870,8 +873,8 @@ public class LibraryManager {
 
         // 4. Rebuilt the tree arrays
 
-        ArrayList<DatFileName> datFiles = new ArrayList<>();
-        HashMap<TreeItem, ArrayList<DatFile>> lists = new HashMap<>();
+        List<DatFileName> datFiles = new ArrayList<>();
+        Map<TreeItem, List<DatFile>> lists = new HashMap<>();
         for (String key : dfnMap.keySet()) {
             datFiles.add(dfnMap.get(key));
         }
@@ -895,7 +898,7 @@ public class LibraryManager {
             }
 
             if (!Editor3DWindow.getWindow().getUnsaved().equals(ti)) {
-                ArrayList<DatFile> fileList;
+                List<DatFile> fileList;
                 if (lists.containsKey(ti)) {
                     fileList = lists.get(ti);
                 } else {
@@ -956,7 +959,7 @@ public class LibraryManager {
         // Add unsaved files wich are not anymore on the file system, but were opened in the text editor or in the 3D view
 
         {
-            HashSet<DatFile> newUnsavedFiles = new HashSet<>();
+            Set<DatFile> newUnsavedFiles = new HashSet<>();
             for (String key : unsavedInTextMap.keySet()) {
                 DatFile df = unsavedInTextMap.get(key).getState().getFileNameObj();
                 if (!newUnsavedFiles.contains(df)) {
@@ -983,8 +986,8 @@ public class LibraryManager {
         return result;
     }
 
-    private static void readAllUnsavedFiles(HashMap<String, TreeItem> parentMap, HashMap<String, DatType> typeMap, HashMap<String, DatFileName> dfnMap, HashSet<String> locked,
-            HashMap<String, DatFile> existingMap) {
+    private static void readAllUnsavedFiles(Map<String, TreeItem> parentMap, Map<String, DatType> typeMap, Map<String, DatFileName> dfnMap, Set<String> locked,
+            Map<String, DatFile> existingMap) {
         for (DatFile df : Project.getUnsavedFiles()) {
             final String old = df.getOldName();
             if (!locked.contains(old)) {
@@ -1000,20 +1003,20 @@ public class LibraryManager {
 
     private static void readVirtualDataFromFolder(
             int[] result,
-            HashMap<String, TreeItem> parentMap,
-            HashMap<String, DatType> typeMap,
-            HashSet<String> locked,
-            HashSet<String> loaded,
-            HashMap<String, DatFile> existingMap,
-            HashMap<String, DatFileName> dfnMap,
+            Map<String, TreeItem> parentMap,
+            Map<String, DatType> typeMap,
+            Set<String> locked,
+            Set<String> loaded,
+            Map<String, DatFile> existingMap,
+            Map<String, DatFileName> dfnMap,
             final TreeItem treeItem,
-            HashMap<String, HashSet<Composite3D>> openIn3DMap,
-            HashMap<String, CompositeTab> openInTextMap,
-            HashMap<String, HashSet<Composite3D>> unsavedIn3DMap,
-            HashMap<String, CompositeTab> unsavedInTextMap,
-            HashMap<String, HistoryManager> historyMap,
-            HashMap<String, DuplicateManager> duplicateMap,
-            HashMap<String, Boolean> readOnly,
+            Map<String, Set<Composite3D>> openIn3DMap,
+            Map<String, CompositeTab> openInTextMap,
+            Map<String, Set<Composite3D>> unsavedIn3DMap,
+            Map<String, CompositeTab> unsavedInTextMap,
+            Map<String, HistoryManager> historyMap,
+            Map<String, DuplicateManager> duplicateMap,
+            Map<String, Boolean> readOnly,
             boolean checkForUnsaved
             ) {
 
@@ -1036,7 +1039,7 @@ public class LibraryManager {
                     result[1] = result[1] + 1;
 
                     // 3. Displayed, but deleted files will become unsaved files
-                    HashSet<Composite3D> c3ds = new HashSet<>();
+                    Set<Composite3D> c3ds = new HashSet<>();
                     for (OpenGLRenderer r : Editor3DWindow.getRenders()) {
                         Composite3D c3d = r.getC3D();
                         if (df.equals(c3d.getLockableDatFileReference())) {
@@ -1059,7 +1062,7 @@ public class LibraryManager {
                     loaded.add(old);
 
                     // 3.5 Displayed, but unmodified files (Text+3D) need a remapping
-                    HashSet<Composite3D> c3ds = new HashSet<>();
+                    Set<Composite3D> c3ds = new HashSet<>();
                     for (OpenGLRenderer r : Editor3DWindow.getRenders()) {
                         Composite3D c3d = r.getC3D();
                         if (df.equals(c3d.getLockableDatFileReference())) {
@@ -1086,14 +1089,14 @@ public class LibraryManager {
             DatType type,
             String prefix1,
             String prefix2,
-            HashSet<String> locked,
-            HashSet<String> loaded,
-            HashMap<String, TreeItem> newParentMap,
-            HashMap<String, DatType> newTypeMap,
-            HashMap<String, DatFileName> newDfnMap,
+            Set<String> locked,
+            Set<String> loaded,
+            Map<String, TreeItem> newParentMap,
+            Map<String, DatType> newTypeMap,
+            Map<String, DatFileName> newDfnMap,
             final TreeItem treeItem,
             boolean isPrimitiveFolder,
-            HashMap<String, Boolean> readOnly,
+            Map<String, Boolean> readOnly,
             boolean isReadOnlyFolder) {
 
         final File baseFolder = new File(basePath);

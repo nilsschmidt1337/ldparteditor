@@ -32,10 +32,10 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
     public final int id = id_counter.getAndIncrement();
 
     private final GDataCSG start;
-    private final ArrayList<GData> cachedData;
+    private final List<GData> cachedData;
     private final List<Polygon> polygonCache;
 
-    public CSGMesh(GDataCSG gDataCSG, ArrayList<GData> cachedData2, List<Polygon> polygonCache2) {
+    public CSGMesh(GDataCSG gDataCSG, List<GData> cachedData2, List<Polygon> polygonCache2) {
         start = gDataCSG;
         cachedData = cachedData2;
         polygonCache = polygonCache2;
@@ -102,7 +102,7 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
         return polygons;
     }
 
-    public static void fillCache(ArrayList<GData> cachedData, GData start) {
+    public static void fillCache(List<GData> cachedData, GData start) {
         if (cachedData.isEmpty()) {
             GData next = start;
             while ((next = next.getNext()) != null && next.type() == 8) {
@@ -132,8 +132,8 @@ public class CSGMesh extends CSGPrimitive implements Primitive {
         }
     }
 
-    public static boolean needCacheRefresh(ArrayList<GData> cachedData2, GData start, DatFile df) {
-        ArrayList<GData> cachedData = new ArrayList<>();
+    public static boolean needCacheRefresh(List<GData> cachedData2, GData start, DatFile df) {
+        List<GData> cachedData = new ArrayList<>();
         GData next = start;
         while ((next = next.getNext()) != null && next.type() == 8) {
 

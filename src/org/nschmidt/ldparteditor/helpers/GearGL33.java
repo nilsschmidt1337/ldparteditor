@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helpers;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -41,8 +42,8 @@ public class GearGL33 {
         final float radius2 = radius1 + width;
         final float radius3 = radius2 + toothHeight;
 
-        final ArrayList<Float> vertices = new ArrayList<>();
-        final ArrayList<Integer> indices = new ArrayList<>();
+        final List<Float> vertices = new ArrayList<>();
+        final List<Integer> indices = new ArrayList<>();
 
         final double R = 2 * Math.PI / segments;
         double r;

@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -98,7 +98,7 @@ public enum FlipTriangleOptimizer {
                         VectorCSGd c = triverts[(i + 2) % 3];
                         VectorCSGd co;
                         {
-                            Set<VectorCSGd> ov = new TreeSet<>();
+                            SortedSet<VectorCSGd> ov = new TreeSet<>();
                             ov.addAll(Arrays.asList(trimap.get(other)));
                             ov.remove(a);
                             ov.remove(b);

@@ -19,7 +19,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -31,7 +35,7 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 
 class VM06Edger2 extends VM05Distance {
 
-    private ArrayList<Vertex> verticesToCheck = new ArrayList<>();
+    private List<Vertex> verticesToCheck = new ArrayList<>();
 
     protected VM06Edger2(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -49,7 +53,7 @@ class VM06Edger2 extends VM05Distance {
         return BFC.NOCERTIFY;
     }
 
-    private void addEdgeEdger2(TreeSet<Vertex> h1, TreeSet<Vertex> h2) {
+    private void addEdgeEdger2(SortedSet<Vertex> h1, SortedSet<Vertex> h2) {
         for (Vertex v1 : h1) {
             for (Vertex v2 : h2) {
                 // if v1 is connected with v2 draw a line from v1 to v2
@@ -61,9 +65,9 @@ class VM06Edger2 extends VM05Distance {
         }
     }
 
-    private void addLineEdger2(Vertex v1, Vertex v2, TreeSet<Vertex> h1, TreeSet<Vertex> h2, Edger2Settings es) {
+    private void addLineEdger2(Vertex v1, Vertex v2, SortedSet<Vertex> h1, SortedSet<Vertex> h2, Edger2Settings es) {
 
-        ArrayList<GData> faces = linkedCommonFaces(h1, h2);
+        List<GData> faces = linkedCommonFaces(h1, h2);
         if (faces.size() == 2) {
 
             GData g1 = faces.get(0);
@@ -77,7 +81,7 @@ class VM06Edger2 extends VM05Distance {
             if (g1.type() == 3) {
                 GData3 g3 = (GData3) g1;
                 Vertex[] vt = triangles.get(g3);
-                TreeSet<Vertex> tvs = new TreeSet<>();
+                SortedSet<Vertex> tvs = new TreeSet<>();
                 tvs.add(vt[0]);
                 tvs.add(vt[1]);
                 tvs.add(vt[2]);
@@ -89,7 +93,7 @@ class VM06Edger2 extends VM05Distance {
             } else {
                 GData4 g4 = (GData4) g1;
                 Vertex[] vq = quads.get(g4);
-                TreeSet<Vertex> qvs = new TreeSet<>();
+                SortedSet<Vertex> qvs = new TreeSet<>();
                 qvs.add(vq[0]);
                 qvs.add(vq[1]);
                 qvs.add(vq[2]);
@@ -114,7 +118,7 @@ class VM06Edger2 extends VM05Distance {
             if (g2.type() == 3) {
                 GData3 g3 = (GData3) g2;
                 Vertex[] vt = triangles.get(g3);
-                TreeSet<Vertex> tvs = new TreeSet<>();
+                SortedSet<Vertex> tvs = new TreeSet<>();
                 tvs.add(vt[0]);
                 tvs.add(vt[1]);
                 tvs.add(vt[2]);
@@ -126,7 +130,7 @@ class VM06Edger2 extends VM05Distance {
             } else {
                 GData4 g4 = (GData4) g2;
                 Vertex[] vq = quads.get(g4);
-                TreeSet<Vertex> qvs = new TreeSet<>();
+                SortedSet<Vertex> qvs = new TreeSet<>();
                 qvs.add(vq[0]);
                 qvs.add(vq[1]);
                 qvs.add(vq[2]);
@@ -187,7 +191,7 @@ class VM06Edger2 extends VM05Distance {
         }
     }
 
-    private void addLineQuadEdger2(GData4 g4, HashSet<AccurateEdge> presentEdges, Edger2Settings es, TreeMap<Vertex, Vertex> snap) {
+    private void addLineQuadEdger2(GData4 g4, Set<AccurateEdge> presentEdges, Edger2Settings es, SortedMap<Vertex, Vertex> snap) {
 
         Vertex[] verts = quads.get(g4);
 
@@ -241,11 +245,11 @@ class VM06Edger2 extends VM05Distance {
         verticesToCheck.clear();
 
         final double edsquare = es.getEqualDistance().multiply(es.getEqualDistance(), Threshold.MC).doubleValue() * 1E6;
-        TreeMap<Vertex, Vertex> snap = new TreeMap<>();
-        TreeMap<Vertex, TreeSet<Vertex>> snapToOriginal = new TreeMap<>();
+        SortedMap<Vertex, Vertex> snap = new TreeMap<>();
+        SortedMap<Vertex, SortedSet<Vertex>> snapToOriginal = new TreeMap<>();
 
-        HashMap<AccurateEdge, Integer> edges = new HashMap<>();
-        HashSet<AccurateEdge> presentEdges = new HashSet<>();
+        Map<AccurateEdge, Integer> edges = new HashMap<>();
+        Set<AccurateEdge> presentEdges = new HashSet<>();
 
         switch (es.getScope()) {
         case 0: // All Data
@@ -256,7 +260,7 @@ class VM06Edger2 extends VM05Distance {
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
-                    TreeSet<Vertex> h = new TreeSet<>();
+                    SortedSet<Vertex> h = new TreeSet<>();
                     h.add(vertex);
                     snapToOriginal.put(snap.get(vertex), h);
                 }
@@ -392,7 +396,7 @@ class VM06Edger2 extends VM05Distance {
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
-                    TreeSet<Vertex> h = new TreeSet<>();
+                    SortedSet<Vertex> h = new TreeSet<>();
                     h.add(vertex);
                     snapToOriginal.put(snap.get(vertex), h);
                 }
@@ -527,7 +531,7 @@ class VM06Edger2 extends VM05Distance {
                 if (snapToOriginal.containsKey(snap.get(vertex))) {
                     snapToOriginal.get(snap.get(vertex)).add(vertex);
                 } else {
-                    TreeSet<Vertex> h = new TreeSet<>();
+                    SortedSet<Vertex> h = new TreeSet<>();
                     h.add(vertex);
                     snapToOriginal.put(snap.get(vertex), h);
                 }
@@ -631,7 +635,7 @@ class VM06Edger2 extends VM05Distance {
 
 
             {
-                HashSet<AccurateEdge> selectedEdges = new HashSet<>();
+                Set<AccurateEdge> selectedEdges = new HashSet<>();
 
                 for (GData3 g3 : selectedTriangles) {
                     if (!g3.isTriangle) continue;

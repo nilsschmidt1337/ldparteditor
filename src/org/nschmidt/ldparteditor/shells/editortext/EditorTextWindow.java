@@ -19,8 +19,8 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.io.File;
 import java.text.MessageFormat;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -185,111 +185,111 @@ public class EditorTextWindow extends EditorTextDesign {
         Set<DatFile> unsavedFiles = new HashSet<>(Project.getUnsavedFiles());
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives8().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives8().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getUnofficialParts().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getUnofficialParts().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getUnofficialSubparts().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getUnofficialSubparts().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getUnofficialPrimitives().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getUnofficialPrimitives().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getUnofficialPrimitives48().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getUnofficialPrimitives48().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getUnofficialPrimitives8().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getUnofficialPrimitives8().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getOfficialParts().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getOfficialParts().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getOfficialSubparts().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getOfficialSubparts().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getOfficialPrimitives().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getOfficialPrimitives().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getOfficialPrimitives48().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getOfficialPrimitives48().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
         {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> ta = (ArrayList<DatFile>) Editor3DWindow.getWindow().getOfficialPrimitives8().getData();
+            List<DatFile> ta = (List<DatFile>) Editor3DWindow.getWindow().getOfficialPrimitives8().getData();
             for (DatFile ti : ta) {
                 unsavedFiles.remove(ti);
             }
         }
 
-        HashSet<DatFile> myFiles = new HashSet<>();
+        Set<DatFile> myFiles = new HashSet<>();
         for (CTabItem tab : tabFolder[0].getItems()) {
             CompositeTab cTab = (CompositeTab) tab;
             myFiles.add(cTab.getState().getFileNameObj());
@@ -1327,7 +1327,7 @@ public class EditorTextWindow extends EditorTextDesign {
     }
 
     public static void openIn3D(DatFile df) {
-        ArrayList<OpenGLRenderer> renders = Editor3DWindow.getRenders();
+        List<OpenGLRenderer> renders = Editor3DWindow.getRenders();
 
         if (renders.isEmpty()) {
 

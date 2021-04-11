@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -26,7 +27,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -55,7 +56,7 @@ public class DatHeaderManager {
         this.df = df;
     }
 
-    volatile ThreadsafeTreeMap<Integer, ArrayList<ParsingResult>> cachedHeaderHints = new ThreadsafeTreeMap<>(); // Cleared
+    volatile ThreadsafeSortedMap<Integer, List<ParsingResult>> cachedHeaderHints = new ThreadsafeSortedMap<>(); // Cleared
 
     void pushDatHeaderCheck(GData data, StyledText compositeText, TreeItem hints, TreeItem warnings, TreeItem errors, TreeItem duplicates, Label problemCount) {
         if (df.isReadOnly()) return;
@@ -71,7 +72,7 @@ public class DatHeaderManager {
                             if (newEntry != null) {
                                 NLogger.debug(getClass(), "Started DATHeader check..."); //$NON-NLS-1$
 
-                                final ArrayList<ParsingResult> allHints = new ArrayList<>();
+                                final List<ParsingResult> allHints = new ArrayList<>();
                                 int headerState = HeaderState.H00_TITLE;
                                 final HeaderState h = new HeaderState();
 
@@ -690,11 +691,11 @@ public class DatHeaderManager {
                     cachedHeaderHints.clear();
                 }
 
-                private void registerHint(int lineNumber, String errno, String message, boolean[] registered, ArrayList<ParsingResult> allHints) {
+                private void registerHint(int lineNumber, String errno, String message, boolean[] registered, List<ParsingResult> allHints) {
                     registerHint(lineNumber, errno, new Object[]{}, message, registered, allHints);
                 }
 
-                private void registerHint(int lineNumber, String errno, Object[] args, String message, boolean[] registered, ArrayList<ParsingResult> allHints) {
+                private void registerHint(int lineNumber, String errno, Object[] args, String message, boolean[] registered, List<ParsingResult> allHints) {
                     registered[0] = true;
                     Object[] messageArguments = args;
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$

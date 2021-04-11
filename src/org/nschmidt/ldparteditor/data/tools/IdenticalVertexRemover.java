@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data.tools;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -60,7 +61,7 @@ public enum IdenticalVertexRemover {
             for (GData2 g2 : l.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g2)) continue;
                 Vertex[] verts = l.get(g2);
-                Set<Vertex> verts2 = new TreeSet<>();
+                SortedSet<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -71,7 +72,7 @@ public enum IdenticalVertexRemover {
             for (GData3 g3 : t.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g3)) continue;
                 Vertex[] verts = t.get(g3);
-                Set<Vertex> verts2 = new TreeSet<>();
+                SortedSet<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -82,7 +83,7 @@ public enum IdenticalVertexRemover {
             for (GData4 g4 : q.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
                 Vertex[] verts = q.get(g4);
-                Set<Vertex> verts2 = new TreeSet<>();
+                SortedSet<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }
@@ -124,7 +125,7 @@ public enum IdenticalVertexRemover {
             for (GData5 g5 : c.keySet()) {
                 if (!lineLinkedToVertices.containsKey(g5)) continue;
                 Vertex[] verts = c.get(g5);
-                Set<Vertex> verts2 = new TreeSet<>();
+                SortedSet<Vertex> verts2 = new TreeSet<>();
                 for (Vertex vert : verts) {
                     verts2.add(vert);
                 }

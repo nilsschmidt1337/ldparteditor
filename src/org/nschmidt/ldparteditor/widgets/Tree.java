@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.widgets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuDetectListener;
@@ -36,10 +38,10 @@ import org.nschmidt.ldparteditor.helpers.WidgetSelectionListener;
  */
 public class Tree {
 
-    private final HashMap<TreeItem, org.eclipse.swt.widgets.TreeItem> swtFromTi = new HashMap<>();
+    private final Map<TreeItem, org.eclipse.swt.widgets.TreeItem> swtFromTi = new HashMap<>();
     private final org.eclipse.swt.widgets.Tree tree;
-    private final ArrayList<TreeItem> items = new ArrayList<>();
-    private final HashMap<org.eclipse.swt.widgets.TreeItem, TreeItem> tiFromSWT = new HashMap<>();
+    private final List<TreeItem> items = new ArrayList<>();
+    private final Map<org.eclipse.swt.widgets.TreeItem, TreeItem> tiFromSWT = new HashMap<>();
     private org.eclipse.swt.widgets.TreeItem[] itemsSWT;
 
     int counter;
@@ -145,11 +147,11 @@ public class Tree {
         }
     }
 
-    public HashMap<org.eclipse.swt.widgets.TreeItem, TreeItem> getMap() {
+    public Map<org.eclipse.swt.widgets.TreeItem, TreeItem> getMap() {
         return tiFromSWT;
     }
 
-    public HashMap<TreeItem, org.eclipse.swt.widgets.TreeItem> getMapInv() {
+    public Map<TreeItem, org.eclipse.swt.widgets.TreeItem> getMapInv() {
         return swtFromTi;
     }
 
@@ -160,7 +162,7 @@ public class Tree {
     /**
      * @return the items
      */
-    public ArrayList<TreeItem> getItems() {
+    public List<TreeItem> getItems() {
         return items;
     }
 

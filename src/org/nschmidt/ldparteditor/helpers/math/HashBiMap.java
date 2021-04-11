@@ -26,14 +26,14 @@ import java.util.Set;
  */
 public class HashBiMap<K, V> implements Map<K, V> {
 
-    private final HashMap<K, V> keyToValue = new HashMap<>();
-    private final HashMap<V, K> valueToKey = new HashMap<>();
+    private final Map<K, V> keyToValue = new HashMap<>();
+    private final Map<V, K> valueToKey = new HashMap<>();
 
     public HashBiMap() {
         super();
     }
 
-    private HashBiMap(HashMap<K, V> keyToValue2, HashMap<V, K> valueToKey2) {
+    private HashBiMap(Map<K, V> keyToValue2, Map<V, K> valueToKey2) {
         super();
         this.keyToValue.putAll(keyToValue2);
         this.valueToKey.putAll(valueToKey2);

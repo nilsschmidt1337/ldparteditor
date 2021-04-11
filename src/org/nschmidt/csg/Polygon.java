@@ -38,6 +38,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -168,8 +169,8 @@ public final class Polygon {
         return this;
     }
 
-    public HashMap<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
-        HashMap<GData3, IdAndPlane> result = new HashMap<>();
+    public Map<GData3, IdAndPlane> toLDrawTriangles(GData1 parent) {
+        Map<GData3, IdAndPlane> result = new HashMap<>();
         if (this.vertices.size() >= 3) {
             final GColour c16 = View.getLDConfigColour(16);
             VectorCSGd dv1 = this.vertices.get(0);

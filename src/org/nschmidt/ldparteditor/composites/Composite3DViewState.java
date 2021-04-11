@@ -15,9 +15,10 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.composites;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -25,7 +26,7 @@ import org.lwjgl.util.vector.Vector3f;
 import org.lwjgl.util.vector.Vector4f;
 import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.workbench.Composite3DState;
 
 public class Composite3DViewState {
@@ -52,11 +53,11 @@ public class Composite3DViewState {
     /** The viewport z-Far value */
     private double zFar = 1000001f;
 
-    private final HashMap<String, ArrayList<Boolean>> hideShowState = new HashMap<>();
-    private final HashMap<String, ArrayList<Boolean>> selection = new HashMap<>();
+    private final Map<String, List<Boolean>> hideShowState = new HashMap<>();
+    private final Map<String, List<Boolean>> selection = new HashMap<>();
 
-    private final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
-    private final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+    private final Set<Vertex> hiddenVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
+    private final Set<Vertex> selectedVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
     float getZoom() {
         return zoom;
@@ -142,11 +143,11 @@ public class Composite3DViewState {
         return manipulator;
     }
 
-    public HashMap<String, ArrayList<Boolean>> getHideShowState() {
+    public Map<String, List<Boolean>> getHideShowState() {
         return hideShowState;
     }
 
-    public HashMap<String, ArrayList<Boolean>> getSelection() {
+    public Map<String, List<Boolean>> getSelection() {
         return selection;
     }
 

@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.snapshot;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
@@ -38,7 +38,7 @@ public class SnapshotDialog extends SnapshotDesign {
      *
      * @param parentShell
      */
-    public SnapshotDialog(Shell parentShell, ArrayList<MemorySnapshot> snapshots, MemorySnapshot[] selection) {
+    public SnapshotDialog(Shell parentShell, List<MemorySnapshot> snapshots, MemorySnapshot[] selection) {
         super(parentShell, snapshots, selection);
     }
 

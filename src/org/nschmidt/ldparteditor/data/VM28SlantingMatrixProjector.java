@@ -16,8 +16,8 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.nschmidt.ldparteditor.enums.SlantingMatrixStatus;
@@ -302,7 +302,7 @@ class VM28SlantingMatrixProjector extends VM27YTruder {
                 final GColour col16 = View.getLDConfigColour(16);
                 Set<String> alreadyParsed = new HashSet<>();
                 alreadyParsed.add(linkedDatFile.getShortName());
-                ArrayList<ParsingResult> subfileLine = DatParser
+                List<ParsingResult> subfileLine = DatParser
                         .parseLine(lineBuilder.toString(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                 GData1 subfile = (GData1) subfileLine.get(0).getGraphicalData();
                 if (subfile != null) {

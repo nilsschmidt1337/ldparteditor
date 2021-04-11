@@ -26,7 +26,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -118,7 +120,7 @@ public class CompositePrimitive extends Composite {
 
     private final Matrix4f viewportRotation = new Matrix4f();
 
-    private volatile ArrayList<Primitive> primitives = new ArrayList<>();
+    private volatile List<Primitive> primitives = new ArrayList<>();
     private Primitive selectedPrimitive = null;
     private Primitive focusedPrimitive = null;
     private int mouseButtonPressed;
@@ -143,10 +145,10 @@ public class CompositePrimitive extends Composite {
 
     private boolean doingDND;
 
-    private ArrayList<Primitive> searchResults = new ArrayList<>();
-    private static HashMap<String, PGData> cache = new HashMap<>();
-    private static HashMap<PGTimestamp, ArrayList<String>> fileCache = new HashMap<>();
-    private static HashSet<PGTimestamp> fileCacheHits = new HashSet<>();
+    private List<Primitive> searchResults = new ArrayList<>();
+    private static Map<String, PGData> cache = new HashMap<>();
+    private static Map<PGTimestamp, List<String>> fileCache = new HashMap<>();
+    private static Set<PGTimestamp> fileCacheHits = new HashSet<>();
 
     public CompositePrimitive(Composite parent) {
         super(parent, I18n.noBiDirectionalTextStyle() | SWT.BORDER);
@@ -485,7 +487,7 @@ public class CompositePrimitive extends Composite {
         return new Matrix4f[]{viewportMatrix, viewportTranslation, viewportRotation};
     }
 
-    public ArrayList<Primitive> getPrimitives() {
+    public List<Primitive> getPrimitives() {
         return primitives;
     }
 
@@ -623,7 +625,7 @@ public class CompositePrimitive extends Composite {
                 setSelectedPrimitive(null);
                 primitives.clear();
 
-                ArrayList<String> searchPaths = new ArrayList<>();
+                List<String> searchPaths = new ArrayList<>();
                 String ldrawPath = WorkbenchManager.getUserSettingState().getLdrawFolderPath();
                 if (ldrawPath != null) {
                     searchPaths.add(ldrawPath + File.separator + "p" + File.separator); //$NON-NLS-1$
@@ -652,12 +654,12 @@ public class CompositePrimitive extends Composite {
                     searchPaths.add(project + File.separator + "P" + File.separator + "8" + File.separator); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
-                HashMap<String, Primitive> titleMap = new HashMap<>();
-                HashMap<String, String> leavesTitleMap = new HashMap<>();
-                HashMap<String, Primitive> primitiveMap = new HashMap<>();
-                HashMap<String, Primitive> categoryMap = new HashMap<>();
-                HashMap<String, Primitive> leavesMap = new HashMap<>();
-                HashMap<String, ArrayList<PrimitiveRule>> leavesRulesMap = new HashMap<>();
+                Map<String, Primitive> titleMap = new HashMap<>();
+                Map<String, String> leavesTitleMap = new HashMap<>();
+                Map<String, Primitive> primitiveMap = new HashMap<>();
+                Map<String, Primitive> categoryMap = new HashMap<>();
+                Map<String, Primitive> leavesMap = new HashMap<>();
+                Map<String, List<PrimitiveRule>> leavesRulesMap = new HashMap<>();
                 final String lowResSuffix = File.separator + "8" + File.separator; //$NON-NLS-1$
                 final String hiResSuffix = File.separator + "48" + File.separator; //$NON-NLS-1$
                 try {
@@ -692,7 +694,7 @@ public class CompositePrimitive extends Composite {
                                         NLogger.debug(getClass(), "Category       __{0}", catID); //$NON-NLS-1$
                                         if (maxDepth < 2) {
                                             // MARK Parse rules I
-                                            ArrayList<PrimitiveRule> rules = new ArrayList<>();
+                                            List<PrimitiveRule> rules = new ArrayList<>();
                                             for (int i = 1; i < dataSegments.length; i++) {
                                                 dataSegments[i] = dataSegments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                                                 dataSegments[i] = dataSegments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -787,7 +789,7 @@ public class CompositePrimitive extends Composite {
                                                     categoryMap.put(catID, child);
                                                     if (depth == maxDepth) {
                                                         // MARK Parse rules II
-                                                        ArrayList<PrimitiveRule> rules = new ArrayList<>();
+                                                        List<PrimitiveRule> rules = new ArrayList<>();
                                                         for (int i = 1; i < dataSegments.length; i++) {
                                                             dataSegments[i] = dataSegments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                                                             dataSegments[i] = dataSegments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
@@ -915,7 +917,7 @@ public class CompositePrimitive extends Composite {
                         isEmpty = true;
                         isUppercase = !isUppercase;
 
-                        HashMap<PGTimestamp, PGTimestamp> hotMap = new HashMap<>();
+                        Map<PGTimestamp, PGTimestamp> hotMap = new HashMap<>();
                         for (PGTimestamp ts : fileCache.keySet()) {
                             hotMap.put(ts, ts);
                         }
@@ -926,13 +928,13 @@ public class CompositePrimitive extends Composite {
                                 final String path = f.getAbsolutePath();
                                 PGTimestamp newTs = new PGTimestamp(path, f.lastModified());
                                 PGTimestamp ts = hotMap.get(newTs);
-                                ArrayList<String> filedata;
+                                List<String> filedata;
                                 if (ts != null && ts.isHot() && fileCache.containsKey(ts)) {
                                     filedata = fileCache.get(ts);
                                     fileCacheHits.add(ts);
                                     final int s = filedata.size();
                                     Primitive newPrimitive = Primitive.createPrimitive();
-                                    ArrayList<PGData> data = new ArrayList<>();
+                                    List<PGData> data = new ArrayList<>();
                                     String description = ""; //$NON-NLS-1$
                                     PGData gd = null;
                                     if (s > 0) {
@@ -947,7 +949,7 @@ public class CompositePrimitive extends Composite {
                                         } else if ((gd = parseLine(line, 0, View.ID, new HashSet<>(), hotMap)) != null) {
                                             data.add(gd);
                                         }
-                                        final HashSet<String> set = new HashSet<>();
+                                        final Set<String> set = new HashSet<>();
                                         for (int i = 1; i < s; i++) {
                                             gd = parseLine(filedata.get(i), 0, View.ID, set, hotMap);
                                             if (gd != null && gd.type() != 0) {
@@ -976,7 +978,7 @@ public class CompositePrimitive extends Composite {
                                     }
                                     try {
                                         Primitive newPrimitive = Primitive.createPrimitive();
-                                        ArrayList<PGData> data = new ArrayList<>();
+                                        List<PGData> data = new ArrayList<>();
                                         String description = ""; //$NON-NLS-1$
                                         reader = new UTF8BufferedReader(path);
                                         String line;
@@ -994,7 +996,7 @@ public class CompositePrimitive extends Composite {
                                             } else if ((gd = parseLine(line, 0, View.ID, new HashSet<>(), hotMap)) != null) {
                                                 data.add(gd);
                                             }
-                                            final HashSet<String> set = new HashSet<>();
+                                            final Set<String> set = new HashSet<>();
                                             while ((line = reader.readLine()) != null) {
                                                 gd = parseLine(line, 0, View.ID, set, hotMap);
                                                 if (gd != null && gd.type() != 0) {
@@ -1040,7 +1042,7 @@ public class CompositePrimitive extends Composite {
 
                 // Clear superflous cache data
                 {
-                    HashSet<PGTimestamp> toRemove = new HashSet<>();
+                    Set<PGTimestamp> toRemove = new HashSet<>();
                     for (PGTimestamp t : fileCache.keySet()) {
                         if (!fileCacheHits.contains(t)) {
                             toRemove.add(t);
@@ -1070,7 +1072,7 @@ public class CompositePrimitive extends Composite {
                     final Primitive p = primitiveMap.get(key);
                     boolean matched = false;
                     for (String catKey : leavesMap.keySet()) {
-                        ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
+                        List<PrimitiveRule> rules = leavesRulesMap.get(catKey);
                         if (rules.isEmpty()) continue;
                         boolean andCummulative = true;
                         boolean orWasPrevious = true;
@@ -1144,7 +1146,7 @@ public class CompositePrimitive extends Composite {
                 // Sort the categories
                 for (String catKey : leavesMap.keySet()) {
                     Primitive cat = leavesMap.get(catKey);
-                    ArrayList<PrimitiveRule> rules = leavesRulesMap.get(catKey);
+                    List<PrimitiveRule> rules = leavesRulesMap.get(catKey);
                     boolean hasSpecialOrder = false;
                     for (PrimitiveRule rule : rules) {
                         final Rule r = rule.getRule();
@@ -1176,7 +1178,7 @@ public class CompositePrimitive extends Composite {
 
     private static final Pattern WHITESPACE = Pattern.compile("\\s+"); //$NON-NLS-1$
 
-    public static PGData parseLine(String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
+    public static PGData parseLine(String line, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, Map<PGTimestamp, PGTimestamp> hotMap) {
 
         PGData result = null;
 
@@ -1269,7 +1271,7 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    private static PGData parseReference(String[] dataSegments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, HashMap<PGTimestamp, PGTimestamp> hotMap) {
+    private static PGData parseReference(String[] dataSegments, int depth, Matrix4f productMatrix, Set<String> alreadyParsed, Map<PGTimestamp, PGTimestamp> hotMap) {
         if (dataSegments.length < 15) {
             return null;
         } else {
@@ -1336,7 +1338,7 @@ public class CompositePrimitive extends Composite {
                 if (fileExists) break;
             }
 
-            ArrayList<String> lines = null;
+            List<String> lines = null;
             String absoluteFilename = null;
             // MARK Virtual file check for project files...
             boolean isVirtual = false;
@@ -1532,11 +1534,11 @@ public class CompositePrimitive extends Composite {
         openGL.drawScene(-1, -1);
     }
 
-    public void setSearchResults(ArrayList<Primitive> results) {
+    public void setSearchResults(List<Primitive> results) {
         searchResults = results;
     }
 
-    public ArrayList<Primitive> getSearchResults() {
+    public List<Primitive> getSearchResults() {
         return searchResults;
     }
 
@@ -1546,19 +1548,19 @@ public class CompositePrimitive extends Composite {
         }
     }
 
-    public static HashMap<String, PGData> getCache() {
+    public static Map<String, PGData> getCache() {
         return cache;
     }
 
-    public static void setCache(HashMap<String, PGData> cache) {
+    public static void setCache(Map<String, PGData> cache) {
         CompositePrimitive.cache = cache;
     }
 
-    public static HashMap<PGTimestamp, ArrayList<String>> getFileCache() {
+    public static Map<PGTimestamp, List<String>> getFileCache() {
         return fileCache;
     }
 
-    public static void setFileCache(HashMap<PGTimestamp, ArrayList<String>> fileCache) {
+    public static void setFileCache(Map<PGTimestamp, List<String>> fileCache) {
         CompositePrimitive.fileCache = fileCache;
     }
 

@@ -17,9 +17,11 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -45,10 +47,10 @@ class VM25Smooth extends VM24MeshReducer {
         clearSelection();
 
         @SuppressWarnings("unchecked")
-        ArrayList<Vertex> newVerts = (ArrayList<Vertex>) obj[0];
+        List<Vertex> newVerts = (List<Vertex>) obj[0];
 
         @SuppressWarnings("unchecked")
-        ArrayList<Vertex> oldVerts = (ArrayList<Vertex>) obj[3];
+        List<Vertex> oldVerts = (List<Vertex>) obj[3];
 
         int size = newVerts.size();
         for (int i = 0; i < size; i++) {
@@ -72,9 +74,9 @@ class VM25Smooth extends VM24MeshReducer {
 
     private Vertex[] getNeighbourVertices(Vertex old) {
 
-        TreeSet<Vertex> tverts1 = new TreeSet<>();
-        TreeSet<Vertex> tverts2 = new TreeSet<>();
-        HashSet<GData> surfs = getLinkedSurfaces(old);
+        SortedSet<Vertex> tverts1 = new TreeSet<>();
+        SortedSet<Vertex> tverts2 = new TreeSet<>();
+        Set<GData> surfs = getLinkedSurfaces(old);
 
         for (GData g : surfs) {
             Vertex[] v;
@@ -112,15 +114,15 @@ class VM25Smooth extends VM24MeshReducer {
         final boolean isY = SmoothDialog.isY();
         final boolean isZ = SmoothDialog.isZ();
 
-        ArrayList<Vertex> vertsToProcess = new ArrayList<>();
-        ArrayList<Vertex> originalVerts = new ArrayList<>();
-        ArrayList<Vertex> newPos = new ArrayList<>();
+        List<Vertex> vertsToProcess = new ArrayList<>();
+        List<Vertex> originalVerts = new ArrayList<>();
+        List<Vertex> newPos = new ArrayList<>();
 
-        TreeSet<Vertex> origVerts = new TreeSet<>();
+        SortedSet<Vertex> origVerts = new TreeSet<>();
         origVerts.addAll(verts);
 
         {
-            TreeSet<Vertex> allVerts = new TreeSet<>();
+            SortedSet<Vertex> allVerts = new TreeSet<>();
             for (Vertex vertex : verts) {
                 allVerts.add(vertex);
                 for (Vertex vertex2 : getNeighbourVertices(vertex)) {
@@ -132,8 +134,8 @@ class VM25Smooth extends VM24MeshReducer {
         }
 
 
-        TreeMap<Integer, ArrayList<Integer>> adjacency = new TreeMap<>();
-        TreeMap<Vertex, Integer> indmap = new TreeMap<>();
+        SortedMap<Integer, List<Integer>> adjacency = new TreeMap<>();
+        SortedMap<Vertex, Integer> indmap = new TreeMap<>();
 
         int i = 0;
         for (Vertex vertex : vertsToProcess) {
@@ -143,7 +145,7 @@ class VM25Smooth extends VM24MeshReducer {
 
         for (Vertex vertex : origVerts) {
             Integer key = indmap.get(vertex);
-            ArrayList<Integer> ad;
+            List<Integer> ad;
             if (adjacency.containsKey(key)) {
                 ad = adjacency.get(key);
             } else {
@@ -165,7 +167,7 @@ class VM25Smooth extends VM24MeshReducer {
             for (Vertex vertex : vertsToProcess) {
                 if (origVerts.contains(vertex)) {
 
-                    ArrayList<Integer> il = adjacency.get(indmap.get(vertex));
+                    List<Integer> il = adjacency.get(indmap.get(vertex));
 
                     if (!il.isEmpty()) {
                         final BigDecimal ad = new BigDecimal(il.size());

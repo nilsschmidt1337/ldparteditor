@@ -24,7 +24,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
+import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -501,10 +504,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 NLogger.debug(getClass(), "Initialised raytracer."); //$NON-NLS-1$
                                 final boolean lights = c3d.isLightOn();
                                 // Read triangles and quads
-                                final ArrayList<float[]> tris = new ArrayList<>();
+                                final List<float[]> tris = new ArrayList<>();
                                 {
-                                    HashMap<GData4, Vertex[]> quads = c3d.getLockableDatFileReference().getVertexManager().getQuads();
-                                    HashMap<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
+                                    Map<GData4, Vertex[]> quads = c3d.getLockableDatFileReference().getVertexManager().getQuads();
+                                    Map<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
                                     for (GData3 g : tris2.keySet()) {
                                         Vertex[] v = tris2.get(g);
                                         Vector4f[] nv = new Vector4f[3];
@@ -670,13 +673,13 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
                                 NLogger.debug(getClass(), "Started raytracer."); //$NON-NLS-1$
 
-                                final ArrayList<float[]> points = new ArrayList<>(10000);
+                                final List<float[]> points = new ArrayList<>(10000);
 
 
-                                final LinkedList<float[]> speckles = new LinkedList<>();
-                                final LinkedList<float[]> glitters = new LinkedList<>();
-                                final HashMap<float[], Long> specklesCreation = new HashMap<>();
-                                final HashMap<float[], Long> glittersCreation = new HashMap<>();
+                                final List<float[]> speckles = new LinkedList<>();
+                                final List<float[]> glitters = new LinkedList<>();
+                                final Map<float[], Long> specklesCreation = new HashMap<>();
+                                final Map<float[], Long> glittersCreation = new HashMap<>();
 
                                 // Light positions
                                 final Vector3f lp1 = new Vector3f(-2.0f, -2.0f, 2.0f);
@@ -694,10 +697,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                         final int[] start = new int[] { j };
                                         final int[] ti = new int[] { start[0] * 4 * w};
                                         threads[j] = new Thread(() -> {
-                                            final TreeMap<Float, float[]>  zSort = new TreeMap<>();
-                                            final TreeMap<Float, Vector4f>  hitSort = new TreeMap<>();
+                                            final SortedMap<Float, float[]>  zSort = new TreeMap<>();
+                                            final SortedMap<Float, Vector4f>  hitSort = new TreeMap<>();
                                             final Random tRnd = new Random(12348729642643L * start[0]);
-                                            ArrayList<float[]> points2 = new ArrayList<>(10000 / chunks);
+                                            List<float[]> points2 = new ArrayList<>(10000 / chunks);
                                             final PowerRay pr = new PowerRay();
                                             final int s = start[0];
                                             int i = ti[0];

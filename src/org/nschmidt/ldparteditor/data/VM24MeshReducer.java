@@ -20,6 +20,7 @@ import java.text.MessageFormat;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,7 +35,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.MeshReducerSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -59,7 +60,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
         linkedDatFile.setDrawSelection(false);
 
         {
-            final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+            final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
             verticesToProcess.addAll(vertexLinkedToPositionInFile.keySet());
 
@@ -93,7 +94,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                     while (true) {
 
                                         // 1. Ermittle alle angrenzenden Flächen
-                                        final HashSet<GData> surfs;
+                                        final Set<GData> surfs;
                                         if (ignoreColours) {
                                             surfs = getLinkedSurfaces(v);
                                         } else {
@@ -101,7 +102,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                         }
 
                                         // 2. Ermittle alle angrenzenden Punkte
-                                        final TreeSet<Vertex> verts = new TreeSet<>();
+                                        final SortedSet<Vertex> verts = new TreeSet<>();
 
                                         {
                                             int delta = 1;
@@ -130,7 +131,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
                                         // 5. Prüfe die Kandidaten
                                         for (final Vertex t : verts) {
-                                            final HashSet<GData> tsurfs = getLinkedSurfaces(t);
+                                            final Set<GData> tsurfs = getLinkedSurfaces(t);
                                             final int oldcount = tsurfs.size();
                                             tsurfs.removeAll(surfs);
 
@@ -141,7 +142,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
                                             // 5.2 t darf nur zwei angrenzende Punkte mit v teilen
                                             {
-                                                final TreeSet<Vertex> verts2 = new TreeSet<>();
+                                                final SortedSet<Vertex> verts2 = new TreeSet<>();
                                                 for (final GData gData : getLinkedSurfaces(t)) {
                                                     if (gData.type() == 3) {
                                                         for (Vertex tv : triangles.get(gData)) {
@@ -202,7 +203,7 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                                     oldNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
                                                     s++;
                                                 }
-                                                HashSet<Integer> ignoreSet = new HashSet<>();
+                                                Set<Integer> ignoreSet = new HashSet<>();
                                                 for (s = 0; s < surfcount; s++) {
                                                     for (int i = 0; i < 3; i++) {
                                                         if (surfsv[s][i].equals(t)) {

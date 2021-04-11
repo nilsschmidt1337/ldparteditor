@@ -20,7 +20,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -35,7 +39,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.text.DatParser;
 
@@ -54,9 +58,9 @@ public class VM20Manipulator extends VM19ColourChanger {
      * @param moveAdjacentData
      */
     private void transform(Set<GData> allData, Set<Vertex> allVertices, Matrix transformation, Vector3d newVertex, boolean updateSelection, boolean moveAdjacentData) {
-        HashSet<GData> allData2 = new HashSet<>(allData);
-        TreeSet<Vertex> verticesToTransform = new TreeSet<>();
-        TreeSet<Vertex> transformedLPEvertices = new TreeSet<>();
+        Set<GData> allData2 = new HashSet<>(allData);
+        SortedSet<Vertex> verticesToTransform = new TreeSet<>();
+        SortedSet<Vertex> transformedLPEvertices = new TreeSet<>();
         verticesToTransform.addAll(allVertices);
         for (GData gd : allData) {
             Set<VertexInfo> vis = lineLinkedToVertices.get(gd);
@@ -66,7 +70,7 @@ public class VM20Manipulator extends VM19ColourChanger {
                 }
             }
         }
-        TreeMap<Vertex, Vertex> oldToNewVertex = new TreeMap<>();
+        SortedMap<Vertex, Vertex> oldToNewVertex = new TreeMap<>();
         // Calculate the new vertex position
         if (newVertex == null) {
             for (Vertex v : allVertices) {
@@ -83,7 +87,7 @@ public class VM20Manipulator extends VM19ColourChanger {
             }
         }
         // Evaluate the adjacency
-        HashMap<GData, Integer> verticesCountPerGData = new HashMap<>();
+        Map<GData, Integer> verticesCountPerGData = new HashMap<>();
         for (Vertex v : allVertices) {
             Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
             if (manis == null) continue;
@@ -118,7 +122,7 @@ public class VM20Manipulator extends VM19ColourChanger {
             selectedQuads.clear();
             selectedCondlines.clear();
         }
-        HashSet<GData> allNewData = new HashSet<>();
+        Set<GData> allNewData = new HashSet<>();
         for (GData gd : allData2) {
             GData newData = null;
             final int type = gd.type();
@@ -328,13 +332,13 @@ public class VM20Manipulator extends VM19ColourChanger {
         if (linkedDatFile.isReadOnly())
             return;
 
-        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        final Set<Vertex> singleVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
-        final HashSet<GData0> effSelectedVertices = new HashSet<>();
-        final HashSet<GData2> effSelectedLines = new HashSet<>();
-        final HashSet<GData3> effSelectedTriangles = new HashSet<>();
-        final HashSet<GData4> effSelectedQuads = new HashSet<>();
-        final HashSet<GData5> effSelectedCondlines = new HashSet<>();
+        final Set<GData0> effSelectedVertices = new HashSet<>();
+        final Set<GData2> effSelectedLines = new HashSet<>();
+        final Set<GData3> effSelectedTriangles = new HashSet<>();
+        final Set<GData4> effSelectedQuads = new HashSet<>();
+        final Set<GData5> effSelectedCondlines = new HashSet<>();
 
         selectedData.clear();
 
@@ -343,7 +347,7 @@ public class VM20Manipulator extends VM19ColourChanger {
         if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
             Matrix4f lowAccTransformation = transformation.getMatrix4f();
             Matrix4f.transpose(lowAccTransformation, lowAccTransformation);
-            ArrayList<GData> newSelection = new ArrayList<>();
+            List<GData> newSelection = new ArrayList<>();
             for (GDataCSG gd : GDataCSG.getSelection(linkedDatFile)) {
                 if (gd != null) newSelection.add(transformCSG(lowAccTransformation, gd));
             }
@@ -384,9 +388,9 @@ public class VM20Manipulator extends VM19ColourChanger {
 
         // 1. Vertex Based Selection
         {
-            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+            final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
             if (moveAdjacentData) {
-                HashMap<GData, Integer> occurMap = new HashMap<>();
+                Map<GData, Integer> occurMap = new HashMap<>();
                 for (Vertex vertex : selectedVertices) {
                     Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
                     if (occurences == null)
@@ -539,19 +543,19 @@ public class VM20Manipulator extends VM19ColourChanger {
             // + selectedData update!
 
 
-            HashSet<GData> allData = new HashSet<>();
+            Set<GData> allData = new HashSet<>();
             allData.addAll(selectedLines);
             allData.addAll(selectedTriangles);
             allData.addAll(selectedQuads);
             allData.addAll(selectedCondlines);
-            HashSet<Vertex> allVertices = new HashSet<>();
+            Set<Vertex> allVertices = new HashSet<>();
             allVertices.addAll(selectedVertices);
             transform(allData, allVertices, transformation, newVertex, true, moveAdjacentData);
 
             // 4. Subfile Based Transformation & Selection
             if (!selectedSubfiles.isEmpty()) {
                 HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
-                HashSet<GData1> newSubfiles = new HashSet<>();
+                Set<GData1> newSubfiles = new HashSet<>();
                 for (GData1 subf : selectedSubfiles) {
                     if (!drawPerLine.containsValue(subf)) {
                         continue;
@@ -786,7 +790,7 @@ public class VM20Manipulator extends VM19ColourChanger {
 
             if (swapWinding) {
                 backupHideShowState();
-                ArrayList<GData1> backupSubfiles = new ArrayList<>();
+                List<GData1> backupSubfiles = new ArrayList<>();
                 backupSubfiles.addAll(selectedSubfiles);
                 selectedData.removeAll(selectedSubfiles);
                 selectedSubfiles.clear();

@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.lwjgl.util.vector.Matrix4f;
@@ -75,8 +76,8 @@ class VM23FlatSubfileTester extends VM22TJunctionFixer {
         }
     }
 
-    public ArrayList<ParsingResult> checkForFlatScaling(GData1 ref) {
-        ArrayList<ParsingResult> result = new ArrayList<>();
+    public List<ParsingResult> checkForFlatScaling(GData1 ref) {
+        List<ParsingResult> result = new ArrayList<>();
 
         Matrix4f tMatrix = (Matrix4f) ref.accurateLocalMatrix.getMatrix4f().invert();
 

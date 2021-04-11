@@ -23,6 +23,7 @@ import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 
 /**
  * An ArrayList implementation of Set. An ArraySet is good for small sets; it
@@ -35,7 +36,7 @@ import java.util.Iterator;
  */
 class ArraySet<E> extends AbstractSet<E> {
 
-    private ArrayList<E> items; // Items of the set
+    private List<E> items; // Items of the set
 
     /**
      * Create an empty set (default initial capacity is 3).

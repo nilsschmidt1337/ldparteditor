@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.dialogs.colour;
 import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.text.MessageFormat;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.jface.window.ApplicationWindow;
@@ -139,7 +140,7 @@ class ColourDesign extends ApplicationWindow {
             lblEmptyLine.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         }
 
-        TreeSet<Integer> ldConfIndices = new TreeSet<>(View.getColourMap().keySet());
+        SortedSet<Integer> ldConfIndices = new TreeSet<>(View.getColourMap().keySet());
 
         int counter = 0;
         ToolItem toolItemColours = new ToolItem(cmpContainer, Cocoa.getStyle(), true);

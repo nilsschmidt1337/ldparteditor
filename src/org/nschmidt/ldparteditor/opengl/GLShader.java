@@ -19,6 +19,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL20;
@@ -27,7 +28,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
 public class GLShader {
 
     private final int program;
-    private final HashMap<String, Integer> uniformMap = new HashMap<>();
+    private final Map<String, Integer> uniformMap = new HashMap<>();
 
     public GLShader() {
         program = 0;

@@ -22,6 +22,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -41,8 +43,8 @@ public enum CSGOptimizerEdgeCollapse {
 
         for (List<GData3> triangles : trianglesPerPlane.values()) {
 
-            final Set<VectorCSGd> verticesToProcess = new TreeSet<>();
-            final Map<VectorCSGd, List<GData3>> linkedSurfaceMap = new TreeMap<>();
+            final SortedSet<VectorCSGd> verticesToProcess = new TreeSet<>();
+            final SortedMap<VectorCSGd, List<GData3>> linkedSurfaceMap = new TreeMap<>();
             final Map<GData3, VectorCSGd[]> trimap = new HashMap<>();
 
             for (GData3 tri : triangles) {
@@ -80,7 +82,7 @@ public enum CSGOptimizerEdgeCollapse {
                 }
 
                 // 2. Ermittle alle angrenzenden Punkte
-                final TreeSet<VectorCSGd> verts = new TreeSet<>();
+                final SortedSet<VectorCSGd> verts = new TreeSet<>();
                 for (final GData3 g : surfs) {
                     verts.addAll(Arrays.asList(trimap.get(g)));
                 }
@@ -113,7 +115,7 @@ public enum CSGOptimizerEdgeCollapse {
 
                     // 5.2 t darf nur zwei angrenzende Punkte mit v teilen
                     {
-                        final TreeSet<VectorCSGd> verts2 = new TreeSet<>();
+                        final SortedSet<VectorCSGd> verts2 = new TreeSet<>();
                         for (final GData3 gData : new ArrayList<>(linkedSurfaceMap.get(t))) {
                             verts2.addAll(Arrays.asList(trimap.get(gData)));
                         }
@@ -139,7 +141,7 @@ public enum CSGOptimizerEdgeCollapse {
                                         double diskr = ref.dot(ref2);
                                         if (diskr > epsilon) {
                                             {
-                                                final TreeSet<VectorCSGd> verts2 = new TreeSet<>();
+                                                final SortedSet<VectorCSGd> verts2 = new TreeSet<>();
                                                 for (final GData3 gData : new ArrayList<>(linkedSurfaceMap.get(r))) {
                                                     verts2.addAll(Arrays.asList(trimap.get(gData)));
                                                 }
@@ -178,7 +180,7 @@ public enum CSGOptimizerEdgeCollapse {
                             oldNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
                             s++;
                         }
-                        HashSet<Integer> ignoreSet = new HashSet<>();
+                        Set<Integer> ignoreSet = new HashSet<>();
                         for (s = 0; s < surfcount; s++) {
                             for (int i = 0; i < 3; i++) {
                                 if (surfsv[s][i].compareTo(t) == 0) {
@@ -223,7 +225,7 @@ public enum CSGOptimizerEdgeCollapse {
         final List<GData3> affectedSurfaces = linkedSurfaceMap.get(v);
         for (GData3 g : affectedSurfaces) {
 
-            Set<VectorCSGd> verts = new TreeSet<>(Arrays.asList(trimap.get(g)));
+            SortedSet<VectorCSGd> verts = new TreeSet<>(Arrays.asList(trimap.get(g)));
 
             if (!verts.contains(t)) {
                 List<VectorCSGd> nv = new ArrayList<>(Arrays.asList(trimap.get(g)));

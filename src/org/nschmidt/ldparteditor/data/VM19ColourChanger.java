@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -39,15 +40,15 @@ class VM19ColourChanger extends VM18LineConverter {
 
         backupHideShowState();
 
-        final HashSet<GData2> effSelectedLines = new HashSet<>();
-        final HashSet<GData3> effSelectedTriangles = new HashSet<>();
-        final HashSet<GData4> effSelectedQuads = new HashSet<>();
-        final HashSet<GData5> effSelectedCondlines = new HashSet<>();
+        final Set<GData2> effSelectedLines = new HashSet<>();
+        final Set<GData3> effSelectedTriangles = new HashSet<>();
+        final Set<GData4> effSelectedQuads = new HashSet<>();
+        final Set<GData5> effSelectedCondlines = new HashSet<>();
 
-        final HashSet<GData2> subSelectedLines = new HashSet<>();
-        final HashSet<GData3> subSelectedTriangles = new HashSet<>();
-        final HashSet<GData4> subSelectedQuads = new HashSet<>();
-        final HashSet<GData5> subSelectedCondlines = new HashSet<>();
+        final Set<GData2> subSelectedLines = new HashSet<>();
+        final Set<GData3> subSelectedTriangles = new HashSet<>();
+        final Set<GData4> subSelectedQuads = new HashSet<>();
+        final Set<GData5> subSelectedCondlines = new HashSet<>();
 
         final GColour col16 = View.getLDConfigColour(16);
 
@@ -109,7 +110,7 @@ class VM19ColourChanger extends VM18LineConverter {
         // 3. Transformation of the selected data (no whole subfiles!!)
         // + selectedData update!
 
-        ArrayList<GData> modData = new ArrayList<>();
+        List<GData> modData = new ArrayList<>();
         for (GData2 gd : effSelectedLines)
             modData.add(changeColour(index, r, g, b, a, gd));
         for (GData3 gd : effSelectedTriangles)
@@ -120,7 +121,7 @@ class VM19ColourChanger extends VM18LineConverter {
             modData.add(changeColour(index, r, g, b, a, gd));
 
         if (GDataCSG.hasSelectionCSG(linkedDatFile)) {
-            ArrayList<GData> newSelection = new ArrayList<>();
+            List<GData> newSelection = new ArrayList<>();
             for (GDataCSG gd : GDataCSG.getSelection(linkedDatFile))
                 newSelection.add(changeColour(index, r, g, b, a, gd));
             modData.addAll(newSelection);
@@ -180,7 +181,7 @@ class VM19ColourChanger extends VM18LineConverter {
             String col = colourBuilder.toString();
             final boolean isRandomColour = a == 0f;
             HashBiMap<Integer, GData> drawPerLine = linkedDatFile.getDrawPerLineNoClone();
-            HashSet<GData1> newSubfiles = new HashSet<>();
+            Set<GData1> newSubfiles = new HashSet<>();
             for (GData1 subf : selectedSubfiles) {
                 if (!drawPerLine.containsValue(subf)) {
                     continue;
@@ -268,7 +269,7 @@ class VM19ColourChanger extends VM18LineConverter {
     }
 
     private final synchronized GData changeColour(int index, float r, float g, float b, float a, GData dataToModify) {
-        HashSet<GData> newSet = new HashSet<>();
+        Set<GData> newSet = new HashSet<>();
         newSet.add(dataToModify);
         changeColour(index, r, g, b, a, newSet);
         if (newSet.iterator().hasNext()) {
@@ -279,7 +280,7 @@ class VM19ColourChanger extends VM18LineConverter {
     }
 
     private final synchronized void changeColour(int index, float r, float g, float b, float a, Set<GData> dataToModify) {
-        HashSet<GData> newData = new HashSet<>();
+        Set<GData> newData = new HashSet<>();
         GColour colour = View.getLDConfigColour(index);
         final float cr = colour.getR();
         final float cg = colour.getG();

@@ -18,7 +18,10 @@ package org.nschmidt.ldparteditor.data;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.NavigableSet;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.enums.View;
@@ -36,15 +39,15 @@ class VM09WindingChange extends VM08SlicerPro {
         if (linkedDatFile.isReadOnly())
             return;
 
-        final HashSet<GData2> effSelectedLines = new HashSet<>();
-        final HashSet<GData3> effSelectedTriangles = new HashSet<>();
-        final HashSet<GData4> effSelectedQuads = new HashSet<>();
-        final HashSet<GData5> effSelectedCondlines = new HashSet<>();
+        final Set<GData2> effSelectedLines = new HashSet<>();
+        final Set<GData3> effSelectedTriangles = new HashSet<>();
+        final Set<GData4> effSelectedQuads = new HashSet<>();
+        final Set<GData5> effSelectedCondlines = new HashSet<>();
 
-        final HashSet<GData2> subSelectedLines = new HashSet<>();
-        final HashSet<GData3> subSelectedTriangles = new HashSet<>();
-        final HashSet<GData4> subSelectedQuads = new HashSet<>();
-        final HashSet<GData5> subSelectedCondlines = new HashSet<>();
+        final Set<GData2> subSelectedLines = new HashSet<>();
+        final Set<GData3> subSelectedTriangles = new HashSet<>();
+        final Set<GData4> subSelectedQuads = new HashSet<>();
+        final Set<GData5> subSelectedCondlines = new HashSet<>();
 
         final GColour col16 = View.getLDConfigColour(16);
 
@@ -106,7 +109,7 @@ class VM09WindingChange extends VM08SlicerPro {
         // 3. Winding change of the selected data (no whole subfiles!!)
         // + selectedData update!
 
-        ArrayList<GData> modData = new ArrayList<>();
+        List<GData> modData = new ArrayList<>();
 
         for (GData3 gd : effSelectedTriangles)
             modData.add(changeWinding(gd));
@@ -150,7 +153,7 @@ class VM09WindingChange extends VM08SlicerPro {
 
 
             final HashBiMap<Integer, GData> dpl = linkedDatFile.getDrawPerLineNoClone();
-            HashSet<GData1> newSubfiles = new HashSet<>();
+            Set<GData1> newSubfiles = new HashSet<>();
             for (GData1 subf : selectedSubfiles) {
                 GData1 untransformedSubfile;
                 StringBuilder colourBuilder = new StringBuilder();
@@ -233,7 +236,7 @@ class VM09WindingChange extends VM08SlicerPro {
                     // Add Invert Next
                     GData before = subf.getBefore();
                     int lineToInsert = dpl.getKey(before);
-                    TreeSet<Integer> ts = new TreeSet<>();
+                    NavigableSet<Integer> ts = new TreeSet<>();
                     ts.addAll(dpl.keySet());
                     for (Iterator<Integer> dsi = ts.descendingIterator(); dsi.hasNext();) {
                         Integer k = dsi.next();
@@ -253,7 +256,7 @@ class VM09WindingChange extends VM08SlicerPro {
 
                     // Update Draw per line
 
-                    TreeSet<Integer> ts = new TreeSet<>();
+                    SortedSet<Integer> ts = new TreeSet<>();
                     ts.addAll(dpl.keySet());
 
                     int counter = 1;

@@ -58,12 +58,12 @@ public class GTexture {
 
     private long accessTime = System.currentTimeMillis();
 
-    private HashMap<OpenGLRenderer, Integer> openGlId = new HashMap<>();
-    private HashMap<OpenGLRenderer, Integer> openGlIdGlossmap = new HashMap<>();
-    private HashMap<OpenGLRenderer, Integer> openGlIdCubemap = new HashMap<>();
-    private HashMap<OpenGLRenderer, Integer> openGlIdCubemapMatte = new HashMap<>();
-    private HashMap<OpenGLRenderer, Integer> openGlIdCubemapMetal = new HashMap<>();
-    private HashMap<OpenGLRenderer, Boolean> openGlDisposed = new HashMap<>();
+    private Map<OpenGLRenderer, Integer> openGlId = new HashMap<>();
+    private Map<OpenGLRenderer, Integer> openGlIdGlossmap = new HashMap<>();
+    private Map<OpenGLRenderer, Integer> openGlIdCubemap = new HashMap<>();
+    private Map<OpenGLRenderer, Integer> openGlIdCubemapMatte = new HashMap<>();
+    private Map<OpenGLRenderer, Integer> openGlIdCubemapMetal = new HashMap<>();
+    private Map<OpenGLRenderer, Boolean> openGlDisposed = new HashMap<>();
 
     private String texture = ""; //$NON-NLS-1$
     private String glossmap = ""; //$NON-NLS-1$

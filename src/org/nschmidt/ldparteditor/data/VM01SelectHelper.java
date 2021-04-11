@@ -21,7 +21,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -42,7 +45,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.PowerRay;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -358,12 +361,12 @@ class VM01SelectHelper extends VM01Select {
             }
         }
         if (addSomething) {
-            TreeSet<Vertex> nearVertices = new TreeSet<>();
+            SortedSet<Vertex> nearVertices = new TreeSet<>();
             float zoom = c3d.getZoom() * 1000f;
             NLogger.debug(getClass(), zoom);
             final PerspectiveCalculator pc = c3d.getPerspectiveCalculator();
-            ArrayList<Vector4f> vertsOnScreen = new ArrayList<>(selectedVertices.size());
-            ArrayList<Vertex> verts = new ArrayList<>(selectedVertices.size());
+            List<Vector4f> vertsOnScreen = new ArrayList<>(selectedVertices.size());
+            List<Vertex> verts = new ArrayList<>(selectedVertices.size());
             for (Vertex v : selectedVertices) {
                 vertsOnScreen.add(pc.getScreenCoordinatesFrom3D(v.x, v.y, v.z));
                 verts.add(v);
@@ -371,7 +374,7 @@ class VM01SelectHelper extends VM01Select {
             final float EPSILON_SQR = (float) Math.pow(WorkbenchManager.getUserSettingState().getFuzziness2D(), 2.0);
             NLogger.debug(getClass(), "2D EPSILON² around selection is {0}", EPSILON_SQR); //$NON-NLS-1$
             if (EPSILON_SQR > 1f) {
-                final ArrayList<Vector4f> nearVertices2 = new ArrayList<>();
+                final List<Vector4f> nearVertices2 = new ArrayList<>();
                 final int size = selectedVertices.size();
                 for (int i = 0; i < size; i++) {
                     final Vector4f sv = vertsOnScreen.get(i);
@@ -399,7 +402,7 @@ class VM01SelectHelper extends VM01Select {
 
             if (BigDecimal.ZERO.compareTo(WorkbenchManager.getUserSettingState().getFuzziness3D()) < 0) {
                 nearVertices.clear();
-                final ArrayList<Vertex> nearVertices2 = new ArrayList<>();
+                final List<Vertex> nearVertices2 = new ArrayList<>();
                 BigDecimal epsilon;
                 epsilon = WorkbenchManager.getUserSettingState().getFuzziness3D();
                 epsilon = epsilon.multiply(epsilon, Threshold.MC);
@@ -426,7 +429,7 @@ class VM01SelectHelper extends VM01Select {
 
         } else if (Editor3DWindow.getWindow().isMovingAdjacentData() && Editor3DWindow.getWindow().getWorkingType() == ObjectMode.VERTICES) {
             {
-                HashMap<GData, Integer> occurMap = new HashMap<>();
+                Map<GData, Integer> occurMap = new HashMap<>();
                 for (Vertex vertex : selectedVertices) {
                     Set<VertexManifestation> occurences = vertexLinkedToPositionInFile.get(vertex);
                     if (occurences == null)
@@ -907,7 +910,7 @@ class VM01SelectHelper extends VM01Select {
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
-        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
         selectedVerticesTemp.addAll(selectedVertices);
         selectedVertices.clear();
         Vector4f selectionWidth = new Vector4f(c3d.getSelectionWidth());
@@ -1158,7 +1161,7 @@ class VM01SelectHelper extends VM01Select {
      */
     private synchronized void selectLines2(Composite3D c3d, Vector4f selectionWidth, Vector4f selectionHeight) {
         final boolean noTrans = Editor3DWindow.getWindow().hasNoTransparentSelection();
-        Set<Vertex> tmpVerts = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        Set<Vertex> tmpVerts = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
         tmpVerts.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
         selectVertices2(c3d);
@@ -1356,7 +1359,7 @@ class VM01SelectHelper extends VM01Select {
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
         }
-        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        Set<Vertex> selectedVerticesTemp = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
         selectedVerticesTemp.addAll(selectedVertices);
         selectedVertices.clear();
         boolean allVertsFromLine = false;
@@ -1487,7 +1490,7 @@ class VM01SelectHelper extends VM01Select {
      * @param selectionWidth
      */
     private synchronized void selectFaces2(Composite3D c3d, Event event, Vector4f selectionWidth, Vector4f selectionHeight) {
-        Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        Set<Vertex> selVert4sTemp = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
         selVert4sTemp.addAll(selectedVerticesForSubfile);
         selectedVerticesForSubfile.clear();
         selectVertices2(c3d);
@@ -1624,7 +1627,7 @@ class VM01SelectHelper extends VM01Select {
     }
 
     synchronized void selectWholeSubfiles() {
-        HashSet<GData1> subfilesToAdd = new HashSet<>();
+        Set<GData1> subfilesToAdd = new HashSet<>();
         for (GData g : selectedData) {
             subfilesToAdd.add(g.parent.firstRef);
         }
@@ -1701,7 +1704,7 @@ class VM01SelectHelper extends VM01Select {
         selectedQuadsForSubfile.clear();
         selectedCondlinesForSubfile.clear();
 
-        HashSet<GData1> backupSubfiles = new HashSet<>(selectedSubfiles);
+        Set<GData1> backupSubfiles = new HashSet<>(selectedSubfiles);
 
         if (!(c3d.getKeys().isCtrlPressed() || (Cocoa.IS_COCOA && c3d.getKeys().isCmdPressed()))) {
             clearSelection2();
@@ -1738,7 +1741,7 @@ class VM01SelectHelper extends VM01Select {
         }
 
         NLogger.debug(getClass(), "Subfiles in selection:"); //$NON-NLS-1$
-        HashSet<GData1> subs = new HashSet<>();
+        Set<GData1> subs = new HashSet<>();
         for (GData g : selectedData) {
             GData1 s = g.parent.firstRef;
             if (!View.DUMMY_REFERENCE.equals(s)) {
@@ -1752,8 +1755,8 @@ class VM01SelectHelper extends VM01Select {
         selectedData.clear();
 
         NLogger.debug(getClass(), "Subfiles in selection, to add/remove:"); //$NON-NLS-1$
-        HashSet<GData1> subsToAdd = new HashSet<>();
-        HashSet<GData1> subsToRemove = new HashSet<>();
+        Set<GData1> subsToAdd = new HashSet<>();
+        Set<GData1> subsToRemove = new HashSet<>();
         if (c3d.getKeys().isCtrlPressed()) {
             for (GData1 subf : backupSubfiles) {
                 if (subs.contains(subf)) {
@@ -1788,7 +1791,7 @@ class VM01SelectHelper extends VM01Select {
 
     public Vector4f getSelectionCenter() {
 
-        final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        final Set<Vertex> objectVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
         objectVertices.addAll(selectedVertices);
 
         // 1. Object Based Selection
@@ -1902,7 +1905,7 @@ class VM01SelectHelper extends VM01Select {
             alreadyParsed.add(linkedDatFile.getShortName());
             GData pasted;
             if (StringHelper.isNotBlank(lineToParse)) {
-                ArrayList<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
+                List<ParsingResult> result = DatParser.parseLine(lineToParse, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.0f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, linkedDatFile, false, alreadyParsed);
                 pasted = result.get(0).getGraphicalData();
                 if (pasted == null)
                     pasted = new GData0(lineToParse, View.DUMMY_REFERENCE);

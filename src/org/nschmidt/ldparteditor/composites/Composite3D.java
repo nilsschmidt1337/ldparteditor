@@ -23,8 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -93,7 +95,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.PerspectiveCalculator;
 import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.opengl.OpenGLRenderer;
@@ -165,7 +167,7 @@ public class Composite3D extends ScalableComposite {
 
     private final Vector4f screenXY = new Vector4f(0, 0, 0, 1);
 
-    private final Set<Vertex> tmpHiddenVertices = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+    private final Set<Vertex> tmpHiddenVertices = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
     public Vector4f getScreenXY() {
         return screenXY;
@@ -1247,7 +1249,7 @@ public class Composite3D extends ScalableComposite {
                 final GColour col16 = View.getLDConfigColour(16);
                 Set<String> alreadyParsed = new HashSet<>();
                 alreadyParsed.add(datfile.getShortName());
-                ArrayList<ParsingResult> subfileLine = DatParser
+                List<ParsingResult> subfileLine = DatParser
                         .parseLine(
                                 "1 16 " + MathHelper.bigDecimalToString(cur[0]) + " " + MathHelper.bigDecimalToString(cur[1]) + " " + MathHelper.bigDecimalToString(cur[2]) + " 1 0 0 0 1 0 0 0 1 " + ref, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datfile, false, alreadyParsed); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
                 GData1 primitiveLine = (GData1) subfileLine.get(0).getGraphicalData();
@@ -2065,8 +2067,8 @@ public class Composite3D extends ScalableComposite {
 
                                 final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
                                 final int lastSetIndex = ((CompositeTab) t).getState().getOldLineIndex();
-                                final ArrayList<Integer> indices = new ArrayList<>();
-                                final HashSet<GData> selection = new HashSet<>();
+                                final List<Integer> indices = new ArrayList<>();
+                                final Set<GData> selection = new HashSet<>();
                                 Integer index;
 
                                 selection.addAll(vm.getSelectedData());
@@ -2134,8 +2136,8 @@ public class Composite3D extends ScalableComposite {
                 return;
             }
 
-            final HashSet<Integer> selectedIndicies = new HashSet<>();
-            final TreeSet<Vertex> selectedVertices = new TreeSet<>();
+            final Set<Integer> selectedIndicies = new HashSet<>();
+            final SortedSet<Vertex> selectedVertices = new TreeSet<>();
             selectedVertices.addAll(vm.getSelectedVertices());
             for (GData gd : vm.getSelectedData()) {
                 final Integer i = df.getDrawPerLineNoClone().getKey(gd);

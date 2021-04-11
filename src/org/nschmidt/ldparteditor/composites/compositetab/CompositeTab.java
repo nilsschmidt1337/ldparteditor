@@ -884,7 +884,7 @@ public class CompositeTab extends CompositeTabDesign {
                 case EDITORTEXT_QUICKFIX:
                     if (compositeTextPtr[0].getEditable()) {
                         if (!vm.isUpdated()) return;
-                        HashSet<TreeItem> items = new HashSet<>();
+                        Set<TreeItem> items = new HashSet<>();
                         int offset = compositeTextPtr[0].getOffsetAtLine(Math.max(Math.min(state.currentLineIndex, compositeTextPtr[0].getLineCount() - 1), 0));
                         for (TreeItem t1 : treeItemHintsPtr[0].getItems()) {
                             if (!t1.getText(0).isEmpty() && ((Integer) t1.getData()).intValue() == offset) {
@@ -1400,7 +1400,7 @@ public class CompositeTab extends CompositeTabDesign {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
-                HashSet<TreeItem> items = new HashSet<>();
+                Set<TreeItem> items = new HashSet<>();
                 for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
                     items.add(sort1);
                 }
@@ -1450,8 +1450,8 @@ public class CompositeTab extends CompositeTabDesign {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
-                HashSet<TreeItem> items = new HashSet<>();
-                HashSet<String> sorts = new HashSet<>();
+                Set<TreeItem> items = new HashSet<>();
+                Set<String> sorts = new HashSet<>();
                 for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
                     if (sort1 == null) continue;
                     if (sort1.equals(treeItemHintsPtr[0])) {
@@ -1538,7 +1538,7 @@ public class CompositeTab extends CompositeTabDesign {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
-                HashSet<TreeItem> items = new HashSet<>();
+                Set<TreeItem> items = new HashSet<>();
                 for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
                     items.add(sort1);
                 }
@@ -1588,8 +1588,8 @@ public class CompositeTab extends CompositeTabDesign {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
-                HashSet<TreeItem> items = new HashSet<>();
-                HashSet<String> sorts = new HashSet<>();
+                Set<TreeItem> items = new HashSet<>();
+                Set<String> sorts = new HashSet<>();
                 for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
                     if (sort1 == null) continue;
                     if (sort1.equals(treeItemHintsPtr[0])) {

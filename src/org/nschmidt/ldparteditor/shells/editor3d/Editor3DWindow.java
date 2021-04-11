@@ -41,7 +41,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Pattern;
@@ -242,8 +244,8 @@ public class Editor3DWindow extends Editor3DDesign {
     /** The vertex window */
     private final VertexWindow vertexWindow = new VertexWindow();
 
-    public static final ArrayList<GLCanvas> canvasList = new ArrayList<>();
-    public static final ArrayList<OpenGLRenderer> renders = new ArrayList<>();
+    public static final List<GLCanvas> canvasList = new ArrayList<>();
+    public static final List<OpenGLRenderer> renders = new ArrayList<>();
 
     public static int sashWeight1 = 50;
     public static int sashWeight2 = 50;
@@ -297,9 +299,9 @@ public class Editor3DWindow extends Editor3DDesign {
     private final EditorMetaWindow metaWindow = new EditorMetaWindow();
     private boolean updatingSelectionTab = true;
 
-    private ArrayList<String> recentItems = new ArrayList<>();
+    private List<String> recentItems = new ArrayList<>();
 
-    private HashMap<DatFile, HashMap<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState>> c3dStates = new HashMap<>();
+    private Map<DatFile, Map<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState>> c3dStates = new HashMap<>();
 
     /**
      * Create the application window.
@@ -760,7 +762,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         NLogger.debug(getClass(), "Saving all files from this group"); //$NON-NLS-1$
                         {
                             @SuppressWarnings("unchecked")
-                            ArrayList<DatFile> dfs = (ArrayList<DatFile>) treeParts[0].getSelection()[0].getData();
+                            List<DatFile> dfs = (List<DatFile>) treeParts[0].getSelection()[0].getData();
                             for (DatFile df : dfs) {
                                 if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                                     if (df.save()) {
@@ -813,7 +815,7 @@ public class Editor3DWindow extends Editor3DDesign {
             private void iterateOverItems(TreeItem ti) {
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> dfs = (ArrayList<DatFile>) ti.getData();
+                    List<DatFile> dfs = (List<DatFile>) ti.getData();
                     for (DatFile df : dfs) {
                         if (!df.isReadOnly() && Project.getUnsavedFiles().contains(df)) {
                             if (df.save()) {
@@ -833,7 +835,7 @@ public class Editor3DWindow extends Editor3DDesign {
             }
         });
         widgetUtil(btnSaveAllPtr[0]).addSelectionListener(e -> {
-            HashSet<DatFile> dfs = new HashSet<>(Project.getUnsavedFiles());
+            Set<DatFile> dfs = new HashSet<>(Project.getUnsavedFiles());
             for (DatFile df : dfs) {
                 if (!df.isReadOnly()) {
                     if (df.save()) {
@@ -1126,7 +1128,7 @@ public class Editor3DWindow extends Editor3DDesign {
             setWorkingType(ObjectMode.SUBFILES);
             if ((e.stateMask & SWT.ALT) == SWT.ALT && !Cocoa.checkCtrlOrCmdPressed(e.stateMask) && Project.getFileToEdit() != null && !Project.getFileToEdit().getVertexManager().getSelectedSubfiles().isEmpty()) {
                 final VertexManager vm = Project.getFileToEdit().getVertexManager();
-                final ArrayList<GData1> subfiles = new ArrayList<>();
+                final List<GData1> subfiles = new ArrayList<>();
                 subfiles.addAll(vm.getSelectedSubfiles());
                 for (GData1 g1 : subfiles) {
                     vm.removeSubfileFromSelection(g1);
@@ -1338,7 +1340,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                             Set<String> alreadyParsed = new HashSet<>();
                                             alreadyParsed.add(Project.getFileToEdit().getShortName());
                                             final GColour col16 = View.getLDConfigColour(16);
-                                            ArrayList<ParsingResult> subfileLine = DatParser
+                                            List<ParsingResult> subfileLine = DatParser
                                                     .parseLine(
                                                             "1 16 0 0 0 1 0 0 0 1 0 0 0 1 s\\" + new File(selected).getName(), -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, Project.getFileToEdit(), false, alreadyParsed); //$NON-NLS-1$
                                             GData1 gd1 = (GData1) subfileLine.get(0).getGraphicalData();
@@ -2675,7 +2677,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 getCompositePrimitive().disableRefresh();
             }
             getCompositePrimitive().collapseAll();
-            ArrayList<Primitive> prims = getCompositePrimitive().getPrimitives();
+            List<Primitive> prims = getCompositePrimitive().getPrimitives();
             final String crit = txtPrimitiveSearchPtr[0].getText();
             if (crit.trim().isEmpty()) {
                 getCompositePrimitive().setSearchResults(new ArrayList<>());
@@ -2693,7 +2695,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 return;
             }
             final Pattern pattern = Pattern.compile(criteria);
-            ArrayList<Primitive> results = new ArrayList<>();
+            List<Primitive> results = new ArrayList<>();
             for (Primitive p : prims) {
                 p.search(pattern, results);
             }
@@ -3399,7 +3401,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         coordCount += CoordinatesDialog.isY() ? 1 : 0;
                         coordCount += CoordinatesDialog.isZ() ? 1 : 0;
                         if (coordCount == 1 && CoordinatesDialog.getStart() != null) {
-                            TreeSet<Vertex> verts1 = new TreeSet<>();
+                            SortedSet<Vertex> verts1 = new TreeSet<>();
                             verts1.addAll(vm.getSelectedVertices());
                             vm.clearSelection();
                             for (Vertex v21 : verts1) {
@@ -3434,7 +3436,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                 CoordinatesDialog.setZ(c1);
                             }
                         } else if (coordCount == 2 && CoordinatesDialog.getStart() != null) {
-                            TreeSet<Vertex> verts2 = new TreeSet<>();
+                            SortedSet<Vertex> verts2 = new TreeSet<>();
                             verts2.addAll(vm.getSelectedVertices());
                             vm.clearSelection();
                             for (Vertex v22 : verts2) {
@@ -3537,7 +3539,7 @@ public class Editor3DWindow extends Editor3DDesign {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                    TreeSet<Vertex> clipboard = new TreeSet<>();
+                    SortedSet<Vertex> clipboard = new TreeSet<>();
                     if (VertexManager.getClipboard().size() == 1) {
                         GData vertex = VertexManager.getClipboard().get(0);
                         if (vertex.type() == 0) {
@@ -3601,7 +3603,7 @@ public class Editor3DWindow extends Editor3DDesign {
             for (OpenGLRenderer renderer : renders) {
                 Composite3D c3d = renderer.getC3D();
                 if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                    TreeSet<Vertex> clipboard = new TreeSet<>();
+                    SortedSet<Vertex> clipboard = new TreeSet<>();
                     if (VertexManager.getClipboard().size() == 1) {
                         GData vertex = VertexManager.getClipboard().get(0);
                         if (vertex.type() == 0) {
@@ -3714,9 +3716,9 @@ public class Editor3DWindow extends Editor3DDesign {
                                     return;
                                 }
 
-                                HashSet<String> files = new HashSet<>();
+                                Set<String> files = new HashSet<>();
                                 files.add(fileName);
-                                ArrayList<String> list = buildFileList(source, new ArrayList<>(), files, monitor);
+                                List<String> list = buildFileList(source, new ArrayList<>(), files, monitor);
 
                                 final String fileName2 = fileName;
                                 final String source2 = source;
@@ -3752,8 +3754,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                                     DatFile main = View.DUMMY_DATFILE;
 
-                                    HashSet<DatFile> dfsToOpen = new HashSet<>();
-                                    ArrayList<DatFile> tempFileList = new ArrayList<>();
+                                    Set<DatFile> dfsToOpen = new HashSet<>();
+                                    List<DatFile> tempFileList = new ArrayList<>();
                                     tempFileList.addAll(Project.getOpenedFiles());
 
                                     for (int i =  list.size() - 2; i >= 0; i -= 2) {
@@ -3900,7 +3902,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
 
-            private ArrayList<String> buildFileList(String source, ArrayList<String> result, HashSet<String> files, final IProgressMonitor monitor) {
+            private List<String> buildFileList(String source, List<String> result, Set<String> files, final IProgressMonitor monitor) {
                 String[] lines;
 
                 lines = pattern.split(source, -1);
@@ -3965,7 +3967,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
                     if (new EdgerDialog(getShell(), es).open() == IDialogConstants.OK_ID) {
 
-                        final HashSet<GData2> oldLines = new HashSet<>();
+                        final Set<GData2> oldLines = new HashSet<>();
                         final int oldCondlineCount = es.isVerbose() ? vm.getCondlines().size() : 0;
                         final int oldLineCount = es.isVerbose() ? vm.getLines().size() : 0;
                         if (es.isVerbose()) {
@@ -4515,8 +4517,8 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
 
                 final Pattern whitespace = Pattern.compile("\\s+"); //$NON-NLS-1$
-                ArrayList<GColour> pal = WorkbenchManager.getUserSettingState().getUserPalette();
-                ArrayList<GColour> newPal = new ArrayList<>();
+                List<GColour> pal = WorkbenchManager.getUserSettingState().getUserPalette();
+                List<GColour> newPal = new ArrayList<>();
 
 
                 UTF8BufferedReader reader = null;
@@ -5845,7 +5847,7 @@ public class Editor3DWindow extends Editor3DDesign {
         close();
     }
 
-    private void saveComposite3DStates(Control c, ArrayList<Composite3DState> c3dStates, String parentPath, String path) {
+    private void saveComposite3DStates(Control c, List<Composite3DState> c3dStates, String parentPath, String path) {
         Composite3DState st = new Composite3DState();
         st.setParentPath(parentPath);
         st.setPath(path);
@@ -5908,7 +5910,7 @@ public class Editor3DWindow extends Editor3DDesign {
      * Updates the tree for new unsaved entries
      */
     public void updateTreeUnsavedEntries() {
-        ArrayList<TreeItem> categories = new ArrayList<>();
+        List<TreeItem> categories = new ArrayList<>();
         categories.add(this.treeItemProjectPartsPtr[0]);
         categories.add(this.treeItemProjectSubpartsPtr[0]);
         categories.add(this.treeItemProjectPrimitivesPtr[0]);
@@ -5922,7 +5924,7 @@ public class Editor3DWindow extends Editor3DDesign {
         int counter = 0;
         for (TreeItem item : categories) {
             counter++;
-            ArrayList<TreeItem> datFileTreeItems = item.getItems();
+            List<TreeItem> datFileTreeItems = item.getItems();
             for (TreeItem df : datFileTreeItems) {
                 DatFile d = (DatFile) df.getData();
                 StringBuilder nameSb = new StringBuilder(new File(d.getNewName()).getName());
@@ -5976,7 +5978,7 @@ public class Editor3DWindow extends Editor3DDesign {
      * Updates the tree for new unsaved entries
      */
     public void updateTreeSelectedDatFile(DatFile sdf) {
-        ArrayList<TreeItem> categories = new ArrayList<>();
+        List<TreeItem> categories = new ArrayList<>();
         categories.add(this.treeItemProjectPartsPtr[0]);
         categories.add(this.treeItemProjectSubpartsPtr[0]);
         categories.add(this.treeItemProjectPrimitivesPtr[0]);
@@ -5993,7 +5995,7 @@ public class Editor3DWindow extends Editor3DDesign {
         categories.add(this.treeItemOfficialPrimitives48Ptr[0]);
         categories.add(this.treeItemOfficialPrimitives8Ptr[0]);
         for (TreeItem item : categories) {
-            ArrayList<TreeItem> datFileTreeItems = item.getItems();
+            List<TreeItem> datFileTreeItems = item.getItems();
             for (TreeItem df : datFileTreeItems) {
                 DatFile d = (DatFile) df.getData();
                 if (d.equals(sdf)) {
@@ -6016,10 +6018,10 @@ public class Editor3DWindow extends Editor3DDesign {
      */
     @SuppressWarnings("unchecked")
     private void updateTreeRenamedEntries() {
-        HashMap<String, TreeItem> categories = new HashMap<>();
-        HashMap<String, DatType> types = new HashMap<>();
+        Map<String, TreeItem> categories = new HashMap<>();
+        Map<String, DatType> types = new HashMap<>();
 
-        ArrayList<String> validPrefixes = new ArrayList<>();
+        List<String> validPrefixes = new ArrayList<>();
 
         {
             String s = WorkbenchManager.getUserSettingState().getUnofficialFolderPath() + File.separator + "PARTS" + File.separator + "S" + File.separator; //$NON-NLS-1$ //$NON-NLS-2$
@@ -6146,8 +6148,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
         for (String prefix : validPrefixes) {
             TreeItem item = categories.get(prefix);
-            ArrayList<DatFile> dats = (ArrayList<DatFile>) item.getData();
-            ArrayList<TreeItem> datFileTreeItems = item.getItems();
+            List<DatFile> dats = (List<DatFile>) item.getData();
+            List<TreeItem> datFileTreeItems = item.getItems();
             Set<TreeItem> itemsToRemove = new HashSet<>();
             for (TreeItem df : datFileTreeItems) {
                 DatFile d = (DatFile) df.getData();
@@ -6165,7 +6167,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (!item2.equals(item)) {
                         itemsToRemove.add(df);
                         dats.remove(d);
-                        ((ArrayList<DatFile>) item2.getData()).add(d);
+                        ((List<DatFile>) item2.getData()).add(d);
                         TreeItem nt = new TreeItem(item2);
                         nt.setText(df.getText());
                         d.setType(types.get(validPrefix));
@@ -6203,7 +6205,7 @@ public class Editor3DWindow extends Editor3DDesign {
      *
      */
     public void updateTreeRemoveEntry(DatFile e) {
-        ArrayList<TreeItem> categories = new ArrayList<>();
+        List<TreeItem> categories = new ArrayList<>();
         categories.add(this.treeItemProjectPartsPtr[0]);
         categories.add(this.treeItemProjectSubpartsPtr[0]);
         categories.add(this.treeItemProjectPrimitivesPtr[0]);
@@ -6217,7 +6219,7 @@ public class Editor3DWindow extends Editor3DDesign {
         int counter = 0;
         for (TreeItem item : categories) {
             counter++;
-            ArrayList<TreeItem> datFileTreeItems = new ArrayList<>(item.getItems());
+            List<TreeItem> datFileTreeItems = new ArrayList<>(item.getItems());
             for (TreeItem df : datFileTreeItems) {
                 DatFile d = (DatFile) df.getData();
                 if (e.equals(d)) {
@@ -6246,7 +6248,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 c3d.unlinkData();
             }
         }
-        HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
+        Set<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
         for (EditorTextWindow win : windows) {
             win.closeTabWithDatfile(e);
         }
@@ -6277,7 +6279,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
+            List<DatFile> cachedReferences =(List<DatFile>) folder.getData();
             if (cachedReferences != null) {
                 cachedReferences.remove(e);
             }
@@ -6774,7 +6776,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     for (TreeItem folder : folders) {
                         folder.setData(new ArrayList<>());
                         for (TreeItem part : folder.getItems()) {
-                            ((ArrayList<DatFile>) folder.getData()).add((DatFile) part.getData());
+                            ((List<DatFile>) folder.getData()).add((DatFile) part.getData());
                         }
                     }
                 }
@@ -6789,7 +6791,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 for (int i = 0; i < 15; i++) {
                     TreeItem folder = folders[i];
                     folder.removeAll();
-                    for (DatFile part : (ArrayList<DatFile>) folder.getData()) {
+                    for (DatFile part : (List<DatFile>) folder.getData()) {
                         StringBuilder nameSb = new StringBuilder(new File(part.getNewName()).getName());
                         if (i > 9 && (!part.getNewName().startsWith(Project.getProjectPath()) || !part.getNewName().replace(Project.getProjectPath() + File.separator, "").contains(File.separator))) { //$NON-NLS-1$
                             nameSb.insert(0, "(!) "); //$NON-NLS-1$
@@ -6821,7 +6823,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public void closeAllComposite3D() {
         canvasList.clear();
-        ArrayList<OpenGLRenderer> renders2 = new ArrayList<>(renders);
+        List<OpenGLRenderer> renders2 = new ArrayList<>(renders);
         for (OpenGLRenderer renderer : renders2) {
             Composite3D c3d = renderer.getC3D();
             c3d.getModifier().closeView();
@@ -6831,7 +6833,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public TreeData getDatFileTreeData(DatFile df) {
         TreeData result = new TreeData();
-        ArrayList<TreeItem> categories = new ArrayList<>();
+        List<TreeItem> categories = new ArrayList<>();
         categories.add(this.treeItemProjectPartsPtr[0]);
         categories.add(this.treeItemProjectSubpartsPtr[0]);
         categories.add(this.treeItemProjectPrimitivesPtr[0]);
@@ -6849,7 +6851,7 @@ public class Editor3DWindow extends Editor3DDesign {
         categories.add(this.treeItemOfficialPrimitives8Ptr[0]);
         categories.add(this.treeItemUnsavedPtr[0]);
         for (TreeItem item : categories) {
-            ArrayList<TreeItem> datFileTreeItems = item.getItems();
+            List<TreeItem> datFileTreeItems = item.getItems();
             for (TreeItem ti : datFileTreeItems) {
                 DatFile d = (DatFile) ti.getData();
                 if (df.equals(d)) {
@@ -7038,7 +7040,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     ti.setData(df);
 
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPartsPtr[0].getData();
+                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPartsPtr[0].getData();
                     cachedReferences.add(df);
 
                     Project.addUnsavedFile(df);
@@ -7173,7 +7175,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPartsPtr[0].getData();
+                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPartsPtr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7181,7 +7183,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectSubpartsPtr[0].getData();
+                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectSubpartsPtr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7189,7 +7191,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitivesPtr[0].getData();
+                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitivesPtr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7197,7 +7199,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitives48Ptr[0].getData();
+                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitives48Ptr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7205,7 +7207,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
                 {
                     @SuppressWarnings("unchecked")
-                    ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitives8Ptr[0].getData();
+                    List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitives8Ptr[0].getData();
                     if (cachedReferences.contains(df)) {
                         openDatFile(df, where, null);
                         return df;
@@ -7220,7 +7222,7 @@ public class Editor3DWindow extends Editor3DDesign {
             case PART:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPartsPtr[0].getData();
+                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPartsPtr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItemProjectPartsPtr[0]);
@@ -7228,7 +7230,7 @@ public class Editor3DWindow extends Editor3DDesign {
             case SUBPART:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectSubpartsPtr[0].getData();
+                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectSubpartsPtr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItemProjectSubpartsPtr[0]);
@@ -7236,7 +7238,7 @@ public class Editor3DWindow extends Editor3DDesign {
             case PRIMITIVE:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitivesPtr[0].getData();
+                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitivesPtr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItemProjectPrimitivesPtr[0]);
@@ -7244,7 +7246,7 @@ public class Editor3DWindow extends Editor3DDesign {
             case PRIMITIVE48:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitives48Ptr[0].getData();
+                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitives48Ptr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItemProjectPrimitives48Ptr[0]);
@@ -7252,7 +7254,7 @@ public class Editor3DWindow extends Editor3DDesign {
             case PRIMITIVE8:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPrimitives8Ptr[0].getData();
+                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPrimitives8Ptr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItemProjectPrimitives8Ptr[0]);
@@ -7260,7 +7262,7 @@ public class Editor3DWindow extends Editor3DDesign {
             default:
             {
                 @SuppressWarnings("unchecked")
-                ArrayList<DatFile> cachedReferences = (ArrayList<DatFile>) this.treeItemProjectPartsPtr[0].getData();
+                List<DatFile> cachedReferences = (List<DatFile>) this.treeItemProjectPartsPtr[0].getData();
                 if (cachedReferences != null) cachedReferences.add(df);
             }
             ti = new TreeItem(this.treeItemProjectPartsPtr[0]);
@@ -7519,7 +7521,7 @@ public class Editor3DWindow extends Editor3DDesign {
         }
     }
 
-    public static ArrayList<OpenGLRenderer> getRenders() {
+    public static List<OpenGLRenderer> getRenders() {
         return renders;
     }
 
@@ -7573,7 +7575,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
+            List<DatFile> cachedReferences =(List<DatFile>) folder.getData();
             for (DatFile d : cachedReferences) {
                 if (createNew || !df.equals(d)) {
                     if (dir.equals(d.getOldName()) || dir.equals(d.getNewName())) {
@@ -7611,7 +7613,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         for (TreeItem folder : folders) {
             @SuppressWarnings("unchecked")
-            ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
+            List<DatFile> cachedReferences =(List<DatFile>) folder.getData();
             // Null-check is only required when a file is opened on program start
             if (cachedReferences == null) {
                 continue;
@@ -7647,7 +7649,7 @@ public class Editor3DWindow extends Editor3DDesign {
         return mntmWithSameColourPtr[0];
     }
 
-    public ArrayList<String> getRecentItems() {
+    public List<String> getRecentItems() {
         return recentItems;
     }
 
@@ -8491,7 +8493,7 @@ public class Editor3DWindow extends Editor3DDesign {
             return;
         }
         {
-            HashMap<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState> states = new HashMap<>();
+            Map<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState> states = new HashMap<>();
             if (c3dStates.containsKey(df)) {
                 states = c3dStates.get(df);
             } else {
@@ -8503,12 +8505,12 @@ public class Editor3DWindow extends Editor3DDesign {
 
         // Cleanup old states
         {
-            HashSet<DatFile> allFiles = new HashSet<>();
+            Set<DatFile> allFiles = new HashSet<>();
             for (CTabItem ci : tabFolderOpenDatFilesPtr[0].getItems()) {
                 allFiles.add((DatFile) ci.getData());
             }
 
-            HashSet<DatFile> cachedStates = new HashSet<>();
+            Set<DatFile> cachedStates = new HashSet<>();
             cachedStates.addAll(c3dStates.keySet());
             for (DatFile d : cachedStates) {
                 if (!allFiles.contains(d)) {
@@ -8523,7 +8525,7 @@ public class Editor3DWindow extends Editor3DDesign {
             return;
         }
         if (c3dStates.containsKey(df))  {
-            HashMap<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState> states = c3dStates.get(df);
+            Map<Composite3D, org.nschmidt.ldparteditor.composites.Composite3DViewState> states = c3dStates.get(df);
             if (states.containsKey(c3d)) {
                 c3d.importState(states.get(c3d));
             }
@@ -8687,7 +8689,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                 }
 
-                HashSet<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
+                Set<EditorTextWindow> windows = new HashSet<>(Project.getOpenTextWindows());
                 for (EditorTextWindow win : windows) {
                     win.updateTabWithDatfile(df);
                 }
@@ -8727,11 +8729,11 @@ public class Editor3DWindow extends Editor3DDesign {
                         String defaultPrefix = new File(Project.getProjectPath()).getAbsolutePath() + File.separator;
                         String projectPrefix = new File(Project.getTempProjectPath()).getAbsolutePath() + File.separator;
                         Editor3DWindow.getWindow().getProjectParts().getParentItem().setData(Project.getTempProjectPath());
-                        HashSet<DatFile> projectFiles = new HashSet<>();
-                        projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData());
-                        projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData());
-                        projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData());
-                        projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData());
+                        Set<DatFile> projectFiles = new HashSet<>();
+                        projectFiles.addAll((List<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData());
+                        projectFiles.addAll((List<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData());
+                        projectFiles.addAll((List<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData());
+                        projectFiles.addAll((List<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData());
                         for (DatFile df : projectFiles) {
                             df.getVertexManager().addSnapshot();
                             boolean isUnsaved = Project.getUnsavedFiles().contains(df);
@@ -8850,7 +8852,7 @@ public class Editor3DWindow extends Editor3DDesign {
             folders[4] = treeItemUnofficialSubpartsPtr[0];
 
             for (TreeItem folder : folders) {
-                ArrayList<DatFile> cachedReferences =(ArrayList<DatFile>) folder.getData();
+                List<DatFile> cachedReferences = (List<DatFile>) folder.getData();
                 for (DatFile d : cachedReferences) {
                     if (fileToOverwriteU.equals(d) || fileToOverwriteL.equals(d)) {
                         targetFile = d;
@@ -8877,7 +8879,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
 
-            ArrayList<ArrayList<DatFile>> refResult = null;
+            List<List<DatFile>> refResult = null;
 
             if (new File(targetPathDirL).exists() || new File(targetPathDirU).exists()) {
                 if (targetFile == null) {
@@ -8914,7 +8916,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     newDatFile.setText(df.getText());
                     newDatFile.saveForced();
                     newDatFile.setType(df.getType());
-                    ((ArrayList<DatFile>) targetTreeItem.getData()).add(newDatFile);
+                    ((List<DatFile>) targetTreeItem.getData()).add(newDatFile);
                     TreeItem ti = new TreeItem(targetTreeItem);
                     ti.setText(new File(df.getNewName()).getName());
                     ti.setData(newDatFile);
@@ -8958,7 +8960,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     DatFile newDatFile = new DatFile(new File(targetPathDirL).exists() ? targetPathL : targetPathU);
                     newDatFile.setText(df.getText());
                     newDatFile.saveForced();
-                    ((ArrayList<DatFile>) targetTreeItem.getData()).add(newDatFile);
+                    ((List<DatFile>) targetTreeItem.getData()).add(newDatFile);
                     TreeItem ti = new TreeItem(targetTreeItem);
                     ti.setText(new File(df.getNewName()).getName());
                     ti.setData(newDatFile);
@@ -8967,7 +8969,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (refResult != null) {
                     // Remove old data
                     for(int i = 0; i < 5; i++) {
-                        ArrayList<DatFile> toRemove = refResult.get(i);
+                        List<DatFile> toRemove = refResult.get(i);
                         for (DatFile datToRemove : toRemove) {
                             datToRemove.disposeData();
                             updateTreeRemoveEntry(datToRemove);
@@ -8976,7 +8978,7 @@ public class Editor3DWindow extends Editor3DDesign {
                     // Create new data
                     TreeItem[] targetTrees = new TreeItem[]{treeItemUnofficialPartsPtr[0], treeItemUnofficialSubpartsPtr[0], treeItemUnofficialPrimitivesPtr[0], treeItemUnofficialPrimitives48Ptr[0], treeItemUnofficialPrimitives8Ptr[0]};
                     for(int i = 5; i < 10; i++) {
-                        ArrayList<DatFile> toCreate = refResult.get(i);
+                        List<DatFile> toCreate = refResult.get(i);
                         for (DatFile datToCreate : toCreate) {
                             DatFile newDatFile = new DatFile(datToCreate.getOldName());
                             String source = datToCreate.getTextDirect();
@@ -8984,7 +8986,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             newDatFile.setOriginalText(source);
                             newDatFile.saveForced();
                             newDatFile.setType(datToCreate.getType());
-                            ((ArrayList<DatFile>) targetTrees[i - 5].getData()).add(newDatFile);
+                            ((List<DatFile>) targetTrees[i - 5].getData()).add(newDatFile);
                             TreeItem ti = new TreeItem(targetTrees[i - 5]);
                             ti.setText(new File(datToCreate.getOldName()).getName());
                             ti.setData(newDatFile);
@@ -9140,9 +9142,9 @@ public class Editor3DWindow extends Editor3DDesign {
         mntmSCLinesPtr[0].setSelection(true);
     }
 
-    public ArrayList<Composite3DState> getC3DStates() {
+    public List<Composite3DState> getC3DStates() {
         // Traverse the sash forms to store the 3D configuration
-        final ArrayList<Composite3DState> c3dStates = new ArrayList<>();
+        final List<Composite3DState> c3dStates = new ArrayList<>();
         Control c = Editor3DDesign.getSashForm().getChildren()[1];
         if (c != null) {
             if (c instanceof SashForm|| c instanceof CompositeContainer) {

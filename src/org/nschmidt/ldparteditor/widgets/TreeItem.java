@@ -19,6 +19,8 @@ import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -36,7 +38,7 @@ public class TreeItem {
 
     private String[] text;
     private Object data;
-    private ArrayList<TreeItem> items = new ArrayList<>();
+    private List<TreeItem> items = new ArrayList<>();
     private Tree parent;
     private TreeItem parentItem;
     private Image image;
@@ -103,7 +105,7 @@ public class TreeItem {
         this.image = image;
     }
 
-    public ArrayList<TreeItem> getItems() {
+    public List<TreeItem> getItems() {
         return items;
     }
 
@@ -119,7 +121,7 @@ public class TreeItem {
      */
     public void removeWithinPosition(StyledText compositeText, int startOffset, int endOffset, int length) {
 
-        ArrayList<TreeItem> nl = new ArrayList<>(items.size() + 100);
+        List<TreeItem> nl = new ArrayList<>(items.size() + 100);
 
         for (TreeItem t : items) {
             try {
@@ -167,8 +169,8 @@ public class TreeItem {
      */
     public void sortItems() {
         if (!items.isEmpty()) {
-            ArrayList<TreeItem> nl = new ArrayList<>(items.size() + 100);
-            HashMap<Integer, ArrayList<TreeItem>> itemsPerLine = new HashMap<>();
+            List<TreeItem> nl = new ArrayList<>(items.size() + 100);
+            Map<Integer, List<TreeItem>> itemsPerLine = new HashMap<>();
             SortedSet<Integer> lines = new TreeSet<>();
             for (TreeItem t : items) {
                 Integer litem = (Integer) t.getData();

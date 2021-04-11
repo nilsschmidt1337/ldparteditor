@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.helpers;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -32,7 +33,7 @@ public enum ProgressHelper {
     /** Counts the number of tasks */
     private static int taskCount = 0;
     /** Contains all task descriptions */
-    private static ArrayList<String> taskList = new ArrayList<>();
+    private static List<String> taskList = new ArrayList<>();
 
     /**
      * Registers a new task to progress on the task queue

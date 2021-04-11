@@ -18,8 +18,9 @@ package org.nschmidt.ldparteditor.workbench;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -59,7 +60,7 @@ public class UserSettingState implements Serializable {
     /** {@code true} if the user wants to use relative paths */
     private boolean usingRelativePaths = false;
     /** Your colour palette. */
-    private ArrayList<GColour> userPalette = new ArrayList<>();
+    private List<GColour> userPalette = new ArrayList<>();
 
     /** Your coarse move snap value */
     private BigDecimal coarseMoveSnap = new BigDecimal("1"); //$NON-NLS-1$
@@ -105,7 +106,7 @@ public class UserSettingState implements Serializable {
 
     private float[] manipulatorSize = null;
 
-    private ArrayList<String> recentItems = new ArrayList<>();
+    private List<String> recentItems = new ArrayList<>();
 
     private Locale locale = Locale.US;
 
@@ -120,7 +121,7 @@ public class UserSettingState implements Serializable {
     private String[] keyTextKeys = null;
     private TextTask[] keyTextTasks = null;
 
-    private ArrayList<ToolItemState> toolItemConfig3D = new ArrayList<>();
+    private List<ToolItemState> toolItemConfig3D = new ArrayList<>();
 
     /** {@code true} if anti-aliasing is enabled for 3D windows */
     private boolean antiAliasing = false;
@@ -555,7 +556,7 @@ public class UserSettingState implements Serializable {
     /**
      * @return your colour palette (17 colours)
      */
-    public ArrayList<GColour> getUserPalette() {
+    public List<GColour> getUserPalette() {
         return userPalette;
     }
 
@@ -563,7 +564,7 @@ public class UserSettingState implements Serializable {
      * @param userPalette
      *            sets the colour palette (17 colours)
      */
-    public void setUserPalette(ArrayList<GColour> userPalette) {
+    public void setUserPalette(List<GColour> userPalette) {
         this.userPalette = userPalette;
     }
 
@@ -703,11 +704,11 @@ public class UserSettingState implements Serializable {
         this.manipulatorSize = manipulatorSize;
     }
 
-    public ArrayList<String> getRecentItems() {
+    public List<String> getRecentItems() {
         return recentItems;
     }
 
-    public void setRecentItems(ArrayList<String> recentItems) {
+    public void setRecentItems(List<String> recentItems) {
         this.recentItems = recentItems;
     }
 
@@ -727,11 +728,11 @@ public class UserSettingState implements Serializable {
         this.bfcCertificationRequiredForLDrawMode = bfcCertificationRequiredForLDrawMode;
     }
 
-    public ArrayList<ToolItemState> getToolItemConfig3D() {
+    public List<ToolItemState> getToolItemConfig3D() {
         return toolItemConfig3D;
     }
 
-    public void setToolItemConfig3D(ArrayList<ToolItemState> toolItemConfig3D) {
+    public void setToolItemConfig3D(List<ToolItemState> toolItemConfig3D) {
         this.toolItemConfig3D = toolItemConfig3D;
     }
 
@@ -752,10 +753,10 @@ public class UserSettingState implements Serializable {
     }
 
     void saveShortkeys() {
-        HashMap<String, Task> m1 = KeyStateManager.getTaskmap();
-        HashMap<Task, String> m2 = KeyStateManager.getTaskKeymap();
-        HashMap<String, TextTask> m3 = KeyStateManager.getTextTaskmap();
-        HashMap<TextTask, String> m4 = KeyStateManager.getTextTaskKeymap();
+        Map<String, Task> m1 = KeyStateManager.getTaskmap();
+        Map<Task, String> m2 = KeyStateManager.getTaskKeymap();
+        Map<String, TextTask> m3 = KeyStateManager.getTextTaskmap();
+        Map<TextTask, String> m4 = KeyStateManager.getTextTaskKeymap();
 
         int size1 = m1.size();
         int size2 = m3.size();

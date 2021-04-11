@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data.tools;
 
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -48,7 +49,7 @@ public enum Merger {
         Map<GData4, Vertex[]> q = vm.getQuads();
         Map<GData5, Vertex[]> c = vm.getCondlines();
 
-        Set<Vertex> originVerts = new TreeSet<>();
+        SortedSet<Vertex> originVerts = new TreeSet<>();
         originVerts.addAll(vm.getSelectedVertices());
 
         for (GData2 g : lines) {

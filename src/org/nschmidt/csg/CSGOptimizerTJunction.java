@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.data.GColour;
@@ -37,7 +38,7 @@ public enum CSGOptimizerTJunction {
 
         for (List<GData3> triangles : trianglesPerPlane.values()) {
 
-            final Set<VectorCSGd> vertices = new TreeSet<>();
+            final SortedSet<VectorCSGd> vertices = new TreeSet<>();
             final Map<GData3, VectorCSGd[]> trimap = new HashMap<>();
 
             for (GData3 tri : triangles) {

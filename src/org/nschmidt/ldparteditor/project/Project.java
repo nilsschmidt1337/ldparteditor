@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.helpers.Version;
@@ -51,15 +53,15 @@ public enum Project {
     private static boolean defaultProject = true;
 
     /** A set of all open EditorTextWindow instances */
-    private static HashSet<EditorTextWindow> openTextWindows = new HashSet<>();
+    private static Set<EditorTextWindow> openTextWindows = new HashSet<>();
     /** A set of all absolute filenames, which are not saved */
-    private static final HashSet<DatFile> unsavedFiles = new HashSet<>();
+    private static final Set<DatFile> unsavedFiles = new HashSet<>();
     /** A set of all absolute filenames, which were parsed */
-    private static final HashSet<DatFile> parsedFiles = new HashSet<>();
+    private static final Set<DatFile> parsedFiles = new HashSet<>();
     /** The file which is currently displayed in the 3D editor */
     private static DatFile fileToEdit = new DatFile(getProjectPath() + File.separator + "parts" + File.separator + "new.dat"); //$NON-NLS-1$ //$NON-NLS-2$
     /** A list of all absolute filenames, which were opened */
-    private static final ArrayList<DatFile> openedFiles = new ArrayList<>();
+    private static final List<DatFile> openedFiles = new ArrayList<>();
 
 
     /**
@@ -98,17 +100,17 @@ public enum Project {
      */
     @SuppressWarnings("unchecked")
     public static boolean save() {
-        HashSet<DatFile> projectFiles = new HashSet<>();
+        Set<DatFile> projectFiles = new HashSet<>();
         if (isDefaultProject()) {
             // Linked project parts need a new path, because they were copied to a new directory
             String defaultPrefix = new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator;
             String projectPrefix = new File(projectPath).getAbsolutePath() + File.separator;
             Editor3DWindow.getWindow().getProjectParts().getParentItem().setData(projectPath);
-            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData());
-            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData());
-            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData());
-            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData());
-            projectFiles.addAll((ArrayList<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives8().getData());
+            projectFiles.addAll((List<DatFile>) Editor3DWindow.getWindow().getProjectParts().getData());
+            projectFiles.addAll((List<DatFile>) Editor3DWindow.getWindow().getProjectSubparts().getData());
+            projectFiles.addAll((List<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives().getData());
+            projectFiles.addAll((List<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives48().getData());
+            projectFiles.addAll((List<DatFile>) Editor3DWindow.getWindow().getProjectPrimitives8().getData());
             for (DatFile df : projectFiles) {
                 boolean isUnsaved = Project.getUnsavedFiles().contains(df);
                 boolean isParsed = Project.getParsedFiles().contains(df);
@@ -236,7 +238,7 @@ public enum Project {
     }
 
     private static void resetEditor() {
-        HashSet<EditorTextWindow> openWindows = new HashSet<>();
+        Set<EditorTextWindow> openWindows = new HashSet<>();
         openWindows.addAll(openTextWindows);
         for (EditorTextWindow txtwin : openWindows) {
             if (txtwin.isSeperateWindow()) {
@@ -301,14 +303,14 @@ public enum Project {
     /**
      * @return the open text editor windows from the current project
      */
-    public static HashSet<EditorTextWindow> getOpenTextWindows() {
+    public static Set<EditorTextWindow> getOpenTextWindows() {
         return openTextWindows;
     }
 
     /**
      * @return all absolut filenames, which are not saved
      */
-    public static HashSet<DatFile> getUnsavedFiles() {
+    public static Set<DatFile> getUnsavedFiles() {
         return unsavedFiles;
     }
 
@@ -321,7 +323,7 @@ public enum Project {
     }
 
 
-    public static ArrayList<DatFile> getOpenedFiles() {
+    public static List<DatFile> getOpenedFiles() {
         return openedFiles;
     }
 
@@ -338,7 +340,7 @@ public enum Project {
     /**
      * @return all absolut filenames, which were parsed
      */
-    public static HashSet<DatFile> getParsedFiles() {
+    public static Set<DatFile> getParsedFiles() {
         return parsedFiles;
     }
 

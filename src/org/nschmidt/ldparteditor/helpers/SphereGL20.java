@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.helpers;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.lwjgl.BufferUtils;
 import org.lwjgl.opengl.GL11;
@@ -31,11 +32,11 @@ public class SphereGL20 {
     private final FloatBuffer bvertices;
     private final ShortBuffer bindices;
 
-    private final ArrayList<Short> indices = new ArrayList<>();
+    private final List<Short> indices = new ArrayList<>();
 
     public SphereGL20(float radius, int segments) {
 
-        final ArrayList<Float> vertices = new ArrayList<>();
+        final List<Float> vertices = new ArrayList<>();
 
         final double R = 1d / (segments - 1);
         final double S = 1d / (segments - 1);

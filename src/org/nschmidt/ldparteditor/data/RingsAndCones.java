@@ -19,7 +19,6 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -59,7 +58,7 @@ public enum RingsAndCones {
 
     private static Map<Integer, boolean[]> existanceMap = new HashMap<>();
 
-    public static void solve(Shell sh, final DatFile df, final ArrayList<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
+    public static void solve(Shell sh, final DatFile df, final List<Primitive> allPrimitives, final RingsAndConesSettings rs, boolean syncWithTextEditor) {
 
         if (df.isReadOnly()) return;
 

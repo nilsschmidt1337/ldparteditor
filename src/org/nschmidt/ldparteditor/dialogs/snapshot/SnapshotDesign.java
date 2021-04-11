@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.dialogs.snapshot;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -44,10 +44,10 @@ class SnapshotDesign extends Dialog {
 
     // Use final only for subclass/listener references!
     final Combo[] cmbSnapshotPtr = new Combo[1];
-    final ArrayList<MemorySnapshot> snapshots;
+    final List<MemorySnapshot> snapshots;
     final MemorySnapshot[] selection;
 
-    SnapshotDesign(Shell parentShell, ArrayList<MemorySnapshot> snapshots, MemorySnapshot[] selection) {
+    SnapshotDesign(Shell parentShell, List<MemorySnapshot> snapshots, MemorySnapshot[] selection) {
         super(parentShell);
         this.snapshots = snapshots;
         this.selection = selection;

@@ -18,8 +18,8 @@ package org.nschmidt.ldparteditor.data;
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,7 +34,7 @@ import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.SelectorSettings;
 import org.nschmidt.ldparteditor.helpers.composite3d.TJunctionSettings;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
@@ -53,8 +53,8 @@ class VM22TJunctionFixer extends VM21Merger {
 
         linkedDatFile.setDrawSelection(false);
 
-        final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
-        final Set<Vertex> verticesToSelect = Collections.newSetFromMap(new ThreadsafeTreeMap<>());
+        final Set<Vertex> verticesToProcess = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
+        final Set<Vertex> verticesToSelect = Collections.newSetFromMap(new ThreadsafeSortedMap<>());
 
         if (selectedVertices.isEmpty()) {
             verticesToProcess.addAll(vertexLinkedToPositionInFile.keySet());
@@ -133,15 +133,15 @@ class VM22TJunctionFixer extends VM21Merger {
 
     private boolean isTjunctionCandidate(Vertex v, final boolean calculateDistance) {
 
-        HashSet<GData> surfs = getLinkedSurfaces(v);
+        Set<GData> surfs = getLinkedSurfaces(v);
 
         int surfCount = surfs.size();
         if (surfCount == 0) {
             return false;
         }
 
-        TreeSet<Vertex> verts = new TreeSet<>();
-        TreeSet<Vertex> verts2 = new TreeSet<>();
+        SortedSet<Vertex> verts = new TreeSet<>();
+        SortedSet<Vertex> verts2 = new TreeSet<>();
 
         for (GData g : surfs) {
             switch (g.type()) {

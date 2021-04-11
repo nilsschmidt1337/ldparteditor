@@ -20,8 +20,9 @@ import java.math.RoundingMode;
 import java.nio.FloatBuffer;
 import java.text.MessageFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.swt.graphics.Rectangle;
@@ -39,7 +40,7 @@ import org.nschmidt.ldparteditor.helpers.composite3d.ViewIdleManager;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.ThreadsafeHashMap;
-import org.nschmidt.ldparteditor.helpers.math.ThreadsafeTreeMap;
+import org.nschmidt.ldparteditor.helpers.math.ThreadsafeSortedMap;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -116,7 +117,7 @@ public final class GData1 extends GData {
         this.readOnly = false;
     }
 
-    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, Matrix tMatrixPrec, ArrayList<String> lines, String name, String shortName, int depth, boolean det,
+    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, Matrix tMatrixPrec, List<String> lines, String name, String shortName, int depth, boolean det,
             Matrix4f pMatrix, Matrix pMatrixPrec, DatFile datFile, GData1 firstRef, boolean readOnly, boolean errorCheckOnly, Set<String> alreadyParsed, GData1 parent) {
         super(parent);
         depth++;
@@ -328,7 +329,7 @@ public final class GData1 extends GData {
      * @param pMatrix
      * @param firstRef
      */
-    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, ArrayList<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
+    public GData1(int colourNumber, float r, float g, float b, float a, Matrix4f tMatrix, List<String> lines, String name, String shortName, int depth, boolean det, Matrix4f pMatrix,
             GData1 firstRef, Set<String> alreadyParsed, GData1 parent, DatFile datFile) {
         super(parent);
         this.accurateLocalMatrix = null;
@@ -1783,7 +1784,7 @@ public final class GData1 extends GData {
             }
         }
 
-        ArrayList<GData> dataToInline = new ArrayList<>();
+        List<GData> dataToInline = new ArrayList<>();
         GData data2draw = myGData;
         while ((data2draw = data2draw.next) != null) {
             dataToInline.add(data2draw);
@@ -2677,7 +2678,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, BFC> map) {
+    public void getBFCorientationMap(Map<GData,BFC> map) {
         if (matrix != null) {
             BFC tempWinding = GData.localWinding;
             boolean tempInvertNext = GData.globalInvertNext;
@@ -2716,7 +2717,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
+    public void getBFCorientationMapNOCERTIFY(Map<GData, BFC> map) {
         boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
         GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;
@@ -2735,7 +2736,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
+    public void getBFCorientationMapNOCLIP(Map<GData, BFC> map) {
         boolean tempNegativeDeterminant = GData.globalNegativeDeterminant;
         GData.globalNegativeDeterminant = GData.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;
@@ -2754,7 +2755,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMap(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         if (matrix != null) {
             boolean tNext = state.globalFoundTEXMAPNEXT;
             state.globalFoundTEXMAPNEXT = false;
@@ -2813,7 +2814,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean tempNegativeDeterminant = state.globalNegativeDeterminant;
         state.globalNegativeDeterminant = state.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;
@@ -2832,7 +2833,7 @@ public final class GData1 extends GData {
     }
 
     @Override
-    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeSortedMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
         boolean tempNegativeDeterminant = state.globalNegativeDeterminant;
         state.globalNegativeDeterminant = state.globalNegativeDeterminant ^ negativeDeterminant;
         GData data2draw = myGData;

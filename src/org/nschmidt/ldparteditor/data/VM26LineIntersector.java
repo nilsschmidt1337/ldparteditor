@@ -19,7 +19,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -61,9 +63,9 @@ class VM26LineIntersector extends VM25Smooth {
 
         clearSelection();
 
-        final ArrayList<ArrayList<Vector3dd>> linesToParse = new ArrayList<>();
-        TreeSet<Vertex> m1 = new TreeSet<>();
-        TreeSet<Vertex> m2 = new TreeSet<>();
+        final List<List<Vector3dd>> linesToParse = new ArrayList<>();
+        SortedSet<Vertex> m1 = new TreeSet<>();
+        SortedSet<Vertex> m2 = new TreeSet<>();
 
         for (GData2 g2 : linesToIntersect) {
             Vertex[] verts = lines.get(g2);
@@ -74,13 +76,13 @@ class VM26LineIntersector extends VM25Smooth {
                     m1.add(v);
                 }
             }
-            ArrayList<Vector3dd> l = new ArrayList<>();
+            List<Vector3dd> l = new ArrayList<>();
             l.add(new Vector3dd(verts[0]));
             l.add(new Vector3dd(verts[1]));
             linesToParse.add(l);
         }
 
-        Set<Vertex> intersectionPoints = new TreeSet<>();
+        SortedSet<Vertex> intersectionPoints = new TreeSet<>();
 
         // Calculate intersection points
 
@@ -98,16 +100,16 @@ class VM26LineIntersector extends VM25Smooth {
                             monitor.beginTask(I18n.VM_SEARCH_INTERSECTION, linesToParse.size());
                             int i = 0;
                             int j = 0;
-                            for (Iterator<ArrayList<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {
+                            for (Iterator<List<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {
                                 if (monitor.isCanceled()) break;
-                                ArrayList<Vector3dd> line = iterator.next();
+                                List<Vector3dd> line = iterator.next();
                                 i++;
                                 j = 0;
-                                for (ArrayList<Vector3dd> line2 : linesToParse) {
+                                for (List<Vector3dd> line2 : linesToParse) {
                                     j++;
                                     if (j > i) {
                                         if (monitor.isCanceled()) break;
-                                        TreeSet<Vector3dd> allVertices = new TreeSet<>();
+                                        SortedSet<Vector3dd> allVertices = new TreeSet<>();
                                         for(int l = 0; l < 2; l++) {
                                             allVertices.add(line.get(l));
                                             allVertices.add(line2.get(l));
@@ -138,14 +140,14 @@ class VM26LineIntersector extends VM25Smooth {
         } else {
             int i = 0;
             int j = 0;
-            for (Iterator<ArrayList<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {
-                ArrayList<Vector3dd> line = iterator.next();
+            for (Iterator<List<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {
+                List<Vector3dd> line = iterator.next();
                 i++;
                 j = 0;
-                for (ArrayList<Vector3dd> line2 : linesToParse) {
+                for (List<Vector3dd> line2 : linesToParse) {
                     j++;
                     if (j > i) {
-                        TreeSet<Vector3dd> allVertices = new TreeSet<>();
+                        SortedSet<Vector3dd> allVertices = new TreeSet<>();
                         for(int l = 0; l < 2; l++) {
                             allVertices.add(line.get(l));
                             allVertices.add(line2.get(l));

@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,16 +50,16 @@ public enum QuickFixer {
      *            the selected Issues
      * @param datFile
      */
-    public static void fixTextIssues(StyledText cText, HashSet<TreeItem> issues, DatFile datFile) {
+    public static void fixTextIssues(StyledText cText, Set<TreeItem> issues, DatFile datFile) {
 
         if (datFile.isReadOnly() || issues.isEmpty())
             return;
 
-        ArrayList<Integer> lineNumbers = new ArrayList<>();
-        HashMap<Integer, HashSet<TreeItem>> issuesInLine = new HashMap<>();
+        List<Integer> lineNumbers = new ArrayList<>();
+        Map<Integer, Set<TreeItem>> issuesInLine = new HashMap<>();
 
         {
-            HashSet<Integer> numbers = new HashSet<>();
+            Set<Integer> numbers = new HashSet<>();
             for (TreeItem t : issues) {
                 if (t == null || t.getText(0).isEmpty())
                     continue;
@@ -184,5 +187,4 @@ public enum QuickFixer {
         if (tl > 3) text = text.substring(0, tl - 4);
         return text.replaceAll("<br>", StringHelper.getLineDelimiter()); //$NON-NLS-1$
     }
-
 }

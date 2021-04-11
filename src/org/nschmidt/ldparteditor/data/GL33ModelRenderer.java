@@ -22,7 +22,10 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.CompletableFuture;
@@ -122,7 +125,7 @@ public class GL33ModelRenderer {
     private volatile AtomicBoolean calculateCSG = new AtomicBoolean(true);
 
     private volatile AtomicBoolean calculateCondlineControlPoints = new AtomicBoolean(true);
-    private volatile TreeSet<Vertex> pureCondlineControlPoints = new TreeSet<>();
+    private volatile SortedSet<Vertex> pureCondlineControlPoints = new TreeSet<>();
     private volatile float[] dataTriangles = null;
     private volatile float[] dataLines = new float[]{0f};
     private volatile float[] dataTempLines = new float[]{0f};
@@ -144,15 +147,15 @@ public class GL33ModelRenderer {
     private volatile int condlineSize = 0;
     private volatile int selectionSize = 0;
 
-    private volatile ArrayList<GDataPNG> images = new ArrayList<>();
-    private volatile ArrayList<GData2> distanceMeters = new ArrayList<>();
-    private volatile ArrayList<GData3> protractors = new ArrayList<>();
-    private volatile HashMap<GData, Vertex[]> sharedVertexMap = new HashMap<>();
+    private volatile List<GDataPNG> images = new ArrayList<>();
+    private volatile List<GData2> distanceMeters = new ArrayList<>();
+    private volatile List<GData3> protractors = new ArrayList<>();
+    private volatile Map<GData, Vertex[]> sharedVertexMap = new HashMap<>();
 
     private volatile boolean usesCSG = false;
 
-    private volatile ArrayList<Matrix4f> stud1MatricesResult = new ArrayList<>();
-    private volatile ArrayList<Matrix4f> stud2MatricesResult = new ArrayList<>();
+    private volatile List<Matrix4f> stud1MatricesResult = new ArrayList<>();
+    private volatile List<Matrix4f> stud2MatricesResult = new ArrayList<>();
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -309,12 +312,12 @@ public class GL33ModelRenderer {
                 final Set<GDataCSG> oldCsgData = new HashSet<>();
                 final Set<GData> selectionSet = new HashSet<>();
                 final Set<GData> hiddenSet = new HashSet<>();
-                final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
-                final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
-                final HashMap<GData, Vertex[]> vertexMap2 = new HashMap<>();
-                final HashMap<GData, float[]> normalMap = new HashMap<>();
+                final List<GDataAndWinding> dataInOrder = new ArrayList<>();
+                final Map<GData, Vertex[]> vertexMap = new HashMap<>();
+                final Map<GData, Vertex[]> vertexMap2 = new HashMap<>();
+                final Map<GData, float[]> normalMap = new HashMap<>();
                 final ThreadsafeHashMap<GData1, Matrix4f> cacheViewByProjection = new ThreadsafeHashMap<>(1000);
-                final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
+                final Map<GData1, Matrix4f> matrixMap = new HashMap<>();
                 final Integer myID = idGen.getAndIncrement();
                 matrixMap.put(View.DUMMY_REFERENCE, View.ID);
                 idList.add(myID);
@@ -366,7 +369,7 @@ public class GL33ModelRenderer {
 
                         if (calculateCondlineControlPoints.compareAndSet(true, false)) {
                             CompletableFuture.runAsync( () -> {
-                                final TreeSet<Vertex> tmpPureCondlineControlPoints = new TreeSet<>();
+                                final SortedSet<Vertex> tmpPureCondlineControlPoints = new TreeSet<>();
                                 for (Vertex v : vertices) {
                                     Set<VertexManifestation> manis = vm.vertexLinkedToPositionInFile.get(v);
                                     if (manis != null) {
@@ -394,19 +397,19 @@ public class GL33ModelRenderer {
                         final Set<Vertex> selectedVertices = vm.selectedVertices;
                         final ThreadsafeHashMap<GData, Set<VertexInfo>> ltv = vm.lineLinkedToVertices;
                         Set<Vertex> tmpSelectedVertices = null;
-                        TreeMap<Integer, ArrayList<Integer>> smoothVertexAdjacency = null;
-                        TreeMap<Vertex, Integer> smoothVertexIndmap = null;
+                        SortedMap<Integer, List<Integer>> smoothVertexAdjacency = null;
+                        SortedMap<Vertex, Integer> smoothVertexIndmap = null;
                         final Set<Vertex> hiddenVertices = vm.hiddenVertices;
                         final ThreadsafeHashMap<GData2, Vertex[]> lines = vm.lines;
                         final ThreadsafeHashMap<GData3, Vertex[]> triangles = vm.triangles;
                         final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
                         final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
-                        final ArrayList<GDataCSG> csgData = new ArrayList<>();
+                        final List<GDataCSG> csgData = new ArrayList<>();
                         final boolean drawStudLogo = c3d.isShowingLogo();
-                        final ArrayList<GDataPNG> pngImages = new ArrayList<>();
-                        final ArrayList<GData2> tmpDistanceMeters = new ArrayList<>();
-                        final ArrayList<GData3> tmpProtractors = new ArrayList<>();
-                        final HashSet<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
+                        final List<GDataPNG> pngImages = new ArrayList<>();
+                        final List<GData2> tmpDistanceMeters = new ArrayList<>();
+                        final List<GData3> tmpProtractors = new ArrayList<>();
+                        final Set<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
                         final boolean drawWireframe = renderMode == -1;
 
                         // Build the list of the data from the datfile
@@ -422,13 +425,13 @@ public class GL33ModelRenderer {
                                 pngImages, tmpDistanceMeters, tmpProtractors);
 
                         final boolean smoothShading = c3d.isSmoothShading() && !drawWireframe;
-                        final HashMap<GData, Vector3f[]> vertexNormals;
+                        final Map<GData, Vector3f[]> vertexNormals;
                         if (smoothShading) {
                             // MARK Calculate normals here...
                             vertexNormals = new HashMap<>();
-                            final ArrayList<GDataAndWinding> data;
+                            final List<GDataAndWinding> data;
                             data = dataInOrder;
-                            final HashMap<GData, Vector3f> surfaceNormals = new HashMap<>();
+                            final Map<GData, Vector3f> surfaceNormals = new HashMap<>();
                             for (GDataAndWinding gw : data) {
                                 final GData gd = gw.data;
                                 Vector3f normalv = null;
@@ -518,7 +521,7 @@ public class GL33ModelRenderer {
                         final float[] tmpCsgSelectionData;
                         {
                             int csgSelectionIndex = 0;
-                            HashSet<GData3> selection = GDataCSG.getSelectionData(df);
+                            Set<GData3> selection = GDataCSG.getSelectionData(df);
                             csgSelectionVertexSize += selection.size() * 6;
                             tmpCsgSelectionData = new float[csgSelectionVertexSize * 7];
                             for (GData3 gd3 : selection) {
@@ -546,7 +549,7 @@ public class GL33ModelRenderer {
                                 }
                             }
                             final boolean modified = modified2;
-                            final ArrayList<GDataCSG> csgData2 = csgData;
+                            final List<GDataCSG> csgData2 = csgData;
                             CompletableFuture.runAsync( () -> {
                                 // Do asynchronous CSG calculations here...
                                 int csgDataSize = 0;
@@ -683,8 +686,8 @@ public class GL33ModelRenderer {
                         final boolean isTransforming = manipulator.isModified();
                         final boolean moveAdjacentData = Editor3DWindow.getWindow().isMovingAdjacentData();
 
-                        final ArrayList<Matrix4f> stud1Matrices;
-                        final ArrayList<Matrix4f> stud2Matrices;
+                        final List<Matrix4f> stud1Matrices;
+                        final List<Matrix4f> stud2Matrices;
 
                         if (drawStudLogo) {
                             stud1Matrices = new ArrayList<>();
@@ -699,7 +702,7 @@ public class GL33ModelRenderer {
                         int localCondlineSize = 0;
                         int localTempLineSize = 0;
                         @SuppressWarnings("unchecked")
-                        int localVerticesSize = vertices.size() + (smoothVertices ? ((ArrayList<Vertex>) smoothObj[0]).size() : 0);
+                        int localVerticesSize = vertices.size() + (smoothVertices ? ((List<Vertex>) smoothObj[0]).size() : 0);
                         int localSelectionLineSize = 0;
 
                         int triangleVertexCount = 0;
@@ -711,12 +714,12 @@ public class GL33ModelRenderer {
 
                         if (smoothVertices) {
                             @SuppressWarnings("unchecked")
-                            TreeMap<Integer, ArrayList<Integer>> tmpAdjacency = (TreeMap<Integer, ArrayList<Integer>>) smoothObj[2];
+                            SortedMap<Integer, List<Integer>> tmpAdjacency = (TreeMap<Integer, List<Integer>>) smoothObj[2];
                             @SuppressWarnings("unchecked")
-                            TreeMap<Vertex, Integer> tmpIndex = (TreeMap<Vertex, Integer>) smoothObj[1];
+                            SortedMap<Vertex, Integer> tmpIndex = (TreeMap<Vertex, Integer>) smoothObj[1];
                             smoothVertexAdjacency = tmpAdjacency;
                             smoothVertexIndmap = tmpIndex;
-                            for (ArrayList<Integer> lst : smoothVertexAdjacency.values()) {
+                            for (List<Integer> lst : smoothVertexAdjacency.values()) {
                                 final int size = lst.size();
                                 localSelectionLineSize += 14 * size;
                                 selectionLineVertexCount += 2 * size;
@@ -724,8 +727,8 @@ public class GL33ModelRenderer {
                         }
 
                         // Pre-compute vertex transformations for Move Adjacent Data
-                        TreeMap<Vertex, Vector4f> transformedVerts = null;
-                        ArrayList<Vertex> transformedVertices = null;
+                        SortedMap<Vertex, Vector4f> transformedVerts = null;
+                        List<Vertex> transformedVertices = null;
                         if (isTransforming && moveAdjacentData) {
                             transformedVerts = new TreeMap<>();
                             transformedVertices = new ArrayList<>();
@@ -1100,7 +1103,7 @@ public class GL33ModelRenderer {
                                 }
 
                                 @SuppressWarnings("unchecked")
-                                ArrayList<Vertex> verts = (ArrayList<Vertex>) smoothObj[0];
+                                List<Vertex> verts = (List<Vertex>) smoothObj[0];
                                 for(Vertex v : verts) {
                                     vertexData[i] = v.x;
                                     vertexData[i + 1] = v.y;
@@ -1150,7 +1153,7 @@ public class GL33ModelRenderer {
 
                         if (smoothVertices) {
                             @SuppressWarnings("unchecked")
-                            ArrayList<Vertex> verts = (ArrayList<Vertex>) smoothObj[0];
+                            List<Vertex> verts = (List<Vertex>) smoothObj[0];
                             for (Vertex v1 : verts) {
                                 if (smoothVertexAdjacency.containsKey(smoothVertexIndmap.get(v1))) {
                                     for (Integer i : smoothVertexAdjacency.get(smoothVertexIndmap.get(v1))) {
@@ -2357,8 +2360,8 @@ public class GL33ModelRenderer {
 
                 {
                     lock.lock();
-                    ArrayList<Matrix4f> stud1Matrices = stud1MatricesResult;
-                    ArrayList<Matrix4f> stud2Matrices = stud2MatricesResult;
+                    List<Matrix4f> stud1Matrices = stud1MatricesResult;
+                    List<Matrix4f> stud2Matrices = stud2MatricesResult;
                     lock.unlock();
                     GL30.glBindVertexArray(vaoStudLogo1);
                     for (Matrix4f m : stud1Matrices) {
@@ -2621,18 +2624,18 @@ public class GL33ModelRenderer {
     }
 
     private boolean loadBFCinfo(
-            final ArrayList<GDataAndWinding> dataInOrder,
-            final ArrayList<GDataCSG> csgData,
-            final HashMap<GData, Vertex[]> vertexMap,
-            final HashMap<GData1, Matrix4f> matrixMap, final DatFile df,
+            final List<GDataAndWinding> dataInOrder,
+            final List<GDataCSG> csgData,
+            final Map<GData, Vertex[]> vertexMap,
+            final Map<GData1, Matrix4f> matrixMap, final DatFile df,
             final ThreadsafeHashMap<GData2, Vertex[]> lines,
             final ThreadsafeHashMap<GData3, Vertex[]> triangles,
             final ThreadsafeHashMap<GData4, Vertex[]> quads,
             final ThreadsafeHashMap<GData5, Vertex[]> condlines,
             final boolean drawStudLogo,
-            ArrayList<GDataPNG> pngImages,
-            ArrayList<GData2> tmpDistanceMeters,
-            ArrayList<GData3> tmpProtractors) {
+            List<GDataPNG> pngImages,
+            List<GData2> tmpDistanceMeters,
+            List<GData3> tmpProtractors) {
 
         boolean hasCSG = false;
         Deque<GData> stack = new LinkedList<>();

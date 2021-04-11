@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -107,14 +109,14 @@ public class GL33ModelRendererLDrawStandard {
     private volatile int lineSize = 0;
     private volatile int condlineSize = 0;
 
-    private volatile ArrayList<GDataAndTexture> texmapData = new ArrayList<>();
-    private volatile HashMap<GData, Vertex[]> sharedVertexMap = new HashMap<>();
-    private volatile HashMap<GData, Vector3f[]> sharedTEXMAPnormalMap = new HashMap<>();
+    private volatile List<GDataAndTexture> texmapData = new ArrayList<>();
+    private volatile Map<GData, Vertex[]> sharedVertexMap = new HashMap<>();
+    private volatile Map<GData, Vector3f[]> sharedTEXMAPnormalMap = new HashMap<>();
 
     private volatile boolean usesTEXMAP = false;
 
-    private volatile ArrayList<Matrix4f> stud1MatricesResult = new ArrayList<>();
-    private volatile ArrayList<Matrix4f> stud2MatricesResult = new ArrayList<>();
+    private volatile List<Matrix4f> stud1MatricesResult = new ArrayList<>();
+    private volatile List<Matrix4f> stud2MatricesResult = new ArrayList<>();
 
     private volatile AtomicBoolean isRunning = new AtomicBoolean(true);
 
@@ -207,13 +209,13 @@ public class GL33ModelRendererLDrawStandard {
             final Matrix4f mm = new Matrix4f();
             Matrix4f.setIdentity(mm);
 
-            final ArrayList<GDataAndWinding> dataInOrder = new ArrayList<>();
-            final ArrayList<GDataAndTexture> texmapDataInOrder = new ArrayList<>();
-            final HashMap<GData, Vertex[]> vertexMap = new HashMap<>();
-            final HashMap<GData, Vertex[]> vertexMap2 = new HashMap<>();
-            final HashMap<GData, float[]> normalMap = new HashMap<>();
+            final List<GDataAndWinding> dataInOrder = new ArrayList<>();
+            final List<GDataAndTexture> texmapDataInOrder = new ArrayList<>();
+            final Map<GData, Vertex[]> vertexMap = new HashMap<>();
+            final Map<GData, Vertex[]> vertexMap2 = new HashMap<>();
+            final Map<GData, float[]> normalMap = new HashMap<>();
             final ThreadsafeHashMap<GData1, Matrix4f> cacheViewByProjection = new ThreadsafeHashMap<>(1000);
-            final HashMap<GData1, Matrix4f> matrixMap = new HashMap<>();
+            final Map<GData1, Matrix4f> matrixMap = new HashMap<>();
             final Integer myID = idGen.getAndIncrement();
             matrixMap.put(View.DUMMY_REFERENCE, View.ID);
             idList.add(myID);
@@ -262,7 +264,7 @@ public class GL33ModelRendererLDrawStandard {
                     final ThreadsafeHashMap<GData4, Vertex[]> quads = vm.quads;
                     final ThreadsafeHashMap<GData5, Vertex[]> condlines = vm.condlines;
                     final boolean drawStudLogo = c3d.isShowingLogo();
-                    final HashSet<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
+                    final Set<GData> dataToRemove = new HashSet<>(vertexMap.keySet());
                     final Matrix4f viewport = new Matrix4f();
                     viewport.load(c3d.getViewport());
 
@@ -276,7 +278,7 @@ public class GL33ModelRendererLDrawStandard {
                         usesTEXMAP = loadBFCandTEXMAPinfo(
                                 dataInOrder, texmapDataInOrder, vertexMap, matrixMap, df, lines,
                                 triangles, quads, condlines, drawStudLogo);
-                        HashSet<GData> allData = new HashSet<>();
+                        Set<GData> allData = new HashSet<>();
                         if (usesTEXMAP) {
 
                             GTexture lastTexture = null;
@@ -396,18 +398,18 @@ public class GL33ModelRendererLDrawStandard {
 
                     final boolean smoothShading = c3d.isSmoothShading();
 
-                    final HashMap<GData, Vector3f[]> vertexNormals;
+                    final Map<GData, Vector3f[]> vertexNormals;
                     if (smoothShading) {
                         // MARK Calculate normals here...
                         vertexNormals = new HashMap<>();
-                        final ArrayList<GDataAndWinding> data;
+                        final List<GDataAndWinding> data;
                         if (usesTEXMAP) {
                             data = new ArrayList<>(dataInOrder);
                             data.addAll(texmapDataInOrder);
                         } else {
                             data = dataInOrder;
                         }
-                        final HashMap<GData, Vector3f> surfaceNormals = new HashMap<>();
+                        final Map<GData, Vector3f> surfaceNormals = new HashMap<>();
                         for (GDataAndWinding gw : data) {
                             final GData gd = gw.data;
                             Vector3f normalv = null;
@@ -499,8 +501,8 @@ public class GL33ModelRendererLDrawStandard {
                     final boolean hideCondlines = lineMode > 1;
                     final boolean hideLines = lineMode > 2;
 
-                    final ArrayList<Matrix4f> stud1Matrices;
-                    final ArrayList<Matrix4f> stud2Matrices;
+                    final List<Matrix4f> stud1Matrices;
+                    final List<Matrix4f> stud2Matrices;
 
                     if (drawStudLogo) {
                         stud1Matrices = new ArrayList<>();
@@ -1254,8 +1256,8 @@ public class GL33ModelRendererLDrawStandard {
 
                 {
                     lock.lock();
-                    ArrayList<Matrix4f> stud1Matrices = stud1MatricesResult;
-                    ArrayList<Matrix4f> stud2Matrices = stud2MatricesResult;
+                    List<Matrix4f> stud1Matrices = stud1MatricesResult;
+                    List<Matrix4f> stud2Matrices = stud2MatricesResult;
                     lock.unlock();
                     GL30.glBindVertexArray(vaoStudLogo1);
                     for (Matrix4f m : stud1Matrices) {
@@ -1327,10 +1329,10 @@ public class GL33ModelRendererLDrawStandard {
     }
 
     private boolean loadBFCandTEXMAPinfo(
-            final ArrayList<GDataAndWinding> dataInOrder,
-            final ArrayList<GDataAndTexture> texmapDataInOrder,
-            final HashMap<GData, Vertex[]> vertexMap,
-            final HashMap<GData1, Matrix4f> matrixMap,
+            final List<GDataAndWinding> dataInOrder,
+            final List<GDataAndTexture> texmapDataInOrder,
+            final Map<GData, Vertex[]> vertexMap,
+            final Map<GData1, Matrix4f> matrixMap,
             final DatFile df, final ThreadsafeHashMap<GData2, Vertex[]> lines,
             final ThreadsafeHashMap<GData3, Vertex[]> triangles,
             final ThreadsafeHashMap<GData4, Vertex[]> quads,

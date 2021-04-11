@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
 
@@ -25,37 +26,37 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3dd;
  */
 class IntersectionInfoWithColour {
 
-    private ArrayList<Vector3dd> allVertices = new ArrayList<>();
-    private ArrayList<GColour> colours = new ArrayList<>();
-    private ArrayList<Integer> isLine = new ArrayList<>();
+    private List<Vector3dd> allVertices = new ArrayList<>();
+    private List<GColour> colours = new ArrayList<>();
+    private List<Integer> isLine = new ArrayList<>();
 
-    IntersectionInfoWithColour(ArrayList<GColour> colours, ArrayList<Vector3dd> allVertices, ArrayList<Integer> resultIsLine) {
+    IntersectionInfoWithColour(List<GColour> colours, List<Vector3dd> allVertices, List<Integer> resultIsLine) {
         this.isLine.addAll(resultIsLine);
         this.allVertices.addAll(allVertices);
         this.colours.addAll(colours);
     }
 
-    public ArrayList<Vector3dd> getAllVertices() {
+    public List<Vector3dd> getAllVertices() {
         return allVertices;
     }
 
-    public void setAllVertices(ArrayList<Vector3dd> allVertices) {
+    public void setAllVertices(List<Vector3dd> allVertices) {
         this.allVertices = allVertices;
     }
 
-    public ArrayList<GColour> getColours() {
+    public List<GColour> getColours() {
         return colours;
     }
 
-    public void setColours(ArrayList<GColour> colours) {
+    public void setColours(List<GColour> colours) {
         this.colours = colours;
     }
 
-    public ArrayList<Integer> getIsLine() {
+    public List<Integer> getIsLine() {
         return isLine;
     }
 
-    public void setIsLine(ArrayList<Integer> isLine) {
+    public void setIsLine(List<Integer> isLine) {
         this.isLine = isLine;
     }
 }

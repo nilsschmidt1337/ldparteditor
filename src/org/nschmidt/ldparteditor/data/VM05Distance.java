@@ -179,11 +179,11 @@ class VM05Distance extends VM04Rectifier {
             }
         }
 
-        HashSet<GData> commonLinkedGData = new HashSet<>();
+        Set<GData> commonLinkedGData = new HashSet<>();
         {
             Set<VertexManifestation> linked = vertexLinkedToPositionInFile.get(p1);
             Set<VertexManifestation> linked2 = vertexLinkedToPositionInFile.get(p2);
-            HashSet<GData> l2 = new HashSet<>(linked2.size());
+            Set<GData> l2 = new HashSet<>(linked2.size());
             for (VertexManifestation vm : linked) {
                 commonLinkedGData.add(vm.getGdata());
             }

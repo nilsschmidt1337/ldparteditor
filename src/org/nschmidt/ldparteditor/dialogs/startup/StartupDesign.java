@@ -21,6 +21,7 @@ import java.text.DateFormat;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
@@ -67,7 +68,7 @@ class StartupDesign extends Dialog {
     final NButton[] btnBrowseUnofficialPathPtr = new NButton[1];
     final NButton[] btnBrowseAuthoringPathPtr = new NButton[1];
 
-    final HashMap<String, Locale> localeMap = new HashMap<>();
+    final Map<String, Locale> localeMap = new HashMap<>();
 
     StartupDesign(Shell parentShell) {
         super(parentShell);

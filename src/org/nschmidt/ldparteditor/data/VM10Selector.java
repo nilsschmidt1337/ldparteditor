@@ -19,6 +19,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -114,7 +116,7 @@ class VM10Selector extends VM09WindingChange {
     private void selectorHelper(final SelectorSettings ss) {
         final Set<GColour> allColours = new HashSet<>();
         final Set<Vector3d> allNormals = new HashSet<>();
-        final TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision = new TreeMap<>();
+        final SortedMap<Vertex, SortedSet<Vertex>> adjaencyByPrecision = new TreeMap<>();
 
         // Get near vertices
 
@@ -123,7 +125,7 @@ class VM10Selector extends VM09WindingChange {
             int i = 0;
             int j = 0;
             for (Vertex v1 : vertexLinkedToPositionInFile.keySet()) {
-                TreeSet<Vertex> newSet = new TreeSet<>();
+                SortedSet<Vertex> newSet = new TreeSet<>();
                 newSet.add(v1);
                 for (Vertex v2 : vertexLinkedToPositionInFile.keySet()) {
                     if (j > i) {
@@ -140,7 +142,7 @@ class VM10Selector extends VM09WindingChange {
             }
         } else {
             for (Vertex v1 : vertexLinkedToPositionInFile.keySet()) {
-                TreeSet<Vertex> newSet = new TreeSet<>();
+                SortedSet<Vertex> newSet = new TreeSet<>();
                 newSet.add(v1);
                 adjaencyByPrecision.put(v1, newSet);
             }
@@ -256,7 +258,7 @@ class VM10Selector extends VM09WindingChange {
             final Set<GData4> newSelectedQuads = new HashSet<>();
             final Set<GData5> newSelectedCondlines = new HashSet<>();
 
-            final Set<Vertex> addedSelectedVertices = new TreeSet<>();
+            final SortedSet<Vertex> addedSelectedVertices = new TreeSet<>();
             final Set<GData2> addedSelectedLines = new HashSet<>();
             final Set<GData3> addedSelectedTriangles = new HashSet<>();
             final Set<GData4> addedSelectedQuads = new HashSet<>();
@@ -302,13 +304,13 @@ class VM10Selector extends VM09WindingChange {
                     newSelectedTriangles.clear();
                     newSelectedQuads.clear();
 
-                    HashSet<AccurateEdge> touchingEdges = new HashSet<>();
+                    Set<AccurateEdge> touchingEdges = new HashSet<>();
                     {
                         Vertex[] verts;
                         for (GData3 g : lastSelectedTriangles) {
                             verts = triangles.get(g);
                             for (Vertex v : verts) {
-                                TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                 for (Vertex v2 : verts2) {
                                     addedSelectedVertices.add(v2);
                                 }
@@ -320,7 +322,7 @@ class VM10Selector extends VM09WindingChange {
                         for (GData4 g : lastSelectedQuads) {
                             verts = quads.get(g);
                             for (Vertex v : verts) {
-                                TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                 for (Vertex v2 : verts2) {
                                     addedSelectedVertices.add(v2);
                                 }
@@ -370,7 +372,7 @@ class VM10Selector extends VM09WindingChange {
                                     newSelectedTriangles.add(g);
                                     Vertex[] verts = triangles.get(g);
                                     for (Vertex v : verts) {
-                                        TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                        SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                         for (Vertex v2 : verts2) {
                                             addedSelectedVertices.add(v2);
                                         }
@@ -407,7 +409,7 @@ class VM10Selector extends VM09WindingChange {
                                     newSelectedQuads.add(g);
                                     Vertex[] verts = quads.get(g);
                                     for (Vertex v : verts) {
-                                        TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                        SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                         for (Vertex v2 : verts2) {
                                             addedSelectedVertices.add(v2);
                                         }
@@ -529,13 +531,13 @@ class VM10Selector extends VM09WindingChange {
                     newSelectedQuads.clear();
                     newSelectedCondlines.clear();
 
-                    TreeSet<Vertex> touchingVertices = new TreeSet<>();
+                    SortedSet<Vertex> touchingVertices = new TreeSet<>();
                     {
                         Vertex[] verts;
                         for (GData2 g : lastSelectedLines) {
                             verts = lines.get(g);
                             for (Vertex v : verts) {
-                                TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                 for (Vertex v2 : verts2) {
                                     touchingVertices.add(v2);
                                     addedSelectedVertices.add(v2);
@@ -545,7 +547,7 @@ class VM10Selector extends VM09WindingChange {
                         for (GData3 g : lastSelectedTriangles) {
                             verts = triangles.get(g);
                             for (Vertex v : verts) {
-                                TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                 for (Vertex v2 : verts2) {
                                     touchingVertices.add(v2);
                                     addedSelectedVertices.add(v2);
@@ -555,7 +557,7 @@ class VM10Selector extends VM09WindingChange {
                         for (GData4 g : lastSelectedQuads) {
                             verts = quads.get(g);
                             for (Vertex v : verts) {
-                                TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                 for (Vertex v2 : verts2) {
                                     touchingVertices.add(v2);
                                     addedSelectedVertices.add(v2);
@@ -567,7 +569,7 @@ class VM10Selector extends VM09WindingChange {
                             int c = 0;
                             for (Vertex v : verts) {
                                 if (c > 1) break;
-                                TreeSet<Vertex> verts2 = adjaencyByPrecision.get(v);
+                                SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                 for (Vertex v2 : verts2) {
                                     touchingVertices.add(v2);
                                     addedSelectedVertices.add(v2);
@@ -587,7 +589,7 @@ class VM10Selector extends VM09WindingChange {
                                     newSelectedLines.add((GData2) g);
                                     Vertex[] verts = lines.get(g);
                                     for (Vertex ov : verts) {
-                                        TreeSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                        SortedSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                         for (Vertex v2 : verts2) {
                                             addedSelectedVertices.add(v2);
                                         }
@@ -628,7 +630,7 @@ class VM10Selector extends VM09WindingChange {
                                     newSelectedTriangles.add((GData3) g);
                                     Vertex[] verts = triangles.get(g);
                                     for (Vertex ov : verts) {
-                                        TreeSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                        SortedSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                         for (Vertex v2 : verts2) {
                                             addedSelectedVertices.add(v2);
                                         }
@@ -666,7 +668,7 @@ class VM10Selector extends VM09WindingChange {
                                     newSelectedQuads.add((GData4) g);
                                     Vertex[] verts = quads.get(g);
                                     for (Vertex ov : verts) {
-                                        TreeSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                        SortedSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                         for (Vertex v2 : verts2) {
                                             addedSelectedVertices.add(v2);
                                         }
@@ -681,7 +683,7 @@ class VM10Selector extends VM09WindingChange {
                                     int c = 0;
                                     for (Vertex ov : verts) {
                                         if (c > 1) break;
-                                        TreeSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
+                                        SortedSet<Vertex> verts2 = adjaencyByPrecision.get(ov);
                                         for (Vertex v2 : verts2) {
                                             addedSelectedVertices.add(v2);
                                         }
@@ -775,7 +777,7 @@ class VM10Selector extends VM09WindingChange {
         }
     }
 
-    private boolean isEdgeAdjacent(SelectorSettings ss, GData g1, TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+    private boolean isEdgeAdjacent(SelectorSettings ss, GData g1, SortedMap<Vertex, SortedSet<Vertex>> adjaencyByPrecision) {
         if (ss.isEdgeAdjacency()) {
             return isEdgeAdjacentToSelectedData(g1, null, adjaencyByPrecision);
         }
@@ -791,9 +793,9 @@ class VM10Selector extends VM09WindingChange {
             Set<? extends GData> data3r,
             Set<? extends GData> data4r,
             Set<? extends GData> data5r,
-            TreeMap<Vertex, TreeSet<Vertex>> adjaencyByPrecision) {
+            SortedMap<Vertex, SortedSet<Vertex>> adjaencyByPrecision) {
         if (ss.isEdgeAdjacency()) {
-            HashSet<GData> selectedData = new HashSet<>();
+            Set<GData> selectedData = new HashSet<>();
             selectedData.addAll(data2);
             selectedData.addAll(data3);
             selectedData.addAll(data4);

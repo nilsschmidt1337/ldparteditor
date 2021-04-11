@@ -15,7 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.helpers.compositetext;
 
-import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.data.DatFile;
@@ -40,7 +40,7 @@ public enum Inspector {
      *            the selected Issues
      * @param datFile
      */
-    public static void inspectTextIssues(StyledText cText, HashSet<TreeItem> issues, DatFile datFile) {
+    public static void inspectTextIssues(StyledText cText, Set<TreeItem> issues, DatFile datFile) {
 
         if (issues.isEmpty())
             return;

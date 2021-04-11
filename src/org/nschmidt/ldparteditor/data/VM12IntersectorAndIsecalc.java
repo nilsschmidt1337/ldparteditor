@@ -28,6 +28,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+import java.util.SortedMap;
+import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -73,12 +75,12 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
         if (linkedDatFile.isReadOnly()) return;
 
-        final ArrayList<GData2> newLines = new ArrayList<>();
+        final List<GData2> newLines = new ArrayList<>();
 
         final Set<GData2> linesToDelete = new HashSet<>();
         final Set<GData5> clinesToDelete = new HashSet<>();
 
-        final ArrayList<GData> surfsToParse;
+        final List<GData> surfsToParse;
 
         if (is.getScope() == 0) {
             surfsToParse = new ArrayList<>(triangles.size() + quads.size());
@@ -309,7 +311,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
             NLogger.debug(getClass(), "Get target surfaces to parse."); //$NON-NLS-1$
 
-            final HashSet<GData> targetSurfs = new HashSet<>();
+            final Set<GData> targetSurfs = new HashSet<>();
             {
                 Set<GData3> tris = triangles.keySet();
                 for (GData3 tri : tris) {
@@ -354,7 +356,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 }
             }
 
-            final ArrayList<GData> originObjects = new ArrayList<>();
+            final List<GData> originObjects = new ArrayList<>();
             originObjects.addAll(selectedTriangles);
             originObjects.addAll(selectedQuads);
             originObjects.addAll(selectedLines);
@@ -362,7 +364,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
             // Remove adjacent non-selected surfaces from targetSurfs!
             {
-                TreeSet<Vertex> verts = new TreeSet<>();
+                SortedSet<Vertex> verts = new TreeSet<>();
                 for (GData g3 : selectedTriangles) {
                     Vertex[] verts2 = triangles.get(g3);
                     for (Vertex vertex : verts2) {
@@ -395,7 +397,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
             clearSelection();
 
-            final ArrayList<IntersectionInfoWithColour> intersections = new ArrayList<>();
+            final List<IntersectionInfoWithColour> intersections = new ArrayList<>();
             final Set<GData2> newLines =  Collections.newSetFromMap(new ThreadsafeHashMap<>());
             final Set<GData3> newTriangles = Collections.newSetFromMap(new ThreadsafeHashMap<>());
             final Set<GData5> newCondlines =  Collections.newSetFromMap(new ThreadsafeHashMap<>());
@@ -524,9 +526,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                             }
                                             counter2.incrementAndGet();
 
-                                            final ArrayList<Vector3dd> av = info.getAllVertices();
-                                            final ArrayList<GColour> cols = info.getColours();
-                                            final ArrayList<Integer> ts = info.getIsLine();
+                                            final List<Vector3dd> av = info.getAllVertices();
+                                            final List<GColour> cols = info.getColours();
+                                            final List<Integer> ts = info.getIsLine();
 
                                             newTriangles.addAll(MathHelper.triangulatePointGroups(cols, av, ts, View.DUMMY_REFERENCE, linkedDatFile));
                                             newLines.addAll(MathHelper.triangulatePointGroups2(cols, av, ts, View.DUMMY_REFERENCE, linkedDatFile));
@@ -571,7 +573,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             {
                 for (GData3 g3 : newTriangles) {
                     Vertex[] verts = triangles.get(g3);
-                    Set<Vertex> verts2 = new TreeSet<>();
+                    SortedSet<Vertex> verts2 = new TreeSet<>();
                     for (Vertex vert : verts) {
                         verts2.add(vert);
                     }
@@ -661,12 +663,12 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         }
     }
 
-    private HashSet<GData2> intersectionLines(final Set<GData5> clinesToDelete, final Set<GData2> linesToDelete, GData g1, GData g2) {
+    private Set<GData2> intersectionLines(final Set<GData5> clinesToDelete, final Set<GData2> linesToDelete, GData g1, GData g2) {
 
         GColour c = new GColour(24, View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0], 1f);
 
-        HashSet<GData2> result = new HashSet<>();
-        HashSet<Vector3d> points = new HashSet<>();
+        Set<GData2> result = new HashSet<>();
+        Set<Vector3d> points = new HashSet<>();
 
         int t1 = g1.type();
         int t2 = g2.type();
@@ -900,20 +902,20 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
         }
         if (points.size() == 4) {
-            ArrayList<Vector3d> points2 = new ArrayList<>();
+            List<Vector3d> points2 = new ArrayList<>();
             points2.addAll(points);
             result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(1).x, points2.get(1).y, points2.get(1).z, View.DUMMY_REFERENCE, linkedDatFile, true));
             result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(1).x, points2.get(1).y, points2.get(1).z, points2.get(2).x, points2.get(2).y, points2.get(2).z, View.DUMMY_REFERENCE, linkedDatFile, true));
             result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).x, points2.get(2).y, points2.get(2).z, points2.get(3).x, points2.get(3).y, points2.get(3).z, View.DUMMY_REFERENCE, linkedDatFile, true));
             result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(3).x, points2.get(3).y, points2.get(3).z, View.DUMMY_REFERENCE, linkedDatFile, true));
         } else if (points.size() == 3) {
-            ArrayList<Vector3d> points2 = new ArrayList<>();
+            List<Vector3d> points2 = new ArrayList<>();
             points2.addAll(points);
             result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(1).x, points2.get(1).y, points2.get(1).z, View.DUMMY_REFERENCE, linkedDatFile, true));
             result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(2).x, points2.get(2).y, points2.get(2).z, points2.get(1).x, points2.get(1).y, points2.get(1).z, View.DUMMY_REFERENCE, linkedDatFile, true));
             result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(2).x, points2.get(2).y, points2.get(2).z, View.DUMMY_REFERENCE, linkedDatFile, true));
         } else if (points.size() == 2) {
-            ArrayList<Vector3d> points2 = new ArrayList<>();
+            List<Vector3d> points2 = new ArrayList<>();
             points2.addAll(points);
             result.add(new GData2(c.getColourNumber(), c.getR(), c.getG(), c.getB(), c.getA(), points2.get(0).x, points2.get(0).y, points2.get(0).z, points2.get(1).x, points2.get(1).y, points2.get(1).z, View.DUMMY_REFERENCE, linkedDatFile, true));
         }
@@ -921,17 +923,17 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         return result;
     }
 
-    private IntersectionInfoWithColour getIntersectionInfo(GData origin, HashSet<GData> targetSurfs, IntersectorSettings ins) {
+    private IntersectionInfoWithColour getIntersectionInfo(GData origin, Set<GData> targetSurfs, IntersectorSettings ins) {
 
         final BigDecimal minDist = new BigDecimal(".0001"); //$NON-NLS-1$
 
         final int ot = origin.type();
 
-        final ArrayList<ArrayList<Vector3dd>> fixedIntersectionLines = new ArrayList<>();
-        final ArrayList<ArrayList<Vector3dd>> allLines = new ArrayList<>();
-        final ArrayList<Vector3dd> fixedVertices = new ArrayList<>();
+        final List<List<Vector3dd>> fixedIntersectionLines = new ArrayList<>();
+        final List<List<Vector3dd>> allLines = new ArrayList<>();
+        final List<Vector3dd> fixedVertices = new ArrayList<>();
 
-        final HashMap<GData, ArrayList<Vector3dd>> intersections = new HashMap<>();
+        final Map<GData, List<Vector3dd>> intersections = new HashMap<>();
 
         Vertex[] ov = null;
         switch (ot) {
@@ -955,9 +957,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
             if (getLineFaceIntersection(fixedVertices, targetSurfs, ov)) {
 
-                final ArrayList<Vector3dd> resultVertices = new ArrayList<>();
-                final ArrayList<GColour> resultColours = new ArrayList<>();
-                final ArrayList<Integer> resultIsLine = new ArrayList<>();
+                final List<Vector3dd> resultVertices = new ArrayList<>();
+                final List<GColour> resultColours = new ArrayList<>();
+                final List<Integer> resultIsLine = new ArrayList<>();
 
                 Vector3dd start = fixedVertices.get(0);
 
@@ -1096,7 +1098,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
 
             for (GData key : intersections.keySet()) {
-                ArrayList<Vector3dd> line = intersections.get(key);
+                List<Vector3dd> line = intersections.get(key);
                 if (line.size() > 1) {
                     fixedIntersectionLines.add(line);
                 }
@@ -1104,14 +1106,14 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
             // Check intersections within the fixed intersection lines
             {
-                ArrayList<ArrayList<Vector3dd>> linesToRemove = new ArrayList<>();
-                ArrayList<ArrayList<Vector3dd>> newLines = new ArrayList<>();
-                for (Iterator<ArrayList<Vector3dd>> iterator = fixedIntersectionLines.iterator(); iterator.hasNext();) {
-                    ArrayList<Vector3dd> line = iterator.next();
-                    ArrayList<Vector3d> intersect = new ArrayList<>();
-                    for (ArrayList<Vector3dd> line2 : fixedIntersectionLines) {
+                List<List<Vector3dd>> linesToRemove = new ArrayList<>();
+                List<List<Vector3dd>> newLines = new ArrayList<>();
+                for (Iterator<List<Vector3dd>> iterator = fixedIntersectionLines.iterator(); iterator.hasNext();) {
+                    List<Vector3dd> line = iterator.next();
+                    List<Vector3d> intersect = new ArrayList<>();
+                    for (List<Vector3dd> line2 : fixedIntersectionLines) {
                         if (line2 != line) {
-                            TreeSet<Vector3dd> allVertices = new TreeSet<>();
+                            SortedSet<Vector3dd> allVertices = new TreeSet<>();
                             for(int l = 0; l < 2; l++) {
                                 allVertices.add(line.get(l));
                                 allVertices.add(line2.get(l));
@@ -1125,7 +1127,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         }
                     }
                     if (!intersect.isEmpty()) {
-                        TreeMap<BigDecimal, Vector3d> linePoints = new TreeMap<>();
+                        SortedMap<BigDecimal, Vector3d> linePoints = new TreeMap<>();
                         Vector3d start = line.get(0);
                         Vector3d end = line.get(1);
                         for (Vector3d v : intersect) {
@@ -1137,7 +1139,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                         for (BigDecimal d : linePoints.keySet()) {
                             end = linePoints.get(d);
-                            ArrayList<Vector3dd> newLine = new ArrayList<>();
+                            List<Vector3dd> newLine = new ArrayList<>();
                             newLine.add(new Vector3dd(start));
                             newLine.add(new Vector3dd(end));
                             newLines.add(newLine);
@@ -1150,9 +1152,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 fixedIntersectionLines.addAll(newLines);
             }
 
-            final ArrayList<Vector3dd> resultVertices = new ArrayList<>();
-            final ArrayList<GColour> resultColours = new ArrayList<>();
-            final ArrayList<Integer> resultIsLine = new ArrayList<>();
+            final List<Vector3dd> resultVertices = new ArrayList<>();
+            final List<GColour> resultColours = new ArrayList<>();
+            final List<Integer> resultIsLine = new ArrayList<>();
 
             Vector3d originalNormal = null;
 
@@ -1181,8 +1183,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
 
             {
-                final TreeSet<Vector3dd> allVertices = new TreeSet<>();
-                for (ArrayList<Vector3dd> l : fixedIntersectionLines) {
+                final SortedSet<Vector3dd> allVertices = new TreeSet<>();
+                for (List<Vector3dd> l : fixedIntersectionLines) {
                     allVertices.add(l.get(0).round());
                     allVertices.add(l.get(1).round());
                 }
@@ -1201,7 +1203,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         Vector3dd v2 = fixedVertices.get(j);
                         int lc = allLines.size();
                         for (int k = 0; k < lc; k++) {
-                            ArrayList<Vector3dd> l = allLines.get(k);
+                            List<Vector3dd> l = allLines.get(k);
                             Vector3dd v3 = l.get(0);
                             Vector3dd v4 = l.get(1);
                             if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4) && intersectLineLineSegmentUnidirectional(v1, v2, v3, v4)) {
@@ -1219,7 +1221,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         } else {
                             BigDecimal dist = Vector3dd.manhattan(v1, v2);
                             if (dist.compareTo(minDist) > 0) {
-                                ArrayList<Vector3dd> nl = new ArrayList<>();
+                                List<Vector3dd> nl = new ArrayList<>();
                                 nl.add(v1);
                                 nl.add(v2);
                                 allLines.add(nl);
@@ -1233,7 +1235,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     int removed = 0;
                     for (int i = 0; i + removed < lc; i++) {
                         for (int j = i + 1; j + removed < lc; j++) {
-                            TreeSet<Vector3dd> allVertices = new TreeSet<>();
+                            SortedSet<Vector3dd> allVertices = new TreeSet<>();
                             for(int l = 0; l < 2; l++) {
                                 allVertices.add(allLines.get(i).get(l));
                                 allVertices.add(allLines.get(j).get(l));
@@ -1249,7 +1251,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                     removed = 0;
                     for (int i = 0; i + removed < lc; i++) {
-                        TreeSet<Vector3dd> allVertices = new TreeSet<>();
+                        SortedSet<Vector3dd> allVertices = new TreeSet<>();
                         allVertices.add(allLines.get(i).get(0));
                         allVertices.add(allLines.get(i).get(1));
                         if (allVertices.size() == 1) {
@@ -1264,7 +1266,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 for (int i = 0; i < lc; i++) {
                     for (int j = i + 1; j < lc; j++) {
                         for (int k = j + 1; k < lc; k++) {
-                            TreeSet<Vector3dd> allVertices = new TreeSet<>();
+                            SortedSet<Vector3dd> allVertices = new TreeSet<>();
                             for(int l = 0; l < 2; l++) {
                                 allVertices.add(allLines.get(i).get(l).round());
                                 allVertices.add(allLines.get(j).get(l).round());
@@ -1405,9 +1407,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         }
     }
 
-    private boolean getLineFaceIntersection(ArrayList<Vector3dd> fixedVertices, HashSet<GData> targetSurfs, Vertex[] ov) {
+    private boolean getLineFaceIntersection(List<Vector3dd> fixedVertices, Set<GData> targetSurfs, Vertex[] ov) {
 
-        TreeMap<BigDecimal, Vector3d> linePoints = new TreeMap<>();
+        SortedMap<BigDecimal, Vector3d> linePoints = new TreeMap<>();
         Vector3d start = new Vector3d(ov[0]);
         Vector3d end = new Vector3d(ov[1]);
 
@@ -1456,8 +1458,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
     }
 
-    private void getTriangleTriangleIntersection(HashMap<GData, ArrayList<Vector3dd>> intersections, GData target, Vertex[] ov, Vertex[] tv, boolean originIsQuad, boolean targetIsQuad) {
-        ArrayList<Vector3dd> result2 = null;
+    private void getTriangleTriangleIntersection(Map<GData, List<Vector3dd>> intersections, GData target, Vertex[] ov, Vertex[] tv, boolean originIsQuad, boolean targetIsQuad) {
+        List<Vector3dd> result2 = null;
         if (intersections.containsKey(target)) {
             result2 = intersections.get(target);
         } else {
@@ -1465,7 +1467,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             intersections.put(target, result2);
         }
 
-        final TreeSet<Vector3dd> result = new TreeSet<>();
+        final SortedSet<Vector3dd> result = new TreeSet<>();
 
         {
             Vector3dd r = new Vector3dd();
@@ -1589,11 +1591,11 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
         final Set<GData3> newTriangles = new HashSet<>();
         final Set<GData3> colouredTriangles = new HashSet<>();
 
-        final ArrayList<ArrayList<Vector3dd>> linesToParse = new ArrayList<>();
-        final ArrayList<ArrayList<Vector3dd>> colourLines = new ArrayList<>();
-        final ArrayList<ArrayList<Vector3dh>> linesToParseHashed = new ArrayList<>();
+        final List<List<Vector3dd>> linesToParse = new ArrayList<>();
+        final List<List<Vector3dd>> colourLines = new ArrayList<>();
+        final List<List<Vector3dh>> linesToParseHashed = new ArrayList<>();
 
-        final HashMap<ArrayList<Vector3dd>, GColour> colours = new HashMap<>();
+        final Map<List<Vector3dd>, GColour> colours = new HashMap<>();
 
         final int chunks = View.NUM_CORES;
 
@@ -1616,26 +1618,26 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         monitor.beginTask(I18n.VM_LINES_2_PATTERN, IProgressMonitor.UNKNOWN);
 
                         for (GData3 g3 : selectedTriangles) {
-                            TreeSet<Vertex> vs = new TreeSet<>();
+                            SortedSet<Vertex> vs = new TreeSet<>();
                             Vertex[] verts = triangles.get(g3);
                             for (Vertex v : verts) {
                                 vs.add(v);
                             }
                             if (vs.size() != 3) return;
                             {
-                                ArrayList<Vector3dd> l = new ArrayList<>();
+                                List<Vector3dd> l = new ArrayList<>();
                                 l.add(new Vector3dd(verts[0]));
                                 l.add(new Vector3dd(verts[1]));
                                 linesToParse.add(l);
                             }
                             {
-                                ArrayList<Vector3dd> l = new ArrayList<>();
+                                List<Vector3dd> l = new ArrayList<>();
                                 l.add(new Vector3dd(verts[1]));
                                 l.add(new Vector3dd(verts[2]));
                                 linesToParse.add(l);
                             }
                             {
-                                ArrayList<Vector3dd> l = new ArrayList<>();
+                                List<Vector3dd> l = new ArrayList<>();
                                 l.add(new Vector3dd(verts[2]));
                                 l.add(new Vector3dd(verts[0]));
                                 linesToParse.add(l);
@@ -1643,46 +1645,46 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         }
 
                         for (GData4 g4 : selectedQuads) {
-                            TreeSet<Vertex> vs = new TreeSet<>();
+                            SortedSet<Vertex> vs = new TreeSet<>();
                             Vertex[] verts = quads.get(g4);
                             for (Vertex v : verts) {
                                 vs.add(v);
                             }
                             if (vs.size() != 4) return;
                             {
-                                ArrayList<Vector3dd> l = new ArrayList<>();
+                                List<Vector3dd> l = new ArrayList<>();
                                 l.add(new Vector3dd(verts[0]));
                                 l.add(new Vector3dd(verts[1]));
                                 linesToParse.add(l);
                             }
                             {
-                                ArrayList<Vector3dd> l = new ArrayList<>();
+                                List<Vector3dd> l = new ArrayList<>();
                                 l.add(new Vector3dd(verts[1]));
                                 l.add(new Vector3dd(verts[2]));
                                 linesToParse.add(l);
                             }
                             {
-                                ArrayList<Vector3dd> l = new ArrayList<>();
+                                List<Vector3dd> l = new ArrayList<>();
                                 l.add(new Vector3dd(verts[2]));
                                 l.add(new Vector3dd(verts[3]));
                                 linesToParse.add(l);
                             }
                             {
-                                ArrayList<Vector3dd> l = new ArrayList<>();
+                                List<Vector3dd> l = new ArrayList<>();
                                 l.add(new Vector3dd(verts[3]));
                                 l.add(new Vector3dd(verts[0]));
                                 linesToParse.add(l);
                             }
                             {
-                                ArrayList<Vector3dd> l = new ArrayList<>();
+                                List<Vector3dd> l = new ArrayList<>();
                                 l.add(new Vector3dd(verts[1]));
                                 l.add(new Vector3dd(verts[3]));
                                 linesToParse.add(l);
                             }
                         }
 
-                        TreeSet<Vertex> m1 = new TreeSet<>();
-                        TreeSet<Vertex> m2 = new TreeSet<>();
+                        SortedSet<Vertex> m1 = new TreeSet<>();
+                        SortedSet<Vertex> m2 = new TreeSet<>();
                         for (GData2 g2 : selectedLines) {
                             Vertex[] verts = lines.get(g2);
                             for (Vertex v : verts) {
@@ -1694,7 +1696,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     }
                                 }
                             }
-                            ArrayList<Vector3dd> l = new ArrayList<>();
+                            List<Vector3dd> l = new ArrayList<>();
                             l.add(new Vector3dd(verts[0]));
                             l.add(new Vector3dd(verts[1]));
                             if (g2.colourNumber == 24) {
@@ -1770,14 +1772,14 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
         // Calculate intersecting lines, if needed.
         {
-            ArrayList<ArrayList<Vector3dd>> linesToRemove = new ArrayList<>();
-            ArrayList<ArrayList<Vector3dd>> newLines = new ArrayList<>();
-            for (Iterator<ArrayList<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {
-                ArrayList<Vector3dd> line = iterator.next();
-                ArrayList<Vector3d> intersect = new ArrayList<>();
-                for (ArrayList<Vector3dd> line2 : linesToParse) {
+            List<List<Vector3dd>> linesToRemove = new ArrayList<>();
+            List<List<Vector3dd>> newLines = new ArrayList<>();
+            for (Iterator<List<Vector3dd>> iterator = linesToParse.iterator(); iterator.hasNext();) {
+                List<Vector3dd> line = iterator.next();
+                List<Vector3d> intersect = new ArrayList<>();
+                for (List<Vector3dd> line2 : linesToParse) {
                     if (line2 != line) {
-                        TreeSet<Vector3dd> allVertices = new TreeSet<>();
+                        SortedSet<Vector3dd> allVertices = new TreeSet<>();
                         for(int l = 0; l < 2; l++) {
                             allVertices.add(line.get(l));
                             allVertices.add(line2.get(l));
@@ -1791,7 +1793,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     }
                 }
                 if (!intersect.isEmpty()) {
-                    TreeMap<BigDecimal, Vector3d> linePoints = new TreeMap<>();
+                    SortedMap<BigDecimal, Vector3d> linePoints = new TreeMap<>();
                     Vector3d start = line.get(0);
                     Vector3d end = line.get(1);
                     for (Vector3d v : intersect) {
@@ -1803,7 +1805,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                     for (BigDecimal d : linePoints.keySet()) {
                         end = linePoints.get(d);
-                        ArrayList<Vector3dd> newLine = new ArrayList<>();
+                        List<Vector3dd> newLine = new ArrayList<>();
                         newLine.add(new Vector3dd(start));
                         newLine.add(new Vector3dd(end));
                         newLines.add(newLine);
@@ -1816,12 +1818,12 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             linesToParse.addAll(newLines);
         }
 
-        final ArrayList<Vector3dd> resultVertices = new ArrayList<>();
-        final ArrayList<GColour> resultColours = new ArrayList<>();
-        final ArrayList<Integer> resultIsLine = new ArrayList<>();
+        final List<Vector3dd> resultVertices = new ArrayList<>();
+        final List<GColour> resultColours = new ArrayList<>();
+        final List<Integer> resultIsLine = new ArrayList<>();
 
-        final Set<ArrayList<Vector3dd>> colourLines2 = Collections.newSetFromMap(new ThreadsafeHashMap<>());
-        final ThreadsafeHashMap<ArrayList<Vector3dd> , GColour> colours2 = new ThreadsafeHashMap<>();
+        final Set<List<Vector3dd>> colourLines2 = Collections.newSetFromMap(new ThreadsafeHashMap<>());
+        final ThreadsafeHashMap<List<Vector3dd> , GColour> colours2 = new ThreadsafeHashMap<>();
         final Thread[] colourThreads = new Thread[chunks];
 
         // Spread coloured lines
@@ -1839,16 +1841,16 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                             if (!colourLines.isEmpty()) {
 
-                                final ArrayList<Vector3dd> fixedVertices = new ArrayList<>();
-                                final ArrayList<Vector3dd> colourVertices = new ArrayList<>();
-                                final TreeMap<Vector3dd, GColour> vertexColour = new TreeMap<>();
+                                final List<Vector3dd> fixedVertices = new ArrayList<>();
+                                final List<Vector3dd> colourVertices = new ArrayList<>();
+                                final SortedMap<Vector3dd, GColour> vertexColour = new TreeMap<>();
                                 {
-                                    final TreeSet<Vector3dd> allVertices = new TreeSet<>();
-                                    for (ArrayList<Vector3dd> l : linesToParse) {
+                                    final SortedSet<Vector3dd> allVertices = new TreeSet<>();
+                                    for (List<Vector3dd> l : linesToParse) {
                                         allVertices.add(l.get(0).round());
                                         allVertices.add(l.get(1).round());
                                     }
-                                    for (ArrayList<Vector3dd> l : colourLines) {
+                                    for (List<Vector3dd> l : colourLines) {
                                         Vector3dd vc1 = l.get(0).round();
                                         Vector3dd vc2 = l.get(1).round();
                                         if (!vertexColour.containsKey(vc1)) {
@@ -1871,7 +1873,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     fixedVertices.addAll(allVertices);
                                 }
 
-                                final ArrayList<ArrayList<Vector3dd>> fixedLinesToParse = new ArrayList<>();
+                                final List<List<Vector3dd>> fixedLinesToParse = new ArrayList<>();
                                 fixedLinesToParse.addAll(linesToParse);
 
                                 final int vc = colourVertices.size();
@@ -1899,7 +1901,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                     BigDecimal len = sp.normalise(dir);
                                                     int lc = fixedLinesToParse.size();
                                                     for (int k = 0; k < lc; k++) {
-                                                        ArrayList<Vector3dd> l = fixedLinesToParse.get(k);
+                                                        List<Vector3dd> l = fixedLinesToParse.get(k);
                                                         Vector3dd v3 = l.get(0);
                                                         Vector3dd v4 = l.get(1);
                                                         if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4) && intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, v3, v4)) {
@@ -1913,13 +1915,13 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                         BigDecimal dist = Vector3dd.manhattan(v1, v2);
                                                         if (dist.compareTo(minDist) > 0) {
                                                             if (vertexColour.containsKey(v1) && vertexColour.get(v1) != null) {
-                                                                ArrayList<Vector3dd> nl = new ArrayList<>();
+                                                                List<Vector3dd> nl = new ArrayList<>();
                                                                 nl.add(v1);
                                                                 nl.add(v2);
                                                                 colours2.put(nl, vertexColour.get(v1));
                                                                 colourLines2.add(nl);
                                                             } else if (vertexColour.containsKey(v2) && vertexColour.get(v2) != null) {
-                                                                ArrayList<Vector3dd> nl = new ArrayList<>();
+                                                                List<Vector3dd> nl = new ArrayList<>();
                                                                 nl.add(v1);
                                                                 nl.add(v2);
                                                                 colours2.put(nl, vertexColour.get(v2));
@@ -1948,12 +1950,12 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             }
         }
 
-        final ArrayList<Vector3dd> fixedVertices = new ArrayList<>();
-        final ArrayList<Vector3dh> fixedVertices2 = new ArrayList<>();
+        final List<Vector3dd> fixedVertices = new ArrayList<>();
+        final List<Vector3dh> fixedVertices2 = new ArrayList<>();
 
         {
-            final TreeSet<Vector3dd> allVertices = new TreeSet<>();
-            for (ArrayList<Vector3dd> l : linesToParse) {
+            final SortedSet<Vector3dd> allVertices = new TreeSet<>();
+            for (List<Vector3dd> l : linesToParse) {
                 allVertices.add(l.get(0).round());
                 allVertices.add(l.get(1).round());
             }
@@ -1977,7 +1979,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                             final Thread[] threads = new Thread[1];
 
                             {
-                                TreeMap<Vector3dd, Vector3dh> hashedRelation = new TreeMap<>();
+                                SortedMap<Vector3dd, Vector3dh> hashedRelation = new TreeMap<>();
                                 for (Vector3dd v : fixedVertices) {
                                     Vector3dh vh;
                                     if (hashedRelation.containsKey(v)) {
@@ -1989,7 +1991,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                     fixedVertices2.add(vh);
                                 }
-                                for (ArrayList<Vector3dd> l : linesToParse) {
+                                for (List<Vector3dd> l : linesToParse) {
 
                                     Vector3dd v1nh = l.get(0).round();
                                     Vector3dd v2nh = l.get(1).round();
@@ -2011,7 +2013,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                         hashedRelation.put(v2nh, v2);
                                     }
 
-                                    ArrayList<Vector3dh> newline = new ArrayList<>();
+                                    List<Vector3dh> newline = new ArrayList<>();
                                     newline.add(v1);
                                     newline.add(v2);
                                     linesToParseHashed.add(newline);
@@ -2045,9 +2047,9 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                         Vector3d sp = Vector3dd.sub(v2, v1);
                                         Vector3d dir = new Vector3d();
                                         BigDecimal len = sp.normalise(dir);
-                                        Iterator<ArrayList<Vector3dh>> li = linesToParseHashed.iterator();
+                                        Iterator<List<Vector3dh>> li = linesToParseHashed.iterator();
                                         while (li.hasNext()) {
-                                            ArrayList<Vector3dh> l = li.next();
+                                            List<Vector3dh> l = li.next();
                                             Vector3dh v3 = l.get(0);
                                             Vector3dh v4 = l.get(1);
                                             if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4)) {
@@ -2060,7 +2062,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                         if (!intersect) {
                                             BigDecimal dist = Vector3dd.manhattan(v1, v2);
                                             if (dist.compareTo(minDist) > 0) {
-                                                ArrayList<Vector3dh> nl = new ArrayList<>();
+                                                List<Vector3dh> nl = new ArrayList<>();
                                                 nl.add(v1);
                                                 nl.add(v2);
                                                 linesToParseHashed.add(nl);
@@ -2112,8 +2114,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 colours.putAll(colours2);
                                 linesToParse.clear();
                                 fixedVertices2.clear();
-                                for (ArrayList<Vector3dh> l : linesToParseHashed) {
-                                    ArrayList<Vector3dd> nl = new ArrayList<>();
+                                for (List<Vector3dh> l : linesToParseHashed) {
+                                    List<Vector3dd> nl = new ArrayList<>();
                                     nl.add(new Vector3dd(l.get(0)));
                                     nl.add(new Vector3dd(l.get(1)));
                                     linesToParse.add(nl);
@@ -2139,7 +2141,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 int removed = 0;
                 for (int i = 0; i + removed < lc; i++) {
                     for (int j = i + 1; j + removed < lc; j++) {
-                        TreeSet<Vector3dd> allVertices = new TreeSet<>();
+                        SortedSet<Vector3dd> allVertices = new TreeSet<>();
                         for(int l = 0; l < 2; l++) {
                             allVertices.add(linesToParse.get(i).get(l));
                             allVertices.add(linesToParse.get(j).get(l));
@@ -2155,7 +2157,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                 removed = 0;
                 for (int i = 0; i + removed < lc; i++) {
-                    TreeSet<Vector3dd> allVertices = new TreeSet<>();
+                    SortedSet<Vector3dd> allVertices = new TreeSet<>();
                     allVertices.add(linesToParse.get(i).get(0));
                     allVertices.add(linesToParse.get(i).get(1));
                     if (allVertices.size() == 1) {
@@ -2166,10 +2168,10 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                 lc = linesToParse.size();
 
-                HashSet<Vector3dh> m1 = new HashSet<>();
-                HashSet<Vector3dh> m2 = new HashSet<>();
-                HashSet<Vector3dh> m3 = new HashSet<>();
-                TreeMap<Vector3dd, Vector3dh> hashedRelation = new TreeMap<>();
+                Set<Vector3dh> m1 = new HashSet<>();
+                Set<Vector3dh> m2 = new HashSet<>();
+                Set<Vector3dh> m3 = new HashSet<>();
+                SortedMap<Vector3dd, Vector3dh> hashedRelation = new TreeMap<>();
                 for (int i = 0; i < lc; i++) {
                     Vector3dd v1nh = linesToParse.get(i).get(0).round();
                     Vector3dd v2nh = linesToParse.get(i).get(1).round();
@@ -2191,7 +2193,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         hashedRelation.put(v2nh, v2);
                     }
 
-                    ArrayList<Vector3dh> newline = new ArrayList<>();
+                    List<Vector3dh> newline = new ArrayList<>();
                     newline.add(v1);
                     newline.add(v2);
                     linesToParseHashed.add(newline);
@@ -2262,7 +2264,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 final int[] start = new int[] { t };
                                 threads[t] = new Thread(() -> {
                                     int counter = start[0];
-                                    HashSet<Vector3dh> allVertices = new HashSet<>();
+                                    Set<Vector3dh> allVertices = new HashSet<>();
                                     Vector3d normal = null;
                                     for (int i = 0; i < lc; i++) {
                                         if (counter == 0) {
@@ -2351,21 +2353,21 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                                         }
 
                                                         {
-                                                            HashSet<ArrayList<Vector3dd>> threeLines = new HashSet<>();
+                                                            Set<List<Vector3dd>> threeLines = new HashSet<>();
                                                             threeLines.add(linesToParse.get(i));
                                                             threeLines.add(linesToParse.get(j));
                                                             threeLines.add(linesToParse.get(k));
-                                                            ArrayList<Vector3dd> intersected = null;
-                                                            for (Iterator<ArrayList<Vector3dd>> iterator = threeLines.iterator(); iterator.hasNext();) {
-                                                                ArrayList<Vector3dd> line = iterator.next();
+                                                            List<Vector3dd> intersected = null;
+                                                            for (Iterator<List<Vector3dd>> iterator = threeLines.iterator(); iterator.hasNext();) {
+                                                                List<Vector3dd> line = iterator.next();
                                                                 Vector3dd v1 = line.get(0);
                                                                 Vector3dd v2 = line.get(1);
                                                                 Vector3d sp = Vector3dd.sub(v2, v1);
                                                                 Vector3d dir = new Vector3d();
                                                                 BigDecimal len = sp.normalise(dir);
-                                                                for (ArrayList<Vector3dd> line2 : colourLines) {
+                                                                for (List<Vector3dd> line2 : colourLines) {
                                                                     if (line2 != line) {
-                                                                        TreeSet<Vector3dd> allVertices1 = new TreeSet<>();
+                                                                        SortedSet<Vector3dd> allVertices1 = new TreeSet<>();
                                                                         for(int l1 = 0; l1 < 2; l1++) {
                                                                             allVertices1.add(line.get(l1));
                                                                             allVertices1.add(line2.get(l1));
@@ -2458,7 +2460,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             {
                 for (GData3 g3 : newTriangles) {
                     Vertex[] verts = triangles.get(g3);
-                    Set<Vertex> verts2 = new TreeSet<>();
+                    SortedSet<Vertex> verts2 = new TreeSet<>();
                     for (Vertex vert : verts) {
                         verts2.add(vert);
                     }
@@ -2553,7 +2555,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
             final List<GData3> optimization = new ArrayList<>();
             final Random rnd = new Random(12345L);
-            final  Map<GData3, Map<GData3, Boolean>> flipCache = new HashMap<>();
+            final Map<GData3, Map<GData3, Boolean>> flipCache = new HashMap<>();
             optimization.addAll(unbindTriangles);
 
             try

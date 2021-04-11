@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.enums;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * A collection of keywords which will be highlighted in type 0 lines
@@ -26,7 +27,7 @@ import java.util.HashSet;
 public enum DatKeyword {
     INSTANCE;
 
-    private static final HashSet<String> keywords = new HashSet<>();
+    private static final Set<String> keywords = new HashSet<>();
 
     static {
         keywords.add("!:"); //$NON-NLS-1$
@@ -130,7 +131,7 @@ public enum DatKeyword {
     /**
      * @return all valid LDraw/LPC/TEXMAP Keywords
      */
-    public static HashSet<String> getKeywords() {
+    public static Set<String> getKeywords() {
         return keywords;
     }
 }

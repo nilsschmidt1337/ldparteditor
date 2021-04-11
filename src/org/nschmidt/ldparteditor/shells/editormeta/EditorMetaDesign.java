@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.jface.window.ApplicationWindow;
 import org.eclipse.swt.SWT;
@@ -386,7 +387,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         if (categoryFile.exists() && categoryFile.isFile()) {
                             UTF8BufferedReader reader = null;
                             try {
-                                ArrayList<String> categories = new ArrayList<>();
+                                List<String> categories = new ArrayList<>();
                                 categories.add(""); //$NON-NLS-1$
                                 reader = new UTF8BufferedReader(categoryFile.getAbsolutePath());
                                 String line ;

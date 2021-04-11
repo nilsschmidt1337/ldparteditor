@@ -130,13 +130,13 @@ public enum SubfileCompiler {
                 }
             }
         }
-        HashSet<Integer> selectedDataIndices = new HashSet<>();
-        HashSet<Vertex> selectedVertices = new HashSet<>();
+        Set<Integer> selectedDataIndices = new HashSet<>();
+        Set<Vertex> selectedVertices = new HashSet<>();
         if (preserveSelection) {
             selectedVertices.addAll(vm.getSelectedVertices());
             HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
             Set<Integer> keys = dpl.keySet();
-            ArrayList<Integer> lineNumbers = new ArrayList<>();
+            List<Integer> lineNumbers = new ArrayList<>();
             lineNumbers.addAll(keys);
             for (Integer l : dpl.keySet()) {
                 GData gd = datFile.getDrawPerLineNoClone().getValue(l);
@@ -161,7 +161,7 @@ public enum SubfileCompiler {
         HashBiMap<Integer, GData> dpl = datFile.getDrawPerLineNoClone();
 
         Set<Integer> keys = dpl.keySet();
-        ArrayList<Integer> lineNumbers = new ArrayList<>();
+        List<Integer> lineNumbers = new ArrayList<>();
         lineNumbers.addAll(keys);
         Collections.sort(lineNumbers);
 
@@ -397,7 +397,7 @@ public enum SubfileCompiler {
                 DatFile old = null;
                 {
                     int odi = 0;
-                    List<DatFile> od = (ArrayList<DatFile>) treeToSearch.getData();
+                    List<DatFile> od = (List<DatFile>) treeToSearch.getData();
                     for (DatFile odf : od) {
                         if (odf.equals(df) || targetPath.toUpperCase(MyLanguage.locale).equals(odf.getOldName().toUpperCase(MyLanguage.locale))) {
                             old = odf;

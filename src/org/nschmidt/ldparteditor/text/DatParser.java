@@ -22,6 +22,7 @@ import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -86,9 +87,9 @@ public enum DatParser {
     private static final Vector3d vertexC2 = new Vector3d();
     private static final Vector3d vertexD2 = new Vector3d();
 
-    public static ArrayList<ParsingResult> parseLine(String line, int lineNumber, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
+    public static List<ParsingResult> parseLine(String line, int lineNumber, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed) {
-        ArrayList<ParsingResult> result = new ArrayList<>();
+        List<ParsingResult> result = new ArrayList<>();
         // Get the linetype
         int linetype = 0;
         final String[] dataSegments = WHITESPACE.split(line.trim());
@@ -244,10 +245,10 @@ public enum DatParser {
      *
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parseComment(String line, String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, DatFile datFile,
+    private static List<ParsingResult> parseComment(String line, String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, DatFile datFile,
             boolean errorCheckOnly, Set<String> alreadyParsed) {
 
-        ArrayList<ParsingResult> result = new ArrayList<>();
+        List<ParsingResult> result = new ArrayList<>();
         line = WHITESPACE.matcher(line).replaceAll(" ").trim(); //$NON-NLS-1$
 
         if (line.startsWith(I18n.DATFILE_INLINE_PREFIX)) {
@@ -514,9 +515,9 @@ public enum DatParser {
      *
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parseReference(String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
+    private static List<ParsingResult> parseReference(String[] dataSegments, int depth, float r, float g, float b, float a, GData1 parent, Matrix4f productMatrix, Matrix accurateProductMatrix,
             DatFile datFile, boolean errorCheckOnly, Set<String> alreadyParsed, int lineNumber) {
-        ArrayList<ParsingResult> result = new ArrayList<>();
+        List<ParsingResult> result = new ArrayList<>();
         boolean parseError = false;
         boolean hasDitheredColour = false;
         // [ERROR] Check less argument count
@@ -659,7 +660,7 @@ public enum DatParser {
                 if (fileExists) break;
             }
 
-            ArrayList<String> lines = null;
+            List<String> lines = null;
             if (parseError) {
                 result.add(new ParsingResult(I18n.DATPARSER_SINGULAR_MATRIX, "[E02] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             }
@@ -832,8 +833,8 @@ public enum DatParser {
      * @param errorCheckOnly
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parseLine(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly) {
-        ArrayList<ParsingResult> result = new ArrayList<>();
+    private static List<ParsingResult> parseLine(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly) {
+        List<ParsingResult> result = new ArrayList<>();
         boolean parseError = false;
         // [ERROR] Check argument count
         if (dataSegments.length != 8) {
@@ -899,8 +900,8 @@ public enum DatParser {
      * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parseTriangle(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
-        ArrayList<ParsingResult> result = new ArrayList<>();
+    private static List<ParsingResult> parseTriangle(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
+        List<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
         if (dataSegments.length != 11) {
             Object[] messageArguments = {dataSegments.length, 11};
@@ -1001,8 +1002,8 @@ public enum DatParser {
      * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parseQuad(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
-        ArrayList<ParsingResult> result = new ArrayList<>();
+    private static List<ParsingResult> parseQuad(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
+        List<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
         if (dataSegments.length != 14) {
             Object[] messageArguments = {dataSegments.length, 14};
@@ -1205,8 +1206,8 @@ public enum DatParser {
      * @param isCCW
      * @return an empty list if there was no error
      */
-    private static ArrayList<ParsingResult> parseCondline(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
-        ArrayList<ParsingResult> result = new ArrayList<>();
+    private static List<ParsingResult> parseCondline(String[] dataSegments, float r, float g, float b, float a, GData1 parent, DatFile datFile, boolean errorCheckOnly, int depth) {
+        List<ParsingResult> result = new ArrayList<>();
         // [ERROR] Check argument count
         if (dataSegments.length != 14) {
             Object[] messageArguments = {dataSegments.length, 14};

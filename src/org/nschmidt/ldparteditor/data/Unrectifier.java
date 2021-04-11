@@ -17,6 +17,8 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.eclipse.swt.custom.StyledText;
 import org.nschmidt.ldparteditor.helpers.compositetext.Inliner;
@@ -36,9 +38,9 @@ public enum Unrectifier {
         final int x = st.getSelectionRange().x;
         final int y = st.getSelectionRange().y;
 
-        ArrayList<Integer> lineNumbers = new ArrayList<>();
+        List<Integer> lineNumbers = new ArrayList<>();
 
-        HashSet<String> rectPrimitives = new HashSet<>();
+        Set<String> rectPrimitives = new HashSet<>();
         rectPrimitives.add("rect.dat"); //$NON-NLS-1$
         rectPrimitives.add("rect1.dat"); //$NON-NLS-1$
         rectPrimitives.add("rect2a.dat"); //$NON-NLS-1$
@@ -70,7 +72,7 @@ public enum Unrectifier {
         vm.clearSelection();
 
         if (splitQuads) {
-            HashSet<GData4> selectedQuads = new HashSet<>();
+            Set<GData4> selectedQuads = new HashSet<>();
 
             data2draw = fileNameObj.getDrawChainStart();
             while ((data2draw = data2draw.getNext()) != null) {

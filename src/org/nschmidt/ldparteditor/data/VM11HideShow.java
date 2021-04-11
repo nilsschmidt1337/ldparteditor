@@ -17,11 +17,13 @@ package org.nschmidt.ldparteditor.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 class VM11HideShow extends VM10Selector {
 
-    private HashMap<String, ArrayList<Boolean>> state = new HashMap<>();
+    private Map<String, List<Boolean>> state = new HashMap<>();
 
     protected VM11HideShow(DatFile linkedDatFile) {
         super(linkedDatFile);
@@ -116,7 +118,7 @@ class VM11HideShow extends VM10Selector {
         hiddenData.clear();
     }
 
-    public HashMap<String, ArrayList<Boolean>> backupHideShowState() {
+    public Map<String, List<Boolean>> backupHideShowState() {
         state.clear();
         if (!hiddenData.isEmpty()) {
             backup(linkedDatFile.getDrawChainStart(), state, ""); //$NON-NLS-1$
@@ -125,7 +127,7 @@ class VM11HideShow extends VM10Selector {
         return new HashMap<>();
     }
 
-    public HashMap<String, ArrayList<Boolean>> backupHideShowState(HashMap<String, ArrayList<Boolean>> s) {
+    public Map<String, List<Boolean>> backupHideShowState(Map<String, List<Boolean>> s) {
         if (!hiddenData.isEmpty()) {
             backup(linkedDatFile.getDrawChainStart(), s, ""); //$NON-NLS-1$
             return s;
@@ -133,8 +135,8 @@ class VM11HideShow extends VM10Selector {
         return new HashMap<>();
     }
 
-    private void backup(GData g, HashMap<String, ArrayList<Boolean>> s, String key) {
-        final ArrayList<Boolean> st = new ArrayList<>();
+    private void backup(GData g, Map<String, List<Boolean>> s, String key) {
+        final List<Boolean> st = new ArrayList<>();
         int lineNumber = 1;
         s.put(key, st);
         st.add(g.visible);
@@ -150,7 +152,7 @@ class VM11HideShow extends VM10Selector {
         }
     }
 
-    public HashMap<String, ArrayList<Boolean>> backupSelectedDataState(HashMap<String, ArrayList<Boolean>> s) {
+    public Map<String, List<Boolean>> backupSelectedDataState(Map<String, List<Boolean>> s) {
         if (!selectedData.isEmpty()) {
             backup2(linkedDatFile.getDrawChainStart(), s, ""); //$NON-NLS-1$
             return s;
@@ -158,8 +160,8 @@ class VM11HideShow extends VM10Selector {
         return new HashMap<>();
     }
 
-    private void backup2(GData g, HashMap<String, ArrayList<Boolean>> s, String key) {
-        final ArrayList<Boolean> st = new ArrayList<>();
+    private void backup2(GData g, Map<String, List<Boolean>> s, String key) {
+        final List<Boolean> st = new ArrayList<>();
         int lineNumber = 1;
         s.put(key, st);
         st.add(selectedData.contains(g));
@@ -175,13 +177,13 @@ class VM11HideShow extends VM10Selector {
         }
     }
 
-    public void backupHideShowAndSelectedState(HashMap<String, ArrayList<Boolean>> s1, HashMap<String, ArrayList<Boolean>> s2) {
+    public void backupHideShowAndSelectedState(Map<String, List<Boolean>> s1, Map<String, List<Boolean>> s2) {
         backup3(linkedDatFile.getDrawChainStart(), s1, s2, ""); //$NON-NLS-1$
     }
 
-    private void backup3(GData g, HashMap<String, ArrayList<Boolean>> s1, HashMap<String, ArrayList<Boolean>> s2, String key) {
-        final ArrayList<Boolean> st1 = new ArrayList<>();
-        final ArrayList<Boolean> st2 = new ArrayList<>();
+    private void backup3(GData g, Map<String, List<Boolean>> s1, Map<String, List<Boolean>> s2, String key) {
+        final List<Boolean> st1 = new ArrayList<>();
+        final List<Boolean> st2 = new ArrayList<>();
         int lineNumber = 1;
         s1.put(key, st1);
         s2.put(key, st2);
@@ -207,18 +209,18 @@ class VM11HideShow extends VM10Selector {
         }
     }
 
-    public void restoreHideShowState(HashMap<String, ArrayList<Boolean>> s) {
+    public void restoreHideShowState(Map<String, List<Boolean>> s) {
         state.clear();
         state.putAll(s);
         restoreHideShowState();
     }
 
-    private void restore(GData g, HashMap<String, ArrayList<Boolean>> s, String key) {
+    private void restore(GData g, Map<String, List<Boolean>> s, String key) {
         int lineNumber = 1;
-        ArrayList<Boolean> nl = new ArrayList<>();
+        List<Boolean> nl = new ArrayList<>();
         nl.add(true);
         s.putIfAbsent(key, nl);
-        final ArrayList<Boolean> st = s.get(key);
+        final List<Boolean> st = s.get(key);
         final int size = st.size();
         g.visible = st.get(0);
         if (!g.visible) hiddenData.add(g);
@@ -239,18 +241,18 @@ class VM11HideShow extends VM10Selector {
         }
     }
 
-    public void restoreSelectedDataState(HashMap<String, ArrayList<Boolean>> s) {
+    public void restoreSelectedDataState(Map<String, List<Boolean>> s) {
         if (s.size() > 0) {
             restore2(linkedDatFile.getDrawChainStart(), s, ""); //$NON-NLS-1$
         }
     }
 
-    private void restore2(GData g, HashMap<String, ArrayList<Boolean>> s, String key) {
+    private void restore2(GData g, Map<String, List<Boolean>> s, String key) {
         int lineNumber = 1;
-        ArrayList<Boolean> nl = new ArrayList<>();
+        List<Boolean> nl = new ArrayList<>();
         nl.add(true);
         s.putIfAbsent(key, nl);
-        final ArrayList<Boolean> st = s.get(key);
+        final List<Boolean> st = s.get(key);
         final int size = st.size();
         if (Boolean.TRUE.equals(st.get(0))) {
             selectedData.add(g);

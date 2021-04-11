@@ -24,6 +24,7 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.HashSet;
 import java.util.Locale;
+import java.util.Set;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
@@ -179,7 +180,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
                 int c1 = txtDataPtr[0].getLineCount();
                 int c2 = txtData2Ptr[0].getLineCount();
                 int matches = 0;
-                HashSet<String> lines = new HashSet<>();
+                Set<String> lines = new HashSet<>();
                 for (int i = 0; i < c2; i++) {
                     String line = txtData2Ptr[0].getLine(i);
                     if (!line.isEmpty() && !line.startsWith("0") && !line.startsWith("5")) { //$NON-NLS-1$ //$NON-NLS-2$

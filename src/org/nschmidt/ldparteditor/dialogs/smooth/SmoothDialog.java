@@ -19,6 +19,7 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.data.Vertex;
@@ -63,7 +64,7 @@ public class SmoothDialog extends SmoothDesign {
 
         {
             final VertexManager vm = Project.getFileToEdit().getVertexManager();
-            ArrayList<Vertex> selectedVerts = new ArrayList<>();
+            List<Vertex> selectedVerts = new ArrayList<>();
             selectedVerts.addAll(vm.getSelectedVertices());
             Project.getFileToEdit().getVertexManager().clearSelection();
             if (selectedVerts.isEmpty()) {

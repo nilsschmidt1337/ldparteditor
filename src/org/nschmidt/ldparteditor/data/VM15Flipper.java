@@ -18,7 +18,9 @@ package org.nschmidt.ldparteditor.data;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
@@ -76,8 +78,8 @@ class VM15Flipper extends VM14Splitter {
 
         // Special case for coloured triangle pairs (Flipper behaviour)
         {
-            HashSet<GData3> surfsToIgnore = new HashSet<>();
-            HashMap<GData3, GData3> trianglePair = new HashMap<>();
+            Set<GData3> surfsToIgnore = new HashSet<>();
+            Map<GData3, GData3> trianglePair = new HashMap<>();
             int i = 0;
             int j = 0;
             // Special case for only two triangles
@@ -115,8 +117,8 @@ class VM15Flipper extends VM14Splitter {
             for (GData3 s1 : trianglePair.keySet()) {
                 GData3 s2 = trianglePair.get(s1);
                 {
-                    TreeSet<Vertex> v1 = new TreeSet<>();
-                    TreeSet<Vertex> v2 = new TreeSet<>();
+                    SortedSet<Vertex> v1 = new TreeSet<>();
+                    SortedSet<Vertex> v2 = new TreeSet<>();
                     for (Vertex v : triangles.get(s1)) {
                         v1.add(v);
                     }
@@ -124,7 +126,7 @@ class VM15Flipper extends VM14Splitter {
                         v2.add(v);
                     }
                     {
-                        TreeSet<Vertex> sum = new TreeSet<>();
+                        SortedSet<Vertex> sum = new TreeSet<>();
                         sum.addAll(v1);
                         sum.addAll(v2);
                         if (sum.size() != 4) continue;
