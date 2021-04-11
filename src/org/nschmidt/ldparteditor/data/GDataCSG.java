@@ -1000,17 +1000,35 @@ public final class GDataCSG extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, BFC> map) {}
+    public void getBFCorientationMap(HashMap<GData, BFC> map) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {}
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {}
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        // Implementation is not required.
+    }
+
 
     static synchronized boolean hasSelectionCSG(DatFile df) {
         return !selectedBodyMap.putIfAbsent(df, new HashSet<>()).isEmpty();

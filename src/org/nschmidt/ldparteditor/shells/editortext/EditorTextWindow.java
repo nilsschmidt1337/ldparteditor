@@ -1054,16 +1054,24 @@ public class EditorTextWindow extends EditorTextDesign {
         tabFolder[0].addCTabFolder2Listener(new CTabFolder2Listener() {
 
             @Override
-            public void showList(CTabFolderEvent event) {}
+            public void showList(CTabFolderEvent event) {
+                // Implementation is not required.
+            }
 
             @Override
-            public void restore(CTabFolderEvent event) {}
+            public void restore(CTabFolderEvent event) {
+                // Implementation is not required.
+            }
 
             @Override
-            public void minimize(CTabFolderEvent event) {}
+            public void minimize(CTabFolderEvent event) {
+                // Implementation is not required.
+            }
 
             @Override
-            public void maximize(CTabFolderEvent event) {}
+            public void maximize(CTabFolderEvent event) {
+                // Implementation is not required.
+            }
 
             @Override
             public void close(CTabFolderEvent event) {
@@ -1108,7 +1116,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
             @Override
             public void dragFinished(DragSourceEvent event) {
-
+                // Implementation is not required.
             }
         });
 

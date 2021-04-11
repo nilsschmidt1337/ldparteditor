@@ -108,7 +108,6 @@ public class Arc {
             direction2.setX(0f);
             direction2.setY(direction.y * 10f);
             direction2.setZ(-direction.y * 10f / direction.z);
-            ;
         }
 
         final Vector3f xbase;

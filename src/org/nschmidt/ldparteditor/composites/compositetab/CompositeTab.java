@@ -1221,6 +1221,7 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void focusLost(FocusEvent e) {
+                // Implementation is not required.
             }
 
             @Override
@@ -1390,18 +1391,22 @@ public class CompositeTab extends CompositeTabDesign {
         tabFolderPartInformationPtr[0].addCTabFolder2Listener(new CTabFolder2Listener() {
             @Override
             public void showList(CTabFolderEvent event) {
+                // Implementation is not required.
             }
 
             @Override
             public void restore(CTabFolderEvent event) {
+                // Implementation is not required.
             }
 
             @Override
             public void minimize(CTabFolderEvent event) {
+                // Implementation is not required.
             }
 
             @Override
             public void maximize(CTabFolderEvent event) {
+                // Implementation is not required.
             }
 
             @Override
@@ -1733,7 +1738,9 @@ public class CompositeTab extends CompositeTabDesign {
         canvasLineNumberAreaPtr[0].addMouseListener(new MouseListener() {
 
             @Override
-            public void mouseUp(MouseEvent e) {}
+            public void mouseUp(MouseEvent e) {
+                // Implementation is not required.
+            }
 
             @Override
             public void mouseDown(MouseEvent e) {
@@ -1793,7 +1800,9 @@ public class CompositeTab extends CompositeTabDesign {
             }
 
             @Override
-            public void mouseDoubleClick(MouseEvent e) {}
+            public void mouseDoubleClick(MouseEvent e) {
+                // Implementation is not required.
+            }
         });
         canvasLineNumberAreaPtr[0].addPaintListener(e -> {
             e.gc.setFont(Font.MONOSPACE);

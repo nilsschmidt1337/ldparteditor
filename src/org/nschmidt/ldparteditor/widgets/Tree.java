@@ -54,7 +54,6 @@ public class Tree {
         setItemsSWT(new org.eclipse.swt.widgets.TreeItem[initialSize]);
         for (int i = 0; i < initialSize; i++) {
             itemsSWT[i] = new org.eclipse.swt.widgets.TreeItem(tree, SWT.NONE);
-            ;
         }
     }
 

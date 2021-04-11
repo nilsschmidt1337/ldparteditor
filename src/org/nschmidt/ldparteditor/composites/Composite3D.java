@@ -370,6 +370,7 @@ public class Composite3D extends ScalableComposite {
 
             @Override
             public void controlMoved(ControlEvent consumed) {
+                // Implementation is not required.
             }
         });
 
@@ -2355,7 +2356,7 @@ public class Composite3D extends ScalableComposite {
         setSyncTranslation(state.isSyncTranslation());
         setSyncZoom(state.isSyncZoom());
 
-        setPerspectiveOnContextMenu(perspective);;
+        setPerspectiveOnContextMenu(perspective);
         getMntmRealPreview().setSelection(lineMode == 0);
         getMntmShowAll().setSelection(lineMode == 1);
         getMntmStdLines().setSelection(lineMode == 2);

@@ -42,37 +42,48 @@ public final class GDataTEX extends GData {
 
     @Override
     public void drawGL20(Composite3D c3d) {
+        // Implementation is not required.
     }
 
     @Override
     public void drawGL20RandomColours(Composite3D c3d) {
+        // Implementation is not required.
     }
 
     @Override
     public void drawGL20BFC(Composite3D c3d) {
+        // Implementation is not required.
     }
 
     @Override
     public void drawGL20BFCuncertified(Composite3D c3d) {
+        // Implementation is not required.
     }
 
     @Override
     public void drawGL20BFCbackOnly(Composite3D c3d) {
+        // Implementation is not required.
     }
 
     @Override
     public void drawGL20BFCcolour(Composite3D c3d) {
+        // Implementation is not required.
     }
 
     @Override
     public void drawGL20WhileAddCondlines(Composite3D c3d) {
+        // Implementation is not required.
     }
 
     @Override
-    public void drawGL20CoplanarityHeatmap(Composite3D c3d) {}
+    public void drawGL20CoplanarityHeatmap(Composite3D c3d) {
+        // Implementation is not required.
+    }
 
     @Override
-    public void drawGL20Wireframe(Composite3D c3d) {}
+    public void drawGL20Wireframe(Composite3D c3d) {
+        // Implementation is not required.
+    }
 
     @Override
     public void drawGL20BFCtextured(Composite3D c3d) {
@@ -213,11 +224,19 @@ public final class GDataTEX extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, BFC> map) {}
+    public void getBFCorientationMap(HashMap<GData, BFC> map) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {}
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {}
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
+        // Implementation is not required.
+    }
 
     @Override
     public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {

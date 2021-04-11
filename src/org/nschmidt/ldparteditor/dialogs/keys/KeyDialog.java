@@ -36,7 +36,9 @@ public class KeyDialog extends KeyDesign {
         this.dialogArea.addKeyListener(new KeyListener() {
 
             @Override
-            public void keyReleased(KeyEvent e) {}
+            public void keyReleased(KeyEvent e) {
+                // Implementation is not required.
+            }
 
             @Override
             public void keyPressed(KeyEvent e) {

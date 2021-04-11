@@ -116,6 +116,7 @@ public class BigDecimalSpinner extends Composite {
         dwn.addMouseListener(new MouseListener() {
             @Override
             public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
+                // Implementation is not required.
             }
 
             @Override
@@ -125,6 +126,7 @@ public class BigDecimalSpinner extends Composite {
 
             @Override
             public void mouseDoubleClick(org.eclipse.swt.events.MouseEvent e) {
+                // Implementation is not required.
             }
         });
 
@@ -273,6 +275,7 @@ public class BigDecimalSpinner extends Composite {
         up.addMouseListener(new MouseListener() {
             @Override
             public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
+                // Implementation is not required.
             }
 
             @Override
@@ -282,6 +285,7 @@ public class BigDecimalSpinner extends Composite {
 
             @Override
             public void mouseDoubleClick(org.eclipse.swt.events.MouseEvent e) {
+                // Implementation is not required.
             }
         });
 

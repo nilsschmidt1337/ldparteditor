@@ -85,10 +85,14 @@ public class VertexWindow extends ApplicationWindow {
         // MARK Add listeners...
         getShell().addShellListener(new ShellListener() {
             @Override
-            public void shellIconified(ShellEvent consumed) {}
+            public void shellIconified(ShellEvent consumed) {
+                // Implementation is not required.
+            }
 
             @Override
-            public void shellDeiconified(ShellEvent consumed) { }
+            public void shellDeiconified(ShellEvent consumed) {
+                // Implementation is not required.
+            }
 
             @Override
             public void shellDeactivated(ShellEvent e) {
@@ -100,10 +104,14 @@ public class VertexWindow extends ApplicationWindow {
             }
 
             @Override
-            public void shellClosed(ShellEvent consumed) {}
+            public void shellClosed(ShellEvent consumed) {
+                // Implementation is not required.
+            }
 
             @Override
-            public void shellActivated(ShellEvent consumed) {}
+            public void shellActivated(ShellEvent consumed) {
+                // Implementation is not required.
+            }
         });
         spnXPtr[0].addValueChangeListener(spn -> changeVertex());
         spnYPtr[0].addValueChangeListener(spn -> changeVertex());

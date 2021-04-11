@@ -470,7 +470,9 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void drawGL20Wireframe(Composite3D c3d) {}
+    public void drawGL20Wireframe(Composite3D c3d) {
+        // Implementation is not required.
+    }
 
     @Override
     public void drawGL20BFCtextured(Composite3D c3d) {
@@ -667,13 +669,19 @@ public final class GData2 extends GData {
     }
 
     @Override
-    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        // Implementation is not required.
+    }
 
     @Override
-    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        // Implementation is not required.
+    }
 
     @Override
-    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        // Implementation is not required.
+    }
 
     String colourReplace(String col) {
         StringBuilder lineBuilder = new StringBuilder();

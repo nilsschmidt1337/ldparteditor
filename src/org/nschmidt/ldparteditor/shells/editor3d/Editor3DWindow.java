@@ -443,7 +443,10 @@ public class Editor3DWindow extends Editor3DDesign {
         NLogger.writeVersion();
         sh.addFocusListener(new FocusListener() {
             @Override
-            public void focusLost(FocusEvent consumed) {}
+            public void focusLost(FocusEvent consumed) {
+                // Implementation is not required.
+            }
+
             @Override
             public void focusGained(FocusEvent e) {
                 regainFocus();
@@ -452,10 +455,14 @@ public class Editor3DWindow extends Editor3DDesign {
         });
         sh.addShellListener(new ShellListener() {
             @Override
-            public void shellIconified(ShellEvent consumed) {}
+            public void shellIconified(ShellEvent consumed) {
+                // Implementation is not required.
+            }
 
             @Override
-            public void shellDeiconified(ShellEvent consumed) { }
+            public void shellDeiconified(ShellEvent consumed) {
+                // Implementation is not required.
+            }
 
             @Override
             public void shellDeactivated(ShellEvent e) {
@@ -467,7 +474,9 @@ public class Editor3DWindow extends Editor3DDesign {
             }
 
             @Override
-            public void shellClosed(ShellEvent consumed) {}
+            public void shellClosed(ShellEvent consumed) {
+                // Implementation is not required.
+            }
 
             @Override
             public void shellActivated(ShellEvent e) {
@@ -549,7 +558,9 @@ public class Editor3DWindow extends Editor3DDesign {
                 }
             }
             @Override
-            public void controlMoved(ControlEvent e) {}
+            public void controlMoved(ControlEvent e) {
+                // Implementation is not required.
+            }
         });
 
 
@@ -5527,16 +5538,24 @@ public class Editor3DWindow extends Editor3DDesign {
         tabFolderOpenDatFilesPtr[0].addCTabFolder2Listener(new CTabFolder2Listener() {
 
             @Override
-            public void showList(CTabFolderEvent event) {}
+            public void showList(CTabFolderEvent event) {
+                // Implementation is not required.
+            }
 
             @Override
-            public void restore(CTabFolderEvent event) {}
+            public void restore(CTabFolderEvent event) {
+                // Implementation is not required.
+            }
 
             @Override
-            public void minimize(CTabFolderEvent event) {}
+            public void minimize(CTabFolderEvent event) {
+                // Implementation is not required.
+            }
 
             @Override
-            public void maximize(CTabFolderEvent event) {}
+            public void maximize(CTabFolderEvent event) {
+                // Implementation is not required.
+            }
 
             @Override
             public void close(CTabFolderEvent event) {

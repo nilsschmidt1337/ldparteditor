@@ -427,7 +427,9 @@ public final class GDataPNG extends GData {
     }
 
     @Override
-    public void drawGL20BFCtextured(Composite3D c3d) {}
+    public void drawGL20BFCtextured(Composite3D c3d) {
+        // Implementation is not required.
+    }
 
     @Override
     public int type() {
@@ -450,17 +452,34 @@ public final class GDataPNG extends GData {
     }
 
     @Override
-    public void getBFCorientationMap(HashMap<GData, BFC> map) {}
+    public void getBFCorientationMap(HashMap<GData, BFC> map) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {}
+    public void getBFCorientationMapNOCERTIFY(HashMap<GData, BFC> map) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {}
+    public void getBFCorientationMapNOCLIP(HashMap<GData, BFC> map) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMap(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMapNOCERTIFY(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        // Implementation is not required.
+    }
+
     @Override
-    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {}
+    public void getVertexNormalMapNOCLIP(GDataState state, ThreadsafeTreeMap<Vertex, float[]> vertexLinkedToNormalCACHE, ThreadsafeHashMap<GData, float[]> dataLinkedToNormalCACHE, VM00Base vm) {
+        // Implementation is not required.
+    }
 
     public String getString(Vertex offset, BigDecimal angleA, BigDecimal angleB, BigDecimal angleC, Vertex scale, String texturePath) {
         StringBuilder lineBuilder = new StringBuilder();

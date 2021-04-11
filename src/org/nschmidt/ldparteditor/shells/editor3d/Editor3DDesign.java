@@ -2843,7 +2843,7 @@ class Editor3DDesign extends ApplicationWindow {
         }
         if (mode == ToolItemDrawMode.DROP_DOWN) {
             if (toolItem == null) {
-                toolItem = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);;
+                toolItem = new ToolItem(target, Cocoa.getStyle(), mode == ToolItemDrawMode.HORIZONTAL);
             }
             final NButton btnManipulatorActions = new NButton(toolItem, SWT.ARROW | SWT.DOWN);
             btnManipulatorActions.setToolTipText(I18n.E3D_MODIFY_MANIPULATOR);

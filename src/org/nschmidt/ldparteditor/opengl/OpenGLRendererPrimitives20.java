@@ -370,6 +370,6 @@ public class OpenGLRendererPrimitives20 extends OpenGLRendererPrimitives {
 
     @Override
     public void dispose() {
-
+        // Implementation is not required.
     }
 }

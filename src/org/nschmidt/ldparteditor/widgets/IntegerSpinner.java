@@ -98,6 +98,7 @@ public class IntegerSpinner extends Composite {
         dwn.addMouseListener(new MouseListener() {
             @Override
             public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
+                // Implementation is not required.
             }
 
             @Override
@@ -107,6 +108,7 @@ public class IntegerSpinner extends Composite {
 
             @Override
             public void mouseDoubleClick(org.eclipse.swt.events.MouseEvent e) {
+                // Implementation is not required.
             }
         });
 
@@ -236,6 +238,7 @@ public class IntegerSpinner extends Composite {
         up.addMouseListener(new MouseListener() {
             @Override
             public void mouseUp(org.eclipse.swt.events.MouseEvent e) {
+                // Implementation is not required.
             }
 
             @Override
@@ -245,6 +248,7 @@ public class IntegerSpinner extends Composite {
 
             @Override
             public void mouseDoubleClick(org.eclipse.swt.events.MouseEvent e) {
+                // Implementation is not required.
             }
         });
 

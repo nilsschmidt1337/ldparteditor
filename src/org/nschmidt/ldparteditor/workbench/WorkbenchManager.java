@@ -27,7 +27,6 @@ import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 import org.eclipse.swt.graphics.Rectangle;
-import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Threshold;
 import org.nschmidt.ldparteditor.helpers.Manipulator;
 import org.nschmidt.ldparteditor.logger.NLogger;
@@ -72,7 +71,6 @@ public enum WorkbenchManager {
         windowStateOfTextEditor.setCentered(true);
         windowStateOfTextEditor.setMaximized(false);
         windowStateOfTextEditor.setSizeAndPosition(new Rectangle(0, 0, 1024, 768));
-        Colour.saveDefaultColours();
         saveWorkbench(WorkbenchManager.CONFIG_GZ);
     }
 

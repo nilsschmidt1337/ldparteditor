@@ -74,12 +74,4 @@ public enum Colour {
         textForeground[0].dispose();
         textForegroundHidden[0].dispose();
     }
-
-    /**
-     * Saves the default editor colours
-     */
-    public static void saveDefaultColours() {
-
-    }
-
 }
