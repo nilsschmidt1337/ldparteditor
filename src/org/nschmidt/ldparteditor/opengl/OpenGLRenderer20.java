@@ -689,7 +689,7 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
                                 {
 
-                                    final Lock lock = new ReentrantLock();
+                                    final Lock tmpLock = new ReentrantLock();
 
                                     final int chunks = Math.max(View.NUM_CORES - 1, 1);
                                     final Thread[] threads = new Thread[chunks];
@@ -1264,20 +1264,20 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                     }
                                                     skip = size;
                                                     try {
-                                                        lock.lock();
+                                                        tmpLock.lock();
                                                         // Update renderedPoints here!
                                                         renderedPoints[0] = r;
                                                     } finally {
-                                                        lock.unlock();
+                                                        tmpLock.unlock();
                                                     }
                                                 }
                                                 i += 4 * w * (chunks - 1);
                                             }
                                             try {
-                                                lock.lock();
+                                                tmpLock.lock();
                                                 points.addAll(points2);
                                             } finally {
-                                                lock.unlock();
+                                                tmpLock.unlock();
                                             }
                                         });
                                         threads[j].start();

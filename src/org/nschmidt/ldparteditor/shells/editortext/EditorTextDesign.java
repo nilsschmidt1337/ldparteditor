@@ -119,7 +119,7 @@ class EditorTextDesign extends ApplicationWindow {
      * purpose!)
      */
     ApplicationWindow editorTextWindow;
-    CompositeTabFolder[] tabFolder = new CompositeTabFolder[1];
+    CompositeTabFolder[] tabFolderPtr = new CompositeTabFolder[1];
 
     EditorTextDesign() {
         super(null);
@@ -270,7 +270,7 @@ class EditorTextDesign extends ApplicationWindow {
                     num2 = -1;
                 }
 
-                CompositeTab selection = (CompositeTab) tabFolder[0].getSelection();
+                CompositeTab selection = (CompositeTab) tabFolderPtr[0].getSelection();
                 if (selection != null) {
                     DatFile df = selection.getState().getFileNameObj();
                     if (!df.isReadOnly()) {
@@ -578,7 +578,7 @@ class EditorTextDesign extends ApplicationWindow {
             cmpTextEditor.setLayout(new FillLayout(SWT.HORIZONTAL));
             {
                 CompositeTabFolder tabFolder = new CompositeTabFolder(cmpTextEditor, SWT.BORDER);
-                this.tabFolder[0] = tabFolder;
+                this.tabFolderPtr[0] = tabFolder;
                 tabFolder.setMRUVisible(true);
                 tabFolder.setSelectionBackground(Display.getCurrent().getSystemColor(SWT.COLOR_TITLE_INACTIVE_BACKGROUND_GRADIENT));
                 tabFolder.computeSize(SWT.DEFAULT, SWT.DEFAULT);

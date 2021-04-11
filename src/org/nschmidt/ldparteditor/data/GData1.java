@@ -1483,13 +1483,13 @@ public final class GData1 extends GData {
         }
 
         GColour col16 = View.getLDConfigColour(16);
-        Matrix accurateLocalMatrix = new Matrix(this.accurateLocalMatrix);
+        Matrix tmpAccurateLocalMatrix = new Matrix(this.accurateLocalMatrix);
         BigDecimal tx = this.accurateLocalMatrix.m30.add(BigDecimal.ZERO);
         BigDecimal ty = this.accurateLocalMatrix.m31.add(BigDecimal.ZERO);
         BigDecimal tz = this.accurateLocalMatrix.m32.add(BigDecimal.ZERO);
-        accurateLocalMatrix = accurateLocalMatrix.translate(new BigDecimal[] { tx.negate(), ty.negate(), tz.negate() });
-        accurateLocalMatrix = Matrix.mul(transformation, accurateLocalMatrix);
-        accurateLocalMatrix = accurateLocalMatrix.translate(new BigDecimal[] { tx, ty, tz });
+        tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.translate(new BigDecimal[] { tx.negate(), ty.negate(), tz.negate() });
+        tmpAccurateLocalMatrix = Matrix.mul(transformation, tmpAccurateLocalMatrix);
+        tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.translate(new BigDecimal[] { tx, ty, tz });
 
         // Avoid scaling of flat files
         GData1 untransformedSubfile;
@@ -1527,24 +1527,24 @@ public final class GData1 extends GData {
             BigDecimal discrZ = transformation.m20.multiply(transformation.m20).add(transformation.m21.multiply(transformation.m21)).add(transformation.m22.multiply(transformation.m22));
             if (discrX.compareTo(epsilon) > 0 && discrY.compareTo(epsilon) > 0 && discrZ.compareTo(epsilon) > 0) {
                 if (plainOnX && avoidFlatScaling) {
-                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 0, 0);
-                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 0, 1);
-                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 0, 2);
+                    tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.set(BigDecimal.ONE , 0, 0);
+                    tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.set(BigDecimal.ZERO, 0, 1);
+                    tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.set(BigDecimal.ZERO, 0, 2);
                 }
                 if (plainOnY && avoidFlatScaling) {
-                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 1, 1);
-                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 1, 0);
-                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 1, 2);
+                    tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.set(BigDecimal.ONE , 1, 1);
+                    tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.set(BigDecimal.ZERO, 1, 0);
+                    tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.set(BigDecimal.ZERO, 1, 2);
                 }
                 if (plainOnZ && avoidFlatScaling) {
-                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ONE , 2, 2);
-                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 2, 0);
-                    accurateLocalMatrix = accurateLocalMatrix.set(BigDecimal.ZERO, 2, 1);
+                    tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.set(BigDecimal.ONE , 2, 2);
+                    tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.set(BigDecimal.ZERO, 2, 0);
+                    tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.set(BigDecimal.ZERO, 2, 1);
                 }
             }
         }
 
-        accurateLocalMatrix = accurateLocalMatrix.reduceAccuracy();
+        tmpAccurateLocalMatrix = tmpAccurateLocalMatrix.reduceAccuracy();
 
         df.getVertexManager().remove(untransformedSubfile);
         StringBuilder lineBuilder = new StringBuilder();
@@ -1558,29 +1558,29 @@ public final class GData1 extends GData {
             lineBuilder.append(colourNumber);
         }
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m30));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m30));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m31));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m31));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m32));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m00));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m00));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m10));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m10));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m20));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m20));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m01));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m01));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m11));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m11));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m21));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m21));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m02));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m02));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m12));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m12));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(accurateLocalMatrix.m22));
+        lineBuilder.append(bigDecimalToString(tmpAccurateLocalMatrix.m22));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
 
@@ -1753,16 +1753,16 @@ public final class GData1 extends GData {
     public String inlinedString(BFC bfc, GColour colour) {
         final StringBuilder sb = new StringBuilder();
         boolean flipSurfaces = false;
-        float r = this.r;
-        float g = this.g;
-        float b = this.b;
-        int colourNumber = this.colourNumber;
+        float tmpR = this.r;
+        float tmpG = this.g;
+        float tmpB = this.b;
+        int tmpColourNumber = this.colourNumber;
         if (Inliner.recursively) {
             if (this.colourNumber == 16) {
-                r = colour.getR();
-                g = colour.getG();
-                b = colour.getB();
-                colourNumber = colour.getColourNumber();
+                tmpR = colour.getR();
+                tmpG = colour.getG();
+                tmpB = colour.getB();
+                tmpColourNumber = colour.getColourNumber();
             }
         }
 
@@ -1874,7 +1874,7 @@ public final class GData1 extends GData {
                     GData1 g1 = (GData1) gs;
                     GColour col = null;
                     if (g1.colourNumber == 16) {
-                        col = new GColour(colourNumber, r, g, b, a);
+                        col = new GColour(tmpColourNumber, tmpR, tmpG, tmpB, a);
                     } else {
                         col = new GColour(g1.colourNumber, g1.r, g1.g, g1.b, g1.a);
                     }
@@ -1899,13 +1899,13 @@ public final class GData1 extends GData {
                         lineBuilder1.append(MathHelper.toHex((int) (255f * g1.g)).toUpperCase());
                         lineBuilder1.append(MathHelper.toHex((int) (255f * g1.b)).toUpperCase());
                     } else if (g1.colourNumber == 16) {
-                        if (colourNumber == -1) {
+                        if (tmpColourNumber == -1) {
                             lineBuilder1.append("0x2"); //$NON-NLS-1$
-                            lineBuilder1.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
-                            lineBuilder1.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
-                            lineBuilder1.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+                            lineBuilder1.append(MathHelper.toHex((int) (255f * tmpR)).toUpperCase());
+                            lineBuilder1.append(MathHelper.toHex((int) (255f * tmpG)).toUpperCase());
+                            lineBuilder1.append(MathHelper.toHex((int) (255f * tmpB)).toUpperCase());
                         } else {
-                            lineBuilder1.append(colourNumber);
+                            lineBuilder1.append(tmpColourNumber);
                         }
                     } else {
                         lineBuilder1.append(g1.colourNumber);
@@ -1950,13 +1950,13 @@ public final class GData1 extends GData {
                     lineBuilder2.append(MathHelper.toHex((int) (255f * g2.g)).toUpperCase());
                     lineBuilder2.append(MathHelper.toHex((int) (255f * g2.b)).toUpperCase());
                 } else if (g2.colourNumber == 16) {
-                    if (colourNumber == -1) {
+                    if (tmpColourNumber == -1) {
                         lineBuilder2.append("0x2"); //$NON-NLS-1$
-                        lineBuilder2.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
-                        lineBuilder2.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
-                        lineBuilder2.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+                        lineBuilder2.append(MathHelper.toHex((int) (255f * tmpR)).toUpperCase());
+                        lineBuilder2.append(MathHelper.toHex((int) (255f * tmpG)).toUpperCase());
+                        lineBuilder2.append(MathHelper.toHex((int) (255f * tmpB)).toUpperCase());
                     } else {
-                        lineBuilder2.append(colourNumber);
+                        lineBuilder2.append(tmpColourNumber);
                     }
                 } else {
                     lineBuilder2.append(g2.colourNumber);
@@ -1988,13 +1988,13 @@ public final class GData1 extends GData {
                     lineBuilder3.append(MathHelper.toHex((int) (255f * g3.g)).toUpperCase());
                     lineBuilder3.append(MathHelper.toHex((int) (255f * g3.b)).toUpperCase());
                 } else if (g3.colourNumber == 16) {
-                    if (colourNumber == -1) {
+                    if (tmpColourNumber == -1) {
                         lineBuilder3.append("0x2"); //$NON-NLS-1$
-                        lineBuilder3.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
-                        lineBuilder3.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
-                        lineBuilder3.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+                        lineBuilder3.append(MathHelper.toHex((int) (255f * tmpR)).toUpperCase());
+                        lineBuilder3.append(MathHelper.toHex((int) (255f * tmpG)).toUpperCase());
+                        lineBuilder3.append(MathHelper.toHex((int) (255f * tmpB)).toUpperCase());
                     } else {
-                        lineBuilder3.append(colourNumber);
+                        lineBuilder3.append(tmpColourNumber);
                     }
                 } else {
                     lineBuilder3.append(g3.colourNumber);
@@ -2039,13 +2039,13 @@ public final class GData1 extends GData {
                     lineBuilder4.append(MathHelper.toHex((int) (255f * g4.g)).toUpperCase());
                     lineBuilder4.append(MathHelper.toHex((int) (255f * g4.b)).toUpperCase());
                 } else if (g4.colourNumber == 16) {
-                    if (colourNumber == -1) {
+                    if (tmpColourNumber == -1) {
                         lineBuilder4.append("0x2"); //$NON-NLS-1$
-                        lineBuilder4.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
-                        lineBuilder4.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
-                        lineBuilder4.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+                        lineBuilder4.append(MathHelper.toHex((int) (255f * tmpR)).toUpperCase());
+                        lineBuilder4.append(MathHelper.toHex((int) (255f * tmpG)).toUpperCase());
+                        lineBuilder4.append(MathHelper.toHex((int) (255f * tmpB)).toUpperCase());
                     } else {
-                        lineBuilder4.append(colourNumber);
+                        lineBuilder4.append(tmpColourNumber);
                     }
                 } else {
                     lineBuilder4.append(g4.colourNumber);
@@ -2096,13 +2096,13 @@ public final class GData1 extends GData {
                     lineBuilder5.append(MathHelper.toHex((int) (255f * g5.g)).toUpperCase());
                     lineBuilder5.append(MathHelper.toHex((int) (255f * g5.b)).toUpperCase());
                 } else if (g5.colourNumber == 16) {
-                    if (colourNumber == -1) {
+                    if (tmpColourNumber == -1) {
                         lineBuilder5.append("0x2"); //$NON-NLS-1$
-                        lineBuilder5.append(MathHelper.toHex((int) (255f * r)).toUpperCase());
-                        lineBuilder5.append(MathHelper.toHex((int) (255f * g)).toUpperCase());
-                        lineBuilder5.append(MathHelper.toHex((int) (255f * b)).toUpperCase());
+                        lineBuilder5.append(MathHelper.toHex((int) (255f * tmpR)).toUpperCase());
+                        lineBuilder5.append(MathHelper.toHex((int) (255f * tmpG)).toUpperCase());
+                        lineBuilder5.append(MathHelper.toHex((int) (255f * tmpB)).toUpperCase());
                     } else {
-                        lineBuilder5.append(colourNumber);
+                        lineBuilder5.append(tmpColourNumber);
                     }
                 } else {
                     lineBuilder5.append(g5.colourNumber);
@@ -2238,11 +2238,11 @@ public final class GData1 extends GData {
 
     @Override
     public String transformAndColourReplace(String colour, Matrix matrix) {
-        Matrix localMatrix;
+        Matrix tmpLocalMatrix;
         if (accurateLocalMatrix == null) {
-            localMatrix = Matrix.mul(matrix, new Matrix(this.localMatrix));
+            tmpLocalMatrix = Matrix.mul(matrix, new Matrix(this.localMatrix));
         } else {
-            localMatrix = Matrix.mul(matrix, accurateLocalMatrix);
+            tmpLocalMatrix = Matrix.mul(matrix, accurateLocalMatrix);
         }
         StringBuilder lineBuilder = new StringBuilder();
         lineBuilder.append(1);
@@ -2261,29 +2261,29 @@ public final class GData1 extends GData {
             col = "16"; //$NON-NLS-1$
         lineBuilder.append(col);
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m30));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m30));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m31));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m31));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m32));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m32));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m00));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m00));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m10));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m10));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m20));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m20));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m01));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m01));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m11));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m11));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m21));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m21));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m02));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m02));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m12));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m12));
         lineBuilder.append(" "); //$NON-NLS-1$
-        lineBuilder.append(bigDecimalToString(localMatrix.m22));
+        lineBuilder.append(bigDecimalToString(tmpLocalMatrix.m22));
         lineBuilder.append(" "); //$NON-NLS-1$
         lineBuilder.append(shortName);
         return lineBuilder.toString();

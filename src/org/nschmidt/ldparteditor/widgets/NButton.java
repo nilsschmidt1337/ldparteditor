@@ -159,12 +159,12 @@ public class NButton extends Canvas {
 
     private void paint(PaintEvent event) {
         final GC gc = event.gc;
-        final Image img = this.img;
+        final Image tmpImg = this.img;
         final boolean focused = this.isFocusControl();
         final boolean enabled = this.isEnabled();
-        final boolean hasImage = img != null;
-        final int img_width = hasImage ? img.getImageData().width : 0;
-        final int img_height = hasImage ? img.getImageData().height : 0;
+        final boolean hasImage = tmpImg != null;
+        final int img_width = hasImage ? tmpImg.getImageData().width : 0;
+        final int img_height = hasImage ? tmpImg.getImageData().height : 0;
         final int this_width = getBounds().width - 1;
 
         gc.setFont(Font.SYSTEM);
@@ -225,7 +225,7 @@ public class NButton extends Canvas {
 
         if (hasImage) {
 
-            gc.drawImage(img, 5, 5);
+            gc.drawImage(tmpImg, 5, 5);
         }
 
         gc.setForeground(getForeground());

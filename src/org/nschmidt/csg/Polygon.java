@@ -180,13 +180,13 @@ public final class Polygon {
                 Vertex v1 = new Vertex((float) dv1.x, (float) dv1.y, (float) dv1.z);
                 Vertex v2 = new Vertex((float) dv2.x, (float) dv2.y, (float) dv2.z);
                 Vertex v3 = new Vertex((float) dv3.x, (float) dv3.y, (float) dv3.z);
-                GColourIndex colour = null;
-                if ((colour = this.colour) == null) {
+                GColourIndex tmpColour = null;
+                if ((tmpColour = this.colour) == null) {
                     int dID = CSGPrimitive.id_counter.getAndIncrement();
                     result.put(new GData3(v1, v2, v3, parent, c16, true), new IdAndPlane(plane, dID));
                 } else {
                     // TODO Debug-only: result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), new IdAndPlane(plane, colour.getIndex())); // only for test
-                    result.put(new GData3(v1, v2, v3, parent, colour.getColour(), true), new IdAndPlane(plane, colour.getIndex()));
+                    result.put(new GData3(v1, v2, v3, parent, tmpColour.getColour(), true), new IdAndPlane(plane, tmpColour.getIndex()));
                 }
             }
         }
@@ -235,10 +235,10 @@ public final class Polygon {
 
     Polygon transformed(Transform transform, GColour c, int id) {
         Polygon result = createClone().transform(transform);
-        GColourIndex colour = null;
-        if ((colour = this.getColour()) != null) {
+        GColourIndex tmpColour = null;
+        if ((tmpColour = this.getColour()) != null) {
             GColour c2;
-            if ((c2 = colour.getColour()) != null) {
+            if ((c2 = tmpColour.getColour()) != null) {
                 if (c2.getColourNumber() == 16) {
                     result.setColour(new GColourIndex(c.createClone(), id));
                 } else {

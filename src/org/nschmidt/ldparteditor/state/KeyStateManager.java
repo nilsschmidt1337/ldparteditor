@@ -464,16 +464,16 @@ public class KeyStateManager {
                 NLogger.debug(KeyStateManager.class, "[Key ({0}) down]", keyCode); //$NON-NLS-1$
                 setKeyState(keyCode, true);
                 pressedKeyCodes.add(keyCode);
-                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
-                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
-                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
-                final boolean cmdPressed = (event.stateMask & SWT.COMMAND) != 0;
+                final boolean tmpCtrlPressed = (event.stateMask & SWT.CTRL) != 0;
+                final boolean tmpAltPressed = (event.stateMask & SWT.ALT) != 0;
+                final boolean tmpShiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                final boolean tmpCmdPressed = (event.stateMask & SWT.COMMAND) != 0;
                 final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
-                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCtrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpAltPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpShiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 final String key = sb.toString();
                 final Task t = taskMap.get(key);
                 if (t != null) {
@@ -805,7 +805,7 @@ public class KeyStateManager {
                     case TRANSFORM_RIGHT:
                     case TRANSFORM_RIGHT_COPY:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || win.getWorkingAction() == WorkingMode.SELECT) break;
-                        if (ctrlPressed) {
+                        if (tmpCtrlPressed) {
                             win.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
@@ -822,7 +822,7 @@ public class KeyStateManager {
                     case TRANSFORM_LEFT:
                     case TRANSFORM_LEFT_COPY:
                         if (win.getWorkingLayer() == ManipulatorAxisMode.NONE || win.getWorkingAction() == WorkingMode.SELECT) break;
-                        if (ctrlPressed) {
+                        if (tmpCtrlPressed) {
                             win.setMovingAdjacentData(false);
                             GuiStatusManager.updateStatus();
                             vm.copy();
@@ -919,14 +919,14 @@ public class KeyStateManager {
                 NLogger.debug(KeyStateManager.class, "[Key ({0}) up]", keyCode); //$NON-NLS-1$
                 pressedKeyCodes.remove(keyCode);
                 setKeyState(keyCode, false);
-                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
-                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
-                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                final boolean tmpCtrlPressed = (event.stateMask & SWT.CTRL) != 0;
+                final boolean tmpAltPressed = (event.stateMask & SWT.ALT) != 0;
+                final boolean tmpShiftPressed = (event.stateMask & SWT.SHIFT) != 0;
                 final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
-                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCtrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpAltPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpShiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 final String key = sb.toString();
                 final Task t = taskMap.get(key);
                 if (t != null) {
@@ -994,16 +994,16 @@ public class KeyStateManager {
             // Logic for CompositePrimitive
             if (keyEventType == SWT.KeyDown && !pressedKeyCodes.contains(keyCode)) {
                 NLogger.debug(KeyStateManager.class, "[Key ({0}) down]", keyCode); //$NON-NLS-1$
-                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
-                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
-                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
-                final boolean cmdPressed = (event.stateMask & SWT.COMMAND) != 0;
+                final boolean tmpCtrlPressed = (event.stateMask & SWT.CTRL) != 0;
+                final boolean tmpAltPressed = (event.stateMask & SWT.ALT) != 0;
+                final boolean tmpShiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                final boolean tmpCmdPressed = (event.stateMask & SWT.COMMAND) != 0;
                 final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
-                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(cmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCtrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpAltPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpShiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCmdPressed ? "+Cmd" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 final String key = sb.toString();
                 final Task t = taskMap.get(key);
                 if (t != null) {
@@ -1071,14 +1071,14 @@ public class KeyStateManager {
                 NLogger.debug(KeyStateManager.class, "[Key ({0}) up]", keyCode); //$NON-NLS-1$
                 pressedKeyCodes.remove(keyCode);
                 setKeyState(keyCode, false);
-                final boolean ctrlPressed = (event.stateMask & SWT.CTRL) != 0;
-                final boolean altPressed = (event.stateMask & SWT.ALT) != 0;
-                final boolean shiftPressed = (event.stateMask & SWT.SHIFT) != 0;
+                final boolean tmpCtrlPressed = (event.stateMask & SWT.CTRL) != 0;
+                final boolean tmpAltPressed = (event.stateMask & SWT.ALT) != 0;
+                final boolean tmpShiftPressed = (event.stateMask & SWT.SHIFT) != 0;
                 final StringBuilder sb = new StringBuilder();
                 sb.append(keyCode);
-                sb.append(ctrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(altPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
-                sb.append(shiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpCtrlPressed ? "+Ctrl" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpAltPressed ? "+Alt" : ""); //$NON-NLS-1$//$NON-NLS-2$
+                sb.append(tmpShiftPressed ? "+Shift" : ""); //$NON-NLS-1$//$NON-NLS-2$
                 final String key = sb.toString();
                 final Task t = taskMap.get(key);
                 if (t != null) {

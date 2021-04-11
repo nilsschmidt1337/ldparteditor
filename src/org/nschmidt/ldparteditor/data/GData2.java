@@ -357,15 +357,15 @@ public final class GData2 extends GData {
             return;
         }
 
-        final float r = MathHelper.randomFloat(id, 0);
-        final float g = MathHelper.randomFloat(id, 1);
-        final float b = MathHelper.randomFloat(id, 2);
+        final float rndRed = MathHelper.randomFloat(id, 0);
+        final float rndGreen = MathHelper.randomFloat(id, 1);
+        final float rndBlue = MathHelper.randomFloat(id, 2);
 
         if (c3d.getZoom() > View.edgeThreshold) {
 
             GL11.glPushMatrix();
 
-            GL11.glColor4f(r, g, b, a);
+            GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
             GL11.glScalef(lGeom[20][0], lGeom[20][1], lGeom[20][2]);
 
             if (GData.globalNegativeDeterminant) {
@@ -428,7 +428,7 @@ public final class GData2 extends GData {
 
         } else {
             GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
-            GL11.glColor4f(r, g, b, a);
+            GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
             GL11.glBegin(GL11.GL_LINES);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x2, y2, z2);
@@ -478,11 +478,11 @@ public final class GData2 extends GData {
     public void drawGL20BFCtextured(Composite3D c3d) {
         // done :)
         if (GData.globalDrawObjects) {
-            final OpenGLRenderer20 r = (OpenGLRenderer20) c3d.getRenderer();
-            GL20.glUniform1f(r.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
-            GL20.glUniform1f(r.getNoTextureSwitch(), 1f);
-            GL20.glUniform1f(r.getNoLightSwitch(), 1f);
-            GL20.glUniform1f(r.getCubeMapSwitch(), 0f);
+            final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
+            GL20.glUniform1f(renderer.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
+            GL20.glUniform1f(renderer.getNoTextureSwitch(), 1f);
+            GL20.glUniform1f(renderer.getNoLightSwitch(), 1f);
+            GL20.glUniform1f(renderer.getCubeMapSwitch(), 0f);
             if (!visible)
                 return;
             if (!c3d.isDrawingSolidMaterials())
@@ -780,9 +780,9 @@ public final class GData2 extends GData {
     }
 
     private void drawNumber(String number, float ox, float oy, float oz, float zoom) {
-        final int length =  number.length();
+        final int charCount =  number.length();
         float ox2 = 0f;
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < charCount; i++) {
             Set<PGData3> tris = new HashSet<>();
             final char c = number.charAt(i);
             switch (c) {
@@ -836,9 +836,9 @@ public final class GData2 extends GData {
     }
 
     private void drawNumberGL33(String number, float ox, float oy, float oz, float zoom) {
-        final int length =  number.length();
+        final int charCount =  number.length();
         float ox2 = 0f;
-        for (int i = 0; i < length; i++) {
+        for (int i = 0; i < charCount; i++) {
             Set<PGData3> tris = new HashSet<>();
             final char c = number.charAt(i);
             switch (c) {

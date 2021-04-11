@@ -532,7 +532,7 @@ class VM00Base {
             Set<GData3> s3 = triangles.keySet();
             Set<GData4> s4 = quads.keySet();
             Set<GData5> s5 = condlines.keySet();
-            Set<GData> dataToHide = new HashSet<>();
+            Set<GData> tmpDataToHide = new HashSet<>();
             for (Iterator<GData> hi = hiddenData.iterator(); hi.hasNext();) {
                 final GData oldData = hi.next();
                 if (
@@ -551,14 +551,14 @@ class VM00Base {
                 if (g3 != null) {
                     for (GData g : g3) {
                         if (isSharingSameSubfile(g, oldData)) {
-                            dataToHide.add(g);
+                            tmpDataToHide.add(g);
                             g.visible = false;
                         }
                     }
                     hi.remove();
                 }
             }
-            hiddenData.addAll(dataToHide);
+            hiddenData.addAll(tmpDataToHide);
         }
     }
 

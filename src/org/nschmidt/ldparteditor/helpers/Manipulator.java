@@ -518,8 +518,8 @@ public class Manipulator {
     }
 
     public GColour checkManipulatorStatus(float r, float g, float b, int type, Composite3D c3d, float zoom) {
-        GColour result = manipulatorStatusHelper(r, g, b, type, c3d, zoom);
-        if (View.MANIPULATOR_SELECTED_COLOUR_R[0] == result.getR() && View.MANIPULATOR_SELECTED_COLOUR_G[0] == result.getG() && View.MANIPULATOR_SELECTED_COLOUR_B[0] == result.getB()) {
+        GColour resultColour = manipulatorStatusHelper(r, g, b, type, c3d, zoom);
+        if (View.MANIPULATOR_SELECTED_COLOUR_R[0] == resultColour.getR() && View.MANIPULATOR_SELECTED_COLOUR_G[0] == resultColour.getG() && View.MANIPULATOR_SELECTED_COLOUR_B[0] == resultColour.getB()) {
             switch (Editor3DWindow.getWindow().getWorkingLayer()) {
             case NONE:
             case TEMP_X:
@@ -543,7 +543,7 @@ public class Manipulator {
                     break;
                 default:
                 }
-                return result;
+                return resultColour;
             default:
                 return new GColour(-1, View.MANIPULATOR_OUTERCIRCLE_COLOUR_R[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_G[0], View.MANIPULATOR_OUTERCIRCLE_COLOUR_B[0], 1f);
             }
@@ -618,7 +618,7 @@ public class Manipulator {
         default:
             break;
         }
-        return result;
+        return resultColour;
     }
 
     private GColour manipulatorStatusHelper(float r, float g, float b, int type, Composite3D c3d, float zoom) {

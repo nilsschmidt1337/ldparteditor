@@ -716,7 +716,7 @@ public class GTexture {
             File localTexture = new File(fTex);
             File localTextureU = new File(fTexU);
             File localTextureL = new File(fTexL);
-            File texture = new File(tex);
+            File textureFile = new File(tex);
 
             boolean fileExists = (
                     (fileToOpen = FileHelper.exist(localTexture)) != null
@@ -731,7 +731,7 @@ public class GTexture {
                     || (fileToOpen = FileHelper.exist(officialTexture)) != null
                     || (fileToOpen = FileHelper.exist(officialTextureU)) != null
                     || (fileToOpen = FileHelper.exist(officialTextureL)) != null
-                    || (fileToOpen = FileHelper.exist(texture)) != null)
+                    || (fileToOpen = FileHelper.exist(textureFile)) != null)
                     && fileToOpen.isFile();
 
             InputStream in = null;
@@ -786,8 +786,8 @@ public class GTexture {
                     final byte[] tbytes = new byte[buf.remaining()];
                     buf.get(tbytes);
                     bytes = new ArrayList<>(tbytes.length);
-                    for (final byte b : tbytes) {
-                        bytes.add(b);
+                    for (final byte bt : tbytes) {
+                        bytes.add(bt);
                     }
                 }
 
@@ -849,13 +849,13 @@ public class GTexture {
                 final int as = bytes.size();
                 for (int i = 0; i < as; i++) {
                     c++;
-                    byte b = bytes.get(i);
+                    byte bt = bytes.get(i);
                     if (c < 4) {
-                        if (b == (byte) 0xFF)
+                        if (bt == (byte) 0xFF)
                             bytes.set(i, (byte) 0xFE);
-                        if (b == (byte) 0x01)
+                        if (bt == (byte) 0x01)
                             bytes.set(i, (byte) 0x02);
-                        if (b == (byte) 0x00)
+                        if (bt == (byte) 0x00)
                             bytes.set(i, (byte) 0x02);
                     } else {
                         c = 0;
@@ -864,8 +864,8 @@ public class GTexture {
                 {
                     byte[] tmp = new byte[bytes.size()];
                     c = 0;
-                    for (final byte b : bytes) {
-                        tmp[c] = b;
+                    for (final byte bt : bytes) {
+                        tmp[c] = bt;
                         c++;
                     }
                     buf = ByteBuffer.allocateDirect(4 * tWidth * tHeight);

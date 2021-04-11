@@ -35,7 +35,7 @@ public class MemorySnapshot {
         String formattedDate = sdf.format(date);
         final int objCount = df.getDrawPerLineNoClone().size();
         creation =  formattedDate + " (" + objCount + " Objects)"; //$NON-NLS-1$ //$NON-NLS-2$
-        String[] backup = new String[objCount];
+        String[] backupArray = new String[objCount];
         int count = 0;
         GData data2draw = df.getDrawChainStart();
         while (count < objCount && data2draw != null) {
@@ -45,20 +45,20 @@ public class MemorySnapshot {
                 break;
             }
 
-            backup[count] = data2draw.toString();
+            backupArray[count] = data2draw.toString();
             count++;
         }
 
         if (count < objCount) {
             String[] smallerBackup = new String[count];
             for (int i = 0; i < count; i++) {
-                smallerBackup[i] = backup[i];
+                smallerBackup[i] = backupArray[i];
             }
 
-            backup = smallerBackup;
+            backupArray = smallerBackup;
         }
 
-        this.backup = backup;
+        this.backup = backupArray;
     }
 
     @Override

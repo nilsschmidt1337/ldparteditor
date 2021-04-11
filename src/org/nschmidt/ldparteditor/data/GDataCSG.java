@@ -382,23 +382,23 @@ public final class GDataCSG extends GData {
         if (clearCaches) {
             clearPolygonCache.put(df, true);
         }
-        final Set<GDataCSG> parsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<>());
-        parsedData.add(this);
+        final Set<GDataCSG> tmpParsedData = GDataCSG.parsedData.putIfAbsent(df, new HashSet<>());
+        tmpParsedData.add(this);
         final boolean modified = c3d != null && c3d.getManipulator().isModified();
         if (deleteAndRecompile || modified || clearCaches) {
-            final HashBiMap<Integer, GDataCSG> idToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<>());
-            final Map<String, CSG> linkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<>());
-            final Set<GDataCSG> registeredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<>());
+            final HashBiMap<Integer, GDataCSG> tmpIdToGDataCSG = GDataCSG.idToGDataCSG.putIfAbsent(df, new HashBiMap<>());
+            final Map<String, CSG> tmpLinkedCSG = GDataCSG.linkedCSG.putIfAbsent(df, new HashMap<>());
+            final Set<GDataCSG> tmpRegisteredData = GDataCSG.registeredData.putIfAbsent(df, new HashSet<>());
             final Matrix4f m;
             if (modified) {
                 m = c3d.getManipulator().getTempTransformationCSG4f();
             } else {
                 m = View.ID;
             }
-            registeredData.remove(null);
+            tmpRegisteredData.remove(null);
             try {
                 compiledCSG = null;
-                registeredData.add(this);
+                tmpRegisteredData.add(this);
                 if (ref1 != null) {
                     switch (type) {
                     case CSG.QUAD:
@@ -413,7 +413,7 @@ public final class GDataCSG extends GData {
                             switch (type) {
                             case CSG.QUAD:
                                 CSGQuad quad = new CSGQuad();
-                                idToGDataCSG.put(quad.id, this);
+                                tmpIdToGDataCSG.put(quad.id, this);
                                 CSG csgQuad = quad.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgQuad = transformWithManipulator(csgQuad, m, matrix);
@@ -421,11 +421,11 @@ public final class GDataCSG extends GData {
                                     csgQuad = csgQuad.transformed(matrix);
                                 }
                                 dataCSG = csgQuad;
-                                linkedCSG.put(ref1, csgQuad);
+                                tmpLinkedCSG.put(ref1, csgQuad);
                                 break;
                             case CSG.CIRCLE:
                                 CSGCircle circle = new CSGCircle(quality);
-                                idToGDataCSG.put(circle.id, this);
+                                tmpIdToGDataCSG.put(circle.id, this);
                                 CSG csgCircle = circle.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCircle = transformWithManipulator(csgCircle, m, matrix);
@@ -433,11 +433,11 @@ public final class GDataCSG extends GData {
                                     csgCircle = csgCircle.transformed(matrix);
                                 }
                                 dataCSG = csgCircle;
-                                linkedCSG.put(ref1, csgCircle);
+                                tmpLinkedCSG.put(ref1, csgCircle);
                                 break;
                             case CSG.ELLIPSOID:
                                 CSGSphere sphere = new CSGSphere(quality, quality / 2);
-                                idToGDataCSG.put(sphere.id, this);
+                                tmpIdToGDataCSG.put(sphere.id, this);
                                 CSG csgSphere = sphere.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgSphere = transformWithManipulator(csgSphere, m, matrix);
@@ -445,11 +445,11 @@ public final class GDataCSG extends GData {
                                     csgSphere = csgSphere.transformed(matrix);
                                 }
                                 dataCSG = csgSphere;
-                                linkedCSG.put(ref1, csgSphere);
+                                tmpLinkedCSG.put(ref1, csgSphere);
                                 break;
                             case CSG.CUBOID:
                                 CSGCube cube = new CSGCube();
-                                idToGDataCSG.put(cube.id, this);
+                                tmpIdToGDataCSG.put(cube.id, this);
                                 CSG csgCube = cube.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCube = transformWithManipulator(csgCube, m, matrix);
@@ -457,11 +457,11 @@ public final class GDataCSG extends GData {
                                     csgCube = csgCube.transformed(matrix);
                                 }
                                 dataCSG = csgCube;
-                                linkedCSG.put(ref1, csgCube);
+                                tmpLinkedCSG.put(ref1, csgCube);
                                 break;
                             case CSG.CYLINDER:
                                 CSGCylinder cylinder = new CSGCylinder(quality);
-                                idToGDataCSG.put(cylinder.id, this);
+                                tmpIdToGDataCSG.put(cylinder.id, this);
                                 CSG csgCylinder = cylinder.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCylinder = transformWithManipulator(csgCylinder, m, matrix);
@@ -469,11 +469,11 @@ public final class GDataCSG extends GData {
                                     csgCylinder = csgCylinder.transformed(matrix);
                                 }
                                 dataCSG = csgCylinder;
-                                linkedCSG.put(ref1, csgCylinder);
+                                tmpLinkedCSG.put(ref1, csgCylinder);
                                 break;
                             case CSG.CONE:
                                 CSGCone cone = new CSGCone(quality);
-                                idToGDataCSG.put(cone.id, this);
+                                tmpIdToGDataCSG.put(cone.id, this);
                                 CSG csgCone = cone.toCSG(df, colour);
                                 if (modified && isSelected(df)) {
                                     csgCone = transformWithManipulator(csgCone, m, matrix);
@@ -481,7 +481,7 @@ public final class GDataCSG extends GData {
                                     csgCone = csgCone.transformed(matrix);
                                 }
                                 dataCSG = csgCone;
-                                linkedCSG.put(ref1, csgCone);
+                                tmpLinkedCSG.put(ref1, csgCone);
                                 break;
                             case CSG.MESH:
                                 if (clearCaches) {
@@ -490,14 +490,14 @@ public final class GDataCSG extends GData {
                                 CSGMesh mesh = new CSGMesh(this, cachedData, polygonCache);
                                 CSGMesh.fillCache(cachedData, this);
                                 CSG csgMesh = mesh.toCSG(df, colour);
-                                idToGDataCSG.put(mesh.id, this);
+                                tmpIdToGDataCSG.put(mesh.id, this);
                                 if (modified && isSelected(df)) {
                                     csgMesh = transformWithManipulator(csgMesh, m, matrix);
                                 } else {
                                     csgMesh = csgMesh.transformed(matrix);
                                 }
                                 dataCSG = csgMesh;
-                                linkedCSG.put(ref1, csgMesh);
+                                tmpLinkedCSG.put(ref1, csgMesh);
                                 break;
                             case CSG.EXTRUDE:
                                 if (clearCaches) {
@@ -511,14 +511,14 @@ public final class GDataCSG extends GData {
                                 CSGExtrude extruder = new CSGExtrude(this, cachedData, extruderConfig, polygonCache);
                                 CSGExtrude.fillCache(cachedData, this);
                                 CSG csgExtruder = extruder.toCSG(df, colour);
-                                idToGDataCSG.put(extruder.id, this);
+                                tmpIdToGDataCSG.put(extruder.id, this);
                                 if (modified && isSelected(df)) {
                                     csgExtruder = transformWithManipulator(csgExtruder, m, matrix);
                                 } else {
                                     csgExtruder = csgExtruder.transformed(matrix);
                                 }
                                 dataCSG = csgExtruder;
-                                linkedCSG.put(ref1, csgExtruder);
+                                tmpLinkedCSG.put(ref1, csgExtruder);
                                 break;
                             default:
                                 break;
@@ -526,37 +526,37 @@ public final class GDataCSG extends GData {
                         }
                         break;
                     case CSG.COMPILE:
-                        if (linkedCSG.containsKey(ref1)) {
-                            compiledCSG = linkedCSG.get(ref1);
+                        if (tmpLinkedCSG.containsKey(ref1)) {
+                            compiledCSG = tmpLinkedCSG.get(ref1);
                             compiledCSG.compile();
                         } else {
                             compiledCSG = null;
                         }
                         break;
                     case CSG.DIFFERENCE:
-                        if (linkedCSG.containsKey(ref1) && linkedCSG.containsKey(ref2)) {
-                            linkedCSG.put(ref3, linkedCSG.get(ref1).difference(linkedCSG.get(ref2)));
+                        if (tmpLinkedCSG.containsKey(ref1) && tmpLinkedCSG.containsKey(ref2)) {
+                            tmpLinkedCSG.put(ref3, tmpLinkedCSG.get(ref1).difference(tmpLinkedCSG.get(ref2)));
                         }
                         break;
                     case CSG.INTERSECTION:
-                        if (linkedCSG.containsKey(ref1) && linkedCSG.containsKey(ref2)) {
-                            linkedCSG.put(ref3, linkedCSG.get(ref1).intersect(linkedCSG.get(ref2)));
+                        if (tmpLinkedCSG.containsKey(ref1) && tmpLinkedCSG.containsKey(ref2)) {
+                            tmpLinkedCSG.put(ref3, tmpLinkedCSG.get(ref1).intersect(tmpLinkedCSG.get(ref2)));
                         }
                         break;
                     case CSG.UNION:
-                        if (linkedCSG.containsKey(ref1) && linkedCSG.containsKey(ref2)) {
-                            linkedCSG.put(ref3, linkedCSG.get(ref1).union(linkedCSG.get(ref2)));
+                        if (tmpLinkedCSG.containsKey(ref1) && tmpLinkedCSG.containsKey(ref2)) {
+                            tmpLinkedCSG.put(ref3, tmpLinkedCSG.get(ref1).union(tmpLinkedCSG.get(ref2)));
                         }
                         break;
                     case CSG.TRANSFORM:
-                        if (linkedCSG.containsKey(ref1) && matrix != null) {
-                            idToGDataCSG.put(id, this);
+                        if (tmpLinkedCSG.containsKey(ref1) && matrix != null) {
+                            tmpIdToGDataCSG.put(id, this);
                             if (modified && isSelected(df)) {
-                                dataCSG = linkedCSG.get(ref1).transformed(matrix).transformed(m, colour, id);
+                                dataCSG = tmpLinkedCSG.get(ref1).transformed(matrix).transformed(m, colour, id);
                             } else {
-                                dataCSG = linkedCSG.get(ref1).transformed(matrix, colour, id);
+                                dataCSG = tmpLinkedCSG.get(ref1).transformed(matrix, colour, id);
                             }
-                            linkedCSG.put(ref2, dataCSG);
+                            tmpLinkedCSG.put(ref2, dataCSG);
                         }
                         break;
                     case CSG.QUALITY:

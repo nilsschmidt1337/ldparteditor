@@ -43,9 +43,9 @@ class CopyDesign extends Dialog {
 
     // Use final only for subclass/listener references!
 
-    final NButton[] btn1 = new NButton[1];
-    final NButton[] btn2 = new NButton[1];
-    final NButton[] btn3 = new NButton[1];
+    final NButton[] btn1Ptr = new NButton[1];
+    final NButton[] btn2Ptr = new NButton[1];
+    final NButton[] btn3Ptr = new NButton[1];
 
     private final String fileName;
 
@@ -67,7 +67,7 @@ class CopyDesign extends Dialog {
         gridLayout.horizontalSpacing = 10;
 
         NButton btn1 = new NButton(cmpContainer, SWT.NONE);
-        this.btn1[0] = btn1;
+        this.btn1Ptr[0] = btn1;
         btn1.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
@@ -79,7 +79,7 @@ class CopyDesign extends Dialog {
         }
 
         NButton btn2 = new NButton(cmpContainer, SWT.NONE);
-        this.btn2[0] = btn2;
+        this.btn2Ptr[0] = btn2;
         btn2.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {
@@ -91,7 +91,7 @@ class CopyDesign extends Dialog {
         }
 
         NButton btn3 = new NButton(cmpContainer, SWT.NONE);
-        this.btn3[0] = btn3;
+        this.btn3Ptr[0] = btn3;
         btn3.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         {

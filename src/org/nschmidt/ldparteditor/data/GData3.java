@@ -312,12 +312,12 @@ public final class GData3 extends GData {
             drawProtractorGL20(false, c3d, x1p, y1p, z1p, x2p, y2p, z2p, x3p, y3p, z3p);
             return;
         }
-        final float r = MathHelper.randomFloat(id, 0);
-        final float g = MathHelper.randomFloat(id, 1);
-        final float b = MathHelper.randomFloat(id, 2);
+        final float tR = MathHelper.randomFloat(id, 0);
+        final float tG = MathHelper.randomFloat(id, 1);
+        final float tB = MathHelper.randomFloat(id, 2);
         GL11.glBegin(GL11.GL_TRIANGLES);
         if (GData.globalNegativeDeterminant) {
-            GL11.glColor4f(r, g, b, a);
+            GL11.glColor4f(tR, tG, tB, a);
             GL11.glNormal3f(xn, yn, zn);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x3, y3, z3);
@@ -327,7 +327,7 @@ public final class GData3 extends GData {
             GL11.glVertex3f(x2, y2, z2);
             GL11.glVertex3f(x3, y3, z3);
         } else {
-            GL11.glColor4f(r, g, b, a);
+            GL11.glColor4f(tR, tG, tB, a);
             GL11.glNormal3f(xn, yn, zn);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x2, y2, z2);
@@ -988,12 +988,12 @@ public final class GData3 extends GData {
                     break;
                 }
             }
-            float r = this.r;
-            float g = this.g;
-            float b = this.b;
-            float a = this.a;
+            float tR = this.r;
+            float tG = this.g;
+            float tB = this.b;
+            float tA = this.a;
             if (hasColourType && useCubeMap < 1) {
-                a = 0.99f;
+                tA = 0.99f;
             }
             final OpenGLRenderer20 ren = (OpenGLRenderer20) c3d.getRenderer();
             if (GData.globalTextureStack.isEmpty()) {
@@ -1004,12 +1004,12 @@ public final class GData3 extends GData {
                 GL20.glUniform1f(ren.getCubeMapSwitch(), useCubeMap);
                 switch (GData.accumClip) {
                 case 0:
-                    drawBFCcolour2(c3d, r, g, b, a, useCubeMap);
+                    drawBFCcolour2(c3d, tR, tG, tB, tA, useCubeMap);
                     break;
                 default:
                     BFC tmp = GData.localWinding;
                     GData.localWinding = BFC.NOCERTIFY;
-                    drawBFCcolour2(c3d, r, g, b, a, useCubeMap);
+                    drawBFCcolour2(c3d, tR, tG, tB, tA, useCubeMap);
                     GData.localWinding = tmp;
                     break;
                 }
@@ -1019,11 +1019,11 @@ public final class GData3 extends GData {
                 GTexture tex = GData.globalTextureStack.peek();
                 tex.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, c3d.isLightOn() && matLight, ren, useCubeMap);
                 float[] uv;
-                switch (a < 1f || GData.accumClip > 0 ? BFC.NOCERTIFY : GData.localWinding) {
+                switch (tA < 1f || GData.accumClip > 0 ? BFC.NOCERTIFY : GData.localWinding) {
                 case CCW:
                     if (GData.globalNegativeDeterminant) {
                         if (GData.globalInvertNext) {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1037,7 +1037,7 @@ public final class GData3 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1053,7 +1053,7 @@ public final class GData3 extends GData {
                         }
                     } else {
                         if (GData.globalInvertNext) {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1067,7 +1067,7 @@ public final class GData3 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, false, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1086,7 +1086,7 @@ public final class GData3 extends GData {
                 case CW:
                     if (GData.globalNegativeDeterminant) {
                         if (GData.globalInvertNext) {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1100,7 +1100,7 @@ public final class GData3 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1116,7 +1116,7 @@ public final class GData3 extends GData {
                         }
                     } else {
                         if (GData.globalInvertNext) {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1130,7 +1130,7 @@ public final class GData3 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_TRIANGLES);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1148,7 +1148,7 @@ public final class GData3 extends GData {
                     break;
                 case NOCERTIFY:
                     if (GData.globalNegativeDeterminant) {
-                        GL11.glColor4f(r, g, b, a);
+                        GL11.glColor4f(tR, tG, tB, tA);
                         GL11.glBegin(GL11.GL_TRIANGLES);
                         tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x3, y3, z3, parent);
@@ -1174,7 +1174,7 @@ public final class GData3 extends GData {
                         c3d.getVertexManager().setVertexAndNormal(x3, y3, z3, true, this, useCubeMap);
                         GL11.glEnd();
                     } else {
-                        GL11.glColor4f(r, g, b, a);
+                        GL11.glColor4f(tR, tG, tB, tA);
                         GL11.glBegin(GL11.GL_TRIANGLES);
                         tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1430,68 +1430,68 @@ public final class GData3 extends GData {
                 verts[2] = new Vertex(v3.x , v3.y , v3.z, true);
             }
 
-            float xn = (verts[2].y - verts[0].y) * (verts[1].z - verts[0].z) - (verts[2].z - verts[0].z) * (verts[1].y - verts[0].y);
-            float yn = (verts[2].z - verts[0].z) * (verts[1].x - verts[0].x) - (verts[2].x - verts[0].x) * (verts[1].z - verts[0].z);
-            float zn = (verts[2].x - verts[0].x) * (verts[1].y - verts[0].y) - (verts[2].y - verts[0].y) * (verts[1].x - verts[0].x);
+            float txn = (verts[2].y - verts[0].y) * (verts[1].z - verts[0].z) - (verts[2].z - verts[0].z) * (verts[1].y - verts[0].y);
+            float tyn = (verts[2].z - verts[0].z) * (verts[1].x - verts[0].x) - (verts[2].x - verts[0].x) * (verts[1].z - verts[0].z);
+            float tzn = (verts[2].x - verts[0].x) * (verts[1].y - verts[0].y) - (verts[2].y - verts[0].y) * (verts[1].x - verts[0].x);
 
-            final float length = (float) Math.sqrt(xn * xn + yn * yn + zn *zn);
+            final float length = (float) Math.sqrt(txn * txn + tyn * tyn + tzn *tzn);
             if (length > 0) {
-                xn = xn / length;
-                yn = yn / length;
-                zn = zn / length;
+                txn = txn / length;
+                tyn = tyn / length;
+                tzn = tzn / length;
             }
 
             for (Vertex vertex : verts) {
                 float[] result = new float[3];
                 switch (state.localWinding) {
                 case NOCLIP:
-                    result[0] = xn;
-                    result[1] = yn;
-                    result[2] = zn;
+                    result[0] = txn;
+                    result[1] = tyn;
+                    result[2] = tzn;
                     break;
                 case CCW:
                     if (state.globalInvertNext) {
                         if (state.globalNegativeDeterminant) {
-                            result[0] = -xn;
-                            result[1] = -yn;
-                            result[2] = -zn;
+                            result[0] = -txn;
+                            result[1] = -tyn;
+                            result[2] = -tzn;
                         } else {
-                            result[0] = xn;
-                            result[1] = yn;
-                            result[2] = zn;
+                            result[0] = txn;
+                            result[1] = tyn;
+                            result[2] = tzn;
                         }
                     } else {
                         if (state.globalNegativeDeterminant) {
-                            result[0] = -xn;
-                            result[1] = -yn;
-                            result[2] = -zn;
+                            result[0] = -txn;
+                            result[1] = -tyn;
+                            result[2] = -tzn;
                         } else {
-                            result[0] = xn;
-                            result[1] = yn;
-                            result[2] = zn;
+                            result[0] = txn;
+                            result[1] = tyn;
+                            result[2] = tzn;
                         }
                     }
                     break;
                 case CW:
                     if (state.globalInvertNext) {
                         if (state.globalNegativeDeterminant) {
-                            result[0] = -xn;
-                            result[1] = -yn;
-                            result[2] = -zn;
+                            result[0] = -txn;
+                            result[1] = -tyn;
+                            result[2] = -tzn;
                         } else {
-                            result[0] = xn;
-                            result[1] = yn;
-                            result[2] = zn;
+                            result[0] = txn;
+                            result[1] = tyn;
+                            result[2] = tzn;
                         }
                     } else {
                         if (state.globalNegativeDeterminant) {
-                            result[0] = -xn;
-                            result[1] = -yn;
-                            result[2] = -zn;
+                            result[0] = -txn;
+                            result[1] = -tyn;
+                            result[2] = -tzn;
                         } else {
-                            result[0] = xn;
-                            result[1] = yn;
-                            result[2] = zn;
+                            result[0] = txn;
+                            result[1] = tyn;
+                            result[2] = tzn;
                         }
                     }
                     break;
@@ -1928,34 +1928,34 @@ public final class GData3 extends GData {
         }
 
         {
-            float x1 = v[0].x;
-            float y1 = v[0].y;
-            float z1 = v[0].z;
-            float x2 = v[1].x;
-            float y2 = v[1].y;
-            float z2 = v[1].z;
-            float x3 = v[2].x;
-            float y3 = v[2].y;
-            float z3 = v[2].z;
+            float tx1 = v[0].x;
+            float ty1 = v[0].y;
+            float tz1 = v[0].z;
+            float tx2 = v[1].x;
+            float ty2 = v[1].y;
+            float tz2 = v[1].z;
+            float tx3 = v[2].x;
+            float ty3 = v[2].y;
+            float tz3 = v[2].z;
 
-            float sx1 = x1 + (x2 - x1) * .2f;
-            float sy1 = y1 + (y2 - y1) * .2f;
-            float sz1 = z1 + (z2 - z1) * .2f;
-            float sx2 = x1 + (x3 - x1) * .2f;
-            float sy2 = y1 + (y3 - y1) * .2f;
-            float sz2 = z1 + (z3 - z1) * .2f;
-            float sx1t = x1 + (x2 - x1) * .25f;
-            float sy1t = y1 + (y2 - y1) * .25f;
-            float sz1t = z1 + (z2 - z1) * .25f;
-            float sx2t = x1 + (x3 - x1) * .25f;
-            float sy2t = y1 + (y3 - y1) * .25f;
-            float sz2t = z1 + (z3 - z1) * .25f;
-            float sx1tt = x1 + (x2 - x1) * .24f;
-            float sy1tt = y1 + (y2 - y1) * .24f;
-            float sz1tt = z1 + (z2 - z1) * .24f;
-            float sx2tt = x1 + (x3 - x1) * .24f;
-            float sy2tt = y1 + (y3 - y1) * .24f;
-            float sz2tt = z1 + (z3 - z1) * .24f;
+            float sx1 = tx1 + (tx2 - tx1) * .2f;
+            float sy1 = ty1 + (ty2 - ty1) * .2f;
+            float sz1 = tz1 + (tz2 - tz1) * .2f;
+            float sx2 = tx1 + (tx3 - tx1) * .2f;
+            float sy2 = ty1 + (ty3 - ty1) * .2f;
+            float sz2 = tz1 + (tz3 - tz1) * .2f;
+            float sx1t = tx1 + (tx2 - tx1) * .25f;
+            float sy1t = ty1 + (ty2 - ty1) * .25f;
+            float sz1t = tz1 + (tz2 - tz1) * .25f;
+            float sx2t = tx1 + (tx3 - tx1) * .25f;
+            float sy2t = ty1 + (ty3 - ty1) * .25f;
+            float sz2t = tz1 + (tz3 - tz1) * .25f;
+            float sx1tt = tx1 + (tx2 - tx1) * .24f;
+            float sy1tt = ty1 + (ty2 - ty1) * .24f;
+            float sz1tt = tz1 + (tz2 - tz1) * .24f;
+            float sx2tt = tx1 + (tx3 - tx1) * .24f;
+            float sy2tt = ty1 + (ty3 - ty1) * .24f;
+            float sz2tt = tz1 + (tz3 - tz1) * .24f;
             float sx3 = sx1t * .5f + sx2t * .5f;
             float sy3 = sy1t * .5f + sy2t * .5f;
             float sz3 = sz1t * .5f + sz2t * .5f;

@@ -113,12 +113,12 @@ public final class GData4 extends GData {
         this.x4 = x4p.floatValue() * 1000f;
         this.y4 = y4p.floatValue() * 1000f;
         this.z4 = z4p.floatValue() * 1000f;
-        float xn = -normal.getXf();
-        float yn = -normal.getYf();
-        float zn = -normal.getZf();
-        this.xn = xn;
-        this.yn = yn;
-        this.zn = zn;
+        float txn = -normal.getXf();
+        float tyn = -normal.getYf();
+        float tzn = -normal.getZf();
+        this.xn = txn;
+        this.yn = tyn;
+        this.zn = tzn;
         datFile.getVertexManager().add(this);
     }
 
@@ -323,12 +323,12 @@ public final class GData4 extends GData {
             return;
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
-        final float r = MathHelper.randomFloat(id, 0);
-        final float g = MathHelper.randomFloat(id, 1);
-        final float b = MathHelper.randomFloat(id, 2);
+        final float rndRed = MathHelper.randomFloat(id, 0);
+        final float rndGreen = MathHelper.randomFloat(id, 1);
+        final float rndBlue = MathHelper.randomFloat(id, 2);
         GL11.glBegin(GL11.GL_QUADS);
         if (GData.globalNegativeDeterminant) {
-            GL11.glColor4f(r, g, b, a);
+            GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
             GL11.glNormal3f(xn, yn, zn);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x4, y4, z4);
@@ -340,7 +340,7 @@ public final class GData4 extends GData {
             GL11.glVertex3f(x3, y3, z3);
             GL11.glVertex3f(x4, y4, z4);
         } else {
-            GL11.glColor4f(r, g, b, a);
+            GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
             GL11.glNormal3f(-xn, -yn, -zn);
             GL11.glVertex3f(x1, y1, z1);
             GL11.glVertex3f(x4, y4, z4);
@@ -998,12 +998,12 @@ public final class GData4 extends GData {
                     break;
                 }
             }
-            float r = this.r;
-            float g = this.g;
-            float b = this.b;
-            float a = this.a;
+            float tR = this.r;
+            float tG = this.g;
+            float tB = this.b;
+            float tA = this.a;
             if (hasColourType && useCubeMap < 1) {
-                a = 0.99f;
+                tA = 0.99f;
             }
             final OpenGLRenderer20 ren = (OpenGLRenderer20) c3d.getRenderer();
             if (GData.globalTextureStack.isEmpty()) {
@@ -1014,12 +1014,12 @@ public final class GData4 extends GData {
                 GL20.glUniform1f(ren.getCubeMapSwitch(), useCubeMap);
                 switch (GData.accumClip) {
                 case 0:
-                    drawBFCcolour2(c3d, r, g, b, a, useCubeMap);
+                    drawBFCcolour2(c3d, tR, tG, tB, tA, useCubeMap);
                     break;
                 default:
                     BFC tmp = GData.localWinding;
                     GData.localWinding = BFC.NOCERTIFY;
-                    drawBFCcolour2(c3d, r, g, b, a, useCubeMap);
+                    drawBFCcolour2(c3d, tR, tG, tB, tA, useCubeMap);
                     GData.localWinding = tmp;
                     break;
                 }
@@ -1029,11 +1029,11 @@ public final class GData4 extends GData {
                 GTexture tex = GData.globalTextureStack.peek();
                 tex.bind(c3d.isDrawingSolidMaterials(), GData.globalNegativeDeterminant ^ GData.globalInvertNext, c3d.isLightOn() && matLight, ren, useCubeMap);
                 float[] uv;
-                switch (a < 1f || GData.accumClip > 0 ? BFC.NOCERTIFY : GData.localWinding) {
+                switch (tA < 1f || GData.accumClip > 0 ? BFC.NOCERTIFY : GData.localWinding) {
                 case CCW:
                     if (GData.globalNegativeDeterminant) {
                         if (GData.globalInvertNext) {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_QUADS);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x4, y4, z4, parent);
@@ -1050,7 +1050,7 @@ public final class GData4 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, false, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_QUADS);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1069,7 +1069,7 @@ public final class GData4 extends GData {
                         }
                     } else {
                         if (GData.globalInvertNext) {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_QUADS);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1086,7 +1086,7 @@ public final class GData4 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, false, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_QUADS);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x4, y4, z4, parent);
@@ -1108,7 +1108,7 @@ public final class GData4 extends GData {
                 case CW:
                     if (GData.globalNegativeDeterminant) {
                         if (GData.globalInvertNext) {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_QUADS);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1125,7 +1125,7 @@ public final class GData4 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_QUADS);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x4, y4, z4, parent);
@@ -1144,7 +1144,7 @@ public final class GData4 extends GData {
                         }
                     } else {
                         if (GData.globalInvertNext) {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_QUADS);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x4, y4, z4, parent);
@@ -1161,7 +1161,7 @@ public final class GData4 extends GData {
                             c3d.getVertexManager().setVertexAndNormal(x2, y2, z2, true, this, useCubeMap);
                             GL11.glEnd();
                         } else {
-                            GL11.glColor4f(r, g, b, a);
+                            GL11.glColor4f(tR, tG, tB, tA);
                             GL11.glBegin(GL11.GL_QUADS);
                             tex.calcUVcoords1(x1, y1, z1, parent, this);
                             tex.calcUVcoords2(x2, y2, z2, parent);
@@ -1182,7 +1182,7 @@ public final class GData4 extends GData {
                     break;
                 case NOCERTIFY:
                     if (GData.globalNegativeDeterminant) {
-                        GL11.glColor4f(r, g, b, a);
+                        GL11.glColor4f(tR, tG, tB, tA);
                         GL11.glBegin(GL11.GL_QUADS);
                         tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x4, y4, z4, parent);
@@ -1214,7 +1214,7 @@ public final class GData4 extends GData {
                         c3d.getVertexManager().setVertexAndNormal(x4, y4, z4, true, this, useCubeMap);
                         GL11.glEnd();
                     } else {
-                        GL11.glColor4f(r, g, b, a);
+                        GL11.glColor4f(tR, tG, tB, tA);
                         GL11.glBegin(GL11.GL_QUADS);
                         tex.calcUVcoords1(x1, y1, z1, parent, null);
                         tex.calcUVcoords2(x4, y4, z4, parent);
@@ -1270,16 +1270,16 @@ public final class GData4 extends GData {
         calculateAngle();
         float f = (float) Math.min(1.0, Math.max(0, angle - Threshold.coplanarityAngleWarning) / Threshold.coplanarityAngleError);
 
-        float r = 0f;
-        float g;
-        float b = 0f;
+        float red = 0f;
+        float green;
+        float blue = 0f;
 
         if (f < .5) {
-            g = f / .5f;
-            b = (1f - g);
+            green = f / .5f;
+            blue = (1f - green);
         } else {
-            r = (f - .5f) / .5f;
-            g = (1f - r);
+            red = (f - .5f) / .5f;
+            green = (1f - red);
         }
 
         if (!visible)
@@ -1287,7 +1287,7 @@ public final class GData4 extends GData {
         if (a < 1f && c3d.isDrawingSolidMaterials() || !c3d.isDrawingSolidMaterials() && a == 1f)
             return;
         GL11.glBegin(GL11.GL_QUADS);
-        GL11.glColor4f(r, g, b, a);
+        GL11.glColor4f(red, green, blue, a);
         if (GData.globalNegativeDeterminant) {
             GL11.glNormal3f(xn, yn, zn);
             GL11.glVertex3f(x1, y1, z1);
@@ -1518,68 +1518,68 @@ public final class GData4 extends GData {
             for (int i = 0; i < 4; i++) {
                 Vector3f.add(normals[i], normal, normal);
             }
-            float xn = normal.x;
-            float yn = normal.y;
-            float zn = normal.z;
+            float txn = normal.x;
+            float tyn = normal.y;
+            float tzn = normal.z;
 
-            final float length = (float) Math.sqrt(xn * xn + yn * yn + zn *zn);
+            final float length = (float) Math.sqrt(txn * txn + tyn * tyn + tzn *tzn);
             if (length > 0) {
-                xn = xn / length;
-                yn = yn / length;
-                zn = zn / length;
+                txn = txn / length;
+                tyn = tyn / length;
+                tzn = tzn / length;
             }
 
             for (Vertex vertex : verts) {
                 float[] result = new float[3];
                 switch (state.localWinding) {
                 case NOCLIP:
-                    result[0] = xn;
-                    result[1] = yn;
-                    result[2] = zn;
+                    result[0] = txn;
+                    result[1] = tyn;
+                    result[2] = tzn;
                     break;
                 case CCW:
                     if (state.globalInvertNext) {
                         if (state.globalNegativeDeterminant) {
-                            result[0] = -xn;
-                            result[1] = -yn;
-                            result[2] = -zn;
+                            result[0] = -txn;
+                            result[1] = -tyn;
+                            result[2] = -tzn;
                         } else {
-                            result[0] = xn;
-                            result[1] = yn;
-                            result[2] = zn;
+                            result[0] = txn;
+                            result[1] = tyn;
+                            result[2] = tzn;
                         }
                     } else {
                         if (state.globalNegativeDeterminant) {
-                            result[0] = xn;
-                            result[1] = yn;
-                            result[2] = zn;
+                            result[0] = txn;
+                            result[1] = tyn;
+                            result[2] = tzn;
                         } else {
-                            result[0] = -xn;
-                            result[1] = -yn;
-                            result[2] = -zn;
+                            result[0] = -txn;
+                            result[1] = -tyn;
+                            result[2] = -tzn;
                         }
                     }
                     break;
                 case CW:
                     if (state.globalInvertNext) {
                         if (state.globalNegativeDeterminant) {
-                            result[0] = xn;
-                            result[1] = yn;
-                            result[2] = zn;
+                            result[0] = txn;
+                            result[1] = tyn;
+                            result[2] = tzn;
                         } else {
-                            result[0] = -xn;
-                            result[1] = -yn;
-                            result[2] = -zn;
+                            result[0] = -txn;
+                            result[1] = -tyn;
+                            result[2] = -tzn;
                         }
                     } else {
                         if (state.globalNegativeDeterminant) {
-                            result[0] = xn;
-                            result[1] = yn;
-                            result[2] = zn;
+                            result[0] = txn;
+                            result[1] = tyn;
+                            result[2] = tzn;
                         } else {
-                            result[0] = -xn;
-                            result[1] = -yn;
-                            result[2] = -zn;
+                            result[0] = -txn;
+                            result[1] = -tyn;
+                            result[2] = -tzn;
                         }
                     }
                     break;

@@ -518,15 +518,15 @@ public final class GData5 extends GData {
 
         if (result > -1e-20f) {
 
-            final float r = MathHelper.randomFloat(id, 0);
-            final float g = MathHelper.randomFloat(id, 1);
-            final float b = MathHelper.randomFloat(id, 2);
+            final float rndRed = MathHelper.randomFloat(id, 0);
+            final float rndGreen = MathHelper.randomFloat(id, 1);
+            final float rndBlue = MathHelper.randomFloat(id, 2);
 
             if (GL11.glGetBoolean(GL11.GL_LIGHTING) == 1) GL11.glDisable(GL11.GL_LIGHTING);
 
             if (zoom > View.edgeThreshold) {
 
-                GL11.glColor4f(r, g, b, a);
+                GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
 
                 GL11.glPushMatrix();
 
@@ -592,7 +592,7 @@ public final class GData5 extends GData {
 
             } else {
                 GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
-                GL11.glColor4f(r, g, b, a);
+                GL11.glColor4f(rndRed, rndGreen, rndBlue, a);
                 GL11.glBegin(GL11.GL_LINES);
                 GL11.glVertex3f(x1, y1, z1);
                 GL11.glVertex3f(x2, y2, z2);
@@ -758,11 +758,11 @@ public final class GData5 extends GData {
     public void drawGL20BFCtextured(Composite3D c3d) {
         // done :)
         if (GData.globalDrawObjects) {
-            final OpenGLRenderer20 r = (OpenGLRenderer20) c3d.getRenderer();
-            GL20.glUniform1f(r.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
-            GL20.glUniform1f(r.getNoTextureSwitch(), 1f);
-            GL20.glUniform1f(r.getNoLightSwitch(), 1f);
-            GL20.glUniform1f(r.getCubeMapSwitch(), 0f);
+            final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
+            GL20.glUniform1f(renderer.getNormalSwitchLoc(), GData.globalNegativeDeterminant ^ GData.globalInvertNext ? 1f : 0f);
+            GL20.glUniform1f(renderer.getNoTextureSwitch(), 1f);
+            GL20.glUniform1f(renderer.getNoLightSwitch(), 1f);
+            GL20.glUniform1f(renderer.getCubeMapSwitch(), 0f);
 
             if (!visible)
                 return;

@@ -116,7 +116,7 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  */
 public class CSG {
 
-    private SortedMap<GData3, IdAndPlane> result = new TreeMap<>();
+    private SortedMap<GData3, IdAndPlane> csgResult = new TreeMap<>();
 
     private List<Polygon> polygons;
     private Bounds bounds = null;
@@ -217,16 +217,16 @@ public class CSG {
         final List<Polygon> nonIntersectingPolys = new ArrayList<>();
 
         thisPolys.removeIf(poly -> {
-            final boolean result;
-            if (result = !otherBounds.intersects(poly.getBounds())) {
+            final boolean result = !otherBounds.intersects(poly.getBounds());
+            if (result) {
                 nonIntersectingPolys.add(poly);
             }
             return result;
         });
 
         otherPolys.removeIf(poly -> {
-            final boolean result;
-            if (result = !thisBounds.intersects(poly.getBounds())) {
+            final boolean result = !thisBounds.intersects(poly.getBounds());
+            if (result) {
                 nonIntersectingPolys.add(poly);
             }
             return result;
@@ -305,8 +305,8 @@ public class CSG {
         final List<Polygon> nonIntersectingPolys = new ArrayList<>();
 
         thisPolys.removeIf(poly -> {
-            final boolean result;
-            if (result = !otherBounds.intersects(poly.getBounds())) {
+            final boolean result = !otherBounds.intersects(poly.getBounds());
+            if (result) {
                 nonIntersectingPolys.add(poly);
             }
             return result;
@@ -442,7 +442,7 @@ public class CSG {
         GColour col = View.getLDConfigColour(16);
         GData1 g1 = new GData1(-1, col.getR(), col.getG(), col.getB(), 1f, id, View.ACCURATE_ID, new ArrayList<>(), null, null, 1, false, id, View.ACCURATE_ID, null, View.DUMMY_REFERENCE, true, false,
                 new HashSet<>(), View.DUMMY_REFERENCE);
-        this.result = toLDrawTriangles(g1);
+        this.csgResult = toLDrawTriangles(g1);
         return g1;
     }
 
@@ -479,7 +479,7 @@ public class CSG {
 
         if (optimizedTriangles.isEmpty() && df != null && df.isOptimizingCSG()) {
             optimizedTriangles = new TreeMap<>();
-            optimizedTriangles.putAll(result);
+            optimizedTriangles.putAll(csgResult);
         }
 
         if (shouldOptimize && df != null && df.isOptimizingCSG()) {
@@ -578,7 +578,7 @@ public class CSG {
         }
 
         if (optimizedResult == null) {
-            return result;
+            return csgResult;
         } else {
             return optimizedResult;
         }

@@ -1061,7 +1061,7 @@ public final class DatFile {
 
 
     void parseForChanges(String[] lines) {
-        final boolean drawSelection = isDrawSelection();
+        final boolean tmpDrawSelection = isDrawSelection();
         setDrawSelection(false);
 
         Project.getParsedFiles().add(this);
@@ -1147,12 +1147,12 @@ public final class DatFile {
         }
 
         vertices.validateState();
-        setDrawSelection(drawSelection);
+        setDrawSelection(tmpDrawSelection);
     }
 
 
     public void parseForData(boolean addHistory) {
-        final boolean drawSelection = isDrawSelection();
+        final boolean tmpDrawSelection = isDrawSelection();
         setDrawSelection(false);
 
         Project.getParsedFiles().add(this);
@@ -1259,7 +1259,7 @@ public final class DatFile {
         }
 
         if (addHistory) addHistory();
-        setDrawSelection(drawSelection);
+        setDrawSelection(tmpDrawSelection);
     }
 
     public HashBiMap<Integer, GData> getDrawPerLine() {

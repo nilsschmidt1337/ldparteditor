@@ -212,25 +212,25 @@ class CompositeTabDesign extends CTabItem {
                 trtmDuplicates.setImage(ResourceManager.getImage("icon16_duplicate.png")); //$NON-NLS-1$
                 trtmDuplicates.setText(new String[] { I18n.COMPOSITETAB_DUPLICATES, "", "" }); //$NON-NLS-1$ //$NON-NLS-2$
 
-                Menu menu = new Menu(tabFolder);
-                tree.setMenu(menu);
+                Menu mnuTabFolder = new Menu(tabFolder);
+                tree.setMenu(mnuTabFolder);
 
-                MenuItem mntmQuickFix = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
+                MenuItem mntmQuickFix = new MenuItem(mnuTabFolder, I18n.noBiDirectionalTextStyle());
                 mntmQuickFixPtr[0] = mntmQuickFix;
                 mntmQuickFix.setEnabled(true);
                 mntmQuickFix.setText(I18n.COMPOSITETAB_QUICK_FIX);
 
-                MenuItem mntmQuickFixSame = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
+                MenuItem mntmQuickFixSame = new MenuItem(mnuTabFolder, I18n.noBiDirectionalTextStyle());
                 mntmQuickFixSamePtr[0] = mntmQuickFixSame;
                 mntmQuickFixSame.setEnabled(true);
                 mntmQuickFixSame.setText(I18n.COMPOSITETAB_QUICK_FIX_SIMILAR);
 
-                MenuItem mntmInspect = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
+                MenuItem mntmInspect = new MenuItem(mnuTabFolder, I18n.noBiDirectionalTextStyle());
                 mntmInspectPtr[0] = mntmInspect;
                 mntmInspect.setEnabled(true);
                 mntmInspect.setText(I18n.COMPOSITETAB_INSPECT);
 
-                MenuItem mntmInspectSame = new MenuItem(menu, I18n.noBiDirectionalTextStyle());
+                MenuItem mntmInspectSame = new MenuItem(mnuTabFolder, I18n.noBiDirectionalTextStyle());
                 mntmInspectSamePtr[0] = mntmInspectSame;
                 mntmInspectSame.setEnabled(true);
                 mntmInspectSame.setText(I18n.COMPOSITETAB_INSPECT_SIMILAR);

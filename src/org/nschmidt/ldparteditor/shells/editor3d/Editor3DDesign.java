@@ -739,7 +739,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                 tabFolderOpenDatFiles.setSelection(1);
 
-                SashForm sashForm = new SashForm(cmpMainEditor, Cocoa.getStyle());
+                SashForm sashFormCmpMain = new SashForm(cmpMainEditor, Cocoa.getStyle());
 
                 {
                     GridData gridDataX = new GridData();
@@ -754,13 +754,13 @@ class Editor3DDesign extends ApplicationWindow {
                     gridDataX.grabExcessVerticalSpace = true;
 
                     gridDataX.grabExcessHorizontalSpace = true;
-                    sashForm.setLayoutData(gridDataX);
+                    sashFormCmpMain.setLayoutData(gridDataX);
                 }
 
-                Editor3DDesign.setSashForm(sashForm);
-                sashForm.setToolTipText(I18n.E3D_DRAG_HINT);
+                Editor3DDesign.setSashForm(sashFormCmpMain);
+                sashFormCmpMain.setToolTipText(I18n.E3D_DRAG_HINT);
                 {
-                    SashForm sashForm2 = new SashForm(sashForm, SWT.VERTICAL);
+                    SashForm sashForm2 = new SashForm(sashFormCmpMain, SWT.VERTICAL);
                     this.leftSash[0] = sashForm2;
                     Composite cmpContainer1 = new Composite(sashForm2, SWT.BORDER);
                     GridLayout gridLayout = new GridLayout(1, true);
@@ -1707,15 +1707,15 @@ class Editor3DDesign extends ApplicationWindow {
 
                 List<Composite3DState> threeDconfig = windowState.getThreeDwindowConfig();
                 if (threeDconfig == null) {
-                    new CompositeContainer(sashForm, false);
+                    new CompositeContainer(sashFormCmpMain, false);
                 } else {
                     final int configSize = threeDconfig.size();
                     if (configSize < 2) {
                         if (configSize == 1) {
                             Composite3DState state = threeDconfig.get(0);
-                            createComposite3D(sashForm, null, state);
+                            createComposite3D(sashFormCmpMain, null, state);
                         } else {
-                            new CompositeContainer(sashForm, false);
+                            new CompositeContainer(sashFormCmpMain, false);
                         }
                     } else {
                         // MARK Load the configuration of multiple 3D windows
@@ -1726,12 +1726,12 @@ class Editor3DDesign extends ApplicationWindow {
                 int width = windowState.getWindowState().getSizeAndPosition().width;
                 int[] sashSize = windowState.getLeftSashWidth();
                 if (sashSize == null) {
-                    sashForm.setWeights(new int[] { width / 3, width - width / 3 });
+                    sashFormCmpMain.setWeights(new int[] { width / 3, width - width / 3 });
                 } else {
                     try {
-                        sashForm.setWeights(sashSize);
+                        sashFormCmpMain.setWeights(sashSize);
                     } catch (IllegalArgumentException iae) {
-                        sashForm.setWeights(new int[] { width / 3, width - width / 3 });
+                        sashFormCmpMain.setWeights(new int[] { width / 3, width - width / 3 });
                     }
                 }
             }

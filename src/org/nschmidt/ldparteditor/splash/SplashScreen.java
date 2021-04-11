@@ -427,15 +427,15 @@ public class SplashScreen extends ApplicationWindow {
         final FormLayout layout = new FormLayout();
         final Label titleLabel = new Label(frame, SWT.NONE);
         final Label statusLabel = new Label(frame, SWT.NONE);
-        final ProgressBar bar = new ProgressBar(frame, SWT.NONE);
+        final ProgressBar titleProgressBar = new ProgressBar(frame, SWT.NONE);
         final FormData barData = new FormData();
 
-        bar.setMaximum(100);
+        titleProgressBar.setMaximum(100);
 
         titleLabel.setText(Version.getApplicationName() + " " + Version.getVersion() + "\n" + Version.getStage() + "\n(C) " + Version.getDevelopmentLead()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         titleLabel.setBackground(bgColor);
-        bar.setBackground(bgColor);
+        titleProgressBar.setBackground(bgColor);
         statusLabel.setBackground(bgColor);
 
         frame.setLayout(layout);
@@ -444,7 +444,7 @@ public class SplashScreen extends ApplicationWindow {
         barData.left = new FormAttachment(15, 5);
         barData.right = new FormAttachment(100, -5);
         barData.bottom = new FormAttachment(100, -5);
-        bar.setLayoutData(barData);
+        titleProgressBar.setLayoutData(barData);
 
         titleData.left = new FormAttachment(45, 5);
         titleData.right = new FormAttachment(100, 0);
@@ -456,7 +456,7 @@ public class SplashScreen extends ApplicationWindow {
         statusData.top = new FormAttachment(80, 0);
         statusLabel.setLayoutData(statusData);
 
-        this.bar = bar;
+        this.bar = titleProgressBar;
         this.label = statusLabel;
 
         return frame;

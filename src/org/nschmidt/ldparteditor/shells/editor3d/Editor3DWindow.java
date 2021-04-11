@@ -582,10 +582,10 @@ public class Editor3DWindow extends Editor3DDesign {
             int additions = 0;
             int deletions = 0;
             int conflicts = 0;
-            for (int[] is : stats) {
-                additions += is[0];
-                deletions += is[1];
-                conflicts += is[2];
+            for (int[] folderStat : stats) {
+                additions += folderStat[0];
+                deletions += folderStat[1];
+                conflicts += folderStat[2];
             }
 
             txtSearchPtr[0].setText(" "); //$NON-NLS-1$
@@ -1924,10 +1924,10 @@ public class Editor3DWindow extends Editor3DDesign {
         widgetUtil(btnMergeQuadPtr[0]).addSelectionListener(e -> {
             if (Project.getFileToEdit() != null && !Project.getFileToEdit().isReadOnly()) {
                 Project.getFileToEdit().getVertexManager().addSnapshot();
-                RectifierSettings rs = new RectifierSettings();
-                rs.setScope(1);
-                rs.setNoBorderedQuadToRectConversation(true);
-                Project.getFileToEdit().getVertexManager().rectify(rs, true, true);
+                RectifierSettings rectifierSettings = new RectifierSettings();
+                rectifierSettings.setScope(1);
+                rectifierSettings.setNoBorderedQuadToRectConversation(true);
+                Project.getFileToEdit().getVertexManager().rectify(rectifierSettings, true, true);
             }
             regainFocus();
         });
@@ -3854,21 +3854,21 @@ public class Editor3DWindow extends Editor3DDesign {
                                         Composite3D c3d = renderer.getC3D();
                                         WidgetSelectionHelper.unselectAllChildButtons(c3d.mnuRenderMode);
                                         if (state == 0) {
-                                            c3d.mntmNoBFC[0].setSelection(true);
+                                            c3d.mntmNoBFCPtr[0].setSelection(true);
                                             c3d.getMntmStudLogo().setSelection(true);
                                             c3d.getModifier().switchShowingLogo(true);
                                             c3d.getModifier().setRenderMode(0);
                                         }
                                         if (state == 1) {
-                                            c3d.mntmRandomColours[0].setSelection(true);
+                                            c3d.mntmRandomColoursPtr[0].setSelection(true);
                                             c3d.getModifier().setRenderMode(1);
                                         }
                                         if (state == 2) {
-                                            c3d.mntmCondlineMode[0].setSelection(true);
+                                            c3d.mntmCondlineModePtr[0].setSelection(true);
                                             c3d.getModifier().setRenderMode(6);
                                         }
                                         if (state == 3) {
-                                            c3d.mntmWireframeMode[0].setSelection(true);
+                                            c3d.mntmWireframeModePtr[0].setSelection(true);
                                             c3d.getModifier().setRenderMode(-1);
                                         }
                                         state++;
@@ -9144,19 +9144,19 @@ public class Editor3DWindow extends Editor3DDesign {
 
     public List<Composite3DState> getC3DStates() {
         // Traverse the sash forms to store the 3D configuration
-        final List<Composite3DState> c3dStates = new ArrayList<>();
+        final List<Composite3DState> result = new ArrayList<>();
         Control c = Editor3DDesign.getSashForm().getChildren()[1];
         if (c != null) {
             if (c instanceof SashForm|| c instanceof CompositeContainer) {
                 // c instanceof CompositeContainer: Simple case, since its only one 3D view open -> No recursion!
-                saveComposite3DStates(c, c3dStates, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
+                saveComposite3DStates(c, result, "", "|"); //$NON-NLS-1$ //$NON-NLS-2$
             } else {
                 // There is no 3D window open at the moment
             }
         } else {
             // There is no 3D window open at the moment
         }
-        return c3dStates;
+        return result;
     }
 
     public VertexWindow getVertexWindow() {

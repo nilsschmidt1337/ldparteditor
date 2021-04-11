@@ -88,18 +88,18 @@ public class Vertex implements Comparable<Vertex> {
         this.yp = by;
         this.zp = bz;
 
-        BigDecimal x = new BigDecimal(this.x);
-        x = x.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rx = new BigDecimal(this.x);
+        rx = rx.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal y = new BigDecimal(this.y);
-        y = y.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal ry = new BigDecimal(this.y);
+        ry = ry.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal z = new BigDecimal(this.z);
-        z = z.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rz = new BigDecimal(this.z);
+        rz = rz.setScale(2, RoundingMode.HALF_UP);
 
-        this.roundedX = x.floatValue();
-        this.roundedY = y.floatValue();
-        this.roundedZ = z.floatValue();
+        this.roundedX = rx.floatValue();
+        this.roundedY = ry.floatValue();
+        this.roundedZ = rz.floatValue();
     }
 
     // High performance version / only for texture rendering, primitive preview
@@ -114,18 +114,18 @@ public class Vertex implements Comparable<Vertex> {
         this.yp = null;
         this.zp = null;
 
-        BigDecimal x = new BigDecimal(this.x);
-        x = x.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rx = new BigDecimal(this.x);
+        rx = rx.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal y = new BigDecimal(this.y);
-        y = y.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal ry = new BigDecimal(this.y);
+        ry = ry.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal z = new BigDecimal(this.z);
-        z = z.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rz = new BigDecimal(this.z);
+        rz = rz.setScale(2, RoundingMode.HALF_UP);
 
-        this.roundedX = x.floatValue();
-        this.roundedY = y.floatValue();
-        this.roundedZ = z.floatValue();
+        this.roundedX = rx.floatValue();
+        this.roundedY = ry.floatValue();
+        this.roundedZ = rz.floatValue();
     }
 
     // High accuracy version (better performance)
@@ -141,18 +141,18 @@ public class Vertex implements Comparable<Vertex> {
         this.yp = by;
         this.zp = bz;
 
-        BigDecimal x = new BigDecimal(this.x);
-        x = x.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rx = new BigDecimal(this.x);
+        rx = rx.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal y = new BigDecimal(this.y);
-        y = y.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal ry = new BigDecimal(this.y);
+        ry = ry.setScale(2, RoundingMode.HALF_UP);
 
-        BigDecimal z = new BigDecimal(this.z);
-        z = z.setScale(2, RoundingMode.HALF_UP);
+        BigDecimal rz = new BigDecimal(this.z);
+        rz = rz.setScale(2, RoundingMode.HALF_UP);
 
-        this.roundedX = x.floatValue();
-        this.roundedY = y.floatValue();
-        this.roundedZ = z.floatValue();
+        this.roundedX = rx.floatValue();
+        this.roundedY = ry.floatValue();
+        this.roundedZ = rz.floatValue();
     }
 
     public Vertex(float x, float y, float z) {
