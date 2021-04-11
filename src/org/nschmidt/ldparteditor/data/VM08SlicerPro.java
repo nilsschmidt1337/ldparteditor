@@ -159,32 +159,29 @@ class VM08SlicerPro extends VM07PathTruder {
                                     if (j == chunks - 1) {
                                         end[0] = iterations;
                                     }
-                                    threads[j] = new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            for (int k = start[0]; k < end[0]; k++) {
-                                                monitor.subTask(counter2.toString() + surfCount);
-                                                GData o = originSurfs.get(k);
-                                                /* Check if the monitor has been canceled */
-                                                if (monitor.isCanceled()) {
-                                                    isCancelled[0] = 1;
-                                                    return;
-                                                }
-                                                counter2.incrementAndGet();
-                                                for (GData t : targetSurfs) {
-                                                    ArrayList<IntersectionInfo> ii = getIntersectionInfo(o, t, dir, dirN, m, minv, pc, ss);
-                                                    if (!ii.isEmpty()) {
-                                                        intersectionSet.add(ii);
-                                                        switch (t.type()) {
-                                                        case 3:
-                                                            trisToDelete.add((GData3) t);
-                                                            break;
-                                                        case 4:
-                                                            quadsToDelete.add((GData4) t);
-                                                            break;
-                                                        default:
-                                                            break;
-                                                        }
+                                    threads[j] = new Thread(() -> {
+                                        for (int k = start[0]; k < end[0]; k++) {
+                                            monitor.subTask(counter2.toString() + surfCount);
+                                            GData o = originSurfs.get(k);
+                                            /* Check if the monitor has been canceled */
+                                            if (monitor.isCanceled()) {
+                                                isCancelled[0] = 1;
+                                                return;
+                                            }
+                                            counter2.incrementAndGet();
+                                            for (GData t : targetSurfs) {
+                                                ArrayList<IntersectionInfo> ii = getIntersectionInfo(o, t, dir, dirN, m, minv, pc, ss);
+                                                if (!ii.isEmpty()) {
+                                                    intersectionSet.add(ii);
+                                                    switch (t.type()) {
+                                                    case 3:
+                                                        trisToDelete.add((GData3) t);
+                                                        break;
+                                                    case 4:
+                                                        quadsToDelete.add((GData4) t);
+                                                        break;
+                                                    default:
+                                                        break;
                                                     }
                                                 }
                                             }
@@ -230,60 +227,57 @@ class VM08SlicerPro extends VM07PathTruder {
                                     if (j == chunks - 1) {
                                         end[0] = iterations;
                                     }
-                                    threads[j] = new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            for (int k = start[0]; k < end[0]; k++) {
-                                                monitor.subTask(counter2.toString() + maxIterations);
-                                                ArrayList<IntersectionInfo> ii = intersections.get(k);
-                                                if (monitor.isCanceled()) {
-                                                    isCancelled[0] = 2;
-                                                    return;
+                                    threads[j] = new Thread(() -> {
+                                        for (int k = start[0]; k < end[0]; k++) {
+                                            monitor.subTask(counter2.toString() + maxIterations);
+                                            ArrayList<IntersectionInfo> ii = intersections.get(k);
+                                            if (monitor.isCanceled()) {
+                                                isCancelled[0] = 2;
+                                                return;
+                                            }
+                                            counter2.incrementAndGet();
+                                            for (IntersectionInfo info : ii) {
+                                                final int pointsToTriangulate = info.getAllVertices().size();
+                                                final ArrayList<Vector3d> av = info.getAllVertices();
+
+                                                final float R;
+                                                final float G;
+                                                final float B;
+                                                final float A;
+                                                final int CN;
+                                                GData origin2 = info.getOrigin();
+                                                if (origin2.type() == 3) {
+                                                    GData3 origin = (GData3) origin2;
+                                                    CN = origin.colourNumber;
+                                                    R = origin.r;
+                                                    G = origin.g;
+                                                    B = origin.b;
+                                                    A = origin.a;
+                                                } else {
+                                                    GData4 origin = (GData4) origin2;
+                                                    CN = origin.colourNumber;
+                                                    R = origin.r;
+                                                    G = origin.g;
+                                                    B = origin.b;
+                                                    A = origin.a;
                                                 }
-                                                counter2.incrementAndGet();
-                                                for (IntersectionInfo info : ii) {
-                                                    final int pointsToTriangulate = info.getAllVertices().size();
-                                                    final ArrayList<Vector3d> av = info.getAllVertices();
 
-                                                    final float R;
-                                                    final float G;
-                                                    final float B;
-                                                    final float A;
-                                                    final int CN;
-                                                    GData origin2 = info.getOrigin();
-                                                    if (origin2.type() == 3) {
-                                                        GData3 origin = (GData3) origin2;
-                                                        CN = origin.colourNumber;
-                                                        R = origin.r;
-                                                        G = origin.g;
-                                                        B = origin.b;
-                                                        A = origin.a;
-                                                    } else {
-                                                        GData4 origin = (GData4) origin2;
-                                                        CN = origin.colourNumber;
-                                                        R = origin.r;
-                                                        G = origin.g;
-                                                        B = origin.b;
-                                                        A = origin.a;
-                                                    }
-
-                                                    switch (pointsToTriangulate) {
-                                                    case 3:
-                                                        newTriangles.add(new GData3(CN, R, G, B, A,
-                                                                av.get(0).x, av.get(0).y, av.get(0).z,
-                                                                av.get(1).x, av.get(1).y, av.get(1).z,
-                                                                av.get(2).x, av.get(2).y, av.get(2).z,
-                                                                View.DUMMY_REFERENCE, linkedDatFile, true));
-                                                        break;
-                                                    case 4:
-                                                    case 5:
-                                                    case 6:
-                                                    case 7:
-                                                        newTriangles.addAll(MathHelper.triangulateNPoints(CN, R, G, B, A, pointsToTriangulate, av, View.DUMMY_REFERENCE, linkedDatFile));
-                                                        break;
-                                                    default:
-                                                        break;
-                                                    }
+                                                switch (pointsToTriangulate) {
+                                                case 3:
+                                                    newTriangles.add(new GData3(CN, R, G, B, A,
+                                                            av.get(0).x, av.get(0).y, av.get(0).z,
+                                                            av.get(1).x, av.get(1).y, av.get(1).z,
+                                                            av.get(2).x, av.get(2).y, av.get(2).z,
+                                                            View.DUMMY_REFERENCE, linkedDatFile, true));
+                                                    break;
+                                                case 4:
+                                                case 5:
+                                                case 6:
+                                                case 7:
+                                                    newTriangles.addAll(MathHelper.triangulateNPoints(CN, R, G, B, A, pointsToTriangulate, av, View.DUMMY_REFERENCE, linkedDatFile));
+                                                    break;
+                                                default:
+                                                    break;
                                                 }
                                             }
                                         }

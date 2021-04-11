@@ -62,6 +62,7 @@ class ColourTableDesign extends ApplicationWindow {
      */
     @Override
     protected Control createContents(Composite parent) {
+        final ColourTableDesign me = this;
         Composite cmpContainer = new Composite(parent, SWT.NONE);
         GridLayout gridLayout = new GridLayout(1, true);
         gridLayout.verticalSpacing = 10;
@@ -108,12 +109,7 @@ class ColourTableDesign extends ApplicationWindow {
                 final TreeItem selection;
                 if (tree.getSelectionCount() == 1 && (selection = tree.getSelection()[0]).getData() != null) {
                     refCol[0] = (GColour) ((Object[]) selection.getData())[0];
-                    Display.getCurrent().timerExec(100, new Runnable() {
-                        @Override
-                        public void run() {
-                            close();
-                        }
-                    });
+                    Display.getCurrent().timerExec(100, me::close);
                 }
             }
         });

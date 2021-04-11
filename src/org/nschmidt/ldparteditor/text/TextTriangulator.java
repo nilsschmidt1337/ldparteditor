@@ -91,21 +91,18 @@ public class TextTriangulator {
                         for (int j = 0; j < vector.getNumGlyphs(); j++) {
                             final int[] i = new int[1];
                             i[0] = j;
-                            threads[j] = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Shape characterShape = vector.getGlyphOutline(i[0]);
-                                    NLogger.debug(TextTriangulator.class, "Triangulating {0}", text.charAt(i[0])); //$NON-NLS-1$
-                                    Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, deltaAngle, counter, lock, lock2, r, g, b);
-                                    if (characterTriangleSet.isEmpty()) {
-                                        counter.decrementAndGet();
-                                    }
+                            threads[j] = new Thread(() -> {
+                                Shape characterShape = vector.getGlyphOutline(i[0]);
+                                NLogger.debug(TextTriangulator.class, "Triangulating {0}", text.charAt(i[0])); //$NON-NLS-1$
+                                Set<GData> characterTriangleSet = triangulateShape(monitor, characterShape, flatness, interpolateFlatness, parent, datFile, scale, deltaAngle, counter, lock, lock2, r, g, b);
+                                if (characterTriangleSet.isEmpty()) {
+                                    counter.decrementAndGet();
+                                }
 
-                                    NLogger.debug(TextTriangulator.class, "Triangulating [Done] {0}", text.charAt(i[0])); //$NON-NLS-1$
+                                NLogger.debug(TextTriangulator.class, "Triangulating [Done] {0}", text.charAt(i[0])); //$NON-NLS-1$
 
-                                    synchronized (finalTriangleSet) {
-                                        finalTriangleSet.addAll(characterTriangleSet);
-                                    }
+                                synchronized (finalTriangleSet) {
+                                    finalTriangleSet.addAll(characterTriangleSet);
                                 }
                             });
                             threads[j].start();

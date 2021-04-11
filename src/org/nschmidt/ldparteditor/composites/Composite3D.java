@@ -43,8 +43,6 @@ import org.eclipse.swt.events.ControlEvent;
 import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.MenuDetectEvent;
-import org.eclipse.swt.events.MenuDetectListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -1102,9 +1100,9 @@ public class Composite3D extends ScalableComposite {
             VertexWindow.placeVertexWindow();
         });
 
-        canvas.addListener(SWT.MouseDown, event -> mouse.mouseDown(event));
-        canvas.addListener(SWT.MouseMove, event -> mouse.mouseMove(event));
-        canvas.addListener(SWT.MouseUp, event -> mouse.mouseUp(event));
+        canvas.addListener(SWT.MouseDown, mouse::mouseDown);
+        canvas.addListener(SWT.MouseMove, mouse::mouseMove);
+        canvas.addListener(SWT.MouseUp, mouse::mouseUp);
         canvas.addListener(SWT.MouseEnter, event -> setHasMouse(true));
         canvas.addListener(SWT.MouseExit, event -> setHasMouse(false));
 
@@ -1149,23 +1147,18 @@ public class Composite3D extends ScalableComposite {
             }
         });
 
-        canvas.addMenuDetectListener(new MenuDetectListener() {
+        canvas.addMenuDetectListener(e -> {
+            if (e.detail != SWT.MENU_KEYBOARD) {
+                return;
+            }
+            java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
+            final int x = (int) b.getX();
+            final int y = (int) b.getY();
 
-            @Override
-            public void menuDetected(MenuDetectEvent e) {
-                if (e.detail != SWT.MENU_KEYBOARD) {
-                    return;
-                }
-                java.awt.Point b = java.awt.MouseInfo.getPointerInfo().getLocation();
-                final int x = (int) b.getX();
-                final int y = (int) b.getY();
-
-                Menu menu = getMenu();
-                if (!menu.isDisposed()) {
-                    menu.setLocation(x, y);
-                    menu.setVisible(true);
-                }
-
+            Menu menu = getMenu();
+            if (!menu.isDisposed()) {
+                menu.setLocation(x, y);
+                menu.setVisible(true);
             }
         });
 
@@ -1192,14 +1185,11 @@ public class Composite3D extends ScalableComposite {
                 final Event ev = new Event();
                 ev.x = event.x - toDisplay(1, 1).x;
                 ev.y = event.y - toDisplay(1, 1).y;
-                if (newMouseMove.compareAndSet(true, false)) Display.getCurrent().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            mouse.mouseMove(ev);
-                            newMouseMove.set(true);
-                        } catch (SWTException swtEx) { /* consumed */ }
-                    }
+                if (newMouseMove.compareAndSet(true, false)) Display.getCurrent().asyncExec(() -> {
+                    try {
+                        mouse.mouseMove(ev);
+                        newMouseMove.set(true);
+                    } catch (SWTException swtEx) { /* consumed */ }
                 });
             }
 
@@ -1986,15 +1976,28 @@ public class Composite3D extends ScalableComposite {
         if (df.equals(View.DUMMY_DATFILE) || df.isReadOnly()) return;
         final VertexManager vm = df.getVertexManager();
         if (!vm.getSelectedData().isEmpty()) {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
+            Display.getCurrent().asyncExec(() -> {
 
-                    showSelectionInTextEditor(df, false);
+                showSelectionInTextEditor(df, false);
 
-                    boolean isOpen = false;
-                    CompositeTab ct = null;
-                    final CompositeTab ct2;
+                boolean isOpen = false;
+                CompositeTab ct = null;
+                final CompositeTab ct2;
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    for (final CTabItem t : w.getTabFolder().getItems()) {
+                        ct = (CompositeTab) t;
+                        if (df.equals(ct.getState().getFileNameObj())) {
+                            isOpen = true;
+                            break;
+                        }
+                    }
+                    if (isOpen) {
+                        break;
+                    }
+                }
+
+                if (!isOpen) {
+                    openInTextEditor();
                     for (EditorTextWindow w : Project.getOpenTextWindows()) {
                         for (final CTabItem t : w.getTabFolder().getItems()) {
                             ct = (CompositeTab) t;
@@ -2007,60 +2010,41 @@ public class Composite3D extends ScalableComposite {
                             break;
                         }
                     }
+                }
 
-                    if (!isOpen) {
-                        openInTextEditor();
-                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                            for (final CTabItem t : w.getTabFolder().getItems()) {
-                                ct = (CompositeTab) t;
-                                if (df.equals(ct.getState().getFileNameObj())) {
-                                    isOpen = true;
-                                    break;
-                                }
-                            }
-                            if (isOpen) {
-                                break;
+                ct2 = ct;
+
+                Display.getDefault().asyncExec(() -> {
+                    int minLine = Integer.MAX_VALUE;
+                    final HashBiMap<Integer, GData> dpl = df.getDrawPerLineNoClone();
+                    for (GData g : vm.getSelectedData()) {
+                        if (dpl.containsValue(g)) {
+                            int line = dpl.getKey(g);
+                            if (line < minLine) {
+                                minLine = line;
                             }
                         }
                     }
+                    if (minLine != Integer.MAX_VALUE) {
+                        ct2.getTextComposite().setTopIndex(minLine - 1);
+                        ct2.getTextComposite().setCaretOffset(ct2.getTextComposite().getOffsetAtLine(minLine - 1));
+                        ct2.getTextComposite().redraw();
+                    }
 
-                    ct2 = ct;
+                    vm.getSelectedVertices().clear();
+                    vm.copy();
 
-                    Display.getDefault().asyncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            int minLine = Integer.MAX_VALUE;
-                            final HashBiMap<Integer, GData> dpl = df.getDrawPerLineNoClone();
-                            for (GData g : vm.getSelectedData()) {
-                                if (dpl.containsValue(g)) {
-                                    int line = dpl.getKey(g);
-                                    if (line < minLine) {
-                                        minLine = line;
-                                    }
-                                }
-                            }
-                            if (minLine != Integer.MAX_VALUE) {
-                                ct2.getTextComposite().setTopIndex(minLine - 1);
-                                ct2.getTextComposite().setCaretOffset(ct2.getTextComposite().getOffsetAtLine(minLine - 1));
-                                ct2.getTextComposite().redraw();
-                            }
-
-                            vm.getSelectedVertices().clear();
-                            vm.copy();
-
-                            vm.delete(false, true);
+                    vm.delete(false, true);
 
 
-                            if (minLine != Integer.MAX_VALUE) {
-                                ct2.getTextComposite().setTopIndex(minLine - 1);
-                                ct2.getTextComposite().setCaretOffset(ct2.getTextComposite().getOffsetAtLine(minLine - 1));
-                                ct2.getTextComposite().redraw();
-                            }
+                    if (minLine != Integer.MAX_VALUE) {
+                        ct2.getTextComposite().setTopIndex(minLine - 1);
+                        ct2.getTextComposite().setCaretOffset(ct2.getTextComposite().getOffsetAtLine(minLine - 1));
+                        ct2.getTextComposite().redraw();
+                    }
 
-                            vm.pasteToJoin(dpl.getValue(Math.max(minLine - 1, 1)));
-                        }
-                    });
-                }
+                    vm.pasteToJoin(dpl.getValue(Math.max(minLine - 1, 1)));
+                });
             });
         }
     }
@@ -2075,56 +2059,53 @@ public class Composite3D extends ScalableComposite {
                         w.getTabFolder().setSelection(t);
                         ((CompositeTab) t).getControl().getShell().forceActive();
 
-                        Display.getDefault().asyncExec(new Runnable() {
-                            @Override
-                            public void run() {
-                                final VertexManager vm = df.getVertexManager();
-                                if (!vm.getSelectedData().isEmpty() || !vm.getSelectedVertices().isEmpty()) {
+                        Display.getDefault().asyncExec(() -> {
+                            final VertexManager vm = df.getVertexManager();
+                            if (!vm.getSelectedData().isEmpty() || !vm.getSelectedVertices().isEmpty()) {
 
-                                    final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
-                                    final int lastSetIndex = ((CompositeTab) t).getState().getOldLineIndex();
-                                    final ArrayList<Integer> indices = new ArrayList<>();
-                                    final HashSet<GData> selection = new HashSet<>();
-                                    Integer index;
+                                final int oldIndex = ((CompositeTab) t).getTextComposite().getTopIndex() + 1;
+                                final int lastSetIndex = ((CompositeTab) t).getState().getOldLineIndex();
+                                final ArrayList<Integer> indices = new ArrayList<>();
+                                final HashSet<GData> selection = new HashSet<>();
+                                Integer index;
 
-                                    selection.addAll(vm.getSelectedData());
-                                    selection.addAll(vm.getSelectedSubfiles());
+                                selection.addAll(vm.getSelectedData());
+                                selection.addAll(vm.getSelectedSubfiles());
 
-                                    for (Vertex v : vm.getSelectedVertices()) {
-                                        selection.addAll(vm.getLinkedVertexMetaCommands(v));
-                                    }
+                                for (Vertex v : vm.getSelectedVertices()) {
+                                    selection.addAll(vm.getLinkedVertexMetaCommands(v));
+                                }
 
-                                    for (GData g : selection) {
-                                        index = df.getDrawPerLineNoClone().getKey(g);
-                                        if (index != null) {
-                                            indices.add(index);
-                                        }
-                                    }
-
-                                    if (!indices.isEmpty()) {
-
-                                        Collections.sort(indices);
-
-                                        index = indices.get(0);
-                                        for (int i : indices) {
-                                            if (i > oldIndex) {
-                                                index = i;
-                                                break;
-                                            }
-                                        }
-
-                                        if (index == lastSetIndex) {
-                                            index = indices.get(0);
-                                        }
-
-                                        if (setTopIndex) {
-                                            ((CompositeTab) t).getState().setOldLineIndex(index);
-                                            ((CompositeTab) t).getTextComposite().setTopIndex(index - 1);
-                                        }
+                                for (GData g : selection) {
+                                    index = df.getDrawPerLineNoClone().getKey(g);
+                                    if (index != null) {
+                                        indices.add(index);
                                     }
                                 }
-                                ((CompositeTab) t).getTextComposite().redraw();
+
+                                if (!indices.isEmpty()) {
+
+                                    Collections.sort(indices);
+
+                                    index = indices.get(0);
+                                    for (int i : indices) {
+                                        if (i > oldIndex) {
+                                            index = i;
+                                            break;
+                                        }
+                                    }
+
+                                    if (index == lastSetIndex) {
+                                        index = indices.get(0);
+                                    }
+
+                                    if (setTopIndex) {
+                                        ((CompositeTab) t).getState().setOldLineIndex(index);
+                                        ((CompositeTab) t).getTextComposite().setTopIndex(index - 1);
+                                    }
+                                }
                             }
+                            ((CompositeTab) t).getTextComposite().redraw();
                         });
                         if (w.isSeperateWindow()) {
                             w.open();
@@ -2180,42 +2161,39 @@ public class Composite3D extends ScalableComposite {
                 if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
                     win.getTabFolder().setSelection(t);
                     ((CompositeTab) t).getControl().getShell().forceActive();
-                    Display.getDefault().asyncExec(new Runnable() {
-                        @Override
-                        public void run() {
+                    Display.getDefault().asyncExec(() -> {
 
-                            if (setTopIndex) {
-                                ((CompositeTab) t).getTextComposite().setTopIndex(index2 - 1);
-                            }
-
-                            for (Integer i : selectedIndicies) {
-                                final GData gs = df.getDrawPerLineNoClone().getValue(i);
-                                if (gs != null && gs.type() > 0 && gs.type() < 6) {
-                                    switch (gs.type()) {
-                                    case 1:
-                                        vm.addSubfileToSelection((GData1) gs);
-                                        break;
-                                    case 2:
-                                        vm.getSelectedLines().add((GData2) gs);
-                                        break;
-                                    case 3:
-                                        vm.getSelectedTriangles().add((GData3) gs);
-                                        break;
-                                    case 4:
-                                        vm.getSelectedQuads().add((GData4) gs);
-                                        break;
-                                    case 5:
-                                        vm.getSelectedCondlines().add((GData5) gs);
-                                        break;
-                                    default:
-                                        break;
-                                    }
-                                    vm.getSelectedData().add(gs);
-                                }
-                            }
-                            vm.getSelectedVertices().addAll(selectedVertices);
-                            ((CompositeTab) t).getTextComposite().redraw();
+                        if (setTopIndex) {
+                            ((CompositeTab) t).getTextComposite().setTopIndex(index2 - 1);
                         }
+
+                        for (Integer i : selectedIndicies) {
+                            final GData gs = df.getDrawPerLineNoClone().getValue(i);
+                            if (gs != null && gs.type() > 0 && gs.type() < 6) {
+                                switch (gs.type()) {
+                                case 1:
+                                    vm.addSubfileToSelection((GData1) gs);
+                                    break;
+                                case 2:
+                                    vm.getSelectedLines().add((GData2) gs);
+                                    break;
+                                case 3:
+                                    vm.getSelectedTriangles().add((GData3) gs);
+                                    break;
+                                case 4:
+                                    vm.getSelectedQuads().add((GData4) gs);
+                                    break;
+                                case 5:
+                                    vm.getSelectedCondlines().add((GData5) gs);
+                                    break;
+                                default:
+                                    break;
+                                }
+                                vm.getSelectedData().add(gs);
+                            }
+                        }
+                        vm.getSelectedVertices().addAll(selectedVertices);
+                        ((CompositeTab) t).getTextComposite().redraw();
                     });
                     return;
                 }

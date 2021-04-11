@@ -44,8 +44,6 @@ import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.dnd.DragSourceEvent;
 import org.eclipse.swt.dnd.DragSourceListener;
 import org.eclipse.swt.dnd.Transfer;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -215,25 +213,19 @@ public class CompositePrimitive extends Composite {
         });
 
         GL.setCapabilities(capabilities);
-        canvas.addDisposeListener(new DisposeListener() {
-            @Override
-            public void widgetDisposed(DisposeEvent e) {
-                canvas.getCursor().dispose();
-            }
+        canvas.addDisposeListener(e -> {
+            canvas.getCursor().dispose();
         });
         // MARK Resize
         canvas.addListener(SWT.Resize, event -> {
             canvas.setCurrent();
             GL.setCapabilities(capabilities);
-            Display.getCurrent().timerExec(500, new Runnable() {
-                @Override
-                public void run() {
-                    openGL.drawScene(-1, -1);
-                }
-            });
+            Display.getCurrent().timerExec(500, () ->
+                openGL.drawScene(-1, -1)
+            );
         });
 
-        canvas.addListener(SWT.MouseDown, event -> mouseDown(event));
+        canvas.addListener(SWT.MouseDown, this::mouseDown);
 
         canvas.addListener(SWT.MouseDoubleClick, event -> {
             mouseButtonPressed = event.button;
@@ -321,7 +313,7 @@ public class CompositePrimitive extends Composite {
             openGL.drawScene(event.x, event.y);
         });
 
-        canvas.addListener(SWT.MouseUp, event -> mouseUp(event));
+        canvas.addListener(SWT.MouseUp, this::mouseUp);
         canvas.addListener(SWT.Paint, event -> openGL.drawScene(-1, -1));
         canvas.addListener(SWT.MouseVerticalWheel, event -> {
 

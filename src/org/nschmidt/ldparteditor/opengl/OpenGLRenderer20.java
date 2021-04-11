@@ -693,50 +693,71 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                     for (int j = 0; j < chunks; ++j) {
                                         final int[] start = new int[] { j };
                                         final int[] ti = new int[] { start[0] * 4 * w};
-                                        threads[j] = new Thread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                final TreeMap<Float, float[]>  zSort = new TreeMap<>();
-                                                final TreeMap<Float, Vector4f>  hitSort = new TreeMap<>();
-                                                final Random tRnd = new Random(12348729642643L * start[0]);
-                                                ArrayList<float[]> points2 = new ArrayList<>(10000 / chunks);
-                                                final PowerRay pr = new PowerRay();
-                                                final int s = start[0];
-                                                int i = ti[0];
-                                                int skip = 0;
-                                                for (int y = s; y < h; y += chunks) {
-                                                    final int sy = h - y - 1;
-                                                    for (int x = 0; x < w; x++) {
-                                                        final int sx = w - x - 1;
-                                                        float rS = sc[i];
-                                                        float gS = sc[i + 1];
-                                                        float bS = sc[i + 2];
-                                                        float rT = tc[i];
-                                                        float gT = tc[i + 1];
-                                                        float bT = tc[i + 2];
-                                                        if (rS != rT || gS != gT || bS != bT) {
-                                                            zSort.clear();
-                                                            hitSort.clear();
-                                                            final Vector4f posv = get3DCoordinatesFromScreen(x, y, z, w, h, vInverse);
-                                                            for (float[] tri : tris) {
-                                                                float[] zHit = pr.triangleIntersect(posv, ray, tri);
-                                                                if (zHit.length != 0) {
-                                                                    Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
-                                                                    hitSort.put(sz.z, sz);
-                                                                    zSort.put(sz.z, tri);
-                                                                }
+                                        threads[j] = new Thread(() -> {
+                                            final TreeMap<Float, float[]>  zSort = new TreeMap<>();
+                                            final TreeMap<Float, Vector4f>  hitSort = new TreeMap<>();
+                                            final Random tRnd = new Random(12348729642643L * start[0]);
+                                            ArrayList<float[]> points2 = new ArrayList<>(10000 / chunks);
+                                            final PowerRay pr = new PowerRay();
+                                            final int s = start[0];
+                                            int i = ti[0];
+                                            int skip = 0;
+                                            for (int y = s; y < h; y += chunks) {
+                                                final int sy = h - y - 1;
+                                                for (int x = 0; x < w; x++) {
+                                                    final int sx = w - x - 1;
+                                                    float rS = sc[i];
+                                                    float gS = sc[i + 1];
+                                                    float bS = sc[i + 2];
+                                                    float rT = tc[i];
+                                                    float gT = tc[i + 1];
+                                                    float bT = tc[i + 2];
+                                                    if (rS != rT || gS != gT || bS != bT) {
+                                                        zSort.clear();
+                                                        hitSort.clear();
+                                                        final Vector4f posv = get3DCoordinatesFromScreen(x, y, z, w, h, vInverse);
+                                                        for (float[] tri : tris) {
+                                                            float[] zHit = pr.triangleIntersect(posv, ray, tri);
+                                                            if (zHit.length != 0) {
+                                                                Vector4f sz = getScreenZFrom3D(zHit[0], zHit[1], zHit[2], w, h, vM);
+                                                                hitSort.put(sz.z, sz);
+                                                                zSort.put(sz.z, tri);
                                                             }
+                                                        }
 
 
-                                                            final int size = zSort.size();
+                                                        final int size = zSort.size();
 
-                                                            switch(size) {
-                                                            case 0:
-                                                            {
+                                                        switch(size) {
+                                                        case 0:
+                                                        {
+                                                            float[] point = new float[11];
+                                                            point[0] = rT;
+                                                            point[1] = gT;
+                                                            point[2] = bT;
+                                                            point[3] = sx;
+                                                            point[4] = sy;
+                                                            point[5] = sx;
+                                                            point[6] = sy + 1;
+                                                            point[7] = sx + 1;
+                                                            point[8] = sy + 1;
+                                                            point[9] = sx + 1;
+                                                            point[10] = sy;
+                                                            points2.add(point);
+                                                            break;
+                                                        }
+                                                        case 1:
+                                                        {
+                                                            float[] ze = zSort.get(zSort.firstKey());
+                                                            GColour c = View.getLDConfigColour((int) ze[16]);
+                                                            GColourType ct = c.getType();
+                                                            if (ct == null) {
                                                                 float[] point = new float[11];
-                                                                point[0] = rT;
-                                                                point[1] = gT;
-                                                                point[2] = bT;
+                                                                float a = ze[15];
+                                                                float oneMinusAlpha = 1f - a;
+                                                                point[0] = rT * a + rS * oneMinusAlpha;
+                                                                point[1] = gT * a + gS * oneMinusAlpha;
+                                                                point[2] = bT * a + bS * oneMinusAlpha;
                                                                 point[3] = sx;
                                                                 point[4] = sy;
                                                                 point[5] = sx;
@@ -746,29 +767,280 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                 point[9] = sx + 1;
                                                                 point[10] = sy;
                                                                 points2.add(point);
-                                                                break;
+                                                            } else {
+                                                                // Compute light (with specular!)
+                                                                float light = 0f;
+                                                                float lightSpecular = 0f;
+                                                                final Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                final Vector4f pos = hitSort.get(hitSort.firstKey());
+                                                                if (lights) {
+                                                                    Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
+                                                                    Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
+                                                                    Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
+                                                                    Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
+                                                                    Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
+                                                                    lightDir1.normalise();
+                                                                    lightDir2.normalise();
+                                                                    lightDir3.normalise();
+                                                                    lightDir4.normalise();
+                                                                    // attenuation and light direction
+                                                                    // ambient + diffuse
+                                                                    light = 0.09f; // Ambient
+                                                                    light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
+                                                                    light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
+                                                                    light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
+                                                                    light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
+                                                                    lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
+                                                                }
+                                                                float r = ze[12];
+                                                                float g = ze[13];
+                                                                float b = ze[14];
+                                                                switch (ct.type()) {
+                                                                case PEARL:
+                                                                {
+                                                                    Vector3f normal2 = new Vector3f(
+                                                                            normal.x * (.8f + .2f * tRnd.nextFloat()),
+                                                                            normal.y * (.8f + .2f * tRnd.nextFloat()),
+                                                                            normal.z * (.8f + .2f * tRnd.nextFloat())
+                                                                            );
+                                                                    float sp = Vector3f.dot(normal2, ray3f);
+                                                                    float spI = 1f - sp;
+                                                                    Vector3f v = Vector3f.cross(ray3f, normal2, null);
+                                                                    Random rnd = new Random((long) (129642643f * (1f + r) * (1f + g) * (1f + b)));
+                                                                    r = r + Math.abs(sp + v.x * spI) * rnd.nextFloat() / 4f;
+                                                                    g = g + Math.abs(sp + v.y * spI) * rnd.nextFloat() / 4f;
+                                                                    b = b + Math.abs(sp + v.z * spI) * rnd.nextFloat() / 4f;
+                                                                    if (lights) {
+                                                                        r = (light + lightSpecular) / 4f + r;
+                                                                        g = (light + lightSpecular) / 4f + g;
+                                                                        b = (light + lightSpecular) / 4f + b;
+                                                                    }
+                                                                    break;
+                                                                }
+                                                                case GLITTER:
+                                                                {
+                                                                    float a = ze[15];
+                                                                    GCGlitter type = (GCGlitter) ct;
+                                                                    final int sSize = glitters.size();
+                                                                    float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
+                                                                    boolean hit = false;
+                                                                    final int glitterCount = 30000;
+                                                                    boolean buildable = sSize < glitterCount;
+                                                                    Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
+                                                                    final float px = v.x;
+                                                                    final float py = v.y;
+                                                                    final float pz = v.z;
+                                                                    float[] newGlitter = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
+                                                                    try {
+                                                                        lockGlitter.lock();
+                                                                        final long now = System.currentTimeMillis();
+                                                                        for (Iterator<float[]> iterator = glitters.iterator(); iterator.hasNext();) {
+                                                                            float[] glitter = iterator.next();
+                                                                            final long age = now - glittersCreation.get(glitter);
+                                                                            if (age > 500L) {
+                                                                                iterator.remove();
+                                                                            } else {
+                                                                                float dx = glitter[0] - px;
+                                                                                float dy = glitter[1] - py;
+                                                                                float dz = glitter[2] - pz;
+                                                                                float dist = Math.abs(dx) + Math.abs(dy) + Math.abs(dz);
+                                                                                if (dist < glitter[3]) {
+                                                                                    hit = true;
+                                                                                    break;
+                                                                                }
+                                                                                if (buildable) {
+                                                                                    if (dist * 0.5 < radi) {
+                                                                                        buildable = false;
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        if (buildable && !hit) {
+                                                                            glittersCreation.put(newGlitter, System.currentTimeMillis());
+                                                                            glitters.add(newGlitter);
+                                                                        }
+                                                                    } finally {
+                                                                        lockGlitter.unlock();
+                                                                    }
+
+                                                                    float vari = tRnd.nextFloat();
+                                                                    if (hit) {
+                                                                        lightSpecular *= 1f + vari;
+                                                                        r = type.getR();
+                                                                        g = type.getG();
+                                                                        b = type.getB();
+                                                                        a = 1f;
+                                                                    } else {
+                                                                        r = r * .8f + vari * .2f * r;
+                                                                        g = g * .8f + vari * .2f * g;
+                                                                        b = b * .8f + vari * .2f * b;
+                                                                    }
+                                                                    float oneMinusAlpha = 1f - a;
+                                                                    if (lights) {
+                                                                        float resLight = light + lightSpecular * 2f;
+                                                                        r = resLight + r;
+                                                                        g = resLight + g;
+                                                                        b = resLight + b;
+                                                                    }
+                                                                    r = r * a + rS * oneMinusAlpha;
+                                                                    g = g * a + gS * oneMinusAlpha;
+                                                                    b = b * a + bS * oneMinusAlpha;
+                                                                    break;
+                                                                }
+                                                                case SPECKLE:
+                                                                {
+                                                                    float a = ze[15];
+                                                                    GCSpeckle type = (GCSpeckle) ct;
+                                                                    final int sSize = speckles.size();
+                                                                    float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
+                                                                    boolean hit = false;
+                                                                    final int speckleCount = 30000;
+                                                                    boolean buildable = sSize < speckleCount;
+                                                                    Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
+                                                                    final float px = v.x;
+                                                                    final float py = v.y;
+                                                                    final float pz = v.z;
+                                                                    float[] newSpeckle = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
+                                                                    try {
+                                                                        lockSpeckle.lock();
+                                                                        final long now = System.currentTimeMillis();
+                                                                        for (Iterator<float[]> iterator = speckles.iterator(); iterator.hasNext();) {
+                                                                            float[] speckle = iterator.next();
+                                                                            final long age = now - specklesCreation.get(speckle);
+                                                                            if (age > 500L) {
+                                                                                iterator.remove();
+                                                                            } else {
+                                                                                double dx = speckle[0] - px;
+                                                                                double dy = speckle[1] - py;
+                                                                                double dz = speckle[2] - pz;
+                                                                                float dist = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
+                                                                                if (dist < speckle[3]) {
+                                                                                    hit = true;
+                                                                                    break;
+                                                                                }
+                                                                                if (buildable) {
+                                                                                    if (dist * 0.5 < radi) {
+                                                                                        buildable = false;
+                                                                                    }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                        if (buildable && !hit) {
+                                                                            specklesCreation.put(newSpeckle, System.currentTimeMillis());
+                                                                            speckles.add(newSpeckle);
+                                                                        }
+                                                                    } finally {
+                                                                        lockSpeckle.unlock();
+                                                                    }
+
+                                                                    float vari = tRnd.nextFloat();
+                                                                    if (hit) {
+                                                                        r = (type.getR() * .8f + vari * .2f * type.getR()) * .5f + r * .5f;
+                                                                        g = (type.getG() * .8f + vari * .2f * type.getG()) * .5f + g * .5f;
+                                                                        b = (type.getB() * .8f + vari * .2f * type.getB()) * .5f + b * .5f;
+                                                                        a = 1f;
+                                                                    } else {
+                                                                        r = r * .8f + vari * .2f * r;
+                                                                        g = g * .8f + vari * .2f * g;
+                                                                        b = b * .8f + vari * .2f * b;
+                                                                    }
+                                                                    float oneMinusAlpha = 1f - a;
+                                                                    if (lights) {
+                                                                        float resLight = light + lightSpecular * 2f;
+                                                                        r = resLight + r;
+                                                                        g = resLight + g;
+                                                                        b = resLight + b;
+                                                                    }
+                                                                    r = r * a + rS * oneMinusAlpha;
+                                                                    g = g * a + gS * oneMinusAlpha;
+                                                                    b = b * a + bS * oneMinusAlpha;
+                                                                    break;
+                                                                }
+                                                                default:
+                                                                    break;
+                                                                }
+
+                                                                float[] point = new float[11];
+                                                                point[0] = r;
+                                                                point[1] = g;
+                                                                point[2] = b;
+                                                                point[3] = sx;
+                                                                point[4] = sy;
+                                                                point[5] = sx;
+                                                                point[6] = sy + 1;
+                                                                point[7] = sx + 1;
+                                                                point[8] = sy + 1;
+                                                                point[9] = sx + 1;
+                                                                point[10] = sy;
+                                                                points2.add(point);
                                                             }
-                                                            case 1:
-                                                            {
-                                                                float[] ze = zSort.get(zSort.firstKey());
+                                                            break;
+                                                        }
+                                                        default:
+                                                            float[] point = new float[11];
+                                                            int k = 0;
+
+                                                            point[0] = 1f;
+                                                            point[1] = 1f;
+                                                            point[2] = 1f;
+
+                                                            for (Float f : zSort.keySet()) {
+                                                                k++;
+                                                                float[] ze = zSort.get(f);
+                                                                float a = ze[15];
+                                                                float r = ze[12];
+                                                                float g = ze[13];
+                                                                float b = ze[14];
+
                                                                 GColour c = View.getLDConfigColour((int) ze[16]);
                                                                 GColourType ct = c.getType();
-                                                                if (ct == null) {
-                                                                    float[] point = new float[11];
-                                                                    float a = ze[15];
+                                                                if (ct == null || GCType.hasCubeMap(ct.type())) {
                                                                     float oneMinusAlpha = 1f - a;
-                                                                    point[0] = rT * a + rS * oneMinusAlpha;
-                                                                    point[1] = gT * a + gS * oneMinusAlpha;
-                                                                    point[2] = bT * a + bS * oneMinusAlpha;
-                                                                    point[3] = sx;
-                                                                    point[4] = sy;
-                                                                    point[5] = sx;
-                                                                    point[6] = sy + 1;
-                                                                    point[7] = sx + 1;
-                                                                    point[8] = sy + 1;
-                                                                    point[9] = sx + 1;
-                                                                    point[10] = sy;
-                                                                    points2.add(point);
+                                                                    if (a == 1f) {
+                                                                        point[0] = rS;
+                                                                        point[1] = gS;
+                                                                        point[2] = bS;
+                                                                    } else if (k < size) {
+                                                                        // Compute light (with specular!)
+                                                                        float lightSpecular = 0f;
+                                                                        if (lights) {
+                                                                            Vector4f pos = hitSort.get(f);
+                                                                            Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
+                                                                            Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                            Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
+                                                                            Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
+                                                                            Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
+                                                                            Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
+                                                                            lightDir1.normalise();
+                                                                            lightDir2.normalise();
+                                                                            lightDir3.normalise();
+                                                                            lightDir4.normalise();
+                                                                            // attenuation and light direction
+                                                                            // ambient + diffuse
+                                                                            float light = 0.09f; // Ambient
+                                                                            light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
+                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
+                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
+                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
+                                                                            lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
+                                                                            // compute final color
+                                                                            r = r + light;
+                                                                            g = g + light;
+                                                                            b = b + light;
+                                                                        }
+
+                                                                        point[0] = (r + lightSpecular) * a + point[0] * oneMinusAlpha;
+                                                                        point[1] = (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
+                                                                        point[2] = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
+
+                                                                    } else {
+                                                                        float lightSpecular = 0f;
+                                                                        Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
+                                                                        lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
+                                                                        point[0] = (rT + lightSpecular) * a + point[0] * oneMinusAlpha;
+                                                                        point[1] = (gT + lightSpecular) * a + point[1] * oneMinusAlpha;
+                                                                        point[2] = (bT + lightSpecular) * a + point[2] * oneMinusAlpha;
+                                                                    }
                                                                 } else {
                                                                     // Compute light (with specular!)
                                                                     float light = 0f;
@@ -794,9 +1066,6 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                         light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
                                                                         lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
                                                                     }
-                                                                    float r = ze[12];
-                                                                    float g = ze[13];
-                                                                    float b = ze[14];
                                                                     switch (ct.type()) {
                                                                     case PEARL:
                                                                     {
@@ -821,7 +1090,6 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                     }
                                                                     case GLITTER:
                                                                     {
-                                                                        float a = ze[15];
                                                                         GCGlitter type = (GCGlitter) ct;
                                                                         final int sSize = glitters.size();
                                                                         float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
@@ -884,14 +1152,13 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                             g = resLight + g;
                                                                             b = resLight + b;
                                                                         }
-                                                                        r = r * a + rS * oneMinusAlpha;
-                                                                        g = g * a + gS * oneMinusAlpha;
-                                                                        b = b * a + bS * oneMinusAlpha;
+                                                                        r = r * a + point[0] * oneMinusAlpha;
+                                                                        g = g * a + point[1] * oneMinusAlpha;
+                                                                        b = b * a + point[2] * oneMinusAlpha;
                                                                         break;
                                                                     }
                                                                     case SPECKLE:
                                                                     {
-                                                                        float a = ze[15];
                                                                         GCSpeckle type = (GCSpeckle) ct;
                                                                         final int sSize = speckles.size();
                                                                         float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
@@ -953,334 +1220,62 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                             g = resLight + g;
                                                                             b = resLight + b;
                                                                         }
-                                                                        r = r * a + rS * oneMinusAlpha;
-                                                                        g = g * a + gS * oneMinusAlpha;
-                                                                        b = b * a + bS * oneMinusAlpha;
+                                                                        r = r * a + point[0] * oneMinusAlpha;
+                                                                        g = g * a + point[1] * oneMinusAlpha;
+                                                                        b = b * a + point[2] * oneMinusAlpha;
                                                                         break;
                                                                     }
                                                                     default:
                                                                         break;
                                                                     }
-
-                                                                    float[] point = new float[11];
                                                                     point[0] = r;
                                                                     point[1] = g;
                                                                     point[2] = b;
-                                                                    point[3] = sx;
-                                                                    point[4] = sy;
-                                                                    point[5] = sx;
-                                                                    point[6] = sy + 1;
-                                                                    point[7] = sx + 1;
-                                                                    point[8] = sy + 1;
-                                                                    point[9] = sx + 1;
-                                                                    point[10] = sy;
-                                                                    points2.add(point);
                                                                 }
-                                                                break;
                                                             }
-                                                            default:
-                                                                float[] point = new float[11];
-                                                                int k = 0;
-
-                                                                point[0] = 1f;
-                                                                point[1] = 1f;
-                                                                point[2] = 1f;
-
-                                                                for (Float f : zSort.keySet()) {
-                                                                    k++;
-                                                                    float[] ze = zSort.get(f);
-                                                                    float a = ze[15];
-                                                                    float r = ze[12];
-                                                                    float g = ze[13];
-                                                                    float b = ze[14];
-
-                                                                    GColour c = View.getLDConfigColour((int) ze[16]);
-                                                                    GColourType ct = c.getType();
-                                                                    if (ct == null || GCType.hasCubeMap(ct.type())) {
-                                                                        float oneMinusAlpha = 1f - a;
-                                                                        if (a == 1f) {
-                                                                            point[0] = rS;
-                                                                            point[1] = gS;
-                                                                            point[2] = bS;
-                                                                        } else if (k < size) {
-                                                                            // Compute light (with specular!)
-                                                                            float lightSpecular = 0f;
-                                                                            if (lights) {
-                                                                                Vector4f pos = hitSort.get(f);
-                                                                                Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
-                                                                                Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                                Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
-                                                                                Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
-                                                                                Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
-                                                                                Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
-                                                                                lightDir1.normalise();
-                                                                                lightDir2.normalise();
-                                                                                lightDir3.normalise();
-                                                                                lightDir4.normalise();
-                                                                                // attenuation and light direction
-                                                                                // ambient + diffuse
-                                                                                float light = 0.09f; // Ambient
-                                                                                light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
-                                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
-                                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
-                                                                                light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-                                                                                lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
-                                                                                // compute final color
-                                                                                r = r + light;
-                                                                                g = g + light;
-                                                                                b = b + light;
-                                                                            }
-
-                                                                            point[0] = (r + lightSpecular) * a + point[0] * oneMinusAlpha;
-                                                                            point[1] = (g + lightSpecular)  * a + point[1] * oneMinusAlpha;
-                                                                            point[2] = (b + lightSpecular) * a + point[2] * oneMinusAlpha;
-
-                                                                        } else {
-                                                                            float lightSpecular = 0f;
-                                                                            Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                            lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
-                                                                            point[0] = (rT + lightSpecular) * a + point[0] * oneMinusAlpha;
-                                                                            point[1] = (gT + lightSpecular) * a + point[1] * oneMinusAlpha;
-                                                                            point[2] = (bT + lightSpecular) * a + point[2] * oneMinusAlpha;
-                                                                        }
-                                                                    } else {
-                                                                        // Compute light (with specular!)
-                                                                        float light = 0f;
-                                                                        float lightSpecular = 0f;
-                                                                        final Vector3f normal = new Vector3f(ze[9], ze[10], ze[11]);
-                                                                        final Vector4f pos = hitSort.get(hitSort.firstKey());
-                                                                        if (lights) {
-                                                                            Vector3f position = new Vector3f(pos.x, pos.y, pos.z);
-                                                                            Vector3f lightDir1 = Vector3f.sub(lp1, position, null);
-                                                                            Vector3f lightDir2 = Vector3f.sub(lp2, position, null);
-                                                                            Vector3f lightDir3 = Vector3f.sub(lp3, position, null);
-                                                                            Vector3f lightDir4 = Vector3f.sub(lp4, position, null);
-                                                                            lightDir1.normalise();
-                                                                            lightDir2.normalise();
-                                                                            lightDir3.normalise();
-                                                                            lightDir4.normalise();
-                                                                            // attenuation and light direction
-                                                                            // ambient + diffuse
-                                                                            light = 0.09f; // Ambient
-                                                                            light += 0.80f * .6f * Math.max(Vector3f.dot(normal, lightDir1), 0.0);
-                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir2), 0.0);
-                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir3), 0.0);
-                                                                            light += 0.25f * .6f * Math.max(Vector3f.dot(normal, lightDir4), 0.0);
-                                                                            lightSpecular += Math.pow(Math.max(Vector3f.dot(normal, ray3f2), 0.0), 128f);
-                                                                        }
-                                                                        switch (ct.type()) {
-                                                                        case PEARL:
-                                                                        {
-                                                                            Vector3f normal2 = new Vector3f(
-                                                                                    normal.x * (.8f + .2f * tRnd.nextFloat()),
-                                                                                    normal.y * (.8f + .2f * tRnd.nextFloat()),
-                                                                                    normal.z * (.8f + .2f * tRnd.nextFloat())
-                                                                                    );
-                                                                            float sp = Vector3f.dot(normal2, ray3f);
-                                                                            float spI = 1f - sp;
-                                                                            Vector3f v = Vector3f.cross(ray3f, normal2, null);
-                                                                            Random rnd = new Random((long) (129642643f * (1f + r) * (1f + g) * (1f + b)));
-                                                                            r = r + Math.abs(sp + v.x * spI) * rnd.nextFloat() / 4f;
-                                                                            g = g + Math.abs(sp + v.y * spI) * rnd.nextFloat() / 4f;
-                                                                            b = b + Math.abs(sp + v.z * spI) * rnd.nextFloat() / 4f;
-                                                                            if (lights) {
-                                                                                r = (light + lightSpecular) / 4f + r;
-                                                                                g = (light + lightSpecular) / 4f + g;
-                                                                                b = (light + lightSpecular) / 4f + b;
-                                                                            }
-                                                                            break;
-                                                                        }
-                                                                        case GLITTER:
-                                                                        {
-                                                                            GCGlitter type = (GCGlitter) ct;
-                                                                            final int sSize = glitters.size();
-                                                                            float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
-                                                                            boolean hit = false;
-                                                                            final int glitterCount = 30000;
-                                                                            boolean buildable = sSize < glitterCount;
-                                                                            Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
-                                                                            final float px = v.x;
-                                                                            final float py = v.y;
-                                                                            final float pz = v.z;
-                                                                            float[] newGlitter = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
-                                                                            try {
-                                                                                lockGlitter.lock();
-                                                                                final long now = System.currentTimeMillis();
-                                                                                for (Iterator<float[]> iterator = glitters.iterator(); iterator.hasNext();) {
-                                                                                    float[] glitter = iterator.next();
-                                                                                    final long age = now - glittersCreation.get(glitter);
-                                                                                    if (age > 500L) {
-                                                                                        iterator.remove();
-                                                                                    } else {
-                                                                                        float dx = glitter[0] - px;
-                                                                                        float dy = glitter[1] - py;
-                                                                                        float dz = glitter[2] - pz;
-                                                                                        float dist = Math.abs(dx) + Math.abs(dy) + Math.abs(dz);
-                                                                                        if (dist < glitter[3]) {
-                                                                                            hit = true;
-                                                                                            break;
-                                                                                        }
-                                                                                        if (buildable) {
-                                                                                            if (dist * 0.5 < radi) {
-                                                                                                buildable = false;
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                if (buildable && !hit) {
-                                                                                    glittersCreation.put(newGlitter, System.currentTimeMillis());
-                                                                                    glitters.add(newGlitter);
-                                                                                }
-                                                                            } finally {
-                                                                                lockGlitter.unlock();
-                                                                            }
-
-                                                                            float vari = tRnd.nextFloat();
-                                                                            if (hit) {
-                                                                                lightSpecular *= 1f + vari;
-                                                                                r = type.getR();
-                                                                                g = type.getG();
-                                                                                b = type.getB();
-                                                                                a = 1f;
-                                                                            } else {
-                                                                                r = r * .8f + vari * .2f * r;
-                                                                                g = g * .8f + vari * .2f * g;
-                                                                                b = b * .8f + vari * .2f * b;
-                                                                            }
-                                                                            float oneMinusAlpha = 1f - a;
-                                                                            if (lights) {
-                                                                                float resLight = light + lightSpecular * 2f;
-                                                                                r = resLight + r;
-                                                                                g = resLight + g;
-                                                                                b = resLight + b;
-                                                                            }
-                                                                            r = r * a + point[0] * oneMinusAlpha;
-                                                                            g = g * a + point[1] * oneMinusAlpha;
-                                                                            b = b * a + point[2] * oneMinusAlpha;
-                                                                            break;
-                                                                        }
-                                                                        case SPECKLE:
-                                                                        {
-                                                                            GCSpeckle type = (GCSpeckle) ct;
-                                                                            final int sSize = speckles.size();
-                                                                            float radi = 1000f * type.getMinSize() + (type.getMaxSize() - type.getMinSize()) * tRnd.nextFloat();
-                                                                            boolean hit = false;
-                                                                            final int speckleCount = 30000;
-                                                                            boolean buildable = sSize < speckleCount;
-                                                                            Vector4f v = get3DCoordinatesFromScreen(pos.x, pos.y, pos.z, w, h, vInverse);
-                                                                            final float px = v.x;
-                                                                            final float py = v.y;
-                                                                            final float pz = v.z;
-                                                                            float[] newSpeckle = new float[]{px + tRnd.nextFloat() * radi, py + tRnd.nextFloat() * radi, pz + tRnd.nextFloat() * radi, radi};
-                                                                            try {
-                                                                                lockSpeckle.lock();
-                                                                                final long now = System.currentTimeMillis();
-                                                                                for (Iterator<float[]> iterator = speckles.iterator(); iterator.hasNext();) {
-                                                                                    float[] speckle = iterator.next();
-                                                                                    final long age = now - specklesCreation.get(speckle);
-                                                                                    if (age > 500L) {
-                                                                                        iterator.remove();
-                                                                                    } else {
-                                                                                        double dx = speckle[0] - px;
-                                                                                        double dy = speckle[1] - py;
-                                                                                        double dz = speckle[2] - pz;
-                                                                                        float dist = (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
-                                                                                        if (dist < speckle[3]) {
-                                                                                            hit = true;
-                                                                                            break;
-                                                                                        }
-                                                                                        if (buildable) {
-                                                                                            if (dist * 0.5 < radi) {
-                                                                                                buildable = false;
-                                                                                            }
-                                                                                        }
-                                                                                    }
-                                                                                }
-                                                                                if (buildable && !hit) {
-                                                                                    specklesCreation.put(newSpeckle, System.currentTimeMillis());
-                                                                                    speckles.add(newSpeckle);
-                                                                                }
-                                                                            } finally {
-                                                                                lockSpeckle.unlock();
-                                                                            }
-
-                                                                            float vari = tRnd.nextFloat();
-                                                                            if (hit) {
-                                                                                r = (type.getR() * .8f + vari * .2f * type.getR()) * .5f + r * .5f;
-                                                                                g = (type.getG() * .8f + vari * .2f * type.getG()) * .5f + g * .5f;
-                                                                                b = (type.getB() * .8f + vari * .2f * type.getB()) * .5f + b * .5f;
-                                                                                a = 1f;
-                                                                            } else {
-                                                                                r = r * .8f + vari * .2f * r;
-                                                                                g = g * .8f + vari * .2f * g;
-                                                                                b = b * .8f + vari * .2f * b;
-                                                                            }
-                                                                            float oneMinusAlpha = 1f - a;
-                                                                            if (lights) {
-                                                                                float resLight = light + lightSpecular * 2f;
-                                                                                r = resLight + r;
-                                                                                g = resLight + g;
-                                                                                b = resLight + b;
-                                                                            }
-                                                                            r = r * a + point[0] * oneMinusAlpha;
-                                                                            g = g * a + point[1] * oneMinusAlpha;
-                                                                            b = b * a + point[2] * oneMinusAlpha;
-                                                                            break;
-                                                                        }
-                                                                        default:
-                                                                            break;
-                                                                        }
-                                                                        point[0] = r;
-                                                                        point[1] = g;
-                                                                        point[2] = b;
-                                                                    }
-                                                                }
-                                                                point[3] = sx;
-                                                                point[4] = sy;
-                                                                point[5] = sx;
-                                                                point[6] = sy + 1;
-                                                                point[7] = sx + 1;
-                                                                point[8] = sy + 1;
-                                                                point[9] = sx + 1;
-                                                                point[10] = sy;
-                                                                points2.add(point);
-                                                            }
-                                                        }
-                                                        i += 4;
-                                                    }
-                                                    if (s < 1) {
-                                                        int size = points2.size();
-                                                        int size2 = renderedPoints[0] == null ? -1 : renderedPoints[0].length;
-                                                        float[][] r;
-                                                        if (size2 < size) {
-                                                            r = new float[size][];
-                                                            skip = 0;
-                                                        } else {
-                                                            r = renderedPoints[0];
-                                                        }
-                                                        for (int j = skip; j < size; j++) {
-                                                            r[j] = points2.get(j);
-                                                        }
-                                                        skip = size;
-                                                        try {
-                                                            lock.lock();
-                                                            // Update renderedPoints here!
-                                                            renderedPoints[0] = r;
-                                                        } finally {
-                                                            lock.unlock();
+                                                            point[3] = sx;
+                                                            point[4] = sy;
+                                                            point[5] = sx;
+                                                            point[6] = sy + 1;
+                                                            point[7] = sx + 1;
+                                                            point[8] = sy + 1;
+                                                            point[9] = sx + 1;
+                                                            point[10] = sy;
+                                                            points2.add(point);
                                                         }
                                                     }
-                                                    i += 4 * w * (chunks - 1);
+                                                    i += 4;
                                                 }
-                                                try {
-                                                    lock.lock();
-                                                    points.addAll(points2);
-                                                } finally {
-                                                    lock.unlock();
+                                                if (s < 1) {
+                                                    int size = points2.size();
+                                                    int size2 = renderedPoints[0] == null ? -1 : renderedPoints[0].length;
+                                                    float[][] r;
+                                                    if (size2 < size) {
+                                                        r = new float[size][];
+                                                        skip = 0;
+                                                    } else {
+                                                        r = renderedPoints[0];
+                                                    }
+                                                    for (int k = skip; k < size; k++) {
+                                                        r[k] = points2.get(k);
+                                                    }
+                                                    skip = size;
+                                                    try {
+                                                        lock.lock();
+                                                        // Update renderedPoints here!
+                                                        renderedPoints[0] = r;
+                                                    } finally {
+                                                        lock.unlock();
+                                                    }
                                                 }
+                                                i += 4 * w * (chunks - 1);
                                             }
-
-
+                                            try {
+                                                lock.lock();
+                                                points.addAll(points2);
+                                            } finally {
+                                                lock.unlock();
+                                            }
                                         });
                                         threads[j].start();
                                     }

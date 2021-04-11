@@ -88,158 +88,157 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                             for (final Vertex v : verticesToProcess) {
                                 if (monitor.isCanceled()) break;
                                 if (!vertexLinkedToPositionInFile.containsKey(v)) continue;
-                                Display.getDefault().asyncExec(new Runnable() {
-                                    @Override
-                                    public void run() {
+                                Display.getDefault().asyncExec(() -> {
 
-                                        while (true) {
+                                    while (true) {
 
-                                            // 1. Ermittle alle angrenzenden Flächen
-                                            final HashSet<GData> surfs;
-                                            if (ignoreColours) {
-                                                surfs = getLinkedSurfaces(v);
-                                            } else {
-                                                surfs = getLinkedSurfacesOfSameColour(v);
+                                        // 1. Ermittle alle angrenzenden Flächen
+                                        final HashSet<GData> surfs;
+                                        if (ignoreColours) {
+                                            surfs = getLinkedSurfaces(v);
+                                        } else {
+                                            surfs = getLinkedSurfacesOfSameColour(v);
+                                        }
+
+                                        // 2. Ermittle alle angrenzenden Punkte
+                                        final TreeSet<Vertex> verts = new TreeSet<>();
+
+                                        {
+                                            int delta = 1;
+
+                                            for (final GData gData : surfs) {
+                                                if (gData.type() == 3) {
+                                                    for (Vertex tv : triangles.get(gData)) {
+                                                        verts.add(tv);
+                                                    }
+                                                } else {
+                                                    for (Vertex tv : quads.get(gData)) {
+                                                        verts.add(tv);
+                                                    }
+                                                    delta += 1;
+                                                }
                                             }
 
-                                            // 2. Ermittle alle angrenzenden Punkte
-                                            final TreeSet<Vertex> verts = new TreeSet<>();
+                                            // 3. Ist das Polygon geschlossen? Wenn nein, breche ab.
+                                            if (verts.size() - delta != surfs.size()) {
+                                                break;
+                                            }
+                                        }
 
+                                        // 4. Entferne den Ursprungspunkt aus der Menge
+                                        verts.remove(v);
+
+                                        // 5. Prüfe die Kandidaten
+                                        for (final Vertex t : verts) {
+                                            final HashSet<GData> tsurfs = getLinkedSurfaces(t);
+                                            final int oldcount = tsurfs.size();
+                                            tsurfs.removeAll(surfs);
+
+                                            // 5.1 t muss zwei Flächen mit v teilen
+                                            if (oldcount - tsurfs.size() != 2) {
+                                                continue;
+                                            }
+
+                                            // 5.2 t darf nur zwei angrenzende Punkte mit v teilen
                                             {
-                                                int delta = 1;
-
-                                                for (final GData gData : surfs) {
+                                                final TreeSet<Vertex> verts2 = new TreeSet<>();
+                                                for (final GData gData : getLinkedSurfaces(t)) {
                                                     if (gData.type() == 3) {
                                                         for (Vertex tv : triangles.get(gData)) {
-                                                            verts.add(tv);
+                                                            verts2.add(tv);
                                                         }
                                                     } else {
                                                         for (Vertex tv : quads.get(gData)) {
-                                                            verts.add(tv);
+                                                            verts2.add(tv);
                                                         }
-                                                        delta += 1;
                                                     }
                                                 }
-
-                                                // 3. Ist das Polygon geschlossen? Wenn nein, breche ab.
-                                                if (verts.size() - delta != surfs.size()) {
-                                                    break;
-                                                }
-                                            }
-
-                                            // 4. Entferne den Ursprungspunkt aus der Menge
-                                            verts.remove(v);
-
-                                            // 5. Prüfe die Kandidaten
-                                            for (final Vertex t : verts) {
-                                                final HashSet<GData> tsurfs = getLinkedSurfaces(t);
-                                                final int oldcount = tsurfs.size();
-                                                tsurfs.removeAll(surfs);
-
-                                                // 5.1 t muss zwei Flächen mit v teilen
-                                                if (oldcount - tsurfs.size() != 2) {
+                                                verts2.remove(t);
+                                                int oldcount2 = verts2.size();
+                                                verts2.removeAll(verts);
+                                                if (oldcount2 - verts2.size() != 2) {
                                                     continue;
                                                 }
-
-                                                // 5.2 t darf nur zwei angrenzende Punkte mit v teilen
-                                                {
-                                                    final TreeSet<Vertex> verts2 = new TreeSet<>();
-                                                    for (final GData gData : getLinkedSurfaces(t)) {
-                                                        if (gData.type() == 3) {
-                                                            for (Vertex tv : triangles.get(gData)) {
-                                                                verts2.add(tv);
-                                                            }
-                                                        } else {
-                                                            for (Vertex tv : quads.get(gData)) {
-                                                                verts2.add(tv);
-                                                            }
-                                                        }
-                                                    }
-                                                    verts2.remove(t);
-                                                    int oldcount2 = verts2.size();
-                                                    verts2.removeAll(verts);
-                                                    if (oldcount2 - verts2.size() != 2) {
-                                                        continue;
-                                                    }
-                                                }
-
-                                                // 5.3 die Normalen dürfen nicht kippen!
-                                                {
-                                                    boolean cont = false;
-                                                    final int surfcount = surfs.size();
-                                                    Vertex[][] surfsv = new Vertex[surfcount][4];
-                                                    Vector3d[] oldNormals = new Vector3d[surfcount];
-                                                    Vector3d[] newNormals = new Vector3d[surfcount];
-                                                    int s = 0;
-                                                    for (final GData gData : surfs) {
-                                                        int i = 0;
-                                                        if (gData.type() == 3) {
-                                                            for (Vertex tv : triangles.get(gData)) {
-                                                                surfsv[s][i] = tv;
-                                                                i++;
-                                                            }
-                                                        } else {
-                                                            for (Vertex tv : quads.get(gData)) {
-                                                                surfsv[s][i] = tv;
-                                                                i++;
-                                                            }
-                                                            if (surfsv[s][1].equals(v)) {
-                                                                surfsv[s][0] = surfsv[s][1];
-                                                                surfsv[s][1] = surfsv[s][2];
-                                                                surfsv[s][2] = surfsv[s][3];
-                                                            } else if (surfsv[s][2].equals(v)) {
-                                                                Vertex tmp = surfsv[s][0];
-                                                                surfsv[s][0] = surfsv[s][2];
-                                                                surfsv[s][1] = surfsv[s][3];
-                                                                surfsv[s][2] = tmp;
-                                                            } else if (surfsv[s][3].equals(v)) {
-                                                                Vertex tmp = surfsv[s][0];
-                                                                Vertex tmp2 = surfsv[s][1];
-                                                                surfsv[s][0] = surfsv[s][3];
-                                                                surfsv[s][1] = tmp;
-                                                                surfsv[s][2] = tmp2;
-                                                            }
-                                                            surfsv[s][3] = null;
-                                                        }
-                                                        oldNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
-                                                        s++;
-                                                    }
-                                                    HashSet<Integer> ignoreSet = new HashSet<>();
-                                                    for (s = 0; s < surfcount; s++) {
-                                                        for (int i = 0; i < 3; i++) {
-                                                            if (surfsv[s][i].equals(t)) {
-                                                                ignoreSet.add(s);
-                                                            }
-                                                            if (surfsv[s][i].equals(v)) {
-                                                                surfsv[s][i] = t;
-                                                            }
-                                                        }
-                                                        if (!ignoreSet.contains(s)) {
-                                                            newNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
-                                                            double angle = Vector3d.angle(oldNormals[s], newNormals[s]);
-                                                            if (angle > 3.0) {
-                                                                cont = true;
-                                                                break;
-                                                            }
-                                                        }
-                                                    }
-                                                    if (cont) {
-                                                        continue;
-                                                    }
-                                                }
-                                                // Als letzten Schritt => Kante zusammenfallen lassen
-                                                changeVertexDirectFast(v, t, true);
-
-                                                reduceCount[0]++;
-
-                                                break;
                                             }
+
+                                            // 5.3 die Normalen dürfen nicht kippen!
+                                            {
+                                                boolean cont = false;
+                                                final int surfcount = surfs.size();
+                                                Vertex[][] surfsv = new Vertex[surfcount][4];
+                                                Vector3d[] oldNormals = new Vector3d[surfcount];
+                                                Vector3d[] newNormals = new Vector3d[surfcount];
+                                                int s = 0;
+                                                for (final GData gData : surfs) {
+                                                    int i = 0;
+                                                    if (gData.type() == 3) {
+                                                        for (Vertex tv : triangles.get(gData)) {
+                                                            surfsv[s][i] = tv;
+                                                            i++;
+                                                        }
+                                                    } else {
+                                                        for (Vertex tv : quads.get(gData)) {
+                                                            surfsv[s][i] = tv;
+                                                            i++;
+                                                        }
+                                                        if (surfsv[s][1].equals(v)) {
+                                                            surfsv[s][0] = surfsv[s][1];
+                                                            surfsv[s][1] = surfsv[s][2];
+                                                            surfsv[s][2] = surfsv[s][3];
+                                                        } else if (surfsv[s][2].equals(v)) {
+                                                            Vertex tmp = surfsv[s][0];
+                                                            surfsv[s][0] = surfsv[s][2];
+                                                            surfsv[s][1] = surfsv[s][3];
+                                                            surfsv[s][2] = tmp;
+                                                        } else if (surfsv[s][3].equals(v)) {
+                                                            Vertex tmp = surfsv[s][0];
+                                                            Vertex tmp2 = surfsv[s][1];
+                                                            surfsv[s][0] = surfsv[s][3];
+                                                            surfsv[s][1] = tmp;
+                                                            surfsv[s][2] = tmp2;
+                                                        }
+                                                        surfsv[s][3] = null;
+                                                    }
+                                                    oldNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
+                                                    s++;
+                                                }
+                                                HashSet<Integer> ignoreSet = new HashSet<>();
+                                                for (s = 0; s < surfcount; s++) {
+                                                    for (int i = 0; i < 3; i++) {
+                                                        if (surfsv[s][i].equals(t)) {
+                                                            ignoreSet.add(s);
+                                                        }
+                                                        if (surfsv[s][i].equals(v)) {
+                                                            surfsv[s][i] = t;
+                                                        }
+                                                    }
+                                                    if (!ignoreSet.contains(s)) {
+                                                        newNormals[s] = Vector3d.getNormal(new Vector3d(surfsv[s][0]), new Vector3d(surfsv[s][1]), new Vector3d(surfsv[s][2]));
+                                                        double angle = Vector3d.angle(oldNormals[s], newNormals[s]);
+                                                        if (angle > 3.0) {
+                                                            cont = true;
+                                                            break;
+                                                        }
+                                                    }
+                                                }
+                                                if (cont) {
+                                                    continue;
+                                                }
+                                            }
+                                            // Als letzten Schritt => Kante zusammenfallen lassen
+                                            changeVertexDirectFast(v, t, true);
+
+                                            reduceCount[0]++;
 
                                             break;
                                         }
-                                        monitor.worked(1);
-                                        a.set(true);
-                                    }});
+
+                                        break;
+                                    }
+                                    monitor.worked(1);
+                                    a.set(true);
+                                });
+
                                 while (!a.get()) {
                                     Thread.sleep(5);
                                 }

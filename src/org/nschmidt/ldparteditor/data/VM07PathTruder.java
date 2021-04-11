@@ -254,589 +254,586 @@ class VM07PathTruder extends VM06Edger2 {
 
                             final GColour col16 = View.getLDConfigColour(16);
                             final Thread[] threads = new Thread[1];
-                            threads[0] = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
+                            threads[0] = new Thread(() -> {
 
-                                    if (monitor.isCanceled()) {
-                                        return;
-                                    }
+                                if (monitor.isCanceled()) {
+                                    return;
+                                }
 
-                                    final GColour lineColour = DatParser.validateColour(24, .5f, .5f, .5f, 1f).createClone();
-                                    final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).createClone();
+                                final GColour lineColour = DatParser.validateColour(24, .5f, .5f, .5f, 1f).createClone();
+                                final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).createClone();
 
-                                    double vertmerge = 0.001;
-                                    double pi = 3.14159265358979323846;
+                                double vertmerge = 0.001;
+                                double pi = 3.14159265358979323846;
 
-                                    int maxLine = 1000;
-                                    double small = 0.1;
-                                    double smallAngle = .95;
+                                int maxLine = 1000;
+                                double small = 0.1;
+                                double smallAngle = .95;
 
-                                    double[][][] path1Arr = new double[5 * maxLine][2][3];
-                                    double[][][] path2Arr = new double[5 * maxLine][2][3];
-                                    double[][][] path1aArr = new double[maxLine][2][3];
-                                    double[][][] path2aArr = new double[maxLine][2][3];
-                                    /** [lineIndex][pointIndex][coordinateIndex] */
-                                    double[][][] shape1Arr = new double[maxLine][2][3];
-                                    /** [lineIndex][pointIndex][coordinateIndex] */
-                                    double[][][] shape2Arr = new double[maxLine][2][3];
-                                    double[][][] curShape = new double[maxLine][2][3];
-                                    double[][][] nxtShape = new double[maxLine][2][3];
-                                    double[] shape1Vect = new double[3];
-                                    double[] shape2Vect = new double[3];
+                                double[][][] path1Arr = new double[5 * maxLine][2][3];
+                                double[][][] path2Arr = new double[5 * maxLine][2][3];
+                                double[][][] path1aArr = new double[maxLine][2][3];
+                                double[][][] path2aArr = new double[maxLine][2][3];
+                                /** [lineIndex][pointIndex][coordinateIndex] */
+                                double[][][] shape1Arr = new double[maxLine][2][3];
+                                /** [lineIndex][pointIndex][coordinateIndex] */
+                                double[][][] shape2Arr = new double[maxLine][2][3];
+                                double[][][] curShape = new double[maxLine][2][3];
+                                double[][][] nxtShape = new double[maxLine][2][3];
+                                double[] shape1Vect = new double[3];
+                                double[] shape2Vect = new double[3];
 
-                                    double[] temp1 = new double[3];
-                                    double[] temp2 = new double[3];
-                                    double[] temp3 = new double[3];
-                                    double[] xVect = new double[3];
-                                    double[] yVect = new double[3];
-                                    double[] zVect = new double[3];
+                                double[] temp1 = new double[3];
+                                double[] temp2 = new double[3];
+                                double[] temp3 = new double[3];
+                                double[] xVect = new double[3];
+                                double[] yVect = new double[3];
+                                double[] zVect = new double[3];
 
-                                    double angle;
-                                    double ca;
-                                    double sa;
-                                    double ratio;
-                                    double[][][] sortBuf = new double[maxLine][2][3];
-                                    int[][][] next = new int[maxLine][2][2];
+                                double angle;
+                                double ca;
+                                double sa;
+                                double ratio;
+                                double[][][] sortBuf = new double[maxLine][2][3];
+                                int[][][] next = new int[maxLine][2][2];
 
-                                    int path1Len = 0;
-                                    int path2Len = 0;
-                                    int shape1Len = 0;
-                                    int shape2Len = 0;
+                                int path1Len = 0;
+                                int path2Len = 0;
+                                int shape1Len = 0;
+                                int shape2Len = 0;
 
-                                    boolean circular = false;
-                                    double maxlength = ps.getMaxPathSegmentLength().doubleValue();
-                                    double dmax;
-                                    double d = 0.0;
-                                    double len;
-                                    int inLineIdx;
-                                    int numPath;
-                                    boolean invert = ps.isInverted();
+                                boolean circular = false;
+                                double maxlength = ps.getMaxPathSegmentLength().doubleValue();
+                                double dmax;
+                                double d = 0.0;
+                                double len;
+                                int inLineIdx;
+                                int numPath;
+                                boolean invert = ps.isInverted();
 
-                                    int transitions = ps.getTransitionCount();
-                                    double slope = ps.getTransitionCurveControl().doubleValue();
-                                    double position = ps.getTransitionCurveCenter().doubleValue();
-                                    double crease = ps.getPathAngleForLine().doubleValue();
-                                    boolean compensate = ps.isCompensation();
-                                    boolean endings = path1endSegments.size() == 2 && path2endSegments.size() == 2;
-                                    double rotation = ps.getRotation().doubleValue();
+                                int transitions = ps.getTransitionCount();
+                                double slope = ps.getTransitionCurveControl().doubleValue();
+                                double position = ps.getTransitionCurveCenter().doubleValue();
+                                double crease = ps.getPathAngleForLine().doubleValue();
+                                boolean compensate = ps.isCompensation();
+                                boolean endings = path1endSegments.size() == 2 && path2endSegments.size() == 2;
+                                double rotation = ps.getRotation().doubleValue();
 
-                                    {
-                                        // Read path file 1
-                                        if (endings) {
-                                            path1.add(0, path1endSegments.get(0));
-                                            path1.add(path1endSegments.get(1));
-                                        }
-                                        for (GData2 p : path1) {
-                                            sortBuf[path1Len][0][0] = p.x1p.doubleValue();
-                                            sortBuf[path1Len][0][1] = p.y1p.doubleValue();
-                                            sortBuf[path1Len][0][2] = p.z1p.doubleValue();
-                                            sortBuf[path1Len][1][0] = p.x2p.doubleValue();
-                                            sortBuf[path1Len][1][1] = p.y2p.doubleValue();
-                                            sortBuf[path1Len][1][2] = p.z2p.doubleValue();
-                                            next[path1Len][0][0] = next[path1Len][1][0] = -1;
-                                            path1Len++;
-                                        }
-                                        // Sort path file 1
-                                        circular = true;
-                                        for (int i = 0; i < path1Len; i++) {
-                                            for (int j = 0; j < 2; j++) {
-                                                if (next[i][j][0] != -1)
-                                                    break;
-                                                dmax = 10000000;
-                                                for (int k = 0; k < path1Len; k++) {
-                                                    if (k != i) {
-                                                        for (int l = 0; l < 2; l++) {
-                                                            d = manhattan(sortBuf[i][j], sortBuf[k][l]);
-                                                            if (d < dmax) {
-                                                                dmax = d;
-                                                                next[i][j][0] = k;
-                                                                next[i][j][1] = l;
-                                                            }
-                                                            if (d == 0)
-                                                                break;
-                                                        }
-                                                        if (d == 0)
-                                                            break;
-                                                    }
-                                                }
-                                                if (dmax > small) {
-                                                    next[i][j][0] = -1;
-                                                    circular = false;
-                                                }
-                                            }
-                                        }
-                                        if (circular) {
-                                            next[next[0][0][0]][next[0][0][1]][0] = -1;
-                                            next[0][0][0] = -1;
-                                        }
-                                        inLineIdx = 0;
-                                        numPath = 0;
-                                        for (int i = 0; i < path1Len; i++) {
-                                            for (int j = 0; j < 2; j++) {
-                                                int a;
-                                                int b;
-                                                int c;
-                                                int d2;
-                                                if (next[i][j][0] == -1) {
-                                                    numPath++;
-                                                    a = i;
-                                                    b = j;
-                                                    do {
-                                                        set(path1aArr[inLineIdx][0], sortBuf[a][b]);
-                                                        set(path1aArr[inLineIdx][1], sortBuf[a][1 - b]);
-                                                        inLineIdx++;
-
-                                                        d2 = next[a][1 - b][1];
-                                                        c = next[a][1 - b][0];
-                                                        next[a][1 - b][0] = -2;
-                                                        next[a][b][0] = -2;
-                                                        b = d2;
-                                                        a = c;
-                                                    } while (a != -1);
-                                                }
-                                            }
-                                        }
-
-                                        path1Len = inLineIdx;
-
-                                        if (numPath > 1) {
-                                            // NumPath distinct paths found in Path file 1. Unexpected results may happen!
-                                        }
-                                    }
-                                    {
-                                        // Read path file 2
-                                        if (endings) {
-                                            path2.add(0, path2endSegments.get(0));
-                                            path2.add(path2endSegments.get(1));
-                                        }
-                                        for (GData2 p : path2) {
-                                            sortBuf[path2Len][0][0] = p.x1p.doubleValue();
-                                            sortBuf[path2Len][0][1] = p.y1p.doubleValue();
-                                            sortBuf[path2Len][0][2] = p.z1p.doubleValue();
-                                            sortBuf[path2Len][1][0] = p.x2p.doubleValue();
-                                            sortBuf[path2Len][1][1] = p.y2p.doubleValue();
-                                            sortBuf[path2Len][1][2] = p.z2p.doubleValue();
-                                            next[path2Len][0][0] = next[path2Len][1][0] = -1;
-                                            path2Len++;
-                                        }
-                                        // Sort path file 2
-                                        circular = true;
-                                        for (int i = 0; i < path2Len; i++) {
-                                            for (int j = 0; j < 2; j++) {
-                                                if (next[i][j][0] != -1)
-                                                    break;
-                                                dmax = 10000000;
-                                                for (int k = 0; k < path2Len; k++) {
-                                                    if (k != i) {
-                                                        for (int l = 0; l < 2; l++) {
-                                                            d = manhattan(sortBuf[i][j], sortBuf[k][l]);
-                                                            if (d < dmax) {
-                                                                dmax = d;
-                                                                next[i][j][0] = k;
-                                                                next[i][j][1] = l;
-                                                            }
-                                                            if (d == 0)
-                                                                break;
-                                                        }
-                                                        if (d == 0)
-                                                            break;
-                                                    }
-                                                }
-                                                if (dmax > small) {
-                                                    next[i][j][0] = -1;
-                                                    circular = false;
-                                                }
-                                            }
-                                        }
-                                        if (circular) {
-                                            next[next[0][0][0]][next[0][0][1]][0] = -1;
-                                            next[0][0][0] = -1;
-                                        }
-                                        inLineIdx = 0;
-                                        numPath = 0;
-                                        for (int i = 0; i < path2Len; i++) {
-                                            for (int j = 0; j < 2; j++) {
-                                                int a;
-                                                int b;
-                                                int c;
-                                                int d2;
-                                                if (next[i][j][0] == -1) {
-                                                    numPath++;
-                                                    a = i;
-                                                    b = j;
-                                                    do {
-                                                        set(path2aArr[inLineIdx][0], sortBuf[a][b]);
-                                                        set(path2aArr[inLineIdx][1], sortBuf[a][1 - b]);
-                                                        inLineIdx++;
-
-                                                        d2 = next[a][1 - b][1];
-                                                        c = next[a][1 - b][0];
-                                                        next[a][1 - b][0] = -2;
-                                                        next[a][b][0] = -2;
-                                                        b = d2;
-                                                        a = c;
-                                                    } while (a != -1);
-                                                }
-                                            }
-                                        }
-
-                                        path2Len = inLineIdx;
-
-                                    }
-
-                                    for (GData2 p : shape1) {
-                                        shape1Arr[shape1Len][0][0] = p.x1p.doubleValue();
-                                        shape1Arr[shape1Len][0][1] = p.y1p.doubleValue();
-                                        shape1Arr[shape1Len][0][2] = p.z1p.doubleValue();
-                                        shape1Arr[shape1Len][1][0] = p.x2p.doubleValue();
-                                        shape1Arr[shape1Len][1][1] = p.y2p.doubleValue();
-                                        shape1Arr[shape1Len][1][2] = p.z2p.doubleValue();
-                                        shape1Len++;
-                                    }
-
-                                    for (GData2 p : shape2) {
-                                        shape2Arr[shape2Len][0][0] = p.x1p.doubleValue();
-                                        shape2Arr[shape2Len][0][1] = p.y1p.doubleValue();
-                                        shape2Arr[shape2Len][0][2] = p.z1p.doubleValue();
-                                        shape2Arr[shape2Len][1][0] = p.x2p.doubleValue();
-                                        shape2Arr[shape2Len][1][1] = p.y2p.doubleValue();
-                                        shape2Arr[shape2Len][1][2] = p.z2p.doubleValue();
-                                        shape2Len++;
-                                    }
-
-                                    if (path1Len != path2Len) {
-                                        // The two path files do not have the same number of elements!
-                                        return;
-                                    }
-
-                                    if (endings && path1Len < 3 && !circular) {
-                                        // Path files must have at least 3 elements to use -e option!
-                                        return;
-                                    }
-
-                                    if (shape1Len != shape2Len) {
-                                        // The two shape files do not have the same number of elements!
-                                        return;
-                                    }
-
-                                    // Split long lines
-                                    inLineIdx = 0;
-                                    for (int i = 0; i < path1Len; i++) {
-                                        double[] p1 = new double[3];
-                                        double[] p2 = new double[3];
-                                        double[] q1 = new double[3];
-                                        double[] q2 = new double[3];
-                                        double[] delta1 = new double[3];
-                                        double[] delta2 = new double[3];
-                                        double[] temp = new double[3];
-                                        int nsplit1;
-                                        int nsplit2;
-
-                                        set(p1, path1aArr[i][0]);
-                                        set(p2, path1aArr[i][1]);
-
-                                        set(q1, path2aArr[i][0]);
-                                        set(q2, path2aArr[i][1]);
-
-                                        nsplit1 = (int) (dist(p1, p2) / maxlength) + 1;
-                                        nsplit2 = (int) (dist(q1, q2) / maxlength) + 1;
-
-                                        // don't split endings segments
-                                        if (endings) {
-                                            if (i == 0 || i == path1Len - 1)
-                                                nsplit1 = nsplit2 = 1;
-                                        }
-
-                                        nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;
-
-                                        sub(delta1, p2, p1);
-                                        mult(delta1, delta1, 1.0 / nsplit1);
-                                        sub(delta2, q2, q1);
-                                        mult(delta2, delta2, 1.0 / nsplit1);
-                                        for (int k = 0; k < nsplit1; k++) {
-                                            mult(temp, delta1, k);
-                                            add(path1Arr[inLineIdx][0], p1, temp);
-                                            add(path1Arr[inLineIdx][1], path1Arr[inLineIdx][0], delta1);
-                                            mult(temp, delta2, k);
-                                            add(path2Arr[inLineIdx][0], q1, temp);
-                                            add(path2Arr[inLineIdx][1], path2Arr[inLineIdx][0], delta2);
-
-                                            inLineIdx++;
-                                        }
-                                    }
-
-                                    path1Len = path2Len = inLineIdx;
-                                    set(path1Arr[path1Len][0], path1Arr[path1Len - 1][1]);
-                                    set(path1Arr[path1Len][1], path1Arr[path1Len - 1][0]);
-
-                                    set(path2Arr[path2Len][0], path2Arr[path2Len - 1][1]);
-                                    set(path2Arr[path2Len][1], path2Arr[path2Len - 1][0]);
-
-                                    len = dist(shape1Arr[0][0], shape1Arr[0][1]);
-
-                                    for (int i = 1; i < shape1Len; i++) {
-                                        sub(shape1Arr[i][0], shape1Arr[i][0], shape1Arr[0][0]);
-                                        mult(shape1Arr[i][0], shape1Arr[i][0], 1 / len);
-                                        sub(shape1Arr[i][1], shape1Arr[i][1], shape1Arr[0][0]);
-                                        mult(shape1Arr[i][1], shape1Arr[i][1], 1 / len);
-                                    }
-                                    sub(shape1Vect, shape1Arr[0][1], shape1Arr[0][0]);
-
-                                    angle = Math.atan2(-shape1Vect[0], -shape1Vect[1]);
-
-                                    sa = Math.sin(angle);
-                                    ca = Math.cos(angle);
-
-                                    for (int i = 1; i < shape1Len; i++) {
-                                        shape1Arr[i - 1][0][0] = shape1Arr[i][0][0] * ca - shape1Arr[i][0][1] * sa;
-                                        shape1Arr[i - 1][0][1] = shape1Arr[i][0][0] * sa + shape1Arr[i][0][1] * ca;
-                                        shape1Arr[i - 1][1][0] = shape1Arr[i][1][0] * ca - shape1Arr[i][1][1] * sa;
-                                        shape1Arr[i - 1][1][1] = shape1Arr[i][1][0] * sa + shape1Arr[i][1][1] * ca;
-                                        shape1Arr[i - 1][0][2] = shape1Arr[i][0][2];
-                                        shape1Arr[i - 1][1][2] = shape1Arr[i][1][2];
-                                        if (invert) {
-                                            shape1Arr[i - 1][0][0] = -shape1Arr[i - 1][0][0];
-                                            shape1Arr[i - 1][1][0] = -shape1Arr[i - 1][1][0];
-                                        }
-                                    }
-                                    shape1Len--;
-
-                                    // Normalize shape 2
-
-                                    len = dist(shape2Arr[0][0], shape2Arr[0][1]);
-
-                                    for (int i = 1; i < shape2Len; i++) {
-                                        sub(shape2Arr[i][0], shape2Arr[i][0], shape2Arr[0][0]);
-                                        mult(shape2Arr[i][0], shape2Arr[i][0], 1 / len);
-                                        sub(shape2Arr[i][1], shape2Arr[i][1], shape2Arr[0][0]);
-                                        mult(shape2Arr[i][1], shape2Arr[i][1], 1 / len);
-                                    }
-                                    sub(shape2Vect, shape2Arr[0][1], shape2Arr[0][0]);
-
-                                    angle = Math.atan2(-shape2Vect[0], -shape2Vect[1]);
-
-                                    sa = Math.sin(angle);
-                                    ca = Math.cos(angle);
-
-                                    for (int i = 1; i < shape2Len; i++) {
-                                        shape2Arr[i - 1][0][0] = shape2Arr[i][0][0] * ca - shape2Arr[i][0][1] * sa;
-                                        shape2Arr[i - 1][0][1] = shape2Arr[i][0][0] * sa + shape2Arr[i][0][1] * ca;
-                                        shape2Arr[i - 1][1][0] = shape2Arr[i][1][0] * ca - shape2Arr[i][1][1] * sa;
-                                        shape2Arr[i - 1][1][1] = shape2Arr[i][1][0] * sa + shape2Arr[i][1][1] * ca;
-                                        shape2Arr[i - 1][0][2] = shape2Arr[i][0][2];
-                                        shape2Arr[i - 1][1][2] = shape2Arr[i][1][2];
-                                        if (invert) {
-                                            shape2Arr[i - 1][0][0] = -shape2Arr[i - 1][0][0];
-                                            shape2Arr[i - 1][1][0] = -shape2Arr[i - 1][1][0];
-                                        }
-
-                                    }
-
-                                    // Extrusion
-                                    // Initialize current shape
-                                    if (circular)
-                                        endings = false;
-
+                                {
+                                    // Read path file 1
                                     if (endings) {
-                                        double angle2 = pathLocalBasis(0, 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                                        angle = pathLocalBasis(0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
-                                        if (angle2 > 90) {
-                                            mult(xVect, xVect, -1);
-                                            mult(zVect, zVect, -1);
+                                        path1.add(0, path1endSegments.get(0));
+                                        path1.add(path1endSegments.get(1));
+                                    }
+                                    for (GData2 p : path1) {
+                                        sortBuf[path1Len][0][0] = p.x1p.doubleValue();
+                                        sortBuf[path1Len][0][1] = p.y1p.doubleValue();
+                                        sortBuf[path1Len][0][2] = p.z1p.doubleValue();
+                                        sortBuf[path1Len][1][0] = p.x2p.doubleValue();
+                                        sortBuf[path1Len][1][1] = p.y2p.doubleValue();
+                                        sortBuf[path1Len][1][2] = p.z2p.doubleValue();
+                                        next[path1Len][0][0] = next[path1Len][1][0] = -1;
+                                        path1Len++;
+                                    }
+                                    // Sort path file 1
+                                    circular = true;
+                                    for (int i = 0; i < path1Len; i++) {
+                                        for (int j = 0; j < 2; j++) {
+                                            if (next[i][j][0] != -1)
+                                                break;
+                                            dmax = 10000000;
+                                            for (int k = 0; k < path1Len; k++) {
+                                                if (k != i) {
+                                                    for (int l = 0; l < 2; l++) {
+                                                        d = manhattan(sortBuf[i][j], sortBuf[k][l]);
+                                                        if (d < dmax) {
+                                                            dmax = d;
+                                                            next[i][j][0] = k;
+                                                            next[i][j][1] = l;
+                                                        }
+                                                        if (d == 0)
+                                                            break;
+                                                    }
+                                                    if (d == 0)
+                                                        break;
+                                                }
+                                            }
+                                            if (dmax > small) {
+                                                next[i][j][0] = -1;
+                                                circular = false;
+                                            }
+                                        }
+                                    }
+                                    if (circular) {
+                                        next[next[0][0][0]][next[0][0][1]][0] = -1;
+                                        next[0][0][0] = -1;
+                                    }
+                                    inLineIdx = 0;
+                                    numPath = 0;
+                                    for (int i = 0; i < path1Len; i++) {
+                                        for (int j = 0; j < 2; j++) {
+                                            int a;
+                                            int b;
+                                            int c;
+                                            int d2;
+                                            if (next[i][j][0] == -1) {
+                                                numPath++;
+                                                a = i;
+                                                b = j;
+                                                do {
+                                                    set(path1aArr[inLineIdx][0], sortBuf[a][b]);
+                                                    set(path1aArr[inLineIdx][1], sortBuf[a][1 - b]);
+                                                    inLineIdx++;
+
+                                                    d2 = next[a][1 - b][1];
+                                                    c = next[a][1 - b][0];
+                                                    next[a][1 - b][0] = -2;
+                                                    next[a][b][0] = -2;
+                                                    b = d2;
+                                                    a = c;
+                                                } while (a != -1);
+                                            }
+                                        }
+                                    }
+
+                                    path1Len = inLineIdx;
+
+                                    if (numPath > 1) {
+                                        // NumPath distinct paths found in Path file 1. Unexpected results may happen!
+                                    }
+                                }
+                                {
+                                    // Read path file 2
+                                    if (endings) {
+                                        path2.add(0, path2endSegments.get(0));
+                                        path2.add(path2endSegments.get(1));
+                                    }
+                                    for (GData2 p : path2) {
+                                        sortBuf[path2Len][0][0] = p.x1p.doubleValue();
+                                        sortBuf[path2Len][0][1] = p.y1p.doubleValue();
+                                        sortBuf[path2Len][0][2] = p.z1p.doubleValue();
+                                        sortBuf[path2Len][1][0] = p.x2p.doubleValue();
+                                        sortBuf[path2Len][1][1] = p.y2p.doubleValue();
+                                        sortBuf[path2Len][1][2] = p.z2p.doubleValue();
+                                        next[path2Len][0][0] = next[path2Len][1][0] = -1;
+                                        path2Len++;
+                                    }
+                                    // Sort path file 2
+                                    circular = true;
+                                    for (int i = 0; i < path2Len; i++) {
+                                        for (int j = 0; j < 2; j++) {
+                                            if (next[i][j][0] != -1)
+                                                break;
+                                            dmax = 10000000;
+                                            for (int k = 0; k < path2Len; k++) {
+                                                if (k != i) {
+                                                    for (int l = 0; l < 2; l++) {
+                                                        d = manhattan(sortBuf[i][j], sortBuf[k][l]);
+                                                        if (d < dmax) {
+                                                            dmax = d;
+                                                            next[i][j][0] = k;
+                                                            next[i][j][1] = l;
+                                                        }
+                                                        if (d == 0)
+                                                            break;
+                                                    }
+                                                    if (d == 0)
+                                                        break;
+                                                }
+                                            }
+                                            if (dmax > small) {
+                                                next[i][j][0] = -1;
+                                                circular = false;
+                                            }
+                                        }
+                                    }
+                                    if (circular) {
+                                        next[next[0][0][0]][next[0][0][1]][0] = -1;
+                                        next[0][0][0] = -1;
+                                    }
+                                    inLineIdx = 0;
+                                    numPath = 0;
+                                    for (int i = 0; i < path2Len; i++) {
+                                        for (int j = 0; j < 2; j++) {
+                                            int a;
+                                            int b;
+                                            int c;
+                                            int d2;
+                                            if (next[i][j][0] == -1) {
+                                                numPath++;
+                                                a = i;
+                                                b = j;
+                                                do {
+                                                    set(path2aArr[inLineIdx][0], sortBuf[a][b]);
+                                                    set(path2aArr[inLineIdx][1], sortBuf[a][1 - b]);
+                                                    inLineIdx++;
+
+                                                    d2 = next[a][1 - b][1];
+                                                    c = next[a][1 - b][0];
+                                                    next[a][1 - b][0] = -2;
+                                                    next[a][b][0] = -2;
+                                                    b = d2;
+                                                    a = c;
+                                                } while (a != -1);
+                                            }
+                                        }
+                                    }
+
+                                    path2Len = inLineIdx;
+
+                                }
+
+                                for (GData2 p : shape1) {
+                                    shape1Arr[shape1Len][0][0] = p.x1p.doubleValue();
+                                    shape1Arr[shape1Len][0][1] = p.y1p.doubleValue();
+                                    shape1Arr[shape1Len][0][2] = p.z1p.doubleValue();
+                                    shape1Arr[shape1Len][1][0] = p.x2p.doubleValue();
+                                    shape1Arr[shape1Len][1][1] = p.y2p.doubleValue();
+                                    shape1Arr[shape1Len][1][2] = p.z2p.doubleValue();
+                                    shape1Len++;
+                                }
+
+                                for (GData2 p : shape2) {
+                                    shape2Arr[shape2Len][0][0] = p.x1p.doubleValue();
+                                    shape2Arr[shape2Len][0][1] = p.y1p.doubleValue();
+                                    shape2Arr[shape2Len][0][2] = p.z1p.doubleValue();
+                                    shape2Arr[shape2Len][1][0] = p.x2p.doubleValue();
+                                    shape2Arr[shape2Len][1][1] = p.y2p.doubleValue();
+                                    shape2Arr[shape2Len][1][2] = p.z2p.doubleValue();
+                                    shape2Len++;
+                                }
+
+                                if (path1Len != path2Len) {
+                                    // The two path files do not have the same number of elements!
+                                    return;
+                                }
+
+                                if (endings && path1Len < 3 && !circular) {
+                                    // Path files must have at least 3 elements to use -e option!
+                                    return;
+                                }
+
+                                if (shape1Len != shape2Len) {
+                                    // The two shape files do not have the same number of elements!
+                                    return;
+                                }
+
+                                // Split long lines
+                                inLineIdx = 0;
+                                for (int i = 0; i < path1Len; i++) {
+                                    double[] p1 = new double[3];
+                                    double[] p2 = new double[3];
+                                    double[] q1 = new double[3];
+                                    double[] q2 = new double[3];
+                                    double[] delta1 = new double[3];
+                                    double[] delta2 = new double[3];
+                                    double[] temp = new double[3];
+                                    int nsplit1;
+                                    int nsplit2;
+
+                                    set(p1, path1aArr[i][0]);
+                                    set(p2, path1aArr[i][1]);
+
+                                    set(q1, path2aArr[i][0]);
+                                    set(q2, path2aArr[i][1]);
+
+                                    nsplit1 = (int) (dist(p1, p2) / maxlength) + 1;
+                                    nsplit2 = (int) (dist(q1, q2) / maxlength) + 1;
+
+                                    // don't split endings segments
+                                    if (endings) {
+                                        if (i == 0 || i == path1Len - 1)
+                                            nsplit1 = nsplit2 = 1;
+                                    }
+
+                                    nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;
+
+                                    sub(delta1, p2, p1);
+                                    mult(delta1, delta1, 1.0 / nsplit1);
+                                    sub(delta2, q2, q1);
+                                    mult(delta2, delta2, 1.0 / nsplit1);
+                                    for (int k = 0; k < nsplit1; k++) {
+                                        mult(temp, delta1, k);
+                                        add(path1Arr[inLineIdx][0], p1, temp);
+                                        add(path1Arr[inLineIdx][1], path1Arr[inLineIdx][0], delta1);
+                                        mult(temp, delta2, k);
+                                        add(path2Arr[inLineIdx][0], q1, temp);
+                                        add(path2Arr[inLineIdx][1], path2Arr[inLineIdx][0], delta2);
+
+                                        inLineIdx++;
+                                    }
+                                }
+
+                                path1Len = path2Len = inLineIdx;
+                                set(path1Arr[path1Len][0], path1Arr[path1Len - 1][1]);
+                                set(path1Arr[path1Len][1], path1Arr[path1Len - 1][0]);
+
+                                set(path2Arr[path2Len][0], path2Arr[path2Len - 1][1]);
+                                set(path2Arr[path2Len][1], path2Arr[path2Len - 1][0]);
+
+                                len = dist(shape1Arr[0][0], shape1Arr[0][1]);
+
+                                for (int i = 1; i < shape1Len; i++) {
+                                    sub(shape1Arr[i][0], shape1Arr[i][0], shape1Arr[0][0]);
+                                    mult(shape1Arr[i][0], shape1Arr[i][0], 1 / len);
+                                    sub(shape1Arr[i][1], shape1Arr[i][1], shape1Arr[0][0]);
+                                    mult(shape1Arr[i][1], shape1Arr[i][1], 1 / len);
+                                }
+                                sub(shape1Vect, shape1Arr[0][1], shape1Arr[0][0]);
+
+                                angle = Math.atan2(-shape1Vect[0], -shape1Vect[1]);
+
+                                sa = Math.sin(angle);
+                                ca = Math.cos(angle);
+
+                                for (int i = 1; i < shape1Len; i++) {
+                                    shape1Arr[i - 1][0][0] = shape1Arr[i][0][0] * ca - shape1Arr[i][0][1] * sa;
+                                    shape1Arr[i - 1][0][1] = shape1Arr[i][0][0] * sa + shape1Arr[i][0][1] * ca;
+                                    shape1Arr[i - 1][1][0] = shape1Arr[i][1][0] * ca - shape1Arr[i][1][1] * sa;
+                                    shape1Arr[i - 1][1][1] = shape1Arr[i][1][0] * sa + shape1Arr[i][1][1] * ca;
+                                    shape1Arr[i - 1][0][2] = shape1Arr[i][0][2];
+                                    shape1Arr[i - 1][1][2] = shape1Arr[i][1][2];
+                                    if (invert) {
+                                        shape1Arr[i - 1][0][0] = -shape1Arr[i - 1][0][0];
+                                        shape1Arr[i - 1][1][0] = -shape1Arr[i - 1][1][0];
+                                    }
+                                }
+                                shape1Len--;
+
+                                // Normalize shape 2
+
+                                len = dist(shape2Arr[0][0], shape2Arr[0][1]);
+
+                                for (int i = 1; i < shape2Len; i++) {
+                                    sub(shape2Arr[i][0], shape2Arr[i][0], shape2Arr[0][0]);
+                                    mult(shape2Arr[i][0], shape2Arr[i][0], 1 / len);
+                                    sub(shape2Arr[i][1], shape2Arr[i][1], shape2Arr[0][0]);
+                                    mult(shape2Arr[i][1], shape2Arr[i][1], 1 / len);
+                                }
+                                sub(shape2Vect, shape2Arr[0][1], shape2Arr[0][0]);
+
+                                angle = Math.atan2(-shape2Vect[0], -shape2Vect[1]);
+
+                                sa = Math.sin(angle);
+                                ca = Math.cos(angle);
+
+                                for (int i = 1; i < shape2Len; i++) {
+                                    shape2Arr[i - 1][0][0] = shape2Arr[i][0][0] * ca - shape2Arr[i][0][1] * sa;
+                                    shape2Arr[i - 1][0][1] = shape2Arr[i][0][0] * sa + shape2Arr[i][0][1] * ca;
+                                    shape2Arr[i - 1][1][0] = shape2Arr[i][1][0] * ca - shape2Arr[i][1][1] * sa;
+                                    shape2Arr[i - 1][1][1] = shape2Arr[i][1][0] * sa + shape2Arr[i][1][1] * ca;
+                                    shape2Arr[i - 1][0][2] = shape2Arr[i][0][2];
+                                    shape2Arr[i - 1][1][2] = shape2Arr[i][1][2];
+                                    if (invert) {
+                                        shape2Arr[i - 1][0][0] = -shape2Arr[i - 1][0][0];
+                                        shape2Arr[i - 1][1][0] = -shape2Arr[i - 1][1][0];
+                                    }
+
+                                }
+
+                                // Extrusion
+                                // Initialize current shape
+                                if (circular)
+                                    endings = false;
+
+                                if (endings) {
+                                    double angle2 = pathLocalBasis(0, 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                    angle = pathLocalBasis(0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                                    if (angle2 > 90) {
+                                        mult(xVect, xVect, -1);
+                                        mult(zVect, zVect, -1);
+                                    }
+                                } else {
+                                    angle = pathLocalBasis(circular ? path1Len - 1 : 0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                                }
+                                // compensate sharp angles
+                                if (compensate) {
+                                    mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
+                                }
+
+                                // Calculate next transformed shape
+                                for (int j = 0; j < shape1Len; j++) {
+                                    for (int k = 0; k < 2; k++) {
+                                        mult(nxtShape[j][k], xVect, shape1Arr[j][k][0]);
+                                        mult(temp1, yVect, shape1Arr[j][k][1]);
+                                        add(nxtShape[j][k], nxtShape[j][k], temp1);
+                                        mult(temp1, zVect, shape1Arr[j][k][2]);
+                                        add(nxtShape[j][k], nxtShape[j][k], temp1);
+                                        if (endings) {
+                                            add(nxtShape[j][k], nxtShape[j][k], path1Arr[1][0]);
+                                        } else {
+                                            add(nxtShape[j][k], nxtShape[j][k], path1Arr[0][0]);
+                                        }
+                                    }
+
+                                }
+                                if (angle > crease) {
+                                    // sharp angle. Create line at junction
+                                    for (int i = 0; i < shape1Len; i++) {
+                                        Vertex v1 = new Vertex(new BigDecimal(nxtShape[i][0][0]), new BigDecimal(nxtShape[i][0][1]), new BigDecimal(nxtShape[i][0][2]));
+                                        Vertex v2 = new Vertex(new BigDecimal(nxtShape[i][1][0]), new BigDecimal(nxtShape[i][1][1]), new BigDecimal(nxtShape[i][1][2]));
+                                        newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
+                                    }
+                                }
+
+                                int start;
+                                int end;
+                                start = 0;
+                                end = path1Len;
+                                if (endings) {
+                                    start++;
+                                    end--;
+                                }
+                                for (int i = start; i < end; i++) {
+
+                                    // Transfer old next shape to current.
+                                    for (int j = 0; j < shape1Len; j++) {
+                                        set(curShape[j][0], nxtShape[j][0]);
+                                        set(curShape[j][1], nxtShape[j][1]);
+                                    }
+
+                                    if (i == end - 1) {
+                                        if (circular) {
+                                            angle = pathLocalBasis(i, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                                        } else {
+                                            if (endings) {
+                                                double angle2 = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                                angle = pathLocalBasis(i + 2, i + 2, xVect, yVect, zVect, path1Arr, path2Arr);
+                                                if (angle2 < 90) {
+                                                    // in that case the local
+                                                    // base is mirrorred...
+                                                    sub(xVect, nullv, xVect);
+                                                    sub(zVect, nullv, zVect);
+                                                }
+                                            } else {
+                                                angle = pathLocalBasis(i + 1, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                                // in that case the local base
+                                                // is mirrorred...
+                                                sub(xVect, nullv, xVect);
+                                                sub(zVect, nullv, zVect);
+                                            }
                                         }
                                     } else {
-                                        angle = pathLocalBasis(circular ? path1Len - 1 : 0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                                        angle = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
                                     }
+
                                     // compensate sharp angles
                                     if (compensate) {
                                         mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
                                     }
 
-                                    // Calculate next transformed shape
+                                    {
+                                        double x;
+                                        double j = (i + 1.0 - start) * transitions % (2 * (end - start));
+                                        x = 1.0 * j / (end - start);
+                                        if (x > 1.0)
+                                            x = 2.0 - x;
+                                        ratio = sigmoid(x, slope, position);
+                                    }
+
+                                    double rotangle = rotation * pi / 180.0 * ((i + 1.0) / path1Len);
+
+                                    sa = Math.sin(rotangle);
+                                    ca = Math.cos(rotangle);
+
                                     for (int j = 0; j < shape1Len; j++) {
                                         for (int k = 0; k < 2; k++) {
-                                            mult(nxtShape[j][k], xVect, shape1Arr[j][k][0]);
-                                            mult(temp1, yVect, shape1Arr[j][k][1]);
-                                            add(nxtShape[j][k], nxtShape[j][k], temp1);
-                                            mult(temp1, zVect, shape1Arr[j][k][2]);
-                                            add(nxtShape[j][k], nxtShape[j][k], temp1);
-                                            if (endings) {
-                                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[1][0]);
-                                            } else {
-                                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[0][0]);
-                                            }
-                                        }
+                                            temp1[0] = shape1Arr[j][k][0] * ca - shape1Arr[j][k][1] * sa;
+                                            temp1[1] = shape1Arr[j][k][0] * sa + shape1Arr[j][k][1] * ca;
+                                            temp2[0] = shape2Arr[j][k][0] * ca - shape2Arr[j][k][1] * sa;
+                                            temp2[1] = shape2Arr[j][k][0] * sa + shape2Arr[j][k][1] * ca;
 
+                                            mult(nxtShape[j][k], xVect, temp1[0] * (1.0 - ratio) + temp2[0] * ratio);
+                                            mult(temp3, yVect, temp1[1] * (1.0 - ratio) + temp2[1] * ratio);
+                                            add(nxtShape[j][k], nxtShape[j][k], temp3);
+                                            mult(temp3, zVect, shape1Arr[j][k][2] * (1.0 - ratio) + shape2Arr[j][k][2] * ratio);
+                                            add(nxtShape[j][k], nxtShape[j][k], temp3);
+                                            add(nxtShape[j][k], nxtShape[j][k], path1Arr[i + 1][0]);
+                                        }
                                     }
                                     if (angle > crease) {
                                         // sharp angle. Create line at junction
-                                        for (int i = 0; i < shape1Len; i++) {
-                                            Vertex v1 = new Vertex(new BigDecimal(nxtShape[i][0][0]), new BigDecimal(nxtShape[i][0][1]), new BigDecimal(nxtShape[i][0][2]));
-                                            Vertex v2 = new Vertex(new BigDecimal(nxtShape[i][1][0]), new BigDecimal(nxtShape[i][1][1]), new BigDecimal(nxtShape[i][1][2]));
+                                        for (int j = 0; j < shape1Len; j++) {
+                                            Vertex v1 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                                            Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
                                             newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
                                         }
                                     }
-
-                                    int start;
-                                    int end;
-                                    start = 0;
-                                    end = path1Len;
-                                    if (endings) {
-                                        start++;
-                                        end--;
-                                    }
-                                    for (int i = start; i < end; i++) {
-
-                                        // Transfer old next shape to current.
-                                        for (int j = 0; j < shape1Len; j++) {
-                                            set(curShape[j][0], nxtShape[j][0]);
-                                            set(curShape[j][1], nxtShape[j][1]);
-                                        }
-
-                                        if (i == end - 1) {
-                                            if (circular) {
-                                                angle = pathLocalBasis(i, 0, xVect, yVect, zVect, path1Arr, path2Arr);
-                                            } else {
-                                                if (endings) {
-                                                    double angle2 = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                                                    angle = pathLocalBasis(i + 2, i + 2, xVect, yVect, zVect, path1Arr, path2Arr);
-                                                    if (angle2 < 90) {
-                                                        // in that case the local
-                                                        // base is mirrorred...
-                                                        sub(xVect, nullv, xVect);
-                                                        sub(zVect, nullv, zVect);
-                                                    }
-                                                } else {
-                                                    angle = pathLocalBasis(i + 1, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                                                    // in that case the local base
-                                                    // is mirrorred...
-                                                    sub(xVect, nullv, xVect);
-                                                    sub(zVect, nullv, zVect);
-                                                }
-                                            }
-                                        } else {
-                                            angle = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                                        }
-
-                                        // compensate sharp angles
-                                        if (compensate) {
-                                            mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
-                                        }
-
-                                        {
-                                            double x;
-                                            double j = (i + 1.0 - start) * transitions % (2 * (end - start));
-                                            x = 1.0 * j / (end - start);
-                                            if (x > 1.0)
-                                                x = 2.0 - x;
-                                            ratio = sigmoid(x, slope, position);
-                                        }
-
-                                        double rotangle = rotation * pi / 180.0 * ((i + 1.0) / path1Len);
-
-                                        sa = Math.sin(rotangle);
-                                        ca = Math.cos(rotangle);
-
-                                        for (int j = 0; j < shape1Len; j++) {
-                                            for (int k = 0; k < 2; k++) {
-                                                temp1[0] = shape1Arr[j][k][0] * ca - shape1Arr[j][k][1] * sa;
-                                                temp1[1] = shape1Arr[j][k][0] * sa + shape1Arr[j][k][1] * ca;
-                                                temp2[0] = shape2Arr[j][k][0] * ca - shape2Arr[j][k][1] * sa;
-                                                temp2[1] = shape2Arr[j][k][0] * sa + shape2Arr[j][k][1] * ca;
-
-                                                mult(nxtShape[j][k], xVect, temp1[0] * (1.0 - ratio) + temp2[0] * ratio);
-                                                mult(temp3, yVect, temp1[1] * (1.0 - ratio) + temp2[1] * ratio);
-                                                add(nxtShape[j][k], nxtShape[j][k], temp3);
-                                                mult(temp3, zVect, shape1Arr[j][k][2] * (1.0 - ratio) + shape2Arr[j][k][2] * ratio);
-                                                add(nxtShape[j][k], nxtShape[j][k], temp3);
-                                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[i + 1][0]);
-                                            }
-                                        }
-                                        if (angle > crease) {
-                                            // sharp angle. Create line at junction
-                                            for (int j = 0; j < shape1Len; j++) {
-                                                Vertex v1 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                                Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
+                                    // Generate tri/quad sheet
+                                    for (int j = 0; j < shape1Len; j++) {
+                                        if (!lineIndicators.isEmpty()) {
+                                            if (dist(shape1Arr[j][0], shape1Arr[j][1]) < EPSILON && dist(shape2Arr[j][0], shape2Arr[j][1]) < EPSILON) {
+                                                // Null lenth segment in shape file
+                                                // -> generate line at that place
+                                                Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
                                                 newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
                                             }
                                         }
-                                        // Generate tri/quad sheet
-                                        for (int j = 0; j < shape1Len; j++) {
-                                            if (!lineIndicators.isEmpty()) {
-                                                if (dist(shape1Arr[j][0], shape1Arr[j][1]) < EPSILON && dist(shape2Arr[j][0], shape2Arr[j][1]) < EPSILON) {
-                                                    // Null lenth segment in shape file
-                                                    // -> generate line at that place
-                                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                                    Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                                    newLines.add(new GData2(lineColour.getColourNumber(), lineColour.getR(), lineColour.getG(), lineColour.getB(), lineColour.getA(), v1, v2, View.DUMMY_REFERENCE, linkedDatFile, true));
-                                                }
+                                        if (dist(curShape[j][0], curShape[j][1]) < vertmerge) {
+                                            if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge || dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                                // Degenerated. Nothing to
+                                                // output
+                                                continue;
+                                            } else {
+                                                Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
+                                                Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
+                                                continue;
                                             }
-                                            if (dist(curShape[j][0], curShape[j][1]) < vertmerge) {
-                                                if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge || dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
-                                                    // Degenerated. Nothing to
-                                                    // output
-                                                    continue;
-                                                } else {
-                                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                                    Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                                    newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
-                                                    continue;
-                                                }
-                                            }
-                                            if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge) {
-                                                if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
-                                                    // Degenerated. Nothing to
-                                                    // output
-                                                    continue;
-                                                } else {
-                                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                                    Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
-                                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                                    newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
-                                                    continue;
-                                                }
-                                            }
-                                            if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge) {
-                                                if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
-                                                    // Degenerated. Nothing to
-                                                    // output
-                                                    continue;
-                                                } else {
-                                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                                    Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
-                                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                                    newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
-                                                    continue;
-                                                }
-                                            }
-                                            if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                        }
+                                        if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge) {
+                                            if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                                // Degenerated. Nothing to
+                                                // output
+                                                continue;
+                                            } else {
                                                 Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
                                                 Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
                                                 newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
                                                 continue;
                                             }
-                                            if (triAngle(curShape[j][0], nxtShape[j][0], nxtShape[j][1], curShape[j][1]) < smallAngle) {
+                                        }
+                                        if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge) {
+                                            if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                                // Degenerated. Nothing to
+                                                // output
+                                                continue;
+                                            } else {
                                                 Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
                                                 Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
                                                 Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                                Vertex v4 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                                newQuads.add(new GData4(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
-                                            } else {
-                                                {
-                                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                                    Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                                    newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
-                                                }
-                                                {
-                                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                                    Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
-                                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                                    newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
-                                                }
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
+                                                continue;
+                                            }
+                                        }
+                                        if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                            Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                            Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
+                                            Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                                            newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
+                                            continue;
+                                        }
+                                        if (triAngle(curShape[j][0], nxtShape[j][0], nxtShape[j][1], curShape[j][1]) < smallAngle) {
+                                            Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                            Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
+                                            Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
+                                            Vertex v4 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                                            newQuads.add(new GData4(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, v4, View.DUMMY_REFERENCE, linkedDatFile));
+                                        } else {
+                                            {
+                                                Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
+                                                Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
+                                            }
+                                            {
+                                                Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                                Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
+                                                Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
+                                                newTriangles.add(new GData3(bodyColour.getColourNumber(), bodyColour.getR(), bodyColour.getG(), bodyColour.getB(), bodyColour.getA(), v1, v2, v3, View.DUMMY_REFERENCE, linkedDatFile, true));
                                             }
                                         }
                                     }
@@ -874,555 +871,552 @@ class VM07PathTruder extends VM06Edger2 {
         } else {
             final GColour col16 = View.getLDConfigColour(16);
             final Thread[] threads = new Thread[1];
-            threads[0] = new Thread(new Runnable() {
-                @Override
-                public void run() {
+            threads[0] = new Thread(() -> {
 
-                    final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).createClone();
+                final GColour bodyColour = DatParser.validateColour(16, col16.getR(), col16.getG(), col16.getB(), 1f).createClone();
 
-                    double vertmerge = 0.001;
-                    double pi = 3.14159265358979323846;
+                double vertmerge = 0.001;
+                double pi = 3.14159265358979323846;
 
-                    int maxLine = 1000;
-                    double small = 0.1;
-                    double smallAngle = .95;
+                int maxLine = 1000;
+                double small = 0.1;
+                double smallAngle = .95;
 
-                    double[][][] path1Arr = new double[5 * maxLine][2][3];
-                    double[][][] path2Arr = new double[5 * maxLine][2][3];
-                    double[][][] path1aArr = new double[maxLine][2][3];
-                    double[][][] path2aArr = new double[maxLine][2][3];
-                    /** [lineIndex][pointIndex][coordinateIndex] */
-                    double[][][] shape1Arr = new double[maxLine][2][3];
-                    /** [lineIndex][pointIndex][coordinateIndex] */
-                    double[][][] shape2Arr = new double[maxLine][2][3];
-                    double[][][] curShape = new double[maxLine][2][3];
-                    double[][][] nxtShape = new double[maxLine][2][3];
-                    double[] shape1Vect = new double[3];
-                    double[] shape2Vect = new double[3];
+                double[][][] path1Arr = new double[5 * maxLine][2][3];
+                double[][][] path2Arr = new double[5 * maxLine][2][3];
+                double[][][] path1aArr = new double[maxLine][2][3];
+                double[][][] path2aArr = new double[maxLine][2][3];
+                /** [lineIndex][pointIndex][coordinateIndex] */
+                double[][][] shape1Arr = new double[maxLine][2][3];
+                /** [lineIndex][pointIndex][coordinateIndex] */
+                double[][][] shape2Arr = new double[maxLine][2][3];
+                double[][][] curShape = new double[maxLine][2][3];
+                double[][][] nxtShape = new double[maxLine][2][3];
+                double[] shape1Vect = new double[3];
+                double[] shape2Vect = new double[3];
 
-                    double[] temp1 = new double[3];
-                    double[] temp2 = new double[3];
-                    double[] temp3 = new double[3];
-                    double[] xVect = new double[3];
-                    double[] yVect = new double[3];
-                    double[] zVect = new double[3];
+                double[] temp1 = new double[3];
+                double[] temp2 = new double[3];
+                double[] temp3 = new double[3];
+                double[] xVect = new double[3];
+                double[] yVect = new double[3];
+                double[] zVect = new double[3];
 
-                    double angle;
-                    double ca;
-                    double sa;
-                    double ratio;
-                    double[][][] sortBuf = new double[maxLine][2][3];
-                    int[][][] next = new int[maxLine][2][2];
+                double angle;
+                double ca;
+                double sa;
+                double ratio;
+                double[][][] sortBuf = new double[maxLine][2][3];
+                int[][][] next = new int[maxLine][2][2];
 
-                    int path1Len = 0;
-                    int path2Len = 0;
-                    int shape1Len = 0;
-                    int shape2Len = 0;
+                int path1Len = 0;
+                int path2Len = 0;
+                int shape1Len = 0;
+                int shape2Len = 0;
 
-                    boolean circular = false;
-                    double maxlength = ps.getMaxPathSegmentLength().doubleValue();
-                    double dmax;
-                    double d = 0.0;
-                    double len;
-                    int inLineIdx;
-                    int numPath;
-                    boolean invert = ps.isInverted();
+                boolean circular = false;
+                double maxlength = ps.getMaxPathSegmentLength().doubleValue();
+                double dmax;
+                double d = 0.0;
+                double len;
+                int inLineIdx;
+                int numPath;
+                boolean invert = ps.isInverted();
 
-                    int transitions = ps.getTransitionCount();
-                    double slope = ps.getTransitionCurveControl().doubleValue();
-                    double position = ps.getTransitionCurveCenter().doubleValue();
-                    boolean compensate = ps.isCompensation();
-                    boolean endings = path1endSegments.size() == 2 && path2endSegments.size() == 2;
-                    double rotation = ps.getRotation().doubleValue();
+                int transitions = ps.getTransitionCount();
+                double slope = ps.getTransitionCurveControl().doubleValue();
+                double position = ps.getTransitionCurveCenter().doubleValue();
+                boolean compensate = ps.isCompensation();
+                boolean endings = path1endSegments.size() == 2 && path2endSegments.size() == 2;
+                double rotation = ps.getRotation().doubleValue();
 
-                    {
-                        // Read path file 1
-                        if (endings) {
-                            path1.add(0, path1endSegments.get(0));
-                            path1.add(path1endSegments.get(1));
-                        }
-                        for (GData2 p : path1) {
-                            sortBuf[path1Len][0][0] = p.x1p.doubleValue();
-                            sortBuf[path1Len][0][1] = p.y1p.doubleValue();
-                            sortBuf[path1Len][0][2] = p.z1p.doubleValue();
-                            sortBuf[path1Len][1][0] = p.x2p.doubleValue();
-                            sortBuf[path1Len][1][1] = p.y2p.doubleValue();
-                            sortBuf[path1Len][1][2] = p.z2p.doubleValue();
-                            next[path1Len][0][0] = next[path1Len][1][0] = -1;
-                            path1Len++;
-                        }
-                        // Sort path file 1
-                        circular = true;
-                        for (int i = 0; i < path1Len; i++) {
-                            for (int j = 0; j < 2; j++) {
-                                if (next[i][j][0] != -1)
-                                    break;
-                                dmax = 10000000;
-                                for (int k = 0; k < path1Len; k++) {
-                                    if (k != i) {
-                                        for (int l = 0; l < 2; l++) {
-                                            d = manhattan(sortBuf[i][j], sortBuf[k][l]);
-                                            if (d < dmax) {
-                                                dmax = d;
-                                                next[i][j][0] = k;
-                                                next[i][j][1] = l;
-                                            }
-                                            if (d == 0)
-                                                break;
-                                        }
-                                        if (d == 0)
-                                            break;
-                                    }
-                                }
-                                if (dmax > small) {
-                                    next[i][j][0] = -1;
-                                    circular = false;
-                                }
-                            }
-                        }
-                        if (circular) {
-                            next[next[0][0][0]][next[0][0][1]][0] = -1;
-                            next[0][0][0] = -1;
-                        }
-                        inLineIdx = 0;
-                        numPath = 0;
-                        for (int i = 0; i < path1Len; i++) {
-                            for (int j = 0; j < 2; j++) {
-                                int a;
-                                int b;
-                                int c;
-                                int d2;
-                                if (next[i][j][0] == -1) {
-                                    numPath++;
-                                    a = i;
-                                    b = j;
-                                    do {
-                                        set(path1aArr[inLineIdx][0], sortBuf[a][b]);
-                                        set(path1aArr[inLineIdx][1], sortBuf[a][1 - b]);
-                                        inLineIdx++;
-
-                                        d2 = next[a][1 - b][1];
-                                        c = next[a][1 - b][0];
-                                        next[a][1 - b][0] = -2;
-                                        next[a][b][0] = -2;
-                                        b = d2;
-                                        a = c;
-                                    } while (a != -1);
-                                }
-                            }
-                        }
-
-                        path1Len = inLineIdx;
-
-                        if (numPath > 1) {
-                            // NumPath distinct paths found in Path file 1. Unexpected results may happen!
-                        }
-                    }
-                    {
-                        // Read path file 2
-                        if (endings) {
-                            path2.add(0, path2endSegments.get(0));
-                            path2.add(path2endSegments.get(1));
-                        }
-                        for (GData2 p : path2) {
-                            sortBuf[path2Len][0][0] = p.x1p.doubleValue();
-                            sortBuf[path2Len][0][1] = p.y1p.doubleValue();
-                            sortBuf[path2Len][0][2] = p.z1p.doubleValue();
-                            sortBuf[path2Len][1][0] = p.x2p.doubleValue();
-                            sortBuf[path2Len][1][1] = p.y2p.doubleValue();
-                            sortBuf[path2Len][1][2] = p.z2p.doubleValue();
-                            next[path2Len][0][0] = next[path2Len][1][0] = -1;
-                            path2Len++;
-                        }
-                        // Sort path file 2
-                        circular = true;
-                        for (int i = 0; i < path2Len; i++) {
-                            for (int j = 0; j < 2; j++) {
-                                if (next[i][j][0] != -1)
-                                    break;
-                                dmax = 10000000;
-                                for (int k = 0; k < path2Len; k++) {
-                                    if (k != i) {
-                                        for (int l = 0; l < 2; l++) {
-                                            d = manhattan(sortBuf[i][j], sortBuf[k][l]);
-                                            if (d < dmax) {
-                                                dmax = d;
-                                                next[i][j][0] = k;
-                                                next[i][j][1] = l;
-                                            }
-                                            if (d == 0)
-                                                break;
-                                        }
-                                        if (d == 0)
-                                            break;
-                                    }
-                                }
-                                if (dmax > small) {
-                                    next[i][j][0] = -1;
-                                    circular = false;
-                                }
-                            }
-                        }
-                        if (circular) {
-                            next[next[0][0][0]][next[0][0][1]][0] = -1;
-                            next[0][0][0] = -1;
-                        }
-                        inLineIdx = 0;
-                        numPath = 0;
-                        for (int i = 0; i < path2Len; i++) {
-                            for (int j = 0; j < 2; j++) {
-                                int a;
-                                int b;
-                                int c;
-                                int d2;
-                                if (next[i][j][0] == -1) {
-                                    numPath++;
-                                    a = i;
-                                    b = j;
-                                    do {
-                                        set(path2aArr[inLineIdx][0], sortBuf[a][b]);
-                                        set(path2aArr[inLineIdx][1], sortBuf[a][1 - b]);
-                                        inLineIdx++;
-
-                                        d2 = next[a][1 - b][1];
-                                        c = next[a][1 - b][0];
-                                        next[a][1 - b][0] = -2;
-                                        next[a][b][0] = -2;
-                                        b = d2;
-                                        a = c;
-                                    } while (a != -1);
-                                }
-                            }
-                        }
-
-                        path2Len = inLineIdx;
-
-                    }
-
-                    for (GData2 p : shape1) {
-                        shape1Arr[shape1Len][0][0] = p.x1p.doubleValue();
-                        shape1Arr[shape1Len][0][1] = p.y1p.doubleValue();
-                        shape1Arr[shape1Len][0][2] = p.z1p.doubleValue();
-                        shape1Arr[shape1Len][1][0] = p.x2p.doubleValue();
-                        shape1Arr[shape1Len][1][1] = p.y2p.doubleValue();
-                        shape1Arr[shape1Len][1][2] = p.z2p.doubleValue();
-                        shape1Len++;
-                    }
-
-                    for (GData2 p : shape2) {
-                        shape2Arr[shape2Len][0][0] = p.x1p.doubleValue();
-                        shape2Arr[shape2Len][0][1] = p.y1p.doubleValue();
-                        shape2Arr[shape2Len][0][2] = p.z1p.doubleValue();
-                        shape2Arr[shape2Len][1][0] = p.x2p.doubleValue();
-                        shape2Arr[shape2Len][1][1] = p.y2p.doubleValue();
-                        shape2Arr[shape2Len][1][2] = p.z2p.doubleValue();
-                        shape2Len++;
-                    }
-
-                    if (path1Len != path2Len) {
-                        // The two path files do not have the same number of elements!
-                        return;
-                    }
-
-                    if (endings && path1Len < 3 && !circular) {
-                        // Path files must have at least 3 elements to use -e option!
-                        return;
-                    }
-
-                    if (shape1Len != shape2Len) {
-                        // The two shape files do not have the same number of elements!
-                        return;
-                    }
-
-                    // Split long lines
-                    inLineIdx = 0;
-                    for (int i = 0; i < path1Len; i++) {
-                        double[] p1 = new double[3];
-                        double[] p2 = new double[3];
-                        double[] q1 = new double[3];
-                        double[] q2 = new double[3];
-                        double[] delta1 = new double[3];
-                        double[] delta2 = new double[3];
-                        double[] temp = new double[3];
-                        int nsplit1;
-                        int nsplit2;
-
-                        set(p1, path1aArr[i][0]);
-                        set(p2, path1aArr[i][1]);
-
-                        set(q1, path2aArr[i][0]);
-                        set(q2, path2aArr[i][1]);
-
-                        nsplit1 = (int) (dist(p1, p2) / maxlength) + 1;
-                        nsplit2 = (int) (dist(q1, q2) / maxlength) + 1;
-
-                        // don't split endings segments
-                        if (endings) {
-                            if (i == 0 || i == path1Len - 1)
-                                nsplit1 = nsplit2 = 1;
-                        }
-
-                        nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;
-
-                        sub(delta1, p2, p1);
-                        mult(delta1, delta1, 1.0 / nsplit1);
-                        sub(delta2, q2, q1);
-                        mult(delta2, delta2, 1.0 / nsplit1);
-                        for (int k = 0; k < nsplit1; k++) {
-                            mult(temp, delta1, k);
-                            add(path1Arr[inLineIdx][0], p1, temp);
-                            add(path1Arr[inLineIdx][1], path1Arr[inLineIdx][0], delta1);
-                            mult(temp, delta2, k);
-                            add(path2Arr[inLineIdx][0], q1, temp);
-                            add(path2Arr[inLineIdx][1], path2Arr[inLineIdx][0], delta2);
-
-                            inLineIdx++;
-                        }
-                    }
-
-                    path1Len = path2Len = inLineIdx;
-                    set(path1Arr[path1Len][0], path1Arr[path1Len - 1][1]);
-                    set(path1Arr[path1Len][1], path1Arr[path1Len - 1][0]);
-
-                    set(path2Arr[path2Len][0], path2Arr[path2Len - 1][1]);
-                    set(path2Arr[path2Len][1], path2Arr[path2Len - 1][0]);
-
-                    len = dist(shape1Arr[0][0], shape1Arr[0][1]);
-
-                    for (int i = 1; i < shape1Len; i++) {
-                        sub(shape1Arr[i][0], shape1Arr[i][0], shape1Arr[0][0]);
-                        mult(shape1Arr[i][0], shape1Arr[i][0], 1 / len);
-                        sub(shape1Arr[i][1], shape1Arr[i][1], shape1Arr[0][0]);
-                        mult(shape1Arr[i][1], shape1Arr[i][1], 1 / len);
-                    }
-                    sub(shape1Vect, shape1Arr[0][1], shape1Arr[0][0]);
-
-                    angle = Math.atan2(-shape1Vect[0], -shape1Vect[1]);
-
-                    sa = Math.sin(angle);
-                    ca = Math.cos(angle);
-
-                    for (int i = 1; i < shape1Len; i++) {
-                        shape1Arr[i - 1][0][0] = shape1Arr[i][0][0] * ca - shape1Arr[i][0][1] * sa;
-                        shape1Arr[i - 1][0][1] = shape1Arr[i][0][0] * sa + shape1Arr[i][0][1] * ca;
-                        shape1Arr[i - 1][1][0] = shape1Arr[i][1][0] * ca - shape1Arr[i][1][1] * sa;
-                        shape1Arr[i - 1][1][1] = shape1Arr[i][1][0] * sa + shape1Arr[i][1][1] * ca;
-                        shape1Arr[i - 1][0][2] = shape1Arr[i][0][2];
-                        shape1Arr[i - 1][1][2] = shape1Arr[i][1][2];
-                        if (invert) {
-                            shape1Arr[i - 1][0][0] = -shape1Arr[i - 1][0][0];
-                            shape1Arr[i - 1][1][0] = -shape1Arr[i - 1][1][0];
-                        }
-                    }
-                    shape1Len--;
-
-                    // Normalize shape 2
-
-                    len = dist(shape2Arr[0][0], shape2Arr[0][1]);
-
-                    for (int i = 1; i < shape2Len; i++) {
-                        sub(shape2Arr[i][0], shape2Arr[i][0], shape2Arr[0][0]);
-                        mult(shape2Arr[i][0], shape2Arr[i][0], 1 / len);
-                        sub(shape2Arr[i][1], shape2Arr[i][1], shape2Arr[0][0]);
-                        mult(shape2Arr[i][1], shape2Arr[i][1], 1 / len);
-                    }
-                    sub(shape2Vect, shape2Arr[0][1], shape2Arr[0][0]);
-
-                    angle = Math.atan2(-shape2Vect[0], -shape2Vect[1]);
-
-                    sa = Math.sin(angle);
-                    ca = Math.cos(angle);
-
-                    for (int i = 1; i < shape2Len; i++) {
-                        shape2Arr[i - 1][0][0] = shape2Arr[i][0][0] * ca - shape2Arr[i][0][1] * sa;
-                        shape2Arr[i - 1][0][1] = shape2Arr[i][0][0] * sa + shape2Arr[i][0][1] * ca;
-                        shape2Arr[i - 1][1][0] = shape2Arr[i][1][0] * ca - shape2Arr[i][1][1] * sa;
-                        shape2Arr[i - 1][1][1] = shape2Arr[i][1][0] * sa + shape2Arr[i][1][1] * ca;
-                        shape2Arr[i - 1][0][2] = shape2Arr[i][0][2];
-                        shape2Arr[i - 1][1][2] = shape2Arr[i][1][2];
-                        if (invert) {
-                            shape2Arr[i - 1][0][0] = -shape2Arr[i - 1][0][0];
-                            shape2Arr[i - 1][1][0] = -shape2Arr[i - 1][1][0];
-                        }
-
-                    }
-
-                    // Extrusion
-                    // Initialize current shape
-                    if (circular)
-                        endings = false;
-
+                {
+                    // Read path file 1
                     if (endings) {
-                        double angle2 = pathLocalBasis(0, 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                        angle = pathLocalBasis(0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
-                        if (angle2 > 90) {
-                            mult(xVect, xVect, -1);
-                            mult(zVect, zVect, -1);
+                        path1.add(0, path1endSegments.get(0));
+                        path1.add(path1endSegments.get(1));
+                    }
+                    for (GData2 p : path1) {
+                        sortBuf[path1Len][0][0] = p.x1p.doubleValue();
+                        sortBuf[path1Len][0][1] = p.y1p.doubleValue();
+                        sortBuf[path1Len][0][2] = p.z1p.doubleValue();
+                        sortBuf[path1Len][1][0] = p.x2p.doubleValue();
+                        sortBuf[path1Len][1][1] = p.y2p.doubleValue();
+                        sortBuf[path1Len][1][2] = p.z2p.doubleValue();
+                        next[path1Len][0][0] = next[path1Len][1][0] = -1;
+                        path1Len++;
+                    }
+                    // Sort path file 1
+                    circular = true;
+                    for (int i = 0; i < path1Len; i++) {
+                        for (int j = 0; j < 2; j++) {
+                            if (next[i][j][0] != -1)
+                                break;
+                            dmax = 10000000;
+                            for (int k = 0; k < path1Len; k++) {
+                                if (k != i) {
+                                    for (int l = 0; l < 2; l++) {
+                                        d = manhattan(sortBuf[i][j], sortBuf[k][l]);
+                                        if (d < dmax) {
+                                            dmax = d;
+                                            next[i][j][0] = k;
+                                            next[i][j][1] = l;
+                                        }
+                                        if (d == 0)
+                                            break;
+                                    }
+                                    if (d == 0)
+                                        break;
+                                }
+                            }
+                            if (dmax > small) {
+                                next[i][j][0] = -1;
+                                circular = false;
+                            }
+                        }
+                    }
+                    if (circular) {
+                        next[next[0][0][0]][next[0][0][1]][0] = -1;
+                        next[0][0][0] = -1;
+                    }
+                    inLineIdx = 0;
+                    numPath = 0;
+                    for (int i = 0; i < path1Len; i++) {
+                        for (int j = 0; j < 2; j++) {
+                            int a;
+                            int b;
+                            int c;
+                            int d2;
+                            if (next[i][j][0] == -1) {
+                                numPath++;
+                                a = i;
+                                b = j;
+                                do {
+                                    set(path1aArr[inLineIdx][0], sortBuf[a][b]);
+                                    set(path1aArr[inLineIdx][1], sortBuf[a][1 - b]);
+                                    inLineIdx++;
+
+                                    d2 = next[a][1 - b][1];
+                                    c = next[a][1 - b][0];
+                                    next[a][1 - b][0] = -2;
+                                    next[a][b][0] = -2;
+                                    b = d2;
+                                    a = c;
+                                } while (a != -1);
+                            }
+                        }
+                    }
+
+                    path1Len = inLineIdx;
+
+                    if (numPath > 1) {
+                        // NumPath distinct paths found in Path file 1. Unexpected results may happen!
+                    }
+                }
+                {
+                    // Read path file 2
+                    if (endings) {
+                        path2.add(0, path2endSegments.get(0));
+                        path2.add(path2endSegments.get(1));
+                    }
+                    for (GData2 p : path2) {
+                        sortBuf[path2Len][0][0] = p.x1p.doubleValue();
+                        sortBuf[path2Len][0][1] = p.y1p.doubleValue();
+                        sortBuf[path2Len][0][2] = p.z1p.doubleValue();
+                        sortBuf[path2Len][1][0] = p.x2p.doubleValue();
+                        sortBuf[path2Len][1][1] = p.y2p.doubleValue();
+                        sortBuf[path2Len][1][2] = p.z2p.doubleValue();
+                        next[path2Len][0][0] = next[path2Len][1][0] = -1;
+                        path2Len++;
+                    }
+                    // Sort path file 2
+                    circular = true;
+                    for (int i = 0; i < path2Len; i++) {
+                        for (int j = 0; j < 2; j++) {
+                            if (next[i][j][0] != -1)
+                                break;
+                            dmax = 10000000;
+                            for (int k = 0; k < path2Len; k++) {
+                                if (k != i) {
+                                    for (int l = 0; l < 2; l++) {
+                                        d = manhattan(sortBuf[i][j], sortBuf[k][l]);
+                                        if (d < dmax) {
+                                            dmax = d;
+                                            next[i][j][0] = k;
+                                            next[i][j][1] = l;
+                                        }
+                                        if (d == 0)
+                                            break;
+                                    }
+                                    if (d == 0)
+                                        break;
+                                }
+                            }
+                            if (dmax > small) {
+                                next[i][j][0] = -1;
+                                circular = false;
+                            }
+                        }
+                    }
+                    if (circular) {
+                        next[next[0][0][0]][next[0][0][1]][0] = -1;
+                        next[0][0][0] = -1;
+                    }
+                    inLineIdx = 0;
+                    numPath = 0;
+                    for (int i = 0; i < path2Len; i++) {
+                        for (int j = 0; j < 2; j++) {
+                            int a;
+                            int b;
+                            int c;
+                            int d2;
+                            if (next[i][j][0] == -1) {
+                                numPath++;
+                                a = i;
+                                b = j;
+                                do {
+                                    set(path2aArr[inLineIdx][0], sortBuf[a][b]);
+                                    set(path2aArr[inLineIdx][1], sortBuf[a][1 - b]);
+                                    inLineIdx++;
+
+                                    d2 = next[a][1 - b][1];
+                                    c = next[a][1 - b][0];
+                                    next[a][1 - b][0] = -2;
+                                    next[a][b][0] = -2;
+                                    b = d2;
+                                    a = c;
+                                } while (a != -1);
+                            }
+                        }
+                    }
+
+                    path2Len = inLineIdx;
+
+                }
+
+                for (GData2 p : shape1) {
+                    shape1Arr[shape1Len][0][0] = p.x1p.doubleValue();
+                    shape1Arr[shape1Len][0][1] = p.y1p.doubleValue();
+                    shape1Arr[shape1Len][0][2] = p.z1p.doubleValue();
+                    shape1Arr[shape1Len][1][0] = p.x2p.doubleValue();
+                    shape1Arr[shape1Len][1][1] = p.y2p.doubleValue();
+                    shape1Arr[shape1Len][1][2] = p.z2p.doubleValue();
+                    shape1Len++;
+                }
+
+                for (GData2 p : shape2) {
+                    shape2Arr[shape2Len][0][0] = p.x1p.doubleValue();
+                    shape2Arr[shape2Len][0][1] = p.y1p.doubleValue();
+                    shape2Arr[shape2Len][0][2] = p.z1p.doubleValue();
+                    shape2Arr[shape2Len][1][0] = p.x2p.doubleValue();
+                    shape2Arr[shape2Len][1][1] = p.y2p.doubleValue();
+                    shape2Arr[shape2Len][1][2] = p.z2p.doubleValue();
+                    shape2Len++;
+                }
+
+                if (path1Len != path2Len) {
+                    // The two path files do not have the same number of elements!
+                    return;
+                }
+
+                if (endings && path1Len < 3 && !circular) {
+                    // Path files must have at least 3 elements to use -e option!
+                    return;
+                }
+
+                if (shape1Len != shape2Len) {
+                    // The two shape files do not have the same number of elements!
+                    return;
+                }
+
+                // Split long lines
+                inLineIdx = 0;
+                for (int i = 0; i < path1Len; i++) {
+                    double[] p1 = new double[3];
+                    double[] p2 = new double[3];
+                    double[] q1 = new double[3];
+                    double[] q2 = new double[3];
+                    double[] delta1 = new double[3];
+                    double[] delta2 = new double[3];
+                    double[] temp = new double[3];
+                    int nsplit1;
+                    int nsplit2;
+
+                    set(p1, path1aArr[i][0]);
+                    set(p2, path1aArr[i][1]);
+
+                    set(q1, path2aArr[i][0]);
+                    set(q2, path2aArr[i][1]);
+
+                    nsplit1 = (int) (dist(p1, p2) / maxlength) + 1;
+                    nsplit2 = (int) (dist(q1, q2) / maxlength) + 1;
+
+                    // don't split endings segments
+                    if (endings) {
+                        if (i == 0 || i == path1Len - 1)
+                            nsplit1 = nsplit2 = 1;
+                    }
+
+                    nsplit1 = nsplit1 > nsplit2 ? nsplit1 : nsplit2;
+
+                    sub(delta1, p2, p1);
+                    mult(delta1, delta1, 1.0 / nsplit1);
+                    sub(delta2, q2, q1);
+                    mult(delta2, delta2, 1.0 / nsplit1);
+                    for (int k = 0; k < nsplit1; k++) {
+                        mult(temp, delta1, k);
+                        add(path1Arr[inLineIdx][0], p1, temp);
+                        add(path1Arr[inLineIdx][1], path1Arr[inLineIdx][0], delta1);
+                        mult(temp, delta2, k);
+                        add(path2Arr[inLineIdx][0], q1, temp);
+                        add(path2Arr[inLineIdx][1], path2Arr[inLineIdx][0], delta2);
+
+                        inLineIdx++;
+                    }
+                }
+
+                path1Len = path2Len = inLineIdx;
+                set(path1Arr[path1Len][0], path1Arr[path1Len - 1][1]);
+                set(path1Arr[path1Len][1], path1Arr[path1Len - 1][0]);
+
+                set(path2Arr[path2Len][0], path2Arr[path2Len - 1][1]);
+                set(path2Arr[path2Len][1], path2Arr[path2Len - 1][0]);
+
+                len = dist(shape1Arr[0][0], shape1Arr[0][1]);
+
+                for (int i = 1; i < shape1Len; i++) {
+                    sub(shape1Arr[i][0], shape1Arr[i][0], shape1Arr[0][0]);
+                    mult(shape1Arr[i][0], shape1Arr[i][0], 1 / len);
+                    sub(shape1Arr[i][1], shape1Arr[i][1], shape1Arr[0][0]);
+                    mult(shape1Arr[i][1], shape1Arr[i][1], 1 / len);
+                }
+                sub(shape1Vect, shape1Arr[0][1], shape1Arr[0][0]);
+
+                angle = Math.atan2(-shape1Vect[0], -shape1Vect[1]);
+
+                sa = Math.sin(angle);
+                ca = Math.cos(angle);
+
+                for (int i = 1; i < shape1Len; i++) {
+                    shape1Arr[i - 1][0][0] = shape1Arr[i][0][0] * ca - shape1Arr[i][0][1] * sa;
+                    shape1Arr[i - 1][0][1] = shape1Arr[i][0][0] * sa + shape1Arr[i][0][1] * ca;
+                    shape1Arr[i - 1][1][0] = shape1Arr[i][1][0] * ca - shape1Arr[i][1][1] * sa;
+                    shape1Arr[i - 1][1][1] = shape1Arr[i][1][0] * sa + shape1Arr[i][1][1] * ca;
+                    shape1Arr[i - 1][0][2] = shape1Arr[i][0][2];
+                    shape1Arr[i - 1][1][2] = shape1Arr[i][1][2];
+                    if (invert) {
+                        shape1Arr[i - 1][0][0] = -shape1Arr[i - 1][0][0];
+                        shape1Arr[i - 1][1][0] = -shape1Arr[i - 1][1][0];
+                    }
+                }
+                shape1Len--;
+
+                // Normalize shape 2
+
+                len = dist(shape2Arr[0][0], shape2Arr[0][1]);
+
+                for (int i = 1; i < shape2Len; i++) {
+                    sub(shape2Arr[i][0], shape2Arr[i][0], shape2Arr[0][0]);
+                    mult(shape2Arr[i][0], shape2Arr[i][0], 1 / len);
+                    sub(shape2Arr[i][1], shape2Arr[i][1], shape2Arr[0][0]);
+                    mult(shape2Arr[i][1], shape2Arr[i][1], 1 / len);
+                }
+                sub(shape2Vect, shape2Arr[0][1], shape2Arr[0][0]);
+
+                angle = Math.atan2(-shape2Vect[0], -shape2Vect[1]);
+
+                sa = Math.sin(angle);
+                ca = Math.cos(angle);
+
+                for (int i = 1; i < shape2Len; i++) {
+                    shape2Arr[i - 1][0][0] = shape2Arr[i][0][0] * ca - shape2Arr[i][0][1] * sa;
+                    shape2Arr[i - 1][0][1] = shape2Arr[i][0][0] * sa + shape2Arr[i][0][1] * ca;
+                    shape2Arr[i - 1][1][0] = shape2Arr[i][1][0] * ca - shape2Arr[i][1][1] * sa;
+                    shape2Arr[i - 1][1][1] = shape2Arr[i][1][0] * sa + shape2Arr[i][1][1] * ca;
+                    shape2Arr[i - 1][0][2] = shape2Arr[i][0][2];
+                    shape2Arr[i - 1][1][2] = shape2Arr[i][1][2];
+                    if (invert) {
+                        shape2Arr[i - 1][0][0] = -shape2Arr[i - 1][0][0];
+                        shape2Arr[i - 1][1][0] = -shape2Arr[i - 1][1][0];
+                    }
+
+                }
+
+                // Extrusion
+                // Initialize current shape
+                if (circular)
+                    endings = false;
+
+                if (endings) {
+                    double angle2 = pathLocalBasis(0, 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                    angle = pathLocalBasis(0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                    if (angle2 > 90) {
+                        mult(xVect, xVect, -1);
+                        mult(zVect, zVect, -1);
+                    }
+                } else {
+                    angle = pathLocalBasis(circular ? path1Len - 1 : 0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                }
+                // compensate sharp angles
+                if (compensate) {
+                    mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
+                }
+
+                // Calculate next transformed shape
+                for (int j = 0; j < shape1Len; j++) {
+                    for (int k = 0; k < 2; k++) {
+                        mult(nxtShape[j][k], xVect, shape1Arr[j][k][0]);
+                        mult(temp1, yVect, shape1Arr[j][k][1]);
+                        add(nxtShape[j][k], nxtShape[j][k], temp1);
+                        mult(temp1, zVect, shape1Arr[j][k][2]);
+                        add(nxtShape[j][k], nxtShape[j][k], temp1);
+                        if (endings) {
+                            add(nxtShape[j][k], nxtShape[j][k], path1Arr[1][0]);
+                        } else {
+                            add(nxtShape[j][k], nxtShape[j][k], path1Arr[0][0]);
+                        }
+                    }
+
+                }
+
+                int start;
+                int end;
+                start = 0;
+                end = path1Len;
+                if (endings) {
+                    start++;
+                    end--;
+                }
+                for (int i = start; i < end; i++) {
+
+                    // Transfer old next shape to current.
+                    for (int j = 0; j < shape1Len; j++) {
+                        set(curShape[j][0], nxtShape[j][0]);
+                        set(curShape[j][1], nxtShape[j][1]);
+                    }
+
+                    if (i == end - 1) {
+                        if (circular) {
+                            angle = pathLocalBasis(i, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                        } else {
+                            if (endings) {
+                                double angle2 = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                angle = pathLocalBasis(i + 2, i + 2, xVect, yVect, zVect, path1Arr, path2Arr);
+                                if (angle2 < 90) {
+                                    // in that case the local
+                                    // base is mirrorred...
+                                    sub(xVect, nullv, xVect);
+                                    sub(zVect, nullv, zVect);
+                                }
+                            } else {
+                                angle = pathLocalBasis(i + 1, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
+                                // in that case the local base
+                                // is mirrorred...
+                                sub(xVect, nullv, xVect);
+                                sub(zVect, nullv, zVect);
+                            }
                         }
                     } else {
-                        angle = pathLocalBasis(circular ? path1Len - 1 : 0, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                        angle = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
                     }
+
                     // compensate sharp angles
                     if (compensate) {
                         mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
                     }
 
-                    // Calculate next transformed shape
+                    {
+                        double x;
+                        double j = (i + 1.0 - start) * transitions % (2 * (end - start));
+                        x = 1.0 * j / (end - start);
+                        if (x > 1.0)
+                            x = 2.0 - x;
+                        ratio = sigmoid(x, slope, position);
+                    }
+
+                    double rotangle = rotation * pi / 180.0 * ((i + 1.0) / path1Len);
+
+                    sa = Math.sin(rotangle);
+                    ca = Math.cos(rotangle);
+
                     for (int j = 0; j < shape1Len; j++) {
                         for (int k = 0; k < 2; k++) {
-                            mult(nxtShape[j][k], xVect, shape1Arr[j][k][0]);
-                            mult(temp1, yVect, shape1Arr[j][k][1]);
-                            add(nxtShape[j][k], nxtShape[j][k], temp1);
-                            mult(temp1, zVect, shape1Arr[j][k][2]);
-                            add(nxtShape[j][k], nxtShape[j][k], temp1);
-                            if (endings) {
-                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[1][0]);
-                            } else {
-                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[0][0]);
-                            }
-                        }
+                            temp1[0] = shape1Arr[j][k][0] * ca - shape1Arr[j][k][1] * sa;
+                            temp1[1] = shape1Arr[j][k][0] * sa + shape1Arr[j][k][1] * ca;
+                            temp2[0] = shape2Arr[j][k][0] * ca - shape2Arr[j][k][1] * sa;
+                            temp2[1] = shape2Arr[j][k][0] * sa + shape2Arr[j][k][1] * ca;
 
+                            mult(nxtShape[j][k], xVect, temp1[0] * (1.0 - ratio) + temp2[0] * ratio);
+                            mult(temp3, yVect, temp1[1] * (1.0 - ratio) + temp2[1] * ratio);
+                            add(nxtShape[j][k], nxtShape[j][k], temp3);
+                            mult(temp3, zVect, shape1Arr[j][k][2] * (1.0 - ratio) + shape2Arr[j][k][2] * ratio);
+                            add(nxtShape[j][k], nxtShape[j][k], temp3);
+                            add(nxtShape[j][k], nxtShape[j][k], path1Arr[i + 1][0]);
+                        }
                     }
-
-                    int start;
-                    int end;
-                    start = 0;
-                    end = path1Len;
-                    if (endings) {
-                        start++;
-                        end--;
-                    }
-                    for (int i = start; i < end; i++) {
-
-                        // Transfer old next shape to current.
-                        for (int j = 0; j < shape1Len; j++) {
-                            set(curShape[j][0], nxtShape[j][0]);
-                            set(curShape[j][1], nxtShape[j][1]);
-                        }
-
-                        if (i == end - 1) {
-                            if (circular) {
-                                angle = pathLocalBasis(i, 0, xVect, yVect, zVect, path1Arr, path2Arr);
+                    // Generate tri/quad sheet
+                    for (int j = 0; j < shape1Len; j++) {
+                        if (dist(curShape[j][0], curShape[j][1]) < vertmerge) {
+                            if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge || dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                // Degenerated. Nothing to output
+                                continue;
                             } else {
-                                if (endings) {
-                                    double angle2 = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                                    angle = pathLocalBasis(i + 2, i + 2, xVect, yVect, zVect, path1Arr, path2Arr);
-                                    if (angle2 < 90) {
-                                        // in that case the local
-                                        // base is mirrorred...
-                                        sub(xVect, nullv, xVect);
-                                        sub(zVect, nullv, zVect);
-                                    }
-                                } else {
-                                    angle = pathLocalBasis(i + 1, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                                    // in that case the local base
-                                    // is mirrorred...
-                                    sub(xVect, nullv, xVect);
-                                    sub(zVect, nullv, zVect);
-                                }
-                            }
-                        } else {
-                            angle = pathLocalBasis(i, i + 1, xVect, yVect, zVect, path1Arr, path2Arr);
-                        }
-
-                        // compensate sharp angles
-                        if (compensate) {
-                            mult(xVect, xVect, 1 / Math.cos(angle * pi / 360));
-                        }
-
-                        {
-                            double x;
-                            double j = (i + 1.0 - start) * transitions % (2 * (end - start));
-                            x = 1.0 * j / (end - start);
-                            if (x > 1.0)
-                                x = 2.0 - x;
-                            ratio = sigmoid(x, slope, position);
-                        }
-
-                        double rotangle = rotation * pi / 180.0 * ((i + 1.0) / path1Len);
-
-                        sa = Math.sin(rotangle);
-                        ca = Math.cos(rotangle);
-
-                        for (int j = 0; j < shape1Len; j++) {
-                            for (int k = 0; k < 2; k++) {
-                                temp1[0] = shape1Arr[j][k][0] * ca - shape1Arr[j][k][1] * sa;
-                                temp1[1] = shape1Arr[j][k][0] * sa + shape1Arr[j][k][1] * ca;
-                                temp2[0] = shape2Arr[j][k][0] * ca - shape2Arr[j][k][1] * sa;
-                                temp2[1] = shape2Arr[j][k][0] * sa + shape2Arr[j][k][1] * ca;
-
-                                mult(nxtShape[j][k], xVect, temp1[0] * (1.0 - ratio) + temp2[0] * ratio);
-                                mult(temp3, yVect, temp1[1] * (1.0 - ratio) + temp2[1] * ratio);
-                                add(nxtShape[j][k], nxtShape[j][k], temp3);
-                                mult(temp3, zVect, shape1Arr[j][k][2] * (1.0 - ratio) + shape2Arr[j][k][2] * ratio);
-                                add(nxtShape[j][k], nxtShape[j][k], temp3);
-                                add(nxtShape[j][k], nxtShape[j][k], path1Arr[i + 1][0]);
+                                Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
+                                Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                                newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
+                                continue;
                             }
                         }
-                        // Generate tri/quad sheet
-                        for (int j = 0; j < shape1Len; j++) {
-                            if (dist(curShape[j][0], curShape[j][1]) < vertmerge) {
-                                if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge || dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
-                                    // Degenerated. Nothing to output
-                                    continue;
-                                } else {
-                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                    Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                    newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
-                                    continue;
-                                }
-                            }
-                            if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge) {
-                                if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
-                                    // Degenerated. Nothing to output
-                                    continue;
-                                } else {
-                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                    Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
-                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                    newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
-                                    continue;
-                                }
-                            }
-                            if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge) {
-                                if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
-                                    // Degenerated. Nothing to output
-                                    continue;
-                                } else {
-                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                    Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
-                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                    newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
-                                    continue;
-                                }
-                            }
-                            if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                        if (dist(nxtShape[j][0], nxtShape[j][1]) < vertmerge) {
+                            if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge || dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                // Degenerated. Nothing to output
+                                continue;
+                            } else {
                                 Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
                                 Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
                                 Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
                                 newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
                                 continue;
                             }
-                            if (triAngle(curShape[j][0], nxtShape[j][0], nxtShape[j][1], curShape[j][1]) < smallAngle) {
+                        }
+                        if (dist(curShape[j][0], nxtShape[j][0]) < vertmerge) {
+                            if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                                // Degenerated. Nothing to output
+                                continue;
+                            } else {
                                 Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
                                 Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
                                 Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                Vertex v4 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                newQuads.add(new GData4(v1, v2, v3, v4, View.DUMMY_REFERENCE, bodyColour));
-                            } else {
-                                {
-                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                    Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
-                                    newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
-                                }
-                                {
-                                    Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
-                                    Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
-                                    Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
-                                    newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
-                                }
+                                newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
+                                continue;
+                            }
+                        }
+                        if (dist(nxtShape[j][1], curShape[j][1]) < vertmerge) {
+                            Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                            Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
+                            Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                            newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
+                            continue;
+                        }
+                        if (triAngle(curShape[j][0], nxtShape[j][0], nxtShape[j][1], curShape[j][1]) < smallAngle) {
+                            Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                            Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
+                            Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
+                            Vertex v4 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                            newQuads.add(new GData4(v1, v2, v3, v4, View.DUMMY_REFERENCE, bodyColour));
+                        } else {
+                            {
+                                Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                Vertex v2 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
+                                Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][0][0]), new BigDecimal(nxtShape[j][0][1]), new BigDecimal(nxtShape[j][0][2]));
+                                newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
+                            }
+                            {
+                                Vertex v1 = new Vertex(new BigDecimal(curShape[j][0][0]), new BigDecimal(curShape[j][0][1]), new BigDecimal(curShape[j][0][2]));
+                                Vertex v2 = new Vertex(new BigDecimal(curShape[j][1][0]), new BigDecimal(curShape[j][1][1]), new BigDecimal(curShape[j][1][2]));
+                                Vertex v3 = new Vertex(new BigDecimal(nxtShape[j][1][0]), new BigDecimal(nxtShape[j][1][1]), new BigDecimal(nxtShape[j][1][2]));
+                                newTriangles.add(new GData3(v1, v2, v3, View.DUMMY_REFERENCE, bodyColour, true));
                             }
                         }
                     }

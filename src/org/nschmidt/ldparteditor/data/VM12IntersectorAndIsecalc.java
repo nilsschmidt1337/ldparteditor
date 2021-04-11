@@ -429,37 +429,34 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     if (j == chunks - 1) {
                                         end[0] = iterations;
                                     }
-                                    threads[j] = new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            for (int k = start[0]; k < end[0]; k++) {
-                                                monitor.subTask(counter2.toString() + surfCount);
-                                                GData o = originObjects.get(k);
-                                                /* Check if the monitor has been canceled */
-                                                if (monitor.isCanceled()) {
-                                                    isCancelled[0] = 1;
-                                                    return;
-                                                }
-                                                counter2.incrementAndGet();
-                                                IntersectionInfoWithColour ii = getIntersectionInfo(o, targetSurfs, ins);
-                                                if (ii != null) {
-                                                    intersectionSet.add(ii);
-                                                    switch (o.type()) {
-                                                    case 2:
-                                                        linesToDelete.add((GData2) o);
-                                                        break;
-                                                    case 3:
-                                                        trisToDelete.add((GData3) o);
-                                                        break;
-                                                    case 4:
-                                                        quadsToDelete.add((GData4) o);
-                                                        break;
-                                                    case 5:
-                                                        condlinesToDelete.add((GData5) o);
-                                                        break;
-                                                    default:
-                                                        break;
-                                                    }
+                                    threads[j] = new Thread(() -> {
+                                        for (int k = start[0]; k < end[0]; k++) {
+                                            monitor.subTask(counter2.toString() + surfCount);
+                                            GData o = originObjects.get(k);
+                                            /* Check if the monitor has been canceled */
+                                            if (monitor.isCanceled()) {
+                                                isCancelled[0] = 1;
+                                                return;
+                                            }
+                                            counter2.incrementAndGet();
+                                            IntersectionInfoWithColour ii = getIntersectionInfo(o, targetSurfs, ins);
+                                            if (ii != null) {
+                                                intersectionSet.add(ii);
+                                                switch (o.type()) {
+                                                case 2:
+                                                    linesToDelete.add((GData2) o);
+                                                    break;
+                                                case 3:
+                                                    trisToDelete.add((GData3) o);
+                                                    break;
+                                                case 4:
+                                                    quadsToDelete.add((GData4) o);
+                                                    break;
+                                                case 5:
+                                                    condlinesToDelete.add((GData5) o);
+                                                    break;
+                                                default:
+                                                    break;
                                                 }
                                             }
                                         }
@@ -517,26 +514,23 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                     if (j == chunks - 1) {
                                         end[0] = iterations;
                                     }
-                                    threads[j] = new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            for (int k = start[0]; k < end[0]; k++) {
-                                                monitor.subTask(counter2.toString() + maxIterations);
-                                                IntersectionInfoWithColour info = intersections.get(k);
-                                                if (monitor.isCanceled()) {
-                                                    isCancelled[0] = 2;
-                                                    return;
-                                                }
-                                                counter2.incrementAndGet();
-
-                                                final ArrayList<Vector3dd> av = info.getAllVertices();
-                                                final ArrayList<GColour> cols = info.getColours();
-                                                final ArrayList<Integer> ts = info.getIsLine();
-
-                                                newTriangles.addAll(MathHelper.triangulatePointGroups(cols, av, ts, View.DUMMY_REFERENCE, linkedDatFile));
-                                                newLines.addAll(MathHelper.triangulatePointGroups2(cols, av, ts, View.DUMMY_REFERENCE, linkedDatFile));
-                                                newCondlines.addAll(MathHelper.triangulatePointGroups5(cols, av, ts, View.DUMMY_REFERENCE, linkedDatFile));
+                                    threads[j] = new Thread(() -> {
+                                        for (int k = start[0]; k < end[0]; k++) {
+                                            monitor.subTask(counter2.toString() + maxIterations);
+                                            IntersectionInfoWithColour info = intersections.get(k);
+                                            if (monitor.isCanceled()) {
+                                                isCancelled[0] = 2;
+                                                return;
                                             }
+                                            counter2.incrementAndGet();
+
+                                            final ArrayList<Vector3dd> av = info.getAllVertices();
+                                            final ArrayList<GColour> cols = info.getColours();
+                                            final ArrayList<Integer> ts = info.getIsLine();
+
+                                            newTriangles.addAll(MathHelper.triangulatePointGroups(cols, av, ts, View.DUMMY_REFERENCE, linkedDatFile));
+                                            newLines.addAll(MathHelper.triangulatePointGroups2(cols, av, ts, View.DUMMY_REFERENCE, linkedDatFile));
+                                            newCondlines.addAll(MathHelper.triangulatePointGroups5(cols, av, ts, View.DUMMY_REFERENCE, linkedDatFile));
                                         }
                                     });
                                     threads[j].start();
@@ -1887,58 +1881,55 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                 for (int j = 0; j < chunks; ++j) {
                                     final int[] start = new int[] { j };
-                                    colourThreads[j] = new Thread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            int counter = start[0];
-                                            for (int i = 0; i < vc; i++) {
-                                                if (counter == 0) {
-                                                    counter = chunks;
-                                                    counter2.incrementAndGet();
-                                                    if (monitor.isCanceled()) {
-                                                        return;
-                                                    }
-                                                    Vector3dd v1 = colourVertices.get(i);
-                                                    for (int j = 0; j < vc2; j++) {
-                                                        boolean intersect = false;
-                                                        Vector3dd v2 = fixedVertices.get(j);
-                                                        Vector3d sp = Vector3dd.sub(v2, v1);
-                                                        Vector3d dir = new Vector3d();
-                                                        BigDecimal len = sp.normalise(dir);
-                                                        int lc = fixedLinesToParse.size();
-                                                        for (int k = 0; k < lc; k++) {
-                                                            ArrayList<Vector3dd> l = fixedLinesToParse.get(k);
-                                                            Vector3dd v3 = l.get(0);
-                                                            Vector3dd v4 = l.get(1);
-                                                            if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4) && intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, v3, v4)) {
-                                                                intersect = true;
-                                                                break;
-                                                            }
+                                    colourThreads[j] = new Thread(() -> {
+                                        int counter = start[0];
+                                        for (int i = 0; i < vc; i++) {
+                                            if (counter == 0) {
+                                                counter = chunks;
+                                                counter2.incrementAndGet();
+                                                if (monitor.isCanceled()) {
+                                                    return;
+                                                }
+                                                Vector3dd v1 = colourVertices.get(i);
+                                                for (int vi = 0; vi < vc2; vi++) {
+                                                    boolean intersect = false;
+                                                    Vector3dd v2 = fixedVertices.get(vi);
+                                                    Vector3d sp = Vector3dd.sub(v2, v1);
+                                                    Vector3d dir = new Vector3d();
+                                                    BigDecimal len = sp.normalise(dir);
+                                                    int lc = fixedLinesToParse.size();
+                                                    for (int k = 0; k < lc; k++) {
+                                                        ArrayList<Vector3dd> l = fixedLinesToParse.get(k);
+                                                        Vector3dd v3 = l.get(0);
+                                                        Vector3dd v4 = l.get(1);
+                                                        if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4) && intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, v3, v4)) {
+                                                            intersect = true;
+                                                            break;
                                                         }
-                                                        if (intersect) {
-                                                            continue;
-                                                        } else {
-                                                            BigDecimal dist = Vector3dd.manhattan(v1, v2);
-                                                            if (dist.compareTo(minDist) > 0) {
-                                                                if (vertexColour.containsKey(v1) && vertexColour.get(v1) != null) {
-                                                                    ArrayList<Vector3dd> nl = new ArrayList<>();
-                                                                    nl.add(v1);
-                                                                    nl.add(v2);
-                                                                    colours2.put(nl, vertexColour.get(v1));
-                                                                    colourLines2.add(nl);
-                                                                } else if (vertexColour.containsKey(v2) && vertexColour.get(v2) != null) {
-                                                                    ArrayList<Vector3dd> nl = new ArrayList<>();
-                                                                    nl.add(v1);
-                                                                    nl.add(v2);
-                                                                    colours2.put(nl, vertexColour.get(v2));
-                                                                    colourLines2.add(nl);
-                                                                }
+                                                    }
+                                                    if (intersect) {
+                                                        continue;
+                                                    } else {
+                                                        BigDecimal dist = Vector3dd.manhattan(v1, v2);
+                                                        if (dist.compareTo(minDist) > 0) {
+                                                            if (vertexColour.containsKey(v1) && vertexColour.get(v1) != null) {
+                                                                ArrayList<Vector3dd> nl = new ArrayList<>();
+                                                                nl.add(v1);
+                                                                nl.add(v2);
+                                                                colours2.put(nl, vertexColour.get(v1));
+                                                                colourLines2.add(nl);
+                                                            } else if (vertexColour.containsKey(v2) && vertexColour.get(v2) != null) {
+                                                                ArrayList<Vector3dd> nl = new ArrayList<>();
+                                                                nl.add(v1);
+                                                                nl.add(v2);
+                                                                colours2.put(nl, vertexColour.get(v2));
+                                                                colourLines2.add(nl);
                                                             }
                                                         }
                                                     }
                                                 }
-                                                counter -= 1;
                                             }
+                                            counter -= 1;
                                         }
                                     });
                                     colourThreads[j].start();
@@ -2031,51 +2022,48 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                             final int vc = fixedVertices2.size();
                             final String vertCount = "/" + vc + ")"; //$NON-NLS-1$ //$NON-NLS-2$
 
-                            threads[0] = new Thread(new Runnable() {
-                                @Override
-                                public void run() {
+                            threads[0] = new Thread(() -> {
 
-                                    for (int i = 0; i < vc; i++) {
+                                for (int i = 0; i < vc; i++) {
 
-                                        Object[] messageArguments = {i, vertCount};
-                                        MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                        formatter.setLocale(MyLanguage.locale);
-                                        formatter.applyPattern(I18n.VM_DETECT_NEW_EDGES);
+                                    Object[] messageArguments = {i, vertCount};
+                                    MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                    formatter.setLocale(MyLanguage.locale);
+                                    formatter.applyPattern(I18n.VM_DETECT_NEW_EDGES);
 
-                                        monitor.subTask(formatter.format(messageArguments));
+                                    monitor.subTask(formatter.format(messageArguments));
 
-                                        if (monitor.isCanceled()) {
-                                            break;
-                                        }
+                                    if (monitor.isCanceled()) {
+                                        break;
+                                    }
 
-                                        Vector3dh v1 = fixedVertices2.get(i);
-                                        for (int j = i + 1; j < vc; j++) {
-                                            boolean intersect = false;
-                                            Vector3dh v2 = fixedVertices2.get(j);
+                                    Vector3dh v1 = fixedVertices2.get(i);
+                                    for (int j = i + 1; j < vc; j++) {
+                                        boolean intersect = false;
+                                        Vector3dh v2 = fixedVertices2.get(j);
 
-                                            Vector3d sp = Vector3dd.sub(v2, v1);
-                                            Vector3d dir = new Vector3d();
-                                            BigDecimal len = sp.normalise(dir);
-                                            Iterator<ArrayList<Vector3dh>> li = linesToParseHashed.iterator();
-                                            while (li.hasNext()) {
-                                                ArrayList<Vector3dh> l = li.next();
-                                                Vector3dh v3 = l.get(0);
-                                                Vector3dh v4 = l.get(1);
-                                                if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4)) {
-                                                    if (intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, v3,  v4)) {
-                                                        intersect = true;
-                                                        break;
-                                                    }
+                                        Vector3d sp = Vector3dd.sub(v2, v1);
+                                        Vector3d dir = new Vector3d();
+                                        BigDecimal len = sp.normalise(dir);
+                                        Iterator<ArrayList<Vector3dh>> li = linesToParseHashed.iterator();
+                                        while (li.hasNext()) {
+                                            ArrayList<Vector3dh> l = li.next();
+                                            Vector3dh v3 = l.get(0);
+                                            Vector3dh v4 = l.get(1);
+                                            if (!v1.equals(v3) && !v1.equals(v4) && !v2.equals(v3) && !v2.equals(v4)) {
+                                                if (intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, v3,  v4)) {
+                                                    intersect = true;
+                                                    break;
                                                 }
                                             }
-                                            if (!intersect) {
-                                                BigDecimal dist = Vector3dd.manhattan(v1, v2);
-                                                if (dist.compareTo(minDist) > 0) {
-                                                    ArrayList<Vector3dh> nl = new ArrayList<>();
-                                                    nl.add(v1);
-                                                    nl.add(v2);
-                                                    linesToParseHashed.add(nl);
-                                                }
+                                        }
+                                        if (!intersect) {
+                                            BigDecimal dist = Vector3dd.manhattan(v1, v2);
+                                            if (dist.compareTo(minDist) > 0) {
+                                                ArrayList<Vector3dh> nl = new ArrayList<>();
+                                                nl.add(v1);
+                                                nl.add(v2);
+                                                linesToParseHashed.add(nl);
                                             }
                                         }
                                     }
@@ -2272,158 +2260,155 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                             for (int t = 0; t < chunks; ++t) {
                                 final int[] start = new int[] { t };
-                                threads[t] = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        int counter = start[0];
-                                        HashSet<Vector3dh> allVertices = new HashSet<>();
-                                        Vector3d normal = null;
-                                        for (int i = 0; i < lc; i++) {
-                                            if (counter == 0) {
-                                                counter = chunks;
+                                threads[t] = new Thread(() -> {
+                                    int counter = start[0];
+                                    HashSet<Vector3dh> allVertices = new HashSet<>();
+                                    Vector3d normal = null;
+                                    for (int i = 0; i < lc; i++) {
+                                        if (counter == 0) {
+                                            counter = chunks;
 
-                                                Object[] messageArguments = {counter2.toString(), vertCount};
-                                                MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                                formatter.setLocale(MyLanguage.locale);
-                                                formatter.applyPattern(I18n.VM_TRIANGULATE);
+                                            Object[] messageArguments = {counter2.toString(), vertCount};
+                                            MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
+                                            formatter.setLocale(MyLanguage.locale);
+                                            formatter.applyPattern(I18n.VM_TRIANGULATE);
 
-                                                monitor.subTask(formatter.format(messageArguments));
-                                                counter2.incrementAndGet();
-                                                if (monitor.isCanceled()) {
-                                                    return;
-                                                }
-                                                for (int j = i + 1; j < lc; j++) {
-                                                    for (int k = j + 1; k < lc; k++) {
-                                                        for(int l = 0; l < 2; l++) {
-                                                            allVertices.add(linesToParseHashed.get(i).get(l));
-                                                            allVertices.add(linesToParseHashed.get(j).get(l));
-                                                            allVertices.add(linesToParseHashed.get(k).get(l));
+                                            monitor.subTask(formatter.format(messageArguments));
+                                            counter2.incrementAndGet();
+                                            if (monitor.isCanceled()) {
+                                                return;
+                                            }
+                                            for (int j = i + 1; j < lc; j++) {
+                                                for (int k = j + 1; k < lc; k++) {
+                                                    for(int l = 0; l < 2; l++) {
+                                                        allVertices.add(linesToParseHashed.get(i).get(l));
+                                                        allVertices.add(linesToParseHashed.get(j).get(l));
+                                                        allVertices.add(linesToParseHashed.get(k).get(l));
+                                                    }
+                                                    if (allVertices.size() == 3) {
+                                                        Vector3dh[] triVerts = new Vector3dh[3];
+                                                        int l = 0;
+                                                        for (Vector3dh v : allVertices) {
+                                                            triVerts[l] = v;
+                                                            l++;
                                                         }
-                                                        if (allVertices.size() == 3) {
-                                                            Vector3dh[] triVerts = new Vector3dh[3];
-                                                            int l = 0;
-                                                            for (Vector3dh v : allVertices) {
-                                                                triVerts[l] = v;
-                                                                l++;
-                                                            }
-                                                            allVertices.clear();
-                                                            boolean isInsideTriangle = false;
-                                                            if (normal == null) {
-                                                                normal = Vector3d.cross(Vector3d.sub(triVerts[2], triVerts[0]), Vector3d.sub(triVerts[1], triVerts[0]));
-                                                                normal.normalise(normal);
-                                                            }
-                                                            for (Vector3dh fixed : fixedVertices2) {
-                                                                if (fixed.equals(triVerts[0])) continue;
-                                                                if (fixed.equals(triVerts[1])) continue;
-                                                                if (fixed.equals(triVerts[2])) continue;
-                                                                Set<Vector3dh> n1 = neighbours.get(triVerts[0]);
-                                                                Set<Vector3dh> n2 = neighbours.get(triVerts[1]);
-                                                                Set<Vector3dh> n3 = neighbours.get(triVerts[2]);
-                                                                int nc = 0;
-                                                                if (n1.contains(fixed)) nc += 1;
-                                                                if (n2.contains(fixed)) nc += 1;
-                                                                if (n3.contains(fixed)) nc += 1;
-                                                                if (nc > 1) {
-                                                                    if (intersectRayTriangle(fixed, normal, triVerts[0], triVerts[1], triVerts[2])) {
-                                                                        isInsideTriangle = true;
-                                                                        break;
-                                                                    }
+                                                        allVertices.clear();
+                                                        boolean isInsideTriangle = false;
+                                                        if (normal == null) {
+                                                            normal = Vector3d.cross(Vector3d.sub(triVerts[2], triVerts[0]), Vector3d.sub(triVerts[1], triVerts[0]));
+                                                            normal.normalise(normal);
+                                                        }
+                                                        for (Vector3dh fixed : fixedVertices2) {
+                                                            if (fixed.equals(triVerts[0])) continue;
+                                                            if (fixed.equals(triVerts[1])) continue;
+                                                            if (fixed.equals(triVerts[2])) continue;
+                                                            Set<Vector3dh> n1 = neighbours.get(triVerts[0]);
+                                                            Set<Vector3dh> n2 = neighbours.get(triVerts[1]);
+                                                            Set<Vector3dh> n3 = neighbours.get(triVerts[2]);
+                                                            int nc = 0;
+                                                            if (n1.contains(fixed)) nc += 1;
+                                                            if (n2.contains(fixed)) nc += 1;
+                                                            if (n3.contains(fixed)) nc += 1;
+                                                            if (nc > 1) {
+                                                                if (intersectRayTriangle(fixed, normal, triVerts[0], triVerts[1], triVerts[2])) {
+                                                                    isInsideTriangle = true;
+                                                                    break;
                                                                 }
                                                             }
-                                                            if (isInsideTriangle) continue;
+                                                        }
+                                                        if (isInsideTriangle) continue;
 
-                                                            // Check collinearity
-                                                            {
-                                                                double angle;
-                                                                Vector3d vertexA = new Vector3d(triVerts[0]);
-                                                                Vector3d vertexB = new Vector3d(triVerts[1]);
-                                                                Vector3d vertexC = new Vector3d(triVerts[2]);
-                                                                Vector3d a = new Vector3d();
-                                                                Vector3d b = new Vector3d();
-                                                                Vector3d c = new Vector3d();
-                                                                Vector3d.sub(vertexB, vertexA, a);
-                                                                Vector3d.sub(vertexC, vertexB, b);
-                                                                Vector3d.sub(vertexC, vertexA, c);
+                                                        // Check collinearity
+                                                        {
+                                                            double angle;
+                                                            Vector3d vertexA = new Vector3d(triVerts[0]);
+                                                            Vector3d vertexB = new Vector3d(triVerts[1]);
+                                                            Vector3d vertexC = new Vector3d(triVerts[2]);
+                                                            Vector3d a = new Vector3d();
+                                                            Vector3d b = new Vector3d();
+                                                            Vector3d c = new Vector3d();
+                                                            Vector3d.sub(vertexB, vertexA, a);
+                                                            Vector3d.sub(vertexC, vertexB, b);
+                                                            Vector3d.sub(vertexC, vertexA, c);
 
-                                                                angle = Vector3d.angle(a, c);
-                                                                double sumAngle = angle;
-                                                                if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
-                                                                    continue;
-                                                                }
-
-                                                                a.negate();
-                                                                angle = Vector3d.angle(a, b);
-                                                                sumAngle = sumAngle + angle;
-                                                                if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
-                                                                    continue;
-                                                                }
-
-                                                                angle = 180.0 - sumAngle;
-                                                                if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
-                                                                    continue;
-                                                                }
+                                                            angle = Vector3d.angle(a, c);
+                                                            double sumAngle = angle;
+                                                            if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
+                                                                continue;
                                                             }
 
-                                                            {
-                                                                HashSet<ArrayList<Vector3dd>> threeLines = new HashSet<>();
-                                                                threeLines.add(linesToParse.get(i));
-                                                                threeLines.add(linesToParse.get(j));
-                                                                threeLines.add(linesToParse.get(k));
-                                                                ArrayList<Vector3dd> intersected = null;
-                                                                for (Iterator<ArrayList<Vector3dd>> iterator = threeLines.iterator(); iterator.hasNext();) {
-                                                                    ArrayList<Vector3dd> line = iterator.next();
-                                                                    Vector3dd v1 = line.get(0);
-                                                                    Vector3dd v2 = line.get(1);
-                                                                    Vector3d sp = Vector3dd.sub(v2, v1);
-                                                                    Vector3d dir = new Vector3d();
-                                                                    BigDecimal len = sp.normalise(dir);
-                                                                    for (ArrayList<Vector3dd> line2 : colourLines) {
-                                                                        if (line2 != line) {
-                                                                            TreeSet<Vector3dd> allVertices1 = new TreeSet<>();
-                                                                            for(int l1 = 0; l1 < 2; l1++) {
-                                                                                allVertices1.add(line.get(l1));
-                                                                                allVertices1.add(line2.get(l1));
-                                                                            }
-                                                                            if (allVertices1.size() == 4) {
-                                                                                if (intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, line2.get(0), line2.get(1))) {
-                                                                                    intersected = line2;
-                                                                                    break;
-                                                                                }
+                                                            a.negate();
+                                                            angle = Vector3d.angle(a, b);
+                                                            sumAngle = sumAngle + angle;
+                                                            if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
+                                                                continue;
+                                                            }
+
+                                                            angle = 180.0 - sumAngle;
+                                                            if (angle < Threshold.COLLINEAR_ANGLE_MINIMUM || angle > Threshold.COLLINEAR_ANGLE_MAXIMUM) {
+                                                                continue;
+                                                            }
+                                                        }
+
+                                                        {
+                                                            HashSet<ArrayList<Vector3dd>> threeLines = new HashSet<>();
+                                                            threeLines.add(linesToParse.get(i));
+                                                            threeLines.add(linesToParse.get(j));
+                                                            threeLines.add(linesToParse.get(k));
+                                                            ArrayList<Vector3dd> intersected = null;
+                                                            for (Iterator<ArrayList<Vector3dd>> iterator = threeLines.iterator(); iterator.hasNext();) {
+                                                                ArrayList<Vector3dd> line = iterator.next();
+                                                                Vector3dd v1 = line.get(0);
+                                                                Vector3dd v2 = line.get(1);
+                                                                Vector3d sp = Vector3dd.sub(v2, v1);
+                                                                Vector3d dir = new Vector3d();
+                                                                BigDecimal len = sp.normalise(dir);
+                                                                for (ArrayList<Vector3dd> line2 : colourLines) {
+                                                                    if (line2 != line) {
+                                                                        TreeSet<Vector3dd> allVertices1 = new TreeSet<>();
+                                                                        for(int l1 = 0; l1 < 2; l1++) {
+                                                                            allVertices1.add(line.get(l1));
+                                                                            allVertices1.add(line2.get(l1));
+                                                                        }
+                                                                        if (allVertices1.size() == 4) {
+                                                                            if (intersectLineLineSegmentUnidirectionalFast(v1, sp, dir, len, line2.get(0), line2.get(1))) {
+                                                                                intersected = line2;
+                                                                                break;
                                                                             }
                                                                         }
                                                                     }
-                                                                    if (intersected != null) {
-                                                                        break;
-                                                                    }
                                                                 }
-
-                                                                rlock.lock();
-                                                                if (MathHelper.directionOfVectors(Vector3d.cross(Vector3d.sub(triVerts[2], triVerts[0]), Vector3d.sub(triVerts[1], triVerts[0])), originalNormal) == 1) {
-                                                                    resultVertices.add(triVerts[0]);
-                                                                    resultVertices.add(triVerts[1]);
-                                                                    resultVertices.add(triVerts[2]);
-                                                                } else {
-                                                                    resultVertices.add(triVerts[0]);
-                                                                    resultVertices.add(triVerts[2]);
-                                                                    resultVertices.add(triVerts[1]);
-                                                                }
-
                                                                 if (intersected != null) {
-                                                                    resultColours.add(colours.get(intersected) != null ? colours.get(intersected) : View.getLDConfigColour(16));
-                                                                } else {
-                                                                    resultColours.add(View.getLDConfigColour(16));
+                                                                    break;
                                                                 }
-                                                                resultIsLine.add(0);
-                                                                rlock.unlock();
                                                             }
-                                                        } else {
-                                                            allVertices.clear();
+
+                                                            rlock.lock();
+                                                            if (MathHelper.directionOfVectors(Vector3d.cross(Vector3d.sub(triVerts[2], triVerts[0]), Vector3d.sub(triVerts[1], triVerts[0])), originalNormal) == 1) {
+                                                                resultVertices.add(triVerts[0]);
+                                                                resultVertices.add(triVerts[1]);
+                                                                resultVertices.add(triVerts[2]);
+                                                            } else {
+                                                                resultVertices.add(triVerts[0]);
+                                                                resultVertices.add(triVerts[2]);
+                                                                resultVertices.add(triVerts[1]);
+                                                            }
+
+                                                            if (intersected != null) {
+                                                                resultColours.add(colours.get(intersected) != null ? colours.get(intersected) : View.getLDConfigColour(16));
+                                                            } else {
+                                                                resultColours.add(View.getLDConfigColour(16));
+                                                            }
+                                                            resultIsLine.add(0);
+                                                            rlock.unlock();
                                                         }
+                                                    } else {
+                                                        allVertices.clear();
                                                     }
                                                 }
                                             }
-                                            counter -= 1;
                                         }
+                                        counter -= 1;
                                     }
                                 });
                                 threads[t].start();

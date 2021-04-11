@@ -306,12 +306,9 @@ public class SplashScreen extends ApplicationWindow {
                 }
 
                 // Finish it.
-                display.syncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        ProgressHelper.finishQueue(bar, label);
-                    }
-                });
+                display.syncExec(() ->
+                    ProgressHelper.finishQueue(bar, label)
+                );
                 threadReturn[0] = ReturnType.NO_ERROR;
             }
         }.start();
@@ -469,12 +466,9 @@ public class SplashScreen extends ApplicationWindow {
      * and {@code ProgressHelper.dequeueTask()}
      */
     private void dequeueTask() {
-        display.syncExec(new Runnable() {
-            @Override
-            public void run() {
-                ProgressHelper.dequeueTask(bar, label);
-            }
-        });
+        display.syncExec(() ->
+            ProgressHelper.dequeueTask(bar, label)
+        );
     }
 
 }

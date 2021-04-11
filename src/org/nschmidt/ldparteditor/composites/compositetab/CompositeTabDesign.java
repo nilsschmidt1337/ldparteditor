@@ -20,8 +20,6 @@ import org.eclipse.swt.custom.CTabFolder;
 import org.eclipse.swt.custom.CTabItem;
 import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.custom.StyledText;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.Cursor;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -127,12 +125,7 @@ class CompositeTabDesign extends CTabItem {
             this.canvasLineNumberAreaPtr[0] = canvasLineNumberArea;
             canvasLineNumberArea.setBackground(SWTResourceManager.getColor(SWT.COLOR_WIDGET_BACKGROUND));
             canvasLineNumberArea.setCursor(new Cursor(Display.getCurrent(), SWT.CURSOR_HAND));
-            this.canvasLineNumberAreaPtr[0].addDisposeListener(new DisposeListener() {
-                @Override
-                public void widgetDisposed(DisposeEvent e) {
-                    canvasLineNumberAreaPtr[0].getCursor().dispose();
-                }
-            });
+            this.canvasLineNumberAreaPtr[0].addDisposeListener(e -> canvasLineNumberAreaPtr[0].getCursor().dispose());
 
             GridData gdCanvasLineNumberArea = new GridData(SWT.LEFT, SWT.FILL, false, true);
             canvasLineNumberArea.setLayoutData(gdCanvasLineNumberArea);

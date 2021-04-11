@@ -327,12 +327,9 @@ class VM00Base {
                                         throw new LDPartEditorException(ie);
                                     }
                                 }
-                                Display.getDefault().asyncExec(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        SubfileCompiler.compile(linkedDatFile, true, true);
-                                    }
-                                });
+                                Display.getDefault().asyncExec(() ->
+                                    SubfileCompiler.compile(linkedDatFile, true, true)
+                                );
                             }
                         } else {
                             NLogger.debug(getClass(), "Synchronisation was skipped due to undo/redo."); //$NON-NLS-1$

@@ -117,22 +117,19 @@ class VM01SelectHelper extends VM01Select {
                         end[0] = iterations;
                     }
                     i[0] = j;
-                    threads[j] = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            final PowerRay powerRay = new PowerRay();
-                            int s = start[0];
-                            int e = end[0];
-                            Vector4f result = new Vector4f();
-                            for (int k = s; k < e; k++) {
-                                Vertex vertex = verts[k];
-                                if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
-                                    continue;
-                                MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
-                                if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
-                                    if (dialogCanceled.get()) return;
-                                    selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
-                                }
+                    threads[j] = new Thread(() -> {
+                        final PowerRay powerRay = new PowerRay();
+                        int s = start[0];
+                        int e = end[0];
+                        Vector4f result = new Vector4f();
+                        for (int k = s; k < e; k++) {
+                            Vertex vertex = verts[k];
+                            if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
+                                continue;
+                            MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
+                            if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
+                                if (dialogCanceled.get()) return;
+                                selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                             }
                         }
                     });
@@ -259,38 +256,35 @@ class VM01SelectHelper extends VM01Select {
                         end[0] = iterations;
                     }
                     i[0] = j;
-                    threads[j] = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            final PowerRay powerRay = new PowerRay();
-                            int s = start[0];
-                            int e = end[0];
-                            float[][] a = new float[3][3];
-                            float[] b = new float[3];
-                            for (int k = s; k < e; k++) {
-                                Vertex vertex = verts[k];
-                                if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
-                                    continue;
-                                a[0][0] = selectionWidth.x;
-                                a[1][0] = selectionWidth.y;
-                                a[2][0] = selectionWidth.z;
+                    threads[j] = new Thread(() -> {
+                        final PowerRay powerRay = new PowerRay();
+                        int s = start[0];
+                        int e = end[0];
+                        float[][] a = new float[3][3];
+                        float[] b = new float[3];
+                        for (int k = s; k < e; k++) {
+                            Vertex vertex = verts[k];
+                            if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
+                                continue;
+                            a[0][0] = selectionWidth.x;
+                            a[1][0] = selectionWidth.y;
+                            a[2][0] = selectionWidth.z;
 
-                                a[0][1] = selectionHeight.x;
-                                a[1][1] = selectionHeight.y;
-                                a[2][1] = selectionHeight.z;
+                            a[0][1] = selectionHeight.x;
+                            a[1][1] = selectionHeight.y;
+                            a[2][1] = selectionHeight.z;
 
-                                a[0][2] = selectionDepth.x;
-                                a[1][2] = selectionDepth.y;
-                                a[2][2] = selectionDepth.z;
+                            a[0][2] = selectionDepth.x;
+                            a[1][2] = selectionDepth.y;
+                            a[2][2] = selectionDepth.z;
 
-                                b[0] = vertex.x - selectionStart.x;
-                                b[1] = vertex.y - selectionStart.y;
-                                b[2] = vertex.z - selectionStart.z;
-                                b = MathHelper.gaussianElimination(a, b);
-                                if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
-                                    if (dialogCanceled.get()) return;
-                                    selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
-                                }
+                            b[0] = vertex.x - selectionStart.x;
+                            b[1] = vertex.y - selectionStart.y;
+                            b[2] = vertex.z - selectionStart.z;
+                            b = MathHelper.gaussianElimination(a, b);
+                            if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
+                                if (dialogCanceled.get()) return;
+                                selectVerticesHelper(c3d, vertex, selectionDepth, powerRay, noTrans, needRayTest);
                             }
                         }
                     });
@@ -538,22 +532,19 @@ class VM01SelectHelper extends VM01Select {
                         end[0] = iterations;
                     }
                     i[0] = j;
-                    threads[j] = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            final PowerRay powerRay = new PowerRay();
-                            int s = start[0];
-                            int e = end[0];
-                            Vector4f result = new Vector4f();
-                            for (int k = s; k < e; k++) {
-                                Vertex vertex = verts[k];
-                                if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
-                                    continue;
-                                MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
-                                if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
-                                    if (dialogCanceled.get()) return;
-                                    selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
-                                }
+                    threads[j] = new Thread(() -> {
+                        final PowerRay powerRay = new PowerRay();
+                        int s = start[0];
+                        int e = end[0];
+                        Vector4f result = new Vector4f();
+                        for (int k = s; k < e; k++) {
+                            Vertex vertex = verts[k];
+                            if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
+                                continue;
+                            MathHelper.crossProduct(selectionDepth, Vector4f.sub(vertex.toVector4f(), selectionStart, null), result);
+                            if (result.x * result.x + result.y * result.y + result.z * result.z < discr) {
+                                if (dialogCanceled.get()) return;
+                                selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                             }
                         }
                     });
@@ -677,38 +668,35 @@ class VM01SelectHelper extends VM01Select {
                         end[0] = iterations;
                     }
                     i[0] = j;
-                    threads[j] = new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            final PowerRay powerRay = new PowerRay();
-                            int s = start[0];
-                            int e = end[0];
-                            float[][] a = new float[3][3];
-                            float[] b = new float[3];
-                            for (int k = s; k < e; k++) {
-                                Vertex vertex = verts[k];
-                                if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
-                                    continue;
-                                a[0][0] = selectionWidth.x;
-                                a[1][0] = selectionWidth.y;
-                                a[2][0] = selectionWidth.z;
+                    threads[j] = new Thread(() -> {
+                        final PowerRay powerRay = new PowerRay();
+                        int s = start[0];
+                        int e = end[0];
+                        float[][] a = new float[3][3];
+                        float[] b = new float[3];
+                        for (int k = s; k < e; k++) {
+                            Vertex vertex = verts[k];
+                            if (hiddenVertices.contains(vertex) || noCondlineVerts && isPureCondlineControlPoint(vertex))
+                                continue;
+                            a[0][0] = selectionWidth.x;
+                            a[1][0] = selectionWidth.y;
+                            a[2][0] = selectionWidth.z;
 
-                                a[0][1] = selectionHeight.x;
-                                a[1][1] = selectionHeight.y;
-                                a[2][1] = selectionHeight.z;
+                            a[0][1] = selectionHeight.x;
+                            a[1][1] = selectionHeight.y;
+                            a[2][1] = selectionHeight.z;
 
-                                a[0][2] = selectionDepth.x;
-                                a[1][2] = selectionDepth.y;
-                                a[2][2] = selectionDepth.z;
+                            a[0][2] = selectionDepth.x;
+                            a[1][2] = selectionDepth.y;
+                            a[2][2] = selectionDepth.z;
 
-                                b[0] = vertex.x - selectionStart.x;
-                                b[1] = vertex.y - selectionStart.y;
-                                b[2] = vertex.z - selectionStart.z;
-                                b = MathHelper.gaussianElimination(a, b);
-                                if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
-                                    if (dialogCanceled.get()) return;
-                                    selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
-                                }
+                            b[0] = vertex.x - selectionStart.x;
+                            b[1] = vertex.y - selectionStart.y;
+                            b[2] = vertex.z - selectionStart.z;
+                            b = MathHelper.gaussianElimination(a, b);
+                            if (b[0] <= 1f && b[0] >= 0f && b[1] >= 0f && b[1] <= 1f) {
+                                if (dialogCanceled.get()) return;
+                                selectVertices2Helper(c3d, vertex, selectionDepth, powerRay, noTrans);
                             }
                         }
                     });

@@ -126,142 +126,139 @@ public enum RingsAndCones {
                             final Thread[] threads = new Thread[chunks];
                             for (int j = 0; j < chunks; ++j) {
                                 final long num = j;
-                                threads[j] = new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
+                                threads[j] = new Thread(() -> {
+                                    {
+                                        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
+                                        int amount = 0;
+                                        final long min_r = 1;
+                                        long maxR = 100;
+
+                                        int minAmount;
+                                        long minDelta;
+                                        int minDigits;
+
+                                        long current = radi_min;
+
+                                        Random rnd = new Random(1238426235L * num);
+
+                                        final long[] tsolution = new long[50];
+                                        final long[] tsolutionR = new long[50];
+                                        final long[] tsolutionR2 = new long[50];
+
+                                        final long width = maxR - min_r;
+
+                                        final long[] rndSet;
+                                        final int size = existanceMap.keySet().size();
+                                        if (size == 0 && rs.isUsingExistingPrimitives()) {
+                                            return;
+                                        }
                                         {
-                                            final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
-                                            int amount = 0;
-                                            final long min_r = 1;
-                                            long maxR = 100;
-
-                                            int minAmount;
-                                            long minDelta;
-                                            int minDigits;
-
-                                            long current = radi_min;
-
-                                            Random rnd = new Random(1238426235L * num);
-
-                                            final long[] tsolution = new long[50];
-                                            final long[] tsolutionR = new long[50];
-                                            final long[] tsolutionR2 = new long[50];
-
-                                            final long width = maxR - min_r;
-
-                                            final long[] rndSet;
-                                            final int size = existanceMap.keySet().size();
-                                            if (size == 0 && rs.isUsingExistingPrimitives()) {
-                                                return;
-                                            }
+                                            int i = 0;
+                                            rndSet  = new long[size];
+                                            for(int in : existanceMap.keySet())
                                             {
-                                                int i = 0;
-                                                rndSet  = new long[size];
-                                                for(int in : existanceMap.keySet())
-                                                {
-                                                    rndSet[i] = in;
-                                                    i = i + 1;
-                                                }
+                                                rndSet[i] = in;
+                                                i = i + 1;
                                             }
-                                            long start = System.currentTimeMillis();
-                                            while (!m.isCanceled()) {
-                                                long s;
-                                                long r;
-                                                // MARK Solver 1
-                                                if (rs.isUsingExistingPrimitives()) {
-                                                    r = rndSet[(int) (rnd.nextFloat() * size)];
-                                                    if (!primitiveExists((int) r, angle)) {
-                                                        continue;
-                                                    }
-                                                } else {
-                                                    // MARK Solver 2
-                                                    r = (long) (width * rnd.nextDouble() + min_r);
-                                                }
-
-                                                s = current / r;
-                                                if (s < 10000000L) {
+                                        }
+                                        long start = System.currentTimeMillis();
+                                        while (!m.isCanceled()) {
+                                            long s;
+                                            long r;
+                                            // MARK Solver 1
+                                            if (rs.isUsingExistingPrimitives()) {
+                                                r = rndSet[(int) (rnd.nextFloat() * size)];
+                                                if (!primitiveExists((int) r, angle)) {
                                                     continue;
                                                 }
+                                            } else {
+                                                // MARK Solver 2
+                                                r = (long) (width * rnd.nextDouble() + min_r);
+                                            }
 
-                                                amount++;
-                                                if (amount < 47) {
-                                                    tsolution[amount] = s;
-                                                    tsolutionR[amount] = r;
-                                                    tsolutionR2[amount] = current;
-                                                } else {
-                                                    current = radi_min;
-                                                    amount = 0;
-                                                    continue;
-                                                }
-                                                long sum = s + current;
+                                            s = current / r;
+                                            if (s < 10000000L) {
+                                                continue;
+                                            }
 
-                                                minAmount = minAmountA.get();
-                                                minDelta = minDeltaA.get();
-                                                minDigits = minDigitsA.get();
+                                            amount++;
+                                            if (amount < 47) {
+                                                tsolution[amount] = s;
+                                                tsolutionR[amount] = r;
+                                                tsolutionR2[amount] = current;
+                                            } else {
+                                                current = radi_min;
+                                                amount = 0;
+                                                continue;
+                                            }
+                                            long sum = s + current;
 
-                                                if (sum >= radi_max || amount > minAmount) {
-                                                    if (amount <= minAmount && amount < 47) {
-                                                        long delta = Math.abs(sum - radi_max);
-                                                        if (100000L >= delta) {
-                                                            if (amount != minAmount) {
-                                                                minDelta = Long.MAX_VALUE;
-                                                            } else if (delta < minDelta) {
-                                                                minDelta = delta;
-                                                                minDigits = Integer.MAX_VALUE;
-                                                            } else if (delta > minDelta) {
+                                            minAmount = minAmountA.get();
+                                            minDelta = minDeltaA.get();
+                                            minDigits = minDigitsA.get();
+
+                                            if (sum >= radi_max || amount > minAmount) {
+                                                if (amount <= minAmount && amount < 47) {
+                                                    long delta = Math.abs(sum - radi_max);
+                                                    if (100000L >= delta) {
+                                                        if (amount != minAmount) {
+                                                            minDelta = Long.MAX_VALUE;
+                                                        } else if (delta < minDelta) {
+                                                            minDelta = delta;
+                                                            minDigits = Integer.MAX_VALUE;
+                                                        } else if (delta > minDelta) {
+                                                            current = radi_min;
+                                                            amount = 0;
+                                                            continue;
+                                                        } else {
+                                                            int digits = getDigits(tsolution[amount]);
+                                                            for(int i = 1; i < amount; i++) {
+                                                                digits += getDigits(tsolution[i]);
+                                                            }
+                                                            if (digits < minDigits) {
+                                                                minDigits = digits;
+                                                            } else {
                                                                 current = radi_min;
                                                                 amount = 0;
                                                                 continue;
-                                                            } else {
-                                                                int digits = getDigits(tsolution[amount]);
-                                                                for(int i = 1; i < amount; i++) {
-                                                                    digits += getDigits(tsolution[i]);
-                                                                }
-                                                                if (digits < minDigits) {
-                                                                    minDigits = digits;
-                                                                } else {
-                                                                    current = radi_min;
-                                                                    amount = 0;
-                                                                    continue;
-                                                                }
                                                             }
-                                                            minAmount = amount;
-                                                            if (minDigits == Integer.MAX_VALUE) {
-                                                                m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.MC).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                                            } else {
-                                                                m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.MC).doubleValue()) + " deviation and " + minDigits + " digits."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                                                            }
-                                                            tlock.lock();
-                                                            if (minAmount < minAmountA.get()  || minAmount == minAmountA.get() && minDelta <= minDeltaA.get()) {
-                                                                for(int i = 1; i < amount; i++) {
-                                                                    solution[i] = tsolution[i];
-                                                                    solutionR[i] = tsolutionR[i];
-                                                                    solutionR2[i] = tsolutionR2[i];
-                                                                }
-                                                                solution[amount] = tsolution[amount];
-                                                                solutionR[amount] = tsolutionR[amount];
-                                                                solutionR2[amount] = tsolutionR2[amount];
-                                                                solutionR2[amount + 1] = sum;
-                                                                solutionAmount[0] = amount;
-                                                                minAmountA.set(minAmount);
-                                                                minDeltaA.set(minDelta);
-                                                                minDigitsA.set(minDigits);
-                                                            }
-                                                            tlock.unlock();
-                                                            start = System.currentTimeMillis();
                                                         }
-                                                    }
-                                                    if (num == 0 && System.currentTimeMillis() - start > Math.max(40000 / chunks, 6000)) {
-                                                        minAmount--;
-                                                        minAmountA.set(minAmount);
+                                                        minAmount = amount;
+                                                        if (minDigits == Integer.MAX_VALUE) {
+                                                            m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.MC).doubleValue()) + " deviation."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                                        } else {
+                                                            m.subTask("Best Solution - " + minAmount + " Primitives, with " + numberFormat4f.format(new BigDecimal(delta).divide(factor, Threshold.MC).doubleValue()) + " deviation and " + minDigits + " digits."); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                                                        }
+                                                        tlock.lock();
+                                                        if (minAmount < minAmountA.get()  || minAmount == minAmountA.get() && minDelta <= minDeltaA.get()) {
+                                                            for(int i = 1; i < amount; i++) {
+                                                                solution[i] = tsolution[i];
+                                                                solutionR[i] = tsolutionR[i];
+                                                                solutionR2[i] = tsolutionR2[i];
+                                                            }
+                                                            solution[amount] = tsolution[amount];
+                                                            solutionR[amount] = tsolutionR[amount];
+                                                            solutionR2[amount] = tsolutionR2[amount];
+                                                            solutionR2[amount + 1] = sum;
+                                                            solutionAmount[0] = amount;
+                                                            minAmountA.set(minAmount);
+                                                            minDeltaA.set(minDelta);
+                                                            minDigitsA.set(minDigits);
+                                                        }
+                                                        tlock.unlock();
                                                         start = System.currentTimeMillis();
                                                     }
-                                                    if (minAmount < 1) break;
-                                                    current = radi_min;
-                                                    amount = 0;
-                                                } else {
-                                                    current = sum;
                                                 }
+                                                if (num == 0 && System.currentTimeMillis() - start > Math.max(40000 / chunks, 6000)) {
+                                                    minAmount--;
+                                                    minAmountA.set(minAmount);
+                                                    start = System.currentTimeMillis();
+                                                }
+                                                if (minAmount < 1) break;
+                                                current = radi_min;
+                                                amount = 0;
+                                            } else {
+                                                current = sum;
                                             }
                                         }
                                     }

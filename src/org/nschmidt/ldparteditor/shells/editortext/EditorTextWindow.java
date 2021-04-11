@@ -146,16 +146,13 @@ public class EditorTextWindow extends EditorTextDesign {
             ShellHelper.centerShellOnPrimaryScreen(sh);
         }
         // Maximize has to be called asynchronously
-        sh.getDisplay().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    if (!sh.isDisposed()) {
-                        sh.setMaximized(editorTextWindowState.getWindowState().isMaximized());
-                        sh.forceActive();
-                    }
-                } catch (SWTException consumed) {}
-            }
+        sh.getDisplay().asyncExec(() -> {
+            try {
+                if (!sh.isDisposed()) {
+                    sh.setMaximized(editorTextWindowState.getWindowState().isMaximized());
+                    sh.forceActive();
+                }
+            } catch (SWTException consumed) {}
         });
         // The window reference has to be added to the tab folder
         tabFolder[0].setWindow(editorTextWindow);

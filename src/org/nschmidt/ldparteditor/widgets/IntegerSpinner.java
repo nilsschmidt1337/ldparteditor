@@ -21,9 +21,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
-import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.MouseWheelListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -116,21 +114,18 @@ public class IntegerSpinner extends Composite {
         this.txtValPtr[0] = txt;
         txt.setLayoutData(gd1);
         txt.setText("0"); //$NON-NLS-1$
-        txt.addMouseWheelListener(new MouseWheelListener() {
-            @Override
-            public void mouseScrolled(MouseEvent e) {
-                Composite p = parent;
-                while (p != null) {
-                    if (p.getHorizontalBar() != null && p.getHorizontalBar().isVisible() || p.getVerticalBar() != null && p.getVerticalBar().isVisible()) {
-                        return;
-                    }
-                    p = p.getParent();
+        txt.addMouseWheelListener(e -> {
+            Composite p = parent;
+            while (p != null) {
+                if (p.getHorizontalBar() != null && p.getHorizontalBar().isVisible() || p.getVerticalBar() != null && p.getVerticalBar().isVisible()) {
+                    return;
                 }
-                if (e.count > 0) {
-                    setValue(value + 1);
-                } else {
-                    setValue(value - 1);
-                }
+                p = p.getParent();
+            }
+            if (e.count > 0) {
+                setValue(value + 1);
+            } else {
+                setValue(value - 1);
             }
         });
 

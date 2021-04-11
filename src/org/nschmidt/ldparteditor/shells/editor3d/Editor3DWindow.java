@@ -409,26 +409,23 @@ public class Editor3DWindow extends Editor3DDesign {
             ShellHelper.centerShellOnPrimaryScreen(sh);
         }
         // Maximize / tab creation on text editor has to be called asynchronously
-        sh.getDisplay().asyncExec(new Runnable() {
-            @Override
-            public void run() {
-                sh.setMaximized(WorkbenchManager.getEditor3DWindowState().getWindowState().isMaximized());
+        sh.getDisplay().asyncExec(() -> {
+            sh.setMaximized(WorkbenchManager.getEditor3DWindowState().getWindowState().isMaximized());
 
-                if (WorkbenchManager.getUserSettingState().getTextWinArr() != TEXT_3D_SEPARATE) {
-                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                        if (!w.isSeperateWindow()) {
-                            Project.getParsedFiles().add(Project.getFileToEdit());
-                            Project.addOpenedFile(Project.getFileToEdit());
-                            {
-                                CompositeTab tbtmnewItem = new CompositeTab(w.getTabFolder(), SWT.CLOSE);
-                                tbtmnewItem.setFolderAndWindow(w.getTabFolder(), Editor3DWindow.getWindow());
-                                tbtmnewItem.getState().setFileNameObj(Project.getFileToEdit());
-                                w.getTabFolder().setSelection(tbtmnewItem);
-                                tbtmnewItem.parseForErrorAndHints();
-                                tbtmnewItem.getTextComposite().redraw();
-                            }
-                            break;
+            if (WorkbenchManager.getUserSettingState().getTextWinArr() != TEXT_3D_SEPARATE) {
+                for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                    if (!w.isSeperateWindow()) {
+                        Project.getParsedFiles().add(Project.getFileToEdit());
+                        Project.addOpenedFile(Project.getFileToEdit());
+                        {
+                            CompositeTab tbtmnewItem = new CompositeTab(w.getTabFolder(), SWT.CLOSE);
+                            tbtmnewItem.setFolderAndWindow(w.getTabFolder(), Editor3DWindow.getWindow());
+                            tbtmnewItem.getState().setFileNameObj(Project.getFileToEdit());
+                            w.getTabFolder().setSelection(tbtmnewItem);
+                            tbtmnewItem.parseForErrorAndHints();
+                            tbtmnewItem.getTextComposite().redraw();
                         }
+                        break;
                     }
                 }
             }
@@ -2658,12 +2655,7 @@ public class Editor3DWindow extends Editor3DDesign {
             if (treeParts[0].getSelectionCount() == 1 && treeParts[0].getSelection()[0] != null) {
                 treeParts[0].getSelection()[0].setVisible(!treeParts[0].getSelection()[0].isVisible());
                 TreeItem sel = treeParts[0].getSelection()[0];
-                sh.getDisplay().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        treeParts[0].build();
-                    }
-                });
+                sh.getDisplay().asyncExec(treeParts[0]::build);
                 treeParts[0].redraw();
                 treeParts[0].update();
                 treeParts[0].getTree().select(treeParts[0].getMapInv().get(sel));
@@ -2937,234 +2929,170 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         widgetUtil(mntmWithSameColourPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    mntmSelectEverythingPtr[0].setEnabled(
-                            mntmWithHiddenDataPtr[0].getSelection() ||
-                            mntmWithSameColourPtr[0].getSelection() ||
-                            mntmWithSameTypePtr[0].getSelection() ||
-                            mntmWithSameOrientationPtr[0].getSelection() ||
-                            mntmExceptSubfilesPtr[0].getSelection()
-                            );
-                    showSelectMenu();
-                }
+            Display.getCurrent().asyncExec(() -> {
+                mntmSelectEverythingPtr[0].setEnabled(
+                        mntmWithHiddenDataPtr[0].getSelection() ||
+                        mntmWithSameColourPtr[0].getSelection() ||
+                        mntmWithSameTypePtr[0].getSelection() ||
+                        mntmWithSameOrientationPtr[0].getSelection() ||
+                        mntmExceptSubfilesPtr[0].getSelection()
+                        );
+                showSelectMenu();
             });
             regainFocus();
         });
 
         widgetUtil(mntmWithSameTypePtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    mntmSelectEverythingPtr[0].setEnabled(
-                            mntmWithHiddenDataPtr[0].getSelection() ||
-                            mntmWithSameColourPtr[0].getSelection() ||
-                            mntmWithSameTypePtr[0].getSelection() ||
-                            mntmWithSameOrientationPtr[0].getSelection() ||
-                            mntmExceptSubfilesPtr[0].getSelection()
-                            );
-                    showSelectMenu();
-                }
+            Display.getCurrent().asyncExec(() -> {
+                mntmSelectEverythingPtr[0].setEnabled(
+                        mntmWithHiddenDataPtr[0].getSelection() ||
+                        mntmWithSameColourPtr[0].getSelection() ||
+                        mntmWithSameTypePtr[0].getSelection() ||
+                        mntmWithSameOrientationPtr[0].getSelection() ||
+                        mntmExceptSubfilesPtr[0].getSelection()
+                        );
+                showSelectMenu();
             });
             regainFocus();
         });
 
         widgetUtil(mntmWithSameOrientationPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    mntmSelectEverythingPtr[0].setEnabled(
-                            mntmWithHiddenDataPtr[0].getSelection() ||
-                            mntmWithSameColourPtr[0].getSelection() ||
-                            mntmWithSameTypePtr[0].getSelection() ||
-                            mntmWithSameOrientationPtr[0].getSelection() ||
-                            mntmExceptSubfilesPtr[0].getSelection()
-                            );
-                    if (mntmWithSameOrientationPtr[0].getSelection()) {
+            Display.getCurrent().asyncExec(() -> {
+                mntmSelectEverythingPtr[0].setEnabled(
+                        mntmWithHiddenDataPtr[0].getSelection() ||
+                        mntmWithSameColourPtr[0].getSelection() ||
+                        mntmWithSameTypePtr[0].getSelection() ||
+                        mntmWithSameOrientationPtr[0].getSelection() ||
+                        mntmExceptSubfilesPtr[0].getSelection()
+                        );
+                if (mntmWithSameOrientationPtr[0].getSelection()) {
 
 
-                        new ValueDialog(getShell(), I18n.E3D_ANGLE_DIFF, I18n.E3D_THRESH_IN_DEG) {
+                    new ValueDialog(getShell(), I18n.E3D_ANGLE_DIFF, I18n.E3D_THRESH_IN_DEG) {
 
-                            @Override
-                            public void initializeSpinner() {
-                                this.spnValuePtr[0].setMinimum(new BigDecimal("-90")); //$NON-NLS-1$
-                                this.spnValuePtr[0].setMaximum(new BigDecimal("180")); //$NON-NLS-1$
-                                this.spnValuePtr[0].setValue(sels.getAngle());
-                            }
+                        @Override
+                        public void initializeSpinner() {
+                            this.spnValuePtr[0].setMinimum(new BigDecimal("-90")); //$NON-NLS-1$
+                            this.spnValuePtr[0].setMaximum(new BigDecimal("180")); //$NON-NLS-1$
+                            this.spnValuePtr[0].setValue(sels.getAngle());
+                        }
 
-                            @Override
-                            public void applyValue() {
-                                sels.setAngle(this.spnValuePtr[0].getValue());
-                            }
-                        }.open();
-                    }
-                    showSelectMenu();
+                        @Override
+                        public void applyValue() {
+                            sels.setAngle(this.spnValuePtr[0].getValue());
+                        }
+                    }.open();
                 }
+                showSelectMenu();
             });
             regainFocus();
         });
 
         widgetUtil(mntmWithAccuracyPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    mntmSelectEverythingPtr[0].setEnabled(
-                            mntmWithHiddenDataPtr[0].getSelection() ||
-                            mntmWithSameColourPtr[0].getSelection() ||
-                            mntmWithSameTypePtr[0].getSelection() ||
-                            mntmWithSameOrientationPtr[0].getSelection() ||
-                            mntmExceptSubfilesPtr[0].getSelection()
-                            );
-                    if (mntmWithAccuracyPtr[0].getSelection()) {
+            Display.getCurrent().asyncExec(() -> {
+                mntmSelectEverythingPtr[0].setEnabled(
+                        mntmWithHiddenDataPtr[0].getSelection() ||
+                        mntmWithSameColourPtr[0].getSelection() ||
+                        mntmWithSameTypePtr[0].getSelection() ||
+                        mntmWithSameOrientationPtr[0].getSelection() ||
+                        mntmExceptSubfilesPtr[0].getSelection()
+                        );
+                if (mntmWithAccuracyPtr[0].getSelection()) {
 
-                        new ValueDialog(getShell(), I18n.E3D_SET_ACCURACY, I18n.E3D_THRESH_IN_LDU) {
+                    new ValueDialog(getShell(), I18n.E3D_SET_ACCURACY, I18n.E3D_THRESH_IN_LDU) {
 
-                            @Override
-                            public void initializeSpinner() {
-                                this.spnValuePtr[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
-                                this.spnValuePtr[0].setMaximum(new BigDecimal("1000")); //$NON-NLS-1$
-                                this.spnValuePtr[0].setValue(sels.getEqualDistance());
-                            }
+                        @Override
+                        public void initializeSpinner() {
+                            this.spnValuePtr[0].setMinimum(new BigDecimal("0")); //$NON-NLS-1$
+                            this.spnValuePtr[0].setMaximum(new BigDecimal("1000")); //$NON-NLS-1$
+                            this.spnValuePtr[0].setValue(sels.getEqualDistance());
+                        }
 
-                            @Override
-                            public void applyValue() {
-                                sels.setEqualDistance(this.spnValuePtr[0].getValue());
-                            }
-                        }.open();
-                    }
-                    showSelectMenu();
+                        @Override
+                        public void applyValue() {
+                            sels.setEqualDistance(this.spnValuePtr[0].getValue());
+                        }
+                    }.open();
                 }
+                showSelectMenu();
             });
             regainFocus();
         });
         widgetUtil(mntmWithHiddenDataPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    mntmSelectEverythingPtr[0].setEnabled(
-                            mntmWithHiddenDataPtr[0].getSelection() ||
-                            mntmWithSameColourPtr[0].getSelection() ||
-                            mntmWithSameTypePtr[0].getSelection() ||
-                            mntmWithSameOrientationPtr[0].getSelection() ||
-                            mntmExceptSubfilesPtr[0].getSelection()
-                            );
-                    showSelectMenu();
-                }
+            Display.getCurrent().asyncExec(() -> {
+                mntmSelectEverythingPtr[0].setEnabled(
+                        mntmWithHiddenDataPtr[0].getSelection() ||
+                        mntmWithSameColourPtr[0].getSelection() ||
+                        mntmWithSameTypePtr[0].getSelection() ||
+                        mntmWithSameOrientationPtr[0].getSelection() ||
+                        mntmExceptSubfilesPtr[0].getSelection()
+                        );
+                showSelectMenu();
             });
             regainFocus();
         });
         widgetUtil(mntmWithWholeSubfilesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    showSelectMenu();
-                }
-            });
+            Display.getCurrent().asyncExec(Editor3DWindow.getWindow()::showSelectMenu);
             regainFocus();
         });
         widgetUtil(mntmWithAdjacencyPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    showSelectMenu();
-                }
-            });
+            Display.getCurrent().asyncExec(Editor3DWindow.getWindow()::showSelectMenu);
             regainFocus();
         });
         widgetUtil(mntmExceptSubfilesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    mntmSelectEverythingPtr[0].setEnabled(
-                            mntmWithHiddenDataPtr[0].getSelection() ||
-                            mntmWithSameColourPtr[0].getSelection() ||
-                            mntmWithSameTypePtr[0].getSelection() ||
-                            mntmWithSameOrientationPtr[0].getSelection() ||
-                            mntmExceptSubfilesPtr[0].getSelection()
-                            );
-                    mntmWithWholeSubfilesPtr[0].setEnabled(!mntmExceptSubfilesPtr[0].getSelection());
-                    showSelectMenu();
-                }
+            Display.getCurrent().asyncExec(() -> {
+                mntmSelectEverythingPtr[0].setEnabled(
+                        mntmWithHiddenDataPtr[0].getSelection() ||
+                        mntmWithSameColourPtr[0].getSelection() ||
+                        mntmWithSameTypePtr[0].getSelection() ||
+                        mntmWithSameOrientationPtr[0].getSelection() ||
+                        mntmExceptSubfilesPtr[0].getSelection()
+                        );
+                mntmWithWholeSubfilesPtr[0].setEnabled(!mntmExceptSubfilesPtr[0].getSelection());
+                showSelectMenu();
             });
             regainFocus();
         });
         widgetUtil(mntmStopAtEdgesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    showSelectMenu();
-                }
-            });
+            Display.getCurrent().asyncExec(Editor3DWindow.getWindow()::showSelectMenu);
             regainFocus();
         });
         widgetUtil(mntmSAllTypesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    activateAllTypes();
-                    showSelectMenu();
-                }
+            Display.getCurrent().asyncExec(() -> {
+                activateAllTypes();
+                showSelectMenu();
             });
             regainFocus();
         });
         widgetUtil(mntmSNothingPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    mntmSVerticesPtr[0].setSelection(false);
-                    mntmSLinesPtr[0].setSelection(false);
-                    mntmSTrianglesPtr[0].setSelection(false);
-                    mntmSQuadsPtr[0].setSelection(false);
-                    mntmSCLinesPtr[0].setSelection(false);
-                    showSelectMenu();
-                }
+            Display.getCurrent().asyncExec(() -> {
+                mntmSVerticesPtr[0].setSelection(false);
+                mntmSLinesPtr[0].setSelection(false);
+                mntmSTrianglesPtr[0].setSelection(false);
+                mntmSQuadsPtr[0].setSelection(false);
+                mntmSCLinesPtr[0].setSelection(false);
+                showSelectMenu();
             });
             regainFocus();
         });
         widgetUtil(mntmSTrianglesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    showSelectMenu();
-                }
-            });
+            Display.getCurrent().asyncExec(Editor3DWindow.getWindow()::showSelectMenu);
             regainFocus();
         });
         widgetUtil(mntmSQuadsPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    showSelectMenu();
-                }
-            });
+            Display.getCurrent().asyncExec(Editor3DWindow.getWindow()::showSelectMenu);
             regainFocus();
         });
         widgetUtil(mntmSCLinesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    showSelectMenu();
-                }
-            });
+            Display.getCurrent().asyncExec(Editor3DWindow.getWindow()::showSelectMenu);
             regainFocus();
         });
         widgetUtil(mntmSVerticesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    showSelectMenu();
-                }
-            });
+            Display.getCurrent().asyncExec(Editor3DWindow.getWindow()::showSelectMenu);
             regainFocus();
         });
         widgetUtil(mntmSLinesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    showSelectMenu();
-                }
-            });
+            Display.getCurrent().asyncExec(Editor3DWindow.getWindow()::showSelectMenu);
             regainFocus();
         });
 
@@ -3220,19 +3148,16 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         widgetUtil(mntmSelectIsolatedVerticesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    for (OpenGLRenderer renderer : renders) {
-                        Composite3D c3d = renderer.getC3D();
-                        if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
-                            VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                            vm.addSnapshot();
-                            vm.selectIsolatedVertices();
-                            vm.syncWithTextEditors(true);
-                            regainFocus();
-                            return;
-                        }
+            Display.getCurrent().asyncExec(() -> {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit())) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
+                        vm.selectIsolatedVertices();
+                        vm.syncWithTextEditors(true);
+                        regainFocus();
+                        return;
                     }
                 }
             });
@@ -3240,18 +3165,15 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         widgetUtil(mntmSplitPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    for (OpenGLRenderer renderer : renders) {
-                        Composite3D c3d = renderer.getC3D();
-                        if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                            VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                            vm.addSnapshot();
-                            vm.split(2);
-                            regainFocus();
-                            return;
-                        }
+            Display.getCurrent().asyncExec(() -> {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                        VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                        vm.addSnapshot();
+                        vm.split(2);
+                        regainFocus();
+                        return;
                     }
                 }
             });
@@ -3259,35 +3181,32 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         widgetUtil(mntmSplitNTimesPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    for (OpenGLRenderer renderer : renders) {
-                        Composite3D c3d = renderer.getC3D();
-                        if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+            Display.getCurrent().asyncExec(() -> {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
 
-                            final int[] frac = new int[]{2};
-                            if (new ValueDialogInt(getShell(), I18n.E3D_SPLIT_EDGES, I18n.E3D_NUMBER_OF_FRACTIONS) {
+                        final int[] frac = new int[]{2};
+                        if (new ValueDialogInt(getShell(), I18n.E3D_SPLIT_EDGES, I18n.E3D_NUMBER_OF_FRACTIONS) {
 
-                                @Override
-                                public void initializeSpinner() {
-                                    this.spnValuePtr[0].setMinimum(2);
-                                    this.spnValuePtr[0].setMaximum(1000);
-                                    this.spnValuePtr[0].setValue(2);
-                                }
-
-                                @Override
-                                public void applyValue() {
-                                    frac[0] = this.spnValuePtr[0].getValue();
-                                }
-                            }.open() == OK) {
-
-                                VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                                vm.addSnapshot();
-                                vm.split(frac[0]);
-                                regainFocus();
-                                return;
+                            @Override
+                            public void initializeSpinner() {
+                                this.spnValuePtr[0].setMinimum(2);
+                                this.spnValuePtr[0].setMaximum(1000);
+                                this.spnValuePtr[0].setValue(2);
                             }
+
+                            @Override
+                            public void applyValue() {
+                                frac[0] = this.spnValuePtr[0].getValue();
+                            }
+                        }.open() == OK) {
+
+                            VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                            vm.addSnapshot();
+                            vm.split(frac[0]);
+                            regainFocus();
+                            return;
                         }
                     }
                 }
@@ -3296,22 +3215,19 @@ public class Editor3DWindow extends Editor3DDesign {
         });
 
         widgetUtil(mntmSmoothPtr[0]).addSelectionListener(e -> {
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    for (OpenGLRenderer renderer : renders) {
-                        Composite3D c3d = renderer.getC3D();
-                        if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
-                            OpenGLRenderer.getSmoothing().set(true);
-                            if (new SmoothDialog(getShell()).open() == OK) {
-                                VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
-                                vm.addSnapshot();
-                                vm.smooth(SmoothDialog.isX(), SmoothDialog.isY(), SmoothDialog.isZ(), SmoothDialog.getFactor(), SmoothDialog.getIterations());
-                                regainFocus();
-                            }
-                            OpenGLRenderer.getSmoothing().set(false);
-                            return;
+            Display.getCurrent().asyncExec(() -> {
+                for (OpenGLRenderer renderer : renders) {
+                    Composite3D c3d = renderer.getC3D();
+                    if (c3d.getLockableDatFileReference().equals(Project.getFileToEdit()) && !c3d.getLockableDatFileReference().isReadOnly()) {
+                        OpenGLRenderer.getSmoothing().set(true);
+                        if (new SmoothDialog(getShell()).open() == OK) {
+                            VertexManager vm = c3d.getLockableDatFileReference().getVertexManager();
+                            vm.addSnapshot();
+                            vm.smooth(SmoothDialog.isX(), SmoothDialog.isY(), SmoothDialog.isZ(), SmoothDialog.getFactor(), SmoothDialog.getIterations());
+                            regainFocus();
                         }
+                        OpenGLRenderer.getSmoothing().set(false);
+                        return;
                     }
                 }
             });
@@ -3805,177 +3721,174 @@ public class Editor3DWindow extends Editor3DDesign {
                                 final String fileName2 = fileName;
                                 final String source2 = source;
                                 final String oldFileName2 = oldFileName;
-                                Display.getDefault().asyncExec(new Runnable() {
-                                    @Override
-                                    public void run() {
+                                Display.getDefault().asyncExec(() -> {
 
-                                        String fileName = fileName2;
-                                        String source = source2;
+                                    String fileName3 = fileName2;
+                                    String source3 = source2;
 
-                                        closeAllComposite3D();
-                                        for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
-                                            if (txtwin.isSeperateWindow()) {
-                                                txtwin.getShell().close();
-                                            } else {
-                                                txtwin.closeAllTabs();
-                                            }
-                                        }
-                                        Project.setDefaultProject(true);
-                                        Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
-                                        getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                        getShell().update();
-                                        treeItemProjectPtr[0].setText(fileName);
-                                        treeItemProjectPtr[0].setData(Project.getProjectPath());
-
-                                        treeItemProjectPartsPtr[0].getItems().clear();
-                                        treeItemProjectSubpartsPtr[0].getItems().clear();
-                                        treeItemProjectPrimitivesPtr[0].getItems().clear();
-
-                                        treeItemOfficialPartsPtr[0].setData(null);
-
-                                        list.add(0, new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator + oldFileName2);
-                                        list.add(1, source);
-
-                                        DatFile main = View.DUMMY_DATFILE;
-
-                                        HashSet<DatFile> dfsToOpen = new HashSet<>();
-                                        ArrayList<DatFile> tempFileList = new ArrayList<>();
-                                        tempFileList.addAll(Project.getOpenedFiles());
-
-                                        for (int i =  list.size() - 2; i >= 0; i -= 2) {
-                                            DatFile df;
-                                            TreeItem n;
-                                            fileName = list.get(i);
-                                            source = list.get(i + 1);
-                                            df = DatFile.createDatFileForReview(fileName);
-                                            monitor.beginTask(fileName, IProgressMonitor.UNKNOWN);
-                                            Display.getCurrent().readAndDispatch();
-                                            dfsToOpen.add(df);
-                                            df.setText(source);
-                                            // Add / remove from unsaved files is mandatory!
-                                            Project.addUnsavedFile(df);
-                                            df.parseForData(true);
-                                            Project.removeUnsavedFile(df);
-                                            Project.getParsedFiles().remove(df);
-                                            if (source.contains("0 !LDRAW_ORG Unofficial_Subpart")) { //$NON-NLS-1$
-                                                int ind = fileName.lastIndexOf(File.separator + "s" + File.separator); //$NON-NLS-1$
-                                                if (ind >= 0) {
-                                                    fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "parts" + File.separator + "s" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
-                                                }
-                                                n = new TreeItem(treeItemProjectSubpartsPtr[0]);
-                                                df.setType(DatType.SUBPART);
-                                            } else if (source.contains("0 !LDRAW_ORG Unofficial_Primitive")) { //$NON-NLS-1$
-                                                int ind = fileName.lastIndexOf(File.separator);
-                                                if (ind >= 0) {
-                                                    fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "p" + File.separator).toString();  //$NON-NLS-1$
-                                                }
-                                                n = new TreeItem(treeItemProjectPrimitivesPtr[0]);
-                                                df.setType(DatType.PRIMITIVE);
-                                            } else if (source.contains("0 !LDRAW_ORG Unofficial_48_Primitive")) { //$NON-NLS-1$
-                                                int ind = fileName.lastIndexOf(File.separator + "48" + File.separator); //$NON-NLS-1$
-                                                if (ind >= 0) {
-                                                    fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 2, File.separator + "p" + File.separator  + "48" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
-                                                }
-                                                n = new TreeItem(treeItemProjectPrimitives48Ptr[0]);
-                                                df.setType(DatType.PRIMITIVE48);
-                                            } else if (source.contains("0 !LDRAW_ORG Unofficial_8_Primitive")) { //$NON-NLS-1$
-                                                int ind = fileName.lastIndexOf(File.separator + "8" + File.separator); //$NON-NLS-1$
-                                                if (ind >= 0) {
-                                                    fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "p" + File.separator  + "8" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
-                                                }
-                                                n = new TreeItem(treeItemProjectPrimitives8Ptr[0]);
-                                                df.setType(DatType.PRIMITIVE8);
-                                            } else {
-                                                int ind = fileName.lastIndexOf(File.separator);
-                                                if (ind >= 0) {
-                                                    fileName = new StringBuilder(fileName).replace(ind, ind + File.separator.length(), File.separator + "parts" + File.separator).toString();  //$NON-NLS-1$
-                                                }
-                                                n = new TreeItem(treeItemProjectPartsPtr[0]);
-                                                df.setType(DatType.PART);
-                                            }
-
-                                            df.setNewName(fileName);
-                                            df.setOldName(fileName);
-
-                                            for (DatFile datFile : tempFileList) {
-                                                if (df.equals(datFile)) {
-                                                    Project.getParsedFiles().remove(datFile);
-                                                    Project.removeUnsavedFile(datFile);
-                                                    datFile.disposeData();
-                                                    Project.getOpenedFiles().remove(datFile);
-                                                }
-                                            }
-
-                                            Project.addUnsavedFile(df);
-                                            Project.getParsedFiles().add(df);
-                                            Project.addOpenedFile(df);
-
-                                            n.setText(fileName2);
-                                            n.setData(df);
-
-                                            if (i == 0) {
-                                                main = df;
-                                            }
-                                        }
-
-                                        dfsToOpen.remove(main);
-
-                                        resetSearch();
-
-                                        treeItemProjectPtr[0].getParent().build();
-                                        treeItemProjectPtr[0].getParent().redraw();
-                                        treeItemProjectPtr[0].getParent().update();
-
-                                        Project.setFileToEdit(main);
-
-                                        openDatFile(main, OpenInWhat.EDITOR_3D, null);
-                                        renders.get(0).getC3D().getModifier().splitViewHorizontally();
-                                        renders.get(0).getC3D().getModifier().splitViewVertically();
-                                        renders.get(1).getC3D().getModifier().splitViewVertically();
-
-                                        int state = 0;
-                                        for (OpenGLRenderer renderer : getRenders()) {
-                                            Composite3D c3d = renderer.getC3D();
-                                            WidgetSelectionHelper.unselectAllChildButtons(c3d.mnuRenderMode);
-                                            if (state == 0) {
-                                                c3d.mntmNoBFC[0].setSelection(true);
-                                                c3d.getMntmStudLogo().setSelection(true);
-                                                c3d.getModifier().switchShowingLogo(true);
-                                                c3d.getModifier().setRenderMode(0);
-                                            }
-                                            if (state == 1) {
-                                                c3d.mntmRandomColours[0].setSelection(true);
-                                                c3d.getModifier().setRenderMode(1);
-                                            }
-                                            if (state == 2) {
-                                                c3d.mntmCondlineMode[0].setSelection(true);
-                                                c3d.getModifier().setRenderMode(6);
-                                            }
-                                            if (state == 3) {
-                                                c3d.mntmWireframeMode[0].setSelection(true);
-                                                c3d.getModifier().setRenderMode(-1);
-                                            }
-                                            state++;
-                                        }
-
-                                        updateTreeUnsavedEntries();
-
-                                        EditorTextWindow txt;
-
-                                        if (Project.getOpenTextWindows().isEmpty()) {
-                                            txt = new EditorTextWindow();
-                                            txt.run(main, false);
+                                    closeAllComposite3D();
+                                    for (EditorTextWindow txtwin : Project.getOpenTextWindows()) {
+                                        if (txtwin.isSeperateWindow()) {
+                                            txtwin.getShell().close();
                                         } else {
-                                            txt = Project.getOpenTextWindows().iterator().next();
+                                            txtwin.closeAllTabs();
                                         }
-
-                                        for (DatFile df : dfsToOpen) {
-                                            txt.openNewDatFileTab(df, false);
-                                        }
-
-                                        setReviewingAPart(true, dfsToOpen);
-                                        regainFocus();
                                     }
+                                    Project.setDefaultProject(true);
+                                    Project.setProjectPath(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath());
+                                    getShell().setText(Version.getApplicationName() + " " + Version.getVersion() + " (" + WorkbenchManager.getUserSettingState().getOpenGLVersionString() + ")"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                                    getShell().update();
+                                    treeItemProjectPtr[0].setText(fileName3);
+                                    treeItemProjectPtr[0].setData(Project.getProjectPath());
+
+                                    treeItemProjectPartsPtr[0].getItems().clear();
+                                    treeItemProjectSubpartsPtr[0].getItems().clear();
+                                    treeItemProjectPrimitivesPtr[0].getItems().clear();
+
+                                    treeItemOfficialPartsPtr[0].setData(null);
+
+                                    list.add(0, new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator + oldFileName2);
+                                    list.add(1, source3);
+
+                                    DatFile main = View.DUMMY_DATFILE;
+
+                                    HashSet<DatFile> dfsToOpen = new HashSet<>();
+                                    ArrayList<DatFile> tempFileList = new ArrayList<>();
+                                    tempFileList.addAll(Project.getOpenedFiles());
+
+                                    for (int i =  list.size() - 2; i >= 0; i -= 2) {
+                                        DatFile df;
+                                        TreeItem n;
+                                        fileName3 = list.get(i);
+                                        source3 = list.get(i + 1);
+                                        df = DatFile.createDatFileForReview(fileName3);
+                                        monitor.beginTask(fileName3, IProgressMonitor.UNKNOWN);
+                                        Display.getCurrent().readAndDispatch();
+                                        dfsToOpen.add(df);
+                                        df.setText(source3);
+                                        // Add / remove from unsaved files is mandatory!
+                                        Project.addUnsavedFile(df);
+                                        df.parseForData(true);
+                                        Project.removeUnsavedFile(df);
+                                        Project.getParsedFiles().remove(df);
+                                        if (source3.contains("0 !LDRAW_ORG Unofficial_Subpart")) { //$NON-NLS-1$
+                                            int ind = fileName3.lastIndexOf(File.separator + "s" + File.separator); //$NON-NLS-1$
+                                            if (ind >= 0) {
+                                                fileName3 = new StringBuilder(fileName3).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "parts" + File.separator + "s" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
+                                            }
+                                            n = new TreeItem(treeItemProjectSubpartsPtr[0]);
+                                            df.setType(DatType.SUBPART);
+                                        } else if (source3.contains("0 !LDRAW_ORG Unofficial_Primitive")) { //$NON-NLS-1$
+                                            int ind = fileName3.lastIndexOf(File.separator);
+                                            if (ind >= 0) {
+                                                fileName3 = new StringBuilder(fileName3).replace(ind, ind + File.separator.length(), File.separator + "p" + File.separator).toString();  //$NON-NLS-1$
+                                            }
+                                            n = new TreeItem(treeItemProjectPrimitivesPtr[0]);
+                                            df.setType(DatType.PRIMITIVE);
+                                        } else if (source3.contains("0 !LDRAW_ORG Unofficial_48_Primitive")) { //$NON-NLS-1$
+                                            int ind = fileName3.lastIndexOf(File.separator + "48" + File.separator); //$NON-NLS-1$
+                                            if (ind >= 0) {
+                                                fileName3 = new StringBuilder(fileName3).replace(ind, ind + File.separator.length() * 2 + 2, File.separator + "p" + File.separator  + "48" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
+                                            }
+                                            n = new TreeItem(treeItemProjectPrimitives48Ptr[0]);
+                                            df.setType(DatType.PRIMITIVE48);
+                                        } else if (source3.contains("0 !LDRAW_ORG Unofficial_8_Primitive")) { //$NON-NLS-1$
+                                            int ind = fileName3.lastIndexOf(File.separator + "8" + File.separator); //$NON-NLS-1$
+                                            if (ind >= 0) {
+                                                fileName3 = new StringBuilder(fileName3).replace(ind, ind + File.separator.length() * 2 + 1, File.separator + "p" + File.separator  + "8" + File.separator).toString();  //$NON-NLS-1$ //$NON-NLS-2$
+                                            }
+                                            n = new TreeItem(treeItemProjectPrimitives8Ptr[0]);
+                                            df.setType(DatType.PRIMITIVE8);
+                                        } else {
+                                            int ind = fileName3.lastIndexOf(File.separator);
+                                            if (ind >= 0) {
+                                                fileName3 = new StringBuilder(fileName3).replace(ind, ind + File.separator.length(), File.separator + "parts" + File.separator).toString();  //$NON-NLS-1$
+                                            }
+                                            n = new TreeItem(treeItemProjectPartsPtr[0]);
+                                            df.setType(DatType.PART);
+                                        }
+
+                                        df.setNewName(fileName3);
+                                        df.setOldName(fileName3);
+
+                                        for (DatFile datFile : tempFileList) {
+                                            if (df.equals(datFile)) {
+                                                Project.getParsedFiles().remove(datFile);
+                                                Project.removeUnsavedFile(datFile);
+                                                datFile.disposeData();
+                                                Project.getOpenedFiles().remove(datFile);
+                                            }
+                                        }
+
+                                        Project.addUnsavedFile(df);
+                                        Project.getParsedFiles().add(df);
+                                        Project.addOpenedFile(df);
+
+                                        n.setText(fileName2);
+                                        n.setData(df);
+
+                                        if (i == 0) {
+                                            main = df;
+                                        }
+                                    }
+
+                                    dfsToOpen.remove(main);
+
+                                    resetSearch();
+
+                                    treeItemProjectPtr[0].getParent().build();
+                                    treeItemProjectPtr[0].getParent().redraw();
+                                    treeItemProjectPtr[0].getParent().update();
+
+                                    Project.setFileToEdit(main);
+
+                                    openDatFile(main, OpenInWhat.EDITOR_3D, null);
+                                    renders.get(0).getC3D().getModifier().splitViewHorizontally();
+                                    renders.get(0).getC3D().getModifier().splitViewVertically();
+                                    renders.get(1).getC3D().getModifier().splitViewVertically();
+
+                                    int state = 0;
+                                    for (OpenGLRenderer renderer : getRenders()) {
+                                        Composite3D c3d = renderer.getC3D();
+                                        WidgetSelectionHelper.unselectAllChildButtons(c3d.mnuRenderMode);
+                                        if (state == 0) {
+                                            c3d.mntmNoBFC[0].setSelection(true);
+                                            c3d.getMntmStudLogo().setSelection(true);
+                                            c3d.getModifier().switchShowingLogo(true);
+                                            c3d.getModifier().setRenderMode(0);
+                                        }
+                                        if (state == 1) {
+                                            c3d.mntmRandomColours[0].setSelection(true);
+                                            c3d.getModifier().setRenderMode(1);
+                                        }
+                                        if (state == 2) {
+                                            c3d.mntmCondlineMode[0].setSelection(true);
+                                            c3d.getModifier().setRenderMode(6);
+                                        }
+                                        if (state == 3) {
+                                            c3d.mntmWireframeMode[0].setSelection(true);
+                                            c3d.getModifier().setRenderMode(-1);
+                                        }
+                                        state++;
+                                    }
+
+                                    updateTreeUnsavedEntries();
+
+                                    EditorTextWindow txt;
+
+                                    if (Project.getOpenTextWindows().isEmpty()) {
+                                        txt = new EditorTextWindow();
+                                        txt.run(main, false);
+                                    } else {
+                                        txt = Project.getOpenTextWindows().iterator().next();
+                                    }
+
+                                    for (DatFile df : dfsToOpen) {
+                                        txt.openNewDatFileTab(df, false);
+                                    }
+
+                                    setReviewingAPart(true, dfsToOpen);
+                                    regainFocus();
                                 });
                             }
                         });
@@ -5508,20 +5421,17 @@ public class Editor3DWindow extends Editor3DDesign {
                 @Override
                 public void run(final IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
                     monitor.beginTask(I18n.E3D_LOADING_LIBRARY, IProgressMonitor.UNKNOWN);
-                    Display.getDefault().asyncExec(new Runnable() {
-                        @Override
-                        public void run() {
-                            LibraryManager.readUnofficialParts(treeItemUnofficialPartsPtr[0]);
-                            LibraryManager.readUnofficialSubparts(treeItemUnofficialSubpartsPtr[0]);
-                            LibraryManager.readUnofficialPrimitives(treeItemUnofficialPrimitivesPtr[0]);
-                            LibraryManager.readUnofficialHiResPrimitives(treeItemUnofficialPrimitives48Ptr[0]);
-                            LibraryManager.readUnofficialLowResPrimitives(treeItemUnofficialPrimitives8Ptr[0]);
-                            LibraryManager.readOfficialParts(treeItemOfficialPartsPtr[0]);
-                            LibraryManager.readOfficialSubparts(treeItemOfficialSubpartsPtr[0]);
-                            LibraryManager.readOfficialPrimitives(treeItemOfficialPrimitivesPtr[0]);
-                            LibraryManager.readOfficialHiResPrimitives(treeItemOfficialPrimitives48Ptr[0]);
-                            LibraryManager.readOfficialLowResPrimitives(treeItemOfficialPrimitives8Ptr[0]);
-                        }
+                    Display.getDefault().asyncExec(() -> {
+                        LibraryManager.readUnofficialParts(treeItemUnofficialPartsPtr[0]);
+                        LibraryManager.readUnofficialSubparts(treeItemUnofficialSubpartsPtr[0]);
+                        LibraryManager.readUnofficialPrimitives(treeItemUnofficialPrimitivesPtr[0]);
+                        LibraryManager.readUnofficialHiResPrimitives(treeItemUnofficialPrimitives48Ptr[0]);
+                        LibraryManager.readUnofficialLowResPrimitives(treeItemUnofficialPrimitives8Ptr[0]);
+                        LibraryManager.readOfficialParts(treeItemOfficialPartsPtr[0]);
+                        LibraryManager.readOfficialSubparts(treeItemOfficialSubpartsPtr[0]);
+                        LibraryManager.readOfficialPrimitives(treeItemOfficialPrimitivesPtr[0]);
+                        LibraryManager.readOfficialHiResPrimitives(treeItemOfficialPrimitives48Ptr[0]);
+                        LibraryManager.readOfficialLowResPrimitives(treeItemOfficialPrimitives8Ptr[0]);
                     });
                 }
             });

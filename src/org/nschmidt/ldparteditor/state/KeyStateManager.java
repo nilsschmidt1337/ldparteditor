@@ -23,10 +23,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ArmEvent;
-import org.eclipse.swt.events.ArmListener;
-import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -1232,40 +1228,28 @@ public class KeyStateManager {
     }
 
     public static void addTooltipText(final NButton btn, final String text, final TextTask t) {
-        btn.addMouseMoveListener(new MouseMoveListener() {
-            @Override
-            public void mouseMove(MouseEvent e) {
-                btn.setToolTipText(text + " (" + textTaskKeyMap.get(t) +")"); //$NON-NLS-1$ //$NON-NLS-2$
-            }
+        btn.addMouseMoveListener(e -> {
+            btn.setToolTipText(text + " (" + textTaskKeyMap.get(t) +")"); //$NON-NLS-1$ //$NON-NLS-2$
         });
     }
 
     public static void addTooltipText(final NButton btn, final String text, final Task t) {
-        btn.addMouseMoveListener(new MouseMoveListener() {
-            @Override
-            public void mouseMove(MouseEvent e) {
-                btn.setToolTipText(text + " (" + taskKeyMap.get(t) +")"); //$NON-NLS-1$ //$NON-NLS-2$
-            }
+        btn.addMouseMoveListener(e -> {
+            btn.setToolTipText(text + " (" + taskKeyMap.get(t) +")"); //$NON-NLS-1$ //$NON-NLS-2$
         });
     }
 
     public static void addKeyText(final MenuItem mntm, final String text, final Task t) {
         mntm.setText(text + "\t" + taskKeyMap.get(t)); //$NON-NLS-1$
-        mntm.addArmListener(new ArmListener() {
-            @Override
-            public void widgetArmed(ArmEvent e) {
-                mntm.setText(text + "\t" + taskKeyMap.get(t)); //$NON-NLS-1$
-            }
+        mntm.addArmListener(e -> {
+            mntm.setText(text + "\t" + taskKeyMap.get(t)); //$NON-NLS-1$
         });
     }
 
     public static void addKeyText(final MenuItem mntm, final String text, final TextTask t) {
         mntm.setText(text + "\t" + textTaskKeyMap.get(t)); //$NON-NLS-1$
-        mntm.addArmListener(new ArmListener() {
-            @Override
-            public void widgetArmed(ArmEvent e) {
-                mntm.setText(text + "\t" + textTaskKeyMap.get(t)); //$NON-NLS-1$
-            }
+        mntm.addArmListener(e -> {
+            mntm.setText(text + "\t" + textTaskKeyMap.get(t)); //$NON-NLS-1$
         });
     }
 

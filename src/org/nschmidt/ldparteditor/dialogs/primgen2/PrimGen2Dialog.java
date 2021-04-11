@@ -26,10 +26,6 @@ import java.util.HashSet;
 import java.util.Locale;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ExtendedModifyEvent;
-import org.eclipse.swt.custom.ExtendedModifyListener;
-import org.eclipse.swt.custom.LineStyleEvent;
-import org.eclipse.swt.custom.LineStyleListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
@@ -118,106 +114,92 @@ public class PrimGen2Dialog extends PrimGen2Design {
         spnMajorPtr[0].setValue(2);
         spnMinorPtr[0].setValue(BigDecimal.ONE);
 
-        Display.getCurrent().asyncExec(new Runnable() {
-            @Override
-            public void run() {
+        Display.getCurrent().asyncExec(() -> {
 
-                lblStandardPtr[0].setText(I18n.PRIMGEN_STANDARD);
+            lblStandardPtr[0].setText(I18n.PRIMGEN_STANDARD);
 
-                final StringBuilder sb = new StringBuilder();
-                sb.append("0 Circle 0.25\n"); //$NON-NLS-1$
-                sb.append("0 Name: 1-4edge.dat\n"); //$NON-NLS-1$
+            final StringBuilder sb = new StringBuilder();
+            sb.append("0 Circle 0.25\n"); //$NON-NLS-1$
+            sb.append("0 Name: 1-4edge.dat\n"); //$NON-NLS-1$
 
-                final UserSettingState user = WorkbenchManager.getUserSettingState();
+            final UserSettingState user = WorkbenchManager.getUserSettingState();
 
-                String ldrawName = user.getLdrawUserName();
-                String realName = user.getRealUserName();
-                if (ldrawName == null || ldrawName.isEmpty()) {
-                    if (realName == null || realName.isEmpty()) {
-                        sb.append("0 Author: Primitive Generator 2\n"); //$NON-NLS-1$
-                    } else {
-                        sb.append("0 Author: " + realName + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
-                    }
+            String ldrawName = user.getLdrawUserName();
+            String realName = user.getRealUserName();
+            if (ldrawName == null || ldrawName.isEmpty()) {
+                if (realName == null || realName.isEmpty()) {
+                    sb.append("0 Author: Primitive Generator 2\n"); //$NON-NLS-1$
                 } else {
-                    if (realName == null || realName.isEmpty()) {
-                        sb.append("0 Author: [" + ldrawName + "]\n"); //$NON-NLS-1$ //$NON-NLS-2$
-                    } else {
-                        sb.append("0 Author: " + realName + " [" + ldrawName + "]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                    }
+                    sb.append("0 Author: " + realName + "\n"); //$NON-NLS-1$ //$NON-NLS-2$
                 }
-
-                sb.append("0 !LDRAW_ORG Unofficial_Primitive\n"); //$NON-NLS-1$
-                sb.append("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt\n\n"); //$NON-NLS-1$
-
-                sb.append("0 BFC CERTIFY CCW\n\n"); //$NON-NLS-1$
-
-                sb.append("2 24 1 0 0 0.9239 0 0.3827\n"); //$NON-NLS-1$
-                sb.append("2 24 0.9239 0 0.3827 0.7071 0 0.7071\n"); //$NON-NLS-1$
-                sb.append("2 24 0.7071 0 0.7071 0.3827 0 0.9239\n"); //$NON-NLS-1$
-                sb.append("2 24 0.3827 0 0.9239 0 0 1\n"); //$NON-NLS-1$
-                sb.append("0 // Build by LDPartEditor (PrimGen 2.X)"); //$NON-NLS-1$
-
-                c3d.setRenderMode(6);
-                c3d.getModifier().switchMeshLines(false);
-                txtDataPtr[0].setText(sb.toString());
+            } else {
+                if (realName == null || realName.isEmpty()) {
+                    sb.append("0 Author: [" + ldrawName + "]\n"); //$NON-NLS-1$ //$NON-NLS-2$
+                } else {
+                    sb.append("0 Author: " + realName + " [" + ldrawName + "]\n"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                }
             }
+
+            sb.append("0 !LDRAW_ORG Unofficial_Primitive\n"); //$NON-NLS-1$
+            sb.append("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt\n\n"); //$NON-NLS-1$
+
+            sb.append("0 BFC CERTIFY CCW\n\n"); //$NON-NLS-1$
+
+            sb.append("2 24 1 0 0 0.9239 0 0.3827\n"); //$NON-NLS-1$
+            sb.append("2 24 0.9239 0 0.3827 0.7071 0 0.7071\n"); //$NON-NLS-1$
+            sb.append("2 24 0.7071 0 0.7071 0.3827 0 0.9239\n"); //$NON-NLS-1$
+            sb.append("2 24 0.3827 0 0.9239 0 0 1\n"); //$NON-NLS-1$
+            sb.append("0 // Build by LDPartEditor (PrimGen 2.X)"); //$NON-NLS-1$
+
+            c3d.setRenderMode(6);
+            c3d.getModifier().switchMeshLines(false);
+            txtDataPtr[0].setText(sb.toString());
         });
 
         // MARK All final listeners will be configured here..
 
-        txtDataPtr[0].addLineStyleListener(new LineStyleListener() {
-            @Override
-            public void lineGetStyle(final LineStyleEvent e) {
-                // So the line will be formated with the syntax formatter from
-                // the CompositeText.
-                final VertexManager vm = df.getVertexManager();
-                final GData data = df.getDrawPerLineNoClone().getValue(txtDataPtr[0].getLineAtOffset(e.lineOffset) + 1);
-                boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
-                isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
-                syntaxFormatter.format(e,
-                        BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
-                        0f, false, isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), df);
-            }
+        txtDataPtr[0].addLineStyleListener(e -> {
+            // So the line will be formated with the syntax formatter from
+            // the CompositeText.
+            final VertexManager vm = df.getVertexManager();
+            final GData data = df.getDrawPerLineNoClone().getValue(txtDataPtr[0].getLineAtOffset(e.lineOffset) + 1);
+            boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
+            isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
+            syntaxFormatter.format(e,
+                    BigDecimal.ZERO, BigDecimal.ZERO, BigDecimal.ZERO,
+                    0f, false, isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(), df);
         });
 
-        txtDataPtr[0].addExtendedModifyListener(new ExtendedModifyListener() {
-            @Override
-            public void modifyText(ExtendedModifyEvent event) {
-                df.disposeData();
-                df.setText(txtDataPtr[0].getText());
-                df.parseForData(false);
+        txtDataPtr[0].addExtendedModifyListener(event -> {
+            df.disposeData();
+            df.setText(txtDataPtr[0].getText());
+            df.parseForData(false);
 
-                if (NLogger.debugging) {
-                    int c1 = txtDataPtr[0].getLineCount();
-                    int c2 = txtData2Ptr[0].getLineCount();
-                    int matches = 0;
-                    HashSet<String> lines = new HashSet<>();
-                    for (int i = 0; i < c2; i++) {
-                        String line = txtData2Ptr[0].getLine(i);
-                        if (!line.isEmpty() && !line.startsWith("0") && !line.startsWith("5")) { //$NON-NLS-1$ //$NON-NLS-2$
-                            lines.add(line);
-                        }
+            if (NLogger.debugging) {
+                int c1 = txtDataPtr[0].getLineCount();
+                int c2 = txtData2Ptr[0].getLineCount();
+                int matches = 0;
+                HashSet<String> lines = new HashSet<>();
+                for (int i = 0; i < c2; i++) {
+                    String line = txtData2Ptr[0].getLine(i);
+                    if (!line.isEmpty() && !line.startsWith("0") && !line.startsWith("5")) { //$NON-NLS-1$ //$NON-NLS-2$
+                        lines.add(line);
                     }
-                    lblStandardPtr[0].setText(""); //$NON-NLS-1$
-                    for (int i = 0; i < c1; i++) {
-                        String line = txtDataPtr[0].getLine(i);
-                        if (lines.contains(line)) {
-                            matches = matches + 1;
-                        } else if (lblStandardPtr[0].getText().isEmpty() && !line.isEmpty() && !line.startsWith("0") && !line.startsWith("5")) { //$NON-NLS-1$ //$NON-NLS-2$
-                            lblStandardPtr[0].setText(i + 1 + " " + line); //$NON-NLS-1$
-                        }
+                }
+                lblStandardPtr[0].setText(""); //$NON-NLS-1$
+                for (int i = 0; i < c1; i++) {
+                    String line = txtDataPtr[0].getLine(i);
+                    if (lines.contains(line)) {
+                        matches = matches + 1;
+                    } else if (lblStandardPtr[0].getText().isEmpty() && !line.isEmpty() && !line.startsWith("0") && !line.startsWith("5")) { //$NON-NLS-1$ //$NON-NLS-2$
+                        lblStandardPtr[0].setText(i + 1 + " " + line); //$NON-NLS-1$
                     }
-
-                    lblStandardPtr[0].setText("Coverage: " + matches * 100d / lines.size() + "% " + lblStandardPtr[0].getText()); //$NON-NLS-1$ //$NON-NLS-2$
                 }
 
-                Display.getCurrent().asyncExec(new Runnable() {
-                    @Override
-                    public void run() {
-                        c3d.getRenderer().drawScene();
-                    }
-                });
+                lblStandardPtr[0].setText("Coverage: " + matches * 100d / lines.size() + "% " + lblStandardPtr[0].getText()); //$NON-NLS-1$ //$NON-NLS-2$
             }
+
+            Display.getCurrent().asyncExec(c3d.getRenderer()::drawScene);
         });
 
         txtDataPtr[0].addListener(SWT.KeyDown, event -> {
@@ -329,12 +311,7 @@ public class PrimGen2Dialog extends PrimGen2Design {
 
         widgetUtil(btnTopPtr[0]).addSelectionListener(e -> {
             c3d.getPerspectiveCalculator().setPerspective(Perspective.TOP);
-            Display.getCurrent().asyncExec(new Runnable() {
-                @Override
-                public void run() {
-                    c3d.getRenderer().drawScene();
-                }
-            });
+            Display.getCurrent().asyncExec(c3d.getRenderer()::drawScene);
         });
 
         widgetUtil(cmbTypePtr[0]).addSelectionListener(e -> {
