@@ -19,7 +19,8 @@ import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL15;
 import org.lwjgl.opengl.GL20;
 
-public class GL33HelperPrimitives {
+public enum GL33HelperPrimitives {
+    INSTANCE;
 
     private static final int POSITION_SHADER_LOCATION = 0;
     private static final int COLOUR_SHADER_LOCATION = 1;

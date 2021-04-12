@@ -51,7 +51,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  *
  * @author nils TODO Needs documentation
  */
-public class LibraryManager {
+public enum LibraryManager {
+    INSTANCE;
 
     // TODO Needs error handling!
 

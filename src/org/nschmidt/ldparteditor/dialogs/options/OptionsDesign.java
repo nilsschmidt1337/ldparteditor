@@ -93,7 +93,9 @@ class OptionsDesign extends ApplicationWindow {
         OPENGL_COLOUR
     }
 
-    {
+    public OptionsDesign(Shell parentShell) {
+        super(parentShell);
+
         s1.add(Task.TRANSFORM_UP);
         s1.add(Task.TRANSFORM_RIGHT);
         s1.add(Task.TRANSFORM_DOWN);
@@ -116,11 +118,6 @@ class OptionsDesign extends ApplicationWindow {
         s1.add(Task.COLOUR_NUMBER7);
         s1.add(Task.COLOUR_NUMBER8);
         s1.add(Task.COLOUR_NUMBER9);
-    }
-
-    public OptionsDesign(Shell parentShell) {
-        super(parentShell);
-        // TODO Auto-generated constructor stub
     }
 
     /**

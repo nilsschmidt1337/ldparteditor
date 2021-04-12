@@ -48,9 +48,9 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class CSGCube extends CSGPrimitive implements Primitive {
+public class CSGCube implements Primitive {
 
-    public final int id = id_counter.getAndIncrement();
+    public final int id = idCounter.getAndIncrement();
 
     /**
      * Center of this cube.

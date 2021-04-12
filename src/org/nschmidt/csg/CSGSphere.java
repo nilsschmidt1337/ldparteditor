@@ -45,9 +45,9 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  *
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
-public class CSGSphere extends CSGPrimitive implements Primitive {
+public class CSGSphere implements Primitive {
 
-    public final int id = id_counter.getAndIncrement();
+    public final int id = idCounter.getAndIncrement();
 
     private VectorCSGd center;
     private double radius;

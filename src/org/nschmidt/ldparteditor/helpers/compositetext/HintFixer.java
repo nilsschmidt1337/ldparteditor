@@ -28,7 +28,8 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
  * @author nils
  *
  */
-final class HintFixer {
+enum HintFixer {
+    INSTANCE;
 
     public static String fix(int lineNumber, String sort, String text, DatFile datFile, HeaderState h) {
         DatType type = datFile.getType();

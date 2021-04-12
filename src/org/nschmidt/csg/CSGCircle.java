@@ -30,9 +30,9 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  *
  * @author nils
  */
-public class CSGCircle extends CSGPrimitive implements Primitive {
+public class CSGCircle implements Primitive {
 
-    public final int id = id_counter.getAndIncrement();
+    public final int id = idCounter.getAndIncrement();
     private VectorCSGd start;
     private VectorCSGd end;
     private double radius;

@@ -33,9 +33,9 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.helpers.composite3d.PathTruderSettings;
 import org.nschmidt.ldparteditor.helpers.math.HashBiMap;
 
-public class CSGExtrude extends CSGPrimitive implements Primitive {
+public class CSGExtrude implements Primitive {
 
-    public final int id = id_counter.getAndIncrement();
+    public final int id = idCounter.getAndIncrement();
 
     private final GDataCSG start;
     private final List<GData> cachedData;

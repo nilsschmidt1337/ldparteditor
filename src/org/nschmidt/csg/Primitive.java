@@ -31,6 +31,7 @@
 package org.nschmidt.csg;
 
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.nschmidt.ldparteditor.data.DatFile;
 import org.nschmidt.ldparteditor.data.GColour;
@@ -41,6 +42,9 @@ import org.nschmidt.ldparteditor.data.GColour;
  * @author Michael Hoffer &lt;info@michaelhoffer.de&gt;
  */
 interface Primitive {
+
+
+    static final AtomicInteger idCounter = new AtomicInteger(0);
 
     /**
      * Returns the polygons that define this primitive.

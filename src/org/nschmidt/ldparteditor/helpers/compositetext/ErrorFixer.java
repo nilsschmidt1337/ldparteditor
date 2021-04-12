@@ -42,7 +42,8 @@ import org.nschmidt.ldparteditor.text.DatParser;
  * @author nils
  *
  */
-final class ErrorFixer {
+enum ErrorFixer {
+    INSTANCE;
 
     public static String fix(int lineNumber, String sort, String line, String text, DatFile datFile, Shell tWinShell) {
         int s = Integer.parseInt(sort, 16);

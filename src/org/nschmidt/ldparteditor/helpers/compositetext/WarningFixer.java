@@ -29,7 +29,8 @@ import org.nschmidt.ldparteditor.helpers.math.Vector3d;
  * @author nils
  *
  */
-final class WarningFixer {
+enum WarningFixer {
+    INSTANCE;
 
     public static String fix(int lineNumber, String sort, String line, String text) {
         // TODO Needs implementation!

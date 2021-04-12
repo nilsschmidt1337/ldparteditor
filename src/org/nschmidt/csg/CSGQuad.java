@@ -29,9 +29,9 @@ import org.nschmidt.ldparteditor.data.GColourIndex;
  *
  * @author nils
  */
-public class CSGQuad extends CSGPrimitive implements Primitive {
+public class CSGQuad implements Primitive {
 
-    public final int id = id_counter.getAndIncrement();
+    public final int id = idCounter.getAndIncrement();
 
     /**
      * Center of this quad.

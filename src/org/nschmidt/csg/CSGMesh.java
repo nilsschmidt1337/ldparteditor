@@ -27,9 +27,9 @@ import org.nschmidt.ldparteditor.data.GData4;
 import org.nschmidt.ldparteditor.data.GDataCSG;
 import org.nschmidt.ldparteditor.data.GDataTEX;
 
-public class CSGMesh extends CSGPrimitive implements Primitive {
+public class CSGMesh implements Primitive {
 
-    public final int id = id_counter.getAndIncrement();
+    public final int id = idCounter.getAndIncrement();
 
     private final GDataCSG start;
     private final List<GData> cachedData;

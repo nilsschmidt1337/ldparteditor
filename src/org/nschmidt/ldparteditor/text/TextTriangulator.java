@@ -55,7 +55,8 @@ import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
  * @author nils
  *
  */
-public class TextTriangulator {
+public enum TextTriangulator {
+    INSTANCE;
 
     public static Set<GData> triangulateText(Font font, final float r, final float g, final float b, final String text, final double flatness, final double interpolateFlatness, final GData1 parent, final DatFile datFile, int fontHeight,
             final double deltaAngle) {

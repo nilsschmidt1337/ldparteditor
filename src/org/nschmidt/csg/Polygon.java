@@ -182,7 +182,7 @@ public final class Polygon {
                 Vertex v3 = new Vertex((float) dv3.x, (float) dv3.y, (float) dv3.z);
                 GColourIndex tmpColour = null;
                 if ((tmpColour = this.colour) == null) {
-                    int dID = CSGPrimitive.id_counter.getAndIncrement();
+                    int dID = Primitive.idCounter.getAndIncrement();
                     result.put(new GData3(v1, v2, v3, parent, c16, true), new IdAndPlane(plane, dID));
                 } else {
                     // TODO Debug-only: result.put(new GData3(v1, v2, v3, parent, View.getLDConfigColour(PSEUDO_ID % 16), true), new IdAndPlane(plane, colour.getIndex())); // only for test

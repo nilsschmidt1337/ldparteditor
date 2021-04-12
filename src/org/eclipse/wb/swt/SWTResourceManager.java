@@ -35,7 +35,9 @@ import org.nschmidt.ldparteditor.logger.NLogger;
  * @author scheglov_ke
  * @author Dan Rubel
  */
-public class SWTResourceManager {
+public enum SWTResourceManager {
+    INSTANCE;
+
     // //////////////////////////////////////////////////////////////////////////
     //
     // Color
