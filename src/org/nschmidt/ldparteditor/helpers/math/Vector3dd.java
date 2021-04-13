@@ -41,6 +41,10 @@ public class Vector3dd extends Vector3d implements Comparable<Vector3dd> {
     private static final BigDecimal MIN_DIST = new BigDecimal(".0001"); //$NON-NLS-1$
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof Vector3dd)) {
+            return false;
+        }
+
         Vector3dd other = (Vector3dd) obj;
         return other == this || this.x.subtract(other.x).abs().compareTo(MIN_DIST) < 0 && this.y.subtract(other.y).abs().compareTo(MIN_DIST) < 0 && this.z.subtract(other.z).abs().compareTo(MIN_DIST) < 0;
     }

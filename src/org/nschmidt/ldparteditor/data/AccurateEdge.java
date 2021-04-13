@@ -36,6 +36,10 @@ class AccurateEdge {
 
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof AccurateEdge)) {
+            return false;
+        }
+
         AccurateEdge other = (AccurateEdge) obj;
         return
                 this.v1.xp.compareTo(other.v1.xp) == 0 &&

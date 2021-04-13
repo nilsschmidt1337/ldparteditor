@@ -35,6 +35,10 @@ public class Vector3dh extends Vector3dd {
 
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof Vector3dh)) {
+            return false;
+        }
+
         Vector3dh other = (Vector3dh) obj;
         return other == this;
     }

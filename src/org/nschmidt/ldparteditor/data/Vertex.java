@@ -182,6 +182,10 @@ public class Vertex implements Comparable<Vertex> {
 
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof Vertex)) {
+            return false;
+        }
+
         Vertex other = (Vertex) obj;
         return Math.abs(roundedX - other.roundedX) < EPSILON && Math.abs(roundedY - other.roundedY) < EPSILON
                 && Math.abs(roundedZ - other.roundedZ) < EPSILON;

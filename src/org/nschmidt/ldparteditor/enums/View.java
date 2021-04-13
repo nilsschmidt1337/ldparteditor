@@ -399,6 +399,10 @@ public enum View {
 
         @Override
         public boolean equals(Object obj) {
+            if (!(obj instanceof IndexedEntry)) {
+                return false;
+            }
+
             IndexedEntry other = (IndexedEntry) obj;
             if (Float.floatToIntBits(b) != Float.floatToIntBits(other.b))
                 return false;

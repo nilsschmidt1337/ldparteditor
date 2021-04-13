@@ -190,6 +190,10 @@ public class VectorCSGd implements Comparable<VectorCSGd>{
 
     @Override
     public boolean equals(Object obj) {
+        if (!(obj instanceof VectorCSGd)) {
+            return false;
+        }
+
         VectorCSGd o = (VectorCSGd) obj;
         return Math.abs(x - o.x) < EPSILON && Math.abs(y - o.y) < EPSILON && Math.abs(z - o.z) < EPSILON;
     }
