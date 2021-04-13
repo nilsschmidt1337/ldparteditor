@@ -31,10 +31,10 @@ public enum Font {
     INSTANCE;
 
     /** The standard system font (copy) */
-    public static final org.eclipse.swt.graphics.Font SYSTEM = SWTResourceManager.getFont(Display.getCurrent().getSystemFont().getFontData()[0].getName(), Display.getCurrent().getSystemFont()
+    public static final org.eclipse.swt.graphics.Font SYSTEM = SWTResourceManager.getFont(Display.getDefault().getSystemFont().getFontData()[0].getName(), Display.getDefault().getSystemFont()
             .getFontData()[0].getHeight(), SWT.NORMAL);
     /** The system font with the height of 8 */
-    public static final org.eclipse.swt.graphics.Font SMALL = SWTResourceManager.getFont(Display.getCurrent().getSystemFont().getFontData()[0].getName(), 8, SWT.NORMAL);
+    public static final org.eclipse.swt.graphics.Font SMALL = SWTResourceManager.getFont(Display.getDefault().getSystemFont().getFontData()[0].getName(), 8, SWT.NORMAL);
     /** The standard monospaced font for terminals */
     public static final org.eclipse.swt.graphics.Font MONOSPACE = JFaceResources.getFont(JFaceResources.TEXT_FONT);
     /** The width of the standard monospaced font (in pixels) */
