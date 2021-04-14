@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -125,9 +126,7 @@ class VM25Smooth extends VM24MeshReducer {
             SortedSet<Vertex> allVerts = new TreeSet<>();
             for (Vertex vertex : verts) {
                 allVerts.add(vertex);
-                for (Vertex vertex2 : getNeighbourVertices(vertex)) {
-                    allVerts.add(vertex2);
-                }
+                allVerts.addAll(Arrays.asList(getNeighbourVertices(vertex)));
             }
             vertsToProcess.addAll(allVerts);
             originalVerts.addAll(vertsToProcess);

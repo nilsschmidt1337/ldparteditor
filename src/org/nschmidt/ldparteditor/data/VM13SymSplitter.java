@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -310,9 +311,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     verts = lines.get(g);
                     {
                         SortedSet<Vertex> vv = new TreeSet<>();
-                        for (Vertex v : verts) {
-                            vv.add(v);
-                        }
+                        vv.addAll(Arrays.asList(verts));
                         if (vv.size() != 2) continue;
                     }
                     break;
@@ -320,9 +319,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     verts = triangles.get(g);
                     {
                         SortedSet<Vertex> vv = new TreeSet<>();
-                        for (Vertex v : verts) {
-                            vv.add(v);
-                        }
+                        vv.addAll(Arrays.asList(verts));
                         if (vv.size() != 3) continue;
                     }
                     break;
@@ -330,9 +327,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     verts = quads.get(g);
                     {
                         SortedSet<Vertex> vv = new TreeSet<>();
-                        for (Vertex v : verts) {
-                            vv.add(v);
-                        }
+                        vv.addAll(Arrays.asList(verts));
                         if (vv.size() != 4) continue;
                     }
                     break;
@@ -341,9 +336,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                     verts = new Vertex[]{v2[0], v2[1]};
                     {
                         SortedSet<Vertex> vv = new TreeSet<>();
-                        for (Vertex v : verts) {
-                            vv.add(v);
-                        }
+                        vv.addAll(Arrays.asList(verts));
                         if (vv.size() != 2) continue;
                     }
                     break;
@@ -767,9 +760,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             verts = lines.get(g);
                             {
                                 SortedSet<Vertex> vv = new TreeSet<>();
-                                for (Vertex v : verts) {
-                                    vv.add(v);
-                                }
+                                vv.addAll(Arrays.asList(verts));
                                 if (vv.size() != 2) continue;
                             }
                             break;
@@ -777,9 +768,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             verts = triangles.get(g);
                             {
                                 SortedSet<Vertex> vv = new TreeSet<>();
-                                for (Vertex v : verts) {
-                                    vv.add(v);
-                                }
+                                vv.addAll(Arrays.asList(verts));
                                 if (vv.size() != 3) continue;
                             }
                             break;
@@ -787,9 +776,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             verts = quads.get(g);
                             {
                                 SortedSet<Vertex> vv = new TreeSet<>();
-                                for (Vertex v : verts) {
-                                    vv.add(v);
-                                }
+                                vv.addAll(Arrays.asList(verts));
                                 if (vv.size() != 4) continue;
                             }
                             break;
@@ -798,9 +785,7 @@ class VM13SymSplitter extends VM12IntersectorAndIsecalc {
                             verts = new Vertex[]{v2[0], v2[1]};
                             {
                                 SortedSet<Vertex> vv = new TreeSet<>();
-                                for (Vertex v : verts) {
-                                    vv.add(v);
-                                }
+                                vv.addAll(Arrays.asList(verts));
                                 if (vv.size() != 2) continue;
                             }
                             break;

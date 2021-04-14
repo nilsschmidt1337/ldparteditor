@@ -20,6 +20,7 @@ import static org.nschmidt.ldparteditor.helpers.WidgetUtility.widgetUtil;
 import java.io.File;
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Locale;
@@ -1401,9 +1402,7 @@ public class CompositeTab extends CompositeTabDesign {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 Set<TreeItem> items = new HashSet<>();
-                for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
-                    items.add(sort1);
-                }
+                items.addAll(Arrays.asList(treeProblemsPtr[0].getSelection()));
                 if (items.contains(treeItemHintsPtr[0])) {
                     NLogger.debug(getClass(), "+Quick fix all hints."); //$NON-NLS-1$
                     items.remove(treeItemHintsPtr[0]);
@@ -1539,9 +1538,7 @@ public class CompositeTab extends CompositeTabDesign {
                 final VertexManager vm = state.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 Set<TreeItem> items = new HashSet<>();
-                for (TreeItem sort1 : treeProblemsPtr[0].getSelection()) {
-                    items.add(sort1);
-                }
+                items.addAll(Arrays.asList(treeProblemsPtr[0].getSelection()));
                 if (items.contains(treeItemHintsPtr[0])) {
                     NLogger.debug(getClass(), "+Inspect all hints."); //$NON-NLS-1$
                     items.remove(treeItemHintsPtr[0]);

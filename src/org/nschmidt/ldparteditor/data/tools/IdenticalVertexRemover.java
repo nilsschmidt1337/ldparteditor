@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data.tools;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -62,9 +63,7 @@ public enum IdenticalVertexRemover {
                 if (!lineLinkedToVertices.containsKey(g2)) continue;
                 Vertex[] verts = l.get(g2);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 2) {
                     linesToDelete2.add(g2);
                 }
@@ -73,9 +72,7 @@ public enum IdenticalVertexRemover {
                 if (!lineLinkedToVertices.containsKey(g3)) continue;
                 Vertex[] verts = t.get(g3);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 3 || g3.isCollinear()) {
                     trisToDelete2.add(g3);
                 }
@@ -84,9 +81,7 @@ public enum IdenticalVertexRemover {
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
                 Vertex[] verts = q.get(g4);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (convertQuadsToTriangles && verts2.size() == 3) {
 
                     // Quad to triangle conversion!
@@ -126,9 +121,7 @@ public enum IdenticalVertexRemover {
                 if (!lineLinkedToVertices.containsKey(g5)) continue;
                 Vertex[] verts = c.get(g5);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 4) {
                     clinesToDelete2.add(g5);
                 }

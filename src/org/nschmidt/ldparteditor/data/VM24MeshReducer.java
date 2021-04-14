@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
@@ -109,13 +110,9 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
 
                                             for (final GData gData : surfs) {
                                                 if (gData.type() == 3) {
-                                                    for (Vertex tv : triangles.get(gData)) {
-                                                        verts.add(tv);
-                                                    }
+                                                    verts.addAll(Arrays.asList(triangles.get(gData)));
                                                 } else {
-                                                    for (Vertex tv : quads.get(gData)) {
-                                                        verts.add(tv);
-                                                    }
+                                                    verts.addAll(Arrays.asList(quads.get(gData)));
                                                     delta += 1;
                                                 }
                                             }
@@ -145,13 +142,9 @@ class VM24MeshReducer extends VM23FlatSubfileTester {
                                                 final SortedSet<Vertex> verts2 = new TreeSet<>();
                                                 for (final GData gData : getLinkedSurfaces(t)) {
                                                     if (gData.type() == 3) {
-                                                        for (Vertex tv : triangles.get(gData)) {
-                                                            verts2.add(tv);
-                                                        }
+                                                        verts2.addAll(Arrays.asList(triangles.get(gData)));
                                                     } else {
-                                                        for (Vertex tv : quads.get(gData)) {
-                                                            verts2.add(tv);
-                                                        }
+                                                        verts2.addAll(Arrays.asList(quads.get(gData)));
                                                     }
                                                 }
                                                 verts2.remove(t);

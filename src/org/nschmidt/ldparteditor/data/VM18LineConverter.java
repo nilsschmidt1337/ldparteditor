@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -114,18 +115,14 @@ class VM18LineConverter extends VM17Unificator {
                 {
                     GData3 g3 = (GData3) faces.get(0);
                     Vertex[] v3 = triangles.get(g3);
-                    for (Vertex tv : v3) {
-                        fv1.add(tv);
-                    }
+                    fv1.addAll(Arrays.asList(v3));
                 }
                 break;
                 case 4:
                 {
                     GData4 g4 = (GData4) faces.get(0);
                     Vertex[] v4 = quads.get(g4);
-                    for (Vertex tv : v4) {
-                        fv1.add(tv);
-                    }
+                    fv1.addAll(Arrays.asList(v4));
                 }
                 break;
                 default:
@@ -136,18 +133,14 @@ class VM18LineConverter extends VM17Unificator {
                 {
                     GData3 g3 = (GData3) faces.get(1);
                     Vertex[] v3 = triangles.get(g3);
-                    for (Vertex tv : v3) {
-                        fv2.add(tv);
-                    }
+                    fv2.addAll(Arrays.asList(v3));
                 }
                 break;
                 case 4:
                 {
                     GData4 g4 = (GData4) faces.get(1);
                     Vertex[] v4 = quads.get(g4);
-                    for (Vertex tv : v4) {
-                        fv2.add(tv);
-                    }
+                    fv2.addAll(Arrays.asList(v4));
                 }
                 break;
                 default:

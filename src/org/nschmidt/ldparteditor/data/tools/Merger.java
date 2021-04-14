@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data.tools;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
@@ -53,24 +54,16 @@ public enum Merger {
         originVerts.addAll(vm.getSelectedVertices());
 
         for (GData2 g : lines) {
-            for (Vertex v : l.get(g)) {
-                originVerts.add(v);
-            }
+            originVerts.addAll(Arrays.asList(l.get(g)));
         }
         for (GData3 g : tris) {
-            for (Vertex v : t.get(g)) {
-                originVerts.add(v);
-            }
+            originVerts.addAll(Arrays.asList(t.get(g)));
         }
         for (GData4 g : quads) {
-            for (Vertex v : q.get(g)) {
-                originVerts.add(v);
-            }
+            originVerts.addAll(Arrays.asList(q.get(g)));
         }
         for (GData5 g : clines) {
-            for (Vertex v : c.get(g)) {
-                originVerts.add(v);
-            }
+            originVerts.addAll(Arrays.asList(c.get(g)));
         }
 
         vm.clearSelection();

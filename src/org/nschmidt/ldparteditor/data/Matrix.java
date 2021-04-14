@@ -212,9 +212,7 @@ public final class Matrix {
     Matrix transposeXYZ() {
         final BigDecimal[][] mn = new BigDecimal[4][4];
         for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
-                mn[i][j] = this.m[i][j];
-            }
+            System.arraycopy(this.m[i], 0, mn[i], 0, 4);
         }
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {

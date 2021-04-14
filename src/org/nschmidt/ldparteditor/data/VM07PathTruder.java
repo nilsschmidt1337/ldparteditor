@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -1458,9 +1459,7 @@ class VM07PathTruder extends VM06Edger2 {
             for (GData2 g2 : newLines) {
                 Vertex[] verts = lines.get(g2);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 2) {
                     linesToDelete2.add(g2);
                 }
@@ -1468,9 +1467,7 @@ class VM07PathTruder extends VM06Edger2 {
             for (GData3 g3 : newTriangles) {
                 Vertex[] verts = triangles.get(g3);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 3 || g3.isCollinear()) {
                     trisToDelete2.add(g3);
                 }
@@ -1478,9 +1475,7 @@ class VM07PathTruder extends VM06Edger2 {
             for (GData4 g4 : newQuads) {
                 Vertex[] verts = quads.get(g4);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 4 || g4.isCollinear()) {
                     quadsToDelete2.add(g4);
                 }

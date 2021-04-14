@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
@@ -71,24 +72,16 @@ public class VM21Merger extends VM20Manipulator {
         if (mode != MergeTo.LAST_SELECTED) {
             originVerts.addAll(selectedVertices);
             for (GData2 g : selectedLines) {
-                for (Vertex v : lines.get(g)) {
-                    originVerts.add(v);
-                }
+                originVerts.addAll(Arrays.asList(lines.get(g)));
             }
             for (GData3 g : selectedTriangles) {
-                for (Vertex v : triangles.get(g)) {
-                    originVerts.add(v);
-                }
+                originVerts.addAll(Arrays.asList(triangles.get(g)));
             }
             for (GData4 g : selectedQuads) {
-                for (Vertex v : quads.get(g)) {
-                    originVerts.add(v);
-                }
+                originVerts.addAll(Arrays.asList(quads.get(g)));
             }
             for (GData5 g : selectedCondlines) {
-                for (Vertex v : condlines.get(g)) {
-                    originVerts.add(v);
-                }
+                originVerts.addAll(Arrays.asList(condlines.get(g)));
             }
         }
 

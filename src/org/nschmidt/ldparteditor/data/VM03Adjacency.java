@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -786,9 +787,7 @@ class VM03Adjacency extends VM02Add {
                 Vertex[] verts = lines.get(line);
                 if (verts == null)
                     continue;
-                for (Vertex vertex : verts) {
-                    objectVertices.add(vertex);
-                }
+                objectVertices.addAll(Arrays.asList(verts));
             }
             for (GData3 triangle : selectedTriangles) {
                 if (triangle.parent.equals(View.DUMMY_REFERENCE))
@@ -796,9 +795,7 @@ class VM03Adjacency extends VM02Add {
                 Vertex[] verts = triangles.get(triangle);
                 if (verts == null)
                     continue;
-                for (Vertex vertex : verts) {
-                    objectVertices.add(vertex);
-                }
+                objectVertices.addAll(Arrays.asList(verts));
             }
             for (GData4 quad : selectedQuads) {
                 if (quad.parent.equals(View.DUMMY_REFERENCE))
@@ -806,9 +803,7 @@ class VM03Adjacency extends VM02Add {
                 Vertex[] verts = quads.get(quad);
                 if (verts == null)
                     continue;
-                for (Vertex vertex : verts) {
-                    objectVertices.add(vertex);
-                }
+                objectVertices.addAll(Arrays.asList(verts));
             }
             for (GData5 condline : selectedCondlines) {
                 if (condline.parent.equals(View.DUMMY_REFERENCE))
@@ -816,9 +811,7 @@ class VM03Adjacency extends VM02Add {
                 Vertex[] verts = condlines.get(condline);
                 if (verts == null)
                     continue;
-                for (Vertex vertex : verts) {
-                    objectVertices.add(vertex);
-                }
+                objectVertices.addAll(Arrays.asList(verts));
             }
 
             Set<GData0> vs = new HashSet<>(effSelectedVertices);

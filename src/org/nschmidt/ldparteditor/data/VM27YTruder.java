@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
@@ -377,9 +378,7 @@ class VM27YTruder extends VM26LineIntersector {
             for (GData2 g2 : newLines) {
                 Vertex[] verts = lines.get(g2);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 2) {
                     linesToDelete2.add(g2);
                 }
@@ -387,9 +386,7 @@ class VM27YTruder extends VM26LineIntersector {
             for (GData3 g3 : newTriangles) {
                 Vertex[] verts = triangles.get(g3);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 3 || g3.isCollinear()) {
                     trisToDelete2.add(g3);
                 }
@@ -397,9 +394,7 @@ class VM27YTruder extends VM26LineIntersector {
             for (GData4 g4 : newQuads) {
                 Vertex[] verts = quads.get(g4);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 4 || g4.isCollinear()) {
                     quadsToDelete2.add(g4);
                 }
@@ -407,9 +402,7 @@ class VM27YTruder extends VM26LineIntersector {
             for (GData5 g5 : newCondlines) {
                 Vertex[] verts = condlines.get(g5);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 4) {
                     condlinesToDelete2.add(g5);
                 }

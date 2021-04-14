@@ -15,6 +15,7 @@ FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TOR
 ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE. */
 package org.nschmidt.ldparteditor.data;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -119,12 +120,8 @@ class VM15Flipper extends VM14Splitter {
                 {
                     SortedSet<Vertex> v1 = new TreeSet<>();
                     SortedSet<Vertex> v2 = new TreeSet<>();
-                    for (Vertex v : triangles.get(s1)) {
-                        v1.add(v);
-                    }
-                    for (Vertex v : triangles.get(s2)) {
-                        v2.add(v);
-                    }
+                    v1.addAll(Arrays.asList(triangles.get(s1)));
+                    v2.addAll(Arrays.asList(triangles.get(s2)));
                     {
                         SortedSet<Vertex> sum = new TreeSet<>();
                         sum.addAll(v1);

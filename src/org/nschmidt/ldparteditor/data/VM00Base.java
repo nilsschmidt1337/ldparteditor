@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -447,29 +448,19 @@ class VM00Base {
         SortedSet<Vertex> verticesInUse = new TreeSet<>();
 
         for (GData0 line : declaredVertices.keySet()) {
-            for (Vertex vertex : declaredVertices.get(line)) {
-                verticesInUse.add(vertex);
-            }
+            verticesInUse.addAll(Arrays.asList(declaredVertices.get(line)));
         }
         for (GData2 line : lines.keySet()) {
-            for (Vertex vertex : lines.get(line)) {
-                verticesInUse.add(vertex);
-            }
+            verticesInUse.addAll(Arrays.asList(lines.get(line)));
         }
         for (GData3 line : triangles.keySet()) {
-            for (Vertex vertex : triangles.get(line)) {
-                verticesInUse.add(vertex);
-            }
+            verticesInUse.addAll(Arrays.asList(triangles.get(line)));
         }
         for (GData4 line : quads.keySet()) {
-            for (Vertex vertex : quads.get(line)) {
-                verticesInUse.add(vertex);
-            }
+            verticesInUse.addAll(Arrays.asList(quads.get(line)));
         }
         for (GData5 line : condlines.keySet()) {
-            for (Vertex vertex : condlines.get(line)) {
-                verticesInUse.add(vertex);
-            }
+            verticesInUse.addAll(Arrays.asList(condlines.get(line)));
         }
 
         int vertexCount = vertices.size();
@@ -1588,9 +1579,7 @@ class VM00Base {
                 Vertex[] verts = lines.get(line);
                 if (verts == null)
                     continue;
-                for (Vertex vertex : verts) {
-                    objectVertices.add(vertex);
-                }
+                objectVertices.addAll(Arrays.asList(verts));
             }
             for (GData3 triangle : selectedTriangles) {
                 if (triangle.parent.equals(View.DUMMY_REFERENCE))
@@ -1598,9 +1587,7 @@ class VM00Base {
                 Vertex[] verts = triangles.get(triangle);
                 if (verts == null)
                     continue;
-                for (Vertex vertex : verts) {
-                    objectVertices.add(vertex);
-                }
+                objectVertices.addAll(Arrays.asList(verts));
             }
             for (GData4 quad : selectedQuads) {
                 if (quad.parent.equals(View.DUMMY_REFERENCE))
@@ -1608,9 +1595,7 @@ class VM00Base {
                 Vertex[] verts = quads.get(quad);
                 if (verts == null)
                     continue;
-                for (Vertex vertex : verts) {
-                    objectVertices.add(vertex);
-                }
+                objectVertices.addAll(Arrays.asList(verts));
             }
             for (GData5 condline : selectedCondlines) {
                 if (condline.parent.equals(View.DUMMY_REFERENCE))
@@ -1618,9 +1603,7 @@ class VM00Base {
                 Vertex[] verts = condlines.get(condline);
                 if (verts == null)
                     continue;
-                for (Vertex vertex : verts) {
-                    objectVertices.add(vertex);
-                }
+                objectVertices.addAll(Arrays.asList(verts));
             }
 
             if (moveAdjacentData) {

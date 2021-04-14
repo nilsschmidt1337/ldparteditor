@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -367,15 +368,11 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 SortedSet<Vertex> verts = new TreeSet<>();
                 for (GData g3 : selectedTriangles) {
                     Vertex[] verts2 = triangles.get(g3);
-                    for (Vertex vertex : verts2) {
-                        verts.add(vertex);
-                    }
+                    verts.addAll(Arrays.asList(verts2));
                 }
                 for (GData g4 : selectedQuads) {
                     Vertex[] verts2 = quads.get(g4);
-                    for (Vertex vertex : verts2) {
-                        verts.add(vertex);
-                    }
+                    verts.addAll(Arrays.asList(verts2));
                 }
                 for (Vertex vertex : verts) {
                     Collection<GData> surfs = getLinkedSurfaces(vertex);
@@ -574,9 +571,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 for (GData3 g3 : newTriangles) {
                     Vertex[] verts = triangles.get(g3);
                     SortedSet<Vertex> verts2 = new TreeSet<>();
-                    for (Vertex vert : verts) {
-                        verts2.add(vert);
-                    }
+                    verts2.addAll(Arrays.asList(verts));
                     if (verts2.size() < 3 || g3.isCollinear()) {
                         trisToDelete2.add(g3);
                     }
@@ -1620,9 +1615,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         for (GData3 g3 : selectedTriangles) {
                             SortedSet<Vertex> vs = new TreeSet<>();
                             Vertex[] verts = triangles.get(g3);
-                            for (Vertex v : verts) {
-                                vs.add(v);
-                            }
+                            vs.addAll(Arrays.asList(verts));
                             if (vs.size() != 3) return;
                             {
                                 List<Vector3dd> l = new ArrayList<>();
@@ -1647,9 +1640,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         for (GData4 g4 : selectedQuads) {
                             SortedSet<Vertex> vs = new TreeSet<>();
                             Vertex[] verts = quads.get(g4);
-                            for (Vertex v : verts) {
-                                vs.add(v);
-                            }
+                            vs.addAll(Arrays.asList(verts));
                             if (vs.size() != 4) return;
                             {
                                 List<Vector3dd> l = new ArrayList<>();
@@ -2461,9 +2452,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 for (GData3 g3 : newTriangles) {
                     Vertex[] verts = triangles.get(g3);
                     SortedSet<Vertex> verts2 = new TreeSet<>();
-                    for (Vertex vert : verts) {
-                        verts2.add(vert);
-                    }
+                    verts2.addAll(Arrays.asList(verts));
                     if (verts2.size() < 3 || g3.isCollinear()) {
                         trisToDelete2.add(g3);
                     }

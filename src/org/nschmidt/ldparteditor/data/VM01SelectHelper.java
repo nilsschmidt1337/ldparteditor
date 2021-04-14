@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -1800,33 +1801,25 @@ class VM01SelectHelper extends VM01Select {
             Vertex[] verts = lines.get(line);
             if (verts == null)
                 continue;
-            for (Vertex vertex : verts) {
-                objectVertices.add(vertex);
-            }
+            objectVertices.addAll(Arrays.asList(verts));
         }
         for (GData3 triangle : selectedTriangles) {
             Vertex[] verts = triangles.get(triangle);
             if (verts == null)
                 continue;
-            for (Vertex vertex : verts) {
-                objectVertices.add(vertex);
-            }
+            objectVertices.addAll(Arrays.asList(verts));
         }
         for (GData4 quad : selectedQuads) {
             Vertex[] verts = quads.get(quad);
             if (verts == null)
                 continue;
-            for (Vertex vertex : verts) {
-                objectVertices.add(vertex);
-            }
+            objectVertices.addAll(Arrays.asList(verts));
         }
         for (GData5 condline : selectedCondlines) {
             Vertex[] verts = condlines.get(condline);
             if (verts == null)
                 continue;
-            for (Vertex vertex : verts) {
-                objectVertices.add(vertex);
-            }
+            objectVertices.addAll(Arrays.asList(verts));
         }
 
         // 2. Subfile Based Selection

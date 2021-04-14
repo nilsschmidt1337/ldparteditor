@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
@@ -128,12 +129,8 @@ class VM04Rectifier extends VM03Adjacency {
                                                 Vertex[] v1 = triangles.get(tri1);
                                                 Vertex[] v2 = triangles.get(tri2);
 
-                                                for (Vertex ve : v1) {
-                                                    tri1V.add(ve);
-                                                }
-                                                for (Vertex ve : v2) {
-                                                    tri2V.add(ve);
-                                                }
+                                                tri1V.addAll(Arrays.asList(v1));
+                                                tri2V.addAll(Arrays.asList(v2));
                                                 triC.addAll(tri1V);
                                                 triC.retainAll(tri2V);
                                                 tri2V.removeAll(tri1V);
@@ -274,12 +271,8 @@ class VM04Rectifier extends VM03Adjacency {
                                         Vertex[] v1 = triangles.get(tri1);
                                         Vertex[] v2 = triangles.get(tri2);
 
-                                        for (Vertex ve : v1) {
-                                            tri1V.add(ve);
-                                        }
-                                        for (Vertex ve : v2) {
-                                            tri2V.add(ve);
-                                        }
+                                        tri1V.addAll(Arrays.asList(v1));
+                                        tri2V.addAll(Arrays.asList(v2));
                                         triC.addAll(tri1V);
                                         triC.retainAll(tri2V);
                                         tri2V.removeAll(tri1V);
@@ -632,12 +625,8 @@ class VM04Rectifier extends VM03Adjacency {
                                 Vertex[] v1 = triangles.get(tri1);
                                 Vertex[] v2 = triangles.get(tri2);
 
-                                for (Vertex ve : v1) {
-                                    tri1V.add(ve);
-                                }
-                                for (Vertex ve : v2) {
-                                    tri2V.add(ve);
-                                }
+                                tri1V.addAll(Arrays.asList(v1));
+                                tri2V.addAll(Arrays.asList(v2));
                                 triC.addAll(tri1V);
                                 triC.retainAll(tri2V);
                                 tri2V.removeAll(tri1V);
@@ -778,12 +767,8 @@ class VM04Rectifier extends VM03Adjacency {
                         Vertex[] v1 = triangles.get(tri1);
                         Vertex[] v2 = triangles.get(tri2);
 
-                        for (Vertex ve : v1) {
-                            tri1V.add(ve);
-                        }
-                        for (Vertex ve : v2) {
-                            tri2V.add(ve);
-                        }
+                        tri1V.addAll(Arrays.asList(v1));
+                        tri2V.addAll(Arrays.asList(v2));
                         triC.addAll(tri1V);
                         triC.retainAll(tri2V);
                         tri2V.removeAll(tri1V);

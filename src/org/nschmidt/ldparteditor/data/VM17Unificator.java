@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
@@ -73,9 +74,7 @@ class VM17Unificator extends VM16Subdivide {
                 default:
                     continue;
                 }
-                for (Vertex v : verts) {
-                    selectedVertices.add(v);
-                }
+                selectedVertices.addAll(Arrays.asList(verts));
             }
         }
 
@@ -280,9 +279,7 @@ class VM17Unificator extends VM16Subdivide {
                 if (!lineLinkedToVertices.containsKey(g2)) continue;
                 Vertex[] verts = lines.get(g2);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 2) {
                     linesToDelete2.add(g2);
                 }
@@ -291,9 +288,7 @@ class VM17Unificator extends VM16Subdivide {
                 if (!lineLinkedToVertices.containsKey(g3)) continue;
                 Vertex[] verts = triangles.get(g3);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 3 || g3.isCollinear()) {
                     trisToDelete2.add(g3);
                 }
@@ -302,9 +297,7 @@ class VM17Unificator extends VM16Subdivide {
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
                 Vertex[] verts = quads.get(g4);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 3 || g4.isCollinear()) {
                     quadsToDelete2.add(g4);
                 }
@@ -313,9 +306,7 @@ class VM17Unificator extends VM16Subdivide {
                 if (!lineLinkedToVertices.containsKey(g5)) continue;
                 Vertex[] verts = condlines.get(g5);
                 SortedSet<Vertex> verts2 = new TreeSet<>();
-                for (Vertex vert : verts) {
-                    verts2.add(vert);
-                }
+                verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 4) {
                     clinesToDelete2.add(g5);
                 }

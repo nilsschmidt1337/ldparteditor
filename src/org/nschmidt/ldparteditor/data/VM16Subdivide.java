@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedMap;
@@ -330,9 +331,7 @@ class VM16Subdivide extends VM15Flipper {
 
         for (GData3 tri : selectedTriangles) {
             Vertex[] verts = triangles.get(tri);
-            for (Vertex v : verts) {
-                verticesToMove.add(v);
-            }
+            verticesToMove.addAll(Arrays.asList(verts));
         }
 
         int newContentSize = newLines.size() + newTris.size();

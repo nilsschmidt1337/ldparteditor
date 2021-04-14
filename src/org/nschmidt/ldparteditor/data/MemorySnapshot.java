@@ -51,9 +51,7 @@ public class MemorySnapshot {
 
         if (count < objCount) {
             String[] smallerBackup = new String[count];
-            for (int i = 0; i < count; i++) {
-                smallerBackup[i] = backupArray[i];
-            }
+            System.arraycopy(backupArray, 0, smallerBackup, 0, count);
 
             backupArray = smallerBackup;
         }

@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -323,9 +324,7 @@ class VM08SlicerPro extends VM07PathTruder {
                 for (GData3 g3 : newTriangles) {
                     Vertex[] verts = triangles.get(g3);
                     SortedSet<Vertex> verts2 = new TreeSet<>();
-                    for (Vertex vert : verts) {
-                        verts2.add(vert);
-                    }
+                    verts2.addAll(Arrays.asList(verts));
                     if (verts2.size() < 3 || g3.isCollinear()) {
                         trisToDelete2.add(g3);
                     } else {

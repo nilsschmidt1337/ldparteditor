@@ -2223,12 +2223,8 @@ public class Composite3D extends ScalableComposite {
         state.getViewportMatrix().load(viewportMatrix);
         state.getViewportMatrixInv().load(viewportMatrixInv);
 
-        for (int i = 0; i < 3; i++) {
-            state.getViewportGenerator()[i] = viewportGenerator[i];
-        }
-        for (int i = 0; i < 4; i++) {
-            state.getViewportOriginAxis()[i] = viewportOriginAxis[i];
-        }
+        System.arraycopy(viewportGenerator, 0, state.getViewportGenerator(), 0, 3);
+        System.arraycopy(viewportOriginAxis, 0, state.getViewportOriginAxis(), 0, 4);
 
         state.setzFar(zFar);
         state.setzNear(zNear);
@@ -2257,12 +2253,8 @@ public class Composite3D extends ScalableComposite {
         viewportMatrix.load(state.getViewportMatrix());
         viewportMatrixInv.load(state.getViewportMatrixInv());
 
-        for (int i = 0; i < 3; i++) {
-            viewportGenerator[i] = state.getViewportGenerator()[i];
-        }
-        for (int i = 0; i < 4; i++) {
-            viewportOriginAxis[i] = state.getViewportOriginAxis()[i];
-        }
+        System.arraycopy(state.getViewportGenerator(), 0, viewportGenerator, 0, 3);
+        System.arraycopy(state.getViewportOriginAxis(), 0 , viewportOriginAxis, 0, 4);
 
         zFar = state.getzFar();
         zNear = state.getzNear();
