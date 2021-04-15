@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.regex.Pattern;
 
@@ -876,12 +877,9 @@ public enum LibraryManager {
 
         List<DatFileName> datFiles = new ArrayList<>();
         Map<TreeItem, List<DatFile>> lists = new HashMap<>();
-        for (String key : dfnMap.keySet()) {
-            datFiles.add(dfnMap.get(key));
-        }
-        for (String key : newDfnMap.keySet()) {
-            datFiles.add(newDfnMap.get(key));
-        }
+        datFiles.addAll(dfnMap.values());
+        datFiles.addAll(newDfnMap.values());
+
         Collections.sort(datFiles);
 
         for (DatFileName dfn : datFiles) {
@@ -953,16 +951,16 @@ public enum LibraryManager {
             }
         }
 
-        for (TreeItem key : lists.keySet()) {
-            key.setData(lists.get(key));
+        for (Entry<TreeItem, List<DatFile>> entry : lists.entrySet()) {
+            entry.getKey().setData(entry.getValue());
         }
 
         // Add unsaved files wich are not anymore on the file system, but were opened in the text editor or in the 3D view
 
         {
             Set<DatFile> newUnsavedFiles = new HashSet<>();
-            for (String key : unsavedInTextMap.keySet()) {
-                DatFile df = unsavedInTextMap.get(key).getState().getFileNameObj();
+            for (CompositeTab ctab : unsavedInTextMap.values()) {
+                DatFile df = ctab.getState().getFileNameObj();
                 if (!newUnsavedFiles.contains(df)) {
                     newUnsavedFiles.add(df);
                     Project.addUnsavedFile(df);
@@ -970,8 +968,8 @@ public enum LibraryManager {
                     result[1] = result[1] - 1;
                 }
             }
-            for (String key : unsavedIn3DMap.keySet()) {
-                for (Composite3D c3d : unsavedIn3DMap.get(key)) {
+            for (Set<Composite3D> composites : unsavedIn3DMap.values()) {
+                for (Composite3D c3d : composites) {
                     DatFile df = c3d.getLockableDatFileReference();
                     if (!newUnsavedFiles.contains(df)) {
                         newUnsavedFiles.add(df);

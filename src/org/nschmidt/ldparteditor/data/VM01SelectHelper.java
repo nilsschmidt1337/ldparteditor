@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -872,11 +873,13 @@ class VM01SelectHelper extends VM01Select {
             final Vector4f point = vertex.toVector4f();
             Vertex[] triQuadVerts = new Vertex[4];
             int i = 0;
-            for (GData3 triangle : triangles.keySet()) {
+            for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+                GData3 triangle = entry.getKey();
                 if (noTrans && triangle.a < 1f || hiddenData.contains(triangle))
                     continue;
                 i = 0;
-                for (Vertex tvertex : triangles.get(triangle)) {
+                // FIXME Think about potential use of System.arraycopy here
+                for (Vertex tvertex : entry.getValue()) {
                     triQuadVerts[i] = tvertex;
                     i++;
                 }
@@ -887,11 +890,13 @@ class VM01SelectHelper extends VM01Select {
                 }
             }
 
-            for (GData4 quad : quads.keySet()) {
+            for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+                GData4 quad = entry.getKey();
                 if (noTrans && quad.a < 1f || hiddenData.contains(quad))
                     continue;
                 i = 0;
-                for (Vertex tvertex : quads.get(quad)) {
+                // FIXME Think about potential use of System.arraycopy here
+                for (Vertex tvertex : entry.getValue()) {
                     triQuadVerts[i] = tvertex;
                     i++;
                 }
@@ -928,10 +933,11 @@ class VM01SelectHelper extends VM01Select {
             if (selectedVertices.size() == 1) {
                 Vertex selectedVertex = selectedVertices.iterator().next();
                 if (sels.isLines() || !sels.isCondlines()) {
-                     for (GData2 line : lines.keySet()) {
+                     for (Entry<GData2, Vertex[]> entry : lines.entrySet()) {
+                        GData2 line = entry.getKey();
                         if (hiddenData.contains(line))
                             continue;
-                        for (Vertex tvertex : lines.get(line)) {
+                        for (Vertex tvertex : entry.getValue()) {
                             if (selectedVertex.equals(tvertex)) {
                                 if (selectedLines.contains(line)) {
                                     if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
@@ -945,10 +951,11 @@ class VM01SelectHelper extends VM01Select {
                     }
                 }
                 if (sels.isCondlines() || !sels.isLines()) {
-                    for (GData5 line : condlines.keySet()) {
+                    for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
+                        GData5 line = entry.getKey();
                         if (hiddenData.contains(line))
                             continue;
-                        for (Vertex tvertex : condlines.get(line)) {
+                        for (Vertex tvertex : entry.getValue()) {
                             if (selectedVertex.equals(tvertex)) {
                                 if (selectedCondlines.contains(line)) {
                                     if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
@@ -1003,11 +1010,12 @@ class VM01SelectHelper extends VM01Select {
                 float[][] m = new float[2][2];
                 float[] b = new float[] { 0f, 0f };
                 if (sels.isLines() || !sels.isCondlines()) {
-                    for (GData2 line : lines.keySet()) {
+                    for (Entry<GData2, Vertex[]> entry : lines.entrySet()) {
+                        GData2 line = entry.getKey();
                         if (hiddenData.contains(line))
                             continue;
                         allVertsFromLine = false;
-                        for (Vertex tvertex : lines.get(line)) {
+                        for (Vertex tvertex : entry.getValue()) {
                             if (allVertsFromLine) { // b
                                 f[0] = a[0] - tvertex.x;
                                 f[1] = a[1] - tvertex.y;
@@ -1054,11 +1062,12 @@ class VM01SelectHelper extends VM01Select {
                     }
                 }
                 if (sels.isCondlines() || !sels.isLines()) {
-                    for (GData5 line : condlines.keySet()) {
+                    for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
+                        GData5 line = entry.getKey();
                         if (hiddenData.contains(line))
                             continue;
                         allVertsFromLine = false;
-                        for (Vertex tvertex : condlines.get(line)) {
+                        for (Vertex tvertex : entry.getValue()) {
                             if (allVertsFromLine) { // b
                                 f[0] = a[0] - tvertex.x;
                                 f[1] = a[1] - tvertex.y;
@@ -1108,11 +1117,12 @@ class VM01SelectHelper extends VM01Select {
             }
         } else {
             if (sels.isLines() || !sels.isCondlines()) {
-                for (GData2 line : lines.keySet()) {
+                for (Entry<GData2, Vertex[]> entry : lines.entrySet()) {
+                    GData2 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
                     allVertsFromLine = false;
-                    for (Vertex tvertex : lines.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (!selectedVertices.contains(tvertex))
                             break;
                         if (allVertsFromLine) {
@@ -1129,11 +1139,12 @@ class VM01SelectHelper extends VM01Select {
                 }
             }
             if (sels.isCondlines() || !sels.isLines()) {
-                for (GData5 line : condlines.keySet()) {
+                for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
+                    GData5 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
                     allVertsFromLine = false;
-                    for (Vertex tvertex : condlines.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (!selectedVertices.contains(tvertex))
                             break;
                         if (allVertsFromLine) {
@@ -1176,19 +1187,21 @@ class VM01SelectHelper extends VM01Select {
         if (selectedVerticesForSubfile.size() < 2 || needRayTest) {
             if (selectedVerticesForSubfile.size() == 1) {
                 Vertex selectedVertex = selectedVerticesForSubfile.iterator().next();
-                for (GData2 line : lines.keySet()) {
+                for (Entry<GData2, Vertex[]> entry : lines.entrySet()) {
+                    GData2 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
-                    for (Vertex tvertex : lines.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (selectedVertex.equals(tvertex)) {
                             selectedLinesForSubfile.add(line);
                         }
                     }
                 }
-                for (GData5 line : condlines.keySet()) {
+                for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
+                    GData5 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
-                    for (Vertex tvertex : condlines.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (selectedVertex.equals(tvertex)) {
                             selectedCondlinesForSubfile.add(line);
                         }
@@ -1235,11 +1248,12 @@ class VM01SelectHelper extends VM01Select {
 
                 float[][] m = new float[2][2];
                 float[] b = new float[] { 0f, 0f };
-                for (GData2 line : lines.keySet()) {
+                for (Entry<GData2, Vertex[]> entry : lines.entrySet()) {
+                    GData2 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
                     allVertsFromLine = false;
-                    for (Vertex tvertex : lines.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (allVertsFromLine) { // b
                             f[0] = a[0] - tvertex.x;
                             f[1] = a[1] - tvertex.y;
@@ -1279,11 +1293,12 @@ class VM01SelectHelper extends VM01Select {
                     } catch (RuntimeException re1) {
                     }
                 }
-                for (GData5 line : condlines.keySet()) {
+                for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
+                    GData5 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
                     allVertsFromLine = false;
-                    for (Vertex tvertex : condlines.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (allVertsFromLine) { // b
                             f[0] = a[0] - tvertex.x;
                             f[1] = a[1] - tvertex.y;
@@ -1325,11 +1340,12 @@ class VM01SelectHelper extends VM01Select {
                 }
             }
         } else {
-            for (GData2 line : lines.keySet()) {
+            for (Entry<GData2, Vertex[]> entry : lines.entrySet()) {
+                GData2 line = entry.getKey();
                 if (hiddenData.contains(line))
                     continue;
                 allVertsFromLine = false;
-                for (Vertex tvertex : lines.get(line)) {
+                for (Vertex tvertex : entry.getValue()) {
                     if (!selectedVerticesForSubfile.contains(tvertex))
                         break;
                     if (allVertsFromLine) {
@@ -1338,11 +1354,12 @@ class VM01SelectHelper extends VM01Select {
                     allVertsFromLine = true;
                 }
             }
-            for (GData5 line : condlines.keySet()) {
+            for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
+                GData5 line = entry.getKey();
                 if (hiddenData.contains(line))
                     continue;
                 allVertsFromLine = false;
-                for (Vertex tvertex : condlines.get(line)) {
+                for (Vertex tvertex : entry.getValue()) {
                     if (!selectedVerticesForSubfile.contains(tvertex))
                         break;
                     if (allVertsFromLine) {
@@ -1376,10 +1393,11 @@ class VM01SelectHelper extends VM01Select {
             if (selectedVertices.size() == 1) {
                 Vertex selectedVertex = selectedVertices.iterator().next();
                 if (sels.isTriangles() || !sels.isQuads()) {
-                    for (GData3 line : triangles.keySet()) {
+                    for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+                        GData3 line = entry.getKey();
                         if (hiddenData.contains(line))
                             continue;
-                        for (Vertex tvertex : triangles.get(line)) {
+                        for (Vertex tvertex : entry.getValue()) {
                             if (selectedVertex.equals(tvertex)) {
                                 if (selectedTriangles.contains(line)) {
                                     if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
@@ -1393,10 +1411,11 @@ class VM01SelectHelper extends VM01Select {
                     }
                 }
                 if (sels.isQuads() || !sels.isTriangles()) {
-                    for (GData4 line : quads.keySet()) {
+                    for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+                        GData4 line = entry.getKey();
                         if (hiddenData.contains(line))
                             continue;
-                        for (Vertex tvertex : quads.get(line)) {
+                        for (Vertex tvertex : entry.getValue()) {
                             if (selectedVertex.equals(tvertex)) {
                                 if (selectedQuads.contains(line)) {
                                     if (needRayTest || c3d.getKeys().isAltPressed()) selectedData.remove(line);
@@ -1435,11 +1454,12 @@ class VM01SelectHelper extends VM01Select {
             }
         } else {
             if (sels.isTriangles() || !sels.isQuads()) {
-                for (GData3 line : triangles.keySet()) {
+                for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+                    GData3 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
                     allVertsFromLine = true;
-                    for (Vertex tvertex : triangles.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (!selectedVertices.contains(tvertex)) {
                             allVertsFromLine = false;
                             break;
@@ -1457,11 +1477,12 @@ class VM01SelectHelper extends VM01Select {
                 }
             }
             if (sels.isQuads() || !sels.isTriangles()) {
-                for (GData4 line : quads.keySet()) {
+                for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+                    GData4 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
                     allVertsFromLine = true;
-                    for (Vertex tvertex : quads.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (!selectedVertices.contains(tvertex)) {
                             allVertsFromLine = false;
                             break;
@@ -1504,19 +1525,21 @@ class VM01SelectHelper extends VM01Select {
         if (selectedVerticesForSubfile.size() < 2 || needRayTest) {
             if (selectedVerticesForSubfile.size() == 1) {
                 Vertex selectedVertex = selectedVerticesForSubfile.iterator().next();
-                for (GData3 line : triangles.keySet()) {
+                for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+                    GData3 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
-                    for (Vertex tvertex : triangles.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (selectedVertex.equals(tvertex)) {
                             selectedTrianglesForSubfile.add(line);
                         }
                     }
                 }
-                for (GData4 line : quads.keySet()) {
+                for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+                    GData4 line = entry.getKey();
                     if (hiddenData.contains(line))
                         continue;
-                    for (Vertex tvertex : quads.get(line)) {
+                    for (Vertex tvertex : entry.getValue()) {
                         if (selectedVertex.equals(tvertex)) {
                             selectedQuadsForSubfile.add(line);
                         }
@@ -1536,11 +1559,12 @@ class VM01SelectHelper extends VM01Select {
                 }
             }
         } else {
-            for (GData3 line : triangles.keySet()) {
+            for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+                GData3 line = entry.getKey();
                 if (hiddenData.contains(line))
                     continue;
                 allVertsFromLine = true;
-                for (Vertex tvertex : triangles.get(line)) {
+                for (Vertex tvertex : entry.getValue()) {
                     if (!selectedVerticesForSubfile.contains(tvertex)) {
                         allVertsFromLine = false;
                         break;
@@ -1550,11 +1574,12 @@ class VM01SelectHelper extends VM01Select {
                     selectedTrianglesForSubfile.add(line);
                 }
             }
-            for (GData4 line : quads.keySet()) {
+            for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+                GData4 line = entry.getKey();
                 if (hiddenData.contains(line))
                     continue;
                 allVertsFromLine = true;
-                for (Vertex tvertex : quads.get(line)) {
+                for (Vertex tvertex : entry.getValue()) {
                     if (!selectedVerticesForSubfile.contains(tvertex)) {
                         allVertsFromLine = false;
                         break;
@@ -1588,13 +1613,15 @@ class VM01SelectHelper extends VM01Select {
         double minDist = Double.MAX_VALUE;
         final double[] dist = new double[1];
         GData result = null;
-        for (GData3 triangle : triangles.keySet()) {
+        for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+            GData3 triangle = entry.getKey();
             if (hiddenData.contains(triangle))
                 continue;
             if (noTrans && triangle.a < 1f && !c3d.isShowingHiddenVertices())
                 continue;
             i = 0;
-            for (Vertex tvertex : triangles.get(triangle)) {
+            // FIXME Think about potential use of System.arraycopy here
+            for (Vertex tvertex : entry.getValue()) {
                 triQuadVerts[i] = tvertex;
                 i++;
             }
@@ -1606,13 +1633,15 @@ class VM01SelectHelper extends VM01Select {
                 }
             }
         }
-        for (GData4 quad : quads.keySet()) {
+        for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+            GData4 quad = entry.getKey();
             if (hiddenData.contains(quad))
                 continue;
             if (noTrans && quad.a < 1f && !c3d.isShowingHiddenVertices())
                 continue;
             i = 0;
-            for (Vertex tvertex : quads.get(quad)) {
+            // FIXME Think about potential use of System.arraycopy here
+            for (Vertex tvertex : entry.getValue()) {
                 triQuadVerts[i] = tvertex;
                 i++;
             }

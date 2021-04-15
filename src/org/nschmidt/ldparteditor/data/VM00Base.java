@@ -447,20 +447,20 @@ class VM00Base {
         Set<Vertex> vertices = vertexLinkedToPositionInFile.keySet();
         SortedSet<Vertex> verticesInUse = new TreeSet<>();
 
-        for (GData0 line : declaredVertices.keySet()) {
-            verticesInUse.addAll(Arrays.asList(declaredVertices.get(line)));
+        for (Vertex[] verts : declaredVertices.values()) {
+            verticesInUse.addAll(Arrays.asList(verts));
         }
-        for (GData2 line : lines.keySet()) {
-            verticesInUse.addAll(Arrays.asList(lines.get(line)));
+        for (Vertex[] verts : lines.values()) {
+            verticesInUse.addAll(Arrays.asList(verts));
         }
-        for (GData3 line : triangles.keySet()) {
-            verticesInUse.addAll(Arrays.asList(triangles.get(line)));
+        for (Vertex[] verts : triangles.values()) {
+            verticesInUse.addAll(Arrays.asList(verts));
         }
-        for (GData4 line : quads.keySet()) {
-            verticesInUse.addAll(Arrays.asList(quads.get(line)));
+        for (Vertex[] verts : quads.values()) {
+            verticesInUse.addAll(Arrays.asList(verts));
         }
-        for (GData5 line : condlines.keySet()) {
-            verticesInUse.addAll(Arrays.asList(condlines.get(line)));
+        for (Vertex[] verts : condlines.values()) {
+            verticesInUse.addAll(Arrays.asList(verts));
         }
 
         int vertexCount = vertices.size();

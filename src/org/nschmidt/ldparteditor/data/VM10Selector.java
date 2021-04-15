@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -342,7 +343,8 @@ class VM10Selector extends VM09WindingChange {
                             }
                         }
                         if (!skipEdge) {
-                            for (GData3 g : triangles.keySet()) {
+                            for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+                                GData3 g = entry.getKey();
                                 if (!addedSelectedTriangles.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision) && isEdgeAdjacent(ss, g, addedSelectedLines, addedSelectedTriangles, addedSelectedQuads, addedSelectedCondlines, newSelectedLines, newSelectedTriangles, newSelectedQuads, newSelectedCondlines, adjaencyByPrecision)) {
                                     if (ss.isOrientation()) {
                                         int faceCount = 0;
@@ -370,7 +372,7 @@ class VM10Selector extends VM09WindingChange {
                                     }
                                     addedSelectedTriangles.add(g);
                                     newSelectedTriangles.add(g);
-                                    Vertex[] verts = triangles.get(g);
+                                    Vertex[] verts = entry.getValue();
                                     for (Vertex v : verts) {
                                         SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                         for (Vertex v2 : verts2) {
@@ -379,7 +381,8 @@ class VM10Selector extends VM09WindingChange {
                                     }
                                 }
                             }
-                            for (GData4 g : quads.keySet()) {
+                            for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+                                GData4 g = entry.getKey();
                                 if (!addedSelectedQuads.contains(g) && canSelect(null, g, ss, allNormals, allColours, angle2) && hasSameEdge(edge, g, adjaencyByPrecision) && isEdgeAdjacent(ss, g, addedSelectedLines, addedSelectedTriangles, addedSelectedQuads, addedSelectedCondlines, newSelectedLines, newSelectedTriangles, newSelectedQuads, newSelectedCondlines, adjaencyByPrecision)) {
                                     if (ss.isOrientation()) {
                                         int faceCount = 0;
@@ -407,7 +410,7 @@ class VM10Selector extends VM09WindingChange {
                                     }
                                     addedSelectedQuads.add(g);
                                     newSelectedQuads.add(g);
-                                    Vertex[] verts = quads.get(g);
+                                    Vertex[] verts = entry.getValue();
                                     for (Vertex v : verts) {
                                         SortedSet<Vertex> verts2 = adjaencyByPrecision.get(v);
                                         for (Vertex v2 : verts2) {
@@ -443,9 +446,10 @@ class VM10Selector extends VM09WindingChange {
 
                 // Now add lines and condlines
                 if (ss.isLines()) {
-                    for (GData2 g : lines.keySet()) {
+                    for (Entry<GData2, Vertex[]> entry : lines.entrySet()) {
+                        GData2 g = entry.getKey();
                         if (canSelect(null, g, ss, allNormals, allColours, angle2) && isEdgeAdjacent(ss, g, adjaencyByPrecision)) {
-                            Vertex[] verts = lines.get(g);
+                            Vertex[] verts = entry.getValue();
                             if (addedSelectedVertices.contains(verts[0]) && addedSelectedVertices.contains(verts[1])) {
                                 selectedLines.add(g);
                             }
@@ -454,9 +458,10 @@ class VM10Selector extends VM09WindingChange {
                     selectedData.addAll(selectedLines);
                 }
                 if (ss.isCondlines()) {
-                    for (GData5 g : condlines.keySet()) {
+                    for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
+                        GData5 g = entry.getKey();
                         if (canSelect(null, g, ss, allNormals, allColours, angle2) && isEdgeAdjacent(ss, g, adjaencyByPrecision)) {
-                            Vertex[] verts = condlines.get(g);
+                            Vertex[] verts = entry.getValue();
                             if (addedSelectedVertices.contains(verts[0]) && addedSelectedVertices.contains(verts[1])) {
                                 selectedCondlines.add(g);
                             }

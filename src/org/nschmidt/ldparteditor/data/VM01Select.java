@@ -17,6 +17,7 @@ package org.nschmidt.ldparteditor.data;
 
 import java.math.BigDecimal;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -617,16 +618,18 @@ class VM01Select extends VM00Snapshot {
 
     public void selectIsolatedVertices() {
         clearSelection();
-        for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
+        for (Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+            Vertex v = entry.getKey();
+            Set<VertexManifestation> manifestations = entry.getValue();
             int vd = 0;
-            for (VertexManifestation vm : vertexLinkedToPositionInFile.get(v)) {
+            for (VertexManifestation vm : manifestations) {
                 if (vm.getGdata().type() == 0) {
                     vd++;
                 } else {
                     break;
                 }
             }
-            if (vd == vertexLinkedToPositionInFile.get(v).size()) {
+            if (vd == manifestations.size()) {
                 selectedVertices.add(v);
             }
         }

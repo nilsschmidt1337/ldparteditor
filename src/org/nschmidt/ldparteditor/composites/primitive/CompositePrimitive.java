@@ -29,6 +29,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1058,20 +1059,21 @@ public class CompositePrimitive extends Composite {
                 }
 
                 // Set category titles
-                for (String catKey : leavesMap.keySet()) {
+                for (Entry<String, Primitive> entry : leavesMap.entrySet()) {
+                    String catKey = entry.getKey();
                     String key = leavesTitleMap.get(catKey);
                     if (key == null) continue;
                     Primitive title = titleMap.get(key);
                     if (title == null) continue;
-                    Primitive cat = leavesMap.get(catKey);
+                    Primitive cat = entry.getValue();
                     cat.setZoom(title.getZoom());
                     cat.setGraphicalData(title.getGraphicalData());
                 }
                 // Check which primitves belong in which category
-                for (String key : primitiveMap.keySet()) {
-                    final Primitive p = primitiveMap.get(key);
+                for (final Primitive p : primitiveMap.values()) {
                     boolean matched = false;
-                    for (String catKey : leavesMap.keySet()) {
+                    for (Entry<String, Primitive> entry : leavesMap.entrySet()) {
+                        final String catKey = entry.getKey();
                         List<PrimitiveRule> rules = leavesRulesMap.get(catKey);
                         if (rules.isEmpty()) continue;
                         boolean andCummulative = true;
@@ -1093,7 +1095,7 @@ public class CompositePrimitive extends Composite {
                                 if (index + 1 < rules.size()) {
                                     if (!rules.get(index + 1).isAnd()) {
                                         matched = true;
-                                        Primitive cat = leavesMap.get(catKey);
+                                        Primitive cat = entry.getValue();
                                         cat.getCategories().add(p);
                                         break;
                                     } else {
@@ -1102,7 +1104,7 @@ public class CompositePrimitive extends Composite {
                                     }
                                 } else {
                                     matched = true;
-                                    Primitive cat = leavesMap.get(catKey);
+                                    Primitive cat = entry.getValue();
                                     cat.getCategories().add(p);
                                     break;
                                 }
@@ -1112,7 +1114,7 @@ public class CompositePrimitive extends Composite {
                             } else {
                                 if (andCummulative && !orWasPrevious) {
                                     matched = true;
-                                    Primitive cat = leavesMap.get(catKey);
+                                    Primitive cat = entry.getValue();
                                     cat.getCategories().add(p);
                                     break;
                                 }
@@ -1133,7 +1135,7 @@ public class CompositePrimitive extends Composite {
                             }
                             if (rules.get(rules.size() - j).isAnd()) {
                                 matched = true;
-                                Primitive cat = leavesMap.get(catKey);
+                                Primitive cat = entry.getValue();
                                 cat.getCategories().add(p);
                                 break;
                             }
@@ -1144,8 +1146,9 @@ public class CompositePrimitive extends Composite {
                     }
                 }
                 // Sort the categories
-                for (String catKey : leavesMap.keySet()) {
-                    Primitive cat = leavesMap.get(catKey);
+                for (Entry<String, Primitive> entry : leavesMap.entrySet()) {
+                    String catKey = entry.getKey();
+                    Primitive cat = entry.getValue();
                     List<PrimitiveRule> rules = leavesRulesMap.get(catKey);
                     boolean hasSpecialOrder = false;
                     for (PrimitiveRule rule : rules) {

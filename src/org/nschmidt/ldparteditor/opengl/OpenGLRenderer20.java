@@ -26,6 +26,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.SortedMap;
 import java.util.TreeMap;
@@ -508,8 +509,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                 {
                                     Map<GData4, Vertex[]> quads = c3d.getLockableDatFileReference().getVertexManager().getQuads();
                                     Map<GData3, Vertex[]> tris2 = c3d.getLockableDatFileReference().getVertexManager().getTriangles();
-                                    for (GData3 g : tris2.keySet()) {
-                                        Vertex[] v = tris2.get(g);
+                                    for (Entry<GData3, Vertex[]> entry : tris2.entrySet()) {
+                                        GData3 g = entry.getKey();
+                                        Vertex[] v = entry.getValue();
                                         Vector4f[] nv = new Vector4f[3];
                                         {
                                             boolean notShown = true;
@@ -579,8 +581,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
 
                                     }
-                                    for (GData4 g : quads.keySet()) {
-                                        Vertex[] v = quads.get(g);
+                                    for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+                                        GData4 g = entry.getKey();
+                                        Vertex[] v = entry.getValue();
                                         Vector4f[] nv = new Vector4f[4];
                                         {
                                             boolean notShown = true;
@@ -987,9 +990,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                             point[1] = 1f;
                                                             point[2] = 1f;
 
-                                                            for (Float f : zSort.keySet()) {
+                                                            for (Entry<Float, float[]> entry : zSort.entrySet()) {
+                                                                Float f = entry.getKey();
                                                                 k++;
-                                                                float[] ze = zSort.get(f);
+                                                                float[] ze = entry.getValue();
                                                                 float a = ze[15];
                                                                 float r = ze[12];
                                                                 float g = ze[13];

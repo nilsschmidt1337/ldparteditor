@@ -310,8 +310,7 @@ public class VM20Manipulator extends VM19ColourChanger {
             }
         }
         if (updateSelection && moveAdjacentData) {
-            for (Vertex v : oldToNewVertex.keySet()) {
-                Vertex nv = oldToNewVertex.get(v);
+            for (Vertex nv : oldToNewVertex.values()) {
                 if (nv != null) {
                     if (vertexLinkedToPositionInFile.containsKey(nv)) {
                         selectedVertices.add(nv);

@@ -975,14 +975,12 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         int intersectionCount = 0;
 
 
-                        for (GData3 g3 : triangles.keySet()) {
-                            Vertex[] v = triangles.get(g3);
+                        for (Vertex[] v : triangles.values()) {
                             if (intersectRayTriangle(mid, normal, new Vector3dd(v[0]), new Vector3dd(v[1]), new Vector3dd(v[2]))) {
                                 intersectionCount += 1;
                             }
                         }
-                        for (GData4 g4 : quads.keySet()) {
-                            Vertex[] v = quads.get(g4);
+                        for (Vertex[] v : quads.values()) {
                             if (
                                     intersectRayTriangle(mid, normal, new Vector3dd(v[0]), new Vector3dd(v[1]), new Vector3dd(v[2])) ||
                                     intersectRayTriangle(mid, normal, new Vector3dd(v[2]), new Vector3dd(v[3]), new Vector3dd(v[0]))) {
@@ -1092,8 +1090,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                 }
             }
 
-            for (GData key : intersections.keySet()) {
-                List<Vector3dd> line = intersections.get(key);
+            for (List<Vector3dd> line : intersections.values()) {
                 if (line.size() > 1) {
                     fixedIntersectionLines.add(line);
                 }
@@ -1132,8 +1129,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                         BigDecimal dist = Vector3d.manhattan(end, start);
                         linePoints.put(dist, end);
 
-                        for (BigDecimal d : linePoints.keySet()) {
-                            end = linePoints.get(d);
+                        for (Vector3d point : linePoints.values()) {
+                            end = point;
                             List<Vector3dd> newLine = new ArrayList<>();
                             newLine.add(new Vector3dd(start));
                             newLine.add(new Vector3dd(end));
@@ -1341,14 +1338,12 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                     int intersectionCount = 0;
 
-                                    for (GData3 g3 : triangles.keySet()) {
-                                        Vertex[] v = triangles.get(g3);
+                                    for (Vertex[] v : triangles.values()) {
                                         if (intersectRayTriangle(mid, normal, new Vector3dd(v[0]), new Vector3dd(v[1]), new Vector3dd(v[2]))) {
                                             intersectionCount += 1;
                                         }
                                     }
-                                    for (GData4 g4 : quads.keySet()) {
-                                        Vertex[] v = quads.get(g4);
+                                    for (Vertex[] v : quads.values()) {
                                         if (
                                                 intersectRayTriangle(mid, normal, new Vector3dd(v[0]), new Vector3dd(v[1]), new Vector3dd(v[2])) ||
                                                 intersectRayTriangle(mid, normal, new Vector3dd(v[2]), new Vector3dd(v[3]), new Vector3dd(v[0]))) {
@@ -1445,8 +1440,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
             BigDecimal dist = Vector3d.manhattan(end, start);
             linePoints.put(BigDecimal.ZERO, start);
             linePoints.put(dist, end);
-            for (BigDecimal d : linePoints.keySet()) {
-                fixedVertices.add(new Vector3dd(linePoints.get(d)));
+            for (Vector3d v : linePoints.values()) {
+                fixedVertices.add(new Vector3dd(v));
             }
             return true;
         }
@@ -1794,8 +1789,8 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                     BigDecimal dist = Vector3d.manhattan(end, start);
                     linePoints.put(dist, end);
 
-                    for (BigDecimal d : linePoints.keySet()) {
-                        end = linePoints.get(d);
+                    for (Vector3d point : linePoints.values()) {
+                        end = point;
                         List<Vector3dd> newLine = new ArrayList<>();
                         newLine.add(new Vector3dd(start));
                         newLine.add(new Vector3dd(end));

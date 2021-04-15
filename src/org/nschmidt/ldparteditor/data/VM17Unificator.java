@@ -19,6 +19,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -275,36 +276,40 @@ class VM17Unificator extends VM16Subdivide {
         final Set<GData4> quadsToDelete2 = new HashSet<>();
         final Set<GData5> clinesToDelete2 = new HashSet<>();
         {
-            for (GData2 g2 : lines.keySet()) {
+            for (Entry<GData2, Vertex[]> entry : lines.entrySet()) {
+                GData2 g2 = entry.getKey();
                 if (!lineLinkedToVertices.containsKey(g2)) continue;
-                Vertex[] verts = lines.get(g2);
+                Vertex[] verts = entry.getValue();
                 SortedSet<Vertex> verts2 = new TreeSet<>();
                 verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 2) {
                     linesToDelete2.add(g2);
                 }
             }
-            for (GData3 g3 : triangles.keySet()) {
+            for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+                GData3 g3 = entry.getKey();
                 if (!lineLinkedToVertices.containsKey(g3)) continue;
-                Vertex[] verts = triangles.get(g3);
+                Vertex[] verts = entry.getValue();
                 SortedSet<Vertex> verts2 = new TreeSet<>();
                 verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 3 || g3.isCollinear()) {
                     trisToDelete2.add(g3);
                 }
             }
-            for (GData4 g4 : quads.keySet()) {
+            for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+                GData4 g4 = entry.getKey();
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
-                Vertex[] verts = quads.get(g4);
+                Vertex[] verts = entry.getValue();
                 SortedSet<Vertex> verts2 = new TreeSet<>();
                 verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 3 || g4.isCollinear()) {
                     quadsToDelete2.add(g4);
                 }
             }
-            for (GData5 g5 : condlines.keySet()) {
+            for (Entry<GData5, Vertex[]> entry : condlines.entrySet()) {
+                GData5 g5 = entry.getKey();
                 if (!lineLinkedToVertices.containsKey(g5)) continue;
-                Vertex[] verts = condlines.get(g5);
+                Vertex[] verts = entry.getValue();
                 SortedSet<Vertex> verts2 = new TreeSet<>();
                 verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 4) {

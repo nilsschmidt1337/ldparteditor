@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -94,8 +95,9 @@ class VM16Subdivide extends VM15Flipper {
         SortedMap<Vertex, Vertex> newPoints = new TreeMap<>();
 
         // Calculate new points
-        for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
-            Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
+        for (Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+            Vertex v = entry.getKey();
+            Set<VertexManifestation> manis = entry.getValue();
             Set<Vector3d> midEdge = new HashSet<>();
             boolean keepIt = false;
             for (VertexManifestation m : manis) {
@@ -339,8 +341,9 @@ class VM16Subdivide extends VM15Flipper {
         clearSelection();
 
         // Calculate new points, based on Loop's Algorithm
-        for (Vertex v : vertexLinkedToPositionInFile.keySet()) {
-            Set<VertexManifestation> manis = vertexLinkedToPositionInFile.get(v);
+        for (Entry<Vertex, Set<VertexManifestation>> entry : vertexLinkedToPositionInFile.entrySet()) {
+            Vertex v = entry.getKey();
+            Set<VertexManifestation> manis = entry.getValue();
             Set<Vector3d> midEdge = new HashSet<>();
             boolean keepIt = false;
             for (VertexManifestation m : manis) {

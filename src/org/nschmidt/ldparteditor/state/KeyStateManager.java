@@ -1264,8 +1264,9 @@ public class KeyStateManager {
     }
 
     public static String getMapKey(Task t1) {
-        for (String k : taskMap.keySet()) {
-            if (taskMap.get(k) == t1) {
+        for (Entry<String, Task> entry : taskMap.entrySet()) {
+            String k = entry.getKey();
+            if (entry.getValue() == t1) {
                 return k;
             }
         }
@@ -1273,8 +1274,9 @@ public class KeyStateManager {
     }
 
     public static String getMapKey(TextTask t2) {
-        for (String k : textTaskMap.keySet()) {
-            if (textTaskMap.get(k) == t2) {
+        for (Entry<String, TextTask> entry : textTaskMap.entrySet()) {
+            String k = entry.getKey();
+            if (entry.getValue() == t2) {
                 return k;
             }
         }

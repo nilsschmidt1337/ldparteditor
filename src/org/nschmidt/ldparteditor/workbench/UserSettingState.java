@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.eclipse.wb.swt.SWTResourceManager;
@@ -771,8 +772,9 @@ public class UserSettingState implements Serializable {
 
         {
             int i = 0;
-            for (String k : m1.keySet()) {
-                Task t = m1.get(k);
+            for (Entry<String, Task> entry : m1.entrySet()) {
+                String k = entry.getKey();
+                Task t = entry.getValue();
                 String keyString = m2.get(t);
                 key3DStrings[i] = keyString;
                 key3DKeys[i] = k;
@@ -783,8 +785,9 @@ public class UserSettingState implements Serializable {
 
         {
             int i = 0;
-            for (String k : m3.keySet()) {
-                TextTask t = m3.get(k);
+            for (Entry<String, TextTask> entry : m3.entrySet()) {
+                String k = entry.getKey();
+                TextTask t = entry.getValue();
                 String keyString = m4.get(t);
                 keyTextStrings[i] = keyString;
                 keyTextKeys[i] = k;

@@ -22,6 +22,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -563,19 +564,21 @@ public final class VertexManager extends VM99Clipboard {
             GL11.glColor3f(View.MESHLINE_COLOUR_R[0], View.MESHLINE_COLOUR_G[0], View.MESHLINE_COLOUR_B[0]);
 
             if (c3d.isSubMeshLines() || drawWireframe) {
-                for (GData3 gdata : triangles.keySet()) {
+                for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+                    GData3 gdata = entry.getKey();
                     if (!(gdata.visible || gdata.isTriangle))
                         continue;
                     GL11.glBegin(GL11.GL_LINE_LOOP);
-                    for (Vertex vertex : triangles.get(gdata)) {
+                    for (Vertex vertex : entry.getValue()) {
                         GL11.glVertex3f(vertex.x + tr2.x, vertex.y + tr2.y, vertex.z + tr2.z);
                     }
                     GL11.glEnd();
                 }
-                for (GData4 gdata : quads.keySet()) {
+                for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+                    GData4 gdata = entry.getKey();
                     if (!gdata.visible)
                         continue;
-                    final Vertex[] quadverts = quads.get(gdata);
+                    final Vertex[] quadverts = entry.getValue();
                     GL11.glBegin(GL11.GL_LINES);
                     GL11.glVertex3f(quadverts[0].x + tr2.x, quadverts[0].y + tr2.y, quadverts[0].z + tr2.z);
                     GL11.glVertex3f(quadverts[1].x + tr2.x, quadverts[1].y + tr2.y, quadverts[1].z + tr2.z);
@@ -592,7 +595,8 @@ public final class VertexManager extends VM99Clipboard {
                 }
             } else {
                 Vertex[] quadverts = new Vertex[4];
-                for (GData gdata : lineLinkedToVertices.keySet()) {
+                for (Entry<GData, Set<VertexInfo>> entry : lineLinkedToVertices.entrySet()) {
+                    GData gdata = entry.getKey();
                     if (!gdata.visible)
                         continue;
                     switch (gdata.type()) {
@@ -600,14 +604,14 @@ public final class VertexManager extends VM99Clipboard {
                         if (!((GData3) gdata).isTriangle)
                             continue;
                         GL11.glBegin(GL11.GL_LINE_LOOP);
-                        for (VertexInfo info : lineLinkedToVertices.get(gdata)) {
+                        for (VertexInfo info : entry.getValue()) {
                             Vertex triVertex = info.vertex;
                             GL11.glVertex3f(triVertex.x + tr2.x, triVertex.y + tr2.y, triVertex.z + tr2.z);
                         }
                         GL11.glEnd();
                         break;
                     case 4:
-                        for (VertexInfo info : lineLinkedToVertices.get(gdata)) {
+                        for (VertexInfo info : entry.getValue()) {
                             quadverts[info.position] = info.vertex;
                         }
                         GL11.glBegin(GL11.GL_LINES);
@@ -881,11 +885,13 @@ public final class VertexManager extends VM99Clipboard {
         Vector4f minPoint = new Vector4f();
         double minDist = Double.MAX_VALUE;
         final double[] dist = new double[1];
-        for (GData3 triangle : triangles.keySet()) {
+        for (Entry<GData3, Vertex[]> entry : triangles.entrySet()) {
+            GData3 triangle = entry.getKey();
             if (hiddenData.contains(triangle))
                 continue;
             i = 0;
-            for (Vertex tvertex : triangles.get(triangle)) {
+            // FIXME Think about potential use of System.arraycopy here
+            for (Vertex tvertex : entry.getValue()) {
                 triQuadVerts[i] = tvertex;
                 i++;
             }
@@ -917,11 +923,13 @@ public final class VertexManager extends VM99Clipboard {
             }
         }
 
-        for (GData4 quad : quads.keySet()) {
+        for (Entry<GData4, Vertex[]> entry : quads.entrySet()) {
+            GData4 quad = entry.getKey();
             if (hiddenData.contains(quad))
                 continue;
             i = 0;
-            for (Vertex tvertex : quads.get(quad)) {
+            // FIXME Think about potential use of System.arraycopy here
+            for (Vertex tvertex : entry.getValue()) {
                 triQuadVerts[i] = tvertex;
                 i++;
             }

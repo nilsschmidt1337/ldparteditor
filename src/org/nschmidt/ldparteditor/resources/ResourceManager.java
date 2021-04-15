@@ -161,8 +161,8 @@ public enum ResourceManager {
      */
     public static void dispose() {
         // Dispose all images
-        for (String s : imageMap.keySet()) {
-            imageMap.get(s).dispose();
+        for (Image img : imageMap.values()) {
+            img.dispose();
         }
         imageMap.clear();
         // Dispose all static fonts

@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -115,8 +116,9 @@ class VM15Flipper extends VM14Splitter {
             }
 
             effSelectedTriangles.removeAll(surfsToIgnore);
-            for (GData3 s1 : trianglePair.keySet()) {
-                GData3 s2 = trianglePair.get(s1);
+            for (Entry<GData3, GData3> entry : trianglePair.entrySet()) {
+                GData3 s1 = entry.getKey();
+                GData3 s2 = entry.getValue();
                 {
                     SortedSet<Vertex> v1 = new TreeSet<>();
                     SortedSet<Vertex> v2 = new TreeSet<>();

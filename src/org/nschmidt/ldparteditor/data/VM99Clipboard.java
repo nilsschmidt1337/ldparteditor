@@ -24,6 +24,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedMap;
 import java.util.SortedSet;
@@ -812,8 +813,9 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
             lineNumber--;
         }
 
-        for (int key : dataToInsert.keySet()) {
-            CLIPBOARD.addAll(-key, dataToInsert.get(key));
+        for (Entry<Integer, List<GData>> entry : dataToInsert.entrySet()) {
+            int key = entry.getKey();
+            CLIPBOARD.addAll(-key, entry.getValue());
         }
         {
             java.util.ListIterator<GData> li = CLIPBOARD.listIterator(CLIPBOARD.size());

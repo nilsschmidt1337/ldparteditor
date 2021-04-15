@@ -18,6 +18,7 @@ package org.nschmidt.ldparteditor.data.tools;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -59,27 +60,30 @@ public enum IdenticalVertexRemover {
         final Set<GData4> quadsToDelete2 = new HashSet<>();
         final Set<GData5> clinesToDelete2 = new HashSet<>();
         {
-            for (GData2 g2 : l.keySet()) {
+            for (Entry<GData2, Vertex[]> entry : l.entrySet()) {
+                GData2 g2 = entry.getKey();
                 if (!lineLinkedToVertices.containsKey(g2)) continue;
-                Vertex[] verts = l.get(g2);
+                Vertex[] verts = entry.getValue();
                 SortedSet<Vertex> verts2 = new TreeSet<>();
                 verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 2) {
                     linesToDelete2.add(g2);
                 }
             }
-            for (GData3 g3 : t.keySet()) {
+            for (Entry<GData3, Vertex[]> entry : t.entrySet()) {
+                GData3 g3 = entry.getKey();
                 if (!lineLinkedToVertices.containsKey(g3)) continue;
-                Vertex[] verts = t.get(g3);
+                Vertex[] verts = entry.getValue();
                 SortedSet<Vertex> verts2 = new TreeSet<>();
                 verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 3 || g3.isCollinear()) {
                     trisToDelete2.add(g3);
                 }
             }
-            for (GData4 g4 : q.keySet()) {
+            for (Entry<GData4, Vertex[]> entry : q.entrySet()) {
+                GData4 g4 = entry.getKey();
                 if (!lineLinkedToVertices.containsKey(g4)) continue;
-                Vertex[] verts = q.get(g4);
+                Vertex[] verts = entry.getValue();
                 SortedSet<Vertex> verts2 = new TreeSet<>();
                 verts2.addAll(Arrays.asList(verts));
                 if (convertQuadsToTriangles && verts2.size() == 3) {
@@ -117,9 +121,10 @@ public enum IdenticalVertexRemover {
                     quadsToDelete2.add(g4);
                 }
             }
-            for (GData5 g5 : c.keySet()) {
+            for (Entry<GData5, Vertex[]> entry : c.entrySet()) {
+                GData5 g5 = entry.getKey();
                 if (!lineLinkedToVertices.containsKey(g5)) continue;
-                Vertex[] verts = c.get(g5);
+                Vertex[] verts = entry.getValue();
                 SortedSet<Vertex> verts2 = new TreeSet<>();
                 verts2.addAll(Arrays.asList(verts));
                 if (verts2.size() < 4) {
