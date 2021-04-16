@@ -77,8 +77,8 @@ public class PrimGen2Dialog extends PrimGen2Design {
     private boolean doUpdate = false;
     private boolean ok = false;
 
-    private final DecimalFormat decvformat4f = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
-    private final DecimalFormat decvformat0f = new DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.locale));
+    private final DecimalFormat decvformat4f = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
+    private final DecimalFormat decvformat0f = new DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.getLocale()));
 
     private final DecimalFormat decformat4f = new DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(Locale.ENGLISH));
 

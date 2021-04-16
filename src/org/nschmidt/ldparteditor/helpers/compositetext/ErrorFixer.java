@@ -545,7 +545,7 @@ enum ErrorFixer {
 
                 Object[] messageArguments = {lineNumber + 1, g1.toString()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.locale);
+                formatter.setLocale(MyLanguage.getLocale());
                 formatter.applyPattern(I18n.ERRORFIXER_MOVED_TO_HINT);
 
                 messageBox.setMessage(formatter.format(messageArguments));

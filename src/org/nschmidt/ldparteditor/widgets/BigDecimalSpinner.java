@@ -65,7 +65,7 @@ public class BigDecimalSpinner extends Composite {
 
     public BigDecimalSpinner(final Composite parent, int style, String numberFormat) {
         super(parent, style);
-        this.numberFormat = new java.text.DecimalFormat(numberFormat, new DecimalFormatSymbols(MyLanguage.locale));
+        this.numberFormat = new java.text.DecimalFormat(numberFormat, new DecimalFormatSymbols(MyLanguage.getLocale()));
         me = this;
         createContents(parent);
     }
@@ -76,7 +76,7 @@ public class BigDecimalSpinner extends Composite {
      */
     public BigDecimalSpinner(final Composite parent, int style) {
         super(parent, style);
-        numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
+        numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         me = this;
         createContents(parent);
     }

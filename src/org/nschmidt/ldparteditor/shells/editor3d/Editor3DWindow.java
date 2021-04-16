@@ -626,7 +626,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             Object[] messageArguments = {additions, deletions, conflicts};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DIALOG_SYNC);
             messageBox.setMessage(formatter.format(messageArguments));
 
@@ -679,7 +679,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         Object[] messageArguments = {path};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.E3D_LAST_PROJECT);
 
                         mntmItem2.setText(formatter.format(messageArguments));
@@ -1692,7 +1692,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     Object[] messageArguments1 = {num, View.getLDConfigColourName(num)};
                     MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter1.setLocale(MyLanguage.locale);
+                    formatter1.setLocale(MyLanguage.getLocale());
                     formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
                     btnLastUsedColourPtr[0].setToolTipText(formatter1.format(messageArguments1));
@@ -1705,7 +1705,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     Object[] messageArguments2 = {colourBuilder.toString()};
                     MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter2.setLocale(MyLanguage.locale);
+                    formatter2.setLocale(MyLanguage.getLocale());
                     formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
                     btnLastUsedColourPtr[0].setToolTipText(formatter2.format(messageArguments2));
@@ -3993,7 +3993,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     vm.getLines().size() - oldLineCount - unmatchedLines,
                                     unmatchedLines};
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                            formatter.setLocale(MyLanguage.locale);
+                            formatter.setLocale(MyLanguage.getLocale());
                             formatter.applyPattern(I18n.EDGER_VERBOSE_MSG);
 
                             messageBox.setMessage(formatter.format(messageArguments));
@@ -4033,7 +4033,7 @@ public class Editor3DWindow extends Editor3DDesign {
                                     result[3]
                             };
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                            formatter.setLocale(MyLanguage.locale);
+                            formatter.setLocale(MyLanguage.getLocale());
                             formatter.applyPattern(I18n.RECTIFIER_VERBOSE_MSG);
 
                             messageBox.setMessage(formatter.format(messageArguments));
@@ -4769,7 +4769,7 @@ public class Editor3DWindow extends Editor3DDesign {
                         messageBox4.setText(I18n.DIALOG_INFO);
                         Object[] messageArguments = {response.readLine()};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.E3D_LOG_UPLOAD_SUCCESS);
                         messageBox4.setMessage(formatter.format(messageArguments));
                         messageBox4.open();
@@ -5766,7 +5766,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 Object[] messageArguments = {df.getShortName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.locale);
+                formatter.setLocale(MyLanguage.getLocale());
                 formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                 messageBox.setMessage(formatter.format(messageArguments));
 
@@ -6691,7 +6691,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
             btnLastUsedColourPtr[0].setToolTipText(formatter.format(messageArguments));
@@ -6704,7 +6704,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
             btnLastUsedColourPtr[0].setToolTipText(formatter.format(messageArguments));
@@ -8281,7 +8281,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
             Object[] messageArguments = {df.getShortName()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
             messageBox.setMessage(formatter.format(messageArguments));
 
@@ -8429,7 +8429,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
         Object[] messageArguments = {df.getShortName(), df.getLastSavedOpened()};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-        formatter.setLocale(MyLanguage.locale);
+        formatter.setLocale(MyLanguage.getLocale());
         formatter.applyPattern(I18n.DIALOG_REVERT);
         messageBox.setMessage(formatter.format(messageArguments));
 
@@ -8657,7 +8657,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                     Object[] messageArguments = {new File(newPath).getName()};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.locale);
+                    formatter.setLocale(MyLanguage.getLocale());
                     formatter.applyPattern(I18n.DIALOG_NO_PROJECT_LOCATION);
                     messageBox.setMessage(formatter.format(messageArguments));
 
@@ -8867,7 +8867,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 Object[] messageArguments = {newName};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.locale);
+                formatter.setLocale(MyLanguage.getLocale());
                 formatter.applyPattern(I18n.DIALOG_REPLACE);
                 messageBox.setMessage(formatter.format(messageArguments));
 
@@ -9082,7 +9082,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         Object[] messageArguments1 = {num, View.getLDConfigColourName(num)};
                         MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                        formatter1.setLocale(MyLanguage.locale);
+                        formatter1.setLocale(MyLanguage.getLocale());
                         formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
                         btnLastUsedColourPtr[0].setToolTipText(formatter1.format(messageArguments1));
@@ -9095,7 +9095,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
                         Object[] messageArguments2 = {colourBuilder.toString()};
                         MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                        formatter2.setLocale(MyLanguage.locale);
+                        formatter2.setLocale(MyLanguage.getLocale());
                         formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
                         btnLastUsedColourPtr[0].setToolTipText(formatter2.format(messageArguments2));

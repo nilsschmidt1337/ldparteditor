@@ -708,7 +708,7 @@ public final class GData2 extends GData {
     }
 
     void drawDistanceGL20(Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c) {
-        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
+        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
         GL11.glLineWidth(View.LINE_WIDTH_GL[0]);
@@ -908,7 +908,7 @@ public final class GData2 extends GData {
     void drawDistanceGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, boolean forceLengthCalculation) {
         GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
 
-        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
+        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         final float zoom = 1f / c3d.getZoom();
         final Vector4f textOrigin = new Vector4f((x1 + x2) / 2f, (y1 + y2) / 2f, (z1 + z2) / 2f, 1f);
         final Vector4f lineOrigin = new Vector4f(x1, y1, z1, 1f);

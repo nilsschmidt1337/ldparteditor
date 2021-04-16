@@ -133,7 +133,7 @@ public class TreeItem {
 
                     Object[] messageArguments = {litem, o};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.locale);
+                    formatter.setLocale(MyLanguage.getLocale());
                     formatter.applyPattern(I18n.TREEITEM_LINE);
 
                     t.setText(formatter.format(messageArguments), 1);
@@ -150,7 +150,7 @@ public class TreeItem {
 
                         Object[] messageArguments = {lnew, newOffset};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.TREEITEM_LINE);
 
                         t.setText(formatter.format(messageArguments), 1);

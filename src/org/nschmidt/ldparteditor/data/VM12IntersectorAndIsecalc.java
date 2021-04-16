@@ -2016,7 +2016,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                     Object[] messageArguments = {i, vertCount};
                                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                    formatter.setLocale(MyLanguage.locale);
+                                    formatter.setLocale(MyLanguage.getLocale());
                                     formatter.applyPattern(I18n.VM_DETECT_NEW_EDGES);
 
                                     monitor.subTask(formatter.format(messageArguments));
@@ -2258,7 +2258,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
 
                                             Object[] messageArguments = {counter2.toString(), vertCount};
                                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                            formatter.setLocale(MyLanguage.locale);
+                                            formatter.setLocale(MyLanguage.getLocale());
                                             formatter.applyPattern(I18n.VM_TRIANGULATE);
 
                                             monitor.subTask(formatter.format(messageArguments));

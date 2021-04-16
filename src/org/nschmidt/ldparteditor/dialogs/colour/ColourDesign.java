@@ -185,7 +185,7 @@ class ColourDesign extends ApplicationWindow {
 
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
             btnCol.setToolTipText(formatter.format(messageArguments));
@@ -199,7 +199,7 @@ class ColourDesign extends ApplicationWindow {
 
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
             btnCol.setToolTipText(formatter.format(messageArguments));

@@ -75,7 +75,7 @@ class SlantingMatrixProjectorDesign extends Dialog {
     // Use final only for subclass/listener references!
     private final VertexManager vm;
     private final SlantingMatrixProjectorSettings mps;
-    private java.text.DecimalFormat numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMATL4F, new DecimalFormatSymbols(MyLanguage.locale));
+    private java.text.DecimalFormat numberFormat = new java.text.DecimalFormat(View.NUMBER_FORMATL4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
 
     SlantingMatrixProjectorDesign(Shell parentShell, VertexManager vm, SlantingMatrixProjectorSettings mps) {
         super(parentShell);

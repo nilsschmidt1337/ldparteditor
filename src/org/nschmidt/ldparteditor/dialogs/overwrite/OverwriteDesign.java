@@ -58,7 +58,7 @@ class OverwriteDesign extends Dialog {
 
         Object[] messageArguments = {whichFile};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-        formatter.setLocale(MyLanguage.locale);
+        formatter.setLocale(MyLanguage.getLocale());
         formatter.applyPattern(I18n.DIALOG_REPLACE);
         lblOverwrite.setText(formatter.format(messageArguments));
 

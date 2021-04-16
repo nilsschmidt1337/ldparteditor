@@ -305,7 +305,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
                 Object[] messageArguments = {df.getShortName()};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.locale);
+                formatter.setLocale(MyLanguage.getLocale());
                 formatter.applyPattern(I18n.DIALOG_UNSAVED_CHANGES);
                 messageBox.setMessage(formatter.format(messageArguments));
 

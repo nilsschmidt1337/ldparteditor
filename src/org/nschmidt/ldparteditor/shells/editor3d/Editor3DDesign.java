@@ -836,7 +836,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Object[] messageArguments = {I18n.getCurrentUnit()};
                                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                formatter.setLocale(MyLanguage.locale);
+                                formatter.setLocale(MyLanguage.getLocale());
                                 formatter.applyPattern(I18n.E3D_MOVE_SNAP);
 
                                 Label lblNewLabel = new Label(cmpSnappingArea, Cocoa.getStyle());
@@ -878,7 +878,7 @@ class Editor3DDesign extends ApplicationWindow {
                             {
                                 Object[] messageArguments = {I18n.getCurrentUnit()};
                                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                                formatter.setLocale(MyLanguage.locale);
+                                formatter.setLocale(MyLanguage.getLocale());
                                 formatter.applyPattern(I18n.E3D_SCALE_INITIAL);
 
                                 Label lblNewLabel31 = new Label(cmpSnappingArea, Cocoa.getStyle());
@@ -3449,7 +3449,7 @@ class Editor3DDesign extends ApplicationWindow {
 
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
             btnCol.setToolTipText(formatter.format(messageArguments));
@@ -3462,7 +3462,7 @@ class Editor3DDesign extends ApplicationWindow {
 
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
             btnCol.setToolTipText(formatter.format(messageArguments));
@@ -3486,7 +3486,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                     Object[] messageArguments1 = {num2, View.getLDConfigColourName(num2)};
                     MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter1.setLocale(MyLanguage.locale);
+                    formatter1.setLocale(MyLanguage.getLocale());
                     formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
                     btnCol.setToolTipText(formatter1.format(messageArguments1));
@@ -3499,7 +3499,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                     Object[] messageArguments2 = {colourBuilder1.toString()};
                     MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter2.setLocale(MyLanguage.locale);
+                    formatter2.setLocale(MyLanguage.getLocale());
                     formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
                     btnCol.setToolTipText(formatter2.format(messageArguments2));
@@ -3551,7 +3551,7 @@ class Editor3DDesign extends ApplicationWindow {
                 if (num3 != -1) {
                     Object[] messageArguments3 = {num3, View.getLDConfigColourName(num3)};
                     MessageFormat formatter3 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter3.setLocale(MyLanguage.locale);
+                    formatter3.setLocale(MyLanguage.getLocale());
                     formatter3.applyPattern(I18n.EDITORTEXT_COLOUR_1);
 
                     btnLastUsedColourPtr[0].setToolTipText(formatter3.format(messageArguments3));
@@ -3564,7 +3564,7 @@ class Editor3DDesign extends ApplicationWindow {
 
                     Object[] messageArguments4 = {colourBuilder2.toString()};
                     MessageFormat formatter4 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter4.setLocale(MyLanguage.locale);
+                    formatter4.setLocale(MyLanguage.getLocale());
                     formatter4.applyPattern(I18n.EDITORTEXT_COLOUR_2);
 
                     btnLastUsedColourPtr[0].setToolTipText(formatter4.format(messageArguments4));

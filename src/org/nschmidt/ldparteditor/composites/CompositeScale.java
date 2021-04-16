@@ -49,7 +49,7 @@ import org.nschmidt.ldparteditor.widgets.NButton;
  */
 public class CompositeScale extends ScalableComposite {
 
-    private final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.locale));
+    private final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.getLocale()));
 
     private final Canvas canvasHorizontal;
     private final Canvas canvasVertical;

@@ -205,7 +205,7 @@ class EditorTextDesign extends ApplicationWindow {
 
             Object[] messageArguments = {num, View.getLDConfigColourName(num)};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
             btnCol.setToolTipText(formatter.format(messageArguments));
@@ -219,7 +219,7 @@ class EditorTextDesign extends ApplicationWindow {
 
             Object[] messageArguments = {colourBuilder.toString()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.EDITORTEXT_COLOUR_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
             btnCol.setToolTipText(formatter.format(messageArguments));
@@ -242,7 +242,7 @@ class EditorTextDesign extends ApplicationWindow {
                 if (num1 != -1) {
                     Object[] messageArguments1 = {num1, View.getLDConfigColourName(num1)};
                     MessageFormat formatter1 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter1.setLocale(MyLanguage.locale);
+                    formatter1.setLocale(MyLanguage.getLocale());
                     formatter1.applyPattern(I18n.EDITORTEXT_COLOUR_1 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
                     btnCol.setToolTipText(formatter1.format(messageArguments1));
@@ -255,7 +255,7 @@ class EditorTextDesign extends ApplicationWindow {
 
                     Object[] messageArguments2 = {colourBuilder.toString()};
                     MessageFormat formatter2 = new MessageFormat(""); //$NON-NLS-1$
-                    formatter2.setLocale(MyLanguage.locale);
+                    formatter2.setLocale(MyLanguage.getLocale());
                     formatter2.applyPattern(I18n.EDITORTEXT_COLOUR_2 + Cocoa.replaceCtrlByCmd(I18n.E3D_CONTROL_CLICK_MODIFY));
 
                     btnCol.setToolTipText(formatter2.format(messageArguments2));

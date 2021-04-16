@@ -51,53 +51,53 @@ public final class I18n {
     private I18n() {}
 
     // Bundles
-    private static final ResourceBundle EDITORTEXT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TextEditor", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle UNITS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Units", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle PARTS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Parts", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle VERSION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Version", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle PERSPECTIVE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Perspective", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle SPLASH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.SplashScreen", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle PROJECT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Project", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle COPYNPASTE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CopyAndPaste", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle DIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Dialog", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle E3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Editor3D", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle COLOUR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Colour", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle COLOURDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ColourDialog", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle COMPOSITETAB = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CompositeTab", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle COORDINATESDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CoordinatesDialog", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle DATFILE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.DatFile", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle DATPARSER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.DatParser", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle HINTFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.HintFixer", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle EDGER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Edger", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle META = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Meta", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle MESHREDUCE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.MeshReducer", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle INTERSECTOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Intersector", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle ISECALC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Isecalc", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle OPTIONS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Options", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle PATHTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PathTruder", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle YTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.YTruder", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle PRIMGEN = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PrimGen", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle RECTIFIER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rectifier", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle RCONES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.RingsAndCones", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle ROTATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rotate", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle ROUND = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Round", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle SCALE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Scale", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle SEARCH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Search", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle SLANT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.SlantingMatrixProjector", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle SLICERPRO = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Slicerpro", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle SMOOTH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Smooth", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle SORT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Sort", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle SYMSPLITTER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Symsplitter", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle TJUNCTION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TJunctionFinder", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle TRANSLATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Translate", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle TREEITEM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TreeItem", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle TXT2DAT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Txt2Dat", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle UNIFICATOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Unificator", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle VM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.VertexManager", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle C3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Composite3D", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle KEYBOARD = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Keyboard", MyLanguage.locale); //$NON-NLS-1$
-    private static final ResourceBundle ERRORFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ErrorFixer", MyLanguage.locale); //$NON-NLS-1$
+    private static final ResourceBundle EDITORTEXT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TextEditor", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle UNITS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Units", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle PARTS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Parts", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle VERSION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Version", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle PERSPECTIVE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Perspective", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SPLASH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.SplashScreen", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle PROJECT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Project", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle COPYNPASTE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CopyAndPaste", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle DIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Dialog", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle E3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Editor3D", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle COLOUR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Colour", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle COLOURDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ColourDialog", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle COMPOSITETAB = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CompositeTab", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle COORDINATESDIALOG = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.CoordinatesDialog", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle DATFILE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.DatFile", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle DATPARSER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.DatParser", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle HINTFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.HintFixer", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle EDGER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Edger", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle META = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Meta", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle MESHREDUCE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.MeshReducer", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle INTERSECTOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Intersector", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle ISECALC = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Isecalc", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle LINES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.LinesPattern", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle OPTIONS = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Options", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle PATHTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PathTruder", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle YTRUDER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.YTruder", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle PRIMGEN = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.PrimGen", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle RECTIFIER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rectifier", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle RCONES = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.RingsAndCones", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle ROTATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Rotate", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle ROUND = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Round", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SCALE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Scale", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SEARCH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Search", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SLANT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.SlantingMatrixProjector", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SLICERPRO = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Slicerpro", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SMOOTH = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Smooth", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SORT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Sort", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle SYMSPLITTER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Symsplitter", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle TJUNCTION = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TJunctionFinder", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle TRANSLATE = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Translate", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle TREEITEM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.TreeItem", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle TXT2DAT = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Txt2Dat", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle UNIFICATOR = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Unificator", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle VM = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.VertexManager", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle C3D = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Composite3D", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle KEYBOARD = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.Keyboard", MyLanguage.getLocale()); //$NON-NLS-1$
+    private static final ResourceBundle ERRORFIXER = ResourceBundle.getBundle("org.nschmidt.ldparteditor.i18n.ErrorFixer", MyLanguage.getLocale()); //$NON-NLS-1$
     // Bundles end
 
     private static boolean notAdjusted = true;
@@ -1345,7 +1345,7 @@ public final class I18n {
     }
 
     static { // Make a test if the current locale use RTL layout
-        if (!ComponentOrientation.getOrientation(MyLanguage.locale).isLeftToRight()) {
+        if (!ComponentOrientation.getOrientation(MyLanguage.getLocale()).isLeftToRight()) {
             IS_RTL = true;
             I18N_RTL = SWT.RIGHT_TO_LEFT;
         } else {

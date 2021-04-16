@@ -614,7 +614,7 @@ public final class DatFile {
 
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(warnings);
@@ -629,7 +629,7 @@ public final class DatFile {
 
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -684,7 +684,7 @@ public final class DatFile {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -713,7 +713,7 @@ public final class DatFile {
                     position = compositeText.getOffsetAtLine(lineNumber - 1);
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.locale);
+                    formatter.setLocale(MyLanguage.getLocale());
                     formatter.applyPattern(I18n.DATFILE_LINE);
 
                     TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -810,7 +810,7 @@ public final class DatFile {
 
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(warnings);
@@ -825,7 +825,7 @@ public final class DatFile {
 
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -873,7 +873,7 @@ public final class DatFile {
                         position = compositeText.getOffsetAtLine(lineNumber - 1);
                         Object[] messageArguments = {lineNumber, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.DATFILE_LINE);
 
                         TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -901,7 +901,7 @@ public final class DatFile {
                     position = compositeText.getOffsetAtLine(lineNumber - 1);
                     Object[] messageArguments = {lineNumber, position};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.locale);
+                    formatter.setLocale(MyLanguage.getLocale());
                     formatter.applyPattern(I18n.DATFILE_LINE);
 
                     TreeItem trtmNewTreeitem = new TreeItem(errors);
@@ -959,7 +959,7 @@ public final class DatFile {
                 }
                 Object[] messageArguments = {lineNumber2, position};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.locale);
+                formatter.setLocale(MyLanguage.getLocale());
                 formatter.applyPattern(I18n.DATFILE_LINE);
 
                 TreeItem trtmNewTreeitem = new TreeItem(duplicates);
@@ -1021,7 +1021,7 @@ public final class DatFile {
                     for (ParsingResult result : parsingResults) {
                         Object[] messageArguments = {lineNumber2, position};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.DATFILE_LINE);
                         TreeItem trtmNewTreeitem = new TreeItem(headerHints);
                         trtmNewTreeitem.setImage(ResourceManager.getImage("icon16_info.png")); //$NON-NLS-1$
@@ -1800,7 +1800,7 @@ public final class DatFile {
 
             Object[] messageArguments = {getShortName(), getLastSavedOpened()};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DIALOG_MODIFIED);
             messageBox.setMessage(formatter.format(messageArguments));
 

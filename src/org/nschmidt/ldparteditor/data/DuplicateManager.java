@@ -568,7 +568,7 @@ public class DuplicateManager {
                     registered[0] = true;
                     Object[] messageArguments = {lineNumber};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.locale);
+                    formatter.setLocale(MyLanguage.getLocale());
                     formatter.applyPattern(I18n.DATPARSER_DUPLICATED_LINES);
                     GData.CACHE_duplicates.put(gd, new ParsingResult(formatter.format(messageArguments), "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 }

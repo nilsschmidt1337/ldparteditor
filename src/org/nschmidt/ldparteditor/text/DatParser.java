@@ -124,7 +124,7 @@ public enum DatParser {
             // Mark unknown linetypes as error
             Object[] messageArguments = {linetype};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_UNKNOWN_LINE_TYPE);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         }
@@ -281,7 +281,7 @@ public enum DatParser {
             } else if (line.startsWith("VERTEX ", 7)) { //$NON-NLS-1$
                 Object[] messageArguments = {line.substring(14)};
                 MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                formatter.setLocale(MyLanguage.locale);
+                formatter.setLocale(MyLanguage.getLocale());
                 formatter.applyPattern(I18n.DATPARSER_VERTEX_AT);
                 result.add(new ParsingResult(formatter.format(messageArguments) , "[WFE] " + I18n.DATPARSER_VERTEX_DECLARATION, ResultType.WARN)); //$NON-NLS-1$
                 boolean numberError = false;
@@ -524,7 +524,7 @@ public enum DatParser {
         if (dataSegments.length < 15) {
             Object[] messageArguments = {dataSegments.length, 15};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
@@ -840,7 +840,7 @@ public enum DatParser {
         if (dataSegments.length != 8) {
             Object[] messageArguments = {dataSegments.length, 8};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
@@ -906,7 +906,7 @@ public enum DatParser {
         if (dataSegments.length != 11) {
             Object[] messageArguments = {dataSegments.length, 11};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
@@ -1008,7 +1008,7 @@ public enum DatParser {
         if (dataSegments.length != 14) {
             Object[] messageArguments = {dataSegments.length, 14};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {
@@ -1212,7 +1212,7 @@ public enum DatParser {
         if (dataSegments.length != 14) {
             Object[] messageArguments = {dataSegments.length, 14};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DATPARSER_WRONG_ARGUMENT_COUNT);
             result.add(new ParsingResult(formatter.format(messageArguments), "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
         } else {

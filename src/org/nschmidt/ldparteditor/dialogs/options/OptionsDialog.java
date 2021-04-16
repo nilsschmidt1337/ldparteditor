@@ -129,7 +129,7 @@ public class OptionsDialog extends OptionsDesign {
             if (localeMap.containsKey(cmbLocalePtr[0].getText())) {
                 Locale locale = localeMap.get(cmbLocalePtr[0].getText());
                 userSettingState.setLocale(locale);
-                MyLanguage.locale = locale;
+                MyLanguage.setLocale(locale);
             }
         });
         cmbTextWinArrPtr[0].addListener(SWT.Modify, e -> {

@@ -73,7 +73,7 @@ class CopyDesign extends Dialog {
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DIALOG_COPY_FILE_ONLY);
             btn1.setText(formatter.format(messageArguments));
         }
@@ -85,7 +85,7 @@ class CopyDesign extends Dialog {
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DIALOG_COPY_FILE_AND_REQUIRED);
             btn2.setText(formatter.format(messageArguments));
         }
@@ -97,7 +97,7 @@ class CopyDesign extends Dialog {
         {
             Object[] messageArguments = {fileName};
             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-            formatter.setLocale(MyLanguage.locale);
+            formatter.setLocale(MyLanguage.getLocale());
             formatter.applyPattern(I18n.DIALOG_COPY_FILE_AND_REQUIRED_AND_RELATED);
             btn3.setText(formatter.format(messageArguments));
         }

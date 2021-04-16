@@ -27,13 +27,21 @@ import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
 public enum MyLanguage {
     INSTANCE;
 
-    public static Locale locale = getLocale();
+    private static Locale locale = initLocale();
 
-    private static Locale getLocale() {
+    private static Locale initLocale() {
         final UserSettingState userConfig = WorkbenchManager.getUserSettingState();
         if (userConfig == null || userConfig.getLocale() == null) {
             return Locale.US;
         }
         return userConfig.getLocale();
+    }
+
+    public static Locale getLocale() {
+        return locale;
+    }
+
+    public static void setLocale(Locale locale) {
+        MyLanguage.locale = locale;
     }
 }

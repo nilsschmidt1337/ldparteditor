@@ -699,7 +699,7 @@ public class DatHeaderManager {
                     registered[0] = true;
                     Object[] messageArguments = args;
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.locale);
+                    formatter.setLocale(MyLanguage.getLocale());
                     formatter.applyPattern(message);
                     allHints.add(new ParsingResult(formatter.format(messageArguments), "[H" + errno + "] " + I18n.DATPARSER_HEADER_HINT, ResultType.HINT, lineNumber)); //$NON-NLS-1$ //$NON-NLS-2$
                 }

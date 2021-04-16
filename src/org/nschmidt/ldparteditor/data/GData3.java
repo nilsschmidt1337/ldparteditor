@@ -1598,7 +1598,7 @@ public final class GData3 extends GData {
     void drawProtractorGL33(Composite3D c3d, GLShader shader, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
         GL20.glUniform3f(shader.getUniformLocation("color"), r, g, b); //$NON-NLS-1$
 
-        final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.locale));
+        final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         final float zoom = 1f / c3d.getZoom();
 
         final Vector4f textOrigin = new Vector4f(x1, y1, z1, 1f);
@@ -1617,7 +1617,7 @@ public final class GData3 extends GData {
     }
 
     void drawProtractorGL20(boolean selected, Composite3D c3d, BigDecimal x1c, BigDecimal y1c, BigDecimal z1c, BigDecimal x2c, BigDecimal y2c, BigDecimal z2c, BigDecimal x3c, BigDecimal y3c, BigDecimal z3c) {
-        final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.locale));
+        final java.text.DecimalFormat numberFormat2f = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.getLocale()));
         final OpenGLRenderer20 renderer = (OpenGLRenderer20) c3d.getRenderer();
         final float zoom = 1f / c3d.getZoom();
 

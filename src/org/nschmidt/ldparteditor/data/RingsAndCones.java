@@ -127,7 +127,7 @@ public enum RingsAndCones {
                                 final long num = j;
                                 threads[j] = new Thread(() -> {
                                     {
-                                        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
+                                        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
                                         int amount = 0;
                                         final long min_r = 1;
                                         long maxR = 100;

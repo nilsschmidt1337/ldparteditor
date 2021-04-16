@@ -71,7 +71,7 @@ class RingsAndConesDesign extends Dialog {
     @Override
     protected Control createDialogArea(Composite parent) {
 
-        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
+        final java.text.DecimalFormat numberFormat4f = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
 
         Composite cmpContainer = (Composite) super.createDialogArea(parent);
         GridLayout gridLayout = (GridLayout) cmpContainer.getLayout();

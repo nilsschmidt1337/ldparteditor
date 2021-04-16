@@ -118,7 +118,7 @@ class VM22TJunctionFixer extends VM21Merger {
         messageBox.setText(I18n.DIALOG_INFO);
         Object[] messageArguments = {tJunctionCount[0]};
         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-        formatter.setLocale(MyLanguage.locale);
+        formatter.setLocale(MyLanguage.getLocale());
         formatter.applyPattern(I18n.E3D_T_JUNCTION_COUNT);
         messageBox.setMessage(formatter.format(messageArguments));
         messageBox.open();

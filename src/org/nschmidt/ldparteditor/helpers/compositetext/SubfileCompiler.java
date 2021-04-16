@@ -320,7 +320,7 @@ public enum SubfileCompiler {
                         } else {
                             Object[] messageArguments = {lineNumber, line};
                             MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                            formatter.setLocale(MyLanguage.locale);
+                            formatter.setLocale(MyLanguage.getLocale());
                             formatter.applyPattern(I18n.E3D_INVALID_FILENAME);
                             MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
                             messageBox.setText(I18n.DIALOG_ERROR);
@@ -330,7 +330,7 @@ public enum SubfileCompiler {
                     } else {
                         Object[] messageArguments = {lineNumber, line};
                         MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                        formatter.setLocale(MyLanguage.locale);
+                        formatter.setLocale(MyLanguage.getLocale());
                         formatter.applyPattern(I18n.E3D_INVALID_MATRIX);
                         MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
                         messageBox.setText(I18n.DIALOG_ERROR);
@@ -340,7 +340,7 @@ public enum SubfileCompiler {
                 } else {
                     Object[] messageArguments = {lineNumber, line};
                     MessageFormat formatter = new MessageFormat(""); //$NON-NLS-1$
-                    formatter.setLocale(MyLanguage.locale);
+                    formatter.setLocale(MyLanguage.getLocale());
                     formatter.applyPattern(I18n.E3D_INVALID_COLOUR);
                     MessageBox messageBox = new MessageBox(new Shell(), SWT.ICON_ERROR);
                     messageBox.setText(I18n.DIALOG_ERROR);
@@ -399,7 +399,7 @@ public enum SubfileCompiler {
                     int odi = 0;
                     List<DatFile> od = (List<DatFile>) treeToSearch.getData();
                     for (DatFile odf : od) {
-                        if (odf.equals(df) || targetPath.toUpperCase(MyLanguage.locale).equals(odf.getOldName().toUpperCase(MyLanguage.locale))) {
+                        if (odf.equals(df) || targetPath.toUpperCase(MyLanguage.getLocale()).equals(odf.getOldName().toUpperCase(MyLanguage.getLocale()))) {
                             old = odf;
                             odf.disposeData();
                             Project.removeUnsavedFile(odf);

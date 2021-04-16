@@ -51,10 +51,10 @@ import org.nschmidt.ldparteditor.vertexwindow.VertexWindow;
 public enum GuiStatusManager {
     INSTANCE;
 
-    private static final DecimalFormat DF0F = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.locale));
-    private static final DecimalFormat DF1F = new java.text.DecimalFormat(View.NUMBER_FORMAT1F, new DecimalFormatSymbols(MyLanguage.locale));
-    private static final DecimalFormat DF2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.locale));
-    private static final DecimalFormat DF4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.locale));
+    private static final DecimalFormat DF0F = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.getLocale()));
+    private static final DecimalFormat DF1F = new java.text.DecimalFormat(View.NUMBER_FORMAT1F, new DecimalFormatSymbols(MyLanguage.getLocale()));
+    private static final DecimalFormat DF2F = new java.text.DecimalFormat(View.NUMBER_FORMAT2F, new DecimalFormatSymbols(MyLanguage.getLocale()));
+    private static final DecimalFormat DF4F = new java.text.DecimalFormat(View.NUMBER_FORMAT4F, new DecimalFormatSymbols(MyLanguage.getLocale()));
 
     /**
      * Updates the status text from {@linkplain Editor3DWindow}

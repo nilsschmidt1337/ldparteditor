@@ -50,7 +50,7 @@ public class IntegerSpinner extends Composite {
     private IntValueChangeAdapter myListener;
 
     private final IntegerSpinner me;
-    private final java.text.DecimalFormat numberFormat0f = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.locale));
+    private final java.text.DecimalFormat numberFormat0f = new java.text.DecimalFormat(View.NUMBER_FORMAT0F, new DecimalFormatSymbols(MyLanguage.getLocale()));
 
     private volatile AtomicInteger counter = new AtomicInteger();
     private volatile boolean focus = true;
