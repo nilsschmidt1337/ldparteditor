@@ -1050,8 +1050,8 @@ public final class VertexManager extends VM99Clipboard {
         } else {
             if (event == null)
                 return;
-            dx = (event.x - cSize.x / 2) / viewportPixelPerLDU;
-            dy = (cSize.y / 2 - event.y) / viewportPixelPerLDU;
+            dx = (event.x - cSize.x / 2f) / viewportPixelPerLDU;
+            dy = (cSize.y / 2f - event.y) / viewportPixelPerLDU;
 
             Vector4f xAxis4fTranslation = new Vector4f(dx, 0, 0, 1.0f);
             Vector4f yAxis4fTranslation = new Vector4f(0, dy, 0, 1.0f);

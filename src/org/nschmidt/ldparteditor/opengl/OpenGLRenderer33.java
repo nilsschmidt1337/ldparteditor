@@ -1210,7 +1210,7 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                     // Draw arrows for cursor-on-border-scrolling
                     if (userSettings.isTranslatingViewByCursor() && c3d.hasMouse() && c3d.equals(Project.getFileToEdit().getLastSelectedComposite())) {
 
-                        final float duration = Math.max(10f, Math.min(1000f, System.currentTimeMillis() - start));
+                        final float duration = Math.max(10f, Math.min(1000, System.currentTimeMillis() - start));
                         final float speed = 0.05f / duration / zoom;
                         final int[] indices = new int[] { 0, 1, 2, 0, 2, 1};
                         final float[] vertices = new float[18];
@@ -1221,13 +1221,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             vertices[i + 4] = View.TEXT_COLOUR_G[0];
                             vertices[i + 5] = View.TEXT_COLOUR_B[0];
                         }
-                        if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y > 25f) {
+                        if (Math.abs(bounds.width / 2f - mp.x) > 75f || mp.y > 25f) {
                             for (int i = 0; i < 18; i += 6) {
                                 vertices[i + 3] = View.TEXT_COLOUR_R[0];
                                 vertices[i + 4] = View.TEXT_COLOUR_G[0];
                                 vertices[i + 5] = View.TEXT_COLOUR_B[0];
                             }
-                        } else if (mp.y > 0f && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
+                        } else if (mp.y > 0f && Math.abs(bounds.width / 2f - mp.x) <= 75f) {
                             for (int i = 0; i < 18; i += 6) {
                                 vertices[i + 3] = View.VERTEX_SELECTED_COLOUR_R[0];
                                 vertices[i + 4] = View.VERTEX_SELECTED_COLOUR_G[0];
@@ -1257,13 +1257,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             vertices[i + 4] = View.TEXT_COLOUR_G[0];
                             vertices[i + 5] = View.TEXT_COLOUR_B[0];
                         }
-                        if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y <= (bounds.height - 25)) {
+                        if (Math.abs(bounds.width / 2f - mp.x) > 75f || mp.y <= (bounds.height - 25)) {
                             for (int i = 0; i < 18; i += 6) {
                                 vertices[i + 3] = View.TEXT_COLOUR_R[0];
                                 vertices[i + 4] = View.TEXT_COLOUR_G[0];
                                 vertices[i + 5] = View.TEXT_COLOUR_B[0];
                             }
-                        } else if (mp.y > (bounds.height - 25) && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
+                        } else if (mp.y > (bounds.height - 25) && Math.abs(bounds.width / 2f - mp.x) <= 75f) {
                             for (int i = 0; i < 18; i += 6) {
                                 vertices[i + 3] = View.VERTEX_SELECTED_COLOUR_R[0];
                                 vertices[i + 4] = View.VERTEX_SELECTED_COLOUR_G[0];
@@ -1291,13 +1291,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             vertices[i + 4] = View.TEXT_COLOUR_G[0];
                             vertices[i + 5] = View.TEXT_COLOUR_B[0];
                         }
-                        if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x >= 25) {
+                        if (Math.abs(bounds.height / 2f - mp.y) > 75f || mp.x >= 25) {
                             for (int i = 0; i < 18; i += 6) {
                                 vertices[i + 3] = View.TEXT_COLOUR_R[0];
                                 vertices[i + 4] = View.TEXT_COLOUR_G[0];
                                 vertices[i + 5] = View.TEXT_COLOUR_B[0];
                             }
-                        } else if (mp.x < 25 && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
+                        } else if (mp.x < 25 && Math.abs(bounds.height / 2f - mp.y) <= 75f) {
                             for (int i = 0; i < 18; i += 6) {
                                 vertices[i + 3] = View.VERTEX_SELECTED_COLOUR_R[0];
                                 vertices[i + 4] = View.VERTEX_SELECTED_COLOUR_G[0];
@@ -1325,13 +1325,13 @@ public class OpenGLRenderer33 extends OpenGLRenderer {
                             vertices[i + 4] = View.TEXT_COLOUR_G[0];
                             vertices[i + 5] = View.TEXT_COLOUR_B[0];
                         }
-                        if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x <= (bounds.width - 25)) {
+                        if (Math.abs(bounds.height / 2f - mp.y) > 75f || mp.x <= (bounds.width - 25)) {
                             for (int i = 0; i < 18; i += 6) {
                                 vertices[i + 3] = View.TEXT_COLOUR_R[0];
                                 vertices[i + 4] = View.TEXT_COLOUR_G[0];
                                 vertices[i + 5] = View.TEXT_COLOUR_B[0];
                             }
-                        } else if (mp.x > (bounds.width - 25) && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
+                        } else if (mp.x > (bounds.width - 25) && Math.abs(bounds.height / 2f - mp.y) <= 75f) {
                             for (int i = 0; i < 18; i += 6) {
                                 vertices[i + 3] = View.VERTEX_SELECTED_COLOUR_R[0];
                                 vertices[i + 4] = View.VERTEX_SELECTED_COLOUR_G[0];

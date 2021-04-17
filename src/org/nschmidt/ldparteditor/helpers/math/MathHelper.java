@@ -58,7 +58,7 @@ public enum MathHelper {
      * @return a random float between 0f and 1f
      */
     public static float randomFloat(int id, int argNum) {
-        randomizer.setSeed(18363 * Math.abs(id) + argNum * 192732);
+        randomizer.setSeed(18363l * Math.abs(id) + argNum * 192732l);
         return randomizer.nextFloat();
     }
 
@@ -1114,7 +1114,7 @@ public enum MathHelper {
         double x = 0.0;
 
         for (int k = 1; k < 10; k++) {
-            x += a[(k - 1) % 8] / Math.pow(2., p * (k + 1) / 2) / Math.pow(k, n);
+            x += a[(k - 1) % 8] / Math.pow(2d, p * (k + 1) / 2d) / Math.pow(k, n);
         }
         /*
          * Convert the relative precision and estimate of the result into an

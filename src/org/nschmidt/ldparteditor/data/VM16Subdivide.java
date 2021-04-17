@@ -378,7 +378,7 @@ class VM16Subdivide extends VM15Flipper {
             if (keepIt) {
                 newPoints.put(v, v);
             } else {
-                double n = midEdge.size() + 1;
+                double n = midEdge.size() + 1d;
                 double t = 3.0 / 8.0 + 1.0 / 4.0 * Math.cos(Math.PI * 2.0 / n);
                 double alphaN = 3.0 / 8.0 + t * t;
                 BigDecimal oneMinusAlphaDivN = new BigDecimal((1.0 - alphaN) / n);

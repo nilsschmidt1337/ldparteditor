@@ -423,7 +423,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 int lastend = 0;
                                 for (int j = 0; j < chunks; ++j) {
                                     final int[] start = new int[] { lastend };
-                                    lastend = Math.round(iterations / chunks * (j + 1));
+                                    lastend = iterations / chunks * (j + 1);
                                     final int[] end = new int[] { lastend };
                                     if (j == chunks - 1) {
                                         end[0] = iterations;
@@ -508,7 +508,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 int lastend = 0;
                                 for (int j = 0; j < chunks; ++j) {
                                     final int[] start = new int[] { lastend };
-                                    lastend = Math.round(iterations / chunks * (j + 1));
+                                    lastend = iterations / chunks * (j + 1);
                                     final int[] end = new int[] { lastend };
                                     if (j == chunks - 1) {
                                         end[0] = iterations;

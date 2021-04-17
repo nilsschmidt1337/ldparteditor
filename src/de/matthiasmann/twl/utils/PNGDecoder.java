@@ -655,7 +655,7 @@ public class PNGDecoder {
     private void closeChunk() throws IOException {
         if (chunkRemaining > 0) {
             // just skip the rest and the CRC
-            skip(chunkRemaining + 4);
+            skip(chunkRemaining + 4l);
         } else {
             readFully(buffer, 0, 4);
             int expectedCrc = readInt(buffer, 0);

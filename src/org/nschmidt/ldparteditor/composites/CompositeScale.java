@@ -132,24 +132,24 @@ public class CompositeScale extends ScalableComposite {
                 // MARK Ruler Perspective Horizontal
                 switch (c3d.getPerspectiveIndex()) {
                 case FRONT:
-                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
+                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
                     break;
                 case BACK:
-                    offset = (int) -(c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
+                    offset = (int) -(c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
                     factor = -1;
                     break;
                 case LEFT:
-                    offset = (int) -(c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
+                    offset = (int) -(c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
                     factor = -1;
                     break;
                 case RIGHT:
-                    offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
+                    offset = (int) (c3d.getTranslation().m32 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
                     break;
                 case TOP:
-                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
+                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
                     break;
                 case BOTTOM:
-                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2;
+                    offset = (int) (c3d.getTranslation().m30 * c3d.getZoom() * View.PIXEL_PER_LDU) - 2f;
                     break;
                 case TWO_THIRDS:
                     throw new AssertionError();

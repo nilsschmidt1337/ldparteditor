@@ -116,7 +116,7 @@ class VM01SelectHelper extends VM01Select {
                 for (int j = 0; j < chunks; ++j) {
                     final int[] i = new int[1];
                     final int[] start = new int[] { lastend };
-                    lastend = Math.round(iterations / chunks * (j + 1));
+                    lastend = iterations / chunks * (j + 1);
                     final int[] end = new int[] { lastend };
                     if (j == chunks - 1) {
                         end[0] = iterations;
@@ -255,7 +255,7 @@ class VM01SelectHelper extends VM01Select {
                 for (int j = 0; j < chunks; ++j) {
                     final int[] i = new int[1];
                     final int[] start = new int[] { lastend };
-                    lastend = Math.round(iterations / chunks * (j + 1));
+                    lastend = iterations / chunks * (j + 1);
                     final int[] end = new int[] { lastend };
                     if (j == chunks - 1) {
                         end[0] = iterations;
@@ -531,7 +531,7 @@ class VM01SelectHelper extends VM01Select {
                 for (int j = 0; j < chunks; ++j) {
                     final int[] i = new int[1];
                     final int[] start = new int[] { lastend };
-                    lastend = Math.round(iterations / chunks * (j + 1));
+                    lastend = iterations / chunks * (j + 1);
                     final int[] end = new int[] { lastend };
                     if (j == chunks - 1) {
                         end[0] = iterations;
@@ -667,7 +667,7 @@ class VM01SelectHelper extends VM01Select {
                 for (int j = 0; j < chunks; ++j) {
                     final int[] i = new int[1];
                     final int[] start = new int[] { lastend };
-                    lastend = Math.round(iterations / chunks * (j + 1));
+                    lastend = iterations / chunks * (j + 1);
                     final int[] end = new int[] { lastend };
                     if (j == chunks - 1) {
                         end[0] = iterations;

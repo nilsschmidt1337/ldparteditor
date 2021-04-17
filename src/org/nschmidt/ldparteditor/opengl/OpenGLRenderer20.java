@@ -744,10 +744,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                             point[3] = sx;
                                                             point[4] = sy;
                                                             point[5] = sx;
-                                                            point[6] = sy + 1;
-                                                            point[7] = sx + 1;
-                                                            point[8] = sy + 1;
-                                                            point[9] = sx + 1;
+                                                            point[6] = sy + 1f;
+                                                            point[7] = sx + 1f;
+                                                            point[8] = sy + 1f;
+                                                            point[9] = sx + 1f;
                                                             point[10] = sy;
                                                             points2.add(point);
                                                             break;
@@ -767,10 +767,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                 point[3] = sx;
                                                                 point[4] = sy;
                                                                 point[5] = sx;
-                                                                point[6] = sy + 1;
-                                                                point[7] = sx + 1;
-                                                                point[8] = sy + 1;
-                                                                point[9] = sx + 1;
+                                                                point[6] = sy + 1f;
+                                                                point[7] = sx + 1f;
+                                                                point[8] = sy + 1f;
+                                                                point[9] = sx + 1f;
                                                                 point[10] = sy;
                                                                 points2.add(point);
                                                             } else {
@@ -973,10 +973,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                                 point[3] = sx;
                                                                 point[4] = sy;
                                                                 point[5] = sx;
-                                                                point[6] = sy + 1;
-                                                                point[7] = sx + 1;
-                                                                point[8] = sy + 1;
-                                                                point[9] = sx + 1;
+                                                                point[6] = sy + 1f;
+                                                                point[7] = sx + 1f;
+                                                                point[8] = sy + 1f;
+                                                                point[9] = sx + 1f;
                                                                 point[10] = sy;
                                                                 points2.add(point);
                                                             }
@@ -1243,10 +1243,10 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                                                             point[3] = sx;
                                                             point[4] = sy;
                                                             point[5] = sx;
-                                                            point[6] = sy + 1;
-                                                            point[7] = sx + 1;
-                                                            point[8] = sy + 1;
-                                                            point[9] = sx + 1;
+                                                            point[6] = sy + 1f;
+                                                            point[7] = sx + 1f;
+                                                            point[8] = sy + 1f;
+                                                            point[9] = sx + 1f;
                                                             point[10] = sy;
                                                             points2.add(point);
                                                         }
@@ -1981,14 +1981,14 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
                     // Draw arrows for cursor-on-border-scrolling
                     if (userSettings.isTranslatingViewByCursor() && c3d.hasMouse() && c3d.equals(Project.getFileToEdit().getLastSelectedComposite())) {
 
-                    	final float duration = Math.max(10f, Math.min(1000f, System.currentTimeMillis() - start));
+                    	final float duration = Math.max(10f, Math.min(1000, System.currentTimeMillis() - start));
                     	final float speed = 0.05f / duration / zoom;
 
                     	// TOP
                         GL11.glColor3f(View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0]);
-                        if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y > 25f) {
+                        if (Math.abs(bounds.width / 2f - mp.x) > 75f || mp.y > 25f) {
                             GL11.glColor3f(View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0]);
-                        } else if (mp.y > 0f && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
+                        } else if (mp.y > 0f && Math.abs(bounds.width / 2f - mp.x) <= 75f) {
                             GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
                             c3d.getMouse().prepareTranslateViewport();
                             c3d.getMouse().translateViewport(0f, speed, viewportTranslation, viewportRotation, c3d.getPerspectiveCalculator());
@@ -2005,9 +2005,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
                         // BOTTOM
                         GL11.glColor3f(View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0]);
-                        if (Math.abs(bounds.width / 2 - mp.x) > 75f || mp.y <= (bounds.height - 25)) {
+                        if (Math.abs(bounds.width / 2f - mp.x) > 75f || mp.y <= (bounds.height - 25)) {
                             GL11.glColor3f(View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0]);
-                        } else if (mp.y > (bounds.height - 25) && Math.abs(bounds.width / 2 - mp.x) <= 75f) {
+                        } else if (mp.y > (bounds.height - 25) && Math.abs(bounds.width / 2f - mp.x) <= 75f) {
                             GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
                             c3d.getMouse().prepareTranslateViewport();
                             c3d.getMouse().translateViewport(0f, -speed, viewportTranslation, viewportRotation, c3d.getPerspectiveCalculator());
@@ -2024,9 +2024,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
                         // LEFT
                         GL11.glColor3f(View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0]);
-                        if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x >= 25) {
+                        if (Math.abs(bounds.height / 2f - mp.y) > 75f || mp.x >= 25) {
                             GL11.glColor3f(View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0]);
-                        } else if (mp.x < 25 && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
+                        } else if (mp.x < 25 && Math.abs(bounds.height / 2f - mp.y) <= 75f) {
                             GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
                             c3d.getMouse().prepareTranslateViewport();
                             c3d.getMouse().translateViewport(-speed, 0f, viewportTranslation, viewportRotation, c3d.getPerspectiveCalculator());
@@ -2043,9 +2043,9 @@ public class OpenGLRenderer20 extends OpenGLRenderer {
 
                         // RIGHT
                         GL11.glColor3f(View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0]);
-                        if (Math.abs(bounds.height / 2 - mp.y) > 75f || mp.x <= (bounds.width - 25)) {
+                        if (Math.abs(bounds.height / 2f - mp.y) > 75f || mp.x <= (bounds.width - 25)) {
                             GL11.glColor3f(View.TEXT_COLOUR_R[0], View.TEXT_COLOUR_G[0], View.TEXT_COLOUR_B[0]);
-                        } else if (mp.x > (bounds.width - 25) && Math.abs(bounds.height / 2 - mp.y) <= 75f) {
+                        } else if (mp.x > (bounds.width - 25) && Math.abs(bounds.height / 2f - mp.y) <= 75f) {
                             GL11.glColor3f(View.VERTEX_SELECTED_COLOUR_R[0], View.VERTEX_SELECTED_COLOUR_G[0], View.VERTEX_SELECTED_COLOUR_B[0]);
                             c3d.getMouse().prepareTranslateViewport();
                             c3d.getMouse().translateViewport(speed, 0f, viewportTranslation, viewportRotation, c3d.getPerspectiveCalculator());
