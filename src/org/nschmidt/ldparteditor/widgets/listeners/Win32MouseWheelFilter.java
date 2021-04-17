@@ -103,17 +103,9 @@ public class Win32MouseWheelFilter implements Listener {
             display.addFilter(SWT.MouseWheel, this);
             return;
 
-        } catch (ClassNotFoundException e) {
-            NLogger.error(getClass(), e);
-        } catch (IllegalArgumentException e) {
-            NLogger.error(getClass(), e);
-        } catch (SecurityException e) {
-            NLogger.error(getClass(), e);
-        } catch (IllegalAccessException e) {
-            NLogger.error(getClass(), e);
-        } catch (NoSuchFieldException e) {
-            NLogger.error(getClass(), e);
-        } catch (NoSuchMethodException e) {
+        } catch (ClassNotFoundException | IllegalArgumentException
+                | SecurityException | IllegalAccessException
+                | NoSuchFieldException | NoSuchMethodException e) {
             NLogger.error(getClass(), e);
         }
 
@@ -222,15 +214,8 @@ public class Win32MouseWheelFilter implements Listener {
                         fSendEventMethod64.invoke(null, handle, msg, wParam, 0);
                 }
 
-            } catch (IllegalArgumentException e) {
-                NLogger.error(getClass(), e);
-            } catch (IllegalAccessException e) {
-                NLogger.error(getClass(), e);
-            } catch (InvocationTargetException e) {
-                NLogger.error(getClass(), e);
-            } catch (SecurityException e) {
-                NLogger.error(getClass(), e);
-            } catch (NoSuchFieldException e) {
+            } catch (IllegalArgumentException | IllegalAccessException
+                    | InvocationTargetException | SecurityException | NoSuchFieldException e) {
                 NLogger.error(getClass(), e);
             }
         } else {

@@ -1462,9 +1462,8 @@ class Editor3DDesign extends ApplicationWindow {
                                     sb.append(StringHelper.getLineDelimiter());
                                 }
                                 Project.getFileToEdit().setText(sb.toString());
-                            } catch (LDParsingException e) {
-                            } catch (FileNotFoundException e) {
-                            } catch (UnsupportedEncodingException e) {
+                            } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                                NLogger.error(Editor3DDesign.class, e);
                             } finally {
                                 try {
                                     if (reader != null)

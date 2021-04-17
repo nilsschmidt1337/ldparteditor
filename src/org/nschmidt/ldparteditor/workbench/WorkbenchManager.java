@@ -101,15 +101,6 @@ public enum WorkbenchManager {
                 }
                 configFileStream.close();
             }
-        } catch (FileNotFoundException e) {
-            NLogger.error(WorkbenchManager.class, e);
-            return false;
-        } catch (IOException e) {
-            NLogger.error(WorkbenchManager.class, e);
-            return false;
-        } catch (ClassNotFoundException e) {
-            NLogger.error(WorkbenchManager.class, e);
-            return false;
         } catch (Exception e) {
             NLogger.error(WorkbenchManager.class, e);
             return false;

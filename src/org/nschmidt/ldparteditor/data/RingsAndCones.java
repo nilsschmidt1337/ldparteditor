@@ -300,11 +300,11 @@ public enum RingsAndCones {
                         return result + ca.length;
                     }
                 });
-            } catch (InvocationTargetException consumed) {
             } catch (InterruptedException ie) {
                 Thread.currentThread().interrupt();
                 throw new LDPartEditorException(ie);
             } catch (Exception ex) {
+                NLogger.error(RingsAndCones.class, ex);
             }
 
 

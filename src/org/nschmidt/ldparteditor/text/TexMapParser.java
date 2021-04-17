@@ -567,13 +567,7 @@ public enum TexMapParser {
                         }
                         lines.add(line);
                     }
-                } catch (FileNotFoundException e1) {
-                    alreadyParsed.remove(shortFilename);
-                    return null;
-                } catch (LDParsingException e1) {
-                    alreadyParsed.remove(shortFilename);
-                    return null;
-                } catch (UnsupportedEncodingException e1) {
+                } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e1) {
                     alreadyParsed.remove(shortFilename);
                     return null;
                 } finally {

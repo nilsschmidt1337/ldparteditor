@@ -678,9 +678,8 @@ public enum LibraryManager {
                             default:
                                 break;
                             }
-                        } catch (LDParsingException e) {
-                        } catch (FileNotFoundException e) {
-                        } catch (UnsupportedEncodingException e) {
+                        } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                            NLogger.error(LibraryManager.class, e);
                         } finally {
                             try {
                                 if (reader != null)
@@ -1194,9 +1193,8 @@ public enum LibraryManager {
                             default:
                                 break;
                             }
-                        } catch (LDParsingException e) {
-                        } catch (FileNotFoundException e) {
-                        } catch (UnsupportedEncodingException e) {
+                        } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                            NLogger.error(LibraryManager.class, e);
                         } finally {
                             try {
                                 if (reader != null)
@@ -1274,9 +1272,8 @@ public enum LibraryManager {
                                             titleSb.append(title.substring(1));
                                         }
                                     }
-                                } catch (LDParsingException e) {
-                                } catch (FileNotFoundException e) {
-                                } catch (UnsupportedEncodingException e) {
+                                } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                                    NLogger.error(LibraryManager.class, e);
                                 } finally {
                                     try {
                                         if (reader != null)

@@ -58,9 +58,8 @@ enum DescriptionManager {
                                             titleSb.append(title.substring(1));
                                         }
                                     }
-                                } catch (LDParsingException e) {
-                                } catch (FileNotFoundException e) {
-                                } catch (UnsupportedEncodingException e) {
+                                } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
+                                    NLogger.debug(DescriptionManager.class, ex);
                                 } finally {
                                     try {
                                         if (reader != null)

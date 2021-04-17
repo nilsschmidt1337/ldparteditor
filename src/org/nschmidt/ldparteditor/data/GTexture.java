@@ -873,18 +873,7 @@ public class GTexture {
                 }
 
                 in.close();
-            } catch (OutOfMemoryError e) {
-                tWidth = 1;
-                tHeight = 1;
-                buf = ByteBuffer.allocateDirect(4);
-                final byte[] bytes = new byte[] { 0, 0, 0, -1 };
-                buf.put(bytes);
-                buf.flip();
-                try {
-                    in.close();
-                } catch (Exception ex) {
-                }
-            } catch (BufferOverflowException e) {
+            } catch (OutOfMemoryError | BufferOverflowException e) {
                 tWidth = 1;
                 tHeight = 1;
                 buf = ByteBuffer.allocateDirect(4);

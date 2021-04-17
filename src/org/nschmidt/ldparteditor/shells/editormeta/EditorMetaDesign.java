@@ -36,6 +36,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.StringHelper;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
@@ -398,11 +399,8 @@ class EditorMetaDesign extends ApplicationWindow {
                                     }
                                 }
                                 evCategoryCmbPtr[0].setItems(categories.toArray(new String[categories.size()]));
-                            } catch (LDParsingException e) {
-                                setDefaultCategories();
-                            } catch (FileNotFoundException e) {
-                                setDefaultCategories();
-                            } catch (UnsupportedEncodingException e) {
+                            } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                                NLogger.error(EditorMetaDesign.class, e);
                                 setDefaultCategories();
                             } finally {
                                 try {

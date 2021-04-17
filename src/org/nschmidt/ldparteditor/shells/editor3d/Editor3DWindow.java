@@ -4536,9 +4536,8 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                     pal.clear();
                     pal.addAll(newPal);
-                } catch (LDParsingException ex1) {
-                } catch (FileNotFoundException ex3) {
-                } catch (UnsupportedEncodingException ex4) {
+                } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
+                    NLogger.error(Editor3DWindow.class, ex);
                 } finally {
                     try {
                         if (reader != null)
@@ -7126,9 +7125,8 @@ public class Editor3DWindow extends Editor3DDesign {
                             break;
                         }
                     }
-                } catch (LDParsingException e) {
-                } catch (FileNotFoundException e) {
-                } catch (UnsupportedEncodingException e) {
+                } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
+                    NLogger.error(Editor3DWindow.class, ex);
                 } finally {
                     try {
                         if (reader != null)

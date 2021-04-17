@@ -425,9 +425,8 @@ public final class DatFile {
                     }
                     result.add(line2);
                 }
-            } catch (FileNotFoundException e) {
-            } catch (LDParsingException e) {
-            } catch (UnsupportedEncodingException e) {
+            } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e) {
+                NLogger.error(DatFile.class, e);
             } finally {
                 try {
                     if (reader != null)
@@ -1192,9 +1191,8 @@ public final class DatFile {
 
                 lastModified = new File(getOldName()).lastModified();
 
-            } catch (FileNotFoundException e) {
-            } catch (LDParsingException e) {
-            } catch (UnsupportedEncodingException e) {
+            } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e) {
+                NLogger.error(DatFile.class, e);
             } finally {
                 try {
                     if (reader != null)
@@ -1871,9 +1869,8 @@ public final class DatFile {
                         source.append(line2);
                     }
                 }
-            } catch (FileNotFoundException e) {
-            } catch (LDParsingException e) {
-            } catch (UnsupportedEncodingException e) {
+            } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e) {
+                NLogger.error(DatFile.class, e);
             } finally {
                 try {
                     if (reader != null)

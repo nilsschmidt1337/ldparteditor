@@ -293,10 +293,9 @@ public class SplashScreen extends ApplicationWindow {
                             states.add(new ToolItemState(dataSegments[0], location, mode, dataSegments[3]));
                         }
                     }
-                } catch (FileNotFoundException consumed) {
-                } catch (LDParsingException e1) {
-                    NLogger.error(getClass(), e1);
-                } catch (UnsupportedEncodingException e1) {
+                } catch (FileNotFoundException e1) {
+                    NLogger.debug(SplashScreen.class, e1);
+                } catch (LDParsingException | UnsupportedEncodingException e1) {
                     NLogger.error(getClass(), e1);
                 } finally {
                     try {

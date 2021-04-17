@@ -885,9 +885,8 @@ public class CompositePrimitive extends Composite {
                                 }
                                 // line = line.replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                             }
-                        } catch (LDParsingException e) {
-                        } catch (FileNotFoundException e) {
-                        } catch (UnsupportedEncodingException e) {
+                        } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                            NLogger.error(CompositePrimitive.class, e);
                         } finally {
                             try {
                                 if (reader != null)
@@ -1020,9 +1019,8 @@ public class CompositePrimitive extends Composite {
                                             titleMap.put(newPrimitive.getName(), newPrimitive);
                                             isEmpty = false;
                                         }
-                                    } catch (LDParsingException e) {
-                                    } catch (FileNotFoundException e) {
-                                    } catch (UnsupportedEncodingException e) {
+                                    } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
+                                        NLogger.error(CompositePrimitive.class, e);
                                     } finally {
                                         try {
                                             if (reader != null)
@@ -1400,11 +1398,8 @@ public class CompositePrimitive extends Composite {
                             }
                             lines.add(line);
                         }
-                    } catch (FileNotFoundException e1) {
-                        return null;
-                    } catch (LDParsingException e1) {
-                        return null;
-                    } catch (UnsupportedEncodingException e1) {
+                    } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e1) {
+                        NLogger.error(CompositePrimitive.class, e1);
                         return null;
                     } finally {
                         try {

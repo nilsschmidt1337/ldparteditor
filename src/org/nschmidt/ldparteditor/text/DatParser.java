@@ -55,6 +55,7 @@ import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.math.MathHelper;
 import org.nschmidt.ldparteditor.helpers.math.Vector3d;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.logger.NLogger;
 import org.nschmidt.ldparteditor.project.Project;
 import org.nschmidt.ldparteditor.shells.editor3d.Editor3DWindow;
 import org.nschmidt.ldparteditor.workbench.WorkbenchManager;
@@ -742,15 +743,8 @@ public enum DatParser {
                         }
                         lines.add(line);
                     }
-                } catch (FileNotFoundException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                } catch (LDParsingException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
-                } catch (UnsupportedEncodingException e1) {
-                    // TODO Auto-generated catch block
-                    e1.printStackTrace();
+                } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException ex) {
+                    NLogger.debug(DatParser.class, ex);
                 } finally {
                     try {
                         if (reader != null)
