@@ -16,6 +16,7 @@ ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEAL
 package org.nschmidt.ldparteditor.state;
 
 import java.math.BigDecimal;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -76,12 +77,12 @@ public class KeyStateManager {
     private Set<Integer> pressedKeyCodes = new HashSet<>();
     /** A map which assigns a pressed key to a task */
     private static final Map<String, Task> taskMap = new HashMap<>();
-    private static final Map<Task, String> taskKeyMap = new HashMap<>();
+    private static final Map<Task, String> taskKeyMap = new EnumMap<>(Task.class);
     /** A set of all reserved keys */
     private static final Set<String> reservedKeyCodes = new HashSet<>();
     /** A map which assigns a pressed key to a task (for the text editor)*/
     private static final Map<String, TextTask> textTaskMap = new HashMap<>();
-    private static final Map<TextTask, String> textTaskKeyMap = new HashMap<>();
+    private static final Map<TextTask, String> textTaskKeyMap = new EnumMap<>(TextTask.class);
 
     private int multi = 100;
     private int colourNumber = 0;
