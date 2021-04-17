@@ -1208,9 +1208,7 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 break;
                             }
                         }
-                        if (intersect) {
-                            continue;
-                        } else {
+                        if (!intersect) {
                             BigDecimal dist = Vector3dd.manhattan(v1, v2);
                             if (dist.compareTo(minDist) > 0) {
                                 List<Vector3dd> nl = new ArrayList<>();
@@ -2094,7 +2092,6 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 selectedData.addAll(originalSelectionQuads);
                                 selectedData.addAll(originalSelectionLines);
                                 originalSelectionLines.clear();
-                                return;
                             } else {
                                 colourLines.addAll(colourLines2);
                                 colours.putAll(colours2);
@@ -2423,7 +2420,6 @@ class VM12IntersectorAndIsecalc extends VM11HideShow {
                                 selectedData.addAll(originalSelectionQuads);
                                 selectedData.addAll(originalSelectionLines);
                                 originalSelectionLines.clear();
-                                return;
                             }
                         } finally {
                             monitor.done();

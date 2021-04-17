@@ -107,9 +107,7 @@ public class SyntaxFormatter {
         // Get the linetype
         int linetype = 0;
         for (String segment : textSegments) {
-            if (segment.isEmpty()) {
-                continue;
-            } else {
+            if (!segment.isEmpty()) {
                 try {
                     linetype = Integer.parseInt(segment);
                     break;
@@ -296,7 +294,6 @@ public class SyntaxFormatter {
         for (String segment : textSegments) {
             if (segment.isEmpty() || segment.equals("0")) { //$NON-NLS-1$
                 offset++;
-                continue;
             } else if (segment.equals("//") || segment.equals("Author:")) { //$NON-NLS-1$ //$NON-NLS-2$
                 return; // We got a real comment or a author entry here. Do not
                 // highlight other KEYWORDS in these lines
@@ -313,9 +310,7 @@ public class SyntaxFormatter {
             } else if (segment.equals("VERTEX")) { //$NON-NLS-1$
                 maybeVertex = true;
                 break;
-            } else if (segment.equals("!LPE")) { //$NON-NLS-1$
-                continue;
-            } else {
+            } else if (!segment.equals("!LPE")) { //$NON-NLS-1$
                 break;
             }
         }
@@ -500,7 +495,6 @@ public class SyntaxFormatter {
             String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
-                continue;
             } else {
                 int segmentLength = segment.length();
                 StyleRange segmentStyleRange = new StyleRange();
@@ -748,7 +742,6 @@ public class SyntaxFormatter {
             String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
-                continue;
             } else {
                 int segmentLength = segment.length();
                 StyleRange segmentStyleRange = new StyleRange();
@@ -884,7 +877,6 @@ public class SyntaxFormatter {
             String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
-                continue;
             } else {
                 int segmentLength = segment.length();
                 StyleRange segmentStyleRange = new StyleRange();
@@ -1072,7 +1064,6 @@ public class SyntaxFormatter {
             String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
-                continue;
             } else {
                 int segmentLength = segment.length();
                 StyleRange segmentStyleRange = new StyleRange();
@@ -1334,7 +1325,6 @@ public class SyntaxFormatter {
             String segment = textSegments[i];
             if (segment.isEmpty()) {
                 offset++;
-                continue;
             } else {
                 int segmentLength = segment.length();
                 StyleRange segmentStyleRange = new StyleRange();

@@ -288,7 +288,6 @@ public class GTexture {
             tU[i] = (float) Math.atan2(d.x, d.z);
             tV[i] = (float) Math.asin(d.y);
         }
-        return;
     }
 
     float[] getUVcoords(boolean isTriangle, GData id) {

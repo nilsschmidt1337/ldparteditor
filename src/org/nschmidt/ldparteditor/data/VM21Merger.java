@@ -314,7 +314,5 @@ public class VM21Merger extends VM20Manipulator {
             r.setZ(orig2.z.add(dir2.z.multiply(t)));
             distance[0] = t;
         }
-        return;
     }
-
 }

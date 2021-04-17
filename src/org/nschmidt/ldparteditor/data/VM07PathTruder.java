@@ -859,7 +859,6 @@ class VM07PathTruder extends VM06Edger2 {
                                 selectedLines.addAll(originalSelection);
                                 selectedData.addAll(originalSelection);
                                 originalSelection.clear();
-                                return;
                             }
                         } finally {
                             monitor.done();

@@ -5625,7 +5625,6 @@ public class Editor3DWindow extends Editor3DDesign {
         newBgPicture.setNext(next);
         linkedDatFile.getVertexManager().setSelectedBgPicture(newBgPicture);
         updateBgPictureTab();
-        return;
     }
 
     private void resetAddState() {
