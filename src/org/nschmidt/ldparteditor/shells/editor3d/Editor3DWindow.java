@@ -1251,8 +1251,7 @@ public class Editor3DWindow extends Editor3DDesign {
 
 
                                     boolean hasIOerror = false;
-                                    UTF8PrintWriter r = null;
-                                    try {
+                                    try (UTF8PrintWriter r = new UTF8PrintWriter(selected)) {
 
                                         String typeSuffix = ""; //$NON-NLS-1$
                                         String folderPrefix = ""; //$NON-NLS-1$
@@ -1273,7 +1272,6 @@ public class Editor3DWindow extends Editor3DDesign {
                                             typeSuffix = "Unofficial_Primitive"; //$NON-NLS-1$
                                         }
 
-                                        r = new UTF8PrintWriter(selected);
                                         r.println("0 " + subfilePrefix); //$NON-NLS-1$
                                         r.println("0 Name: " + folderPrefix + new File(selected).getName()); //$NON-NLS-1$
                                         String ldrawName = WorkbenchManager.getUserSettingState().getLdrawUserName();
@@ -1319,13 +1317,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                         r.println(""); //$NON-NLS-1$
                                         r.println(vm.getClipboardText());
                                         r.flush();
-                                        r.close();
                                     } catch (Exception ex1) {
                                         hasIOerror = true;
-                                    } finally {
-                                        if (r != null) {
-                                            r.close();
-                                        }
                                     }
 
                                     if (hasIOerror) {
@@ -4468,27 +4461,19 @@ public class Editor3DWindow extends Editor3DDesign {
                     Project.setLastVisitedPath(f.getParentFile().getAbsolutePath());
                 }
 
-                UTF8PrintWriter r = null;
-                try {
-                    r = new UTF8PrintWriter(newPath);
+                try (UTF8PrintWriter r = new UTF8PrintWriter(newPath)) {
                     int x = 0;
                     for (GColour col : WorkbenchManager.getUserSettingState().getUserPalette()) {
                         r.println("1 " + col + " " + x + " 0 0 1 0 0 0 1 0 0 0 1 rect.dat"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         x += 2;
                     }
                     r.flush();
-                    r.close();
                 } catch (Exception ex) {
                     MessageBox messageBoxError = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                     messageBoxError.setText(I18n.DIALOG_ERROR);
                     messageBoxError.setMessage(I18n.DIALOG_CANT_SAVE_FILE);
                     messageBoxError.open();
-                } finally {
-                    if (r != null) {
-                        r.close();
-                    }
                 }
-
             }
 
             regainFocus();
@@ -4521,9 +4506,7 @@ public class Editor3DWindow extends Editor3DDesign {
                 List<GColour> newPal = new ArrayList<>();
 
 
-                UTF8BufferedReader reader = null;
-                try {
-                    reader = new UTF8BufferedReader(newPath);
+                try (UTF8BufferedReader reader = new UTF8BufferedReader(newPath)) {
                     String line;
                     while ((line = reader.readLine()) != null) {
                         final String[] dataSegments = whitespace.split(line.trim());
@@ -4538,12 +4521,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     pal.addAll(newPal);
                 } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
                     NLogger.error(Editor3DWindow.class, ex);
-                } finally {
-                    try {
-                        if (reader != null)
-                            reader.close();
-                    } catch (LDParsingException ex2) {
-                    }
                 }
 
                 reloadAllColours();
@@ -4623,9 +4600,6 @@ public class Editor3DWindow extends Editor3DDesign {
 
             String source = ""; //$NON-NLS-1$
             {
-                UTF8BufferedReader b11 = null;
-                UTF8BufferedReader b21 = null;
-
                 StringBuilder code1 = new StringBuilder();
 
                 File l11 = new File(NLogger.ERROR_LOG);
@@ -4634,52 +4608,34 @@ public class Editor3DWindow extends Editor3DDesign {
                 if (l11.exists() || l21.exists()) {
                     try {
                         if (l11.exists()) {
-                            b11 = new UTF8BufferedReader(NLogger.ERROR_LOG);
-                            String line1;
-                            while ((line1 = b11.readLine()) != null) {
-                                code1.append(line1);
-                                code1.append(StringHelper.getLineDelimiter());
+                            try (UTF8BufferedReader b11 = new UTF8BufferedReader(NLogger.ERROR_LOG)) {
+                                String line1;
+                                while ((line1 = b11.readLine()) != null) {
+                                    code1.append(line1);
+                                    code1.append(StringHelper.getLineDelimiter());
+                                }
                             }
                         }
 
                         if (l21.exists()) {
-                            b21 = new UTF8BufferedReader(NLogger.ERROR_LOG2);
-                            String line2;
-                            while ((line2 = b21.readLine()) != null) {
-                                code1.append(line2);
-                                code1.append(StringHelper.getLineDelimiter());
+                            try (UTF8BufferedReader b21 = new UTF8BufferedReader(NLogger.ERROR_LOG2)) {
+                                String line2;
+                                while ((line2 = b21.readLine()) != null) {
+                                    code1.append(line2);
+                                    code1.append(StringHelper.getLineDelimiter());
+                                }
                             }
                         }
 
                         source = code1.toString();
-                    } catch (Exception e11) {
-                        if (b11 != null) {
-                            try {
-                                b11.close();
-                            } catch (Exception consumend1) {}
-                        }
-                        if (b21 != null) {
-                            try {
-                                b21.close();
-                            } catch (Exception consumend2) {}
-                        }
+                    } catch (Exception ex) {
+                        NLogger.error(Editor3DWindow.class, ex);
                         MessageBox messageBox1 = new MessageBox(getShell(), SWT.ICON_ERROR | SWT.OK);
                         messageBox1.setText(I18n.DIALOG_ERROR);
                         messageBox1.setMessage(I18n.E3D_LOG_UPLOAD_UNEXPECTED_EXCEPTION);
                         messageBox1.open();
                         regainFocus();
                         return;
-                    } finally {
-                        if (b11 != null) {
-                            try {
-                                b11.close();
-                            } catch (Exception consumend3) {}
-                        }
-                        if (b21 != null) {
-                            try {
-                                b21.close();
-                            } catch (Exception consumend4) {}
-                        }
                     }
                 } else {
                     MessageBox messageBox2 = new MessageBox(getShell(), SWT.ICON_INFORMATION | SWT.OK);
@@ -4694,9 +4650,6 @@ public class Editor3DWindow extends Editor3DDesign {
             LogUploadDialog dialog = new LogUploadDialog(getShell(), source);
 
             if (dialog.open() == IDialogConstants.OK_ID) {
-
-                UTF8BufferedReader b12 = null;
-                UTF8BufferedReader b22 = null;
 
                 if (mntmUploadLogsPtr[0].getData() == null) {
                     mntmUploadLogsPtr[0].setData(0);
@@ -4729,20 +4682,22 @@ public class Editor3DWindow extends Editor3DDesign {
                     if (l12.exists() || l22.exists()) {
 
                         if (l12.exists()) {
-                            b12 = new UTF8BufferedReader(NLogger.ERROR_LOG);
-                            String line3;
-                            while ((line3 = b12.readLine()) != null) {
-                                code2.append(line3);
-                                code2.append(StringHelper.getLineDelimiter());
+                            try (UTF8BufferedReader b12 = new UTF8BufferedReader(NLogger.ERROR_LOG)) {
+                                String line3;
+                                while ((line3 = b12.readLine()) != null) {
+                                    code2.append(line3);
+                                    code2.append(StringHelper.getLineDelimiter());
+                                }
                             }
                         }
 
                         if (l22.exists()) {
-                            b22 = new UTF8BufferedReader(NLogger.ERROR_LOG2);
-                            String line4;
-                            while ((line4 = b22.readLine()) != null) {
-                                code2.append(line4);
-                                code2.append(StringHelper.getLineDelimiter());
+                            try (UTF8BufferedReader b22 = new UTF8BufferedReader(NLogger.ERROR_LOG2)) {
+                                String line4;
+                                while ((line4 = b22.readLine()) != null) {
+                                    code2.append(line4);
+                                    code2.append(StringHelper.getLineDelimiter());
+                                }
                             }
                         }
 
@@ -4783,17 +4738,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     messageBox6.setText(I18n.DIALOG_INFO);
                     messageBox6.setMessage(I18n.E3D_LOG_UPLOAD_UNEXPECTED_EXCEPTION);
                     messageBox6.open();
-                } finally {
-                    if (b12 != null) {
-                        try {
-                            b12.close();
-                        } catch (Exception consumend5) {}
-                    }
-                    if (b22 != null) {
-                        try {
-                            b22.close();
-                        } catch (Exception consumend6) {}
-                    }
                 }
             }
             regainFocus();
@@ -7072,10 +7016,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                 // Type Check and Description Parsing!!
                 StringBuilder titleSb = new StringBuilder();
-                UTF8BufferedReader reader = null;
                 File f = new File(filePath);
-                try {
-                    reader = new UTF8BufferedReader(f.getAbsolutePath());
+                try (UTF8BufferedReader reader = new UTF8BufferedReader(f.getAbsolutePath())) {
                     String title = reader.readLine();
                     if (title != null) {
                         title = title.trim();
@@ -7127,12 +7069,6 @@ public class Editor3DWindow extends Editor3DDesign {
                     }
                 } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
                     NLogger.error(Editor3DWindow.class, ex);
-                } finally {
-                    try {
-                        if (reader != null)
-                            reader.close();
-                    } catch (LDParsingException e1) {
-                    }
                 }
 
                 df = new DatFile(filePath, titleSb.toString(), false, type);

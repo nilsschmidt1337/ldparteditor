@@ -1452,9 +1452,7 @@ class Editor3DDesign extends ApplicationWindow {
 
 
                         if (NLogger.debugging) {
-                            UTF8BufferedReader reader = null;
-                            try {
-                                reader = new UTF8BufferedReader("testsource.txt"); //$NON-NLS-1$
+                            try (UTF8BufferedReader reader = new UTF8BufferedReader("testsource.txt")) { //$NON-NLS-1$
                                 StringBuilder sb = new StringBuilder();
                                 String s;
                                 while ((s = reader.readLine()) != null) {
@@ -1464,12 +1462,6 @@ class Editor3DDesign extends ApplicationWindow {
                                 Project.getFileToEdit().setText(sb.toString());
                             } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
                                 NLogger.error(Editor3DDesign.class, e);
-                            } finally {
-                                try {
-                                    if (reader != null)
-                                        reader.close();
-                                } catch (LDParsingException e1) {
-                                }
                             }
                         } else {
                             Project.getFileToEdit().setText(WorkbenchManager.getDefaultFileHeader());

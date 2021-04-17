@@ -415,9 +415,7 @@ public final class DatFile {
     public List<String> getSource() {
         List<String> result = new ArrayList<>();
         if (originalText.isEmpty() && new File(this.getOldName()).exists()) {
-            UTF8BufferedReader reader = null;
-            try {
-                reader = new UTF8BufferedReader(this.getOldName());
+            try (UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName())) {
                 while (true) {
                     String line2 = reader.readLine();
                     if (line2 == null) {
@@ -427,12 +425,6 @@ public final class DatFile {
                 }
             } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e) {
                 NLogger.error(DatFile.class, e);
-            } finally {
-                try {
-                    if (reader != null)
-                        reader.close();
-                } catch (LDParsingException e1) {
-                }
             }
         } else {
             GData data2draw = drawChainAnchor;
@@ -1169,9 +1161,7 @@ public final class DatFile {
         } else {
             StringBuilder sb = new StringBuilder();
             List<String> lines2 = new ArrayList<>(4096);
-            UTF8BufferedReader reader = null;
-            try {
-                reader = new UTF8BufferedReader(this.getOldName());
+            try (UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName())) {
                 String line = reader.readLine();
                 if (line != null) {
                     sb.append(line);
@@ -1193,12 +1183,6 @@ public final class DatFile {
 
             } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e) {
                 NLogger.error(DatFile.class, e);
-            } finally {
-                try {
-                    if (reader != null)
-                        reader.close();
-                } catch (LDParsingException e1) {
-                }
             }
             lines = lines2.toArray(new String[lines2.size()]);
             setLastSavedOpened(new Date());
@@ -1586,51 +1570,50 @@ public final class DatFile {
 
         boolean deleteFirst = oldName.equals(newName);
 
-        UTF8PrintWriter r = null;
-        try {
-            File newFile = new File(newName);
-            if (deleteFirst) {
-                File oldFile = new File(oldName);
-                if (oldFile.exists()) {
-                    if (checkFileCollision(oldFile)) {
-                        return true;
-                    }
+        File newFile = new File(newName);
+        if (deleteFirst) {
+            File oldFile = new File(oldName);
+            if (oldFile.exists()) {
+                if (checkFileCollision(oldFile)) {
+                    return true;
+                }
+                oldFile.delete();
+            }
+        } else {
+            if (newFile.exists()) {
+                if (checkFileCollision(newFile)) {
+                    return true;
+                }
+            }
+            File oldFile = new File(oldName);
+            if (oldFile.exists()) {
+                if (oldFile.lastModified() == lastModified) {
                     oldFile.delete();
                 }
-            } else {
-                if (newFile.exists()) {
-                    if (checkFileCollision(newFile)) {
-                        return true;
-                    }
-                }
-                File oldFile = new File(oldName);
-                if (oldFile.exists()) {
-                    if (oldFile.lastModified() == lastModified) {
-                        oldFile.delete();
-                    }
-                }
             }
-            if (!newFile.getParentFile().exists()) {
-                newFile.getParentFile().mkdirs();
+        }
+        if (!newFile.getParentFile().exists()) {
+            newFile.getParentFile().mkdirs();
+        }
+        List<String> lines = new ArrayList<>();
+        lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
+        if (!lines.isEmpty()) {
+            final int index = lines.size() - 1;
+            String lastLine = lines.get(index);
+            if (!isNotBlank(lastLine)) {
+                lines.remove(index);
             }
-            r = new UTF8PrintWriter(newName);
-            List<String> lines = new ArrayList<>();
-            lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
-            if (!lines.isEmpty()) {
-                final int index = lines.size() - 1;
-                String lastLine = lines.get(index);
-                if (!isNotBlank(lastLine)) {
-                    lines.remove(index);
-                }
-            }
-            if (lines.isEmpty())
-                lines.add(""); //$NON-NLS-1$
+        }
+        if (lines.isEmpty())
+            lines.add(""); //$NON-NLS-1$
 
+        try (UTF8PrintWriter r = new UTF8PrintWriter(newName)) {
             for (String line : lines) {
                 r.println(line);
             }
+
             r.flush();
-            r.close();
+
             if (!deleteFirst) {
                 File oldFile = new File(oldName);
                 if (oldFile.exists()) oldFile.delete();
@@ -1650,25 +1633,21 @@ public final class DatFile {
         } catch (Exception ex) {
             NLogger.error(getClass(), ex);
             return false;
-        } finally {
-            if (r != null) {
-                r.close();
-            }
         }
     }
 
     public boolean saveForced() {
         text = getText();
-        UTF8PrintWriter r = null;
-        try {
-            File newFile = new File(newName);
-            if (newFile.exists()) {
-                newFile.delete();
-            }
-            if (!newFile.getParentFile().exists()) {
-                newFile.getParentFile().mkdirs();
-            }
-            r = new UTF8PrintWriter(newName);
+        File newFile = new File(newName);
+        if (newFile.exists()) {
+            newFile.delete();
+        }
+
+        if (!newFile.getParentFile().exists()) {
+            newFile.getParentFile().mkdirs();
+        }
+
+        try (UTF8PrintWriter r = new UTF8PrintWriter(newName)) {
             List<String> lines = new ArrayList<>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
@@ -1685,7 +1664,6 @@ public final class DatFile {
                 r.println(line);
             }
             r.flush();
-            r.close();
             // File was saved. It is not virtual anymore.
             setVirtual(false);
             originalText = text;
@@ -1700,25 +1678,19 @@ public final class DatFile {
             return true;
         } catch (Exception ex) {
             return false;
-        } finally {
-            if (r != null) {
-                r.close();
-            }
         }
     }
 
     public boolean saveAs(String newName) {
         text = getText();
-        UTF8PrintWriter r = null;
-        try {
-            File newFile = new File(newName);
-            if (newFile.exists()) {
-                newFile.delete();
-            }
-            if (!newFile.getParentFile().exists()) {
-                newFile.getParentFile().mkdirs();
-            }
-            r = new UTF8PrintWriter(newName);
+        File newFile = new File(newName);
+        if (newFile.exists()) {
+            newFile.delete();
+        }
+        if (!newFile.getParentFile().exists()) {
+            newFile.getParentFile().mkdirs();
+        }
+        try (UTF8PrintWriter r = new UTF8PrintWriter(newName)) {
             List<String> lines = new ArrayList<>();
             lines.addAll(Arrays.asList(text.split("\r?\n|\r", -1))); //$NON-NLS-1$
             if (!lines.isEmpty()) {
@@ -1780,14 +1752,9 @@ public final class DatFile {
                 r.println(line);
             }
             r.flush();
-            r.close();
             return true;
         } catch (Exception ex) {
             return false;
-        } finally {
-            if (r != null) {
-                r.close();
-            }
         }
     }
 
@@ -1854,9 +1821,7 @@ public final class DatFile {
     public String getSourceText() {
         StringBuilder source = new StringBuilder();
         if (originalText.isEmpty()) {
-            UTF8BufferedReader reader = null;
-            try {
-                reader = new UTF8BufferedReader(this.getOldName());
+            try (UTF8BufferedReader reader = new UTF8BufferedReader(this.getOldName())) {
                 String line = reader.readLine();
                 if (line != null) {
                     source.append(line);
@@ -1871,12 +1836,6 @@ public final class DatFile {
                 }
             } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e) {
                 NLogger.error(DatFile.class, e);
-            } finally {
-                try {
-                    if (reader != null)
-                        reader.close();
-                } catch (LDParsingException e1) {
-                }
             }
         } else {
             GData data2draw = drawChainAnchor;

@@ -607,9 +607,7 @@ public enum LibraryManager {
                 for (File f : files) {
                     if (f.isFile() && f.getName().matches(".*.dat")) { //$NON-NLS-1$
                         titleSb.setLength(0);
-                        UTF8BufferedReader reader = null;
-                        try {
-                            reader = new UTF8BufferedReader(f.getAbsolutePath());
+                        try (UTF8BufferedReader reader = new UTF8BufferedReader(f.getAbsolutePath())) {
                             String title = reader.readLine();
                             if (title != null) {
                                 title = title.trim();
@@ -680,12 +678,6 @@ public enum LibraryManager {
                             }
                         } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
                             NLogger.error(LibraryManager.class, e);
-                        } finally {
-                            try {
-                                if (reader != null)
-                                    reader.close();
-                            } catch (LDParsingException e1) {
-                            }
                         }
                         DatFileName name = new DatFileName(f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48  || type == DatType.PRIMITIVE8);
                         datFiles.add(name);
@@ -1117,9 +1109,7 @@ public enum LibraryManager {
                         }
                         titleSb.setLength(0);
                         TreeItem treeItem2 = Editor3DWindow.getWindow().getProjectParts();
-                        UTF8BufferedReader reader = null;
-                        try {
-                            reader = new UTF8BufferedReader(path);
+                        try (UTF8BufferedReader reader = new UTF8BufferedReader(path)) {
                             String title = reader.readLine();
                             if (title != null) {
                                 title = title.trim();
@@ -1195,12 +1185,6 @@ public enum LibraryManager {
                             }
                         } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
                             NLogger.error(LibraryManager.class, e);
-                        } finally {
-                            try {
-                                if (reader != null)
-                                    reader.close();
-                            } catch (LDParsingException e1) {
-                            }
                         }
 
                         newDfnMap.put(path, new DatFileName(path, f.getName(), titleSb.toString(), type == DatType.PRIMITIVE || type == DatType.PRIMITIVE48 || type == DatType.PRIMITIVE8));
@@ -1242,7 +1226,6 @@ public enum LibraryManager {
                     if (canSearch) {
                         // Do the search for DAT files
                         File libFolder = new File(folderPath);
-                        UTF8BufferedReader reader = null;
                         StringBuilder titleSb = new StringBuilder();
                         final File[] files = libFolder.listFiles();
                         if (files == null) {
@@ -1262,8 +1245,7 @@ public enum LibraryManager {
                                     result[0] = result[0] + 1;
                                 }
                                 titleSb.setLength(0);
-                                try {
-                                    reader = new UTF8BufferedReader(f.getAbsolutePath());
+                                try (UTF8BufferedReader reader = new UTF8BufferedReader(f.getAbsolutePath())) {
                                     String title = reader.readLine();
                                     if (title != null) {
                                         title = title.trim();
@@ -1274,12 +1256,6 @@ public enum LibraryManager {
                                     }
                                 } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
                                     NLogger.error(LibraryManager.class, e);
-                                } finally {
-                                    try {
-                                        if (reader != null)
-                                            reader.close();
-                                    } catch (LDParsingException e1) {
-                                    }
                                 }
 
                                 newDfnMap.put(path, new DatFileName(path,f.getName(), titleSb.toString(), isPrimitiveFolder));

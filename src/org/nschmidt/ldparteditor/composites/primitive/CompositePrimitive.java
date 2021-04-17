@@ -670,9 +670,7 @@ public class CompositePrimitive extends Composite {
                     // It is considered to be "read-only" by the application.
                     File rulesFile = new File("primitive_rules.txt"); //$NON-NLS-1$
                     if (rulesFile.exists() && rulesFile.isFile()) {
-                        UTF8BufferedReader reader = null;
-                        try {
-                            reader = new UTF8BufferedReader(rulesFile.getAbsolutePath());
+                        try (UTF8BufferedReader reader = new UTF8BufferedReader(rulesFile.getAbsolutePath())) {
                             String line ;
                             while ((line = reader.readLine()) != null) {
                                 NLogger.debug(getClass(), "Primitive Rule__{0}", line); //$NON-NLS-1$
@@ -887,12 +885,6 @@ public class CompositePrimitive extends Composite {
                             }
                         } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
                             NLogger.error(CompositePrimitive.class, e);
-                        } finally {
-                            try {
-                                if (reader != null)
-                                    reader.close();
-                            } catch (LDParsingException e1) {
-                            }
                         }
                     }
 
@@ -904,7 +896,6 @@ public class CompositePrimitive extends Composite {
                             isUppercase = !isUppercase;
                             continue;
                         }
-                        UTF8BufferedReader reader = null;
                         final File[] files = libFolder.listFiles();
                         if (files == null) {
                             isUppercase = !isUppercase;
@@ -976,11 +967,10 @@ public class CompositePrimitive extends Composite {
                                     if (ts != null) {
                                         fileCache.remove(ts);
                                     }
-                                    try {
+                                    try (UTF8BufferedReader reader = new UTF8BufferedReader(path)) {
                                         Primitive newPrimitive = Primitive.createPrimitive();
                                         List<PGData> data = new ArrayList<>();
                                         String description = ""; //$NON-NLS-1$
-                                        reader = new UTF8BufferedReader(path);
                                         String line;
                                         line = reader.readLine();
                                         if (line != null) {
@@ -1021,12 +1011,6 @@ public class CompositePrimitive extends Composite {
                                         }
                                     } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
                                         NLogger.error(CompositePrimitive.class, e);
-                                    } finally {
-                                        try {
-                                            if (reader != null)
-                                                reader.close();
-                                        } catch (LDParsingException e1) {
-                                        }
                                     }
                                     newTs = new PGTimestamp(path, f.lastModified());
                                     fileCache.put(newTs, filedata);
@@ -1387,10 +1371,8 @@ public class CompositePrimitive extends Composite {
                     if (ts != null) {
                         fileCache.remove(ts);
                     }
-                    UTF8BufferedReader reader = null;
                     String line = null;
-                    try {
-                        reader = new UTF8BufferedReader(absoluteFilename);
+                    try (UTF8BufferedReader reader = new UTF8BufferedReader(absoluteFilename)) {
                         while (true) {
                             line = reader.readLine();
                             if (line == null) {
@@ -1401,12 +1383,6 @@ public class CompositePrimitive extends Composite {
                     } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e1) {
                         NLogger.error(CompositePrimitive.class, e1);
                         return null;
-                    } finally {
-                        try {
-                            if (reader != null)
-                                reader.close();
-                        } catch (LDParsingException e1) {
-                        }
                     }
                     fileCache.put(newTs, lines);
                     fileCacheHits.add(newTs);

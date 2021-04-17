@@ -555,28 +555,22 @@ public enum TexMapParser {
                 return null;
             } else {
                 absoluteFilename = fileToOpen.getAbsolutePath();
-                UTF8BufferedReader reader = null;
                 String line = null;
                 lines = new ArrayList<>(4096);
-                try {
-                    reader = new UTF8BufferedReader(absoluteFilename);
+                try (UTF8BufferedReader reader = new UTF8BufferedReader(absoluteFilename)) {
                     while (true) {
                         line = reader.readLine();
                         if (line == null) {
                             break;
                         }
+
                         lines.add(line);
                     }
                 } catch (FileNotFoundException | LDParsingException | UnsupportedEncodingException e1) {
                     alreadyParsed.remove(shortFilename);
                     return null;
-                } finally {
-                    try {
-                        if (reader != null)
-                            reader.close();
-                    } catch (LDParsingException e1) {
-                    }
                 }
+
                 Matrix4f destMatrix = new Matrix4f();
                 Matrix4f.mul(productMatrix, tMatrix, destMatrix);
                 GDataCSG.forceRecompile(datFile);
@@ -586,6 +580,7 @@ public enum TexMapParser {
                 if (result != null && result.firstRef.isRecursive()) {
                     return null;
                 }
+
                 return result;
             }
         }

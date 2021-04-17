@@ -46,10 +46,8 @@ enum DescriptionManager {
                             if (newEntry != null) {
                                 DatFile df = (DatFile) newEntry.getData();
                                 NLogger.debug(getClass(), "Register description for {0}", df.getOldName()); //$NON-NLS-1$
-                                UTF8BufferedReader reader = null;
                                 final StringBuilder titleSb = new StringBuilder();
-                                try {
-                                    reader = new UTF8BufferedReader(df.getOldName());
+                                try (UTF8BufferedReader reader = new UTF8BufferedReader(df.getOldName())) {
                                     String title = reader.readLine();
                                     if (title != null) {
                                         title = title.trim();
@@ -60,12 +58,6 @@ enum DescriptionManager {
                                     }
                                 } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException ex) {
                                     NLogger.debug(DescriptionManager.class, ex);
-                                } finally {
-                                    try {
-                                        if (reader != null)
-                                            reader.close();
-                                    } catch (LDParsingException e1) {
-                                    }
                                 }
                                 String d = titleSb.toString();
                                 newEntry.setText(df.getShortName() + d);

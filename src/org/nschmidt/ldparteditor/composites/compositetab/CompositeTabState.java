@@ -94,10 +94,8 @@ public class CompositeTabState {
             getTab().setText(filename);
         } else {
 
-            UTF8BufferedReader reader = null;
-            try {
+            try (UTF8BufferedReader reader = new UTF8BufferedReader(fileNameObj.getOldName())) {
                 StringBuilder sb = new StringBuilder();
-                reader = new UTF8BufferedReader(fileNameObj.getOldName());
                 String line = reader.readLine();
                 if (line != null) {
                     sb.append(line);
@@ -149,12 +147,6 @@ public class CompositeTabState {
                 datFileObj.setText(""); //$NON-NLS-1$
                 datFileObj.setOriginalText(""); //$NON-NLS-1$
                 getTab().getTextComposite().setEditable(false);
-            } finally {
-                try {
-                    if (reader != null)
-                        reader.close();
-                } catch (LDParsingException e1) {
-                }
             }
         }
         getTab().getTextComposite().forceFocus();

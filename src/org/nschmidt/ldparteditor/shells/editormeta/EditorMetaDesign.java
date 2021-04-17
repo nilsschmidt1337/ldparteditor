@@ -386,11 +386,9 @@ class EditorMetaDesign extends ApplicationWindow {
                             categoryFile = new File("categories.txt"); //$NON-NLS-1$
                         }
                         if (categoryFile.exists() && categoryFile.isFile()) {
-                            UTF8BufferedReader reader = null;
-                            try {
+                            try (UTF8BufferedReader reader = new UTF8BufferedReader(categoryFile.getAbsolutePath())) {
                                 List<String> categories = new ArrayList<>();
                                 categories.add(""); //$NON-NLS-1$
-                                reader = new UTF8BufferedReader(categoryFile.getAbsolutePath());
                                 String line ;
                                 while ((line = reader.readLine()) != null) {
                                     line = line.trim();
@@ -402,12 +400,6 @@ class EditorMetaDesign extends ApplicationWindow {
                             } catch (LDParsingException | FileNotFoundException | UnsupportedEncodingException e) {
                                 NLogger.error(EditorMetaDesign.class, e);
                                 setDefaultCategories();
-                            } finally {
-                                try {
-                                    if (reader != null)
-                                        reader.close();
-                                } catch (LDParsingException e1) {
-                                }
                             }
                         } else {
                             setDefaultCategories();

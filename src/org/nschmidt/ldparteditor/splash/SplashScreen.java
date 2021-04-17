@@ -253,9 +253,8 @@ public class SplashScreen extends ApplicationWindow {
                 } catch (SecurityException consumed) {}
 
                 // Load the toolItem state for the 3D editor
-                UTF8BufferedReader reader = null;
                 String line = null;
-                try {
+                try (UTF8BufferedReader reader = new UTF8BufferedReader(pathToLayout3Dconfig)) {
                     List<ToolItemState> states = WorkbenchManager.getUserSettingState().getToolItemConfig3D();
                     if (states == null) {
                         states = new ArrayList<>();
@@ -263,7 +262,6 @@ public class SplashScreen extends ApplicationWindow {
                     }
                     // "layout_3D_editor.cfg" is not stored in the AppData\LDPartEditor folder on Windows
                     // It is considered to be "read-only" by the application.
-                    reader = new UTF8BufferedReader(pathToLayout3Dconfig);
                     states.clear();
                     while (true) {
                         line = reader.readLine();
@@ -297,12 +295,6 @@ public class SplashScreen extends ApplicationWindow {
                     NLogger.debug(SplashScreen.class, e1);
                 } catch (LDParsingException | UnsupportedEncodingException e1) {
                     NLogger.error(getClass(), e1);
-                } finally {
-                    try {
-                        if (reader != null)
-                            reader.close();
-                    } catch (LDParsingException e1) {
-                    }
                 }
 
                 // Finish it.

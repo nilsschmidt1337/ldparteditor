@@ -149,39 +149,37 @@ public enum Project {
 
         if(src.isDirectory()){
 
-            //if directory not exists, create it
+            // if directory not exists, create it
             if(!dest.exists()){
                 dest.mkdir();
                 NLogger.debug(Project.class, "Directory copied from {0} to {1}", src, dest); //$NON-NLS-1$
             }
 
-            //list all the directory contents
+            // list all the directory contents
             String[] files = src.list();
 
             for (String file : files) {
-                //construct the src and dest file structure
+                // construct the src and dest file structure
                 File srcFile = new File(src, file);
                 File destFile = new File(dest, file);
-                //recursive copy
+                // recursive copy
                 copyFolder(srcFile,destFile);
             }
 
         }else{
-            //if file, then copy it
-            //Use bytes stream to support all file types
-            InputStream in = new FileInputStream(src);
-            OutputStream out = new FileOutputStream(dest);
+            // if file, then copy it
+            // Use bytes stream to support all file types
+            try (InputStream in = new FileInputStream(src);
+                 OutputStream out = new FileOutputStream(dest)) {
 
-            byte[] buffer = new byte[1024];
+                byte[] buffer = new byte[1024];
 
-            int length;
-            //copy the file content in bytes
-            while ((length = in.read(buffer)) > 0){
-                out.write(buffer, 0, length);
+                int length;
+                //copy the file content in bytes
+                while ((length = in.read(buffer)) > 0){
+                    out.write(buffer, 0, length);
+                }
             }
-
-            in.close();
-            out.close();
             NLogger.debug(Project.class, "File copied from {0} to {1}", src, dest); //$NON-NLS-1$
         }
     }

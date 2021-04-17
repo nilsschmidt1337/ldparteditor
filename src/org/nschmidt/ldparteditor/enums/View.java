@@ -40,7 +40,6 @@ import org.nschmidt.ldparteditor.data.colour.GCRubber;
 import org.nschmidt.ldparteditor.data.colour.GCSpeckle;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.logger.NLogger;
-import org.nschmidt.ldparteditor.text.LDParsingException;
 import org.nschmidt.ldparteditor.text.TextTriangulator;
 import org.nschmidt.ldparteditor.text.UTF8BufferedReader;
 
@@ -428,10 +427,8 @@ public enum View {
             Pattern pMaxSize = Pattern.compile("MAXSIZE\\s+\\d+.?\\d*"); //$NON-NLS-1$
             Pattern pSpeckle = Pattern.compile("SPECKLE\\s+VALUE\\s+#[A-F0-9]{6}"); //$NON-NLS-1$
             Pattern pGlitter = Pattern.compile("GLITTER\\s+VALUE\\s+#[A-F0-9]{6}"); //$NON-NLS-1$
-            UTF8BufferedReader reader = null;
-            try {
+            try (UTF8BufferedReader reader = new UTF8BufferedReader(location)) {
                 indexFromColour.put(new IndexedEntry(View.LINE_COLOUR_R[0], View.LINE_COLOUR_G[0], View.LINE_COLOUR_B[0]), 24);
-                reader = new UTF8BufferedReader(location);
                 while (true) {
                     String line = reader.readLine();
                     if (line == null) {
@@ -584,12 +581,7 @@ public enum View {
                 }
                 return true;
             } catch (Exception e) {
-            } finally {
-                try {
-                    if (reader != null)
-                        reader.close();
-                } catch (LDParsingException e1) {
-                }
+                NLogger.debug(View.class, e);
             }
         }
         return false;

@@ -257,7 +257,6 @@ public enum NLogger {
         // Log only 100 errors per session.. ;-)
         if (errorCount < 100) {
             errorCount++;
-            FileWriter fw = null;
             if (!writeInNewFile) {
                 // Check if "error_log1.txt" is greater than 100KB
                 File log1 = new File(ERROR_LOG);
@@ -265,8 +264,7 @@ public enum NLogger {
             }
             if (writeInNewFile) {
                 // Write in the new ERROR_LOG2 file
-                try {
-                    fw = new FileWriter(ERROR_LOG2, true);
+                try (FileWriter fw = new FileWriter(ERROR_LOG2, true)) {
                     StringBuilder sb = new StringBuilder();
                     sb.append("[ERROR "); //$NON-NLS-1$
                     sb.append(Version.getVersion());
@@ -279,12 +277,6 @@ public enum NLogger {
                     fw.flush();
                 } catch (IOException ex) {
                     System.err.println("[ERROR] Fatal logging error, caused by java.io.IOException."); //$NON-NLS-1$
-                } finally {
-                    if (fw != null)
-                        try {
-                            fw.close();
-                        } catch (IOException ex) {
-                        }
                 }
                 try {
                     // Check if ERROR_LOG2 is greater than 100KB
@@ -301,8 +293,7 @@ public enum NLogger {
                 }
             } else {
                 // Write in the old "error_log1.txt" file
-                try {
-                    fw = new FileWriter(ERROR_LOG, true);
+                try (FileWriter fw = new FileWriter(ERROR_LOG, true)) {
                     StringBuilder sb = new StringBuilder();
                     sb.append("[ERROR "); //$NON-NLS-1$
                     sb.append(Version.getVersion());
@@ -315,12 +306,6 @@ public enum NLogger {
                     fw.flush();
                 } catch (IOException ex) {
                     System.err.println("[ERROR] Fatal logging error, caused by java.io.IOException."); //$NON-NLS-1$
-                } finally {
-                    if (fw != null)
-                        try {
-                            fw.close();
-                        } catch (IOException ex) {
-                        }
                 }
             }
         }

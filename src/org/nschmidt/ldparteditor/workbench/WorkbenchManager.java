@@ -17,9 +17,7 @@ package org.nschmidt.ldparteditor.workbench;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.math.BigDecimal;
@@ -78,11 +76,9 @@ public enum WorkbenchManager {
      * Loads the workbench from WorkbenchManager.CONFIG_GZ
      */
     public static boolean loadWorkbench(String path) {
-        ObjectInputStream configFileStream = null;
-        try {
-            File configGzFile = new File(path);
-            if (configGzFile.exists()) {
-                configFileStream = new ObjectInputStream(new GZIPInputStream(new FileInputStream(path)));
+        File configGzFile = new File(path);
+        if (configGzFile.exists()) {
+            try (ObjectInputStream configFileStream = new ObjectInputStream(new GZIPInputStream(new FileInputStream(path)))){
                 WorkbenchManager.editor3DWindowState = (Editor3DWindowState) configFileStream.readObject();
                 WorkbenchManager.editorTextWindowState = (EditorTextWindowState) configFileStream.readObject();
                 WorkbenchManager.userSettingState = (UserSettingState) configFileStream.readObject();
@@ -99,18 +95,9 @@ public enum WorkbenchManager {
                     NLogger.debug(WorkbenchManager.class, "Could not load the primitive cache."); //$NON-NLS-1$
                     NLogger.debug(WorkbenchManager.class, e);
                 }
-                configFileStream.close();
-            }
-        } catch (Exception e) {
-            NLogger.error(WorkbenchManager.class, e);
-            return false;
-        } finally {
-            if (configFileStream != null) {
-                try {
-                    configFileStream.close();
-                } catch (IOException e) {
-                    NLogger.error(WorkbenchManager.class, e);
-                }
+            } catch (Exception e) {
+                NLogger.error(WorkbenchManager.class, e);
+                return false;
             }
         }
 
@@ -145,12 +132,10 @@ public enum WorkbenchManager {
      * Saves the workbench to WorkbenchManager.CONFIG_GZ
      */
     public static boolean saveWorkbench(String path) {
-        ObjectOutputStream configFileStream = null;
-        try {
+        try (ObjectOutputStream configFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(path)))) {
             Editor3DWindow editor3DWindow = Editor3DWindow.getWindow();
             File configGzFile = new File(path);
             configGzFile.delete();
-            configFileStream = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(path)));
             if (editor3DWindow == null) {
                 // Write defaults here..
                 configFileStream.writeObject(WorkbenchManager.editor3DWindowState);
@@ -174,27 +159,9 @@ public enum WorkbenchManager {
             } catch (Exception e) {
                 NLogger.error(WorkbenchManager.class, e);
             }
-            configFileStream.close();
-        } catch (SecurityException se) {
-            NLogger.error(WorkbenchManager.class, se);
+        } catch (Exception ex) {
+            NLogger.error(WorkbenchManager.class, ex);
             return false;
-        } catch (FileNotFoundException fe) {
-            NLogger.error(WorkbenchManager.class, fe);
-            return false;
-        } catch (IOException ie) {
-            NLogger.error(WorkbenchManager.class, ie);
-            return false;
-        } catch (Exception e) {
-            NLogger.error(WorkbenchManager.class, e);
-            return false;
-        } finally {
-            if (configFileStream != null) {
-                try {
-                    configFileStream.close();
-                } catch (IOException e) {
-                    NLogger.error(WorkbenchManager.class, e);
-                }
-            }
         }
         return true;
     }
