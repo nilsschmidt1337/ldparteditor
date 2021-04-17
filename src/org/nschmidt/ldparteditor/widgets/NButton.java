@@ -71,11 +71,7 @@ public class NButton extends Canvas {
         }
 
         if (isRadio) {
-            List<NButton> groups = radioGroups.get(parent);
-            if (groups == null) {
-                groups = new ArrayList<>();
-                radioGroups.put(parent, groups);
-            }
+            List<NButton> groups = radioGroups.computeIfAbsent(parent, c -> new ArrayList<>());
             groups.add(this);
         }
 

@@ -89,13 +89,9 @@ public enum SWTResourceManager {
      * @return the {@link Color} matching the RGB value
      */
     public static Color getColor(RGB rgb) {
-        Color color = mColorMap.get(rgb);
-        if (color == null) {
-            Display display = Display.getCurrent();
-            color = new Color(display, rgb);
-            mColorMap.put(rgb, color);
-        }
-        return color;
+        return mColorMap.computeIfAbsent(rgb, r ->
+            new Color(Display.getCurrent(), r)
+        );
     }
 
     /**
@@ -152,8 +148,7 @@ public enum SWTResourceManager {
      */
     private static Font getFont(String name, int size, int style, boolean strikeout, boolean underline) {
         String fontName = name + '|' + size + '|' + style + '|' + strikeout + '|' + underline;
-        Font font = mFontMap.get(fontName);
-        if (font == null) {
+        return mFontMap.computeIfAbsent(fontName, f -> {
             FontData fontData = new FontData(name, size, style);
             if (strikeout || underline) {
                 try {
@@ -167,14 +162,12 @@ public enum SWTResourceManager {
                             logFontClass.getField("lfUnderline").set(logFont, Byte.valueOf((byte) 1)); //$NON-NLS-1$
                         }
                     }
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     System.err.println("Unable to set underline or strikeout" + " (probably on a non-Windows platform). " + e); //$NON-NLS-1$ //$NON-NLS-2$
                 }
             }
-            font = new Font(Display.getCurrent(), fontData);
-            mFontMap.put(fontName, font);
-        }
-        return font;
+            return new Font(Display.getCurrent(), fontData);
+        });
     }
 
     /**
