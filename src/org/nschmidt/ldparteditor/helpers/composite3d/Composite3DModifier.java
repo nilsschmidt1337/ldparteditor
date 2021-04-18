@@ -28,7 +28,6 @@ import org.eclipse.swt.dnd.DropTarget;
 import org.eclipse.swt.dnd.DropTargetAdapter;
 import org.eclipse.swt.dnd.DropTargetEvent;
 import org.eclipse.swt.dnd.FileTransfer;
-import org.eclipse.swt.dnd.Transfer;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -414,7 +413,7 @@ public class Composite3DModifier {
             nc.moveBelow(oldParentSashForm.getChildren()[0]);
 
             DropTarget dt = new DropTarget(nc, DND.DROP_DEFAULT | DND.DROP_MOVE );
-            dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+            dt.setTransfer(FileTransfer.getInstance());
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {

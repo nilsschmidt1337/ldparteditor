@@ -88,7 +88,7 @@ class SortDesign extends Dialog {
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        cmbScope.setItems(new String[] {I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION});
+        cmbScope.setItems(I18n.SORT_SCOPE_FILE, I18n.SORT_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         if (fromLine == toLine) {
             cmbScope.select(0);
@@ -100,7 +100,7 @@ class SortDesign extends Dialog {
 
         Combo cmbSortCriteria = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbSortCriteriaPtr[0] = cmbSortCriteria;
-        cmbSortCriteria.setItems(new String[] {I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC});
+        cmbSortCriteria.setItems(I18n.SORT_BY_COLOUR_ASC, I18n.SORT_BY_COLOUR_DESC, I18n.SORT_BY_TYPE_ASC, I18n.SORT_BY_TYPE_DESC, I18n.SORT_BY_TYPE_COLOUR_ASC, I18n.SORT_BY_TYPE_COLOUR_DESC);
         cmbSortCriteria.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbSortCriteria.select(2);
         criteria = 2;

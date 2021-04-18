@@ -136,7 +136,7 @@ class YTruderDesign extends Dialog {
 
         Combo cmbAxis = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbAxisPtr[0] = cmbAxis;
-        cmbAxis.setItems(new String[] {I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z});
+        cmbAxis.setItems(I18n.YTRUDER_X, I18n.YTRUDER_Y, I18n.YTRUDER_Z);
         cmbAxis.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbAxis.select(ys.getAxis());
 

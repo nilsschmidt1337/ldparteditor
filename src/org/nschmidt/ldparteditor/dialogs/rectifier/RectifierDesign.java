@@ -23,7 +23,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -32,6 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.RectifierSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
 import org.nschmidt.ldparteditor.widgets.BigDecimalSpinner;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The rectifier dialog
@@ -92,7 +92,7 @@ class RectifierDesign extends Dialog {
         {
             Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbColourisePtr[0] = cmbColourise;
-            cmbColourise.setItems(new String[] {I18n.RECTIFIER_COLOUR_1, I18n.RECTIFIER_COLOUR_2});
+            cmbColourise.setItems(I18n.RECTIFIER_COLOUR_1, I18n.RECTIFIER_COLOUR_2);
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbColourise.setText(cmbColourise.getItem(rs.isColourise() ? 1 : 0));
             cmbColourise.select(rs.isColourise() ? 1 : 0);
@@ -100,7 +100,7 @@ class RectifierDesign extends Dialog {
         {
             Combo cmbNoQuadConversation = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbNoQuadConversationPtr[0] = cmbNoQuadConversation;
-            cmbNoQuadConversation.setItems(new String[] {I18n.RECTIFIER_TRI_QUADS_1, I18n.RECTIFIER_TRI_QUADS_2});
+            cmbNoQuadConversation.setItems(I18n.RECTIFIER_TRI_QUADS_1, I18n.RECTIFIER_TRI_QUADS_2);
             cmbNoQuadConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbNoQuadConversation.setText(cmbNoQuadConversation.getItem(rs.isNoQuadConversation() ? 1 : 0));
             cmbNoQuadConversation.select(rs.isNoQuadConversation() ? 1 : 0);
@@ -108,7 +108,7 @@ class RectifierDesign extends Dialog {
         {
             Combo cmbNoBorderedQuadToRectConversation = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbNoBorderedQuadToRectConversationPtr[0] = cmbNoBorderedQuadToRectConversation;
-            cmbNoBorderedQuadToRectConversation.setItems(new String[] {I18n.RECTIFIER_RECT_1, I18n.RECTIFIER_RECT_2});
+            cmbNoBorderedQuadToRectConversation.setItems(I18n.RECTIFIER_RECT_1, I18n.RECTIFIER_RECT_2);
             cmbNoBorderedQuadToRectConversation.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbNoBorderedQuadToRectConversation.setText(cmbNoBorderedQuadToRectConversation.getItem(rs.isNoBorderedQuadToRectConversation() ? 1 : 0));
             cmbNoBorderedQuadToRectConversation.select(rs.isNoBorderedQuadToRectConversation() ? 1 : 0);
@@ -116,14 +116,14 @@ class RectifierDesign extends Dialog {
         {
             Combo cmbNoRectConversationOnAdjacentCondlines = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbNoRectConversationOnAdjacentCondlinesPtr[0] = cmbNoRectConversationOnAdjacentCondlines;
-            cmbNoRectConversationOnAdjacentCondlines.setItems(new String[] {I18n.RECTIFIER_RECT_3, I18n.RECTIFIER_RECT_4});
+            cmbNoRectConversationOnAdjacentCondlines.setItems(I18n.RECTIFIER_RECT_3, I18n.RECTIFIER_RECT_4);
             cmbNoRectConversationOnAdjacentCondlines.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbNoRectConversationOnAdjacentCondlines.setText(cmbNoRectConversationOnAdjacentCondlines.getItem(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0));
             cmbNoRectConversationOnAdjacentCondlines.select(rs.isNoRectConversationOnAdjacentCondlines() ? 1 : 0);
         }
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        cmbScope.setItems(new String[] {I18n.RECTIFIER_SCOPE_FILE, I18n.RECTIFIER_SCOPE_SELECTION});
+        cmbScope.setItems(I18n.RECTIFIER_SCOPE_FILE, I18n.RECTIFIER_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(rs.getScope()));
         cmbScope.select(rs.getScope());

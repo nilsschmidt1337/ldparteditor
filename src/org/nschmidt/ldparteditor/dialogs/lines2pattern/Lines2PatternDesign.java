@@ -64,7 +64,7 @@ class Lines2PatternDesign extends Dialog {
         lblSeparator.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
-        cmbScope.setItems(new String[] {I18n.LINES_SCOPE_SELECTION});
+        cmbScope.setItems(I18n.LINES_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(0));
         cmbScope.select(0);

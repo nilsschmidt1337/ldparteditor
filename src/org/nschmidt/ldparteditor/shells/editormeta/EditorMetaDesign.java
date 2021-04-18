@@ -314,7 +314,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         evTypeUnofficialBtnPtr[0] = btnUnofficial;
 
                         Combo cmbType = new Combo(cmpType, SWT.NONE);
-                        cmbType.setItems(new String[] { "Part", "Subpart", "Primitive", "8_Primitive", "48_Primitive", "Shortcut", "Part Alias", "Part Physical_Colour",  "Part Physical_Colour Alias", "Part Flexible_Section", "Shortcut Alias", "Shortcut Physical_Colour",  "Shortcut Physical_Colour Alias"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
+                        cmbType.setItems("Part", "Subpart", "Primitive", "8_Primitive", "48_Primitive", "Shortcut", "Part Alias", "Part Physical_Colour",  "Part Physical_Colour Alias", "Part Flexible_Section", "Shortcut Alias", "Shortcut Physical_Colour",  "Shortcut Physical_Colour Alias"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$ //$NON-NLS-9$ //$NON-NLS-10$ //$NON-NLS-11$ //$NON-NLS-12$ //$NON-NLS-13$
                         cmbType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbType.setText("Part"); //$NON-NLS-1$
                         cmbType.select(0);
@@ -338,7 +338,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblLicense.setText("0 !LICENSE "); //$NON-NLS-1$
 
                         Combo cmbLicense = new Combo(cmpLicense, SWT.NONE);
-                        cmbLicense.setItems(new String[] { "Redistributable under CCAL version 2.0 : see CAreadme.txt", "Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
+                        cmbLicense.setItems("Redistributable under CCAL version 2.0 : see CAreadme.txt", "Not redistributable : see NonCAreadme.txt" ); //$NON-NLS-1$ //$NON-NLS-2$
                         cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbLicense.setText(userSettings.getLicense() != null ? userSettings.getLicense() : "Redistributable under CCAL version 2.0 : see CAreadme.txt"); //$NON-NLS-1$
                         cmbLicense.select(0);
@@ -365,7 +365,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblBfc.setText("0 BFC "); //$NON-NLS-1$
 
                         Combo cmbBfc = new Combo(cmpBfc, SWT.NONE);
-                        cmbBfc.setItems(new String[] { "NOCERTIFY", "CERTIFY CW", "CERTIFY CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                        cmbBfc.setItems("NOCERTIFY", "CERTIFY CW", "CERTIFY CCW"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                         cmbBfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbBfc.setText("NOCERTIFY"); //$NON-NLS-1$
                         cmbBfc.select(0);
@@ -538,7 +538,7 @@ class EditorMetaDesign extends ApplicationWindow {
                     lblBfc.setText("0 BFC "); //$NON-NLS-1$
 
                     Combo cmbBfc = new Combo(cmpBfc, SWT.NONE);
-                    cmbBfc.setItems(new String[] { "INVERTNEXT", "NOCLIP", "CW", "CCW", "CLIP", "CLIP CW", "CLIP CCW"}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
+                    cmbBfc.setItems("INVERTNEXT", "NOCLIP", "CW", "CCW", "CLIP", "CLIP CW", "CLIP CCW"); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$
                     cmbBfc.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                     cmbBfc.setText("INVERTNEXT"); //$NON-NLS-1$
                     cmbBfc.select(0);
@@ -577,7 +577,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
                         Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
-                        cmbTexmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
+                        cmbTexmap.setItems("START", "NEXT"); //$NON-NLS-1$ //$NON-NLS-2$
                         cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbTexmap.setText("START"); //$NON-NLS-1$
                         cmbTexmap.select(0);
@@ -649,7 +649,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
                         Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
-                        cmbTexmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
+                        cmbTexmap.setItems("START", "NEXT"); //$NON-NLS-1$ //$NON-NLS-2$
                         cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbTexmap.setText("START"); //$NON-NLS-1$
                         cmbTexmap.select(0);
@@ -735,7 +735,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblTexmap.setText("0 !TEXMAP "); //$NON-NLS-1$
 
                         Combo cmbTexmap = new Combo(cmpTexmap, SWT.NONE);
-                        cmbTexmap.setItems(new String[] { "START", "NEXT" }); //$NON-NLS-1$ //$NON-NLS-2$
+                        cmbTexmap.setItems("START", "NEXT"); //$NON-NLS-1$ //$NON-NLS-2$
                         cmbTexmap.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                         cmbTexmap.setText("START"); //$NON-NLS-1$
                         cmbTexmap.select(0);
@@ -911,7 +911,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblVertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                         {
                             Combo cmbCsg = new Combo(cmpLpe, SWT.NONE);
-                            cmbCsg.setItems(new String[] { "UNION ", "DIFFERENCE ", "INTERSECTION "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                            cmbCsg.setItems("UNION ", "DIFFERENCE ", "INTERSECTION "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
                             cmbCsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                             cmbCsg.setText("UNION "); //$NON-NLS-1$
                             cmbCsg.select(0);
@@ -940,7 +940,7 @@ class EditorMetaDesign extends ApplicationWindow {
                         lblVertex.setText("0 !LPE CSG_"); //$NON-NLS-1$
                         {
                             Combo cmbCsg = new Combo(cmpLpe, SWT.NONE);
-                            cmbCsg.setItems(new String[] { "CUBOID ", "ELLIPSOID ", "QUAD ", "CYLINDER ", "CONE ", "CIRCLE ", "MESH ", "EXTRUDE "}); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
+                            cmbCsg.setItems("CUBOID ", "ELLIPSOID ", "QUAD ", "CYLINDER ", "CONE ", "CIRCLE ", "MESH ", "EXTRUDE "); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$ //$NON-NLS-7$ //$NON-NLS-8$
                             cmbCsg.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                             cmbCsg.setText("CUBOID "); //$NON-NLS-1$
                             cmbCsg.select(0);
@@ -1351,7 +1351,7 @@ class EditorMetaDesign extends ApplicationWindow {
     }
 
     private void setDefaultCategories() {
-        evCategoryCmbPtr[0].setItems(new String[] {
+        evCategoryCmbPtr[0].setItems(
                 "", //$NON-NLS-1$
                 "Animal", //$NON-NLS-1$
                 "Antenna", //$NON-NLS-1$
@@ -1432,8 +1432,8 @@ class EditorMetaDesign extends ApplicationWindow {
                 "Window", //$NON-NLS-1$
                 "Windscreen", //$NON-NLS-1$
                 "Wing", //$NON-NLS-1$
-                "Znap", //$NON-NLS-1$
-        });
+                "Znap" //$NON-NLS-1$
+        );
     }
 
     /**

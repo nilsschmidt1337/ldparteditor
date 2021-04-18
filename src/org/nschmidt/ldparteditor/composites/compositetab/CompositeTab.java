@@ -147,7 +147,7 @@ public class CompositeTab extends CompositeTabDesign {
 
         {
             DropTarget dt = new DropTarget(compositeTextPtr[0], DND.DROP_DEFAULT | DND.DROP_MOVE );
-            dt.setTransfer(new Transfer[] { MyDummyTransfer2.getInstance(), FileTransfer.getInstance() });
+            dt.setTransfer(MyDummyTransfer2.getInstance(), FileTransfer.getInstance());
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {

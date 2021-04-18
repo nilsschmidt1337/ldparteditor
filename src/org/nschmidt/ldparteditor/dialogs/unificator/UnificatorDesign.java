@@ -101,7 +101,7 @@ class UnificatorDesign extends Dialog {
         {
             Combo cmbSplitPlane = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbWhatToUnifyPtr[0] = cmbSplitPlane;
-            cmbSplitPlane.setItems(new String[] {I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES});
+            cmbSplitPlane.setItems(I18n.UNIFICATOR_VERTICES, I18n.UNIFICATOR_SUBPART_VERTICES, I18n.UNIFICATOR_VERTICES_SUBPART_VERTICES);
             cmbSplitPlane.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbSplitPlane.setText(cmbSplitPlane.getItem(us.getSnapOn()));
             cmbSplitPlane.select(us.getSnapOn());
@@ -109,7 +109,7 @@ class UnificatorDesign extends Dialog {
 
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        cmbScope.setItems(new String[] {I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION});
+        cmbScope.setItems(I18n.UNIFICATOR_SCOPE_FILE, I18n.UNIFICATOR_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(us.getScope()));
         cmbScope.select(us.getScope());

@@ -21,7 +21,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.nschmidt.ldparteditor.widgets.NButton;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -29,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.nschmidt.ldparteditor.helpers.composite3d.IntersectorSettings;
 import org.nschmidt.ldparteditor.i18n.I18n;
+import org.nschmidt.ldparteditor.widgets.NButton;
 
 /**
  * The intersector dialog
@@ -73,15 +73,15 @@ class IntersectorDesign extends Dialog {
 
         Label lblDescription = new Label(cmpContainer, SWT.NONE);
         lblDescription.setText(I18n.INTERSECTOR_DESCRIPTION);
-        
+
         NButton btnHideOther = new NButton(cmpContainer, SWT.CHECK);
         this.btnHideOtherPtr[0] = btnHideOther;
         btnHideOther.setText(I18n.INTERSECTOR_HIDE_OTHER);
         btnHideOther.setSelection(ins.isHidingOther());
-        
+
         Combo cmbScope = new Combo(cmpContainer, SWT.READ_ONLY);
         this.cmbScopePtr[0] = cmbScope;
-        cmbScope.setItems(new String[] {I18n.INTERSECTOR_SCOPE_FILE, I18n.INTERSECTOR_SCOPE_SELECTION});
+        cmbScope.setItems(I18n.INTERSECTOR_SCOPE_FILE, I18n.INTERSECTOR_SCOPE_SELECTION);
         cmbScope.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
         cmbScope.setText(cmbScope.getItem(ins.getScope()));
         cmbScope.select(ins.getScope());
@@ -90,7 +90,7 @@ class IntersectorDesign extends Dialog {
         {
             Combo cmbColourise = new Combo(cmpContainer, SWT.READ_ONLY);
             this.cmbColourisePtr[0] = cmbColourise;
-            cmbColourise.setItems(new String[] {I18n.INTERSECTOR_NO_MODS, I18n.INTERSECTOR_COLOUR_MODS});
+            cmbColourise.setItems(I18n.INTERSECTOR_NO_MODS, I18n.INTERSECTOR_COLOUR_MODS);
             cmbColourise.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
             cmbColourise.setText(cmbColourise.getItem(ins.isColourise() ? 1 : 0));
             cmbColourise.select(ins.isColourise() ? 1 : 0);

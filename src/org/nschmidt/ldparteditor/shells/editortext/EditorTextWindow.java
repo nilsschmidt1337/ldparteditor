@@ -416,7 +416,7 @@ public class EditorTextWindow extends EditorTextDesign {
     public void registerEvents() {
         {
             DropTarget dt = new DropTarget(tabFolderPtr[0].getParent().getParent(), DND.DROP_DEFAULT | DND.DROP_MOVE );
-            dt.setTransfer(new Transfer[] { FileTransfer.getInstance() });
+            dt.setTransfer(FileTransfer.getInstance());
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {

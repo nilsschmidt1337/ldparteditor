@@ -195,7 +195,7 @@ class OptionsDesign extends ApplicationWindow {
 
                 Combo cmbTextWinArr = new Combo(cmpContainer, SWT.READ_ONLY);
                 this.cmbTextWinArrPtr[0] = cmbTextWinArr;
-                cmbTextWinArr.setItems(new String[]{I18n.OPTIONS_TEXT_WINDOW_SEPARATE, I18n.OPTIONS_TEXT_WINDOW_LEFT, I18n.OPTIONS_TEXT_WINDOW_RIGHT});
+                cmbTextWinArr.setItems(I18n.OPTIONS_TEXT_WINDOW_SEPARATE, I18n.OPTIONS_TEXT_WINDOW_LEFT, I18n.OPTIONS_TEXT_WINDOW_RIGHT);
                 cmbTextWinArr.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbTextWinArr.select(userSettings.getTextWinArr());
 
@@ -310,7 +310,7 @@ class OptionsDesign extends ApplicationWindow {
 
                 Combo cmbLicense = new Combo(cmpContainer, SWT.NONE);
                 this.cmbLicensePtr[0] = cmbLicense;
-                cmbLicense.setItems(new String[] { "0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt" }); //$NON-NLS-1$ //$NON-NLS-2$
+                cmbLicense.setItems("0 !LICENSE Redistributable under CCAL version 2.0 : see CAreadme.txt", "0 !LICENSE Not redistributable : see NonCAreadme.txt"); //$NON-NLS-1$ //$NON-NLS-2$
                 cmbLicense.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbLicense.setText(userSettings.getLicense());
 
@@ -363,7 +363,7 @@ class OptionsDesign extends ApplicationWindow {
 
                 Combo cmbMouseButtonLayout = new Combo(cmpContainer, SWT.READ_ONLY);
                 this.cmbMouseButtonLayoutPtr[0] = cmbMouseButtonLayout;
-                cmbMouseButtonLayout.setItems(new String[]{I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_A, I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_B});
+                cmbMouseButtonLayout.setItems(I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_A, I18n.KEYBOARD_MOUSE_BUTTON_LAYOUT_B);
                 cmbMouseButtonLayout.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 1, 1));
                 cmbMouseButtonLayout.select(userSettings.getMouseButtonLayout());
 
