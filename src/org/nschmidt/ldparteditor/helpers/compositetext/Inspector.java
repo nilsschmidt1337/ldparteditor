@@ -51,12 +51,15 @@ public enum Inspector {
 
         final int lc = cText.getLineCount();
         for (TreeItem ti : issues) {
-            if (ti.getData() == null) continue;
-            final int offset = (int) ti.getData();
-            if (offset < 0) continue;
-            final int line = cText.getLineAtOffset(offset) + 1;
-            if (line < 1 || line > lc) continue;
-            vm.addTextLineToSelection(line);
+            if (ti.getData() != null) {
+                final int offset = (int) ti.getData();
+                if (offset >= 0) {
+                    final int line = cText.getLineAtOffset(offset) + 1;
+                    if (line >= 1 && line <= lc) {
+                        vm.addTextLineToSelection(line);
+                    }
+                }
+            }
         }
 
         vm.setModifiedNoSync();

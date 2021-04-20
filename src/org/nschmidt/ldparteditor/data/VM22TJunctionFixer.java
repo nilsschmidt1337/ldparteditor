@@ -80,23 +80,24 @@ class VM22TJunctionFixer extends VM21Merger {
 
                         for (final Vertex v : verticesToProcess) {
                             if (monitor.isCanceled()) break;
-                            if (!vertexLinkedToPositionInFile.containsKey(v)) continue;
-                            Display.getDefault().asyncExec(() -> {
-                                clearSelection2();
-                                if (isTjunctionCandidate(v, calculateDistance)) {
+                            if (vertexLinkedToPositionInFile.containsKey(v)) {
+                                Display.getDefault().asyncExec(() -> {
                                     clearSelection2();
-                                    selectedVertices.add(v);
-                                    verticesToSelect.add(v);
-                                    if (doMerge) merge(MergeTo.NEAREST_EDGE_SPLIT, false, false);
-                                    tJunctionCount[0]++;
+                                    if (isTjunctionCandidate(v, calculateDistance)) {
+                                        clearSelection2();
+                                        selectedVertices.add(v);
+                                        verticesToSelect.add(v);
+                                        if (doMerge) merge(MergeTo.NEAREST_EDGE_SPLIT, false, false);
+                                        tJunctionCount[0]++;
+                                    }
+                                    monitor.worked(1);
+                                    a.set(true);
+                                });
+                                while (!a.get()) {
+                                    Thread.sleep(10);
                                 }
-                                monitor.worked(1);
-                                a.set(true);
-                            });
-                            while (!a.get()) {
-                                Thread.sleep(10);
+                                a.set(false);
                             }
-                            a.set(false);
                         }
                     } catch (Exception ex) {
                         NLogger.error(getClass(), ex);

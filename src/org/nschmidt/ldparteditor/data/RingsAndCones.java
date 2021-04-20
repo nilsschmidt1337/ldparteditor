@@ -623,9 +623,7 @@ public enum RingsAndCones {
                                     if (Character.isDigit(c)) {
                                         number = number.insert(0, c);
                                         readDigit = true;
-                                    } else if (readDigit) {
-                                        break;
-                                    } else if (i < charsThis.length - 5) {
+                                    } else if (readDigit || i < charsThis.length - 5) {
                                         break;
                                     }
                                 }

@@ -2725,14 +2725,10 @@ public class GL33ModelRenderer {
                 } else {
                     switch (((GDataBFC) gd).type) {
                     case CCW:
-                        localWinding = BFC.CCW;
-                        continue;
                     case CCW_CLIP:
                         localWinding = BFC.CCW;
                         continue;
                     case CW:
-                        localWinding = BFC.CW;
-                        continue;
                     case CW_CLIP:
                         localWinding = BFC.CW;
                         continue;
@@ -2740,10 +2736,8 @@ public class GL33ModelRenderer {
                         boolean validState = false;
                         GData g = gd.next;
                         while (g != null && g.type() < 2) {
-                            if (g.type() == 1) {
-                                if (g.visible) validState = true;
-                                break;
-                            } else if (!g.toString().trim().isEmpty()) {
+                            validState = g.type() == 1 && g.visible;
+                            if (validState || !g.toString().trim().isEmpty()) {
                                 break;
                             }
                             g = g.next;

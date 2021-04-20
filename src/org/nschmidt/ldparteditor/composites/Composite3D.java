@@ -1211,56 +1211,57 @@ public class Composite3D extends ScalableComposite {
                             NLogger.debug(getClass(), f);
                             if (f.toLowerCase(Locale.ENGLISH).endsWith(".dat")) { //$NON-NLS-1$
                                 final File fileToOpen = new File(f);
-                                if (!fileToOpen.exists() || fileToOpen.isDirectory()) continue;
-                                DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
-                                if (df != null) {
-                                    boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
-                                    WorkbenchManager.getUserSettingState().setSyncingTabs(false);
-                                    Editor3DWindow.getWindow().addRecentFile(df);
-                                    final File f2 = new File(df.getNewName());
-                                    if (f2.getParentFile() != null) {
-                                        Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
-                                    }
-                                    for (EditorTextWindow w : Project.getOpenTextWindows()) {
-                                        for (CTabItem t : w.getTabFolder().getItems()) {
-                                            if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
-                                                w.closeTabWithDatfile(df);
-                                                WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
-                                                return;
+                                if (fileToOpen.exists() && !fileToOpen.isDirectory()) {
+                                    DatFile df = Editor3DWindow.getWindow().openDatFile(OpenInWhat.EDITOR_3D, f, true);
+                                    if (df != null) {
+                                        boolean tabSync = WorkbenchManager.getUserSettingState().isSyncingTabs();
+                                        WorkbenchManager.getUserSettingState().setSyncingTabs(false);
+                                        Editor3DWindow.getWindow().addRecentFile(df);
+                                        final File f2 = new File(df.getNewName());
+                                        if (f2.getParentFile() != null) {
+                                            Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
+                                        }
+                                        for (EditorTextWindow w : Project.getOpenTextWindows()) {
+                                            for (CTabItem t : w.getTabFolder().getItems()) {
+                                                if (df.equals(((CompositeTab) t).getState().getFileNameObj())) {
+                                                    w.closeTabWithDatfile(df);
+                                                    WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
+                                                    return;
+                                                }
                                             }
                                         }
+                                        WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
                                     }
-                                    WorkbenchManager.getUserSettingState().setSyncingTabs(tabSync);
+                                    break;
                                 }
-                                break;
                             }
                         }
                     }
-                    return;
-                }
-                NLogger.debug(getClass(), "Primitive dropped at: {0} | {1}", event.x, event.y); //$NON-NLS-1$
-                final Editor3DWindow window = Editor3DWindow.getWindow();
-                final org.nschmidt.ldparteditor.data.Primitive p = window.getCompositePrimitive().getSelectedPrimitive();
-                final DatFile datfile = getLockableDatFileReference();
-                if (p == null || p.isCategory() || datfile.isReadOnly()) return;
-                NLogger.debug(getClass(), "Primitive: {0}", p); //$NON-NLS-1$
-                String ref = p.getName();
-                final BigDecimal[] cur = getCursorSnapped3Dprecise();
-                final GColour col16 = View.getLDConfigColour(16);
-                Set<String> alreadyParsed = new HashSet<>();
-                alreadyParsed.add(datfile.getShortName());
-                List<ParsingResult> subfileLine = DatParser
-                        .parseLine(
-                                "1 16 " + MathHelper.bigDecimalToString(cur[0]) + " " + MathHelper.bigDecimalToString(cur[1]) + " " + MathHelper.bigDecimalToString(cur[2]) + " 1 0 0 0 1 0 0 0 1 " + ref, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datfile, false, alreadyParsed); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
-                GData1 primitiveLine = (GData1) subfileLine.get(0).getGraphicalData();
-                if (primitiveLine != null) {
-                    datfile.addToTailOrInsertAfterCursor(primitiveLine);
-                    datfile.getVertexManager().setModified(true, true);
-                    if (!Project.getUnsavedFiles().contains(datfile)) {
-                        Project.addUnsavedFile(datfile);
-                        Editor3DWindow.getWindow().updateTreeUnsavedEntries();
+                } else {
+                    NLogger.debug(getClass(), "Primitive dropped at: {0} | {1}", event.x, event.y); //$NON-NLS-1$
+                    final Editor3DWindow window = Editor3DWindow.getWindow();
+                    final org.nschmidt.ldparteditor.data.Primitive p = window.getCompositePrimitive().getSelectedPrimitive();
+                    final DatFile datfile = getLockableDatFileReference();
+                    if (p == null || p.isCategory() || datfile.isReadOnly()) return;
+                    NLogger.debug(getClass(), "Primitive: {0}", p); //$NON-NLS-1$
+                    String ref = p.getName();
+                    final BigDecimal[] cur = getCursorSnapped3Dprecise();
+                    final GColour col16 = View.getLDConfigColour(16);
+                    Set<String> alreadyParsed = new HashSet<>();
+                    alreadyParsed.add(datfile.getShortName());
+                    List<ParsingResult> subfileLine = DatParser
+                            .parseLine(
+                                    "1 16 " + MathHelper.bigDecimalToString(cur[0]) + " " + MathHelper.bigDecimalToString(cur[1]) + " " + MathHelper.bigDecimalToString(cur[2]) + " 1 0 0 0 1 0 0 0 1 " + ref, -1, 0, col16.getR(), col16.getG(), col16.getB(), 1.1f, View.DUMMY_REFERENCE, View.ID, View.ACCURATE_ID, datfile, false, alreadyParsed); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+                    GData1 primitiveLine = (GData1) subfileLine.get(0).getGraphicalData();
+                    if (primitiveLine != null) {
+                        datfile.addToTailOrInsertAfterCursor(primitiveLine);
+                        datfile.getVertexManager().setModified(true, true);
+                        if (!Project.getUnsavedFiles().contains(datfile)) {
+                            Project.addUnsavedFile(datfile);
+                            Editor3DWindow.getWindow().updateTreeUnsavedEntries();
+                        }
+                        datfile.getVertexManager().validateState();
                     }
-                    datfile.getVertexManager().validateState();
                 }
             }
         });

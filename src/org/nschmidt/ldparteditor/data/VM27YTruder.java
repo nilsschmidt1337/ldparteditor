@@ -135,8 +135,6 @@ class VM27YTruder extends VM26LineIntersector {
                                     flag = true;
                                     break;
                                 }
-                                if (flag)
-                                    break;
                             }
                         }
                         if (flag)

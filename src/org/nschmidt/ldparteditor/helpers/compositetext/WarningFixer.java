@@ -33,7 +33,6 @@ enum WarningFixer {
     INSTANCE;
 
     public static String fix(int lineNumber, String sort, String line, String text) {
-        // TODO Needs implementation!
         int s = Integer.parseInt(sort, 16);
         switch (s) {
         case 204: // Upper- & Mixed-Case File Name

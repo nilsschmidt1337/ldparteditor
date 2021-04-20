@@ -807,10 +807,7 @@ public class GTexture {
                     }
                     final int strideLength2 = stride.size();
                     int index = 0;
-                    for (int i = 0; i < tHeight; i++) {
-                        if (index + 1 > bytes.size()) {
-                            break;
-                        }
+                    for (int i = 0; i < tHeight && index + 1 <= bytes.size(); i++) {
                         bytes.addAll(index, stride);
                         index += strideLength + strideLength2;
                         if (index + 1 > bytes.size()) {

@@ -1317,201 +1317,185 @@ public class Manipulator {
             accurateResult = Matrix.mul(View.ACCURATE_ID.translate(new BigDecimal[] { accuratePosition[0].negate(), accuratePosition[1].negate(), accuratePosition[2].negate() }), accurateResult);
         }
 
-        if (xRotate) {
-            while (true) {
-                if (xRotatingForwards) {
-                    transformation.rotate(snapXrotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snapXrotate, snapXrotateFlag, accurateXaxis);
-                    accurateRotationX = accurateRotationX + snapXrotate.doubleValue();
-                    Vector4f vector = new Vector4f(xRotateArrow);
-                    Matrix4f m = new Matrix4f();
-                    Matrix4f.setIdentity(m);
-                    m.rotate(Math.max(snapXrotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                    Matrix4f.transform(m, vector, vector);
-                    vector.setW(0f);
-                    vector.normalise();
-                    vector.setW(1f);
-                    xRotateArrow.set(vector);
-                    xRotateStart.set(xRotateArrow);
-                } else if (xRotatingBackwards) {
-                    transformation.rotate(-snapXrotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snapXrotate.negate(), snapXrotateFlag, accurateXaxis);
-                    accurateRotationX = accurateRotationX - snapXrotate.doubleValue();
-                    Vector4f vector = new Vector4f(xRotateArrow);
-                    Matrix4f m = new Matrix4f();
-                    Matrix4f.setIdentity(m);
-                    m.rotate(-Math.max(snapXrotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
-                    Matrix4f.transform(m, vector, vector);
-                    vector.setW(0f);
-                    vector.normalise();
-                    vector.setW(1f);
-                    xRotateArrow.set(vector);
-                    xRotateStart.set(xRotateArrow);
-                } else {
-                    break;
-                }
-                xRotatingForwards = false;
-                xRotatingBackwards = false;
-                Matrix4f.transform(transformation, yAxis, yAxis);
-                Matrix4f.transform(transformation, zAxis, zAxis);
-                accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
-                accurateZaxis = accurateTransformation.transform(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
-
-                accurateResult = Matrix.mul(accurateTransformation, accurateResult);
-                Matrix4f.mul(transformation, result, result);
-                Matrix4f.setIdentity(transformation);
-
-                modified = true;
-                break;
+        if (xRotate && xRotatingForwards || xRotatingBackwards) {
+            if (xRotatingForwards) {
+                transformation.rotate(snapXrotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                accurateTransformation = View.ACCURATE_ID.rotate(snapXrotate, snapXrotateFlag, accurateXaxis);
+                accurateRotationX = accurateRotationX + snapXrotate.doubleValue();
+                Vector4f vector = new Vector4f(xRotateArrow);
+                Matrix4f m = new Matrix4f();
+                Matrix4f.setIdentity(m);
+                m.rotate(Math.max(snapXrotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                Matrix4f.transform(m, vector, vector);
+                vector.setW(0f);
+                vector.normalise();
+                vector.setW(1f);
+                xRotateArrow.set(vector);
+                xRotateStart.set(xRotateArrow);
+            } else { // xRotatingBackwards
+                transformation.rotate(-snapXrotate.floatValue(), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                accurateTransformation = View.ACCURATE_ID.rotate(snapXrotate.negate(), snapXrotateFlag, accurateXaxis);
+                accurateRotationX = accurateRotationX - snapXrotate.doubleValue();
+                Vector4f vector = new Vector4f(xRotateArrow);
+                Matrix4f m = new Matrix4f();
+                Matrix4f.setIdentity(m);
+                m.rotate(-Math.max(snapXrotate.floatValue(), PI16TH), new Vector3f(xAxis.x, xAxis.y, xAxis.z));
+                Matrix4f.transform(m, vector, vector);
+                vector.setW(0f);
+                vector.normalise();
+                vector.setW(1f);
+                xRotateArrow.set(vector);
+                xRotateStart.set(xRotateArrow);
             }
+
+            xRotatingForwards = false;
+            xRotatingBackwards = false;
+            Matrix4f.transform(transformation, yAxis, yAxis);
+            Matrix4f.transform(transformation, zAxis, zAxis);
+            accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+            accurateZaxis = accurateTransformation.transform(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+
+            modified = true;
         }
 
-        if (yRotate) {
-            while (true) {
-                if (yRotatingForwards) {
-                    transformation.rotate(snapYrotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snapYrotate, snapYrotateFlag, accurateYaxis);
-                    accurateRotationY = accurateRotationY + snapYrotate.doubleValue();
-                    Vector4f vector = new Vector4f(yRotateArrow);
-                    Matrix4f m = new Matrix4f();
-                    Matrix4f.setIdentity(m);
-                    m.rotate(Math.max(snapYrotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                    Matrix4f.transform(m, vector, vector);
-                    vector.setW(0f);
-                    vector.normalise();
-                    vector.setW(1f);
-                    yRotateArrow.set(vector);
-                    yRotateStart.set(yRotateArrow);
-                } else if (yRotatingBackwards) {
-                    transformation.rotate(-snapYrotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snapYrotate.negate(), snapYrotateFlag, accurateYaxis);
-                    accurateRotationY = accurateRotationY - snapYrotate.doubleValue();
-                    Vector4f vector = new Vector4f(yRotateArrow);
-                    Matrix4f m = new Matrix4f();
-                    Matrix4f.setIdentity(m);
-                    m.rotate(-Math.max(snapYrotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
-                    Matrix4f.transform(m, vector, vector);
-                    vector.setW(0f);
-                    vector.normalise();
-                    vector.setW(1f);
-                    yRotateArrow.set(vector);
-                    yRotateStart.set(yRotateArrow);
-                } else {
-                    break;
-                }
-                yRotatingForwards = false;
-                yRotatingBackwards = false;
-                Matrix4f.transform(transformation, xAxis, xAxis);
-                Matrix4f.transform(transformation, zAxis, zAxis);
-                accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
-                accurateZaxis = accurateTransformation.transform(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
-
-                accurateResult = Matrix.mul(accurateTransformation, accurateResult);
-                Matrix4f.mul(transformation, result, result);
-                Matrix4f.setIdentity(transformation);
-
-                modified = true;
-                break;
+        if (yRotate && yRotatingForwards || yRotatingBackwards) {
+            if (yRotatingForwards) {
+                transformation.rotate(snapYrotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                accurateTransformation = View.ACCURATE_ID.rotate(snapYrotate, snapYrotateFlag, accurateYaxis);
+                accurateRotationY = accurateRotationY + snapYrotate.doubleValue();
+                Vector4f vector = new Vector4f(yRotateArrow);
+                Matrix4f m = new Matrix4f();
+                Matrix4f.setIdentity(m);
+                m.rotate(Math.max(snapYrotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                Matrix4f.transform(m, vector, vector);
+                vector.setW(0f);
+                vector.normalise();
+                vector.setW(1f);
+                yRotateArrow.set(vector);
+                yRotateStart.set(yRotateArrow);
+            } else { // yRotatingBackwards
+                transformation.rotate(-snapYrotate.floatValue(), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                accurateTransformation = View.ACCURATE_ID.rotate(snapYrotate.negate(), snapYrotateFlag, accurateYaxis);
+                accurateRotationY = accurateRotationY - snapYrotate.doubleValue();
+                Vector4f vector = new Vector4f(yRotateArrow);
+                Matrix4f m = new Matrix4f();
+                Matrix4f.setIdentity(m);
+                m.rotate(-Math.max(snapYrotate.floatValue(), PI16TH), new Vector3f(yAxis.x, yAxis.y, yAxis.z));
+                Matrix4f.transform(m, vector, vector);
+                vector.setW(0f);
+                vector.normalise();
+                vector.setW(1f);
+                yRotateArrow.set(vector);
+                yRotateStart.set(yRotateArrow);
             }
+
+            yRotatingForwards = false;
+            yRotatingBackwards = false;
+            Matrix4f.transform(transformation, xAxis, xAxis);
+            Matrix4f.transform(transformation, zAxis, zAxis);
+            accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+            accurateZaxis = accurateTransformation.transform(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+
+            modified = true;
         }
 
-        if (zRotate) {
-            while (true) {
-                if (zRotatingForwards) {
-                    transformation.rotate(snapZrotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snapZrotate, snapZrotateFlag, accurateZaxis);
-                    accurateRotationZ = accurateRotationZ + snapZrotate.doubleValue();
-                    Vector4f vector = new Vector4f(zRotateArrow);
-                    Matrix4f m = new Matrix4f();
-                    Matrix4f.setIdentity(m);
-                    m.rotate(Math.max(snapZrotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                    Matrix4f.transform(m, vector, vector);
-                    vector.setW(0f);
-                    vector.normalise();
-                    vector.setW(1f);
-                    zRotateArrow.set(vector);
-                    zRotateStart.set(zRotateArrow);
-                } else if (zRotatingBackwards) {
-                    transformation.rotate(-snapZrotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snapZrotate.negate(), snapZrotateFlag, accurateZaxis);
-                    accurateRotationZ = accurateRotationZ - snapZrotate.doubleValue();
-                    Vector4f vector = new Vector4f(zRotateArrow);
-                    Matrix4f m = new Matrix4f();
-                    Matrix4f.setIdentity(m);
-                    m.rotate(-Math.max(snapZrotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
-                    Matrix4f.transform(m, vector, vector);
-                    vector.setW(0f);
-                    vector.normalise();
-                    vector.setW(1f);
-                    zRotateArrow.set(vector);
-                    zRotateStart.set(zRotateArrow);
-                } else {
-                    break;
-                }
-                zRotatingForwards = false;
-                zRotatingBackwards = false;
-                Matrix4f.transform(transformation, yAxis, yAxis);
-                Matrix4f.transform(transformation, xAxis, xAxis);
-                accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
-                accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
-
-                accurateResult = Matrix.mul(accurateTransformation, accurateResult);
-                Matrix4f.mul(transformation, result, result);
-                Matrix4f.setIdentity(transformation);
-
-                modified = true;
-                break;
+        if (zRotate && zRotatingForwards || zRotatingBackwards) {
+            if (zRotatingForwards) {
+                transformation.rotate(snapZrotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                accurateTransformation = View.ACCURATE_ID.rotate(snapZrotate, snapZrotateFlag, accurateZaxis);
+                accurateRotationZ = accurateRotationZ + snapZrotate.doubleValue();
+                Vector4f vector = new Vector4f(zRotateArrow);
+                Matrix4f m = new Matrix4f();
+                Matrix4f.setIdentity(m);
+                m.rotate(Math.max(snapZrotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                Matrix4f.transform(m, vector, vector);
+                vector.setW(0f);
+                vector.normalise();
+                vector.setW(1f);
+                zRotateArrow.set(vector);
+                zRotateStart.set(zRotateArrow);
+            } else { // zRotatingBackwards
+                transformation.rotate(-snapZrotate.floatValue(), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                accurateTransformation = View.ACCURATE_ID.rotate(snapZrotate.negate(), snapZrotateFlag, accurateZaxis);
+                accurateRotationZ = accurateRotationZ - snapZrotate.doubleValue();
+                Vector4f vector = new Vector4f(zRotateArrow);
+                Matrix4f m = new Matrix4f();
+                Matrix4f.setIdentity(m);
+                m.rotate(-Math.max(snapZrotate.floatValue(), PI16TH), new Vector3f(zAxis.x, zAxis.y, zAxis.z));
+                Matrix4f.transform(m, vector, vector);
+                vector.setW(0f);
+                vector.normalise();
+                vector.setW(1f);
+                zRotateArrow.set(vector);
+                zRotateStart.set(zRotateArrow);
             }
+
+            zRotatingForwards = false;
+            zRotatingBackwards = false;
+            Matrix4f.transform(transformation, yAxis, yAxis);
+            Matrix4f.transform(transformation, xAxis, xAxis);
+            accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+            accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+
+            modified = true;
         }
 
-        if (vRotate) {
-            while (true) {
-                Vector4f[] gen = c3d.getGenerator();
-                if (vRotatingForwards) {
-                    transformation.rotate(snapVrotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snapVrotate, snapVrotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
-                    Vector4f vector = new Vector4f(vRotateArrow);
-                    Matrix4f m = new Matrix4f();
-                    Matrix4f.setIdentity(m);
-                    m.rotate(Math.max(snapVrotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                    Matrix4f.transform(m, vector, vector);
-                    vector.setW(0f);
-                    vector.normalise();
-                    vector.setW(1f);
-                    vRotateArrow.set(vector);
-                    vRotateStart.set(vRotateArrow);
-                } else if (vRotatingBackwards) {
-                    transformation.rotate(-snapVrotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                    accurateTransformation = View.ACCURATE_ID.rotate(snapVrotate.negate(), snapVrotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
-                    Vector4f vector = new Vector4f(vRotateArrow);
-                    Matrix4f m = new Matrix4f();
-                    Matrix4f.setIdentity(m);
-                    m.rotate(-Math.max(snapVrotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
-                    Matrix4f.transform(m, vector, vector);
-                    vector.setW(0f);
-                    vector.normalise();
-                    vector.setW(1f);
-                    vRotateArrow.set(vector);
-                    vRotateStart.set(vRotateArrow);
-                } else {
-                    break;
-                }
-                vRotatingForwards = false;
-                vRotatingBackwards = false;
-                Matrix4f.transform(transformation, zAxis, zAxis);
-                Matrix4f.transform(transformation, yAxis, yAxis);
-                Matrix4f.transform(transformation, xAxis, xAxis);
-                accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
-                accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
-                accurateZaxis = accurateTransformation.transform(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
-
-                accurateResult = Matrix.mul(accurateTransformation, accurateResult);
-                Matrix4f.mul(transformation, result, result);
-                Matrix4f.setIdentity(transformation);
-
-                modified = true;
-                break;
+        if (vRotate && vRotatingForwards || vRotatingBackwards) {
+            Vector4f[] gen = c3d.getGenerator();
+            if (vRotatingForwards) {
+                transformation.rotate(snapVrotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                accurateTransformation = View.ACCURATE_ID.rotate(snapVrotate, snapVrotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+                Vector4f vector = new Vector4f(vRotateArrow);
+                Matrix4f m = new Matrix4f();
+                Matrix4f.setIdentity(m);
+                m.rotate(Math.max(snapVrotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                Matrix4f.transform(m, vector, vector);
+                vector.setW(0f);
+                vector.normalise();
+                vector.setW(1f);
+                vRotateArrow.set(vector);
+                vRotateStart.set(vRotateArrow);
+            } else { // vRotatingBackwards
+                transformation.rotate(-snapVrotate.floatValue(), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                accurateTransformation = View.ACCURATE_ID.rotate(snapVrotate.negate(), snapVrotateFlag, new BigDecimal[] { new BigDecimal(gen[2].x), new BigDecimal(gen[2].y), new BigDecimal(gen[2].z) });
+                Vector4f vector = new Vector4f(vRotateArrow);
+                Matrix4f m = new Matrix4f();
+                Matrix4f.setIdentity(m);
+                m.rotate(-Math.max(snapVrotate.floatValue(), PI16TH), new Vector3f(gen[2].x, gen[2].y, gen[2].z));
+                Matrix4f.transform(m, vector, vector);
+                vector.setW(0f);
+                vector.normalise();
+                vector.setW(1f);
+                vRotateArrow.set(vector);
+                vRotateStart.set(vRotateArrow);
             }
+
+            vRotatingForwards = false;
+            vRotatingBackwards = false;
+            Matrix4f.transform(transformation, zAxis, zAxis);
+            Matrix4f.transform(transformation, yAxis, yAxis);
+            Matrix4f.transform(transformation, xAxis, xAxis);
+            accurateXaxis = accurateTransformation.transform(accurateXaxis[0], accurateXaxis[1], accurateXaxis[2]);
+            accurateYaxis = accurateTransformation.transform(accurateYaxis[0], accurateYaxis[1], accurateYaxis[2]);
+            accurateZaxis = accurateTransformation.transform(accurateZaxis[0], accurateZaxis[1], accurateZaxis[2]);
+
+            accurateResult = Matrix.mul(accurateTransformation, accurateResult);
+            Matrix4f.mul(transformation, result, result);
+            Matrix4f.setIdentity(transformation);
+
+            modified = true;
         }
 
         if (xRotate || yRotate || zRotate || vRotate) {

@@ -56,9 +56,7 @@ public enum CSGOptimizerTJunction {
             for (GData3 tri : triangles) {
                 final VectorCSGd[] triverts = trimap.get(tri);
                 for (VectorCSGd v : vertices) {
-                    if (triverts[0].compareTo(v) == 0) continue;
-                    if (triverts[1].compareTo(v) == 0) continue;
-                    if (triverts[2].compareTo(v) == 0) continue;
+                    if (triverts[0].compareTo(v) == 0 || triverts[1].compareTo(v) == 0 || triverts[2].compareTo(v) == 0) continue;
                     {
                         double d =  MathHelper.getNearestPointDistanceToLineSegmentCSG(triverts[0], triverts[1], v, epsilon);
                         if (d < epsilon) {
@@ -110,8 +108,7 @@ public enum CSGOptimizerTJunction {
 
     private static boolean isValidEdge(VectorCSGd a, VectorCSGd b, Set<VectorCSGd> vertices) {
         for (VectorCSGd v : vertices) {
-            if (a.compareTo(v) == 0) continue;
-            if (b.compareTo(v) == 0) continue;
+            if (a.compareTo(v) == 0 || b.compareTo(v) == 0) continue;
             double d = MathHelper.getNearestPointDistanceToLineSegmentCSG(a, b, v, epsilon);
             if (d < epsilon) {
                 return false;

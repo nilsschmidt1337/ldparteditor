@@ -100,36 +100,36 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                         selectedLines.remove(g);
                         {
                             Vertex[] verts = lines.get(g);
-                            if (verts == null)
-                                continue;
-                            objectVertices.addAll(Arrays.asList(verts));
+                            if (verts != null) {
+                                objectVertices.addAll(Arrays.asList(verts));
+                            }
                         }
                         break;
                     case 3:
                         selectedTriangles.remove(g);
                         {
                             Vertex[] verts = triangles.get(g);
-                            if (verts == null)
-                                continue;
-                            objectVertices.addAll(Arrays.asList(verts));
+                            if (verts != null) {
+                                objectVertices.addAll(Arrays.asList(verts));
+                            }
                         }
                         break;
                     case 4:
                         selectedQuads.remove(g);
                         {
                             Vertex[] verts = quads.get(g);
-                            if (verts == null)
-                                continue;
-                            objectVertices.addAll(Arrays.asList(verts));
+                            if (verts != null) {
+                                objectVertices.addAll(Arrays.asList(verts));
+                            }
                         }
                         break;
                     case 5:
                         selectedCondlines.remove(g);
                         {
                             Vertex[] verts = condlines.get(g);
-                            if (verts == null)
-                                continue;
-                            objectVertices.addAll(Arrays.asList(verts));
+                            if (verts != null) {
+                                objectVertices.addAll(Arrays.asList(verts));
+                            }
                         }
                         break;
                     default:
@@ -203,36 +203,36 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                         selectedLines.remove(g);
                         {
                             Vertex[] verts = lines.get(g);
-                            if (verts == null)
-                                continue;
-                            objectVertices.addAll(Arrays.asList(verts));
+                            if (verts != null) {
+                                objectVertices.addAll(Arrays.asList(verts));
+                            }
                         }
                         break;
                     case 3:
                         selectedTriangles.remove(g);
                         {
                             Vertex[] verts = triangles.get(g);
-                            if (verts == null)
-                                continue;
-                            objectVertices.addAll(Arrays.asList(verts));
+                            if (verts != null) {
+                                objectVertices.addAll(Arrays.asList(verts));
+                            }
                         }
                         break;
                     case 4:
                         selectedQuads.remove(g);
                         {
                             Vertex[] verts = quads.get(g);
-                            if (verts == null)
-                                continue;
-                            objectVertices.addAll(Arrays.asList(verts));
+                            if (verts != null) {
+                                objectVertices.addAll(Arrays.asList(verts));
+                            }
                         }
                         break;
                     case 5:
                         selectedCondlines.remove(g);
                         {
                             Vertex[] verts = condlines.get(g);
-                            if (verts == null)
-                                continue;
-                            objectVertices.addAll(Arrays.asList(verts));
+                            if (verts != null) {
+                                objectVertices.addAll(Arrays.asList(verts));
+                            }
                         }
                         break;
                     default:
@@ -253,9 +253,9 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     effSelectedLines.add(new GData2(verts[0], verts[1], line.parent, new GColour(line.colourNumber, line.r, line.g, line.b, line.a), line.isLine));
                 }
                 Vertex[] verts = lines.get(line);
-                if (verts == null)
-                    continue;
-                objectVertices.addAll(Arrays.asList(verts));
+                if (verts != null) {
+                    objectVertices.addAll(Arrays.asList(verts));
+                }
             }
             for (GData3 triangle : selectedTriangles) {
                 if (triangle.parent.equals(View.DUMMY_REFERENCE)) {
@@ -267,9 +267,9 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     effSelectedTriangles.add(new GData3(verts[0], verts[1], verts[2], triangle.parent, new GColour(triangle.colourNumber, triangle.r, triangle.g, triangle.b, triangle.a), true));
                 }
                 Vertex[] verts = triangles.get(triangle);
-                if (verts == null)
-                    continue;
-                objectVertices.addAll(Arrays.asList(verts));
+                if (verts != null) {
+                    objectVertices.addAll(Arrays.asList(verts));
+                }
             }
             for (GData4 quad : selectedQuads) {
                 if (quad.parent.equals(View.DUMMY_REFERENCE)) {
@@ -281,9 +281,9 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     effSelectedQuads.add(new GData4(verts[0], verts[1], verts[2], verts[3], quad.parent, new GColour(quad.colourNumber, quad.r, quad.g, quad.b, quad.a)));
                 }
                 Vertex[] verts = quads.get(quad);
-                if (verts == null)
-                    continue;
-                objectVertices.addAll(Arrays.asList(verts));
+                if (verts != null) {
+                    objectVertices.addAll(Arrays.asList(verts));
+                }
             }
             for (GData5 condline : selectedCondlines) {
                 if (condline.parent.equals(View.DUMMY_REFERENCE)) {
@@ -296,9 +296,9 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                             new GColour(condline.colourNumber, condline.r, condline.g, condline.b, condline.a)));
                 }
                 Vertex[] verts = condlines.get(condline);
-                if (verts == null)
-                    continue;
-                objectVertices.addAll(Arrays.asList(verts));
+                if (verts != null) {
+                    objectVertices.addAll(Arrays.asList(verts));
+                }
             }
 
             singleVertices.addAll(selectedVertices);
@@ -477,7 +477,6 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
 
             selectedVertices.retainAll(vertexLinkedToPositionInFile.keySet());
         }
-
     }
 
     public void paste(SelectorSettings sels) {
@@ -493,19 +492,11 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
             clearSelection();
             if (Editor3DWindow.getWindow().isInsertingAtCursorPosition()) {
                 for (GData g : CLIPBOARD) {
-                    if (g.type() == 0 && (!insertVertices || g.text.startsWith("0 //~"))) { //$NON-NLS-1$
-                        continue;
-                    }
-                    if (!insertLines && g.type() == 2) {
-                        continue;
-                    }
-                    if (!insertTriangles && g.type() == 3) {
-                        continue;
-                    }
-                    if (!insertQuads && g.type() == 4) {
-                        continue;
-                    }
-                    if (!insertCondlines && g.type() == 5) {
+                    if (g.type() == 0 && (!insertVertices || g.text.startsWith("0 //~")) //$NON-NLS-1$
+                    || !insertLines && g.type() == 2
+                    || !insertTriangles && g.type() == 3
+                    || !insertQuads && g.type() == 4
+                    || !insertCondlines && g.type() == 5) {
                         continue;
                     }
                     Set<String> alreadyParsed = new HashSet<>();
@@ -531,33 +522,34 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                     case 1:
                         selectedSubfiles.add((GData1) pasted);
                         Set<VertexInfo> vis = lineLinkedToVertices.get(pasted);
-                        if (vis == null) continue;
-                        for (VertexInfo vertexInfo : vis) {
-                            selectedVertices.add(vertexInfo.getVertex());
-                            GData gs = vertexInfo.getLinkedData();
-                            selectedData.add(gs);
-                            switch (gs.type()) {
-                            case 0:
-                                selectedData.remove(gs);
-                                Vertex vertex2 = ((GData0) gs).getVertex();
-                                if (vertex2 != null) {
-                                    selectedVertices.add(vertex2);
+                        if (vis != null) {
+                            for (VertexInfo vertexInfo : vis) {
+                                selectedVertices.add(vertexInfo.getVertex());
+                                GData gs = vertexInfo.getLinkedData();
+                                selectedData.add(gs);
+                                switch (gs.type()) {
+                                case 0:
+                                    selectedData.remove(gs);
+                                    Vertex vertex2 = ((GData0) gs).getVertex();
+                                    if (vertex2 != null) {
+                                        selectedVertices.add(vertex2);
+                                    }
+                                    break;
+                                case 2:
+                                    selectedLines.add((GData2) gs);
+                                    break;
+                                case 3:
+                                    selectedTriangles.add((GData3) gs);
+                                    break;
+                                case 4:
+                                    selectedQuads.add((GData4) gs);
+                                    break;
+                                case 5:
+                                    selectedCondlines.add((GData5) gs);
+                                    break;
+                                default:
+                                    break;
                                 }
-                                break;
-                            case 2:
-                                selectedLines.add((GData2) gs);
-                                break;
-                            case 3:
-                                selectedTriangles.add((GData3) gs);
-                                break;
-                            case 4:
-                                selectedQuads.add((GData4) gs);
-                                break;
-                            case 5:
-                                selectedCondlines.add((GData5) gs);
-                                break;
-                            default:
-                                break;
                             }
                         }
                         break;
@@ -583,19 +575,11 @@ class VM99Clipboard extends VM28SlantingMatrixProjector {
                 GData before = linkedDatFile.getDrawChainTail();
                 GData tailData = null;
                 for (GData g : CLIPBOARD) {
-                    if (!insertVertices && g.type() == 0 && g.text.contains("VERTEX")) { //$NON-NLS-1$
-                        continue;
-                    }
-                    if (!insertLines && g.type() == 2) {
-                        continue;
-                    }
-                    if (!insertTriangles && g.type() == 3) {
-                        continue;
-                    }
-                    if (!insertQuads && g.type() == 4) {
-                        continue;
-                    }
-                    if (!insertCondlines && g.type() == 5) {
+                    if (!insertVertices && g.type() == 0 && g.text.contains("VERTEX") //$NON-NLS-1$
+                     || !insertLines && g.type() == 2
+                     || !insertTriangles && g.type() == 3
+                     || !insertQuads && g.type() == 4
+                     || !insertCondlines && g.type() == 5) {
                         continue;
                     }
                     Set<String> alreadyParsed = new HashSet<>();

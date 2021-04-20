@@ -131,19 +131,17 @@ public class VM20Manipulator extends VM19ColourChanger {
             case 0:
             {
                 Vertex[] verts = declaredVertices.get(gd);
-                if (verts != null) {
-                    if (transformedLPEvertices.contains(verts[0])) {
-                        continue;
-                    } else {
-                        if (!moveAdjacentData) transformedLPEvertices.add(verts[0]);
-                        Vertex v1 = oldToNewVertex.get(verts[0]);
-                        if (v1 == null) v1 = verts[0];
-                        newData = addVertex(v1);
-                        if (updateSelection) {
-                            selectedVertices.remove(verts[0]);
-                            selectedVertices.add(v1);
-                        }
-                    }
+                if (verts == null || transformedLPEvertices.contains(verts[0])) {
+                    continue;
+                }
+
+                if (!moveAdjacentData) transformedLPEvertices.add(verts[0]);
+                Vertex v1 = oldToNewVertex.get(verts[0]);
+                if (v1 == null) v1 = verts[0];
+                newData = addVertex(v1);
+                if (updateSelection) {
+                    selectedVertices.remove(verts[0]);
+                    selectedVertices.add(v1);
                 }
             }
             break;

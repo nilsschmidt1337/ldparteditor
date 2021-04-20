@@ -168,8 +168,6 @@ public enum ReferenceParser {
 
         }
         if (refMode == References.REQUIRED_AND_RELATED) {
-            // TODO Needs implementation!
-
 
             // 1. Gather a FULL list of DatFiles which are located within the base path of the selected DatFile A
 
@@ -429,6 +427,7 @@ public enum ReferenceParser {
                         } else {
                             dt = DatType.PRIMITIVE;
                         }
+                        break;
                     default:
                         break;
                     }
@@ -469,6 +468,7 @@ public enum ReferenceParser {
                             } else {
                                 dt = DatType.PRIMITIVE;
                             }
+                            break;
                         default:
                             break;
                         }

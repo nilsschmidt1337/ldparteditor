@@ -62,10 +62,8 @@ enum ErrorFixer {
             GData g = datFile.getDrawPerLineNoClone().getValue(lineNumber + 1).getNext();
             while (g != null && g.type() < 2) {
                 lineNumber++;
-                if (g.type() == 1) {
-                    validState = true;
-                    break;
-                } else if (!g.toString().trim().isEmpty()) {
+                validState = g.type() == 1;
+                if (validState || !g.toString().trim().isEmpty()) {
                     break;
                 }
                 g = g.getNext();

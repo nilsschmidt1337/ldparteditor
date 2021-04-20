@@ -1032,16 +1032,12 @@ class VM00Base {
                 GData0 oldVm = (GData0) oldData;
                 GData0 newVm = null;
                 Vertex[] va = declaredVertices.get(oldVm);
-                if (va == null) {
+                if (va == null || !moveAdjacentData && !selectedVertices.contains(va[0]))
                     continue;
-                } else {
-                    if (!moveAdjacentData && !selectedVertices.contains(va[0]))
-                        continue;
-                    if (va[0].equals(oldVertex))
-                        va[0] = newVertex;
-                    newVm = addVertex(va[0]);
-                    newData = newVm;
-                }
+                if (va[0].equals(oldVertex))
+                    va[0] = newVertex;
+                newVm = addVertex(va[0]);
+                newData = newVm;
                 break;
             case 2:
                 GData2 oldLin = (GData2) oldData;
@@ -1195,16 +1191,12 @@ class VM00Base {
                 GData0 oldVm = (GData0) oldData;
                 GData0 newVm = null;
                 Vertex[] va = declaredVertices.get(oldVm);
-                if (va == null) {
+                if (va == null || !moveAdjacentData && !selectedVertices.contains(va[0]))
                     continue;
-                } else {
-                    if (!moveAdjacentData && !selectedVertices.contains(va[0]))
-                        continue;
-                    if (va[0].equals(oldVertex))
-                        va[0] = newVertex;
-                    newVm = addVertex(va[0]);
-                    newData = newVm;
-                }
+                if (va[0].equals(oldVertex))
+                    va[0] = newVertex;
+                newVm = addVertex(va[0]);
+                newData = newVm;
                 break;
             case 2:
                 GData2 oldLin = (GData2) oldData;

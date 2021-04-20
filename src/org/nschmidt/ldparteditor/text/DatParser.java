@@ -555,48 +555,46 @@ public enum DatParser {
             BigDecimal m32;
             final BigDecimal m33 = BigDecimal.ONE;
             float det = 0;
-            while (true) {
-                try {
-                    // Offset
-                    m30 = new BigDecimal(dataSegments[2]);
-                    tMatrix.m30 = m30.floatValue() * 1000f;
-                    m31 = new BigDecimal(dataSegments[3]);
-                    tMatrix.m31 = m31.floatValue() * 1000f;
-                    m32 = new BigDecimal(dataSegments[4]);
-                    tMatrix.m32 = m32.floatValue() * 1000f;
-                    // First row
-                    m00 = new BigDecimal(dataSegments[5]);
-                    tMatrix.m00 = m00.floatValue();
-                    m10 = new BigDecimal(dataSegments[6]);
-                    tMatrix.m10 = m10.floatValue();
-                    m20 = new BigDecimal(dataSegments[7]);
-                    tMatrix.m20 = m20.floatValue();
-                    // Second row
-                    m01 = new BigDecimal(dataSegments[8]);
-                    tMatrix.m01 = m01.floatValue();
-                    m11 = new BigDecimal(dataSegments[9]);
-                    tMatrix.m11 = m11.floatValue();
-                    m21 = new BigDecimal(dataSegments[10]);
-                    tMatrix.m21 = m21.floatValue();
-                    // Third row
-                    m02 = new BigDecimal(dataSegments[11]);
-                    tMatrix.m02 = m02.floatValue();
-                    m12 = new BigDecimal(dataSegments[12]);
-                    tMatrix.m12 = m12.floatValue();
-                    m22 = new BigDecimal(dataSegments[13]);
-                    tMatrix.m22 = m22.floatValue();
-                } catch (NumberFormatException nfe) {
-                    m00 = null; m01 = null; m02 = null; m10 = null;
-                    m11 = null; m12 = null; m20 = null; m21 = null;
-                    m22 = null; m30 = null; m31 = null; m32 = null;
-                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                    break;
-                }
+            try {
+                // Offset
+                m30 = new BigDecimal(dataSegments[2]);
+                tMatrix.m30 = m30.floatValue() * 1000f;
+                m31 = new BigDecimal(dataSegments[3]);
+                tMatrix.m31 = m31.floatValue() * 1000f;
+                m32 = new BigDecimal(dataSegments[4]);
+                tMatrix.m32 = m32.floatValue() * 1000f;
+                // First row
+                m00 = new BigDecimal(dataSegments[5]);
+                tMatrix.m00 = m00.floatValue();
+                m10 = new BigDecimal(dataSegments[6]);
+                tMatrix.m10 = m10.floatValue();
+                m20 = new BigDecimal(dataSegments[7]);
+                tMatrix.m20 = m20.floatValue();
+                // Second row
+                m01 = new BigDecimal(dataSegments[8]);
+                tMatrix.m01 = m01.floatValue();
+                m11 = new BigDecimal(dataSegments[9]);
+                tMatrix.m11 = m11.floatValue();
+                m21 = new BigDecimal(dataSegments[10]);
+                tMatrix.m21 = m21.floatValue();
+                // Third row
+                m02 = new BigDecimal(dataSegments[11]);
+                tMatrix.m02 = m02.floatValue();
+                m12 = new BigDecimal(dataSegments[12]);
+                tMatrix.m12 = m12.floatValue();
+                m22 = new BigDecimal(dataSegments[13]);
+                tMatrix.m22 = m22.floatValue();
                 tMatrix.m33 = 1f;
+
                 det = tMatrix.determinant();
                 parseError = Math.abs(det) < Threshold.SINGULARITY_DETERMINANT;
-                break;
+            } catch (NumberFormatException nfe) {
+                m00 = null; m01 = null; m02 = null; m10 = null;
+                m11 = null; m12 = null; m20 = null; m21 = null;
+                m22 = null; m30 = null; m31 = null; m32 = null;
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             }
+
             // [WARNING] Check file existance
             boolean fileExists = true;
             StringBuilder sb = new StringBuilder();
@@ -837,20 +835,16 @@ public enum DatParser {
                 return result;
             }
             // [ERROR] Check identical vertices
-            while (true) {
-                try {
-                    // Start vertex
-                    start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
-                    start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
-                    start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
-                    // End vertex
-                    end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
-                    end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
-                    end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
-                } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                    break;
-                }
+            try {
+                // Start vertex
+                start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                // End vertex
+                end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+
                 parseError = Vector3d.sub(start, end).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0;
                 if (parseError) {
                     result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
@@ -863,7 +857,8 @@ public enum DatParser {
                 if (colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
                     result.add(new ParsingResult(I18n.DATPARSER_DITHERED_COLOUR, "[WDC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                 }
-                break;
+            } catch (NumberFormatException nfe) {
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             }
         }
         return result;
@@ -903,24 +898,20 @@ public enum DatParser {
                 return result;
             }
             // [ERROR] Check identical vertices
-            while (true) {
-                try {
-                    // 1st vertex
-                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
-                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
-                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
-                    // 2nd vertex
-                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
-                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
-                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
-                    // 3rd vertex
-                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
-                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
-                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
-                } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                    break;
-                }
+            try {
+                // 1st vertex
+                vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                // 2nd vertex
+                vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                // 3rd vertex
+                vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+                vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+                vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
+
                 if (!errorCheckOnly) { // result.size() < 1 &&
                     GData3 data = new GData3(colour.getColourNumber(), colour.getR(), colour.getG(), colour.getB(), colour.getA(), vertexA.x, vertexA.y, vertexA.z, vertexB.x, vertexB.y, vertexB.z,
                             vertexC.x, vertexC.y, vertexC.z, parent, datFile, true);
@@ -965,7 +956,8 @@ public enum DatParser {
                         result.add(new ParsingResult(I18n.DATPARSER_DITHERED_COLOUR, "[WDC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     }
                 }
-                break;
+            } catch (NumberFormatException nfe) {
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             }
         }
         return result;
@@ -1006,28 +998,24 @@ public enum DatParser {
             }
             // [ERROR] Check hourglass, concave form, coplanarity & identical
             // vertices
-            while (true) {
-                try {
-                    // 1st vertex
-                    vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
-                    vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
-                    vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
-                    // 2nd vertex
-                    vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
-                    vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
-                    vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
-                    // 3rd vertex
-                    vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
-                    vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
-                    vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
-                    // 4th vertex
-                    vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
-                    vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
-                    vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
-                } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                    break;
-                }
+            try {
+                // 1st vertex
+                vertexA.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                vertexA.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                vertexA.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                // 2nd vertex
+                vertexB.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                vertexB.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                vertexB.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                // 3rd vertex
+                vertexC.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+                vertexC.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+                vertexC.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
+                // 4th vertex
+                vertexD.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+                vertexD.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+                vertexD.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
+
 
                 final boolean depthLower1 = depth < 1;
 
@@ -1169,9 +1157,11 @@ public enum DatParser {
                         result.add(new ParsingResult(I18n.DATPARSER_DITHERED_COLOUR, "[WDC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                     }
                 }
-                break;
+            } catch (NumberFormatException nfe) {
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             }
         }
+
         return result;
     }
 
@@ -1209,28 +1199,24 @@ public enum DatParser {
                 return result;
             }
             // [ERROR] Check identical vertices
-            while (true) {
-                try {
-                    // start vertex
-                    start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
-                    start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
-                    start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
-                    // end vertex
-                    end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
-                    end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
-                    end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
-                    // control vertex I
-                    controlI.setX(new BigDecimal(dataSegments[8], Threshold.MC));
-                    controlI.setY(new BigDecimal(dataSegments[9], Threshold.MC));
-                    controlI.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
-                    // control vertex II
-                    controlII.setX(new BigDecimal(dataSegments[11], Threshold.MC));
-                    controlII.setY(new BigDecimal(dataSegments[12], Threshold.MC));
-                    controlII.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
-                } catch (NumberFormatException nfe) {
-                    result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
-                    break;
-                }
+            try {
+                // start vertex
+                start.setX(new BigDecimal(dataSegments[2], Threshold.MC));
+                start.setY(new BigDecimal(dataSegments[3], Threshold.MC));
+                start.setZ(new BigDecimal(dataSegments[4], Threshold.MC));
+                // end vertex
+                end.setX(new BigDecimal(dataSegments[5], Threshold.MC));
+                end.setY(new BigDecimal(dataSegments[6], Threshold.MC));
+                end.setZ(new BigDecimal(dataSegments[7], Threshold.MC));
+                // control vertex I
+                controlI.setX(new BigDecimal(dataSegments[8], Threshold.MC));
+                controlI.setY(new BigDecimal(dataSegments[9], Threshold.MC));
+                controlI.setZ(new BigDecimal(dataSegments[10], Threshold.MC));
+                // control vertex II
+                controlII.setX(new BigDecimal(dataSegments[11], Threshold.MC));
+                controlII.setY(new BigDecimal(dataSegments[12], Threshold.MC));
+                controlII.setZ(new BigDecimal(dataSegments[13], Threshold.MC));
+
                 if (Vector3d.sub(start, end).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0) {
                     result.add(new ParsingResult(I18n.DATPARSER_IDENTICAL_VERTICES, "[E0D] " + I18n.DATPARSER_DATA_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 } else if (depth < 1 && Vector3d.sub(controlI, controlII).length().compareTo(Threshold.IDENTICAL_VERTEX_DISTANCE) < 0) {
@@ -1244,9 +1230,11 @@ public enum DatParser {
                 if (depth < 1 && colour.getType() != null && GCType.DITHERED == colour.getType().type()) {
                     result.add(new ParsingResult(I18n.DATPARSER_DITHERED_COLOUR, "[WDC] " + I18n.DATPARSER_WARNING, ResultType.WARN)); //$NON-NLS-1$
                 }
-                break;
+            } catch (NumberFormatException nfe) {
+                result.add(new ParsingResult(I18n.DATPARSER_INVALID_NUMBER_FORMAT, "[E99] " + I18n.DATPARSER_SYNTAX_ERROR, ResultType.ERROR)); //$NON-NLS-1$
             }
         }
+
         return result;
     }
 
