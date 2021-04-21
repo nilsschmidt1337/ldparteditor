@@ -79,19 +79,17 @@ public class CSGCone implements Primitive {
         for (int i = 0; i < numSlices; i++) {
             double t0 = i / (double) numSlices;
             double t1 = (i + 1) / (double) numSlices;
-            {
-                polygons.add(new Polygon(df, Arrays.asList(cylPoint(axisX, axisY, axisZ, ray, s, 0, 0, t0, 0), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 0),
-                                                cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 0)), new GColourIndex(colour, id)));
-            }
-            {
-                polygons.add(new Polygon(df, Arrays.asList(endV, cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t1, 1), cylPoint(axisX, axisY, axisZ, ray, s, radius, 1, t0, 1)), new GColourIndex(colour, id)));
-            }
+
+            polygons.add(new Polygon(df, Arrays.asList(cylPoint(axisX, axisY, ray, s, 0, 0, t0), cylPoint(axisX, axisY, ray, s, radius, 1, t0),
+                                     cylPoint(axisX, axisY, ray, s, radius, 1, t1)), new GColourIndex(colour, id)));
+
+            polygons.add(new Polygon(df, Arrays.asList(endV, cylPoint(axisX, axisY, ray, s, radius, 1, t1), cylPoint(axisX, axisY, ray, s, radius, 1, t0)), new GColourIndex(colour, id)));
         }
 
         return polygons;
     }
 
-    private VectorCSGd cylPoint(VectorCSGd axisX, VectorCSGd axisY, VectorCSGd axisZ, VectorCSGd ray, VectorCSGd s, double r, double stack, double slice, double normalBlend) {
+    private VectorCSGd cylPoint(VectorCSGd axisX, VectorCSGd axisY, VectorCSGd ray, VectorCSGd s, double r, double stack, double slice) {
         double angle = slice * Math.PI * 2;
         VectorCSGd out = axisX.times(Math.cos(angle)).plus(axisY.times(Math.sin(angle)));
         return s.plus(ray.times(stack)).plus(out.times(r));

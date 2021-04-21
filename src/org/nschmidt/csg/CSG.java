@@ -59,7 +59,6 @@ import org.nschmidt.ldparteditor.data.GData3;
 import org.nschmidt.ldparteditor.enums.View;
 import org.nschmidt.ldparteditor.helpers.LDPartEditorException;
 import org.nschmidt.ldparteditor.helpers.composite3d.GuiStatusManager;
-import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * Constructive Solid Geometry (CSG).
@@ -236,36 +235,41 @@ public class CSG {
         CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
         CompletableFuture.allOf(f1, f2).join();
 
+        final Node a;
+        final Node b;
+
         try {
-            Node a = f1.get();
-            Node b = f2.get();
-
-            a.clipTo(b);
-            b.clipTo(a);
-            b.invert();
-            b.clipTo(a);
-            b.invert();
-
-            final List<Node> nodes = new ArrayList<>();
-            final Deque<NodePolygon> st = new LinkedList<>();
-            st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
-            while (!st.isEmpty()) {
-                NodePolygon np = st.pop();
-                Node n = np.getNode();
-                nodes.add(n);
-                List<NodePolygon> npr = n.buildForResult(np.getPolygons());
-                for (NodePolygon np2 : npr) {
-                    st.push(np2);
-                }
-            }
-
-            final List<Polygon> resultPolys = a.allPolygons(nonIntersectingPolys);
-            return CSG.fromPolygons(resultPolys);
-        } catch (ExecutionException | InterruptedException e) {
-            // Exceptions sollten (tm) schon im "join" geworfen worden sein.
+            a = f1.get();
+            b = f2.get();
+        } catch (ExecutionException e) {
+            // Exceptions should (tm) already be thrown by the "join()" call.
+            throw new LDPartEditorException(e);
+        } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(e);
         }
+
+        a.clipTo(b);
+        b.clipTo(a);
+        b.invert();
+        b.clipTo(a);
+        b.invert();
+
+        final List<Node> nodes = new ArrayList<>();
+        final Deque<NodePolygon> st = new LinkedList<>();
+        st.push(new NodePolygon(a, b.allPolygons(new ArrayList<>())));
+        while (!st.isEmpty()) {
+            NodePolygon np = st.pop();
+            Node n = np.getNode();
+            nodes.add(n);
+            List<NodePolygon> npr = n.buildForResult(np.getPolygons());
+            for (NodePolygon np2 : npr) {
+                st.push(np2);
+            }
+        }
+
+        final List<Polygon> resultPolys = a.allPolygons(nonIntersectingPolys);
+        return CSG.fromPolygons(resultPolys);
     }
 
     /**
@@ -320,14 +324,15 @@ public class CSG {
         CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(otherPolys));
         CompletableFuture.allOf(f1, f2).join();
 
-        Node a = null;
-        Node b = null;
+        final Node a;
+        final Node b;
 
         try {
             a = f1.get();
             b = f2.get();
         } catch (ExecutionException e) {
-            NLogger.error(getClass(), e);
+            // Exceptions should (tm) already be thrown by the "join()" call.
+            throw new LDPartEditorException(e);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(ie);
@@ -390,14 +395,14 @@ public class CSG {
         CompletableFuture<Node> f2 = CompletableFuture.supplyAsync(() -> new Node(csg.createClone().polygons));
         CompletableFuture.allOf(f1, f2).join();
 
-        Node a = null;
-        Node b = null;
+        final Node a;
+        final Node b;
 
         try {
             a = f1.get();
             b = f2.get();
         } catch (ExecutionException e) {
-            NLogger.error(getClass(), e);
+            throw new LDPartEditorException(e);
         } catch (InterruptedException ie) {
             Thread.currentThread().interrupt();
             throw new LDPartEditorException(ie);

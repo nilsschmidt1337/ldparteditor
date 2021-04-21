@@ -111,10 +111,12 @@ final class Node {
         while (!st.isEmpty()) {
             final Node n = st.pop();
             final List<Polygon> polys = n.polygons;
-            if (n.plane == null && !polys.isEmpty()) {
+            if (n.plane == null) {
+                if (polys.isEmpty()) {
+                    continue;
+                }
+
                 n.plane = polys.get(0).plane.createClone();
-            } else if (n.plane == null && polys.isEmpty()) {
-                continue;
             }
 
             for (Polygon polygon : polys) {
@@ -360,10 +362,12 @@ final class Node {
 
         final List<NodePolygon> result = new ArrayList<>(2);
 
-        if (this.plane == null && !polygons.isEmpty()) {
+        if (this.plane == null) {
+            if (polygons.isEmpty()) {
+                return result;
+            }
+
             this.plane = polygons.get(0).plane.createClone();
-        } else if (this.plane == null && polygons.isEmpty()) {
-            return result;
         }
 
         List<Polygon> frontP = new ArrayList<>();
