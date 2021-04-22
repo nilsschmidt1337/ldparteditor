@@ -69,7 +69,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexInfo;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
-import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
+import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropTransfer;
 import org.nschmidt.ldparteditor.enums.Colour;
 import org.nschmidt.ldparteditor.enums.Font;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
@@ -147,7 +147,7 @@ public class CompositeTab extends CompositeTabDesign {
 
         {
             DropTarget dt = new DropTarget(compositeTextPtr[0], DND.DROP_DEFAULT | DND.DROP_MOVE );
-            dt.setTransfer(MyDummyTransfer2.getInstance(), FileTransfer.getInstance());
+            dt.setTransfer(PrimitiveDragAndDropTransfer.getInstance(), FileTransfer.getInstance());
             dt.addDropListener(new DropTargetAdapter() {
                 @Override
                 public void drop(DropTargetEvent event) {

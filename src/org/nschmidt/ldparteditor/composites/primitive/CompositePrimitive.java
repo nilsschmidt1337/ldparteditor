@@ -76,8 +76,8 @@ import org.nschmidt.ldparteditor.data.PGDataInit;
 import org.nschmidt.ldparteditor.data.PGDataProxy;
 import org.nschmidt.ldparteditor.data.PGTimestamp;
 import org.nschmidt.ldparteditor.data.Primitive;
-import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
-import org.nschmidt.ldparteditor.dnd.MyDummyType2;
+import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropTransfer;
+import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropType;
 import org.nschmidt.ldparteditor.enums.MouseButton;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.Rule;
@@ -192,7 +192,7 @@ public class CompositePrimitive extends Composite {
 
         this.setBackgroundMode(SWT.INHERIT_FORCE);
 
-        Transfer[] types = new Transfer[] { MyDummyTransfer2.getInstance() };
+        Transfer[] types = new Transfer[] { PrimitiveDragAndDropTransfer.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
 
         final DragSource source = new DragSource(canvas, operations);
@@ -206,7 +206,7 @@ public class CompositePrimitive extends Composite {
 
             @Override
             public void dragSetData(DragSourceEvent event) {
-                event.data = new MyDummyType2();
+                event.data = new PrimitiveDragAndDropType();
             }
 
             @Override

@@ -19,6 +19,6 @@ package org.nschmidt.ldparteditor.dnd;
  * @author nils
  *
  */
-public class MyDummyType {
-    int dummy = 1;
+public class TextTabDragAndDropType {
+    int placeholderData = 1;
 }

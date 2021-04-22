@@ -24,17 +24,18 @@ import java.io.IOException;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.TransferData;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * @author nils
  *
  */
-public class MyDummyTransfer2 extends ByteArrayTransfer {
-    private static final String MYTYPENAME = "name_for_my_type2"; //$NON-NLS-1$
-    private static final int MYTYPEID = registerType(MYTYPENAME);
-    private static MyDummyTransfer2 instance = new MyDummyTransfer2();
+public class TextTabDragAndDropTransfer extends ByteArrayTransfer {
+    private static final String TYPENAME = "lpe_text_editor_tab"; //$NON-NLS-1$
+    private static final int TYPEID = registerType(TYPENAME);
+    private static TextTabDragAndDropTransfer instance = new TextTabDragAndDropTransfer();
 
-    public static MyDummyTransfer2 getInstance() {
+    public static TextTabDragAndDropTransfer getInstance() {
         return instance;
     }
 
@@ -43,17 +44,15 @@ public class MyDummyTransfer2 extends ByteArrayTransfer {
         if (!checkMyType(object) || !isSupportedType(transferData)) {
             DND.error(DND.ERROR_INVALID_DATA);
         }
-        MyDummyType2 myTypes = (MyDummyType2) object;
-        try {
+        TextTabDragAndDropType myTypes = (TextTabDragAndDropType) object;
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+             DataOutputStream writeOut = new DataOutputStream(out)) {
             // write data to a byte array and then ask super to convert to
-            // pMedium
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            DataOutputStream writeOut = new DataOutputStream(out);
-            writeOut.writeInt(myTypes.dummy);
+            writeOut.writeInt(myTypes.placeholderData);
             byte[] buffer2 = out.toByteArray();
-            writeOut.close();
             super.javaToNative(buffer2, transferData);
-        } catch (IOException e) {
+        } catch (IOException ex) {
+            NLogger.error(getClass(), ex);
         }
     }
 
@@ -64,16 +63,15 @@ public class MyDummyTransfer2 extends ByteArrayTransfer {
             if (buffer == null)
                 return null;
 
-            MyDummyType2 datum = new MyDummyType2();
-            try {
-                ByteArrayInputStream in = new ByteArrayInputStream(buffer);
-                DataInputStream readIn = new DataInputStream(in);
-                datum.dummy = readIn.readInt();
-                readIn.close();
+            TextTabDragAndDropType data = new TextTabDragAndDropType();
+            try (ByteArrayInputStream in = new ByteArrayInputStream(buffer);
+                 DataInputStream readIn = new DataInputStream(in)) {
+                data.placeholderData = readIn.readInt();
             } catch (IOException ex) {
+                NLogger.error(getClass(), ex);
                 return null;
             }
-            return datum;
+            return data;
         }
 
         return null;
@@ -81,19 +79,16 @@ public class MyDummyTransfer2 extends ByteArrayTransfer {
 
     @Override
     protected String[] getTypeNames() {
-        return new String[] { MYTYPENAME };
+        return new String[] { TYPENAME };
     }
 
     @Override
     protected int[] getTypeIds() {
-        return new int[] { MYTYPEID };
+        return new int[] { TYPEID };
     }
 
     private boolean checkMyType(Object object) {
-        if (object == null || !(object instanceof MyDummyType2)) {
-            return false;
-        }
-        return true;
+        return object instanceof TextTabDragAndDropType;
     }
 
     @Override

@@ -80,7 +80,7 @@ import org.nschmidt.ldparteditor.data.Vertex;
 import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.snapshot.SnapshotDialog;
 import org.nschmidt.ldparteditor.dialogs.value.ValueDialog;
-import org.nschmidt.ldparteditor.dnd.MyDummyTransfer2;
+import org.nschmidt.ldparteditor.dnd.PrimitiveDragAndDropTransfer;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.Perspective;
 import org.nschmidt.ldparteditor.enums.Task;
@@ -1164,7 +1164,7 @@ public class Composite3D extends ScalableComposite {
             }
         });
 
-        Transfer[] types = new Transfer[] { MyDummyTransfer2.getInstance(), FileTransfer.getInstance() };
+        Transfer[] types = new Transfer[] { PrimitiveDragAndDropTransfer.getInstance(), FileTransfer.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
         DropTarget target = new DropTarget(this, operations);
         target.setTransfer(types);

@@ -24,17 +24,18 @@ import java.io.IOException;
 import org.eclipse.swt.dnd.ByteArrayTransfer;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.TransferData;
+import org.nschmidt.ldparteditor.logger.NLogger;
 
 /**
  * @author nils
  *
  */
-public class MyDummyTransfer extends ByteArrayTransfer {
-    private static final String MYTYPENAME = "name_for_my_type"; //$NON-NLS-1$
-    private static final int MYTYPEID = registerType(MYTYPENAME);
-    private static MyDummyTransfer instance = new MyDummyTransfer();
+public class PrimitiveDragAndDropTransfer extends ByteArrayTransfer {
+    private static final String TYPENAME = "ldraw_primitive"; //$NON-NLS-1$
+    private static final int TYPEID = registerType(TYPENAME);
+    private static PrimitiveDragAndDropTransfer instance = new PrimitiveDragAndDropTransfer();
 
-    public static MyDummyTransfer getInstance() {
+    public static PrimitiveDragAndDropTransfer getInstance() {
         return instance;
     }
 
@@ -43,17 +44,15 @@ public class MyDummyTransfer extends ByteArrayTransfer {
         if (!checkMyType(object) || !isSupportedType(transferData)) {
             DND.error(DND.ERROR_INVALID_DATA);
         }
-        MyDummyType myTypes = (MyDummyType) object;
-        try {
-            // write data to a byte array and then ask super to convert to
-            // pMedium
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
-            DataOutputStream writeOut = new DataOutputStream(out);
-            writeOut.writeInt(myTypes.dummy);
+        PrimitiveDragAndDropType myTypes = (PrimitiveDragAndDropType) object;
+        try (ByteArrayOutputStream out = new ByteArrayOutputStream();
+             DataOutputStream writeOut = new DataOutputStream(out)) {
+            // write data to a byte array and then ask super to convert
+            writeOut.writeInt(myTypes.placeholderData);
             byte[] buffer2 = out.toByteArray();
-            writeOut.close();
             super.javaToNative(buffer2, transferData);
-        } catch (IOException e) {
+        } catch (IOException ex) {
+            NLogger.error(getClass(), ex);
         }
     }
 
@@ -64,16 +63,15 @@ public class MyDummyTransfer extends ByteArrayTransfer {
             if (buffer == null)
                 return null;
 
-            MyDummyType datum = new MyDummyType();
-            try {
-                ByteArrayInputStream in = new ByteArrayInputStream(buffer);
-                DataInputStream readIn = new DataInputStream(in);
-                datum.dummy = readIn.readInt();
-                readIn.close();
+            PrimitiveDragAndDropType data = new PrimitiveDragAndDropType();
+            try (ByteArrayInputStream in = new ByteArrayInputStream(buffer);
+                 DataInputStream readIn = new DataInputStream(in)) {
+                data.placeholderData = readIn.readInt();
             } catch (IOException ex) {
+                NLogger.error(getClass(), ex);
                 return null;
             }
-            return datum;
+            return data;
         }
 
         return null;
@@ -81,19 +79,16 @@ public class MyDummyTransfer extends ByteArrayTransfer {
 
     @Override
     protected String[] getTypeNames() {
-        return new String[] { MYTYPENAME };
+        return new String[] { TYPENAME };
     }
 
     @Override
     protected int[] getTypeIds() {
-        return new int[] { MYTYPEID };
+        return new int[] { TYPEID };
     }
 
     private boolean checkMyType(Object object) {
-        if (object == null || !(object instanceof MyDummyType)) {
-            return false;
-        }
-        return true;
+        return object instanceof PrimitiveDragAndDropType;
     }
 
     @Override

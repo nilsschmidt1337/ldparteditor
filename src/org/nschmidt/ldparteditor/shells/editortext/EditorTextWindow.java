@@ -65,8 +65,8 @@ import org.nschmidt.ldparteditor.data.VertexManager;
 import org.nschmidt.ldparteditor.dialogs.colour.ColourDialog;
 import org.nschmidt.ldparteditor.dialogs.round.RoundDialog;
 import org.nschmidt.ldparteditor.dialogs.sort.SortDialog;
-import org.nschmidt.ldparteditor.dnd.MyDummyTransfer;
-import org.nschmidt.ldparteditor.dnd.MyDummyType;
+import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropTransfer;
+import org.nschmidt.ldparteditor.dnd.TextTabDragAndDropType;
 import org.nschmidt.ldparteditor.enums.MyLanguage;
 import org.nschmidt.ldparteditor.enums.OpenInWhat;
 import org.nschmidt.ldparteditor.enums.View;
@@ -1095,7 +1095,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
         widgetUtil(tabFolderPtr[0]).addSelectionListener(e -> ((CompositeTab) tabFolderPtr[0].getSelection()).getTextComposite().forceFocus());
-        Transfer[] types = new Transfer[] { MyDummyTransfer.getInstance() };
+        Transfer[] types = new Transfer[] { TextTabDragAndDropTransfer.getInstance() };
         int operations = DND.DROP_MOVE | DND.DROP_COPY | DND.DROP_LINK;
 
         final DragSource source = new DragSource(tabFolderPtr[0], operations);
@@ -1108,7 +1108,7 @@ public class EditorTextWindow extends EditorTextDesign {
 
             @Override
             public void dragSetData(DragSourceEvent event) {
-                event.data = new MyDummyType();
+                event.data = new TextTabDragAndDropType();
             }
 
             @Override
@@ -1117,7 +1117,7 @@ public class EditorTextWindow extends EditorTextDesign {
             }
         });
 
-        Transfer[] types2 = new Transfer[] { MyDummyTransfer.getInstance(), FileTransfer.getInstance()};
+        Transfer[] types2 = new Transfer[] { TextTabDragAndDropTransfer.getInstance(), FileTransfer.getInstance()};
         DropTarget target = new DropTarget(tabFolderPtr[0], operations);
         target.setTransfer(types2);
         target.addDropListener(new DropTargetAdapter() {

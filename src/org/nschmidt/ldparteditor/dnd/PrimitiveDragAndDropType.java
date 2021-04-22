@@ -19,6 +19,6 @@ package org.nschmidt.ldparteditor.dnd;
  * @author nils
  *
  */
-public class MyDummyType2 {
-    int dummy = 1;
+public class PrimitiveDragAndDropType {
+    int placeholderData = 1;
 }
