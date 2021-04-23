@@ -1054,7 +1054,8 @@ class VM00Base {
                             linkedDatFile, oldLin.isLine);
                     break;
                 default:
-                    break;
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    continue;
                 }
                 newData = newLin;
                 if (selectedLines.contains(oldLin))
@@ -1079,7 +1080,8 @@ class VM00Base {
                             newVertex, oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 default:
-                    break;
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    continue;
                 }
                 newData = newTri;
                 if (selectedTriangles.contains(oldTri))
@@ -1108,7 +1110,8 @@ class VM00Base {
                             oldQuad.z2p), new Vertex(oldQuad.x3p, oldQuad.y3p, oldQuad.z3p), newVertex, oldQuad.parent, linkedDatFile);
                     break;
                 default:
-                    break;
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    continue;
                 }
                 newData = newQuad;
                 if (selectedQuads.contains(oldQuad))
@@ -1137,14 +1140,16 @@ class VM00Base {
                             oldCLin.z2p), new Vertex(oldCLin.x3p, oldCLin.y3p, oldCLin.z3p), newVertex, oldCLin.parent, linkedDatFile);
                     break;
                 default:
-                    break;
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    continue;
                 }
                 newData = newCLin;
                 if (selectedCondlines.contains(oldCLin))
                     selectedCondlines.add(newCLin);
                 break;
             default:
-                break;
+                NLogger.error(VM00Base.class, "Unsupported vertex change on instance: " + oldData + " type: " + oldData.type()); //$NON-NLS-1$ //$NON-NLS-2$
+                continue;
             }
 
             if (selectedVertices.contains(oldVertex)) {
@@ -1213,7 +1218,8 @@ class VM00Base {
                             linkedDatFile, oldLin.isLine);
                     break;
                 default:
-                    break;
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    continue;
                 }
                 newData = newLin;
                 if (selectedLines.contains(oldLin))
@@ -1238,7 +1244,8 @@ class VM00Base {
                             newVertex, oldTri.parent, linkedDatFile, oldTri.isTriangle);
                     break;
                 default:
-                    break;
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    continue;
                 }
                 newData = newTri;
                 if (selectedTriangles.contains(oldTri))
@@ -1267,7 +1274,8 @@ class VM00Base {
                             oldQuad.z2p), new Vertex(oldQuad.x3p, oldQuad.y3p, oldQuad.z3p), newVertex, oldQuad.parent, linkedDatFile);
                     break;
                 default:
-                    break;
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    continue;
                 }
                 newData = newQuad;
                 if (selectedQuads.contains(oldQuad))
@@ -1296,14 +1304,16 @@ class VM00Base {
                             oldCLin.z2p), new Vertex(oldCLin.x3p, oldCLin.y3p, oldCLin.z3p), newVertex, oldCLin.parent, linkedDatFile);
                     break;
                 default:
-                    break;
+                    NLogger.error(VM00Base.class, "Unsupported vertex position index on instance: " + oldData + " type: " + oldData.type() + " index: " + mani.getPosition()); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+                    continue;
                 }
                 newData = newCLin;
                 if (selectedCondlines.contains(oldCLin))
                     selectedCondlines.add(newCLin);
                 break;
             default:
-                break;
+                NLogger.error(VM00Base.class, "Unsupported vertex change on instance: " + oldData + " type: " + oldData.type()); //$NON-NLS-1$ //$NON-NLS-2$
+                continue;
             }
 
             if (selectedVertices.contains(oldVertex)) {

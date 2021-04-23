@@ -658,7 +658,7 @@ public enum LibraryManager {
                                     break;
                                 }
                             }
-                            if (type == null) type = DatType.PART;
+
                             // Change treeItem according to type
                             switch (type) {
                             case PART:
@@ -843,7 +843,7 @@ public enum LibraryManager {
 
             // 3. Scan for new files
 
-            readActualDataFromFolder(result, basePath, null, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, null, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
+            readActualDataFromFolder(result, basePath, DatType.PART, "", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, null, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
 
             readActualDataFromFolder(result, basePath, DatType.PART, "PARTS", "", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItemProjectParts, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
             readActualDataFromFolder(result, basePath, DatType.SUBPART, "PARTS", "S", locked, loaded, newParentMap, newTypeMap, newDfnMap, treeItemProjectSubparts, false, readOnly, false); //$NON-NLS-1$ //$NON-NLS-2$
@@ -1162,8 +1162,6 @@ public enum LibraryManager {
                                     break;
                                 }
                             }
-
-                            if (type == null) type = DatType.PART;
 
                             // Change treeItem according to type
                             switch (type) {

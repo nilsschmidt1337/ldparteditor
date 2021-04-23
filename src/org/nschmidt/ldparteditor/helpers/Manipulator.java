@@ -639,6 +639,8 @@ public class Manipulator {
             axis = new Vector3f(gen[2].x, gen[2].y, gen[2].z);
             break;
         default:
+            NLogger.debug(Manipulator.class, "No rotation type. Value is " + type); //$NON-NLS-1$
+            axis = new Vector3f(1f, 0f, 0f);
             break;
         }
         switch (type) {
@@ -840,7 +842,6 @@ public class Manipulator {
                 break;
             }
             // Take the axis
-            vector = null;
             switch (type) {
             case X_TRANSLATE:
             case X_SCALE:
@@ -883,6 +884,8 @@ public class Manipulator {
                 vRotateArrow.set(vector);
                 break;
             default:
+                NLogger.error(Manipulator.class, "Unknown manipulator action type " + type); //$NON-NLS-1$
+                vector = new Vector4f(1f, 0f, 0f, 1f);
                 break;
             }
             vector.scale(size / zoom / 1000f);
