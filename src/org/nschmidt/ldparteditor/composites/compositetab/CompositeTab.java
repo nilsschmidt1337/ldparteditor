@@ -112,7 +112,7 @@ public class CompositeTab extends CompositeTabDesign {
     private final int caretHeight = compositeTextPtr[0].getCaret().getSize().y;
 
     /** The state of this tab */
-    private CompositeTabState state = new CompositeTabState();
+    private CompositeTabState tabState = new CompositeTabState();
 
     // We need no other private attributes anymore!
 
@@ -143,7 +143,7 @@ public class CompositeTab extends CompositeTabDesign {
         // MARK All final listeners will be configured here..
         // Each line should be formatted automagically on text change within a
         // single text line
-        this.state.setTab(this);
+        this.tabState.setTab(this);
 
         {
             DropTarget dt = new DropTarget(compositeTextPtr[0], DND.DROP_DEFAULT | DND.DROP_MOVE );
@@ -169,12 +169,12 @@ public class CompositeTab extends CompositeTabDesign {
                                             if (f2.getParentFile() != null) {
                                                 Project.setLastVisitedPath(f2.getParentFile().getAbsolutePath());
                                             }
-                                            if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, state.window[0])) {
+                                            if (!Editor3DWindow.getWindow().openDatFile(df, OpenInWhat.EDITOR_TEXT, tabState.window[0])) {
                                                 {
-                                                    CompositeTab tbtmnewItem = new CompositeTab(state.folder[0], SWT.CLOSE);
-                                                    tbtmnewItem.setFolderAndWindow(state.folder[0], state.window[0]);
+                                                    CompositeTab tbtmnewItem = new CompositeTab(tabState.folder[0], SWT.CLOSE);
+                                                    tbtmnewItem.setFolderAndWindow(tabState.folder[0], tabState.window[0]);
                                                     tbtmnewItem.getState().setFileNameObj(df);
-                                                    state.folder[0].setSelection(tbtmnewItem);
+                                                    tabState.folder[0].setSelection(tbtmnewItem);
                                                     tbtmnewItem.parseForErrorAndHints();
                                                     tbtmnewItem.getTextComposite().redraw();
                                                 }
@@ -205,7 +205,7 @@ public class CompositeTab extends CompositeTabDesign {
                         return;
                     }
 
-                    final DatFile datfile = state.getFileNameObj();
+                    final DatFile datfile = tabState.getFileNameObj();
                     if (datfile.isReadOnly()) {
                         return;
                     }
@@ -238,7 +238,7 @@ public class CompositeTab extends CompositeTabDesign {
         compositeTextPtr[0].addLineStyleListener(e -> {
             // So the line will be formated with the syntax formatter from
             // the CompositeText.
-            final DatFile df = state.getFileNameObj();
+            final DatFile df = tabState.getFileNameObj();
             final VertexManager vm = df.getVertexManager();
             final GData data = df.getDrawPerLineNoClone().getValue(compositeTextPtr[0].getLineAtOffset(e.lineOffset) + 1);
             boolean isSelected = vm.isSyncWithTextEditor() && vm.getSelectedData().contains(data);
@@ -257,12 +257,12 @@ public class CompositeTab extends CompositeTabDesign {
 
             isSelected = isSelected || vm.isSyncWithTextEditor() && GDataCSG.getSelection(df).contains(data);
             syntaxFormatter.format(e,
-                    state.getToReplaceX(), state.getToReplaceY(), state.getToReplaceZ(),
-                    state.getReplaceEpsilon(), state.isReplacingVertex(), isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(),  df);
+                    tabState.getToReplaceX(), tabState.getToReplaceY(), tabState.getToReplaceZ(),
+                    tabState.getReplaceEpsilon(), tabState.isReplacingVertex(), isSelected, GData.CACHE_duplicates.containsKey(data), data == null || data.isVisible(),  df);
         });
         final boolean[] isDelPressed = new boolean[] { false };
         compositeTextPtr[0].addVerifyKeyListener(event -> {
-            DatFile dat = state.getFileNameObj();
+            DatFile dat = tabState.getFileNameObj();
             final VertexManager vm = dat.getVertexManager();
             event.doit = vm.isUpdated();
             isDelPressed[0] = event.keyCode == SWT.DEL;
@@ -273,11 +273,11 @@ public class CompositeTab extends CompositeTabDesign {
             // only POSSIBLE approach to get this working, VerifyKey has NO use!
             public void verifyText(VerifyEvent event) {
                 event.doit = true;
-                state.setDoingPaste(event.text.length() > 1 && compositeTextPtr[0].isFocusControl() && state.getFileNameObj().getVertexManager().isUpdated());
-                final DatFile dat = state.getFileNameObj();
+                tabState.setDoingPaste(event.text.length() > 1 && compositeTextPtr[0].isFocusControl() && tabState.getFileNameObj().getVertexManager().isUpdated());
+                final DatFile dat = tabState.getFileNameObj();
                 final VertexManager vm = dat.getVertexManager();
                 if (vm.getVertexToReplace() != null) {
-                    if (!vm.isModified() && state.isReplacingVertex()) {
+                    if (!vm.isModified() && tabState.isReplacingVertex()) {
                         // Replaced vertex manipulation check
                         NLogger.debug(getClass(), "Vertex Manipulation is ACTIVE"); //$NON-NLS-1$
 
@@ -298,11 +298,11 @@ public class CompositeTab extends CompositeTabDesign {
                             }
                         }
 
-                        state.currentCaretPositionLine = compositeTextPtr[0].getLineAtOffset(event.start);
-                        state.currentCaretPositionChar = compositeTextPtr[0].getCaretOffset() - compositeTextPtr[0].getOffsetAtLine(state.currentCaretPositionLine);
-                        state.currentCaretTopIndex = compositeTextPtr[0].getTopIndex();
+                        tabState.currentCaretPositionLine = compositeTextPtr[0].getLineAtOffset(event.start);
+                        tabState.currentCaretPositionChar = compositeTextPtr[0].getCaretOffset() - compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine);
+                        tabState.currentCaretTopIndex = compositeTextPtr[0].getTopIndex();
 
-                        String oldLine = compositeTextPtr[0].getLine(state.currentCaretPositionLine);
+                        String oldLine = compositeTextPtr[0].getLine(tabState.currentCaretPositionLine);
                         String newLine;
                         NLogger.debug(getClass(), "Old Line {0}", oldLine); //$NON-NLS-1$
                         NLogger.debug(getClass(), "Key Char {0}", event.character); //$NON-NLS-1$
@@ -318,7 +318,7 @@ public class CompositeTab extends CompositeTabDesign {
                             return;
                         }
 
-                        GData dataInLine = dat.getDrawPerLine().getValue(state.currentCaretPositionLine + 1);
+                        GData dataInLine = dat.getDrawPerLine().getValue(tabState.currentCaretPositionLine + 1);
                         final int type = dataInLine.type();
                         String[] dataSegments = oldLine.trim().split("\\s+"); //$NON-NLS-1$
                         final boolean isDistanceOrProtractor = type == 2 && !((GData2) dataInLine).isLine
@@ -329,7 +329,7 @@ public class CompositeTab extends CompositeTabDesign {
                         switch (type) {
                         case 0:
                             if (dataSegments.length == 6 && "0".equals(dataSegments[0]) && "!LPE".equals(dataSegments[1]) && "VERTEX".equals(dataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                if (state.currentCaretPositionChar > oldLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
+                                if (tabState.currentCaretPositionChar > oldLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
                                     Vertex[] verts = vm.getDeclaredVertices().get(dataInLine);
                                     if (verts != null) {
                                         vertexToReplace = verts[0];
@@ -344,7 +344,7 @@ public class CompositeTab extends CompositeTabDesign {
                         case 3:
                         case 4:
                         case 5:
-                            int index2 = StringHelper.getIndexFromWhitespaces(oldLine, state.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
+                            int index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
                             if (index2 > 1) {
                                 if (type > 3 && index2 > 10) {
                                     if (type == 4)
@@ -379,7 +379,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 }
                             }
                             if (!(vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace))) {
-                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, state.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
+                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
                                 if (index2 > 1) {
                                     if (type > 3 && index2 > 10) {
                                         if (type == 4)
@@ -416,7 +416,7 @@ public class CompositeTab extends CompositeTabDesign {
                             }
 
                             if (!(vm.getVertexToReplace() != null && vertexToReplace != null && vm.getVertexToReplace().equals(vertexToReplace))) {
-                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, state.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
+                                index2 = StringHelper.getIndexFromWhitespaces(oldLine, tabState.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
                                 if (index2 > 1) {
                                     if (type > 3 && index2 > 10) {
                                         if (type == 4)
@@ -459,16 +459,16 @@ public class CompositeTab extends CompositeTabDesign {
 
                             NLogger.debug(getClass(), "VerifyEvent.Text {0}", event.text); //$NON-NLS-1$
                             if (doReplace) {
-                                int off = compositeTextPtr[0].getOffsetAtLine(state.currentCaretPositionLine);
+                                int off = compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine);
                                 newLine = oldLine.substring(0, Math.max(0, event.start - off)) + event.text + oldLine.substring(Math.max(0, event.end - off));
-                            } else if (event.text.length() == 0 && state.currentCaretPositionChar > 0) {
+                            } else if (event.text.length() == 0 && tabState.currentCaretPositionChar > 0) {
                                 if (!isDelPressed[0])
-                                    state.currentCaretPositionChar--;
-                                newLine = oldLine.substring(0, state.currentCaretPositionChar) + oldLine.substring(state.currentCaretPositionChar + 1);
-                            } else if (oldLine.length() > state.currentCaretPositionChar) {
-                                newLine = oldLine.substring(0, state.currentCaretPositionChar) + event.text + oldLine.substring(state.currentCaretPositionChar);
+                                    tabState.currentCaretPositionChar--;
+                                newLine = oldLine.substring(0, tabState.currentCaretPositionChar) + oldLine.substring(tabState.currentCaretPositionChar + 1);
+                            } else if (oldLine.length() > tabState.currentCaretPositionChar) {
+                                newLine = oldLine.substring(0, tabState.currentCaretPositionChar) + event.text + oldLine.substring(tabState.currentCaretPositionChar);
                             } else {
-                                newLine = oldLine.substring(0, state.currentCaretPositionChar) + event.text + oldLine.substring(Math.min(state.currentCaretPositionChar, oldLine.length()));
+                                newLine = oldLine.substring(0, tabState.currentCaretPositionChar) + event.text + oldLine.substring(Math.min(tabState.currentCaretPositionChar, oldLine.length()));
                             }
 
                             NLogger.debug(getClass(), "New Line {0}", newLine); //$NON-NLS-1$
@@ -507,7 +507,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 switch (type) {
                                 case 0:
                                     if (newDataSegments.length == 6 && "0".equals(newDataSegments[0]) && "!LPE".equals(newDataSegments[1]) && "VERTEX".equals(newDataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                        if (state.currentCaretPositionChar > newLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
+                                        if (tabState.currentCaretPositionChar > newLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
                                             x = new BigDecimal(newDataSegments[3]);
                                             y = new BigDecimal(newDataSegments[4]);
                                             z = new BigDecimal(newDataSegments[5]);
@@ -522,7 +522,7 @@ public class CompositeTab extends CompositeTabDesign {
                                 case 4:
                                 case 5:
                                     int index2;
-                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, state.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
+                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar) - (isDistanceOrProtractor ? 2 : 0);
                                     if (index2 > 0) {
                                         if (type > 3 && index2 > 10) {
                                             x = new BigDecimal(newDataSegments[11]);
@@ -557,13 +557,13 @@ public class CompositeTab extends CompositeTabDesign {
                                 Vertex newVertex = new Vertex(x, y, z);
                                 if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
                                     vm.setVertexToReplace(newVertex);
-                                    state.setToReplaceX(x);
-                                    state.setToReplaceY(y);
-                                    state.setToReplaceZ(z);
+                                    tabState.setToReplaceX(x);
+                                    tabState.setToReplaceY(y);
+                                    tabState.setToReplaceZ(z);
                                     event.doit = false;
                                     vm.setModifiedNoSync();
-                                    state.currentCaretPositionChar = off2;
-                                    compositeTextPtr[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
+                                    tabState.currentCaretPositionChar = off2;
+                                    compositeTextPtr[0].setText(tabState.getFileNameObj().getText()); // This has always to be the last line here!
 
                                 } else {
                                     foundValidVertex = false;
@@ -572,7 +572,7 @@ public class CompositeTab extends CompositeTabDesign {
                                         case 0:
                                             if (newDataSegments.length == 6
                                             && "0".equals(newDataSegments[0]) && "!LPE".equals(newDataSegments[1]) && "VERTEX".equals(newDataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                                if (state.currentCaretPositionChar > newLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
+                                                if (tabState.currentCaretPositionChar > newLine.indexOf("VERTEX") + 6) { //$NON-NLS-1$
                                                     x = new BigDecimal(newDataSegments[3]);
                                                     y = new BigDecimal(newDataSegments[4]);
                                                     z = new BigDecimal(newDataSegments[5]);
@@ -587,7 +587,7 @@ public class CompositeTab extends CompositeTabDesign {
                                         case 4:
                                         case 5:
                                             int index2;
-                                            index2 = StringHelper.getIndexFromWhitespaces(newLine, state.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
+                                            index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar + 1) - (isDistanceOrProtractor ? 2 : 0);
                                             if (index2 > 1) {
                                                 if (type > 3 && index2 > 10) {
                                                     x = new BigDecimal(newDataSegments[11]);
@@ -623,13 +623,13 @@ public class CompositeTab extends CompositeTabDesign {
                                         newVertex = new Vertex(x, y, z);
                                         if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
                                             vm.setVertexToReplace(newVertex);
-                                            state.setToReplaceX(x);
-                                            state.setToReplaceY(y);
-                                            state.setToReplaceZ(z);
+                                            tabState.setToReplaceX(x);
+                                            tabState.setToReplaceY(y);
+                                            tabState.setToReplaceZ(z);
                                             event.doit = false;
                                             vm.setModifiedNoSync();
-                                            state.currentCaretPositionChar = off2;
-                                            compositeTextPtr[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
+                                            tabState.currentCaretPositionChar = off2;
+                                            compositeTextPtr[0].setText(tabState.getFileNameObj().getText()); // This has always to be the last line here!
                                         } else {
                                             foundValidVertex = false;
                                             try {
@@ -637,7 +637,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                 case 0:
                                                     if (newDataSegments.length == 6
                                                     && "0".equals(newDataSegments[0]) && "!LPE".equals(newDataSegments[1]) && "VERTEX".equals(newDataSegments[2])) { //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-                                                        if (state.currentCaretPositionChar > newLine.indexOf("VERTEX") + 5) { //$NON-NLS-1$
+                                                        if (tabState.currentCaretPositionChar > newLine.indexOf("VERTEX") + 5) { //$NON-NLS-1$
                                                             x = new BigDecimal(newDataSegments[3]);
                                                             y = new BigDecimal(newDataSegments[4]);
                                                             z = new BigDecimal(newDataSegments[5]);
@@ -652,7 +652,7 @@ public class CompositeTab extends CompositeTabDesign {
                                                 case 4:
                                                 case 5:
                                                     int index2;
-                                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, state.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
+                                                    index2 = StringHelper.getIndexFromWhitespaces(newLine, tabState.currentCaretPositionChar - 1) - (isDistanceOrProtractor ? 2 : 0);
                                                     if (index2 > 1) {
                                                         if (type > 3 && index2 > 10) {
                                                             x = new BigDecimal(newDataSegments[11]);
@@ -688,13 +688,13 @@ public class CompositeTab extends CompositeTabDesign {
                                                 newVertex = new Vertex(x, y, z);
                                                 if (vm.changeVertexDirect(vertexToReplace, newVertex, !foundVertexMetacommand)) {
                                                     vm.setVertexToReplace(newVertex);
-                                                    state.setToReplaceX(x);
-                                                    state.setToReplaceY(y);
-                                                    state.setToReplaceZ(z);
+                                                    tabState.setToReplaceX(x);
+                                                    tabState.setToReplaceY(y);
+                                                    tabState.setToReplaceZ(z);
                                                     event.doit = false;
                                                     vm.setModifiedNoSync();
-                                                    state.currentCaretPositionChar = off2;
-                                                    compositeTextPtr[0].setText(state.getFileNameObj().getText()); // This has always to be the last line here!
+                                                    tabState.currentCaretPositionChar = off2;
+                                                    compositeTextPtr[0].setText(tabState.getFileNameObj().getText()); // This has always to be the last line here!
                                                 }
                                             }
                                         }
@@ -714,7 +714,7 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void modifyText(final ExtendedModifyEvent event) {
-                final DatFile dat = state.getFileNameObj();
+                final DatFile dat = tabState.getFileNameObj();
                 final VertexManager vm = dat.getVertexManager();
 
                 vm.addSnapshot();
@@ -735,14 +735,14 @@ public class CompositeTab extends CompositeTabDesign {
                     canvasLineNumberAreaPtr[0].redraw();
                 } else {
                     // Text inserted
-                    if (state.isDoingPaste() && Editor3DWindow.getWindow().isMovingAdjacentData() && WorkbenchManager.getUserSettingState().isDisableMADtext()) {
+                    if (tabState.isDoingPaste() && Editor3DWindow.getWindow().isMovingAdjacentData() && WorkbenchManager.getUserSettingState().isDisableMADtext()) {
                         Editor3DWindow.getWindow().setMovingAdjacentData(false);
                         GuiStatusManager.updateStatus();
                     }
                 }
 
                 if (text.equals(dat.getOriginalText()) && dat.getOldName().equals(dat.getNewName())) {
-                    if (!dat.isVirtual()) state.getTab().setText(state.filename);
+                    if (!dat.isVirtual()) tabState.getTab().setText(tabState.filename);
                     // Do not remove virtual files from the unsaved file list
                     // (they are virtual, because they were not saved at all!)
                     if (Project.getUnsavedFiles().contains(dat) && !dat.isVirtual()) {
@@ -750,7 +750,7 @@ public class CompositeTab extends CompositeTabDesign {
                         Editor3DWindow.getWindow().updateTreeUnsavedEntries();
                     }
                 } else {
-                    state.getTab().setText(state.getFilenameWithStar());
+                    tabState.getTab().setText(tabState.getFilenameWithStar());
                     if (!Project.getUnsavedFiles().contains(dat)) {
                         Project.addUnsavedFile(dat);
                         Editor3DWindow.getWindow().updateTreeUnsavedEntries();
@@ -759,7 +759,7 @@ public class CompositeTab extends CompositeTabDesign {
                 dat.setText(text);
                 final int off = event.start + event.length;
 
-                if (!state.isSync()) {
+                if (!tabState.isSync()) {
                     boolean doRedraw = !vm.getSelectedData().isEmpty();
                     if (compositeTextPtr[0].isFocusControl()) {
                         vm.clearSelection();
@@ -772,13 +772,13 @@ public class CompositeTab extends CompositeTabDesign {
                 if (vm.getVertexToReplace() != null) {
                     if (vm.isModified()) {
                         try {
-                            compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(state.currentCaretPositionLine) + state.currentCaretPositionChar);
+                            compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine) + tabState.currentCaretPositionChar);
                         } catch (IllegalArgumentException iae) {
                             int diff = 1;
                             int trys = 0;
                             while (true) {
                                 try {
-                                    compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(state.currentCaretPositionLine) + state.currentCaretPositionChar - diff);
+                                    compositeTextPtr[0].setCaretOffset(compositeTextPtr[0].getOffsetAtLine(tabState.currentCaretPositionLine) + tabState.currentCaretPositionChar - diff);
                                     break;
                                 } catch (IllegalArgumentException iae2) {
                                     trys++;
@@ -790,27 +790,27 @@ public class CompositeTab extends CompositeTabDesign {
                                 }
                             }
                         }
-                        compositeTextPtr[0].setTopIndex(state.currentCaretTopIndex);
+                        compositeTextPtr[0].setTopIndex(tabState.currentCaretTopIndex);
                         NLogger.debug(getClass(), "Caret Reset"); //$NON-NLS-1$
                         vm.getSelectedVertices().clear();
                         vm.getSelectedVertices().add(vm.getVertexToReplace());
                     }
                 }
 
-                if (state.isSync()) {
-                    state.getFileNameObj().parseForError(compositeTextPtr[0], event.start, off, event.length, event.replacedText, treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0],
+                if (tabState.isSync()) {
+                    tabState.getFileNameObj().parseForError(compositeTextPtr[0], event.start, off, event.length, event.replacedText, treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0],
                             treeItemDuplicatesPtr[0], lblProblemCountPtr[0], false);
                     vm.setModified(false, true);
                 } else {
                     if (!vm.isModified()) {
                         Display.getCurrent().syncExec(() ->
-                            state.getFileNameObj().parseForErrorAndData(compositeTextPtr[0], event.start, off, event.length, event.replacedText, treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0],
+                            tabState.getFileNameObj().parseForErrorAndData(compositeTextPtr[0], event.start, off, event.length, event.replacedText, treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0],
                                     treeItemDuplicatesPtr[0], lblProblemCountPtr[0])
                         );
                     } else {
                         vm.setModified(false, true);
                         GData.CACHE_warningsAndErrors.clear();
-                        state.getFileNameObj().parseForError(compositeTextPtr[0], event.start, off, event.length, event.replacedText, treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0],
+                        tabState.getFileNameObj().parseForError(compositeTextPtr[0], event.start, off, event.length, event.replacedText, treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0],
                                 treeItemDuplicatesPtr[0], lblProblemCountPtr[0], true);
                     }
                     vm.setUpdated(true);
@@ -830,7 +830,7 @@ public class CompositeTab extends CompositeTabDesign {
         final CompositeTab me = this;
         compositeTextPtr[0].addListener(SWT.KeyDown, event -> {
 
-            final DatFile df = state.getFileNameObj();
+            final DatFile df = tabState.getFileNameObj();
             final VertexManager vm = df.getVertexManager();
 
             vm.addSnapshot();
@@ -855,14 +855,14 @@ public class CompositeTab extends CompositeTabDesign {
                 case EDITORTEXT_REPLACE_VERTEX:
                     if (compositeTextPtr[0].getEditable()) {
                         if (!vm.isUpdated()) return;
-                        VertexMarker.markTheVertex(state, compositeTextPtr[0], df);
-                        if (state.isReplacingVertex()) {
-                            if (state.window[0] == Editor3DWindow.getWindow()) {
+                        VertexMarker.markTheVertex(tabState, compositeTextPtr[0], df);
+                        if (tabState.isReplacingVertex()) {
+                            if (tabState.window[0] == Editor3DWindow.getWindow()) {
                                 Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SYNC_EDIT);
                                 Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                                 Editor3DWindow.getStatusLabel().update();
                             } else {
-                                state.window[0].setStatus(I18n.EDITORTEXT_SYNC_EDIT);
+                                tabState.window[0].setStatus(I18n.EDITORTEXT_SYNC_EDIT);
                             }
                         }
                     }
@@ -870,15 +870,15 @@ public class CompositeTab extends CompositeTabDesign {
                 case EDITORTEXT_ESC:
                     if (compositeTextPtr[0].getEditable()) {
                         if (!vm.isUpdated()) return;
-                        state.setReplacingVertex(false);
+                        tabState.setReplacingVertex(false);
                         vm.setVertexToReplace(null);
                         compositeTextPtr[0].redraw(0, 0, compositeTextPtr[0].getBounds().width, compositeTextPtr[0].getBounds().height, true);
-                        if (state.window[0] == Editor3DWindow.getWindow()) {
+                        if (tabState.window[0] == Editor3DWindow.getWindow()) {
                             Editor3DWindow.getStatusLabel().setText(I18n.EDITORTEXT_SYNC_EDIT_DEACTIVATED);
                             Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                             Editor3DWindow.getStatusLabel().update();
                         } else {
-                            state.window[0].setStatus(I18n.EDITORTEXT_SYNC_EDIT_DEACTIVATED);
+                            tabState.window[0].setStatus(I18n.EDITORTEXT_SYNC_EDIT_DEACTIVATED);
                         }
                     }
                     break;
@@ -886,7 +886,7 @@ public class CompositeTab extends CompositeTabDesign {
                     if (compositeTextPtr[0].getEditable()) {
                         if (!vm.isUpdated()) return;
                         Set<TreeItem> items = new HashSet<>();
-                        int offset = compositeTextPtr[0].getOffsetAtLine(Math.max(Math.min(state.currentLineIndex, compositeTextPtr[0].getLineCount() - 1), 0));
+                        int offset = compositeTextPtr[0].getOffsetAtLine(Math.max(Math.min(tabState.currentLineIndex, compositeTextPtr[0].getLineCount() - 1), 0));
                         for (TreeItem t1 : treeItemHintsPtr[0].getItems()) {
                             if (!t1.getText(0).isEmpty() && ((Integer) t1.getData()).intValue() == offset) {
                                 NLogger.debug(getClass(), "Found hint at {0}", t1.getText(1)); //$NON-NLS-1$
@@ -952,7 +952,7 @@ public class CompositeTab extends CompositeTabDesign {
                     toLine2++;
                     NLogger.debug(getClass(), "From line {0}", fromLine2); //$NON-NLS-1$
                     NLogger.debug(getClass(), "To   line {0}", toLine2); //$NON-NLS-1$
-                    Rounder.round(state, fromLine2, toLine2, df);
+                    Rounder.round(tabState, fromLine2, toLine2, df);
                     st2.forceFocus();
                     break;
                 }
@@ -1210,12 +1210,12 @@ public class CompositeTab extends CompositeTabDesign {
 
             @Override
             public void focusGained(FocusEvent e) {
-                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                final VertexManager vm = tabState.getFileNameObj().getVertexManager();
                 if (!vm.isSyncWithTextEditor()) {
                     if (vm.isModified() && !vm.isUpdated()) {
                         NLogger.debug(getClass(), "Text focused, reload"); //$NON-NLS-1$
                         try {
-                            compositeTextPtr[0].setText(state.getFileNameObj().getText());
+                            compositeTextPtr[0].setText(tabState.getFileNameObj().getText());
                         } catch (IllegalArgumentException iae) {
                             // Ignored on termination
                         }
@@ -1226,7 +1226,7 @@ public class CompositeTab extends CompositeTabDesign {
                 }
                 SearchWindow sw = Editor3DWindow.getWindow().getSearchWindow();
                 if (sw != null) {
-                    sw.setTextComposite(state.getTab());
+                    sw.setTextComposite(tabState.getTab());
                     sw.setScopeToAll();
                 }
                 if (Editor3DWindow.getWindow().isAddingSomething()) {
@@ -1239,9 +1239,9 @@ public class CompositeTab extends CompositeTabDesign {
         compositeTextPtr[0].addCaretListener(event -> {
             ViewIdleManager.pause[0].compareAndSet(false, true);
             Point r = compositeTextPtr[0].getSelectionRange();
-            state.setOldLineIndex(-1);
-            if (!state.isSync()) {
-                DatFile df = state.getFileNameObj();
+            tabState.setOldLineIndex(-1);
+            if (!tabState.isSync()) {
+                DatFile df = tabState.getFileNameObj();
                 df.addHistory(compositeTextPtr[0].getText(), r.x, r.y, compositeTextPtr[0].getTopIndex());
                 if (df.updateDuplicatesErrors(compositeTextPtr[0], treeItemDuplicatesPtr[0])) {
                     df.getDuplicate().pushDuplicateCheck(df.getDrawChainStart());
@@ -1259,23 +1259,23 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             }
             try {
-                compositeTextPtr[0].setLineBackground(state.currentLineIndex, 1, compositeTextPtr[0].getBackground());
+                compositeTextPtr[0].setLineBackground(tabState.currentLineIndex, 1, compositeTextPtr[0].getBackground());
             } catch (Exception a) {
             }
             int caretOffset = event.caretOffset;
-            state.currentLineIndex = compositeTextPtr[0].getLineAtOffset(caretOffset);
+            tabState.currentLineIndex = compositeTextPtr[0].getLineAtOffset(caretOffset);
             if (compositeTextPtr[0].getSelectionCount() == 0) {
                 try {
-                    compositeTextPtr[0].setLineBackground(state.currentLineIndex, 1, Colour.lineHighlightBackground[0]);
+                    compositeTextPtr[0].setLineBackground(tabState.currentLineIndex, 1, Colour.lineHighlightBackground[0]);
                 } catch (Exception a) {
                 }
             }
-            if (state.window[0] == Editor3DWindow.getWindow()) {
+            if (tabState.window[0] == Editor3DWindow.getWindow()) {
                 try {
-                    if (state.isReplacingVertex()) {
-                        Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
+                    if (tabState.isReplacingVertex()) {
+                        Editor3DWindow.getStatusLabel().setText(tabState.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(tabState.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
                     } else {
-                        Editor3DWindow.getStatusLabel().setText(state.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                        Editor3DWindow.getStatusLabel().setText(tabState.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(tabState.currentLineIndex) + 1)); //$NON-NLS-1$
                     }
                     Editor3DWindow.getStatusLabel().setSize(Editor3DWindow.getStatusLabel().computeSize(SWT.DEFAULT, SWT.DEFAULT));
                     Editor3DWindow.getStatusLabel().update();
@@ -1283,10 +1283,10 @@ public class CompositeTab extends CompositeTabDesign {
                 }
             } else {
                 try {
-                    if (state.isReplacingVertex()) {
-                        state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(state.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
+                    if (tabState.isReplacingVertex()) {
+                        tabState.window[0].setStatus(tabState.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(tabState.currentLineIndex) + 1) + "   " + I18n.EDITORTEXT_SYNC_EDIT); //$NON-NLS-1$ //$NON-NLS-2$
                     } else {
-                        state.window[0].setStatus(state.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(state.currentLineIndex) + 1)); //$NON-NLS-1$
+                        tabState.window[0].setStatus(tabState.currentLineIndex + 1 + " : " + (caretOffset - compositeTextPtr[0].getOffsetAtLine(tabState.currentLineIndex) + 1)); //$NON-NLS-1$
                     }
                 } catch (Exception a) {
                 }
@@ -1399,7 +1399,7 @@ public class CompositeTab extends CompositeTabDesign {
         });
         final WidgetSelectionListener quickFix = e -> {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
-                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                final VertexManager vm = tabState.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 Set<TreeItem> items = new HashSet<>();
                 items.addAll(Arrays.asList(treeProblemsPtr[0].getSelection()));
@@ -1447,7 +1447,7 @@ public class CompositeTab extends CompositeTabDesign {
         };
         final WidgetSelectionListener quickFixSame = e -> {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
-                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                final VertexManager vm = tabState.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 Set<TreeItem> items = new HashSet<>();
                 Set<String> sorts = new HashSet<>();
@@ -1535,7 +1535,7 @@ public class CompositeTab extends CompositeTabDesign {
         };
         final WidgetSelectionListener inspect = e -> {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
-                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                final VertexManager vm = tabState.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 Set<TreeItem> items = new HashSet<>();
                 items.addAll(Arrays.asList(treeProblemsPtr[0].getSelection()));
@@ -1583,7 +1583,7 @@ public class CompositeTab extends CompositeTabDesign {
         };
         final WidgetSelectionListener inspectSame = e -> {
             if (compositeTextPtr[0].getEditable() && treeProblemsPtr[0].getSelectionCount() > 0) {
-                final VertexManager vm = state.getFileNameObj().getVertexManager();
+                final VertexManager vm = tabState.getFileNameObj().getVertexManager();
                 if (!vm.isUpdated()) return;
                 Set<TreeItem> items = new HashSet<>();
                 Set<String> sorts = new HashSet<>();
@@ -1834,16 +1834,16 @@ public class CompositeTab extends CompositeTabDesign {
                 getDisplay().update();
             }
         });
-        widgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> state.folder[0].delete());
-        widgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> state.folder[0].copy());
-        widgetUtil(mntmCutPtr[0]).addSelectionListener(e -> state.folder[0].cut());
-        widgetUtil(mntmPastePtr[0]).addSelectionListener(e -> state.folder[0].paste());
+        widgetUtil(mntmDeletePtr[0]).addSelectionListener(e -> tabState.folder[0].delete());
+        widgetUtil(mntmCopyPtr[0]).addSelectionListener(e -> tabState.folder[0].copy());
+        widgetUtil(mntmCutPtr[0]).addSelectionListener(e -> tabState.folder[0].cut());
+        widgetUtil(mntmPastePtr[0]).addSelectionListener(e -> tabState.folder[0].paste());
 
         widgetUtil(mntmDrawSelectionPtr[0]).addSelectionListener(e -> {
-            if (!state.getFileNameObj().getVertexManager().isUpdated()){
+            if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
-            final DatFile df = state.getFileNameObj();
+            final DatFile df = tabState.getFileNameObj();
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
             vm.showAll();
@@ -1864,10 +1864,10 @@ public class CompositeTab extends CompositeTabDesign {
         });
 
         widgetUtil(mntmDrawUntilSelectionPtr[0]).addSelectionListener(e -> {
-            if (!state.getFileNameObj().getVertexManager().isUpdated()){
+            if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
-            final DatFile df = state.getFileNameObj();
+            final DatFile df = tabState.getFileNameObj();
             final VertexManager vm = df.getVertexManager();
             vm.addSnapshot();
             vm.showAll();
@@ -1890,10 +1890,10 @@ public class CompositeTab extends CompositeTabDesign {
         widgetUtil(mntmShowSelectionPtr[0]).addSelectionListener(e -> showSelection());
 
         widgetUtil(mntmShowAllPtr[0]).addSelectionListener(e -> {
-            if (!state.getFileNameObj().getVertexManager().isUpdated()){
+            if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
                 return;
             }
-            final DatFile df = state.getFileNameObj();
+            final DatFile df = tabState.getFileNameObj();
             final VertexManager vm = df.getVertexManager();
             final StyledText st = getTextComposite();
             vm.addSnapshot();
@@ -1911,8 +1911,8 @@ public class CompositeTab extends CompositeTabDesign {
      *            the window to set.
      */
     public void setFolderAndWindow(CompositeTabFolder cTabFolder, ApplicationWindow textEditorWindow) {
-        this.state.window[0] = textEditorWindow;
-        this.state.folder[0] = cTabFolder;
+        this.tabState.window[0] = textEditorWindow;
+        this.tabState.folder[0] = cTabFolder;
     }
 
     /**
@@ -1944,15 +1944,15 @@ public class CompositeTab extends CompositeTabDesign {
      * @param state
      */
     private void restoreState(CompositeTabState state) {
-        this.state = state;
-        this.state.setTab(this);
+        this.tabState = state;
+        this.tabState.setTab(this);
     }
 
     /**
      * @return The state of this tab
      */
     public CompositeTabState getState() {
-        return this.state;
+        return this.tabState;
     }
 
     /**
@@ -1966,22 +1966,22 @@ public class CompositeTab extends CompositeTabDesign {
      */
     public CompositeTab moveToFolder(CompositeTabFolder folder, int index) {
 
-        if (this.state.getTab().getParent().equals(folder)) {
+        if (this.tabState.getTab().getParent().equals(folder)) {
             int index2 = 0;
             for (CTabItem t : folder.getItems()) {
-                if (((CompositeTab) t).getState().getFileNameObj().equals(state.getFileNameObj()))
+                if (((CompositeTab) t).getState().getFileNameObj().equals(tabState.getFileNameObj()))
                     break;
                 index2++;
             }
             if (index == index2)
-                return this.state.getTab();
+                return this.tabState.getTab();
         }
         if (index != 0) {
-            if (!this.state.getTab().getParent().equals(folder))
+            if (!this.tabState.getTab().getParent().equals(folder))
                 index--;
         }
         final CompositeTab ct = new CompositeTab(folder, SWT.CLOSE, index);
-        ct.setText(this.state.getTab().getText());
+        ct.setText(this.tabState.getTab().getText());
         ct.getControl().dispose();
         ct.canvasLineNumberAreaPtr[0] = this.canvasLineNumberAreaPtr[0];
         ct.compositeTextPtr[0] = this.compositeTextPtr[0];
@@ -1999,23 +1999,23 @@ public class CompositeTab extends CompositeTabDesign {
         ct.btnQuickFixSamePtr[0] = this.btnQuickFixSamePtr[0];
         ct.lblProblemCountPtr[0] = this.lblProblemCountPtr[0];
         try {
-            ct.setControl(this.state.getTab().getControl());
+            ct.setControl(this.tabState.getTab().getControl());
         } catch (IllegalArgumentException e) {
-            this.state.getTab().getControl().setParent(folder);
-            ct.setControl(this.state.getTab().getControl());
+            this.tabState.getTab().getControl().setParent(folder);
+            ct.setControl(this.tabState.getTab().getControl());
         }
-        this.state.getTab().dispose();
-        ct.restoreState(state);
+        this.tabState.getTab().dispose();
+        ct.restoreState(tabState);
         ct.setFolderAndWindow(folder, folder.getWindow());
         return ct;
     }
 
     public StyledText getTextComposite() {
-        return this.state.getTab().compositeTextPtr[0];
+        return this.tabState.getTab().compositeTextPtr[0];
     }
 
     public void parseForErrorAndHints() {
-        this.state.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0], treeItemDuplicatesPtr[0], lblProblemCountPtr[0], true);
+        this.tabState.getFileNameObj().parseForError(getTextComposite(), 0, getTextComposite().getText().length(), getTextComposite().getText().length(), getTextComposite().getText(), treeItemHintsPtr[0], treeItemWarningsPtr[0], treeItemErrorsPtr[0], treeItemDuplicatesPtr[0], lblProblemCountPtr[0], true);
         int errorCount = treeItemErrorsPtr[0].getItems().size();
         int warningCount = treeItemWarningsPtr[0].getItems().size();
         int hintCount = treeItemHintsPtr[0].getItems().size();
@@ -2029,16 +2029,16 @@ public class CompositeTab extends CompositeTabDesign {
     }
 
     public void updateColours() {
-        this.state.getTab().compositeTextPtr[0].setBackground(Colour.textBackground[0]);
-        this.state.getTab().compositeTextPtr[0].setForeground(Colour.textForeground[0]);
-        this.state.getTab().compositeTextPtr[0].redrawRange(0, this.state.getTab().compositeTextPtr[0].getText().length(), false);
+        this.tabState.getTab().compositeTextPtr[0].setBackground(Colour.textBackground[0]);
+        this.tabState.getTab().compositeTextPtr[0].setForeground(Colour.textForeground[0]);
+        this.tabState.getTab().compositeTextPtr[0].redrawRange(0, this.tabState.getTab().compositeTextPtr[0].getText().length(), false);
     }
 
     public void hideSelection() {
-        if (!state.getFileNameObj().getVertexManager().isUpdated()){
+        if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
             return;
         }
-        final DatFile df = state.getFileNameObj();
+        final DatFile df = tabState.getFileNameObj();
         final VertexManager vm = df.getVertexManager();
         vm.addSnapshot();
         final StyledText st = getTextComposite();
@@ -2056,10 +2056,10 @@ public class CompositeTab extends CompositeTabDesign {
     }
 
     public void showSelection() {
-        if (!state.getFileNameObj().getVertexManager().isUpdated()){
+        if (!tabState.getFileNameObj().getVertexManager().isUpdated()){
             return;
         }
-        final DatFile df = state.getFileNameObj();
+        final DatFile df = tabState.getFileNameObj();
         final VertexManager vm = df.getVertexManager();
         vm.addSnapshot();
         final StyledText st = getTextComposite();

@@ -123,7 +123,7 @@ public class Composite3D extends ScalableComposite {
 
     // Context Menus
     /** The menu of this composite */
-    private final Menu menu;
+    private final Menu mnuComposite;
     /** The "View Angles"-Menu */
     private final Menu mnuViewAngles;
     /** The "Render Mode"-Menu */
@@ -315,7 +315,7 @@ public class Composite3D extends ScalableComposite {
 
         Editor3DWindow.renders.remove(openGL);
         Editor3DWindow.canvasList.remove(canvas);
-        this.menu.dispose();
+        this.mnuComposite.dispose();
         setLockableDatFileReference(df);
     }
 
@@ -402,26 +402,26 @@ public class Composite3D extends ScalableComposite {
 
         this.setBackgroundMode(SWT.INHERIT_FORCE);
 
-        this.menu = new Menu(this);
+        this.mnuComposite = new Menu(this);
 
-        MenuItem mntmViewAngles = new MenuItem(menu, SWT.CASCADE);
+        MenuItem mntmViewAngles = new MenuItem(mnuComposite, SWT.CASCADE);
         mntmViewAngles.setText(I18n.E3D_VIEWING_ANGLES);
 
-        MenuItem mntmManipulator = new MenuItem(menu, SWT.CASCADE);
+        MenuItem mntmManipulator = new MenuItem(mnuComposite, SWT.CASCADE);
         mntmManipulator.setText(I18n.E3D_MODIFY_MANIPULATOR);
 
-        MenuItem mntmViewActions = new MenuItem(menu, SWT.CASCADE);
+        MenuItem mntmViewActions = new MenuItem(mnuComposite, SWT.CASCADE);
         mntmViewActions.setText(I18n.E3D_VIEW_ACTIONS);
 
-        MenuItem mntmRenderModes = new MenuItem(menu, SWT.CASCADE);
+        MenuItem mntmRenderModes = new MenuItem(mnuComposite, SWT.CASCADE);
         mntmRenderModes.setText(I18n.C3D_RENDER_MODE);
 
-        MenuItem mntmSynchronise = new MenuItem(menu, SWT.CASCADE);
+        MenuItem mntmSynchronise = new MenuItem(mnuComposite, SWT.CASCADE);
         mntmSynchronise.setText(I18n.E3D_SYNC);
 
-        new MenuItem(menu, SWT.SEPARATOR);
+        new MenuItem(mnuComposite, SWT.SEPARATOR);
 
-        final MenuItem mntmCloseDat = new MenuItem(menu, SWT.NONE);
+        final MenuItem mntmCloseDat = new MenuItem(mnuComposite, SWT.NONE);
         widgetUtil(mntmCloseDat).addSelectionListener(e -> {
             Project.removeOpenedFile(lockableDatFileReference);
             if (!Editor3DWindow.getWindow().closeDatfile(lockableDatFileReference)) {
@@ -433,7 +433,7 @@ public class Composite3D extends ScalableComposite {
         mntmCloseDat.setText(I18n.E3D_CLOSE);
         mntmCloseDat.setSelection(false);
 
-        final MenuItem mntmLockedDat = new MenuItem(menu, SWT.CHECK);
+        final MenuItem mntmLockedDat = new MenuItem(mnuComposite, SWT.CHECK);
         locked = mntmLockedDat;
         widgetUtil(mntmLockedDat).addSelectionListener(e -> {
             if (!lockableDatFileReference.equals(View.DUMMY_DATFILE)) {
@@ -443,25 +443,25 @@ public class Composite3D extends ScalableComposite {
         mntmLockedDat.setText(I18n.C3D_LOCK_FILE);
         mntmLockedDat.setSelection(false);
 
-        final MenuItem mntmOpenInTextEditor = new MenuItem(menu, SWT.NONE);
+        final MenuItem mntmOpenInTextEditor = new MenuItem(mnuComposite, SWT.NONE);
         widgetUtil(mntmOpenInTextEditor).addSelectionListener(e -> openInTextEditor());
         mntmOpenInTextEditor.setText(I18n.C3D_OPEN_IN_TEXT);
         mntmOpenInTextEditor.setSelection(false);
 
-        final MenuItem mntmSelectionInTextEditor = new MenuItem(menu, SWT.NONE);
+        final MenuItem mntmSelectionInTextEditor = new MenuItem(mnuComposite, SWT.NONE);
         widgetUtil(mntmSelectionInTextEditor).addSelectionListener(e -> showSelectionInTextEditor(lockableDatFileReference, true));
         mntmSelectionInTextEditor.setText(I18n.C3D_SHOW_IN_TEXT);
         mntmSelectionInTextEditor.setSelection(false);
 
-        final MenuItem mntmJoinInTextEditor = new MenuItem(menu, SWT.NONE);
+        final MenuItem mntmJoinInTextEditor = new MenuItem(mnuComposite, SWT.NONE);
         widgetUtil(mntmJoinInTextEditor).addSelectionListener(e -> joinSelectionInTextEditor(lockableDatFileReference));
         mntmJoinInTextEditor.setText(I18n.C3D_JOIN_SELECTION);
         mntmJoinInTextEditor.setSelection(false);
 
         if (NLogger.debugging) {
-            new MenuItem(menu, SWT.SEPARATOR);
+            new MenuItem(mnuComposite, SWT.SEPARATOR);
 
-            final MenuItem mntmOpenSnapshot = new MenuItem(menu, SWT.NONE);
+            final MenuItem mntmOpenSnapshot = new MenuItem(mnuComposite, SWT.NONE);
             widgetUtil(mntmOpenSnapshot).addSelectionListener(e -> {
                 DatFile df = lockableDatFileReference;
                 if (df.equals(View.DUMMY_DATFILE)) return;
@@ -479,9 +479,9 @@ public class Composite3D extends ScalableComposite {
             mntmOpenSnapshot.setSelection(false);
         }
 
-        new MenuItem(menu, SWT.SEPARATOR);
+        new MenuItem(mnuComposite, SWT.SEPARATOR);
 
-        MenuItem mntmCut = new MenuItem(menu, I18n.rightToLeftStyle());
+        MenuItem mntmCut = new MenuItem(mnuComposite, I18n.rightToLeftStyle());
         widgetUtil(mntmCut).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
@@ -490,7 +490,7 @@ public class Composite3D extends ScalableComposite {
         });
         mntmCut.setText(I18n.COPYNPASTE_CUT);
         mntmCut.setImage(ResourceManager.getImage("icon16_edit-cut.png")); //$NON-NLS-1$
-        MenuItem mntmCopy = new MenuItem(menu, I18n.rightToLeftStyle());
+        MenuItem mntmCopy = new MenuItem(mnuComposite, I18n.rightToLeftStyle());
         widgetUtil(mntmCopy).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
@@ -498,7 +498,7 @@ public class Composite3D extends ScalableComposite {
         });
         mntmCopy.setText(I18n.COPYNPASTE_COPY);
         mntmCopy.setImage(ResourceManager.getImage("icon16_edit-copy.png")); //$NON-NLS-1$
-        MenuItem mntmPaste = new MenuItem(menu, I18n.rightToLeftStyle());
+        MenuItem mntmPaste = new MenuItem(mnuComposite, I18n.rightToLeftStyle());
         widgetUtil(mntmPaste).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
@@ -510,7 +510,7 @@ public class Composite3D extends ScalableComposite {
         });
         mntmPaste.setText(I18n.COPYNPASTE_PASTE);
         mntmPaste.setImage(ResourceManager.getImage("icon16_edit-paste.png")); //$NON-NLS-1$
-        MenuItem mntmDelete = new MenuItem(menu, I18n.rightToLeftStyle());
+        MenuItem mntmDelete = new MenuItem(mnuComposite, I18n.rightToLeftStyle());
         widgetUtil(mntmDelete).addSelectionListener(e -> {
             if (lockableDatFileReference.equals(View.DUMMY_DATFILE)) return;
             lockableDatFileReference.getVertexManager().addSnapshot();
@@ -519,9 +519,9 @@ public class Composite3D extends ScalableComposite {
         mntmDelete.setText(I18n.COPYNPASTE_DELETE);
         mntmDelete.setImage(ResourceManager.getImage("icon16_delete.png")); //$NON-NLS-1$
 
-        new MenuItem(menu, SWT.SEPARATOR);
+        new MenuItem(mnuComposite, SWT.SEPARATOR);
 
-        MenuItem mntmGridSize = new MenuItem(menu, I18n.rightToLeftStyle());
+        MenuItem mntmGridSize = new MenuItem(mnuComposite, I18n.rightToLeftStyle());
         widgetUtil(mntmGridSize).addSelectionListener(e -> new ValueDialog(getShell(), I18n.C3D_SET_GRID_SIZE, I18n.getCurrentUnit()) {
             @Override
             public void initializeSpinner() {
@@ -1322,7 +1322,7 @@ public class Composite3D extends ScalableComposite {
 
     @Override
     public Menu getMenu() {
-        return menu;
+        return mnuComposite;
     }
 
     /**
