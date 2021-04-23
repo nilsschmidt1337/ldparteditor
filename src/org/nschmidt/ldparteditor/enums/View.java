@@ -455,7 +455,7 @@ public enum View {
                             Matcher m = pAlpha.matcher(line);
 
                             if (m.find()) {
-                                String alphaStr = m.group().replaceAll("ALPHA", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
+                                String alphaStr = m.group().replace("ALPHA", "").trim(); //$NON-NLS-1$ //$NON-NLS-2$
                                 float alpha = Float.parseFloat(alphaStr) / 255f;
                                 GColour colour = new GColour(index, r, g, b, alpha);
                                 if (line.contains(" MATERIAL")) { //$NON-NLS-1$
@@ -575,7 +575,7 @@ public enum View {
                             }
                             indexFromColour.put(entry, index);
                             edgeColourFromIndex.put(index, new GColour(index, r2, g2, b2, 1f));
-                            colourNameFromIndex.put(index, dataSegments[2].replaceAll("_", " ")); //$NON-NLS-1$ //$NON-NLS-2$
+                            colourNameFromIndex.put(index, dataSegments[2].replace('_', ' ' ));
                         }
                     }
                 }

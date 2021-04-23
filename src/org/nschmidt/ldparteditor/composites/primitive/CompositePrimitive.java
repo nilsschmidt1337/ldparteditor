@@ -699,7 +699,7 @@ public class CompositePrimitive extends Composite {
                                             List<PrimitiveRule> rules = new ArrayList<>();
                                             for (int i = 1; i < dataSegments.length; i++) {
                                                 dataSegments[i] = dataSegments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                                dataSegments[i] = dataSegments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                                dataSegments[i] = dataSegments[i].replace('_', ' ');
                                                 int searchIndex = 0;
                                                 boolean hasAnd = false;
                                                 boolean hasNot = false;
@@ -794,7 +794,7 @@ public class CompositePrimitive extends Composite {
                                                         List<PrimitiveRule> rules = new ArrayList<>();
                                                         for (int i = 1; i < dataSegments.length; i++) {
                                                             dataSegments[i] = dataSegments[i].replaceAll("\\s+", " ").trim(); //$NON-NLS-1$ //$NON-NLS-2$
-                                                            dataSegments[i] = dataSegments[i].replaceAll("_", " "); //$NON-NLS-1$ //$NON-NLS-2$
+                                                            dataSegments[i] = dataSegments[i].replace('_', ' ');
                                                             int searchIndex = 0;
                                                             boolean hasAnd = false;
                                                             boolean hasNot = false;
@@ -1292,12 +1292,7 @@ public class CompositePrimitive extends Composite {
             sb.append(dataSegments[dataSegments.length - 1]);
             String shortFilename = sb.toString();
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
-            try {
-                shortFilename = shortFilename.replaceAll("s\\\\", "S" + File.separator).replaceAll("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            } catch (Exception e) {
-                // Workaround for windows OS / JVM BUG
-                shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
+            shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             if (alreadyParsed.contains(shortFilename)) {
                 return null;
             } else {

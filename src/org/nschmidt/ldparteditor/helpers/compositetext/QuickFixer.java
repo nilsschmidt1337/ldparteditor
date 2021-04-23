@@ -86,10 +86,10 @@ public enum QuickFixer {
         // Set the identifiers for each line
         text2 = "<L1>" + text2; //$NON-NLS-1$
         if (text2.contains("\r\n")) { //$NON-NLS-1$ Windows line termination
-            text2 = text2.replaceAll("\\r\\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
+            text2 = text2.replace("\r\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         if (text2.contains("\n")) { //$NON-NLS-1$ Linux/Mac line termination
-            text2 = text2.replaceAll("\\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
+            text2 = text2.replace("\n", "#!%"); //$NON-NLS-1$ //$NON-NLS-2$
         }
         if (!text2.endsWith("#!%")) { //$NON-NLS-1$
             text2 = text2 + "#!%"; //$NON-NLS-1$
@@ -185,6 +185,6 @@ public enum QuickFixer {
         text = text.replaceAll("<L[0-9]+>", ""); //$NON-NLS-1$ //$NON-NLS-2$
         final int tl = text.length();
         if (tl > 3) text = text.substring(0, tl - 4);
-        return text.replaceAll("<br>", StringHelper.getLineDelimiter()); //$NON-NLS-1$
+        return text.replace("<br>", StringHelper.getLineDelimiter()); //$NON-NLS-1$
     }
 }

@@ -3679,18 +3679,8 @@ public class Editor3DWindow extends Editor3DDesign {
                                 String fileName = PartReviewDialog.getFileName().toLowerCase(Locale.ENGLISH);
                                 if (!fileName.endsWith(".dat")) fileName = fileName + ".dat"; //$NON-NLS-1$ //$NON-NLS-2$
                                 String oldFileName = fileName;
-                                try {
-                                    oldFileName = oldFileName.replaceAll("\\\\", File.separator); //$NON-NLS-1$
-                                } catch (Exception ex) {
-                                    // Workaround for windows OS / JVM BUG
-                                    oldFileName = oldFileName.replace("\\", File.separator); //$NON-NLS-1$
-                                }
-                                try {
-                                    fileName = fileName.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-                                } catch (Exception ex) {
-                                    // Workaround for windows OS / JVM BUG
-                                    fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-                                }
+                                oldFileName = oldFileName.replace("\\", File.separator); //$NON-NLS-1$
+                                fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
 
                                 // Download first, then build the views
 
@@ -3913,12 +3903,7 @@ public class Editor3DWindow extends Editor3DDesign {
                             sb.append(dataSegments[dataSegments.length - 1]);
                             String fileName = sb.toString();
                             fileName = fileName.toLowerCase(Locale.ENGLISH);
-                            try {
-                                fileName = fileName.replaceAll("\\\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-                            } catch (Exception e) {
-                                // Workaround for windows OS / JVM BUG
-                                fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
-                            }
+                            fileName = fileName.replace("\\", "/"); //$NON-NLS-1$ //$NON-NLS-2$
 
                             if (files.contains(fileName)) continue;
                             files.add(fileName);
@@ -3929,18 +3914,8 @@ public class Editor3DWindow extends Editor3DDesign {
 
                             if (source2 != null) {
 
-                                try {
-                                    fileName = fileName.replaceAll("/", File.separator); //$NON-NLS-1$
-                                } catch (Exception ex) {
-                                    // Workaround for windows OS / JVM BUG
-                                    fileName = fileName.replace("/", File.separator); //$NON-NLS-1$
-                                }
-                                try {
-                                    fileName = fileName.replaceAll("\\\\", File.separator); //$NON-NLS-1$
-                                } catch (Exception ex) {
-                                    // Workaround for windows OS / JVM BUG
-                                    fileName = fileName.replace("\\", File.separator); //$NON-NLS-1$
-                                }
+                                fileName = fileName.replace("/", File.separator); //$NON-NLS-1$
+                                fileName = fileName.replace("\\", File.separator); //$NON-NLS-1$
 
                                 result.add(new File(Project.DEFAULT_PROJECT_PATH).getAbsolutePath() + File.separator + fileName);
                                 result.add(source2);

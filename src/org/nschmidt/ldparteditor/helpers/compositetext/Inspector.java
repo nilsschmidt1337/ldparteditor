@@ -65,7 +65,5 @@ public enum Inspector {
         vm.setModifiedNoSync();
         vm.syncWithTextEditors(true);
         vm.updateUnsavedStatus();
-
-        // FIXME Needs implementation!
     }
 }

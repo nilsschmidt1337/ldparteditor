@@ -638,12 +638,7 @@ public class SyntaxFormatter {
             String shortFilename = sb.toString();
             boolean isLowercase = shortFilename.equals(shortFilename.toLowerCase(Locale.ENGLISH));
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
-            try {
-                shortFilename = shortFilename.replaceAll("s\\\\", "S" + File.separator).replaceAll("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            } catch (Exception ex) {
-                // Workaround for windows OS / JVM BUG
-                shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
+            shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             String shortFilename2 = shortFilename.startsWith("S" + File.separator) ? "s" + shortFilename.substring(1) : shortFilename; //$NON-NLS-1$ //$NON-NLS-2$
             String shortFilename3 = shortFilename.startsWith("S" + File.separator) ? shortFilename.substring(2) : shortFilename; //$NON-NLS-1$
             String[] prefix ;

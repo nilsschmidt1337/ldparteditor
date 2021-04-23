@@ -606,12 +606,7 @@ public enum DatParser {
             String shortFilename = sb.toString();
             boolean isLowercase = shortFilename.equals(shortFilename.toLowerCase(Locale.ENGLISH));
             shortFilename = shortFilename.toLowerCase(Locale.ENGLISH);
-            try {
-                shortFilename = shortFilename.replaceAll("s\\\\", "S" + File.separator).replaceAll("\\\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            } catch (Exception e) {
-                // Workaround for windows OS / JVM BUG
-                shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
-            }
+            shortFilename = shortFilename.replace("s\\", "S" + File.separator).replace("\\", File.separator); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
             if (alreadyParsed.contains(shortFilename)) {
                 result.add(new ParsingResult(I18n.DATPARSER_RECURSIVE, "[E01] " + I18n.DATPARSER_LOGIC_ERROR, ResultType.ERROR)); //$NON-NLS-1$
                 if (!View.DUMMY_REFERENCE.equals(parent))

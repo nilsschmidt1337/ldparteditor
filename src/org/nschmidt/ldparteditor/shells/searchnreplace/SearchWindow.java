@@ -323,20 +323,9 @@ public class SearchWindow extends SearchDesign {
                 if (rbAllPtr[0].getSelection()) {
                     try {
                         if (cbCaseSensitivePtr[0].getSelection()) {
-                            try {
-                                textComposite.setText(textComposite.getText().replaceAll(Pattern.quote(criteria), replacement));
-                            } catch (Exception e) {
-                                // Workaround for windows OS / JVM BUG
-                                textComposite.setText(textComposite.getText().replace(Pattern.quote(criteria), replacement));
-                            }
-
+                            textComposite.setText(textComposite.getText().replace(Pattern.quote(criteria), replacement));
                         } else {
-                            try {
-                                textComposite.setText(textComposite.getText().replaceAll("(?i)" + Pattern.quote(criteria), replacement)); //$NON-NLS-1$
-                            } catch (Exception e) {
-                                // Workaround for windows OS / JVM BUG
-                                textComposite.setText(textComposite.getText().replace("(?i)" + Pattern.quote(criteria), replacement)); //$NON-NLS-1$
-                            }
+                            textComposite.setText(textComposite.getText().replace("(?i)" + Pattern.quote(criteria), replacement)); //$NON-NLS-1$
                         }
                     } catch (Exception consumed) {}
                 } else {
@@ -347,20 +336,9 @@ public class SearchWindow extends SearchDesign {
                     if (!textToReplace.isEmpty()) {
                         try {
                             if (cbCaseSensitivePtr[0].getSelection()) {
-                                try {
-                                    textToReplace = textToReplace.replaceAll(Pattern.quote(criteria), replacement);
-                                } catch (Exception e) {
-                                    // Workaround for windows OS / JVM BUG
-                                    textToReplace = textToReplace.replace(Pattern.quote(criteria), replacement);
-                                }
-
+                                textToReplace = textToReplace.replace(Pattern.quote(criteria), replacement);
                             } else {
-                                try {
-                                    textToReplace = textToReplace.replaceAll("(?i)" + Pattern.quote(criteria), replacement); //$NON-NLS-1$
-                                } catch (Exception e) {
-                                    // Workaround for windows OS / JVM BUG
-                                    textToReplace = textToReplace.replace("(?i)" + Pattern.quote(criteria), replacement); //$NON-NLS-1$
-                                }
+                                textToReplace = textToReplace.replace("(?i)" + Pattern.quote(criteria), replacement); //$NON-NLS-1$
                             }
 
                             textComposite.insert(textToReplace);
