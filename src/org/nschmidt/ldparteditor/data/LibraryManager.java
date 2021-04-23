@@ -444,10 +444,10 @@ public enum LibraryManager {
             if (this.comparePrimitives && other.comparePrimitives) {
                 if (segsThis[0].length() > 2 && segsOther[0].length() > 2 && (segsThis[0].charAt(1) == '-' || segsThis[0].charAt(2) == '-')
                         && (segsOther[0].charAt(1) == '-' || segsOther[0].charAt(2) == '-')) {
-                    String upperThis = ""; //$NON-NLS-1$
-                    String upperOther = ""; //$NON-NLS-1$
-                    String lowerThis = ""; //$NON-NLS-1$
-                    String lowerOther = ""; //$NON-NLS-1$
+                    StringBuilder upperThis = new StringBuilder();
+                    StringBuilder upperOther = new StringBuilder();
+                    StringBuilder lowerThis = new StringBuilder();
+                    StringBuilder lowerOther = new StringBuilder();
                     String suffixThis = ""; //$NON-NLS-1$
                     String suffixOther = ""; //$NON-NLS-1$
                     boolean readUpper = true;
@@ -456,9 +456,9 @@ public enum LibraryManager {
                     for (char c : charsThis) {
                         if (Character.isDigit(c)) {
                             if (readUpper) {
-                                upperThis = upperThis + c;
+                                upperThis.append(c);
                             } else {
-                                lowerThis = lowerThis + c;
+                                lowerThis.append(c);
                             }
                         } else {
                             if (readUpper) {
@@ -476,9 +476,9 @@ public enum LibraryManager {
                     for (char c : charsOther) {
                         if (Character.isDigit(c)) {
                             if (readUpper) {
-                                upperOther = upperOther + c;
+                                upperOther.append(c);
                             } else {
-                                lowerOther = lowerOther + c;
+                                lowerOther.append(c);
                             }
                         } else {
                             if (readUpper) {
@@ -492,8 +492,8 @@ public enum LibraryManager {
                     }
                     try {
 
-                        float fractionThis = Float.parseFloat(upperThis) / Float.parseFloat(lowerThis);
-                        float fractionOther = Float.parseFloat(upperOther) / Float.parseFloat(lowerOther);
+                        float fractionThis = Float.parseFloat(upperThis.toString()) / Float.parseFloat(lowerThis.toString());
+                        float fractionOther = Float.parseFloat(upperOther.toString()) / Float.parseFloat(lowerOther.toString());
 
                         if (!suffixThis.equals(suffixOther)) {
                             return suffixThis.compareTo(suffixOther);
@@ -509,12 +509,12 @@ public enum LibraryManager {
                 }
             }
 
-            String numThis = ""; //$NON-NLS-1$
-            String numOther = ""; //$NON-NLS-1$
+            StringBuilder numThis = new StringBuilder();
+            StringBuilder numOther = new StringBuilder();
             char[] charsThis = segsThis[0].toCharArray();
             for (char c : charsThis) {
                 if (Character.isDigit(c)) {
-                    numThis = numThis + c;
+                    numThis.append(c);
                 } else {
                     break;
                 }
@@ -522,16 +522,16 @@ public enum LibraryManager {
             char[] charsOther = segsOther[0].toCharArray();
             for (char c : charsOther) {
                 if (Character.isDigit(c)) {
-                    numOther = numOther + c;
+                    numOther.append(c);
                 } else {
                     break;
                 }
             }
-            if (numThis.isEmpty() || numOther.isEmpty() || numThis.equals(numOther)) {
+            if (numThis.length() == 0 || numOther.length() == 0 || numThis.toString().equals(numOther.toString())) {
                 return this.name.compareTo(other.name);
             } else {
-                int intThis = Integer.parseInt(numThis, 10);
-                int intOther = Integer.parseInt(numOther, 10);
+                int intThis = Integer.parseInt(numThis.toString(), 10);
+                int intOther = Integer.parseInt(numOther.toString(), 10);
                 if (intThis == intOther) {
                     return 0;
                 } else {
@@ -593,14 +593,14 @@ public enum LibraryManager {
      *            {@code true} if the folder contains primitives
      */
     private static void readLibraryFolder(String basePath, String prefix1, String prefix2, TreeItem treeItem, boolean isPrimitiveFolder, boolean isReadOnlyFolder, DatType type) {
-        String folderPath = basePath;
+        StringBuilder folderPathSb = new StringBuilder(basePath);
         boolean canSearch = true;
         final File baseFolder = new File(basePath);
         if (prefix1.isEmpty()) {
             Map<DatFileName, TreeItem> parentMap = new HashMap<>();
             Map<DatFileName, DatType> typeMap = new HashMap<>();
             List<DatFileName> datFiles = new ArrayList<>();
-            File libFolder = new File(folderPath);
+            File libFolder = new File(folderPathSb.toString());
             StringBuilder titleSb = new StringBuilder();
             File[] files = libFolder.listFiles();
             if (files != null) {
@@ -686,7 +686,7 @@ public enum LibraryManager {
                     }
                 }
             } else {
-                NLogger.error(LibraryManager.class, "readLibraryFolder: Can't open directory" + folderPath);  //$NON-NLS-1$
+                NLogger.error(LibraryManager.class, "readLibraryFolder: Can't open directory" + folderPathSb);  //$NON-NLS-1$
             }
             // Sort the file list
             Collections.sort(datFiles);
@@ -694,7 +694,7 @@ public enum LibraryManager {
             for (DatFileName dat : datFiles) {
                 TreeItem finding = new TreeItem(parentMap.get(dat));
                 // Save the path
-                DatFile path = new DatFile(folderPath + File.separator + dat.getName(), dat.getDescription(), isReadOnlyFolder, typeMap.get(dat));
+                DatFile path = new DatFile(folderPathSb + File.separator + dat.getName(), dat.getDescription(), isReadOnlyFolder, typeMap.get(dat));
                 finding.setData(path);
                 // Set the filename
                 if (Project.getUnsavedFiles().contains(path)) {
@@ -713,7 +713,8 @@ public enum LibraryManager {
             for (File sub : baseFolderFiles) {
                 // Check if the sub-folder exist
                 if (sub.isDirectory() && sub.getName().equalsIgnoreCase(prefix1)) {
-                    folderPath = folderPath + File.separator + sub.getName();
+                    folderPathSb.append(File.separator);
+                    folderPathSb.append(sub.getName());
                     if (!prefix2.equals("")) { //$NON-NLS-1$
                         // We can not search now. It is not guaranteed that the
                         // sub-sub-folder exist (e.g. D:\LDRAW\PARTS\S)
@@ -723,7 +724,8 @@ public enum LibraryManager {
                         if (subFolderFiles != null) {
                             for (File subsub : subFolderFiles) {
                                 if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(prefix2)) {
-                                    folderPath = folderPath + File.separator + subsub.getName();
+                                    folderPathSb.append(File.separator);
+                                    folderPathSb.append(subsub.getName());
                                     canSearch = true;
                                     break;
                                 }
@@ -733,7 +735,7 @@ public enum LibraryManager {
                     if (canSearch) {
                         // Do the search for DAT files
                         List<DatFileName> datFiles = new ArrayList<>();
-                        File libFolder = new File(folderPath);
+                        File libFolder = new File(folderPathSb.toString());
                         final File[] libFolderFiles = libFolder.listFiles();
                         if (libFolderFiles != null) {
                             for (File f : libFolderFiles) {
@@ -749,7 +751,7 @@ public enum LibraryManager {
                         for (DatFileName dat : datFiles) {
                             TreeItem finding = new TreeItem(treeItem);
                             // Save the path
-                            DatFile path = new DatFile(folderPath + File.separator + dat.getName(), "", isReadOnlyFolder, type); //$NON-NLS-1$
+                            DatFile path = new DatFile(folderPathSb.toString() + File.separator + dat.getName(), "", isReadOnlyFolder, type); //$NON-NLS-1$
                             finding.setData(path);
                             // Set the filename
                             if (Project.getUnsavedFiles().contains(path)) {
@@ -1206,7 +1208,9 @@ public enum LibraryManager {
             for (File sub : baseFolderFiles) {
                 // Check if the sub-folder exist
                 if (sub.isDirectory() && sub.getName().equalsIgnoreCase(prefix1)) {
-                    String folderPath = basePath + File.separator + sub.getName();
+                    StringBuilder folderPathSb = new StringBuilder(basePath);
+                    folderPathSb.append(File.separator);
+                    folderPathSb.append(sub.getName());
                     if (!prefix2.equals("")) { //$NON-NLS-1$
                         // We can not search now. It is not guaranteed that the
                         // sub-sub-folder exist (e.g. D:\LDRAW\PARTS\S)
@@ -1216,7 +1220,8 @@ public enum LibraryManager {
                         if (files != null) {
                             for (File subsub : files) {
                                 if (subsub.isDirectory() && subsub.getName().equalsIgnoreCase(prefix2)) {
-                                    folderPath = folderPath + File.separator + subsub.getName();
+                                    folderPathSb.append(File.separator);
+                                    folderPathSb.append(subsub.getName());
                                     canSearch = true;
                                     break;
                                 }
@@ -1225,7 +1230,7 @@ public enum LibraryManager {
                     }
                     if (canSearch) {
                         // Do the search for DAT files
-                        File libFolder = new File(folderPath);
+                        File libFolder = new File(folderPathSb.toString());
                         StringBuilder titleSb = new StringBuilder();
                         final File[] files = libFolder.listFiles();
                         if (files == null) {

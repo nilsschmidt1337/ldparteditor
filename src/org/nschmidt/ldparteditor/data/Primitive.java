@@ -290,8 +290,8 @@ public class Primitive implements Comparable<Primitive> {
                     try {
                         String nameO1 = o1.name;
                         if (nameO1.startsWith("48\\")) nameO1 = nameO1.substring(3); //$NON-NLS-1$
-                        String upperThis = ""; //$NON-NLS-1$
-                        String lowerThis = ""; //$NON-NLS-1$
+                        StringBuilder upperThis = new StringBuilder();
+                        StringBuilder lowerThis = new StringBuilder();
                         if (nameO1.charAt(1) == '-' || nameO1.charAt(2) == '-') {
                             boolean readUpper = true;
                             int charCount = 0;
@@ -299,9 +299,9 @@ public class Primitive implements Comparable<Primitive> {
                             for (char c : charsThis) {
                                 if (Character.isDigit(c)) {
                                     if (readUpper) {
-                                        upperThis = upperThis + c;
+                                        upperThis.append(c);
                                     } else {
-                                        lowerThis = lowerThis + c;
+                                        lowerThis.append(c);
                                     }
                                 } else {
                                     if (readUpper) {
@@ -313,7 +313,7 @@ public class Primitive implements Comparable<Primitive> {
                                 }
                                 charCount++;
                             }
-                            fractionThis = Float.parseFloat(upperThis) / Float.parseFloat(lowerThis);
+                            fractionThis = Float.parseFloat(upperThis.toString()) / Float.parseFloat(lowerThis.toString());
                         } else {
                             return 1;
                         }
@@ -324,8 +324,8 @@ public class Primitive implements Comparable<Primitive> {
                     try {
                         String nameO2 = o2.name;
                         if (nameO2.startsWith("48\\")) nameO2 = nameO2.substring(3); //$NON-NLS-1$
-                        String upperOther = ""; //$NON-NLS-1$
-                        String lowerOther = ""; //$NON-NLS-1$
+                        StringBuilder upperOther = new StringBuilder();
+                        StringBuilder lowerOther = new StringBuilder();
                         if (nameO2.charAt(1) == '-' || nameO2.charAt(2) == '-') {
                             boolean readUpper = true;
                             int charCount = 0;
@@ -333,9 +333,9 @@ public class Primitive implements Comparable<Primitive> {
                             for (char c : charsOther) {
                                 if (Character.isDigit(c)) {
                                     if (readUpper) {
-                                        upperOther = upperOther + c;
+                                        upperOther.append(c);
                                     } else {
-                                        lowerOther = lowerOther + c;
+                                        lowerOther.append(c);
                                     }
                                 } else {
                                     if (readUpper) {
@@ -347,7 +347,7 @@ public class Primitive implements Comparable<Primitive> {
                                 }
                                 charCount++;
                             }
-                            fractionOther = Float.parseFloat(upperOther) / Float.parseFloat(lowerOther);
+                            fractionOther = Float.parseFloat(upperOther.toString()) / Float.parseFloat(lowerOther.toString());
                         } else {
                             return -1;
                         }
@@ -376,20 +376,20 @@ public class Primitive implements Comparable<Primitive> {
                     String nameO2 = o2.name;
                     char[] charsThis = nameO1.toCharArray();
                     char[] charsOther = nameO2.toCharArray();
-                    String numberThis = ""; //$NON-NLS-1$
-                    String numberOther = ""; //$NON-NLS-1$
-                    String prefixThis = ""; //$NON-NLS-1$
-                    String prefixOther = ""; //$NON-NLS-1$
+                    StringBuilder numberThis = new StringBuilder();
+                    StringBuilder numberOther = new StringBuilder();
+                    StringBuilder prefixThis = new StringBuilder();
+                    StringBuilder prefixOther = new StringBuilder();
                     try {
                         boolean readDigit = false;
                         for (int i = charsThis.length - 1; i > 0 ; i--) {
                             char c = charsThis[i];
                             if (Character.isDigit(c)) {
-                                numberThis = c + numberThis;
+                                numberThis.insert(0, c);
                                 readDigit = true;
                             } else if (readDigit) {
                                 for (int j = 0; j < i + 1; j++) {
-                                    if (!Character.isDigit(charsThis[j])) prefixThis = prefixThis + charsThis[j];
+                                    if (!Character.isDigit(charsThis[j])) prefixThis.append(charsThis[j]);
                                 }
                                 break;
                             } else if (i < charsThis.length - 5) {
@@ -397,21 +397,23 @@ public class Primitive implements Comparable<Primitive> {
                             }
                         }
                         if (!readDigit) {
-                            numberThis = "0"; //$NON-NLS-1$
+                            numberThis.setLength(0);
+                            numberThis.append('0');
                         }
                     } catch (Exception ex) {
-                        numberThis = "0"; //$NON-NLS-1$
+                        numberThis.setLength(0);
+                        numberThis.append('0');
                     }
                     try {
                         boolean readDigit = false;
                         for (int i = charsOther.length - 1; i > 0 ; i--) {
                             char c = charsOther[i];
                             if (Character.isDigit(c)) {
-                                numberOther = c + numberOther;
+                                numberOther.insert(0, c);
                                 readDigit = true;
                             } else if (readDigit) {
                                 for (int j = 0; j < i + 1; j++) {
-                                    if (!Character.isDigit(charsOther[j])) prefixOther = prefixOther + charsOther[j];
+                                    if (!Character.isDigit(charsOther[j])) prefixOther.append(charsOther[j]);
                                 }
                                 break;
                             } else if (i < charsOther.length - 5) {
@@ -419,12 +421,14 @@ public class Primitive implements Comparable<Primitive> {
                             }
                         }
                         if (!readDigit) {
-                            numberOther = "0"; //$NON-NLS-1$
+                            numberOther.setLength(0);
+                            numberOther.append('0');
                         }
                     } catch (Exception ex) {
-                        numberOther = "0"; //$NON-NLS-1$
+                        numberOther.setLength(0);
+                        numberOther.append('0');
                     }
-                    return Integer.compare(Integer.parseInt(numberThis), Integer.parseInt(numberOther));
+                    return Integer.compare(Integer.parseInt(numberThis.toString()), Integer.parseInt(numberOther.toString()));
                 });
                 break;
             default:

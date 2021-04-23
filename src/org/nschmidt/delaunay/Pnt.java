@@ -54,11 +54,15 @@ public class Pnt {
     public String toString() {
         if (coordinates.length == 0)
             return "Pnt()"; //$NON-NLS-1$
-        String result = "Pnt(" + coordinates[0]; //$NON-NLS-1$
-        for (int i = 1; i < coordinates.length; i++)
-            result = result + "," + coordinates[i]; //$NON-NLS-1$
-        result = result + ")"; //$NON-NLS-1$
-        return result;
+        StringBuilder result = new StringBuilder("Pnt("); //$NON-NLS-1$
+        result.append(coordinates[0]);
+        for (int i = 1; i < coordinates.length; i++) {
+            result.append(',');
+            result.append(coordinates[i]);
+        }
+
+        result.append(')');
+        return result.toString();
     }
 
     @Override

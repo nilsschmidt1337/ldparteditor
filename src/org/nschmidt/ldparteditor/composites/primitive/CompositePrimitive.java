@@ -683,13 +683,16 @@ public class CompositePrimitive extends Composite {
                                 if (dataSegments.length > 1)
                                 {
                                     String[] treeSegments = dataSegments[0].split(Pattern.quote("|")); //$NON-NLS-1$
-                                    String catID = ""; //$NON-NLS-1$
                                     final int maxDepth = treeSegments.length;
+                                    final StringBuilder sb = new StringBuilder();
+                                    String catID = sb.toString();
                                     int depth = 0;
                                     for (String s : treeSegments) {
                                         depth++;
                                         String before = catID;
-                                        catID = catID + "|" + s; //$NON-NLS-1$
+                                        sb.append('|');
+                                        sb.append(s);
+                                        catID = sb.toString();
                                         NLogger.debug(getClass(), "Category       __{0}", catID); //$NON-NLS-1$
                                         if (maxDepth < 2) {
                                             // MARK Parse rules I
