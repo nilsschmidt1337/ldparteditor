@@ -223,7 +223,7 @@ public class GL33ModelRendererLDrawStandard {
 
                 boolean myTurn;
                 try {
-                    myTurn = myID == idList.get(idCount.get());
+                    myTurn = myID.equals(idList.get(idCount.get()));
                 } catch (IndexOutOfBoundsException iob) {
                     try {
                         Thread.sleep(10);
